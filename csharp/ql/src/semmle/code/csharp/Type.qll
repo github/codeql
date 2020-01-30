@@ -338,7 +338,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * calls made by callables in this type, excluding member accesses.
    */
   int getResponse() {
-    result = sum(Callable c |
+    result =
+      sum(Callable c |
         c.getDeclaringType() = this
       |
         count(Call call |
@@ -691,7 +692,8 @@ class RefType extends ValueOrRefType, @ref_type {
    */
   float getSpecialisationIndex() {
     this.getNumberOfCallables() != 0 and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+    result =
+      (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfCallables().(float)
   }
 
@@ -932,7 +934,8 @@ class TupleType extends ValueType, @tuple_type {
 
   language[monotonicAggregates]
   override string toStringWithTypes() {
-    result = "(" +
+    result =
+      "(" +
         concat(int i |
           exists(getElement(i))
         |

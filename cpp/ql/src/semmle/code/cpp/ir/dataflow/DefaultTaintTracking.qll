@@ -135,7 +135,8 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
-  i2 = any(CallInstruction call |
+  i2 =
+    any(CallInstruction call |
       isPureFunction(call.getStaticCallTarget().getName()) and
       call.getAnArgument() = i1 and
       forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and
@@ -149,6 +150,9 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   or
   i2.(UnaryInstruction).getUnary() = i1
   or
+  i2.(ChiInstruction).getPartial() = i1 and
+  not isChiForAllAliasedMemory(i2)
+  or
   exists(BinaryInstruction bin |
     bin = i2 and
     predictableInstruction(i2.getAnOperand().getDef()) and
@@ -160,7 +164,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(PointerAddInstruction).getLeft() = i1
   or
   // Flow from argument to return value
-  i2 = any(CallInstruction call |
+  i2 =
+    any(CallInstruction call |
       exists(int indexIn |
         modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
         i1 = DataFlow::getACallArgumentOrIndirection(call, indexIn)
@@ -172,7 +177,8 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // together in a single virtual variable.
   // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
   // is a pointer addition expression?
-  i2 = any(WriteSideEffectInstruction outNode |
+  i2 =
+    any(WriteSideEffectInstruction outNode |
       exists(CallInstruction call, int indexIn, int indexOut |
         modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
         i1 = DataFlow::getACallArgumentOrIndirection(call, indexIn) and
@@ -184,10 +190,27 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
 
 private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
   exists(FunctionInput modelIn, FunctionOutput modelOut |
-    f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+    (
+      f.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      or
+      f.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+    ) and
     (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
     modelOut.isParameterDeref(parameterOut)
   )
+}
+
+/**
+ * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
+ * Taint shoud not pass through these instructions since they tend to mix up
+ * unrelated objects.
+ */
+private predicate isChiForAllAliasedMemory(Instruction instr) {
+  instr.(ChiInstruction).getTotal() instanceof AliasedDefinitionInstruction
+  or
+  isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
+  or
+  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInput())
 }
 
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {

@@ -41,7 +41,7 @@ void good1(wchar_t *wstr) {
 }
 
 void bad3(char *str) {
-    // BAD -- zero-termination proved by sprintf (as destination) [NOT DETECTED]
+    // BAD -- zero-termination proved by sprintf (as destination)
     char *buffer = (char *)malloc(strlen(str));
     sprintf(buffer, "%s", str);
     free(buffer);

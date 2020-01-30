@@ -100,8 +100,8 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
     not exists(captured.getAUse()) and
     exists(SsaVariable capturedDef | capturedDef = captured.getAnUltimateDefinition() |
       capturedDef.(SsaImplicitInit).isParameterDefinition(node1.asParameter()) or
-      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = node1
-            .asExpr() or
+      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
+        node1.asExpr() or
       capturedDef.(SsaExplicitUpdate).getDefiningExpr().(AssignOp) = node1.asExpr()
     )
   )
@@ -235,6 +235,8 @@ DataFlowType getErasedRepr(Type t) {
       then result.(BoxedType).getPrimitiveType().getName() = "boolean"
       else result = e
   )
+  or
+  t instanceof NullType and result instanceof TypeObject
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */

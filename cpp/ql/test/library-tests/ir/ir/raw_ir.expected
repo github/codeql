@@ -3371,15 +3371,16 @@ ir.cpp:
 
 #  731|   Block 7
 #  731|     r731_11(glval<String>)   = VariableAddress[#throw731:19]   : 
-#  731|     r731_12(glval<unknown>)  = FunctionAddress[String]         : 
-#  731|     r731_13(glval<char[14]>) = StringConstant["String object"] : 
-#  731|     r731_14(char *)          = Convert                         : r731_13
-#  731|     v731_15(void)            = Call                            : func:r731_12, this:r731_11, 0:r731_14
-#  731|     mu731_16(unknown)        = ^CallSideEffect                 : ~mu724_3
-#  731|     mu731_17(String)         = ^IndirectMayWriteSideEffect[-1] : &:r731_11
-#  731|     v731_18(void)            = ^BufferReadSideEffect[0]        : &:r731_14, ~mu724_3
-#  731|     mu731_19(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r731_14
-#  731|     v731_20(void)            = ThrowValue                      : &:r731_11, ~mu724_3
+#  731|     mu731_12(String)         = Uninitialized[#throw731:19]     : &:r731_11
+#  731|     r731_13(glval<unknown>)  = FunctionAddress[String]         : 
+#  731|     r731_14(glval<char[14]>) = StringConstant["String object"] : 
+#  731|     r731_15(char *)          = Convert                         : r731_14
+#  731|     v731_16(void)            = Call                            : func:r731_13, this:r731_11, 0:r731_15
+#  731|     mu731_17(unknown)        = ^CallSideEffect                 : ~mu724_3
+#  731|     mu731_18(String)         = ^IndirectMayWriteSideEffect[-1] : &:r731_11
+#  731|     v731_19(void)            = ^BufferReadSideEffect[0]        : &:r731_15, ~mu724_3
+#  731|     mu731_20(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r731_15
+#  731|     v731_21(void)            = ThrowValue                      : &:r731_11, ~mu724_3
 #-----|   Exception -> Block 9
 
 #  733|   Block 8
@@ -3399,15 +3400,16 @@ ir.cpp:
 #  735|     r735_4(char *)         = Load                            : &:r735_2, ~mu735_3
 #  735|     mu735_5(unknown)       = InitializeIndirection[s]        : &:r735_4
 #  736|     r736_1(glval<String>)  = VariableAddress[#throw736:5]    : 
-#  736|     r736_2(glval<unknown>) = FunctionAddress[String]         : 
-#  736|     r736_3(glval<char *>)  = VariableAddress[s]              : 
-#  736|     r736_4(char *)         = Load                            : &:r736_3, ~mu724_3
-#  736|     v736_5(void)           = Call                            : func:r736_2, this:r736_1, 0:r736_4
-#  736|     mu736_6(unknown)       = ^CallSideEffect                 : ~mu724_3
-#  736|     mu736_7(String)        = ^IndirectMayWriteSideEffect[-1] : &:r736_1
-#  736|     v736_8(void)           = ^BufferReadSideEffect[0]        : &:r736_4, ~mu724_3
-#  736|     mu736_9(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r736_4
-#  736|     v736_10(void)          = ThrowValue                      : &:r736_1, ~mu724_3
+#  736|     mu736_2(String)        = Uninitialized[#throw736:5]      : &:r736_1
+#  736|     r736_3(glval<unknown>) = FunctionAddress[String]         : 
+#  736|     r736_4(glval<char *>)  = VariableAddress[s]              : 
+#  736|     r736_5(char *)         = Load                            : &:r736_4, ~mu724_3
+#  736|     v736_6(void)           = Call                            : func:r736_3, this:r736_1, 0:r736_5
+#  736|     mu736_7(unknown)       = ^CallSideEffect                 : ~mu724_3
+#  736|     mu736_8(String)        = ^IndirectMayWriteSideEffect[-1] : &:r736_1
+#  736|     v736_9(void)           = ^BufferReadSideEffect[0]        : &:r736_5, ~mu724_3
+#  736|     mu736_10(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r736_5
+#  736|     v736_11(void)          = ThrowValue                      : &:r736_1, ~mu724_3
 #-----|   Exception -> Block 2
 
 #  738|   Block 11
@@ -5728,15 +5730,16 @@ ir.cpp:
 
 # 1140|   Block 7
 # 1140|     r1140_11(glval<String>)   = VariableAddress[#throw1140:19]  : 
-# 1140|     r1140_12(glval<unknown>)  = FunctionAddress[String]         : 
-# 1140|     r1140_13(glval<char[14]>) = StringConstant["String object"] : 
-# 1140|     r1140_14(char *)          = Convert                         : r1140_13
-# 1140|     v1140_15(void)            = Call                            : func:r1140_12, this:r1140_11, 0:r1140_14
-# 1140|     mu1140_16(unknown)        = ^CallSideEffect                 : ~mu1133_3
-# 1140|     mu1140_17(String)         = ^IndirectMayWriteSideEffect[-1] : &:r1140_11
-# 1140|     v1140_18(void)            = ^BufferReadSideEffect[0]        : &:r1140_14, ~mu1133_3
-# 1140|     mu1140_19(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r1140_14
-# 1140|     v1140_20(void)            = ThrowValue                      : &:r1140_11, ~mu1133_3
+# 1140|     mu1140_12(String)         = Uninitialized[#throw1140:19]    : &:r1140_11
+# 1140|     r1140_13(glval<unknown>)  = FunctionAddress[String]         : 
+# 1140|     r1140_14(glval<char[14]>) = StringConstant["String object"] : 
+# 1140|     r1140_15(char *)          = Convert                         : r1140_14
+# 1140|     v1140_16(void)            = Call                            : func:r1140_13, this:r1140_11, 0:r1140_15
+# 1140|     mu1140_17(unknown)        = ^CallSideEffect                 : ~mu1133_3
+# 1140|     mu1140_18(String)         = ^IndirectMayWriteSideEffect[-1] : &:r1140_11
+# 1140|     v1140_19(void)            = ^BufferReadSideEffect[0]        : &:r1140_15, ~mu1133_3
+# 1140|     mu1140_20(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r1140_15
+# 1140|     v1140_21(void)            = ThrowValue                      : &:r1140_11, ~mu1133_3
 #-----|   Exception -> Block 9
 
 # 1142|   Block 8
@@ -5756,15 +5759,16 @@ ir.cpp:
 # 1144|     r1144_4(char *)         = Load                            : &:r1144_2, ~mu1144_3
 # 1144|     mu1144_5(unknown)       = InitializeIndirection[s]        : &:r1144_4
 # 1145|     r1145_1(glval<String>)  = VariableAddress[#throw1145:5]   : 
-# 1145|     r1145_2(glval<unknown>) = FunctionAddress[String]         : 
-# 1145|     r1145_3(glval<char *>)  = VariableAddress[s]              : 
-# 1145|     r1145_4(char *)         = Load                            : &:r1145_3, ~mu1133_3
-# 1145|     v1145_5(void)           = Call                            : func:r1145_2, this:r1145_1, 0:r1145_4
-# 1145|     mu1145_6(unknown)       = ^CallSideEffect                 : ~mu1133_3
-# 1145|     mu1145_7(String)        = ^IndirectMayWriteSideEffect[-1] : &:r1145_1
-# 1145|     v1145_8(void)           = ^BufferReadSideEffect[0]        : &:r1145_4, ~mu1133_3
-# 1145|     mu1145_9(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r1145_4
-# 1145|     v1145_10(void)          = ThrowValue                      : &:r1145_1, ~mu1133_3
+# 1145|     mu1145_2(String)        = Uninitialized[#throw1145:5]     : &:r1145_1
+# 1145|     r1145_3(glval<unknown>) = FunctionAddress[String]         : 
+# 1145|     r1145_4(glval<char *>)  = VariableAddress[s]              : 
+# 1145|     r1145_5(char *)         = Load                            : &:r1145_4, ~mu1133_3
+# 1145|     v1145_6(void)           = Call                            : func:r1145_3, this:r1145_1, 0:r1145_5
+# 1145|     mu1145_7(unknown)       = ^CallSideEffect                 : ~mu1133_3
+# 1145|     mu1145_8(String)        = ^IndirectMayWriteSideEffect[-1] : &:r1145_1
+# 1145|     v1145_9(void)           = ^BufferReadSideEffect[0]        : &:r1145_5, ~mu1133_3
+# 1145|     mu1145_10(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1145_5
+# 1145|     v1145_11(void)          = ThrowValue                      : &:r1145_1, ~mu1133_3
 #-----|   Exception -> Block 2
 
 # 1147|   Block 11
@@ -5877,6 +5881,27 @@ ir.cpp:
 # 1163|     v1163_8(void)           = UnmodeledUse                       : mu*
 # 1163|     v1163_9(void)           = AliasedUse                         : ~mu1163_3
 # 1163|     v1163_10(void)          = ExitFunction                       : 
+
+# 1169| String ReturnObjectImpl()
+# 1169|   Block 0
+# 1169|     v1169_1(void)           = EnterFunction                   : 
+# 1169|     mu1169_2(unknown)       = AliasedDefinition               : 
+# 1169|     mu1169_3(unknown)       = UnmodeledDefinition             : 
+# 1170|     r1170_1(glval<String>)  = VariableAddress[#return]        : 
+# 1170|     mu1170_2(String)        = Uninitialized[#return]          : &:r1170_1
+# 1170|     r1170_3(glval<unknown>) = FunctionAddress[String]         : 
+# 1170|     r1170_4(glval<char[4]>) = StringConstant["foo"]           : 
+# 1170|     r1170_5(char *)         = Convert                         : r1170_4
+# 1170|     r1170_6(String)         = Call                            : func:r1170_3, this:r1170_1, 0:r1170_5
+# 1170|     mu1170_7(unknown)       = ^CallSideEffect                 : ~mu1169_3
+# 1170|     mu1170_8(String)        = ^IndirectMayWriteSideEffect[-1] : &:r1170_1
+# 1170|     v1170_9(void)           = ^BufferReadSideEffect[0]        : &:r1170_5, ~mu1169_3
+# 1170|     mu1170_10(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1170_5
+# 1169|     r1169_4(glval<String>)  = VariableAddress[#return]        : 
+# 1169|     v1169_5(void)           = ReturnValue                     : &:r1169_4, ~mu1169_3
+# 1169|     v1169_6(void)           = UnmodeledUse                    : mu*
+# 1169|     v1169_7(void)           = AliasedUse                      : ~mu1169_3
+# 1169|     v1169_8(void)           = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

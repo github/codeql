@@ -8056,6 +8056,20 @@ ir.cpp:
 # 1166|       0: [VariableAccess] y
 # 1166|           Type = [IntType] int
 # 1166|           ValueCategory = prvalue(load)
+# 1169| [TopLevelFunction] String ReturnObjectImpl()
+# 1169|   params: 
+# 1169|   body: [Block] { ... }
+# 1170|     0: [ReturnStmt] return ...
+# 1170|       0: [ConstructorCall] call to String
+# 1170|           Type = [Struct] String
+# 1170|           ValueCategory = prvalue
+# 1170|         0: [ArrayToPointerConversion] array to pointer conversion
+# 1170|             Type = [PointerType] const char *
+# 1170|             ValueCategory = prvalue
+# 1170|           expr: foo
+# 1170|               Type = [ArrayType] const char[4]
+# 1170|               Value = [StringLiteral] "foo"
+# 1170|               ValueCategory = lvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

@@ -1166,4 +1166,8 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
+String ReturnObjectImpl() {
+  return String("foo");
+}
+
 // semmle-extractor-options: -std=c++17 --clang

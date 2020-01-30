@@ -61,8 +61,8 @@ void bg_structptr(XY *p1, XY *p2) {
   if (guarded(p1->x)) {
     sink(p1->x); // no flow [FALSE POSITIVE in AST]
   } else if (guarded(p1->y)) {
-    sink(p1->x); // flow [NOT DETECTED in IR]
+    sink(p1->x); // flow
   } else if (guarded(p2->x)) {
-    sink(p1->x); // flow [NOT DETECTED in IR]
+    sink(p1->x); // flow
   }
 }

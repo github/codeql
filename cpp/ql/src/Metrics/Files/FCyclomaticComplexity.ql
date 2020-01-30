@@ -19,7 +19,8 @@ where
   if loc > 0
   then
     // Weighted average of complexity by function length
-    complexity = sum(FunctionDeclarationEntry fde |
+    complexity =
+      sum(FunctionDeclarationEntry fde |
           fde.getFile() = f
         |
           fde.getNumberOfLines() * fde.getCyclomaticComplexity()

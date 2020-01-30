@@ -11,10 +11,6 @@
 
 import java
 
-int integralTypeWidth(IntegralType t) {
-  if t.hasName("long") or t.hasName("Long") then result = 64 else result = 32
-}
-
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 
 predicate isConstantExp(Expr e) {
@@ -46,13 +42,6 @@ predicate isConstantExp(Expr e) {
   exists(RemExpr r | r = e |
     r.getLeftOperand().getType() instanceof IntegralType and
     eval(r.getRightOperand().getProperExpr()) = 1
-  )
-  or
-  // Left shift by 64 (longs) or 32 (all other integer types) is constant.
-  exists(LShiftExpr s | s = e |
-    exists(IntegralType t | t = s.getLeftOperand().getType() |
-      eval(s.getRightOperand().getProperExpr()) = integralTypeWidth(t)
-    )
   )
   or
   exists(AndBitwiseExpr a | a = e | eval(a.getAnOperand().getProperExpr()) = 0)

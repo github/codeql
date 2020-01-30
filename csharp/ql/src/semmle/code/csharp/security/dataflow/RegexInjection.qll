@@ -58,8 +58,8 @@ module RegexInjection {
   /** A call to `Regex.Escape` that sanitizes the user input for use in a regex. */
   class RegexEscapeSanitizer extends Sanitizer {
     RegexEscapeSanitizer() {
-      this.getExpr().(MethodCall).getTarget() = any(SystemTextRegularExpressionsRegexClass r)
-            .getAMethod("Escape")
+      this.getExpr().(MethodCall).getTarget() =
+        any(SystemTextRegularExpressionsRegexClass r).getAMethod("Escape")
     }
   }
 

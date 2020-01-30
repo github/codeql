@@ -198,13 +198,15 @@ class DefinitionByReferenceNode extends Node {
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
-    result = instr
+    result =
+      instr
           .getPrimaryInstruction()
           .(CallInstruction)
           .getPositionalArgument(instr.getIndex())
           .getUnconvertedResultExpression()
     or
-    result = instr
+    result =
+      instr
           .getPrimaryInstruction()
           .(CallInstruction)
           .getThisArgument()
@@ -272,6 +274,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom
   or
+  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+  or
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom
   or
   // A chi instruction represents a point where a new value (the _partial_
@@ -283,10 +287,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // due to shortcomings of the alias analysis. We may get false flow in cases
   // where the data is indeed overwritten.
   //
-  // Allowing flow through the partial operand would be more noisy, especially
-  // for variables that have escaped: for soundness, the IR has to assume that
-  // every write to an unknown address can affect every escaped variable, and
-  // this assumption shows up as data flowing through partial chi operands.
+  // Flow through the partial operand belongs in the taint-tracking libraries
+  // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
   // Flow from argument to return value

@@ -50,7 +50,8 @@ class BlockOrNonChild extends Element {
 
   private int getNonContiguousStartRankIn(AffectedFile file) {
     // When using `rank` with `order by`, the ranks may not be contiguous.
-    this = rank[result](BlockOrNonChild boc, int startLine, int startCol |
+    this =
+      rank[result](BlockOrNonChild boc, int startLine, int startCol |
         boc.getLocation().hasLocationInfo(file.getAbsolutePath(), startLine, startCol, _, _)
       |
         boc order by startLine, startCol
@@ -58,13 +59,15 @@ class BlockOrNonChild extends Element {
   }
 
   int getStartRankIn(AffectedFile file) {
-    this.getNonContiguousStartRankIn(file) = rank[result](int rnk |
+    this.getNonContiguousStartRankIn(file) =
+      rank[result](int rnk |
         exists(BlockOrNonChild boc | boc.getNonContiguousStartRankIn(file) = rnk)
       )
   }
 
   int getNonContiguousEndRankIn(AffectedFile file) {
-    this = rank[result](BlockOrNonChild boc, int endLine, int endCol |
+    this =
+      rank[result](BlockOrNonChild boc, int endLine, int endCol |
         boc.getLocation().hasLocationInfo(file.getAbsolutePath(), _, _, endLine, endCol)
       |
         boc order by endLine, endCol
@@ -79,9 +82,8 @@ predicate emptyBlockContainsNonchild(Block b) {
   emptyBlock(_, b) and
   exists(BlockOrNonChild c, AffectedFile file |
     c.(BlockOrNonChild).getStartRankIn(file) = 1 + b.(BlockOrNonChild).getStartRankIn(file) and
-    c.(BlockOrNonChild).getNonContiguousEndRankIn(file) < b
-          .(BlockOrNonChild)
-          .getNonContiguousEndRankIn(file)
+    c.(BlockOrNonChild).getNonContiguousEndRankIn(file) <
+      b.(BlockOrNonChild).getNonContiguousEndRankIn(file)
   )
 }
 

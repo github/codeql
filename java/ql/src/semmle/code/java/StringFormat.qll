@@ -175,7 +175,8 @@ class FormattingCall extends Call {
     then
       exists(Expr arg | arg = this.getArgument(1 + this.getFormatStringIndex()) |
         result = arg.(ArrayCreationExpr).getFirstDimensionSize() or
-        result = arg
+        result =
+          arg
               .(VarAccess)
               .getVariable()
               .getAnAssignedValue()
@@ -410,7 +411,8 @@ private class PrintfFormatString extends FormatString {
   }
 
   override int getMaxFmtSpecIndex() {
-    result = max(int ix |
+    result =
+      max(int ix |
         ix = fmtSpecRefersToSpecificIndex(_) or
         ix = count(int i | fmtSpecRefersToSequentialIndex(i))
       )

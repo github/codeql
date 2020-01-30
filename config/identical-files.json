@@ -82,6 +82,14 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/IRType.qll"
   ],
+  "IR IRConfiguration": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/IRConfiguration.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/IRConfiguration.qll"
+  ],
+  "IR UseSoundEscapeAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/UseSoundEscapeAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/UseSoundEscapeAnalysis.qll"
+  ],
   "IR Operand Tag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/OperandTag.qll"
@@ -182,9 +190,14 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstructionImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstructionImports.qll"
   ],
-  "C++ SSA AliasAnalysis": [
+  "SSA AliasAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
+  ],
+  "C++ SSA AliasAnalysisImports": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
   ],
   "C++ IR ValueNumberingImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
@@ -194,6 +207,10 @@
   "IR SSA SimpleSSA": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll"
+  ],
+  "IR AliasConfiguration (unaliased_ssa)": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll"
   ],
   "IR SSA SSAConstruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
