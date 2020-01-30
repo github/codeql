@@ -16,27 +16,21 @@ module ExceptionXss {
    * Gets the name of a method that does not leak taint from its arguments if an exception is thrown by the method.
    */
   private string getAnUnlikelyToThrowMethodName() {
-    result = "getElementById" or
-    result = "indexOf" or
-    result = "stringify" or
-    result = "assign" or
-    // fs methods. (The callback argument to the async functions are vulnerable, but its unlikely that the callback is the user-controlled part).
-    result = "existsSync" or
-    result = "exists" or
-    result = "writeFileSync" or
-    result = "writeFile" or
-    result = "appendFile" or
-    result = "appendFileSync" or
-    result = "pick" or
-    // log.info etc.
-    result = "info" or
-    result = "warn" or
-    result = "error" or
-    result = "join" or
+    result = "getElementById" or // document.getElementById
+    result = "indexOf" or // String.prototype.indexOf
+    result = "assign" or // Object.assign
+    result = "pick" or // _.pick
+    result = getAStandardLoggerMethodName() or // log.info etc.
     result = "val" or // $.val
     result = "parse" or // JSON.parse
-    result = "push" or // Array.prototype.push
-    result = "test" // RegExp.prototype.test
+    result = "stringify" or // JSON.stringify
+    result = "test" or // RegExp.prototype.test
+    result = "setItem" or // localStorage.setItem
+    result = "existsSync" or
+    // the "fs" methods are a mix of "this is safe" and "you have bigger problems".
+    exists(ExternalMemberDecl decl | decl.hasQualifiedName("fs", result)) or
+    // Array methods are generally exception safe.
+    exists(ExternalMemberDecl decl | decl.hasQualifiedName("Array", result))
   }
 
   /**
@@ -104,7 +98,7 @@ module ExceptionXss {
     }
 
     /**
-     * Get the parameter in the callback that contains an error.
+     * Gets the parameter in the callback that contains an error.
      * In the current implementation this is always the first parameter.
      */
     DataFlow::Node getErrorParam() { result = errorParameter }

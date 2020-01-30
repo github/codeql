@@ -51,24 +51,6 @@ module Shared {
       )
     }
   }
-  
-  /**
-   * A property read from a safe property is considered a sanitizer.
-   */
-  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
-    SafePropertyReadSanitizer() {
-      exists(PropAccess pacc | pacc = this.asExpr() |
-        isSafeLocationProperty(pacc)
-        or
-        // `$(location.hash)` is a fairly common and safe idiom
-        // (because `location.hash` always starts with `#`),
-        // so we mark `hash` as safe for the purposes of this query
-        pacc.getPropertyName() = "hash"
-        or
-        pacc.getPropertyName() = "length"
-      )
-    }
-  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -278,6 +260,24 @@ module DomBasedXss {
   }
 
   /**
+   * A property read from a safe property is considered a sanitizer.
+   */
+  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
+    SafePropertyReadSanitizer() {
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *
@@ -287,8 +287,6 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
-  
-  private class SafePropertyReadSanitizer extends Sanitizer, Shared::SafePropertyReadSanitizer {}
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
