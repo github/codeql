@@ -1,0 +1,70 @@
+| test.cpp:1:5:1:10 | AliasedUse: test00 |  |
+| test.cpp:1:5:1:10 | EnterFunction: test00 |  |
+| test.cpp:1:5:1:10 | ExitFunction: test00 |  |
+| test.cpp:1:5:1:10 | ReturnValue: test00 |  |
+| test.cpp:1:5:1:10 | UnmodeledUse: test00 |  |
+| test.cpp:8:1:8:1 | NoOp: return ... |  |
+| test.cpp:12:5:12:10 | AliasedUse: test01 |  |
+| test.cpp:12:5:12:10 | EnterFunction: test01 |  |
+| test.cpp:12:5:12:10 | ExitFunction: test01 |  |
+| test.cpp:12:5:12:10 | ReturnValue: test01 |  |
+| test.cpp:12:5:12:10 | UnmodeledUse: test01 |  |
+| test.cpp:19:1:19:1 | NoOp: return ... |  |
+| test.cpp:25:5:25:10 | AliasedUse: test02 |  |
+| test.cpp:25:5:25:10 | EnterFunction: test02 |  |
+| test.cpp:25:5:25:10 | ExitFunction: test02 |  |
+| test.cpp:25:5:25:10 | ReturnValue: test02 |  |
+| test.cpp:25:5:25:10 | UnmodeledUse: test02 |  |
+| test.cpp:30:3:30:17 | Call: call to change_global02 |  |
+| test.cpp:33:1:33:1 | NoOp: return ... |  |
+| test.cpp:39:5:39:10 | AliasedUse: test03 |  |
+| test.cpp:39:5:39:10 | EnterFunction: test03 |  |
+| test.cpp:39:5:39:10 | ExitFunction: test03 |  |
+| test.cpp:39:5:39:10 | ReturnValue: test03 |  |
+| test.cpp:39:5:39:10 | UnmodeledUse: test03 |  |
+| test.cpp:47:1:47:1 | NoOp: return ... |  |
+| test.cpp:49:14:49:22 | AliasedUse: my_strspn |  |
+| test.cpp:49:14:49:22 | EnterFunction: my_strspn |  |
+| test.cpp:49:14:49:22 | ExitFunction: my_strspn |  |
+| test.cpp:49:14:49:22 | ReturnValue: my_strspn |  |
+| test.cpp:49:14:49:22 | UnmodeledUse: my_strspn |  |
+| test.cpp:53:10:53:21 | ConditionalBranch: ... != ... |  |
+| test.cpp:56:13:56:24 | ConditionalBranch: ... != ... |  |
+| test.cpp:56:31:56:42 | ConditionalBranch: ... != ... |  |
+| test.cpp:59:9:59:20 | ConditionalBranch: ... == ... |  |
+| test.cpp:60:7:60:12 | NoOp: break; |  |
+| test.cpp:63:3:63:3 | NoOp: label ...: |  |
+| test.cpp:75:6:75:11 | AliasedUse: test04 |  |
+| test.cpp:75:6:75:11 | EnterFunction: test04 |  |
+| test.cpp:75:6:75:11 | ExitFunction: test04 |  |
+| test.cpp:75:6:75:11 | ReturnVoid: test04 |  |
+| test.cpp:75:6:75:11 | UnmodeledUse: test04 |  |
+| test.cpp:79:7:79:33 | ConditionalBranch: ... < ... |  |
+| test.cpp:79:17:79:20 | FieldAddress: val1 | FieldAddress, Unary |
+| test.cpp:79:30:79:33 | FieldAddress: val2 | FieldAddress, Unary |
+| test.cpp:82:1:82:1 | NoOp: return ... |  |
+| test.cpp:84:6:84:11 | AliasedUse: test05 |  |
+| test.cpp:84:6:84:11 | EnterFunction: test05 |  |
+| test.cpp:84:6:84:11 | ExitFunction: test05 |  |
+| test.cpp:84:6:84:11 | ReturnVoid: test05 |  |
+| test.cpp:84:6:84:11 | UnmodeledUse: test05 |  |
+| test.cpp:88:7:88:12 | ConditionalBranch: ... != ... |  |
+| test.cpp:89:1:89:1 | NoOp: return ... |  |
+| test.cpp:91:5:91:21 | AliasedUse: regression_test00 |  |
+| test.cpp:91:5:91:21 | EnterFunction: regression_test00 |  |
+| test.cpp:91:5:91:21 | ExitFunction: regression_test00 |  |
+| test.cpp:91:5:91:21 | ReturnValue: regression_test00 |  |
+| test.cpp:91:5:91:21 | UnmodeledUse: regression_test00 |  |
+| test.cpp:104:5:104:26 | AliasedUse: inheritanceConversions |  |
+| test.cpp:104:5:104:26 | EnterFunction: inheritanceConversions |  |
+| test.cpp:104:5:104:26 | ExitFunction: inheritanceConversions |  |
+| test.cpp:104:5:104:26 | ReturnValue: inheritanceConversions |  |
+| test.cpp:104:5:104:26 | UnmodeledUse: inheritanceConversions |  |
+| test.cpp:105:15:105:15 | FieldAddress: b | FieldAddress, Unary |
+| test.cpp:107:15:107:15 | FieldAddress: b | FieldAddress, Unary |
+| test.cpp:112:6:112:11 | AliasedUse: test06 |  |
+| test.cpp:112:6:112:11 | EnterFunction: test06 |  |
+| test.cpp:112:6:112:11 | ExitFunction: test06 |  |
+| test.cpp:112:6:112:11 | ReturnVoid: test06 |  |
+| test.cpp:112:6:112:11 | UnmodeledUse: test06 |  |
+| test.cpp:117:1:117:1 | NoOp: return ... |  |
