@@ -136,7 +136,7 @@ public class LdapInjection {
   }
 
   public void testUnboundBad9(@RequestParam String uBadFilterCreateToString, LDAPConnection c) throws LDAPException {
-    c.search(null, "ou=system", null, null, 1, 1, false, Filter.create(uBadFilterCreateToString).toString()); // False Negative
+    c.search(null, "ou=system", null, null, 1, 1, false, Filter.create(uBadFilterCreateToString).toString());
   }
 
   public void testUnboundBad10(@RequestParam String uBadFilterCreateToStringBuffer, LDAPConnection c) throws LDAPException {
@@ -241,7 +241,7 @@ public class LdapInjection {
   }
 
   public void testSpringBad12(@RequestParam String sBadFilterToString, LdapTemplate c) {
-    c.search("", new HardcodedFilter("(uid=" + sBadFilterToString + ")").toString(), 1, false, null); // False Negative
+    c.search("", new HardcodedFilter("(uid=" + sBadFilterToString + ")").toString(), 1, false, null);
   }
 
   public void testSpringBad13(@RequestParam String sBadFilterEncode, LdapTemplate c) {
@@ -270,7 +270,7 @@ public class LdapInjection {
 
   public void testApacheBad2(@RequestParam String aBad, @RequestParam String aBadDNObjToString, LdapNetworkConnection c)
       throws LdapException {
-    c.search(new Dn("ou=system" + aBadDNObjToString).getName(), "(uid=" + aBad + ")", null); // False Negative
+    c.search(new Dn("ou=system" + aBadDNObjToString).getName(), "(uid=" + aBad + ")", null);
   }
 
   public void testApacheBad3(@RequestParam String aBadSearchRequest, LdapConnection c)
@@ -311,12 +311,12 @@ public class LdapInjection {
   // ESAPI encoder sanitizer
   public void testOk3(@RequestParam String okEncodeForLDAP, DirContext ctx) throws NamingException {
     Encoder encoder = DefaultEncoder.getInstance();
-    ctx.search("ou=system", "(uid=" + encoder.encodeForLDAP(okEncodeForLDAP) + ")", new SearchControls()); // False Positive
+    ctx.search("ou=system", "(uid=" + encoder.encodeForLDAP(okEncodeForLDAP) + ")", new SearchControls());
   }
 
   // Spring LdapEncoder sanitizer
   public void testOk4(@RequestParam String okFilterEncode, DirContext ctx) throws NamingException {
-    ctx.search("ou=system", "(uid=" + LdapEncoder.filterEncode(okFilterEncode) + ")", new SearchControls()); // False Positive
+    ctx.search("ou=system", "(uid=" + LdapEncoder.filterEncode(okFilterEncode) + ")", new SearchControls());
   }
 
   // UnboundID Filter.encodeValue sanitizer

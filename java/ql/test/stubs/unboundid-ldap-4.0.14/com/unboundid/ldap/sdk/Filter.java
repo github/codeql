@@ -10,4 +10,6 @@ public class Filter {
   public static java.lang.String encodeValue(java.lang.String value) { return null; }
 
   public void toNormalizedString(java.lang.StringBuilder buffer) { }
+
+  public String toString() { return ""; }
 }

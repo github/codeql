@@ -4,5 +4,5 @@ import org.owasp.esapi.Encoder;
 
 public class DefaultEncoder implements Encoder {
   public static Encoder getInstance() { return null; }
-  public String encodeForLDAP(String input) { return input; }
+  public String encodeForLDAP(String input) { return null; }
 }
