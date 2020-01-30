@@ -19,12 +19,22 @@ class Node extends TNode {
    * if any.
    */
   Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
-    this = TExprNode(cfn) and
-    result = cfn.getElement()
+    result = this.(ExprNode).getExprAtNode(cfn)
   }
 
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+
+  /** Gets the definition corresponding to this node, if any. */
+  AssignableDefinition asDefinition() { result = this.asDefinitionAtNode(_) }
+
+  /**
+   * Gets the definition corresponding to this node, at control flow node `cfn`,
+   * if any.
+   */
+  AssignableDefinition asDefinitionAtNode(ControlFlow::Node cfn) {
+    result = this.(AssignableDefinitionNode).getDefinitionAtNode(cfn)
+  }
 
   /** Gets the type of this node. */
   cached
@@ -140,6 +150,22 @@ class ParameterNode extends Node {
   predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
+/** A definition, viewed as a node in a data flow graph. */
+class AssignableDefinitionNode extends Node, TSsaDefinitionNode {
+  private Ssa::ExplicitDefinition edef;
+
+  AssignableDefinitionNode() { this = TSsaDefinitionNode(edef) }
+
+  /** Gets the underlying definition. */
+  AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }
+
+  /** Gets the underlying definition, at control flow node `cfn`, if any. */
+  AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
+    result = edef.getADefinition() and
+    cfn = edef.getControlFlowNode()
+  }
+}
+
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
 
@@ -147,6 +173,11 @@ ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
 ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
+
+/** Gets a node corresponding to the definition `def`. */
+AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
+  result.getDefinition() = def
+}
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
