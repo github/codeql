@@ -18,7 +18,7 @@
 			Otherwise, the plugin may write user input (for example, a URL query
 			parameter) to a web page without properly sanitizing the input first,
 			which allows for a cross-site scripting vulnerability in the client
-			application.
+			application through dynamic HTML construction.
 
 		</p>
 	</overview>
@@ -26,7 +26,9 @@
 	<recommendation>
 		<p>
 
-			Document all options that can lead to cross-site scripting attacks.
+			Document all options that can lead to cross-site scripting
+			attacks, and guard against unsafe inputs where dynamic HTML
+			construction is not intended.
 
 		</p>
 	</recommendation>

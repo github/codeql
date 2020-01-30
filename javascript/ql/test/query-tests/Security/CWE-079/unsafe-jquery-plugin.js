@@ -171,4 +171,15 @@
 		}
 
 	}
+
+	function setupPlugin(o) {
+		$.fn.my_plugin = o.f
+	}
+	setupPlugin({f: function(options) {
+		$(options.target); // NOT OK
+	}});
+	setupPlugin({f:function(options) {
+		$(document).find(options.target); // OK
+	}});
+
 });

@@ -36,7 +36,7 @@ module UnsafeJQueryPlugin {
       // prefixing prevents forced html/css confusion:
 
       // prefixing through concatenation:
-      succ.asExpr().(AddExpr).getRightOperand().flow() = pred
+      StringConcatenation::getFirstOperand(succ) != pred
       or
       // prefixing through a poor-mans templating system:
       exists(DataFlow::MethodCallNode replace |
@@ -49,7 +49,7 @@ module UnsafeJQueryPlugin {
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
       super.isSanitizerGuard(node) or
       node instanceof IsElementSanitizer or
-      node instanceof PropertyPrecenseSanitizer
+      node instanceof PropertyPresenceSanitizer
     }
   }
 }

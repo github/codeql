@@ -73,9 +73,9 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Gets an function that is registered as a jQuery plugin method at `def`.
+   * Gets a node that is registered as a jQuery plugin method at `def`.
    */
-  private DataFlow::FunctionNode getAJQueryPluginMethod(
+  private DataFlow::SourceNode getAJQueryPluginMethod(
     DataFlow::TypeBackTracker t, DataFlow::Node def
   ) {
     t.start() and
@@ -83,6 +83,13 @@ module UnsafeJQueryPlugin {
     result.flowsTo(def)
     or
     exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
+    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
   }
 
   /**
@@ -96,6 +103,13 @@ module UnsafeJQueryPlugin {
   }
 
   /**
+   * Gets an operand to `extend`.
+   */
+  private DataFlow::SourceNode getAnExtendOperand(ExtendCall extend) {
+    result = getAnExtendOperand(DataFlow::TypeBackTracker::end(), extend)
+  }
+
+  /**
    * A function that is registered as a jQuery plugin method.
    */
   class JQueryPluginMethod extends DataFlow::FunctionNode {
@@ -104,7 +118,7 @@ module UnsafeJQueryPlugin {
     JQueryPluginMethod() {
       exists(DataFlow::Node def |
         jQueryPluginDefinition(pluginName, def) and
-        this = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
+        this = getAJQueryPluginMethod(def)
       )
     }
 
@@ -120,8 +134,8 @@ module UnsafeJQueryPlugin {
   private predicate hasDefaultOption(JQueryPluginMethod plugin, DataFlow::PropWrite def) {
     exists(ExtendCall extend, JQueryPluginOptions options, DataFlow::SourceNode default |
       options.getPlugin() = plugin and
-      options = getAnExtendOperand(DataFlow::TypeBackTracker::end(), extend) and
-      default = getAnExtendOperand(DataFlow::TypeBackTracker::end(), extend) and
+      options = getAnExtendOperand(extend) and
+      default = getAnExtendOperand(extend) and
       default.getAPropertyWrite() = def
     )
   }
@@ -173,11 +187,11 @@ module UnsafeJQueryPlugin {
   /**
    * Expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
-  class PropertyPrecenseSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class PropertyPresenceSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
     DataFlow::Node input;
     boolean polarity;
 
-    PropertyPrecenseSanitizer() {
+    PropertyPresenceSanitizer() {
       exists(DataFlow::PropRead read, string name |
         not name = "length" and read.accesses(input, name)
       |
