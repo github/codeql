@@ -21,6 +21,49 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
+/**
+ * Functions that we should only allow taint to flow through (to the return
+ * value) if all but the source argument are 'predictable'.  This is done to
+ * emulate the old security library's implementation rather than due to any
+ * strong belief that this is the right approach.
+ *
+ * Note that the list itself is not very principled; it consists of all the
+ * functions listed in the old security library's [default] `isPureFunction`
+ * but not in the old taint tracking library's `returnArgument` predicate.
+ */
+predicate predictableOnlyFlow(string name) {
+  name = "abs" or
+  name = "atof" or
+  name = "atoi" or
+  name = "atol" or
+  name = "atoll" or
+  name = "labs" or
+  name = "strcasestr" or
+  //name = "strcat" or
+  name = "strchnul" or
+  name = "strchr" or
+  name = "strchrnul" or
+  name = "strcmp" or
+  //name = "strcpy" or
+  name = "strcspn" or
+  name = "strdup" or
+  name = "strlen" or
+  //name = "strncat" or
+  name = "strncmp" or
+  //name = "strncpy" or
+  name = "strndup" or
+  name = "strnlen" or
+  name = "strrchr" or
+  name = "strspn" or
+  name = "strstr" or
+  name = "strtod" or
+  name = "strtof" or
+  name = "strtol" or
+  name = "strtoll" or
+  name = "strtoq" or
+  name = "strtoul"
+}
+
 private DataFlow::Node getNodeForSource(Expr source) {
   isUserInput(source, _) and
   (
@@ -28,7 +71,6 @@ private DataFlow::Node getNodeForSource(Expr source) {
     or
     result = DataFlow::definitionByReferenceNode(source)
   )
-}
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
@@ -123,15 +165,16 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
-  i2 =
-    any(CallInstruction call |
-      isPureFunction(call.getStaticCallTarget().getName()) and
-      call.getAnArgument() = i1 and
-      forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and
-      // flow through `strlen` tends to cause dubious results, if the length is
-      // bounded.
-      not call.getStaticCallTarget().getName() = "strlen"
-    )
+  exists(CallInstruction call, int argIndex | call = i2 |
+    isPureFunction(call.getStaticCallTarget().getName()) and
+    i1 = getACallArgumentOrIndirection(call, argIndex) and
+    forall(Instruction arg | arg = call.getAnArgument() |
+      arg = getACallArgumentOrIndirection(call, argIndex) or predictableInstruction(arg)
+    ) and
+    // flow through `strlen` tends to cause dubious results, if the length is
+    // bounded.
+    not call.getStaticCallTarget().getName() = "strlen"
+  )
   or
   // Flow through pointer dereference
   i2.(LoadInstruction).getSourceAddress() = i1
@@ -168,11 +211,11 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   )
   or
   // Flow from argument to return value
-  i2 =
-    any(CallInstruction call |
+  i2 = any(CallInstruction call |
       exists(int indexIn |
         modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
-        i1 = getACallArgumentOrIndirection(call, indexIn)
+        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        not predictableOnlyFlow(call.getStaticCallTarget().getName())
       )
     )
   or
@@ -181,8 +224,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // together in a single virtual variable.
   // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
   // is a pointer addition expression?
-  i2 =
-    any(WriteSideEffectInstruction outNode |
+  i2 = any(WriteSideEffectInstruction outNode |
       exists(CallInstruction call, int indexIn, int indexOut |
         modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
         i1 = getACallArgumentOrIndirection(call, indexIn) and
