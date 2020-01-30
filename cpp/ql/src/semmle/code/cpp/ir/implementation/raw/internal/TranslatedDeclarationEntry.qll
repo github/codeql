@@ -52,10 +52,8 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
   final override Type getTargetType() { result = getVariableType(getVariable()) }
 
   final override TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(getVariable()
-            .getInitializer()
-            .getExpr()
-            .getFullyConverted())
+    result =
+      getTranslatedInitialization(getVariable().getInitializer().getExpr().getFullyConverted())
   }
 
   final override Instruction getInitializationSuccessor() {

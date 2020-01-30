@@ -96,7 +96,8 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
-        e2 = any(ConditionalExpr ce |
+        e2 =
+          any(ConditionalExpr ce |
             e1 = ce.getThen() or
             e1 = ce.getElse()
           ) and
@@ -112,7 +113,8 @@ module LocalFlow {
         isSuccessor = true
         or
         // An `=` expression, where the result of the expression is used
-        e2 = any(AssignExpr ae |
+        e2 =
+          any(AssignExpr ae |
             ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
             e1 = ae.getRValue()
           ) and
@@ -167,7 +169,8 @@ module LocalFlow {
     UncertainExplicitSsaDefinition() {
       this instanceof Ssa::ExplicitDefinition
       or
-      this = any(Ssa::ImplicitQualifierDefinition qdef |
+      this =
+        any(Ssa::ImplicitQualifierDefinition qdef |
           qdef.getQualifierDefinition() instanceof UncertainExplicitSsaDefinition
         )
     }
@@ -279,7 +282,8 @@ private class Argument extends Expr {
   private int arg;
 
   Argument() {
-    call = any(DispatchCall dc |
+    call =
+      any(DispatchCall dc |
         this = dc.getArgument(arg)
         or
         this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
@@ -468,11 +472,8 @@ private module Cached {
   predicate readStepImpl(Node node1, Content c, Node node2) {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
-      c.(FieldLikeContent).getField() = node2
-            .asExpr()
-            .(FieldLikeRead)
-            .getTarget()
-            .getSourceDeclaration()
+      c.(FieldLikeContent).getField() =
+        node2.asExpr().(FieldLikeRead).getTarget().getSourceDeclaration()
     )
   }
 
@@ -671,7 +672,8 @@ private module ParameterNodes {
     // the order is irrelevant
     int getParameterPosition(SsaCapturedEntryDefinition def) {
       exists(Callable c | c = def.getCallable() |
-        def = rank[-result - 1](SsaCapturedEntryDefinition def0 |
+        def =
+          rank[-result - 1](SsaCapturedEntryDefinition def0 |
             def0.getCallable() = c
           |
             def0 order by getId(def0.getSourceVariable().getAssignable())
@@ -1115,10 +1117,8 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
-      kind.(ImplicitCapturedReturnKind).getVariable() = this
-            .getDefinition()
-            .getSourceVariable()
-            .getAssignable()
+      kind.(ImplicitCapturedReturnKind).getVariable() =
+        this.getDefinition().getSourceVariable().getAssignable()
     }
   }
 
@@ -1253,7 +1253,8 @@ predicate flowOutOfDelegateLibraryCall(
 private class FieldLike extends Assignable, Modifiable {
   FieldLike() {
     this instanceof Field or
-    this = any(Property p |
+    this =
+      any(Property p |
         not p.isOverridableOrImplementable() and
         (
           p.isAutoImplemented()

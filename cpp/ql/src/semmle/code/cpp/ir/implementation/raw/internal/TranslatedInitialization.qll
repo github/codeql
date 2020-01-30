@@ -208,7 +208,8 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
 
   override TranslatedElement getChild(int id) {
     // The children are in initialization order
-    result = rank[id + 1](TranslatedElementInitialization init |
+    result =
+      rank[id + 1](TranslatedElementInitialization init |
         init.getInitList() = expr
       |
         init order by init.getElementIndex()

@@ -458,8 +458,8 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
       result = this.getInstruction(InitializerVariableAddressTag())
       or
       operandTag instanceof LoadOperandTag and
-      result = getTranslatedFunction(stmt.getEnclosingCallable())
-            .getUnmodeledDefinitionInstruction()
+      result =
+        getTranslatedFunction(stmt.getEnclosingCallable()).getUnmodeledDefinitionInstruction()
     )
   }
 

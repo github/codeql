@@ -151,7 +151,8 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 }
 
 private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 = rank[r](TypeFlowNode n |
+  n1 =
+    rank[r](TypeFlowNode n |
       joinStep(n, n2)
     |
       n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()

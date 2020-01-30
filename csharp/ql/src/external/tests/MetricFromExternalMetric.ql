@@ -11,7 +11,8 @@ import csharp
 import external.ExternalArtifact
 
 predicate numBuiltFiles(Folder fold, int i) {
-  i = count(File f |
+  i =
+    count(File f |
       exists(ExternalMetric m |
         m.getQueryPath() = "filesBuilt.ql" and
         m.getValue() = 1.0 and

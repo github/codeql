@@ -9,7 +9,8 @@ class FunctionMonkeyPatch extends Function {
       (
         if exists(this.getATemplateArgument())
         then
-          templateArgs = "<" +
+          templateArgs =
+            "<" +
               concat(int i |
                 exists(this.getTemplateArgument(i))
               |
@@ -17,7 +18,8 @@ class FunctionMonkeyPatch extends Function {
               ) + ">"
         else templateArgs = ""
       ) and
-      args = "(" +
+      args =
+        "(" +
           concat(int i |
             exists(this.getParameter(i))
           |

@@ -196,7 +196,8 @@ predicate lackOfCohesionHS(/* this */ ValueOrRefType t, float locm) {
     // m = number of methods that access some field, property, indexer or event
     m = count(Method method | hasAccessingMethod(t, method)) and
     // r = average (over f) of number of methods that access field or property f
-    r = avg(Field f |
+    r =
+      avg(Field f |
         hasAccessedFieldOrProperty(t, f)
       |
         count(Method x | accessesLocalFieldOrProperty(x, f))

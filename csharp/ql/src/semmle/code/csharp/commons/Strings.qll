@@ -32,7 +32,8 @@ class ImplicitToStringExpr extends Expr {
       not p.getType() instanceof ArrayType
       or
       p instanceof StringFormatItemParameter and
-      not p.getType() = any(ArrayType at |
+      not p.getType() =
+        any(ArrayType at |
           at.getElementType() instanceof ObjectType and
           this.getType().isImplicitlyConvertibleTo(at)
         )

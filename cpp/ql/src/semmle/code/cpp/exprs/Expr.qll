@@ -890,12 +890,8 @@ class DeleteExpr extends Expr, @delete_expr {
    * Gets the compile-time type of the object being deleted.
    */
   Type getDeletedObjectType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**
@@ -968,12 +964,8 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
    * Gets the element type of the array being deleted.
    */
   Type getDeletedElementType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**

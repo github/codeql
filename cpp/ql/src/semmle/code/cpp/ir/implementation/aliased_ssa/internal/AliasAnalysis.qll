@@ -201,8 +201,8 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() = f
-            .getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.(InitializeParameterInstruction).getParameter() =
+        f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
       init instanceof InitializeThisInstruction and
       init.getEnclosingFunction() = f and

@@ -19,7 +19,8 @@ import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlow::Encryptio
  */
 class ByteArrayLiteralSource extends KeySource {
   ByteArrayLiteralSource() {
-    this.asExpr() = any(ArrayCreation ac |
+    this.asExpr() =
+      any(ArrayCreation ac |
         ac.getArrayType().getElementType() instanceof ByteType and
         ac.hasInitializer()
       )
