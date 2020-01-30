@@ -291,25 +291,50 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
-  // Flow from argument to return value
-  iTo = any(CallInstruction call |
-      exists(int indexIn |
-        modelFlowToReturnValue(call.getStaticCallTarget(), indexIn) and
-        iFrom = getACallArgumentOrIndirection(call, indexIn)
-      )
-    )
-  or
-  // Flow from input argument to output argument
-  // TODO: This won't work in practice as long as all aliased memory is tracked
-  // together in a single virtual variable.
-  iTo = any(WriteSideEffectInstruction outNode |
-      exists(CallInstruction call, int indexIn, int indexOut |
-        modelFlowToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
-        iFrom = getACallArgumentOrIndirection(call, indexIn) and
-        outNode.getIndex() = indexOut and
+  // Flow through modeled functions
+  modelFlow(iFrom, iTo)
+}
+
+private predicate modelFlow(Instruction iFrom, Instruction iTo) {
+  exists(
+    CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
+  |
+    call.getStaticCallTarget() = func and
+    func.hasDataFlow(modelIn, modelOut)
+  |
+    (
+      modelOut.isReturnValue() and
+      iTo = call
+      or
+      // TODO: Add write side effects for return values
+      modelOut.isReturnValueDeref() and
+      iTo = call
+      or
+      exists(WriteSideEffectInstruction outNode |
+        modelOut.isParameterDeref(outNode.getIndex()) and
+        iTo = outNode and
         outNode.getPrimaryInstruction() = call
       )
+      // TODO: add write side effects for qualifiers
+    ) and
+    (
+      exists(int index |
+        modelIn.isParameter(index) and
+        iFrom = call.getPositionalArgument(index)
+      )
+      or
+      exists(int index, ReadSideEffectInstruction read |
+        modelIn.isParameterDeref(index) and
+        read.getIndex() = index and
+        read.getPrimaryInstruction() = call and
+        iFrom = read.getSideEffectOperand().getAnyDef()
+      )
+      or
+      modelIn.isQualifierAddress() and
+      iFrom = call.getThisArgument()
+      // TODO: add read side effects for qualifiers
     )
+  )
 }
 
 /**
