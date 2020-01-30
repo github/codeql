@@ -68,6 +68,8 @@ class ValueNumber extends TValueNumber {
     or
     this instanceof TUniqueValueNumber and result = "Unique"
   }
+
+  Expr getAnExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
 }
 
 /**
