@@ -1,6 +1,5 @@
 private import internal.ValueNumberingInternal
 private import internal.ValueNumberingImports
-private import IR
 
 /**
  * Provides additional information about value numbering in IR dumps.
@@ -81,7 +80,7 @@ class ValueNumber extends TValueNumber {
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 
-  Expr getAnExpr() {
+  Language::Expr getAnExpr() {
     result = getAnInstruction().getUnconvertedResultExpression()
   }
 }

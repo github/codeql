@@ -1,6 +1,5 @@
 private import internal.ValueNumberingInternal
 private import internal.ValueNumberingImports
-private import IR
 
 /**
  * Provides additional information about value numbering in IR dumps.
@@ -19,9 +18,21 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
  * The value number assigned to a particular set of instructions that produce equivalent results.
  */
 class ValueNumber extends TValueNumber {
-  final string toString() { result = getExampleInstruction().getResultId() }
+  final string toString() { result = "GVN" }
 
-  final Language::Location getLocation() { result = getExampleInstruction().getLocation() }
+  final string getDebugString() {
+    result = "ValueNumber: " +
+        strictconcat(this.getAnInstruction().getUnconvertedResultExpression().toString(), ", ")
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this
+        .getAnInstruction()
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Gets the instructions that have been assigned this value number. This will always produce at
@@ -69,7 +80,9 @@ class ValueNumber extends TValueNumber {
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 
-  Expr getAnExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
+  Language::Expr getAnExpr() {
+    result = getAnInstruction().getUnconvertedResultExpression()
+  }
 }
 
 /**

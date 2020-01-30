@@ -1,6 +1,5 @@
 private import ValueNumberingImports
 private import cpp
-private import IR
 
 newtype TValueNumber =
   TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {

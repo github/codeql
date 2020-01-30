@@ -1,6 +1,5 @@
 private import internal.ValueNumberingInternal
 private import internal.ValueNumberingImports
-private import IR
 
 /**
  * Provides additional information about value numbering in IR dumps.
@@ -19,9 +18,21 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
  * The value number assigned to a particular set of instructions that produce equivalent results.
  */
 class ValueNumber extends TValueNumber {
-  final string toString() { result = getExampleInstruction().getResultId() }
+  final string toString() { result = "GVN" }
 
-  final Language::Location getLocation() { result = getExampleInstruction().getLocation() }
+  final string getDebugString() {
+    result = "ValueNumber: " +
+        strictconcat(this.getAnInstruction().getUnconvertedResultExpression().toString(), ", ")
+  }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this
+        .getAnInstruction()
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Gets the instructions that have been assigned this value number. This will always produce at
@@ -46,6 +57,32 @@ class ValueNumber extends TValueNumber {
    * Gets an `Operand` whose definition is exact and has this value number.
    */
   final Operand getAUse() { this = valueNumber(result.getDef()) }
+
+  final string getKind() {
+    this instanceof TVariableAddressValueNumber and result = "VariableAddress"
+    or
+    this instanceof TInitializeParameterValueNumber and result = "InitializeParameter"
+    or
+    this instanceof TInitializeThisValueNumber and result = "InitializeThis"
+    or
+    this instanceof TStringConstantValueNumber and result = "StringConstant"
+    or
+    this instanceof TFieldAddressValueNumber and result = "FieldAddress"
+    or
+    this instanceof TBinaryValueNumber and result = "Binary"
+    or
+    this instanceof TPointerArithmeticValueNumber and result = "PointerArithmetic"
+    or
+    this instanceof TUnaryValueNumber and result = "Unary"
+    or
+    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversionr"
+    or
+    this instanceof TUniqueValueNumber and result = "Unique"
+  }
+
+  Language::Expr getAnExpr() {
+    result = getAnInstruction().getUnconvertedResultExpression()
+  }
 }
 
 /**
