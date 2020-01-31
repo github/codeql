@@ -9,7 +9,7 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
     exists(ValueNumber vn |
       vn = valueNumber(instr) and
       key = "valnum" and
-      if strictcount(vn.getAnInstruction()) > 1 then result = vn.toString() else result = "unique"
+      if strictcount(vn.getAnInstruction()) > 1 then result = vn.getDebugString() else result = "unique"
     )
   }
 }
