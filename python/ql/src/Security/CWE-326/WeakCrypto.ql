@@ -20,8 +20,7 @@ int minimumSecureKeySize(string algo) {
 }
 
 predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
-    exists(ModuleObject mod |
-        mod.attr(_) = obj |
+    exists(ModuleObject mod | mod.attr(_) = obj |
         algorithm = "DSA" and
         (
             mod.getName() = "cryptography.hazmat.primitives.asymmetric.dsa" and arg = "key_size"
@@ -43,8 +42,7 @@ predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
 }
 
 predicate ecKeySizeArg(FunctionObject obj, string arg) {
-    exists(ModuleObject mod |
-        mod.attr(_) = obj |
+    exists(ModuleObject mod | mod.attr(_) = obj |
         mod.getName() = "cryptography.hazmat.primitives.asymmetric.ec" and arg = "curve"
     )
 }
@@ -53,9 +51,12 @@ int keySizeFromCurve(ClassObject curveClass) {
     result = curveClass.declaredAttribute("key_size").(NumericObject).intValue()
 }
 
-predicate algorithmAndKeysizeForCall(CallNode call, string algorithm, int keySize, ControlFlowNode keyOrigin) {
+predicate algorithmAndKeysizeForCall(
+    CallNode call, string algorithm, int keySize, ControlFlowNode keyOrigin
+) {
     exists(FunctionObject func, string argname, ControlFlowNode arg |
-        arg = func.getNamedArgumentForCall(call, argname) |
+        arg = func.getNamedArgumentForCall(call, argname)
+    |
         exists(NumericObject key |
             arg.refersTo(key, keyOrigin) and
             dsaRsaKeySizeArg(func, algorithm, argname) and
@@ -71,11 +72,10 @@ predicate algorithmAndKeysizeForCall(CallNode call, string algorithm, int keySiz
     )
 }
 
-
 from CallNode call, ControlFlowNode origin, string algo, int keySize
 where
     algorithmAndKeysizeForCall(call, algo, keySize, origin) and
     keySize < minimumSecureKeySize(algo)
-select call, "Creation of an " + algo + " key uses $@ bits, which is below " + minimumSecureKeySize(algo) + " and considered breakable.", origin, keySize.toString()
-
-
+select call,
+    "Creation of an " + algo + " key uses $@ bits, which is below " + minimumSecureKeySize(algo) +
+        " and considered breakable.", origin, keySize.toString()

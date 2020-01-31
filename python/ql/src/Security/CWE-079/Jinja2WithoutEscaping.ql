@@ -15,15 +15,15 @@ import python
 ClassObject jinja2EnvironmentOrTemplate() {
     exists(ModuleObject jinja2, string name |
         jinja2.getName() = "jinja2" and
-        jinja2.attr(name) = result |
+        jinja2.attr(name) = result
+    |
         name = "Environment" or
         name = "Template"
     )
 }
 
 ControlFlowNode getAutoEscapeParameter(CallNode call) {
-    exists(Object callable |
-        call.getFunction().refersTo(callable) |
+    exists(Object callable | call.getFunction().refersTo(callable) |
         callable = jinja2EnvironmentOrTemplate() and
         result = call.getArgByName("autoescape")
     )
@@ -31,18 +31,17 @@ ControlFlowNode getAutoEscapeParameter(CallNode call) {
 
 from CallNode call
 where
-not exists(call.getNode().getStarargs()) and
-not exists(call.getNode().getKwargs()) and
-(
-    not exists(getAutoEscapeParameter(call)) and
-    exists(Object env |
-        call.getFunction().refersTo(env) and
-        env = jinja2EnvironmentOrTemplate()
+    not exists(call.getNode().getStarargs()) and
+    not exists(call.getNode().getKwargs()) and
+    (
+        not exists(getAutoEscapeParameter(call)) and
+        exists(Object env |
+            call.getFunction().refersTo(env) and
+            env = jinja2EnvironmentOrTemplate()
+        )
+        or
+        exists(Object isFalse |
+            getAutoEscapeParameter(call).refersTo(isFalse) and isFalse.booleanValue() = false
+        )
     )
-    or
-    exists(Object isFalse |
-        getAutoEscapeParameter(call).refersTo(isFalse) and isFalse.booleanValue() = false
-    )
-)
-
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."

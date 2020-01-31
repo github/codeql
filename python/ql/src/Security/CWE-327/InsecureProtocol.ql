@@ -11,13 +11,9 @@
 
 import python
 
-FunctionObject ssl_wrap_socket() {
-    result = the_ssl_module().attr("wrap_socket")
-}
+FunctionObject ssl_wrap_socket() { result = the_ssl_module().attr("wrap_socket") }
 
-ClassObject ssl_Context_class() {
-    result = the_ssl_module().attr("SSLContext")
-}
+ClassObject ssl_Context_class() { result = the_ssl_module().attr("SSLContext") }
 
 string insecure_version_name() {
     // For `pyOpenSSL.SSL`
@@ -33,20 +29,20 @@ string insecure_version_name() {
     result = "PROTOCOL_TLSv1"
 }
 
-private ModuleObject the_ssl_module() {
-    result = ModuleObject::named("ssl")
-}
+private ModuleObject the_ssl_module() { result = ModuleObject::named("ssl") }
 
-private ModuleObject the_pyOpenSSL_module() {
-    result = ModuleObject::named("pyOpenSSL.SSL")
-}
+private ModuleObject the_pyOpenSSL_module() { result = ModuleObject::named("pyOpenSSL.SSL") }
 
-/* A syntactic check for cases where points-to analysis cannot infer the presence of
+/*
+ * A syntactic check for cases where points-to analysis cannot infer the presence of
  * a protocol constant, e.g. if it has been removed in later versions of the `ssl`
  * library.
  */
+
 bindingset[named_argument]
-predicate probable_insecure_ssl_constant(CallNode call, string insecure_version, string named_argument) {
+predicate probable_insecure_ssl_constant(
+    CallNode call, string insecure_version, string named_argument
+) {
     exists(ControlFlowNode arg |
         arg = call.getArgByName(named_argument) or
         arg = call.getArg(0)
@@ -61,7 +57,9 @@ predicate probable_insecure_ssl_constant(CallNode call, string insecure_version,
     )
 }
 
-predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string insecure_version, string named_argument) {
+predicate unsafe_ssl_wrap_socket_call(
+    CallNode call, string method_name, string insecure_version, string named_argument
+) {
     (
         call = ssl_wrap_socket().getACall() and
         method_name = "deprecated method ssl.wrap_socket" and
@@ -70,10 +68,8 @@ predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string 
         call = ssl_Context_class().getACall() and
         named_argument = "protocol" and
         method_name = "ssl.SSLContext"
-    )
-    and
-    insecure_version = insecure_version_name()
-    and
+    ) and
+    insecure_version = insecure_version_name() and
     (
         call.getArgByName(named_argument).refersTo(the_ssl_module().attr(insecure_version))
         or
@@ -94,6 +90,8 @@ predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) 
 from CallNode call, string method_name, string insecure_version
 where
     unsafe_ssl_wrap_socket_call(call, method_name, insecure_version, _)
-or
+    or
     unsafe_pyOpenSSL_Context_call(call, insecure_version) and method_name = "pyOpenSSL.SSL.Context"
-select call, "Insecure SSL/TLS protocol version " + insecure_version + " specified in call to " + method_name + "."
+select call,
+    "Insecure SSL/TLS protocol version " + insecure_version + " specified in call to " + method_name +
+        "."
