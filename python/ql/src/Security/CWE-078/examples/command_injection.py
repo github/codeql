@@ -20,5 +20,4 @@ def command_execution_safe(request):
     if request.method == 'POST':
         action = request.POST.get('action', '')
         #GOOD -- Use a whitelist
-        subprocess.call(["application", COMMAND[action]])
-
+        subprocess.call(["application", COMMANDS[action]])

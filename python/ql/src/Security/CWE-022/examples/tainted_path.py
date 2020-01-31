@@ -11,7 +11,6 @@ urlpatterns = [
 
 def user_picture1(request):
     """A view that is vulnerable to malicious file access."""
-    base_path = '/server/static/images'
     filename = request.GET.get('p')
     # BAD: This could read any file on the file system
     data = open(filename, 'rb').read()
