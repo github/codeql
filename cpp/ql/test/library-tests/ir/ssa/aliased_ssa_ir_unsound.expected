@@ -1118,7 +1118,7 @@ ssa.cpp:
 #  250|     r250_8(glval<int>)     = VariableAddress[size]              : 
 #  250|     r250_9(int)            = Load                               : &:r250_8, m247_9
 #  250|     r250_10(void *)        = Call                               : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
-#  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m249_5
+#  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m249_6
 #  250|     m250_12(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
 #  250|     m250_13(unknown)       = Chi                                : total:m248_10, partial:m250_12
 #  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
