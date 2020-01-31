@@ -26,7 +26,7 @@ class OpenTarFile extends TaintKind {
         name = "getmembers" and result.(SequenceKind).getItem() instanceof TarFileInfo
     }
 
-    override ClassValue getType() { result = Module::named("tarfile").attr("TarFile") }
+    override ClassValue getType() { result = Value::named("tarfile.TarFile") }
 
     override TaintKind getTaintForIteration() { result instanceof TarFileInfo }
 }
@@ -34,13 +34,13 @@ class OpenTarFile extends TaintKind {
 /** The source of open tarfile objects. That is, any call to `tarfile.open(...)` */
 class TarfileOpen extends TaintSource {
     TarfileOpen() {
-        Module::named("tarfile").attr("open").getACall() = this and
+        Value::named("tarfile.open").getACall() = this and
         /*
          * If argument refers to a string object, then it's a hardcoded path and
          * this tarfile is safe.
          */
 
-        not this.(CallNode).getAnArg().refersTo(any(StringObject str)) and
+        not this.(CallNode).getAnArg().pointsTo(Value::forString(_)) and
         /* Ignore opens within the tarfile module itself */
         not this.(ControlFlowNode).getLocation().getFile().getBaseName() = "tarfile.py"
     }

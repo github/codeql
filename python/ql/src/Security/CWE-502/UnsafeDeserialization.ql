@@ -12,9 +12,9 @@
  */
 
 import python
+import semmle.python.security.Paths
 // Sources -- Any untrusted input
 import semmle.python.web.HttpRequest
-import semmle.python.security.Paths
 // Flow -- untrusted string
 import semmle.python.security.strings.Untrusted
 // Sink -- Unpickling and other deserialization formats.

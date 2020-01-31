@@ -12,9 +12,9 @@
 
 import python
 
-FunctionObject ssl_wrap_socket() { result = ModuleObject::named("ssl").attr("wrap_socket") }
+FunctionValue ssl_wrap_socket() { result = Value::named("ssl.wrap_socket") }
 
-ClassObject ssl_Context_class() { result = ModuleObject::named("ssl").attr("SSLContext") }
+ClassValue ssl_Context_class() { result = Value::named("ssl.SSLContext") }
 
 CallNode unsafe_call(string method_name) {
     result = ssl_wrap_socket().getACall() and

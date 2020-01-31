@@ -3,7 +3,7 @@
 
 <overview>
 <p>
-When creating a file POSIX systems allow permissions to be specified
+When creating a file, POSIX systems allow permissions to be specified
 for owner, group and others separately. Permissions should be kept as
 strict as possible, preventing access to the files contents by other users.
 </p>
