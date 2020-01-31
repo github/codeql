@@ -1183,6 +1183,404 @@ nodes
 | tainted-sendFile.js:25:34:25:45 | req.params.x |
 | tainted-sendFile.js:25:34:25:45 | req.params.x |
 | tainted-sendFile.js:25:34:25:45 | req.params.x |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:24:6:30 | req.url |
+| tainted-string-steps.js:6:24:6:30 | req.url |
+| tainted-string-steps.js:6:24:6:30 | req.url |
+| tainted-string-steps.js:6:24:6:30 | req.url |
+| tainted-string-steps.js:6:24:6:30 | req.url |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | torrents.js:5:6:5:38 | name |
 | torrents.js:5:6:5:38 | name |
 | torrents.js:5:6:5:38 | name |
@@ -2930,6 +3328,550 @@ edges
 | tainted-sendFile.js:25:34:25:45 | req.params.x | tainted-sendFile.js:25:16:25:46 | path.jo ... rams.x) |
 | tainted-sendFile.js:25:34:25:45 | req.params.x | tainted-sendFile.js:25:16:25:46 | path.jo ... rams.x) |
 | tainted-sendFile.js:25:34:25:45 | req.params.x | tainted-sendFile.js:25:16:25:46 | path.jo ... rams.x) |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:10:18:10:21 | path | tainted-string-steps.js:10:18:10:31 | path.substr(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:11:18:11:21 | path | tainted-string-steps.js:11:18:11:30 | path.slice(4) |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:17:18:17:21 | path | tainted-string-steps.js:17:18:17:28 | path.trim() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:18:18:18:21 | path | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:21 | path | tainted-string-steps.js:24:18:24:32 | path.split("?") |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:24:18:24:32 | path.split("?") | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
+| tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) |
 | torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
 | torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
 | torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name |
@@ -3022,5 +3964,14 @@ edges
 | tainted-sendFile.js:18:43:18:58 | req.param("dir") | tainted-sendFile.js:18:43:18:58 | req.param("dir") | tainted-sendFile.js:18:43:18:58 | req.param("dir") | This path depends on $@. | tainted-sendFile.js:18:43:18:58 | req.param("dir") | a user-provided value |
 | tainted-sendFile.js:24:16:24:49 | path.re ... rams.x) | tainted-sendFile.js:24:37:24:48 | req.params.x | tainted-sendFile.js:24:16:24:49 | path.re ... rams.x) | This path depends on $@. | tainted-sendFile.js:24:37:24:48 | req.params.x | a user-provided value |
 | tainted-sendFile.js:25:16:25:46 | path.jo ... rams.x) | tainted-sendFile.js:25:34:25:45 | req.params.x | tainted-sendFile.js:25:16:25:46 | path.jo ... rams.x) | This path depends on $@. | tainted-sendFile.js:25:34:25:45 | req.params.x | a user-provided value |
+| tainted-string-steps.js:8:18:8:34 | path.substring(4) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:8:18:8:34 | path.substring(4) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:9:18:9:37 | path.substring(0, i) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:10:18:10:31 | path.substr(4) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:10:18:10:31 | path.substr(4) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:11:18:11:30 | path.slice(4) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:11:18:11:30 | path.slice(4) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:17:18:17:28 | path.trim() | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:17:18:17:28 | path.trim() | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:18:18:18:35 | path.toLowerCase() | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:18:18:18:35 | path.toLowerCase() | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:24:18:24:35 | path.split("?")[0] | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:24:18:24:35 | path.split("?")[0] | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-string-steps.js:27:18:27:36 | path.split(unknown) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
 | torrents.js:7:25:7:27 | loc | torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:7:25:7:27 | loc | This path depends on $@. | torrents.js:5:13:5:38 | parseTo ... t).name | a user-provided value |
 | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | This path depends on $@. | views.js:1:43:1:55 | req.params[0] | a user-provided value |
