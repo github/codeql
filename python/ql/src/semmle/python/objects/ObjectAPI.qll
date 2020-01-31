@@ -241,14 +241,14 @@ module Value {
         name = "False" and result = TFalse()
     }
 
-    /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are
+    /** Gets the `NumericValue` for the integer constant `i`, if it exists.
+     * There will be no `NumericValue` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
      * * Any integer explicitly mentioned in the source program.
      */
-    Value forInt(int i) {
+    NumericValue forInt(int i) {
         result.(IntObjectInternal).intValue() = i
     }
 
@@ -617,6 +617,26 @@ class StringValue extends Value {
         result = this.(BytesObjectInternal).strValue()
         or
         result = this.(UnicodeObjectInternal).strValue()
+    }
+}
+
+/** A class representing numbers (ints and floats), either present in the source as a literal,
+ *  or in a builtin as a value.
+ */
+class NumericValue extends Value {
+    NumericValue() {
+        this instanceof IntObjectInternal or
+        this instanceof FloatObjectInternal
+    }
+
+    /** Gets the integer-value if it is a constant integer, and it fits in a QL int */
+    int getIntValue() {
+        result = this.(IntObjectInternal).intValue()
+    }
+
+    /** Gets the float-value if it is a constant float */
+    int getFloatValue() {
+        result = this.(FloatObjectInternal).floatValue()
     }
 }
 
