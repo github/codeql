@@ -416,7 +416,7 @@ module AccessPath {
   /**
    * Gets a SourceNode that is accessed using the same access path as the input. 
    */
-  DataFlow::SourceNode getASourceAccess(DataFlow::Node node) {
+  DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
     exists(DataFlow::SourceNode root, string accessPath | 
       node = AccessPath::getAReferenceTo(root, accessPath) and 
       result = AccessPath::getAReferenceTo(root, accessPath)

@@ -168,7 +168,7 @@ module StringOps {
         (call.getMethodName() = "substring" or call.getMethodName() = "substr" or call.getMethodName() = "slice") and
         call.getNumArgument() = 2 and
         (
-          AccessPath::getASourceAccess(substring).getAPropertyRead("length").flowsTo(call.getArgument(1))
+          AccessPath::getAnAliasedSourceNode(substring).getAPropertyRead("length").flowsTo(call.getArgument(1))
           or
           substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
         )

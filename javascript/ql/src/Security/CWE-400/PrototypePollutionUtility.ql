@@ -53,7 +53,7 @@ abstract class EnumeratedPropName extends DataFlow::Node {
    * For example, gets `src[key]` in `for (var key in src) { src[key]; }`.
    */
   PropRead getASourceProp() {
-    result = AccessPath::getASourceAccess(getSourceObject()).getAPropertyRead() and
+    result = AccessPath::getAnAliasedSourceNode(getSourceObject()).getAPropertyRead() and
     result.getPropertyNameExpr().flow().getImmediatePredecessor*() = this
   }
 }
