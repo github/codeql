@@ -255,8 +255,8 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       |
         pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
           rightOperand) and
-        result = TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand,
-            rightOperand)
+        result =
+          TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand, rightOperand)
       )
       or
       // The value number of a copy is just the value number of its source value.
