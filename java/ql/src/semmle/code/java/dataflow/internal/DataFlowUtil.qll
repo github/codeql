@@ -26,6 +26,8 @@ private newtype TNode =
     e instanceof Argument and not e.getType() instanceof ImmutableType
     or
     exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
+    or
+    exists(ArrayAccess aa | e = aa.getArray())
   } or
   TImplicitExprPostUpdate(InstanceAccessExt ia) {
     implicitInstanceArgument(_, ia)

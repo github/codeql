@@ -161,10 +161,27 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 /**
  * Holds if the step from `n1` to `n2` is either extracting a value from a
  * container, inserting a value into a container, or transforming one container
+ * to another. This is restricted to cases where `n2` is the returned value of
+ * a call.
+ */
+predicate containerReturnValueStep(Expr n1, Expr n2) { qualifierToMethodStep(n1, n2) }
+
+/**
+ * Holds if the step from `n1` to `n2` is either extracting a value from a
+ * container, inserting a value into a container, or transforming one container
+ * to another. This is restricted to cases where the value of `n2` is being modified.
+ */
+predicate containerUpdateStep(Expr n1, Expr n2) {
+  qualifierToArgumentStep(n1, n2) or
+  argToQualifierStep(n1, n2)
+}
+
+/**
+ * Holds if the step from `n1` to `n2` is either extracting a value from a
+ * container, inserting a value into a container, or transforming one container
  * to another.
  */
 predicate containerStep(Expr n1, Expr n2) {
-  qualifierToMethodStep(n1, n2) or
-  qualifierToArgumentStep(n1, n2) or
-  argToQualifierStep(n1, n2)
+  containerReturnValueStep(n1, n2) or
+  containerUpdateStep(n1, n2)
 }
