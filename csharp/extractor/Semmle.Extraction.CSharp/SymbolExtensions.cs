@@ -213,7 +213,7 @@ namespace Semmle.Extraction.CSharp
 
         static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            bool prefixAssembly = true;
+            bool prefixAssembly = cx.Extractor.Options.PrefixIdsWithAssemblies;
             if (cx.Extractor.Standalone) prefixAssembly = false;
             if (named.ContainingAssembly is null) prefixAssembly = false;
 

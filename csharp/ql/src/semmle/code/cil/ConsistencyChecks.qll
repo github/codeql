@@ -423,10 +423,14 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
  */
 class InconsistentMethodLocation extends MethodViolation {
   InconsistentMethodLocation() {
-    this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
+    not this.getMethod().getLocation() = this.getMethod().getSourceDeclaration().getLocation()
   }
 
-  override string getMessage() { result = "Inconsistent constructed method location" }
+  override string getMessage() {
+    result =
+      "Inconsistent constructed method location" + this.getMethod().getLocation() +
+        this.getMethod().getSourceDeclaration().getLocation()
+  }
 }
 
 /**

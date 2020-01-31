@@ -10,10 +10,6 @@ class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
   Assembly getAssembly() { metadata_handle(this, result, _) }
 }
 
-query predicate tooManyMatchingHandles(MetadataEntity e) {
-  strictcount(MetadataEntity e2 | e.matchesHandle(e2)) > 2
-}
-
 query predicate missingCil(Element e) {
   (
     e instanceof Callable

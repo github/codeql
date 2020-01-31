@@ -87,6 +87,11 @@ namespace Semmle.Extraction
         /// <param name="scope">The extraction scope (what to include in this trap file).</param>
         /// <returns></returns>
         Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
+
+        /// <summary>
+        /// The options from the command line.
+        /// </summary>
+        CommonOptions Options { get; }
     }
 
     /// <summary>
@@ -99,21 +104,21 @@ namespace Semmle.Extraction
         /// </summary>
         public static readonly int DefaultNumberOfThreads = Environment.ProcessorCount;
 
-        public bool Standalone
-        {
-            get; private set;
-        }
+        public bool Standalone { get; }
+
+        public CommonOptions Options { get; }
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
         /// </summary>
         /// <param name="standalone">If the extraction is standalone.</param>
         /// <param name="outputPath">The name of the output DLL/EXE, or null if not specified (standalone extraction).</param>
-        public Extractor(bool standalone, string outputPath, ILogger logger)
+        public Extractor(bool standalone, string outputPath, ILogger logger, CommonOptions options)
         {
             Standalone = standalone;
             OutputPath = outputPath;
             Logger = logger;
+            Options = options;
         }
 
         // Limit the number of error messages in the log file

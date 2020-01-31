@@ -21,8 +21,9 @@ namespace Semmle.Extraction.CIL
         public readonly string assemblyPath;
         public Entities.Assembly assembly;
         public PDB.IPdb pdb;
+        public readonly bool PrefixAssemblyId;  // Cache
 
-        public Context(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        public Context(Extraction.Context cx, string assemblyPath)
         {
             this.cx = cx;
             this.assemblyPath = assemblyPath;
@@ -30,6 +31,7 @@ namespace Semmle.Extraction.CIL
             peReader = new PEReader(stream, PEStreamOptions.PrefetchEntireImage);
             mdReader = peReader.GetMetadataReader();
             TypeSignatureDecoder = new Entities.TypeSignatureDecoder(this);
+            PrefixAssemblyId = cx.Extractor.Options.PrefixIdsWithAssemblies;
 
             globalNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "", null)));
             systemNamespace = new Lazy<Entities.Namespace>(() => Populate(new Entities.Namespace(this, "System")));
@@ -42,7 +44,7 @@ namespace Semmle.Extraction.CIL
 
             defaultGenericContext = new EmptyContext(this);
 
-            if (extractPdbs)
+            if (cx.Extractor.Options.PDB)
             {
                 pdb = PDB.PdbReader.Create(assemblyPath, peReader);
                 if (pdb != null)
@@ -74,6 +76,8 @@ namespace Semmle.Extraction.CIL
 
         public void WriteAssemblyPrefix(TextWriter trapFile)
         {
+            if (!PrefixAssemblyId)
+                return;
             var def = mdReader.GetAssemblyDefinition();
             trapFile.Write(GetString(def.Name));
             trapFile.Write('_');

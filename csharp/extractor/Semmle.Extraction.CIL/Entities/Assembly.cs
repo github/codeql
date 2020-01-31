@@ -108,9 +108,9 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
+        static void ExtractCIL(Extraction.Context cx, string assemblyPath, CommonOptions options)
         {
-            using (var cilContext = new Context(cx, assemblyPath, extractPdbs))
+            using (var cilContext = new Context(cx, assemblyPath))
             {
                 cilContext.Populate(new Assembly(cilContext));
                 cilContext.cx.PopulateAll();
@@ -128,21 +128,21 @@ namespace Semmle.Extraction.CIL.Entities
         /// <param name="extractPdbs">Whether to extract PDBs.</param>
         /// <param name="trapFile">The path of the trap file.</param>
         /// <param name="extracted">Whether the file was extracted (false=cached).</param>
-        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression, out string trapFile, out bool extracted)
+        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, CommonOptions options, out string trapFile, out bool extracted)
         {
             trapFile = "";
             extracted = false;
             try
             {
-                var extractor = new Extractor(false, assemblyPath, logger);
+                var extractor = new Extractor(false, assemblyPath, logger, options);
                 var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
+                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, options.TrapCompression))
                 {
                     trapFile = trapWriter.TrapFile;
-                    if (nocache || !System.IO.File.Exists(trapFile))
+                    if (!options.Cache || !System.IO.File.Exists(trapFile))
                     {
                         var cx = extractor.CreateContext(null, trapWriter, null);
-                        ExtractCIL(cx, assemblyPath, extractPdbs);
+                        ExtractCIL(cx, assemblyPath, options);
                         extracted = true;
                     }
                 }

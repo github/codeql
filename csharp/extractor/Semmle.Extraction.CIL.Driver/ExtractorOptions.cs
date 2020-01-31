@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Globalization;
 using Semmle.Util.Logging;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Driver
 {
@@ -161,7 +162,7 @@ namespace Semmle.Extraction.CIL.Driver
     /// <summary>
     /// Parses the command line and collates a list of DLLs/EXEs to extract.
     /// </summary>
-    class ExtractorOptions
+    class ExtractorOptions : CommonOptions
     {
         readonly AssemblyList assemblyList = new AssemblyList();
 
@@ -179,12 +180,6 @@ namespace Semmle.Extraction.CIL.Driver
         {
             AddDirectory(RuntimeEnvironment.GetRuntimeDirectory(), extractAll);
         }
-
-        public Verbosity Verbosity { get; private set; }
-        public bool NoCache { get; private set; }
-        public int Threads { get; private set; }
-        public bool PDB { get; private set; }
-        public TrapWriter.CompressionMode TrapCompression { get; private set; }
 
         void AddFileOrDirectory(string path)
         {
@@ -215,50 +210,34 @@ namespace Semmle.Extraction.CIL.Driver
         /// </summary>
         public IEnumerable<AssemblyName> MissingReferences => assemblyList.missingReferences;
 
+        public override bool handleArgument(string argument)
+        {
+            AddFileOrDirectory(argument);
+            return true;
+        }
+
+        public override bool handleFlag(string flag, bool value)
+        {
+            switch(flag)
+            {
+                case "dotnet":
+                    AddFrameworkDirectories(value);
+                    return true;
+                default:
+                    return base.handleFlag(flag, value);
+            }
+        }
+
+        public override void invalidArgument(string argument)
+        {
+            // Handles invalid arguments - never called.
+        }
+
         public static ExtractorOptions ParseCommandLine(string[] args)
         {
             var options = new ExtractorOptions();
-            options.Verbosity = Verbosity.Info;
-            options.Threads = System.Environment.ProcessorCount;
-            options.PDB = true;
-            options.TrapCompression = TrapWriter.CompressionMode.Gzip;
 
-            foreach (var arg in args)
-            {
-                if (arg == "--verbose")
-                {
-                    options.Verbosity = Verbosity.All;
-                }
-                else if (arg == "--silent")
-                {
-                    options.Verbosity = Verbosity.Off;
-                }
-                else if (arg.StartsWith("--verbosity:"))
-                {
-                    options.Verbosity = (Verbosity)int.Parse(arg.Substring(12));
-                }
-                else if (arg == "--dotnet")
-                {
-                    options.AddFrameworkDirectories(true);
-                }
-                else if (arg == "--nocache")
-                {
-                    options.NoCache = true;
-                }
-                else if (arg.StartsWith("--threads:"))
-                {
-                    options.Threads = int.Parse(arg.Substring(10));
-                }
-                else if (arg == "--no-pdb")
-                {
-                    options.PDB = false;
-                }
-                else
-                {
-                    options.AddFileOrDirectory(arg);
-                }
-            }
-
+            options.ParseArguments(args);
             options.AddFrameworkDirectories(false);
             options.ResolveReferences();
 

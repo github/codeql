@@ -651,6 +651,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteAssemblyPrefix(TextWriter trapFile)
         {
+            if (!cx.PrefixAssemblyId)
+                return;
+
             switch (tr.ResolutionScope.Kind)
             {
                 case HandleKind.TypeReference:

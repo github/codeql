@@ -123,7 +123,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public virtual bool IsSourceDeclaration => symbol.IsSourceDeclaration();
 
-        public override bool NeedsPopulation => Context.Defines(symbol);
+        public override bool NeedsPopulation =>
+            Context.Defines(symbol) || (symbol.ContainingType!=null && symbol.ContainingType.IsTupleType);
 
         public Extraction.Entities.Location Location => Context.Create(ReportingLocation);
 

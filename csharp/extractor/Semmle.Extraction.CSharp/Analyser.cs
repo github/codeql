@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp
             layout = new Layout();
             this.options = options;
             this.compilation = compilation;
-            extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger);
+            extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger, options);
             LogDiagnostics();
 
             SetReferencePaths();
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CSharp
         {
             compilation = compilationIn;
             layout = new Layout();
-            extractor = new Extraction.Extractor(true, null, Logger);
+            extractor = new Extraction.Extractor(true, null, Logger, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
@@ -312,7 +312,7 @@ namespace Semmle.Extraction.CSharp
             stopwatch.Start();
             string trapFile;
             bool extracted;
-            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, !options.Cache, options.PDB, options.TrapCompression, out trapFile, out extracted);
+            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, options, out trapFile, out extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }

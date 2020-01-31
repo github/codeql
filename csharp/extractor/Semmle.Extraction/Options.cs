@@ -49,6 +49,11 @@ namespace Semmle.Extraction
         /// </summary>
         public TrapWriter.CompressionMode TrapCompression = TrapWriter.CompressionMode.Gzip;
 
+        /// <summary>
+        /// Whether to prefix identifiers in trap files with the assembly id.
+        /// </summary>
+        public bool PrefixIdsWithAssemblies = false;
+
         public virtual bool handleOption(string key, string value)
         {
             switch (key)
@@ -92,6 +97,9 @@ namespace Semmle.Extraction
                     return true;
                 case "brotli":
                     TrapCompression = value ? TrapWriter.CompressionMode.Brotli : TrapWriter.CompressionMode.Gzip;
+                    return true;
+                case "assemblyprefix":
+                    PrefixIdsWithAssemblies = value;
                     return true;
                 default:
                     return false;
