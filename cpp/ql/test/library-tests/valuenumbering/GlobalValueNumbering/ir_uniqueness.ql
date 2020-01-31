@@ -2,8 +2,10 @@ import cpp
 import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.ir.IR
 
-// Unlike the AST global value numbering, which produces *exactly* 1 value number per expression,
-// the IR global value numbering produces *at most* 1 value number per instruction.
+// Every non-void instruction should have exactly one GVN.
+// So this query should have zero results.
 from Instruction i
-where count(valueNumber(i)) != 1
+where
+  not i.getResultIRType() instanceof IRVoidType and
+  count(valueNumber(i)) != 1
 select i, concat(ValueNumber g | g = valueNumber(i) | g.getKind(), ", ")
