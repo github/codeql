@@ -9,7 +9,9 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
     exists(ValueNumber vn |
       vn = valueNumber(instr) and
       key = "valnum" and
-      if strictcount(vn.getAnInstruction()) > 1 then result = vn.getDebugString() else result = "unique"
+      if strictcount(vn.getAnInstruction()) > 1
+      then result = vn.getDebugString()
+      else result = "unique"
     )
   }
 }
@@ -21,7 +23,8 @@ class ValueNumber extends TValueNumber {
   final string toString() { result = "GVN" }
 
   final string getDebugString() {
-    result = "ValueNumber: " +
+    result =
+      "ValueNumber: " +
         strictconcat(this.getAnInstruction().getUnconvertedResultExpression().toString(), ", ")
   }
 
@@ -45,7 +48,8 @@ class ValueNumber extends TValueNumber {
    * deterministic but arbitrary. Intended for use only in debugging.
    */
   final Instruction getExampleInstruction() {
-    result = min(Instruction instr |
+    result =
+      min(Instruction instr |
         instr = getAnInstruction()
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
