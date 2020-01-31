@@ -414,7 +414,7 @@ module AccessPath {
   }
 
   /**
-   * Gets a SourceNode that is accessed using the same access path as the input. 
+   * Gets a `SourceNode` that refers to the same value or access path as the given node.
    */
   pragma[inline]
   DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
