@@ -290,7 +290,7 @@ test.cpp:
 #   43|         valnum = GVN
 #   43|     r43_6(glval<int>)           = VariableAddress[global03] : 
 #   43|         valnum = GVN
-#   43|     r43_7(int)                  = Load                      : &:r43_6, ~m39_12
+#   43|     r43_7(int)                  = Load                      : &:r43_6, ~m39_2
 #   43|         valnum = unique
 #   43|     r43_8(int)                  = Add                       : r43_5, r43_7
 #   43|         valnum = GVN
@@ -308,7 +308,7 @@ test.cpp:
 #   44|         valnum = GVN
 #   44|     m44_5(int)                  = Store                     : &:r44_4, r44_1
 #   44|         valnum = GVN
-#   44|     m44_6(unknown)              = Chi                       : total:m39_12, partial:m44_5
+#   44|     m44_6(unknown)              = Chi                       : total:m39_11, partial:m44_5
 #   44|         valnum = unique
 #   45|     r45_1(glval<int>)           = VariableAddress[p0]       : 
 #   45|         valnum = GVN
@@ -322,7 +322,7 @@ test.cpp:
 #   45|         valnum = GVN
 #   45|     r45_6(glval<int>)           = VariableAddress[global03] : 
 #   45|         valnum = GVN
-#   45|     r45_7(int)                  = Load                      : &:r45_6, ~m44_6
+#   45|     r45_7(int)                  = Load                      : &:r45_6, ~m39_2
 #   45|         valnum = unique
 #   45|     r45_8(int)                  = Add                       : r45_5, r45_7
 #   45|         valnum = GVN
@@ -362,17 +362,13 @@ test.cpp:
 #   49|         valnum = GVN
 #   49|     m49_7(unknown)             = InitializeIndirection[str]   : &:r49_6
 #   49|         valnum = unique
-#   49|     m49_8(unknown)             = Chi                          : total:m49_2, partial:m49_7
-#   49|         valnum = unique
-#   49|     r49_9(glval<char *>)       = VariableAddress[chars]       : 
+#   49|     r49_8(glval<char *>)       = VariableAddress[chars]       : 
 #   49|         valnum = GVN
-#   49|     m49_10(char *)             = InitializeParameter[chars]   : &:r49_9
+#   49|     m49_9(char *)              = InitializeParameter[chars]   : &:r49_8
 #   49|         valnum = GVN
-#   49|     r49_11(char *)             = Load                         : &:r49_9, m49_10
+#   49|     r49_10(char *)             = Load                         : &:r49_8, m49_9
 #   49|         valnum = GVN
-#   49|     m49_12(unknown)            = InitializeIndirection[chars] : &:r49_11
-#   49|         valnum = unique
-#   49|     m49_13(unknown)            = Chi                          : total:m49_8, partial:m49_12
+#   49|     m49_11(unknown)            = InitializeIndirection[chars] : &:r49_10
 #   49|         valnum = unique
 #   50|     r50_1(glval<char *>)       = VariableAddress[ptr]         : 
 #   50|         valnum = GVN
@@ -393,7 +389,7 @@ test.cpp:
 #   53|         valnum = GVN
 #   53|     r53_3(char *)        = Load                 : &:r53_2, m49_5
 #   53|         valnum = GVN
-#   53|     r53_4(char)          = Load                 : &:r53_3, ~m49_13
+#   53|     r53_4(char)          = Load                 : &:r53_3, ~m49_7
 #   53|         valnum = unique
 #   53|     r53_5(int)           = Convert              : r53_4
 #   53|         valnum = unique
@@ -408,7 +404,7 @@ test.cpp:
 #   55|   Block 2
 #   55|     r55_1(glval<char *>) = VariableAddress[chars] : 
 #   55|         valnum = GVN
-#   55|     r55_2(char *)        = Load                   : &:r55_1, m49_10
+#   55|     r55_2(char *)        = Load                   : &:r55_1, m49_9
 #   55|         valnum = GVN
 #   55|     r55_3(glval<char *>) = VariableAddress[ptr]   : 
 #   55|         valnum = GVN
@@ -423,7 +419,7 @@ test.cpp:
 #   56|         valnum = GVN
 #   56|     r56_3(char *)            = Load                 : &:r56_2, m56_1
 #   56|         valnum = GVN
-#   56|     r56_4(char)              = Load                 : &:r56_3, ~m49_13
+#   56|     r56_4(char)              = Load                 : &:r56_3, ~m49_2
 #   56|         valnum = unique
 #   56|     r56_5(int)               = Convert              : r56_4
 #   56|         valnum = unique
@@ -431,7 +427,7 @@ test.cpp:
 #   56|         valnum = GVN
 #   56|     r56_7(char *)            = Load                 : &:r56_6, m49_5
 #   56|         valnum = GVN
-#   56|     r56_8(char)              = Load                 : &:r56_7, ~m49_13
+#   56|     r56_8(char)              = Load                 : &:r56_7, ~m49_7
 #   56|         valnum = unique
 #   56|     r56_9(int)               = Convert              : r56_8
 #   56|         valnum = unique
@@ -446,7 +442,7 @@ test.cpp:
 #   56|         valnum = GVN
 #   56|     r56_13(char *)        = Load                 : &:r56_12, m56_1
 #   56|         valnum = GVN
-#   56|     r56_14(char)          = Load                 : &:r56_13, ~m49_13
+#   56|     r56_14(char)          = Load                 : &:r56_13, ~m49_2
 #   56|         valnum = unique
 #   56|     r56_15(int)           = Convert              : r56_14
 #   56|         valnum = unique
@@ -476,7 +472,7 @@ test.cpp:
 #   59|         valnum = GVN
 #   59|     r59_2(char *)        = Load                 : &:r59_1, m56_1
 #   59|         valnum = GVN
-#   59|     r59_3(char)          = Load                 : &:r59_2, ~m49_13
+#   59|     r59_3(char)          = Load                 : &:r59_2, ~m49_2
 #   59|         valnum = unique
 #   59|     r59_4(int)           = Convert              : r59_3
 #   59|         valnum = unique
@@ -515,14 +511,14 @@ test.cpp:
 #   65|         valnum = GVN
 #   65|     m65_4(unsigned int)         = Store                    : &:r65_1, r65_3
 #   65|         valnum = GVN
-#   49|     v49_14(void)                = ReturnIndirection        : &:r49_6, ~m49_13
-#   49|     v49_15(void)                = ReturnIndirection        : &:r49_11, ~m49_13
-#   49|     r49_16(glval<unsigned int>) = VariableAddress[#return] : 
+#   49|     v49_12(void)                = ReturnIndirection        : &:r49_6, m49_7
+#   49|     v49_13(void)                = ReturnIndirection        : &:r49_10, m49_11
+#   49|     r49_14(glval<unsigned int>) = VariableAddress[#return] : 
 #   49|         valnum = GVN
-#   49|     v49_17(void)                = ReturnValue              : &:r49_16, m65_4
-#   49|     v49_18(void)                = UnmodeledUse             : mu*
-#   49|     v49_19(void)                = AliasedUse               : ~m49_13
-#   49|     v49_20(void)                = ExitFunction             : 
+#   49|     v49_15(void)                = ReturnValue              : &:r49_14, m65_4
+#   49|     v49_16(void)                = UnmodeledUse             : mu*
+#   49|     v49_17(void)                = AliasedUse               : ~m49_2
+#   49|     v49_18(void)                = ExitFunction             : 
 
 #   75| void test04(two_values*)
 #   75|   Block 0
@@ -752,7 +748,7 @@ test.cpp:
 #  105|         valnum = GVN
 #  105|     r105_5(glval<int>)       = FieldAddress[b]                         : r105_4
 #  105|         valnum = GVN
-#  105|     r105_6(int)              = Load                                    : &:r105_5, ~m104_8
+#  105|     r105_6(int)              = Load                                    : &:r105_5, ~m104_7
 #  105|         valnum = GVN
 #  105|     m105_7(int)              = Store                                   : &:r105_1, r105_6
 #  105|         valnum = GVN
@@ -774,7 +770,7 @@ test.cpp:
 #  107|         valnum = GVN
 #  107|     r107_4(glval<int>)       = FieldAddress[b]                         : r107_3
 #  107|         valnum = GVN
-#  107|     r107_5(int)              = Load                                    : &:r107_4, ~m104_8
+#  107|     r107_5(int)              = Load                                    : &:r107_4, ~m104_7
 #  107|         valnum = GVN
 #  107|     m107_6(int)              = Store                                   : &:r107_1, r107_5
 #  107|         valnum = GVN
@@ -786,13 +782,13 @@ test.cpp:
 #  109|         valnum = GVN
 #  109|     m109_4(int)              = Store                                   : &:r109_1, r109_3
 #  109|         valnum = GVN
-#  104|     v104_9(void)             = ReturnIndirection                       : &:r104_6, ~m104_8
-#  104|     r104_10(glval<int>)      = VariableAddress[#return]                : 
+#  104|     v104_8(void)             = ReturnIndirection                       : &:r104_6, m104_7
+#  104|     r104_9(glval<int>)       = VariableAddress[#return]                : 
 #  104|         valnum = GVN
-#  104|     v104_11(void)            = ReturnValue                             : &:r104_10, m109_4
-#  104|     v104_12(void)            = UnmodeledUse                            : mu*
-#  104|     v104_13(void)            = AliasedUse                              : ~m104_8
-#  104|     v104_14(void)            = ExitFunction                            : 
+#  104|     v104_10(void)            = ReturnValue                             : &:r104_9, m109_4
+#  104|     v104_11(void)            = UnmodeledUse                            : mu*
+#  104|     v104_12(void)            = AliasedUse                              : ~m104_2
+#  104|     v104_13(void)            = ExitFunction                            : 
 
 #  112| void test06()
 #  112|   Block 0
