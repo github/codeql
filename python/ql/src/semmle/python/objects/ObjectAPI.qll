@@ -256,7 +256,7 @@ module Value {
      * There will be no `Value` for most byte strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forBytes(string bytes) {
+    StringValue forBytes(string bytes) {
         result.(BytesObjectInternal).strValue() = bytes
     }
 
@@ -264,7 +264,7 @@ module Value {
      * There will be no `Value` for most text strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forUnicode(string text) {
+    StringValue forUnicode(string text) {
         result.(UnicodeObjectInternal).strValue() = text
     }
 
@@ -272,7 +272,7 @@ module Value {
      * There will be no `Value` for most strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forString(string text) {
+    StringValue forString(string text) {
         result.(UnicodeObjectInternal).strValue() = text
         or
         major_version() = 2 and
