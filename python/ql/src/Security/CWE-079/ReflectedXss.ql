@@ -34,4 +34,4 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
 from ReflectedXssConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(),
-    "user-provided value"
+    "a user-provided value"

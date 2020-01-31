@@ -34,4 +34,4 @@ class CodeInjectionConfiguration extends TaintTracking::Configuration {
 from CodeInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ flows to here and is interpreted as code.", src.getSource(),
-    "User-provided value"
+    "A user-provided value"
