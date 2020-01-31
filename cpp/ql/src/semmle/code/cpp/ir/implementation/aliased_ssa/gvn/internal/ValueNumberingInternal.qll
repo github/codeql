@@ -157,6 +157,7 @@ private predicate unaryValueNumber(
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
+  not instr instanceof FieldAddressInstruction and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   tvalueNumber(instr.getUnary()) = operand
