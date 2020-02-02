@@ -22,6 +22,20 @@ class RegexInputFlowConfig extends TaintTracking::Configuration {
 /**
  * Holds if method call `ma` matches against the regex `regexExpr`. For example, method `matches`
  * matches against regex `regex` in `Pattern.matches(regex, input)`.
+ * The following cases are handled:
+ * * `Pattern.matches(regex, input)`
+ * * `input.matches(pattern)` (where `input` is `String`)
+ * * pattern is created first (`Pattern.compile(regex)`) and then matcher (`p.matcher(input)`)
+ *
+ *
+ * Detecting the last case has some limitations:
+ * * it doesn't work if pattern is created in one method and matcher in another one, e.g.:
+ *   `void match(Pattern p) { p.matcher(input); } void foo() { match(Pattern.compile(regex)); }`,
+ *   but it works correctly if pattern is a class field and matcher is created in method, e.g.:
+ *   `private Pattern p = Pattern.compile(regex); void foo() { p.matcher(input); }`
+ * * the issue is reported if `Matcher` object is created with user supplied input on malicious
+ *   pattern. To actually trigger the DoS condition, actual matching (e.g. `matcher.matches()`) is
+ *   required, but usually if matcher is created it will eventually be used.
  */
 predicate matchesAgainstRegex(MethodAccess ma, Expr regexExpr) {
   // `Pattern.matches(regex, input)`
@@ -69,9 +83,11 @@ class RegexPatternFlowConfig extends TaintTracking2::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RegexPatternSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma | ma.getAnArgument() = sink.asExpr() |
-      ma.getMethod() instanceof MethodPatternCompile or
-      ma.getMethod() instanceof MethodPatternMatches or
+    exists(MethodAccess ma, int index | ma.getArgument(index) = sink.asExpr() |
+      ma.getMethod() instanceof MethodPatternCompile
+      or
+      ma.getMethod() instanceof MethodPatternMatches and index = 0
+      or
       ma.getMethod() instanceof MethodStringMatches
     )
   }
@@ -83,20 +99,21 @@ class RegexPatternFlowConfig extends TaintTracking2::Configuration {
 
 /**
  * An expression that represents a regular expression with potential exponential behavior.
+ * Couple of variants of a common pattern that leads to exponential blow-up are detected.
  */
 predicate isExponentialRegex(StringLiteral s) {
-  /*
-   * Detect three variants of a common pattern that leads to exponential blow-up.
-   */
-
-  // Example: ([a-z]+.)+
-  s.getValue().regexpMatch(".*\\([^()*+\\]]+\\]?(\\*|\\+)\\.?\\)(\\*|\\+).*")
+  // Example: ([a-z]+)+
+  s.getValue().regexpMatch(".*\\([^()*+\\]]+\\]?(\\*|\\+)\\)(\\*|\\+).*")
   or
-  // Example: (([a-z])?([a-z]+.))+
-  s
-      .getValue()
-      .regexpMatch(".*\\((\\([^()]+\\)\\?)?\\([^()*+\\]]+\\]?(\\*|\\+)\\.?\\)\\)(\\*|\\+).*")
+  // Example: (([a-z])?([a-z]+))+
+  s.getValue().regexpMatch(".*\\((\\([^()]+\\)\\?)?\\([^()*+\\]]+\\]?(\\*|\\+)\\)\\)(\\*|\\+).*")
   or
-  // Example: (([a-z])+.)+
-  s.getValue().regexpMatch(".*\\(\\([^()*+\\]]+\\]?\\)(\\*|\\+)\\.?\\)(\\*|\\+).*")
+  // Example: (([a-z])+)+
+  s.getValue().regexpMatch(".*\\(\\([^()*+\\]]+\\]?\\)(\\*|\\+)\\)(\\*|\\+).*")
+  or
+  // Example: (a|aa)+
+  s.getValue().regexpMatch(".*\\(([^()*+\\]]+\\]?)\\|\\1+\\??\\)(\\*|\\+).*")
+  or
+  // Example: (.*[a-z]){n} n >= 10
+  s.getValue().regexpMatch(".*\\(\\.\\*[^()*+\\]]+\\]?\\)\\{[1-9][0-9]+,?[0-9]*\\}.*")
 }

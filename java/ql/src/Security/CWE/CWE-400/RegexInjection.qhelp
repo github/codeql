@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Constructing a regular expression with unsanitized user input is dangerous as a malicious user
+may be able to modify the meaning of the expression. In particular, such a user may be able to
+provide a regular expression fragment that takes exponential time in the worst case, and use that
+to perform a Denial of Service attack.</p>
+</overview>
+
+<recommendation>
+<p>For user input that is intended to be referenced as a string literal in a regular expression,
+use the <code>Pattern.quote</code> method to escape any special characters. If the regular
+expression is intended to be configurable by the user, then a timeout should be used to avoid
+Denial of Service attacks. Alternatively, a different regular expression engine, for example RE2/J
+which runs in time linear in the size of the input can be used.</p>
+</recommendation>
+
+<example>
+<p>The following example uses regular expression engine to check if the provided username is part
+of the provided password.</p>
+
+<p>In the first case, the username which is being used to construct the regex is not escaped. If
+a malicious user provides a regex that has exponential worst case performance, then this could
+lead to a Denial of Service.</p>
+
+<p>In the second case, the user input is escaped using <code>Pattern.quote</code> before being
+included in the regular expression. This ensures that the user cannot insert characters which have
+a special meaning in regular expressions.</p>
+
+<sample src="RegexInjection.cs" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Regular-Expressions.info: <a href="https://www.regular-expressions.info/redos.html">Preventing Regular Expression Denial of Service (ReDoS)</a>.
+</li>
+<li>
+<a href="https://github.com/google/re2j">RE2/J: linear time regular expression matching in Java</a>.
+</li>
+</references>
+</qhelp>

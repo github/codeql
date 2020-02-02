@@ -19,16 +19,8 @@ class ExponentialRegexLiteral extends RegexPatternSource {
   ExponentialRegexLiteral() { isExponentialRegex(this.asExpr()) }
 }
 
-// from DataFlow2::PathNode source, DataFlow2::PathNode sink, RegexPatternFlowConfig conf
-// where conf.hasFlowPath(source, sink)
-// select sink.getNode(), source, sink,
-//   "$@ flows to regular expression operation with dangerous regex.", source.getNode(),
-//   "User-provided value"
-
 from DataFlow::PathNode source, DataFlow::PathNode sink, RegexInputFlowConfig conf
 where conf.hasFlowPath(source, sink)
-select source, sink, sink.getNode().asExpr().getParent(), sink.getNode().asExpr().getParent().(MethodAccess).getQualifier()
-
-// from DataFlow2::PathNode source, DataFlow2::PathNode sink, RegexPatternFlowConfig conf
-// where conf.hasFlowPath(source, sink)
-// select source, sink, sink.getNode().asExpr().getParent()
+select sink.getNode(), source, sink,
+  "$@ flows to regular expression operation with dangerous regex.", source.getNode(),
+  "User-provided value"

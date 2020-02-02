@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Matching user input against a regular expression which takes exponential time in the worst case
+can allow a malicious user to perform a Denial of Service ("DoS") attack by crafting input that
+takes a long time to execute.</p>
+
+<p>Most regular expression engines, including the Java standard library implementation, are
+designed to work with an extended regular expression syntax. Although this provides flexibility for
+the user, it can prevent the engine from constructing an efficient implementation of the matcher in
+all circumstances. In particular, the "worst case time complexity" (see the references) of certain
+regular expressions may be "exponential". This would allow a malicious user to provide some input
+which causes the regular expression to take a very long time to execute.</p>
+
+<p>Typically, a regular expression is vulnerable to this attack if it applies repetition to a
+sub-expression which itself is repeated, or contains overlapping options. For example,
+<code>(a+)+</code> is vulnerable to a string such as <code>aaaaaaaaaaaaaaaaaaaaaaaaaaab</code>.
+More information about the precise circumstances can be found in the references.</p>
+</overview>
+
+<recommendation>
+<p>Modify the regular expression to avoid the exponential worst case time. If this is not possible,
+then kill the regular expression matching if it takes too long. Alternatively, use a different
+regular expression engine, for example RE2/J which runs in time linear in the size of the input.
+</p>
+</recommendation>
+
+<example>
+<p>The following example shows a HTTP request parameter that is matched against a regular
+expression which has exponential worst case performance. In the first case, standard Java library
+is being used, which can lead to a Denial of Service. In the second case, RE2/J regular expression
+engine is being used. It runs in time linear in the size of the input and won't lead to a DoS.</p>
+
+<sample src="ReDoS.java" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Regular-Expressions.info: <a href="https://www.regular-expressions.info/redos.html">Preventing Regular Expression Denial of Service (ReDoS)</a>.
+</li>
+<li>
+<a href="https://github.com/google/re2j">RE2/J: linear time regular expression matching in Java</a>.
+</li>
+</references>
+</qhelp>
