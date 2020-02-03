@@ -25,7 +25,7 @@ BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap
 
 clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
-	rm -rf $(EXTRACTOR_PACK_OUT) build/stats-project build/testdb
+	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
@@ -80,15 +80,16 @@ tools/net/sourceforge/pmd/cpd/GoLanguage.class: extractor/net/sourceforge/pmd/cp
 ql/src/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-extractor$(EXE)
 	env TRAP_FOLDER=/tmp $^ --dbscheme $@
 
-ql/src/go.dbscheme.stats: ql/src/go.dbscheme
-	odasa createProject --force --template templates/project --threads 4 \
-		--variable repository https://github.com/golang/tools \
-		--variable revision 6e04913c \
-		--variable SEMMLE_REPO_URL golang.org/x/tools \
-		build/stats-project
-	odasa addSnapshot --latest --overwrite --name revision --project build/stats-project
-	odasa buildSnapshot --latest --project build/stats-project
-	odasa collectStats --dbscheme $^ --db build/stats-project/revision/working/db-go --outputFile $@
+build/stats/src.stamp:
+	mkdir -p $(@D)/src
+	git clone 'https://github.com/golang/tools' $(@D)/src
+	git -C $(@D)/src checkout ac4f524c1612 -q
+	touch $@
+
+ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
+	rm -rf build/stats/database
+	codeql database create -l go -s build/stats/src -j4 --search-path . build/stats/database
+	odasa collectStats --dbscheme $< --db build/stats/database/db-go --outputFile $@
 
 test: all extractor build/testdb/check-upgrade-path
 	codeql test run ql/test --search-path . --additional-packs ql
