@@ -118,9 +118,19 @@ class Value extends TObject {
         )
     }
 
-    /** Gets the boolean value of this value. */
-    boolean booleanValue() {
+    /** Gets the boolean interpretation of this value.
+      * Could be both `true` and `false`, if we can't determine the result more precisely.
+      */
+    boolean getABooleanValue() {
         result = this.(ObjectInternal).booleanValue()
+    }
+
+    /** Gets the boolean interpretation of this value, only if we can determine the result preciely.
+      * The result can be `none()`, but never both `true` and `false`.
+      */
+    boolean getDefiniteBooleanValue() {
+        result = getABooleanValue() and
+        not (getABooleanValue() = true and getABooleanValue() = false)
     }
 }
 

@@ -15,7 +15,7 @@ import semmle.python.web.Http
 FunctionValue requestFunction() { result = Module::named("requests").attr(httpVerbLower()) }
 
 /** requests treats None as the default and all other "falsey" values as False */
-predicate falseNotNone(Value v) { v.booleanValue() = false and not v = Value::none_() }
+predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v = Value::none_() }
 
 from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
 where

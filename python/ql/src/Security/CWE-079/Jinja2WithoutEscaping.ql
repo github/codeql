@@ -43,7 +43,8 @@ where
         not exists(getAutoEscapeParameter(call))
         or
         exists(Value isFalse |
-            getAutoEscapeParameter(call).pointsTo(isFalse) and isFalse.booleanValue() = false
+            getAutoEscapeParameter(call).pointsTo(isFalse) and
+            isFalse.getDefiniteBooleanValue() = false
         )
     )
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."
