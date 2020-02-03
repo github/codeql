@@ -63,11 +63,11 @@ predicate algorithmAndKeysizeForCall(
             keySize = key.getIntValue()
         )
         or
-        exists(ClassValue curveClass |
+        exists(Value curveClassInstance |
             algorithm = "ECC" and
             ecKeySizeArg(func, argname) and
-            arg.pointsTo(_, curveClass, keyOrigin) and
-            keySize = keySizeFromCurve(curveClass)
+            arg.pointsTo(_, curveClassInstance, keyOrigin) and
+            keySize = keySizeFromCurve(curveClassInstance.getClass())
         )
     )
 }
