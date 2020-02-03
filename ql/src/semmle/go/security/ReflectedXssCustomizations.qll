@@ -37,17 +37,27 @@ module ReflectedXss {
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
   class HttpResponseBodySink extends Sink, HTTP::ResponseBody {
-    HttpResponseBodySink() { not nonHtmlContentType(this.getResponseWriter()) }
+    HttpResponseBodySink() { not nonHtmlContentType(this) }
   }
 
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  private predicate nonHtmlContentType(HTTP::ResponseWriter rw) {
+  private predicate nonHtmlContentType(HTTP::ResponseBody body) {
     exists(HTTP::HeaderWrite hw |
-      hw = rw.getAHeaderWrite() and hw.definesHeader("content-type", _)
+      hw = body.getResponseWriter().getAHeaderWrite() and hw.definesHeader("content-type", _)
     |
       not exists(string tp | hw.definesHeader("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+    )
+    or
+    not exists(HTTP::HeaderWrite hw, string tp |
+      hw = body.getResponseWriter().getAHeaderWrite() and hw.definesHeader("content-type", tp)
+    |
+      tp.regexpMatch("(?i).*html.*")
+    ) and
+    exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
+      body = call.getAnArgument() and
+      call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
     )
   }
 
