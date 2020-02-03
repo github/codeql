@@ -192,3 +192,19 @@ int test16(int i) {
   long l;
   l = i;
 }
+
+// implicit integer casts
+void test17(int i, long l) {
+  if (i < l) {
+    sink(i);
+  }
+  if (i < l - 2) {
+    sink (i);
+  }
+}
+
+void test18(int x, int y) {
+  if (x < y - 2) {
+    sink(x);
+  }
+}

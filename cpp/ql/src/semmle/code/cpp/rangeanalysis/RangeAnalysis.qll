@@ -187,6 +187,13 @@ private predicate boundFlowStepSsa(
     guard.controls(op2.getUse().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
+  or
+  exists(IRGuardCondition guard, boolean testIsTrue, SafeCastInstruction cast |
+    valueNumberOfOperand(op2) = valueNumber(cast.getUnary()) and
+    guard = boundFlowCond(valueNumber(cast), op1, delta, upper, testIsTrue) and
+    guard.controls(op2.getUse().getBlock(), testIsTrue) and
+    reason = TCondReason(guard)
+  )
 }
 
 /**
