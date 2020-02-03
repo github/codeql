@@ -113,7 +113,7 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
  * Holds if the properties of `node` are enumerated locally.
  */
 predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
-  node = any(EnumeratedPropName name).getASourceObjectRef()
+  node = AccessPath::getAnAliasedSourceNode(any(EnumeratedPropName name).getSourceObject())
 }
 
 /**
