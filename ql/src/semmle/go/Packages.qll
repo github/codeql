@@ -12,7 +12,11 @@ class Package extends @package {
   string getName() { packages(this, result, _, _) }
 
   /** Gets the path of this package. */
-  string getPath() { packages(this, _, result, _) }
+  string getPath() {
+    exists(string fullPath | packages(this, _, fullPath, _) |
+      result = fullPath.regexpReplaceAll("^.*/vendor/", "")
+    )
+  }
 
   /** Gets the scope of this package. */
   PackageScope getScope() { packages(this, _, _, result) }
