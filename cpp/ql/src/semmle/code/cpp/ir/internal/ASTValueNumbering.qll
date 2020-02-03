@@ -68,7 +68,7 @@ class GVN extends TValueNumber {
   }
 
   /** Gets an expression that has this GVN. */
-  Expr getAnExpr() { result = getAnInstruction().getConvertedResultExpression() }
+  Expr getAnExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
 }
 
 /** Gets the global value number of expression `e`. */
