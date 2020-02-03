@@ -151,6 +151,22 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
   or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  exists(IRFunction f, Parameter parameter |
+    i1 = getInitializeParameter(f, parameter) and
+    i2 = getInitializeIndirection(f, parameter)
+  )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getAnOperand().(SideEffectOperand).getAnyDef() = i1 and
+    read.getArgumentDef() = i2
+  )
+  or
   // Flow from argument to return value
   i2 =
     any(CallInstruction call |
@@ -174,6 +190,18 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
         outNode.getPrimaryInstruction() = call
       )
     )
+}
+
+pragma[noinline]
+private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+pragma[noinline]
+private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
 }
 
 /**
@@ -273,23 +301,6 @@ private Element adjustedSink(DataFlow::Node sink) {
   // For compatibility, send flow into a `NotExpr` even if it's part of a
   // short-circuiting condition and thus might get skipped.
   result.(NotExpr).getOperand() = sink.asExpr()
-  or
-  // For compatibility, send flow from argument read side effects to their
-  // corresponding argument expression
-  exists(IndirectReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
-  or
-  exists(BufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
-  or
-  exists(SizedBufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
 }
 
 predicate tainted(Expr source, Element tainted) {
