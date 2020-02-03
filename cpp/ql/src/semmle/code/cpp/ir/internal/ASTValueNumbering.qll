@@ -56,7 +56,8 @@ class GVN extends TValueNumber {
   final string toString() { result = "GVN" }
 
   final Location getLocation() {
-    result = rank[1](Location l |
+    result =
+      rank[1](Location l |
         l = getAnExpr().getLocation()
       |
         l
