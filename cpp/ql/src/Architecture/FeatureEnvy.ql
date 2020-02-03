@@ -25,7 +25,8 @@ predicate functionUsesFunction(Function source, Function f, File target) {
 }
 
 predicate dependencyCount(Function source, File target, int res) {
-  res = strictcount(Declaration d |
+  res =
+    strictcount(Declaration d |
       functionUsesVariable(source, d, target) or
       functionUsesFunction(source, d, target)
     )

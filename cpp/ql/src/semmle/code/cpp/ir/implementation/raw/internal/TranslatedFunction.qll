@@ -557,7 +557,8 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   override Instruction getFirstInstruction() {
     if exists(getAChild())
     then
-      result = min(TranslatedReadEffect child, int id | child = getChild(id) | child order by id)
+      result =
+        min(TranslatedReadEffect child, int id | child = getChild(id) | child order by id)
             .getFirstInstruction()
     else result = getParent().getChildSuccessor(this)
   }
@@ -566,7 +567,8 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
     exists(int id | child = getChild(id) |
       if exists(TranslatedReadEffect child2, int id2 | id2 > id and child2 = getChild(id2))
       then
-        result = min(TranslatedReadEffect child2, int id2 |
+        result =
+          min(TranslatedReadEffect child2, int id2 |
             child2 = getChild(id2) and id2 > id
           |
             child2 order by id2

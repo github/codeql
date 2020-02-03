@@ -334,9 +334,8 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getNewIRVariable(getOldInstruction(instruction)
-            .(OldIR::VariableInstruction)
-            .getIRVariable())
+    result =
+      getNewIRVariable(getOldInstruction(instruction).(OldIR::VariableInstruction).getIRVariable())
   }
 
   cached
@@ -361,9 +360,8 @@ private module Cached {
 
   cached
   Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
-    result = getOldInstruction(instruction)
-          .(OldIR::BuiltInOperationInstruction)
-          .getBuiltInOperation()
+    result =
+      getOldInstruction(instruction).(OldIR::BuiltInOperationInstruction).getBuiltInOperation()
   }
 
   cached
@@ -527,7 +525,8 @@ private module PhiInsertion {
   predicate definitionLiveOnEntryToBlock(Alias::MemoryLocation defLocation, OldBlock block) {
     exists(int firstAccess |
       definitionHasUse(defLocation, block, firstAccess) and
-      firstAccess = min(int index |
+      firstAccess =
+        min(int index |
           definitionHasUse(defLocation, block, index)
           or
           definitionHasRedefinition(defLocation, block, index)
@@ -709,7 +708,8 @@ module DefUse {
     or
     exists(int firstAccess |
       hasUse(useLocation, block, firstAccess, _) and
-      firstAccess = min(int offset |
+      firstAccess =
+        min(int offset |
           hasUse(useLocation, block, offset, _)
           or
           hasNonPhiDefinition(useLocation, _, block, offset)
@@ -817,7 +817,8 @@ module DefUse {
   private predicate defUseRank(
     Alias::MemoryLocation useLocation, OldBlock block, int rankIndex, int offset
   ) {
-    offset = rank[rankIndex](int j |
+    offset =
+      rank[rankIndex](int j |
         hasDefinition(useLocation, _, block, j) or hasUse(useLocation, block, j, _)
       )
   }
@@ -868,8 +869,8 @@ private module CachedForDebugging {
     or
     exists(Alias::MemoryLocation location, OldBlock phiBlock, string specificity |
       instr = Phi(phiBlock, location) and
-      result = "Phi Block(" + phiBlock.getUniqueId() + ")[" + specificity + "]: " +
-          location.getUniqueId() and
+      result =
+        "Phi Block(" + phiBlock.getUniqueId() + ")[" + specificity + "]: " + location.getUniqueId() and
       if location instanceof Alias::VirtualVariable
       then
         // Sort Phi nodes for virtual variables before Phi nodes for member locations.

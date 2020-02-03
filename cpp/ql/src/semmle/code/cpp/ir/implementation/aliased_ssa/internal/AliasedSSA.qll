@@ -170,8 +170,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   IntValue endBitOffset;
 
   VariableMemoryLocation() {
-    this = TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset,
-        isMayAccess)
+    this =
+      TVariableMemoryLocation(var, type, languageType, startBitOffset, endBitOffset, isMayAccess)
   }
 
   private string getIntervalString() {
@@ -210,7 +210,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   final IntValue getEndBitOffset() { result = endBitOffset }
 
   final override string getUniqueId() {
-    result = var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
+    result =
+      var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
         type.getIdentityString() + ">"
   }
 
@@ -530,8 +531,9 @@ private Overlap getVariableMemoryLocationOverlap(
   VariableMemoryLocation def, VariableMemoryLocation use
 ) {
   overlappingIRVariableMemoryLocations(def, use) and
-  result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(),
-      use.getStartBitOffset(), use.getEndBitOffset())
+  result =
+    Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(),
+      use.getEndBitOffset())
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
@@ -545,14 +547,16 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
         then
           exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            result =
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
         else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
-      result = TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr
-                .getResultAddressOperand()), isMayAccess)
+      result =
+        TEntireAllocationMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()),
+          isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
@@ -574,14 +578,16 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
         then
           exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
             hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result = TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            result =
+              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
           )
         else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
-      result = TEntireAllocationMemoryLocation(getAddressOperandAllocation(operand
-                .getAddressOperand()), isMayAccess)
+      result =
+        TEntireAllocationMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()),
+          isMayAccess)
       or
       kind instanceof EscapedMemoryAccess and
       result = TAllAliasedMemory(operand.getEnclosingIRFunction(), isMayAccess)

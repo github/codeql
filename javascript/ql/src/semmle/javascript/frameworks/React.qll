@@ -38,9 +38,14 @@ abstract class ReactComponent extends ASTNode {
   abstract AbstractValue getAbstractComponent();
 
   /**
-   * Gets the value that instantiates this component when invoked.
+   * Gets the function that instantiates this component when invoked.
    */
   abstract DataFlow::SourceNode getComponentCreatorSource();
+
+  /**
+   * Gets a reference to the function that instantiates this component when invoked.
+   */
+  abstract DataFlow::SourceNode getAComponentCreatorReference();
 
   /**
    * Gets a reference to this component.
@@ -181,7 +186,7 @@ abstract class ReactComponent extends ASTNode {
    * constructor of this component.
    */
   DataFlow::SourceNode getACandidatePropsSource() {
-    result.flowsTo(getComponentCreatorSource().getAnInvocation().getArgument(0))
+    result.flowsTo(getAComponentCreatorReference().getAnInvocation().getArgument(0))
     or
     result = getADefaultPropsSource()
     or
@@ -269,6 +274,19 @@ class FunctionalComponent extends ReactComponent, Function {
 
   override AbstractValue getAbstractComponent() { result = AbstractInstance::of(this) }
 
+  private DataFlow::SourceNode getAComponentCreatorReference(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::valueNode(this)
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = getAComponentCreatorReference(t2).track(t2, t)
+    )
+  }
+
+  override DataFlow::SourceNode getAComponentCreatorReference() {
+    result = getAComponentCreatorReference(DataFlow::TypeTracker::end())
+  }
+
   override DataFlow::SourceNode getComponentCreatorSource() { result = DataFlow::valueNode(this) }
 
   override DataFlow::SourceNode getADefaultPropsSource() {
@@ -301,6 +319,10 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
   }
 
   override AbstractValue getAbstractComponent() { result = AbstractInstance::of(this) }
+
+  override DataFlow::SourceNode getAComponentCreatorReference() {
+    result = DataFlow::valueNode(this).(DataFlow::ClassNode).getAClassReference()
+  }
 
   override DataFlow::SourceNode getComponentCreatorSource() { result = DataFlow::valueNode(this) }
 
@@ -420,6 +442,19 @@ class ES5Component extends ReactComponent, ObjectExpr {
 
   override AbstractValue getAbstractComponent() { result = TAbstractObjectLiteral(this) }
 
+  private DataFlow::SourceNode getAComponentCreatorReference(DataFlow::TypeTracker t) {
+    t.start() and
+    result = create
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = getAComponentCreatorReference(t2).track(t2, t)
+    )
+  }
+
+  override DataFlow::SourceNode getAComponentCreatorReference() {
+    result = getAComponentCreatorReference(DataFlow::TypeTracker::end())
+  }
+
   override DataFlow::SourceNode getComponentCreatorSource() { result = create }
 
   override DataFlow::SourceNode getACandidateStateSource() {
@@ -517,7 +552,7 @@ private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNo
 private class ReactJSXElement extends JSXElement {
   ReactComponent component;
 
-  ReactJSXElement() { component.getComponentCreatorSource().flowsToExpr(getNameExpr()) }
+  ReactJSXElement() { component.getAComponentCreatorReference().flowsToExpr(getNameExpr()) }
 
   /**
    * Gets the component this element instantiates.

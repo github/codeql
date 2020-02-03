@@ -21,12 +21,14 @@ where
   (if callable instanceof Constructor then callableType = "" else callableType = "method ") and
   (
     confusingAccess(d, f) and
-    message = "Confusing name: " + callableType +
+    message =
+      "Confusing name: " + callableType +
         "$@ also refers to field $@ (without qualifying it with 'this')."
     or
     thisAccess(d, f) and
     not confusingAccess(d, f) and
-    message = "Potentially confusing name: " + callableType + "$@ also refers to field $@ (as this."
-        + f.getName() + ")."
+    message =
+      "Potentially confusing name: " + callableType + "$@ also refers to field $@ (as this." +
+        f.getName() + ")."
   )
 select d, message, callable, callable.getName(), f, f.getName()

@@ -1375,9 +1375,8 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType().getUnspecifiedType() != getLeftOperand()
-          .getExpr()
-          .getUnspecifiedType()
+    getConvertedLeftOperandType().getUnspecifiedType() !=
+      getLeftOperand().getExpr().getUnspecifiedType()
   }
 
   private Opcode getOpcode() {

@@ -51,9 +51,8 @@ module ResourceInjection {
   /** An argument to the `ConnectionString` property on a data connection class. */
   class SqlConnectionStringSink extends Sink {
     SqlConnectionStringSink() {
-      this.getExpr() = any(SystemDataConnectionClass dataConn)
-            .getConnectionStringProperty()
-            .getAnAssignedValue()
+      this.getExpr() =
+        any(SystemDataConnectionClass dataConn).getConnectionStringProperty().getAnAssignedValue()
     }
   }
 

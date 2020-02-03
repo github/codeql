@@ -175,7 +175,8 @@ class FormattingCall extends Call {
     then
       exists(Expr arg | arg = this.getArgument(1 + this.getFormatStringIndex()) |
         result = arg.(ArrayCreationExpr).getFirstDimensionSize() or
-        result = arg
+        result =
+          arg
               .(VarAccess)
               .getVariable()
               .getAnAssignedValue()
@@ -245,8 +246,7 @@ private predicate formatStringFragment(Expr fmt) {
     e.(AddExpr).getLeftOperand() = fmt or
     e.(AddExpr).getRightOperand() = fmt or
     e.(ConditionalExpr).getTrueExpr() = fmt or
-    e.(ConditionalExpr).getFalseExpr() = fmt or
-    e.(ParExpr).getExpr() = fmt
+    e.(ConditionalExpr).getFalseExpr() = fmt
   )
 }
 
@@ -266,8 +266,6 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
     e.getType() instanceof BooleanType and fmtvalue = "x" // dummy value
     or
     e.getType() instanceof EnumType and fmtvalue = "x" // dummy value
-    or
-    formatStringValue(e.(ParExpr).getExpr(), fmtvalue)
     or
     exists(Variable v |
       e = v.getAnAccess() and
@@ -410,7 +408,8 @@ private class PrintfFormatString extends FormatString {
   }
 
   override int getMaxFmtSpecIndex() {
-    result = max(int ix |
+    result =
+      max(int ix |
         ix = fmtSpecRefersToSpecificIndex(_) or
         ix = count(int i | fmtSpecRefersToSequentialIndex(i))
       )

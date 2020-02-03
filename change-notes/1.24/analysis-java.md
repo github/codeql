@@ -25,6 +25,10 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 ## Changes to libraries
 
+* The data-flow library has been improved when flow through methods needs to be
+  combined with both taint tracking and flow through fields allowing more flow
+  to be tracked. This affects and improves most security queries, which may
+  report additional results.
 * Identification of test classes has been improved. Previously, one of the
   match conditions would classify any class with a name containing the string
   "Test" as a test class, but now this matching has been replaced with one that
@@ -32,3 +36,6 @@ The following changes in version 1.24 affect Java analysis in all applications.
   general file classification mechanism and thus suppression of alerts, and
   also any security queries using taint tracking, as test classes act as
   default barriers stopping taint flow.
+* Parentheses are now no longer modelled directly in the AST, that is, the
+  `ParExpr` class is empty. Instead, a parenthesized expression can be
+  identified with the `Expr.isParenthesized()` member predicate.

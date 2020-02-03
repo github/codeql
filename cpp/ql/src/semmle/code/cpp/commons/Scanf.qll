@@ -195,7 +195,8 @@ class ScanfFormatLiteral extends Expr {
     //                 2 - maximum width
     //                 3 - length modifier
     //                 4 - conversion character
-    result = "(\\%(" + this.getMaxWidthRegexp() + ")(" + this.getLengthRegexp() + ")(" +
+    result =
+      "(\\%(" + this.getMaxWidthRegexp() + ")(" + this.getLengthRegexp() + ")(" +
         this.getConvCharRegexp() + ")).*"
   }
 

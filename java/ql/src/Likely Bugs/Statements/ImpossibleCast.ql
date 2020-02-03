@@ -67,8 +67,9 @@ where
   (
     // No unchecked operations, so the cast would crash straight away.
     not uncheckedCastType(target) and
-    message = "Impossible downcast: the cast from " + source.getName() + "[] to " + target.getName()
-        + "[] will always fail with a ClassCastException."
+    message =
+      "Impossible downcast: the cast from " + source.getName() + "[] to " + target.getName() +
+        "[] will always fail with a ClassCastException."
     or
     // For unchecked operations, the crash would not occur at the cast site,
     // but only if/when the value is assigned to a variable of different array type.
@@ -80,7 +81,8 @@ where
     returnedFrom(ce, ce.getEnclosingCallable()) and
     ce.getEnclosingCallable().getReturnType().(Array).getElementType() = target and
     not ce.getEnclosingCallable().isPrivate() and
-    message = "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
+    message =
+      "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
         " as a value of type " + target.getName() + "[], but the array has type " + source.getName()
         + "[]. Callers of " + ce.getEnclosingCallable().getName() +
         " may fail with a ClassCastException."
@@ -91,8 +93,9 @@ where
       returnedVariableFrom(v, m) and
       m.getReturnType().(Array).getElementType() = target and
       not m.isPrivate() and
-      message = "Impossible downcast: this is assigned to " + v.getName() + " which is returned by "
-          + m + " as a value of type " + target.getName() + "[], but the array has type " +
+      message =
+        "Impossible downcast: this is assigned to " + v.getName() + " which is returned by " + m +
+          " as a value of type " + target.getName() + "[], but the array has type " +
           source.getName() + "[]. Callers of " + m.getName() +
           " may fail with a ClassCastException."
     )

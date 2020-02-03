@@ -284,7 +284,7 @@ class NewInstance extends MethodAccess {
    * cast.
    */
   private Type getCastInferredConstructedTypes() {
-    exists(CastExpr cast | cast.getExpr() = this or cast.getExpr().(ParExpr).getExpr() = this |
+    exists(CastExpr cast | cast.getExpr() = this |
       result = cast.getType()
       or
       // If we cast the result of this method, then this is either the type specified, or a

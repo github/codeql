@@ -1555,6 +1555,7 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
       visitAll(nd.getSpecifiers(), lbl);
+      emitNodeSymbol(nd, lbl);
       return lbl;
     }
 
@@ -1705,6 +1706,7 @@ public class ASTExtractor {
     public Label visit(ExternalModuleReference nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0);
+      emitNodeSymbol(nd, key);
       return key;
     }
 
@@ -2061,12 +2063,14 @@ public class ASTExtractor {
 
     @Override
     public Label visit(AssignmentPattern nd, Context c) {
-      additionalErrors.add(new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
+      additionalErrors.add(
+          new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
       return super.visit(nd, c);
     }
   }
 
-  public List<ParseError> extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+  public List<ParseError> extract(
+      Node root, Platform platform, SourceType sourceType, int toplevelKind) {
     lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);

@@ -98,8 +98,6 @@ private predicate step(Node n1, Node n2) {
     n2.asExpr().(FieldRead).getField() = f
   )
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()

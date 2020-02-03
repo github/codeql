@@ -24,9 +24,9 @@ predicate conditionCheckMethod(Method m, boolean checkTrue) {
     not m.isOverridable() and
     p.getType() instanceof BooleanType and
     m.getBody().getStmt(0) = ifstmt and
-    ifstmt.getCondition().getProperExpr() = cond and
+    ifstmt.getCondition() = cond and
     (
-      cond.(LogNotExpr).getExpr().getProperExpr().(VarAccess).getVariable() = p and checkTrue = true
+      cond.(LogNotExpr).getExpr().(VarAccess).getVariable() = p and checkTrue = true
       or
       cond.(VarAccess).getVariable() = p and checkTrue = false
     ) and
@@ -41,9 +41,9 @@ predicate conditionCheckMethod(Method m, boolean checkTrue) {
     not m.isOverridable() and
     m.getBody().getStmt(0).(ExprStmt).getExpr() = ma and
     conditionCheck(ma, ct) and
-    ma.getArgument(0).getProperExpr() = arg and
+    ma.getArgument(0) = arg and
     (
-      arg.(LogNotExpr).getExpr().getProperExpr().(VarAccess).getVariable() = p and
+      arg.(LogNotExpr).getExpr().(VarAccess).getVariable() = p and
       checkTrue = ct.booleanNot()
       or
       arg.(VarAccess).getVariable() = p and checkTrue = ct

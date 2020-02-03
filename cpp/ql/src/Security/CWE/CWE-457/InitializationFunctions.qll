@@ -90,9 +90,9 @@ class ParameterNullCheck extends ParameterCheck {
         va = this.(NotExpr).getOperand() or
         va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
         va = getCheckedFalseCondition(this) or
-        va = any(NEExpr eq |
-            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
-          ).getAnOperand()
+        va =
+          any(NEExpr eq | eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0")
+              .getAnOperand()
       )
       or
       nullSuccessor = getAFalseSuccessor() and
@@ -100,9 +100,9 @@ class ParameterNullCheck extends ParameterCheck {
       (
         va = this or
         va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
-        va = any(EQExpr eq |
-            eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0"
-          ).getAnOperand()
+        va =
+          any(EQExpr eq | eq = getCheckedFalseCondition(this) and eq.getAnOperand().getValue() = "0")
+              .getAnOperand()
       )
     )
   }
@@ -188,7 +188,8 @@ class InitializationFunction extends Function {
       isPointerDereferenceAssignmentTarget(this.getParameter(i).getAnAccess()) or
       // Field wise assignment to the parameter
       any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
-      i = this
+      i =
+        this
             .(MemberFunction)
             .getAnOverridingFunction+()
             .(InitializationFunction)
@@ -231,7 +232,8 @@ class InitializationFunction extends Function {
         )
       )
       or
-      result = any(AssumeExpr e |
+      result =
+        any(AssumeExpr e |
           e.getEnclosingFunction() = this and e.getAChild().(Literal).getValue() = "0"
         )
     )
@@ -472,7 +474,8 @@ class ConditionalInitializationCall extends FunctionCall {
       a.getLValue() = fa and
       fa.getASuccessor+() = result
     ) and
-    result = this
+    result =
+      this
           .getArgument(getTarget(this)
                 .(ConditionalInitializationFunction)
                 .conditionallyInitializedParameter(_))
@@ -589,7 +592,8 @@ Expr getAConditionallyInitializedArgument(
  * Gets the type signature for the functions parameters.
  */
 private string typeSig(Function f) {
-  result = concat(int i, Type pt |
+  result =
+    concat(int i, Type pt |
       pt = f.getParameter(i).getType()
     |
       pt.getUnspecifiedType().toString(), "," order by i

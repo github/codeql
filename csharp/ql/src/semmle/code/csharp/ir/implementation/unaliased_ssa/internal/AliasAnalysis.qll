@@ -84,6 +84,10 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
         bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
       )
       or
+      // Conversion using dynamic_cast results in an unknown offset
+      instr instanceof CheckedConvertOrNullInstruction and
+      bitOffset = Ints::unknown()
+      or
       // Converting to a derived class subtracts the offset of the base class.
       exists(ConvertToDerivedInstruction convert |
         convert = instr and
@@ -197,8 +201,8 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() = f
-            .getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.(InitializeParameterInstruction).getParameter() =
+        f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
       init instanceof InitializeThisInstruction and
       init.getEnclosingFunction() = f and

@@ -99,7 +99,8 @@ class XmlComment extends CommentLine, @xmldoccomment {
   /** Gets the name of the closing tag at offset `offset`. */
   string getCloseTag(int offset) {
     exists(int offset1, int offset2 |
-      result = getText()
+      result =
+        getText()
             .regexpFind(xmlTagCloseRegex(), _, offset1)
             .regexpFind(xmlIdentifierRegex(), 0, offset2) and
       offset = offset1 + offset2
@@ -110,10 +111,12 @@ class XmlComment extends CommentLine, @xmldoccomment {
   string getEmptyTag(int offset) {
     exists(int offset1, int offset2 |
       (
-        result = getText()
+        result =
+          getText()
               .regexpFind(xmlTagIntroRegex() + "\\s*/>", _, offset1)
               .regexpFind(xmlIdentifierRegex(), 0, offset2) or
-        result = getText()
+        result =
+          getText()
               .regexpFind(xmlTagIntroRegex() + "\\s*>\\s*</" + xmlIdentifierRegex() + "\\s*>", _,
                 offset1)
               .regexpFind(xmlIdentifierRegex(), 0, offset2)
