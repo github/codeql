@@ -22,19 +22,20 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
 class ValueNumber extends TValueNumber {
   final string toString() { result = "GVN" }
 
-  final string getDebugString() {
+  final Language::Location getLocation() {
     result =
-      "ValueNumber: " +
-        strictconcat(this.getAnInstruction().getUnconvertedResultExpression().toString(), ", ")
+      min(Language::Location l |
+        l = getAnInstruction().getLocation()
+      |
+        l
+        order by
+          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn()
+      )
   }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this
-        .getAnInstruction()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  final string getDebugString() {
+    result = "ValueNumber: " + strictconcat(this.getAnInstruction().getResultId(), ", ")
   }
 
   /**
@@ -78,7 +79,7 @@ class ValueNumber extends TValueNumber {
     or
     this instanceof TUnaryValueNumber and result = "Unary"
     or
-    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversionr"
+    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversion"
     or
     this instanceof TUniqueValueNumber and result = "Unique"
   }
