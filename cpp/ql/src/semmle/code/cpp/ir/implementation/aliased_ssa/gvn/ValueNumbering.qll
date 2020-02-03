@@ -81,7 +81,7 @@ class ValueNumber extends TValueNumber {
     or
     this instanceof TUnaryValueNumber and result = "Unary"
     or
-    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversionr"
+    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversion"
     or
     this instanceof TUniqueValueNumber and result = "Unique"
   }
