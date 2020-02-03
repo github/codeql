@@ -35,9 +35,7 @@ class ValueNumber extends TValueNumber {
   }
 
   final string getDebugString() {
-    result =
-      "ValueNumber: " +
-        strictconcat(this.getAnInstruction().getResultId(), ", ")
+    result = "ValueNumber: " + strictconcat(this.getAnInstruction().getResultId(), ", ")
   }
 
   /**
