@@ -318,3 +318,10 @@ function basicExceptions() {
 function handlebarsSafeString() {
 	return new Handlebars.SafeString(location); // NOT OK!	
 }
+
+function test2() {
+  var target = document.location.search
+
+  // OK
+  $('myId').html(target.length)
+}
