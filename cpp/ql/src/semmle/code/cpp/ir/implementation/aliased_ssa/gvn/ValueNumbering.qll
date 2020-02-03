@@ -22,19 +22,22 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
 class ValueNumber extends TValueNumber {
   final string toString() { result = "GVN" }
 
+  final Language::Location getLocation() {
+    result =
+      min(Language::Location l |
+        l = getAnInstruction().getLocation()
+      |
+        l
+        order by
+          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn()
+      )
+  }
+
   final string getDebugString() {
     result =
       "ValueNumber: " +
         strictconcat(this.getAnInstruction().getUnconvertedResultExpression().toString(), ", ")
-  }
-
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this
-        .getAnInstruction()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /**

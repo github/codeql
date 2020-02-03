@@ -43,9 +43,7 @@ abstract class Bound extends TBound {
   /** Gets an expression that equals this bound. */
   Instruction getInstruction() { result = getInstruction(0) }
 
-  abstract predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  );
+  abstract Location getLocation();
 }
 
 /**
@@ -59,11 +57,7 @@ class ZeroBound extends Bound, TBoundZero {
     result.(ConstantValueInstruction).getValue().toInt() = delta
   }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    none()
-  }
+  override Location getLocation() { result instanceof UnknownDefaultLocation }
 }
 
 /**
@@ -81,9 +75,5 @@ class ValueNumberBound extends Bound, TBoundValueNumber {
 
   override string toString() { result = vn.getExampleInstruction().toString() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    vn.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = vn.getLocation() }
 }
