@@ -234,10 +234,15 @@ class ModuleVariable extends SsaSourceVariable {
             exists(ImportStar is | is.getScope() = this.(Variable).getScope())
         )
     }
+    pragma[nomagic]
+    private Scope referenced_multiple_times_with_scope() {
+        count(this.(Variable).getAStore()) > 1 and
+        result = this.(GlobalVariable).getScope()
+    }
 
     pragma [noinline]
     CallNode global_variable_callnode() {
-        result.getScope() = this.(GlobalVariable).getScope()
+        result.getScope() = this.referenced_multiple_times_with_scope()
     }
 
     pragma[noinline]
