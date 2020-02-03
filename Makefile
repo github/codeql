@@ -1,4 +1,4 @@
-all: tools ql/src/go.dbscheme
+all: extractor ql/src/go.dbscheme
 
 ifeq ($(OS),Windows_NT)
 EXE = .exe
@@ -91,7 +91,7 @@ ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
 	codeql database create -l go -s build/stats/src -j4 --search-path . build/stats/database
 	odasa collectStats --dbscheme $< --db build/stats/database/db-go --outputFile $@
 
-test: all extractor build/testdb/check-upgrade-path
+test: all build/testdb/check-upgrade-path
 	codeql test run ql/test --search-path . --additional-packs ql
 	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
 
