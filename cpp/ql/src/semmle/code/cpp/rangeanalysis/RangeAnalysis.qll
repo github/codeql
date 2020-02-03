@@ -259,7 +259,7 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
 
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
-    safeCast(getResultType(), getUnary().getResultType())
+    safeCast(getUnary().getResultType(), getResultType())
     or
     getResultType() instanceof PointerType and
     getUnary().getResultType() instanceof PointerType
