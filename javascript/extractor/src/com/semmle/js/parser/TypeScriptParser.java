@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -435,6 +436,9 @@ public class TypeScriptParser {
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
     request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
     request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
+    request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");

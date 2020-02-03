@@ -48,6 +48,7 @@ interface ParseCommand {
 interface OpenProjectCommand {
     command: "open-project";
     tsConfig: string;
+    virtualSourceRoot: string | null;
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
 }
@@ -261,7 +262,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
 
     let packageEntryPoints = new Map(command.packageEntryPoints);
     let packageJsonFiles = new Map(command.packageJsonFiles);
-    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), process.env["CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR"]);
+    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), command.virtualSourceRoot);
 
     /**
      * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
@@ -582,6 +583,7 @@ if (process.argv.length > 2) {
             tsConfig: argument,
             packageEntryPoints: [],
             packageJsonFiles: [],
+            virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {
             if (pathlib.basename(sf.fileName) === "lib.d.ts") continue;
