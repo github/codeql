@@ -186,3 +186,9 @@ int test15(int i, int x) {
   }
   return i;
 }
+
+// safe integer type conversion
+int test16(int i) {
+  long l;
+  l = i;
+}
