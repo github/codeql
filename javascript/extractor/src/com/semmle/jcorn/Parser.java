@@ -3238,6 +3238,9 @@ public class Parser {
       if (pi.kind.equals("set") && node.getValue().hasRest())
         this.raiseRecoverable(params.get(params.size() - 1), "Setter cannot use rest params");
     }
+    if (pi.key instanceof Identifier && ((Identifier)pi.key).getName().startsWith("#")) {
+      raiseRecoverable(pi.key, "Only fields, not methods, can be declared private.");
+    }
     return node;
   }
 

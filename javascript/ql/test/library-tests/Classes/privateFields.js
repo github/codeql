@@ -19,4 +19,9 @@ class Foo {
 	#privSecond; // is a PropNode, not a PropRef. Doesn't matter.
 	
 	["#publicField"] = 6;
+	
+	calls() {
+		this.#privDecl();
+		new this.#privDecl();
+	}
 }
