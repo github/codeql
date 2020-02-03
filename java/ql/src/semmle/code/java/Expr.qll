@@ -46,8 +46,12 @@ class Expr extends ExprParent, @expr {
    */
   int getKind() { exprs(this, result, _, _, _) }
 
-  /** Gets this expression with any surrounding parentheses removed. */
-  Expr getProperExpr() {
+  /**
+   * DEPRECATED: This is no longer necessary. See `Expr.isParenthesized()`.
+   *
+   * Gets this expression with any surrounding parentheses removed.
+   */
+  deprecated Expr getProperExpr() {
     result = this.(ParExpr).getExpr().getProperExpr()
     or
     result = this and not this instanceof ParExpr
@@ -152,9 +156,6 @@ class CompileTimeConstantExpr extends Expr {
         e.getFalseExpr().isCompileTimeConstant()
       )
       or
-      // Parenthesized expressions whose contained expression is a constant expression.
-      this.(ParExpr).getExpr().isCompileTimeConstant()
-      or
       // Access to a final variable initialized by a compile-time constant.
       exists(Variable v | this = v.getAnAccess() |
         v.isFinal() and
@@ -168,8 +169,6 @@ class CompileTimeConstantExpr extends Expr {
    */
   string getStringValue() {
     result = this.(StringLiteral).getRepresentedString()
-    or
-    result = this.(ParExpr).getExpr().(CompileTimeConstantExpr).getStringValue()
     or
     result =
       this.(AddExpr).getLeftOperand().(CompileTimeConstantExpr).getStringValue() +
@@ -296,9 +295,6 @@ class CompileTimeConstantExpr extends Expr {
       else result = ce.getFalseExpr().(CompileTimeConstantExpr).getBooleanValue()
     )
     or
-    // Parenthesized expressions containing a boolean value.
-    result = this.(ParExpr).getExpr().(CompileTimeConstantExpr).getBooleanValue()
-    or
     // Simple or qualified names where the variable is final and the initializer is a constant.
     exists(Variable v | this = v.getAnAccess() |
       result = v.getInitializer().(CompileTimeConstantExpr).getBooleanValue()
@@ -384,8 +380,6 @@ class CompileTimeConstantExpr extends Expr {
         then result = ce.getTrueExpr().(CompileTimeConstantExpr).getIntValue()
         else result = ce.getFalseExpr().(CompileTimeConstantExpr).getIntValue()
       )
-      or
-      result = this.(ParExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
       or
       // If a `Variable` is a `CompileTimeConstantExpr`, its value is its initializer.
       exists(Variable v | this = v.getAnAccess() |
@@ -640,12 +634,8 @@ class BinaryExpr extends Expr, @binaryexpr {
   /** Gets the operand on the right-hand side of this binary expression. */
   Expr getRightOperand() { result.isNthChildOf(this, 1) }
 
-  /** Gets an operand (left or right), with any parentheses removed. */
-  Expr getAnOperand() {
-    exists(Expr r | r = this.getLeftOperand() or r = this.getRightOperand() |
-      result = r.getProperExpr()
-    )
-  }
+  /** Gets an operand (left or right). */
+  Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
 
   /** The operands of this binary expression are `e` and `f`, in either order. */
   predicate hasOperands(Expr e, Expr f) {
@@ -761,17 +751,14 @@ class NEExpr extends BinaryExpr, @neexpr {
  * A bitwise expression.
  *
  * This includes expressions involving the operators
- * `&`, `|`, `^`, or `~`,
- * possibly parenthesized.
+ * `&`, `|`, `^`, or `~`.
  */
 class BitwiseExpr extends Expr {
   BitwiseExpr() {
-    exists(Expr proper | proper = this.getProperExpr() |
-      proper instanceof AndBitwiseExpr or
-      proper instanceof OrBitwiseExpr or
-      proper instanceof XorBitwiseExpr or
-      proper instanceof BitNotExpr
-    )
+    this instanceof AndBitwiseExpr or
+    this instanceof OrBitwiseExpr or
+    this instanceof XorBitwiseExpr or
+    this instanceof BitNotExpr
   }
 }
 
@@ -1128,10 +1115,14 @@ class SwitchExpr extends Expr, @switchexpr {
   override string toString() { result = "switch (...)" }
 }
 
-/** A parenthesised expression. */
-class ParExpr extends Expr, @parexpr {
+/**
+ * DEPRECATED: Use `Expr.isParenthesized()` instead.
+ *
+ * A parenthesised expression.
+ */
+deprecated class ParExpr extends Expr, @parexpr {
   /** Gets the expression inside the parentheses. */
-  Expr getExpr() { result.getParent() = this }
+  deprecated Expr getExpr() { result.getParent() = this }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "(...)" }

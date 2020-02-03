@@ -36,3 +36,6 @@ The following changes in version 1.24 affect Java analysis in all applications.
   general file classification mechanism and thus suppression of alerts, and
   also any security queries using taint tracking, as test classes act as
   default barriers stopping taint flow.
+* Parentheses are now no longer modelled directly in the AST, that is, the
+  `ParExpr` class is empty. Instead, a parenthesized expression can be
+  identified with the `Expr.isParenthesized()` member predicate.

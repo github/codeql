@@ -117,6 +117,11 @@ class Value extends TObject {
             my_class.getABaseType+() = other_class
         )
     }
+
+    /** Gets the boolean value of this value. */
+    boolean booleanValue() {
+        result = this.(ObjectInternal).booleanValue()
+    }
 }
 
 /** Class representing modules in the Python program
@@ -599,6 +604,22 @@ class TupleValue extends SequenceValue {
 
 }
 
+/** A class representing strings, either present in the source as a literal, or
+in a builtin as a value. */
+
+class StringValue extends Value {
+    StringValue() {
+        this instanceof BytesObjectInternal or
+        this instanceof UnicodeObjectInternal
+    }
+
+    string getText() {
+        result = this.(BytesObjectInternal).strValue()
+        or
+        result = this.(UnicodeObjectInternal).strValue()
+    }
+}
+
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
 
@@ -692,6 +713,15 @@ module ClassValue {
      * `str` in Python 3 and `unicode` in Python 2. */
     ClassValue unicode() {
         result = TBuiltinClassObject(Builtin::special("unicode"))
+    }
+
+    /** Get the `ClassValue` for the `str` class. This is `bytes` in Python 2,
+    and `str` in Python 3. */
+    ClassValue str() {
+        if major_version() = 2 then
+           result = bytes()
+        else
+           result = unicode()
     }
 
     /** Get the `ClassValue` for the `classmethod` class. */

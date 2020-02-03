@@ -76,8 +76,6 @@ private Expr modExpr(Expr arg, int mod) {
     c.getIntValue() = mod - 1 and
     result.(AndBitwiseExpr).hasOperands(arg, c)
   )
-  or
-  result.(ParExpr).getExpr() = modExpr(arg, mod)
 }
 
 /**

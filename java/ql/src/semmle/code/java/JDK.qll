@@ -101,6 +101,16 @@ class TypeMath extends Class {
   TypeMath() { this.hasQualifiedName("java.lang", "Math") }
 }
 
+/** The class `java.lang.Number`. */
+class TypeNumber extends RefType {
+  TypeNumber() { this.hasQualifiedName("java.lang", "Number") }
+}
+
+/** A (reflexive, transitive) subtype of `java.lang.Number`. */
+class NumberType extends RefType {
+  NumberType() { exists(TypeNumber number | hasSubtype*(number, this)) }
+}
+
 /** A numeric type, including both primitive and boxed types. */
 class NumericType extends Type {
   NumericType() {

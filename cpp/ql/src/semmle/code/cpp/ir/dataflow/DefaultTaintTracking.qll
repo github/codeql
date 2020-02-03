@@ -21,31 +21,19 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
+private DataFlow::Node getNodeForSource(Expr source) {
+  isUserInput(source, _) and
+  (
+    result = DataFlow::exprNode(source)
+    or
+    result = DataFlow::definitionByReferenceNode(source)
+  )
+}
+
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(CallInstruction ci, WriteSideEffectInstruction wsei |
-      userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
-      source.asInstruction() = wsei and
-      wsei.getPrimaryInstruction() = ci
-    )
-    or
-    userInputReturned(source.asExpr())
-    or
-    isUserInput(source.asExpr(), _)
-    or
-    source.asExpr() instanceof EnvironmentRead
-    or
-    source
-        .asInstruction()
-        .(LoadInstruction)
-        .getSourceAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable()
-        .hasName("argv") and
-    source.asInstruction().getEnclosingFunction().hasGlobalName("main")
-  }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) { any() }
 
@@ -59,7 +47,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   ToGlobalVarTaintTrackingCfg() { this = "GlobalVarTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(GlobalOrNamespaceVariable gv | writesVariable(sink.asInstruction(), gv))
@@ -163,6 +151,22 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
   or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  exists(IRFunction f, Parameter parameter |
+    i1 = getInitializeParameter(f, parameter) and
+    i2 = getInitializeIndirection(f, parameter)
+  )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getAnOperand().(SideEffectOperand).getAnyDef() = i1 and
+    read.getArgumentDef() = i2
+  )
+  or
   // Flow from argument to return value
   i2 =
     any(CallInstruction call |
@@ -186,6 +190,33 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
         outNode.getPrimaryInstruction() = call
       )
     )
+}
+
+pragma[noinline]
+private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+pragma[noinline]
+private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+/**
+ * Get an instruction that goes into argument `argumentIndex` of `call`. This
+ * can be either directly or through one pointer indirection.
+ */
+private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
+  result = call.getPositionalArgument(argumentIndex)
+  or
+  exists(ReadSideEffectInstruction readSE |
+    // TODO: why are read side effect operands imprecise?
+    result = readSE.getSideEffectOperand().getAnyDef() and
+    readSE.getPrimaryInstruction() = call and
+    readSE.getIndex() = argumentIndex
+  )
 }
 
 private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
@@ -270,31 +301,11 @@ private Element adjustedSink(DataFlow::Node sink) {
   // For compatibility, send flow into a `NotExpr` even if it's part of a
   // short-circuiting condition and thus might get skipped.
   result.(NotExpr).getOperand() = sink.asExpr()
-  or
-  // For compatibility, send flow from argument read side effects to their
-  // corresponding argument expression
-  exists(IndirectReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
-  or
-  exists(BufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
-  or
-  exists(SizedBufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
 }
 
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
-    cfg.hasFlow(DataFlow::exprNode(source), sink)
-    or
-    cfg.hasFlow(DataFlow::definitionByReferenceNode(source), sink)
-  |
+    cfg.hasFlow(getNodeForSource(source), sink) and
     tainted = adjustedSink(sink)
   )
 }
@@ -307,7 +318,7 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg, DataFlow::Node store,
     GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
   |
-    toCfg.hasFlow(DataFlow::exprNode(source), store) and
+    toCfg.hasFlow(getNodeForSource(source), store) and
     store
         .asInstruction()
         .(StoreInstruction)

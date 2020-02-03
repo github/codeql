@@ -26,7 +26,7 @@ class BooleanExpr extends Expr {
 }
 
 private predicate assignAndCheck(AssignExpr e) {
-  exists(BinaryExpr c | e = c.getAChildExpr().getProperExpr() |
+  exists(BinaryExpr c | e = c.getAChildExpr() |
     c instanceof ComparisonExpr or
     c instanceof EqualityTest
   )

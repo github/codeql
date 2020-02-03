@@ -258,14 +258,7 @@ class FormatLiteral extends Literal {
    * Gets the position in the string at which the nth conversion specifier
    * starts.
    */
-  int getConvSpecOffset(int n) {
-    n = 0 and result = this.getFormat().indexOf("%", 0, 0)
-    or
-    n > 0 and
-    exists(int p |
-      n = p + 1 and result = this.getFormat().indexOf("%", 0, this.getConvSpecOffset(p) + 2)
-    )
-  }
+  int getConvSpecOffset(int n) { result = this.getFormat().indexOf("%", n, 0) }
 
   /*
    * Each of these predicates gets a regular expressions to match each individual

@@ -1129,7 +1129,5 @@ Expr sameValue(SsaVariable v, VarAccess va) {
   or
   result.(AssignExpr).getSource() = sameValue(v, va)
   or
-  result.(ParExpr).getExpr() = sameValue(v, va)
-  or
   result.(RefTypeCastExpr).getExpr() = sameValue(v, va)
 }
