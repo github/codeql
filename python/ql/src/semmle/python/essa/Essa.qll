@@ -50,8 +50,16 @@ class EssaVariable extends TEssaDefinition {
      * Note that this differs from `EssaVariable.getAUse()`.
      */
     ControlFlowNode getASourceUse() {
+        exists(SsaSourceVariable var |
+            result = use_for_var(var) and
+            result = var.getASourceUse()
+        )
+    }
+
+    pragma[nomagic]
+    private ControlFlowNode use_for_var(SsaSourceVariable var) {
         result = this.getAUse() and
-        result = this.getSourceVariable().getASourceUse()
+        var = this.getSourceVariable()
     }
 
     /** Gets the scope of this variable. */
@@ -268,11 +276,16 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
         not exists(this.inputEdgeRefinement(result))
     }
 
+    pragma[noinline]
+    private SsaSourceVariable pred_var(BasicBlock pred) {
+        result = this.getSourceVariable() and
+        pred = this.nonPiInput()
+    }
+
     /** Gets another definition of the same source variable that reaches this definition. */
     private EssaDefinition reachingDefinition(BasicBlock pred) {
         result.getScope() = this.getScope() and
-        result.getSourceVariable() = this.getSourceVariable() and
-        pred = this.nonPiInput() and
+        result.getSourceVariable() = pred_var(pred) and
         result.reachesEndOfBlock(pred)
     }
 
