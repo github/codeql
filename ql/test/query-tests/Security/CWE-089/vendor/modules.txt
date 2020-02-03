@@ -1,0 +1,2 @@
+# github.com/Masterminds/squirrel v1.1.0
+github.com/Masterminds/squirrel
