@@ -95,3 +95,7 @@ function concatCall() {
   x = x.concat('two', 'three');
   return x;
 }
+
+function arrayConcat(a, b) {
+  return [].concat(a, b);
+}
