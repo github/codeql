@@ -1,4 +1,6 @@
 private import ValueNumberingImports
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import semmle.code.csharp.ir.implementation.unaliased_ssa.IR
 
 newtype TValueNumber =
   TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {
