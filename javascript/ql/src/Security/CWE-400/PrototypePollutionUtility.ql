@@ -180,8 +180,8 @@ predicate dynamicPropReadStep(Node base, Node key, SourceNode output) {
     keyParam.flowsTo(innerKey) and
     innerOutput.flowsTo(callee.getAReturnedExpr().flow()) and
     call.getACallee() = callee and
-    argumentPassing(call, base, callee, baseParam) and
-    argumentPassing(call, key, callee, keyParam) and
+    argumentPassingStep(call, base, callee, baseParam) and
+    argumentPassingStep(call, key, callee, keyParam) and
     output = call
   )
 }
@@ -198,12 +198,12 @@ predicate isEnumeratedPropName(Node node) {
   |
     node = pred.getASuccessor()
     or
-    argumentPassing(_, pred, _, node)
+    argumentPassingStep(_, pred, _, node)
     or
     // Handle one level of callbacks
     exists(FunctionNode function, ParameterNode callback, int i |
       pred = callback.getAnInvocation().getArgument(i) and
-      argumentPassing(_, function, _, callback) and
+      argumentPassingStep(_, function, _, callback) and
       node = function.getParameter(i)
     )
   )
@@ -223,7 +223,7 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
   exists(Node use |
     isPotentiallyObjectPrototype(use.getALocalSource())
   |
-    argumentPassing(_, use, _, node)
+    argumentPassingStep(_, use, _, node)
   )
 }
 
