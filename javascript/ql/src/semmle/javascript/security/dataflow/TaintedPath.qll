@@ -69,17 +69,19 @@ module TaintedPath {
       )
       or
       // string method calls of interest
-      exists(DataFlow::MethodCallNode mcn | srclabel = dstlabel |
+      exists(DataFlow::MethodCallNode mcn, string name |
+        srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
+      |
         exists(string substringMethodName |
           substringMethodName = "substr" or
           substringMethodName = "substring" or
           substringMethodName = "slice"
         |
-          mcn.calls(src, substringMethodName) and
+          name = substringMethodName and
           // to avoid very dynamic transformations, require at least one fixed index
-          exists(mcn.getAnArgument().asExpr().getIntValue()) and
-          dst = mcn
-        ) or
+          exists(mcn.getAnArgument().asExpr().getIntValue())
+        )
+        or
         exists(string argumentlessMethodName |
           argumentlessMethodName = "toLocaleLowerCase" or
           argumentlessMethodName = "toLocaleUpperCase" or
@@ -89,16 +91,14 @@ module TaintedPath {
           argumentlessMethodName = "trimLeft" or
           argumentlessMethodName = "trimRight"
         |
-          mcn.calls(src, argumentlessMethodName) and
-          dst = mcn
+          name = argumentlessMethodName
         )
         or
-        mcn.calls(src, "split") and
-        dst = mcn and
-        not exists (DataFlow::Node splitBy |
-          splitBy = mcn.getArgument(0)|
+        name = "split" and
+        not exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
           splitBy.mayHaveStringValue("/") or
-          any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/").flowsTo(splitBy)
+          any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/")
+              .flowsTo(splitBy)
         )
       )
     }
