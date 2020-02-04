@@ -602,45 +602,89 @@ module TaintTracking {
   }
 
   /**
-   * Holds if `params` is a `URLSearchParams` object providing access to
-   * the parameters encoded in `input`.
+   * Holds if `params` is a construction of a `URLSearchParams` that parses 
+   * the parameters in `input`.
    */
-  predicate isUrlSearchParams(DataFlow::SourceNode params, DataFlow::Node input) {
+  private predicate isUrlSearchParams(DataFlow::SourceNode params, DataFlow::Node input) {
     exists(DataFlow::GlobalVarRefNode urlSearchParams, NewExpr newUrlSearchParams |
       urlSearchParams.getName() = "URLSearchParams" and
       newUrlSearchParams = urlSearchParams.getAnInstantiation().asExpr() and
       params.asExpr() = newUrlSearchParams and
       input.asExpr() = newUrlSearchParams.getArgument(0)
     )
-    or
-    exists(DataFlow::NewNode newUrl |
-      newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-      params = newUrl.getAPropertyRead("searchParams") and
-      input = newUrl.getArgument(0)
-    )
+  }
+
+  /**
+   * A pseudo-property used to store a value on a `URLSearchParams` that 
+   * can be obtained with a `get` or `getAll` call. 
+   */
+  private string hiddenUrlPseudoProperty() {
+    result = "$hiddenSearchPararms"
   }
 
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    DataFlow::Node source;
-
+  private class UrlSearchParamsTaintStep extends DataFlow::AdditionalFlowStep {
     UrlSearchParamsTaintStep() {
-      // either this is itself an `URLSearchParams` object
-      isUrlSearchParams(this, source)
+      this = DataFlow::globalVarRef("URL") or
+      this = DataFlow::globalVarRef("URLSearchParams")
+    }
+
+    /**
+     * Holds if `succ` is a `URLSearchParams` providing access to the 
+     * parameters encoded in `pred`. 
+     */ 
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      isUrlSearchParams(succ, pred)
+    }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     * 
+     * This step is used to model 2 facts: 
+     * 1) A `URL` constructed using `url = new URL(input)` transfers taint from `input` to `url.searchParams`. 
+     * 2) A `URLSearchParams` (either `url.searchParams` or `new URLSearchParams(input)`) has a tainted value, 
+     *    which is stored in a pseudo-property, that can later be access using a `get` or `getAll` call. 
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      (prop = "searchParams" or prop = hiddenUrlPseudoProperty()) and
+      exists(DataFlow::NewNode newUrl | succ = newUrl  |
+        newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
+        pred = newUrl.getArgument(0)
+      )
       or
-      // or this is a call to `get` or `getAll` on a `URLSearchParams` object
-      exists(DataFlow::SourceNode searchParams, string m |
-        isUrlSearchParams(searchParams, source) and
-        this = searchParams.getAMethodCall(m) and
-        m.matches("get%")
+      prop = hiddenUrlPseudoProperty() and
+      isUrlSearchParams(succ, pred)
+    }
+
+    /**
+     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+     * 
+     * This step is used to copy a value the value of our pseudo-property that can later be accessed using a `get` or `getAll` call. 
+     */
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = hiddenUrlPseudoProperty() and
+      exists(DataFlow::PropRead write | write = succ | 
+        write.getPropertyName() = "searchParams" and
+        write.getBase() = pred
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
-    }
+   /**
+    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+    * 
+    * This step is used to load the value stored in the hidden pseudo-property. 
+    */
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { 
+      prop = hiddenUrlPseudoProperty() and
+      // this is a call to `get` or `getAll` on a `URLSearchParams` object
+      exists(string m, DataFlow::MethodCallNode call | call = succ |
+        call.getMethodName() = m and
+        call.getReceiver() = pred and
+        m.matches("get%")
+      )
+     }
   }
 
   /**

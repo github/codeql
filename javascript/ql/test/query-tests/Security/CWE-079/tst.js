@@ -325,3 +325,14 @@ function test2() {
   // OK
   $('myId').html(target.length)
 }
+
+function getTaintedUrl() {
+  return new URL(document.location);
+}
+
+function URLPseudoProperties() {
+  // NOT OK
+  let params = getTaintedUrl().searchParams;
+  $('name').html(params.get('name'));
+
+}
