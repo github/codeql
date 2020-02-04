@@ -301,3 +301,5 @@ class DataFlowCall extends Expr {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int flowThroughAccessPathLimit() { none() }
