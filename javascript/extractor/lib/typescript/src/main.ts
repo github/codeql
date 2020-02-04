@@ -316,7 +316,9 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
 
     let diagnostics = program.getSemanticDiagnostics()
         .filter(d => d.category === ts.DiagnosticCategory.Error);
-    console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
+    if (diagnostics.length > 0) {
+        console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
+    }
     for (let diagnostic of diagnostics) {
         let text = diagnostic.messageText;
         if (text && typeof text !== 'string') {
