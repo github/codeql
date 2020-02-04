@@ -13,7 +13,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
  * `Instruction`. This ensures we can add `Node`s that are not `Instruction`s
  * in the future.
  */
-private newtype TIRDataFlowNode = MkIRDataFlowNode(Instruction i)
+private newtype TIRDataFlowNode = TInstructionNode(Instruction i)
 
 /**
  * A node in a data flow graph.
@@ -23,21 +23,19 @@ private newtype TIRDataFlowNode = MkIRDataFlowNode(Instruction i)
  * `DataFlow::parameterNode`, and `DataFlow::uninitializedNode` respectively.
  */
 class Node extends TIRDataFlowNode {
-  Instruction instr;
-
-  Node() { this = MkIRDataFlowNode(instr) }
-
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
   Function getEnclosingCallable() { result = this.getFunction() }
 
-  Function getFunction() { result = instr.getEnclosingFunction() }
+  /** Gets the function to which this node belongs. */
+  Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  Type getType() { result = instr.getResultType() }
+  Type getType() { none() } // overridden in subclasses
 
-  Instruction asInstruction() { this = MkIRDataFlowNode(result) }
+  /** Gets the instruction corresponding to this node, if any. */
+  Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -45,22 +43,19 @@ class Node extends TIRDataFlowNode {
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr asExpr() {
-    result.getConversion*() = instr.getConvertedResultExpression() and
-    not result instanceof Conversion
-  }
+  Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
+  Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
 
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
+  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -76,7 +71,7 @@ class Node extends TIRDataFlowNode {
   Type getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
-  Location getLocation() { result = instr.getLocation() }
+  Location getLocation() { none() } // overridden by subclasses
 
   /**
    * Holds if this element is at the specified location.
@@ -91,18 +86,36 @@ class Node extends TIRDataFlowNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  string toString() {
+  /** Gets a textual representation of this element. */
+  string toString() { none() } // overridden by subclasses
+}
+
+class InstructionNode extends Node, TInstructionNode {
+  Instruction instr;
+
+  InstructionNode() { this = TInstructionNode(instr) }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
+
+  override Function getFunction() { result = instr.getEnclosingFunction() }
+
+  override Type getType() { result = instr.getResultType() }
+
+  override Location getLocation() { result = instr.getLocation() }
+
+  override string toString() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
-    result = this.asInstruction().getOpcode().toString()
+    result = this.getInstruction().getOpcode().toString()
   }
 }
 
 /**
  * An expression, viewed as a node in a data flow graph.
  */
-class ExprNode extends Node {
-  ExprNode() { exists(this.asExpr()) }
+class ExprNode extends InstructionNode {
+  ExprNode() { exists(instr.getConvertedResultExpression()) }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -110,13 +123,16 @@ class ExprNode extends Node {
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr getExpr() { result = this.asExpr() }
+  Expr getExpr() {
+    result.getConversion*() = instr.getConvertedResultExpression() and
+    not result instanceof Conversion
+  }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr getConvertedExpr() { result = this.asConvertedExpr() }
+  Expr getConvertedExpr() { result = instr.getConvertedResultExpression() }
 
   override string toString() { result = this.asConvertedExpr().toString() }
 }
@@ -125,7 +141,7 @@ class ExprNode extends Node {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node {
+class ParameterNode extends InstructionNode {
   override InitializeParameterInstruction instr;
 
   /**
@@ -139,7 +155,7 @@ class ParameterNode extends Node {
   override string toString() { result = instr.getParameter().toString() }
 }
 
-private class ThisParameterNode extends Node {
+private class ThisParameterNode extends InstructionNode {
   override InitializeThisInstruction instr;
 
   override string toString() { result = "this" }
@@ -176,7 +192,7 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends Node {
+abstract class PostUpdateNode extends InstructionNode {
   /**
    * Gets the node before the state update.
    */
@@ -193,7 +209,7 @@ abstract class PostUpdateNode extends Node {
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends Node {
+class DefinitionByReferenceNode extends InstructionNode {
   override WriteSideEffectInstruction instr;
 
   /** Gets the argument corresponding to this node. */
@@ -223,7 +239,7 @@ class DefinitionByReferenceNode extends Node {
 /**
  * Gets the node corresponding to `instr`.
  */
-Node instructionNode(Instruction instr) { result.asInstruction() = instr }
+InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 

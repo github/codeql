@@ -7,17 +7,17 @@ private import DataFlowDispatch
  * A data flow node that occurs as the argument of a call and is passed as-is
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
-class ArgumentNode extends Node {
-  ArgumentNode() { exists(CallInstruction call | this.asInstruction() = call.getAnArgument()) }
+class ArgumentNode extends InstructionNode {
+  ArgumentNode() { exists(CallInstruction call | this.getInstruction() = call.getAnArgument()) }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.asInstruction() = call.getPositionalArgument(pos)
+    this.getInstruction() = call.getPositionalArgument(pos)
     or
-    this.asInstruction() = call.getThisArgument() and pos = -1
+    this.getInstruction() = call.getThisArgument() and pos = -1
   }
 
   /** Gets the call in which this node is an argument. */
@@ -36,15 +36,15 @@ class ReturnKind extends TReturnKind {
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends Node {
-  ReturnNode() { exists(ReturnValueInstruction ret | this.asInstruction() = ret.getReturnValue()) }
+class ReturnNode extends InstructionNode {
+  ReturnNode() { exists(ReturnValueInstruction ret | this.getInstruction() = ret.getReturnValue()) }
 
   /** Gets the kind of this returned value. */
   ReturnKind getKind() { result = TNormalReturnKind() }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends Node {
+class OutNode extends InstructionNode {
   override CallInstruction instr;
 
   /** Gets the underlying call. */
@@ -181,7 +181,7 @@ private predicate suppressUnusedType(Type t) { any() }
 // Java QL library compatibility wrappers
 //////////////////////////////////////////////////////////////////////////////
 /** A node that performs a type cast. */
-class CastNode extends Node {
+class CastNode extends InstructionNode {
   CastNode() { none() } // stub implementation
 }
 
