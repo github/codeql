@@ -1,3 +1,13 @@
+| format.cpp:53:8:53:13 | buffer | format.cpp:52:36:52:49 | call to source |
+| format.cpp:58:8:58:13 | buffer | format.cpp:57:30:57:43 | call to source |
+| format.cpp:63:8:63:13 | buffer | format.cpp:62:52:62:65 | call to source |
+| format.cpp:68:8:68:13 | buffer | format.cpp:67:42:67:55 | call to source |
+| format.cpp:79:8:79:13 | buffer | format.cpp:78:36:78:41 | call to source |
+| format.cpp:84:8:84:13 | buffer | format.cpp:83:38:83:43 | call to source |
+| format.cpp:90:8:90:13 | buffer | format.cpp:89:36:89:49 | call to source |
+| format.cpp:96:8:96:13 | buffer | format.cpp:95:30:95:43 | call to source |
+| format.cpp:101:8:101:13 | buffer | format.cpp:100:31:100:45 | call to source |
+| format.cpp:106:8:106:14 | wbuffer | format.cpp:105:38:105:52 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -38,6 +48,8 @@
 | taint.cpp:351:7:351:7 | a | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:352:7:352:7 | b | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
+| taint.cpp:374:7:374:7 | c | taint.cpp:365:24:365:29 | source |
+| taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
 | taint.cpp:391:7:391:7 | a | taint.cpp:385:27:385:32 | source |
 | taint.cpp:423:7:423:7 | a | taint.cpp:422:14:422:19 | call to source |
 | taint.cpp:424:9:424:17 | call to getMember | taint.cpp:422:14:422:19 | call to source |

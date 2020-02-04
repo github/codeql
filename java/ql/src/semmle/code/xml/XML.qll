@@ -100,11 +100,8 @@ class XMLParent extends @xmlparent {
    * left to right, separated by a space.
    */
   string allCharactersString() {
-    result = concat(string chars, int pos |
-        xmlChars(_, chars, this, pos, _, _)
-      |
-        chars, " " order by pos
-      )
+    result =
+      concat(string chars, int pos | xmlChars(_, chars, this, pos, _, _) | chars, " " order by pos)
   }
 
   /** Gets the text value contained in this XML parent. */

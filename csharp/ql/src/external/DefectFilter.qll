@@ -27,7 +27,8 @@ class DefectResult extends int {
   string getMessage() { defectResults(this, _, _, _, _, _, _, result) }
 
   string getURL() {
-    result = "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn()
-        + ":" + getEndLine() + ":" + getEndColumn()
+    result =
+      "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
+        getEndLine() + ":" + getEndColumn()
   }
 }

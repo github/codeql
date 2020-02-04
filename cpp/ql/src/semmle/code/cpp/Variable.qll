@@ -266,7 +266,8 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
     then result = super.toString()
     else
       exists(string idx |
-        idx = ((getIndex() + 1).toString() + "th")
+        idx =
+          ((getIndex() + 1).toString() + "th")
               .replaceAll("1th", "1st")
               .replaceAll("2th", "2nd")
               .replaceAll("3th", "3rd")

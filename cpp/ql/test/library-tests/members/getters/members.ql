@@ -56,8 +56,8 @@ string functionName(Function f) {
     (
       if exists(f.getATemplateArgument())
       then
-        templateArgs = "<" + concat(int i | | f.getTemplateArgument(i).toString(), "," order by i) +
-            ">"
+        templateArgs =
+          "<" + concat(int i | | f.getTemplateArgument(i).toString(), "," order by i) + ">"
       else templateArgs = ""
     ) and
     args = "(" + concat(int i | | f.getParameter(i).getType().toString(), "," order by i) + ")"

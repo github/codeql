@@ -14,7 +14,8 @@ import java
 
 from CompilationUnit f, float n
 where
-  n = avg(Callable c, int toAvg |
+  n =
+    avg(Callable c, int toAvg |
       c.getCompilationUnit() = f and toAvg = c.getMetrics().getCyclomaticComplexity()
     |
       toAvg

@@ -51,7 +51,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
     loop.limit() >= bufaccess.bufferSize() and
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
-    msg = "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
+    msg =
+      "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
         bufaccess.bufferSize().toString() + " elements."
   )
@@ -106,8 +107,9 @@ predicate wrongBufferSize(Expr error, string msg) {
     statedSize = min(call.statedSizeValue()) and
     statedSize > bufsize and
     error = call.statedSizeExpr() and
-    msg = "Potential buffer-overflow: '" + buf.getName() + "' has size " + bufsize.toString() +
-        " not " + statedSize + "."
+    msg =
+      "Potential buffer-overflow: '" + buf.getName() + "' has size " + bufsize.toString() + " not " +
+        statedSize + "."
   )
 }
 
@@ -121,8 +123,9 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
       or
       access = size and not exists(AddressOfExpr addof | bufaccess = addof.getOperand())
     ) and
-    msg = "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf +
-        "[" + access.toString() + "]' is accessed here."
+    msg =
+      "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
+        access.toString() + "]' is accessed here."
   )
 }
 

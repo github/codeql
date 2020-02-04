@@ -28,7 +28,8 @@ private class Conf extends DataFlow::Configuration {
   Conf() { this = "NoDisposeCallOnLocalIDisposable" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.asExpr() = any(LocalScopeDisposableCreation disposable |
+    node.asExpr() =
+      any(LocalScopeDisposableCreation disposable |
         // Only care about library types - user types often have spurious IDisposable declarations
         disposable.getType().fromLibrary() and
         // WebControls are usually disposed automatically
@@ -80,7 +81,8 @@ private class Conf extends DataFlow::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr() = any(LocalScopeDisposableCreation other | other.getAnArgument() = node1.asExpr())
+    node2.asExpr() =
+      any(LocalScopeDisposableCreation other | other.getAnArgument() = node1.asExpr())
   }
 
   override predicate isBarrierOut(DataFlow::Node node) {

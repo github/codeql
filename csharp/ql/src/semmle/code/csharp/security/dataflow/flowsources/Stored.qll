@@ -35,16 +35,16 @@ class DbDataReaderStoredFlowSource extends StoredFlowSource {
 /** An expression that accesses a method of `DbDataReader` or a sub-class. */
 class DbDataReaderMethodStoredFlowSource extends StoredFlowSource {
   DbDataReaderMethodStoredFlowSource() {
-    this.asExpr().(MethodCall).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
-      ).getASubType*()
+    this.asExpr().(MethodCall).getTarget().getDeclaringType() =
+      any(SystemDataCommon::DbDataReader dataReader).getASubType*()
   }
 }
 
 /** An expression that accesses a property of `DbDataReader` or a sub-class. */
 class DbDataReaderPropertyStoredFlowSource extends StoredFlowSource {
   DbDataReaderPropertyStoredFlowSource() {
-    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
-      ).getASubType*()
+    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() =
+      any(SystemDataCommon::DbDataReader dataReader).getASubType*()
   }
 }
 

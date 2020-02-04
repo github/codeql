@@ -147,7 +147,8 @@ library class SALElement extends Element {
     exists(Location loc |
       loc = this.(FunctionDeclarationEntry).getBlock().getLocation()
       or
-      this = any(VariableDeclarationEntry vde |
+      this =
+        any(VariableDeclarationEntry vde |
           vde.isDefinition() and
           loc = vde.getVariable().getInitializer().getLocation()
         )
@@ -194,7 +195,8 @@ private predicate salAnnotationPos(SALPosition pos) {
  * ordering positions lexicographically by their start line and start column.
  */
 private SALPosition salRelevantPositionAt(File file, int idx) {
-  result = rank[idx](SALPosition pos, int line, int col |
+  result =
+    rank[idx](SALPosition pos, int line, int col |
       pos = MkSALPosition(file, line, col)
     |
       pos order by line, col

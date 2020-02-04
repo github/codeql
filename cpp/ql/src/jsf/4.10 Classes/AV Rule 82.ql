@@ -76,7 +76,8 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
   exists(Class c |
     c = op.getDeclaringType() and
     op.getUnspecifiedType() = c and
-    msg = "Assignment operator in class " + c.getName() + " should have return type " + c.getName() +
+    msg =
+      "Assignment operator in class " + c.getName() + " should have return type " + c.getName() +
         "&. Otherwise a copy is created at each call."
   )
 }
@@ -87,7 +88,8 @@ predicate assignOperatorWithWrongResult(Operator op, string msg) {
   exists(op.getBlock()) and
   not op.getType() instanceof VoidType and
   not assignOperatorWithWrongType(op, _) and
-  msg = "Assignment operator in class " + op.getDeclaringType().getName() +
+  msg =
+    "Assignment operator in class " + op.getDeclaringType().getName() +
       " does not return a reference to *this."
 }
 

@@ -58,6 +58,7 @@ where
   reachable(blame) and
   not functionImperfectlyExtracted(f) and
   (blame = stmt or blame.(Expr).getEnclosingStmt() = stmt) and
-  msg = "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
+  msg =
+    "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
       " but does not return a value here"
 select stmt, msg

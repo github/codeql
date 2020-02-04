@@ -371,7 +371,7 @@ void test_strdup(char *source)
 	c = strndup(source, 100);
 	sink(a); // tainted
 	sink(b);
-	sink(c); // tainted [NOT DETECTED]
+	sink(c); // tainted
 }
 
 void test_strndup(int source)
@@ -379,7 +379,7 @@ void test_strndup(int source)
 	char *a;
 
 	a = strndup("hello, world", source);
-	sink(a);
+	sink(a); // tainted
 }
 
 void test_wcsdup(wchar_t *source)

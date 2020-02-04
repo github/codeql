@@ -43,93 +43,32 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-abstract class TranslatedVariableDeclaration extends TranslatedElement, InitializationContext {
+abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInitialization {
   /**
    * Gets the local variable being declared.
    */
   abstract LocalVariable getVariable();
 
-  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+  final override Type getTargetType() { result = getVariableType(getVariable()) }
 
-  override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
+  final override TranslatedInitialization getInitialization() {
+    result =
+      getTranslatedInitialization(getVariable().getInitializer().getExpr().getFullyConverted())
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getVariableType(getVariable()))
-    or
-    hasUninitializedInstruction() and
-    tag = InitializerStoreTag() and
-    opcode instanceof Opcode::Uninitialized and
-    resultType = getTypeForPRValue(getVariableType(getVariable()))
+  final override Instruction getInitializationSuccessor() {
+    result = getParent().getChildSuccessor(this)
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    (
-      tag = InitializerVariableAddressTag() and
-      kind instanceof GotoEdge and
-      if hasUninitializedInstruction()
-      then result = getInstruction(InitializerStoreTag())
-      else result = getInitialization().getFirstInstruction()
-    )
-    or
-    hasUninitializedInstruction() and
-    kind instanceof GotoEdge and
-    tag = InitializerStoreTag() and
-    (
-      result = getInitialization().getFirstInstruction()
-      or
-      not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
-    )
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and result = getParent().getChildSuccessor(this)
-  }
-
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    (
-      tag = InitializerVariableAddressTag()
-      or
-      hasUninitializedInstruction() and tag = InitializerStoreTag()
-    ) and
+  final override IRVariable getIRVariable() {
     result = getIRUserVariable(getFunction(), getVariable())
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    hasUninitializedInstruction() and
-    tag = InitializerStoreTag() and
-    operandTag instanceof AddressOperandTag and
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Type getTargetType() { result = getVariableType(getVariable()) }
-
-  private TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(getVariable()
-            .getInitializer()
-            .getExpr()
-            .getFullyConverted())
-  }
-
-  private predicate hasUninitializedInstruction() {
-    not exists(getInitialization()) or
-    getInitialization() instanceof TranslatedListInitialization or
-    getInitialization() instanceof TranslatedConstructorInitialization or
-    getInitialization().(TranslatedStringLiteralInitialization).zeroInitRange(_, _)
   }
 }
 
 /**
  * Represents the IR translation of a local variable declaration within a declaration statement.
  */
-class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
+class TranslatedVariableDeclarationEntry extends TranslatedLocalVariableDeclaration,
   TranslatedDeclarationEntry {
   LocalVariable var;
 
@@ -151,7 +90,7 @@ TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDec
 /**
  * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
  */
-class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDeclaration,
+class TranslatedRangeBasedForVariableDeclaration extends TranslatedLocalVariableDeclaration,
   TTranslatedRangeBasedForVariableDeclaration {
   RangeBasedForStmt forStmt;
   LocalVariable var;
@@ -181,7 +120,7 @@ TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
  * }
  * ```
  */
-class TranslatedConditionDecl extends TranslatedVariableDeclaration, TTranslatedConditionDecl {
+class TranslatedConditionDecl extends TranslatedLocalVariableDeclaration, TTranslatedConditionDecl {
   ConditionDeclExpr conditionDeclExpr;
 
   TranslatedConditionDecl() { this = TTranslatedConditionDecl(conditionDeclExpr) }

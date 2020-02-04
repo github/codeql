@@ -1,65 +1,56 @@
 import AliasAnalysis
 private import SimpleSSAImports
 import SimpleSSAPublicImports
+private import AliasConfiguration
 
-private class IntValue = Ints::IntValue;
-
-private predicate hasResultMemoryAccess(
-  Instruction instr, IRVariable var, Language::LanguageType type, IntValue bitOffset
-) {
-  resultPointsTo(instr.getResultAddressOperand().getAnyDef(), var, bitOffset) and
-  type = instr.getResultLanguageType()
-}
-
-private predicate hasOperandMemoryAccess(
-  MemoryOperand operand, IRVariable var, Language::LanguageType type, IntValue bitOffset
-) {
-  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, bitOffset) and
-  type = operand.getLanguageType()
-}
-
-/**
- * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a variable if its
- * address never escapes and all reads and writes of that variable access the entire variable using the original type
- * of the variable.
- */
-private predicate isVariableModeled(IRVariable var) {
-  not variableAddressEscapes(var) and
-  // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
-  // `type = var.getType()` is sufficient.
-  forall(Instruction instr, Language::LanguageType type, IntValue bitOffset |
-    hasResultMemoryAccess(instr, var, type, bitOffset) and
-    not instr.hasResultMayMemoryAccess()
-  |
+private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRType type) {
+  exists(Instruction constantBase, int bitOffset |
+    addressOperandBaseAndConstantOffset(addrOperand, constantBase, bitOffset) and
     bitOffset = 0 and
-    type.getIRType() = var.getIRType() and
-    not instr.hasResultMayMemoryAccess()
-  ) and
-  forall(MemoryOperand operand, Language::LanguageType type, IntValue bitOffset |
-    hasOperandMemoryAccess(operand, var, type, bitOffset)
-  |
-    bitOffset = 0 and
-    type.getIRType() = var.getIRType() and
-    not operand.hasMayReadMemoryAccess()
+    constantBase = var.getABaseInstruction() and
+    type = var.getIRType()
   )
 }
 
-private newtype TMemoryLocation = MkMemoryLocation(IRVariable var) { isVariableModeled(var) }
+/**
+ * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a
+ * variable if its address never escapes and all reads and writes of that variable access the entire
+ * variable using the original type of the variable.
+ */
+private predicate isVariableModeled(Allocation var) {
+  not allocationEscapes(var) and
+  forall(Instruction instr, AddressOperand addrOperand, IRType type |
+    addrOperand = instr.getResultAddressOperand() and
+    type = instr.getResultIRType() and
+    var = getAddressOperandAllocation(addrOperand)
+  |
+    isTotalAccess(var, addrOperand, type) and not instr.hasResultMayMemoryAccess()
+  ) and
+  forall(MemoryOperand memOperand, AddressOperand addrOperand, IRType type |
+    addrOperand = memOperand.getAddressOperand() and
+    type = memOperand.getIRType() and
+    var = getAddressOperandAllocation(addrOperand)
+  |
+    isTotalAccess(var, addrOperand, type) and not memOperand.hasMayReadMemoryAccess()
+  )
+}
 
-private MemoryLocation getMemoryLocation(IRVariable var) { result.getIRVariable() = var }
+private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
+
+private MemoryLocation getMemoryLocation(Allocation var) { result.getAllocation() = var }
 
 class MemoryLocation extends TMemoryLocation {
-  IRVariable var;
+  Allocation var;
 
   MemoryLocation() { this = MkMemoryLocation(var) }
 
-  final string toString() { result = var.toString() }
+  final string toString() { result = var.getAllocationString() }
+
+  final Allocation getAllocation() { result = var }
 
   final Language::Location getLocation() { result = var.getLocation() }
 
   final IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
-
-  final IRVariable getIRVariable() { result = var }
 
   final VirtualVariable getVirtualVariable() { result = this }
 
@@ -77,15 +68,9 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
-  exists(IRVariable var |
-    hasResultMemoryAccess(instr, var, _, _) and
-    result = getMemoryLocation(var)
-  )
+  result = getMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()))
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
-  exists(IRVariable var |
-    hasOperandMemoryAccess(operand, var, _, _) and
-    result = getMemoryLocation(var)
-  )
+  result = getMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()))
 }

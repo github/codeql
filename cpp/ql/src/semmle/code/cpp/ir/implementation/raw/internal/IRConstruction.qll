@@ -80,7 +80,8 @@ private module Cached {
 
   cached
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionOperand(getInstructionTag(instruction), tag)
   }
 
@@ -88,7 +89,8 @@ private module Cached {
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionOperand(getInstructionTag(instruction), tag) and
     overlap instanceof MustTotallyOverlap
   }
@@ -123,7 +125,8 @@ private module Cached {
     result = instruction.(LoadInstruction).getResultLanguageType()
     or
     not instruction instanceof LoadInstruction and
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionOperandType(getInstructionTag(instruction), tag)
   }
 
@@ -139,7 +142,8 @@ private module Cached {
 
   cached
   Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionSuccessor(getInstructionTag(instruction), kind)
   }
 
@@ -283,13 +287,15 @@ private module Cached {
 
   cached
   Function getInstructionFunction(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))
   }
 
   cached
   string getInstructionConstantValue(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionConstantValue(getInstructionTag(instruction))
   }
 
@@ -303,13 +309,15 @@ private module Cached {
 
   cached
   BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionBuiltInOperation(getInstructionTag(instruction))
   }
 
   cached
   CppType getInstructionExceptionType(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionExceptionType(getInstructionTag(instruction))
   }
 
@@ -371,7 +379,8 @@ private module CachedForDebugging {
 
   cached
   string getInstructionUniqueId(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction).getId() + ":" +
+    result =
+      getInstructionTranslatedElement(instruction).getId() + ":" +
         getInstructionTagId(getInstructionTag(instruction))
   }
 }

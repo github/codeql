@@ -60,7 +60,8 @@ class SpringBasePackage extends string {
       // Interpret the contexts of the `web.xml` "contextConfigLocation" parameter as a base package,
       // but only if the appropriate context class is chosen.
       exists(WebXMLFile webXML |
-        webXML.getContextParamValue("contextClass") = "org.springframework.web.context.support.AnnotationConfigWebApplicationContext"
+        webXML.getContextParamValue("contextClass") =
+          "org.springframework.web.context.support.AnnotationConfigWebApplicationContext"
       |
         basePackages = webXML.getContextParamValue("contextConfigLocation")
       )

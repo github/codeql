@@ -21,8 +21,8 @@ predicate isSetFlowEnd(boolean isEdge, int x, int y, string label) {
   (setflow(x, _) or setflow(_, x)) and
   isEdge = false and
   x = y and
-  label = "set: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") +
-      "}"
+  label =
+    "set: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") + "}"
 }
 
 predicate isSetFlow(boolean isEdge, int x, int y, string label) {
@@ -35,8 +35,8 @@ predicate isPointsToSetSrc(boolean isEdge, int x, int y, string label) {
   pointstosets(x, _) and
   isEdge = false and
   x = y and
-  label = "set: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") +
-      "}"
+  label =
+    "set: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") + "}"
 }
 
 predicate isPointsToSetDest(boolean isEdge, Element x, Element y, string label) {
@@ -57,7 +57,8 @@ predicate isPointsToSetDest(boolean isEdge, Element x, Element y, string label) 
 predicate isPointsToSets(boolean isEdge, int x, Element y, string label) {
   isEdge = true and
   pointstosets(x, unresolveElement(y)) and
-  label = "pt: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") +
+  label =
+    "pt: {" + concat(Element e | pointstosets(x, unresolveElement(e)) | e.toString(), ", ") +
       "} -> " + y.toString()
 }
 

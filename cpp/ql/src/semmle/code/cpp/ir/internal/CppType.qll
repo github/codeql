@@ -411,7 +411,8 @@ private int getKindPriority(IntegralType type) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type |
+  result =
+    TPRValueType(max(IntegralType type |
         type.isSigned() and type.getSize() = byteSize
       |
         type order by getKindPriority(type), getSignPriority(type), type.toString() desc
@@ -423,7 +424,8 @@ CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type |
+  result =
+    TPRValueType(max(IntegralType type |
         type.isUnsigned() and type.getSize() = byteSize
       |
         type order by getKindPriority(type), getSignPriority(type), type.toString() desc
@@ -435,7 +437,8 @@ CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalFloatingPointType(int byteSize) {
-  result = TPRValueType(max(FloatingPointType type |
+  result =
+    TPRValueType(max(FloatingPointType type |
         type.getSize() = byteSize
       |
         type order by type.toString() desc
