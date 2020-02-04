@@ -338,38 +338,6 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
 }
 
 /**
- * Get an instruction that goes into argument `argumentIndex` of `call`. This
- * can be either directly or through one pointer indirection.
- */
-Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
-  result = call.getPositionalArgument(argumentIndex)
-  or
-  exists(ReadSideEffectInstruction readSE |
-    // TODO: why are read side effect operands imprecise?
-    result = readSE.getSideEffectOperand().getAnyDef() and
-    readSE.getPrimaryInstruction() = call and
-    readSE.getIndex() = argumentIndex
-  )
-}
-
-private predicate modelFlowToParameter(Function f, int parameterIn, int parameterOut) {
-  exists(FunctionInput modelIn, FunctionOutput modelOut |
-    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
-    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
-    modelOut.isParameterDeref(parameterOut)
-  )
-}
-
-private predicate modelFlowToReturnValue(Function f, int parameterIn) {
-  // Data flow from parameter to return value
-  exists(FunctionInput modelIn, FunctionOutput modelOut |
-    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
-    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
-    (modelOut.isReturnValue() or modelOut.isReturnValueDeref())
-  )
-}
-
-/**
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
