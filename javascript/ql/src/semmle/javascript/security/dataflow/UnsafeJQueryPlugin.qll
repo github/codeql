@@ -36,7 +36,7 @@ module UnsafeJQueryPlugin {
       // prefixing prevents forced html/css confusion:
 
       // prefixing through concatenation:
-      StringConcatenation::getOperand(succ, [1..StringConcatenation::getNumOperand(succ) - 1]) = pred
+      StringConcatenation::taintStep(pred, succ, _, any(int i | i >= 1))
       or
       // prefixing through a poor-mans templating system:
       exists(DataFlow::MethodCallNode replace |
