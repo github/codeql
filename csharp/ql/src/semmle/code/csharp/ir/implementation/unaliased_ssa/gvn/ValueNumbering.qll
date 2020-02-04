@@ -84,7 +84,13 @@ class ValueNumber extends TValueNumber {
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 
-  Language::Expr getAnExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
+  Language::Expr getAnExpr() { result = getAnUnconvertedExpr() }
+
+  Language::Expr getAnUnconvertedExpr() {
+    result = getAnInstruction().getUnconvertedResultExpression()
+  }
+
+  Language::Expr getAConvertedExpr() { result = getAnInstruction().getConvertedResultExpression() }
 }
 
 /**
