@@ -185,7 +185,13 @@ class CastNode extends InstructionNode {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable = Function;
+/**
+ * A function that may contain code or a variable that may contain itself. When
+ * flow crosses from one _enclosing callable_ to another, the interprocedural
+ * data-flow library discards call contexts and inserts a node in the big-step
+ * relation used for human-readable path explanations.
+ */
+class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
