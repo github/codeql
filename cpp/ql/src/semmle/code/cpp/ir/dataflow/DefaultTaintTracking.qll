@@ -71,6 +71,7 @@ private DataFlow::Node getNodeForSource(Expr source) {
     or
     result = DataFlow::definitionByReferenceNode(source)
   )
+}
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
