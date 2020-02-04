@@ -14,3 +14,5 @@
 | tst.js:19:9:19:36 | A.subst ...  "web/" | tst.js:19:9:19:9 | A | tst.js:19:31:19:36 | "web/" | true |
 | tst.js:32:9:32:32 | strings ... h(A, B) | tst.js:32:28:32:28 | A | tst.js:32:31:32:31 | B | true |
 | tst.js:33:9:33:47 | strings ... h(A, B) | tst.js:33:43:33:43 | A | tst.js:33:46:33:46 | B | true |
+| tst.js:34:9:34:34 | A.slice ... ) !== B | tst.js:34:9:34:9 | A | tst.js:34:34:34:34 | B | false |
+| tst.js:35:9:35:42 | A.slice ... = B.foo | tst.js:35:9:35:9 | A | tst.js:35:38:35:42 | B.foo | false |
