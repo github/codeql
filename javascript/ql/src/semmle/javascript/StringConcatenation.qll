@@ -51,6 +51,17 @@ module StringConcatenation {
       call = Closure::moduleImport("goog.string.buildString").getACall() and
       result = call.getArgument(n)
     )
+    or
+    exists(DataFlow::MethodCallNode call |
+      node = call and
+      call.getMethodName() = "concat" and
+      (
+        n = 0 and
+        result = call.getReceiver()
+        or
+        result = call.getArgument(n - 1)
+      )
+    )
   }
 
   /** Gets an operand to the string concatenation defining `node`. */
