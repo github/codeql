@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This vulnerability is caused by unsafe use of the reflection mechanisms</p>
+<p>An attacker may be able to create unexpected control flow paths through the application, potentially bypassing security checks.
+Exploitation of this weakness can result in a limited form of code injection.</p>
+<p>This vulnerability happens when a programmer refactor code using reflection</p>
+
+</overview>
+<recommendation>
+
+<p>Use reflection only on user trusted input</p>
+
+</recommendation>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Unsafe_use_of_Reflection">Unsafe reflection</a>.
+</li>
+
+</references>
+</qhelp>
