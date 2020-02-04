@@ -13,5 +13,4 @@ where
   not AST::taintedIncludingGlobalVars(source, tainted, _) and
   not tainted.getLocation().getFile().getExtension() = "h" and
   side = "IR only"
-  
 select source, tainted, side
