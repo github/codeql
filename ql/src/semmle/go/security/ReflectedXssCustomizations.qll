@@ -40,24 +40,29 @@ module ReflectedXss {
     HttpResponseBodySink() { not nonHtmlContentType(this) }
   }
 
+  predicate htmlTypeSpecified(HTTP::ResponseBody body) {
+    exists(HTTP::HeaderWrite hw, string tp | hw = body.getResponseWriter().getAHeaderWrite() |
+      hw.definesHeader("content-type", tp) and tp.regexpMatch("(?i).*html.*")
+    )
+  }
+
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
   private predicate nonHtmlContentType(HTTP::ResponseBody body) {
-    exists(HTTP::HeaderWrite hw |
-      hw = body.getResponseWriter().getAHeaderWrite() and hw.definesHeader("content-type", _)
-    |
-      not exists(string tp | hw.definesHeader("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
-    )
-    or
-    not exists(HTTP::HeaderWrite hw, string tp |
-      hw = body.getResponseWriter().getAHeaderWrite() and hw.definesHeader("content-type", tp)
-    |
-      tp.regexpMatch("(?i).*html.*")
-    ) and
-    exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
-      body = call.getAnArgument() and
-      call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
+    not htmlTypeSpecified(body) and
+    (
+      exists(HTTP::HeaderWrite hw | hw = body.getResponseWriter().getAHeaderWrite() |
+        hw.definesHeader("content-type", _)
+      )
+      or
+      exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
+        body = call.getAnArgument() and
+        // checks that the format value does not start with:
+        //  - '<', which could lead to an HTML content type being detected, or
+        //  - '%', which could be a format string.
+        call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
+      )
     )
   }
 
