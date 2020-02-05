@@ -42,7 +42,7 @@ SourceNode getAnEnumeratedArrayElement(SourceNode array) {
  */
 abstract class EnumeratedPropName extends DataFlow::Node {
   /**
-   * Gets the object whose properties are being enumerated.
+   * Gets the data flow node holding the object whose properties are being enumerated.
    *
    * For example, gets `src` in `for (var key in src)`.
    */
@@ -135,6 +135,12 @@ class ForOwnEnumeratedPropName extends EnumeratedPropName {
 
   override Node getSourceObject() {
     result = call.getArgument(0)
+  }
+
+  override SourceNode getASourceObjectRef() {
+    result = super.getASourceObjectRef()
+    or
+    result = callback.getParameter(2)
   }
 
   override SourceNode getASourceProp() {
