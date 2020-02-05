@@ -633,18 +633,13 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends DataFlow::AdditionalFlowStep {
-    UrlSearchParamsTaintStep() {
-      this = DataFlow::globalVarRef("URL") or
-      this = DataFlow::globalVarRef("URLSearchParams")
-    }
-
+  private class UrlSearchParamsTaintStep extends DataFlow::AdditionalFlowStep, DataFlow::ValueNode {
     /**
      * Holds if `succ` is a `URLSearchParams` providing access to the 
      * parameters encoded in `pred`. 
      */ 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      isUrlSearchParams(succ, pred)
+      isUrlSearchParams(succ, pred) and succ = this
     }
 
     /**
@@ -657,14 +652,16 @@ module TaintTracking {
      *    which can be accessed using a `get` or `getAll` call. (See getableUrlPseudoProperty())
      */
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      (prop = "searchParams" or prop = hiddenUrlPseudoProperty()) and
-      exists(DataFlow::NewNode newUrl | succ = newUrl  |
-        newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-        pred = newUrl.getArgument(0)
+      succ = this and (
+        (prop = "searchParams" or prop = hiddenUrlPseudoProperty()) and
+        exists(DataFlow::NewNode newUrl | succ = newUrl  |
+          newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
+          pred = newUrl.getArgument(0)
+        )
+        or
+        prop = getableUrlPseudoProperty() and
+        isUrlSearchParams(succ, pred)
       )
-      or
-      prop = getableUrlPseudoProperty() and
-      isUrlSearchParams(succ, pred)
     }
 
     /**
@@ -674,6 +671,7 @@ module TaintTracking {
      * For an expression `url.searchParams`, the property `hiddenUrlPseudoProperty()` from the `url` object is stored in the property `getableUrlPseudoProperty()` on `url.searchParams`. 
      */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
+      succ = this and
       loadProp = hiddenUrlPseudoProperty() and
       storeProp = getableUrlPseudoProperty() and
       exists(DataFlow::PropRead read | read = succ | 
@@ -688,6 +686,7 @@ module TaintTracking {
     * This step is used to load the value stored in the pseudo-property `getableUrlPseudoProperty()`. 
     */
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { 
+      succ = this and
       prop = getableUrlPseudoProperty() and
       // this is a call to `get` or `getAll` on a `URLSearchParams` object
       exists(string m, DataFlow::MethodCallNode call | call = succ |
