@@ -48,24 +48,12 @@ abstract class EnumeratedPropName extends DataFlow::Node {
   abstract DataFlow::Node getSourceObject();
 
   /**
-   * Gets a local reference of the source object.
-   */
-  SourceNode getASourceObjectRef() {
-    exists(SourceNode root, string path |
-      getSourceObject() = AccessPath::getAReferenceTo(root, path) and
-      result = AccessPath::getAReferenceTo(root, path)
-    )
-    or
-    result = getSourceObject().getALocalSource()
-  }
-
-  /**
    * Gets a property read that accesses the corresponding property value in the source object.
    *
    * For example, gets `src[key]` in `for (var key in src) { src[key]; }`.
    */
   PropRead getASourceProp() {
-    result = getASourceObjectRef().getAPropertyRead() and
+    result = AccessPath::getAnAliasedSourceNode(getSourceObject()).getAPropertyRead() and
     result.getPropertyNameExpr().flow().getImmediatePredecessor*() = this
   }
 }
@@ -125,7 +113,7 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
  * Holds if the properties of `node` are enumerated locally.
  */
 predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
-  node = any(EnumeratedPropName name).getASourceObjectRef()
+  node = AccessPath::getAnAliasedSourceNode(any(EnumeratedPropName name).getSourceObject())
 }
 
 /**

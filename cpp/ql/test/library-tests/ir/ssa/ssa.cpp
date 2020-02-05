@@ -244,6 +244,13 @@ void ExplicitConstructorCalls() {
   c2.g();
 }
 
+char *VoidStarIndirectParameters(char *src, int size) {
+  char *dst = new char[size];
+  *src = 'a';
+  memcpy(dst, src, size);
+  return dst;
+}
+
 char StringLiteralAliasing2(bool b) {
   if (b) {
     ExternalFunc();

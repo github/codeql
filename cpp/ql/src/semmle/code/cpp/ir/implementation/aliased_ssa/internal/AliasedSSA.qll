@@ -26,7 +26,7 @@ private predicate hasResultMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
+    if type.getByteSize() > 0
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -43,7 +43,7 @@ private predicate hasOperandMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
+    if type.getByteSize() > 0
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )

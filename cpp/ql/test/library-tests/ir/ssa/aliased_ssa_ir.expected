@@ -1136,50 +1136,105 @@ ssa.cpp:
 #  239|     v239_8(void)                 = AliasedUse                      : ~m244_5
 #  239|     v239_9(void)                 = ExitFunction                    : 
 
-#  247| char StringLiteralAliasing2(bool)
+#  247| char* VoidStarIndirectParameters(char*, int)
 #  247|   Block 0
-#  247|     v247_1(void)        = EnterFunction          : 
-#  247|     m247_2(unknown)     = AliasedDefinition      : 
-#  247|     m247_3(unknown)     = InitializeNonLocal     : 
-#  247|     m247_4(unknown)     = Chi                    : total:m247_2, partial:m247_3
-#  247|     mu247_5(unknown)    = UnmodeledDefinition    : 
-#  247|     r247_6(glval<bool>) = VariableAddress[b]     : 
-#  247|     m247_7(bool)        = InitializeParameter[b] : &:r247_6
-#  248|     r248_1(glval<bool>) = VariableAddress[b]     : 
-#  248|     r248_2(bool)        = Load                   : &:r248_1, m247_7
-#  248|     v248_3(void)        = ConditionalBranch      : r248_2
+#  247|     v247_1(void)           = EnterFunction                      : 
+#  247|     m247_2(unknown)        = AliasedDefinition                  : 
+#  247|     m247_3(unknown)        = InitializeNonLocal                 : 
+#  247|     m247_4(unknown)        = Chi                                : total:m247_2, partial:m247_3
+#  247|     mu247_5(unknown)       = UnmodeledDefinition                : 
+#  247|     r247_6(glval<char *>)  = VariableAddress[src]               : 
+#  247|     m247_7(char *)         = InitializeParameter[src]           : &:r247_6
+#  247|     r247_8(char *)         = Load                               : &:r247_6, m247_7
+#  247|     m247_9(unknown)        = InitializeIndirection[src]         : &:r247_8
+#  247|     r247_10(glval<int>)    = VariableAddress[size]              : 
+#  247|     m247_11(int)           = InitializeParameter[size]          : &:r247_10
+#  248|     r248_1(glval<char *>)  = VariableAddress[dst]               : 
+#  248|     r248_2(glval<unknown>) = FunctionAddress[operator new[]]    : 
+#  248|     r248_3(glval<int>)     = VariableAddress[size]              : 
+#  248|     r248_4(int)            = Load                               : &:r248_3, m247_11
+#  248|     r248_5(unsigned long)  = Convert                            : r248_4
+#  248|     r248_6(unsigned long)  = Constant[1]                        : 
+#  248|     r248_7(unsigned long)  = Mul                                : r248_5, r248_6
+#  248|     r248_8(void *)         = Call                               : func:r248_2, 0:r248_7
+#  248|     m248_9(unknown)        = ^CallSideEffect                    : ~m247_9
+#  248|     m248_10(unknown)       = Chi                                : total:m247_9, partial:m248_9
+#  248|     r248_11(char *)        = Convert                            : r248_8
+#  248|     m248_12(char *)        = Store                              : &:r248_1, r248_11
+#  249|     r249_1(char)           = Constant[97]                       : 
+#  249|     r249_2(glval<char *>)  = VariableAddress[src]               : 
+#  249|     r249_3(char *)         = Load                               : &:r249_2, m247_7
+#  249|     r249_4(glval<char>)    = CopyValue                          : r249_3
+#  249|     m249_5(char)           = Store                              : &:r249_4, r249_1
+#  249|     m249_6(unknown)        = Chi                                : total:m248_10, partial:m249_5
+#  250|     r250_1(glval<unknown>) = FunctionAddress[memcpy]            : 
+#  250|     r250_2(glval<char *>)  = VariableAddress[dst]               : 
+#  250|     r250_3(char *)         = Load                               : &:r250_2, m248_12
+#  250|     r250_4(void *)         = Convert                            : r250_3
+#  250|     r250_5(glval<char *>)  = VariableAddress[src]               : 
+#  250|     r250_6(char *)         = Load                               : &:r250_5, m247_7
+#  250|     r250_7(void *)         = Convert                            : r250_6
+#  250|     r250_8(glval<int>)     = VariableAddress[size]              : 
+#  250|     r250_9(int)            = Load                               : &:r250_8, m247_11
+#  250|     r250_10(void *)        = Call                               : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
+#  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m249_6
+#  250|     m250_12(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
+#  250|     m250_13(unknown)       = Chi                                : total:m249_6, partial:m250_12
+#  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
+#  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
+#  251|     r251_3(char *)         = Load                               : &:r251_2, m248_12
+#  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
+#  247|     v247_12(void)          = ReturnIndirection                  : &:r247_8, ~m250_13
+#  247|     r247_13(glval<char *>) = VariableAddress[#return]           : 
+#  247|     v247_14(void)          = ReturnValue                        : &:r247_13, m251_4
+#  247|     v247_15(void)          = UnmodeledUse                       : mu*
+#  247|     v247_16(void)          = AliasedUse                         : ~m250_13
+#  247|     v247_17(void)          = ExitFunction                       : 
+
+#  254| char StringLiteralAliasing2(bool)
+#  254|   Block 0
+#  254|     v254_1(void)        = EnterFunction          : 
+#  254|     m254_2(unknown)     = AliasedDefinition      : 
+#  254|     m254_3(unknown)     = InitializeNonLocal     : 
+#  254|     m254_4(unknown)     = Chi                    : total:m254_2, partial:m254_3
+#  254|     mu254_5(unknown)    = UnmodeledDefinition    : 
+#  254|     r254_6(glval<bool>) = VariableAddress[b]     : 
+#  254|     m254_7(bool)        = InitializeParameter[b] : &:r254_6
+#  255|     r255_1(glval<bool>) = VariableAddress[b]     : 
+#  255|     r255_2(bool)        = Load                   : &:r255_1, m254_7
+#  255|     v255_3(void)        = ConditionalBranch      : r255_2
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
-#  249|   Block 1
-#  249|     r249_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
-#  249|     v249_2(void)           = Call                          : func:r249_1
-#  249|     m249_3(unknown)        = ^CallSideEffect               : ~m247_4
-#  249|     m249_4(unknown)        = Chi                           : total:m247_4, partial:m249_3
+#  256|   Block 1
+#  256|     r256_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  256|     v256_2(void)           = Call                          : func:r256_1
+#  256|     m256_3(unknown)        = ^CallSideEffect               : ~m254_4
+#  256|     m256_4(unknown)        = Chi                           : total:m254_4, partial:m256_3
 #-----|   Goto -> Block 3
 
-#  252|   Block 2
-#  252|     r252_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
-#  252|     v252_2(void)           = Call                          : func:r252_1
-#  252|     m252_3(unknown)        = ^CallSideEffect               : ~m247_4
-#  252|     m252_4(unknown)        = Chi                           : total:m247_4, partial:m252_3
+#  259|   Block 2
+#  259|     r259_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  259|     v259_2(void)           = Call                          : func:r259_1
+#  259|     m259_3(unknown)        = ^CallSideEffect               : ~m254_4
+#  259|     m259_4(unknown)        = Chi                           : total:m254_4, partial:m259_3
 #-----|   Goto -> Block 3
 
-#  255|   Block 3
-#  255|     m255_1(unknown)        = Phi                       : from 1:~m249_4, from 2:~m252_4
-#  255|     r255_2(glval<char *>)  = VariableAddress[s]        : 
-#  255|     r255_3(glval<char[8]>) = StringConstant["Literal"] : 
-#  255|     r255_4(char *)         = Convert                   : r255_3
-#  255|     m255_5(char *)         = Store                     : &:r255_2, r255_4
-#  256|     r256_1(glval<char>)    = VariableAddress[#return]  : 
-#  256|     r256_2(glval<char *>)  = VariableAddress[s]        : 
-#  256|     r256_3(char *)         = Load                      : &:r256_2, m255_5
-#  256|     r256_4(int)            = Constant[2]               : 
-#  256|     r256_5(glval<char>)    = PointerAdd[1]             : r256_3, r256_4
-#  256|     r256_6(char)           = Load                      : &:r256_5, ~m247_3
-#  256|     m256_7(char)           = Store                     : &:r256_1, r256_6
-#  247|     r247_8(glval<char>)    = VariableAddress[#return]  : 
-#  247|     v247_9(void)           = ReturnValue               : &:r247_8, m256_7
-#  247|     v247_10(void)          = UnmodeledUse              : mu*
-#  247|     v247_11(void)          = AliasedUse                : ~m255_1
-#  247|     v247_12(void)          = ExitFunction              : 
+#  262|   Block 3
+#  262|     m262_1(unknown)        = Phi                       : from 1:~m256_4, from 2:~m259_4
+#  262|     r262_2(glval<char *>)  = VariableAddress[s]        : 
+#  262|     r262_3(glval<char[8]>) = StringConstant["Literal"] : 
+#  262|     r262_4(char *)         = Convert                   : r262_3
+#  262|     m262_5(char *)         = Store                     : &:r262_2, r262_4
+#  263|     r263_1(glval<char>)    = VariableAddress[#return]  : 
+#  263|     r263_2(glval<char *>)  = VariableAddress[s]        : 
+#  263|     r263_3(char *)         = Load                      : &:r263_2, m262_5
+#  263|     r263_4(int)            = Constant[2]               : 
+#  263|     r263_5(glval<char>)    = PointerAdd[1]             : r263_3, r263_4
+#  263|     r263_6(char)           = Load                      : &:r263_5, ~m254_3
+#  263|     m263_7(char)           = Store                     : &:r263_1, r263_6
+#  254|     r254_8(glval<char>)    = VariableAddress[#return]  : 
+#  254|     v254_9(void)           = ReturnValue               : &:r254_8, m263_7
+#  254|     v254_10(void)          = UnmodeledUse              : mu*
+#  254|     v254_11(void)          = AliasedUse                : ~m262_1
+#  254|     v254_12(void)          = ExitFunction              : 

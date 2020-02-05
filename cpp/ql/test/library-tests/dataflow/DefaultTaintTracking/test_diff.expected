@@ -5,8 +5,8 @@
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:3:21:3:22 | s1 | AST only |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:21:8:21:10 | buf | AST only |
 | defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:15:22:17 | buf | AST only |
-| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:31:40:31:53 | dotted_address | AST only |
-| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:36:39:61 | (const char *)... | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:24:8:24:10 | (const char *)... | IR only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:24:8:24:10 | array to pointer conversion | IR only |
 | defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:51:39:61 | env_pointer | AST only |
 | defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p | IR only |
 | test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:11:104:20 | (...) | IR only |

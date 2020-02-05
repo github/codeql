@@ -48,7 +48,7 @@ struct XY {
 void bg_stackstruct(XY s1, XY s2) {
   s1.x = source();
   if (guarded(s1.x)) {
-    sink(s1.x); // no flow
+    sink(s1.x); // no flow [FALSE POSITIVE in AST]
   } else if (guarded(s1.y)) {
     sink(s1.x); // flow
   } else if (guarded(s2.y)) {

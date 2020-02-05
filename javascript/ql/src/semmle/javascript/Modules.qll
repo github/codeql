@@ -149,6 +149,16 @@ abstract class Import extends ASTNode {
   }
 
   /**
+   * Gets the imported module, as determined by the TypeScript compiler, if any.
+   */
+  private Module resolveFromTypeScriptSymbol() {
+    exists(CanonicalName symbol |
+      ast_node_symbol(this, symbol) and
+      ast_node_symbol(result, symbol)
+    )
+  }
+
+  /**
    * Gets the module this import refers to.
    *
    * The result is either an externs module, or an actual source module;
@@ -162,7 +172,8 @@ abstract class Import extends ASTNode {
     else (
       result = resolveAsProvidedModule() or
       result = resolveImportedPath() or
-      result = resolveFromTypeRoot()
+      result = resolveFromTypeRoot() or
+      result = resolveFromTypeScriptSymbol()
     )
   }
 

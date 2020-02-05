@@ -412,4 +412,17 @@ module AccessPath {
       isAssignedInUniqueFile(name)
     )
   }
+
+  /**
+   * Gets a `SourceNode` that refers to the same value or access path as the given node.
+   */
+  pragma[inline]
+  DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
+    exists(DataFlow::SourceNode root, string accessPath | 
+      node = AccessPath::getAReferenceTo(root, accessPath) and 
+      result = AccessPath::getAReferenceTo(root, accessPath)
+    )
+    or
+    result = node.getALocalSource()
+  }
 }
