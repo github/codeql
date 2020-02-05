@@ -605,7 +605,7 @@ module TaintTracking {
    * Holds if `params` is a construction of a `URLSearchParams` that parses 
    * the parameters in `input`.
    */
-  private predicate isUrlSearchParams(DataFlow::SourceNode params, DataFlow::Node input) {
+  predicate isUrlSearchParams(DataFlow::SourceNode params, DataFlow::Node input) {
     exists(DataFlow::GlobalVarRefNode urlSearchParams, NewExpr newUrlSearchParams |
       urlSearchParams.getName() = "URLSearchParams" and
       newUrlSearchParams = urlSearchParams.getAnInstantiation().asExpr() and
