@@ -646,14 +646,14 @@ module TaintTracking {
      * Holds if `pred` should be stored in the object `succ` under the property `prop`.
      * 
      * This step is used to model 3 facts: 
-     * 1) A `URL` constructed using `url = new URL(input)` transfers taint from `input` to `url.searchParams`. (See prop = "searchParams")
+     * 1) A `URL` constructed using `url = new URL(input)` transfers taint from `input` to `url.searchParams`, `url.hash`, and `url.search`.
      * 2) Accessing the `searchParams` on a `URL` results in a `URLSearchParams` object (See the loadStoreStep method on this class and hiddenUrlPseudoProperty())
      * 3) A `URLSearchParams` object (either `url.searchParams` or `new URLSearchParams(input)`) has a tainted value, 
      *    which can be accessed using a `get` or `getAll` call. (See getableUrlPseudoProperty())
      */
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       succ = this and (
-        (prop = "searchParams" or prop = hiddenUrlPseudoProperty()) and
+        (prop = "searchParams" or prop = "hash" or prop = "search" or prop = hiddenUrlPseudoProperty()) and
         exists(DataFlow::NewNode newUrl | succ = newUrl  |
           newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
           pred = newUrl.getArgument(0)
