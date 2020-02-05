@@ -163,7 +163,7 @@ class DynamicPropRead extends DataFlow::SourceNode, DataFlow::ValueNode {
 
 /**
  * Holds if `output` is the result of `base[key]`, either directly or through
- * one or more function calls.
+ * one or more function calls, ignoring reads that can't access the prototype chain.
  */
 predicate dynamicPropReadStep(Node base, Node key, SourceNode output) {
   exists(DynamicPropRead read |
@@ -217,7 +217,12 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
   exists(Node base, Node key |
     dynamicPropReadStep(base, key, node) and
     isEnumeratedPropName(key) and
-    not arePropertiesEnumerated(base.getALocalSource()) // ignore `for (let key in src) { ... src[key] ... }`
+
+    // Ignore cases where the properties of `base` are enumerated, to avoid FPs
+    // where the key came from that enumeration (and thus will not return Object.prototype).
+    // For example, `src[key]` in `for (let key in src) { ... src[key] ... }` will generally
+    // not return Object.prototype because `key` is an enumerable property of `src`.
+    not arePropertiesEnumerated(base.getALocalSource())
   )
   or
   exists(Node use |
@@ -241,11 +246,15 @@ predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::N
   exists(AssignExpr write, IndexExpr index |
     index = write.getLhs() and
     base = index.getBase().flow() and
-    isPotentiallyObjectPrototype(base.getALocalSource()) and
     prop = index.getPropertyNameExpr().flow() and
     rhs = write.getRhs().flow() and
     not exists(prop.getStringValue()) and
-    not arePropertiesEnumerated(base.getALocalSource())
+    not arePropertiesEnumerated(base.getALocalSource()) and
+
+    // Prune writes that are unlikely to modify Object.prototype.
+    // This is mainly for performance, but may block certain results due to
+    // not tracking out of function returns and into callbacks.
+    isPotentiallyObjectPrototype(base.getALocalSource())
   )
 }
 
