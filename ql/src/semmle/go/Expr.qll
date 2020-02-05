@@ -442,14 +442,6 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the expression representing the function being called. */
   Expr getCalleeExpr() { result = getChildExpr(0) }
 
-  /** Holds if this call is of the form `base.method(...)`. */
-  predicate calls(Expr base, string method) {
-    exists(SelectorExpr callee | callee = getCalleeExpr().stripParens() |
-      callee.getBase() = base and
-      method = callee.getSelector().getName()
-    )
-  }
-
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
     i >= 0 and
@@ -462,10 +454,13 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(getAnArgument()) }
 
-  /** Gets the name of the invoked function or method. */
+  /** Gets the name of the invoked function or method if it can be determined syntactically. */
   string getCalleeName() {
-    result = getCalleeExpr().stripParens().(Ident).getName() or
-    calls(_, result)
+    exists(Expr callee | callee = getCalleeExpr().stripParens() |
+      result = callee.(Ident).getName()
+      or
+      result = callee.(SelectorExpr).getSelector().getName()
+    )
   }
 
   /** Gets the declared target of this call. */
