@@ -276,9 +276,6 @@ class Field extends Variable {
 
 /** A built-in or declared function. */
 class Function extends ValueEntity, @functionobject {
-  /** Gets an expression representing a call to this function. */
-  CallExpr getACallExpr() { result.getCalleeExpr() = getAReference() }
-
   /** Gets a call to this function. */
   DataFlow::CallNode getACall() {
     this = result.getTarget()

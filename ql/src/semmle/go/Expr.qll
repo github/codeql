@@ -464,7 +464,7 @@ class CallExpr extends CallOrConversionExpr {
   }
 
   /** Gets the declared target of this call. */
-  Function getTarget() { this = result.getACallExpr() }
+  Function getTarget() { getCalleeExpr() = result.getAReference() }
 
   override predicate mayHaveOwnSideEffects() {
     getTarget().mayHaveSideEffects() or
