@@ -115,3 +115,45 @@ void test06() {
   "a";
   "c";
 }
+
+struct A {
+  int x;
+  int y;
+};
+
+void test_read_arg_same(A *pa, int n) {
+  int b = pa->x;
+  int c = pa->x;
+
+  pa->x = n;
+  int d = pa->x;
+}
+
+A* global_a;
+int global_n;
+
+void test_read_global_same() {
+  int b = global_a->x;
+  int c = global_a->x;
+
+  global_a->x = global_n;
+  int d = global_a->x;
+}
+
+void test_read_arg_different(A *pa) {
+  int b = pa->x;
+  int c = pa->y;
+
+  pa->y = global_n;
+
+  int d = pa->x;
+}
+
+void test_read_global_different(int n) {
+  int b = global_a->x;
+  int c = global_a->x;
+
+  global_a->y = n;
+
+  int d = global_a->x;
+}
