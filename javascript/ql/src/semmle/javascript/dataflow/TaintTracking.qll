@@ -615,11 +615,19 @@ module TaintTracking {
   }
 
   /**
-   * A pseudo-property used to store a value on a `URLSearchParams` that 
-   * can be obtained with a `get` or `getAll` call. 
+   * A pseudo-property a `URL` that stores a value that can be obtained
+   * with a `get` or `getAll` call to the `searchParams` property. 
    */
   private string hiddenUrlPseudoProperty() {
     result = "$hiddenSearchPararms"
+  }
+
+  /**
+   * A pseudo-property on a `URLSearchParams` that can be obtained
+   * with a `get` or `getAll` call. 
+   */ 
+  private string getableUrlPseudoProperty() {
+    result = "$gettableSearchPararms"
   }
 
   /**
@@ -654,17 +662,18 @@ module TaintTracking {
         pred = newUrl.getArgument(0)
       )
       or
-      prop = hiddenUrlPseudoProperty() and
+      prop = getableUrlPseudoProperty() and
       isUrlSearchParams(succ, pred)
     }
 
     /**
-     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+     * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
      * 
      * This step is used to copy a value the value of our pseudo-property that can later be accessed using a `get` or `getAll` call. 
      */
-    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = hiddenUrlPseudoProperty() and
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
+      loadProp = hiddenUrlPseudoProperty() and
+      storeProp = getableUrlPseudoProperty() and
       exists(DataFlow::PropRead write | write = succ | 
         write.getPropertyName() = "searchParams" and
         write.getBase() = pred
@@ -677,7 +686,7 @@ module TaintTracking {
     * This step is used to load the value stored in the hidden pseudo-property. 
     */
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { 
-      prop = hiddenUrlPseudoProperty() and
+      prop = getableUrlPseudoProperty() and
       // this is a call to `get` or `getAll` on a `URLSearchParams` object
       exists(string m, DataFlow::MethodCallNode call | call = succ |
         call.getMethodName() = m and

@@ -335,4 +335,8 @@ function URLPseudoProperties() {
   let params = getTaintedUrl().searchParams;
   $('name').html(params.get('name'));
 
+  // OK (.get is not defined on a URL)
+  let myUrl = getTaintedUrl();
+  $('name').html(myUrl.get('name'));
+
 }
