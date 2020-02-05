@@ -7,7 +7,9 @@ DataFlowCallable viableImpl(DataFlowCall ma) { result = viableCallable(ma) }
  * Gets a function that might be called by `call`.
  */
 DataFlowCallable viableCallable(CallExpr ma) {
-  result = ma.getACallee()
+  exists(DataFlow::CallNode c | c.asExpr() = ma |
+    result = c.getACallee()
+  )
 }
 
 /**

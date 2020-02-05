@@ -466,21 +466,6 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the declared target of this call. */
   Function getTarget() { this = result.getACallExpr() }
 
-  /**
-   * Gets the definition of a possible target of this call.
-   *
-   * For non-virtual calls, there is at most one possible call target (but there may be none if the
-   * target has no declaration).
-   *
-   * For virtual calls, we look up possible targets in all types that implement the receiver
-   * interface type.
-   */
-  FuncDef getACallee() {
-    exists(DataFlow::CallNode call | call.asExpr() = this |
-      result = call.getACallee()
-    )
-  }
-
   override predicate mayHaveOwnSideEffects() {
     getTarget().mayHaveSideEffects() or
     not exists(getTarget())
