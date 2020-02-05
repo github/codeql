@@ -281,6 +281,8 @@ class CallNode extends ExprNode {
     result = getTarget().(DeclaredFunction).getFuncDecl()
     or
     exists(DataFlow::Node calleeSource | calleeSource = getACalleeSource() |
+      result = calleeSource.asExpr()
+      or
       exists(Method m, InterfaceType declaredRecv, Type actualRecv |
         calleeSource = m.getARead() and
         declaredRecv = m.getReceiverType().(NamedType).getBaseType() and
