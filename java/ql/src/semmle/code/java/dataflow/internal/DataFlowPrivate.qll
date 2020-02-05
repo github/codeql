@@ -235,6 +235,8 @@ DataFlowType getErasedRepr(Type t) {
       then result.(BoxedType).getPrimitiveType().getName() = "boolean"
       else result = e
   )
+  or
+  t instanceof NullType and result instanceof TypeObject
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */

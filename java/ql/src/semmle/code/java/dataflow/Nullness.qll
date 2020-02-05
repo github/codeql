@@ -45,7 +45,6 @@ private import semmle.code.java.frameworks.Assertions
 /** Gets an expression that may be `null`. */
 Expr nullExpr() {
   result instanceof NullLiteral or
-  result.(ParExpr).getExpr() = nullExpr() or
   result.(ConditionalExpr).getTrueExpr() = nullExpr() or
   result.(ConditionalExpr).getFalseExpr() = nullExpr() or
   result.(AssignExpr).getSource() = nullExpr() or
@@ -131,11 +130,8 @@ predicate dereference(Expr e) {
  * The `VarAccess` is included for nicer error reporting.
  */
 private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
-  exists(Expr e |
-    dereference(e) and
-    e = sameValue(v, va) and
-    result = e.getProperExpr()
-  )
+  dereference(result) and
+  result = sameValue(v, va)
 }
 
 /**
@@ -442,8 +438,8 @@ private predicate nullDerefCandidate(SsaVariable origin, VarAccess va) {
 /** A variable that is assigned `null` if the given condition takes the given branch. */
 private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond, boolean branch) {
   exists(ConditionalExpr condexpr |
-    v.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = condexpr and
-    condexpr.getCondition().getProperExpr() = cond.getCondition()
+    v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
+    condexpr.getCondition() = cond.getCondition()
   |
     condexpr.getTrueExpr() = nullExpr() and
     branch = true and

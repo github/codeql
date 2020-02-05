@@ -67,6 +67,40 @@ module TaintedPath {
         read.getPropertyName() != "length" and
         srclabel = dstlabel
       )
+      or
+      // string method calls of interest
+      exists(DataFlow::MethodCallNode mcn, string name |
+        srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
+      |
+        exists(string substringMethodName |
+          substringMethodName = "substr" or
+          substringMethodName = "substring" or
+          substringMethodName = "slice"
+        |
+          name = substringMethodName and
+          // to avoid very dynamic transformations, require at least one fixed index
+          exists(mcn.getAnArgument().asExpr().getIntValue())
+        )
+        or
+        exists(string argumentlessMethodName |
+          argumentlessMethodName = "toLocaleLowerCase" or
+          argumentlessMethodName = "toLocaleUpperCase" or
+          argumentlessMethodName = "toLowerCase" or
+          argumentlessMethodName = "toUpperCase" or
+          argumentlessMethodName = "trim" or
+          argumentlessMethodName = "trimLeft" or
+          argumentlessMethodName = "trimRight"
+        |
+          name = argumentlessMethodName
+        )
+        or
+        name = "split" and
+        not exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
+          splitBy.mayHaveStringValue("/") or
+          any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/")
+              .flowsTo(splitBy)
+        )
+      )
     }
 
     /**

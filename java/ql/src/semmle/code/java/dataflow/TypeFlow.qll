@@ -109,8 +109,6 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   or
   n2.asExpr() = n1.asSsa().getAUse()
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
   not n2.asExpr().getType() instanceof PrimitiveType
   or

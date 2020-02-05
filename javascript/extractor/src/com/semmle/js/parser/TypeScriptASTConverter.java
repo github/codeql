@@ -1202,7 +1202,9 @@ public class TypeScriptASTConverter {
 
   private Node convertExternalModuleReference(JsonObject node, SourceLocation loc)
       throws ParseError {
-    return new ExternalModuleReference(loc, convertChild(node, "expression"));
+    ExternalModuleReference moduleRef = new ExternalModuleReference(loc, convertChild(node, "expression"));
+    attachSymbolInformation(moduleRef, node);
+    return moduleRef;
   }
 
   private Node convertFalseKeyword(SourceLocation loc) {
@@ -1366,7 +1368,9 @@ public class TypeScriptASTConverter {
         }
       }
     }
-    return new ImportDeclaration(loc, specifiers, src);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src);
+    attachSymbolInformation(importDecl, node);
+    return importDecl;
   }
 
   private Node convertImportEqualsDeclaration(JsonObject node, SourceLocation loc)

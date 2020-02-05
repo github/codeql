@@ -42,3 +42,7 @@
 | tst.js:89:3:89:3 | x |
 | tst.js:89:3:89:14 | x += 'three' |
 | tst.js:90:10:90:10 | x |
+| tst.js:95:3:95:30 | x = x.c ... three') |
+| tst.js:95:7:95:30 | x.conca ... three') |
+| tst.js:95:16:95:20 | 'two' |
+| tst.js:96:10:96:10 | x |

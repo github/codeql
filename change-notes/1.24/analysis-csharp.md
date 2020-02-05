@@ -18,6 +18,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
 | Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the variable is named `_` in a `foreach` statement. | 
+| Potentially dangerous use of non-short-circuit logic (`cs/non-short-circuit`) | Fewer false positive results | Results have been removed when the expression contains an `out` parameter. |
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | More results | Results are reported from parameters with a default value of `null`. |
 
 ## Removal of old queries
@@ -29,6 +30,10 @@ The following changes in version 1.24 affect C# analysis in all applications.
 
 ## Changes to libraries
 
+* The data-flow library has been improved when flow through methods needs to be
+  combined with both taint tracking and flow through fields allowing more flow
+  to be tracked. This affects and improves most security queries, which may
+  report additional results.
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.

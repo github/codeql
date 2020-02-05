@@ -260,6 +260,24 @@ module DomBasedXss {
   }
 
   /**
+   * A property read from a safe property is considered a sanitizer.
+   */
+  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
+    SafePropertyReadSanitizer() {
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *

@@ -5,10 +5,13 @@
 | BarrierGuard.cpp:33:10:33:15 | source | BarrierGuard.cpp:29:16:29:21 | source |
 | BarrierGuard.cpp:53:13:53:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
 | BarrierGuard.cpp:55:13:55:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
+| BarrierGuard.cpp:64:14:64:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
+| BarrierGuard.cpp:66:14:66:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | (int)... | acrossLinkTargets.cpp:19:27:19:32 | call to source |
 | acrossLinkTargets.cpp:12:8:12:8 | x | acrossLinkTargets.cpp:19:27:19:32 | call to source |
 | clang.cpp:18:8:18:19 | (const int *)... | clang.cpp:12:9:12:20 | sourceArray1 |
 | clang.cpp:18:8:18:19 | sourceArray1 | clang.cpp:12:9:12:20 | sourceArray1 |
+| clang.cpp:29:27:29:28 | m1 | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:37:10:37:11 | m2 | clang.cpp:34:32:34:37 | call to source |
 | clang.cpp:41:18:41:19 | m2 | clang.cpp:39:42:39:47 | call to source |
 | clang.cpp:45:17:45:18 | m2 | clang.cpp:43:35:43:40 | call to source |

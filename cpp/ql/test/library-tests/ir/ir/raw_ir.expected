@@ -4223,10 +4223,10 @@ ir.cpp:
 #-----|     mu0_4(PolymorphicBase)              = ^IndirectMayWriteSideEffect[-1]     : &:r850_1
 #  851|     r851_1(glval<PolymorphicDerived>)   = VariableAddress[d]                  : 
 #  851|     mu851_2(PolymorphicDerived)         = Uninitialized[d]                    : &:r851_1
-#  851|     r851_3(glval<unknown>)              = FunctionAddress[PolymorphicDerived] : 
-#  851|     v851_4(void)                        = Call                                : func:r851_3, this:r851_1
-#  851|     mu851_5(unknown)                    = ^CallSideEffect                     : ~mu849_3
-#  851|     mu851_6(PolymorphicDerived)         = ^IndirectMayWriteSideEffect[-1]     : &:r851_1
+#-----|     r0_5(glval<unknown>)                = FunctionAddress[PolymorphicDerived] : 
+#-----|     v0_6(void)                          = Call                                : func:r0_5, this:r851_1
+#-----|     mu0_7(unknown)                      = ^CallSideEffect                     : ~mu849_3
+#-----|     mu0_8(PolymorphicDerived)           = ^IndirectMayWriteSideEffect[-1]     : &:r851_1
 #  853|     r853_1(glval<PolymorphicBase *>)    = VariableAddress[pb]                 : 
 #  853|     r853_2(glval<PolymorphicBase>)      = VariableAddress[b]                  : 
 #  853|     r853_3(PolymorphicBase *)           = CopyValue                           : r853_2

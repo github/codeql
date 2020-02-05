@@ -16,9 +16,9 @@ where
   exists(IRFunction irFunc |
     irFunc = var.getEnclosingIRFunction() and
     (
-      shouldEscape(var) and variableAddressEscapes(var)
+      shouldEscape(var) and allocationEscapes(var)
       or
-      not shouldEscape(var) and not variableAddressEscapes(var)
+      not shouldEscape(var) and not allocationEscapes(var)
     )
   )
 select var
