@@ -137,7 +137,7 @@ SourceNode propertyEnumerator() {
 }
 
 /**
- * Property enumeration through the `for-own` or `for-in` package.
+ * Property enumeration through a library function taking a callback.
  */
 class LibraryCallbackEnumeratedPropName extends EnumeratedPropName {
   CallNode call;
