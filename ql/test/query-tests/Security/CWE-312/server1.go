@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func serve1() {
+func serve2() {
 	http.HandleFunc("/some/path", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		logStrs(r.Form.Get("password"))

@@ -1,5 +1,3 @@
-// +build ignore
-
 package main
 
 import (
@@ -14,6 +12,9 @@ func serve1() {
 		pw := r.Form.Get("password")
 
 		log.Printf("Registering new user %s.\n", user)
+
+		// ...
+		use(pw)
 	})
 	http.ListenAndServe(":80", nil)
 }

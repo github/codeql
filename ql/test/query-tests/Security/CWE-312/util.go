@@ -1,5 +1,7 @@
 package main
 
+func use(args ...interface{}) {}
+
 var userdb *UserDB = &UserDB{}
 
 type UserDB struct{}

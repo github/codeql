@@ -1,0 +1,4 @@
+# github.com/golang/glog v0.0.0
+github.com/golang/glog
+# github.com/sirupsen/logrus v0.0.0
+github.com/sirupsen/logrus
