@@ -1084,6 +1084,9 @@ implicitly_typed_array_creation(
 explicitly_sized_array_creation(
   unique int id: @array_creation_expr ref);
 
+stackalloc_array_creation(
+  unique int id: @array_creation_expr ref);
+
 mutator_invocation_mode(
   unique int id: @operator_invocation_expr ref,
   int mode: int ref /* prefix = 1, postfix = 2*/);

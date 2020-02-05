@@ -372,6 +372,11 @@ class ArrayCreation extends Expr, @array_creation_expr {
   override string toString() { result = "array creation of type " + this.getType().getName() }
 }
 
+/** A `stackalloc` array creation. */
+class Stackalloc extends ArrayCreation {
+  Stackalloc() { stackalloc_array_creation(this) }
+}
+
 /**
  * An anonymous function. Either a lambda expression (`LambdaExpr`) or an
  * anonymous method expression (`AnonymousMethodExpr`).
