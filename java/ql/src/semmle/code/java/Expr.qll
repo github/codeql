@@ -167,6 +167,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
+  pragma[nomagic]
   string getStringValue() {
     result = this.(StringLiteral).getRepresentedString()
     or
