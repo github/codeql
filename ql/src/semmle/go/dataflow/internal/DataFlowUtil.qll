@@ -264,6 +264,10 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
+  private DataFlow::Node getACalleeSource() {
+    result.getASuccessor*() = getCalleeNode()
+  }
+
   /**
    * Gets the definition of a possible target of this call.
    *
@@ -276,7 +280,7 @@ class CallNode extends ExprNode {
   FuncDef getACallee() {
     result = getTarget().(DeclaredFunction).getFuncDecl()
     or
-    exists(DataFlow::Node calleeSource | calleeSource.getASuccessor*() = getCalleeNode() |
+    exists(DataFlow::Node calleeSource | calleeSource = getACalleeSource() |
       exists(Method m, InterfaceType declaredRecv, Type actualRecv |
         calleeSource = m.getARead() and
         declaredRecv = m.getReceiverType().(NamedType).getBaseType() and
@@ -334,10 +338,7 @@ class CallNode extends ExprNode {
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() {
-    exists(MethodReadNode mrn |
-      mrn.getASuccessor*() = this.getCalleeNode() and
-      result = mrn.getReceiver()
-    )
+    result = getACalleeSource().(MethodReadNode).getReceiver()
   }
 }
 
