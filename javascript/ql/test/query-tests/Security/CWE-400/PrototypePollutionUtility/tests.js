@@ -452,3 +452,13 @@ function copyUsingForOwn(dst, src) {
         }
     });
 }
+
+function copyUsingUnderscoreOrLodash(dst, src) {
+    _.each(src, (value, key, o) => {
+        if (dst[key]) {
+            copyUsingUnderscoreOrLodash(dst[key], src[key]);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}

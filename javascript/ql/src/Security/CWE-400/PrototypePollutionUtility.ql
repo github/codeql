@@ -121,14 +121,30 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
 }
 
 /**
- * Property enumeration through the `for-own` package.
+ * Gets a function that enumerates object properties when invoked.
+ *
+ * Invocations takes the following form:
+ * ```js
+ * fn(obj, (value, key, o) => { ... })
+ * ```
  */
-class ForOwnEnumeratedPropName extends EnumeratedPropName {
+SourceNode propertyEnumerator() {
+  result = moduleImport("for-own") or
+  result = moduleImport("for-in") or
+  result = moduleMember("ramda", "forEachObjIndexed") or
+  result = LodashUnderscore::member("forEach") or
+  result = LodashUnderscore::member("each")
+}
+
+/**
+ * Property enumeration through the `for-own` or `for-in` package.
+ */
+class LibraryCallbackEnumeratedPropName extends EnumeratedPropName {
   CallNode call;
   FunctionNode callback;
 
-  ForOwnEnumeratedPropName() {
-    call = moduleImport("for-own").getACall() and
+  LibraryCallbackEnumeratedPropName() {
+    call = propertyEnumerator().getACall() and
     callback = call.getCallback(1) and
     this = callback.getParameter(1)
   }
