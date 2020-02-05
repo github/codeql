@@ -669,14 +669,14 @@ module TaintTracking {
     /**
      * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
      * 
-     * This step is used to copy a value the value of our pseudo-property that can later be accessed using a `get` or `getAll` call. 
+     * This step is used to copy the value of our pseudo-property that can later be accessed using a `get` or `getAll` call. 
      */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
       loadProp = hiddenUrlPseudoProperty() and
       storeProp = getableUrlPseudoProperty() and
-      exists(DataFlow::PropRead write | write = succ | 
-        write.getPropertyName() = "searchParams" and
-        write.getBase() = pred
+      exists(DataFlow::PropRead read | read = succ | 
+        read.getPropertyName() = "searchParams" and
+        read.getBase() = pred
       )
     }
 
