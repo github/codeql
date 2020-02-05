@@ -173,7 +173,7 @@ predicate dynamicPropReadStep(Node base, Node key, SourceNode output) {
     output = read
   )
   or
-  // Summarize functions returning a dynamic property read of two parameters.
+  // Summarize functions returning a dynamic property read of two parameters, such as `function getProp(obj, prop) { return obj[prop]; }`.
   exists(CallNode call, Function callee, ParameterNode baseParam, ParameterNode keyParam, Node innerBase, Node innerKey, SourceNode innerOutput |
     dynamicPropReadStep(innerBase, innerKey, innerOutput) and
     baseParam.flowsTo(innerBase) and
