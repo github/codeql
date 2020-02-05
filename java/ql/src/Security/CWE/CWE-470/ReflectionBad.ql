@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-470
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
@@ -15,18 +16,16 @@ import DataFlow::PathGraph
 class ClassFornameMethod extends Method {
   ClassFornameMethod() {
     this.getDeclaringType().hasQualifiedName("java.lang", "Class<>") and
-    this.hasName("forName") 
+    this.hasName("forName")
   }
 }
 
 class ArgumentToReflection extends Expr {
   ArgumentToReflection() {
     exists(MethodAccess ma, Method method |
-      ma.getArgument(0) = this and 
+      ma.getArgument(0) = this and
       method = ma.getMethod() and
-      (
-        method instanceof ClassFornameMethod
-      )
+      method instanceof ClassFornameMethod
     )
   }
 }
@@ -47,8 +46,9 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
   }
 }
 
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf, StringArgumentToReflection reflectionArg
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf,
+  StringArgumentToReflection reflectionArg
 where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = reflectionArg
 select reflectionArg, source, sink, "$@ flows to here and is used in reflection", source.getNode(),
   "User controlled value"
