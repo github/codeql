@@ -389,6 +389,20 @@ class Initializers
             return s;
         return null;
     }
+
+    string M8()
+    {
+        string s = default; // "GOOD"
+        s = "";
+        return s;
+    }
+
+    string M9()
+    {
+        var s = (string)null; // "GOOD"
+        s = "";
+        return s;
+    }
 }
 
 class Anonymous
