@@ -61,6 +61,8 @@ class GVN extends TValueNumber {
 
   final string toString() { result = "GVN" }
 
+  final string getDebugString() { result = strictconcat(getAnExpr().toString(), ", ") }
+
   final Location getLocation() {
     result =
       min(Location l |
