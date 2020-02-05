@@ -650,10 +650,11 @@ module TaintTracking {
     /**
      * Holds if `pred` should be stored in the object `succ` under the property `prop`.
      * 
-     * This step is used to model 2 facts: 
-     * 1) A `URL` constructed using `url = new URL(input)` transfers taint from `input` to `url.searchParams`. 
-     * 2) A `URLSearchParams` (either `url.searchParams` or `new URLSearchParams(input)`) has a tainted value, 
-     *    which is stored in a pseudo-property, that can later be access using a `get` or `getAll` call. 
+     * This step is used to model 3 facts: 
+     * 1) A `URL` constructed using `url = new URL(input)` transfers taint from `input` to `url.searchParams`. (See prop = "searchParams")
+     * 2) Accessing the `searchParams` on a `URL` results in a `URLSearchParams` object (See the loadStoreStep method on this class and hiddenUrlPseudoProperty())
+     * 3) A `URLSearchParams` object (either `url.searchParams` or `new URLSearchParams(input)`) has a tainted value, 
+     *    which can be accessed using a `get` or `getAll` call. (See getableUrlPseudoProperty())
      */
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       (prop = "searchParams" or prop = hiddenUrlPseudoProperty()) and
@@ -670,6 +671,7 @@ module TaintTracking {
      * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
      * 
      * This step is used to copy the value of our pseudo-property that can later be accessed using a `get` or `getAll` call. 
+     * For an expression `url.searchParams`, the property `hiddenUrlPseudoProperty()` from the `url` object is stored in the property `getableUrlPseudoProperty()` on `url.searchParams`. 
      */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
       loadProp = hiddenUrlPseudoProperty() and
@@ -683,7 +685,7 @@ module TaintTracking {
    /**
     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
     * 
-    * This step is used to load the value stored in the hidden pseudo-property. 
+    * This step is used to load the value stored in the pseudo-property `getableUrlPseudoProperty()`. 
     */
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { 
       prop = getableUrlPseudoProperty() and
