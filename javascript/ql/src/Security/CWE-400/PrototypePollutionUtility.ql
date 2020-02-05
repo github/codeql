@@ -121,6 +121,30 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
 }
 
 /**
+ * Property enumeration through the `for-own` package.
+ */
+class ForOwnEnumeratedPropName extends EnumeratedPropName {
+  CallNode call;
+  FunctionNode callback;
+
+  ForOwnEnumeratedPropName() {
+    call = moduleImport("for-own").getACall() and
+    callback = call.getCallback(1) and
+    this = callback.getParameter(1)
+  }
+
+  override Node getSourceObject() {
+    result = call.getArgument(0)
+  }
+
+  override SourceNode getASourceProp() {
+    result = super.getASourceProp()
+    or
+    result = callback.getParameter(0)
+  }
+}
+
+/**
  * Holds if the properties of `node` are enumerated locally.
  */
 predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
