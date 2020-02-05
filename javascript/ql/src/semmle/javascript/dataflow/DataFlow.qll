@@ -535,6 +535,13 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+    
+    /**
+     * Holds if this data flow node reads or writes a private field in a class.
+     */ 
+    predicate isPrivateField() {
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
   }
 
   /**
