@@ -7,16 +7,22 @@ import com.semmle.util.process.Env.Var;
 public class EnvironmentVariables {
   public static final String CODEQL_EXTRACTOR_JAVASCRIPT_ROOT_ENV_VAR =
       "CODEQL_EXTRACTOR_JAVASCRIPT_ROOT";
+ 
+  public static final String CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR =
+      "CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR";
+
+  public static final String LGTM_WORKSPACE_ENV_VAR =
+      "LGTM_WORKSPACE";
 
   /**
    * Gets the extractor root based on the <code>CODEQL_EXTRACTOR_JAVASCRIPT_ROOT</code> or <code>
    * SEMMLE_DIST</code> or environment variable, or <code>null</code> if neither is set.
    */
   public static String tryGetExtractorRoot() {
-    String env = Env.systemEnv().get(CODEQL_EXTRACTOR_JAVASCRIPT_ROOT_ENV_VAR);
-    if (env != null && !env.isEmpty()) return env;
-    env = Env.systemEnv().get(Var.SEMMLE_DIST);
-    if (env != null && !env.isEmpty()) return env;
+    String env = Env.systemEnv().getNonEmpty(CODEQL_EXTRACTOR_JAVASCRIPT_ROOT_ENV_VAR);
+    if (env != null) return env;
+    env = Env.systemEnv().getNonEmpty(Var.SEMMLE_DIST);
+    if (env != null) return env;
     return null;
   }
 
@@ -30,5 +36,17 @@ public class EnvironmentVariables {
       throw new UserError("SEMMLE_DIST or CODEQL_EXTRACTOR_JAVASCRIPT_ROOT must be set");
     }
     return env;
+  }
+
+  /**
+   * Gets the scratch directory from the appropriate environment variable.
+   */
+  public static String getScratchDir() {
+    String env = Env.systemEnv().getNonEmpty(CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR);
+    if (env != null) return env;
+    env = Env.systemEnv().getNonEmpty(LGTM_WORKSPACE_ENV_VAR);
+    if (env != null) return env;
+
+    throw new UserError(CODEQL_EXTRACTOR_JAVASCRIPT_SCRATCH_DIR_ENV_VAR + " or " + LGTM_WORKSPACE_ENV_VAR + " must be set");
   }
 }
