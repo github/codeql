@@ -117,7 +117,7 @@ test.cpp:
 #   16|         valnum = r16_5
 #   16|     r16_6(glval<int>)           = VariableAddress[global01] : 
 #   16|         valnum = r16_6
-#   16|     r16_7(int)                  = Load                      : &:r16_6, ~m12_4
+#   16|     r16_7(int)                  = Load                      : &:r16_6, ~m12_3
 #   16|         valnum = unique
 #   16|     r16_8(int)                  = Add                       : r16_5, r16_7
 #   16|         valnum = r16_8
@@ -137,7 +137,7 @@ test.cpp:
 #   17|         valnum = r16_5
 #   17|     r17_6(glval<int>)           = VariableAddress[global01] : 
 #   17|         valnum = r16_6
-#   17|     r17_7(int)                  = Load                      : &:r17_6, ~m12_4
+#   17|     r17_7(int)                  = Load                      : &:r17_6, ~m12_3
 #   17|         valnum = unique
 #   17|     r17_8(int)                  = Add                       : r17_5, r17_7
 #   17|         valnum = r17_8
@@ -204,7 +204,7 @@ test.cpp:
 #   29|         valnum = r29_5
 #   29|     r29_6(glval<int>)           = VariableAddress[global02]        : 
 #   29|         valnum = r29_6
-#   29|     r29_7(int)                  = Load                             : &:r29_6, ~m25_4
+#   29|     r29_7(int)                  = Load                             : &:r29_6, ~m25_3
 #   29|         valnum = unique
 #   29|     r29_8(int)                  = Add                              : r29_5, r29_7
 #   29|         valnum = r29_8
@@ -306,7 +306,7 @@ test.cpp:
 #   43|         valnum = r43_5
 #   43|     r43_6(glval<int>)           = VariableAddress[global03] : 
 #   43|         valnum = r43_6
-#   43|     r43_7(int)                  = Load                      : &:r43_6, ~m39_4
+#   43|     r43_7(int)                  = Load                      : &:r43_6, ~m39_3
 #   43|         valnum = unique
 #   43|     r43_8(int)                  = Add                       : r43_5, r43_7
 #   43|         valnum = r43_8
@@ -338,7 +338,7 @@ test.cpp:
 #   45|         valnum = r43_5
 #   45|     r45_6(glval<int>)           = VariableAddress[global03] : 
 #   45|         valnum = r43_6
-#   45|     r45_7(int)                  = Load                      : &:r45_6, ~m39_4
+#   45|     r45_7(int)                  = Load                      : &:r45_6, ~m39_3
 #   45|         valnum = unique
 #   45|     r45_8(int)                  = Add                       : r45_5, r45_7
 #   45|         valnum = r45_8
