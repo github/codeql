@@ -405,7 +405,8 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       or
       not use instanceof AllNonLocalMemory and
       not use.isAlwaysAllocatedOnStack() and
-      if use instanceof VariableMemoryLocation then
+      if use instanceof VariableMemoryLocation
+      then
         // AllNonLocalMemory totally overlaps any non-local variable.
         result instanceof MustTotallyOverlap
       else
