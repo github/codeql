@@ -56,7 +56,8 @@ class GVN extends TValueNumber {
   final string toString() { result = "GVN" }
 
   final Location getLocation() {
-    result = rank[1](Location l |
+    result =
+      rank[1](Location l |
         l = getAnExpr().getLocation()
       |
         l
@@ -66,8 +67,36 @@ class GVN extends TValueNumber {
       )
   }
 
+  final string getKind() {
+    this instanceof TVariableAddressValueNumber and result = "VariableAddress"
+    or
+    this instanceof TInitializeParameterValueNumber and result = "InitializeParameter"
+    or
+    this instanceof TInitializeThisValueNumber and result = "InitializeThis"
+    or
+    this instanceof TStringConstantValueNumber and result = "StringConstant"
+    or
+    this instanceof TFieldAddressValueNumber and result = "FieldAddress"
+    or
+    this instanceof TBinaryValueNumber and result = "Binary"
+    or
+    this instanceof TPointerArithmeticValueNumber and result = "PointerArithmetic"
+    or
+    this instanceof TUnaryValueNumber and result = "Unary"
+    or
+    this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversion"
+    or
+    this instanceof TUniqueValueNumber and result = "Unique"
+  }
+
   /** Gets an expression that has this GVN. */
-  Expr getAnExpr() { result = getAnInstruction().getConvertedResultExpression() }
+  Expr getAnExpr() { result = getAnUnconvertedExpr() }
+
+  /** Gets an expression that has this GVN. */
+  Expr getAnUnconvertedExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
+
+  /** Gets an expression that has this GVN. */
+  Expr getAConvertedExpr() { result = getAnInstruction().getConvertedResultExpression() }
 }
 
 /** Gets the global value number of expression `e`. */
