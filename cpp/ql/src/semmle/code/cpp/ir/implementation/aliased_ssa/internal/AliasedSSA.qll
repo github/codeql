@@ -403,11 +403,15 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       use instanceof AllNonLocalMemory and
       result instanceof MustExactlyOverlap
       or
-      // AllNonLocalMemory may partially overlap any other location within the same virtual
-      // variable, except a stack variable.
       not use instanceof AllNonLocalMemory and
       not use.isAlwaysAllocatedOnStack() and
-      result instanceof MayPartiallyOverlap
+      if use instanceof VariableMemoryLocation then
+        // AllNonLocalMemory totally overlaps any non-local variable.
+        result instanceof MustTotallyOverlap
+      else
+        // AllNonLocalMemory may partially overlap any other location within the same virtual
+        // variable, except a stack variable.
+        result instanceof MayPartiallyOverlap
     )
     or
     def.getVirtualVariable() = use.getVirtualVariable() and

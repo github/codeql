@@ -243,3 +243,15 @@ void ExplicitConstructorCalls() {
   Constructible c2 = Constructible(2);
   c2.g();
 }
+
+char StringLiteralAliasing2(bool b) {
+  if (b) {
+    ExternalFunc();
+  }
+  else {
+    ExternalFunc();
+  }
+
+  const char* s = "Literal";
+  return s[2];
+}

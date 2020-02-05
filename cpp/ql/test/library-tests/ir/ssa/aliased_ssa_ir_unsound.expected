@@ -958,15 +958,15 @@ ssa.cpp:
 #  213|     mu213_5(unknown)        = UnmodeledDefinition      : 
 #  214|     r214_1(glval<char[32]>) = VariableAddress[a_pad]   : 
 #  214|     r214_2(glval<char[32]>) = StringConstant[""]       : 
-#  214|     r214_3(char[32])        = Load                     : &:r214_2, ~m213_4
+#  214|     r214_3(char[32])        = Load                     : &:r214_2, ~m213_3
 #  214|     m214_4(char[32])        = Store                    : &:r214_1, r214_3
 #  215|     r215_1(glval<char[4]>)  = VariableAddress[a_nopad] : 
 #  215|     r215_2(glval<char[4]>)  = StringConstant["foo"]    : 
-#  215|     r215_3(char[4])         = Load                     : &:r215_2, ~m213_4
+#  215|     r215_3(char[4])         = Load                     : &:r215_2, ~m213_3
 #  215|     m215_4(char[4])         = Store                    : &:r215_1, r215_3
 #  216|     r216_1(glval<char[5]>)  = VariableAddress[a_infer] : 
 #  216|     r216_2(glval<char[5]>)  = StringConstant["blah"]   : 
-#  216|     r216_3(char[5])         = Load                     : &:r216_2, ~m213_4
+#  216|     r216_3(char[5])         = Load                     : &:r216_2, ~m213_3
 #  216|     m216_4(char[5])         = Store                    : &:r216_1, r216_3
 #  217|     r217_1(glval<char[2]>)  = VariableAddress[b]       : 
 #  217|     m217_2(char[2])         = Uninitialized[b]         : &:r217_1
@@ -1038,7 +1038,7 @@ ssa.cpp:
 #  230|     r230_3(char *)         = Load                          : &:r230_2, m229_4
 #  230|     r230_4(int)            = Constant[2]                   : 
 #  230|     r230_5(glval<char>)    = PointerAdd[1]                 : r230_3, r230_4
-#  230|     r230_6(char)           = Load                          : &:r230_5, ~m226_4
+#  230|     r230_6(char)           = Load                          : &:r230_5, ~m226_3
 #  230|     m230_7(char)           = Store                         : &:r230_1, r230_6
 #  226|     r226_6(glval<char>)    = VariableAddress[#return]      : 
 #  226|     v226_7(void)           = ReturnValue                   : &:r226_6, m230_7
@@ -1130,3 +1130,51 @@ ssa.cpp:
 #  239|     v239_7(void)                 = UnmodeledUse                    : mu*
 #  239|     v239_8(void)                 = AliasedUse                      : ~m244_5
 #  239|     v239_9(void)                 = ExitFunction                    : 
+
+#  247| char StringLiteralAliasing2(bool)
+#  247|   Block 0
+#  247|     v247_1(void)        = EnterFunction          : 
+#  247|     m247_2(unknown)     = AliasedDefinition      : 
+#  247|     m247_3(unknown)     = InitializeNonLocal     : 
+#  247|     m247_4(unknown)     = Chi                    : total:m247_2, partial:m247_3
+#  247|     mu247_5(unknown)    = UnmodeledDefinition    : 
+#  247|     r247_6(glval<bool>) = VariableAddress[b]     : 
+#  247|     m247_7(bool)        = InitializeParameter[b] : &:r247_6
+#  248|     r248_1(glval<bool>) = VariableAddress[b]     : 
+#  248|     r248_2(bool)        = Load                   : &:r248_1, m247_7
+#  248|     v248_3(void)        = ConditionalBranch      : r248_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  249|   Block 1
+#  249|     r249_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  249|     v249_2(void)           = Call                          : func:r249_1
+#  249|     m249_3(unknown)        = ^CallSideEffect               : ~m247_4
+#  249|     m249_4(unknown)        = Chi                           : total:m247_4, partial:m249_3
+#-----|   Goto -> Block 3
+
+#  252|   Block 2
+#  252|     r252_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  252|     v252_2(void)           = Call                          : func:r252_1
+#  252|     m252_3(unknown)        = ^CallSideEffect               : ~m247_4
+#  252|     m252_4(unknown)        = Chi                           : total:m247_4, partial:m252_3
+#-----|   Goto -> Block 3
+
+#  255|   Block 3
+#  255|     m255_1(unknown)        = Phi                       : from 1:~m249_4, from 2:~m252_4
+#  255|     r255_2(glval<char *>)  = VariableAddress[s]        : 
+#  255|     r255_3(glval<char[8]>) = StringConstant["Literal"] : 
+#  255|     r255_4(char *)         = Convert                   : r255_3
+#  255|     m255_5(char *)         = Store                     : &:r255_2, r255_4
+#  256|     r256_1(glval<char>)    = VariableAddress[#return]  : 
+#  256|     r256_2(glval<char *>)  = VariableAddress[s]        : 
+#  256|     r256_3(char *)         = Load                      : &:r256_2, m255_5
+#  256|     r256_4(int)            = Constant[2]               : 
+#  256|     r256_5(glval<char>)    = PointerAdd[1]             : r256_3, r256_4
+#  256|     r256_6(char)           = Load                      : &:r256_5, ~m247_3
+#  256|     m256_7(char)           = Store                     : &:r256_1, r256_6
+#  247|     r247_8(glval<char>)    = VariableAddress[#return]  : 
+#  247|     v247_9(void)           = ReturnValue               : &:r247_8, m256_7
+#  247|     v247_10(void)          = UnmodeledUse              : mu*
+#  247|     v247_11(void)          = AliasedUse                : ~m255_1
+#  247|     v247_12(void)          = ExitFunction              : 

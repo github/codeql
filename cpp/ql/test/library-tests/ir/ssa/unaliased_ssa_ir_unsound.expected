@@ -1052,3 +1052,47 @@ ssa.cpp:
 #  239|     v239_6(void)                 = UnmodeledUse                    : mu*
 #  239|     v239_7(void)                 = AliasedUse                      : ~mu239_4
 #  239|     v239_8(void)                 = ExitFunction                    : 
+
+#  247| char StringLiteralAliasing2(bool)
+#  247|   Block 0
+#  247|     v247_1(void)        = EnterFunction          : 
+#  247|     mu247_2(unknown)    = AliasedDefinition      : 
+#  247|     mu247_3(unknown)    = InitializeNonLocal     : 
+#  247|     mu247_4(unknown)    = UnmodeledDefinition    : 
+#  247|     r247_5(glval<bool>) = VariableAddress[b]     : 
+#  247|     m247_6(bool)        = InitializeParameter[b] : &:r247_5
+#  248|     r248_1(glval<bool>) = VariableAddress[b]     : 
+#  248|     r248_2(bool)        = Load                   : &:r248_1, m247_6
+#  248|     v248_3(void)        = ConditionalBranch      : r248_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  249|   Block 1
+#  249|     r249_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  249|     v249_2(void)           = Call                          : func:r249_1
+#  249|     mu249_3(unknown)       = ^CallSideEffect               : ~mu247_4
+#-----|   Goto -> Block 3
+
+#  252|   Block 2
+#  252|     r252_1(glval<unknown>) = FunctionAddress[ExternalFunc] : 
+#  252|     v252_2(void)           = Call                          : func:r252_1
+#  252|     mu252_3(unknown)       = ^CallSideEffect               : ~mu247_4
+#-----|   Goto -> Block 3
+
+#  255|   Block 3
+#  255|     r255_1(glval<char *>)  = VariableAddress[s]        : 
+#  255|     r255_2(glval<char[8]>) = StringConstant["Literal"] : 
+#  255|     r255_3(char *)         = Convert                   : r255_2
+#  255|     m255_4(char *)         = Store                     : &:r255_1, r255_3
+#  256|     r256_1(glval<char>)    = VariableAddress[#return]  : 
+#  256|     r256_2(glval<char *>)  = VariableAddress[s]        : 
+#  256|     r256_3(char *)         = Load                      : &:r256_2, m255_4
+#  256|     r256_4(int)            = Constant[2]               : 
+#  256|     r256_5(glval<char>)    = PointerAdd[1]             : r256_3, r256_4
+#  256|     r256_6(char)           = Load                      : &:r256_5, ~mu247_4
+#  256|     m256_7(char)           = Store                     : &:r256_1, r256_6
+#  247|     r247_7(glval<char>)    = VariableAddress[#return]  : 
+#  247|     v247_8(void)           = ReturnValue               : &:r247_7, m256_7
+#  247|     v247_9(void)           = UnmodeledUse              : mu*
+#  247|     v247_10(void)          = AliasedUse                : ~mu247_4
+#  247|     v247_11(void)          = ExitFunction              : 
