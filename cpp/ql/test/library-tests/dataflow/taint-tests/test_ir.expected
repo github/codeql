@@ -17,5 +17,6 @@
 | taint.cpp:291:7:291:7 | y | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:337:7:337:7 | t | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:350:7:350:7 | t | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
 | taint.cpp:429:7:429:7 | b | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |

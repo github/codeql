@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A newtype wrapper to prevent accidental casts between `Node` and
@@ -289,6 +290,51 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  // Flow through modeled functions
+  modelFlow(iFrom, iTo)
+}
+
+private predicate modelFlow(Instruction iFrom, Instruction iTo) {
+  exists(
+    CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
+  |
+    call.getStaticCallTarget() = func and
+    func.hasDataFlow(modelIn, modelOut)
+  |
+    (
+      modelOut.isReturnValue() and
+      iTo = call
+      or
+      // TODO: Add write side effects for return values
+      modelOut.isReturnValueDeref() and
+      iTo = call
+      or
+      exists(WriteSideEffectInstruction outNode |
+        modelOut.isParameterDeref(outNode.getIndex()) and
+        iTo = outNode and
+        outNode.getPrimaryInstruction() = call
+      )
+      // TODO: add write side effects for qualifiers
+    ) and
+    (
+      exists(int index |
+        modelIn.isParameter(index) and
+        iFrom = call.getPositionalArgument(index)
+      )
+      or
+      exists(int index, ReadSideEffectInstruction read |
+        modelIn.isParameterDeref(index) and
+        read.getIndex() = index and
+        read.getPrimaryInstruction() = call and
+        iFrom = read.getSideEffectOperand().getAnyDef()
+      )
+      or
+      modelIn.isQualifierAddress() and
+      iFrom = call.getThisArgument()
+      // TODO: add read side effects for qualifiers
+    )
+  )
 }
 
 /**

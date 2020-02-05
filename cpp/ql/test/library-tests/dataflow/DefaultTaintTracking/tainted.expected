@@ -93,6 +93,14 @@
 | defaulttainttracking.cpp:79:30:79:35 | call to getenv | defaulttainttracking.cpp:79:30:79:35 | call to getenv |
 | defaulttainttracking.cpp:79:30:79:35 | call to getenv | defaulttainttracking.cpp:79:30:79:42 | (const char *)... |
 | defaulttainttracking.cpp:79:30:79:35 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:84:17:84:17 | t |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:16 | call to move |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:32 | (const char *)... |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:32 | (reference dereference) |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:23 | call to getenv |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:30 | (reference to) |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 |
 | test_diff.cpp:92:10:92:13 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | test_diff.cpp:92:10:92:13 | argv | test_diff.cpp:1:11:1:20 | p#0 |
 | test_diff.cpp:92:10:92:13 | argv | test_diff.cpp:92:10:92:13 | argv |
