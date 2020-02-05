@@ -42,7 +42,7 @@ int test03(int p0, int p1, int* p2) {
 
   x = p0 + p1 + global03;
   *p2 = 0; // Might change global03
-  x = p0 + p1 + global03; // Not the same value
+  x = p0 + p1 + global03; // BUG: Not the same value, but given the same value number (this is likely due to #2696)
   y = x;
 }
 
