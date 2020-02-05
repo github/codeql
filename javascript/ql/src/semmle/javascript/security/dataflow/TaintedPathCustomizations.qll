@@ -124,7 +124,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     NormalizingPathCall() {
-      this = DataFlow::moduleMember("path", "normalize").getACall() and
+      this = NodeJSLib::Path::moduleMember("normalize").getACall() and
       input = getArgument(0) and
       output = this
     }
@@ -148,7 +148,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     ResolvingPathCall() {
-      this = DataFlow::moduleMember("path", "resolve").getACall() and
+      this = NodeJSLib::Path::moduleMember("resolve").getACall() and
       input = getAnArgument() and
       output = this
       or
@@ -180,7 +180,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     NormalizingRelativePathCall() {
-      this = DataFlow::moduleMember("path", "relative").getACall() and
+      this = NodeJSLib::Path::moduleMember("relative").getACall() and
       input = getAnArgument() and
       output = this
     }
@@ -205,7 +205,7 @@ module TaintedPath {
 
     PreservingPathCall() {
       exists(string name | name = "dirname" or name = "toNamespacedPath" |
-        this = DataFlow::moduleMember("path", name).getACall() and
+        this = NodeJSLib::Path::moduleMember(name).getACall() and
         input = getAnArgument() and
         output = this
       )
@@ -244,7 +244,7 @@ module TaintedPath {
     // ".." + path.sep
     exists(StringOps::Concatenation conc | node = conc |
       conc.getOperand(0).getStringValue() = ".." and
-      conc.getOperand(1).getALocalSource() = DataFlow::moduleMember("path", "sep") and
+      conc.getOperand(1).getALocalSource() = NodeJSLib::Path::moduleMember("sep") and
       conc.getNumOperand() = 2
     )
   }
@@ -311,7 +311,7 @@ module TaintedPath {
 
     IsAbsoluteSanitizer() {
       exists(DataFlow::CallNode call | this = call |
-        call = DataFlow::moduleMember("path", "isAbsolute").getACall() and
+        call = NodeJSLib::Path::moduleMember("isAbsolute").getACall() and
         operand = call.getArgument(0) and
         polarity = true and
         negatable = true

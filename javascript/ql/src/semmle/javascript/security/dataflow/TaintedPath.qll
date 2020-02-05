@@ -142,7 +142,7 @@ module TaintedPath {
       or
       // path.join()
       exists(DataFlow::CallNode join, int n |
-        join = DataFlow::moduleMember("path", "join").getACall()
+        join = NodeJSLib::Path::moduleMember("join").getACall()
       |
         src = join.getArgument(n) and
         dst = join and
