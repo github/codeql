@@ -51,6 +51,12 @@ private import semmle.code.cpp.ir.IR
  * methods.
  */
 class GVN extends TValueNumber {
+  GVN() {
+    exists(Instruction instr |
+      this = tvalueNumber(instr) and exists(instr.getUnconvertedResultExpression())
+    )
+  }
+
   private Instruction getAnInstruction() { this = tvalueNumber(result) }
 
   final string toString() { result = "GVN" }
