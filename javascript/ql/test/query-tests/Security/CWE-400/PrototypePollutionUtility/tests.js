@@ -360,3 +360,81 @@ function mergePlainObjectsOnly(target, source) {
     }
     return target;
 }
+
+function forEachProp(obj, callback) {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            callback(key, obj[key]);
+        }
+    }
+}
+
+function mergeUsingCallback(dst, src) {
+    forEachProp(src, key => {
+        if (dst[key]) {
+            mergeUsingCallback(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // NOT OK - but not currently flagged
+        }
+    });
+}
+
+function mergeUsingCallback2(dst, src) {
+    forEachProp(src, (key, value) => {
+        if (dst[key]) {
+            mergeUsingCallback2(dst[key], value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}
+
+function wrappedRead(obj, key) {
+    return obj[key];
+}
+
+function copyUsingWrappedRead(dst, src) {
+    for (let key in src) {
+        let value = wrappedRead(src, key);
+        let target = wrappedRead(dst, key);
+        if (target) {
+            copyUsingWrappedRead(target, value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    }
+}
+
+function almostSafeRead(obj, key) {
+    if (key === '__proto__') return undefined;
+    return obj[key];
+}
+
+function copyUsingAlmostSafeRead(dst, src) {
+    for (let key in src) {
+        let value = almostSafeRead(src, key);
+        let target = almostSafeRead(dst, key);
+        if (target) {
+            copyUsingAlmostSafeRead(target, value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    }
+}
+
+function safeRead(obj, key) {
+    if (key === '__proto__' || key === 'constructor') return undefined;
+    return obj[key];
+}
+
+function copyUsingSafeRead(dst, src) {
+    for (let key in src) {
+        let value = safeRead(src, key);
+        let target = safeRead(dst, key);
+        if (target) {
+            copyUsingSafeRead(target, value);
+        } else {
+            dst[key] = value; // OK
+        }
+    }
+}

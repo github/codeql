@@ -20,6 +20,7 @@
 
 import javascript
 private import internal.CallGraphs
+private import internal.FlowSteps as FlowSteps
 
 module DataFlow {
   cached
@@ -1476,6 +1477,8 @@ module DataFlow {
       succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
   }
+
+  predicate argumentPassingStep = FlowSteps::argumentPassing/4;
 
   /**
    * Gets the data flow node representing the source of definition `def`, taking
