@@ -268,7 +268,7 @@ class CallNode extends ExprNode {
   FuncDef getACallee() { result = expr.getACallee() }
 
   /** Gets the name of the function or method being called, if it can be determined. */
-  string getCalleeName() { result = expr.getTarget().getName() }
+  string getCalleeName() { result = expr.getTarget().getName() or result = expr.getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
   Node getCalleeNode() { result = exprNode(expr.getCalleeExpr()) }
