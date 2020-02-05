@@ -280,7 +280,11 @@ class Function extends ValueEntity, @functionobject {
   CallExpr getACallExpr() { result.getCalleeExpr() = getAReference() }
 
   /** Gets a call to this function. */
-  DataFlow::CallNode getACall() { result.getExpr() = getACallExpr() }
+  DataFlow::CallNode getACall() {
+    this = result.getTarget()
+    or
+    this.(DeclaredFunction).getFuncDecl() = result.getACallee()
+  }
 
   /** Holds if this function has no observable side effects. */
   predicate mayHaveSideEffects() { none() }
