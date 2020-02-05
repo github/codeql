@@ -476,18 +476,8 @@ class CallExpr extends CallOrConversionExpr {
    * interface type.
    */
   FuncDef getACallee() {
-    result = getTarget().(DeclaredFunction).getFuncDecl()
-    or
-    exists(SelectorExpr sel, InterfaceType declaredRecv, Type actualRecv |
-      sel = getCalleeExpr().stripParens() and
-      declaredRecv = sel.getBase().getType().getUnderlyingType() and
-      actualRecv.implements(declaredRecv)
-    |
-      result = actualRecv
-            .(PointerType)
-            .getBaseType()
-            .(NamedType)
-            .getMethodDecl(sel.getSelector().getName())
+    exists(DataFlow::CallNode call | call.asExpr() = this |
+      result = call.getACallee()
     )
   }
 
