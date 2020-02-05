@@ -30,7 +30,7 @@ private class InsecureDefaultHttpResponseClassInstantiation extends InsecureNett
 }
 
 private class InsecureDefaultFullHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
-  InsecureDefaultHttpResponseClassInstantiation() {
+  InsecureDefaultFullHttpResponseClassInstantiation() {
     getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpResponse") and
     getArgument(3).(CompileTimeConstantExpr).getBooleanValue() = false
   }
