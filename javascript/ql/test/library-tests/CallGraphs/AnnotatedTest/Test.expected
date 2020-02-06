@@ -2,4 +2,5 @@ spuriousCallee
 missingCallee
 | constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} |
 | constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} |
+| reExportLibClient.js:4:1:4:6 | ns.f() | lib.js:3:2:3:14 | function() {} |
 badAnnotation
