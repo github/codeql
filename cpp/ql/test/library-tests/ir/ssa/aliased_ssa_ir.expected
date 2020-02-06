@@ -225,42 +225,44 @@ ssa.cpp:
 #   68|     m68_9(char *)        = InitializeParameter[p]   : &:r68_8
 #   68|     r68_10(char *)       = Load                     : &:r68_8, m68_9
 #   68|     m68_11(unknown)      = InitializeIndirection[p] : &:r68_10
-#-----|   Goto -> Block 3
+#-----|   Goto -> Block 1
 
-#   70|   Block 1
+#   69|   Block 1
+#   69|     m69_1(char *)     = Phi                : from 0:m68_9, from 2:m70_6
+#   69|     m69_2(int)        = Phi                : from 0:m68_7, from 2:m69_8
+#   69|     m69_3(unknown)    = Phi                : from 0:~m68_4, from 2:~m70_10
+#   69|     r69_4(glval<int>) = VariableAddress[n] : 
+#   69|     r69_5(int)        = Load               : &:r69_4, m69_2
+#   69|     r69_6(int)        = Constant[1]        : 
+#   69|     r69_7(int)        = Sub                : r69_5, r69_6
+#   69|     m69_8(int)        = Store              : &:r69_4, r69_7
+#   69|     r69_9(int)        = CopyValue          : r69_5
+#   69|     r69_10(int)       = Constant[0]        : 
+#   69|     r69_11(bool)      = CompareGT          : r69_9, r69_10
+#   69|     v69_12(void)      = ConditionalBranch  : r69_11
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   70|   Block 2
 #   70|     r70_1(char)          = Constant[0]        : 
 #   70|     r70_2(glval<char *>) = VariableAddress[p] : 
 #   70|     r70_3(char *)        = Load               : &:r70_2, m69_1
 #   70|     r70_4(int)           = Constant[1]        : 
 #   70|     r70_5(char *)        = PointerAdd[1]      : r70_3, r70_4
 #   70|     m70_6(char *)        = Store              : &:r70_2, r70_5
-#   70|     r70_7(glval<char>)   = CopyValue          : r70_3
-#   70|     m70_8(char)          = Store              : &:r70_7, r70_1
-#   70|     m70_9(unknown)       = Chi                : total:m69_3, partial:m70_8
-#-----|   Goto (back edge) -> Block 3
+#   70|     r70_7(char *)        = CopyValue          : r70_3
+#   70|     r70_8(glval<char>)   = CopyValue          : r70_7
+#   70|     m70_9(char)          = Store              : &:r70_8, r70_1
+#   70|     m70_10(unknown)      = Chi                : total:m69_3, partial:m70_9
+#-----|   Goto (back edge) -> Block 1
 
-#   71|   Block 2
+#   71|   Block 3
 #   71|     v71_1(void)  = NoOp              : 
 #   68|     v68_12(void) = ReturnIndirection : &:r68_10, m68_11
 #   68|     v68_13(void) = ReturnVoid        : 
 #   68|     v68_14(void) = UnmodeledUse      : mu*
 #   68|     v68_15(void) = AliasedUse        : ~m69_3
 #   68|     v68_16(void) = ExitFunction      : 
-
-#   69|   Block 3
-#   69|     m69_1(char *)     = Phi                : from 0:m68_9, from 1:m70_6
-#   69|     m69_2(int)        = Phi                : from 0:m68_7, from 1:m69_8
-#   69|     m69_3(unknown)    = Phi                : from 0:~m68_4, from 1:~m70_9
-#   69|     r69_4(glval<int>) = VariableAddress[n] : 
-#   69|     r69_5(int)        = Load               : &:r69_4, m69_2
-#   69|     r69_6(int)        = Constant[1]        : 
-#   69|     r69_7(int)        = Sub                : r69_5, r69_6
-#   69|     m69_8(int)        = Store              : &:r69_4, r69_7
-#   69|     r69_9(int)        = Constant[0]        : 
-#   69|     r69_10(bool)      = CompareGT          : r69_5, r69_9
-#   69|     v69_11(void)      = ConditionalBranch  : r69_10
-#-----|   False -> Block 2
-#-----|   True -> Block 1
 
 #   75| void ScalarPhi(bool)
 #   75|   Block 0

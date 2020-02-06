@@ -208,7 +208,7 @@ private predicate usedAsCondition(Expr expr) {
  * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
  * lvalue and a function pointer prvalue the same.
  */
-predicate ignoreLoad(Expr expr) {
+private predicate ignoreLoad(Expr expr) {
   expr.hasLValueToRValueConversion() and
   (
     expr instanceof ThisExpr or
@@ -220,6 +220,34 @@ predicate ignoreLoad(Expr expr) {
   )
 }
 
+/**
+ * Holds if `expr` should have a load on it because it will be loaded as part
+ * of the translation of its parent. We want to associate this load with `expr`
+ * itself rather than its parent since in practical applications like data flow
+ * we maintain that the value of the `x` in `x++` should be what's loaded from
+ * `x`.
+ */
+private predicate needsLoadForParentExpr(Expr expr) {
+  exists(CrementOperation crement | expr = crement.getOperand().getFullyConverted())
+  or
+  exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted())
+}
+
+/**
+ * Holds if `expr` should have a `TranslatedLoad` on it.
+ */
+predicate hasTranslatedLoad(Expr expr) {
+  (
+    expr.hasLValueToRValueConversion()
+    or
+    needsLoadForParentExpr(expr)
+  ) and
+  not ignoreExpr(expr) and
+  not isNativeCondition(expr) and
+  not isFlexibleCondition(expr) and
+  not ignoreLoad(expr)
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -229,21 +257,12 @@ newtype TTranslatedElement =
   } or
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
-  TTranslatedLoad(Expr expr) {
-    not ignoreExpr(expr) and
-    not isNativeCondition(expr) and
-    not isFlexibleCondition(expr) and
-    expr.hasLValueToRValueConversion() and
-    not ignoreLoad(expr)
-  } or
+  TTranslatedLoad(Expr expr) { hasTranslatedLoad(expr) } or
+  // For expressions that would not otherwise generate an instruction.
   TTranslatedResultCopy(Expr expr) {
     not ignoreExpr(expr) and
     exprNeedsCopyIfNotLoaded(expr) and
-    // Doesn't have a TTranslatedLoad
-    not (
-      expr.hasLValueToRValueConversion() and
-      not ignoreLoad(expr)
-    )
+    not hasTranslatedLoad(expr)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
