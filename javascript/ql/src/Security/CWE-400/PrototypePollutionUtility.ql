@@ -348,17 +348,6 @@ class PropNameTracking extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node)
-    or
-    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
-      node = DataFlow::ssaDefinitionNode(refinement) and
-      refinement.getGuard() = guard and
-      guard.getTest() instanceof VarAccess and
-      guard.getOutcome() = false
-    )
-  }
-
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
     node instanceof BlacklistEqualityGuard or
     node instanceof WhitelistEqualityGuard or
