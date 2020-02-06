@@ -64,15 +64,18 @@ class GVN extends TValueNumber {
   final string getDebugString() { result = strictconcat(getAnExpr().toString(), ", ") }
 
   final Location getLocation() {
-    result =
-      min(Location l |
-        l = getAnExpr().getLocation()
-      |
-        l
-        order by
-          l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
-          l.getEndColumn()
-      )
+    if exists(Expr e | e = getAnExpr() and not e.getLocation() instanceof UnknownLocation)
+    then
+      result =
+        min(Location l |
+          l = getAnExpr().getLocation() and not l instanceof UnknownLocation
+        |
+          l
+          order by
+            l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+            l.getEndColumn()
+        )
+    else result instanceof UnknownDefaultLocation
   }
 
   final string getKind() {
