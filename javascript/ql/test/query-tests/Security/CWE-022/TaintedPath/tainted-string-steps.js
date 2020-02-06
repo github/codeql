@@ -10,9 +10,9 @@ var server = http.createServer(function(req, res) {
 	fs.readFileSync(path.substr(4)); // NOT OK
 	fs.readFileSync(path.slice(4)); // NOT OK
 
-	fs.readFileSync(path.concat(unknown)); // NOT OK -- but not yet flagged
-	fs.readFileSync(unknown.concat(path)); // NOT OK -- but not yet flagged
-	fs.readFileSync(unknown.concat(unknown, path)); // NOT OK -- but not yet flagged
+	fs.readFileSync(path.concat(unknown)); // NOT OK
+	fs.readFileSync(unknown.concat(path)); // NOT OK
+	fs.readFileSync(unknown.concat(unknown, path)); // NOT OK
 
 	fs.readFileSync(path.trim()); // NOT OK
 	fs.readFileSync(path.toLowerCase()); // NOT OK
