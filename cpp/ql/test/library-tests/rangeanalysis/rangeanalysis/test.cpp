@@ -191,6 +191,7 @@ int test15(int i, int x) {
 int test16(int i) {
   long l;
   l = i;
+  sink(l);
 }
 
 // implicit integer casts
