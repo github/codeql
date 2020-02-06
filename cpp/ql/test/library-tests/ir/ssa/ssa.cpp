@@ -250,3 +250,15 @@ char *VoidStarIndirectParameters(char *src, int size) {
   memcpy(dst, src, size);
   return dst;
 }
+
+char StringLiteralAliasing2(bool b) {
+  if (b) {
+    ExternalFunc();
+  }
+  else {
+    ExternalFunc();
+  }
+
+  const char* s = "Literal";
+  return s[2];
+}

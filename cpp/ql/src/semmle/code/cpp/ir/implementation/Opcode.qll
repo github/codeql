@@ -63,6 +63,7 @@ private newtype TOpcode =
   TUnmodeledDefinition() or
   TUnmodeledUse() or
   TAliasedDefinition() or
+  TInitializeNonLocal() or
   TAliasedUse() or
   TPhi() or
   TBuiltIn() or
@@ -594,6 +595,14 @@ module Opcode {
     final override string toString() { result = "AliasedDefinition" }
 
     final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
+  }
+
+  class InitializeNonLocal extends Opcode, TInitializeNonLocal {
+    final override string toString() { result = "InitializeNonLocal" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() {
+      result instanceof NonLocalMemoryAccess
+    }
   }
 
   class AliasedUse extends Opcode, TAliasedUse {
