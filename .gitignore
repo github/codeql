@@ -1,6 +1,7 @@
 # editor and OS artifacts
 *~
 .DS_STORE
+*.swp  # vim swap files
 
 # query compilation caches
 .cache
