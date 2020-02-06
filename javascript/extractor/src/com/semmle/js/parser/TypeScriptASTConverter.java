@@ -34,6 +34,7 @@ import com.semmle.js.ast.ExportAllDeclaration;
 import com.semmle.js.ast.ExportDeclaration;
 import com.semmle.js.ast.ExportDefaultDeclaration;
 import com.semmle.js.ast.ExportNamedDeclaration;
+import com.semmle.js.ast.ExportNamespaceSpecifier;
 import com.semmle.js.ast.ExportSpecifier;
 import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
@@ -507,6 +508,8 @@ public class TypeScriptASTConverter {
         return convertNamespaceDeclaration(node, loc);
       case "ModuleBlock":
         return convertModuleBlock(node, loc);
+      case "NamespaceExport":
+        return convertNamespaceExport(node, loc);
       case "NamespaceExportDeclaration":
         return convertNamespaceExportDeclaration(node, loc);
       case "NamespaceImport":
@@ -1170,11 +1173,11 @@ public class TypeScriptASTConverter {
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     if (hasChild(node, "exportClause")) {
-      return new ExportNamedDeclaration(
-          loc,
-          null,
-          convertChildren(node.get("exportClause").getAsJsonObject(), "elements"),
-          source);
+      List<ExportSpecifier> specifiers =
+          hasKind(node.get("exportClause"), "NamespaceExport")
+              ? Collections.singletonList(convertChild(node, "exportClause"))
+              : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
+      return new ExportNamedDeclaration(loc, null, specifiers, source);
     } else {
       return new ExportAllDeclaration(loc, source);
     }
@@ -1185,6 +1188,11 @@ public class TypeScriptASTConverter {
         loc,
         convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name"),
         convertChild(node, "name"));
+  }
+
+  private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
+    // Convert the "* as ns" from an export declaration.
+    return new ExportNamespaceSpecifier(loc, convertChild(node, "name"));
   }
 
   private Node convertExpressionStatement(JsonObject node, SourceLocation loc) throws ParseError {
