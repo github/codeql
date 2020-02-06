@@ -1481,8 +1481,11 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
   override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
 }
 
-/** A check of the `if(x)`, which sanitizes `x` in its "else" branch. */
-private class VarAccessBarrierGuard extends AdditionalBarrierGuardNode, DataFlow::Node {
+/**
+  * A check of the `if(x)`, which sanitizes `x` in its "else" branch. 
+  * Can be added to a `isBarrierGuard` in a configuration to add the sanitization. 
+  */
+class VarAccessBarrierGuard extends BarrierGuardNode, DataFlow::Node {
   VarAccess var;
 
   VarAccessBarrierGuard() {
@@ -1492,6 +1495,4 @@ private class VarAccessBarrierGuard extends AdditionalBarrierGuardNode, DataFlow
   override predicate blocks(boolean outcome, Expr e) {
     var = e and outcome = false
   }
-
-  override predicate appliesTo(Configuration cfg) { any() }
 }

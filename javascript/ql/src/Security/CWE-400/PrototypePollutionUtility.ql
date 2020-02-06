@@ -356,7 +356,8 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
     node instanceof BlacklistInclusionGuard or
-    node instanceof WhitelistInclusionGuard
+    node instanceof WhitelistInclusionGuard or
+    node instanceof DataFlow::VarAccessBarrierGuard
   }
 }
 
