@@ -399,3 +399,16 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
     )
   }
 }
+
+/**
+ * A namespace export declaration analyzed as a property write.
+ */
+private class AnalyzedExportNamespaceSpecifier extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  override ExportNamespaceSpecifier astNode;
+
+  override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue value) {
+    baseVal = TAbstractExportsObject(getTopLevel()) and
+    propName = astNode.getExportedName() and
+    value = TAbstractExportsObject(astNode.getExportDeclaration().(ReExportDeclaration).getReExportedModule())
+  }
+}

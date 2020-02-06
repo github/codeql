@@ -545,13 +545,17 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier.
+ * A namespace export specifier, that is `*` or `* as x` occuring in an export declaration.
  *
- * Example:
+ * Examples:
  *
  * ```
  * export
  *   *          // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   * as x     // namespace export specifier
  *   from 'a';
  * ```
  */
@@ -564,6 +568,7 @@ class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifie
  *
  * ```
  * export * from 'a';               // bulk re-export declaration
+ * export * as x from 'a';          // namespace re-export declaration
  * export { x } from 'a';           // named re-export declaration
  * export x from 'a';               // default re-export declaration
  * ```
