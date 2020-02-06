@@ -49,7 +49,7 @@ $(addprefix tools/osx64/,$(BINARIES)):
 tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))) tools/tokenizer.jar
 
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
-	GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(notdir $@))
+	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(notdir $@))
 
 .PHONY: extractor-common extractor extractor-full
 extractor-common: codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme \
