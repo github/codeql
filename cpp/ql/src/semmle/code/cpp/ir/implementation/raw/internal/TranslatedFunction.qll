@@ -71,6 +71,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = getInstruction(AliasedDefinitionTag())
       or
       tag = AliasedDefinitionTag() and
+      result = getInstruction(InitializeNonLocalTag())
+      or
+      tag = InitializeNonLocalTag() and
       result = getInstruction(UnmodeledDefinitionTag())
       or
       (
@@ -142,6 +145,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
+      resultType = getUnknownType()
+      or
+      tag = InitializeNonLocalTag() and
+      opcode instanceof Opcode::InitializeNonLocal and
       resultType = getUnknownType()
       or
       tag = InitializeThisTag() and
