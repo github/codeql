@@ -19,12 +19,12 @@ test_getLocalName
 | e.js:3:10:3:21 | default as g | default |
 | m/c.js:5:10:5:15 | g as h | g |
 test_getExportedName
-| b.js:5:10:5:15 | f as g | f |
-| b.js:7:8:7:9 | f2 | default |
+| b.js:5:10:5:15 | f as g | g |
+| b.js:7:8:7:9 | f2 | f2 |
 | e.js:2:10:2:10 | x | x |
 | e.js:2:13:2:13 | y | y |
-| e.js:3:10:3:21 | default as g | default |
-| m/c.js:5:10:5:15 | g as h | g |
+| e.js:3:10:3:21 | default as g | g |
+| m/c.js:5:10:5:15 | g as h | h |
 test_OtherImports
 | es2015_require.js:1:11:1:24 | require('./d') | d.js:1:1:5:0 | <toplevel> |
 test_ImportMetaExpr
