@@ -754,8 +754,14 @@ private DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
 }
 
 pragma[noinline]
+private ReturnPosition getReturnPosition0(ReturnNodeExt ret, ReturnKindExt kind) {
+  result.getCallable() = returnNodeGetEnclosingCallable(ret) and
+  kind = result.getKind()
+}
+
+pragma[noinline]
 ReturnPosition getReturnPosition(ReturnNodeExt ret) {
-  result = TReturnPosition0(returnNodeGetEnclosingCallable(ret), ret.getKind())
+  result = getReturnPosition0(ret, ret.getKind())
 }
 
 bindingset[cc, callable]
