@@ -744,40 +744,57 @@ module ClassValue {
     ClassValue bool() {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }
-
+    
+    /** Get the `ClassValue` for the `tuple` class. */
+    ClassValue tupleType() {
+        result = TBuiltinClassObject(Builtin::special("tuple"))
+    }
+    
+    /** Get the `ClassValue` for the `list` class. */
+    ClassValue listType() {
+        result = TBuiltinClassObject(Builtin::special("list"))
+    }
+    
+    /** Get the `ClassValue` for the `(x)range` class. */
+    ClassValue rangeType() {
+        result = Builtin::special("xrange")
+        or
+        major_version() = 3 and result = Builtin::special("range")
+    }
+    
     /** Get the `ClassValue` for the `dict` class. */
     ClassValue dict() {
         result = TBuiltinClassObject(Builtin::special("dict"))
     }
-
-    /** Get the `ClassValue` for the class of Python functions. */
-    ClassValue function() {
-        result = TBuiltinClassObject(Builtin::special("FunctionType"))
+    
+    /** Get the `ClassValue` for the `set` class. */
+    ClassValue setType() {
+        result = TBuiltinClassObject(Builtin::special("set"))
     }
-
-    /** Get the `ClassValue` for the `type` class. */
-    ClassValue type() {
-        result = TType()
-    }
-
-    /** Get the `ClassValue` for the class of builtin functions. */
-    ClassValue builtinFunction() {
-        result = Value::named("len").getClass()
+    
+    /** Get the `ClassValue` for the `object` class. */
+    ClassValue objectType() {
+        result = TBuiltinClassObject(Builtin::special("object"))
     }
 
     /** Get the `ClassValue` for the `int` class. */
     ClassValue int_() {
         result = TBuiltinClassObject(Builtin::special("int"))
     }
+    
+    /** Get the `ClassValue` for the `long` class. */
+    ClassValue longType() {
+        result = TBuiltinClassObject(Builtin::special("long"))
+    }
 
     /** Get the `ClassValue` for the `float` class. */
     ClassValue float_() {
         result = TBuiltinClassObject(Builtin::special("float"))
     }
-
-    /** Get the `ClassValue` for the `list` class. */
-    ClassValue list() {
-        result = TBuiltinClassObject(Builtin::special("list"))
+    
+    /** Get the `ClassValue` for the `complex` class. */
+    ClassValue complexType() {
+        result = TBuiltinClassObject(Builtin::special("complex"))
     }
 
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
@@ -799,7 +816,54 @@ module ClassValue {
         else
            result = unicode()
     }
+    
+    /** Get the `ClassValue` for the builtin properties. */
+    ClassValue builtinPropertyType() {
+        /* This is CPython specific */ 
+        result.isC() and
+        result.getName() = "getset_descriptor"
+    }
+    
+    /** Get the `ClassValue` for the `property` class. */
+    ClassValue propertyType() {
+        result = TBuiltinClassObject(Builtin::special("property"))
+    }
+    
+    /** Get the `ClassValue` for the class of Python functions. */
+    ClassValue function() {
+        result = TBuiltinClassObject(Builtin::special("FunctionType"))
+    }
 
+    /** Get the `ClassValue` for the class of builtin functions. */
+    ClassValue builtinFunction() {
+        result = Value::named("len").getClass()
+    }
+    
+    /** Get the `ClassValue` for the `generatorType` class. */
+    ClassValue generatorType() {
+        result = TBuiltinClassObject(Builtin::special("generator"))
+    }
+    
+    /** Get the `ClassValue` for the `type` class. */
+    ClassValue type() {
+        result = TType()
+    }
+    
+    /** Get the `ClassValue` for `ClassType`. */
+    ClassValue classType() {
+        result = TBuiltinClassObject(Builtin::special("ClassType"))
+    }
+    
+    /** Get the `ClassValue` for `InstanceType`. */
+    ClassValue instanceType() {
+        result = TBuiltinClassObject(Builtin::special("InstanceType"))
+    }
+    
+    /** Get the `ClassValue` for `super`. */
+    ClassValue superType() {
+        result = TBuiltinClassObject(Builtin::special("super"))
+    }
+    
     /** Get the `ClassValue` for the `classmethod` class. */
     ClassValue classmethod() {
         result = TBuiltinClassObject(Builtin::special("ClassMethod"))
@@ -809,12 +873,43 @@ module ClassValue {
     ClassValue staticmethod() {
         result = TBuiltinClassObject(Builtin::special("StaticMethod"))
     }
+    
+    /** Get the `ClassValue` for the `MethodType` class. */
+    pragma [noinline]
+    ClassValue boundMethodType() {
+        result = TBuiltinClassObject(Builtin::special("MethodType"))
+    }
+    
+    /** Get the `ClassValue` for the `MethodDescriptorType` class. */
+    ClassValue methodDescriptorType() {
+        result = TBuiltinClassObject(Builtin::special("MethodDescriptorType"))
+    }
+    
+    /** Get the `ClassValue` for the `GetSetDescriptorType` class. */
+    ClassValue getSetDescriptorType() {
+        result = TBuiltinClassObject(Builtin::special("GetSetDescriptorType"))
+    }
+    
+    /** Get the `ClassValue` for the `StopIteration` class. */
+    ClassValue stopIterationType() {
+        result = TBuiltinClassObject(Builtin::special("StopIteration"))
+    }
 
     /** Get the `ClassValue` for the class of modules. */
     ClassValue module_() {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
     }
 
+    /** Get the `ClassValue` for the `Exception` class. */
+    ClassValue exceptionType() {
+        result = TBuiltinClassObject(Builtin::special("Exception"))
+    }
+    
+    /** Get the `ClassValue` for the `BaseException` class. */
+    ClassValue baseExceptionType() {
+        result = TBuiltinClassObject(Builtin::special("BaseException"))
+    }
+    
     /** Get the `ClassValue` for the `NoneType` class. */
     ClassValue nonetype() {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
@@ -828,6 +923,26 @@ module ClassValue {
     /** Get the `ClassValue` for the `NameError` class. */
     ClassValue nameError() {
         result = TBuiltinClassObject(Builtin::builtin("NameError"))
+    }
+    
+    /** Get the `ClassValue` for the `AttributeError` class. */
+    ClassValue attributeErrorType() {
+        result = TBuiltinClassObject(Builtin::builtin("AttributeError"))
+    }
+    
+    /** Get the `ClassValue` for the `KeyError` class. */
+    ClassValue keyErrorType() {
+        result = TBuiltinClassObject(Builtin::builtin("KeyError"))
+    }
+    
+    /** Get the `ClassValue` for the `IOError` class. */
+    ClassValue ioErrorType() {
+        result = TBuiltinClassObject(Builtin::builtin("IOError"))
+    }
+    
+    /** Get the `ClassValue` for the `NotImplementedError` class. */
+    ClassValue notImplementedError() {
+        result = TBuiltinClassObject(Builtin::builtin("NotImplementedError"))
     }
 
 }
