@@ -6,7 +6,6 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 cached
 private newtype TNode =
@@ -689,9 +688,9 @@ class BarrierGuard extends GuardCondition {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(GVN value, boolean branch |
-      result.getExpr() = value.getAnExpr() and
-      this.checks(value.getAnExpr(), branch) and
+    exists(SsaDefinition def, Variable v, boolean branch |
+      result.getExpr() = def.getAUse(v) and
+      this.checks(def.getAUse(v), branch) and
       this.controls(result.getExpr().getBasicBlock(), branch)
     )
   }

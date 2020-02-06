@@ -20,6 +20,7 @@
 
 import javascript
 private import internal.CallGraphs
+private import internal.FlowSteps as FlowSteps
 
 module DataFlow {
   cached
@@ -535,6 +536,13 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+    
+    /**
+     * Holds if this data flow node reads or writes a private field in a class.
+     */ 
+    predicate isPrivateField() {
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
   }
 
   /**
@@ -1469,6 +1477,8 @@ module DataFlow {
       succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
   }
+
+  predicate argumentPassingStep = FlowSteps::argumentPassing/4;
 
   /**
    * Gets the data flow node representing the source of definition `def`, taking

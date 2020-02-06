@@ -759,7 +759,21 @@ module DefUse {
       then defLocation = useLocation
       else (
         definitionHasPhiNode(defLocation, block) and
-        defLocation = useLocation.getVirtualVariable()
+        defLocation = useLocation.getVirtualVariable() and
+        // Handle the unusual case where a virtual variable does not overlap one of its member
+        // locations. For example, a definition of the virtual variable representing all aliased
+        // memory does not overlap a use of a string literal, because the contents of a string
+        // literal can never be redefined. The string literal's location could still be a member of
+        // the `AliasedVirtualVariable` due to something like:
+        // ```
+        // char s[10];
+        // strcpy(s, p);
+        // const char* p = b ? "SomeLiteral" : s;
+        // return p[3];
+        // ```
+        // In the above example, `p[3]` may access either the string literal or the local variable
+        // `s`, so both of those locations must be members of the `AliasedVirtualVariable`.
+        exists(Alias::getOverlap(defLocation, useLocation))
       )
     )
     or

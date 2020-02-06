@@ -1045,4 +1045,25 @@ module NodeJSLib {
       i = 0 and result = this.getArgument(i)
     }
   }
+
+  /**
+   * Provides predicates for working with the "path" module and its platform-specific instances as a single module.
+   */
+  module Path {
+    /**
+     * Gets a node that imports the "path" module, or one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleImport() {
+      result = DataFlow::moduleImport("path") or
+      result = DataFlow::moduleMember("path", "posix") or
+      result = DataFlow::moduleMember("path", "win32")
+    }
+
+    /**
+     * Gets an access to member `member` of the "path" module, or one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleMember(string member) {
+      result = moduleImport().getAPropertyRead(member)
+    }
+  }
 }

@@ -52,6 +52,11 @@ newtype TValueNumber =
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
+  TLoadTotalOverlapValueNumber(
+    IRFunction irFunc, IRType type, ValueNumber memOperand, ValueNumber operand
+  ) {
+    loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
+  } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
 /**
@@ -101,9 +106,15 @@ class ValueNumber extends TValueNumber {
  * The use of `p.x` on line 3 is linked to the definition of `p` on line 1 as well, but is not
  * congruent to that definition because `p.x` accesses only a subset of the memory defined by `p`.
  */
-private class CongruentCopyInstruction extends CopyInstruction {
+class CongruentCopyInstruction extends CopyInstruction {
   CongruentCopyInstruction() {
     this.getSourceValueOperand().getDefinitionOverlap() instanceof MustExactlyOverlap
+  }
+}
+
+class LoadTotalOverlapInstruction extends LoadInstruction {
+  LoadTotalOverlapInstruction() {
+    this.getSourceValueOperand().getDefinitionOverlap() instanceof MustTotallyOverlap
   }
 }
 
@@ -131,6 +142,8 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof PointerArithmeticInstruction
   or
   instr instanceof CongruentCopyInstruction
+  or
+  instr instanceof LoadTotalOverlapInstruction
 }
 
 private predicate variableAddressValueNumber(
@@ -205,6 +218,7 @@ private predicate unaryValueNumber(
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
+  not instr instanceof FieldAddressInstruction and
   instr.getOpcode() = opcode and
   instr.getResultIRType() = type and
   valueNumber(instr.getUnary()) = operand
@@ -219,6 +233,16 @@ private predicate inheritanceConversionValueNumber(
   instr.getBaseClass() = baseClass and
   instr.getDerivedClass() = derivedClass and
   valueNumber(instr.getUnary()) = operand
+}
+
+private predicate loadTotalOverlapValueNumber(
+  LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, ValueNumber memOperand,
+  ValueNumber operand
+) {
+  instr.getEnclosingIRFunction() = irFunc and
+  instr.getResultIRType() = type and
+  valueNumber(instr.getAnOperand().(MemoryOperand).getAnyDef()) = memOperand and
+  valueNumberOfOperand(instr.getAnOperand().(AddressOperand)) = operand
 }
 
 /**
@@ -311,6 +335,11 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
           rightOperand) and
         result =
           TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand, rightOperand)
+      )
+      or
+      exists(IRType type, ValueNumber memOperand, ValueNumber operand |
+        loadTotalOverlapValueNumber(instr, irFunc, type, memOperand, operand) and
+        result = TLoadTotalOverlapValueNumber(irFunc, type, memOperand, operand)
       )
       or
       // The value number of a copy is just the value number of its source value.

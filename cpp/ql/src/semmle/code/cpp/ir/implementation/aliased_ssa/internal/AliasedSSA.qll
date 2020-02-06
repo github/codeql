@@ -26,7 +26,7 @@ private predicate hasResultMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
+    if type.getByteSize() > 0
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -43,7 +43,7 @@ private predicate hasOperandMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
+    if type.getByteSize() > 0
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -298,7 +298,7 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 
   final override string toStringInternal() { result = "{AllNonLocal}" }
 
-  final override VirtualVariable getVirtualVariable() { result = TAllAliasedMemory(irFunc, false) }
+  final override AliasedVirtualVariable getVirtualVariable() { result.getIRFunction() = irFunc }
 
   final override Language::LanguageType getType() {
     result = any(IRUnknownType type).getCanonicalLanguageType()
@@ -311,6 +311,14 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
   final override string getUniqueId() { result = "{AllNonLocal}" }
 
   final override predicate isMayAccess() { isMayAccess = true }
+
+  override predicate canDefineReadOnly() {
+    // A "must" access that defines all non-local memory appears only on the `InitializeNonLocal`
+    // instruction, which provides the initial definition for all memory outside of the current
+    // function's stack frame. This memory includes string literals and other read-only globals, so
+    // we allow such an access to be the definition for a use of a read-only location.
+    not isMayAccess()
+  }
 }
 
 /**
@@ -341,16 +349,6 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
 
 class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
   AliasedVirtualVariable() { not isMayAccess() }
-
-  override predicate canDefineReadOnly() {
-    // A must-def of all aliased memory is only used in two places:
-    // 1. In the prologue of the function, to provide a definition for all memory defined before the
-    //    function was called. In this case, it needs to provide a definition even for read-only
-    //    non-local variables.
-    // 2. As the result of a `Chi` instruction. These don't participate in overlap analysis, so it's
-    //    OK if we let this predicate hold in that case.
-    any()
-  }
 }
 
 /**
@@ -405,10 +403,16 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       use instanceof AllNonLocalMemory and
       result instanceof MustExactlyOverlap
       or
-      // AllNonLocalMemory may partially overlap any location within the same virtual variable,
-      // except a local variable.
-      result instanceof MayPartiallyOverlap and
-      not use.isAlwaysAllocatedOnStack()
+      not use instanceof AllNonLocalMemory and
+      not use.isAlwaysAllocatedOnStack() and
+      if use instanceof VariableMemoryLocation
+      then
+        // AllNonLocalMemory totally overlaps any non-local variable.
+        result instanceof MustTotallyOverlap
+      else
+        // AllNonLocalMemory may partially overlap any other location within the same virtual
+        // variable, except a stack variable.
+        result instanceof MayPartiallyOverlap
     )
     or
     def.getVirtualVariable() = use.getVirtualVariable() and

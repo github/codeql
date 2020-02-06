@@ -17,7 +17,7 @@ void test_not_same_basic_block(int *p) {
 void test_indirect(int **p) {
   int x;
   x = **p;
-  if (*p == nullptr) { // BAD [NOT DETECTED]
+  if (*p == nullptr) { // BAD
     return;
   }
 }
