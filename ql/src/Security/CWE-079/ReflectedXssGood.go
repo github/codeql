@@ -12,7 +12,7 @@ func serve1() {
 		username := r.Form.Get("username")
 		if !isValidUsername(username) {
 			// BAD: a request parameter is incorporated without validation into the response
-			fmt.Fprintf(w, "Unknown user: %q", html.EscapeString(username))
+			fmt.Fprintf(w, "%q is an unknown user", html.EscapeString(username))
 		} else {
 			// TODO: do something exciting
 		}
