@@ -18,7 +18,7 @@ private ClassValue theDjangoHttpResponseClass() {
     not result = theDjangoHttpRedirectClass()
 }
 
-/** internal class used for trakcing a django response. */
+/** internal class used for tracking a django response. */
 private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
         exists(ClassValue cls |
