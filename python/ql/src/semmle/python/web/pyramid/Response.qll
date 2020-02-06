@@ -11,8 +11,8 @@ private import semmle.python.web.Http
  */
 class PyramidRoutedResponse extends HttpResponseTaintSink {
     PyramidRoutedResponse() {
-        exists(PyFunctionObject view |
-            is_pyramid_view_function(view.getFunction()) and
+        exists(PythonFunctionValue view |
+            is_pyramid_view_function(view.getScope()) and
             this = view.getAReturnedNode()
         )
     }

@@ -110,7 +110,8 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
   override string getLabel() { result = Language::getIdentityString(irFunc.getFunction()) }
 
   override int getOrder() {
-    this = rank[result + 1](PrintableIRFunction orderedFunc, Language::Location location |
+    this =
+      rank[result + 1](PrintableIRFunction orderedFunc, Language::Location location |
         location = orderedFunc.getIRFunction().getLocation()
       |
         orderedFunc
@@ -180,7 +181,8 @@ class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
         operationString = instr.getOperationString() and
         operandsString = instr.getOperandsString() and
         columnWidths(block, resultWidth, operationWidth) and
-        result = resultString + getPaddingString(resultWidth - resultString.length()) + " = " +
+        result =
+          resultString + getPaddingString(resultWidth - resultString.length()) + " = " +
             operationString + getPaddingString(operationWidth - operationString.length()) + " : " +
             operandsString
       )
@@ -201,15 +203,13 @@ class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
 
 private predicate columnWidths(IRBlock block, int resultWidth, int operationWidth) {
   resultWidth = max(Instruction instr | instr.getBlock() = block | instr.getResultString().length()) and
-  operationWidth = max(Instruction instr |
-      instr.getBlock() = block
-    |
-      instr.getOperationString().length()
-    )
+  operationWidth =
+    max(Instruction instr | instr.getBlock() = block | instr.getOperationString().length())
 }
 
 private int maxColumnWidth() {
-  result = max(Instruction instr, int width |
+  result =
+    max(Instruction instr, int width |
       width = instr.getResultString().length() or
       width = instr.getOperationString().length() or
       width = instr.getOperandsString().length()
@@ -229,7 +229,8 @@ query predicate nodes(PrintableIRNode node, string key, string value) {
 }
 
 private int getSuccessorIndex(IRBlock pred, IRBlock succ) {
-  succ = rank[result + 1](IRBlock aSucc, EdgeKind kind |
+  succ =
+    rank[result + 1](IRBlock aSucc, EdgeKind kind |
       aSucc = pred.getSuccessor(kind)
     |
       aSucc order by kind.toString()

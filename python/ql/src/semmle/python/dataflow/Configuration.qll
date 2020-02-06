@@ -123,7 +123,7 @@ module TaintTracking {
         /* Old query API */
 
         /* deprecated */
-        predicate hasFlow(Source src, Sink sink) {
+        deprecated predicate hasFlow(Source src, Sink sink) {
             exists(PathSource psrc, PathSink psink |
                 this.hasFlowPath(psrc, psink) and
                 src = psrc.getNode().asCfgNode() and

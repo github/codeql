@@ -93,3 +93,6 @@
 | test.py:208 | List | test.py:208 | Taint sequence of simple.test | seq |
 | test.py:209 | For | test.py:209 | Taint simple.test | i |
 | test.py:213 | For | test.py:213 | Taint simple.test | x |
+| test.py:217 | SOURCE | test.py:217 | Taint simple.test | tainted |
+| test.py:223 | SOURCE | test.py:223 | Taint simple.test | tainted |
+| test.py:229 | SOURCE | test.py:229 | Taint simple.test | tainted |

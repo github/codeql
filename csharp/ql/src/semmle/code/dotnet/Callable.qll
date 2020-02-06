@@ -39,7 +39,8 @@ class Callable extends Declaration, @dotnet_callable {
   language[monotonicAggregates]
   pragma[nomagic]
   private string getMethodParamListNonGeneric() {
-    result = concat(int p |
+    result =
+      concat(int p |
         p in [0 .. this.getNumberOfParameters() - 1]
       |
         this.getParameterTypeLabelNonGeneric(p), "," order by p
@@ -55,7 +56,8 @@ class Callable extends Declaration, @dotnet_callable {
   language[monotonicAggregates]
   pragma[nomagic]
   private string getMethodParamListGeneric() {
-    result = concat(int p |
+    result =
+      concat(int p |
         p in [0 .. this.getNumberOfParameters() - 1]
       |
         this.getParameterTypeLabelGeneric(p), "," order by p
@@ -65,13 +67,15 @@ class Callable extends Declaration, @dotnet_callable {
   pragma[noinline]
   private string getLabelNonGeneric() {
     not this instanceof Generic and
-    result = this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
+    result =
+      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
         this.getUndecoratedName() + "(" + this.getMethodParamListNonGeneric() + ")"
   }
 
   pragma[noinline]
   private string getLabelGeneric() {
-    result = this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
+    result =
+      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
         this.getUndecoratedName() + getGenericsLabel(this) + "(" + this.getMethodParamListGeneric() +
         ")"
   }

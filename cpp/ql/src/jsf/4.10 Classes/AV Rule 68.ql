@@ -64,18 +64,22 @@ from ProperClass c, string msg
 where
   not definesDefaultConstructor(c) and
   not c.hasConstructor() and
-  msg = "AV Rule 68: class " + c.getName() +
+  msg =
+    "AV Rule 68: class " + c.getName() +
       " does not need a default constructor and should explicitly disallow it."
   or
   not definesCopyConstructor(c) and
-  msg = "AV Rule 68: class " + c.getName() +
+  msg =
+    "AV Rule 68: class " + c.getName() +
       " does not need a copy constructor and should explicitly disallow it."
   or
   not definesCopyAssignmentOperator(c) and
-  msg = "AV Rule 68: class " + c.getName() +
+  msg =
+    "AV Rule 68: class " + c.getName() +
       " does not need a copy assignment operator and should explicitly disallow it."
   or
   not definesDestructor(c) and
-  msg = "AV Rule 68: class " + c.getName() +
+  msg =
+    "AV Rule 68: class " + c.getName() +
       " does not need a destructor and should explicitly disallow it."
 select c, msg

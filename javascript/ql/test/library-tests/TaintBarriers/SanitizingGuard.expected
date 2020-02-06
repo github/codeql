@@ -1,7 +1,5 @@
-| tst.js:5:9:5:19 | /x/.test(v) | ExampleConfiguration | false | tst.js:5:18:5:18 | v |
-| tst.js:5:9:5:19 | /x/.test(v) | ExampleConfiguration | true | tst.js:5:18:5:18 | v |
-| tst.js:11:9:11:20 | v.match(/x/) | ExampleConfiguration | false | tst.js:11:9:11:9 | v |
-| tst.js:11:9:11:20 | v.match(/x/) | ExampleConfiguration | true | tst.js:11:9:11:9 | v |
+| tst.js:5:9:5:21 | /^x$/.test(v) | ExampleConfiguration | true | tst.js:5:20:5:20 | v |
+| tst.js:11:9:11:25 | v.match(/[^a-z]/) | ExampleConfiguration | false | tst.js:11:9:11:9 | v |
 | tst.js:23:9:23:27 | o.hasOwnProperty(v) | ExampleConfiguration | true | tst.js:23:26:23:26 | v |
 | tst.js:35:9:35:14 | v in o | ExampleConfiguration | true | tst.js:35:9:35:9 | v |
 | tst.js:47:9:47:25 | o[v] == undefined | ExampleConfiguration | false | tst.js:47:11:47:11 | v |

@@ -55,6 +55,18 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
   }
 
   override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
+  
+  /**
+  * Gets the `try` statement with a catch block containing this statement without
+  * crossing function boundaries or other `try ` statements with catch blocks.
+  */
+  TryStmt getEnclosingTryCatchStmt() {
+    getParentStmt+() = result.getBody() and
+    exists(result.getACatchClause()) and
+    not exists(TryStmt mid | exists(mid.getACatchClause()) | 
+      getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
+    )
+  }
 }
 
 /**

@@ -1,5 +1,5 @@
 const Koa = require('koa');
-const url = require('url');
+const urlLib = require('url');
 const app = new Koa();
 
 app.use(async ctx => {
@@ -7,14 +7,20 @@ app.use(async ctx => {
 	ctx.redirect(url); // NOT OK
 	ctx.redirect(`${url}${x}`); // NOT OK
 
-	var isCrossDomainRedirect = url.parse(url || '', false, true).hostname;
+	var isCrossDomainRedirect = urlLib.parse(url || '', false, true).hostname;
 	if(!url || isCrossDomainRedirect) {
 		ctx.redirect('/'); // OK
 	} else {
 		ctx.redirect(url); // NOT OK
 	}
 
-	if(!url || isCrossDomainRedirect || ! url.match(VALID)) {
+	if(!url || isCrossDomainRedirect || url.match(VALID)) {
+		ctx.redirect('/'); // OK
+	} else {
+		ctx.redirect(url); // possibly OK - flagged anyway
+	}
+
+	if(!url || isCrossDomainRedirect || url.match(/[^\w/-]/)) {
 		ctx.redirect('/'); // OK
 	} else {
 		ctx.redirect(url); // OK

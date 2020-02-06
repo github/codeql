@@ -73,21 +73,21 @@ class RegExpTerm extends Locatable, @regexpterm {
   /** Holds if this regular expression term can match the empty string. */
   predicate isNullable() { none() } // Overridden in subclasses.
 
-  /** Gets the regular expression term that is matched before this one, if any. */
+  /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
     exists(RegExpSequence seq, int i |
       seq.getChild(i) = this and
-      seq.getChild(i - getDirection()) = result
+      seq.getChild(i - 1) = result
     )
     or
     result = getParent().(RegExpTerm).getPredecessor()
   }
 
-  /** Gets the regular expression term that is matched after this one, if any. */
+  /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
     exists(RegExpSequence seq, int i |
       seq.getChild(i) = this and
-      seq.getChild(i + getDirection()) = result
+      seq.getChild(i + 1) = result
     )
     or
     exists(RegExpTerm parent |
@@ -97,12 +97,6 @@ class RegExpTerm extends Locatable, @regexpterm {
       result = parent.getSuccessor()
     )
   }
-
-  /**
-   * Gets the matching direction of this term: `1` if it is in a forward-matching
-   * context, `-1` if it is in a backward-matching context.
-   */
-  private int getDirection() { if isInBackwardMatchingContext() then result = -1 else result = 1 }
 
   /**
    * Holds if this regular term is in a forward-matching context, that is,
@@ -119,9 +113,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Holds if this is the root term of a regular expression.
    */
-  predicate isRootTerm() {
-    not getParent() instanceof RegExpTerm
-  }
+  predicate isRootTerm() { not getParent() instanceof RegExpTerm }
 
   /**
    * Gets the outermost term of this regular expression.
@@ -136,9 +128,7 @@ class RegExpTerm extends Locatable, @regexpterm {
   /**
    * Holds if this term occurs as part of a regular expression literal.
    */
-  predicate isPartOfRegExpLiteral() {
-    exists(getLiteral())
-  }
+  predicate isPartOfRegExpLiteral() { exists(getLiteral()) }
 
   /**
    * Holds if this term occurs as part of a string literal.
@@ -146,9 +136,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * This predicate holds regardless of whether the string literal is actually
    * used as a regular expression. See `isUsedAsRegExp`.
    */
-  predicate isPartOfStringLiteral() {
-    getRootTerm().getParent() instanceof StringLiteral
-  }
+  predicate isPartOfStringLiteral() { getRootTerm().getParent() instanceof StringLiteral }
 
   /**
    * Holds if this term is part of a regular expression literal, or a string literal
@@ -350,8 +338,7 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpAnchor, @regexp_caret {
-}
+class RegExpCaret extends RegExpAnchor, @regexp_caret { }
 
 /**
  * A dollar assertion `$` matching the end of a line.
@@ -362,8 +349,7 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret {
  * $
  * ```
  */
-class RegExpDollar extends RegExpAnchor, @regexp_dollar {
-}
+class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
 
 /**
  * A word boundary assertion.
@@ -778,6 +764,23 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   override string getAMatchedString() {
     not isInverted() and result = getAChild().getAMatchedString()
   }
+
+  /**
+   * Holds if this character class matches any character.
+   */
+  predicate isUniversalClass() {
+    // [^]
+    isInverted() and not exists(getAChild())
+    or
+    // [\w\W] and similar
+    not isInverted() and
+    exists(string cce1, string cce2 |
+      cce1 = getAChild().(RegExpCharacterClassEscape).getValue() and
+      cce2 = getAChild().(RegExpCharacterClassEscape).getValue()
+    |
+      cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
+    )
+  }
 }
 
 /**
@@ -813,6 +816,16 @@ class RegExpParseError extends Error, @regexp_parse_error {
 }
 
 /**
+ * Holds if `func` is a method defined on `String.prototype` with name `name`. 
+ */
+private predicate isNativeStringMethod(Function func, string name) {
+  exists(ExternalInstanceMemberDecl decl |
+    decl.hasQualifiedName("String", name) and
+    func = decl.getInit()
+  )
+}
+
+/**
  * Holds if `source` may be interpreted as a regular expression.
  */
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
@@ -822,18 +835,23 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
     // The argument of a call that coerces the argument to a regular expression.
-    exists(MethodCallExpr mce, string methodName |
+    exists(DataFlow::MethodCallNode mce, string methodName |
       mce.getReceiver().analyze().getAType() = TTString() and
-      mce.getMethodName() = methodName
+      mce.getMethodName() = methodName and
+      not exists(Function func |
+        func = mce.getACallee()
+      |
+        not isNativeStringMethod(func, methodName)
+      )
     |
-      methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
+      methodName = "match" and source = mce.getArgument(0) and mce.getNumArgument() = 1
       or
       methodName = "search" and
-      source.asExpr() = mce.getArgument(0) and
+      source = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
       // "search" is a common method name, and so we exclude chained accesses
       // because `String.prototype.search` returns a number
-      not exists(PropAccess p | p.getBase() = mce)
+      not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
     )
   )
 }
@@ -945,4 +963,132 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = asExpr().(StringLiteral).asRegExp() }
+}
+
+module RegExp {
+  /** Gets the string `"?"` used to represent a regular expression whose flags are unknown. */
+  string unknownFlag() { result = "?" }
+
+  /** Holds if `flags` includes the `m` flag. */
+  bindingset[flags]
+  predicate isMultiline(string flags) { flags.matches("%m%") }
+
+  /** Holds if `flags` includes the `g` flag. */
+  bindingset[flags]
+  predicate isGlobal(string flags) { flags.matches("%g%") }
+
+  /** Holds if `flags` includes the `i` flag. */
+  bindingset[flags]
+  predicate isIgnoreCase(string flags) { flags.matches("%i%") }
+
+  /** Holds if `flags` includes the `s` flag. */
+  bindingset[flags]
+  predicate isDotAll(string flags) { flags.matches("%s%") }
+
+  /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeMultiline(string flags) { flags = unknownFlag() or isMultiline(flags) }
+
+  /** Holds if `flags` includes the `g` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeGlobal(string flags) { flags = unknownFlag() or isGlobal(flags) }
+
+  /** Holds if `flags` includes the `i` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeIgnoreCase(string flags) { flags = unknownFlag() or isIgnoreCase(flags) }
+
+  /** Holds if `flags` includes the `s` flag or is the unknown flag `?`. */
+  bindingset[flags]
+  predicate maybeDotAll(string flags) { flags = unknownFlag() or isDotAll(flags) }
+
+  /** Holds if `term` and all of its disjuncts are anchored on both ends. */
+  predicate isFullyAnchoredTerm(RegExpTerm term) {
+    exists(RegExpSequence seq | term = seq |
+      seq.getChild(0) instanceof RegExpCaret and
+      seq.getLastChild() instanceof RegExpDollar
+    )
+    or
+    isFullyAnchoredTerm(term.(RegExpGroup).getAChild())
+    or
+    isFullyAnchoredAlt(term, term.getNumChild())
+  }
+
+  /** Holds if the first `i` disjuncts of `term` are fully anchored. */
+  private predicate isFullyAnchoredAlt(RegExpAlt term, int i) {
+    isFullyAnchoredTerm(term.getChild(0)) and i = 1
+    or
+    isFullyAnchoredAlt(term, i - 1) and
+    isFullyAnchoredTerm(term.getChild(i - 1))
+  }
+
+  /**
+   * Holds if `term` matches any character except for explicitly listed exceptions.
+   *
+   * For example, holds for `.`, `[^<>]`, or `\W`, but not for `[a-z]`, `\w`, or `[^\W\S]`.
+   */
+  predicate isWildcardLike(RegExpTerm term) {
+    term instanceof RegExpDot
+    or
+    term.(RegExpCharacterClassEscape).getValue().isUppercase()
+    or
+    // [^a-z]
+    exists(RegExpCharacterClass cls | term = cls |
+      cls.isInverted() and
+      not cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
+    )
+    or
+    // [\W]
+    exists(RegExpCharacterClass cls | term = cls |
+      not cls.isInverted() and
+      cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
+    )
+  }
+
+  /**
+   * Holds if `term` is a generic sanitizer for strings that match (if `outcome` is true)
+   * or strings that don't match (if `outcome` is false).
+   *
+   * Specifically, whitelisting regexps such as `^(foo|bar)$` sanitize matches in the true case.
+   * Inverted character classes such as `[^a-z]` or `\W` sanitize matches in the false case.
+   */
+  predicate isGenericRegExpSanitizer(RegExpTerm term, boolean outcome) {
+    term.isRootTerm() and
+    (
+      outcome = true and
+      isFullyAnchoredTerm(term) and
+      not isWildcardLike(term.getAChild*())
+      or
+      // Character set restrictions like `/[^a-z]/.test(x)` sanitize in the false case
+      outcome = false and
+      exists(RegExpTerm root |
+        root = term
+        or
+        root = term.(RegExpGroup).getAChild()
+      |
+        isWildcardLike(root)
+        or
+        isWildcardLike(root.(RegExpAlt).getAChild())
+      )
+    )
+  }
+
+  /**
+   * Gets the AST of a regular expression object that can flow to `node`.
+   */
+  RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
+    exists(DataFlow::RegExpCreationNode regexp |
+      regexp.getAReference().flowsTo(node) and
+      result = regexp.getRoot()
+    )
+  }
+
+  /**
+   * Gets the AST of a regular expression that can flow to `node`,
+   * including `RegExp` objects as well as strings interpreted as regular expressions.
+   */
+  RegExpTerm getRegExpFromNode(DataFlow::Node node) {
+    result = getRegExpObjectFromNode(node)
+    or
+    result = node.asExpr().(StringLiteral).asRegExp()
+  }
 }

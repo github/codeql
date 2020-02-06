@@ -1,9 +1,9 @@
 Crown the rightful heir
 =======================
 
-Phew! No more crimes in the village - you can finally leave the village and go home.
+Phew! No more crimes in the village—you can finally leave the village and go home.
 
-But then... During your last night in the village, the old king - the great King Basil - dies in his sleep and there is chaos everywhere!
+But then... During your last night in the village, the old king—the great King Basil—dies in his sleep and there is chaos everywhere!
 
 The king never married and he had no children, so nobody knows who should inherit the king's castle and fortune. Immediately, lots of villagers claim that they are somehow descended from the king's family and that they are the true heir. People argue and fight and the situation seems hopeless.
 
@@ -38,8 +38,8 @@ We know that the king has no children himself, but perhaps he has siblings. Writ
 .. code-block:: ql
 
    from Person p
-       where parentOf(p) = parentOf("King Basil") and
-       not p = "King Basil"
+   where parentOf(p) = parentOf("King Basil") and
+     not p = "King Basil"
    select p
 
 He does indeed have siblings! But you need to check if any of them are alive... Here is one more predicate you might need:
@@ -56,8 +56,8 @@ Use this predicate to see if the any of the king's siblings are alive.
 
    from Person p
    where parentOf(p) = parentOf("King Basil") and
-       not p = "King Basil"
-       and not p.isDeceased()
+     not p = "King Basil"
+     and not p.isDeceased()
    select p
 
 Unfortunately, none of King Basil's siblings are alive. Time to investigate further. It might be helpful to define a predicate ``childOf()`` which returns a child of the person. To do this, the ``parentOf()`` predicate can be used inside the definition of ``childOf()``. Remember that someone is a child of ``p`` if and only if ``p`` is their parent:
@@ -65,7 +65,7 @@ Unfortunately, none of King Basil's siblings are alive. Time to investigate furt
 .. code-block:: ql
 
    Person childOf(Person p) {
-       p = parentOf(result)
+     p = parentOf(result)
    }
 
 .. pull-quote::
@@ -80,7 +80,7 @@ Try to write a query to find out if any of the king's siblings have children:
 
    from Person p
    where parentOf(p) = parentOf("King Basil") and
-       not p = "King Basil"
+     not p = "King Basil"
    select childOf(p)
 
 The query returns no results, so they have no children. But perhaps King Basil has a cousin who is alive or has children, or a second cousin, or...
@@ -100,8 +100,8 @@ You can translate this into QL as follows:
 .. code-block:: ql
 
    Person ancestorOf(Person p) {
-       result = parentOf(p) or
-       result = parentOf(ancestorOf(p))
+     result = parentOf(p) or
+     result = parentOf(ancestorOf(p))
    }
 
 As you can see, you have used the predicate ``ancestorOf()`` inside its own definition. This is an example of `recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__.
@@ -120,12 +120,12 @@ Here is one way to define ``relativeOf()``:
 .. code-block:: ql
 
    Person relativeOf(Person p) {
-       parentOf*(result) = parentOf*(p)
+     parentOf*(result) = parentOf*(p)
    }
 
 Don't forget to use the predicate ``isDeceased()`` to find relatives that are still alive.
 
-➤ `See the answer in the query console <https://lgtm.com/query/2164460071/>`__
+➤ `See the answer in the query console <https://lgtm.com/query/6710025057257064639/>`__
 
 Select the true heir
 --------------------
@@ -136,9 +136,9 @@ To decide who should inherit the king's fortune, the villagers carefully read th
 
 *"The heir to the throne is the closest living relative of the king. Any person with a criminal record will not be considered. If there are multiple candidates, the oldest person is the heir."*
 
-As your final challenge, define a predicate ``criminalRecord`` so that ``criminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-thief-1>` and :doc:`Catch the fire starter <fire-1>` tutorials).
+As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-thief-1>` and :doc:`Catch the fire starter <fire-1>` tutorials).
 
-➤ `See the answer in the query console <https://lgtm.com/query/1505745996002/>`__
+➤ `See the answer in the query console <https://lgtm.com/query/1820692755164273290/>`__
 
 Experimental explorations
 -------------------------

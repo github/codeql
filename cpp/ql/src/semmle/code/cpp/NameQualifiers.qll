@@ -157,4 +157,6 @@ library class SpecialNameQualifyingElement extends NameQualifyingElement,
   @specialnamequalifyingelement {
   /** Gets the name of this special qualifying element. */
   override string getName() { specialnamequalifyingelements(underlyingElement(this), result) }
+
+  override string toString() { result = getName() }
 }

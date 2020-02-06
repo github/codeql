@@ -115,7 +115,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
                         var declaringGen = tp.TypeParameterKind == TypeParameterKind.Method ? tp.DeclaringMethod : (ISymbol)tp.DeclaringType;
-                        return Equals(declaringGen, declaringGeneric);
+                        return SymbolEqualityComparer.Default.Equals(declaringGen, declaringGeneric);
                     default:
                         return false;
                 }
@@ -373,7 +373,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         public static bool IsReallyUnbound(this INamedTypeSymbol type) =>
-            Equals(type.ConstructedFrom, type) || type.IsUnboundGenericType;
+            SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, type) || type.IsUnboundGenericType;
 
         public static bool IsReallyBound(this INamedTypeSymbol type) => !IsReallyUnbound(type);
 
@@ -413,13 +413,13 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Holds if this symbol is a source declaration.
         /// </summary>
-        public static bool IsSourceDeclaration(this ISymbol symbol) => Equals(symbol, symbol.OriginalDefinition);
+        public static bool IsSourceDeclaration(this ISymbol symbol) => SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
 
         /// <summary>
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.
@@ -477,6 +477,6 @@ namespace Semmle.Extraction.CSharp
         /// This has not yet been exposed on the public API.
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+            symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
     }
 }

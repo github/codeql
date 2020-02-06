@@ -207,8 +207,8 @@ class JacksonMixedInCallable extends Callable {
       then
         // The mixed in type will have a different name to the target type, so just compare the
         // parameters.
-        result.getSignature().suffix(targetType.getName().length()) = getSignature()
-              .suffix(getDeclaringType().getName().length())
+        result.getSignature().suffix(targetType.getName().length()) =
+          getSignature().suffix(getDeclaringType().getName().length())
       else
         // Signatures should match
         result.getSignature() = getSignature()

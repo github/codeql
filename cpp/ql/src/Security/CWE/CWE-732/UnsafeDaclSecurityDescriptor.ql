@@ -52,9 +52,8 @@ class NonNullDaclConfig extends DataFlow2::Configuration {
   NonNullDaclConfig() { this = "NonNullDaclConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.getType().getUnspecifiedType().(PointerType).getBaseType() = any(Type t |
-        t.getName() = "ACL"
-      ).getUnspecifiedType() and
+    source.getType().getUnspecifiedType().(PointerType).getBaseType() =
+      any(Type t | t.getName() = "ACL").getUnspecifiedType() and
     (
       // If the value comes from a function whose body we can't see, assume
       // it's not null.
@@ -79,7 +78,8 @@ class NonNullDaclConfig extends DataFlow2::Configuration {
 from SetSecurityDescriptorDaclFunctionCall call, string message
 where
   exists(NullValue nullExpr |
-    message = "Setting a DACL to NULL in a SECURITY_DESCRIPTOR will result in an unprotected object."
+    message =
+      "Setting a DACL to NULL in a SECURITY_DESCRIPTOR will result in an unprotected object."
   |
     call.getArgument(1).getValue().toInt() != 0 and
     call.getArgument(2) = nullExpr
@@ -89,7 +89,8 @@ where
     Expr constassign, VariableAccess var, NullDaclConfig nullDaclConfig,
     NonNullDaclConfig nonNullDaclConfig
   |
-    message = "Setting a DACL to NULL in a SECURITY_DESCRIPTOR using variable " + var +
+    message =
+      "Setting a DACL to NULL in a SECURITY_DESCRIPTOR using variable " + var +
         " that is set to NULL will result in an unprotected object."
   |
     var = call.getArgument(2) and

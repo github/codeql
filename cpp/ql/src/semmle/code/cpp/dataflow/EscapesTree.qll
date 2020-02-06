@@ -98,7 +98,8 @@ private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
-  referenceOut = any(FunctionCall call |
+  referenceOut =
+    any(FunctionCall call |
       stdIdentityFunction(call.getTarget()) and
       referenceIn = call.getArgument(0).getFullyConverted()
     )

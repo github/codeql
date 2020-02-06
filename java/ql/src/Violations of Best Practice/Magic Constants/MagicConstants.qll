@@ -308,7 +308,8 @@ predicate isNumber(Literal lit) {
 predicate magicConstant(Literal e, string msg) {
   exists(string value, int n, string context |
     firstOccurrence(e, value, context, n) and
-    msg = "Magic constant: literal '" + value + "' is used " + n.toString() + " times in calls to " +
+    msg =
+      "Magic constant: literal '" + value + "' is used " + n.toString() + " times in calls to " +
         context
   )
 }
@@ -399,8 +400,9 @@ predicate literalInsteadOfConstant(
 ) {
   exists(string context |
     canUseFieldInsteadOfLiteral(constField, magicLiteral, context) and
-    message = "Literal value '" + magicLiteral.getLiteral() + "' used " + " in a call to " + context
-        + "; consider using the defined constant $@." and
+    message =
+      "Literal value '" + magicLiteral.getLiteral() + "' used " + " in a call to " + context +
+        "; consider using the defined constant $@." and
     linkText = constField.getName() and
     (
       constField.getCompilationUnit() = magicLiteral.getCompilationUnit() or

@@ -9,6 +9,9 @@ nodes
 | etherpad.js:9:16:9:53 | req.que ... e + ")" |
 | etherpad.js:11:12:11:19 | response |
 | etherpad.js:11:12:11:19 | response |
+| exception-xss.js:190:12:190:24 | req.params.id |
+| exception-xss.js:190:12:190:24 | req.params.id |
+| exception-xss.js:190:12:190:24 | req.params.id |
 | formatting.js:4:9:4:29 | evil |
 | formatting.js:4:16:4:29 | req.query.evil |
 | formatting.js:4:16:4:29 | req.query.evil |
@@ -77,6 +80,7 @@ edges
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:53 | req.que ... e + ")" |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:53 | req.que ... e + ")" |
 | etherpad.js:9:16:9:53 | req.que ... e + ")" | etherpad.js:9:5:9:53 | response |
+| exception-xss.js:190:12:190:24 | req.params.id | exception-xss.js:190:12:190:24 | req.params.id |
 | formatting.js:4:9:4:29 | evil | formatting.js:6:43:6:46 | evil |
 | formatting.js:4:9:4:29 | evil | formatting.js:7:49:7:52 | evil |
 | formatting.js:4:16:4:29 | req.query.evil | formatting.js:4:9:4:29 | evil |
@@ -131,6 +135,7 @@ edges
 #select
 | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | ReflectedXss.js:8:33:8:45 | req.params.id | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:8:33:8:45 | req.params.id | user-provided value |
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
+| exception-xss.js:190:12:190:24 | req.params.id | exception-xss.js:190:12:190:24 | req.params.id | exception-xss.js:190:12:190:24 | req.params.id | Cross-site scripting vulnerability due to $@. | exception-xss.js:190:12:190:24 | req.params.id | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | partial.js:10:14:10:18 | x + y | partial.js:13:42:13:48 | req.url | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:13:42:13:48 | req.url | user-provided value |

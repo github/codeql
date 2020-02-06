@@ -190,7 +190,8 @@ class ProvidesDirective extends Directive, @provides {
   string getServiceImplementationName() { providesWith(this, result) }
 
   override string toString() {
-    result = "provides " + getServiceInterfaceName() + " with " +
+    result =
+      "provides " + getServiceInterfaceName() + " with " +
         concat(getServiceImplementationName(), ", ") + ";"
   }
 }

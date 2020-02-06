@@ -82,9 +82,12 @@ class RelevantDefinition extends AssignableDefinition {
     // for now
     //or
     //this.(AssignableDefinitions::OutRefDefinition).getTargetAccess().isOutArgument()
-    this.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = any(LocalVariableDeclExpr lvde |
-        lvde = any(SpecificCatchClause scc).getVariableDeclExpr() or
-        lvde = any(ForeachStmt fs).getVariableDeclExpr()
+    this.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() =
+      any(LocalVariableDeclExpr lvde |
+        lvde = any(SpecificCatchClause scc).getVariableDeclExpr()
+        or
+        lvde = any(ForeachStmt fs).getVariableDeclExpr() and
+        not lvde.getName() = "_"
       )
     or
     this instanceof AssignableDefinitions::PatternDefinition
@@ -121,7 +124,8 @@ class RelevantDefinition extends AssignableDefinition {
       or
       e instanceof NullLiteral
       or
-      e = any(Field f |
+      e =
+        any(Field f |
           f.isStatic() and
           (f.isReadOnly() or f.isConst())
         ).getAnAccess()

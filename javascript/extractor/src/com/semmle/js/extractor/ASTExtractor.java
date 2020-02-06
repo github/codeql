@@ -1,5 +1,11 @@
 package com.semmle.js.extractor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
@@ -7,6 +13,7 @@ import com.semmle.js.ast.ArrayExpression;
 import com.semmle.js.ast.ArrayPattern;
 import com.semmle.js.ast.ArrowFunctionExpression;
 import com.semmle.js.ast.AssignmentExpression;
+import com.semmle.js.ast.AssignmentPattern;
 import com.semmle.js.ast.AwaitExpression;
 import com.semmle.js.ast.BinaryExpression;
 import com.semmle.js.ast.BindExpression;
@@ -103,6 +110,7 @@ import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.ScopeManager.DeclKind;
 import com.semmle.js.extractor.ScopeManager.Scope;
+import com.semmle.js.parser.ParseError;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
 import com.semmle.ts.ast.DecoratorList;
@@ -144,11 +152,6 @@ import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -307,6 +310,7 @@ public class ASTExtractor {
     private final Platform platform;
     private final SourceType sourceType;
     private boolean isStrict;
+    private List<ParseError> additionalErrors = new ArrayList<>();
 
     public V(Platform platform, SourceType sourceType) {
       this.platform = platform;
@@ -1551,6 +1555,7 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
       visitAll(nd.getSpecifiers(), lbl);
+      emitNodeSymbol(nd, lbl);
       return lbl;
     }
 
@@ -1701,6 +1706,7 @@ public class ASTExtractor {
     public Label visit(ExternalModuleReference nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0);
+      emitNodeSymbol(nd, key);
       return key;
     }
 
@@ -2054,14 +2060,24 @@ public class ASTExtractor {
       visit(nd.getRight(), key, 1, IdContext.label);
       return key;
     }
+
+    @Override
+    public Label visit(AssignmentPattern nd, Context c) {
+      additionalErrors.add(
+          new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
+      return super.visit(nd, c);
+    }
   }
 
-  public void extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+  public List<ParseError> extract(
+      Node root, Platform platform, SourceType sourceType, int toplevelKind) {
     lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);
 
-    root.accept(new V(platform, sourceType), null);
+    V visitor = new V(platform, sourceType);
+    root.accept(visitor, null);
     lexicalExtractor.getMetrics().stopPhase(ExtractionPhase.ASTExtractor_extract);
+    return visitor.additionalErrors;
   }
 }

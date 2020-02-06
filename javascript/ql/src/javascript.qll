@@ -73,6 +73,7 @@ import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
+import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
@@ -92,8 +93,10 @@ import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.TorrentLibraries
+import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
+import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
 import semmle.javascript.linters.ESLint

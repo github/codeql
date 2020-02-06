@@ -1,12 +1,14 @@
 import csharp
 
 predicate getExpandedOperatorArgs(Expr e, Expr left, Expr right) {
-  e = any(BinaryArithmeticOperation bo |
+  e =
+    any(BinaryArithmeticOperation bo |
       bo.getLeftOperand() = left and
       bo.getRightOperand() = right
     )
   or
-  e = any(OperatorCall oc |
+  e =
+    any(OperatorCall oc |
       oc.getArgument(0) = left and
       oc.getArgument(1) = right
     )

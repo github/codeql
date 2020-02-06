@@ -129,6 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.ArrayType:
                     case SyntaxKind.PredefinedType:
                     case SyntaxKind.NullableType:
+                    case SyntaxKind.TupleType:
                         return TypeAccess.Create(info);
 
                     case SyntaxKind.TypeOfExpression:

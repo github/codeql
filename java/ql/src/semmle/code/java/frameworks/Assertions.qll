@@ -109,6 +109,6 @@ predicate assertFail(BasicBlock bb, ControlFlowNode n) {
       n = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = true))
     ) or
     exists(AssertFailMethod m | n = m.getACheck()) or
-    n.(AssertStmt).getExpr().getProperExpr().(BooleanLiteral).getBooleanValue() = false
+    n.(AssertStmt).getExpr().(BooleanLiteral).getBooleanValue() = false
   )
 }

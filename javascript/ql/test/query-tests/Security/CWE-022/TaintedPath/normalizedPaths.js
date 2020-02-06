@@ -231,3 +231,21 @@ app.get('/replace', (req, res) => {
     fs.readFileSync(path); // OK
   }
 });
+
+app.get('/resolve-path', (req, res) => {
+  let path = pathModule.resolve(req.query.path);
+
+  fs.readFileSync(path); // NOT OK
+
+  var self = something();
+	
+  if (path.substring(0, self.dir.length) === self.dir)
+    fs.readFileSync(path); // OK
+  else
+    fs.readFileSync(path); // NOT OK - wrong polarity
+
+  if (path.slice(0, self.dir.length) === self.dir)
+    fs.readFileSync(path); // OK
+  else
+    fs.readFileSync(path); // NOT OK - wrong polarity
+});

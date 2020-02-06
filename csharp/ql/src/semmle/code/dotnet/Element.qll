@@ -10,6 +10,7 @@ import semmle.code.csharp.Location
  */
 class Element extends @dotnet_element {
   /** Gets a textual representation of this element. */
+  cached
   string toString() { none() }
 
   /** Gets the location of this element. */

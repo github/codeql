@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: /langversion:8.0
 
 using System;
 using System.Threading.Tasks;
@@ -177,6 +177,15 @@ class UsingDiscard
             using(_)
             {
             }
+    }
+}
+
+class TupleMatching
+{
+    (int, object) G(object o1, object o2)
+    {
+        (object, object)? pair = (o1, o2);
+        return (0, pair is var (x, y) ? x : null);
     }
 }
 

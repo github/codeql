@@ -606,7 +606,7 @@ class SubscriptNode extends ControlFlowNode {
 
     /** DEPRECATED: Use `getObject()` instead.
      * This will be formally deprecated before the end 2018 and removed in 2019.*/
-    ControlFlowNode getValue() {
+    deprecated ControlFlowNode getValue() {
         exists(Subscript s | this.getNode() = s and s.getObject() = result.getNode() and
         result.getBasicBlock().dominates(this.getBasicBlock()))
     }

@@ -115,6 +115,23 @@ class Value extends TObject {
         or
         this instanceof AbsentModuleAttributeObjectInternal
     }
+
+    /** Whether this overrides v. In this context, "overrides" means that this object
+     *  is a named attribute of a some class C and `v` is a named attribute of another
+     *  class S, both attributes having the same name, and S is a super class of C.
+     */
+    predicate overrides(Value v) {
+        exists(ClassValue my_class, ClassValue other_class, string name |
+            my_class.declaredAttribute(name) = this and
+            other_class.declaredAttribute(name) = v and
+            my_class.getABaseType+() = other_class
+        )
+    }
+
+    /** Gets the boolean value of this value. */
+    boolean booleanValue() {
+        result = this.(ObjectInternal).booleanValue()
+    }
 }
 
 /** Class representing modules in the Python program
@@ -158,6 +175,16 @@ class ModuleValue extends Value {
     /** Whether this module is a package. */
     predicate isPackage() {
         this instanceof PackageObjectInternal
+    }
+
+    /** Whether the complete set of names "exported" by this module can be accurately determined */
+    predicate hasCompleteExportInfo() {
+        this.(ModuleObjectInternal).hasCompleteExportInfo()
+    }
+
+    /** Get a module that this module imports */
+    ModuleValue getAnImportedModule() {
+        result.importedAs(this.getScope().getAnImportedModuleName())
     }
 
 }
@@ -247,6 +274,10 @@ module Module {
         )
     }
 
+    /** Get the `ModuleValue` for the `builtin` module. */
+    ModuleValue builtinModule() {
+        result = TBuiltinModuleObject(Builtin::builtinModule())
+    }
 }
 
 module Value {
@@ -277,7 +308,7 @@ module Value {
     }
 
     /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are 
+     * There will be no `Value` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
@@ -532,6 +563,14 @@ abstract class FunctionValue extends CallableValue {
 
     /** Gets the maximum number of parameters that can be correctly passed to this function */
     abstract int maxParameters();
+
+    predicate isOverridingMethod() {
+        exists(Value f | this.overrides(f))
+    }
+
+    predicate isOverriddenMethod() {
+        exists(Value f | f.overrides(this))
+    }
 }
 
 /** Class representing Python functions */
@@ -560,6 +599,11 @@ class PythonFunctionValue extends FunctionValue {
             else
                 result = count(f.getAnArg())
         )
+    }
+
+    /** Gets a control flow node corresponding to a return statement in this function */
+    ControlFlowNode getAReturnedNode() {
+        result = this.getScope().getAReturnValueFlowNode()
     }
 
 }
@@ -636,6 +680,22 @@ class TupleValue extends SequenceValue {
 
 }
 
+/** A class representing strings, either present in the source as a literal, or
+in a builtin as a value. */
+
+class StringValue extends Value {
+    StringValue() {
+        this instanceof BytesObjectInternal or
+        this instanceof UnicodeObjectInternal
+    }
+
+    string getText() {
+        result = this.(BytesObjectInternal).strValue()
+        or
+        result = this.(UnicodeObjectInternal).strValue()
+    }
+}
+
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
 
@@ -685,6 +745,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }
 
+    /** Get the `ClassValue` for the `dict` class. */
+    ClassValue dict() {
+        result = TBuiltinClassObject(Builtin::special("dict"))
+    }
+
     /** Get the `ClassValue` for the class of Python functions. */
     ClassValue function() {
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
@@ -710,6 +775,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("float"))
     }
 
+    /** Get the `ClassValue` for the `list` class. */
+    ClassValue list() {
+        result = TBuiltinClassObject(Builtin::special("list"))
+    }
+
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
     ClassValue bytes() {
         result = TBuiltinClassObject(Builtin::special("bytes"))
@@ -719,6 +789,15 @@ module ClassValue {
      * `str` in Python 3 and `unicode` in Python 2. */
     ClassValue unicode() {
         result = TBuiltinClassObject(Builtin::special("unicode"))
+    }
+
+    /** Get the `ClassValue` for the `str` class. This is `bytes` in Python 2,
+    and `str` in Python 3. */
+    ClassValue str() {
+        if major_version() = 2 then
+           result = bytes()
+        else
+           result = unicode()
     }
 
     /** Get the `ClassValue` for the `classmethod` class. */
@@ -744,6 +823,11 @@ module ClassValue {
     /** Get the `ClassValue` for the `TypeError` class */
     ClassValue typeErrorType() {
         result = TBuiltinClassObject(Builtin::special("TypeError"))
+    }
+
+    /** Get the `ClassValue` for the `NameError` class. */
+    ClassValue nameError() {
+        result = TBuiltinClassObject(Builtin::builtin("NameError"))
     }
 
 }

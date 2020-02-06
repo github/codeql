@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.InferredTypes
 
 deprecated
 module GlobalAccessPath {
@@ -34,6 +35,24 @@ module GlobalAccessPath {
   }
 }
 
+/**
+ * Provides predicates for associating access paths with data flow nodes.
+ *
+ * For example, `AccessPath.getAReferenceTo(x)` can be used to obtain the global access path
+ * that `x` refers to, as in the following sample:
+ * ```
+ * function f() {
+ *   let v = foo.bar; // reference to 'foo.bar'
+ *   v.baz;           // reference to 'foo.bar.baz'
+ * }
+ *
+ * (function(ns) {
+ *   ns.x;            // reference to 'NS.x'
+ * })(NS = NS || {});
+ * ```
+ *
+ * A pseudo-property named `[number]` is sometimes used to represent array indices within an access path.
+ */
 module AccessPath {
   /**
    * A source node that can be the root of an access path.
@@ -81,6 +100,35 @@ module AccessPath {
   }
 
   /**
+   * Holds if `variable` is compared to the `length` property of something, indicating
+   * that, if used as a dynamic property name, it represents an array index.
+   */
+  private predicate isLikelyArrayIndex(SsaVariable variable) {
+    exists(RelationalComparison cmp, DataFlow::PropRead length, Expr lengthUse |
+      length.getPropertyName() = "length" and
+      length.flowsToExpr(lengthUse) and
+      cmp.hasOperands(variable.getAUse(), lengthUse)
+    )
+    or
+    isLikelyArrayIndex(variable.getDefinition().(SsaRefinementNode).getAnInput())
+  }
+
+  /**
+   * Holds if `prop` likely accesses a non-constant array element.
+   */
+  private predicate isLikelyDynamicArrayAccess(DataFlow::PropRead prop) {
+    // The implicit PropRead in a for-of loop is represented by its lvalue node
+    prop = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
+    or
+    // Match an index access x[i] where `i` is likely an array index variable.
+    not exists(prop.getPropertyName()) and
+    exists(SsaVariable indexVar |
+      isLikelyArrayIndex(indexVar) and
+      prop.getPropertyNameExpr() = indexVar.getAUse()
+    )
+  }
+
+  /**
    * Gets the access path relative to `root` referred to by `node`.
    *
    * This holds for direct references as well as for aliases
@@ -115,6 +163,9 @@ module AccessPath {
     not node.accessesGlobal(_) and
     exists(DataFlow::PropRead prop | node = prop |
       result = join(fromReference(prop.getBase(), root), prop.getPropertyName())
+      or
+      isLikelyDynamicArrayAccess(prop) and
+      result = join(fromReference(prop.getBase(), root), "[number]")
     )
     or
     exists(Closure::ClosureNamespaceAccess acc | node = acc |
@@ -360,5 +411,18 @@ module AccessPath {
       succ = getAReferenceTo(name) and
       isAssignedInUniqueFile(name)
     )
+  }
+
+  /**
+   * Gets a `SourceNode` that refers to the same value or access path as the given node.
+   */
+  pragma[inline]
+  DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
+    exists(DataFlow::SourceNode root, string accessPath | 
+      node = AccessPath::getAReferenceTo(root, accessPath) and 
+      result = AccessPath::getAReferenceTo(root, accessPath)
+    )
+    or
+    result = node.getALocalSource()
   }
 }

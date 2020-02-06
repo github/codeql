@@ -105,7 +105,8 @@ abstract class FunctionWithWrappers extends Function {
    * If there is more than one possible 'cause', a unique one is picked (by lexicographic order).
    */
   predicate wrapperFunction(Function func, int paramIndex, string cause) {
-    cause = min(string callChain, int depth |
+    cause =
+      min(string callChain, int depth |
         this.wrapperFunctionLimitedDepth(func, paramIndex, callChain, depth) and
         depth = min(int d | this.wrapperFunctionLimitedDepth(func, paramIndex, _, d) | d)
       |
@@ -113,7 +114,8 @@ abstract class FunctionWithWrappers extends Function {
       )
     or
     not this.wrapperFunctionLimitedDepth(func, paramIndex, _, _) and
-    cause = min(string targetCause, string possibleCause |
+    cause =
+      min(string targetCause, string possibleCause |
         this.wrapperFunctionAnyDepth(func, paramIndex, targetCause) and
         possibleCause = toCause(func, paramIndex) + ", which ends up calling " + targetCause
       |

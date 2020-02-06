@@ -11,7 +11,7 @@
 
 import cpp
 
-from LocalScopeVariable v, ControlFlowNode def, VariableAccess checked, VariableAccess unchecked
+from StackVariable v, ControlFlowNode def, VariableAccess checked, VariableAccess unchecked
 where
   checked = v.getAnAccess() and
   dereferenced(checked) and

@@ -56,3 +56,15 @@ ipcRenderer.on('reply', (event, arg) => {
 ipcRenderer.send('async', 'ping');
 
 ipcRenderer.sendSync('sync', 'ping');
+
+
+(function () {
+  let win = new BrowserWindow({ width: 800, height: 1500 })
+  win.loadURL('http://github.com');
+
+  let contents = win.webContents;
+
+  contents.on("foo", (foo) => {}).on("bar", (bar) => {});
+  contents.emit("foo", "foo");
+  contents.emit("bar", "bar");
+})();

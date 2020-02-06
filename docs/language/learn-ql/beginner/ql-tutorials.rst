@@ -16,9 +16,9 @@ some simple examples.
 
 Currently the following detective tutorials are available:
 
--  :doc:`Find the thief <find-thief-1>` - a three part mystery that introduces logical connectives, quantifiers, and aggregates
--  :doc:`Catch the fire starter <fire-1>` - an intriguing search that introduces predicates and classes
--  :doc:`Crown the rightful heir <heir>` - a detective puzzle that introduces recursion
+-  :doc:`Find the thief <find-thief-1>`—a three part mystery that introduces logical connectives, quantifiers, and aggregates
+-  :doc:`Catch the fire starter <fire-1>`—an intriguing search that introduces predicates and classes
+-  :doc:`Crown the rightful heir <heir>`—a detective puzzle that introduces recursion
 
 Further resources
 -----------------

@@ -113,9 +113,6 @@ private module ImplCommon {
       }
 
       pragma[noinline]
-      private ParameterNode getAParameter(DataFlowCallable c) { result.getEnclosingCallable() = c }
-
-      pragma[noinline]
       private predicate viableParamArg0(
         int i, ArgumentNode arg, CallContext outercc, DataFlowCall call
       ) {
@@ -123,9 +120,9 @@ private module ImplCommon {
           (
             outercc = TAnyCallContext()
             or
-            outercc = TSomeCall(getAParameter(c), _)
+            outercc = TSomeCall()
             or
-            exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
+            exists(DataFlowCall other | outercc = TSpecificCall(other) |
               recordDataFlowCallSite(other, c)
             )
           ) and
@@ -156,17 +153,17 @@ private module ImplCommon {
           viableParamArg1(p, callable, i, arg, outercc, call)
         |
           if recordDataFlowCallSite(call, callable)
-          then innercc = TSpecificCall(call, i, true)
-          else innercc = TSomeCall(p, true)
+          then innercc = TSpecificCall(call)
+          else innercc = TSomeCall()
         )
       }
 
       private CallContextCall getAValidCallContextForParameter(ParameterNode p) {
-        result = TSomeCall(p, _)
+        result = TSomeCall()
         or
-        exists(DataFlowCall call, int i, DataFlowCallable callable |
-          result = TSpecificCall(call, i, _) and
-          p.isParameterOf(callable, i) and
+        exists(DataFlowCall call, DataFlowCallable callable |
+          result = TSpecificCall(call) and
+          p.isParameterOf(callable, _) and
           recordDataFlowCallSite(call, callable)
         )
       }
@@ -360,7 +357,7 @@ private module ImplCommon {
      */
     cached
     predicate read(Node node1, Content f, Node node2) {
-      readStep(node1, f, node2) and storeStep(_, f, _)
+      readStep(node1, f, node2)
       or
       exists(DataFlowCall call, ReturnKind kind |
         read0(call, kind, node1, f) and
@@ -461,9 +458,6 @@ private module ImplCommon {
       }
 
       pragma[noinline]
-      private ParameterNode getAParameter(DataFlowCallable c) { result.getEnclosingCallable() = c }
-
-      pragma[noinline]
       private predicate viableParamArg0(
         int i, ArgumentNode arg, CallContext outercc, DataFlowCall call
       ) {
@@ -471,9 +465,9 @@ private module ImplCommon {
           (
             outercc = TAnyCallContext()
             or
-            outercc = TSomeCall(getAParameter(c), _)
+            outercc = TSomeCall()
             or
-            exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
+            exists(DataFlowCall other | outercc = TSpecificCall(other) |
               recordDataFlowCallSite(other, c)
             )
           ) and
@@ -504,17 +498,17 @@ private module ImplCommon {
           viableParamArg1(p, callable, i, arg, outercc, call)
         |
           if recordDataFlowCallSite(call, callable)
-          then innercc = TSpecificCall(call, i, true)
-          else innercc = TSomeCall(p, true)
+          then innercc = TSpecificCall(call)
+          else innercc = TSomeCall()
         )
       }
 
       private CallContextCall getAValidCallContextForParameter(ParameterNode p) {
-        result = TSomeCall(p, _)
+        result = TSomeCall()
         or
-        exists(DataFlowCall call, int i, DataFlowCallable callable |
-          result = TSpecificCall(call, i, _) and
-          p.isParameterOf(callable, i) and
+        exists(DataFlowCall call, DataFlowCallable callable |
+          result = TSpecificCall(call) and
+          p.isParameterOf(callable, _) and
           recordDataFlowCallSite(call, callable)
         )
       }
@@ -580,14 +574,6 @@ private module ImplCommon {
     }
 
     /**
-     * Holds if `call` passes an implicit or explicit instance argument, i.e., an
-     * expression that reaches a `this` parameter.
-     */
-    private predicate callHasInstanceArgument(DataFlowCall call) {
-      exists(ArgumentNode arg | arg.argumentOf(call, -1))
-    }
-
-    /**
      * Holds if the call context `call` either improves virtual dispatch in
      * `callable` or if it allows us to prune unreachable nodes in `callable`.
      */
@@ -601,16 +587,8 @@ private module ImplCommon {
     cached
     newtype TCallContext =
       TAnyCallContext() or
-      TSpecificCall(DataFlowCall call, int i, boolean emptyAp) {
-        recordDataFlowCallSite(call, _) and
-        (emptyAp = true or emptyAp = false) and
-        (
-          exists(call.getArgument(i))
-          or
-          i = -1 and callHasInstanceArgument(call)
-        )
-      } or
-      TSomeCall(ParameterNode p, boolean emptyAp) { emptyAp = true or emptyAp = false } or
+      TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
+      TSomeCall() or
       TReturn(DataFlowCallable c, DataFlowCall call) { reducedViableImplInReturn(c, call) }
 
     cached
@@ -635,11 +613,11 @@ private module ImplCommon {
    *
    * There are four cases:
    * - `TAnyCallContext()` : No restrictions on method flow.
-   * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
-   *    parameter at the given `call`. This call improves the set of viable
+   * - `TSpecificCall(DataFlowCall call)` : Flow entered through the
+   *    given `call`. This call improves the set of viable
    *    dispatch targets for at least one method call in the current callable
    *    or helps prune unreachable nodes in the current callable.
-   * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
+   * - `TSomeCall()` : Flow entered through a parameter. The
    *    originating call does not improve the set of dispatch targets for any
    *    method call in the current callable and was therefore not recorded.
    * - `TReturn(Callable c, DataFlowCall call)` : Flow reached `call` from `c` and
@@ -663,23 +641,21 @@ private module ImplCommon {
 
   class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     override string toString() {
-      exists(DataFlowCall call, int i | this = TSpecificCall(call, i, _) |
-        result = "CcCall(" + call + ", " + i + ")"
-      )
+      exists(DataFlowCall call | this = TSpecificCall(call) | result = "CcCall(" + call + ")")
     }
 
     override predicate relevantFor(DataFlowCallable callable) {
       recordDataFlowCallSite(getCall(), callable)
     }
 
-    DataFlowCall getCall() { this = TSpecificCall(result, _, _) }
+    DataFlowCall getCall() { this = TSpecificCall(result) }
   }
 
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
     override predicate relevantFor(DataFlowCallable callable) {
-      exists(ParameterNode p | this = TSomeCall(p, _) and p.getEnclosingCallable() = callable)
+      exists(ParameterNode p | p.getEnclosingCallable() = callable)
     }
   }
 
@@ -848,7 +824,7 @@ private module ImplCommon {
 
   bindingset[call, cc]
   DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-    exists(DataFlowCall ctx | cc = TSpecificCall(ctx, _, _) |
+    exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
       if reducedViableImplInCallContext(call, _, ctx)
       then result = prunedViableImplInCallContext(call, ctx)
       else result = viableCallable(call)
@@ -859,6 +835,76 @@ private module ImplCommon {
     result = viableCallable(call) and cc instanceof CallContextAny
     or
     result = viableCallable(call) and cc instanceof CallContextReturn
+  }
+
+  newtype TSummary =
+    TSummaryVal() or
+    TSummaryTaint() or
+    TSummaryReadVal(Content f) or
+    TSummaryReadTaint(Content f) or
+    TSummaryTaintStore(Content f)
+
+  /**
+   * A summary of flow through a callable. This can either be value-preserving
+   * if no additional steps are used, taint-flow if at least one additional step
+   * is used, or any one of those combined with a store or a read. Summaries
+   * recorded at a return node are restricted to include at least one additional
+   * step, as the value-based summaries are calculated independent of the
+   * configuration.
+   */
+  class Summary extends TSummary {
+    string toString() {
+      result = "Val" and this = TSummaryVal()
+      or
+      result = "Taint" and this = TSummaryTaint()
+      or
+      exists(Content f |
+        result = "ReadVal " + f.toString() and this = TSummaryReadVal(f)
+        or
+        result = "ReadTaint " + f.toString() and this = TSummaryReadTaint(f)
+        or
+        result = "TaintStore " + f.toString() and this = TSummaryTaintStore(f)
+      )
+    }
+
+    /** Gets the summary that results from extending this with an additional step. */
+    Summary additionalStep() {
+      this = TSummaryVal() and result = TSummaryTaint()
+      or
+      this = TSummaryTaint() and result = TSummaryTaint()
+      or
+      exists(Content f | this = TSummaryReadVal(f) and result = TSummaryReadTaint(f))
+      or
+      exists(Content f | this = TSummaryReadTaint(f) and result = TSummaryReadTaint(f))
+    }
+
+    /** Gets the summary that results from extending this with a read. */
+    Summary readStep(Content f) { this = TSummaryVal() and result = TSummaryReadVal(f) }
+
+    /** Gets the summary that results from extending this with a store. */
+    Summary storeStep(Content f) { this = TSummaryTaint() and result = TSummaryTaintStore(f) }
+
+    /** Gets the summary that results from extending this with `step`. */
+    bindingset[this, step]
+    Summary compose(Summary step) {
+      this = TSummaryVal() and result = step
+      or
+      this = TSummaryTaint() and
+      (step = TSummaryTaint() or step = TSummaryTaintStore(_)) and
+      result = step
+      or
+      exists(Content f |
+        this = TSummaryReadVal(f) and step = TSummaryTaint() and result = TSummaryReadTaint(f)
+      )
+      or
+      this = TSummaryReadTaint(_) and step = TSummaryTaint() and result = this
+    }
+
+    /** Holds if this summary does not include any taint steps. */
+    predicate isPartial() {
+      this = TSummaryVal() or
+      this = TSummaryReadVal(_)
+    }
   }
 
   pragma[noinline]

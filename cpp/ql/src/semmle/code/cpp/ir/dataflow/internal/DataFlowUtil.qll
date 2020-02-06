@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A newtype wrapper to prevent accidental casts between `Node` and
@@ -55,14 +56,19 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
 
+  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
 
   /**
+   * DEPRECATED: See UninitializedNode.
+   *
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { result = instr.(UninitializedInstruction).getLocalVariable() }
+  LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -140,15 +146,19 @@ private class ThisParameterNode extends Node {
 }
 
 /**
+ * DEPRECATED: Data flow was never an accurate way to determine what
+ * expressions might be uninitialized. It errs on the side of saying that
+ * everything is uninitialized, and this is even worse in the IR because the IR
+ * doesn't use syntactic hints to rule out variables that are definitely
+ * initialized.
+ *
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
-class UninitializedNode extends Node {
-  override UninitializedInstruction instr;
+deprecated class UninitializedNode extends Node {
+  UninitializedNode() { none() }
 
-  LocalVariable getLocalVariable() { result = instr.getLocalVariable() }
-
-  override string toString() { result = this.getLocalVariable().toString() }
+  LocalVariable getLocalVariable() { none() }
 }
 
 /**
@@ -174,9 +184,48 @@ abstract class PostUpdateNode extends Node {
 }
 
 /**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x` and its
+ * `getVariableAccess()` equal to `x`.
+ */
+class DefinitionByReferenceNode extends Node {
+  override WriteSideEffectInstruction instr;
+
+  /** Gets the argument corresponding to this node. */
+  Expr getArgument() {
+    result =
+      instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getPositionalArgument(instr.getIndex())
+          .getUnconvertedResultExpression()
+    or
+    result =
+      instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getThisArgument()
+          .getUnconvertedResultExpression() and
+    instr.getIndex() = -1
+  }
+
+  /** Gets the parameter through which this value is assigned. */
+  Parameter getParameter() {
+    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
+  }
+}
+
+/**
  * Gets the node corresponding to `instr`.
  */
 Node instructionNode(Instruction instr) { result.asInstruction() = instr }
+
+DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
  * Gets a `Node` corresponding to `e` or any of its conversions. There is no
@@ -218,11 +267,74 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = iFrom or
-  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom or
+  iTo.(CopyInstruction).getSourceValue() = iFrom
+  or
+  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom or
+  iTo.(ConvertInstruction).getUnary() = iFrom
+  or
+  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+  or
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  or
+  // A chi instruction represents a point where a new value (the _partial_
+  // operand) may overwrite an old value (the _total_ operand), but the alias
+  // analysis couldn't determine that it surely will overwrite every bit of it or
+  // that it surely will overwrite no bit of it.
+  //
+  // By allowing flow through the total operand, we ensure that flow is not lost
+  // due to shortcomings of the alias analysis. We may get false flow in cases
+  // where the data is indeed overwritten.
+  //
+  // Flow through the partial operand belongs in the taint-tracking libraries
+  // for now.
+  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  // Flow through modeled functions
+  modelFlow(iFrom, iTo)
+}
+
+private predicate modelFlow(Instruction iFrom, Instruction iTo) {
+  exists(
+    CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
+  |
+    call.getStaticCallTarget() = func and
+    func.hasDataFlow(modelIn, modelOut)
+  |
+    (
+      modelOut.isReturnValue() and
+      iTo = call
+      or
+      // TODO: Add write side effects for return values
+      modelOut.isReturnValueDeref() and
+      iTo = call
+      or
+      exists(WriteSideEffectInstruction outNode |
+        modelOut.isParameterDeref(outNode.getIndex()) and
+        iTo = outNode and
+        outNode.getPrimaryInstruction() = call
+      )
+      // TODO: add write side effects for qualifiers
+    ) and
+    (
+      exists(int index |
+        modelIn.isParameter(index) and
+        iFrom = call.getPositionalArgument(index)
+      )
+      or
+      exists(int index, ReadSideEffectInstruction read |
+        modelIn.isParameterDeref(index) and
+        read.getIndex() = index and
+        read.getPrimaryInstruction() = call and
+        iFrom = read.getSideEffectOperand().getAnyDef()
+      )
+      or
+      modelIn.isQualifierAddress() and
+      iFrom = call.getThisArgument()
+      // TODO: add read side effects for qualifiers
+    )
+  )
 }
 
 /**

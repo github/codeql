@@ -21,7 +21,8 @@ private predicate addressConstantVariable(Variable v) {
  * expression_.
  */
 private predicate constantAddressLValue(Expr lvalue) {
-  lvalue.(VariableAccess).getTarget() = any(Variable v |
+  lvalue.(VariableAccess).getTarget() =
+    any(Variable v |
       v.(Variable).isStatic()
       or
       v instanceof GlobalOrNamespaceVariable
@@ -118,7 +119,8 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
 }
 
 private predicate pointerToLvalueStep(Expr pointerIn, Expr lvalueOut) {
-  lvalueOut = any(ArrayExpr ae |
+  lvalueOut =
+    any(ArrayExpr ae |
       pointerIn = ae.getArrayBase().getFullyConverted() and
       hasConstantValue(ae.getArrayOffset().getFullyConverted())
     )
@@ -152,7 +154,8 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   or
   pointerIn.getConversion() = pointerOut.(ParenthesisExpr)
   or
-  pointerOut = any(ConditionalExpr cond |
+  pointerOut =
+    any(ConditionalExpr cond |
       cond.getCondition().getFullyConverted().getValue().toInt() != 0 and
       pointerIn = cond.getThen().getFullyConverted()
       or
@@ -162,7 +165,8 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   or
   // The comma operator is allowed by C++17 but disallowed by C99. This
   // disjunct is a compromise that's chosen for being easy to implement.
-  pointerOut = any(CommaExpr comma |
+  pointerOut =
+    any(CommaExpr comma |
       hasConstantValue(comma.getLeftOperand()) and
       pointerIn = comma.getRightOperand().getFullyConverted()
     )

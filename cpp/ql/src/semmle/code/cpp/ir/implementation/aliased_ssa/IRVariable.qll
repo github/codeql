@@ -161,7 +161,8 @@ class IRGeneratedVariable extends IRVariable {
   override string getUniqueId() { none() }
 
   final string getLocationString() {
-    result = ast.getLocation().getStartLine().toString() + ":" +
+    result =
+      ast.getLocation().getStartLine().toString() + ":" +
         ast.getLocation().getStartColumn().toString()
   }
 

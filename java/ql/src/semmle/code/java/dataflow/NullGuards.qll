@@ -11,7 +11,6 @@ private import IntegerGuards
 /** Gets an expression that is always `null`. */
 Expr alwaysNullExpr() {
   result instanceof NullLiteral or
-  result.(ParExpr).getExpr() = alwaysNullExpr() or
   result.(CastExpr).getExpr() = alwaysNullExpr()
 }
 
@@ -60,8 +59,6 @@ Expr clearlyNotNullExpr(Expr reason) {
     reason = result
   )
   or
-  result.(ParExpr).getExpr() = clearlyNotNullExpr(reason)
-  or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
@@ -100,6 +97,12 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
   exists(SsaVariable captured |
     v.(SsaImplicitInit).captures(captured) and
     clearlyNotNull(captured, reason)
+  )
+  or
+  exists(Field f |
+    v.getSourceVariable().getVariable() = f and
+    f.isFinal() and
+    f.getInitializer() = clearlyNotNullExpr(reason)
   )
 }
 

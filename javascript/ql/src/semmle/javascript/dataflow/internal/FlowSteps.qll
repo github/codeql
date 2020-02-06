@@ -66,19 +66,7 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
     or
     DataFlow::exceptionalInvocationReturnNode(pred, expr)
   |
-    // Propagate out of enclosing function.
-    not exists(getEnclosingTryStmt(expr.getEnclosingStmt())) and
-    exists(Function f |
-      f = expr.getEnclosingFunction() and
-      DataFlow::exceptionalFunctionReturnNode(succ, f)
-    )
-    or
-    // Propagate to enclosing try/catch.
-    // To avoid false flow, we only propagate to an unguarded catch clause.
-    exists(TryStmt try |
-      try = getEnclosingTryStmt(expr.getEnclosingStmt()) and
-      DataFlow::parameterNode(succ, try.getCatchClause().getAParameter())
-    )
+    succ = expr.getExceptionTarget()
   )
 }
 
@@ -155,19 +143,6 @@ private module CachedSteps {
    */
   cached
   predicate callStep(DataFlow::Node pred, DataFlow::Node succ) { argumentPassing(_, pred, _, succ) }
-
-  /**
-   * Gets the `try` statement containing `stmt` without crossing function boundaries
-   * or other `try ` statements.
-   */
-  cached
-  TryStmt getEnclosingTryStmt(Stmt stmt) {
-    result.getBody() = stmt
-    or
-    not stmt instanceof Function and
-    not stmt = any(TryStmt try).getBody() and
-    result = getEnclosingTryStmt(stmt.getParentStmt())
-  }
 
   /**
    * Holds if there is a flow step from `pred` to `succ` through:
@@ -322,6 +297,7 @@ private module CachedSteps {
    * }
    *
    * f(arg, cb);
+   * ```
    *
    * This is an over-approximation of a possible data flow step through a callback
    * invocation.

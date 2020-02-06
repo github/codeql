@@ -15,7 +15,8 @@ import csharp
 
 from SourceFile f, int n
 where
-  n = count(CommentLine line |
+  n =
+    count(CommentLine line |
       exists(CommentBlock block |
         block.getLocation().getFile() = f and
         line = block.getAProbableCodeLine()

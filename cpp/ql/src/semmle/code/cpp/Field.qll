@@ -66,9 +66,8 @@ class Field extends MemberVariable {
   final int getInitializationOrder() {
     exists(Class cls, int memberIndex |
       this = cls.getCanonicalMember(memberIndex) and
-      memberIndex = rank[result + 1](int index |
-          cls.getCanonicalMember(index).(Field).isInitializable()
-        )
+      memberIndex =
+        rank[result + 1](int index | cls.getCanonicalMember(index).(Field).isInitializable())
     )
   }
 }

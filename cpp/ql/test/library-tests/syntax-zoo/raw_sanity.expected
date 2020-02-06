@@ -51,7 +51,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
 | condition_decls.cpp:16:19:16:20 | IndirectMayWriteSideEffect: call to BoxedInt |
@@ -70,7 +70,7 @@ instructionWithoutSuccessor
 | misc.c:174:17:174:22 | CallSideEffect: call to getInt |
 | misc.c:174:30:174:35 | CallSideEffect: call to getInt |
 | misc.c:174:55:174:60 | Store: (char ****)... |
-| misc.c:219:47:219:48 | InitializeParameter: sp |
+| misc.c:219:47:219:48 | InitializeIndirection: sp |
 | misc.c:221:10:221:10 | Store: 1 |
 | misc.c:222:10:222:10 | Store: 2 |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
@@ -108,7 +108,7 @@ instructionWithoutSuccessor
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:5:16:5:19 | Load: argc |
-| vla.c:5:22:5:25 | CallReadSideEffect: call to atoi |
+| vla.c:5:27:5:33 | BufferReadSideEffect: (const char *)... |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
 | vla.c:12:33:12:44 | Add: ... + ... |
 | vla.c:12:50:12:62 | Mul: ... * ... |
@@ -638,10 +638,13 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
+| misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
 | pointer_to_member.cpp:36:11:36:30 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | pointer_to_member.cpp:36:13:36:19 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | pointer_to_member.cpp:36:22:36:28 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | pointer_to_member.cpp:32:6:32:14 | IR: pmIsConst | void pmIsConst() |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |
+| vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

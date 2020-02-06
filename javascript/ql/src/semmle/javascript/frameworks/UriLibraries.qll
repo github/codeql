@@ -401,4 +401,33 @@ private module ClosureLibraryUri {
       succ = uri
     }
   }
+
+  /**
+   * Provides classes for working with [path](https://nodejs.org/api/path.html) code.
+   */
+  module path {
+    /**
+     * A taint step in the path module.
+     */
+    private class Step extends UriLibraryStep, DataFlow::CallNode {
+      DataFlow::Node src;
+
+      Step() {
+        exists(DataFlow::SourceNode ref |
+          ref = NodeJSLib::Path::moduleMember("parse") or
+          // a ponyfill: https://www.npmjs.com/package/path-parse
+          ref = DataFlow::moduleImport("path-parse") or
+          ref = DataFlow::moduleMember("path-parse", "posix") or
+          ref = DataFlow::moduleMember("path-parse", "win32")
+        |
+          this = ref.getACall() and
+          src = getAnArgument()
+        )
+      }
+
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = src and succ = this
+      }
+    }
+  }
 }

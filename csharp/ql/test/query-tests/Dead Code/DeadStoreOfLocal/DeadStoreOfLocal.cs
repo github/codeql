@@ -259,7 +259,7 @@ public class Captured
         fn(() =>
         {
             var x = y;  // BAD: Dead store in lambda
-        return 0;
+            return 0;
         });
     }
 
@@ -423,5 +423,16 @@ class Finally
             i = 1; // GOOD
         }
         return i;
+    }
+}
+
+public static class AnonymousVariable
+{
+    public static int Count<T>(this IEnumerable<T> items)
+    {
+        int count = 0;
+        foreach (var _ in items) // GOOD
+            count++;
+        return count;
     }
 }

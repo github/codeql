@@ -23,7 +23,7 @@ private class WalkFileNameSource extends FileNameSource {
     exists(DataFlow::FunctionNode callback |
       callback = DataFlow::moduleMember("walk", "walk")
             .getACall()
-            .getAMethodCall("on")
+            .getAMethodCall(EventEmitter::on())
             .getCallback(1)
     |
       this = callback.getParameter(1).getAPropertyRead("name")
@@ -97,7 +97,7 @@ private class FastGlobFileNameSource extends FileNameSource {
       // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
       this = DataFlow::moduleMember(moduleName, "stream")
             .getACall()
-            .getAMethodCall("on")
+            .getAMethodCall(EventEmitter::on())
             .getCallback(1)
             .getParameter(0)
     )

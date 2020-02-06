@@ -52,8 +52,8 @@ module UserControlledBypassOfSensitiveMethod {
   /** The result of a reverse dns may be user-controlled. */
   class ReverseDnsSource extends Source {
     ReverseDnsSource() {
-      this.asExpr().(MethodCall).getTarget() = any(SystemNetDnsClass dns)
-            .getGetHostByAddressMethod()
+      this.asExpr().(MethodCall).getTarget() =
+        any(SystemNetDnsClass dns).getGetHostByAddressMethod()
     }
   }
 

@@ -7,5 +7,5 @@ import semmle.python.security.strings.Untrusted
 
 
 from TaintSink sink, TaintKind kind
-where sink.sinks(kind) and sink.getLocation().getFile().getName().matches("%test.py")
+where sink.sinks(kind) and sink.getLocation().getFile().getShortName() = "test.py"
 select sink.getLocation().toString(), sink.(ControlFlowNode).getNode().toString(), kind

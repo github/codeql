@@ -44,4 +44,13 @@ public class A {
     }
     return null;
   }
+
+  private final Object finalObj = new Object();
+
+  public void ex12() {
+    finalObj.hashCode();
+    if (finalObj != null) { // Useless check
+      finalObj.hashCode();
+    }
+  }
 }

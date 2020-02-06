@@ -23,7 +23,8 @@ class IndexGuard extends ComparisonTest {
 
   IndexGuard() {
     this.getFirstArgument() = indexAccess and
-    this.getSecondArgument() = any(PropertyAccess lengthAccess |
+    this.getSecondArgument() =
+      any(PropertyAccess lengthAccess |
         lengthAccess.getQualifier() = array.getAnAccess() and
         lengthAccess.getTarget().hasName("Length")
       )

@@ -256,9 +256,12 @@ private predicate taintPreservingQualifierToArgument(Method m, int arg) {
   m.hasName("writeTo") and
   arg = 0
   or
-  m.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
-  m.hasName("read") and
-  arg = 0
+  exists(Method read |
+    m.overrides*(read) and
+    read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
+    read.hasName("read") and
+    arg = 0
+  )
   or
   m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
   m.hasName("read") and
@@ -515,9 +518,12 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * `arg` is the index of the argument.
  */
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  method.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-  method.hasName("write") and
-  arg = 0
+  exists(Method write |
+    method.overrides*(write) and
+    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream") and
+    write.hasName("write") and
+    arg = 0
+  )
 }
 
 /** A comparison or equality test with a constant. */

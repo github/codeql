@@ -15,7 +15,8 @@ import cpp
 from File f, int n
 where
   f.fromSource() and
-  n = count(Comment c |
+  n =
+    count(Comment c |
       c.getFile() = f and
       (
         c.getContents().matches("%TODO%") or

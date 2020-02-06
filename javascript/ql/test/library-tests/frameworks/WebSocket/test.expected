@@ -1,0 +1,22 @@
+clientSocket
+| browser.js:2:17:2:52 | new Web ... :8080') |
+| client.js:4:13:4:45 | new Web ... e.org') |
+clientSend
+| browser.js:5:6:5:36 | socket. ... wser!') |
+| client.js:7:5:7:30 | ws.send ... ient!') |
+clientReceive
+| browser.js:8:37:10:2 | functio ... ta);\\n\\t} |
+| browser.js:12:21:14:5 | functio ... )\\n    } |
+| client.js:10:19:12:2 | functio ... ta);\\n\\t} |
+serverSocket
+| server.js:6:43:6:44 | ws |
+serverSend
+| server.js:11:5:11:30 | ws.send ... rver!') |
+serverReceive
+| server.js:7:5:9:6 | ws.on(' ... \\n  \\t\\t}) |
+taintStep
+| browser.js:5:18:5:35 | 'Hi from browser!' | server.js:7:40:7:46 | message |
+| client.js:7:13:7:29 | 'Hi from client!' | server.js:7:40:7:46 | message |
+| server.js:11:13:11:29 | 'Hi from server!' | browser.js:9:42:9:51 | event.data |
+| server.js:11:13:11:29 | 'Hi from server!' | browser.js:13:44:13:53 | event.data |
+| server.js:11:13:11:29 | 'Hi from server!' | client.js:10:37:10:40 | data |

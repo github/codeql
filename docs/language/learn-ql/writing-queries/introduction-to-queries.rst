@@ -136,7 +136,7 @@ When you write a custom query, we also recommend that you write a query help fil
 What next?
 ==========
 
-- See the queries used in real-life variant analysis on the `Semmle blog <https://blog.semmle.com/tags/variant-analysis>`__.
+- See the queries used in real-life variant analysis on the `GitHub Security Lab website <https://securitylab.github.com/research>`__.
 - To learn more about writing path queries, see :doc:`Constructing path queries <path-queries>`.
 - Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in CodeQL.
 - Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.

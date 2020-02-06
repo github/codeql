@@ -1,9 +1,10 @@
 import semmle.code.cpp.models.interfaces.FormattingFunction
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-class Printf extends FormattingFunction {
+class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
@@ -22,6 +23,12 @@ class Printf extends FormattingFunction {
     hasGlobalOrStdName("wprintf") or
     hasGlobalName("wprintf_s")
   }
+
+  override predicate parameterNeverEscapes(int n) { n = 0 }
+
+  override predicate parameterEscapesOnlyViaReturn(int n) { none() }
+
+  override predicate parameterIsAlwaysReturned(int n) { none() }
 }
 
 /**

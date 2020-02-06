@@ -8,19 +8,6 @@ def test_json():
     b = a.get("y")
     c = b["z"]
 
-def test_list(x, y, z):
-    tainted_list = TAINTED_LIST
-    a = tainted_list[0]
-    b = tainted_list[x]
-    c = tainted_list[y:z]
-    d = tainted_list.copy()
-
-def test_dict(x):
-    tainted_dict = TAINTED_DICT
-    a = tainted_dict["name"]
-    b = tainted_dict[x]
-    c = tainted_dict.copy()
-
 def test_str():
     tainted_string = TAINTED
     a = tainted_string.ljust(8)
