@@ -167,6 +167,10 @@ func main() {
 		log.Println("Found glide.yaml, enabling go modules")
 	}
 
+	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
+	// skip the dependency installation step and run the extractor with `-mod=vendor`
+	hasVendor := fileExists("vendor/modules.txt")
+
 	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
 	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
 		inLGTM = true
@@ -274,7 +278,7 @@ func main() {
 	// check whether an explicit dependency installation command was provided
 	inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
 	var install *exec.Cmd
-	if inst == "" {
+	if inst == "" && !hasVendor {
 		// if there is a build file, run the corresponding build tool
 		buildSucceeded := tryBuild("Makefile", "make") ||
 			tryBuild("makefile", "make") ||
@@ -329,7 +333,7 @@ func main() {
 				log.Println("Installing dependencies using `go get -v ./...`.")
 			}
 		}
-	} else {
+	} else if inst != "" {
 		// write custom build commands into a script, then run it
 		var (
 			ext    = ""
@@ -382,7 +386,13 @@ func main() {
 	}
 	log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
 
-	cmd := exec.Command(extractor, "./...")
+	var cmd *exec.Cmd
+	// check for `vendor/modules.txt` and not just `vendor` in order to distinguish non-go vendor dirs
+	if depMode == GoGetWithModules && hasVendor {
+		cmd = exec.Command(extractor, "-mod=vendor", "./...")
+	} else {
+		cmd = exec.Command(extractor, "./...")
+	}
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
