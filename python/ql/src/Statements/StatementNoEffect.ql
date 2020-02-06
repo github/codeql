@@ -14,8 +14,7 @@
 import python
 
 predicate understood_attribute(Attribute attr, ClassObject cls, ClassObject attr_cls) {
-    exists(string name |
-        attr.getName() = name |
+    exists(string name | attr.getName() = name |
         attr.getObject().refersTo(_, cls, _) and
         cls.attributeRefersTo(name, _, attr_cls, _)
     )
@@ -37,15 +36,19 @@ predicate maybe_side_effecting_attribute(Attribute attr) {
 
 predicate side_effecting_descriptor_type(ClassObject descriptor) {
     descriptor.isDescriptorType() and
-    /* Technically all descriptor gets have side effects, 
-     * but some are indicative of a missing call and 
-     * we want to treat them as having no effect. */
-   not descriptor = thePyFunctionType() and
-   not descriptor = theStaticMethodType() and
-   not descriptor = theClassMethodType()
+    /*
+     * Technically all descriptor gets have side effects,
+     * but some are indicative of a missing call and
+     * we want to treat them as having no effect.
+     */
+
+    not descriptor = thePyFunctionType() and
+    not descriptor = theStaticMethodType() and
+    not descriptor = theClassMethodType()
 }
 
-/** Side effecting binary operators are rare, so we assume they are not
+/**
+ * Side effecting binary operators are rare, so we assume they are not
  * side-effecting unless we know otherwise.
  */
 predicate side_effecting_binary(Expr b) {
@@ -53,20 +56,22 @@ predicate side_effecting_binary(Expr b) {
         binary_operator_special_method(b, sub, cls, method_name)
         or
         comparison_special_method(b, sub, cls, method_name)
-        |
+    |
         method_name = special_method() and
-        cls.hasAttribute(method_name)
-        and
+        cls.hasAttribute(method_name) and
         not exists(ClassObject declaring |
-            declaring.declaresAttribute(method_name)
-            and declaring = cls.getAnImproperSuperType() and
-            declaring.isBuiltin() and not declaring = theObjectType()
+            declaring.declaresAttribute(method_name) and
+            declaring = cls.getAnImproperSuperType() and
+            declaring.isBuiltin() and
+            not declaring = theObjectType()
         )
     )
 }
 
 pragma[nomagic]
-private predicate binary_operator_special_method(BinaryExpr b, Expr sub, ClassObject cls, string method_name) {
+private predicate binary_operator_special_method(
+    BinaryExpr b, Expr sub, ClassObject cls, string method_name
+) {
     method_name = special_method() and
     sub = b.getLeft() and
     method_name = b.getOp().getSpecialMethodName() and
@@ -89,19 +94,17 @@ private string special_method() {
 }
 
 predicate is_notebook(File f) {
-    exists(Comment c |
-        c.getLocation().getFile() = f |
+    exists(Comment c | c.getLocation().getFile() = f |
         c.getText().regexpMatch("#\\s*<nbformat>.+</nbformat>\\s*")
     )
 }
 
 /** Expression (statement) in a jupyter/ipython notebook */
-predicate in_notebook(Expr e) {
-    is_notebook(e.getScope().(Module).getFile())
-}
+predicate in_notebook(Expr e) { is_notebook(e.getScope().(Module).getFile()) }
 
 FunctionObject assertRaises() {
-    result = ModuleObject::named("unittest").attr("TestCase").(ClassObject).lookupAttribute("assertRaises")
+    result =
+        ModuleObject::named("unittest").attr("TestCase").(ClassObject).lookupAttribute("assertRaises")
 }
 
 /** Holds if expression `e` is in a `with` block that tests for exceptions being raised. */
@@ -122,13 +125,10 @@ predicate python2_print(Expr e) {
 
 predicate no_effect(Expr e) {
     not e instanceof StrConst and
-    not ((StrConst)e).isDocString() and
+    not e.(StrConst).isDocString() and
     not e.hasSideEffects() and
-    forall(Expr sub |
-        sub = e.getASubExpression*()
-        |
-        not side_effecting_binary(sub)
-        and
+    forall(Expr sub | sub = e.getASubExpression*() |
+        not side_effecting_binary(sub) and
         not maybe_side_effecting_attribute(sub)
     ) and
     not in_notebook(e) and
@@ -139,4 +139,3 @@ predicate no_effect(Expr e) {
 from ExprStmt stmt
 where no_effect(stmt.getValue())
 select stmt, "This statement has no effect."
-
