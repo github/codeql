@@ -74,3 +74,15 @@ function phi2() {
   }
   sink(x); // NOT OK
 }
+
+function falsy() {
+  let x = source();
+  
+  sink(x); // NOT OK
+  
+  if (x) {
+    sink(x); // NOT OK
+  } else {
+	sink(x); // OK
+  }
+}
