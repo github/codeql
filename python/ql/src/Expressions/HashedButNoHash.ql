@@ -69,7 +69,7 @@ predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origi
 predicate typeerror_is_caught(ControlFlowNode f) {
     exists (Try try |
         try.getBody().contains(f.getNode()) and
-        try.getAHandler().getType().refersTo(theTypeErrorType()))
+        try.getAHandler().getType().pointsTo(ClassValue::typeErrorType()))
 }
 
 from ControlFlowNode f, ClassValue c, ControlFlowNode origin

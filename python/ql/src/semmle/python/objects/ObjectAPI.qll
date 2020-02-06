@@ -740,5 +740,10 @@ module ClassValue {
     ClassValue nonetype() {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
+    
+    /** Get the `ClassValue` for the `TypeError` class */
+    ClassValue typeErrorType() {
+        result = TBuiltinClassObject(Builtin::special("TypeError"))
+    }
 
 }
