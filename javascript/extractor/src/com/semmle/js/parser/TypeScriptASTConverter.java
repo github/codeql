@@ -336,7 +336,11 @@ public class TypeScriptASTConverter {
   private Node convertNodeUntyped(JsonObject node, String defaultKind) throws ParseError {
     String kind = getKind(node);
     if (kind == null) kind = defaultKind;
-    if (kind == null) kind = "Identifier";
+    if (kind == null) {
+      // Identifiers and PrivateIdentifiers do not have a "kind" property like other nodes.
+      // Since we encode identifiers and private identifiers the same, default to Identifier.
+      kind = "Identifier";
+    }
     SourceLocation loc = getSourceLocation(node);
     switch (kind) {
       case "AnyKeyword":
@@ -443,6 +447,7 @@ public class TypeScriptASTConverter {
       case "FunctionType":
         return convertFunctionType(node, loc);
       case "Identifier":
+      case "PrivateIdentifier":
         return convertIdentifier(node, loc);
       case "IfStatement":
         return convertIfStatement(node, loc);
