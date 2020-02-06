@@ -79,7 +79,7 @@ bad_asts.cpp:
 #   27|     r27_6(Point)          = Load                     : &:r27_5, ~mu26_4
 #   27|     mu27_7(Point)         = Store                    : &:r27_1, r27_6
 #   28|     v28_1(void)           = NoOp                     : 
-#   26|     v26_9(void)           = ReturnIndirection        : &:r26_7, ~mu26_4
+#   26|     v26_9(void)           = ReturnIndirection[a]     : &:r26_7, ~mu26_4
 #   26|     v26_10(void)          = ReturnVoid               : 
 #   26|     v26_11(void)          = UnmodeledUse             : mu*
 #   26|     v26_12(void)          = AliasedUse               : ~mu26_4
@@ -836,7 +836,7 @@ ir.cpp:
 #  168|     r168_6(glval<bool>)  = VariableAddress[b]       : 
 #  168|     mu168_7(bool)        = Store                    : &:r168_6, r168_5
 #  169|     v169_1(void)         = NoOp                     : 
-#  153|     v153_11(void)        = ReturnIndirection        : &:r153_7, ~mu153_4
+#  153|     v153_11(void)        = ReturnIndirection[p]     : &:r153_7, ~mu153_4
 #  153|     v153_12(void)        = ReturnVoid               : 
 #  153|     v153_13(void)        = UnmodeledUse             : mu*
 #  153|     v153_14(void)        = AliasedUse               : ~mu153_4
@@ -923,7 +923,7 @@ ir.cpp:
 #  184|     r184_7(glval<int>)     = PointerAdd[4]            : r184_4, r184_6
 #  184|     mu184_8(int)           = Store                    : &:r184_7, r184_2
 #  185|     v185_1(void)           = NoOp                     : 
-#  171|     v171_11(void)          = ReturnIndirection        : &:r171_7, ~mu171_4
+#  171|     v171_11(void)          = ReturnIndirection[p]     : &:r171_7, ~mu171_4
 #  171|     v171_12(void)          = ReturnVoid               : 
 #  171|     v171_13(void)          = UnmodeledUse             : mu*
 #  171|     v171_14(void)          = AliasedUse               : ~mu171_4
@@ -1023,8 +1023,8 @@ ir.cpp:
 #  201|     r201_6(glval<bool>)  = VariableAddress[b]       : 
 #  201|     mu201_7(bool)        = Store                    : &:r201_6, r201_5
 #  202|     v202_1(void)         = NoOp                     : 
-#  193|     v193_13(void)        = ReturnIndirection        : &:r193_7, ~mu193_4
-#  193|     v193_14(void)        = ReturnIndirection        : &:r193_11, ~mu193_4
+#  193|     v193_13(void)        = ReturnIndirection[p]     : &:r193_7, ~mu193_4
+#  193|     v193_14(void)        = ReturnIndirection[q]     : &:r193_11, ~mu193_4
 #  193|     v193_15(void)        = ReturnVoid               : 
 #  193|     v193_16(void)        = UnmodeledUse             : mu*
 #  193|     v193_17(void)        = AliasedUse               : ~mu193_4
@@ -1073,7 +1073,7 @@ ir.cpp:
 #  210|     r210_7(glval<int *>) = VariableAddress[q]       : 
 #  210|     mu210_8(int *)       = Store                    : &:r210_7, r210_6
 #  211|     v211_1(void)         = NoOp                     : 
-#  204|     v204_9(void)         = ReturnIndirection        : &:r204_7, ~mu204_4
+#  204|     v204_9(void)         = ReturnIndirection[p]     : &:r204_7, ~mu204_4
 #  204|     v204_10(void)        = ReturnVoid               : 
 #  204|     v204_11(void)        = UnmodeledUse             : mu*
 #  204|     v204_12(void)        = AliasedUse               : ~mu204_4
@@ -1684,7 +1684,7 @@ ir.cpp:
 #  343|     r343_3(int *)        = Load                     : &:r343_2, ~mu341_4
 #  343|     r343_4(int)          = Load                     : &:r343_3, ~mu341_4
 #  343|     mu343_5(int)         = Store                    : &:r343_1, r343_4
-#  341|     v341_9(void)         = ReturnIndirection        : &:r341_7, ~mu341_4
+#  341|     v341_9(void)         = ReturnIndirection[p]     : &:r341_7, ~mu341_4
 #  341|     r341_10(glval<int>)  = VariableAddress[#return] : 
 #  341|     v341_11(void)        = ReturnValue              : &:r341_10, ~mu341_4
 #  341|     v341_12(void)        = UnmodeledUse             : mu*
@@ -2984,8 +2984,8 @@ ir.cpp:
 #  625|     v625_6(void)            = ^BufferReadSideEffect[-1]       : &:r625_2, ~mu622_4
 #  625|     mu625_7(String)         = ^IndirectMayWriteSideEffect[-1] : &:r625_2
 #  626|     v626_1(void)            = NoOp                            : 
-#  622|     v622_15(void)           = ReturnIndirection               : &:r622_7, ~mu622_4
-#  622|     v622_16(void)           = ReturnIndirection               : &:r622_11, ~mu622_4
+#  622|     v622_15(void)           = ReturnIndirection[r]            : &:r622_7, ~mu622_4
+#  622|     v622_16(void)           = ReturnIndirection[p]            : &:r622_11, ~mu622_4
 #  622|     v622_17(void)           = ReturnVoid                      : 
 #  622|     v622_18(void)           = UnmodeledUse                    : mu*
 #  622|     v622_19(void)           = AliasedUse                      : ~mu622_4
@@ -3177,7 +3177,7 @@ ir.cpp:
 #  676|     r676_3(int &)        = Load                     : &:r676_2, ~mu675_4
 #  676|     r676_4(int)          = Load                     : &:r676_3, ~mu675_4
 #  676|     mu676_5(int)         = Store                    : &:r676_1, r676_4
-#  675|     v675_9(void)         = ReturnIndirection        : &:r675_7, ~mu675_4
+#  675|     v675_9(void)         = ReturnIndirection[r]     : &:r675_7, ~mu675_4
 #  675|     r675_10(glval<int>)  = VariableAddress[#return] : 
 #  675|     v675_11(void)        = ReturnValue              : &:r675_10, ~mu675_4
 #  675|     v675_12(void)        = UnmodeledUse             : mu*
@@ -3370,7 +3370,7 @@ ir.cpp:
 #  716|     r716_1(glval<long>)   = VariableAddress[#return] : 
 #  716|     r716_2(long)          = Constant[0]              : 
 #  716|     mu716_3(long)         = Store                    : &:r716_1, r716_2
-#  715|     v715_11(void)         = ReturnIndirection        : &:r715_7, ~mu715_4
+#  715|     v715_11(void)         = ReturnIndirection[x]     : &:r715_7, ~mu715_4
 #  715|     r715_12(glval<long>)  = VariableAddress[#return] : 
 #  715|     v715_13(void)         = ReturnValue              : &:r715_12, ~mu715_4
 #  715|     v715_14(void)         = UnmodeledUse             : mu*
@@ -3557,7 +3557,7 @@ ir.cpp:
 #-----|     r0_20(glval<Base>)     = CopyValue                       : r0_19
 #-----|     r0_21(Base &)          = CopyValue                       : r0_20
 #-----|     mu0_22(Base &)         = Store                           : &:r0_18, r0_21
-#-----|     v0_23(void)            = ReturnIndirection               : &:r0_3, ~mu745_4
+#-----|     v0_23(void)            = ReturnIndirection[p#0]          : &:r0_3, ~mu745_4
 #  745|     r745_9(glval<Base &>)  = VariableAddress[#return]        : 
 #  745|     v745_10(void)          = ReturnValue                     : &:r745_9, ~mu745_4
 #  745|     v745_11(void)          = UnmodeledUse                    : mu*
@@ -3581,7 +3581,7 @@ ir.cpp:
 #  745|     mu745_9(unknown)       = ^CallSideEffect                 : ~mu745_4
 #  745|     mu745_10(String)       = ^IndirectMayWriteSideEffect[-1] : &:r745_6
 #  745|     v745_11(void)          = NoOp                            : 
-#-----|     v0_5(void)             = ReturnIndirection               : &:r0_3, ~mu745_4
+#-----|     v0_5(void)             = ReturnIndirection[p#0]          : &:r0_3, ~mu745_4
 #  745|     v745_12(void)          = ReturnVoid                      : 
 #  745|     v745_13(void)          = UnmodeledUse                    : mu*
 #  745|     v745_14(void)          = AliasedUse                      : ~mu745_4
@@ -3671,7 +3671,7 @@ ir.cpp:
 #-----|     r0_34(glval<Middle>)     = CopyValue                              : r0_33
 #-----|     r0_35(Middle &)          = CopyValue                              : r0_34
 #-----|     mu0_36(Middle &)         = Store                                  : &:r0_32, r0_35
-#-----|     v0_37(void)              = ReturnIndirection                      : &:r0_3, ~mu754_4
+#-----|     v0_37(void)              = ReturnIndirection[p#0]                 : &:r0_3, ~mu754_4
 #  754|     r754_12(glval<Middle &>) = VariableAddress[#return]               : 
 #  754|     v754_13(void)            = ReturnValue                            : &:r754_12, ~mu754_4
 #  754|     v754_14(void)            = UnmodeledUse                           : mu*
@@ -3771,7 +3771,7 @@ ir.cpp:
 #-----|     r0_34(glval<Derived>)     = CopyValue                                 : r0_33
 #-----|     r0_35(Derived &)          = CopyValue                                 : r0_34
 #-----|     mu0_36(Derived &)         = Store                                     : &:r0_32, r0_35
-#-----|     v0_37(void)               = ReturnIndirection                         : &:r0_3, ~mu763_4
+#-----|     v0_37(void)               = ReturnIndirection[p#0]                    : &:r0_3, ~mu763_4
 #  763|     r763_12(glval<Derived &>) = VariableAddress[#return]                  : 
 #  763|     v763_13(void)             = ReturnValue                               : &:r763_12, ~mu763_4
 #  763|     v763_14(void)             = UnmodeledUse                              : mu*
@@ -4328,10 +4328,10 @@ ir.cpp:
 #-----|     mu0_4(PolymorphicBase)              = ^IndirectMayWriteSideEffect[-1]     : &:r850_1
 #  851|     r851_1(glval<PolymorphicDerived>)   = VariableAddress[d]                  : 
 #  851|     mu851_2(PolymorphicDerived)         = Uninitialized[d]                    : &:r851_1
-#-----|     r0_5(glval<unknown>)                = FunctionAddress[PolymorphicDerived] : 
-#-----|     v0_6(void)                          = Call                                : func:r0_5, this:r851_1
-#-----|     mu0_7(unknown)                      = ^CallSideEffect                     : ~mu849_4
-#-----|     mu0_8(PolymorphicDerived)           = ^IndirectMayWriteSideEffect[-1]     : &:r851_1
+#  851|     r851_3(glval<unknown>)              = FunctionAddress[PolymorphicDerived] : 
+#  851|     v851_4(void)                        = Call                                : func:r851_3, this:r851_1
+#  851|     mu851_5(unknown)                    = ^CallSideEffect                     : ~mu849_4
+#  851|     mu851_6(PolymorphicDerived)         = ^IndirectMayWriteSideEffect[-1]     : &:r851_1
 #  853|     r853_1(glval<PolymorphicBase *>)    = VariableAddress[pb]                 : 
 #  853|     r853_2(glval<PolymorphicBase>)      = VariableAddress[b]                  : 
 #  853|     r853_3(PolymorphicBase *)           = CopyValue                           : r853_2
@@ -4475,7 +4475,7 @@ ir.cpp:
 #  885|     r885_4(glval<..(*)(..)>) = VariableAddress[pfn]     : 
 #  885|     mu885_5(..(*)(..))       = Store                    : &:r885_4, r885_3
 #  886|     v886_1(void)             = NoOp                     : 
-#  883|     v883_11(void)            = ReturnIndirection        : &:r883_9, ~mu883_4
+#  883|     v883_11(void)            = ReturnIndirection[p]     : &:r883_9, ~mu883_4
 #  883|     v883_12(void)            = ReturnVoid               : 
 #  883|     v883_13(void)            = UnmodeledUse             : mu*
 #  883|     v883_14(void)            = AliasedUse               : ~mu883_4
@@ -4959,7 +4959,7 @@ ir.cpp:
 #  988|     mu988_11(unknown)        = ^CallSideEffect          : ~mu987_4
 #  988|     r988_12(int)             = Add                      : r988_6, r988_10
 #  988|     mu988_13(int)            = Store                    : &:r988_1, r988_12
-#  987|     v987_11(void)            = ReturnIndirection        : &:r987_7, ~mu987_4
+#  987|     v987_11(void)            = ReturnIndirection[a]     : &:r987_7, ~mu987_4
 #  987|     r987_12(glval<int>)      = VariableAddress[#return] : 
 #  987|     v987_13(void)            = ReturnValue              : &:r987_12, ~mu987_4
 #  987|     v987_14(void)            = UnmodeledUse             : mu*
@@ -5269,7 +5269,7 @@ ir.cpp:
 # 1046|     v1046_7(void)                             = ^BufferReadSideEffect[-1]              : &:r1046_2, ~mu1031_4
 # 1046|     mu1046_8(decltype([...](...){...}))       = ^IndirectMayWriteSideEffect[-1]        : &:r1046_2
 # 1047|     v1047_1(void)                             = NoOp                                   : 
-# 1031|     v1031_11(void)                            = ReturnIndirection                      : &:r1031_9, ~mu1031_4
+# 1031|     v1031_11(void)                            = ReturnIndirection[s]                   : &:r1031_9, ~mu1031_4
 # 1031|     v1031_12(void)                            = ReturnVoid                             : 
 # 1031|     v1031_13(void)                            = UnmodeledUse                           : mu*
 # 1031|     v1031_14(void)                            = AliasedUse                             : ~mu1031_4
@@ -5620,13 +5620,13 @@ ir.cpp:
 #-----|   Goto -> Block 5
 
 # 1079|   Block 5
-# 1079|     v1079_1(void)  = NoOp              : 
-# 1080|     v1080_1(void)  = NoOp              : 
-# 1068|     v1068_9(void)  = ReturnIndirection : &:r1068_7, ~mu1068_4
-# 1068|     v1068_10(void) = ReturnVoid        : 
-# 1068|     v1068_11(void) = UnmodeledUse      : mu*
-# 1068|     v1068_12(void) = AliasedUse        : ~mu1068_4
-# 1068|     v1068_13(void) = ExitFunction      : 
+# 1079|     v1079_1(void)  = NoOp                 : 
+# 1080|     v1080_1(void)  = NoOp                 : 
+# 1068|     v1068_9(void)  = ReturnIndirection[v] : &:r1068_7, ~mu1068_4
+# 1068|     v1068_10(void) = ReturnVoid           : 
+# 1068|     v1068_11(void) = UnmodeledUse         : mu*
+# 1068|     v1068_12(void) = AliasedUse           : ~mu1068_4
+# 1068|     v1068_13(void) = ExitFunction         : 
 
 #-----|   Block 6
 #-----|     r0_24(glval<iterator>)   = VariableAddress[(__begin)]      : 
@@ -5753,8 +5753,8 @@ ir.cpp:
 # 1109|     r1109_9(unsigned int)           = Load                     : &:r1109_8, ~mu1104_4
 # 1106|     mu1106_1(unknown)               = InlineAsm                : ~mu1104_4, 0:r1109_3, 1:r1109_4, 2:r1109_7, 3:r1109_9
 # 1111|     v1111_1(void)                   = NoOp                     : 
-# 1104|     v1104_17(void)                  = ReturnIndirection        : &:r1104_7, ~mu1104_4
-# 1104|     v1104_18(void)                  = ReturnIndirection        : &:r1104_13, ~mu1104_4
+# 1104|     v1104_17(void)                  = ReturnIndirection[a]     : &:r1104_7, ~mu1104_4
+# 1104|     v1104_18(void)                  = ReturnIndirection[c]     : &:r1104_13, ~mu1104_4
 # 1104|     v1104_19(void)                  = ReturnVoid               : 
 # 1104|     v1104_20(void)                  = UnmodeledUse             : mu*
 # 1104|     v1104_21(void)                  = AliasedUse               : ~mu1104_4

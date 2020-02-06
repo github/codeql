@@ -1,8 +1,11 @@
 missingOperand
+| ir.cpp:736:5:736:19 | Chi: call to String | Instruction 'Chi' is missing an expected operand with tag 'ChiTotal' in function '$@'. | ir.cpp:724:6:724:13 | IR: TryCatch | void TryCatch(bool) |
 | ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:1145:5:1145:19 | Chi: call to String | Instruction 'Chi' is missing an expected operand with tag 'ChiTotal' in function '$@'. | ir.cpp:1133:6:1133:23 | IR: TryCatchNoCatchAny | void TryCatchNoCatchAny(bool) |
+| ir.cpp:1170:3:1170:33 | Chi: call to String | Instruction 'Chi' is missing an expected operand with tag 'ChiTotal' in function '$@'. | ir.cpp:1169:8:1169:30 | IR: ReturnConstructorResult | String ReturnConstructorResult() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand

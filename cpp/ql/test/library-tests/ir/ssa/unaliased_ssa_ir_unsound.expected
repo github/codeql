@@ -78,7 +78,7 @@ ssa.cpp:
 #   28|     r28_9(int)            = Load                     : &:r28_8, ~mu13_4
 #   28|     r28_10(int)           = Add                      : r28_5, r28_9
 #   28|     m28_11(int)           = Store                    : &:r28_1, r28_10
-#   13|     v13_13(void)          = ReturnIndirection        : &:r13_7, ~mu13_4
+#   13|     v13_13(void)          = ReturnIndirection[p]     : &:r13_7, ~mu13_4
 #   13|     r13_14(glval<int>)    = VariableAddress[#return] : 
 #   13|     v13_15(void)          = ReturnValue              : &:r13_14, m28_11
 #   13|     v13_16(void)          = UnmodeledUse             : mu*
@@ -249,12 +249,12 @@ ssa.cpp:
 #-----|   Goto (back edge) -> Block 1
 
 #   71|   Block 3
-#   71|     v71_1(void)  = NoOp              : 
-#   68|     v68_11(void) = ReturnIndirection : &:r68_9, ~mu68_4
-#   68|     v68_12(void) = ReturnVoid        : 
-#   68|     v68_13(void) = UnmodeledUse      : mu*
-#   68|     v68_14(void) = AliasedUse        : ~mu68_4
-#   68|     v68_15(void) = ExitFunction      : 
+#   71|     v71_1(void)  = NoOp                 : 
+#   68|     v68_11(void) = ReturnIndirection[p] : &:r68_9, ~mu68_4
+#   68|     v68_12(void) = ReturnVoid           : 
+#   68|     v68_13(void) = UnmodeledUse         : mu*
+#   68|     v68_14(void) = AliasedUse           : ~mu68_4
+#   68|     v68_15(void) = ExitFunction         : 
 
 #   75| void ScalarPhi(bool)
 #   75|   Block 0
@@ -752,7 +752,7 @@ ssa.cpp:
 #  181|     r181_3(int *)        = Load                     : &:r181_2, m179_6
 #  181|     r181_4(int)          = Load                     : &:r181_3, ~mu179_4
 #  181|     m181_5(int)          = Store                    : &:r181_1, r181_4
-#  179|     v179_9(void)         = ReturnIndirection        : &:r179_7, ~mu179_4
+#  179|     v179_9(void)         = ReturnIndirection[p]     : &:r179_7, ~mu179_4
 #  179|     r179_10(glval<int>)  = VariableAddress[#return] : 
 #  179|     v179_11(void)        = ReturnValue              : &:r179_10, m181_5
 #  179|     v179_12(void)        = UnmodeledUse             : mu*
@@ -795,10 +795,10 @@ ssa.cpp:
 #  190|     r190_6(unsigned int)           = Load                     : &:r190_5, ~mu184_4
 #  186|     mu186_1(unknown)               = InlineAsm                : ~mu184_4, 0:r189_3, 1:r189_6, 2:r190_3, 3:r190_6
 #  192|     v192_1(void)                   = NoOp                     : 
-#  184|     v184_21(void)                  = ReturnIndirection        : &:r184_7, ~mu184_4
-#  184|     v184_22(void)                  = ReturnIndirection        : &:r184_11, ~mu184_4
-#  184|     v184_23(void)                  = ReturnIndirection        : &:r184_15, ~mu184_4
-#  184|     v184_24(void)                  = ReturnIndirection        : &:r184_19, ~mu184_4
+#  184|     v184_21(void)                  = ReturnIndirection[a]     : &:r184_7, ~mu184_4
+#  184|     v184_22(void)                  = ReturnIndirection[b]     : &:r184_11, ~mu184_4
+#  184|     v184_23(void)                  = ReturnIndirection[c]     : &:r184_15, ~mu184_4
+#  184|     v184_24(void)                  = ReturnIndirection[d]     : &:r184_19, ~mu184_4
 #  184|     v184_25(void)                  = ReturnVoid               : 
 #  184|     v184_26(void)                  = UnmodeledUse             : mu*
 #  184|     v184_27(void)                  = AliasedUse               : ~mu184_4
@@ -856,8 +856,8 @@ ssa.cpp:
 #  202|     r202_2(glval<int>)     = VariableAddress[ret]        : 
 #  202|     r202_3(int)            = Load                        : &:r202_2, m201_8
 #  202|     m202_4(int)            = Store                       : &:r202_1, r202_3
-#  198|     v198_15(void)          = ReturnIndirection           : &:r198_7, ~mu198_4
-#  198|     v198_16(void)          = ReturnIndirection           : &:r198_11, ~mu198_4
+#  198|     v198_15(void)          = ReturnIndirection[str1]     : &:r198_7, ~mu198_4
+#  198|     v198_16(void)          = ReturnIndirection[str2]     : &:r198_11, ~mu198_4
 #  198|     r198_17(glval<int>)    = VariableAddress[#return]    : 
 #  198|     v198_18(void)          = ReturnValue                 : &:r198_17, m202_4
 #  198|     v198_19(void)          = UnmodeledUse                : mu*
@@ -1099,7 +1099,7 @@ ssa.cpp:
 #  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
 #  251|     r251_3(char *)         = Load                               : &:r251_2, m248_11
 #  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
-#  247|     v247_11(void)          = ReturnIndirection                  : &:r247_7, ~mu247_4
+#  247|     v247_11(void)          = ReturnIndirection[src]             : &:r247_7, ~mu247_4
 #  247|     r247_12(glval<char *>) = VariableAddress[#return]           : 
 #  247|     v247_13(void)          = ReturnValue                        : &:r247_12, m251_4
 #  247|     v247_14(void)          = UnmodeledUse                       : mu*

@@ -348,7 +348,9 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
-predicate tainted_instruction(Function sourceFunc,Instruction source, Function sinkFunc, Instruction sink) {
+predicate tainted_instruction(
+  Function sourceFunc, Instruction source, Function sinkFunc, Instruction sink
+) {
   sourceFunc = source.getEnclosingFunction() and
   sinkFunc = sink.getEnclosingFunction() and
   exists(DefaultTaintTrackingCfg cfg |
