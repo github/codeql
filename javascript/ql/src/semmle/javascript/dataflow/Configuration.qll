@@ -1482,7 +1482,7 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 }
 
 /**
-  * A check of the `if(x)`, which sanitizes `x` in its "else" branch. 
+  * A check of the form `if(x)`, which sanitizes `x` in its "else" branch. 
   * Can be added to a `isBarrierGuard` in a configuration to add the sanitization. 
   */
 class VarAccessBarrierGuard extends BarrierGuardNode, DataFlow::Node {
