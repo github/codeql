@@ -1,1 +1,2 @@
+semmle-extractor-options: --lang=3
 automatic_locations: true
