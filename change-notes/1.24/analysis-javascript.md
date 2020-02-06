@@ -9,6 +9,8 @@
 
 * Imports that rely on path-mappings from a `tsconfig.json` file can now be resolved.
 
+* Export declarations of the form `export * as ns from "x"` are now analyzed more precisely.
+
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
 * Support for the following frameworks and libraries has been improved:
