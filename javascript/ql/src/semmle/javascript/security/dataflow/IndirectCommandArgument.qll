@@ -30,9 +30,7 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
   t.start() and
   result = sys.getACommandArgument()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    t = t2.smallstep(result, commandArgument(sys, t2))
-  )
+  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, commandArgument(sys, t2)))
 }
 
 /**
@@ -43,9 +41,7 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
   t.start() and
   result = sys.getArgumentList().getALocalSource()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    result = argumentList(sys, t2).backtrack(t2, t)
-  )
+  exists(DataFlow::TypeBackTracker t2 | result = argumentList(sys, t2).backtrack(t2, t))
 }
 
 /**
@@ -61,15 +57,29 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
  * let args = ["-c", cmd];
  * childProcess.spawn(sh, args, cb);
  * ```
+ * or
+ * ```
+ * let cmd = getCommand();
+ * childProcess.spawn("cmd.exe", ["/c"].concat(cmd), cb);
+ * ```
  */
 predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecution sys) {
-  exists(
-    DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC
-  |
+  exists(DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC |
     shellCmd(shell.asExpr(), dashC) and
     shell = commandArgument(sys, DataFlow::TypeBackTracker::end()) and
-    args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
     args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
-    source = args.getAPropertyWrite().getRhs()
+    (
+      args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
+      source = args.getAPropertyWrite().getRhs()
+      or
+      exists(DataFlow::MethodCallNode concatCall |
+        args = concatCall.getReceiver() and
+        concatCall.getMethodName() = "concat" and
+        concatCall = argumentList(sys, DataFlow::TypeBackTracker::end())
+      |
+        source = concatCall.getAnArgument() or
+        source = concatCall.getAnArgument().getALocalSource().getAPropertyWrite().getRhs()
+      )
+    )
   )
 }

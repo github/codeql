@@ -50,6 +50,8 @@ var server = http.createServer(function(req, res) {
     args[1] = cmd;
     cp.execFile(`/bin` + "/bash", args); // NOT OK
 
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(args)); // NOT OK
+
 });
 
 function run(cmd, args) {
