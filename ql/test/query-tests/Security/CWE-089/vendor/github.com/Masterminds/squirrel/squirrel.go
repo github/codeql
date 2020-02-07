@@ -2,8 +2,8 @@ package squirrel
 
 type StatementBuilderType struct{}
 
-func Expr(e string) string {
-	return Expr(e)
+func Expr(e string, args ...interface{}) string {
+	return Expr(e, args...)
 }
 
 var StatementBuilder = &StatementBuilderType{}

@@ -1,10 +1,7 @@
-// +build ignore
-
 package main
 
 import (
-	"fmt"
-	"github.com/google/glog"
+	"github.com/golang/glog"
 	"github.com/sirupsen/logrus"
 	"log"
 )
