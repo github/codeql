@@ -108,6 +108,14 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 |
+| globals.cpp:5:20:5:25 | call to getenv | globals.cpp:2:17:2:25 | sinkParam |
+| globals.cpp:5:20:5:25 | call to getenv | globals.cpp:5:12:5:16 | local |
+| globals.cpp:5:20:5:25 | call to getenv | globals.cpp:5:20:5:25 | call to getenv |
+| globals.cpp:5:20:5:25 | call to getenv | globals.cpp:6:10:6:14 | local |
+| globals.cpp:13:15:13:20 | call to getenv | globals.cpp:9:8:9:14 | global1 |
+| globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:15:13:20 | call to getenv |
+| globals.cpp:23:15:23:20 | call to getenv | globals.cpp:16:15:16:21 | global2 |
+| globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:15:23:20 | call to getenv |
 | test_diff.cpp:92:10:92:13 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
 | test_diff.cpp:92:10:92:13 | argv | test_diff.cpp:1:11:1:20 | p#0 |
 | test_diff.cpp:92:10:92:13 | argv | test_diff.cpp:92:10:92:13 | argv |

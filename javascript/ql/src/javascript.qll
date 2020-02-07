@@ -78,6 +78,7 @@ import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.Handlebars
+import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks

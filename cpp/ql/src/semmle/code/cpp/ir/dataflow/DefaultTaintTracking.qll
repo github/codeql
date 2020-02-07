@@ -69,7 +69,7 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
@@ -84,18 +84,15 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(GlobalOrNamespaceVariable gv | writesVariable(sink.asInstruction(), gv))
+    sink.asVariable() instanceof GlobalOrNamespaceVariable
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
     or
-    exists(StoreInstruction i1, LoadInstruction i2, GlobalOrNamespaceVariable gv |
-      writesVariable(i1, gv) and
-      readsVariable(i2, gv) and
-      i1 = n1.asInstruction() and
-      i2 = n2.asInstruction()
-    )
+    writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
+    or
+    readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
@@ -105,19 +102,20 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(
-      ToGlobalVarTaintTrackingCfg other, DataFlow::Node prevSink, GlobalOrNamespaceVariable gv
-    |
-      other.hasFlowTo(prevSink) and
-      writesVariable(prevSink.asInstruction(), gv) and
-      readsVariable(source.asInstruction(), gv)
-    )
+    // This set of sources should be reasonably small, which is good for
+    // performance since the set of sinks is very large.
+    exists(ToGlobalVarTaintTrackingCfg otherCfg | otherCfg.hasFlowTo(source))
   }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
+    or
+    // Additional step for flow out of variables. There is no flow _into_
+    // variables in this configuration, so this step only serves to take flow
+    // out of a variable that's a source.
+    readsVariable(n2.asInstruction(), n1.asVariable())
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
@@ -363,23 +361,12 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
   globalVar = ""
   or
   exists(
-    ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg, DataFlow::Node store,
-    GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
+    ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg,
+    DataFlow::VariableNode variableNode, GlobalOrNamespaceVariable global, DataFlow::Node sink
   |
-    toCfg.hasFlow(getNodeForSource(source), store) and
-    store
-        .asInstruction()
-        .(StoreInstruction)
-        .getDestinationAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable() = global and
-    load
-        .asInstruction()
-        .(LoadInstruction)
-        .getSourceAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable() = global and
-    fromCfg.hasFlow(load, sink) and
+    global = variableNode.getVariable() and
+    toCfg.hasFlow(getNodeForSource(source), variableNode) and
+    fromCfg.hasFlow(variableNode, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
   )

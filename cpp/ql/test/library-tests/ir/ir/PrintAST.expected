@@ -5753,9 +5753,9 @@ ir.cpp:
 #  851|       0: [VariableDeclarationEntry] definition of d
 #  851|           Type = [Struct] PolymorphicDerived
 #  851|         init: [Initializer] initializer for d
-#-----|           expr: [ConstructorCall] call to PolymorphicDerived
-#-----|               Type = [VoidType] void
-#-----|               ValueCategory = prvalue
+#  851|           expr: [ConstructorCall] call to PolymorphicDerived
+#  851|               Type = [VoidType] void
+#  851|               ValueCategory = prvalue
 #  853|     2: [DeclStmt] declaration
 #  853|       0: [VariableDeclarationEntry] definition of pb
 #  853|           Type = [PointerType] PolymorphicBase *

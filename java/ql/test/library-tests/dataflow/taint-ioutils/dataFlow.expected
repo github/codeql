@@ -19,36 +19,36 @@
 | Test.java:22:20:22:52 | toInputStream(...) |
 | Test.java:22:42:22:42 | s |
 | Test.java:26:16:26:18 | inp |
-| Test.java:26:21:26:26 | writer |
+| Test.java:26:21:26:26 | writer [post update] |
 | Test.java:27:3:27:8 | writer |
 | Test.java:27:3:27:19 | toString(...) |
 | Test.java:31:21:31:27 | bufread |
-| Test.java:31:30:31:35 | writer |
+| Test.java:31:30:31:35 | writer [post update] |
 | Test.java:32:3:32:8 | writer |
 | Test.java:32:3:32:19 | toString(...) |
 | Test.java:37:16:37:18 | inp |
-| Test.java:37:21:37:23 | tgt |
+| Test.java:37:21:37:23 | tgt [post update] |
 | Test.java:38:3:38:12 | ...=... |
 | Test.java:38:7:38:9 | tgt |
 | Test.java:38:7:38:12 | ...[...] |
 | Test.java:42:21:42:23 | inp |
-| Test.java:42:26:42:28 | tgt |
+| Test.java:42:26:42:28 | tgt [post update] |
 | Test.java:43:3:43:12 | ...=... |
 | Test.java:43:7:43:9 | tgt |
 | Test.java:43:7:43:12 | ...[...] |
 | Test.java:47:17:47:21 | chars |
-| Test.java:47:24:47:29 | writer |
+| Test.java:47:24:47:29 | writer [post update] |
 | Test.java:48:3:48:8 | writer |
 | Test.java:48:3:48:19 | toString(...) |
 | Test.java:52:24:52:28 | chars |
-| Test.java:52:31:52:36 | writer |
+| Test.java:52:31:52:36 | writer [post update] |
 | Test.java:53:3:53:8 | writer |
 | Test.java:53:3:53:19 | toString(...) |
 | Test.java:57:22:57:26 | lines |
-| Test.java:57:35:57:40 | writer |
+| Test.java:57:35:57:40 | writer [post update] |
 | Test.java:58:3:58:8 | writer |
 | Test.java:58:3:58:19 | toString(...) |
 | Test.java:62:47:62:47 | s |
-| Test.java:62:50:62:55 | writer |
+| Test.java:62:50:62:55 | writer [post update] |
 | Test.java:63:3:63:8 | writer |
 | Test.java:63:3:63:19 | toString(...) |
