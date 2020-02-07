@@ -801,6 +801,92 @@ nodes
 | TaintedPath.js:112:45:112:52 | realpath |
 | TaintedPath.js:112:45:112:52 | realpath |
 | TaintedPath.js:112:45:112:52 | realpath |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:23:119:29 | req.url |
+| TaintedPath.js:119:23:119:29 | req.url |
+| TaintedPath.js:119:23:119:29 | req.url |
+| TaintedPath.js:119:23:119:29 | req.url |
+| TaintedPath.js:119:23:119:29 | req.url |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:121:23:121:26 | path |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
@@ -2996,6 +3082,118 @@ edges
 | TaintedPath.js:111:32:111:39 | realpath | TaintedPath.js:112:45:112:52 | realpath |
 | TaintedPath.js:111:32:111:39 | realpath | TaintedPath.js:112:45:112:52 | realpath |
 | TaintedPath.js:111:32:111:39 | realpath | TaintedPath.js:112:45:112:52 | realpath |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:6:119:47 | path | TaintedPath.js:121:23:121:26 | path |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:36 | url.par ... , true) | TaintedPath.js:119:13:119:42 | url.par ... ).query |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:42 | url.par ... ).query | TaintedPath.js:119:13:119:47 | url.par ... ry.path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:13:119:47 | url.par ... ry.path | TaintedPath.js:119:6:119:47 | path |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
+| TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:119:13:119:36 | url.par ... , true) |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
@@ -4171,6 +4369,7 @@ edges
 | TaintedPath.js:94:48:94:60 | req.params[0] | TaintedPath.js:94:48:94:60 | req.params[0] | TaintedPath.js:94:48:94:60 | req.params[0] | This path depends on $@. | TaintedPath.js:94:48:94:60 | req.params[0] | a user-provided value |
 | TaintedPath.js:109:28:109:48 | fs.real ... c(path) | TaintedPath.js:107:23:107:29 | req.url | TaintedPath.js:109:28:109:48 | fs.real ... c(path) | This path depends on $@. | TaintedPath.js:107:23:107:29 | req.url | a user-provided value |
 | TaintedPath.js:112:45:112:52 | realpath | TaintedPath.js:107:23:107:29 | req.url | TaintedPath.js:112:45:112:52 | realpath | This path depends on $@. | TaintedPath.js:107:23:107:29 | req.url | a user-provided value |
+| TaintedPath.js:121:23:121:26 | path | TaintedPath.js:119:23:119:29 | req.url | TaintedPath.js:121:23:121:26 | path | This path depends on $@. | TaintedPath.js:119:23:119:29 | req.url | a user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
