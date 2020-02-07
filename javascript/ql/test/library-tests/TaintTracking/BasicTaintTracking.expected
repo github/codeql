@@ -17,6 +17,7 @@ typeInferenceMismatch
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
 | bound-function.js:12:12:12:19 | source() | bound-function.js:4:10:4:10 | y |
 | bound-function.js:14:6:14:13 | source() | bound-function.js:4:10:4:10 | y |
+| bound-function.js:22:8:22:15 | source() | bound-function.js:25:10:25:10 | y |
 | bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |

@@ -19,7 +19,7 @@ foo2(null, source());   // OK
 
 
 function takesCallback(cb) {
-    cb(source());       // NOT OK - but not found
+    cb(source());       // NOT OK
 }
 function callback(x, y) {
     sink(y);

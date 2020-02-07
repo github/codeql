@@ -71,6 +71,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
+private import internal.CallGraphs
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -620,10 +621,11 @@ private predicate exploratoryFlowStep(
   isAdditionalStoreStep(pred, succ, _, cfg) or
   isAdditionalLoadStep(pred, succ, _, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, cfg) or
-  // the following two disjuncts taken together over-approximate flow through
+  // the following three disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
-  succ = pred.(DataFlow::FunctionNode).getAParameter()
+  succ = pred.(DataFlow::FunctionNode).getAParameter() or
+  exploratoryBoundInvokeStep(pred, succ)
 }
 
 /**
@@ -1030,6 +1032,13 @@ private predicate flowIntoHigherOrderCall(
   exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
     higherOrderCall(pred, cb, i, cfg, oldSummary) and
     succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+  or
+  exists(DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary |
+    higherOrderCall(pred, cb, i, cfg, oldSummary) and
+    cb = CallGraph::getABoundFunctionReference(f, boundArgs, false) and
+    succ = f.getParameter(boundArgs + i) and
     summary = oldSummary.append(PathSummary::call())
   )
 }

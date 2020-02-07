@@ -105,6 +105,20 @@ private module CachedSteps {
   }
 
   /**
+   * Holds if `pred` may flow to `succ` through an invocation of a bound function.
+   *
+   * Should only be used for graph pruning, as the edge may lead to spurious flow.
+   */
+  cached
+  predicate exploratoryBoundInvokeStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::InvokeNode invk, DataFlow::FunctionNode f, int i, int boundArgs |
+      CallGraph::getABoundFunctionReference(f, boundArgs, _).flowsTo(invk.getCalleeNode()) and
+      pred = invk.getArgument(i) and
+      succ = f.getParameter(i + boundArgs)
+    )
+  }
+
+  /**
    * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
    *
    * This only holds for explicitly modeled partial calls.
