@@ -1179,11 +1179,12 @@ public class TypeScriptASTConverter {
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     if (hasChild(node, "exportClause")) {
+      boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
       List<ExportSpecifier> specifiers =
           hasKind(node.get("exportClause"), "NamespaceExport")
               ? Collections.singletonList(convertChild(node, "exportClause"))
               : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
-      return new ExportNamedDeclaration(loc, null, specifiers, source);
+      return new ExportNamedDeclaration(loc, null, specifiers, source, hasTypeKeyword);
     } else {
       return new ExportAllDeclaration(loc, source);
     }
@@ -1368,6 +1369,7 @@ public class TypeScriptASTConverter {
   private Node convertImportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     List<ImportSpecifier> specifiers = new ArrayList<>();
+    boolean hasTypeKeyword = false;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1381,8 +1383,9 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
+      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, hasTypeKeyword);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
