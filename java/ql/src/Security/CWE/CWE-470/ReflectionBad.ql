@@ -15,7 +15,7 @@ import DataFlow::PathGraph
 
 class ClassFornameMethod extends Method {
   ClassFornameMethod() {
-    this.getDeclaringType().hasQualifiedName("java.lang", "Class<>") and
+    this.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.lang", "Class") and
     this.hasName("forName")
   }
 }
