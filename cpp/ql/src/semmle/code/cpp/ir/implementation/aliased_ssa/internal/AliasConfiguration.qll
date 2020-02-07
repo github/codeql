@@ -7,6 +7,9 @@ private newtype TAllocation =
   TVariableAllocation(IRVariable var) or
   TIndirectParameterAllocation(IRAutomaticUserVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)
+  } or
+  TDynamicAllocation(CallInstruction call) {
+    exists(InitializeDynamicAllocationInstruction instr | instr.getPrimaryInstruction() = call)
   }
 
 /**
@@ -88,6 +91,34 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
   final override string getUniqueId() { result = var.getUniqueId() }
 
   final override IRType getIRType() { result = var.getIRType() }
+
+  final override predicate isReadOnly() { none() }
+
+  final override predicate isAlwaysAllocatedOnStack() { none() }
+
+  final override predicate alwaysEscapes() { none() }
+}
+
+class DynamicAllocation extends Allocation, TDynamicAllocation {
+  CallInstruction call;
+
+  DynamicAllocation() { this = TDynamicAllocation(call) }
+
+  final override string toString() {
+    result = call.toString() + " at " + call.getLocation() // TODO: make this both short and unique
+  }
+
+  final override CallInstruction getABaseInstruction() { result = call }
+
+  final override IRFunction getEnclosingIRFunction() { result = call.getEnclosingIRFunction() }
+
+  final override Language::Location getLocation() { result = call.getLocation() }
+
+  final override string getUniqueId() { result = call.getUniqueId() }
+
+  final override IRType getIRType() {
+    result instanceof IRUnknownType // TODO: look at casts and sizes?
+  }
 
   final override predicate isReadOnly() { none() }
 

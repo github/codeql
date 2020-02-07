@@ -1341,6 +1341,20 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 }
 
 /**
+ *
+ */
+class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
+  InitializeDynamicAllocationInstruction() {
+    getOpcode() instanceof Opcode::InitializeDynamicAllocation
+  }
+  
+  final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
+
+  final Instruction getAllocationAddress() { result = getAllocationAddressOperand().getDef() }
+
+}
+
+/**
  * An instruction representing a GNU or MSVC inline assembly statement.
  */
 class InlineAsmInstruction extends Instruction {

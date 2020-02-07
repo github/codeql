@@ -82,6 +82,7 @@ private newtype TOpcode =
   TSizedBufferReadSideEffect() or
   TSizedBufferMustWriteSideEffect() or
   TSizedBufferMayWriteSideEffect() or
+  TInitializeDynamicAllocation() or
   TChi() or
   TInlineAsm() or
   TUnreached() or
@@ -693,6 +694,10 @@ module Opcode {
   class SizedBufferMayWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
     MayWriteOpcode, TSizedBufferMayWriteSideEffect {
     final override string toString() { result = "SizedBufferMayWriteSideEffect" }
+  }
+
+  class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode, TInitializeDynamicAllocation {
+    final override string toString() { result = "InitializeDynamicAllocation" }
   }
 
   class Chi extends Opcode, TChi {
