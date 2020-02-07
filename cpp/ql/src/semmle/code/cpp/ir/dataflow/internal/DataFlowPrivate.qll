@@ -54,9 +54,7 @@ class ReturnNode extends InstructionNode {
   Instruction primary;
 
   ReturnNode() {
-    exists(ReturnValueInstruction ret |
-      instr = ret.getReturnValue() and primary = ret
-    )
+    exists(ReturnValueInstruction ret | instr = ret.getReturnValue() and primary = ret)
     or
     exists(ReturnIndirectionInstruction rii |
       instr = rii.getSideEffectOperand().getAnyDef() and primary = rii
