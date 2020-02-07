@@ -14,8 +14,6 @@
 import javascript
 import DataFlow
 import PathGraph
-import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.dataflow.internal.FlowSteps
 import semmle.javascript.DynamicPropertyAccess
 
 /**
