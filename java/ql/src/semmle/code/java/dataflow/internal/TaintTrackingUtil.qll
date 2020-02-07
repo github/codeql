@@ -381,13 +381,20 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     tracked = sink.(MethodAccess).getArgument(i)
   )
   or
-  exists(Method m, MethodAccess ma |
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeString and
-    m.hasName("format") and
+  exists(MethodAccess ma |
+    taintPreservingArgumentToMethod(ma.getMethod()) and
     tracked = ma.getAnArgument() and
     sink = ma
   )
+}
+
+/**
+ * Holds if `method` is a library method that return tainted data if any
+ * of its arguments are tainted.
+ */
+private predicate taintPreservingArgumentToMethod(Method method) {
+  method.getDeclaringType() instanceof TypeString and
+  (method.hasName("format") or method.hasName("join"))
 }
 
 /**
