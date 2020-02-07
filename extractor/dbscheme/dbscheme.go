@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Semmle/go/extractor/trap"
+	"github.com/github/codeql-go/extractor/trap"
 )
 
 // A Type represents a database type
