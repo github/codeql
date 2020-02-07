@@ -155,7 +155,7 @@ module ControlFlow {
     private predicate ensuresAux(Expr expr, boolean b) {
       expr = cond and b = outcome
       or
-      expr = any(ParenExpr par | ensuresAux(par, b)).getExpression()
+      expr = any(ParenExpr par | ensuresAux(par, b)).getExpr()
       or
       expr = any(NotExpr ne | ensuresAux(ne, b.booleanNot())).getOperand()
       or

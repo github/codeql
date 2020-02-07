@@ -1486,7 +1486,7 @@ module IR {
    */
   Instruction evalExprInstruction(Expr e) {
     result = MkExprNode(e) or
-    result = evalExprInstruction(e.(ParenExpr).getExpression())
+    result = evalExprInstruction(e.(ParenExpr).getExpr())
   }
 
   /**

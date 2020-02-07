@@ -314,12 +314,12 @@ class StructLit extends CompositeLit {
  */
 class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpr() { result = getChildExpr(0) }
 
-  override Expr stripParens() { result = getExpression().stripParens() }
+  override Expr stripParens() { result = getExpr().stripParens() }
 
   override predicate isPlatformIndependentConstant() {
-    getExpression().isPlatformIndependentConstant()
+    getExpr().isPlatformIndependentConstant()
   }
 
   override string toString() { result = "(...)" }
@@ -388,7 +388,7 @@ class SliceExpr extends @sliceexpr, Expr {
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpr() { result = getChildExpr(0) }
 
   /** Gets the expression representing the asserted type. */
   Expr getTypeExpr() { result = getChildExpr(1) }
@@ -396,7 +396,7 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override predicate isPlatformIndependentConstant() {
-    getExpression().isPlatformIndependentConstant()
+    getExpr().isPlatformIndependentConstant()
   }
 
   override string toString() { result = "type assertion" }
@@ -1160,7 +1160,7 @@ private predicate isTypeExprBottomUp(Expr e) {
   e instanceof InterfaceTypeExpr or
   e instanceof MapTypeExpr or
   e instanceof ChanTypeExpr or
-  isTypeExprBottomUp(e.(ParenExpr).getExpression()) or
+  isTypeExprBottomUp(e.(ParenExpr).getExpr()) or
   isTypeExprBottomUp(e.(StarExpr).getBase()) or
   isTypeExprBottomUp(e.(Ellipsis).getOperand())
 }
@@ -1208,7 +1208,7 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(SelectorExpr sel | isTypeExprTopDown(sel)).getBase()
   or
-  e = any(ParenExpr pe | isTypeExprTopDown(pe)).getExpression()
+  e = any(ParenExpr pe | isTypeExprTopDown(pe)).getExpr()
   or
   e = any(StarExpr se | isTypeExprTopDown(se)).getBase()
   or
@@ -1240,7 +1240,7 @@ class ReferenceExpr extends Expr {
     not this = any(MethodSpec md).getNameExpr() and
     not this = any(StructLit sl).getKey(_)
     or
-    this.(ParenExpr).getExpression() instanceof ReferenceExpr
+    this.(ParenExpr).getExpr() instanceof ReferenceExpr
     or
     this.(StarExpr).getBase() instanceof ReferenceExpr
     or
@@ -1282,7 +1282,7 @@ class ValueExpr extends Expr {
     this instanceof BasicLit or
     this instanceof FuncLit or
     this instanceof CompositeLit or
-    this.(ParenExpr).getExpression() instanceof ValueExpr or
+    this.(ParenExpr).getExpr() instanceof ValueExpr or
     this instanceof SliceExpr or
     this instanceof TypeAssertExpr or
     this instanceof CallOrConversionExpr or

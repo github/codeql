@@ -735,7 +735,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
     succ.(ConversionExpr).getOperand() = pred or
-    succ.(TypeAssertExpr).getExpression() = pred
+    succ.(TypeAssertExpr).getExpr() = pred
   |
     nodeFrom = exprNode(pred) and
     nodeTo = exprNode(succ)

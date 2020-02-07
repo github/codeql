@@ -29,7 +29,7 @@ private predicate isCondRoot(Expr e) {
 private predicate isCond(Expr e) {
   isCondRoot(e) or
   e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand() or
-  e = any(ParenExpr par | isCond(par)).getExpression()
+  e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
 /**
@@ -703,7 +703,7 @@ module CFG {
       or
       i = 0 and result = this.(LabeledStmt).getStmt()
       or
-      i = 0 and result = this.(ParenExpr).getExpression()
+      i = 0 and result = this.(ParenExpr).getExpr()
       or
       result = this.(PlainBlock).getStmt(i)
     }
@@ -1851,7 +1851,7 @@ module CFG {
       result = Panic()
     }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getExpression() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = getExpr() }
   }
 
   private class UnaryExprTree extends ControlFlowTree, UnaryExpr {
