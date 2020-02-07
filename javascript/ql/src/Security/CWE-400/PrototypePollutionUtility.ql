@@ -42,11 +42,18 @@ SourceNode getAnEnumeratedArrayElement(SourceNode array) {
  */
 abstract class EnumeratedPropName extends DataFlow::Node {
   /**
-   * Gets the object whose properties are being enumerated.
+   * Gets the data flow node holding the object whose properties are being enumerated.
    *
    * For example, gets `src` in `for (var key in src)`.
    */
   abstract DataFlow::Node getSourceObject();
+
+  /**
+   * Gets a source node that refers to the object whose properties are being enumerated.
+   */
+  DataFlow::SourceNode getASourceObjectRef() {
+    result = AccessPath::getAnAliasedSourceNode(getSourceObject())
+  }
 
   /**
    * Gets a property read that accesses the corresponding property value in the source object.
@@ -56,7 +63,7 @@ abstract class EnumeratedPropName extends DataFlow::Node {
   SourceNode getASourceProp() {
     exists(Node base, Node key |
       dynamicPropReadStep(base, key, result) and
-      AccessPath::getAnAliasedSourceNode(getSourceObject()).flowsTo(base) and
+      getASourceObjectRef().flowsTo(base) and
       key.getImmediatePredecessor*() = this
     )
   }
@@ -114,10 +121,56 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
 }
 
 /**
+ * Gets a function that enumerates object properties when invoked.
+ *
+ * Invocations takes the following form:
+ * ```js
+ * fn(obj, (value, key, o) => { ... })
+ * ```
+ */
+SourceNode propertyEnumerator() {
+  result = moduleImport("for-own") or
+  result = moduleImport("for-in") or
+  result = moduleMember("ramda", "forEachObjIndexed") or
+  result = LodashUnderscore::member("forEach") or
+  result = LodashUnderscore::member("each")
+}
+
+/**
+ * Property enumeration through a library function taking a callback.
+ */
+class LibraryCallbackEnumeratedPropName extends EnumeratedPropName {
+  CallNode call;
+  FunctionNode callback;
+
+  LibraryCallbackEnumeratedPropName() {
+    call = propertyEnumerator().getACall() and
+    callback = call.getCallback(1) and
+    this = callback.getParameter(1)
+  }
+
+  override Node getSourceObject() {
+    result = call.getArgument(0)
+  }
+
+  override SourceNode getASourceObjectRef() {
+    result = super.getASourceObjectRef()
+    or
+    result = callback.getParameter(2)
+  }
+
+  override SourceNode getASourceProp() {
+    result = super.getASourceProp()
+    or
+    result = callback.getParameter(0)
+  }
+}
+
+/**
  * Holds if the properties of `node` are enumerated locally.
  */
 predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
-  node = AccessPath::getAnAliasedSourceNode(any(EnumeratedPropName name).getSourceObject())
+  node = any(EnumeratedPropName name).getASourceObjectRef()
 }
 
 /**
