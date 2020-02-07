@@ -81,8 +81,8 @@ function falsy() {
   sink(x); // NOT OK
   
   if (x) {
-    sink(x); // NOT OK
+    sink(x); // OK (for taint-tracking)
   } else {
-	sink(x); // OK
+	sink(x); // NOT OK
   }
 }
