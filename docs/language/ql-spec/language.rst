@@ -1798,7 +1798,7 @@ The complete grammar for QL is as follows:
 
 ::
 
-   ql ::= moduleBody ;
+   ql ::= moduleBody
 
    module ::= annotation* "module" modulename "{" moduleBody "}"
 
