@@ -179,7 +179,7 @@ private module CachedSteps {
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Function f | calls(succ, f) |
+    exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
       returnExpr(f, pred, _)
       or
       succ instanceof DataFlow::NewNode and
@@ -188,8 +188,11 @@ private module CachedSteps {
     or
     exists(InvokeExpr invoke, Function fun |
       DataFlow::exceptionalFunctionReturnNode(pred, fun) and
-      DataFlow::exceptionalInvocationReturnNode(succ, invoke) and
+      DataFlow::exceptionalInvocationReturnNode(succ, invoke)
+    |
       calls(invoke.flow(), fun)
+      or
+      callsBound(invoke.flow(), fun, _)
     )
   }
 
@@ -485,4 +488,3 @@ module PathSummary {
    */
   PathSummary return() { exists(FlowLabel lbl | result = MkPathSummary(true, false, lbl, lbl)) }
 }
-

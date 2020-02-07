@@ -751,7 +751,7 @@ private predicate flowThroughCall(
 ) {
   exists(Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
-    calls(output, f) and // Do not consider partial calls
+    (calls(output, f) or callsBound(output, f, _)) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
@@ -761,7 +761,7 @@ private predicate flowThroughCall(
   exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
     DataFlow::exceptionalFunctionReturnNode(ret, f) and
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
-    calls(invk, f) and
+    (calls(invk, f) or callsBound(invk, f, _)) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
