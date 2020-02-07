@@ -78,7 +78,7 @@ predicate importLookup(ASTNode path, Module target, string kind) {
     or
     exists(ReExportDeclaration red |
       path = red.getImportedPath() and
-      target = red.getImportedModule()
+      target = red.getReExportedModule()
     )
   )
 }
