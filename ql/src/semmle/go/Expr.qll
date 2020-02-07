@@ -800,12 +800,12 @@ class ShiftExpr extends @shiftexpr, BitwiseBinaryExpr { }
 /**
  * A comparison expression, that is, `==`, `!=`, `<`, `<=`, `>=` or `>`.
  */
-class Comparison extends @comparison, BinaryExpr { }
+class ComparisonExpr extends @comparison, BinaryExpr { }
 
 /**
  * An equality test, that is, `==` or `!=`.
  */
-class EqualityTestExpr extends @equalitytest, Comparison {
+class EqualityTestExpr extends @equalitytest, ComparisonExpr {
   /** Gets the polarity of this equality test, that is, `true` for `==` and `false` for `!=`. */
   boolean getPolarity() { none() }
 }
@@ -813,7 +813,7 @@ class EqualityTestExpr extends @equalitytest, Comparison {
 /**
  * A relational comparison, that is, `<`, `<=`, `>=` or `>`.
  */
-class RelationalComparisonExpr extends @relationalcomparison, Comparison {
+class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
   /** Holds if this comparison is strict, that is, it implies inequality. */
   predicate isStrict() { none() }
 

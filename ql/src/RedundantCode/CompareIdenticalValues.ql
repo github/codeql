@@ -13,7 +13,7 @@
 
 import go
 
-from Comparison cmp, Expr l
+from ComparisonExpr cmp, Expr l
 where
   l = cmp.getLeftOperand() and
   l.getGlobalValueNumber() = cmp.getRightOperand().getGlobalValueNumber() and

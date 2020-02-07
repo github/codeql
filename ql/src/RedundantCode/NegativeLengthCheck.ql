@@ -11,7 +11,7 @@
 
 import go
 
-from Comparison cmp, BuiltinFunction len, int ub, string r
+from ComparisonExpr cmp, BuiltinFunction len, int ub, string r
 where
   (len = Builtin::len() or len = Builtin::cap()) and
   (
