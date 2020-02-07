@@ -11,3 +11,7 @@ query VarRef getAnExportAccess(LocalTypeName t) {
 query TypeDecl getATypeDecl(LocalTypeName t) {
     result = t.getADeclaration()
 }
+
+query Function calls(DataFlow::InvokeNode invoke) {
+    result = invoke.getACallee()
+}
