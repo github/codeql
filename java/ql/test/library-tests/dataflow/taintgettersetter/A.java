@@ -20,6 +20,24 @@ public class A {
     }
   }
 
+  static class Box2 {
+    String s1;
+    String s2;
+    Box2(String s1, String s2) {
+      this.s1 = s1 + "1";
+      this.s2 = s2 + "2";
+    }
+    
+    String getS1() { return s1 + "2"; }
+    String getS2() { return step(s2 + "_") + "2"; }
+    void setS2(String s) { s2 = "3" + step("_" + s); }
+    Box2 getS1SetS2() { 
+      Box2 b = new Box2("", "");
+      b.setS2(getS1());
+      return b;
+    }
+  }
+
   void foo(Box b1, Box b2) {
     b1.setS1(taint());
     sink(b1.getS1());
@@ -33,5 +51,9 @@ public class A {
 
     Box b4 = Box.mk(taint());
     sink(b4.getS1());
+  
+    Box2 b5 = new Box2(taint(), "");
+    Box2 b6 = b5.getS1SetS2();
+    sink(b6.getS2());
   }
 }
