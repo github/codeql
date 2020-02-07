@@ -42,7 +42,7 @@ SourceNode getAnEnumeratedArrayElement(SourceNode array) {
  */
 abstract class EnumeratedPropName extends DataFlow::Node {
   /**
-   * Gets the object whose properties are being enumerated.
+   * Gets the data flow node holding the object whose properties are being enumerated.
    *
    * For example, gets `src` in `for (var key in src)`.
    */
@@ -117,6 +117,52 @@ class EntriesEnumeratedPropName extends EnumeratedPropName {
     result = super.getASourceProp()
     or
     result = entry.getAPropertyRead("1")
+  }
+}
+
+/**
+ * Gets a function that enumerates object properties when invoked.
+ *
+ * Invocations takes the following form:
+ * ```js
+ * fn(obj, (value, key, o) => { ... })
+ * ```
+ */
+SourceNode propertyEnumerator() {
+  result = moduleImport("for-own") or
+  result = moduleImport("for-in") or
+  result = moduleMember("ramda", "forEachObjIndexed") or
+  result = LodashUnderscore::member("forEach") or
+  result = LodashUnderscore::member("each")
+}
+
+/**
+ * Property enumeration through a library function taking a callback.
+ */
+class LibraryCallbackEnumeratedPropName extends EnumeratedPropName {
+  CallNode call;
+  FunctionNode callback;
+
+  LibraryCallbackEnumeratedPropName() {
+    call = propertyEnumerator().getACall() and
+    callback = call.getCallback(1) and
+    this = callback.getParameter(1)
+  }
+
+  override Node getSourceObject() {
+    result = call.getArgument(0)
+  }
+
+  override SourceNode getASourceObjectRef() {
+    result = super.getASourceObjectRef()
+    or
+    result = callback.getParameter(2)
+  }
+
+  override SourceNode getASourceProp() {
+    result = super.getASourceProp()
+    or
+    result = callback.getParameter(0)
   }
 }
 

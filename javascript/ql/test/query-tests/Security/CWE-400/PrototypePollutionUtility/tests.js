@@ -438,3 +438,27 @@ function copyUsingSafeRead(dst, src) {
         }
     }
 }
+
+function copyUsingForOwn(dst, src) {
+    let forOwn = import('for-own');
+    forOwn(src, (value, key, o) => {
+        if (dst[key]) {
+            copyUsingForOwn(dst[key], src[key]);
+        } else {
+            // Handle a few different ways to access src[key]
+            if (something()) dst[key] = src[key]; // NOT OK
+            if (something()) dst[key] = o[key]; // NOT OK
+            if (something()) dst[key] = value; // NOT OK
+        }
+    });
+}
+
+function copyUsingUnderscoreOrLodash(dst, src) {
+    _.each(src, (value, key, o) => {
+        if (dst[key]) {
+            copyUsingUnderscoreOrLodash(dst[key], src[key]);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}
