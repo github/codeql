@@ -1,4 +1,4 @@
-module github.com/github/codeql-go/ql/test/library-tests/semmle/go/main
+module semmle.go.Packages
 
 go 1.13
 
