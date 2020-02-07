@@ -380,6 +380,14 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     taintPreservingArgumentToMethod(m, i) and
     tracked = sink.(MethodAccess).getArgument(i)
   )
+  or
+  exists(Method m, MethodAccess ma |
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeString and
+    m.hasName("format") and
+    tracked = ma.getAnArgument() and
+    sink = ma
+  )
 }
 
 /**
