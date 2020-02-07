@@ -277,6 +277,7 @@ class Field extends Variable {
 /** A built-in or declared function. */
 class Function extends ValueEntity, @functionobject {
   /** Gets a call to this function. */
+  pragma[nomagic]
   DataFlow::CallNode getACall() {
     this = result.getTarget()
     or
