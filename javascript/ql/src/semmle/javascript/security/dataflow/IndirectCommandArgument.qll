@@ -41,7 +41,14 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
   t.start() and
   result = sys.getArgumentList().getALocalSource()
   or
-  exists(DataFlow::TypeBackTracker t2 | result = argumentList(sys, t2).backtrack(t2, t))
+  exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode pred | 
+    pred = argumentList(sys, t2) 
+  |
+    result = pred.backtrack(t2, t)
+    or
+    t = t2.continue() and
+    TaintTracking::arrayFunctionTaintStep(result, pred, _)
+  )
 }
 
 /**
@@ -68,18 +75,11 @@ predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecutio
     shellCmd(shell.asExpr(), dashC) and
     shell = commandArgument(sys, DataFlow::TypeBackTracker::end()) and
     args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
+    args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
     (
-      args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
-      source = args.getAPropertyWrite().getRhs()
+      source = argumentList(sys, DataFlow::TypeBackTracker::end())
       or
-      exists(DataFlow::MethodCallNode concatCall |
-        args = concatCall.getReceiver() and
-        concatCall.getMethodName() = "concat" and
-        concatCall = argumentList(sys, DataFlow::TypeBackTracker::end())
-      |
-        source = concatCall.getAnArgument() or
-        source = concatCall.getAnArgument().getALocalSource().getAPropertyWrite().getRhs()
-      )
+      source = argumentList(sys, DataFlow::TypeBackTracker::end()).getAPropertyWrite().getRhs()
     )
   )
 }
