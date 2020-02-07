@@ -2076,12 +2076,17 @@ private newtype TPathNode =
       config.isSource(node)
       or
       // ... or a sink that can be reached from a source
-      exists(PathNodeMid mid |
-        pathStep(mid, node, _, _, any(AccessPathNil nil)) and
-        config = mid.getConfiguration()
-      )
+      pathStepNil(node, config)
     )
   }
+
+pragma[nomagic]
+private predicate pathStepNil(Node node, Configuration config) {
+  exists(PathNodeMid mid |
+    pathStep(mid, node, _, _, any(AccessPathNil nil)) and
+    config = mid.getConfiguration()
+  )
+}
 
 /**
  * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
