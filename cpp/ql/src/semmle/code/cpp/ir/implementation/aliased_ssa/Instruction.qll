@@ -1341,17 +1341,23 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 }
 
 /**
- *
+ * An instruction representing the initial value of newly allocated memory, e.g. the result of a
+ * call to `malloc`
  */
 class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   InitializeDynamicAllocationInstruction() {
     getOpcode() instanceof Opcode::InitializeDynamicAllocation
   }
-  
+
+  /**
+   * Gets the address of the allocation this instruction is initializing.
+   */
   final AddressOperand getAllocationAddressOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the operand for the allocation this instruction is initializing.
+   */
   final Instruction getAllocationAddress() { result = getAllocationAddressOperand().getDef() }
-
 }
 
 /**
