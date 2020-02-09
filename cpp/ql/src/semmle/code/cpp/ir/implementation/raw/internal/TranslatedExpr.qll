@@ -2469,9 +2469,6 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
     expr instanceof PrefixCrementOperation and
     not expr.isPRValueCategory() // is C++
     or
-    // Because the load is on the `e` in `e++`.
-    expr instanceof PostfixCrementOperation
-    or
     expr instanceof PointerDereferenceExpr
     or
     expr instanceof AddressOfExpr
@@ -2489,6 +2486,12 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
     // TODO: simplify TranslatedStmtExpr too
   ) and
   not exprImmediatelyDiscarded(expr)
+  or
+  // For certain expressions we want to keep the CopyValue instruction even though the result might
+  // not be needed, as we otherwise cannot get back the original expression. For now the only such
+  // expressions we have encountered are `e++` and `e--`.
+  // Because the load is on the `e` in `e++`.
+  expr instanceof PostfixCrementOperation
 }
 
 /**
