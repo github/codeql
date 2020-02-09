@@ -1838,7 +1838,7 @@ private predicate flowFwdStore(
 ) {
   exists(NodeExt mid, AccessPathFront apf0, boolean through |
     flowFwd(mid, fromArg, apf0, ap0, config) and
-    flowFwdStoreAux(mid, f, node, through, apf0, apf, config)
+    flowFwdStore1(mid, f, node, through, apf0, apf, config)
   |
     through = false or ap0.isValidForFlowThrough()
   )
@@ -1853,12 +1853,20 @@ private predicate flowFwdStore(
   )
 }
 
-private predicate flowFwdStoreAux(
+pragma[noinline]
+private predicate flowFwdStore0(
+  NodeExt mid, Content f, NodeExt node, boolean through, AccessPathFront apf0, Configuration config
+) {
+  storeExt(mid, f, node, through) and
+  consCand(f, apf0, config)
+}
+
+pragma[noinline]
+private predicate flowFwdStore1(
   NodeExt mid, Content f, NodeExt node, boolean through, AccessPathFront apf0, AccessPathFront apf,
   Configuration config
 ) {
-  storeExt(mid, f, node, through) and
-  consCand(f, apf0, config) and
+  flowFwdStore0(mid, f, node, through, apf0, config) and
   apf.headUsesContent(f) and
   flowCand(node, _, apf, unbind(config))
 }
@@ -1958,7 +1966,7 @@ private predicate flow0(NodeExt node, boolean toReturn, AccessPath ap, Configura
   )
   or
   exists(NodeExt mid, AccessPath ap0 |
-    readFwd(node, _, mid, ap, ap0, config) and
+    readFwd(node, mid, ap, ap0, config) and
     flow(mid, toReturn, ap0, config)
   )
   or
@@ -1991,11 +1999,13 @@ private predicate flowTaintStore(
 
 pragma[nomagic]
 private predicate readFwd(
-  NodeExt node1, Content f, NodeExt node2, AccessPath ap, AccessPath ap0, Configuration config
+  NodeExt node1, NodeExt node2, AccessPath ap, AccessPath ap0, Configuration config
 ) {
-  readExt(node1, f, node2, _) and
-  flowFwdRead(node2, f, ap, _, config) and
-  ap0 = pop(f, ap)
+  exists(Content f |
+    readExt(node1, f, node2, _) and
+    flowFwdRead(node2, f, ap, _, config) and
+    ap0 = pop(f, ap)
+  )
 }
 
 bindingset[conf, result]
