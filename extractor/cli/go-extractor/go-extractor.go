@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Semmle/go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/dbscheme"
 
-	"github.com/Semmle/go/extractor"
+	"github.com/github/codeql-go/extractor"
 )
 
 func usage() {

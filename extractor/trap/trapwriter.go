@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"unicode/utf8"
 
-	"github.com/Semmle/go/extractor/srcarchive"
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"golang.org/x/tools/go/packages"
 )
 

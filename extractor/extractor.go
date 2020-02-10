@@ -17,9 +17,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Semmle/go/extractor/dbscheme"
-	"github.com/Semmle/go/extractor/srcarchive"
-	"github.com/Semmle/go/extractor/trap"
+	"github.com/github/codeql-go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/srcarchive"
+	"github.com/github/codeql-go/extractor/trap"
 	"golang.org/x/tools/go/packages"
 )
 
