@@ -221,8 +221,7 @@ module StringOps {
         opt_flag = "[-+ #0]?" and
         width = "\\d+|\\*" and
         prec = "\\.(\\d+|\\*)" and
-        // either a width followed by an optional prec, or just a prec, or nothing
-        opt_width_and_prec = "((" + width + ")(" + prec + ")?|(" + prec + "))?" and
+        opt_width_and_prec = "(" + width + ")?(" + prec + ")?" and
         operator = "[bcdeEfFgGoOpqstTxXUv]" and
         verb = "(%" + opt_flag + opt_width_and_prec + operator + ")"
       |
