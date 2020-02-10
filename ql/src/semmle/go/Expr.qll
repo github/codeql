@@ -220,7 +220,11 @@ class ImagLit extends @imaglit, BasicLit { }
 /**
  * A character literal.
  */
-class CharLit extends @charlit, BasicLit { }
+class CharLit extends @charlit, BasicLit {
+  // use the constant value of the literal as the string value, as the value we get from the
+  // compiler is an integer, meaning we would not otherwise have a string value for rune literals
+  override string getStringValue() { result = this.getValue() }
+}
 
 /**
  * A string literal.
