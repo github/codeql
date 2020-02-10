@@ -34,6 +34,13 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
 }
 
 /**
+ * Gets a data-flow node whose value ends up being interpreted as the command argument in `sys`. 
+ */
+private DataFlow::Node commandArgument(SystemCommandExecution sys) {
+  result = commandArgument(sys, DataFlow::TypeBackTracker::end())
+}
+
+/**
  * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`
  * after a flow summarized by `t`.
  */
@@ -49,6 +56,13 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
     t = t2.continue() and
     TaintTracking::arrayFunctionTaintStep(result, pred, _)
   )
+}
+
+/**
+ * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`. 
+ */
+private DataFlow::SourceNode argumentList(SystemCommandExecution sys) {
+  result = argumentList(sys, DataFlow::TypeBackTracker::end())
 }
 
 /**
@@ -73,13 +87,13 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
 predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecution sys) {
   exists(DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC |
     shellCmd(shell.asExpr(), dashC) and
-    shell = commandArgument(sys, DataFlow::TypeBackTracker::end()) and
+    shell = commandArgument(sys) and
     args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
-    args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
+    args = argumentList(sys) and
     (
-      source = argumentList(sys, DataFlow::TypeBackTracker::end())
+      source = argumentList(sys)
       or
-      source = argumentList(sys, DataFlow::TypeBackTracker::end()).getAPropertyWrite().getRhs()
+      source = argumentList(sys).getAPropertyWrite().getRhs()
     )
   )
 }
