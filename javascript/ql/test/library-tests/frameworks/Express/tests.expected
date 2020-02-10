@@ -69,6 +69,9 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | src/advanced-routehandler-registration.js:125:40:125:40 | v |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:13:17:13:19 | api |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
@@ -463,7 +466,100 @@ test_RouterDefinition_getMiddlewareStackAt
 | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:127:24:127:26 | get | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:127:28:127:30 | "a" | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
-| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:128:1:128:0 | exit node of <toplevel> | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:129:1:129:19 | let method = "GET"; | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:129:5:129:10 | method | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:129:5:129:18 | method = "GET" | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:129:14:129:18 | "GET" | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:1:130:3 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:1:130:25 | app[met ... Case()] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:1:130:56 | app[met ... efined) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:1:130:57 | app[met ... fined); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:5:130:10 | method | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:5:130:22 | method.toLowerCase | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:5:130:24 | method.toLowerCase() | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:12:130:22 | toLowerCase | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:27:130:30 | path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:130:33:130:55 | (req, r ... defined | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:132:1:132:43 | let nam ... uire"]; | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:132:5:132:9 | names | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:132:5:132:42 | names = ... quire"] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:132:13:132:42 | ["handl ... quire"] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:132:14:132:41 | "handle ... equire" | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:1:133:5 | names | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:1:133:13 | names.forEach | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:1:136:2 | names.f ... er);\\n}) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:1:136:3 | names.f ... r);\\n}); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:7:133:13 | forEach | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:133:15:136:1 | name => ... ler);\\n} | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:1:138:43 | let bul ... lers"); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:5:138:15 | bulkRequire | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:5:138:42 | bulkReq ... llers") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:19:138:25 | require | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:19:138:42 | require ... llers") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:138:27:138:41 | "./controllers" | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:1:139:3 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:1:139:7 | app.get | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:1:139:59 | app.get ... ndler); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:5:139:7 | get | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:9:139:19 | bulkRequire | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:9:139:25 | bulkRequire.bulky | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:21:139:25 | bulky | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:27:139:30 | path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:33:139:43 | bulkRequire | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:33:139:49 | bulkRequire.bulky | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:45:139:49 | bulky | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:139:51:139:57 | handler | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:1:141:27 | let opt ...  app }; | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:5:141:11 | options | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:5:141:26 | options ... : app } | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:15:141:26 | { app: app } | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:17:141:19 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:17:141:24 | app: app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:141:22:141:24 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:142:1:142:14 | let args = []; | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:142:5:142:8 | args | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:142:5:142:13 | args = [] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:142:12:142:13 | [] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:1:143:4 | args | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:1:143:9 | args.push | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:1:143:34 | args.pu ... efined) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:1:143:35 | args.pu ... fined); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:6:143:9 | push | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:143:11:143:33 | (req, r ... defined | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:1:144:3 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:1:144:7 | app.use | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:1:144:13 | app.use.apply | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:1:144:32 | app.use ... , args) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:1:144:33 | app.use ...  args); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:5:144:7 | use | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:9:144:13 | apply | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:15:144:21 | options | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:15:144:25 | options.app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:23:144:25 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:144:28:144:31 | args | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:1:146:52 | let han ... fined}; | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:5:146:12 | handlers | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:5:146:51 | handler ... efined} | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:16:146:51 | { handl ... efined} | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:18:146:25 | handlerA | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:18:146:50 | handler ... defined | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:146:28:146:50 | (req, r ... defined | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:1:147:3 | app | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:1:147:7 | app.use | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:1:147:38 | app.use ... data)); | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:5:147:7 | use | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:9:147:16 | handlers | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:9:147:25 | handlers.handlerA | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:9:147:30 | handler ... rA.bind | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:18:147:25 | handlerA | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:27:147:30 | bind | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:32:147:35 | data | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:148:1:148:0 | exit node of <toplevel> | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:5:1:5:0 | exit node of <toplevel> | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:13:17:13:19 | api |
@@ -673,6 +769,9 @@ test_RouteSetup_getRouter
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:1:13:1:32 | require('express')() |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:7:11:7:19 | express() |
@@ -997,10 +1096,15 @@ test_RouteHandlerExpr_getNextMiddleware
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:118:14:118:29 | importedRoutes.a |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:119:14:119:29 | importedRoutes.b |
-| src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:125:37:125:37 | k |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") |
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") |
+| src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:125:40:125:40 | v |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:125:37:125:37 | k |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) | src/csurf-example.js:17:9:17:22 | cookieParser() |
 | src/csurf-example.js:17:9:17:22 | cookieParser() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
@@ -1084,6 +1188,11 @@ test_RouteHandlerExpr
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | true |
 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | true |
 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | true |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | false |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | true |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | false |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | true |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | false |
 | src/auth.js:4:9:4:52 | basicAu ... rd' }}) | src/auth.js:4:1:4:53 | app.use ... d' }})) | false |
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | false |
 | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | false |
@@ -1132,6 +1241,7 @@ test_RouteSetup_handlesAllRequestMethods
 | src/advanced-routehandler-registration.js:73:1:73:56 | app.use ... , res)) |
 | src/advanced-routehandler-registration.js:92:1:92:61 | app.use ... ever")) |
 | src/advanced-routehandler-registration.js:111:1:111:61 | app.use ... ever")) |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) |
@@ -1177,6 +1287,8 @@ test_RouteSetup_getRequestMethod
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | GET |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | GET |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | GET |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | GET |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | GET |
 | src/csurf-example.js:20:1:23:2 | app.get ... ) })\\n}) | GET |
 | src/csurf-example.js:25:1:27:2 | app.pos ... re')\\n}) | POST |
 | src/csurf-example.js:32:3:34:4 | router. ... ')\\n  }) | POST |
@@ -1218,6 +1330,10 @@ test_RouteExpr
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:144:1:144:32 | app.use ... , args) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:1:13:1:32 | require('express')() |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:7:11:7:19 | express() |
@@ -1587,6 +1703,12 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:10:11:10:27 | createApiRouter() |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:30:16:30:35 | new express.Router() |
@@ -1688,6 +1810,7 @@ test_RouteHandlerExpr_getAMatchingAncestor
 | src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:37:11:37:11 | h |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
@@ -1696,6 +1819,7 @@ test_RouteHandlerExpr_getAMatchingAncestor
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:125:37:125:37 | k |
+| src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:37:11:37:11 | h |
 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
@@ -1710,6 +1834,45 @@ test_RouteHandlerExpr_getAMatchingAncestor
 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:37:11:37:11 | h |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:37:11:37:11 | h |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:37:11:37:11 | h |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:37:11:37:11 | h |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:37:11:37:11 | h |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:73:9:73:55 | (req, r ... q, res) |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:92:9:92:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/csurf-example.js:17:9:17:22 | cookieParser() | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:17:9:17:22 | cookieParser() |
@@ -1768,6 +1931,11 @@ test_RouteSetup_getRouteHandlerExpr
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | 1 | src/advanced-routehandler-registration.js:125:40:125:40 | v |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | 0 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | 0 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | 0 | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | 1 | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | 0 | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | 1 | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | 0 | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | 0 | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | 0 | src/csurf-example.js:13:17:13:19 | api |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | 0 | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
@@ -1833,7 +2001,7 @@ test_RouteHandler_getARequestBodyAccess
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:6:17:6:24 | req.body |
 | src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:28:2:28:9 | req.body |
 test_RouterDefinition_getMiddlewareStack
-| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:2:11:2:19 | express() | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
 | src/express2.js:5:11:5:13 | e() | src/express2.js:6:9:6:14 | router |
@@ -1854,6 +2022,7 @@ test_RouteHandler
 | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:111:10:111:12 | req | src/advanced-routehandler-registration.js:111:15:111:17 | res |
 | src/advanced-routehandler-registration.js:123:20:123:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:123:21:123:23 | req | src/advanced-routehandler-registration.js:123:26:123:28 | res |
 | src/advanced-routehandler-registration.js:124:20:124:49 | (req, r ... og(req) | src/advanced-routehandler-registration.js:124:21:124:23 | req | src/advanced-routehandler-registration.js:124:26:124:28 | res |
+| src/controllers/handler-in-bulk-require.js:1:44:1:66 | (req, r ... defined | src/controllers/handler-in-bulk-require.js:1:45:1:47 | req | src/controllers/handler-in-bulk-require.js:1:50:1:52 | res |
 | src/csurf-example.js:20:18:23:1 | functio ... () })\\n} | src/csurf-example.js:20:28:20:30 | req | src/csurf-example.js:20:33:20:35 | res |
 | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} | src/csurf-example.js:25:32:25:34 | req | src/csurf-example.js:25:37:25:39 | res |
 | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } | src/csurf-example.js:32:40:32:42 | req | src/csurf-example.js:32:45:32:47 | res |
@@ -1900,6 +2069,11 @@ test_RouteSetup_getARouteHandlerExpr
 | src/advanced-routehandler-registration.js:125:29:125:41 | app.get(k, v) | src/advanced-routehandler-registration.js:125:40:125:40 | v |
 | src/advanced-routehandler-registration.js:126:1:126:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") |
 | src/advanced-routehandler-registration.js:127:1:127:32 | app.get ... t("a")) | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
+| src/advanced-routehandler-registration.js:135:2:135:53 | app.get ... andler) | src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:139:1:139:58 | app.get ... andler) | src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler |
+| src/advanced-routehandler-registration.js:147:1:147:37 | app.use ... (data)) | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:13:17:13:19 | api |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
@@ -1955,10 +2129,15 @@ test_RouteHandlerExpr_getPreviousMiddleware
 | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:118:14:118:29 | importedRoutes.a | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:119:14:119:29 | importedRoutes.b | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
-| src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:125:37:125:37 | k | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
 | src/advanced-routehandler-registration.js:125:40:125:40 | v | src/advanced-routehandler-registration.js:125:37:125:37 | k |
 | src/advanced-routehandler-registration.js:126:14:126:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:127:14:127:31 | routesMap.get("a") | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path | src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) |
+| src/advanced-routehandler-registration.js:135:31:135:52 | dynamic ... handler | src/advanced-routehandler-registration.js:135:10:135:28 | dynamicRequire.path |
+| src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
+| src/advanced-routehandler-registration.js:139:33:139:57 | bulkReq ... handler | src/advanced-routehandler-registration.js:139:9:139:30 | bulkReq ... ky.path |
+| src/advanced-routehandler-registration.js:147:9:147:36 | handler ... d(data) | src/advanced-routehandler-registration.js:111:9:111:60 | (req, r ... tever") |
 | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) | src/csurf-example.js:13:17:13:19 | api |
 | src/csurf-example.js:17:9:17:22 | cookieParser() | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:17:9:17:22 | cookieParser() |

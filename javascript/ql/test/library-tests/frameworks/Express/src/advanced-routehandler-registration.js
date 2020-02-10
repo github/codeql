@@ -125,3 +125,23 @@ routesMap.set("b", (req, res) => console.log(req));
 routesMap.forEach((v, k) => app.get(k, v));
 app.get("a", routesMap.get("a"));
 app.get("b", routesMap.get("a"));
+
+let method = "GET";
+app[method.toLowerCase()](path, (req, res) => undefined);
+
+let names = ["handler-in-dynamic-require"];
+names.forEach(name => {
+	let dynamicRequire = require("./controllers/" + name);
+	app.get(dynamicRequire.path, dynamicRequire.handler);
+});
+
+let bulkRequire = require("./controllers");
+app.get(bulkRequire.bulky.path, bulkRequire.bulky.handler);
+
+let options = { app: app };
+let args = [];
+args.push((req, res) => undefined);
+app.use.apply(options.app, args);
+
+let handlers = { handlerA: (req, res) => undefined};
+app.use(handlers.handlerA.bind(data));
