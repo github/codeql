@@ -1,0 +1,39 @@
+edges
+| TaintGetterSetter.cs:50:9:50:10 | [post] access to parameter b1 [s] : String | TaintGetterSetter.cs:51:14:51:15 | access to parameter b1 [s] : String |
+| TaintGetterSetter.cs:50:18:50:24 | call to method Taint : String | TaintGetterSetter.cs:50:9:50:10 | [post] access to parameter b1 [s] : String |
+| TaintGetterSetter.cs:51:14:51:15 | access to parameter b1 [s] : String | TaintGetterSetter.cs:51:14:51:23 | call to method GetS1 |
+| TaintGetterSetter.cs:53:9:53:10 | [post] access to parameter b2 [s] : String | TaintGetterSetter.cs:54:14:54:15 | access to parameter b2 [s] : String |
+| TaintGetterSetter.cs:53:18:53:24 | call to method Taint : String | TaintGetterSetter.cs:53:9:53:10 | [post] access to parameter b2 [s] : String |
+| TaintGetterSetter.cs:54:14:54:15 | access to parameter b2 [s] : String | TaintGetterSetter.cs:54:14:54:23 | call to method GetS2 |
+| TaintGetterSetter.cs:56:21:56:27 | call to method Taint : String | TaintGetterSetter.cs:57:31:57:32 | access to local variable t3 : String |
+| TaintGetterSetter.cs:57:18:57:34 | object creation of type Box [s] : String | TaintGetterSetter.cs:58:14:58:15 | access to local variable b3 [s] : String |
+| TaintGetterSetter.cs:57:26:57:33 | call to method Step : String | TaintGetterSetter.cs:57:18:57:34 | object creation of type Box [s] : String |
+| TaintGetterSetter.cs:57:31:57:32 | access to local variable t3 : String | TaintGetterSetter.cs:57:26:57:33 | call to method Step : String |
+| TaintGetterSetter.cs:58:14:58:15 | access to local variable b3 [s] : String | TaintGetterSetter.cs:58:14:58:17 | access to field s |
+| TaintGetterSetter.cs:60:18:60:32 | call to method mk [s] : String | TaintGetterSetter.cs:61:14:61:15 | access to local variable b4 [s] : String |
+| TaintGetterSetter.cs:60:25:60:31 | call to method Taint : String | TaintGetterSetter.cs:60:18:60:32 | call to method mk [s] : String |
+| TaintGetterSetter.cs:61:14:61:15 | access to local variable b4 [s] : String | TaintGetterSetter.cs:61:14:61:23 | call to method GetS1 |
+nodes
+| TaintGetterSetter.cs:50:9:50:10 | [post] access to parameter b1 [s] : String | semmle.label | [post] access to parameter b1 [s] : String |
+| TaintGetterSetter.cs:50:18:50:24 | call to method Taint : String | semmle.label | call to method Taint : String |
+| TaintGetterSetter.cs:51:14:51:15 | access to parameter b1 [s] : String | semmle.label | access to parameter b1 [s] : String |
+| TaintGetterSetter.cs:51:14:51:23 | call to method GetS1 | semmle.label | call to method GetS1 |
+| TaintGetterSetter.cs:53:9:53:10 | [post] access to parameter b2 [s] : String | semmle.label | [post] access to parameter b2 [s] : String |
+| TaintGetterSetter.cs:53:18:53:24 | call to method Taint : String | semmle.label | call to method Taint : String |
+| TaintGetterSetter.cs:54:14:54:15 | access to parameter b2 [s] : String | semmle.label | access to parameter b2 [s] : String |
+| TaintGetterSetter.cs:54:14:54:23 | call to method GetS2 | semmle.label | call to method GetS2 |
+| TaintGetterSetter.cs:56:21:56:27 | call to method Taint : String | semmle.label | call to method Taint : String |
+| TaintGetterSetter.cs:57:18:57:34 | object creation of type Box [s] : String | semmle.label | object creation of type Box [s] : String |
+| TaintGetterSetter.cs:57:26:57:33 | call to method Step : String | semmle.label | call to method Step : String |
+| TaintGetterSetter.cs:57:31:57:32 | access to local variable t3 : String | semmle.label | access to local variable t3 : String |
+| TaintGetterSetter.cs:58:14:58:15 | access to local variable b3 [s] : String | semmle.label | access to local variable b3 [s] : String |
+| TaintGetterSetter.cs:58:14:58:17 | access to field s | semmle.label | access to field s |
+| TaintGetterSetter.cs:60:18:60:32 | call to method mk [s] : String | semmle.label | call to method mk [s] : String |
+| TaintGetterSetter.cs:60:25:60:31 | call to method Taint : String | semmle.label | call to method Taint : String |
+| TaintGetterSetter.cs:61:14:61:15 | access to local variable b4 [s] : String | semmle.label | access to local variable b4 [s] : String |
+| TaintGetterSetter.cs:61:14:61:23 | call to method GetS1 | semmle.label | call to method GetS1 |
+#select
+| TaintGetterSetter.cs:51:14:51:23 | call to method GetS1 | TaintGetterSetter.cs:50:18:50:24 | call to method Taint : String | TaintGetterSetter.cs:51:14:51:23 | call to method GetS1 | $@ | TaintGetterSetter.cs:50:18:50:24 | call to method Taint : String | call to method Taint : String |
+| TaintGetterSetter.cs:54:14:54:23 | call to method GetS2 | TaintGetterSetter.cs:53:18:53:24 | call to method Taint : String | TaintGetterSetter.cs:54:14:54:23 | call to method GetS2 | $@ | TaintGetterSetter.cs:53:18:53:24 | call to method Taint : String | call to method Taint : String |
+| TaintGetterSetter.cs:58:14:58:17 | access to field s | TaintGetterSetter.cs:56:21:56:27 | call to method Taint : String | TaintGetterSetter.cs:58:14:58:17 | access to field s | $@ | TaintGetterSetter.cs:56:21:56:27 | call to method Taint : String | call to method Taint : String |
+| TaintGetterSetter.cs:61:14:61:23 | call to method GetS1 | TaintGetterSetter.cs:60:25:60:31 | call to method Taint : String | TaintGetterSetter.cs:61:14:61:23 | call to method GetS1 | $@ | TaintGetterSetter.cs:60:25:60:31 | call to method Taint : String | call to method Taint : String |
