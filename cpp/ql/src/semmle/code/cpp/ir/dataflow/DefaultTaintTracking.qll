@@ -335,6 +335,12 @@ private Element adjustedSink(DataFlow::Node sink) {
   // For compatibility, send flow into a `NotExpr` even if it's part of a
   // short-circuiting condition and thus might get skipped.
   result.(NotExpr).getOperand() = sink.asExpr()
+  or
+  // Taint `e--` and `e++` when `e` is tainted.
+  exists(PostfixCrementOperation crement |
+    crement.getAnOperand() = sink.asExpr() and
+    result = crement
+  )
 }
 
 predicate tainted(Expr source, Element tainted) {
