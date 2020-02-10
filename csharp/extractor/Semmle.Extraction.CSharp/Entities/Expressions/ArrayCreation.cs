@@ -101,11 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            if (Syntax.Initializer != null)
-            {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
-            }
-
+            ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
             trapFile.implicitly_typed_array_creation(this);
         }
     }
