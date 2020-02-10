@@ -29,7 +29,6 @@ ssa.cpp:
 #   15|     r15_6(int)            = Add                : r15_4, r15_5
 #   15|     m15_7(int)            = Store              : &:r15_3, r15_6
 #   15|     m15_8(unknown)        = Chi                : total:m13_9, partial:m15_7
-#   15|     r15_9(int)            = CopyValue          : r15_4
 #-----|   Goto -> Block 3
 
 #   18|   Block 2
@@ -41,7 +40,6 @@ ssa.cpp:
 #   18|     r18_6(int)            = Add                : r18_4, r18_5
 #   18|     m18_7(int)            = Store              : &:r18_3, r18_6
 #   18|     m18_8(unknown)        = Chi                : total:m13_9, partial:m18_7
-#   18|     r18_9(int)            = CopyValue          : r18_4
 #-----|   Goto -> Block 3
 
 #   21|   Block 3
@@ -63,7 +61,6 @@ ssa.cpp:
 #   22|     r22_6(int)            = Add                : r22_4, r22_5
 #   22|     m22_7(int)            = Store              : &:r22_3, r22_6
 #   22|     m22_8(unknown)        = Chi                : total:m21_3, partial:m22_7
-#   22|     r22_9(int)            = CopyValue          : r22_4
 #-----|   Goto -> Block 6
 
 #   25|   Block 5
@@ -75,7 +72,6 @@ ssa.cpp:
 #   25|     r25_6(int)            = Add                : r25_4, r25_5
 #   25|     m25_7(int)            = Store              : &:r25_3, r25_6
 #   25|     m25_8(unknown)        = Chi                : total:m21_3, partial:m25_7
-#   25|     r25_9(int)            = CopyValue          : r25_4
 #-----|   Goto -> Block 6
 
 #   28|   Block 6
@@ -197,7 +193,6 @@ ssa.cpp:
 #   62|     r62_3(int)        = Constant[1]         : 
 #   62|     r62_4(int)        = Add                 : r62_2, r62_3
 #   62|     m62_5(int)        = Store               : &:r62_1, r62_4
-#   62|     r62_6(int)        = CopyValue           : r62_2
 #   63|     r63_1(bool)       = Constant[0]         : 
 #   63|     v63_2(void)       = ConditionalBranch   : r63_1
 #-----|   False -> Block 1

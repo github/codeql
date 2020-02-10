@@ -404,7 +404,7 @@ test.cpp:
 
 #   53|   Block 1
 #   53|     m53_1(unsigned int)  = Phi                  : from 0:m51_3, from 8:m62_5
-#   53|         valnum = m53_1, m65_4, r62_2, r62_6, r65_3
+#   53|         valnum = m53_1, m65_4, r62_2, r65_3
 #   53|     r53_2(glval<char *>) = VariableAddress[str] : 
 #   53|         valnum = r49_6, r53_2, r56_6
 #   53|     r53_3(char *)        = Load                 : &:r53_2, m49_7
@@ -434,11 +434,11 @@ test.cpp:
 
 #   56|   Block 3
 #   56|     m56_1(decltype(nullptr)) = Phi                  : from 2:m55_4, from 5:m56_23
-#   56|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
 #   56|     r56_2(glval<char *>)     = VariableAddress[ptr] : 
 #   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   56|     r56_3(char *)            = Load                 : &:r56_2, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
 #   56|     r56_4(char)              = Load                 : &:r56_3, ~m49_4
 #   56|         valnum = unique
 #   56|     r56_5(int)               = Convert              : r56_4
@@ -461,7 +461,7 @@ test.cpp:
 #   56|     r56_12(glval<char *>) = VariableAddress[ptr] : 
 #   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   56|     r56_13(char *)        = Load                 : &:r56_12, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
 #   56|     r56_14(char)          = Load                 : &:r56_13, ~m49_4
 #   56|         valnum = unique
 #   56|     r56_15(int)           = Convert              : r56_14
@@ -478,22 +478,20 @@ test.cpp:
 #   56|     r56_19(glval<char *>) = VariableAddress[ptr] : 
 #   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   56|     r56_20(char *)        = Load                 : &:r56_19, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
 #   56|     r56_21(int)           = Constant[1]          : 
 #   56|         valnum = unique
 #   56|     r56_22(char *)        = PointerAdd[1]        : r56_20, r56_21
 #   56|         valnum = m56_23, r56_22
 #   56|     m56_23(char *)        = Store                : &:r56_19, r56_22
 #   56|         valnum = m56_23, r56_22
-#   56|     r56_24(char *)        = CopyValue            : r56_20
-#   56|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
 #-----|   Goto (back edge) -> Block 3
 
 #   59|   Block 6
 #   59|     r59_1(glval<char *>) = VariableAddress[ptr] : 
 #   59|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   59|     r59_2(char *)        = Load                 : &:r59_1, m56_1
-#   59|         valnum = m56_1, r56_13, r56_20, r56_24, r56_3, r59_2
+#   59|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
 #   59|     r59_3(char)          = Load                 : &:r59_2, ~m49_4
 #   59|         valnum = unique
 #   59|     r59_4(int)           = Convert              : r59_3
@@ -514,15 +512,13 @@ test.cpp:
 #   62|     r62_1(glval<unsigned int>) = VariableAddress[result] : 
 #   62|         valnum = r51_1, r62_1, r65_2
 #   62|     r62_2(unsigned int)        = Load                    : &:r62_1, m53_1
-#   62|         valnum = m53_1, m65_4, r62_2, r62_6, r65_3
+#   62|         valnum = m53_1, m65_4, r62_2, r65_3
 #   62|     r62_3(unsigned int)        = Constant[1]             : 
 #   62|         valnum = unique
 #   62|     r62_4(unsigned int)        = Add                     : r62_2, r62_3
 #   62|         valnum = m62_5, r62_4
 #   62|     m62_5(unsigned int)        = Store                   : &:r62_1, r62_4
 #   62|         valnum = m62_5, r62_4
-#   62|     r62_6(unsigned int)        = CopyValue               : r62_2
-#   62|         valnum = m53_1, m65_4, r62_2, r62_6, r65_3
 #-----|   Goto (back edge) -> Block 1
 
 #   63|   Block 9
@@ -532,9 +528,9 @@ test.cpp:
 #   65|     r65_2(glval<unsigned int>)  = VariableAddress[result]  : 
 #   65|         valnum = r51_1, r62_1, r65_2
 #   65|     r65_3(unsigned int)         = Load                     : &:r65_2, m53_1
-#   65|         valnum = m53_1, m65_4, r62_2, r62_6, r65_3
+#   65|         valnum = m53_1, m65_4, r62_2, r65_3
 #   65|     m65_4(unsigned int)         = Store                    : &:r65_1, r65_3
-#   65|         valnum = m53_1, m65_4, r62_2, r62_6, r65_3
+#   65|         valnum = m53_1, m65_4, r62_2, r65_3
 #   49|     v49_14(void)                = ReturnIndirection        : &:r49_8, m49_9
 #   49|     v49_15(void)                = ReturnIndirection        : &:r49_12, m49_13
 #   49|     r49_16(glval<unsigned int>) = VariableAddress[#return] : 
