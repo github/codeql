@@ -337,10 +337,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(NotExpr).getOperand() = sink.asExpr()
   or
   // Taint `e--` and `e++` when `e` is tainted.
-  exists(PostfixCrementOperation crement |
-    crement.getAnOperand() = sink.asExpr() and
-    result = crement
-  )
+  result.(PostfixCrementOperation).getAnOperand() = sink.asExpr()
 }
 
 predicate tainted(Expr source, Element tainted) {
