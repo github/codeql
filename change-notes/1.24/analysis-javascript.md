@@ -26,6 +26,7 @@
   - [for-own](https://www.npmjs.com/package/for-own)
   - [send](https://www.npmjs.com/package/send)
   - [chrome-remote-interface](https://www.npmjs.com/package/chrome-remote-interface)
+  - [http2](https://nodejs.org/api/http2.html)
 
 ## New queries
 
