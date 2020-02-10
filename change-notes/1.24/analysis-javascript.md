@@ -19,6 +19,7 @@
   - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
   - [Koa](https://www.npmjs.com/package/koa)
+  - [http2](https://nodejs.org/api/http2.html)
 
 ## New queries
 

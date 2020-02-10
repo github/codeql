@@ -119,8 +119,11 @@ module HTTP {
   }
 
   /**
+   * DEPRECATED: Use `http` or `https` directly as appropriate.
+   *
    * Gets the string `http` or `https`.
    */
+  deprecated
   string httpOrHttps() { result = "http" or result = "https" }
 
   /**
