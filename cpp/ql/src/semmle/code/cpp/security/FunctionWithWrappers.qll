@@ -106,8 +106,8 @@ abstract class FunctionWithWrappers extends Function {
   pragma[nomagic]
   private string wrapperFunctionAnyDepthUnique(Function func, int paramIndex) {
     result =
-      min(string targetCause | this.wrapperFunctionAnyDepth(func, paramIndex, targetCause)) +
-        ", which ends up calling " + toCause(func, paramIndex)
+      toCause(func, paramIndex) + ", which ends up calling " +
+        min(string targetCause | this.wrapperFunctionAnyDepth(func, paramIndex, targetCause))
   }
 
   /**
