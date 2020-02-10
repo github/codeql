@@ -43,6 +43,7 @@
 | Use of call stack introspection in strict mode (`js/strict-mode-call-stack-introspection`) | Fewer false positive results | The query no longer flags expression statements. |
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | The query reports fewer duplicates and only flags handlers that explicitly access cookie data. |
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional ways dangerous paths can be constructed. |
+| Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional ways of constructing arguments to `cmd.exe` and `/bin/sh`. |
 
 ## Changes to libraries
 
