@@ -392,11 +392,11 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
 }
 
 /**
-  * Holds if the result is a side effect for instruction `call` on argument
-  * index `argument`. This helper predicate makes it easy to join on both of
-  * these columns at once, avoiding pathological join orders in case the
-  * argument index should get joined first.
-  */
+ * Holds if the result is a side effect for instruction `call` on argument
+ * index `argument`. This helper predicate makes it easy to join on both of
+ * these columns at once, avoiding pathological join orders in case the
+ * argument index should get joined first.
+ */
 pragma[noinline]
 SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
   call = result.getPrimaryInstruction() and
