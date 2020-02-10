@@ -10,4 +10,4 @@ import go
 
 from Variable err
 where err.getName() = "err"
-select err
+select err, err.getDeclaration()
