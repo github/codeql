@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.DynamicPropertyAccess
 
 module HTTP {
   /**
@@ -495,5 +496,119 @@ module HTTP {
    */
   class CookieCryptographicKey extends CryptographicKey {
     CookieCryptographicKey() { this = any(CookieMiddlewareInstance instance).getASecretKey() }
+  }
+
+  /**
+   * An object that contains one or more potential route handlers.
+   */
+  class RouteHandlerCandidateContainer extends DataFlow::Node {
+    RouteHandlerCandidateContainer::Range self;
+
+    RouteHandlerCandidateContainer() { this = self }
+
+    /**
+     * Gets the route handler in this container that is accessed at `access`.
+     */
+    DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+      result = self.getRouteHandler(access)
+    }
+  }
+
+  /**
+   * Provides classes for working with objects that may contain one or more route handlers.
+   */
+  module RouteHandlerCandidateContainer {
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t, RouteHandlerCandidateContainer c) {
+      t.start() and result = c
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2, c).track(t2, t))
+    }
+
+    private DataFlow::SourceNode ref(RouteHandlerCandidateContainer c) {
+      result = ref(DataFlow::TypeTracker::end(), c)
+    }
+
+    /**
+     * A container for one or more potential route handlers.
+     *
+     * Extend this class and implement its abstract member predicates to model additional
+     * containers.
+     */
+    abstract class Range extends DataFlow::SourceNode {
+      /**
+       * Gets the route handler in this container that is accessed at `access`.
+       */
+      abstract DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access);
+    }
+
+    /**
+     * An object that contains one or more potential route handlers.
+     */
+    private class ContainerObject extends Range {
+      ContainerObject() {
+        (
+          this instanceof DataFlow::ObjectLiteralNode
+          or
+          exists(DataFlow::CallNode create | this = create |
+            create = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+            create.getArgument(0).asExpr() instanceof NullLiteral
+          )
+        ) and
+        exists(RouteHandlerCandidate candidate | candidate.flowsTo(getAPropertyWrite().getRhs()))
+      }
+
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
+        exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+          access = read and
+          ref(this).getAPropertyRead() = read and
+          result.flowsTo(write.getRhs()) and
+          write = this.getAPropertyWrite()
+        |
+          write.getPropertyName() = read.getPropertyName()
+          or
+          exists(EnumeratedPropName prop | access = prop.getASourceProp())
+          or
+          read = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
+        )
+      }
+    }
+
+    /**
+     * A map that contains one or more route potential handlers.
+     */
+    private class ContainerMap extends Range {
+      ContainerMap() {
+        this = DataFlow::globalVarRef("Map").getAnInstantiation() and
+        exists(RouteHandlerCandidate candidate |
+          candidate.flowsTo(this.getAMethodCall("set").getArgument(1))
+        )
+      }
+
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
+        exists(DataFlow::MethodCallNode set, DataFlow::Node setKey |
+          setKey = set.getArgument(0) and
+          this.getAMethodCall("set") = set and
+          result.flowsTo(set.getArgument(1))
+        |
+          exists(DataFlow::MethodCallNode get, DataFlow::Node getKey |
+            get = access and
+            getKey = get.getArgument(0) and
+            ref(this).getAMethodCall("get") = get
+          |
+            exists(string name |
+              getKey.mayHaveStringValue(name) and
+              setKey.mayHaveStringValue(name)
+            )
+          )
+          or
+          exists(DataFlow::MethodCallNode forEach |
+            forEach = ref(this).getAMethodCall("forEach") and
+            forEach.getCallback(0).getParameter(0) = access
+          )
+        )
+      }
+    }
   }
 }
