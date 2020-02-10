@@ -16,7 +16,7 @@ where
   (len = Builtin::len() or len = Builtin::cap()) and
   (
     exists(RelationalComparisonExpr rel | rel = cmp |
-      rel.getLesserOperand() = len.getACallExpr() and
+      rel.getLesserOperand() = len.getACall().asExpr() and
       rel.getGreaterOperand().getIntValue() = ub and
       (
         ub < 0
@@ -27,7 +27,7 @@ where
     )
     or
     exists(EqualityTestExpr eq | eq = cmp |
-      eq.getAnOperand() = len.getACallExpr() and
+      eq.getAnOperand() = len.getACall().asExpr() and
       eq.getAnOperand().getIntValue() = ub and
       ub < 0 and
       r = "equal"

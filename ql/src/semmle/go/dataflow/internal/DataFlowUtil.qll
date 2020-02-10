@@ -264,11 +264,36 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
-  /** Get the definition of a possible target of this call. See `CallExpr.getACallee`. */
-  FuncDef getACallee() { result = expr.getACallee() }
+  private DataFlow::Node getACalleeSource() {
+    result.getASuccessor*() = getCalleeNode()
+  }
+
+  /**
+   * Gets the definition of a possible target of this call.
+   *
+   * For non-virtual calls, there is at most one possible call target (but there may be none if the
+   * target has no declaration).
+   *
+   * For virtual calls, we look up possible targets in all types that implement the receiver
+   * interface type.
+   */
+  FuncDef getACallee() {
+    result = getTarget().(DeclaredFunction).getFuncDecl()
+    or
+    exists(DataFlow::Node calleeSource | calleeSource = getACalleeSource() |
+      result = calleeSource.asExpr()
+      or
+      exists(Method m, InterfaceType declaredRecv, Type actualRecv |
+        calleeSource = m.getARead() and
+        declaredRecv = m.getReceiverType().(NamedType).getBaseType() and
+        actualRecv.implements(declaredRecv) and
+        result = actualRecv.getMethod(m.getName()).(DeclaredFunction).getFuncDecl()
+      )
+    )
+  }
 
   /** Gets the name of the function or method being called, if it can be determined. */
-  string getCalleeName() { result = expr.getTarget().getName() }
+  string getCalleeName() { result = expr.getTarget().getName() or result = expr.getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
   Node getCalleeNode() { result = exprNode(expr.getCalleeExpr()) }
@@ -315,10 +340,7 @@ class CallNode extends ExprNode {
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() {
-    exists(MethodReadNode mrn |
-      mrn.getASuccessor*() = this.getCalleeNode() and
-      result = mrn.getReceiver()
-    )
+    result = getACalleeSource().(MethodReadNode).getReceiver()
   }
 }
 
@@ -328,7 +350,7 @@ class MethodCallNode extends CallNode {
 
   override Method getTarget() { result = expr.getTarget() }
 
-  override MethodDecl getACallee() { result = expr.getACallee() }
+  override MethodDecl getACallee() { result = super.getACallee() }
 }
 
 /** A representation of a receiver initialization. */

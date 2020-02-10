@@ -214,13 +214,16 @@ module StringOps {
      * width and precision specifiers, but not including `*` specifiers or explicit argument
      * indices.
      */
+    pragma[noinline]
     private string getFormatComponentRegex() {
-      exists(string literal, string opt_flag, string opt_width, string operator, string verb |
+      exists(string literal, string opt_flag, string width, string prec, string opt_width_and_prec, string operator, string verb |
         literal = "([^%]|%%)+" and
         opt_flag = "[-+ #0]?" and
-        opt_width = "((\\d*|\\*)(\\.(\\d*|\\*))?)?" and
+        width = "\\d+|\\*" and
+        prec = "\\.(\\d+|\\*)" and
+        opt_width_and_prec = "(" + width + ")?(" + prec + ")?" and
         operator = "[bcdeEfFgGoOpqstTxXUv]" and
-        verb = "(%" + opt_flag + opt_width + operator + ")"
+        verb = "(%" + opt_flag + opt_width_and_prec + operator + ")"
       |
         result = "(" + literal + "|" + verb + ")"
       )

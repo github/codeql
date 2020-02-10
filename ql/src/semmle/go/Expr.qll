@@ -442,14 +442,6 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the expression representing the function being called. */
   Expr getCalleeExpr() { result = getChildExpr(0) }
 
-  /** Holds if this call is of the form `base.method(...)`. */
-  predicate calls(Expr base, string method) {
-    exists(SelectorExpr callee | callee = getCalleeExpr().stripParens() |
-      callee.getBase() = base and
-      method = callee.getSelector().getName()
-    )
-  }
-
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
     i >= 0 and
@@ -462,39 +454,17 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(getAnArgument()) }
 
-  /** Gets the name of the invoked function or method. */
+  /** Gets the name of the invoked function or method if it can be determined syntactically. */
   string getCalleeName() {
-    result = getCalleeExpr().stripParens().(Ident).getName() or
-    calls(_, result)
+    exists(Expr callee | callee = getCalleeExpr().stripParens() |
+      result = callee.(Ident).getName()
+      or
+      result = callee.(SelectorExpr).getSelector().getName()
+    )
   }
 
   /** Gets the declared target of this call. */
-  Function getTarget() { this = result.getACallExpr() }
-
-  /**
-   * Gets the definition of a possible target of this call.
-   *
-   * For non-virtual calls, there is at most one possible call target (but there may be none if the
-   * target has no declaration).
-   *
-   * For virtual calls, we look up possible targets in all types that implement the receiver
-   * interface type.
-   */
-  FuncDef getACallee() {
-    result = getTarget().(DeclaredFunction).getFuncDecl()
-    or
-    exists(SelectorExpr sel, InterfaceType declaredRecv, Type actualRecv |
-      sel = getCalleeExpr().stripParens() and
-      declaredRecv = sel.getBase().getType().getUnderlyingType() and
-      actualRecv.implements(declaredRecv)
-    |
-      result = actualRecv
-            .(PointerType)
-            .getBaseType()
-            .(NamedType)
-            .getMethodDecl(sel.getSelector().getName())
-    )
-  }
+  Function getTarget() { getCalleeExpr() = result.getAReference() }
 
   override predicate mayHaveOwnSideEffects() {
     getTarget().mayHaveSideEffects() or
