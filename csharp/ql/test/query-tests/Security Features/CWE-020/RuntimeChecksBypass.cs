@@ -17,7 +17,7 @@ public class Test1
     [OnDeserializing]
     public void Deserialize()
     {
-        f = "invalid";  // BAD
+        f = $"invalid";  // BAD
     }
 }
 
@@ -37,7 +37,7 @@ public class Test2
     [OnDeserializing]
     public void Deserialize()
     {
-        var v = "invalid";
+        var v = $"invalid";
         f = v;  // BAD: False negative
 
         if (v == "valid")
@@ -63,7 +63,7 @@ public class Test3
     [OnDeserializing]
     public void Deserialize()
     {
-        var v = "invalid";
+        var v = $"invalid";
         f = v;  // GOOD: False negative
         Assign(v);
     }
@@ -95,7 +95,7 @@ public class Test4
     [OnDeserializing]
     public void Deserialize()
     {
-        var v = "invalid";
+        var v = $"invalid";
         if (v == "valid")
             Assign(v);
     }

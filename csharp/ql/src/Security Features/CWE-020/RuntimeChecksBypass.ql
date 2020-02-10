@@ -35,7 +35,9 @@ Expr uncheckedWrite(Callable callable, Field f) {
   result.getEnclosingCallable() = callable and
   not callable.calls*(checkedWrite(f, _, _).getEnclosingCallable()) and
   // Exclude object creations because they were not deserialized
-  not exists(ObjectCreation src | DataFlow::localExprFlow(src, result))
+  not exists(Expr src | DataFlow::localExprFlow(src, result) |
+    src instanceof ObjectCreation or src.hasValue()
+  )
 }
 
 from BinarySerializableType t, Field f, IfStmt check, Expr write, Expr unsafeWrite
