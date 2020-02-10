@@ -24,6 +24,7 @@
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
+  - [send](https://www.npmjs.com/package/send)
 
 ## New queries
 
