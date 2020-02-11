@@ -131,9 +131,9 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, bool prefix, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            if (type.SpecialType != SpecialType.None)
+            if (type.SpecialType != SpecialType.None && !(type is INamedTypeSymbol n && n.IsGenericType))
             {
                 /*
                  * Use the keyword ("int" etc) for the built-in types.
@@ -160,7 +160,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, subTermAction);
+                        named.BuildNamedTypeId(cx, trapFile, prefix, subTermAction);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
@@ -211,9 +211,8 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
+        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, bool prefixAssembly, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
-            bool prefixAssembly = true;
             if (named.ContainingAssembly is null) prefixAssembly = false;
 
             if (named.IsTupleType)
