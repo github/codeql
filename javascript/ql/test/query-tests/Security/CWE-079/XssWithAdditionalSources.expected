@@ -333,6 +333,12 @@ nodes
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
+| tst.js:335:7:335:39 | target |
+| tst.js:335:16:335:32 | document.location |
+| tst.js:335:16:335:32 | document.location |
+| tst.js:335:16:335:39 | documen ... .search |
+| tst.js:341:18:341:23 | target |
+| tst.js:341:18:341:23 | target |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -646,6 +652,11 @@ edges
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location |
+| tst.js:335:7:335:39 | target | tst.js:341:18:341:23 | target |
+| tst.js:335:7:335:39 | target | tst.js:341:18:341:23 | target |
+| tst.js:335:16:335:32 | document.location | tst.js:335:16:335:39 | documen ... .search |
+| tst.js:335:16:335:32 | document.location | tst.js:335:16:335:39 | documen ... .search |
+| tst.js:335:16:335:39 | documen ... .search | tst.js:335:7:335:39 | target |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

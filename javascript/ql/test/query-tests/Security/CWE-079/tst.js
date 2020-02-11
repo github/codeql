@@ -325,3 +325,18 @@ function test2() {
   // OK
   $('myId').html(target.length)
 }
+
+// Bad escape function, but that is not what we are checking for.
+function escapeHtml(x) {
+	return x.substr(0, 10);
+}
+
+function test() {
+  var target = document.location.search
+
+  // OK
+  $('myId').html(escapeHtml(target));
+
+  // NOT OK
+  $('myId').html(target);
+}
