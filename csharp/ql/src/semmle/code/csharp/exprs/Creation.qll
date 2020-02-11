@@ -372,7 +372,9 @@ class ArrayCreation extends Expr, @array_creation_expr {
   override string toString() { result = "array creation of type " + this.getType().getName() }
 }
 
-/** A `stackalloc` array creation. */
+/**
+ * A `stackalloc` array creation, for example `stackalloc char[] { 'x', 'y' }`.
+ */
 class Stackalloc extends ArrayCreation {
   Stackalloc() { stackalloc_array_creation(this) }
 }

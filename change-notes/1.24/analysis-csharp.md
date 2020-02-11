@@ -27,9 +27,9 @@ The following changes in version 1.24 affect C# analysis in all applications.
 ## Changes to code extraction
 
 * Tuple expressions, for example `(int,bool)` in `default((int,bool))` are now extracted correctly.
-* Expression nullability flow state is extracted. 
-* `stackalloc` array creations are now extracted, and they are represented by the class `Stackalloc`.
+* Expression nullability flow state is extracted.
 * Implicitly typed `stackalloc` expressions are now extracted correctly.
+* The difference between `stackalloc` array creations and normal array creations is extracted.
 
 ## Changes to libraries
 
@@ -40,5 +40,6 @@ The following changes in version 1.24 affect C# analysis in all applications.
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.
+* `stackalloc` array creations are now represented by the QL class `Stackalloc`. Previously they were represented by the class `ArrayCreation`.
 
 ## Changes to autobuilder
