@@ -1342,7 +1342,7 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 
 /**
  * An instruction representing the initial value of newly allocated memory, e.g. the result of a
- * call to `malloc`
+ * call to `malloc`.
  */
 class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
   InitializeDynamicAllocationInstruction() {

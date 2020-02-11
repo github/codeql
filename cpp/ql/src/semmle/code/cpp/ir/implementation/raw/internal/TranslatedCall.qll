@@ -345,7 +345,7 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     expr.getTarget() instanceof AllocationFunction and
     opcode instanceof Opcode::InitializeDynamicAllocation and
     tag = OnlyInstructionTag() and
-    type = getUnknownType() // TODO: precise type
+    type = getUnknownType()
   }
 
   override Instruction getFirstInstruction() {
@@ -357,6 +357,7 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind = gotoEdge() and
+    expr.getTarget() instanceof AllocationFunction and
     if exists(getChild(0))
     then result = getChild(0).getFirstInstruction()
     else result = getParent().getChildSuccessor(this)

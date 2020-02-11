@@ -105,7 +105,7 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
   DynamicAllocation() { this = TDynamicAllocation(call) }
 
   final override string toString() {
-    result = call.toString() + " at " + call.getLocation() // TODO: make this both short and unique
+    result = call.toString() + " at " + call.getLocation() // This isn't performant, but it's only used in test/dump code right not
   }
 
   final override CallInstruction getABaseInstruction() { result = call }
@@ -116,9 +116,7 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
 
   final override string getUniqueId() { result = call.getUniqueId() }
 
-  final override IRType getIRType() {
-    result instanceof IRUnknownType // TODO: look at casts and sizes?
-  }
+  final override IRType getIRType() { result instanceof IRUnknownType }
 
   final override predicate isReadOnly() { none() }
 
