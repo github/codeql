@@ -12,7 +12,7 @@
 
 import python
 
-predicate modules_imports_itself(Import i, ModuleValue m) {
+predicate modules_imports_itself(ImportingStmt i, ModuleValue m) {
     i.getEnclosingModule() = m.getScope() and
     m = max(string s, ModuleValue m_ |
             s = i.getAnImportedModuleName() and
@@ -22,6 +22,6 @@ predicate modules_imports_itself(Import i, ModuleValue m) {
         )
 }
 
-from Import i, ModuleValue m
+from ImportingStmt i, ModuleValue m
 where modules_imports_itself(i, m)
 select i, "The module '" + m.getName() + "' imports itself."

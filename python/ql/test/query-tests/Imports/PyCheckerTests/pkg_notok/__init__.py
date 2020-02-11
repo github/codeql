@@ -11,4 +11,4 @@ import pkg_notok.bar
 
 from pkg_notok import Foo
 from pkg_notok import Foo as NotOkFoo
-from pkg_notok import * # TODO: TN
+from pkg_notok import *
