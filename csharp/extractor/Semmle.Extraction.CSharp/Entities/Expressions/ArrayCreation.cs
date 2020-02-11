@@ -90,6 +90,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
 
+        protected override void PopulateExpression(TextWriter trapFile)
+        {
+            base.PopulateExpression(trapFile);
+            trapFile.stackalloc_array_creation(this);
+        }
+
         public static Expression Create(ExpressionNodeInfo info) => new StackAllocArrayCreation(info).TryPopulate();
     }
 
@@ -103,6 +109,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
             trapFile.implicitly_typed_array_creation(this);
+            trapFile.stackalloc_array_creation(this);
         }
     }
 
