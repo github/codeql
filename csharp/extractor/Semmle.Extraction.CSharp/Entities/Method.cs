@@ -201,10 +201,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
         {
-            if (type.ContainsTypeParameters(cx, method))
-                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
-            else
-                trapFile.WriteSubId(Type.Create(cx, type));
+            type.BuildTypeId(cx, trapFile, false, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
         }
 
         protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
