@@ -339,8 +339,8 @@ private Element adjustedSink(DataFlow::Node sink) {
   // Taint `e--` and `e++` when `e` is tainted.
   result.(PostfixCrementOperation).getAnOperand() = sink.asExpr()
   or
-  // Taint `e1 += e2` when `e1` or `e2` is tainted.
-  result.(AssignArithmeticOperation).getAnOperand() = sink.asExpr()
+  // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
+  result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
 predicate tainted(Expr source, Element tainted) {
