@@ -1,10 +1,4 @@
 | imports_test.py:8:1:8:19 | Import | The module 'imports_test' imports itself. |
 | pkg_notok/__init__.py:4:1:4:16 | Import | The module 'pkg_notok' imports itself. |
-| pkg_notok/__init__.py:10:1:10:20 | Import | The module 'pkg_notok' imports itself. |
 | pkg_notok/__init__.py:12:1:12:25 | Import | The module 'pkg_notok' imports itself. |
 | pkg_notok/__init__.py:13:1:13:37 | Import | The module 'pkg_notok' imports itself. |
-| pkg_ok/__init__.py:1:1:1:26 | Import | The module 'pkg_ok' imports itself. |
-| pkg_ok/__init__.py:3:1:3:23 | Import | The module 'pkg_ok' imports itself. |
-| pkg_ok/__init__.py:4:1:4:28 | Import | The module 'pkg_ok' imports itself. |
-| pkg_ok/__init__.py:6:1:6:18 | Import | The module 'pkg_ok' imports itself. |
-| pkg_ok/__init__.py:7:1:7:22 | Import | The module 'pkg_ok' imports itself. |
