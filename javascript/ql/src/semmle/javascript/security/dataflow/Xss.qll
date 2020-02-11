@@ -51,6 +51,16 @@ module Shared {
       )
     }
   }
+
+  /**
+   * A call that sanitizes HTML in a string, viewed as a sanitizer for 
+   * XSS vulnerabilities. 
+   */ 
+  class XssEscapingHTMLSanitizerCall extends Sanitizer {
+    XssEscapingHTMLSanitizerCall() {
+      this instanceof HtmlSanitizerCall
+    }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -287,6 +297,8 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class XssEscapingHTMLSanitizerCall extends Sanitizer, Shared::XssEscapingHTMLSanitizerCall { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -332,6 +344,8 @@ module ReflectedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class XssEscapingHTMLSanitizerCall extends Sanitizer, Shared::XssEscapingHTMLSanitizerCall { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -360,4 +374,6 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class XssEscapingHTMLSanitizerCall extends Sanitizer, Shared::XssEscapingHTMLSanitizerCall { }
 }
