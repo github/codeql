@@ -696,7 +696,8 @@ module Opcode {
     final override string toString() { result = "SizedBufferMayWriteSideEffect" }
   }
 
-  class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode, TInitializeDynamicAllocation {
+  class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode,
+    TInitializeDynamicAllocation {
     final override string toString() { result = "InitializeDynamicAllocation" }
   }
 
