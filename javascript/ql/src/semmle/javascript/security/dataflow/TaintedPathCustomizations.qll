@@ -108,6 +108,12 @@ module TaintedPath {
         not (isNormalized() and isAbsolute())
       }
     }
+
+    class SplitPath extends DataFlow::FlowLabel {
+      SplitPath() {
+        this = "splitPath"
+      }
+    }
   }
 
   /**

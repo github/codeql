@@ -93,13 +93,38 @@ module TaintedPath {
         |
           name = argumentlessMethodName
         )
-        or
+      )
+      or
+      // array method calls of interest
+      exists(DataFlow::MethodCallNode mcn, string name | dst = mcn and mcn.calls(src, name) |
+        // A `str.split()` call can either split into path elements (`str.split("/")`) or split by some other string.
         name = "split" and
-        not exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
-          splitBy.mayHaveStringValue("/") or
-          any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/")
-              .flowsTo(splitBy)
+        (
+          if
+            exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
+              splitBy.mayHaveStringValue("/") or
+              any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/")
+                  .flowsTo(splitBy)
+            )
+          then
+            srclabel.(Label::PosixPath).canContainDotDotSlash() and
+            dstlabel instanceof Label::SplitPath
+          else srclabel = dstlabel
         )
+        or
+        (
+          name = "pop" or
+          name = "shift" or
+          name = "slice" or
+          name = "splice"
+        ) and
+        dstlabel instanceof Label::SplitPath and
+        srclabel instanceof Label::SplitPath
+        or
+        name = "join" and
+        mcn.getArgument(0).mayHaveStringValue("/") and 
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
       )
     }
 
