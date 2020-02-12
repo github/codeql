@@ -51,7 +51,7 @@ void decode(char *dest, char *src);
 void wdecode(wchar_t *dest, wchar_t *src);
 
 void bad4(char *str) {
-    // BAD -- zero-termination proved by wprintf (as parameter) [NOT DETECTED]
+    // BAD -- zero-termination proved by wprintf (as parameter)
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     wprintf(L"%s", buffer);
@@ -106,4 +106,20 @@ void bad9(wchar_t *wstr) {
     wchar_t *wbuffer = new wchar_t[wcslen(wstr)];
     wcscpy(wbuffer, wstr);
     delete wbuffer;
+}
+
+void good3(char *str) {
+    // GOOD -- zero-termination not required for this printf
+    char *buffer = (char *)malloc(strlen(str));
+    decode(buffer, str);
+    wprintf(L"%p", buffer);
+    free(buffer);
+}
+
+void good4(char *str) {
+    // GOOD -- zero-termination not required for this printf
+    char *buffer = (char *)malloc(strlen(str));
+    decode(buffer, str);
+    wprintf(L"%.*s", strlen(str), buffer);
+    free(buffer);
 }

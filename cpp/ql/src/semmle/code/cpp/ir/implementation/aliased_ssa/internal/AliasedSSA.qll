@@ -220,9 +220,12 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   /**
    * Holds if this memory location covers the entire variable.
    */
-  final predicate coversEntireVariable() {
-    startBitOffset = 0 and
-    endBitOffset = var.getIRType().getByteSize() * 8
+  final predicate coversEntireVariable() { varIRTypeHasBitRange(startBitOffset, endBitOffset) }
+
+  pragma[noinline]
+  private predicate varIRTypeHasBitRange(int start, int end) {
+    start = 0 and
+    end = var.getIRType().getByteSize() * 8
   }
 }
 
