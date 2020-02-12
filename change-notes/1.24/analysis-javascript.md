@@ -25,6 +25,7 @@
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
   - [send](https://www.npmjs.com/package/send)
+  - [chrome-remote-interface](https://www.npmjs.com/package/chrome-remote-interface)
 
 ## New queries
 
