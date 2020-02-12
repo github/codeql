@@ -19,7 +19,13 @@ To show why this complex relation is required consider the following Python code
    finally:
        close_resource()
 
-There are many paths through the above code. There are three different paths through the call to ``close_resource();`` one normal path, one path that breaks out of the loop, and one path where an exception is raised by ``might_raise()``. (An annotated flow graph can be seen :doc:`here <control-flow-graph>`.)
+There are many paths through the above code. There are three different paths through the call to ``close_resource();`` one normal path, one path that breaks out of the loop, and one path where an exception is raised by ``might_raise()``. 
+
+An annotated flow graph:
+
+|Python control flow graph|
+
+.. |Python control flow graph| image:: ../../images/python-flow-graph.png
 
 The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find unreachable code. There is one ``ControlFlowNode`` per path through any ``AstNode`` and any ``AstNode`` that is unreachable has no paths flowing through it. Therefore, any ``AstNode`` without a corresponding ``ControlFlowNode`` is unreachable.
 
