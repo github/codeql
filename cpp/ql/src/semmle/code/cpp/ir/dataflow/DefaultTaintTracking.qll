@@ -336,8 +336,8 @@ private Element adjustedSink(DataFlow::Node sink) {
   // short-circuiting condition and thus might get skipped.
   result.(NotExpr).getOperand() = sink.asExpr()
   or
-  // Taint `e--` and `e++` when `e` is tainted.
-  result.(PostfixCrementOperation).getAnOperand() = sink.asExpr()
+  // Taint postfix and prefix crement operations when their operand is tainted.
+  result.(CrementOperation).getAnOperand() = sink.asExpr()
   or
   // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
   result.(AssignOperation).getAnOperand() = sink.asExpr()
