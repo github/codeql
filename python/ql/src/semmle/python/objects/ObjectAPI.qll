@@ -78,6 +78,16 @@ class Value extends TObject {
     predicate isBuiltin() {
         this.(ObjectInternal).isBuiltin()
     }
+    
+        /** INTERNAL -- Do not use */
+    Builtin asBuiltin() {
+        this = TBuiltinClassObject(result) or
+        this = TBuiltinFunctionObject(result) or
+        this = TBuiltinMethodObject(result) or
+        this = TBuiltinModuleObject(result) or
+        this = TBuiltinOpaqueObject(result) or
+        this = TBuiltinTuple(result)
+    }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
@@ -132,6 +142,62 @@ class Value extends TObject {
         result = getABooleanValue() and
         not (getABooleanValue() = true and getABooleanValue() = false)
     }
+}
+
+/** Numeric values (ints and floats). 
+ *  Includes those occurring in the source as a literal
+ *  or in a builtin module as a value.
+ */
+class NumericValue extends Value {
+
+    NumericValue() {
+        this.asBuiltin().getClass() = theIntType().asBuiltin() or
+        this.asBuiltin().getClass() = theLongType().asBuiltin() or
+        this.asBuiltin().getClass() = theFloatType().asBuiltin()
+    }
+
+    /** Gets the Boolean value that this object
+     *  would evaluate to in a Boolean context,
+     * such as `bool(x)` or `if x: ...`
+     */
+    override boolean booleanValue() {
+        this.intValue() != 0 and result = true
+        or
+        this.intValue() = 0 and result = false
+        or
+        this.floatValue() != 0 and result = true
+        or
+        this.floatValue() = 0 and result = false
+    }
+
+    /** Gets the value of this object if it is a constant integer and it fits in a QL int */ 
+    int intValue() {
+        (
+            this.asBuiltin().getClass() = theIntType().asBuiltin() or
+            this.asBuiltin().getClass() = theLongType().asBuiltin()
+        )
+        and
+        result = this.asBuiltin().getName().toInt()
+    }
+
+    /** Gets the value of this object if it is a constant float */ 
+    float floatValue() {
+        this.asBuiltin().getClass() = theFloatType().asBuiltin()
+        and
+        result = this.asBuiltin().getName().toFloat()
+    }
+
+    /** Gets the string representation of this object, equivalent to calling repr() in Python */
+    string repr() {
+        exists(string s |
+            s = this.asBuiltin().getName() |
+            if this.asBuiltin().getClass() = theLongType().asBuiltin() then
+                result = s + "L"
+            else
+                result = s
+        )
+    }
+
 }
 
 /** Class representing modules in the Python program

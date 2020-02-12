@@ -18,18 +18,20 @@ where
     // Only relevant for Python 2, as all later versions implement true division
     major_version() = 2
     and
-    exists(BinaryExprNode bin, Object lobj, Object robj |
+    exists(BinaryExprNode bin, Value lobj, Value robj |
         bin = div.getAFlowNode()
         and bin.getNode().getOp() instanceof Div
-        and bin.getLeft().refersTo(lobj, theIntType(), left)
-        and bin.getRight().refersTo(robj, theIntType(), right)
+        and bin.getLeft().pointsTo(lobj, left)
+        and lobj.getClass() = ClassValue::int_()
+        and bin.getRight().pointsTo(robj, right)
+        and robj.getClass() = ClassValue::int_()
         // Ignore instances where integer division leaves no remainder
-        and not lobj.(NumericObject).intValue() % robj.(NumericObject).intValue() = 0
+        and not lobj.(NumericValue).intValue() % robj.(NumericValue).intValue() = 0
         and not bin.getNode().getEnclosingModule().hasFromFuture("division")
         // Filter out results wrapped in `int(...)`
-        and not exists(CallNode c, ClassObject cls |
+        and not exists(CallNode c, ClassValue cls |
             c.getAnArg() = bin
-            and c.getFunction().refersTo(cls)
+            and c.getFunction().pointsTo(cls)
             and cls.getName() = "int"
         )
     )
