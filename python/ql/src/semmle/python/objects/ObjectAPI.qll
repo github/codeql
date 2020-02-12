@@ -679,13 +679,6 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("list"))
     }
     
-    /** Get the `ClassValue` for the `(x)range` class. */
-    ClassValue rangeType() {
-        result = Builtin::special("xrange")
-        or
-        major_version() = 3 and result = Builtin::special("range")
-    }
-    
     /** Get the `ClassValue` for the `dict` class. */
     ClassValue dict() {
         result = TBuiltinClassObject(Builtin::special("dict"))
@@ -739,13 +732,6 @@ module ClassValue {
            result = bytes()
         else
            result = unicode()
-    }
-    
-    /** Get the `ClassValue` for the builtin properties. */
-    ClassValue builtinPropertyType() {
-        /* This is CPython specific */ 
-        result.isC() and
-        result.getName() = "getset_descriptor"
     }
     
     /** Get the `ClassValue` for the `property` class. */
