@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, true, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, true, symbol, (cx0, tb0, sub, g) => tb0.WriteSubId(Create(cx0, sub)));
             trapFile.Write(";type");
         }
 
@@ -174,11 +174,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            void WriteType(Context cx, TextWriter trapFile, ITypeSymbol symbol)
+            void WriteType(Context cx, TextWriter trapFile, ITypeSymbol symbol, ISymbol symbolBeingDefined)
             {
-                symbol.BuildTypeId(cx, trapFile, false, WriteType);
+                symbol.BuildTypeId(cx, trapFile, false, symbolBeingDefined, WriteType);
             }
-            WriteType(Context, trapFile, referencedType.symbol);
+            WriteType(Context, trapFile, referencedType.symbol, referencedType.symbol);
             trapFile.Write(";typeRef");
         }
 

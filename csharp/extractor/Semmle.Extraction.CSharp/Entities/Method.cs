@@ -129,12 +129,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol, m.symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
 
-            AddParametersToId(m.Context, trapFile, m.symbol);
+            AddParametersToId(m.Context, trapFile, m.symbol, m.symbol);
             switch (m.symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
@@ -199,12 +199,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
         /// <code>T</code> valid.
         /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
+        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type, ISymbol symbolBeingDefined)
         {
-            type.BuildTypeId(cx, trapFile, false, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
+            type.BuildTypeId(cx, trapFile, false, symbolBeingDefined, (cx0, tb0, type0, g) => AddSignatureTypeToId(cx, tb0, method, type0, g));
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method, ISymbol generic)
         {
             trapFile.Write('(');
             int index = 0;
@@ -212,13 +212,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, generic);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type, generic);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
