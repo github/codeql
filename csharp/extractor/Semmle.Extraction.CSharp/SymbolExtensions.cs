@@ -123,6 +123,24 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
+        /// Write the identifier for the symbol <paramref name="type"/> to the trapfile <paramref name="trapFile"/>.
+        /// If any nested types are found in the identifier, then they are written out explicitly, without
+        /// prefixing the assembly ID.
+        /// </summary>
+        /// <param name="type">The type to write.</param>
+        /// <param name="cx">The extraction context.</param>
+        /// <param name="trapFile">The trap file to write to.</param>
+        /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
+        public static void BuildNestedTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined)
+        {
+            void WriteType(Context cx, TextWriter trapFile, ITypeSymbol symbol, ISymbol symbolBeingDefined)
+            {
+                symbol.BuildTypeId(cx, trapFile, false, symbolBeingDefined, WriteType);
+            }
+            WriteType(cx, trapFile, type, symbolBeingDefined);
+        }
+
+        /// <summary>
         /// Constructs a unique string for this type symbol.
         ///
         /// The supplied action <paramref name="subTermAction"/> is applied to the
@@ -130,8 +148,10 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
+        /// <param name="prefix">Whether to prefix the type ID with the assembly ID.</param>
+        /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, bool prefix, ISymbol SymbolBeingDefined, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, bool prefix, ISymbol symbolBeingDefined, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction)
         {
             if (type.SpecialType != SpecialType.None && !(type is INamedTypeSymbol n && n.IsGenericType))
             {
@@ -150,7 +170,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        subTermAction(cx, trapFile, array.ElementType, SymbolBeingDefined);
+                        subTermAction(cx, trapFile, array.ElementType, symbolBeingDefined);
                         array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
@@ -160,16 +180,16 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, prefix, SymbolBeingDefined, subTermAction);
+                        named.BuildNamedTypeId(cx, trapFile, prefix, symbolBeingDefined, subTermAction);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        subTermAction(cx, trapFile, ptr.PointedAtType, SymbolBeingDefined);
+                        subTermAction(cx, trapFile, ptr.PointedAtType, symbolBeingDefined);
                         trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        if (!SymbolEqualityComparer.Default.Equals(tp.ContainingSymbol, SymbolBeingDefined))
+                        if (!SymbolEqualityComparer.Default.Equals(tp.ContainingSymbol, symbolBeingDefined))
                         {
                             switch (tp.TypeParameterKind)
                             {
@@ -179,7 +199,7 @@ namespace Semmle.Extraction.CSharp
                                     trapFile.Write('_');
                                     break;
                                 case TypeParameterKind.Type:
-                                    subTermAction(cx, trapFile, tp.ContainingType, SymbolBeingDefined);
+                                    subTermAction(cx, trapFile, tp.ContainingType, symbolBeingDefined);
                                     trapFile.Write('_');
                                     break;
                             }

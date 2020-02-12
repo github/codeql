@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, false, symbol, (cx0, tb0, sub, g) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, false, symbol, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)));
             trapFile.Write(";tuple");
         }
 
