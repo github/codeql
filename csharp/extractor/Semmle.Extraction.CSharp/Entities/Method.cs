@@ -204,7 +204,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.BuildTypeId(cx, trapFile, false, symbolBeingDefined, (cx0, tb0, type0, g) => AddSignatureTypeToId(cx, tb0, method, type0, g));
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method, ISymbol generic)
+        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method, ISymbol symbolBeingDefined)
         {
             trapFile.Write('(');
             int index = 0;
@@ -212,13 +212,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, generic);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, symbolBeingDefined);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type, generic);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type, symbolBeingDefined);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
@@ -241,9 +241,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
-            if (explicitInterfaceImplementations.Any())
+            foreach (var i in explicitInterfaceImplementations)
             {
-                trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
+                trapFile.Write(';');
+                i.ContainingType.BuildNestedTypeId(cx, trapFile, null);
             }
         }
 
