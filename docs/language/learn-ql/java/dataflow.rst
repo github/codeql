@@ -113,7 +113,7 @@ Then we can make the source more specific, for example an access to a public par
    where
      fileReader.getDeclaringType().hasQualifiedName("java.io", "FileReader") and
      call.getCallee() = fileReader and
-     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(fc.getArgument(0)))
+     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
    select p
 
 The following example finds calls to formatting functions where the format string is not hard-coded.
