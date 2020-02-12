@@ -27,8 +27,8 @@ predicate needs_docstring(Scope s) {
 }
 
 predicate function_needs_docstring(Function f) {
-    not exists(FunctionObject fo, FunctionObject base | fo.overrides(base) and fo.getFunction() = f |
-        not function_needs_docstring(base.getFunction())
+    not exists(FunctionValue fo, FunctionValue base | fo.overrides(base) and fo.getScope() = f |
+        not function_needs_docstring(base.getScope())
     ) and
     f.getName() != "lambda" and
     (f.getMetrics().getNumberOfLinesOfCode() - count(f.getADecorator())) > 2 and

@@ -36,15 +36,15 @@ predicate mismatched(Assign a, int lcount, int rcount, Location loc, string sequ
 }
 
 predicate mismatched_tuple_rhs(Assign a, int lcount, int rcount, Location loc) {
-    exists(ExprList l, TupleObject r, AstNode origin |
+    exists(ExprList l, TupleValue r, AstNode origin |
         (
             a.getATarget().(Tuple).getElts() = l or
             a.getATarget().(List).getElts() = l
         ) and
-        a.getValue().refersTo(r, origin) and
+        a.getValue().pointsTo(r, origin) and
         loc = origin.getLocation() and
         lcount = len(l) and
-        rcount = r.getLength() and
+        rcount = r.length() and
         lcount != rcount and
         not exists(Starred s | l.getAnItem() = s)
     )

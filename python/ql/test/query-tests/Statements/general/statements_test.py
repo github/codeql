@@ -56,8 +56,10 @@ class Redundant(object):
     def __init__(self, args):
         args = args # violation
 
-#Non redundant assignment
-len = len
+if sys.version_info < (3,):
+    bytes = str
+else:
+    bytes = bytes # Should not be flagged
 
 #Pointless else clauses
 for x in range(10):

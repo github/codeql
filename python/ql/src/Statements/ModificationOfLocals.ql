@@ -12,23 +12,17 @@
 
 import python
 
-Object aFunctionLocalsObject() {
-    exists(Call c, Name n, GlobalVariable v |
-        c = result.getOrigin() and
-        n = c.getFunc() and
-        n.getVariable() = v and
-        v.getId() = "locals" and
-        c.getScope() instanceof FastLocalsFunction
-    )
+predicate originIsLocals(ControlFlowNode n) {
+    n.pointsTo(_, _, Value::named("locals").getACall())
 }
 
 predicate modification_of_locals(ControlFlowNode f) {
-    f.(SubscriptNode).getObject().refersTo(aFunctionLocalsObject()) and
+    originIsLocals(f.(SubscriptNode).getObject()) and
     (f.isStore() or f.isDelete())
     or
     exists(string mname, AttrNode attr |
         attr = f.(CallNode).getFunction() and
-        attr.getObject(mname).refersTo(aFunctionLocalsObject(), _)
+        originIsLocals(attr.getObject(mname))
     |
         mname = "pop" or
         mname = "popitem" or

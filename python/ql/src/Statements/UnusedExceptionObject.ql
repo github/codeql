@@ -12,9 +12,9 @@
 
 import python
 
-from Call call, ClassObject ex
+from Call call, ClassValue ex
 where
-    call.getFunc().refersTo(ex) and
-    ex.getAnImproperSuperType() = theExceptionType() and
+    call.getFunc().pointsTo(ex) and
+    ex.getASuperType() = ClassValue::exception() and
     exists(ExprStmt s | s.getValue() = call)
 select call, "Instantiating an exception, but not raising it, has no effect"

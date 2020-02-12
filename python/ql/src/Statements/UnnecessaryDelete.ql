@@ -27,8 +27,8 @@ where
      *       reference cycle, and an explicit call to `del` helps break this cycle.
      */
 
-    not exists(FunctionObject ex |
-        ex.hasLongName("sys.exc_info") and
+    not exists(FunctionValue ex |
+        ex = Value::named("sys.exc_info") and
         ex.getACall().getScope() = f
     )
 select del, "Unnecessary deletion of local variable $@ in function $@.", e.getLocation(),

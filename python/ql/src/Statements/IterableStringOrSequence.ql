@@ -13,21 +13,15 @@
 
 import python
 
-predicate is_a_string_type(ClassObject seqtype) {
-    seqtype = theBytesType() and major_version() = 2
-    or
-    seqtype = theUnicodeType()
-}
 
 from
-    For loop, ControlFlowNode iter, Object str, Object seq, ControlFlowNode seq_origin,
-    ClassObject strtype, ClassObject seqtype, ControlFlowNode str_origin
+    For loop, ControlFlowNode iter, Value str, Value seq, ControlFlowNode seq_origin, ControlFlowNode str_origin
 where
     loop.getIter().getAFlowNode() = iter and
-    iter.refersTo(str, strtype, str_origin) and
-    iter.refersTo(seq, seqtype, seq_origin) and
-    is_a_string_type(strtype) and
-    seqtype.isIterable() and
-    not is_a_string_type(seqtype)
-select loop, "Iteration over $@, of class " + seqtype.getName() + ", may also iterate over $@.",
+    iter.pointsTo(str, str_origin) and
+    iter.pointsTo(seq, seq_origin) and
+    str.getClass() = ClassValue::str() and
+    seq.getClass().isIterable() and
+    not seq.getClass() = ClassValue::str()
+select loop, "Iteration over $@, of class " + seq.getClass().getName() + ", may also iterate over $@.",
     seq_origin, "sequence", str_origin, "string"

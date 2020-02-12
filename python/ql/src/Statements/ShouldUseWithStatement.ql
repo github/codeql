@@ -22,12 +22,12 @@ predicate only_stmt_in_finally(Try t, Call c) {
     )
 }
 
-predicate points_to_context_manager(ControlFlowNode f, ClassObject cls) {
-    cls.isContextManager() and
-    forex(Object obj | f.refersTo(obj) | f.refersTo(obj, cls, _))
+predicate points_to_context_manager(ControlFlowNode f, ClassValue cls) {
+    forex(Value v | f.pointsTo(v) | v.getClass() = cls) and
+    cls.isContextManager()
 }
 
-from Call close, Try t, ClassObject cls
+from Call close, Try t, ClassValue cls
 where
     only_stmt_in_finally(t, close) and
     calls_close(close) and

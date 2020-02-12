@@ -37,21 +37,30 @@ predicate maybe_defined_in_outer_scope(Name n) {
     exists(SsaVariable v | v.getAUse().getNode() = n | v.maybeUndefined())
 }
 
-Variable relevant_var(Name n) {
-    n.getVariable() = result and
-    (corresponding(n, _) or corresponding(_, n))
+/* Protection against FPs in projects that offer compatibility between Python 2 and 3,
+ * since many of them make assignments such as
+ *
+ * if PY2:
+ *     bytes = str
+ * else:
+ *     bytes = bytes
+ *
+ */
+predicate isBuiltin(string name) {
+    exists(Value v | v = Value::named(name) and v.isBuiltin())
 }
 
 predicate same_name(Name n1, Name n2) {
     corresponding(n1, n2) and
-    relevant_var(n1) = relevant_var(n2) and
-    not exists(Object::builtin(n1.getId())) and
+    n1.getVariable() = n2.getVariable() and
+    not isBuiltin(n1.getId()) and
     not maybe_defined_in_outer_scope(n2)
 }
 
 ClassObject value_type(Attribute a) { a.getObject().refersTo(_, result, _) }
 
 predicate is_property_access(Attribute a) {
+    // TODO: We need something to model PropertyObject in the Value API
     value_type(a).lookupAttribute(a.getName()) instanceof PropertyObject
 }
 
@@ -77,9 +86,9 @@ predicate pyflakes_commented(AssignStmt assignment) {
 }
 
 predicate side_effecting_lhs(Attribute lhs) {
-    exists(ClassObject cls, ClassObject decl |
-        lhs.getObject().refersTo(_, cls, _) and
-        decl = cls.getAnImproperSuperType() and
+    exists(ClassValue cls, ClassValue decl |
+        lhs.getObject().pointsTo().getClass() = cls and
+        decl = cls.getASuperType() and
         not decl.isBuiltin()
     |
         decl.declaresAttribute("__setattr__")
@@ -90,6 +99,7 @@ from AssignStmt a, Expr left, Expr right
 where
     assignment(a, left, right) and
     same_value(left, right) and
+    // some people use self-assignment to shut Pyflakes up, such as `ok = ok # Pyflakes`
     not pyflakes_commented(a) and
     not side_effecting_lhs(left)
 select a, "This assignment assigns a variable to itself."

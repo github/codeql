@@ -14,13 +14,12 @@ import python
 
 predicate string_concat_in_loop(BinaryExpr b) {
     b.getOp() instanceof Add and
-    exists(SsaVariable d, SsaVariable u, BinaryExprNode add, ClassObject str_type |
+    exists(SsaVariable d, SsaVariable u, BinaryExprNode add |
         add.getNode() = b and d = u.getAnUltimateDefinition()
     |
         d.getDefinition().(DefinitionNode).getValue() = add and
         u.getAUse() = add.getAnOperand() and
-        add.getAnOperand().refersTo(_, str_type, _) and
-        (str_type = theBytesType() or str_type = theUnicodeType())
+        add.getAnOperand().pointsTo().getClass() = ClassValue::str()
     )
 }
 
