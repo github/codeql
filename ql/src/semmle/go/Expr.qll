@@ -218,9 +218,11 @@ class FloatLit extends @floatlit, BasicLit { }
 class ImagLit extends @imaglit, BasicLit { }
 
 /**
- * A character literal.
+ * A rune literal.
  */
 class CharLit extends @charlit, BasicLit { }
+
+class RuneLit = CharLit;
 
 /**
  * A string literal.
