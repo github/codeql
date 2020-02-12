@@ -14,7 +14,7 @@ private import semmle.code.java.controlflow.internal.GuardsLogic
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
-  exists(CastExpr cast | cast.getAChildExpr().getProperExpr() = exp |
+  exists(CastExpr cast | cast.getAChildExpr() = exp |
     numType.widerThanOrEqualTo(cast.getType().(NumType))
   )
 }
@@ -54,11 +54,11 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
       positive(pos) and
       upper = true
     |
-      comp.getLesserOperand().getProperExpr() = add and
+      comp.getLesserOperand() = add and
       comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0 and
       branch = false
       or
-      comp.getGreaterOperand().getProperExpr() = add and
+      comp.getGreaterOperand() = add and
       comp.getLesserOperand().(IntegerLiteral).getIntValue() = 0 and
       branch = true
     )
@@ -157,7 +157,6 @@ predicate upcastToWiderType(Expr e) {
 /** Holds if the result of `exp` has certain bits filtered by a bitwise and. */
 private predicate inBitwiseAnd(Expr exp) {
   exists(AndBitwiseExpr a | a.getAnOperand() = exp) or
-  inBitwiseAnd(exp.(ParExpr).getExpr()) or
   inBitwiseAnd(exp.(LShiftExpr).getAnOperand()) or
   inBitwiseAnd(exp.(RShiftExpr).getAnOperand()) or
   inBitwiseAnd(exp.(URShiftExpr).getAnOperand())

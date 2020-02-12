@@ -89,8 +89,8 @@ private int getBaseClassSize(ValueOrRefType type) {
 }
 
 private int getContentSize(ValueOrRefType type) {
-  result = getBaseClassSize(type) +
-      sum(Field field | not field.isStatic() | getTypeSize(field.getType()))
+  result =
+    getBaseClassSize(type) + sum(Field field | not field.isStatic() | getTypeSize(field.getType()))
 }
 
 private predicate isOpaqueType(ValueOrRefType type) {

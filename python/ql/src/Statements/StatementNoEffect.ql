@@ -49,26 +49,43 @@ predicate side_effecting_descriptor_type(ClassObject descriptor) {
  * side-effecting unless we know otherwise.
  */
 predicate side_effecting_binary(Expr b) {
-    exists(Expr sub, string method_name |
-        sub = b.(BinaryExpr).getLeft() and
-        method_name = b.(BinaryExpr).getOp().getSpecialMethodName()
+    exists(Expr sub, ClassObject cls, string method_name |
+        binary_operator_special_method(b, sub, cls, method_name)
         or
-        exists(Cmpop op |
-            b.(Compare).compares(sub, op, _) and
-            method_name = op.getSpecialMethodName()
-        )
+        comparison_special_method(b, sub, cls, method_name)
         |
-        exists(ClassObject cls |
-            sub.refersTo(_, cls, _) and
-            cls.hasAttribute(method_name)
-            and
-            not exists(ClassObject declaring |
-                declaring.declaresAttribute(method_name)
-                and declaring = cls.getAnImproperSuperType() and
-                declaring.isBuiltin() and not declaring = theObjectType()
-            )
+        method_name = special_method() and
+        cls.hasAttribute(method_name)
+        and
+        not exists(ClassObject declaring |
+            declaring.declaresAttribute(method_name)
+            and declaring = cls.getAnImproperSuperType() and
+            declaring.isBuiltin() and not declaring = theObjectType()
         )
     )
+}
+
+pragma[nomagic]
+private predicate binary_operator_special_method(BinaryExpr b, Expr sub, ClassObject cls, string method_name) {
+    method_name = special_method() and
+    sub = b.getLeft() and
+    method_name = b.getOp().getSpecialMethodName() and
+    sub.refersTo(_, cls, _)
+}
+
+pragma[nomagic]
+private predicate comparison_special_method(Compare b, Expr sub, ClassObject cls, string method_name) {
+    exists(Cmpop op |
+        b.compares(sub, op, _) and
+        method_name = op.getSpecialMethodName()
+    ) and
+    sub.refersTo(_, cls, _)
+}
+
+private string special_method() {
+    result = any(Cmpop c).getSpecialMethodName()
+    or
+    result = any(BinaryExpr b).getOp().getSpecialMethodName()
 }
 
 predicate is_notebook(File f) {

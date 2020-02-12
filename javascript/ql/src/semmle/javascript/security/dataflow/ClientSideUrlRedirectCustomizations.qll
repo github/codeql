@@ -55,7 +55,7 @@ module ClientSideUrlRedirect {
       // exclude `location.href.split('?')[0]`, which can never refer to the query string
       not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
       or
-      (methodName = "substring" or methodName = "substr") and
+      (methodName = "substring" or methodName = "substr" or methodName = "slice") and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
       not mce.getArgument(0).(NumberLiteral).getIntValue() = 0

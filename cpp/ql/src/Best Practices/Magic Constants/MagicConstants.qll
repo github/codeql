@@ -307,7 +307,8 @@ predicate nonTrivialValue(string value, Literal literal) {
 }
 
 predicate valueOccurrenceCount(string value, int n) {
-  n = strictcount(Location loc |
+  n =
+    strictcount(Location loc |
       exists(Literal lit | lit.getLocation() = loc | nonTrivialValue(value, lit)) and
       // Exclude generated files (they do not have the same maintainability
       // concerns as ordinary source files)
@@ -338,7 +339,8 @@ predicate check(Literal lit, string value, int n, File f) {
 }
 
 predicate checkWithFileCount(string value, int overallCount, int fileCount, File f) {
-  fileCount = strictcount(Location loc |
+  fileCount =
+    strictcount(Location loc |
       exists(Literal lit | lit.getLocation() = loc | check(lit, value, overallCount, f))
     )
 }
@@ -364,7 +366,8 @@ predicate firstOccurrence(Literal lit, string value, int n) {
 predicate magicConstant(Literal e, string msg) {
   exists(string value, int n |
     firstOccurrence(e, value, n) and
-    msg = "Magic constant: literal '" + value + "' is repeated " + n.toString() +
+    msg =
+      "Magic constant: literal '" + value + "' is repeated " + n.toString() +
         " times and should be encapsulated in a constant."
   )
 }

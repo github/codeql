@@ -1667,6 +1667,15 @@ li > ul > li {
   margin-bottom: 0;
 }
 
+.admonition.note ol {
+  width: 90%;
+  margin-left: 2.2em;
+}
+
+.admonition.note ol > li {
+  margin-top: 0.5em;
+}
+
 /*
  * extra styles for more appropriate for syntax highlighting
  *

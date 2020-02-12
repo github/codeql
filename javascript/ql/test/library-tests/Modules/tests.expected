@@ -7,6 +7,7 @@ test_ImportSpecifiers
 | g.ts:1:9:1:11 | foo | g.ts:1:9:1:11 | foo |
 | import-in-mjs.mjs:1:8:1:24 | exported_from_mjs | import-in-mjs.mjs:1:8:1:24 | exported_from_mjs |
 | import-ts-with-js-extension.ts:1:10:1:12 | foo | import-ts-with-js-extension.ts:1:10:1:12 | foo |
+| importcss.js:1:8:1:8 | A | importcss.js:1:8:1:8 | A |
 | m/c.js:1:8:1:13 | * as b | m/c.js:1:13:1:13 | b |
 | tst.html:5:10:5:10 | f | tst.html:5:10:5:10 | f |
 | unresolved.js:1:8:1:8 | f | unresolved.js:1:8:1:8 | f |
@@ -26,6 +27,8 @@ test_getExportedName
 | m/c.js:5:10:5:15 | g as h | g |
 test_OtherImports
 | es2015_require.js:1:11:1:24 | require('./d') | d.js:1:1:5:0 | <toplevel> |
+test_ImportMetaExpr
+| importmeta.js:1:33:1:43 | import.meta |
 test_ReExportDeclarations
 | b.js:7:1:7:21 | export  ...  './a'; | b.js:7:16:7:20 | './a' |
 | d.js:4:1:4:20 | export * from 'm/c'; | d.js:4:15:4:19 | 'm/c' |
@@ -35,6 +38,7 @@ test_ImportDefaultSpecifiers
 | b.js:1:8:1:8 | f |
 | f.ts:1:8:1:8 | g |
 | import-in-mjs.mjs:1:8:1:24 | exported_from_mjs |
+| importcss.js:1:8:1:8 | A |
 | tst.html:5:10:5:10 | f |
 | unresolved.js:1:8:1:8 | f |
 test_getImportedName
@@ -45,6 +49,7 @@ test_getImportedName
 | g.ts:1:9:1:11 | foo | foo |
 | import-in-mjs.mjs:1:8:1:24 | exported_from_mjs | default |
 | import-ts-with-js-extension.ts:1:10:1:12 | foo | foo |
+| importcss.js:1:8:1:8 | A | default |
 | tst.html:5:10:5:10 | f | default |
 | unresolved.js:1:8:1:8 | f | default |
 test_ExportDeclarations
@@ -61,14 +66,14 @@ test_ExportDeclarations
 | m/c.js:5:1:5:30 | export  ... '../b'; |
 | tst.html:7:3:7:22 | export const y = 42; |
 test_getAnImportedModule
-| b.js | a.js |
-| d.js | a.js |
-| d.js | b.js |
-| es2015_require.js | d.js |
-| f.ts | e.js |
-| g.ts | f.ts |
-| import-ts-with-js-extension.ts | f.ts |
-| m/c.js | b.js |
+| library-tests/Modules/b.js | library-tests/Modules/a.js |
+| library-tests/Modules/d.js | library-tests/Modules/a.js |
+| library-tests/Modules/d.js | library-tests/Modules/b.js |
+| library-tests/Modules/es2015_require.js | library-tests/Modules/d.js |
+| library-tests/Modules/f.ts | library-tests/Modules/e.js |
+| library-tests/Modules/g.ts | library-tests/Modules/f.ts |
+| library-tests/Modules/import-ts-with-js-extension.ts | library-tests/Modules/f.ts |
+| library-tests/Modules/m/c.js | library-tests/Modules/b.js |
 test_getSourceNode
 | a.js:1:1:3:1 | export  ... n 23;\\n} | default | a.js:1:16:3:1 | functio ... n 23;\\n} |
 | a.js:5:1:5:32 | export  ...  } = o; | x | a.js:5:18:5:20 | f() |
@@ -91,6 +96,7 @@ test_Imports
 | g.ts:1:1:1:23 | import  ... m './f' | g.ts:1:19:1:23 | './f' | 1 |
 | import-in-mjs.mjs:1:1:1:46 | import  ... n-mjs'; | import-in-mjs.mjs:1:31:1:45 | 'export-in-mjs' | 1 |
 | import-ts-with-js-extension.ts:1:1:1:29 | import  ... /f.js"; | import-ts-with-js-extension.ts:1:21:1:28 | "./f.js" | 1 |
+| importcss.js:1:1:1:24 | import  ... a.css"; | importcss.js:1:15:1:23 | "./a.css" | 1 |
 | m/c.js:1:1:1:26 | import  ... '../b'; | m/c.js:1:20:1:25 | '../b' | 1 |
 | tst.html:5:3:5:20 | import f from 'a'; | tst.html:5:17:5:19 | 'a' | 1 |
 | unresolved.js:1:1:1:18 | import f from 'a'; | unresolved.js:1:15:1:17 | 'a' | 1 |
@@ -102,6 +108,7 @@ test_NamedImportSpecifier
 test_GlobalVariableRef
 | a.js:5:31:5:31 | o |
 | exports.js:3:9:3:15 | exports |
+| importmeta.js:1:15:1:17 | URL |
 | tst.html:6:3:6:7 | alert |
 test_BulkReExportDeclarations
 | d.js:4:1:4:20 | export * from 'm/c'; |

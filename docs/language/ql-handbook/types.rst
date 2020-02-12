@@ -208,7 +208,9 @@ by declaring them in the ``from`` part.
 You can also annotate predicates and fields. See the list of :ref:`annotations <annotations-overview>`
 that are available.
 
-Kinds of classes
+.. _concrete-classes:
+
+Concrete classes
 ================
 
 The classes in the above examples are all **concrete** classes. They are defined by 
@@ -217,6 +219,9 @@ values in the intersection of the base types that also satisfy the
 :ref:`characteristic predicate <characteristic-predicates>` of the class.
 
 .. _abstract-classes:
+
+Abstract classes
+================
 
 A class :ref:`annotated <abstract>` with ``abstract``, known as an **abstract** class, is also a restriction of 
 the values in a larger type. However, an abstract class is defined as the union of its 
@@ -246,6 +251,13 @@ You can define similar subclasses for MySQL and other database management system
 The abstract class ``SqlExpr`` refers to all of those different expressions. If you want to add
 support for another database system later on, you can simply add a new subclass to ``SqlExpr``;
 there is no need to update the queries that rely on it.
+
+.. pull-quote:: Important
+
+
+   You must take care when you add a new subclass to an existing abstract class. Adding a subclass
+   is not an isolated change, it also extends the abstract class since that is a union of its
+   subclasses. 
 
 .. _overriding-member-predicates:
 

@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // But for properties/indexers that implement explicit interfaces, Roslyn
                 // does not properly populate `AssociatedSymbol`
                 var props = symbol.ContainingType.GetMembers().OfType<IPropertySymbol>();
-                props = props.Where(p => symbol.Equals(p.GetMethod) || symbol.Equals(p.SetMethod));
+                props = props.Where(p => SymbolEqualityComparer.Default.Equals(symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(symbol, p.SetMethod));
                 return props.SingleOrDefault();
             }
         }
@@ -47,12 +47,12 @@ namespace Semmle.Extraction.CSharp.Entities
             var parent = Property.Create(Context, prop);
             int kind;
             Accessor unboundAccessor;
-            if (symbol.Equals(prop.GetMethod))
+            if (SymbolEqualityComparer.Default.Equals(symbol, prop.GetMethod))
             {
                 kind = 1;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod);
             }
-            else if (symbol.Equals(prop.SetMethod))
+            else if (SymbolEqualityComparer.Default.Equals(symbol, prop.SetMethod))
             {
                 kind = 2;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod);

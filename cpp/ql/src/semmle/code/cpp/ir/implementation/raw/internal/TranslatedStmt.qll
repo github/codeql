@@ -80,7 +80,8 @@ class TranslatedDeclStmt extends TranslatedStmt {
    * `TranslatedDeclarationEntry`.
    */
   private TranslatedDeclarationEntry getDeclarationEntry(int index) {
-    result = rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
+    result =
+      rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
         entry = getTranslatedDeclarationEntry(stmt.getDeclarationEntry(originalIndex))
       |
         entry order by originalIndex
@@ -130,46 +131,20 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
   }
 }
 
-class TranslatedReturnValueStmt extends TranslatedReturnStmt, InitializationContext {
+class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariableInitialization {
   TranslatedReturnValueStmt() { stmt.hasExpr() }
 
-  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
-
-  override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getEnclosingFunction().getReturnType())
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = InitializerVariableAddressTag() and
-    result = getInitialization().getFirstInstruction() and
-    kind instanceof GotoEdge
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
+  final override Instruction getInitializationSuccessor() {
     result = getEnclosingFunction().getReturnSuccessorInstruction()
   }
 
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = InitializerVariableAddressTag() and
-    result = getEnclosingFunction().getReturnVariable()
-  }
+  final override Type getTargetType() { result = getEnclosingFunction().getReturnType() }
 
-  override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Type getTargetType() { result = getEnclosingFunction().getReturnType() }
-
-  TranslatedInitialization getInitialization() {
+  final override TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(stmt.getExpr().getFullyConverted())
   }
+
+  final override IRVariable getIRVariable() { result = getEnclosingFunction().getReturnVariable() }
 }
 
 class TranslatedReturnVoidStmt extends TranslatedReturnStmt {

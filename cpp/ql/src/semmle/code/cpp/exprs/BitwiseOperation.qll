@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary bitwise operation.
  */
-abstract class UnaryBitwiseOperation extends UnaryOperation { }
+class UnaryBitwiseOperation extends UnaryOperation, @un_bitwise_op_expr { }
 
 /**
  * A C/C++ complement expression.
@@ -22,7 +22,7 @@ class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
 /**
  * A C/C++ binary bitwise operation.
  */
-abstract class BinaryBitwiseOperation extends BinaryOperation { }
+class BinaryBitwiseOperation extends BinaryOperation, @bin_bitwise_op_expr { }
 
 /**
  * A C/C++ left shift expression.

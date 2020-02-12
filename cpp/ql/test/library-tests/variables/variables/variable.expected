@@ -2,13 +2,9 @@
 | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
 | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | Field |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | StackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | address && | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | address && | StackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | StackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const address & | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const address & | StackVariable |  |  |
 | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | Field |  |  |
 | variables.cpp:1:12:1:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
 | variables.cpp:2:12:2:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
@@ -38,11 +34,10 @@
 | variables.cpp:37:6:37:8 | ap3 | file://:0:0:0:0 | int * | GlobalVariable |  |  |
 | variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | LocalVariable |  |  |
 | variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | SemanticStackVariable |  |  |
-| variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | StackVariable |  |  |
 | variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | LocalVariable |  | static |
-| variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | StackVariable |  | static |
 | variables.cpp:48:9:48:12 | name | file://:0:0:0:0 | char * | Field |  |  |
 | variables.cpp:49:12:49:17 | number | file://:0:0:0:0 | long | Field |  |  |
 | variables.cpp:50:9:50:14 | street | file://:0:0:0:0 | char * | Field |  |  |
 | variables.cpp:51:9:51:12 | town | file://:0:0:0:0 | char * | Field |  |  |
 | variables.cpp:52:16:52:22 | country | file://:0:0:0:0 | char * | MemberVariable |  | static |
+| variables.cpp:56:14:56:29 | externInFunction | file://:0:0:0:0 | int | GlobalVariable |  |  |

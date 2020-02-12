@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var p in parameters.Zip(originalParameters, (paramSymbol, originalParam) => new { paramSymbol, originalParam }))
             {
-                var original = Equals(p.paramSymbol, p.originalParam) ? null : Parameter.Create(Context, p.originalParam, originalMethod);
+                var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam) ? null : Parameter.Create(Context, p.originalParam, originalMethod);
                 Parameter.Create(Context, p.paramSymbol, this, original);
             }
 
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (m.symbol.IsGenericMethod)
             {
-                if (Equals(m.symbol, m.symbol.OriginalDefinition))
+                if (SymbolEqualityComparer.Default.Equals(m.symbol, m.symbol.OriginalDefinition))
                 {
                     trapFile.Write('`');
                     trapFile.Write(m.symbol.TypeParameters.Length);
@@ -318,7 +318,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Whether this method has unbound type parameters.
         /// </summary>
-        public bool IsUnboundGeneric => IsGeneric && Equals(symbol.ConstructedFrom, symbol);
+        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(symbol.ConstructedFrom, symbol);
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 

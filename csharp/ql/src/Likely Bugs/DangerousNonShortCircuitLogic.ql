@@ -27,7 +27,8 @@ class DangerousExpression extends Expr {
       e instanceof MethodCall
       or
       e instanceof ArrayAccess
-    )
+    ) and
+    not exists(Expr e | this = e.getParent*() | e.(Call).getTarget().getAParameter().isOutOrRef())
   }
 }
 

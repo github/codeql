@@ -2,6 +2,7 @@ import ImportSpecifiers
 import getLocalName
 import getExportedName
 import OtherImports
+import ImportMeta
 import ReExportDeclarations
 import ImportDefaultSpecifiers
 import getImportedName

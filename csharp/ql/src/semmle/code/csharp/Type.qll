@@ -338,7 +338,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * calls made by callables in this type, excluding member accesses.
    */
   int getResponse() {
-    result = sum(Callable c |
+    result =
+      sum(Callable c |
         c.getDeclaringType() = this
       |
         count(Call call |
@@ -691,7 +692,8 @@ class RefType extends ValueOrRefType, @ref_type {
    */
   float getSpecialisationIndex() {
     this.getNumberOfCallables() != 0 and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+    result =
+      (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfCallables().(float)
   }
 
@@ -827,16 +829,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     getRank() = that.getRank()
   }
 
-  private string getRankString(int i) {
-    i in [0 .. getRank() - 1] and
-    if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
-  }
-
   /**
    * INTERNAL: Do not use.
    * Gets a string representing the array suffix, for example `[,,,]`.
    */
-  string getArraySuffix() { result = "[" + getRankString(0) + "]" }
+  string getArraySuffix() {
+    result = "[" + concat(int i | i in [0 .. this.getRank() - 2] | ",") + "]"
+  }
 
   private string getDimensionString(Type elementType) {
     exists(Type et, string res |
@@ -935,7 +934,8 @@ class TupleType extends ValueType, @tuple_type {
 
   language[monotonicAggregates]
   override string toStringWithTypes() {
-    result = "(" +
+    result =
+      "(" +
         concat(int i |
           exists(getElement(i))
         |

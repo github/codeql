@@ -320,7 +320,8 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
   Call getCall() { result = expr }
 
   override TranslatedElement getChild(int i) {
-    result = rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
+    result =
+      rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
         (
           tse.getCall() = getCall() and
           tse.getArgumentIndex() = index and
@@ -479,7 +480,8 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     or
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
-    result = getTranslatedExpr(call
+    result =
+      getTranslatedExpr(call
             .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
             .getFullyConverted()).getResult()
   }

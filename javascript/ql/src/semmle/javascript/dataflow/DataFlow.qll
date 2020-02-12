@@ -20,6 +20,7 @@
 
 import javascript
 private import internal.CallGraphs
+private import internal.FlowSteps as FlowSteps
 
 module DataFlow {
   cached
@@ -206,6 +207,11 @@ module DataFlow {
       exists(SsaRefinementNode refinement |
         this = TSsaDefNode(refinement) and
         result = TSsaDefNode(refinement.getAnInput())
+      )
+      or
+      exists(SsaPhiNode phi |
+        this = TSsaDefNode(phi) and
+        result = TSsaDefNode(phi.getRephinedVariable())
       )
       or
       // IIFE call -> return value of IIFE
@@ -530,6 +536,13 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+    
+    /**
+     * Holds if this data flow node reads or writes a private field in a class.
+     */ 
+    predicate isPrivateField() {
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
   }
 
   /**
@@ -1465,6 +1478,8 @@ module DataFlow {
     )
   }
 
+  predicate argumentPassingStep = FlowSteps::argumentPassing/4;
+
   /**
    * Gets the data flow node representing the source of definition `def`, taking
    * flow through IIFE calls into account.
@@ -1575,4 +1590,6 @@ module DataFlow {
   import Configuration
   import TrackedNodes
   import TypeTracking
+
+  predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

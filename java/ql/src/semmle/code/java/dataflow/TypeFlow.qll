@@ -109,8 +109,6 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   or
   n2.asExpr() = n1.asSsa().getAUse()
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
   not n2.asExpr().getType() instanceof PrimitiveType
   or
@@ -151,7 +149,8 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 }
 
 private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 = rank[r](TypeFlowNode n |
+  n1 =
+    rank[r](TypeFlowNode n |
       joinStep(n, n2)
     |
       n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()

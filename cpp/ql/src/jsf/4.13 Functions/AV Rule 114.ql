@@ -46,6 +46,10 @@ predicate functionImperfectlyExtracted(Function f) {
   exists(ErrorExpr ee | ee.getEnclosingFunction() = f)
   or
   count(f.getType()) > 1
+  or
+  // an `AsmStmt` isn't strictly 'imperfectly extracted', but it's beyond the scope
+  // of this analysis.
+  exists(AsmStmt asm | asm.getEnclosingFunction() = f)
 }
 
 from Stmt stmt, string msg, Function f, ControlFlowNode blame
@@ -54,6 +58,7 @@ where
   reachable(blame) and
   not functionImperfectlyExtracted(f) and
   (blame = stmt or blame.(Expr).getEnclosingStmt() = stmt) and
-  msg = "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
+  msg =
+    "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
       " but does not return a value here"
 select stmt, msg

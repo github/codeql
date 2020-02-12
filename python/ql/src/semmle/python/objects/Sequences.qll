@@ -53,7 +53,13 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
     }
 
     private string item(int n) {
-        result = this.getItem(n).toString()
+        exists(ObjectInternal item | item = this.getItem(n) |
+            // To avoid infinite recursion, nested tuples are replaced with the string "...".
+            if item instanceof TupleObjectInternal then
+                result = "(...)"
+            else
+                result = item.toString()
+        )
         or
         n in [0..this.length()-1] and
         not exists(this.getItem(n)) and result = "?"

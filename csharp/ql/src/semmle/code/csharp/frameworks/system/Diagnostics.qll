@@ -23,7 +23,7 @@ class SystemDiagnosticsDebugClass extends SystemDiagnosticsClass {
     this.isStatic()
   }
 
-  /** Gets and `Assert(bool, ...)` method. */
+  /** Gets an `Assert(bool, ...)` method. */
   Method getAssertMethod() {
     result.getDeclaringType() = this and
     result.hasName("Assert") and

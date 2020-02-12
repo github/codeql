@@ -14,11 +14,8 @@ class PersistenceXMLFile extends XMLFile {
   }
 
   PersistencePropertyElement getAPropertyElement() {
-    result = this
-          .getRoot()
-          .getAPersistenceUnitElement()
-          .getAPropertiesElement()
-          .getAPropertyElement()
+    result =
+      this.getRoot().getAPersistenceUnitElement().getAPropertiesElement().getAPropertyElement()
   }
 }
 

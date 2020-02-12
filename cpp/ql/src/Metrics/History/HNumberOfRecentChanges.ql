@@ -15,7 +15,8 @@ import external.VCS
 
 from File f, int n
 where
-  n = count(Commit e |
+  n =
+    count(Commit e |
       e.getAnAffectedFile() = f and
       e.daysToNow() <= 180 and
       not artificialChange(e)

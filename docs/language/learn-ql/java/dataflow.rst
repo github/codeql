@@ -45,7 +45,7 @@ or using the predicates ``exprNode`` and ``parameterNode``:
     */
    ParameterNode parameterNode(Parameter p) { ... }
 
-The predicate ``localFlowStep(Node nodeFrom, Node, nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
+The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
 For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
 

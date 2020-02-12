@@ -371,7 +371,7 @@ private int int_value(Expr e) {
 /** An `SsaDefinition` with an additional predicate `isLt`. */
 class GuardedSsa extends SsaDefinition {
   /** Holds if this `SsaDefinition` is guarded such that `this(var) < gt + k` is `testIsTrue` in `block`. */
-  predicate isLt(LocalScopeVariable var, Expr gt, int k, BasicBlock block, boolean testIsTrue) {
+  predicate isLt(StackVariable var, Expr gt, int k, BasicBlock block, boolean testIsTrue) {
     exists(Expr luse, GuardCondition test | this.getAUse(var) = luse |
       test.ensuresLt(luse, gt, k, block, testIsTrue)
     )

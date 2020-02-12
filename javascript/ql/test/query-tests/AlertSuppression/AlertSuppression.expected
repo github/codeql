@@ -9,6 +9,7 @@
 | tst.js:8:1:8:18 | // lgtm: blah blah |  lgtm: blah blah | lgtm | tst.js:8:1:8:18 | suppression range |
 | tst.js:9:1:9:32 | // lgtm ... ositive |  lgtm blah blah #falsepositive | lgtm | tst.js:9:1:9:32 | suppression range |
 | tst.js:10:1:10:39 | //lgtm  ... nction] | lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | tst.js:10:1:10:39 | suppression range |
+| tst.js:11:1:11:10 | /* lgtm */ |  lgtm  | lgtm | tst.js:11:1:11:10 | suppression range |
 | tst.js:12:1:12:9 | // lgtm[] |  lgtm[] | lgtm[] | tst.js:12:1:12:9 | suppression range |
 | tst.js:14:1:14:6 | //lgtm | lgtm | lgtm | tst.js:14:1:14:6 | suppression range |
 | tst.js:15:1:15:7 | //\\tlgtm | \tlgtm | lgtm | tst.js:15:1:15:7 | suppression range |
@@ -23,6 +24,10 @@
 | tst.js:27:1:27:70 | // lgtm ... nction] |  lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] | lgtm[js/invocation-of-non-function] | tst.js:27:1:27:70 | suppression range |
 | tst.js:28:1:28:36 | // lgtm ... ]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm | tst.js:28:1:28:36 | suppression range |
 | tst.js:28:1:28:36 | // lgtm ... ]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm[js/debugger-statement] | tst.js:28:1:28:36 | suppression range |
+| tst.js:29:1:29:12 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tst.js:29:1:29:12 | suppression range |
+| tst.js:30:1:30:41 | /* lgtm ... ion] */ |  lgtm[js/invocation-of-non-function]  | lgtm[js/invocation-of-non-function] | tst.js:30:1:30:41 | suppression range |
+| tst.js:36:1:36:55 | /* lgtm ... ion] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tst.js:36:1:36:55 | suppression range |
+| tst.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.js:37:1:37:25 | suppression range |
 | tstWindows.html:5:30:5:42 | <!-- lgtm --> |  lgtm  | lgtm | tstWindows.html:5:1:5:42 | suppression range |
 | tstWindows.js:1:11:1:17 | // lgtm |  lgtm | lgtm | tstWindows.js:1:1:1:17 | suppression range |
 | tstWindows.js:2:1:2:30 | // lgtm ... tement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.js:2:1:2:30 | suppression range |
@@ -34,6 +39,7 @@
 | tstWindows.js:8:1:8:18 | // lgtm: blah blah |  lgtm: blah blah | lgtm | tstWindows.js:8:1:8:18 | suppression range |
 | tstWindows.js:9:1:9:32 | // lgtm ... ositive |  lgtm blah blah #falsepositive | lgtm | tstWindows.js:9:1:9:32 | suppression range |
 | tstWindows.js:10:1:10:39 | //lgtm  ... nction] | lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | tstWindows.js:10:1:10:39 | suppression range |
+| tstWindows.js:11:1:11:10 | /* lgtm */ |  lgtm  | lgtm | tstWindows.js:11:1:11:10 | suppression range |
 | tstWindows.js:12:1:12:9 | // lgtm[] |  lgtm[] | lgtm[] | tstWindows.js:12:1:12:9 | suppression range |
 | tstWindows.js:14:1:14:6 | //lgtm | lgtm | lgtm | tstWindows.js:14:1:14:6 | suppression range |
 | tstWindows.js:15:1:15:7 | //\\tlgtm | \tlgtm | lgtm | tstWindows.js:15:1:15:7 | suppression range |
@@ -48,3 +54,7 @@
 | tstWindows.js:27:1:27:70 | // lgtm ... nction] |  lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] | lgtm[js/invocation-of-non-function] | tstWindows.js:27:1:27:70 | suppression range |
 | tstWindows.js:28:1:28:36 | // lgtm ... ]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm | tstWindows.js:28:1:28:36 | suppression range |
 | tstWindows.js:28:1:28:36 | // lgtm ... ]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm[js/debugger-statement] | tstWindows.js:28:1:28:36 | suppression range |
+| tstWindows.js:29:1:29:12 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tstWindows.js:29:1:29:12 | suppression range |
+| tstWindows.js:30:1:30:41 | /* lgtm ... ion] */ |  lgtm[js/invocation-of-non-function]  | lgtm[js/invocation-of-non-function] | tstWindows.js:30:1:30:41 | suppression range |
+| tstWindows.js:36:1:36:55 | /* lgtm ... ion] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tstWindows.js:36:1:36:55 | suppression range |
+| tstWindows.js:37:1:37:25 | /* lgtm ... ess] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.js:37:1:37:25 | suppression range |

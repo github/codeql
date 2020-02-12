@@ -13,6 +13,11 @@ Element stmtEnclosingElement(Stmt s) {
 /**
  * Gets the enclosing element of expression `e`.
  */
+// The `pragma[nomagic]` is a workaround to prevent this cached stage (and all
+// subsequent stages) from being evaluated twice. See QL-888. It has the effect
+// of making the `Conversion` class predicate get the same optimization in all
+// queries.
+pragma[nomagic]
 cached
 Element exprEnclosingElement(Expr e) {
   result = exprEnclosingElement(e.getParent())

@@ -10,9 +10,9 @@ import python
 import external.CodeDuplication
 
 predicate lexically_sorted(SimilarBlock dup1, SimilarBlock dup2) {
-		dup1.sourceFile().getName() < dup2.sourceFile().getName()
+		dup1.sourceFile().getAbsolutePath() < dup2.sourceFile().getAbsolutePath()
 		or
-		dup1.sourceFile().getName() = dup2.sourceFile().getName() and dup1.sourceStartLine() < dup2.sourceStartLine()
+		dup1.sourceFile().getAbsolutePath() = dup2.sourceFile().getAbsolutePath() and dup1.sourceStartLine() < dup2.sourceStartLine()
 }
 
 from SimilarBlock dup1, SimilarBlock dup2

@@ -258,7 +258,8 @@ class HashCons extends HCBase {
                                                                           this instanceof
                                                                             HC_AllocatorArgZero
                                                                         then
-                                                                          result = "AllocatorArgZero"
+                                                                          result =
+                                                                            "AllocatorArgZero"
                                                                         else result = "error"
   }
 
@@ -269,7 +270,8 @@ class HashCons extends HCBase {
   private Expr exampleExpr() {
     // Pick the expression with the minimum source location string. This is
     // just an arbitrary way to pick an expression with this `HC`.
-    result = min(Expr e |
+    result =
+      min(Expr e |
         this = hashCons(e)
       |
         e

@@ -12,7 +12,8 @@
 import cpp
 
 int firstCodeLine(File f) {
-  result = min(Declaration d, Location l, int toMin |
+  result =
+    min(Declaration d, Location l, int toMin |
       (
         l = d.getLocation() and
         l.getFile() = f and

@@ -17,26 +17,30 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.Allocation
 
-class MallocCall extends FunctionCall {
-  MallocCall() { this.getTarget().hasGlobalOrStdName("malloc") }
-
-  Expr getAllocatedSize() { result = this.getArgument(0) }
-}
-
-predicate terminationProblem(MallocCall malloc, string msg) {
+predicate terminationProblem(AllocationExpr malloc, string msg) {
   // malloc(strlen(...))
-  exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getAllocatedSize())) and
-  // flows into a null-terminated string function
+  exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getSizeExpr())) and
+  // flows to a call that implies this is a null-terminated string
   exists(ArrayFunction af, FunctionCall fc, int arg |
     DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and
     fc.getTarget() = af and
     (
-      // null terminated string
+      // flows into null terminated string argument
       af.hasArrayWithNullTerminator(arg)
       or
-      // likely a null terminated string (such as `strcpy`, `strcat`)
+      // flows into likely null terminated string argument (such as `strcpy`, `strcat`)
       af.hasArrayWithUnknownSize(arg)
+      or
+      // flows into string argument to a formatting function (such as `printf`)
+      exists(int n, FormatLiteral fl |
+        fc.getArgument(arg) = fc.(FormattingFunctionCall).getConversionArgument(n) and
+        fl = fc.(FormattingFunctionCall).getFormat() and
+        fl.getConversionType(n) instanceof PointerType and // `%s`, `%ws` etc
+        not fl.getConversionType(n) instanceof VoidPointerType and // exclude: `%p`
+        not fl.hasPrecision(n) // exclude: `%.*s`
+      )
     )
   ) and
   msg = "This allocation does not include space to null-terminate the string."

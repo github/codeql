@@ -8,7 +8,7 @@ import cpp
 import semmle.code.cpp.controlflow.SSA
 import semmle.code.cpp.controlflow.Guards
 
-from GuardedSsa def, LocalScopeVariable var, Expr other, int k, int start, int end, string op
+from GuardedSsa def, StackVariable var, Expr other, int k, int start, int end, string op
 where
   exists(BasicBlock block |
     def.isLt(var, other, k, block, true) and op = "<"

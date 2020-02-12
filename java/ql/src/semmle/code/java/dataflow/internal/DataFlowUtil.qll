@@ -26,6 +26,8 @@ private newtype TNode =
     e instanceof Argument and not e.getType() instanceof ImmutableType
     or
     exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
+    or
+    exists(ArrayAccess aa | e = aa.getArray())
   } or
   TImplicitExprPostUpdate(InstanceAccessExt ia) {
     implicitInstanceArgument(_, ia)
@@ -389,8 +391,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr())
   or
   ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
-  or
-  node2.asExpr().(ParExpr).getExpr() = node1.asExpr()
   or
   node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
   or

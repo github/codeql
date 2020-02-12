@@ -66,7 +66,8 @@ class Pom extends ProtoPom {
 
   /** Gets a Maven coordinate of the form `groupId:artifactId:version`. */
   string getCoordinate() {
-    result = this.getGroup().getValue() + ":" + this.getArtifact().getValue() + ":" +
+    result =
+      this.getGroup().getValue() + ":" + this.getArtifact().getValue() + ":" +
         this.getVersion().getValue()
   }
 
@@ -195,8 +196,8 @@ class Pom extends ProtoPom {
         relativePath = "src"
     |
       // Resolve the relative path against the base directory for this POM
-      result.getAbsolutePath() = normalize(getFile().getParentContainer().getAbsolutePath() + "/" +
-            relativePath)
+      result.getAbsolutePath() =
+        normalize(getFile().getParentContainer().getAbsolutePath() + "/" + relativePath)
     )
   }
 
@@ -411,7 +412,8 @@ class MavenRepoJar extends File {
     exists(MavenRepo mr | mr.getAJarFile() = this |
       // Assuming the standard layout, the first part of the directory structure from the maven
       // repository will be the groupId converted to a path by replacing "." with "/".
-      result = getParentContainer()
+      result =
+        getParentContainer()
             .getParentContainer()
             .getParentContainer()
             .getAbsolutePath()

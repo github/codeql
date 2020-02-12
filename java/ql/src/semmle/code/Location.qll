@@ -84,6 +84,7 @@ class Top extends @top {
   int getNumberOfCommentLines() { numlines(this, _, _, result) }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() { hasName(this, result) }
 }
 

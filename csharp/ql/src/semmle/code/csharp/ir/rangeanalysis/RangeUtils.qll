@@ -27,12 +27,14 @@ IntValue getConstantValue(Instruction instr) {
   or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(PhiInputOperand operand |
+    result =
+      max(PhiInputOperand operand |
         operand = phi.getAnOperand()
       |
         getConstantValue(operand.getDef())
       ) and
-    result = min(PhiInputOperand operand |
+    result =
+      min(PhiInputOperand operand |
         operand = phi.getAnOperand()
       |
         getConstantValue(operand.getDef())

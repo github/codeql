@@ -96,6 +96,8 @@ module DomBasedXss {
         this = mcn.getArgument(1)
       )
       or
+      this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
+      or
       this = any(Handlebars::SafeString s).getAnArgument()
     }
   }
@@ -254,6 +256,24 @@ module DomBasedXss {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this and succ = attr
+    }
+  }
+
+  /**
+   * A property read from a safe property is considered a sanitizer.
+   */
+  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
+    SafePropertyReadSanitizer() {
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
     }
   }
 

@@ -22,3 +22,7 @@
 | D.java:19:14:19:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
 | D.java:26:14:26:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
 | D.java:37:14:37:23 | new Elem(...) | D.java:44:10:44:26 | boxfield.box.elem |
+| E.java:2:32:2:43 | new Object(...) | E.java:18:10:18:20 | raw.content |
+| E.java:2:32:2:43 | new Object(...) | E.java:21:10:21:24 | bh2.buf.content |
+| E.java:2:32:2:43 | new Object(...) | E.java:24:10:24:28 | p2.data.buf.content |
+| E.java:2:32:2:43 | new Object(...) | E.java:30:10:30:27 | p.data.buf.content |

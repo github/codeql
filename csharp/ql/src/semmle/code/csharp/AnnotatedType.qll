@@ -72,7 +72,8 @@ private module Annotations {
     private string getMemberString() {
       if nullability_parent(_, _, nullability)
       then
-        result = "<" +
+        result =
+          "<" +
             concat(int i, Nullability child |
               nullability_parent(getNullability(child), i, nullability)
             |
@@ -112,20 +113,14 @@ private module Annotations {
 
     /** Gets text to be displayed before the type. */
     string getTypePrefix() {
-      result = concat(TypeAnnotation a |
-          a = this.getAnAnnotation()
-        |
-          a.getPrefix(), "" order by a.getBit()
-        )
+      result =
+        concat(TypeAnnotation a | a = this.getAnAnnotation() | a.getPrefix(), "" order by a.getBit())
     }
 
     /** Gets text to be displayed after the type. */
     string getTypeSuffix() {
-      result = concat(TypeAnnotation a |
-          a = this.getAnAnnotation()
-        |
-          a.getSuffix(), "" order by a.getBit()
-        )
+      result =
+        concat(TypeAnnotation a | a = this.getAnAnnotation() | a.getSuffix(), "" order by a.getBit())
     }
 
     /** Gets a textual representation of this type annotation. */
@@ -299,7 +294,8 @@ class AnnotatedType extends TAnnotatedType {
 
   /** Gets a textual representation of this annotated type. */
   string toString() {
-    result = annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() +
+    result =
+      annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() +
         annotations.getTypeSuffix()
   }
 
@@ -353,15 +349,15 @@ class AnnotatedType extends TAnnotatedType {
 
   /** Holds if this annotated type is the `i`th type argument of constructed generic 'g'. */
   predicate appliesToTypeArgument(ConstructedGeneric g, int i) {
-    Annotations::getNoFlagsNullability(this.getAnnotations()) = Annotations::getChildNullability(getElementNullability(g),
-        i) and
+    Annotations::getNoFlagsNullability(this.getAnnotations()) =
+      Annotations::getChildNullability(getElementNullability(g), i) and
     this.getType() = g.getTypeArgument(i)
   }
 
   /** Holds if this annotated type applies to type parameter constraints `constraints`. */
   predicate appliesToTypeConstraint(TypeParameterConstraints constraints) {
-    Annotations::getNoFlagsNullability(this.getAnnotations()) = getTypeParameterNullability(constraints,
-        type)
+    Annotations::getNoFlagsNullability(this.getAnnotations()) =
+      getTypeParameterNullability(constraints, type)
   }
 }
 
@@ -389,8 +385,9 @@ class AnnotatedArrayType extends AnnotatedType {
 
   override string toString() {
     exists(AnnotatedType elementType |
-      result = annotations.getTypePrefix() + elementType.toString() +
-          this.getDimensionString(elementType) + annotations.getTypeSuffix()
+      result =
+        annotations.getTypePrefix() + elementType.toString() + this.getDimensionString(elementType) +
+          annotations.getTypeSuffix()
     )
   }
 }
@@ -406,13 +403,15 @@ class AnnotatedConstructedType extends AnnotatedType {
   }
 
   override string toString() {
-    result = annotations.getTypePrefix() + type.getUnboundGeneric().getNameWithoutBrackets() + "<" +
+    result =
+      annotations.getTypePrefix() + type.getUnboundGeneric().getNameWithoutBrackets() + "<" +
         this.getTypeArgumentsString() + ">" + annotations.getTypeSuffix()
   }
 
   language[monotonicAggregates]
   private string getTypeArgumentsString() {
-    result = concat(int i |
+    result =
+      concat(int i |
         exists(this.getTypeArgument(i))
       |
         this.getTypeArgument(i).toString(), ", " order by i

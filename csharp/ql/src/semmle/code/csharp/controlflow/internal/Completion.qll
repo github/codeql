@@ -191,7 +191,8 @@ private predicate isBooleanConstant(Expr e, boolean value) {
 private predicate isNullnessConstant(Expr e, boolean value) {
   mustHaveNullnessCompletion(e) and
   exists(Expr stripped | stripped = e.stripCasts() |
-    stripped.getType() = any(ValueType t |
+    stripped.getType() =
+      any(ValueType t |
         not t instanceof NullableType and
         // Extractor bug: the type of `x?.Length` is reported as `int`, but it should
         // be `int?`
@@ -290,7 +291,8 @@ private class TriedControlFlowElement extends ControlFlowElement {
     this instanceof Call and
     result instanceof SystemExceptionClass
     or
-    this = any(MemberAccess ma |
+    this =
+      any(MemberAccess ma |
         not ma.isConditional() and
         ma.getQualifier() = any(Expr e | not e instanceof TypeAccess) and
         result instanceof SystemNullReferenceExceptionClass
@@ -302,7 +304,8 @@ private class TriedControlFlowElement extends ControlFlowElement {
     this instanceof ArrayCreation and
     result instanceof SystemOutOfMemoryExceptionClass
     or
-    this = any(AddExpr ae |
+    this =
+      any(AddExpr ae |
         ae.getType() instanceof StringType and
         result instanceof SystemOutOfMemoryExceptionClass
         or
@@ -310,17 +313,20 @@ private class TriedControlFlowElement extends ControlFlowElement {
         result instanceof SystemOverflowExceptionClass
       )
     or
-    this = any(SubExpr se |
+    this =
+      any(SubExpr se |
         se.getType() instanceof IntegralType and
         result instanceof SystemOverflowExceptionClass
       )
     or
-    this = any(MulExpr me |
+    this =
+      any(MulExpr me |
         me.getType() instanceof IntegralType and
         result instanceof SystemOverflowExceptionClass
       )
     or
-    this = any(DivExpr de |
+    this =
+      any(DivExpr de |
         not de.getDenominator().getValue().toFloat() != 0 and
         result instanceof SystemDivideByZeroExceptionClass
       )
@@ -361,7 +367,8 @@ private class TriedControlFlowElement extends ControlFlowElement {
 
   Class getAThrownException() {
     exists(string name | result = this.getAThrownExceptionFromPlausibleCoreLib(name) |
-      result = min(Class c |
+      result =
+        min(Class c |
           c = this.getAThrownExceptionFromPlausibleCoreLib(name)
         |
           c order by c.getLocation().(Assembly).getFullName()

@@ -1,4 +1,5 @@
 | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:8:33:8:45 | req.params.id | user-provided value |
+| exception-xss.js:190:12:190:24 | req.params.id | Cross-site scripting vulnerability due to $@. | exception-xss.js:190:12:190:24 | req.params.id | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:13:42:13:48 | req.url | user-provided value |

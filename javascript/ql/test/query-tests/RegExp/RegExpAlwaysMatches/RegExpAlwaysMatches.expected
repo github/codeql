@@ -1,0 +1,8 @@
+| tst.js:2:11:2:20 | ^(https:)? | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:2:10:2:29 | /^(https:)?/.test(x) | here |
+| tst.js:14:11:14:19 | (\\.com)?$ | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:14:10:14:28 | /(\\.com)?$/.test(x) | here |
+| tst.js:22:11:22:34 | ^(?:https?:\|ftp:\|file:)? | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:22:10:22:43 | /^(?:ht ... test(x) | here |
+| tst.js:30:11:30:20 | (foo\|bar)? | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:30:10:30:29 | /(foo\|bar)?/.test(x) | here |
+| tst.js:34:21:34:26 | (baz)? | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:34:10:34:35 | /^foo\|b ... test(x) | here |
+| tst.js:58:20:58:25 | [a-z]* | This regular expression always the matches at index 0 when used $@, as it matches the empty substring. | tst.js:58:10:58:27 | x.search(/[a-z]*/) | here |
+| tst.js:70:20:70:26 | ^(foo)? | This regular expression always the matches at index 0 when used $@, as it matches the empty substring. | tst.js:70:10:70:28 | x.search(/^(foo)?/) | here |
+| tst.js:86:22:86:21 |  | This regular expression always matches when used in a test $@, as it can match an empty substring. | tst.js:86:10:86:31 | new Reg ... test(x) | here |

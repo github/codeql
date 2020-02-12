@@ -52,6 +52,7 @@ class DefaultToStringType extends ValueOrRefType {
 
 query predicate problems(Expr e, string s, DefaultToStringType t, string name) {
   invokesToString(e, t) and
-  s = "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing." and
+  s =
+    "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing." and
   name = t.getName()
 }

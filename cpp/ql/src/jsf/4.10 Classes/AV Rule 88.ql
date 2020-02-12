@@ -45,13 +45,15 @@ class InterfaceImplementor extends Class {
   }
 
   int getNumInterfaces() {
-    result = count(ClassDerivation d |
+    result =
+      count(ClassDerivation d |
         d.getDerivedClass() = this and d.getBaseClass() instanceof InterfaceClass
       )
   }
 
   int getNumProtectedImplementations() {
-    result = count(ClassDerivation d |
+    result =
+      count(ClassDerivation d |
         d.hasSpecifier("protected") and
         d.getDerivedClass() = this and
         not d.getBaseClass() instanceof InterfaceClass
@@ -59,7 +61,8 @@ class InterfaceImplementor extends Class {
   }
 
   int getNumPrivateImplementations() {
-    result = count(ClassDerivation d |
+    result =
+      count(ClassDerivation d |
         d.hasSpecifier("private") and
         d.getDerivedClass() = this and
         not d.getBaseClass() instanceof InterfaceClass
@@ -67,7 +70,8 @@ class InterfaceImplementor extends Class {
   }
 
   int getNumPublicImplementations() {
-    result = count(ClassDerivation d |
+    result =
+      count(ClassDerivation d |
         d.hasSpecifier("public") and
         d.getDerivedClass() = this and
         not d.getBaseClass() instanceof InterfaceClass

@@ -210,7 +210,8 @@ module JsonNET {
       preservesValue = false
       or
       // operator string
-      c = any(Operator op |
+      c =
+        any(Operator op |
           op.getDeclaringType() = this.getABaseType*() and op.getReturnType() instanceof StringType
         ) and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and

@@ -45,3 +45,6 @@
 | test.py:195 | SOURCE | simple.test |
 | test.py:202 | ITERABLE_SOURCE | iterable.simple |
 | test.py:208 | SOURCE | simple.test |
+| test.py:217 | SOURCE | simple.test |
+| test.py:223 | SOURCE | simple.test |
+| test.py:229 | SOURCE | simple.test |

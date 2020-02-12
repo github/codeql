@@ -1,5 +1,6 @@
 package com.semmle.js.ast;
 
+import com.semmle.ts.ast.INodeWithSymbol;
 import java.util.List;
 
 /**
@@ -14,12 +15,14 @@ import java.util.List;
  *   import "m";
  * </pre>
  */
-public class ImportDeclaration extends Statement {
+public class ImportDeclaration extends Statement implements INodeWithSymbol {
   /** List of import specifiers detailing how declarations are imported; may be empty. */
   private final List<ImportSpecifier> specifiers;
 
   /** The module from which declarations are imported. */
   private final Literal source;
+
+  private int symbol = -1;
 
   public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source) {
     super("ImportDeclaration", loc);
@@ -38,5 +41,15 @@ public class ImportDeclaration extends Statement {
   @Override
   public <C, R> R accept(Visitor<C, R> v, C c) {
     return v.visit(this, c);
+  }
+
+  @Override
+  public int getSymbol() {
+    return this.symbol;
+  }
+
+  @Override
+  public void setSymbol(int symbol) {
+    this.symbol = symbol;
   }
 }

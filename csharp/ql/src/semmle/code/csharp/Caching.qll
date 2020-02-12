@@ -89,7 +89,9 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      exists(CompoundTypeKind k)
+      exists(Gvn::CompoundTypeKind k)
+      or
+      exists(any(Gvn::GvnType t).toString())
       or
       exists(Unification::UnconstrainedTypeParameter utp)
       or

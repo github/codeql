@@ -109,7 +109,7 @@ Analysis overview
 
   Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard CodeQL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a CodeQL database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 
-  Query results can be interpreted and presented in a variety of ways, including displaying them in an `IDE plugin <https://lgtm.com/help/lgtm/running-queries-ide>`__ such as QL for Eclipse, or in a web dashboard as on `LGTM <https://lgtm.com/help/lgtm/about-lgtm>`__.
+  Query results can be interpreted and presented in a variety of ways, including displaying them in an `IDE extension <https://lgtm.com/help/lgtm/running-queries-ide>`__ such as CodeQL for Visual Studio Code, or in a web dashboard as on `LGTM <https://lgtm.com/help/lgtm/about-lgtm>`__.
 
 Introducing QL
 ==============

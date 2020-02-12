@@ -151,9 +151,11 @@ private class ConstantStringExpr extends Expr {
  * A general configuration that is safe when enabled.
  */
 Expr singleSafeConfig() {
-  result.(ConstantStringExpr).getStringValue() = "http://apache.org/xml/features/disallow-doctype-decl"
+  result.(ConstantStringExpr).getStringValue() =
+    "http://apache.org/xml/features/disallow-doctype-decl"
   or
-  result.(ConstantStringExpr).getStringValue() = "http://javax.xml.XMLConstants/feature/secure-processing"
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/feature/secure-processing"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -494,7 +496,8 @@ class SafeSAXParserFactory extends VarAccess {
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://apache.org/xml/features/nonvalidating/load-external-dtd"
+                s.getStringValue() =
+                  "http://apache.org/xml/features/nonvalidating/load-external-dtd"
               ))
       )
     )
@@ -695,7 +698,8 @@ class ExplicitlySafeXMLReader extends VarAccess {
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://apache.org/xml/features/nonvalidating/load-external-dtd"
+                s.getStringValue() =
+                  "http://apache.org/xml/features/nonvalidating/load-external-dtd"
               ))
       )
       or
@@ -828,7 +832,8 @@ class XmlConstants extends RefType {
 
 /** A configuration specific for transformers and schema. */
 Expr configAccessExternalDTD() {
-  result.(ConstantStringExpr).getStringValue() = "http://javax.xml.XMLConstants/property/accessExternalDTD"
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/property/accessExternalDTD"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -839,7 +844,8 @@ Expr configAccessExternalDTD() {
 
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {
-  result.(ConstantStringExpr).getStringValue() = "http://javax.xml.XMLConstants/property/accessExternalStylesheet"
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/property/accessExternalStylesheet"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -850,7 +856,8 @@ Expr configAccessExternalStyleSheet() {
 
 /** A configuration specific for schema. */
 Expr configAccessExternalSchema() {
-  result.(ConstantStringExpr).getStringValue() = "http://javax.xml.XMLConstants/property/accessExternalSchema"
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/property/accessExternalSchema"
   or
   exists(Field f |
     result = f.getAnAccess() and

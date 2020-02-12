@@ -23,7 +23,7 @@
   promise2.catch((v) => {
     var rej_sink = v;
   });
-  promise2.finally((v) => {
+  promise2.finally((v) => { // no promise implementation sends an argument to the finally handler. So there is no data-flow here. 
     var sink = v;
   });
 
