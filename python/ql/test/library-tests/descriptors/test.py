@@ -1,6 +1,3 @@
-
-
-
 class C(object):
 
     @property
@@ -8,8 +5,8 @@ class C(object):
         return self._f
 
     @f.setter
-    def f(self):
-        return self._f
+    def f(self, value):
+        self._f = value
 
 class D(object):
 
