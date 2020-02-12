@@ -402,6 +402,16 @@ class ClassValue extends Value {
         or
         this.hasAttribute("__getitem__")
     }
+    
+    /** Holds if this class is a mapping.
+     *
+     * This is an attempt to translate ClassObject::isMapping()
+     */
+    predicate isMapping() {
+        exists(this.attr("__getitem__"))
+        and
+        not this instanceof SequenceValue
+    }
 
     /** Holds if this class is a descriptor. */
     predicate isDescriptorType() {
