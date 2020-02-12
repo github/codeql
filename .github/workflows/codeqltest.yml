@@ -1,0 +1,70 @@
+name: CodeQL tests
+on: [pull_request]
+jobs:
+
+  test-linux:
+    name: Test Linux (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13.3
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.3
+      id: go
+
+    - name: Set up CodeQL CLI
+      uses: Anthophila/codeql-action/setup-codeql@master
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: make
+
+    - name: Test
+      run: make test
+
+  test-mac:
+    name: Test MacOS
+    runs-on: macOS-latest
+    steps:
+    - name: Set up Go 1.13.3
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.3
+      id: go
+
+    - name: Set up CodeQL CLI
+      uses: Anthophila/codeql-action/setup-codeql@master
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: make
+
+    - name: Test
+      run: make test
+
+  test-win:
+    name: Test Windows
+    runs-on: windows-latest
+    steps:
+    - name: Set up Go 1.13.3
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.3
+      id: go
+
+    - name: Set up CodeQL CLI
+      uses: Anthophila/codeql-action/setup-codeql@master
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: make
+
+    - name: Test
+      run: make test

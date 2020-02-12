@@ -1,0 +1,5 @@
+# Force git not to modify line endings for go files
+*.go binary
+
+# Force git not to modify line endings for dbschemes
+*.dbscheme binary
