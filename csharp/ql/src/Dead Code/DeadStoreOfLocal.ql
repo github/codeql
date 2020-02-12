@@ -114,7 +114,7 @@ class RelevantDefinition extends AssignableDefinition {
    */
   private predicate isDefaultLikeInitializer() {
     this.isInitializer() and
-    exists(Expr e | e = this.getSource() |
+    exists(Expr e | e = this.getSource().stripCasts() |
       exists(string val | val = e.getValue() |
         val = "0" or
         val = "-1" or

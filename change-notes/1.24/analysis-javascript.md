@@ -21,6 +21,10 @@
   - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
   - [Koa](https://www.npmjs.com/package/koa)
+  - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [for-in](https://www.npmjs.com/package/for-in)
+  - [for-own](https://www.npmjs.com/package/for-own)
+  - [send](https://www.npmjs.com/package/send)
 
 ## New queries
 

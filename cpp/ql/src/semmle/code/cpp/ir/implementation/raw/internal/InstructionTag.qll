@@ -12,12 +12,10 @@ newtype TInstructionTag =
   ZeroPadStringElementIndexTag() or
   ZeroPadStringElementAddressTag() or
   ZeroPadStringStoreTag() or
-  AssignOperationLoadTag() or
   AssignOperationConvertLeftTag() or
   AssignOperationOpTag() or
   AssignOperationConvertResultTag() or
   AssignmentStoreTag() or
-  CrementLoadTag() or
   CrementConstantTag() or
   CrementOpTag() or
   CrementStoreTag() or
@@ -95,8 +93,6 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = ZeroPadStringStoreTag() and result = "ZeroPadStore"
   or
-  tag = AssignOperationLoadTag() and result = "AssignOpLoad"
-  or
   tag = AssignOperationConvertLeftTag() and result = "AssignOpConvLeft"
   or
   tag = AssignOperationOpTag() and result = "AssignOpOp"
@@ -104,8 +100,6 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = AssignOperationConvertResultTag() and result = "AssignOpConvRes"
   or
   tag = AssignmentStoreTag() and result = "AssignStore"
-  or
-  tag = CrementLoadTag() and result = "CrementLoad"
   or
   tag = CrementConstantTag() and result = "CrementConst"
   or

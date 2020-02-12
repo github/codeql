@@ -8,12 +8,9 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.models.interfaces.DataFlow
 
-/**
- * A newtype wrapper to prevent accidental casts between `Node` and
- * `Instruction`. This ensures we can add `Node`s that are not `Instruction`s
- * in the future.
- */
-private newtype TIRDataFlowNode = MkIRDataFlowNode(Instruction i)
+private newtype TIRDataFlowNode =
+  TInstructionNode(Instruction i) or
+  TVariableNode(Variable var)
 
 /**
  * A node in a data flow graph.
@@ -23,21 +20,19 @@ private newtype TIRDataFlowNode = MkIRDataFlowNode(Instruction i)
  * `DataFlow::parameterNode`, and `DataFlow::uninitializedNode` respectively.
  */
 class Node extends TIRDataFlowNode {
-  Instruction instr;
-
-  Node() { this = MkIRDataFlowNode(instr) }
-
   /**
-   * INTERNAL: Do not use. Alternative name for `getFunction`.
+   * INTERNAL: Do not use.
    */
-  Function getEnclosingCallable() { result = this.getFunction() }
+  Declaration getEnclosingCallable() { none() } // overridden in subclasses
 
-  Function getFunction() { result = instr.getEnclosingFunction() }
+  /** Gets the function to which this node belongs, if any. */
+  Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  Type getType() { result = instr.getResultType() }
+  Type getType() { none() } // overridden in subclasses
 
-  Instruction asInstruction() { this = MkIRDataFlowNode(result) }
+  /** Gets the instruction corresponding to this node, if any. */
+  Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -45,22 +40,25 @@ class Node extends TIRDataFlowNode {
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr asExpr() {
-    result.getConversion*() = instr.getConvertedResultExpression() and
-    not result instanceof Conversion
-  }
+  Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr asConvertedExpr() { result = instr.getConvertedResultExpression() }
+  Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
 
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = instr.(InitializeParameterInstruction).getParameter() }
+  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+
+  /**
+   * Gets the variable corresponding to this node, if any. This can be used for
+   * modelling flow in and out of global variables.
+   */
+  Variable asVariable() { result = this.(VariableNode).getVariable() }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -76,7 +74,7 @@ class Node extends TIRDataFlowNode {
   Type getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
-  Location getLocation() { result = instr.getLocation() }
+  Location getLocation() { none() } // overridden by subclasses
 
   /**
    * Holds if this element is at the specified location.
@@ -91,18 +89,38 @@ class Node extends TIRDataFlowNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  string toString() {
+  /** Gets a textual representation of this element. */
+  string toString() { none() } // overridden by subclasses
+}
+
+class InstructionNode extends Node, TInstructionNode {
+  Instruction instr;
+
+  InstructionNode() { this = TInstructionNode(instr) }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = instr.getEnclosingFunction() }
+
+  override Type getType() { result = instr.getResultType() }
+
+  override Location getLocation() { result = instr.getLocation() }
+
+  override string toString() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
-    result = this.asInstruction().getOpcode().toString()
+    result = this.getInstruction().getOpcode().toString()
   }
 }
 
 /**
  * An expression, viewed as a node in a data flow graph.
  */
-class ExprNode extends Node {
-  ExprNode() { exists(this.asExpr()) }
+class ExprNode extends InstructionNode {
+  ExprNode() { exists(instr.getConvertedResultExpression()) }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -110,13 +128,16 @@ class ExprNode extends Node {
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr getExpr() { result = this.asExpr() }
+  Expr getExpr() {
+    result.getConversion*() = instr.getConvertedResultExpression() and
+    not result instanceof Conversion
+  }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr getConvertedExpr() { result = this.asConvertedExpr() }
+  Expr getConvertedExpr() { result = instr.getConvertedResultExpression() }
 
   override string toString() { result = this.asConvertedExpr().toString() }
 }
@@ -125,7 +146,7 @@ class ExprNode extends Node {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node {
+class ParameterNode extends InstructionNode {
   override InitializeParameterInstruction instr;
 
   /**
@@ -139,7 +160,7 @@ class ParameterNode extends Node {
   override string toString() { result = instr.getParameter().toString() }
 }
 
-private class ThisParameterNode extends Node {
+private class ThisParameterNode extends InstructionNode {
   override InitializeThisInstruction instr;
 
   override string toString() { result = "this" }
@@ -176,7 +197,7 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends Node {
+abstract class PostUpdateNode extends InstructionNode {
   /**
    * Gets the node before the state update.
    */
@@ -193,7 +214,7 @@ abstract class PostUpdateNode extends Node {
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends Node {
+class DefinitionByReferenceNode extends InstructionNode {
   override WriteSideEffectInstruction instr;
 
   /** Gets the argument corresponding to this node. */
@@ -221,9 +242,40 @@ class DefinitionByReferenceNode extends Node {
 }
 
 /**
+ * A `Node` corresponding to a variable in the program, as opposed to the
+ * value of that variable at some particular point. This can be used for
+ * modelling flow in and out of global variables.
+ */
+class VariableNode extends Node, TVariableNode {
+  Variable v;
+
+  VariableNode() { this = TVariableNode(v) }
+
+  /** Gets the variable corresponding to this node. */
+  Variable getVariable() { result = v }
+
+  override Function getFunction() { none() }
+
+  override Declaration getEnclosingCallable() {
+    // When flow crosses from one _enclosing callable_ to another, the
+    // interprocedural data-flow library discards call contexts and inserts a
+    // node in the big-step relation used for human-readable path explanations.
+    // Therefore we want a distinct enclosing callable for each `VariableNode`,
+    // and that can be the `Variable` itself.
+    result = v
+  }
+
+  override Type getType() { result = v.getType() }
+
+  override Location getLocation() { result = v.getLocation() }
+
+  override string toString() { result = v.toString() }
+}
+
+/**
  * Gets the node corresponding to `instr`.
  */
-Node instructionNode(Instruction instr) { result.asInstruction() = instr }
+InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
@@ -243,6 +295,9 @@ ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
 ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+
+/** Gets the `VariableNode` corresponding to the variable `v`. */
+VariableNode variableNode(Variable v) { result.getVariable() = v }
 
 /**
  * Gets the `Node` corresponding to the value of an uninitialized local
@@ -310,10 +365,10 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       modelOut.isReturnValueDeref() and
       iTo = call
       or
-      exists(WriteSideEffectInstruction outNode |
-        modelOut.isParameterDeref(outNode.getIndex()) and
+      exists(int index, WriteSideEffectInstruction outNode |
+        modelOut.isParameterDeref(index) and
         iTo = outNode and
-        outNode.getPrimaryInstruction() = call
+        outNode = getSideEffectFor(call, index)
       )
       // TODO: add write side effects for qualifiers
     ) and
@@ -325,8 +380,7 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       or
       exists(int index, ReadSideEffectInstruction read |
         modelIn.isParameterDeref(index) and
-        read.getIndex() = index and
-        read.getPrimaryInstruction() = call and
+        read = getSideEffectFor(call, index) and
         iFrom = read.getSideEffectOperand().getAnyDef()
       )
       or
@@ -335,6 +389,18 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       // TODO: add read side effects for qualifiers
     )
   )
+}
+
+/**
+ * Holds if the result is a side effect for instruction `call` on argument
+ * index `argument`. This helper predicate makes it easy to join on both of
+ * these columns at once, avoiding pathological join orders in case the
+ * argument index should get joined first.
+ */
+pragma[noinline]
+SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
+  call = result.getPrimaryInstruction() and
+  argument = result.(IndexedInstruction).getIndex()
 }
 
 /**

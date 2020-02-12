@@ -502,7 +502,7 @@ Identifiers are used in following syntactic constructs:
    simpleId      ::= lowerId | upperId
    modulename    ::= simpleId
    classname     ::= upperId
-   dbasetype     ::= atlowerId
+   dbasetype     ::= atLowerId
    predicateRef  ::= (moduleId "::")? literalId
    predicateName ::= lowerId
    varname       ::= simpleId
@@ -1804,7 +1804,7 @@ The complete grammar for QL is as follows:
 
 ::
 
-   ql ::= moduleBody ;
+   ql ::= moduleBody
 
    module ::= annotation* "module" modulename "{" moduleBody "}"
 
@@ -1976,11 +1976,11 @@ The complete grammar for QL is as follows:
 
    simpleId ::= lowerId | upperId
 
-   modulename :: = simpleId
+   modulename ::= simpleId
 
    classname ::= upperId
 
-   dbasetype ::= atlowerId
+   dbasetype ::= atLowerId
 
    predicateRef ::= (moduleId "::")? literalId
 
