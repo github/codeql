@@ -1,1 +1,2 @@
-| 3 | Property f | 4 | Function f | 8 | Function f |
+| test.py:4:5:4:16 | Function f | getter | test.py:3:6:3:13 | Property f |
+| test.py:8:5:8:23 | Function f | setter | test.py:3:6:3:13 | Property f |
