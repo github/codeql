@@ -8,3 +8,6 @@
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:69:10:69:13 | copy | AST only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:70:12:70:15 | copy | AST only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:71:12:71:15 | copy | AST only |
+| test.cpp:87:12:87:15 | call to gets | test.cpp:87:2:87:8 | pointer | AST only |
+| test.cpp:87:17:87:22 | buffer | test.cpp:84:7:84:12 | buffer | AST only |
+| test.cpp:87:17:87:22 | buffer | test.cpp:87:17:87:22 | array to pointer conversion | IR only |

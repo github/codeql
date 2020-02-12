@@ -76,3 +76,13 @@ void guard() {
     if (len > 1000) return;
     char **node = (char **) malloc(len * sizeof(char *));
 }
+
+char *gets(char *s);
+
+void test_gets()
+{
+	char buffer[1024];
+	char *pointer;
+
+	pointer = gets(buffer);
+}

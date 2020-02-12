@@ -52,3 +52,9 @@
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:15:75:18 | call to atoi |  |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:25 | call to getenv |  |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:45 | (const char *)... |  |
+| test.cpp:87:12:87:15 | call to gets | test.cpp:85:8:85:14 | pointer |  |
+| test.cpp:87:12:87:15 | call to gets | test.cpp:87:2:87:8 | pointer |  |
+| test.cpp:87:12:87:15 | call to gets | test.cpp:87:12:87:15 | call to gets |  |
+| test.cpp:87:17:87:22 | buffer | test.cpp:80:18:80:18 | s |  |
+| test.cpp:87:17:87:22 | buffer | test.cpp:84:7:84:12 | buffer |  |
+| test.cpp:87:17:87:22 | buffer | test.cpp:87:17:87:22 | buffer |  |
