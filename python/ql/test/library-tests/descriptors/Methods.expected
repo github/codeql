@@ -1,6 +1,6 @@
-| 13 | classmethod() | 14 | Function c1 |
-| 20 | classmethod() | 17 | Function c2 |
-| 21 | classmethod() | 17 | Function c2 |
-| 23 | staticmethod() | 24 | Function s1 |
-| 30 | staticmethod() | 27 | Function s2 |
-| 31 | staticmethod() | 27 | Function s2 |
+| 55 | classmethod() | 56 | Function c1 |
+| 62 | classmethod() | 59 | Function c2 |
+| 63 | classmethod() | 59 | Function c2 |
+| 65 | staticmethod() | 66 | Function s1 |
+| 72 | staticmethod() | 69 | Function s2 |
+| 73 | staticmethod() | 69 | Function s2 |

@@ -1,2 +1,8 @@
-| test.py:4:5:4:16 | Function f | getter | test.py:3:6:3:13 | Property f |
-| test.py:8:5:8:23 | Function f | setter | test.py:3:6:3:13 | Property f |
+| test.py:6:5:6:16 | Function x | getter | test.py:5:6:5:13 | Property x |
+| test.py:11:5:11:23 | Function x | setter | test.py:5:6:5:13 | Property x |
+| test.py:15:5:15:16 | Function x | deleter | test.py:5:6:5:13 | Property x |
+| test.py:21:5:21:16 | Function x | getter | test.py:20:6:20:13 | Property x |
+| test.py:28:5:28:19 | Function getx | getter | test.py:37:9:37:59 | Property getx |
+| test.py:31:5:31:26 | Function setx | setter | test.py:37:9:37:59 | Property getx |
+| test.py:34:5:34:19 | Function delx | deleter | test.py:37:9:37:59 | Property getx |
+| test.py:41:5:41:19 | Function getx | getter | test.py:44:9:44:22 | Property getx |
