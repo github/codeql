@@ -48,5 +48,5 @@ void test_anonymous_union() {
   union {
     int u3;
     char* u4;
-  } local_union;
+  } not_an_anonymous_union;
 }
