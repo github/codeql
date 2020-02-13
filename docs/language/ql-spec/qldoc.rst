@@ -1,7 +1,12 @@
 QLDoc comment specification
 ===========================
 
-This document is a specification for QLDoc comments in QL source files.
+This document is a formal specification for QLDoc comments.
+
+About QLDoc comments
+--------------------
+
+You can provide documentation for a QL entity by adding a QLDoc comment in the source file. The QLDoc comment is displayed as pop-up information in QL editors, for example when you hover over a predicate name.
 
 Notation
 --------
@@ -36,7 +41,7 @@ Content
 
 The content of a QLDoc comment is interpreted as standard Markdown, with the following extensions:
 
--  Fenced code blocks using \`s.
+-  Fenced code blocks using backticks.
 -  Automatic interpretation of links and email addresses.
 -  Use of appropriate characters for ellipses, dashes, apostrophes, and quotes.
 
