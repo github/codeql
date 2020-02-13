@@ -187,6 +187,32 @@ class ModuleValue extends Value {
         result.importedAs(this.getScope().getAnImportedModuleName())
     }
 
+    /** When used as a normal module (for example, imported and used by other modules) */
+    predicate isUsedAsModule() {
+        this.isBuiltin()
+        or
+        this.isPackage()
+        or
+        exists(ImportingStmt i | this.importedAs(i.getAnImportedModuleName()))
+        or
+        this.getPath().getBaseName() = "__init__.py"
+    }
+
+    /** When used (exclusively) as a script (will not include normal modules that can also be run as a script) */
+    predicate isUsedAsScript() {
+        not isUsedAsModule() and
+        (
+            not this.getPath().getExtension() = "py"
+            or
+            exists(If i, Name name, StrConst main, Cmpop op |
+                i.getScope() = this.getScope() and
+                op instanceof Eq and
+                i.getTest().(Compare).compares(name, op, main) and
+                name.getId() = "__name__" and main.getText() = "__main__"
+            )
+            // TODO: Add she-bang handling
+        )
+    }
 }
 
 module Module {

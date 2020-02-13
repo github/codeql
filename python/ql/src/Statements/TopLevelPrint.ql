@@ -35,6 +35,6 @@ from Stmt p
 where
     is_print_stmt(p) and
     // TODO: Need to discuss how we would like to handle ModuleObject.getKind in the glorious future
-    exists(ModuleObject m | m.getModule() = p.getScope() and m.getKind() = "module") and
+    exists(ModuleValue m | m.getScope() = p.getScope() and m.isUsedAsModule()) and
     not exists(If i | main_eq_name(i) and i.getASubStatement().getASubStatement*() = p)
 select p, "Print statement may execute during import."
