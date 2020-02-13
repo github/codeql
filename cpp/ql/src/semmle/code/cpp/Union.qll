@@ -18,6 +18,9 @@ class Union extends Struct {
   override string explain() { result = "union " + this.getName() }
 
   override predicate isDeeplyConstBelow() { any() } // No subparts
+
+  /** Holds if this type is anonymous. */
+  final predicate isAnonymous() { getName().matches("(unnamed%") }
 }
 
 /**
@@ -63,4 +66,8 @@ class NestedUnion extends Union {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
+}
+
+class AnonymousUnion extends Union {
+  AnonymousUnion() { this.isAnonymous() }
 }

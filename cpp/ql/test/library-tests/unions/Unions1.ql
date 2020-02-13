@@ -12,6 +12,9 @@ string describe(Class c) {
   or
   c instanceof NestedUnion and
   result = "NestedUnion"
+  or
+  c instanceof AnonymousUnion and
+  result = "AnonymousUnion"
 }
 
 from Class c

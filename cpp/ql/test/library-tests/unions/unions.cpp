@@ -38,3 +38,15 @@ public:
     float f;
   };
 };
+
+void test_anonymous_union() {
+  union {
+    int u1;
+    char* u2;
+  };
+
+  union {
+    int u3;
+    char* u4;
+  } local_union;
+}

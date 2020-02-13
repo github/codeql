@@ -30,9 +30,6 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
 
   override predicate hasName(string name) { usertypes(underlyingElement(this), name, _) }
 
-  /** Holds if this type is anonymous. */
-  predicate isAnonymous() { getName().matches("(unnamed%") }
-
   override predicate hasSpecifier(string s) { Type.super.hasSpecifier(s) }
 
   override Specifier getASpecifier() { result = Type.super.getASpecifier() }

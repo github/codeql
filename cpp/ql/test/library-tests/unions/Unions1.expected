@@ -4,3 +4,5 @@
 | unions.cpp:27:9:27:20 | MyLocalUnion | LocalUnion, Struct, Union |  | operator= |
 | unions.cpp:33:7:33:13 | MyClass |  |  | operator= |
 | unions.cpp:36:9:36:21 | MyNestedUnion | NestedUnion, Struct, Union |  | operator= |
+| unions.cpp:43:9:43:9 | union <unnamed> | LocalUnion, Struct, Union |  | operator= |
+| unions.cpp:48:9:48:9 | union <unnamed> | LocalUnion, Struct, Union |  | operator= |
