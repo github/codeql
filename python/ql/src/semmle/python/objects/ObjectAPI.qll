@@ -681,7 +681,7 @@ module ClassValue {
     
     /** Get the `ClassValue` for `xrange` (Python 2), or `range` (only Python 3) */
     ClassValue rangeType() {
-        result = TBuiltinClassObject(Builtin::special("xrange"))
+        major_version() = 2 and result = TBuiltinClassObject(Builtin::special("xrange"))
         or
         major_version() = 3 and result = TBuiltinClassObject(Builtin::special("range"))
     }
