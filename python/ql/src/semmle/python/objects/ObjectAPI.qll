@@ -403,14 +403,45 @@ class ClassValue extends Value {
         this.hasAttribute("__getitem__")
     }
     
+    /** Holds if this class is a container(). That is, does it have a __getitem__ method.*/
+    predicate isContainer() {
+        exists(this.lookup("__getitem__"))
+    }
+    
+    /** Holds if this class is probably a sequence. */
+    predicate isSequence() {
+        /* To determine whether something is a sequence or a mapping is not entirely clear,
+         * so we need to guess a bit.
+         */
+        this.getASuperType() = ClassValue::tupleType()
+        or
+        this.getASuperType() = ClassValue::list()
+        or
+        this.getASuperType() = ClassValue::rangeType()
+        or
+        this.getASuperType() = ClassValue::bytes()
+        or
+        this.getASuperType() = ClassValue::unicode()
+        or
+        /* Does this inherit from abc.Sequence? */
+        this.getASuperType().getName() = "Sequence"
+        or
+        /* Does it have an index or __reversed__ method? */
+        this.isContainer() and
+        (
+            this.hasAttribute("index") or
+            this.hasAttribute("__reversed__")
+        )
+    }
+    
     /** Holds if this class is a mapping.
      *
      * This is an attempt to translate ClassObject::isMapping()
      */
     predicate isMapping() {
-        exists(this.attr("__getitem__"))
+        this.hasAttribute("__getitem__")
         and
-        not this instanceof SequenceValue
+        not this.isSequence()
     }
 
     /** Holds if this class is a descriptor. */
