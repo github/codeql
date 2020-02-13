@@ -6,7 +6,7 @@ QL specifications
 
 For a formal specification of the QL language, including a description of syntax, terminology, and other technical details, please consult the QL language specification.
 
-For information on the terminology and syntax used in QLDoc comments, please consult the QLDoc specification.
+For information on the terminology and syntax used in QLDoc comments, please consult the QLDoc comment specification.
 
 .. toctree::
    :maxdepth: 2

@@ -1,5 +1,5 @@
-QLDoc specification
-===================
+QLDoc comment specification
+===========================
 
 This document is a specification for QLDoc comments in QL source files.
 
