@@ -105,7 +105,7 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
   DynamicAllocation() { this = TDynamicAllocation(call) }
 
   final override string toString() {
-    result = call.toString() + " at " + call.getLocation() // This isn't performant, but it's only used in test/dump code right not
+    result = call.toString() + " at " + call.getLocation() // This isn't performant, but it's only used in test/dump code right now.
   }
 
   final override CallInstruction getABaseInstruction() { result = call }
