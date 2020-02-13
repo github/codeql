@@ -1504,4 +1504,4 @@ private predicate viableConstantBooleanParamArg(
   )
 }
 
-int flowThroughAccessPathLimit() { result = 3 }
+int accessPathLimit() { result = 3 }
