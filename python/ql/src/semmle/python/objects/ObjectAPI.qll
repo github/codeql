@@ -739,10 +739,22 @@ module ClassValue {
     ClassValue float_() {
         result = TBuiltinClassObject(Builtin::special("float"))
     }
-
+    
+    /** Get the `ClassValue` for the `tuple` class. */
+    ClassValue tupleType() {
+        result = TBuiltinClassObject(Builtin::special("tuple"))
+    }
+    
     /** Get the `ClassValue` for the `list` class. */
     ClassValue list() {
         result = TBuiltinClassObject(Builtin::special("list"))
+    }
+    
+    /** The builtin class '(x)range' */
+    ClassValue rangeType() {
+        result = TBuiltinClassObject(Builtin::special("xrange"))
+        or
+        major_version() = 3 and result = TBuiltinClassObject(Builtin::special("range"))
     }
 
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
