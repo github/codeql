@@ -43,12 +43,61 @@ class WithoutDecoratorOnlyGetter(object):
 
     x = property(getx)
 
+class WithoutDecoratorOnlyGetterKWArg(object):
+
+    def getx(self):
+        return 42
+
+    x = property(fget=getx)
+
 class WithoutDecoratorOnlySetter(object):
 
     def setx(self, value):
         self._x = value
 
     x = property(fset=setx) # TODO: Not handled
+
+class WithDecoratorOnlySetter(object):
+
+    x = property()
+
+    @x.setter
+    def x(self, value):
+        print('{} setting value to {}'.format(self.__class__, value))
+
+class FunkyButValid(object):
+
+    def delx(self):
+        print("deleting x")
+
+    x = property(fdel=delx)
+
+    @x.setter
+    def y(self, value):
+        print('setting value to {}'.format(value))
+
+    @y.getter
+    def z(self):
+        return 42
+
+
+wat = FunkyButValid()
+try:
+    wat.x
+except AttributeError as e:
+    print("x can't be read")
+del wat.x
+
+try:
+    wat.y
+except AttributeError as e:
+    print("y can't be read")
+wat.y = 1234
+del wat.y
+
+print(wat.z)
+wat.z = 10
+del wat.z
 
 class D(object):
 
