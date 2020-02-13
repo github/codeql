@@ -210,7 +210,12 @@ class ModuleValue extends Value {
                 i.getTest().(Compare).compares(name, op, main) and
                 name.getId() = "__name__" and main.getText() = "__main__"
             )
-            // TODO: Add she-bang handling
+            or
+            exists(Comment c |
+                c.getLocation().getFile() = this.getPath() and
+                c.getLocation().getStartLine() = 1 and
+                c.getText().regexpMatch("^#!/.*python(2|3)?[ \\\\t]*$")
+            )
         )
     }
 }
