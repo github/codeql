@@ -21,11 +21,13 @@ private module Cached {
   predicate viableParamArg(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
     exists(int i |
       viableParam(call, i, p) and
-      arg.argumentOf(call, i)
+      arg.argumentOf(call, i) and
+      compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(p))
     )
   }
 
   /** Provides predicates for calculating flow-through summaries. */
+  cached
   private module FlowThrough {
     /**
      * The first flow-through approximation:
@@ -216,14 +218,12 @@ private module Cached {
       private predicate localFlowStepPlus(Node node1, Node node2) {
         localFlowEntry(node1) and
         simpleLocalFlowStep(node1, node2) and
-        node1 != node2 and
-        Cand::cand(_, node2)
+        node1 != node2
         or
         exists(Node mid |
           localFlowStepPlus(node1, mid) and
           simpleLocalFlowStep(mid, node2) and
-          not mid instanceof CastNode and
-          Cand::cand(_, node2)
+          not mid instanceof CastNode
         )
       }
 
@@ -238,9 +238,11 @@ private module Cached {
      * The final flow-through calculation:
      *
      * - Input/output access paths are abstracted with a `ContentOption` parameter
-     *   that represents the head of the access path.
+     *   that represents the head of the access path. `TContentNone()` means that
+     *   the access path is unrestricted.
      * - Types are checked using the `compatibleTypes()` relation.
      */
+    cached
     module Final {
       /**
        * Holds if `p` can flow to `node` in the same callable using only
@@ -250,11 +252,10 @@ private module Cached {
        * (if any), and `contentOut` describes the content of `node` that
        * it flows to (if any).
        */
-      predicate parameterValueFlow(
+      private predicate parameterValueFlow(
         ParameterNode p, Node node, ContentOption contentIn, ContentOption contentOut
       ) {
         parameterValueFlow0(p, node, contentIn, contentOut) and
-        Cand::cand(p, node) and
         if node instanceof CastingNode
         then
           // normal flow through
@@ -269,19 +270,9 @@ private module Cached {
             compatibleTypes(fIn.getType(), getErasedNodeTypeBound(node))
           )
           or
-          // setter
+          // (getter+)setter
           exists(Content fOut |
-            contentIn = TContentNone() and
             contentOut.getContent() = fOut and
-            compatibleTypes(getErasedNodeTypeBound(p), fOut.getType()) and
-            compatibleTypes(fOut.getContainerType(), getErasedNodeTypeBound(node))
-          )
-          or
-          // getter+setter
-          exists(Content fIn, Content fOut |
-            contentIn.getContent() = fIn and
-            contentOut.getContent() = fOut and
-            compatibleTypes(fIn.getType(), fOut.getType()) and
             compatibleTypes(fOut.getContainerType(), getErasedNodeTypeBound(node))
           )
         else any()
@@ -312,7 +303,8 @@ private module Cached {
           contentOutMid = TContentNone() and
           contentIn.getContent() = f and
           contentOut = TContentNone() and
-          Cand::parameterValueFlowReturnCand(p, _, true, _)
+          Cand::parameterValueFlowReturnCand(p, _, true, _) and
+          compatibleTypes(getErasedNodeTypeBound(p), f.getContainerType())
           or
           // value (possibly read and then) stored prior to read (same content)
           contentIn = contentInMid and
@@ -325,25 +317,30 @@ private module Cached {
           parameterValueFlow(p, mid, contentIn, TContentNone()) and
           storeStep(mid, f, node) and
           contentOut.getContent() = f
+        |
+          contentIn = TContentNone() and
+          compatibleTypes(getErasedNodeTypeBound(p), f.getType())
+          or
+          compatibleTypes(contentIn.getContent().getType(), f.getType())
         )
         or
         // flow through: no prior read or store
         exists(ArgumentNode arg |
           parameterValueFlowArg(p, arg, TContentNone(), TContentNone()) and
-          argumentValueFlowsThrough(arg, node, contentIn, contentOut)
+          argumentValueFlowsThrough(_, arg, contentIn, contentOut, node)
         )
         or
         // flow through: no read or store inside method
         exists(ArgumentNode arg |
           parameterValueFlowArg(p, arg, contentIn, contentOut) and
-          argumentValueFlowsThrough(arg, node, TContentNone(), TContentNone())
+          argumentValueFlowsThrough(_, arg, TContentNone(), TContentNone(), node)
         )
         or
         // flow through: possible prior read and prior store with compatible
         // flow-through method
         exists(ArgumentNode arg, ContentOption contentMid |
           parameterValueFlowArg(p, arg, contentIn, contentMid) and
-          argumentValueFlowsThrough(arg, node, contentMid, contentOut)
+          argumentValueFlowsThrough(_, arg, contentMid, contentOut, node)
         )
       }
 
@@ -356,15 +353,7 @@ private module Cached {
       }
 
       pragma[nomagic]
-      predicate parameterValueFlowsToPostUpdate(
-        ParameterNode p, PostUpdateNode n, ContentOption contentIn, ContentOption contentOut
-      ) {
-        parameterValueFlow(p, n, contentIn, contentOut) and
-        contentOut.hasContent()
-      }
-
-      pragma[nomagic]
-      predicate argumentValueFlowsThrough0(
+      private predicate argumentValueFlowsThrough0(
         DataFlowCall call, ArgumentNode arg, ReturnKindExt kind, ContentOption contentIn,
         ContentOption contentOut
       ) {
@@ -374,104 +363,91 @@ private module Cached {
       }
 
       /**
-       * Holds if `arg` flows to `out` through a call using only value-preserving steps,
+       * Holds if `arg` flows to `out` through `call` using only value-preserving steps,
        * not taking call contexts into account.
        *
        * `contentIn` describes the content of `arg` that can flow to `out` (if any), and
        * `contentOut` describes the content of `out` that it flows to (if any).
        */
-      private predicate argumentValueFlowsThrough(
-        ArgumentNode arg, Node out, ContentOption contentIn, ContentOption contentOut
+      cached
+      predicate argumentValueFlowsThrough(
+        DataFlowCall call, ArgumentNode arg, ContentOption contentIn, ContentOption contentOut,
+        Node out
       ) {
-        exists(DataFlowCall call, ReturnKindExt kind |
+        exists(ReturnKindExt kind |
           argumentValueFlowsThrough0(call, arg, kind, contentIn, contentOut) and
           out = kind.getAnOutNode(call)
+        |
+          // normal flow through
+          contentIn = TContentNone() and
+          contentOut = TContentNone() and
+          compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(out))
+          or
+          // getter(+setter)
+          exists(Content fIn |
+            contentIn.getContent() = fIn and
+            compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType())
+          )
+          or
+          // setter
+          exists(Content fOut |
+            contentIn = TContentNone() and
+            contentOut.getContent() = fOut and
+            compatibleTypes(getErasedNodeTypeBound(arg), fOut.getType())
+          )
         )
+      }
+
+      /**
+       * Holds if `p` can flow to the pre-update node associated with post-update
+       * node `n`, in the same callable, using only value-preserving steps.
+       */
+      cached
+      predicate parameterValueFlowsToPreUpdate(ParameterNode p, PostUpdateNode n) {
+        parameterValueFlow(p, n.getPreUpdateNode(), TContentNone(), TContentNone())
+      }
+
+      pragma[nomagic]
+      private predicate parameterValueFlowsToPostUpdate(
+        ParameterNode p, PostUpdateNode n, ContentOption contentIn, ContentOption contentOut
+      ) {
+        parameterValueFlow(p, n, contentIn, contentOut) and
+        contentOut.hasContent()
+      }
+
+      /**
+       * Holds if `p` can flow to a return node of kind `kind` in the same
+       * callable using only value-preserving steps.
+       *
+       * `contentIn` describes the content of `p` that can flow to the return
+       * node (if any), and `contentOut` describes the content of the return
+       * node that it flows to (if any).
+       */
+      cached
+      predicate parameterValueFlowReturn(
+        ParameterNode p, Node ret, ReturnKindExt kind, ContentOption contentIn,
+        ContentOption contentOut
+      ) {
+        ret =
+          any(ReturnNode n |
+            parameterValueFlow(p, n, contentIn, contentOut) and
+            kind = TValueReturn(n.getKind())
+          )
+        or
+        ret =
+          any(PostUpdateNode n |
+            exists(ParameterNode p2, int pos2 |
+              parameterValueFlowsToPostUpdate(p, n, contentIn, contentOut) and
+              parameterValueFlowsToPreUpdate(p2, n) and
+              p2.isParameterOf(_, pos2) and
+              kind = TParamUpdate(pos2) and
+              p != p2
+            )
+          )
       }
     }
 
     import Final
-  }
-
-  /**
-   * Holds if `p` can flow to the pre-update node associated with post-update
-   * node `n`, in the same callable, using only value-preserving steps.
-   */
-  cached
-  predicate parameterValueFlowsToPreUpdate(ParameterNode p, PostUpdateNode n) {
-    FlowThrough::parameterValueFlow(p, n.getPreUpdateNode(), TContentNone(), TContentNone())
-  }
-
-  /**
-   * Holds if `p` can flow to a return node of kind `kind` in the same
-   * callable using only value-preserving steps.
-   *
-   * `contentIn` describes the content of `p` that can flow to the return
-   * node (if any), and `contentOut` describes the content of the return
-   * node that it flows to (if any).
-   */
-  cached
-  predicate parameterValueFlowReturn(
-    ParameterNode p, Node ret, ReturnKindExt kind, ContentOption contentIn, ContentOption contentOut
-  ) {
-    ret =
-      any(ReturnNode n |
-        FlowThrough::parameterValueFlow(p, n, contentIn, contentOut) and
-        kind = TValueReturn(n.getKind())
-      )
-    or
-    ret =
-      any(PostUpdateNode n |
-        exists(ParameterNode p2, int pos2 |
-          FlowThrough::parameterValueFlowsToPostUpdate(p, n, contentIn, contentOut) and
-          parameterValueFlowsToPreUpdate(p2, n) and
-          p2.isParameterOf(_, pos2) and
-          kind = TParamUpdate(pos2) and
-          p != p2
-        )
-      )
-  }
-
-  /**
-   * Holds if `arg` flows to `out` through `call` using only value-preserving steps.
-   *
-   * `contentIn` describes the content of `arg` that can flow to `out` (if any), and
-   * `contentOut` describes the content of `out` that it flows to (if any).
-   */
-  cached
-  predicate argumentValueFlowsThrough(
-    DataFlowCall call, ArgumentNode arg, ContentOption contentIn, ContentOption contentOut, Node out
-  ) {
-    exists(ReturnKindExt kind |
-      FlowThrough::argumentValueFlowsThrough0(call, arg, kind, contentIn, contentOut) and
-      out = kind.getAnOutNode(call)
-    |
-      // normal flow through
-      contentIn = TContentNone() and
-      contentOut = TContentNone() and
-      compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(out))
-      or
-      // getter
-      exists(Content fIn |
-        contentIn.getContent() = fIn and
-        contentOut = TContentNone() and
-        compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType())
-      )
-      or
-      // setter
-      exists(Content fOut |
-        contentIn = TContentNone() and
-        contentOut.getContent() = fOut and
-        compatibleTypes(getErasedNodeTypeBound(arg), fOut.getType())
-      )
-      or
-      // getter+setter
-      exists(Content fIn, Content fOut |
-        contentIn.getContent() = fIn and
-        contentOut.getContent() = fOut and
-        compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType())
-      )
-    )
   }
 
   /**
@@ -494,6 +470,8 @@ private module Cached {
       readStep(n2, f, n1)
     )
   }
+
+  import FlowThrough
 
   /**
    * Holds if the call context `call` either improves virtual dispatch in
@@ -558,7 +536,7 @@ class ContentOption extends TContentOption {
     result = this.getContent().toString()
     or
     not this.hasContent() and
-    result = ""
+    result = "<none>"
   }
 }
 
