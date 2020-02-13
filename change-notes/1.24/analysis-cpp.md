@@ -19,6 +19,7 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 | Memory is never freed (`cpp/memory-never-freed`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
 | Memory may not be freed (`cpp/memory-may-not-be-freed`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
 | Missing return statement (`cpp/missing-return`) | Fewer false positive results | Functions containing `asm` statements are no longer highlighted by this query. |
+| No space for zero terminator (`cpp/no-space-for-terminator`) | More correct results | String arguments to formatting functions are now (usually) expected to be null terminated strings. |
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) |  | This query is no longer run on LGTM. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | This query has been modified to be more conservative when identifying which pointers point to null-terminated strings.  This approach produces fewer, more accurate results. |
 | Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | This query no longer reports incorrect results in template classes. |
