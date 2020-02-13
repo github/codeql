@@ -679,6 +679,13 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("list"))
     }
     
+    /** The builtin class '(x)range' */
+    ClassValue rangeType() {
+        result = TBuiltinClassObject(Builtin::special("xrange"))
+        or
+        major_version() = 3 and result = TBuiltinClassObject(Builtin::special("range"))
+    }
+    
     /** Get the `ClassValue` for the `dict` class. */
     ClassValue dict() {
         result = TBuiltinClassObject(Builtin::special("dict"))
