@@ -9,9 +9,7 @@ newtype TValueNumber =
     initializeParameterValueNumber(_, irFunc, var)
   } or
   TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
-  TConstantValueNumber(IRFunction irFunc, IRType type, string value) {
-    constantValueNumber(_, irFunc, type, value)
-  } or
+  TConstantValueNumber(IRFunction irFunc, string value) { constantValueNumber(_, irFunc, value) } or
   TStringConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     stringConstantValueNumber(_, irFunc, type, value)
   } or
@@ -19,8 +17,7 @@ newtype TValueNumber =
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
   TBinaryValueNumber(
-    IRFunction irFunc, Opcode opcode, TValueNumber leftOperand,
-    TValueNumber rightOperand
+    IRFunction irFunc, Opcode opcode, TValueNumber leftOperand, TValueNumber rightOperand
   ) {
     binaryValueNumber(_, irFunc, opcode, leftOperand, rightOperand)
   } or
@@ -38,9 +35,7 @@ newtype TValueNumber =
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
-  TLoadTotalOverlapValueNumber(
-    IRFunction irFunc, TValueNumber memOperand, TValueNumber operand
-  ) {
+  TLoadTotalOverlapValueNumber(IRFunction irFunc, TValueNumber memOperand, TValueNumber operand) {
     loadTotalOverlapValueNumber(_, irFunc, memOperand, operand)
   } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
@@ -102,15 +97,24 @@ private predicate numberableInstruction(Instruction instr) {
 predicate multipleValueNumbers(Instruction instr, int n) {
   n > 1 and
   (
-    n = strictcount(IRFunction irFunc, Language::AST ast | variableAddressValueNumber(instr, irFunc, ast))
+    n =
+      strictcount(IRFunction irFunc, Language::AST ast |
+        variableAddressValueNumber(instr, irFunc, ast)
+      )
     or
-    n = strictcount(IRFunction irFunc, Language::AST var | initializeParameterValueNumber(instr, irFunc, var))
+    n =
+      strictcount(IRFunction irFunc, Language::AST var |
+        initializeParameterValueNumber(instr, irFunc, var)
+      )
     or
     n = strictcount(IRFunction irFunc | initializeThisValueNumber(instr, irFunc))
     or
-    n = strictcount(IRFunction irFunc, IRType type, string value | constantValueNumber(instr, irFunc, type, value))
+    n = strictcount(IRFunction irFunc, string value | constantValueNumber(instr, irFunc, value))
     or
-    n = strictcount(IRFunction irFunc, IRType type, string value | stringConstantValueNumber(instr, irFunc, type, value))
+    n =
+      strictcount(IRFunction irFunc, IRType type, string value |
+        stringConstantValueNumber(instr, irFunc, type, value)
+      )
   )
 }
 
@@ -139,11 +143,8 @@ private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRF
   instr.getEnclosingIRFunction() = irFunc
 }
 
-private predicate constantValueNumber(
-  ConstantInstruction instr, IRFunction irFunc, IRType type, string value
-) {
+predicate constantValueNumber(ConstantInstruction instr, IRFunction irFunc, string value) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getResultIRType() = type and
   instr.getValue() = value
 }
 
@@ -161,6 +162,7 @@ private predicate fieldAddressValueNumber(
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getField() = field and
+  strictcount(instr.getField()) = 1 and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
 
@@ -176,8 +178,8 @@ private predicate binaryValueNumber(
 }
 
 private predicate pointerArithmeticValueNumber(
-  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode,
-  int elementSize, TValueNumber leftOperand, TValueNumber rightOperand
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
+  TValueNumber leftOperand, TValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
@@ -267,9 +269,9 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       initializeThisValueNumber(instr, irFunc) and
       result = TInitializeThisValueNumber(irFunc)
       or
-      exists(IRType type, string value |
-        constantValueNumber(instr, irFunc, type, value) and
-        result = TConstantValueNumber(irFunc, type, value)
+      exists(string value |
+        constantValueNumber(instr, irFunc, value) and
+        result = TConstantValueNumber(irFunc, value)
       )
       or
       exists(IRType type, string value |
@@ -299,12 +301,8 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
         result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
       )
       or
-      exists(
-        Opcode opcode, int elementSize, TValueNumber leftOperand,
-        TValueNumber rightOperand
-      |
-        pointerArithmeticValueNumber(instr, irFunc, opcode, elementSize, leftOperand,
-          rightOperand) and
+      exists(Opcode opcode, int elementSize, TValueNumber leftOperand, TValueNumber rightOperand |
+        pointerArithmeticValueNumber(instr, irFunc, opcode, elementSize, leftOperand, rightOperand) and
         result =
           TPointerArithmeticValueNumber(irFunc, opcode, elementSize, leftOperand, rightOperand)
       )
