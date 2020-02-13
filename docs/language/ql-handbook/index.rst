@@ -21,7 +21,6 @@ Table of contents
 *****************
 
 .. toctree::
-   :numbered: 3
    :maxdepth: 3
 
    predicates
