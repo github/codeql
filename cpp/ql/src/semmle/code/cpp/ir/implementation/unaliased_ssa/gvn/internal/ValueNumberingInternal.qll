@@ -9,7 +9,9 @@ newtype TValueNumber =
     initializeParameterValueNumber(_, irFunc, var)
   } or
   TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
-  TConstantValueNumber(IRFunction irFunc, string value) { constantValueNumber(_, irFunc, value) } or
+  TConstantValueNumber(IRFunction irFunc, IRType type, string value) {
+    constantValueNumber(_, irFunc, type, value)
+  } or
   TStringConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     stringConstantValueNumber(_, irFunc, type, value)
   } or
@@ -119,8 +121,12 @@ private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRF
   instr.getEnclosingIRFunction() = irFunc
 }
 
-predicate constantValueNumber(ConstantInstruction instr, IRFunction irFunc, string value) {
+predicate constantValueNumber(
+  ConstantInstruction instr, IRFunction irFunc, IRType type, string value
+) {
   instr.getEnclosingIRFunction() = irFunc and
+  strictcount(instr.getResultIRType()) = 1 and
+  instr.getResultIRType() = type and
   instr.getValue() = value
 }
 
@@ -245,9 +251,9 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       initializeThisValueNumber(instr, irFunc) and
       result = TInitializeThisValueNumber(irFunc)
       or
-      exists(string value |
-        constantValueNumber(instr, irFunc, value) and
-        result = TConstantValueNumber(irFunc, value)
+      exists(string value, IRType type |
+        constantValueNumber(instr, irFunc, type, value) and
+        result = TConstantValueNumber(irFunc, type, value)
       )
       or
       exists(IRType type, string value |
