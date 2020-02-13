@@ -43,5 +43,7 @@
 | test.cpp:87:12:87:15 | call to gets | test.cpp:85:8:85:14 | pointer |  |
 | test.cpp:87:12:87:15 | call to gets | test.cpp:87:12:87:15 | call to gets |  |
 | test.cpp:87:17:87:22 | buffer | test.cpp:80:18:80:18 | s |  |
+| test.cpp:87:17:87:22 | buffer | test.cpp:85:8:85:14 | pointer |  |
+| test.cpp:87:17:87:22 | buffer | test.cpp:87:12:87:15 | call to gets |  |
 | test.cpp:87:17:87:22 | buffer | test.cpp:87:17:87:22 | array to pointer conversion |  |
 | test.cpp:87:17:87:22 | buffer | test.cpp:87:17:87:22 | buffer |  |
