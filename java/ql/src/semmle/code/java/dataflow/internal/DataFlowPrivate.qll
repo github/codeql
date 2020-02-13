@@ -323,4 +323,4 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
   )
 }
 
-int flowThroughAccessPathLimit() { none() }
+int accessPathLimit() { result = 5 }
