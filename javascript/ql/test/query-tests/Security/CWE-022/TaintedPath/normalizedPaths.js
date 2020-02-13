@@ -249,3 +249,26 @@ app.get('/resolve-path', (req, res) => {
   else
     fs.readFileSync(path); // NOT OK - wrong polarity
 });
+
+app.get('/relative-startswith', (req, res) => {
+  let path = pathModule.resolve(req.query.path);
+
+  fs.readFileSync(path); // NOT OK
+
+  var self = something();
+	
+  var relative = pathModule.relative(self.webroot, path);
+  if(relative.startsWith(".." + pathModule.sep) || relative == "..") {
+    fs.readFileSync(path); // NOT OK! 
+  } else {
+    fs.readFileSync(path); // OK! 
+  }
+
+  let newpath = pathModule.normalize(p);
+  var relativePath = path.relative(path.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('..' + pathModule.sep) === 0) {
+    fs.readFileSync(path); // NOT OK!
+  } else {
+	  fs.readFileSync(newpath); // OK! 
+  }
+});

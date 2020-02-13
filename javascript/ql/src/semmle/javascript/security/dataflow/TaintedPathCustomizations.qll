@@ -12,19 +12,17 @@ module TaintedPath {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
    * A data flow sink for tainted-path vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
+    Sink() { not this instanceof Sanitizer }
+
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -356,6 +354,35 @@ module TaintedPath {
   }
 
   /**
+   * A sanitizer that recognizes the following pattern:
+   *   var relative = path.relative(webroot, pathname);
+   *   if(relative.startsWith(".." + path.sep) || relative == "..") {
+   *     // pathname is unsafe
+   *   } else {
+   *     // pathname is safe
+   *   }
+   */
+  class RelativePathContainsDotDotGuard extends DataFlow::BarrierGuardNode {
+    StringOps::StartsWith startsWith;
+    DataFlow::CallNode relativeCall;
+
+    RelativePathContainsDotDotGuard() {
+      this = startsWith and
+      relativeCall = DataFlow::moduleImport("path").getAMemberCall("relative") and
+      startsWith.getBaseString().getALocalSource() = relativeCall and
+      exists(DataFlow::Node subString | subString = startsWith.getSubstring() |
+        subString.mayHaveStringValue("..")
+        or
+        subString.(StringOps::ConcatenationRoot).getFirstLeaf().mayHaveStringValue("..")
+      )
+    }
+
+    override predicate blocks(boolean outcome, Expr e) {
+      e = relativeCall.getArgument(1).asExpr() and outcome = false
+    }
+  }
+
+  /**
    * A source of remote user input, considered as a flow source for
    * tainted-path vulnerabilities.
    */
@@ -396,9 +423,7 @@ module TaintedPath {
    * A path argument to a file system access, which disallows upward navigation.
    */
   private class FsPathSinkWithoutUpwardNavigation extends FsPathSink {
-    FsPathSinkWithoutUpwardNavigation() {
-      fileSystemAccess.isUpwardNavigationRejected(this)
-    }
+    FsPathSinkWithoutUpwardNavigation() { fileSystemAccess.isUpwardNavigationRejected(this) }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       // The protection is ineffective if the ../ segments have already
