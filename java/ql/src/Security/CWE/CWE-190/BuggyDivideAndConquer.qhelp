@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+   "-//Semmle//qhelp//EN"
+   "qhelp.dtd">
+<qhelp>
+   <overview>
+      <p>Calculating the mid-point in a divide and conquer operation (binary
+         search, merge sort, ...)
+         may lead to overflow. The overflowed value
+         can then be negative and if used in an array access, will cause an
+         ArrayIndexOutOfBoundsException.
+      </p>
+      <p>
+         The mid-point may be calculated like this:
+         <code>int mid = (low+high)/2</code>.
+         For very large values of <code>low</code> and <code>high</code>,
+         <code>(low+high)</code> will overflow before division takes place.
+      </p>
+   </overview>
+   <recommendation>
+      <p>Calculate the mid-point in a way that is not susceptible to overflow:
+      </p>
+      <ul>
+         <li>Instead of calculating <code>int mid = (low+high)/2</code>
+            or <code>int mid = (low+high) >> 1</code>, calculate
+            <code>int mid = low + (high - low) / 2</code>
+         </li>
+         or
+         <li>
+            Instead of calculating <code>int mid = (low+high)/2</code>
+            or <code>int mid = (low+high) >> 1</code>, calculate
+            <code>int mid = (low + high) >>> 1</code>
+         </li>
+      </ul>
+   </recommendation>
+   <example>
+      <p>
+         In this example, a buggy binary search and merge sort is shown.
+         Both are divide and conquer algorithms.
+         Both calculate the mid-point in a way that is susceptible to overflow when used for very large
+         arrays (2^30 or more elements).
+         Calculating the mid-point in a way that not overflows, fixes the problem.
+      </p>
+      <sample src="BuggyDivideAndConquer.java" />
+   </example>
+   <references>
+      <li>
+         The CERT Oracle Secure Coding Standard for Java:
+         <a
+            href="https://www.securecoding.cert.org/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>
+         .
+      </li>
+   </references>
+</qhelp>
