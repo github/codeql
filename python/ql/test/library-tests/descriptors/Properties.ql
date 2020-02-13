@@ -1,7 +1,7 @@
 import python
 import semmle.python.types.Descriptors
 
-from PropertyObject p, string method_name, FunctionObject method
+from PropertyValue p, string method_name, FunctionValue method
 where
     method_name = "getter" and method = p.getGetter()
     or

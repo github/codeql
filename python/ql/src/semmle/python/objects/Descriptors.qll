@@ -20,12 +20,38 @@ class PropertyInternal extends ObjectInternal, TProperty {
         this = TProperty(_, _, result)
     }
 
+    private CallNode getCall() { this = TProperty(result, _, _) }
+
     /** Gets the setter function of this property */
     CallableObjectInternal getSetter() {
+        // @x.setter
         exists(CallNode call, AttrNode setter |
-            call.getFunction() = setter and 
+            call.getFunction() = setter and
             PointsToInternal::pointsTo(setter.getObject("setter"), this.getContext(), this, _) and
             PointsToInternal::pointsTo(call.getArg(0), this.getContext(), result, _)
+        )
+        or
+        // x = property(getter, setter, deleter)
+        exists(ControlFlowNode setter_arg |
+            setter_arg = getCall().getArg(1) or setter_arg = getCall().getArgByName("fset")
+        |
+            PointsToInternal::pointsTo(setter_arg, this.getContext(), result, _)
+        )
+    }
+
+    /** Gets the setter function of this property */
+    CallableObjectInternal getDeleter() {
+        exists(CallNode call, AttrNode setter |
+            call.getFunction() = setter and
+            PointsToInternal::pointsTo(setter.getObject("deleter"), this.getContext(), this, _) and
+            PointsToInternal::pointsTo(call.getArg(0), this.getContext(), result, _)
+        )
+        or
+        // x = property(getter, setter, deleter)
+        exists(ControlFlowNode deleter_arg |
+            deleter_arg = getCall().getArg(2) or deleter_arg = getCall().getArgByName("fdel")
+        |
+            PointsToInternal::pointsTo(deleter_arg, this.getContext(), result, _)
         )
     }
 

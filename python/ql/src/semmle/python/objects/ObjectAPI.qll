@@ -669,6 +669,34 @@ class NumericValue extends Value {
     }
 }
 
+/** A Python property:
+ *     @property
+ *     def f():
+ *         ....
+ *
+ * https://docs.python.org/3/howto/descriptor.html#properties
+ * https://docs.python.org/3/library/functions.html#property
+ */
+class PropertyValue extends Value {
+
+    PropertyValue() {
+        this instanceof PropertyInternal
+    }
+
+    CallableValue getGetter(){
+        result = this.(PropertyInternal).getGetter()
+    }
+
+    CallableValue getSetter(){
+        result = this.(PropertyInternal).getSetter()
+    }
+
+    CallableValue getDeleter(){
+        result = this.(PropertyInternal).getDeleter()
+    }
+
+}
+
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
 
