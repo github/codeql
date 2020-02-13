@@ -62,6 +62,30 @@ class DocumentBuilder extends RefType {
   DocumentBuilder() { this.hasQualifiedName("javax.xml.parsers", "DocumentBuilder") }
 }
 
+/** A call to `JAXB.unmarshal` or `Unmarshaller.unmarshal`. */
+class JAXBUnmarshal extends XmlParserCall {
+  Expr sink;
+
+  JAXBUnmarshal() {
+    exists(Method m |
+      this.getMethod() = m and
+      (
+        m.getDeclaringType().hasQualifiedName("javax.xml.bind", "JAXB") or
+        m.getDeclaringType().hasQualifiedName("javax.xml.bind", "Unmarshaller")
+      ) and
+      m.hasName("unmarshal") and
+      sink = this.getArgument(0)
+    )
+  }
+
+  override Expr getSink() { result = sink }
+
+  override predicate isSafe() {
+    exists(ExplicitlySafeXMLReader sr | sr.flowsTo(sink)) or
+    exists(CreatedSafeXMLReader cr | cr.flowsTo(sink))
+  }
+}
+
 /** A call to `DocumentBuilder.parse`. */
 class DocumentBuilderParse extends XmlParserCall {
   DocumentBuilderParse() {
@@ -675,7 +699,8 @@ class SafeXMLReaderFlowSink extends Expr {
   SafeXMLReaderFlowSink() {
     this = any(XMLReaderParse p).getQualifier() or
     this = any(ConstructedSAXSource s).getArgument(0) or
-    this = any(SAXSourceSetReader s).getArgument(0)
+    this = any(SAXSourceSetReader s).getArgument(0) or
+    this = any(JAXBUnmarshal s).getSink()
   }
 }
 
