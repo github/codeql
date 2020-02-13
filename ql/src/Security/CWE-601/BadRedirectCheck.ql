@@ -18,8 +18,6 @@ StringOps::HasPrefix checkForLeadingSlash(SsaWithFields v) {
     result.getBaseString() = v.getAUse() and result.getSubstring() = substr
   |
     substr.getStringValue() = "/"
-    or
-    substr.getIntValue() = 47 // ASCII value for '/'
   )
 }
 
@@ -31,7 +29,7 @@ DataFlow::Node checkForSecondSlash(SsaWithFields v) {
   exists(DataFlow::EqualityTestNode eq, DataFlow::Node slash, DataFlow::ElementReadNode er |
     result = eq
   |
-    slash.getIntValue() = 47 and // ASCII value for '/'
+    slash.getStringValue() = "/" and
     er.getBase() = v.getAUse() and
     er.getIndex().getIntValue() = 1 and
     eq.eq(_, er, slash)
@@ -46,7 +44,7 @@ DataFlow::Node checkForSecondBackslash(SsaWithFields v) {
   exists(DataFlow::EqualityTestNode eq, DataFlow::Node slash, DataFlow::ElementReadNode er |
     result = eq
   |
-    slash.getIntValue() = 92 and // ASCII value for '\'
+    slash.getStringValue() = "\\" and
     er.getBase() = v.getAUse() and
     er.getIndex().getIntValue() = 1 and
     eq.eq(_, er, slash)
