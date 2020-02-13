@@ -551,7 +551,7 @@ module ClientRequest {
   }
 
   /**
-   * Gets a reference to a instance of `chrome-remote-interface`.
+   * Gets a reference to an instance of `chrome-remote-interface`.
    *
    * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise. 
    * 
