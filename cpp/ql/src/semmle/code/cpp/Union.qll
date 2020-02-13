@@ -20,7 +20,7 @@ class Union extends Struct {
   override predicate isDeeplyConstBelow() { any() } // No subparts
 
   /** Holds if this type is anonymous. */
-  final predicate isAnonymous() { getName().matches("(unnamed%") }
+  final predicate isAnonymous() { getName() = "union <unnamed>" }
 }
 
 /**
