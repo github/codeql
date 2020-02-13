@@ -57,11 +57,10 @@ predicate same_name(Name n1, Name n2) {
     not maybe_defined_in_outer_scope(n2)
 }
 
-ClassObject value_type(Attribute a) { a.getObject().refersTo(_, result, _) }
+ClassValue value_type(Attribute a) { a.getObject().pointsTo().getClass() = result }
 
 predicate is_property_access(Attribute a) {
-    // TODO: We need something to model PropertyObject in the Value API
-    value_type(a).lookupAttribute(a.getName()) instanceof PropertyObject
+    value_type(a).lookup(a.getName()) instanceof PropertyValue
 }
 
 predicate same_attribute(Attribute a1, Attribute a2) {
