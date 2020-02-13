@@ -1,5 +1,4 @@
 private import ValueNumberingImports
-private import cpp
 
 newtype TValueNumber =
   TVariableAddressValueNumber(IRFunction irFunc, Language::AST ast) {
@@ -15,7 +14,7 @@ newtype TValueNumber =
   TStringConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     stringConstantValueNumber(_, irFunc, type, value)
   } or
-  TFieldAddressValueNumber(IRFunction irFunc, Field field, TValueNumber objectAddress) {
+  TFieldAddressValueNumber(IRFunction irFunc, Language::Field field, TValueNumber objectAddress) {
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
   TBinaryValueNumber(
@@ -34,7 +33,8 @@ newtype TValueNumber =
     unaryValueNumber(_, irFunc, opcode, type, operand)
   } or
   TInheritanceConversionValueNumber(
-    IRFunction irFunc, Opcode opcode, Class baseClass, Class derivedClass, TValueNumber operand
+    IRFunction irFunc, Opcode opcode, Language::Class baseClass, Language::Class derivedClass,
+    TValueNumber operand
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or

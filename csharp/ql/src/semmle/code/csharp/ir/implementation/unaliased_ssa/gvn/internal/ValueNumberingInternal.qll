@@ -1,17 +1,10 @@
 private import ValueNumberingImports
-import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-import semmle.code.csharp.ir.implementation.unaliased_ssa.IR
-private import semmle.code.csharp.Location
-
-class UnknownLocation = EmptyLocation;
-
-class UnknownDefaultLocation = EmptyLocation;
 
 newtype TValueNumber =
-  TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {
-    variableAddressValueNumber(_, irFunc, var)
+  TVariableAddressValueNumber(IRFunction irFunc, Language::AST ast) {
+    variableAddressValueNumber(_, irFunc, ast)
   } or
-  TInitializeParameterValueNumber(IRFunction irFunc, IRVariable var) {
+  TInitializeParameterValueNumber(IRFunction irFunc, Language::AST var) {
     initializeParameterValueNumber(_, irFunc, var)
   } or
   TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
@@ -107,17 +100,23 @@ private predicate numberableInstruction(Instruction instr) {
 }
 
 private predicate variableAddressValueNumber(
-  VariableAddressInstruction instr, IRFunction irFunc, IRVariable var
+  VariableAddressInstruction instr, IRFunction irFunc, Language::AST ast
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getIRVariable() = var
+  // The underlying AST element is used as value-numbering key instead of the
+  // `IRVariable` to work around a problem where a variable or expression with
+  // multiple types gives rise to multiple `IRVariable`s.
+  instr.getIRVariable().getAST() = ast
 }
 
 private predicate initializeParameterValueNumber(
-  InitializeParameterInstruction instr, IRFunction irFunc, IRVariable var
+  InitializeParameterInstruction instr, IRFunction irFunc, Language::AST var
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getIRVariable() = var
+  // The underlying AST element is used as value-numbering key instead of the
+  // `IRVariable` to work around a problem where a variable or expression with
+  // multiple types gives rise to multiple `IRVariable`s.
+  instr.getIRVariable().getAST() = var
 }
 
 private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRFunction irFunc) {
@@ -179,6 +178,7 @@ private predicate unaryValueNumber(
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
+  not instr instanceof FieldAddressInstruction and
   instr.getOpcode() = opcode and
   instr.getResultIRType() = type and
   tvalueNumber(instr.getUnary()) = operand
@@ -242,12 +242,12 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
   exists(IRFunction irFunc |
     irFunc = instr.getEnclosingIRFunction() and
     (
-      exists(IRVariable var |
-        variableAddressValueNumber(instr, irFunc, var) and
-        result = TVariableAddressValueNumber(irFunc, var)
+      exists(Language::AST ast |
+        variableAddressValueNumber(instr, irFunc, ast) and
+        result = TVariableAddressValueNumber(irFunc, ast)
       )
       or
-      exists(IRVariable var |
+      exists(Language::AST var |
         initializeParameterValueNumber(instr, irFunc, var) and
         result = TInitializeParameterValueNumber(irFunc, var)
       )
