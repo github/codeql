@@ -679,7 +679,7 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("list"))
     }
     
-    /** The builtin class '(x)range' */
+    /** Get the `ClassValue` for `xrange` (Python 2), or `range` (only Python 3) */
     ClassValue rangeType() {
         result = TBuiltinClassObject(Builtin::special("xrange"))
         or
