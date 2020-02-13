@@ -1,1 +1,1 @@
-import semmle.code.cpp.ir.internal.ASTValueNumbering
+import GlobalValueNumberingImpl

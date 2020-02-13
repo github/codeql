@@ -94,30 +94,6 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof LoadTotalOverlapInstruction
 }
 
-predicate multipleValueNumbers(Instruction instr, int n) {
-  n > 1 and
-  (
-    n =
-      strictcount(IRFunction irFunc, Language::AST ast |
-        variableAddressValueNumber(instr, irFunc, ast)
-      )
-    or
-    n =
-      strictcount(IRFunction irFunc, Language::AST var |
-        initializeParameterValueNumber(instr, irFunc, var)
-      )
-    or
-    n = strictcount(IRFunction irFunc | initializeThisValueNumber(instr, irFunc))
-    or
-    n = strictcount(IRFunction irFunc, string value | constantValueNumber(instr, irFunc, value))
-    or
-    n =
-      strictcount(IRFunction irFunc, IRType type, string value |
-        stringConstantValueNumber(instr, irFunc, type, value)
-      )
-  )
-}
-
 private predicate variableAddressValueNumber(
   VariableAddressInstruction instr, IRFunction irFunc, Language::AST ast
 ) {
