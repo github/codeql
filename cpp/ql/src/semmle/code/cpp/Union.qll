@@ -71,6 +71,15 @@ class NestedUnion extends Union {
   predicate isPublic() { this.hasSpecifier("public") }
 }
 
+/**
+ * A C/C++ anonymous union. For example:
+ * ```
+ * union {
+ *   int i;
+ *   float f;
+ * };
+ * ```
+ */
 class AnonymousUnion extends Union {
   AnonymousUnion() { this.isAnonymous() }
 }
