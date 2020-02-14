@@ -47,7 +47,6 @@ abstract class SideEffectFunction extends Function {
    */
   predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) { none() }
 
-  // TODO: name?
   /**
    * Gets the index of the parameter that indicates the size of the buffer pointed to by the
    * parameter at index `i`.
