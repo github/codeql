@@ -10,16 +10,16 @@
 - The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
 * Support for the following frameworks and libraries has been improved:
-  - [react](https://www.npmjs.com/package/react)
-  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
-  - [Handlebars](https://www.npmjs.com/package/handlebars)
   - [Electron](https://electronjs.org/)
+  - [Handlebars](https://www.npmjs.com/package/handlebars)
+  - [Koa](https://www.npmjs.com/package/koa)
   - [Node.js](https://nodejs.org/)
   - [Socket.IO](https://socket.io/)
-  - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
-  - [Koa](https://www.npmjs.com/package/koa)
   - [http2](https://nodejs.org/api/http2.html)
+  - [react](https://www.npmjs.com/package/react)
+  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
+  - [ws](https://github.com/websockets/ws)
 
 ## New queries
 
