@@ -13,6 +13,11 @@
 
 import python
 
+predicate has_string_type(Value v) {
+    v.getClass() = ClassValue::bytes() and major_version() = 2
+    or
+    v.getClass() = ClassValue::unicode()
+}
 
 from
     For loop, ControlFlowNode iter, Value str, Value seq, ControlFlowNode seq_origin, ControlFlowNode str_origin
@@ -20,8 +25,8 @@ where
     loop.getIter().getAFlowNode() = iter and
     iter.pointsTo(str, str_origin) and
     iter.pointsTo(seq, seq_origin) and
-    str.getClass() = ClassValue::str() and
+    has_string_type(str) and
     seq.getClass().isIterable() and
-    not seq.getClass() = ClassValue::str()
+    not has_string_type(seq)
 select loop, "Iteration over $@, of class " + seq.getClass().getName() + ", may also iterate over $@.",
     seq_origin, "sequence", str_origin, "string"
