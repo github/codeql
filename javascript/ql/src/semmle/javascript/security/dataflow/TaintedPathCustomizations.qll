@@ -19,8 +19,6 @@ module TaintedPath {
    * A data flow sink for tainted-path vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
-    Sink() { not this instanceof Sanitizer }
-
     /** Gets a flow label denoting the type of value for which this is a sink. */
     DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
