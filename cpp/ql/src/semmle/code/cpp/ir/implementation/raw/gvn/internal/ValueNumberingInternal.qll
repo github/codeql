@@ -61,14 +61,12 @@ newtype TValueNumber =
  */
 class CongruentCopyInstruction extends CopyInstruction {
   CongruentCopyInstruction() {
-    strictcount(this.getSourceValueOperand().getDefinitionOverlap()) = 1 and
     this.getSourceValueOperand().getDefinitionOverlap() instanceof MustExactlyOverlap
   }
 }
 
 class LoadTotalOverlapInstruction extends LoadInstruction {
   LoadTotalOverlapInstruction() {
-    strictcount(this.getSourceValueOperand().getDefinitionOverlap()) = 1 and
     this.getSourceValueOperand().getDefinitionOverlap() instanceof MustTotallyOverlap
   }
 }
