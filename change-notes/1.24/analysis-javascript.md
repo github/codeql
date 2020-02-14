@@ -12,20 +12,21 @@
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
 * Support for the following frameworks and libraries has been improved:
-  - [react](https://www.npmjs.com/package/react)
-  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
-  - [Handlebars](https://www.npmjs.com/package/handlebars)
   - [Electron](https://electronjs.org/)
+  - [Handlebars](https://www.npmjs.com/package/handlebars)
+  - [Koa](https://www.npmjs.com/package/koa)
   - [Node.js](https://nodejs.org/)
   - [Socket.IO](https://socket.io/)
-  - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
-  - [Koa](https://www.npmjs.com/package/koa)
-  - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [chrome-remote-interface](https://www.npmjs.com/package/chrome-remote-interface)
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
+  - [http2](https://nodejs.org/api/http2.html)
+  - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [react](https://www.npmjs.com/package/react)
   - [send](https://www.npmjs.com/package/send)
-  - [chrome-remote-interface](https://www.npmjs.com/package/chrome-remote-interface)
+  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
+  - [ws](https://github.com/websockets/ws)
 
 ## New queries
 
