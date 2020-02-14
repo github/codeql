@@ -3,9 +3,12 @@
  */
 
 private import cpp
+// The `ValueNumbering` library has to be imported right after `cpp` to ensure
+// that the cached IR gets the same checksum here as it does in queries that use
+// `ValueNumbering` without `DataFlow`.
+private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
