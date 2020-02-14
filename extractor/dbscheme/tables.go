@@ -71,7 +71,7 @@ var DeclParentType = NewUnionType("@declparent", NodeType)
 // declarations and function literals
 var FuncDefType = NewUnionType("@funcdef", StmtParentType, ExprParentType)
 
-// ScopeNodeType is the type of AST nodes that mapy have a scope attached to them
+// ScopeNodeType is the type of AST nodes that may have a scope attached to them
 var ScopeNodeType = NewUnionType("@scopenode", NodeType)
 
 // LocationDefaultType is the type of source locations
@@ -684,7 +684,7 @@ var DocCommentsTable = NewTable("doc_comments",
 	EntityColumn(CommentGroupType, "comment"),
 )
 
-// ExprsTable is the table defininig expression AST nodes
+// ExprsTable is the table defining expression AST nodes
 var ExprsTable = NewTable("exprs",
 	EntityColumn(ExprType, "id").Key(),
 	IntColumn("kind"),
