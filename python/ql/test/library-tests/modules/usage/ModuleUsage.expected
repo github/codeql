@@ -1,4 +1,3 @@
-| file://:0:0:0:0 | Module builtins | isUsedAsModule |
 | file://:0:0:0:0 | Module sys | isUsedAsModule |
 | imported.py:0:0:0:0 | Module imported | isUsedAsModule |
 | main.py:0:0:0:0 | Module main | isUsedAsScript |
