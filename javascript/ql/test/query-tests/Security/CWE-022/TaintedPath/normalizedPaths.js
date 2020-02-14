@@ -264,18 +264,18 @@ app.get('/relative-startswith', (req, res) => {
     fs.readFileSync(path); // OK! 
   }
 
-  let newpath = pathModule.normalize(p);
-  var relativePath = path.relative(path.normalize(workspaceDir), newpath);
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
   if (relativePath.indexOf('..' + pathModule.sep) === 0) {
-    fs.readFileSync(path); // NOT OK!
+    fs.readFileSync(newpath); // NOT OK!
   } else {
     fs.readFileSync(newpath); // OK!
   }
 
-  let newpath = pathModule.normalize(p);
-  var relativePath = path.relative(path.normalize(workspaceDir), newpath);
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
   if (relativePath.indexOf('../') === 0) {
-    fs.readFileSync(path); // NOT OK!
+    fs.readFileSync(newpath); // NOT OK!
   } else {
     fs.readFileSync(newpath); // OK! 
   }
