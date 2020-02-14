@@ -506,17 +506,25 @@ class RegExpOpt extends RegExpQuantifier, @regexp_opt {
 /**
  * A range-quantified term
  *
- * Example:
+ * Examples:
  *
  * ```
  * \w{2,4}
+ * \w{2,}
+ * \w{2}
  * ```
  */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
-  /** Gets the lower bound of the range, if any. */
+  /** Gets the lower bound of the range. */
   int getLowerBound() { rangeQuantifierLowerBound(this, result) }
 
-  /** Gets the upper bound of the range, if any. */
+  /**
+   * Gets the upper bound of the range, if any.
+   *
+   * If there is no upper bound, any number of repetitions is allowed.
+   * For a term of the form `r{lo}`, both the lower and the upper bound
+   * are `lo`.
+   */
   int getUpperBound() { rangeQuantifierUpperBound(this, result) }
 
   override predicate isNullable() {
