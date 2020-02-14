@@ -1,7 +1,7 @@
 /**
  * @name Possibly incorrect variable
  * @description Duplicated variables in adjacent expressions could be an error if there is a
- *              more appropriate variable available in the same scope.
+ *              better matching variable name in the same scope.
  * @kind problem
  * @problem.severity warning
  * @precision medium
@@ -25,16 +25,13 @@ class Scope extends Element {
 /** A declaration within a scope. */
 class ScopedDeclaration extends Assignable {
   ScopedDeclaration() {
-    (
-      this instanceof Variable or
-      this instanceof Property
-    )
+    this instanceof Variable or
+    this instanceof Property
   }
 
   Scope getScope() {
-    this.(LocalVariable).getVariableDeclExpr().getEnclosingStmt() = result
-          .(BlockStmt)
-          .getAChildStmt() or
+    this.(LocalVariable).getVariableDeclExpr().getEnclosingStmt() =
+      result.(BlockStmt).getAChildStmt() or
     this.(Parameter).getDeclaringElement() = result or
     this.(Member).getDeclaringType() = result
   }
@@ -78,6 +75,14 @@ predicate adjacent(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
   )
 }
 
+predicate adjacent2(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
+  adjacent(a1, a2) and
+  exists(int kind |
+    expressions(a1, kind, _) and
+    expressions(a2, kind, _)
+  )
+}
+
 class SameVariables extends StructuralComparisonConfiguration {
   SameVariables() { this = "Same variables in operation" }
 
@@ -92,12 +97,12 @@ class SameVariables extends StructuralComparisonConfiguration {
  * same1 = different1;
  * same2 = different2;
  * ```
- * where the target of `same1` and `same1` is equal.
+ * where the target of `same1` and `same2` is equal.
  */
 
 pragma[noopt]
 predicate duplicatedAccess1(Access same1, Access same2, Access different1, Access different2) {
-  exists(ComparisonOrAssignment op1, ComparisonOrAssignment op2 | adjacent(op1, op2) |
+  exists(ComparisonOrAssignment op1, ComparisonOrAssignment op2 | adjacent2(op1, op2) |
     same1 = op1.getLeft() and
     different1 = op1.getRight() and
     same2 = op2.getLeft() and
@@ -108,7 +113,11 @@ predicate duplicatedAccess1(Access same1, Access same2, Access different1, Acces
     same2 = op2.getRight() and
     different2 = op2.getLeft()
   ) and
-  same1.getTarget() = same2.getTarget()
+  exists(Declaration target |
+    target = same1.getTarget() and
+    target = same2.getTarget() and
+    target instanceof ScopedDeclaration
+  )
 }
 
 predicate duplicatedAccess2(Access same1, Access same2, Access different1, Access different2) {
@@ -159,12 +168,12 @@ predicate duplicatedAccess5(
       candidate = b
     ) and
     candidateDecl.getScope() = same1.getTarget().(ScopedDeclaration).getScope() and
-    candidateDecl.getName().toLowerCase() = candidate
+    candidateDecl.getName().toLowerCase() = candidate and
+    not a.substring(a.length() - 3, a.length()) = b.substring(b.length() - 3, b.length())
   )
 }
 
 from Access same1, Access same2, Access different1, Access different2, ScopedDeclaration candidate
 where duplicatedAccess5(same1, same2, different1, different2, candidate)
-select same2,
-  "Duplicated variable '" + same1.getTarget().getName() +
-    "' may be an error, because '$@' might have been intended.", candidate, candidate.getName()
+select same2, "Duplicated variable $@ may be an error, because $@ might have been intended.",
+  same1.getTarget(), same1.getTarget().getName(), candidate, candidate.getName()

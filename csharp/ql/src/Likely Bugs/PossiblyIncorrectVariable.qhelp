@@ -34,9 +34,5 @@ To fix this, edit the assignment to initialize the field <code>Y</code> instead:
 <sample src="PossiblyIncorrectVariableGood.cs" />
 
 </example>
-<references>
 
-  <li>Mitre: <a href="https://cwe.mitre.org/data/definitions/697.html">CWE-697: Incorrect Comparison</a></li>
-
-</references>
 </qhelp>
