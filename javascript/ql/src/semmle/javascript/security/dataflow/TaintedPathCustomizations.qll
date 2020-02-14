@@ -367,7 +367,16 @@ module TaintedPath {
     RelativePathContainsDotDotGuard() {
       this = startsWith and
       relativeCall = DataFlow::moduleImport("path").getAMemberCall("relative") and
-      startsWith.getBaseString().getALocalSource() = relativeCall and
+      (
+        startsWith.getBaseString().getALocalSource() = relativeCall
+        or
+        startsWith
+            .getBaseString()
+            .getALocalSource()
+            .(NormalizingPathCall)
+            .getInput()
+            .getALocalSource() = relativeCall
+      ) and
       exists(DataFlow::Node subString, string prefix |
         subString = startsWith.getSubstring() and
         (prefix = ".." or prefix = "../")
