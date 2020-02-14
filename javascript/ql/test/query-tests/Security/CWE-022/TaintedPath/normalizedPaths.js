@@ -269,6 +269,14 @@ app.get('/relative-startswith', (req, res) => {
   if (relativePath.indexOf('..' + pathModule.sep) === 0) {
     fs.readFileSync(path); // NOT OK!
   } else {
-	  fs.readFileSync(newpath); // OK! 
+    fs.readFileSync(newpath); // OK!
+  }
+
+  let newpath = pathModule.normalize(p);
+  var relativePath = path.relative(path.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('../') === 0) {
+    fs.readFileSync(path); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK! 
   }
 });

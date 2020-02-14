@@ -368,10 +368,13 @@ module TaintedPath {
       this = startsWith and
       relativeCall = DataFlow::moduleImport("path").getAMemberCall("relative") and
       startsWith.getBaseString().getALocalSource() = relativeCall and
-      exists(DataFlow::Node subString | subString = startsWith.getSubstring() |
-        subString.mayHaveStringValue("..")
+      exists(DataFlow::Node subString, string prefix |
+        subString = startsWith.getSubstring() and
+        (prefix = ".." or prefix = "../")
+      |
+        subString.mayHaveStringValue(prefix)
         or
-        subString.(StringOps::ConcatenationRoot).getFirstLeaf().mayHaveStringValue("..")
+        subString.(StringOps::ConcatenationRoot).getFirstLeaf().mayHaveStringValue(prefix)
       )
     }
 
