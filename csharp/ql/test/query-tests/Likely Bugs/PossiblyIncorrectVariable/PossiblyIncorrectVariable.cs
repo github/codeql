@@ -117,6 +117,13 @@ namespace Test
 
             person1.Surname = person2.Surname;
             person1.GivenName = person2.Surname; // GOOD: names are still related
+
+            if (p1.x == p2.x ||
+                p1.x == p2.y ||  // GOOD: False positive
+                p1.y == p2.x ||
+                p1.y == p2.y)
+            {
+            }
         }
     }
 
