@@ -96,6 +96,19 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof LoadTotalOverlapInstruction
 }
 
+private predicate filteredNumberableInstruction(Instruction instr) {
+  // count rather than strictcount to handle missing AST elements
+  // separate instanceof and inline casts to avoid failed casts with a count of 0
+  instr instanceof VariableAddressInstruction and
+  count(instr.(VariableAddressInstruction).getIRVariable().getAST()) != 1
+  or
+  instr instanceof ConstantInstruction and
+  count(instr.getResultIRType()) != 1
+  or
+  instr instanceof FieldAddressInstruction and
+  count(instr.(FieldAddressInstruction).getField()) != 1
+}
+
 private predicate variableAddressValueNumber(
   VariableAddressInstruction instr, IRFunction irFunc, Language::AST ast
 ) {
@@ -208,7 +221,11 @@ private predicate loadTotalOverlapValueNumber(
 private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr.getResultIRType() instanceof IRVoidType and
-  not numberableInstruction(instr)
+  (
+    not numberableInstruction(instr)
+    or
+    filteredNumberableInstruction(instr)
+  )
 }
 
 /**
