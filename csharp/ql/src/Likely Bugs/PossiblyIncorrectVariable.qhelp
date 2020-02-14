@@ -28,7 +28,7 @@ field <code>Y</code>:</p>
 <sample src="PossiblyIncorrectVariableBad.cs" />
 
 <p>
-The fix is to edit the assignment to initialize the field <code>Y</code> instead:
+To fix this, edit the assignment to initialize the field <code>Y</code> instead:
 </p>
 
 <sample src="PossiblyIncorrectVariableGood.cs" />
