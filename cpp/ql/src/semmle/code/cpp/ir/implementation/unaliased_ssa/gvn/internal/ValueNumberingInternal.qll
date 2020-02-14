@@ -37,8 +37,8 @@ newtype TValueNumber =
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
-  TLoadTotalOverlapValueNumber(IRFunction irFunc, TValueNumber memOperand, TValueNumber operand) {
-    loadTotalOverlapValueNumber(_, irFunc, memOperand, operand)
+  TLoadTotalOverlapValueNumber(IRFunction irFunc, IRType type, TValueNumber memOperand, TValueNumber operand) {
+    loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
@@ -206,12 +206,13 @@ private predicate inheritanceConversionValueNumber(
 }
 
 private predicate loadTotalOverlapValueNumber(
-  LoadTotalOverlapInstruction instr, IRFunction irFunc, TValueNumber memOperand,
+  LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber memOperand,
   TValueNumber operand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   tvalueNumber(instr.getAnOperand().(MemoryOperand).getAnyDef()) = memOperand and
-  tvalueNumberOfOperand(instr.getAnOperand().(AddressOperand)) = operand
+  tvalueNumberOfOperand(instr.getAnOperand().(AddressOperand)) = operand and
+  instr.getResultIRType() = type
 }
 
 /**
@@ -306,9 +307,9 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
           TPointerArithmeticValueNumber(irFunc, opcode, elementSize, leftOperand, rightOperand)
       )
       or
-      exists(TValueNumber memOperand, TValueNumber operand |
-        loadTotalOverlapValueNumber(instr, irFunc, memOperand, operand) and
-        result = TLoadTotalOverlapValueNumber(irFunc, memOperand, operand)
+      exists(IRType type, TValueNumber memOperand, TValueNumber operand |
+        loadTotalOverlapValueNumber(instr, irFunc, type, memOperand, operand) and
+        result = TLoadTotalOverlapValueNumber(irFunc, type, memOperand, operand)
       )
       or
       // The value number of a copy is just the value number of its source value.
