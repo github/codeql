@@ -14,9 +14,7 @@ Use "Cloudbees Rhino Sandbox" or sandboxing with SecurityManager or use <a href=
 
 <example>
 The following code could executes random JavaScript code
-ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-ScriptEngine scriptEngine = scriptEngineManager.getEngineByExtension("js");
-Object result = scriptEngine.eval(code);
+<sample src="ScriptEngine.java" />
 </example>
 
 <references>
