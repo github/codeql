@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> The ScriptEngine api is available since the release of Java 6.
+It allows application to interact with script written in language such as JavaScript.</p>
+</overview>
+
+<recommendation>
+Use "Cloudbees Rhino Sandbox" or sandboxing with SecurityManager or use <a href="https://www.graalvm.org/">graalvm</a> instead
+</recommendation>
+
+<example>
+The following code could executes random JavaScript code
+ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+ScriptEngine scriptEngine = scriptEngineManager.getEngineByExtension("js");
+Object result = scriptEngine.eval(code);
+</example>
+
+<references>
+<li>
+CERT coding standard: <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS52-J.+Prevent+code+injection">ScriptEngine code injection</a>
+</li>
+</references>
+</qhelp>
