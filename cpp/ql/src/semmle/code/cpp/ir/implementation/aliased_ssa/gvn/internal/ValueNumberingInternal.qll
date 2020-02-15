@@ -37,7 +37,9 @@ newtype TValueNumber =
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
-  TLoadTotalOverlapValueNumber(IRFunction irFunc, IRType type, TValueNumber memOperand, TValueNumber operand) {
+  TLoadTotalOverlapValueNumber(
+    IRFunction irFunc, IRType type, TValueNumber memOperand, TValueNumber operand
+  ) {
     loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
