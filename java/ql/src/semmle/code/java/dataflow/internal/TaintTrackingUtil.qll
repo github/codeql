@@ -389,7 +389,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
 }
 
 /**
- * Holds if `method` is a library method that return tainted data if any
+ * Holds if `method` is a library method that returns tainted data if any
  * of its arguments are tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
@@ -398,7 +398,7 @@ private predicate taintPreservingArgumentToMethod(Method method) {
 }
 
 /**
- * Holds if `method` is a library method that return tainted data if its
+ * Holds if `method` is a library method that returns tainted data if its
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
