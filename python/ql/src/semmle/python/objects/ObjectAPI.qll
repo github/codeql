@@ -125,7 +125,7 @@ class Value extends TObject {
         result = this.(ObjectInternal).booleanValue()
     }
 
-    /** Gets the boolean interpretation of this value, only if we can determine the result preciely.
+    /** Gets the boolean interpretation of this value, only if we can determine the result precisely.
       * The result can be `none()`, but never both `true` and `false`.
       */
     boolean getDefiniteBooleanValue() {

@@ -16,7 +16,7 @@ import python
  * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Environment
  * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Template
  *
- * Although the docs doesn't say very clearly, autoescape is a valid arugment when constructing
+ * Although the docs doesn't say very clearly, autoescape is a valid argument when constructing
  * a Template manually
  *
  * unsafe_tmpl = Template('Hello {{ name }}!')

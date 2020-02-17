@@ -32,7 +32,7 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
 /* Additional configuration to support tracking of DB objects. Connections, cursors, etc.
  * Without this configuration (or the LegacyConfiguration), the pattern of
- * `any(MyTaintKind k).tains(control_flow_node)` used in DbConnectionExecuteArgument would not work.
+ * `any(MyTaintKind k).taints(control_flow_node)` used in DbConnectionExecuteArgument would not work.
  */
 class DbConfiguration extends TaintTracking::Configuration {
     DbConfiguration() { this = "DB configuration" }
