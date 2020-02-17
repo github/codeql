@@ -124,7 +124,7 @@ Statements
 - ``LoopStmt``: a loop; use ``getBody()`` to access its body
 
   - ``ForStmt``: a ``for`` statement; use ``getInit()``, ``getCond()``, and ``getPost()`` to access
-    the init statement, loop condition and post statement, respectively, all of which are optional
+    the init statement, loop condition, and post statement, respectively, all of which are optional
 
   - ``RangeStmt``: a ``range`` statement; use ``getDomain()`` to access the iteration domain, and
     ``getKey()`` and ``getValue()`` to access the expressions to which successive keys and values
@@ -227,7 +227,7 @@ Names
 While ``Ident`` and ``SelectorExpr`` are very useful classes, they are often too general: ``Ident``
 covers all identifiers in a program, including both identifiers appearing in a declaration as well
 as references, and does not distinguish between names referring to packages, types, variables,
-constants, functions or statement labels. Similarly, a ``SelectorExpr`` might refer to a package, a
+constants, functions, or statement labels. Similarly, a ``SelectorExpr`` might refer to a package, a
 type, a function, or a method.
 
 Class ``Name`` and its subclasses provide a more fine-grained mapping of this space, organized along
@@ -244,7 +244,7 @@ a slice. Use predicates ``isLvalue()`` and ``isRvalue()`` to determine whether a
 expression appears in a syntactic context where it is assigned to or read from, respectively.
 
 Finally, ``ValueExpr`` generalizes ``ReferenceExpr`` to include all other kinds of expressions that
-can be evaluated to a value (as opposed to expressions that refer to a package, a type or a
+can be evaluated to a value (as opposed to expressions that refer to a package, a type, or a
 statement label).
 
 Functions
@@ -278,7 +278,7 @@ that is, a package, a type, a constant, a variable, a field, a function, or a la
 belong to class ``Entity``, which defines a few useful predicates:
 
   - ``getName()`` gets the name of the entity
-  - ``hasQualifiedName(pkg, n)`` holds if this entity is declared it package ``pkg`` and has name
+  - ``hasQualifiedName(pkg, n)`` holds if this entity is declared in package ``pkg`` and has name
     ``n``; this predicate is only defined for types, functions, and package-level variables and
     constants (but not for methods or local variables)
   - ``getDeclaration()`` connects an entity to its declaring identifier, if any
@@ -301,7 +301,7 @@ in package ``pkg``. (Note that due to embedding the same field can belong to mul
 
 Class ``Function`` has a subclass ``Method`` representing methods (including both interface methods
 and methods defined on a named type). Similar to ``Field``, ``Method`` provides a member predicate
-``hasQualifiedName(pkg, tp, m)`` that holds if this method has name ``m`` and belongs to type ``t``
+``hasQualifiedName(pkg, tp, m)`` that holds if this method has name ``m`` and belongs to type ``tp``
 in package ``pkg``. Predicate ``implements(m2)`` holds if this method implements method ``m2``, that
 is, it has the same name and signature as ``m2`` and it belongs to a type that implements the
 interface to which ``m2`` belongs. For any function, ``getACall()`` provides access to call sites
@@ -309,7 +309,7 @@ that may call this function, possibly through virtual dispatch.
 
 Finally, module ``Builtin`` provides a convenient way of looking up the entities corresponding to
 built-in functions and types. For example, ``Builtin::len()`` is the entity representing the
-built-in function ``len``, ``Builtin::bool()`` is the ``bool`` type, and ``Builtin::null()`` is the
+built-in function ``len``, ``Builtin::bool()`` is the ``bool`` type, and ``Builtin::nil()`` is the
 value ``nil``.
 
 Type information
@@ -354,7 +354,7 @@ For example, consider the following code snippet:
 
 In the AST, this is represented as an ``IfStmt`` and a ``ReturnStmt``, with the former having an
 ``NeqExpr`` and a ``BlockStmt`` as its children, and so on. This provides a very detailed picture of
-the syntactic structure of the code, but it does not immediately help us reasoning about the order
+the syntactic structure of the code, but it does not immediately help us reason about the order
 in which the various operations such as the comparison and the assignment are performed.
 
 In the CFG, there are nodes corresponding to ``x := 0``, ``p != nil``, ``x = p.f``, and ``return
@@ -369,7 +369,7 @@ evaluates to ``true`` and the "then" branch is evaluated, while the edge from ``
 ``return x`` models the case where the comparison evaluates to ``false`` and the "then" branch is
 skipped.
 
-Note, in particular, that a CFG node can have multiple outgoing edges (like from ``x == nil``) as
+Note, in particular, that a CFG node can have multiple outgoing edges (like from ``p != nil``) as
 well as multiple incoming edges (like into ``return x``) to represent control-flow branching at
 runtime.
 
@@ -422,7 +422,7 @@ are captured by the predicate ``DataFlow::localFlowStep``. The predicate ``DataF
 generalizes this from a single flow step to zero or more flow steps.
 
 Most expressions have a corresponding data-flow node (exceptions include type expressions, statement
-labels and other expressions that do not have a value). To map from the AST node of an expression to
+labels, and other expressions that do not have a value). To map from the AST node of an expression to
 the corresponding DFG node, use ``DataFlow::exprNode``. Note that the AST node and the DFG node are
 different entities and cannot be used interchangeably.
 
@@ -446,8 +446,8 @@ Important subclasses of ``DataFlow::Node`` include:
   - ``DataFlow::BinaryOperationNode``: an operation involving a binary operator; each ``BinaryExpr``
     has a corresponding ``BinaryOperationNode``, but there are also binary operations that are not
     explicit at the AST level, such as those arising from compound assignments and increment/
-    decrement statements; at the AST level, ``x + 1``, ``x += 1`` and ``x++`` are represented by
-    different kinds of AST nodes, while at the DFG level they are all modelled as a binary
+    decrement statements; at the AST level, ``x + 1``, ``x += 1``, and ``x++`` are represented by
+    different kinds of AST nodes, while at the DFG level they are all modeled as a binary
     operation node with operands ``x`` and ``1``
   - ``DataFlow::UnaryOperationNode``: analogous, but for unary operators
   - ``DataFlow::PointerDereferenceNode``: a pointer dereference, either explicit in an expression of
@@ -458,7 +458,7 @@ Important subclasses of ``DataFlow::Node`` include:
 
 Finally, classes ``Read`` and ``Write`` represent, respectively, a read or a write of a variable, a
 field, or an element of an array, a slice or a map. Use their member predicates ``readsVariable``,
-``writesVariable``, ``readsField``, ``writesField``, ``readsElement`` and ``writesElement`` to
+``writesVariable``, ``readsField``, ``writesField``, ``readsElement``, and ``writesElement`` to
 determine what the read/write refers to.
 
 Call graph
@@ -489,9 +489,9 @@ never flowing through a barrier.
 
 To define a data-flow configuration, you can define a subclass of ``DataFlow::Configuration``,
 overriding the member predicates ``isSource``, ``isSink``, and ``isBarrier`` to define the sets of
-sources, sinks and barriers.
+sources, sinks, and barriers.
 
-Going beyond pure data flow, many security analysis need to perform more general `taint tracking`,
+Going beyond pure data flow, many security analyses need to perform more general `taint tracking`,
 which also considers flow through value-transforming operations such as string operations. To track
 taint, you can define a subclass of ``TaintTracking::Configuration``, which works similar to
 data-flow configurations.
@@ -528,7 +528,7 @@ through the control-flow graph from the last node of ``bb`` to the exit node mus
 ``postdom``. In other words, after program execution leaves ``bb``, it must eventually reach
 ``postdom``.
 
-These two concepts are captured by two member predicates ``dominates`` an ``postDominates`` of class
+These two concepts are captured by two member predicates ``dominates`` and ``postDominates`` of class
 ``BasicBlock``.
 
 Condition guard nodes
@@ -575,7 +575,7 @@ For example, the data-flow graph for our running example actually looks more lik
 |ssa|
 
 Note that the program variable ``x`` has been mapped onto three distinct SSA variables ``x1``,
-``x2`` and ``x3``. In this case there is not much benefit to such a representation, but in general
+``x2``, and ``x3``. In this case there is not much benefit to such a representation, but in general
 SSA form has well-known advantages for data-flow analysis for which we refer to the literature.
 
 If you do need to work with raw SSA variables, they are represented by the class ``SsaVariable``.
