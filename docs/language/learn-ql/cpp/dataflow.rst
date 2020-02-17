@@ -1,12 +1,12 @@
 Analyzing data flow in C and C++
 ================================
 
-You can use data-flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your code base.
+You can use data-flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
-This topic describes how data flow analysis is implemented in the CodeQL libraries for C/C++ and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
+About data flow
+---------------
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For more background information, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
