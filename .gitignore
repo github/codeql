@@ -1,6 +1,7 @@
 # editor and OS artifacts
 *~
 .DS_STORE
+*.swp
 
 # query compilation caches
 .cache

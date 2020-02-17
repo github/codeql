@@ -9,22 +9,26 @@
 
 * Imports that rely on path-mappings from a `tsconfig.json` file can now be resolved.
 
+* Export declarations of the form `export * as ns from "x"` are now analyzed more precisely.
+
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
 * Support for the following frameworks and libraries has been improved:
-  - [react](https://www.npmjs.com/package/react)
-  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
-  - [Handlebars](https://www.npmjs.com/package/handlebars)
   - [Electron](https://electronjs.org/)
+  - [Handlebars](https://www.npmjs.com/package/handlebars)
+  - [Koa](https://www.npmjs.com/package/koa)
   - [Node.js](https://nodejs.org/)
   - [Socket.IO](https://socket.io/)
-  - [ws](https://github.com/websockets/ws)
   - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
-  - [Koa](https://www.npmjs.com/package/koa)
-  - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [chrome-remote-interface](https://www.npmjs.com/package/chrome-remote-interface)
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
+  - [http2](https://nodejs.org/api/http2.html)
+  - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [react](https://www.npmjs.com/package/react)
   - [send](https://www.npmjs.com/package/send)
+  - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
+  - [ws](https://github.com/websockets/ws)
 
 ## New queries
 
@@ -47,6 +51,7 @@
 | Use of call stack introspection in strict mode (`js/strict-mode-call-stack-introspection`) | Fewer false positive results | The query no longer flags expression statements. |
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | The query reports fewer duplicates and only flags handlers that explicitly access cookie data. |
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional ways dangerous paths can be constructed. |
+| Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional ways of constructing arguments to `cmd.exe` and `/bin/sh`. |
 
 ## Changes to libraries
 

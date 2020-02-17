@@ -749,4 +749,9 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::builtin("NameError"))
     }
 
+    /** Get the `ClassValue` for the `ImportError` class. */
+    ClassValue importError() {
+        result = TBuiltinClassObject(Builtin::builtin("ImportError"))
+    }
+
 }
