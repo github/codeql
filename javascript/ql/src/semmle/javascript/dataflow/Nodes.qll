@@ -1247,7 +1247,7 @@ module PartialInvokeNode {
     DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
 
     /**
-     * DEPRECATED. Use the two-argument version of `getBoundReceiver` instead.
+     * DEPRECATED. Use the one-argument version of `getBoundReceiver` instead.
      *
      * Gets the node holding the receiver to be passed to the bound function, if specified.
      */
