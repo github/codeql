@@ -16,8 +16,8 @@ def assert_tuple(x, y):
     assert ()
     assert (x, y)
 
-import subprocess
-assert subprocess.call(['run-backup']) == 0 # TODO: FN
+
+
 
 
 
