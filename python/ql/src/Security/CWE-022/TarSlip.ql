@@ -40,7 +40,7 @@ class TarfileOpen extends TaintSource {
          * this tarfile is safe.
          */
 
-        not this.(CallNode).getAnArg().pointsTo(Value::forString(_)) and
+        not this.(CallNode).getAnArg().pointsTo(any(StringValue str)) and
         /* Ignore opens within the tarfile module itself */
         not this.(ControlFlowNode).getLocation().getFile().getBaseName() = "tarfile.py"
     }
