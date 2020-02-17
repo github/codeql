@@ -75,26 +75,41 @@ class RegExpTerm extends Locatable, @regexpterm {
 
   /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
-    exists(RegExpSequence seq, int i |
-      seq.getChild(i) = this and
-      seq.getChild(i - 1) = result
+    exists(RegExpTerm parent | parent = getParent() |
+      if parent instanceof RegExpSequence
+      then
+        exists(RegExpSequence seq, int i |
+          seq = parent and
+          seq.getChild(i) = this
+        |
+          seq.getChild(i - 1) = result
+          or
+          i = 0 and result = seq.getPredecessor()
+        )
+      else (
+        not parent instanceof RegExpSubPattern and
+        result = parent.getPredecessor()
+      )
     )
-    or
-    result = getParent().(RegExpTerm).getPredecessor()
   }
 
   /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
-    exists(RegExpSequence seq, int i |
-      seq.getChild(i) = this and
-      seq.getChild(i + 1) = result
-    )
-    or
-    exists(RegExpTerm parent |
-      parent = getParent() and
-      not parent instanceof RegExpSubPattern
-    |
-      result = parent.getSuccessor()
+    exists(RegExpTerm parent | parent = getParent() |
+      if parent instanceof RegExpSequence
+      then
+        exists(RegExpSequence seq, int i |
+          seq = parent and
+          seq.getChild(i) = this
+        |
+          seq.getChild(i + 1) = result
+          or
+          i = seq.getNumChild() - 1 and result = seq.getSuccessor()
+        )
+      else (
+        not parent instanceof RegExpSubPattern and
+        result = parent.getSuccessor()
+      )
     )
   }
 
