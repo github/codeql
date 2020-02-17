@@ -383,17 +383,28 @@ private module Cached {
           contentOut = TContentNone() and
           compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(out))
           or
-          // getter(+setter)
+          // getter
           exists(Content fIn |
             contentIn.getContent() = fIn and
-            compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType())
+            contentOut = TContentNone() and
+            compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType()) and
+            compatibleTypes(fIn.getType(), getErasedNodeTypeBound(out))
           )
           or
           // setter
           exists(Content fOut |
             contentIn = TContentNone() and
             contentOut.getContent() = fOut and
-            compatibleTypes(getErasedNodeTypeBound(arg), fOut.getType())
+            compatibleTypes(getErasedNodeTypeBound(arg), fOut.getType()) and
+            compatibleTypes(fOut.getContainerType(), getErasedNodeTypeBound(out))
+          )
+          or
+          // getter+setter
+          exists(Content fIn, Content fOut |
+            contentIn.getContent() = fIn and
+            contentOut.getContent() = fOut and
+            compatibleTypes(getErasedNodeTypeBound(arg), fIn.getContainerType()) and
+            compatibleTypes(fOut.getContainerType(), getErasedNodeTypeBound(out))
           )
         )
       }

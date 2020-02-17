@@ -615,7 +615,9 @@ private newtype TNodeExt =
     exists(Configuration config |
       nodeCand1(node1, config) and
       argumentValueFlowsThrough(call, node1, TContentSome(f1), TContentSome(f2), node2) and
-      nodeCand1(node2, unbind(config))
+      nodeCand1(node2, unbind(config)) and
+      readStoreCand1(f1, unbind(config)) and
+      readStoreCand1(f2, unbind(config))
     )
   }
 
