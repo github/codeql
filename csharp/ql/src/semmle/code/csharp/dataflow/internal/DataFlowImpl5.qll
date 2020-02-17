@@ -2257,18 +2257,17 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap) {
-  exists(LocalCallContext localCC, AccessPath ap0, Node midnode, Configuration conf |
+  exists(AccessPath ap0, Node midnode, Configuration conf |
     midnode = mid.getNode() and
     conf = mid.getConfiguration() and
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
-    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
     ap0 = mid.getAp()
   |
-    localFlowBigStep(midnode, node, true, conf, localCC) and
+    pathLocalFlowBigStep(midnode, node, true, conf, cc) and
     ap = ap0
     or
-    localFlowBigStep(midnode, node, false, conf, localCC) and
+    pathLocalFlowBigStep(midnode, node, false, conf, c) and
     ap0 instanceof AccessPathNil and
     ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
   )
@@ -2295,6 +2294,18 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   pathOutOfCallable(mid, node, cc) and ap = mid.getAp() and sc instanceof SummaryCtxNone
   or
   pathThroughCallable(mid, node, cc, ap) and sc = mid.getSummaryCtx()
+}
+
+pragma[nomagic]
+private predicate pathLocalFlowBigStep(
+  Node node1, Node node2, boolean preservesValue, Configuration config, CallContext cc
+) {
+  flow(node1, config) and
+  exists(LocalCallContext localCC |
+    localFlowBigStep(node1, node2, preservesValue, config, localCC) and
+    localCC = getLocalCallContext(cc, node1.getEnclosingCallable())
+  ) and
+  flow(node2, unbind(config))
 }
 
 pragma[nomagic]
