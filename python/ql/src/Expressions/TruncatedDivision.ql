@@ -29,10 +29,9 @@ where
         and not lval.(NumericValue).intValue() % rval.(NumericValue).intValue() = 0
         and not bin.getNode().getEnclosingModule().hasFromFuture("division")
         // Filter out results wrapped in `int(...)`
-        and not exists(CallNode c, ClassValue cls |
-            c.getAnArg() = bin
-            and c.getFunction().pointsTo(cls)
-            and cls.getName() = "int"
+        and not exists(CallNode c |
+            c = ClassValue::int_().getACall()
+            and c.getAnArg() = bin
         )
     )
 select div, "Result of division may be truncated as its $@ and $@ arguments may both be integers.",
