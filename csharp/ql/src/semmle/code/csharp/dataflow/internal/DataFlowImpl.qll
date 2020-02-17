@@ -2610,14 +2610,7 @@ private module FlowExploration {
 
   private newtype TSummaryCtx2 =
     TSummaryCtx2None() or
-    TSummaryCtx2Nil() or
-    TSummaryCtx2ConsNil(Content f)
-
-  private TSummaryCtx2 getSummaryCtx2(PartialAccessPath ap) {
-    result = TSummaryCtx2Nil() and ap instanceof PartialAccessPathNil
-    or
-    exists(Content f | result = TSummaryCtx2ConsNil(f) and ap = TPartialCons(f, 1))
-  }
+    TSummaryCtx2Some(PartialAccessPath ap)
 
   private newtype TPartialPathNode =
     TPartialPathNodeMk(
@@ -2904,11 +2897,8 @@ private module FlowExploration {
     exists(int i, DataFlowCallable callable |
       partialPathIntoCallable0(mid, callable, i, outercc, call, ap, config) and
       p.isParameterOf(callable, i) and
-      (
-        sc1 = TSummaryCtx1Param(p) and sc2 = getSummaryCtx2(ap)
-        or
-        sc1 = TSummaryCtx1None() and sc2 = TSummaryCtx2None() and not exists(getSummaryCtx2(ap))
-      )
+      sc1 = TSummaryCtx1Param(p) and
+      sc2 = TSummaryCtx2Some(ap)
     |
       if recordDataFlowCallSite(call, callable)
       then innercc = TSpecificCall(call)
@@ -2928,8 +2918,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       config = mid.getConfiguration() and
-      ap = mid.getAp() and
-      ap.len() in [0 .. 1]
+      ap = mid.getAp()
     )
   }
 
