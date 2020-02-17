@@ -103,7 +103,7 @@ module TaintedPath {
           if
             exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
               splitBy.mayHaveStringValue("/") or
-              any(DataFlow::RegExpLiteralNode reg | reg.getRoot().getAMatchedString() = "/")
+              any(DataFlow::RegExpCreationNode reg | reg.getRoot().getAMatchedString() = "/")
                   .flowsTo(splitBy)
             )
           then
