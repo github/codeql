@@ -29,10 +29,10 @@ The following changes in version 1.24 affect C# analysis in all applications.
 
 ## Changes to libraries
 
-* The data-flow library has been improved when flow through methods needs to be
-  combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves most security queries, which may
-  report additional results.
+* The data-flow library has been improved, which affects and improves most security queries. The improvements are:
+  - Track flow through methods that combine taint tracking with flow through fields.
+  - Track flow through clone-like methods, that is, methods that read contents of a field from a
+    parameter and stores the value in the field of a returned object.
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.
