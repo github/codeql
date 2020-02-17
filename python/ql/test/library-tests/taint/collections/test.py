@@ -28,7 +28,7 @@ def test_access():
     b = tainted_list[x]
     c = tainted_list[y:z]
     d = tainted_list.copy()
-    e, f, g = tainted_list # TODO: currently not handled
+    e, f, g = tainted_list
     test(a, b, c, d, e, f, g)
     for h in tainted_list:
         test(h)

@@ -1,4 +1,4 @@
-/** Provides classes and predicates for determining the uses and definitions of 
+/** Provides classes and predicates for determining the uses and definitions of
  * variables for ESSA form.
  */
 
@@ -30,7 +30,7 @@ cached module SsaSource {
 
     /** Holds if `v` is defined by a with statement. */
     cached predicate with_definition(Variable v, ControlFlowNode defn) {
-        exists(With with, Name var | 
+        exists(With with, Name var |
             with.getOptionalVars() = var and
             var.getAFlowNode() = defn |
             var = v.getAStore()
@@ -39,7 +39,11 @@ cached module SsaSource {
 
     /** Holds if `v` is defined by multiple assignment at `defn`. */
     cached predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
-        defn.(NameNode).defines(v) and 
+        (
+            defn.(NameNode).defines(v)
+            or
+            defn.(StarredNode).getValue().(NameNode).defines(v)
+        ) and
         not exists(defn.(DefinitionNode).getValue()) and
         lhs.getElement(n) = defn and
         lhs.getBasicBlock().dominates(defn.getBasicBlock())
