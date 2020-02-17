@@ -1,10 +1,13 @@
-Introducing the CodeQL libraries for C/C++
-==========================================
+CodeQL libraries for C and C++
+==============================
+
+Explore the standard CodeQL libraries for C and C++.
 
 Overview
 --------
 
-There is an extensive library for analyzing CodeQL databases extracted from C/C++ projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.  The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``cpp.qll`` imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:
+There is an extensive library for analyzing CodeQL databases extracted from C/C++ projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. 
+The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``cpp.qll`` imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
@@ -12,7 +15,9 @@ There is an extensive library for analyzing CodeQL databases extracted from C/C+
 
 The rest of this topic summarizes the available CodeQL classes and corresponding C/C++ constructs.
 
-NOTE: You can find related classes and features using the query console's auto-complete feature.  You can also press *F3* to jump to the definition of any element; library files are opened in new tabs in the console.
+.. pull-quote:: Note
+
+   You can find related classes and features using the query console's auto-complete feature.  You can also press *F3* to jump to the definition of any element. Library files are opened in new tabs in the console.
 
 Summary of the library classes
 ------------------------------
@@ -522,6 +527,6 @@ This table lists `Preprocessor <https://help.semmle.com/qldoc/cpp/semmle/code/cp
 What next?
 ----------
 
--  Experiment with the worked examples in the CodeQL for C/C++ topics: :doc:`Function classes <function-classes>`, :doc:`Expressions, types and statements <expressions-types>`, :doc:`Conversions and classes <conversions-classes>`, and :doc:`Analyzing data flow in C/C++ <dataflow>`.
+-  Experiment with the worked examples in the CodeQL for C/C++ topics: :doc:`Functions in C and C++ <function-classes>`, :doc:`Expressions, types, and statements in C and C++ <expressions-types>`, :doc:`Conversions and classes in C and C++ <conversions-classes>`, and :doc:`Analyzing data flow in C and C++ <dataflow>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

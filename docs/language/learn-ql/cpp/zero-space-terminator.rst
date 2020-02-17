@@ -1,5 +1,7 @@
-Example: Checking for allocations equal to ``strlen(string)`` without space for a null terminator
-=================================================================================================
+Detecting a potential buffer overflow
+=====================================
+
+You can use CodeQL to detect potential buffer overflows by checking for allocations equal to ``strlen`` in C and C++.
 
 Overview
 --------

@@ -1,6 +1,8 @@
 Using range analysis for C and C++
 ==================================
 
+You can use range analysis to determine the upper or lower bounds on an expression, or whether an expression could potentially over or underflow.
+
 Overview
 --------
 

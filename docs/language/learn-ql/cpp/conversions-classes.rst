@@ -1,10 +1,7 @@
-Tutorial: Conversions and classes
-=================================
+Conversions and classes in C and C++
+====================================
 
-Overview
---------
-
-This topic contains worked examples of how to write queries using the CodeQL library classes for C/C++ conversions and classes.
+You can use the standard CodeQL libraries for C and C++ to detect when the type of an expression is changed.
 
 Conversions
 -----------
@@ -227,7 +224,7 @@ What next?
 ----------
 
 -  Explore other ways of querying classes using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/class>`__.
--  Take a look at the :doc:`Analyzing data flow in C/C++ <dataflow>` tutorial.
--  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>`, and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
+-  Take a look at the :doc:`Analyzing data flow in C and C++ <dataflow>` tutorial.
+-  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>`, and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

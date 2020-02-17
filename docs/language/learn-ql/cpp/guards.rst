@@ -1,6 +1,8 @@
 Using the guards library in C and C++
 =====================================
 
+You can use the CodeQL guards library to identify conditional expressions that control the execution of other code in C and C++ codebases. 
+
 Overview
 --------
 

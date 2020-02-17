@@ -1,5 +1,7 @@
 Hash consing and value numbering
-=================================================
+================================
+
+You can use specialized CodeQL libraries to recognize expressions that are syntactically identical or compute the same value at runtime in C and C++ codebases.
 
 Overview
 --------
