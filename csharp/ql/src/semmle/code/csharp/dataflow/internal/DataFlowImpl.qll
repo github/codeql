@@ -1647,9 +1647,6 @@ abstract private class AccessPath extends TAccessPath {
    * Holds if this access path has `head` at the front and may be followed by `tail`.
    */
   abstract predicate pop(Content head, AccessPath tail);
-
-  /** Gets the untyped version of this access path. */
-  UntypedAccessPath getUntyped() { result.getATyped() = this }
 }
 
 private class AccessPathNil extends AccessPath, TNil {
@@ -2001,50 +1998,10 @@ private Configuration unbind(Configuration conf) { result >= conf and result <= 
 
 private predicate flow(Node n, Configuration config) { flow(TNormalNode(n), _, _, config) }
 
-private newtype TUntypedAccessPath =
-  TNilUntyped() or
-  TConsNilUntyped(Content f) { exists(TConsNil(f, _)) } or
-  TConsConsUntyped(Content f1, Content f2, int len) { exists(TConsCons(f1, f2, len)) }
-
-/**
- * An untyped access path.
- *
- * Untyped access paths are only used when reconstructing flow summaries,
- * where the extra type information is redundant.
- */
-private class UntypedAccessPath extends TUntypedAccessPath {
-  /** Gets a typed version of this untyped access path. */
-  AccessPath getATyped() {
-    this = TNilUntyped() and result = TNil(_)
-    or
-    exists(Content f | this = TConsNilUntyped(f) | result = TConsNil(f, _))
-    or
-    exists(Content f1, Content f2, int len | this = TConsConsUntyped(f1, f2, len) |
-      result = TConsCons(f1, f2, len)
-    )
-  }
-
-  string toString() {
-    this = TNilUntyped() and
-    result = "<nil>"
-    or
-    exists(Content f | this = TConsNilUntyped(f) | result = "[" + f + "]")
-    or
-    exists(Content f1, Content f2, int len | this = TConsConsUntyped(f1, f2, len) |
-      if len = 2
-      then result = "[" + f1.toString() + ", " + f2.toString() + "]"
-      else result = "[" + f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")]"
-    )
-  }
-}
-
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, UntypedAccessPath uap) {
-    exists(ReturnNodeExt ret, Configuration config, AccessPath ap |
-      ap = uap.getATyped() and
-      flow(TNormalNode(p), true, ap, config)
-    |
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) {
+    exists(ReturnNodeExt ret, Configuration config | flow(TNormalNode(p), true, ap, config) |
       exists(Summary summary |
         parameterFlowReturn(p, ret, _, _, _, summary, config) and
         flow(ret, unbind(config))
@@ -2080,12 +2037,30 @@ private newtype TSummaryCtx =
  *
  * Summaries are only created for parameters that may flow through.
  */
-private class SummaryCtx extends TSummaryCtx {
-  string toString() { result = "SummaryCtx" }
+abstract private class SummaryCtx extends TSummaryCtx {
+  abstract string toString();
 }
 
 /** A summary context from which no flow summary can be generated. */
-private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone { }
+private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
+  override string toString() { result = "<none>" }
+}
+
+/** A summary context from which a flow summary can be generated. */
+private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
+  private ParameterNode p;
+  private AccessPath ap;
+
+  SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
+
+  override string toString() { result = p + ": " + ap }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    p.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
 
 private newtype TPathNode =
   TPathNodeMid(Node node, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config) {
@@ -2399,22 +2374,22 @@ private predicate pathOutOfCallable(PathNodeMid mid, Node out, CallContext cc) {
  */
 pragma[noinline]
 private predicate pathIntoArg(
-  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, UntypedAccessPath ap
+  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap
 ) {
   exists(ArgumentNode arg |
     arg = mid.getNode() and
     cc = mid.getCallContext() and
     arg.argumentOf(call, i) and
-    ap = mid.getAp().getUntyped()
+    ap = mid.getAp()
   )
 }
 
 pragma[noinline]
 private predicate parameterCand(
-  DataFlowCallable callable, int i, UntypedAccessPath ap, Configuration config
+  DataFlowCallable callable, int i, AccessPath ap, Configuration config
 ) {
   exists(ParameterNode p |
-    flow(TNormalNode(p), _, ap.getATyped(), config) and
+    flow(TNormalNode(p), _, ap, config) and
     p.isParameterOf(callable, i)
   )
 }
@@ -2422,7 +2397,7 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  UntypedAccessPath ap
+  AccessPath ap
 ) {
   pathIntoArg(mid, i, outercc, call, ap) and
   callable = resolveCall(call, outercc) and
@@ -2438,7 +2413,7 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParameterNode p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call
 ) {
-  exists(int i, DataFlowCallable callable, UntypedAccessPath ap |
+  exists(int i, DataFlowCallable callable, AccessPath ap |
     pathIntoCallable0(mid, callable, i, outercc, call, ap) and
     p.isParameterOf(callable, i) and
     (
@@ -2457,7 +2432,7 @@ private predicate pathIntoCallable(
 /** Holds if data may flow from a parameter given by `sc` to a return of kind `kind`. */
 pragma[nomagic]
 private predicate paramFlowsThrough(
-  ReturnKindExt kind, CallContextCall cc, TSummaryCtxSome sc, AccessPath ap, Configuration config
+  ReturnKindExt kind, CallContextCall cc, SummaryCtxSome sc, AccessPath ap, Configuration config
 ) {
   exists(PathNodeMid mid, ReturnNodeExt ret |
     mid.getNode() = ret and
