@@ -1,3 +1,4 @@
+"""tests for Django 1.x"""
 from django.conf.urls import url
 from django.shortcuts import redirect, render
 
