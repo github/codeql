@@ -116,13 +116,38 @@ module TaintedPath {
           name = "pop" or
           name = "shift" or
           name = "slice" or
-          name = "splice"
+          name = "splice" or
+          name = "concat"
         ) and
         dstlabel instanceof Label::SplitPath and
         srclabel instanceof Label::SplitPath
         or
         name = "join" and
-        mcn.getArgument(0).mayHaveStringValue("/") and 
+        mcn.getArgument(0).mayHaveStringValue("/") and
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
+      )
+      or
+      // prefix.concat(path)
+      exists(DataFlow::MethodCallNode mcn |
+        mcn.getMethodName() = "concat" and mcn.getAnArgument() = src
+      |
+        dst = mcn and
+        dstlabel instanceof Label::SplitPath and
+        srclabel instanceof Label::SplitPath
+      )
+      or
+      // reading unknown property of split path
+      exists(DataFlow::PropRead read | read = dst |
+        src = read.getBase() and
+        not read.getPropertyName() = "length" and
+        not exists(read.getPropertyNameExpr().getIntValue()) and
+        // split[split.length - 1]
+        not exists(BinaryExpr binop |
+          read.getPropertyNameExpr() = binop and
+          binop.getAnOperand().getIntValue() = 1 and
+          binop.getAnOperand().(PropAccess).getPropertyName() = "length"
+        ) and
         srclabel instanceof Label::SplitPath and
         dstlabel.(Label::PosixPath).canContainDotDotSlash()
       )
