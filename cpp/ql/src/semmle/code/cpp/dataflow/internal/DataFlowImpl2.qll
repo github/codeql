@@ -2267,7 +2267,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
     pathLocalFlowBigStep(midnode, node, true, conf, cc) and
     ap = ap0
     or
-    pathLocalFlowBigStep(midnode, node, false, conf, c) and
+    pathLocalFlowBigStep(midnode, node, false, conf, cc) and
     ap0 instanceof AccessPathNil and
     ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
   )
