@@ -54,8 +54,9 @@ class ComparisonOrAssignment extends Expr {
  * or in a sequence of assignments or declarations.
  */
 predicate adjacent(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
-  exists(BinaryLogicalOperation expr | a1 = expr.getLeftOperand() |
-    a2 = expr.getRightOperand() or a2 = expr.getRightOperand().(LogicalAndExpr).getLeftOperand()
+  exists(BinaryLogicalOperation expr | a2 = expr.getRightOperand() |
+    a1 = expr.getLeftOperand() or
+    a1 = expr.getLeftOperand().(BinaryLogicalOperation).getRightOperand()
   )
   or
   exists(BlockStmt block, ExprStmt s1, ExprStmt s2, int i |
@@ -75,6 +76,17 @@ predicate adjacent(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
   )
 }
 
+predicate adjacentLogicalExpressions(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
+  exists(BinaryLogicalOperation expr | a2 = expr.getRightOperand() |
+    a1 = expr.getLeftOperand() or
+    a1 = expr.getLeftOperand().(BinaryLogicalOperation).getRightOperand()
+  ) and
+  exists(int kind |
+    expressions(a1, kind, _) and
+    expressions(a2, kind, _)
+  )
+}
+
 predicate adjacent2(ComparisonOrAssignment a1, ComparisonOrAssignment a2) {
   adjacent(a1, a2) and
   exists(int kind |
@@ -87,7 +99,7 @@ class SameVariables extends StructuralComparisonConfiguration {
   SameVariables() { this = "Same variables in operation" }
 
   override predicate candidate(ControlFlowElement e1, ControlFlowElement e2) {
-    duplicatedAccess1(e1, e2, _, _)
+    duplicatedAccess1(e1, e2, _, _, _, _)
   }
 }
 
@@ -101,8 +113,12 @@ class SameVariables extends StructuralComparisonConfiguration {
  */
 
 pragma[noopt]
-predicate duplicatedAccess1(Access same1, Access same2, Access different1, Access different2) {
-  exists(ComparisonOrAssignment op1, ComparisonOrAssignment op2 | adjacent2(op1, op2) |
+predicate duplicatedAccess1(
+  Access same1, Access same2, Access different1, Access different2, ComparisonOrAssignment op1,
+  ComparisonOrAssignment op2
+) {
+  adjacent2(op1, op2) and
+  (
     same1 = op1.getLeft() and
     different1 = op1.getRight() and
     same2 = op2.getLeft() and
@@ -121,12 +137,31 @@ predicate duplicatedAccess1(Access same1, Access same2, Access different1, Acces
 }
 
 predicate duplicatedAccess2(Access same1, Access same2, Access different1, Access different2) {
-  duplicatedAccess1(same1, same2, different1, different2) and
-  any(SameVariables same).same(same1, same2) and
-  exists(Declaration target | target = same1.getTarget() |
-    not target.(Modifiable).isStatic() and
-    not target instanceof ImplicitAccessorParameter and
-    not target instanceof EnumConstant
+  exists(ComparisonOrAssignment op1, ComparisonOrAssignment op2 |
+    duplicatedAccess1(same1, same2, different1, different2, op1, op2) and
+    any(SameVariables same).same(same1, same2) and
+    exists(Declaration target | target = same1.getTarget() |
+      not target.(Modifiable).isStatic() and
+      not target instanceof ImplicitAccessorParameter and
+      not target instanceof EnumConstant
+    ) and
+    not exists(ComparisonOrAssignment op |
+      adjacentLogicalExpressions+(op, op1)
+      or
+      adjacentLogicalExpressions+(op2, op)
+    |
+      op2.getLeft().getTarget() = same1.getTarget() and
+      op2.getRight().getTarget() = different2.getTarget()
+      or
+      op2.getLeft().getTarget() = same2.getTarget() and
+      op2.getRight().getTarget() = different1.getTarget()
+      or
+      op2.getRight().getTarget() = same1.getTarget() and
+      op2.getLeft().getTarget() = different2.getTarget()
+      or
+      op2.getRight().getTarget() = same2.getTarget() and
+      op2.getLeft().getTarget() = different1.getTarget()
+    )
   )
 }
 
