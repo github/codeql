@@ -309,7 +309,7 @@ newtype TWriteTarget =
       )
     )
     or
-    exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getExpr().stripParens())
+    exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getOperand().stripParens())
     or
     exists(ParameterOrReceiver parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
     or
@@ -1385,7 +1385,7 @@ module CFG {
   }
 
   private class IncDecTree extends ControlFlowTree, IncDecStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getExpr(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(getOperand(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1395,7 +1395,7 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getExpr(), pred, normalCompletion()) and
+      lastNode(getOperand(), pred, normalCompletion()) and
       succ = MkImplicitOne(this)
       or
       pred = MkImplicitOne(this) and

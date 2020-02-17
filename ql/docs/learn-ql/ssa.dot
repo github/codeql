@@ -1,4 +1,5 @@
 digraph ssa {
+    graph [dpi=300];
     rankdir=LR;
 
     "x1" [shape=diamond,label=<x<sub>1</sub>>];

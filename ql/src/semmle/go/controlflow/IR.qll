@@ -843,7 +843,7 @@ module IR {
     /** Gets the corresponding increment or decrement statement. */
     IncDecStmt getStmt() { result = ids }
 
-    override Type getResultType() { result = ids.getExpr().getType() }
+    override Type getResultType() { result = ids.getOperand().getType() }
 
     override ControlFlow::Root getRoot() { result.isRootOf(ids) }
 
@@ -867,7 +867,7 @@ module IR {
     /** Gets the corresponding increment or decrement statement. */
     IncDecStmt getStmt() { result = ids }
 
-    override Type getResultType() { result = ids.getExpr().getType() }
+    override Type getResultType() { result = ids.getOperand().getType() }
 
     override ControlFlow::Root getRoot() { result.isRootOf(ids) }
 

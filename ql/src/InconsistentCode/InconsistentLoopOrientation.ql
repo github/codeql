@@ -36,7 +36,7 @@ predicate bounds(RelationalComparisonExpr test, Variable v, string direction) {
  * downward.
  */
 predicate updates(IncDecStmt upd, Variable v, string direction) {
-  upd.getExpr() = v.getAReference() and
+  upd.getOperand() = v.getAReference() and
   (
     upd instanceof IncStmt and direction = "upward"
     or

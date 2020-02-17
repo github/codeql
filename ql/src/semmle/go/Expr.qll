@@ -1253,7 +1253,7 @@ class ReferenceExpr extends Expr {
   predicate isLvalue() {
     this = any(Assignment assgn).getLhs(_)
     or
-    this = any(IncDecStmt ids).getExpr()
+    this = any(IncDecStmt ids).getOperand()
     or
     exists(RangeStmt rs |
       this = rs.getKey() or
@@ -1271,7 +1271,7 @@ class ReferenceExpr extends Expr {
     or
     this = any(CompoundAssignStmt cmp).getLhs(_)
     or
-    this = any(IncDecStmt ids).getExpr()
+    this = any(IncDecStmt ids).getOperand()
   }
 }
 

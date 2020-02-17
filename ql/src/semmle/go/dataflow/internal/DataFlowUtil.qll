@@ -536,7 +536,7 @@ class BinaryOperationNode extends Node {
     exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
       rhs = asInstruction() and ids = rhs.getStmt()
     |
-      left = exprNode(ids.getExpr()) and
+      left = exprNode(ids.getOperand()) and
       right = instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
       op = ids.getOperator().charAt(0)
     )

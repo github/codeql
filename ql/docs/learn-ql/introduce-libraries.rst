@@ -35,6 +35,9 @@ about which function may be invoked by a given call (taking virtual dispatch thr
 account), as well as control-flow information about the order in which different operations may be
 executed at runtime.
 
+As a rule of thumb, you normally want to use the AST only for superficial syntactic queries. Any
+analysis involving deeper semantic properties of the program should be done on the DFG.
+
 The rest of this tutorial briefly summarizes the most important classes and predicates provided by
 this library, including references to the `detailed API documentation
 <https://help.semmle.com/qldoc/go/>`__ where applicable. We start by giving an overview of the AST
@@ -114,7 +117,7 @@ Statements
   - ``CompoundAssignStmt``: an assignment statement with a compound operator, such as ``lhs += rhs``
 
 - ``IncStmt``, ``DecStmt``: an increment statement or a decrement statement, respectively; use
-  ``getExpr()`` to access the expression being incremented or decremented
+  ``getOperand()`` to access the expression being incremented or decremented
 - ``BlockStmt``: a block of statements between curly braces; use ``getStmt(i)`` to access the
   ``i``\ th statement in a block
 - ``IfStmt``: an ``if`` statement; use ``getInit()``, ``getCond()``, ``getThen()``, and
@@ -136,6 +139,8 @@ Statements
   deferred
 - ``SendStmt``: a send statement; use ``getChannel()`` and ``getValue()`` to access the channel and
   the value being sent over the channel, respectively
+- ``RecvStmt``: a receive statement in a ``select`` statement; use ``getExpr()`` to access the
+  receiver expression, and ``getLhs(i)`` to access the ``i``\ th left-hand side
 - ``ReturnStmt``: a ``return`` statement; use ``getExpr(i)`` to access the ``i``\ th returned
   expression; if there is only a single returned expression you can use ``getExpr()`` instead
 - ``BranchStmt``: a statement that interrupts structured control flow; use ``getLabel()`` to get the
@@ -152,7 +157,7 @@ Statements
 - ``SwitchStmt``: a ``switch`` statement; use ``getInit()`` to access the (optional) init statement,
   and ``getCase(i)`` to access the ``i``\ th ``case`` or ``default`` clause
 
-  - ``ExprSwitchStmt``: a ``switch`` statement examining the value of an expression
+  - ``ExpressionSwitchStmt``: a ``switch`` statement examining the value of an expression
   - ``TypeSwitchStmt``: a ``switch`` statement examining the type of an expression
 
 - ``CaseClause``: a ``case`` or ``default`` clause in a ``switch`` statement; use ``getExpr(i)`` to
@@ -421,10 +426,10 @@ In CodeQL, data-flow nodes are represented by class ``DataFlow::Node``, and the 
 are captured by the predicate ``DataFlow::localFlowStep``. The predicate ``DataFlow::localFlow``
 generalizes this from a single flow step to zero or more flow steps.
 
-Most expressions have a corresponding data-flow node (exceptions include type expressions, statement
-labels, and other expressions that do not have a value). To map from the AST node of an expression to
-the corresponding DFG node, use ``DataFlow::exprNode``. Note that the AST node and the DFG node are
-different entities and cannot be used interchangeably.
+Most expressions have a corresponding data-flow node; exceptions include type expressions, statement
+labels and other expressions that do not have a value, as well as short-circuiting operators. To map
+from the AST node of an expression to the corresponding DFG node, use ``DataFlow::exprNode``. Note
+that the AST node and the DFG node are different entities and cannot be used interchangeably.
 
 There is also a predicate ``asExpr()`` on ``DataFlow::Node`` that allows you to recover the
 expression underlying a DFG node. However, this predicate should be used with caution, since many
@@ -445,16 +450,17 @@ Important subclasses of ``DataFlow::Node`` include:
     corresponding AST node
   - ``DataFlow::BinaryOperationNode``: an operation involving a binary operator; each ``BinaryExpr``
     has a corresponding ``BinaryOperationNode``, but there are also binary operations that are not
-    explicit at the AST level, such as those arising from compound assignments and increment/
-    decrement statements; at the AST level, ``x + 1``, ``x += 1``, and ``x++`` are represented by
-    different kinds of AST nodes, while at the DFG level they are all modeled as a binary
-    operation node with operands ``x`` and ``1``
+    explicit at the AST level, such as those arising from compound assignments and
+    increment/decrement statements; at the AST level, ``x + 1``, ``x += 1``, and ``x++`` are
+    represented by different kinds of AST nodes, while at the DFG level they are all modeled as a
+    binary operation node with operands ``x`` and ``1``
   - ``DataFlow::UnaryOperationNode``: analogous, but for unary operators
-  - ``DataFlow::PointerDereferenceNode``: a pointer dereference, either explicit in an expression of
-    the form ``*p``, or implicit in a field or method reference through a pointer
-  - ``DataFlow::AddressOperationNode``: analogous, but for taking the address of an entity
-  - ``DataFlow::RelationalComparisonNode``, ``DataFlow::EqualityTestNode``: data-flow nodes
-    corresponding to ``RelationalComparisonExpr`` and ``EqualityTestExpr`` AST nodes
+
+    - ``DataFlow::PointerDereferenceNode``: a pointer dereference, either explicit in an expression
+      of the form ``*p``, or implicit in a field or method reference through a pointer
+    - ``DataFlow::AddressOperationNode``: analogous, but for taking the address of an entity
+    - ``DataFlow::RelationalComparisonNode``, ``DataFlow::EqualityTestNode``: data-flow nodes
+      corresponding to ``RelationalComparisonExpr`` and ``EqualityTestExpr`` AST nodes
 
 Finally, classes ``Read`` and ``Write`` represent, respectively, a read or a write of a variable, a
 field, or an element of an array, a slice or a map. Use their member predicates ``readsVariable``,

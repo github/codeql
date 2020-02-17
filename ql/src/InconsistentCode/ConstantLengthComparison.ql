@@ -16,7 +16,7 @@ from
   ControlFlow::ConditionGuardNode cond, DataFlow::CallNode lenA
 where
   // `i` is incremented in `fs`
-  fs.getPost().(IncStmt).getExpr() = i.getAReference() and
+  fs.getPost().(IncStmt).getOperand() = i.getAReference() and
   // `idx` reads `a[i]`
   idx.reads(a.getANode(), i.getARead()) and
   // `lenA` is `len(a)`
