@@ -353,20 +353,22 @@ module TaintedPath {
 
   /**
    * A sanitizer that recognizes the following pattern:
-   *   var relative = path.relative(webroot, pathname);
-   *   if(relative.startsWith(".." + path.sep) || relative == "..") {
-   *     // pathname is unsafe
-   *   } else {
-   *     // pathname is safe
-   *   }
+   * ```
+   * var relative = path.relative(webroot, pathname);
+   * if(relative.startsWith(".." + path.sep) || relative == "..") {
+   *   // pathname is unsafe
+   * } else {
+   *   // pathname is safe
+   * }
+   * ```
    */
-  class RelativePathContainsDotDotGuard extends DataFlow::BarrierGuardNode {
+  class RelativePathStartsWithDotDotSanitizer extends DataFlow::BarrierGuardNode {
     StringOps::StartsWith startsWith;
     DataFlow::CallNode relativeCall;
 
-    RelativePathContainsDotDotGuard() {
+    RelativePathStartsWithDotDotSanitizer() {
       this = startsWith and
-      relativeCall = DataFlow::moduleImport("path").getAMemberCall("relative") and
+      relativeCall = NodeJSLib::Path::moduleMember("relative").getACall() and
       (
         startsWith.getBaseString().getALocalSource() = relativeCall
         or
@@ -377,18 +379,11 @@ module TaintedPath {
             .getInput()
             .getALocalSource() = relativeCall
       ) and
-      exists(DataFlow::Node subString, string prefix |
-        subString = startsWith.getSubstring() and
-        (prefix = ".." or prefix = "../")
-      |
-        subString.mayHaveStringValue(prefix)
-        or
-        subString.(StringOps::ConcatenationRoot).getFirstLeaf().mayHaveStringValue(prefix)
-      )
+      isDotDotSlashPrefix(startsWith.getSubstring())
     }
 
     override predicate blocks(boolean outcome, Expr e) {
-      e = relativeCall.getArgument(1).asExpr() and outcome = false
+      e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
     }
   }
 
