@@ -19,7 +19,7 @@ class DjangoRoute extends CallNode {
 
     FunctionValue getViewFunction() { django_route(this, _, result) }
 
-    string getNamedArgument() {
+    string getANamedArgument() {
         exists(DjangoRouteRegex regex |
             django_route(this, regex.getAFlowNode(), _) and
             regex.getGroupName(_, _) = result
@@ -32,8 +32,8 @@ class DjangoRoute extends CallNode {
       */
     int getNumPositionalArguments() {
         exists(DjangoRouteRegex regex |
+            not exists(this.getANamedArgument()) and
             django_route(this, regex.getAFlowNode(), _) and
-            not exists(string s | s = regex.getGroupName(_, _)) and
             result = count(regex.getGroupNumber(_, _))
         )
     }

@@ -81,7 +81,7 @@ class DjangoRequestParameter extends HttpRequestTaintSource {
     DjangoRequestParameter() {
         exists(DjangoRoute route, Function f |
             f = route.getViewFunction().getScope() |
-            this.(ControlFlowNode).getNode() = f.getArgByName(route.getNamedArgument())
+            this.(ControlFlowNode).getNode() = f.getArgByName(route.getANamedArgument())
             or
             exists(int i | i >= 0 |
                 i < route.getNumPositionalArguments() and
