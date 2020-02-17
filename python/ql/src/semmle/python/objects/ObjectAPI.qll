@@ -745,7 +745,7 @@ module ClassValue {
     }
     
     /** Get the `ClassValue` for the `TypeError` class */
-    ClassValue typeErrorType() {
+    ClassValue typeError() {
         result = TBuiltinClassObject(Builtin::special("TypeError"))
     }
 
