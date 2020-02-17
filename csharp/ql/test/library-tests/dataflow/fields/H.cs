@@ -138,14 +138,16 @@ public class H
     object Through(object o)
     {
         var a = new A();
-        a.FieldA = o;
+        a.FieldA = o as A;
         return Transform(a).FieldB;
     }
 
     void M7()
     {
-        var o = Through(new object());
-        Sink(o); // flow
+        var a = Through(new A());
+        Sink(a); // flow
+        var b = Through(new B());
+        Sink(b); // no flow
     }
 
     public static void Sink(object o) { }
