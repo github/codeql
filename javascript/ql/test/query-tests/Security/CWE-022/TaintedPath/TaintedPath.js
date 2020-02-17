@@ -140,6 +140,8 @@ var server = http.createServer(function(req, res) {
   fs.readFileSync(concatted.join("/")); // NOT OK
 
   var concatted2 = split.concat(prefix);
-  fs.readFileSync(concatted2.join("/")); // NOT OK 
+  fs.readFileSync(concatted2.join("/")); // NOT OK
+
+  fs.readFileSync(split.pop()); // NOT OK 
 
 });

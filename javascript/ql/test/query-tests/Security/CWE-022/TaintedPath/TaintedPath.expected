@@ -1106,6 +1106,23 @@ nodes
 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
+| TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:29 | split.pop() |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
@@ -3615,6 +3632,10 @@ edges
 | TaintedPath.js:130:7:130:29 | split | TaintedPath.js:142:20:142:24 | split |
 | TaintedPath.js:130:7:130:29 | split | TaintedPath.js:142:20:142:24 | split |
 | TaintedPath.js:130:7:130:29 | split | TaintedPath.js:142:20:142:24 | split |
+| TaintedPath.js:130:7:130:29 | split | TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:130:7:130:29 | split | TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:130:7:130:29 | split | TaintedPath.js:145:19:145:23 | split |
+| TaintedPath.js:130:7:130:29 | split | TaintedPath.js:145:19:145:23 | split |
 | TaintedPath.js:130:15:130:18 | path | TaintedPath.js:130:15:130:29 | path.split("/") |
 | TaintedPath.js:130:15:130:18 | path | TaintedPath.js:130:15:130:29 | path.split("/") |
 | TaintedPath.js:130:15:130:18 | path | TaintedPath.js:130:15:130:29 | path.split("/") |
@@ -3755,6 +3776,22 @@ edges
 | TaintedPath.js:143:19:143:28 | concatted2 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
 | TaintedPath.js:143:19:143:28 | concatted2 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
 | TaintedPath.js:143:19:143:28 | concatted2 | TaintedPath.js:143:19:143:38 | concatted2.join("/") |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
+| TaintedPath.js:145:19:145:23 | split | TaintedPath.js:145:19:145:29 | split.pop() |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
@@ -5017,6 +5054,7 @@ edges
 | TaintedPath.js:137:19:137:35 | prefix + split[x] | TaintedPath.js:126:24:126:30 | req.url | TaintedPath.js:137:19:137:35 | prefix + split[x] | This path depends on $@. | TaintedPath.js:126:24:126:30 | req.url | a user-provided value |
 | TaintedPath.js:140:19:140:37 | concatted.join("/") | TaintedPath.js:126:24:126:30 | req.url | TaintedPath.js:140:19:140:37 | concatted.join("/") | This path depends on $@. | TaintedPath.js:126:24:126:30 | req.url | a user-provided value |
 | TaintedPath.js:143:19:143:38 | concatted2.join("/") | TaintedPath.js:126:24:126:30 | req.url | TaintedPath.js:143:19:143:38 | concatted2.join("/") | This path depends on $@. | TaintedPath.js:126:24:126:30 | req.url | a user-provided value |
+| TaintedPath.js:145:19:145:29 | split.pop() | TaintedPath.js:126:24:126:30 | req.url | TaintedPath.js:145:19:145:29 | split.pop() | This path depends on $@. | TaintedPath.js:126:24:126:30 | req.url | a user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |

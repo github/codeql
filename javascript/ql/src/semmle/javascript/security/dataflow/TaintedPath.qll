@@ -114,7 +114,12 @@ module TaintedPath {
         or
         (
           name = "pop" or
-          name = "shift" or
+          name = "shift"
+        ) and
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
+        or
+        (
           name = "slice" or
           name = "splice" or
           name = "concat"
