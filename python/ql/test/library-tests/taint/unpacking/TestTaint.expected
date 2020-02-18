@@ -1,0 +1,33 @@
+| test.py:8 | unpacking | a | externally controlled string |
+| test.py:8 | unpacking | b | externally controlled string |
+| test.py:8 | unpacking | c | externally controlled string |
+| test.py:14 | unpacking_to_list | a | externally controlled string |
+| test.py:14 | unpacking_to_list | b | externally controlled string |
+| test.py:14 | unpacking_to_list | c | externally controlled string |
+| test.py:23 | nested | a1 | externally controlled string |
+| test.py:23 | nested | a2 | externally controlled string |
+| test.py:23 | nested | a3 | externally controlled string |
+| test.py:23 | nested | b | [externally controlled string] |
+| test.py:23 | nested | c | [externally controlled string] |
+| test.py:27 | nested | a1 | externally controlled string |
+| test.py:27 | nested | a2 | externally controlled string |
+| test.py:27 | nested | a3 | externally controlled string |
+| test.py:27 | nested | b | [externally controlled string] |
+| test.py:27 | nested | c | [externally controlled string] |
+| test.py:31 | nested | a1 | externally controlled string |
+| test.py:31 | nested | a2 | externally controlled string |
+| test.py:31 | nested | a3 | externally controlled string |
+| test.py:31 | nested | b | [externally controlled string] |
+| test.py:31 | nested | c | [externally controlled string] |
+| test.py:38 | unpack_from_set | a | NO TAINT |
+| test.py:38 | unpack_from_set | b | NO TAINT |
+| test.py:38 | unpack_from_set | c | NO TAINT |
+| test.py:48 | contrived_1 | a | externally controlled string |
+| test.py:48 | contrived_1 | b | externally controlled string |
+| test.py:48 | contrived_1 | c | externally controlled string |
+| test.py:48 | contrived_1 | d | externally controlled string |
+| test.py:48 | contrived_1 | e | externally controlled string |
+| test.py:48 | contrived_1 | f | externally controlled string |
+| test.py:56 | contrived_2 | a | NO TAINT |
+| test.py:56 | contrived_2 | b | NO TAINT |
+| test.py:56 | contrived_2 | c | NO TAINT |
