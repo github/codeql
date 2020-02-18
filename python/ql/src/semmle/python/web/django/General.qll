@@ -6,38 +6,6 @@ import semmle.python.web.Http
 // a FunctionValue, so we can't use `FunctionValue.getArgumentForCall`
 // https://github.com/django/django/blob/master/django/urls/conf.py#L76
 
-private predicate django_regex_route(CallNode call, ControlFlowNode regex, FunctionValue view) {
-    exists(Value route_maker |
-        (
-            // Django 1.x
-            Value::named("django.conf.urls.url") = route_maker and
-            route_maker.(FunctionValue).getArgumentForCall(call, 0) = regex and
-            route_maker.(FunctionValue).getArgumentForCall(call, 1).pointsTo(view)
-        )
-        or
-        (
-            // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#re-path
-            Value::named("django.urls.re_path") = route_maker and
-            route_maker.getACall() = call and
-            (
-                call.getArg(0) = regex
-                or
-                call.getArgByName("route") = regex
-
-            ) and
-            (
-                call.getArg(1).pointsTo(view)
-                or
-                call.getArgByName("view").pointsTo(view)
-            )
-        )
-    )
-}
-
-class DjangoRouteRegex extends RegexString {
-    DjangoRouteRegex() { django_regex_route(_, this.getAFlowNode(), _) }
-}
-
 abstract class DjangoRoute extends CallNode {
 
     abstract FunctionValue getViewFunction();
@@ -51,22 +19,59 @@ abstract class DjangoRoute extends CallNode {
     abstract int getNumPositionalArguments();
 }
 
-class DjangoRegexRoute extends DjangoRoute {
-    DjangoRegexRoute() { django_regex_route(this, _, _) }
+// We need this "dummy" class, since otherwise the regex argument would not be considered a regex (RegexString is abstract)
+class DjangoRouteRegex extends RegexString {
+    DjangoRouteRegex() {
+        exists(DjangoRegexRoute route | route.getRouteArg() = this.getAFlowNode())
+    }
+}
 
-    override FunctionValue getViewFunction() { django_regex_route(this, _, result) }
+class DjangoRegexRoute extends DjangoRoute {
+
+    ControlFlowNode route;
+    FunctionValue view;
+
+    DjangoRegexRoute() {
+
+        exists(FunctionValue route_maker |
+            // Django 1.x
+            Value::named("django.conf.urls.url") = route_maker and
+            route_maker.getArgumentForCall(this, 0) = route and
+            route_maker.getArgumentForCall(this, 1).pointsTo(view)
+        )
+        or
+        (
+            // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#re-path
+            this = Value::named("django.urls.re_path").getACall() and
+            (
+                route = this.getArg(0)
+                or
+                route = this.getArgByName("route")
+
+            ) and
+            (
+                this.getArg(1).pointsTo(view)
+                or
+                this.getArgByName("view").pointsTo(view)
+            )
+        )
+    }
+
+    override FunctionValue getViewFunction() { result = view }
+
+    ControlFlowNode getRouteArg() { result = route }
 
     override string getANamedArgument() {
         exists(DjangoRouteRegex regex |
-            django_regex_route(this, regex.getAFlowNode(), _) and
-            regex.getGroupName(_, _) = result
+            regex.getAFlowNode() = route |
+            result = regex.getGroupName(_, _)
         )
     }
 
     override int getNumPositionalArguments() {
+        not exists(this.getANamedArgument()) and
         exists(DjangoRouteRegex regex |
-            not exists(this.getANamedArgument()) and
-            django_regex_route(this, regex.getAFlowNode(), _) and
+            regex.getAFlowNode() = route |
             result = count(regex.getGroupNumber(_, _))
         )
     }
