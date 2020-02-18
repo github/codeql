@@ -1,0 +1,2 @@
+| False negative | uselesscat.js:69:42:69:69 | // NOT  ... lagged] |
+| False positive | uselesscat.js:18:70:18:118 | // OK [ ... jection |

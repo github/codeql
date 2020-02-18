@@ -89,6 +89,10 @@ nodes
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
+| uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
+| uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
+| uselesscat.js:18:40:18:54 | req.params.data |
+| uselesscat.js:18:40:18:54 | req.params.data |
 edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
@@ -178,6 +182,10 @@ edges
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
+| uselesscat.js:18:40:18:54 | req.params.data | uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
+| uselesscat.js:18:40:18:54 | req.params.data | uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
+| uselesscat.js:18:40:18:54 | req.params.data | uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
+| uselesscat.js:18:40:18:54 | req.params.data | uselesscat.js:18:20:18:54 | 'cat '  ... ms.data |
 #select
 | child_process-test.js:17:13:17:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:17:13:17:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:18:17:18:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:18:17:18:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
@@ -211,3 +219,4 @@ edges
 | other.js:18:22:18:24 | cmd | other.js:5:25:5:31 | req.url | other.js:18:22:18:24 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:19:36:19:38 | cmd | other.js:5:25:5:31 | req.url | other.js:19:36:19:38 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command depends on $@. | third-party-command-injection.js:5:20:5:26 | command | a server-provided value |
+| uselesscat.js:18:20:18:54 | 'cat '  ... ms.data | uselesscat.js:18:40:18:54 | req.params.data | uselesscat.js:18:20:18:54 | 'cat '  ... ms.data | This command depends on $@. | uselesscat.js:18:40:18:54 | req.params.data | a user-provided value |
