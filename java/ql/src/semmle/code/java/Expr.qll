@@ -1076,8 +1076,6 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 }
 
 /**
- * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
- *
  * A `switch` expression.
  */
 class SwitchExpr extends Expr, @switchexpr {
