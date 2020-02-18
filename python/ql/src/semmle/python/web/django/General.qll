@@ -5,9 +5,7 @@ import semmle.python.web.Http
 // TODO: Since django uses `path = partial(...)`, our analysis doesn't understand this is
 // a FunctionValue, so we can't use `FunctionValue.getArgumentForCall`
 // https://github.com/django/django/blob/master/django/urls/conf.py#L76
-
 abstract class DjangoRoute extends CallNode {
-
     abstract FunctionValue getViewFunction();
 
     abstract string getANamedArgument();
@@ -19,20 +17,17 @@ abstract class DjangoRoute extends CallNode {
     abstract int getNumPositionalArguments();
 }
 
-// We need this "dummy" class, since otherwise the regex argument would not be considered a regex (RegexString is abstract)
+// We need this "dummy" class, since otherwise the regex argument would not be considered
+// a regex (RegexString is abstract)
 class DjangoRouteRegex extends RegexString {
-    DjangoRouteRegex() {
-        exists(DjangoRegexRoute route | route.getRouteArg() = this.getAFlowNode())
-    }
+    DjangoRouteRegex() { exists(DjangoRegexRoute route | route.getRouteArg() = this.getAFlowNode()) }
 }
 
 class DjangoRegexRoute extends DjangoRoute {
-
     ControlFlowNode route;
     FunctionValue view;
 
     DjangoRegexRoute() {
-
         exists(FunctionValue route_maker |
             // Django 1.x
             Value::named("django.conf.urls.url") = route_maker and
@@ -40,20 +35,17 @@ class DjangoRegexRoute extends DjangoRoute {
             route_maker.getArgumentForCall(this, 1).pointsTo(view)
         )
         or
+        // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#re-path
+        this = Value::named("django.urls.re_path").getACall() and
         (
-            // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#re-path
-            this = Value::named("django.urls.re_path").getACall() and
-            (
-                route = this.getArg(0)
-                or
-                route = this.getArgByName("route")
-
-            ) and
-            (
-                this.getArg(1).pointsTo(view)
-                or
-                this.getArgByName("view").pointsTo(view)
-            )
+            route = this.getArg(0)
+            or
+            route = this.getArgByName("route")
+        ) and
+        (
+            this.getArg(1).pointsTo(view)
+            or
+            this.getArgByName("view").pointsTo(view)
         )
     }
 
@@ -62,23 +54,20 @@ class DjangoRegexRoute extends DjangoRoute {
     ControlFlowNode getRouteArg() { result = route }
 
     override string getANamedArgument() {
-        exists(DjangoRouteRegex regex |
-            regex.getAFlowNode() = route |
+        exists(DjangoRouteRegex regex | regex.getAFlowNode() = route |
             result = regex.getGroupName(_, _)
         )
     }
 
     override int getNumPositionalArguments() {
         not exists(this.getANamedArgument()) and
-        exists(DjangoRouteRegex regex |
-            regex.getAFlowNode() = route |
+        exists(DjangoRouteRegex regex | regex.getAFlowNode() = route |
             result = count(regex.getGroupNumber(_, _))
         )
     }
 }
 
 class DjangoPathRoute extends DjangoRoute {
-
     ControlFlowNode route;
     FunctionValue view;
 
@@ -89,7 +78,6 @@ class DjangoPathRoute extends DjangoRoute {
             route = this.getArg(0)
             or
             route = this.getArgByName("route")
-
         ) and
         (
             this.getArg(1).pointsTo(view)
@@ -110,7 +98,5 @@ class DjangoPathRoute extends DjangoRoute {
         )
     }
 
-    override int getNumPositionalArguments() {
-        none()
-    }
+    override int getNumPositionalArguments() { none() }
 }
