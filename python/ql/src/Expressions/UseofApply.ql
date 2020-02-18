@@ -13,6 +13,5 @@ import python
 private import semmle.python.types.Builtins
 
 from CallNode call, ControlFlowNode func
-where
-major_version() = 2 and call.getFunction() = func and func.pointsTo(Value::named("apply"))
+where major_version() = 2 and call.getFunction() = func and func.pointsTo(Value::named("apply"))
 select call, "Call to the obsolete builtin function 'apply'."
