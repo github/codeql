@@ -139,8 +139,6 @@ Statements
   deferred
 - ``SendStmt``: a send statement; use ``getChannel()`` and ``getValue()`` to access the channel and
   the value being sent over the channel, respectively
-- ``RecvStmt``: a receive statement in a ``select`` statement; use ``getExpr()`` to access the
-  receiver expression, and ``getLhs(i)`` to access the ``i``\ th left-hand side
 - ``ReturnStmt``: a ``return`` statement; use ``getExpr(i)`` to access the ``i``\ th returned
   expression; if there is only a single returned expression you can use ``getExpr()`` instead
 - ``BranchStmt``: a statement that interrupts structured control flow; use ``getLabel()`` to get the
@@ -170,7 +168,7 @@ Statements
   ``getStmt(i)`` to access the ``i``\ th statement in the body of this clause
 - ``RecvStmt``: a receive statement in a ``case`` clause of a ``select`` statement; use
   ``getLhs(i)`` to access the ``i``\ th left-hand side of this statement, and ``getExpr()`` to
-  access the underlying receive expression
+  access the underlying receive expression.
 
 Expressions
 ~~~~~~~~~~~

@@ -530,7 +530,7 @@ class RecvStmt extends Stmt {
   int getNumLhs() { result = count(getLhs(_)) }
 
   /** Gets the receive expression of this receive statement. */
-  ArrowExpr getExpr() {
+  RecvExpr getExpr() {
     result = this.(ExprStmt).getExpr() or
     result = this.(Assignment).getRhs()
   }
