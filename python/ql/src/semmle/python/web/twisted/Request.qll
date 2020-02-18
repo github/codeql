@@ -26,7 +26,7 @@ class TwistedRequest extends TaintKind {
     }
 }
 
-class TwistedRequestSource extends TaintSource {
+class TwistedRequestSource extends HttpRequestTaintSource {
     TwistedRequestSource() { isTwistedRequestInstance(this) }
 
     override string toString() { result = "Twisted request source" }

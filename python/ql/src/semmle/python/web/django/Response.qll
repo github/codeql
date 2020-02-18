@@ -18,8 +18,8 @@ private ClassValue theDjangoHttpResponseClass() {
     not result = theDjangoHttpRedirectClass()
 }
 
-/** Instantiation of a django response. */
-class DjangoResponseSource extends TaintSource {
+/** internal class used for tracking a django response. */
+private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
         exists(ClassValue cls |
             cls.getASuperType() = theDjangoHttpResponseClass() and

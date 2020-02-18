@@ -265,3 +265,5 @@ class DataFlowCall extends CallInstruction {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }

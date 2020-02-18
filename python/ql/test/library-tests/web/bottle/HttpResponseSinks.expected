@@ -1,0 +1,4 @@
+| test.py:9:12:9:26 | bottle handler function result | externally controlled string |
+| test.py:13:12:13:24 | bottle handler function result | externally controlled string |
+| test.py:19:12:19:33 | bottle handler function result | externally controlled string |
+| test.py:36:21:36:51 | Taint sink | externally controlled string |

@@ -98,6 +98,22 @@ abstract class FunctionWithWrappers extends Function {
    * Whether 'func' is a (possibly nested) wrapper function that feeds a parameter at the given index
    * through to an interesting parameter of 'this' function.
    *
+   * The 'cause' gives the name of 'this' interesting function and its relevant parameter
+   * at the end of the call chain.
+   *
+   * If there is more than one possible 'cause', a unique one is picked (by lexicographic order).
+   */
+  pragma[nomagic]
+  private string wrapperFunctionAnyDepthUnique(Function func, int paramIndex) {
+    result =
+      toCause(func, paramIndex) + ", which ends up calling " +
+        min(string targetCause | this.wrapperFunctionAnyDepth(func, paramIndex, targetCause))
+  }
+
+  /**
+   * Whether 'func' is a (possibly nested) wrapper function that feeds a parameter at the given index
+   * through to an interesting parameter of 'this' function.
+   *
    * If there exists a call chain with depth at most 4, the 'cause' reports the smallest call chain.
    * Otherwise, the 'cause' merely reports the name of 'this' interesting function and its relevant
    * parameter at the end of the call chain.
@@ -114,13 +130,7 @@ abstract class FunctionWithWrappers extends Function {
       )
     or
     not this.wrapperFunctionLimitedDepth(func, paramIndex, _, _) and
-    cause =
-      min(string targetCause, string possibleCause |
-        this.wrapperFunctionAnyDepth(func, paramIndex, targetCause) and
-        possibleCause = toCause(func, paramIndex) + ", which ends up calling " + targetCause
-      |
-        possibleCause
-      )
+    cause = wrapperFunctionAnyDepthUnique(func, paramIndex)
   }
 
   /**
