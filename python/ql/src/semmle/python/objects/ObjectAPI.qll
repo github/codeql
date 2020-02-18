@@ -118,9 +118,19 @@ class Value extends TObject {
         )
     }
 
-    /** Gets the boolean value of this value. */
-    boolean booleanValue() {
+    /** Gets the boolean interpretation of this value.
+      * Could be both `true` and `false`, if we can't determine the result more precisely.
+      */
+    boolean getABooleanValue() {
         result = this.(ObjectInternal).booleanValue()
+    }
+
+    /** Gets the boolean interpretation of this value, only if we can determine the result precisely.
+      * The result can be `none()`, but never both `true` and `false`.
+      */
+    boolean getDefiniteBooleanValue() {
+        result = getABooleanValue() and
+        not (getABooleanValue() = true and getABooleanValue() = false)
     }
 }
 
@@ -241,14 +251,14 @@ module Value {
         name = "False" and result = TFalse()
     }
 
-    /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are
+    /** Gets the `NumericValue` for the integer constant `i`, if it exists.
+     * There will be no `NumericValue` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
      * * Any integer explicitly mentioned in the source program.
      */
-    Value forInt(int i) {
+    NumericValue forInt(int i) {
         result.(IntObjectInternal).intValue() = i
     }
 
@@ -256,7 +266,7 @@ module Value {
      * There will be no `Value` for most byte strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forBytes(string bytes) {
+    StringValue forBytes(string bytes) {
         result.(BytesObjectInternal).strValue() = bytes
     }
 
@@ -264,7 +274,7 @@ module Value {
      * There will be no `Value` for most text strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forUnicode(string text) {
+    StringValue forUnicode(string text) {
         result.(UnicodeObjectInternal).strValue() = text
     }
 
@@ -272,7 +282,7 @@ module Value {
      * There will be no `Value` for most strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forString(string text) {
+    StringValue forString(string text) {
         result.(UnicodeObjectInternal).strValue() = text
         or
         major_version() = 2 and
@@ -617,6 +627,26 @@ class StringValue extends Value {
         result = this.(BytesObjectInternal).strValue()
         or
         result = this.(UnicodeObjectInternal).strValue()
+    }
+}
+
+/** A class representing numbers (ints and floats), either present in the source as a literal,
+ *  or in a builtin as a value.
+ */
+class NumericValue extends Value {
+    NumericValue() {
+        this instanceof IntObjectInternal or
+        this instanceof FloatObjectInternal
+    }
+
+    /** Gets the integer-value if it is a constant integer, and it fits in a QL int */
+    int getIntValue() {
+        result = this.(IntObjectInternal).intValue()
+    }
+
+    /** Gets the float-value if it is a constant float */
+    int getFloatValue() {
+        result = this.(FloatObjectInternal).floatValue()
     }
 }
 
