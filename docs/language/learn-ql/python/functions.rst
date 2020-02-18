@@ -57,7 +57,7 @@ We can modify the query further to include only methods whose body consists of a
     and count(f.getAStmt()) = 1
    select f, "This function is (probably) a getter."
 
-➤ `See this in the query console <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in :doc:`Tutorial: Statements and expressions <statements-expressions>`.
+➤ `See this in the query console <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in ":doc:`Tutorial: Statements and expressions <statements-expressions>`."
 
 Finding a call to a specific function
 -------------------------------------

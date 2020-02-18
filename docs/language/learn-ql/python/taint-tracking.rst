@@ -18,7 +18,7 @@ even though there is no data flow from ``path`` to ``path + "/"``.
 Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <../cpp/dataflow>`, :doc:`C# <../csharp/dataflow>`, :doc:`Java <../java/dataflow>`, and :doc:`JavaScript <../javascript/dataflow>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query.
 In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve values and those that don't by defining additional data flow properties.
 
-For further information on data flow and taint tracking with CodeQL, see :doc:`Introduction to data flow <../intro-to-data-flow>`.
+For further information on data flow and taint tracking with CodeQL, see ":doc:`Introduction to data flow <../intro-to-data-flow>`."
 
 Fundamentals of taint tracking using data flow analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -231,8 +231,8 @@ The ``TaintKind`` itself is just a string (a QL string, not a CodeQL entity repr
 which provides methods to extend flow and allow the kind of taint to change along the path.
 The ``TaintKind`` class has many predicates allowing flow to be modified.
 This simplest ``TaintKind`` does not override any predicates, meaning that it only flows as opaque data.
-An example of this is the `Hard-coded credentials query <https://lgtm.com/query/rule:1506421276400/lang:python/>`_,
-which defines the simplest possible taint kind class, ``HardcodedValue``, and custom source and sink classes.
+An example of this is the "Hard-coded credentials" query,
+which defines the simplest possible taint kind class, ``HardcodedValue``, and custom source and sink classes. For more information, see `Hard-coded credentials <https://lgtm.com/query/rule:1506421276400/lang:python/>`_ on LGTM.com.
 
 .. code-block:: ql
 

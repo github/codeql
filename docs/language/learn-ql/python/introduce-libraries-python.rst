@@ -22,9 +22,7 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 Syntactic classes
 -----------------
 
-This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__.
-
-Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__.
+This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ and `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ in Wikipedia.
 
 Scope
 ^^^^^
@@ -239,7 +237,7 @@ Other
 Control flow classes
 --------------------
 
-This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__.
+This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into basic blocks. For more information, see `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__ in Wikipedia.
 
 Example
 ^^^^^^^
@@ -309,7 +307,7 @@ For example, which ``ClassValue``\ s are iterable can be determined using the qu
    where cls.hasAttribute("__iter__")
    select cls
 
-➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
+➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <http://docs.python.org/library/stdtypes.html>`__ in the Python documentation.
 
 Summary
 ^^^^^^^
@@ -320,7 +318,7 @@ Summary
    -  ``CallableValue``
    -  ``ModuleValue``
 
-For more information about these classes, see :doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`.
+For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`."
 
 Taint-tracking classes
 ----------------------
@@ -334,7 +332,7 @@ Summary
 - `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
 - `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
-For more information about these classes, see :doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`.
+For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`".
 
 
 Further reading
