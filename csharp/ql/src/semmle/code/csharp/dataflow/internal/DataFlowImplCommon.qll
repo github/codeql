@@ -296,20 +296,19 @@ private module Cached {
         // read
         exists(Node mid, Content f, ContentOption contentInMid, ContentOption contentOutMid |
           parameterValueFlow(p, mid, contentInMid, contentOutMid) and
-          readStep(mid, f, node)
+          readStep(mid, f, node) and
+          contentOut = TContentNone()
         |
           // value neither read nor stored prior to read
           contentInMid = TContentNone() and
           contentOutMid = TContentNone() and
           contentIn.getContent() = f and
-          contentOut = TContentNone() and
           Cand::parameterValueFlowReturnCand(p, _, true, _) and
           compatibleTypes(getErasedNodeTypeBound(p), f.getContainerType())
           or
           // value (possibly read and then) stored prior to read (same content)
           contentIn = contentInMid and
-          contentOutMid.getContent() = f and
-          contentOut = TContentNone()
+          contentOutMid.getContent() = f
         )
         or
         // store
