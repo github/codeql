@@ -2,7 +2,7 @@ public class H
 {
     class A
     {
-        public object FieldA;
+        public object FieldA; public A Test;
     }
 
     class B
@@ -148,6 +148,20 @@ public class H
         Sink(a); // flow
         var b = Through(new B());
         Sink(b); // no flow
+    }
+
+    void M8()
+    {
+        var a = new A();
+        ((A)a.FieldA).FieldA = new object();
+        Sink(Get(a)); // no flow
+        Sink(Get((A) Get(a))); // flow
+        Sink(((A)a.FieldA).FieldA);
+        //var a = new A();
+        ((A)a.Test).FieldA = new object();
+        //Sink(Get(a)); // no flow
+        //Sink(Get((A) Get(a))); // flow
+        Sink(Get(a.Test));
     }
 
     public static void Sink(object o) { }
