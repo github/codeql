@@ -31,7 +31,8 @@ An annotated flow graph:
 
 The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find unreachable code. There is one ``ControlFlowNode`` per path through any ``AstNode`` and any ``AstNode`` that is unreachable has no paths flowing through it. Therefore, any ``AstNode`` without a corresponding ``ControlFlowNode`` is unreachable.
 
-**Unreachable AST nodes**
+Example finding unreachable AST nodes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ql
 
@@ -43,7 +44,8 @@ The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find u
 
 ➤ `See this in the query console <https://lgtm.com/query/669220024/>`__. The demo projects on LGTM.com all have some code that has no control flow node, and is therefore unreachable. However, since the ``Module`` class is also a subclass of the ``AstNode`` class, the query also finds any modules implemented in C or with no source code. Therefore, it is better to find all unreachable statements:
 
-**Unreachable statements**
+Example finding unreachable statements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ql
 
@@ -60,8 +62,8 @@ The ``BasicBlock`` class
 
 The ``BasicBlock`` class represents a `basic block <http://en.wikipedia.org/wiki/Basic_block>`__ of control flow nodes. The ``BasicBlock`` class is not that useful for writing queries directly, but is very useful for building complex analyses, such as data flow. The reason it is useful is that it shares many of the interesting properties of control flow nodes, such as what can reach what and what `dominates <http://en.wikipedia.org/wiki/Dominator_%28graph_theory%29>`__ what, but there are fewer basic blocks than control flow nodes - resulting in queries that are faster and use less memory.
 
-Example: Finding mutually exclusive basic blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example finding mutually exclusive basic blocks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Suppose we have the following Python code:
 
@@ -92,7 +94,8 @@ However, by that definition, two basic blocks are mutually exclusive if they are
 
 Combining these conditions we get:
 
-**Mutually exclusive blocks within the same function**
+Example finding mutually exclusive blocks within the same function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ql
 

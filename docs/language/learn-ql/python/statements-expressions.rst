@@ -39,12 +39,10 @@ Here is the full class hierarchy:
    -  ``While`` – A ``while`` statement
    -  ``With`` – A ``with`` statement
 
-Example: Finding redundant 'global' statements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example finding redundant 'global' statements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``global`` statement in Python declares a variable with a global (module-level) scope, when it would otherwise be local. Using the ``global`` statement outside a class or function is redundant as the variable is already global.
-
-**Finding redundant global statements**
 
 .. code-block:: ql
 
@@ -58,12 +56,10 @@ The ``global`` statement in Python declares a variable with a global (module-lev
 
 The line: ``g.getScope() instanceof Module`` ensures that the ``Scope`` of ``Global g`` is a ``Module``, rather than a class or function.
 
-Example: Finding 'if' statements with redundant branches
---------------------------------------------------------
+Example finding 'if' statements with redundant branches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An ``if`` statement where one branch is composed of just ``pass`` statements could be simplified by negating the condition and dropping the ``else`` clause.
-
-**An 'if' statement that could be simplified**
 
 .. code-block:: python
 
@@ -72,9 +68,7 @@ An ``if`` statement where one branch is composed of just ``pass`` statements cou
    else:
        do_something
 
-To find statements like this we can run the following query:
-
-**Find 'if' statements with empty branches**
+To find statements like this that could be simplified we can write a query.
 
 .. code-block:: ql
 
@@ -133,8 +127,8 @@ Each kind of Python expression has its own class. Here is the full class hierarc
    -  ``Yield`` – A ``yield`` expression
    -  ``YieldFrom`` – A ``yield from`` expression (Python 3.3+)
 
-Example: Finding comparisons to integer or string literals using 'is'
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example finding comparisons to integer or string literals using 'is'
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Python implementations commonly cache small integers and single character strings, which means that comparisons such as the following often work correctly, but this is not guaranteed and we might want to check for them.
 
@@ -143,9 +137,7 @@ Python implementations commonly cache small integers and single character string
    x is 10
    x is "A"
 
-We can check for these as follows:
-
-**Find comparisons to integer or string literals using** ``is``
+We can check for these using a query.
 
 .. code-block:: ql
 
@@ -166,14 +158,10 @@ The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` che
 
    We have to use ``cmp.getOp(0)`` and ``cmp.getComparator(0)``\ as there is no ``cmp.getOp()`` or ``cmp.getComparator()``. The reason for this is that a ``Compare`` expression can have multiple operators. For example, the expression ``3 < x < 7`` has two operators and two comparators. You use ``cmp.getComparator(0)`` to get the first comparator (in this example the ``3``) and ``cmp.getComparator(1)`` to get the second comparator (in this example the ``7``).
 
-Example: Duplicates in dictionary literals
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example finding duplicates in dictionary literals
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If there are duplicate keys in a Python dictionary, then the second key will overwrite the first, which is almost certainly a mistake. We can find these duplicates with CodeQL, but the query is more complex than previous examples and will require us to write a ``predicate`` as a helper.
-
-Here is the query:
-
-**Find duplicate dictionary keys**
 
 .. code-block:: ql
 
@@ -206,12 +194,10 @@ is equivalent to
 
 The short version is usually used as this is easier to read.
 
-Example: Finding Java-style getters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example finding Java-style getters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Returning to the example from :doc:`Tutorial: Functions <functions>`, the query identified all methods with a single line of code and a name starting with ``get``:
-
-**Basic: Find Java-style getters**
+Returning to the example from :doc:`Tutorial: Functions <functions>`, the query identified all methods with a single line of code and a name starting with ``get``.
 
 .. code-block:: ql
 
@@ -222,9 +208,7 @@ Returning to the example from :doc:`Tutorial: Functions <functions>`, the query 
        and count(f.getAStmt()) = 1
    select f, "This function is (probably) a getter."
 
-This basic query can be improved by checking that the one line of code is of the form ``return self.attr``
-
-**Improved: Find Java-style getters**
+This basic query can be improved by checking that the one line of code is a Java-style getter of the form ``return self.attr``.
 
 .. code-block:: ql
 
@@ -238,21 +222,17 @@ This basic query can be improved by checking that the one line of code is of the
 
 ➤ `See this in the query console <https://lgtm.com/query/669220054/>`__. Of the demo projects on LGTM.com, only the *openstack/nova* project has examples of functions that appear to be Java-style getters.
 
-In this query, the condition:
-
 .. code-block:: ql
 
    ret = f.getStmt(0) and ret.getValue() = attr
 
-checks that the first line in the method is a return statement and that the expression returned (``ret.getValue()``) is an ``Attribute`` expression. Note that the equality ``ret.getValue() = attr`` means that ``ret.getValue()`` is restricted to ``Attribute``\ s, since ``attr`` is an ``Attribute``.
-
-The condition:
+This condition checks that the first line in the method is a return statement and that the expression returned (``ret.getValue()``) is an ``Attribute`` expression. Note that the equality ``ret.getValue() = attr`` means that ``ret.getValue()`` is restricted to ``Attribute``\ s, since ``attr`` is an ``Attribute``.
 
 .. code-block:: ql
 
    attr.getObject() = self and self.getId() = "self"
 
-checks that the value of the attribute (the expression to the left of the dot in ``value.attr``) is an access to a variable called ``"self"``.
+This condition checks that the value of the attribute (the expression to the left of the dot in ``value.attr``) is an access to a variable called ``"self"``.
 
 Class and function definitions
 ------------------------------

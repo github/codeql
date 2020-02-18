@@ -3,6 +3,7 @@ Pointer analysis and type inference in Python
 
 At run time, each Python expression has a value with an associated type. You can learn how an expression behaves at run time using type-inference classes from the standard CodeQL library.
 
+
 This topic contains worked examples of how to write queries using the standard CodeQL library classes for Python type inference.
 
 The ``Value`` class
@@ -11,7 +12,7 @@ The ``Value`` class
 The ``Value`` class and its subclasses ``FunctionValue``, ``ClassValue``, and ``ModuleValue`` represent the values an expression may hold at runtime.
 
 Summary
-~~~~~~~
+^^^^^^^
 
 Class hierarchy for ``Value``:
 

@@ -3,8 +3,8 @@ Analyzing data flow and tracking tainted data in Python
 
 You can use CodeQL to track the flow of data through a Python program to its use. Tracking user-controlled, or tainted, data is a key technique for security researchers.
 
-Overview
---------
+About data flow and taint tracking
+----------------------------------
 
 Taint tracking is used to analyze how potentially insecure, or 'tainted' data flows throughout a program at runtime.
 You can use taint tracking to find out whether user-controlled input can be used in a malicious way,
@@ -16,12 +16,12 @@ For example, in the assignment ``dir = path + "/"``, if ``path`` is tainted then
 even though there is no data flow from ``path`` to ``path + "/"``.
 
 Separate CodeQL libraries have been written to handle 'normal' data flow and taint tracking in :doc:`C/C++ <../cpp/dataflow>`, :doc:`C# <../csharp/dataflow>`, :doc:`Java <../java/dataflow>`, and :doc:`JavaScript <../javascript/dataflow>`. You can access the appropriate classes and predicates that reason about these different modes of data flow by importing the appropriate library in your query.
-In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve value and those that don't by defining additional data flow properties.
+In Python analysis, we can use the same taint tracking library to model both 'normal' data flow and taint flow, but we are still able make the distinction between steps that preserve values and those that don't by defining additional data flow properties.
 
 For further information on data flow and taint tracking with CodeQL, see :doc:`Introduction to data flow <../intro-to-data-flow>`.
 
-Fundamentals of taint tracking and data flow analysis
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fundamentals of taint tracking using data flow analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The taint tracking library is in the `TaintTracking <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ module.
 Any taint tracking or data flow analysis query has three explicit components, one of which is optional, and an implicit component.
@@ -41,7 +41,7 @@ The kind of taint determines which non-value-preserving steps are possible, in a
 In the above example ``dir = path + "/"``, taint flows from ``path`` to ``dir`` if the taint represents a string, but not if the taint is ``None``.
 
 Limitations
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 Although taint tracking is a powerful technique, it is worth noting that it depends on the underlying data flow graphs.
 Creating a data flow graph that is both accurate and covers a large enough part of a program is a challenge,
@@ -80,6 +80,9 @@ A simple taint tracking query has the basic form:
     from MyConfiguration config, TaintTracking::Source src, TaintTracking::Sink sink
     where config.hasFlow(src, sink)
     select sink, "Alert message, including reference to $@.", src, "string describing the source"
+
+Example
+^^^^^^^
 
 As a contrived example, here is a query that looks for flow from a HTTP request to a function called ``"unsafe"``.
 The sources are predefined and accessed by importing library ``semmle.python.web.HttpRequest``.
@@ -128,8 +131,8 @@ The sink is defined by using a custom ``TaintTracking::Sink`` class.
 
 
 
-Implementing path queries
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Converting a taint-tracking query to a path query
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Although the taint tracking query above tells which sources flow to which sinks, it doesn't tell us how.
 For that we need a path query.
@@ -204,8 +207,8 @@ Thus, our example query becomes:
 
 
 
-Custom taint kinds and flows
-----------------------------
+Tracking custom taint kinds and flows
+-------------------------------------
 
 In the above examples, we have assumed the existence of a suitable ``TaintKind``,
 but sometimes it is necessary to model the flow of other objects, such as database connections, or ``None``.

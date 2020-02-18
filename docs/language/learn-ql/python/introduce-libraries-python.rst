@@ -3,14 +3,14 @@ CodeQL library for Python
 
 Overview of the extensive library you use to analyze databases generated from Python code bases. This library uses classes with abstractions and predicates to present the data in an object-oriented form. This abstraction makes it easier for you to write queries.
 
+About the CodeQL library for Python
+-----------------------------------
+
+The CodeQL library for each programming language is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
+
 .. code-block:: ql
 
    import python
-
-The rest of this tutorial summarizes the contents of the standard libraries for Python. We recommend that you read this and then work through the practical examples in the tutorials shown at the end of the page.
-
-Overview of the library
------------------------
 
 The CodeQL library for Python incorporates a large number of classes. Each class corresponds either to one kind of entity in Python source code or to an entity that can be derived from the source code using static analysis. These classes can be divided into four categories:
 
@@ -20,16 +20,16 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 -  **Taint tracking** - classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
 
 Syntactic classes
-~~~~~~~~~~~~~~~~~
+-----------------
 
-This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST). The root of each AST is a ``Module``.
+This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__.
 
-`Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ is attached to the AST in the form of variables (represented by the class ``Variable``).
+Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__.
 
 Scope
 ^^^^^
 
-A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
+A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``).
 
 -  ``Scope``
 
@@ -153,8 +153,8 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
 
 ➤ `See this in the query console <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
 
-Summary
-^^^^^^^
+Summary of syntactic classes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The most commonly used standard classes in the syntactic part of the library are organized as follows:
 
@@ -237,11 +237,14 @@ Other
 -  ``Comment`` – A comment
 
 Control flow classes
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__.
 
-As an example, we might want to find the longest sequence of code without any branches. A ``BasicBlock`` is, by definition, a sequence of code without any branches, so we just need to find the longest ``BasicBlock``.
+Example
+^^^^^^^
+
+If we want to find the longest sequence of code without any branches, we need to consider control flow. A ``BasicBlock`` is, by definition, a sequence of code without any branches, so we just need to find the longest ``BasicBlock``.
 
 First of all we introduce a simple predicate ``bb_length()`` which relates ``BasicBlock``\ s to their length.
 
@@ -289,7 +292,12 @@ The classes in the control-flow part of the library are:
 Type-inference classes
 ----------------------
 
-The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
+The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. 
+
+Example
+^^^^^^^
+
+For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
 **Find iterable "ClassValue"s**
 
@@ -304,7 +312,7 @@ The CodeQL library for Python also supplies some classes for accessing the infer
 ➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
 
 Summary
-~~~~~~~
+^^^^^^^
 
 -  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
@@ -312,7 +320,7 @@ Summary
    -  ``CallableValue``
    -  ``ModuleValue``
 
-These classes are explained in more detail in :doc:`Tutorial: Points-to analysis and type inference <pointsto-type-infer>`.
+For more information about these classes, see :doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`.
 
 Taint-tracking classes
 ----------------------
@@ -321,12 +329,12 @@ The CodeQL library for Python also supplies classes to specify taint-tracking an
 
 
 Summary
-~~~~~~~
+^^^^^^^
 
 - `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
 - `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
-These classes are explained in more detail in :doc:`Tutorial: Taint tracking and data flow analysis in Python <taint-tracking>`.
+For more information about these classes, see :doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`.
 
 
 Further reading
