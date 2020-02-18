@@ -185,6 +185,12 @@ class PropNameTracking extends DataFlow::Configuration {
     )
   }
 
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node)
+    or
+    node instanceof DataFlow::VarAccessBarrier
+  }
+
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
     node instanceof BlacklistEqualityGuard or
     node instanceof WhitelistEqualityGuard or
@@ -193,8 +199,7 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
     node instanceof BlacklistInclusionGuard or
-    node instanceof WhitelistInclusionGuard or
-    node instanceof DataFlow::VarAccessBarrierGuard
+    node instanceof WhitelistInclusionGuard
   }
 }
 

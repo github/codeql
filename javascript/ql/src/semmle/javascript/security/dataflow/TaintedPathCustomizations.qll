@@ -356,6 +356,11 @@ module TaintedPath {
   }
 
   /**
+   * A check of the form `if(x)`, which sanitizes `x` in its "else" branch.
+   */
+  class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
+
+  /**
    * A source of remote user input, considered as a flow source for
    * tainted-path vulnerabilities.
    */

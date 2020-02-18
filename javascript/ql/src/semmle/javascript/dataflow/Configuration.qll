@@ -1483,16 +1483,15 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 
 /**
   * A check of the form `if(x)`, which sanitizes `x` in its "else" branch. 
-  * Can be added to a `isBarrierGuard` in a configuration to add the sanitization. 
+  * Can be added to a `isBarrier` in a configuration to add the sanitization.
   */
-class VarAccessBarrierGuard extends BarrierGuardNode, DataFlow::Node {
-  VarAccess var;
-
-  VarAccessBarrierGuard() {
-    var = this.getEnclosingExpr()
-  }
-
-  override predicate blocks(boolean outcome, Expr e) {
-    var = e and outcome = false
+class VarAccessBarrier extends DataFlow::Node {
+  VarAccessBarrier() {
+    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
+      this = DataFlow::ssaDefinitionNode(refinement) and
+      refinement.getGuard() = guard and
+      guard.getTest() instanceof VarAccess and
+      guard.getOutcome() = false
+    )
   }
 }

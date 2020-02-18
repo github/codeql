@@ -89,7 +89,8 @@ module TaintTracking {
 
     final override predicate isBarrier(DataFlow::Node node) {
       super.isBarrier(node) or
-      isSanitizer(node)
+      isSanitizer(node) or
+      node instanceof DataFlow::VarAccessBarrier
     }
 
     final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
@@ -913,20 +914,5 @@ module TaintTracking {
   predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     DataFlow::localFlowStep(pred, succ) or
     any(AdditionalTaintStep s).step(pred, succ)
-  }
-
-  /** A check of the form `if(x)`, which sanitizes `x` in its "else" branch. */
-  private class VarAccessBarrierGuard extends AdditionalSanitizerGuardNode, DataFlow::Node {
-    DataFlow::VarAccessBarrierGuard guard;
-
-    VarAccessBarrierGuard() {
-      this = guard
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      guard.blocks(outcome, e)
-    }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 }

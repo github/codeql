@@ -35,8 +35,7 @@ module TaintedPath {
       guard instanceof StartsWithDotDotSanitizer or
       guard instanceof StartsWithDirSanitizer or
       guard instanceof IsAbsoluteSanitizer or
-      guard instanceof ContainsDotDotSanitizer or
-      guard instanceof DataFlow::VarAccessBarrierGuard
+      guard instanceof ContainsDotDotSanitizer
     }
 
     override predicate isAdditionalFlowStep(
