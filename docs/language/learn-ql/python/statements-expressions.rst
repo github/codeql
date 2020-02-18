@@ -260,4 +260,5 @@ Further reading
 - ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
 - ":doc:`Analyzing control flow in Python <control-flow>`"
 - ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+
 .. include:: ../../reusables/python-other-resources.rst

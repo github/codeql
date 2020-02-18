@@ -132,7 +132,7 @@ The sink is defined by using a custom ``TaintTracking::Sink`` class.
 
 
 Converting a taint-tracking query to a path query
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Although the taint tracking query above tells which sources flow to which sinks, it doesn't tell us how.
 For that we need a path query.
@@ -262,4 +262,5 @@ Further reading
 - ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
 - ":doc:`Analyzing control flow in Python <control-flow>`"
 - ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+
 .. include:: ../../reusables/python-other-resources.rst
