@@ -434,10 +434,7 @@ class ClassValue extends Value {
         )
     }
     
-    /** Holds if this class is a mapping.
-     *
-     * This is an attempt to translate ClassObject::isMapping()
-     */
+    /** Holds if this class is a mapping. */
     predicate isMapping() {
         this.hasAttribute("__getitem__")
         and
