@@ -1,5 +1,7 @@
-Introducing the CodeQL libraries for Java
-=========================================
+CodeQL library for Java
+=======================
+
+When you need to analyze a Java program, you can make use of the large collection of classes in the Java library for CodeQL.
 
 Overview
 --------

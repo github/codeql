@@ -1,5 +1,7 @@
-Tutorial: Expressions and statements
-====================================
+Expressions and statements in Java
+==================================
+
+You can use CodeQL to check for comparisons in Java code where one side of the comparison is prone to overflow.
 
 Overview
 --------

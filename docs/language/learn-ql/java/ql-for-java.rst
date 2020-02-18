@@ -1,6 +1,8 @@
 CodeQL for Java
 ===============
 
+You can use CodeQL to explore Java programs and quickly find variants of security vulnerabilities and bugs.
+
 .. toctree::
    :glob:
    :hidden:

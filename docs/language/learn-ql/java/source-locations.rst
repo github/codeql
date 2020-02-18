@@ -1,5 +1,7 @@
-Tutorial: Working with source locations
-=======================================
+Working with source locations
+=============================
+
+You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem. 
 
 Overview
 --------

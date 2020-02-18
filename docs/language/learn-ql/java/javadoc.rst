@@ -1,5 +1,7 @@
-Tutorial: Javadoc
-=================
+Javadoc
+=======
+
+You can use CodeQL to find errors in Javadoc comments in Java code.
 
 Overview
 --------

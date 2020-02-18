@@ -1,10 +1,10 @@
-Tutorial: Annotations
-=====================
+Annotations in Java
+===================
+
+CodeQL databases of Java projects contain information about all annotations attached to program elements.
 
 Overview
 --------
-
-CodeQL databases of Java projects contain information about all annotations attached to program elements.
 
 Annotations are represented by the following CodeQL classes:
 

@@ -1,5 +1,7 @@
-Tutorial: Navigating the call graph
-===================================
+Navigating the call graph
+=========================
+
+CodeQL provides an API for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
 
 Call graph API
 --------------
