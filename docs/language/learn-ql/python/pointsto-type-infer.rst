@@ -1,5 +1,7 @@
-Tutorial: Points-to analysis and type inference
-===============================================
+Pointer analysis and type inference in Python
+=============================================
+
+At run time, each Python expression has a value with an associated type. You can learn how an expression behaves at run time using type-inference classes from the standard CodeQL library.
 
 This topic contains worked examples of how to write queries using the standard CodeQL library classes for Python type inference.
 

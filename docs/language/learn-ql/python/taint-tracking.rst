@@ -1,5 +1,7 @@
-Taint tracking and data flow analysis in Python
-===============================================
+Analyzing data flow and tracking tainted data in Python
+=======================================================
+
+You can use CodeQL to track the flow of data through a Python program to its use. Tracking user-controlled, or tainted, data is a key technique for security researchers.
 
 Overview
 --------

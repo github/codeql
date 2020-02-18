@@ -1,7 +1,7 @@
-Introducing the CodeQL libraries for Python
-===========================================
+CodeQL library for Python
+=========================
 
-There is an extensive library for analyzing CodeQL databases extracted from Python projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.  The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
+Overview of the extensive library you use to analyze databases generated from Python code bases. This library uses classes with abstractions and predicates to present the data in an object-oriented form. This abstraction makes it easier for you to write queries.
 
 .. code-block:: ql
 

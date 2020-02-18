@@ -1,5 +1,7 @@
-Tutorial: Control flow analysis
-===============================
+Analyzing control flow in Python
+================================
+
+You can write CodeQL queries to explore the control flow graph of a Python program, for example, to discover unreachable code or mutually exclusive blocks of code.
 
 To analyze the `Control-flow graph <http://en.wikipedia.org/wiki/Control_flow_graph>`__ of a ``Scope`` we can use the two CodeQL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood.
 

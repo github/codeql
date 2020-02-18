@@ -1,5 +1,7 @@
-Tutorial: Functions
+Functions in Python
 ===================
+
+Functions are key building blocks of Python code bases. You can find functions and identify calls to them using syntactic classes from the standard CodeQL library.
 
 This example uses the standard CodeQL class ``Function`` (see :doc:`Introducing the Python libraries <introduce-libraries-python>`).
 
