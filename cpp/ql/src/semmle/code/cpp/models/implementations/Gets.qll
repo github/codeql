@@ -21,7 +21,7 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(2) and
+    input.isParameter(2) and
     output.isParameterDeref(0)
   }
 
