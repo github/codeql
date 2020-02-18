@@ -108,8 +108,8 @@ Combining these conditions we get:
 
 ➤ `See this in the query console <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis which is covered in the next tutorial.
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the tutorial topic :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-other-resources.rst

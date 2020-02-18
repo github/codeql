@@ -329,8 +329,12 @@ Summary
 These classes are explained in more detail in :doc:`Tutorial: Taint tracking and data flow analysis in Python <taint-tracking>`.
 
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the following tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`, and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+- ":doc:`Functions in Python <functions>`"
+- ":doc:`Expressions and statements in Python <statements-expressions>`"
+- ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
+- ":doc:`Analyzing control flow in Python <control-flow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-other-resources.rst

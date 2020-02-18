@@ -227,8 +227,9 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
 
 ➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Read a description of the CodeQL database in :doc:`What's in a CodeQL database? <../database>`
+- ":doc:`Analyzing control flow in Python <control-flow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-other-resources.rst

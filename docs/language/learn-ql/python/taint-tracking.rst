@@ -253,8 +253,10 @@ which defines the simplest possible taint kind class, ``HardcodedValue``, and cu
         }
     }
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the following tutorial topics: :doc:`Control flow <control-flow>` and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+- ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
+- ":doc:`Analyzing control flow in Python <control-flow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-other-resources.rst
