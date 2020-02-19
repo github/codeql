@@ -1,6 +1,8 @@
 CodeQL for C#
 =============
 
+You can use CodeQL to explore C# programs and quickly find variants of security vulnerabilities and bugs.
+
 .. toctree::
    :glob:
    :hidden:
