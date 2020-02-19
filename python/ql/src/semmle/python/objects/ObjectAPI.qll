@@ -423,7 +423,7 @@ class ClassValue extends Value {
         /* To determine whether something is a sequence or a mapping is not entirely clear,
          * so we need to guess a bit.
          */
-        this.getASuperType() = ClassValue::tupleType()
+        this.getASuperType() = ClassValue::tuple()
         or
         this.getASuperType() = ClassValue::list()
         or
