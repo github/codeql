@@ -19,7 +19,7 @@ abstract class SideEffectFunction extends Function {
    * Holds if the function never reads from memory that was defined before entry to the function.
    * This memory could be from global variables, or from other memory that was reachable from a
    * pointer that was passed into the function. Input side-effects, and reads from memory that
-   * cannot be visible to the caller (for example a buffer inside an I/O library) are not modelled
+   * cannot be visible to the caller (for example a buffer inside an I/O library) are not modeled
    * here.
    */
   abstract predicate hasOnlySpecificReadSideEffects();
