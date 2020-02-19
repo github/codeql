@@ -1,38 +1,70 @@
-| Taint externally controlled string | test.py:5 | test.py:5:22:5:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:6 | test.py:6:31:6:44 | tainted_string |  |
+| Taint exception.info | test.py:44 | test.py:44:22:44:26 | taint | p1 = exception.info |  -->  | Taint exception.info | test.py:45 | test.py:45:17:45:21 | taint | p1 = exception.info |
+| Taint exception.info | test.py:45 | test.py:45:17:45:21 | taint | p1 = exception.info |  -->  | Taint exception.info | test.py:45 | test.py:45:12:45:22 | func() | p1 = exception.info |
+| Taint exception.info | test.py:45 | test.py:45:17:45:21 | taint | p1 = exception.info |  -->  | Taint exception.info | test.py:52 | test.py:52:19:52:21 | arg | p0 = exception.info |
+| Taint exception.info | test.py:48 | test.py:48:12:48:33 | TAINTED_EXCEPTION_INFO |  |  -->  | Taint exception.info | test.py:49 | test.py:49:37:49:40 | info |  |
+| Taint exception.info | test.py:49 | test.py:49:11:49:41 | cross_over() |  |  -->  | Taint exception.info | test.py:50 | test.py:50:10:50:12 | res |  |
+| Taint exception.info | test.py:49 | test.py:49:37:49:40 | info |  |  -->  | Taint exception.info | test.py:44 | test.py:44:22:44:26 | taint | p1 = exception.info |
+| Taint exception.info | test.py:49 | test.py:49:37:49:40 | info |  |  -->  | Taint exception.info | test.py:49 | test.py:49:11:49:41 | cross_over() |  |
+| Taint exception.info | test.py:52 | test.py:52:19:52:21 | arg | p0 = exception.info |  -->  | Taint exception.info | test.py:53 | test.py:53:12:53:14 | arg | p0 = exception.info |
+| Taint externally controlled string | test.py:5 | test.py:5:22:5:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:6 | test.py:6:31:6:44 | tainted_string |  |
 | Taint externally controlled string | test.py:6 | test.py:6:31:6:44 | tainted_string |  |  -->  | Taint json[externally controlled string] | test.py:6 | test.py:6:20:6:45 | Attribute() |  |
 | Taint externally controlled string | test.py:7 | test.py:7:9:7:25 | Subscript |  |  -->  | Taint externally controlled string | test.py:8 | test.py:8:9:8:9 | a |  |
+| Taint externally controlled string | test.py:7 | test.py:7:9:7:25 | Subscript |  |  -->  | Taint externally controlled string | test.py:10 | test.py:10:10:10:10 | a |  |
 | Taint externally controlled string | test.py:8 | test.py:8:9:8:18 | Attribute() |  |  -->  | Taint externally controlled string | test.py:9 | test.py:9:9:9:9 | b |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:13 | test.py:13:9:13:22 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:14 | test.py:14:9:14:22 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:15 | test.py:15:9:15:22 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:16 | test.py:16:9:16:22 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:17 | test.py:17:18:17:31 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:18 | test.py:18:14:18:27 | tainted_string |  |
-| Taint externally controlled string | test.py:12 | test.py:12:22:12:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:19 | test.py:19:9:19:22 | tainted_string |  |
-| Taint externally controlled string | test.py:13 | test.py:13:9:13:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:13 | test.py:13:9:13:31 | Attribute() |  |
-| Taint externally controlled string | test.py:14 | test.py:14:9:14:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:14 | test.py:14:9:14:29 | Attribute() |  |
-| Taint externally controlled string | test.py:15 | test.py:15:9:15:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:15 | test.py:15:9:15:25 | Subscript |  |
-| Taint externally controlled string | test.py:16 | test.py:16:9:16:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:16 | test.py:16:9:16:27 | Subscript |  |
-| Taint externally controlled string | test.py:17 | test.py:17:18:17:31 | tainted_string |  |  -->  | Taint externally controlled string | test.py:17 | test.py:17:9:17:32 | reversed() |  |
-| Taint externally controlled string | test.py:18 | test.py:18:14:18:27 | tainted_string |  |  -->  | Taint externally controlled string | test.py:18 | test.py:18:9:18:28 | copy() |  |
-| Taint externally controlled string | test.py:19 | test.py:19:9:19:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:19 | test.py:19:9:19:30 | Attribute() |  |
-| Taint externally controlled string | test.py:22 | test.py:22:22:22:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:23 | test.py:23:8:23:21 | tainted_string |  |
-| Taint externally controlled string | test.py:22 | test.py:22:22:22:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:26 | test.py:26:23:26:36 | tainted_string |  |
-| Taint externally controlled string | test.py:29 | test.py:29:22:29:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:30 | test.py:30:8:30:21 | tainted_string |  |
-| Taint externally controlled string | test.py:29 | test.py:29:22:29:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:30 | test.py:30:34:30:47 | tainted_string |  |
-| Taint externally controlled string | test.py:29 | test.py:29:22:29:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:33 | test.py:33:23:33:36 | tainted_string |  |
-| Taint externally controlled string | test.py:36 | test.py:36:22:36:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:37 | test.py:37:13:37:26 | tainted_string |  |
-| Taint externally controlled string | test.py:36 | test.py:36:22:36:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:38 | test.py:38:15:38:28 | tainted_string |  |
-| Taint externally controlled string | test.py:36 | test.py:36:22:36:28 | TAINTED |  |  -->  | Taint externally controlled string | test.py:39 | test.py:39:15:39:28 | tainted_string |  |
-| Taint externally controlled string | test.py:37 | test.py:37:13:37:26 | tainted_string |  |  -->  | Taint externally controlled string | test.py:37 | test.py:37:9:37:27 | str() |  |
-| Taint externally controlled string | test.py:38 | test.py:38:15:38:28 | tainted_string |  |  -->  | Taint externally controlled string | test.py:38 | test.py:38:9:38:29 | bytes() |  |
-| Taint externally controlled string | test.py:39 | test.py:39:15:39:28 | tainted_string |  |  -->  | Taint externally controlled string | test.py:39 | test.py:39:9:39:46 | bytes() |  |
+| Taint externally controlled string | test.py:8 | test.py:8:9:8:18 | Attribute() |  |  -->  | Taint externally controlled string | test.py:10 | test.py:10:13:10:13 | b |  |
+| Taint externally controlled string | test.py:9 | test.py:9:9:9:14 | Subscript |  |  -->  | Taint externally controlled string | test.py:10 | test.py:10:16:10:16 | c |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:14 | test.py:14:9:14:22 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:15 | test.py:15:9:15:22 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:16 | test.py:16:9:16:22 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:17 | test.py:17:9:17:22 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:18 | test.py:18:18:18:31 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:19 | test.py:19:14:19:27 | tainted_string |  |
+| Taint externally controlled string | test.py:13 | test.py:13:22:13:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:20 | test.py:20:9:20:22 | tainted_string |  |
+| Taint externally controlled string | test.py:14 | test.py:14:9:14:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:14 | test.py:14:9:14:31 | Attribute() |  |
+| Taint externally controlled string | test.py:14 | test.py:14:9:14:31 | Attribute() |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:10:21:10 | a |  |
+| Taint externally controlled string | test.py:15 | test.py:15:9:15:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:15 | test.py:15:9:15:29 | Attribute() |  |
+| Taint externally controlled string | test.py:15 | test.py:15:9:15:29 | Attribute() |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:13:21:13 | b |  |
+| Taint externally controlled string | test.py:16 | test.py:16:9:16:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:16 | test.py:16:9:16:25 | Subscript |  |
+| Taint externally controlled string | test.py:16 | test.py:16:9:16:25 | Subscript |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:16:21:16 | c |  |
+| Taint externally controlled string | test.py:17 | test.py:17:9:17:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:17 | test.py:17:9:17:27 | Subscript |  |
+| Taint externally controlled string | test.py:17 | test.py:17:9:17:27 | Subscript |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:19:21:19 | d |  |
+| Taint externally controlled string | test.py:18 | test.py:18:9:18:32 | reversed() |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:22:21:22 | e |  |
+| Taint externally controlled string | test.py:18 | test.py:18:18:18:31 | tainted_string |  |  -->  | Taint externally controlled string | test.py:18 | test.py:18:9:18:32 | reversed() |  |
+| Taint externally controlled string | test.py:19 | test.py:19:9:19:28 | copy() |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:25:21:25 | f |  |
+| Taint externally controlled string | test.py:19 | test.py:19:14:19:27 | tainted_string |  |  -->  | Taint externally controlled string | test.py:19 | test.py:19:9:19:28 | copy() |  |
+| Taint externally controlled string | test.py:20 | test.py:20:9:20:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:20 | test.py:20:9:20:30 | Attribute() |  |
+| Taint externally controlled string | test.py:20 | test.py:20:9:20:30 | Attribute() |  |  -->  | Taint externally controlled string | test.py:21 | test.py:21:28:21:28 | g |  |
+| Taint externally controlled string | test.py:24 | test.py:24:22:24:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:25 | test.py:25:8:25:21 | tainted_string |  |
+| Taint externally controlled string | test.py:24 | test.py:24:22:24:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:28 | test.py:28:14:28:27 | tainted_string |  |
+| Taint externally controlled string | test.py:31 | test.py:31:22:31:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:32 | test.py:32:8:32:21 | tainted_string |  |
+| Taint externally controlled string | test.py:31 | test.py:31:22:31:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:32 | test.py:32:34:32:47 | tainted_string |  |
+| Taint externally controlled string | test.py:31 | test.py:31:22:31:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:35 | test.py:35:14:35:27 | tainted_string |  |
+| Taint externally controlled string | test.py:38 | test.py:38:22:38:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:39 | test.py:39:13:39:26 | tainted_string |  |
+| Taint externally controlled string | test.py:38 | test.py:38:22:38:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:40 | test.py:40:15:40:28 | tainted_string |  |
+| Taint externally controlled string | test.py:38 | test.py:38:22:38:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:41 | test.py:41:15:41:28 | tainted_string |  |
+| Taint externally controlled string | test.py:39 | test.py:39:9:39:27 | str() |  |  -->  | Taint externally controlled string | test.py:42 | test.py:42:10:42:10 | a |  |
+| Taint externally controlled string | test.py:39 | test.py:39:13:39:26 | tainted_string |  |  -->  | Taint externally controlled string | test.py:39 | test.py:39:9:39:27 | str() |  |
+| Taint externally controlled string | test.py:40 | test.py:40:9:40:29 | bytes() |  |  -->  | Taint externally controlled string | test.py:42 | test.py:42:13:42:13 | b |  |
+| Taint externally controlled string | test.py:40 | test.py:40:15:40:28 | tainted_string |  |  -->  | Taint externally controlled string | test.py:40 | test.py:40:9:40:29 | bytes() |  |
+| Taint externally controlled string | test.py:41 | test.py:41:9:41:46 | bytes() |  |  -->  | Taint externally controlled string | test.py:42 | test.py:42:16:42:16 | c |  |
+| Taint externally controlled string | test.py:41 | test.py:41:15:41:28 | tainted_string |  |  -->  | Taint externally controlled string | test.py:41 | test.py:41:9:41:46 | bytes() |  |
+| Taint externally controlled string | test.py:44 | test.py:44:22:44:26 | taint | p1 = externally controlled string |  -->  | Taint externally controlled string | test.py:45 | test.py:45:17:45:21 | taint | p1 = externally controlled string |
+| Taint externally controlled string | test.py:45 | test.py:45:17:45:21 | taint | p1 = externally controlled string |  -->  | Taint externally controlled string | test.py:45 | test.py:45:12:45:22 | func() | p1 = externally controlled string |
+| Taint externally controlled string | test.py:45 | test.py:45:17:45:21 | taint | p1 = externally controlled string |  -->  | Taint externally controlled string | test.py:52 | test.py:52:19:52:21 | arg | p0 = externally controlled string |
+| Taint externally controlled string | test.py:52 | test.py:52:19:52:21 | arg | p0 = externally controlled string |  -->  | Taint externally controlled string | test.py:53 | test.py:53:12:53:14 | arg | p0 = externally controlled string |
+| Taint externally controlled string | test.py:56 | test.py:56:11:56:24 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:57 | test.py:57:38:57:40 | ext |  |
+| Taint externally controlled string | test.py:57 | test.py:57:11:57:41 | cross_over() |  |  -->  | Taint externally controlled string | test.py:58 | test.py:58:10:58:12 | res |  |
+| Taint externally controlled string | test.py:57 | test.py:57:38:57:40 | ext |  |  -->  | Taint externally controlled string | test.py:44 | test.py:44:22:44:26 | taint | p1 = externally controlled string |
+| Taint externally controlled string | test.py:57 | test.py:57:38:57:40 | ext |  |  -->  | Taint externally controlled string | test.py:57 | test.py:57:11:57:41 | cross_over() |  |
 | Taint json[externally controlled string] | test.py:6 | test.py:6:20:6:45 | Attribute() |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint externally controlled string | test.py:7 | test.py:7:9:7:25 | Subscript |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:25 | Subscript |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:25 | Subscript |  |  -->  | Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:9 | a |  |
+| Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:25 | Subscript |  |  -->  | Taint json[externally controlled string] | test.py:10 | test.py:10:10:10:10 | a |  |
 | Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:9 | a |  |  -->  | Taint externally controlled string | test.py:8 | test.py:8:9:8:18 | Attribute() |  |
 | Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:9 | a |  |  -->  | Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:18 | Attribute() |  |
 | Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:18 | Attribute() |  |  -->  | Taint json[externally controlled string] | test.py:9 | test.py:9:9:9:9 | b |  |
+| Taint json[externally controlled string] | test.py:8 | test.py:8:9:8:18 | Attribute() |  |  -->  | Taint json[externally controlled string] | test.py:10 | test.py:10:13:10:13 | b |  |
 | Taint json[externally controlled string] | test.py:9 | test.py:9:9:9:9 | b |  |  -->  | Taint externally controlled string | test.py:9 | test.py:9:9:9:14 | Subscript |  |
 | Taint json[externally controlled string] | test.py:9 | test.py:9:9:9:9 | b |  |  -->  | Taint json[externally controlled string] | test.py:9 | test.py:9:9:9:14 | Subscript |  |
+| Taint json[externally controlled string] | test.py:9 | test.py:9:9:9:14 | Subscript |  |  -->  | Taint json[externally controlled string] | test.py:10 | test.py:10:16:10:16 | c |  |
