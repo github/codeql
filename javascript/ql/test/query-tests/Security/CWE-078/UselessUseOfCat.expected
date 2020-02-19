@@ -1,0 +1,20 @@
+readFile
+| uselesscat.js:10:1:10:43 | exec("c ... ut) {}) | fs.readFile("foo/bar", function(err, out) {...}) |
+| uselesscat.js:12:1:14:2 | exec("c ... ut);\\n}) | fs.readFile("/proc/"+id+"/status", function(err, out) {...}) |
+| uselesscat.js:16:1:16:29 | execSyn ... uinfo') | fs.readFileSync("/proc/cpuinfo") |
+| uselesscat.js:18:1:18:26 | execSyn ... path}`) | fs.readFileSync(`${newpath}`) |
+| uselesscat.js:32:1:32:34 | execSyn ... path}`) | fs.readFileSync(`foo/bar/${newpath}`) |
+| uselesscat.js:34:1:34:54 | execSyn ... utf8'}) | fs.readFileSync(`foo/bar/${newpath}`, {encoding: 'utf8'})) |
+| uselesscat.js:51:9:51:31 | execSyn ... + file) | fs.readFileSync(file) |
+| uselesscat.js:59:1:62:2 | execFil ... ut);\\n}) | fs.readFile("pom.xml", function(error, stderr, stdout) {...}) |
+| uselesscat.js:69:1:72:2 | execFil ... ut);\\n}) | fs.readFile("pom.xml", {encoding: 'utf8'}), function(error, stderr, stdout) {...}) |
+| uselesscat.js:74:1:74:60 | execFil ... utf8'}) | fs.readFileSync("pom.xml", {encoding: 'utf8'})) |
+| uselesscat.js:76:1:76:39 | execFil ... xml' ]) | fs.readFileSync("pom.xml") |
+| uselesscat.js:79:1:79:46 | execFil ...   opts) | fs.readFileSync("pom.xml", opts)) |
+| uselesscat.js:82:1:82:90 | execFil ... String) | fs.readFileSync("pom.xml", anOptsFileNameThatIsTooLongToBePrintedByToString)) |
+| uselesscat.js:86:1:86:75 | execFil ... utf8'}) | fs.readFileSync("foo/"+newPath+"bar", {encoding: 'utf8'})) |
+| uselesscat.js:88:1:88:35 | execSyn ...  + foo) | fs.readFileSync("/proc/cpuinfo"+foo) |
+| uselesscat.js:90:1:90:50 | execFil ... th}` ]) | fs.readFileSync(`foo/bar/${newpath}`) |
+#select
+| False negative | uselesscat.js:54:42:54:69 | // NOT  ... lagged] |
+| False negative | uselesscat.js:84:118:84:144 | // NOT  ... lagged] |

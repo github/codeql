@@ -16,3 +16,5 @@ where
     msg = "False positive"
   )
 select msg, comment
+
+query string readFile(UselessCat cat) { result = createReadFileCall(cat) }

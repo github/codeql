@@ -14,7 +14,8 @@
 import javascript
 import semmle.javascript.security.UselessUseOfCat
 
+
 from UselessCat cat
-select cat.getCommand(), "Useless use of `cat` in $@.", cat, "command execution"
+select cat, "Useless use of `cat`. Can be replaced with: " + createReadFileCall(cat)
 
 

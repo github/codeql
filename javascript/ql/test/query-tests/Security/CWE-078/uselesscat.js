@@ -7,76 +7,86 @@ var spawnSync = child_process.spawnSync;
 var fs = require('fs');
 var app = express();
 
-function readStatus(id) {
-	exec("cat /proc/" + id + "/status", function (err, out) { // NOT OK
-		console.log(out);
-	});
-};
+exec("cat foo/bar", function (err, out) {}); // NOT OK
 
-var basePath = '/foo/bar';
-app.get('/:data', function (req, res) {
-	res.send(execSync('cat ' + basePath + req.params.data).toString()); // OK [but flagged] - caught by command-injection
+exec("cat /proc/" + id + "/status", function (err, out) { // NOT OK
+	console.log(out);
 });
-
-spawn('cat', ['package.json']); // NOT OK
-
-spawn('/bin/cat', ['package.json']); // NOT 
-
-spawn('/bin/cat', [someValue]); // NOT OK
-spawn('sudo /bin/cat', [someValue]); // NOT OK
-spawn('sudo cat', [someValue]); // NOT OK  
-
-child_process.spawnSync('cat', [someValue]); // NOT OK
-
-child_process.execSync('cat package.json | wc -l'); // OK - pipes!
-
-const cat = child_process.spawn('cat') // OK - benign use (usually pipe to and from).
-
-spawn('cat', ['package.json']); // NOT OK.
-
-exec('cat *.js') // OK - wildcard use.
-exec('cat *.js | wc -l') // OK - wildcard use and pipes!
-exec('cat *.js | wc -l', { cwd: './' }, function () { }); // OK - wildcard and pipes
-
-spawnSync('cat', ['/proc/cpuinfo']) // NOT OK.
-
-exec(`cat ${path.join(__dirname, 'package.json')} | sort | uniq`, () => {}); // OK: pipes
 
 execSync('cat /proc/cpuinfo').toString(); // NOT OK.
 
-var cmd = "cat /proc/cpuinfo"
-execSync(cmd); // NOT OK
+execSync(`cat ${newpath}`) // NOT OK
 
-execSync("cat /proc/cpuinfo | grep -c '" + someValue + "'"); // OK - pipes
+child_process.execSync('cat package.json | wc -l'); // OK - pipes!
 
-function cat(file) {
-	return execSync('cat ' + file).toString(); // NOT OK
-}
+execSync('cat /proc/cpuinfo /foo/bar').toString(); // OK multiple files.
 
-execSync(`cat ${files.join(' ')} > ${outFile}`); // OK
+execSync(`cat ${newpath} /foo/bar`).toString(); // OK multiple files.
 
-var cmd = 'cat package.json | grep'
-exec(cmd); // OK - pipes!
+exec(`cat ${newpath} | grep foo`, function (err, out) { }) // OK - pipes
 
-execSync("sudo cat " + newpath + "*.js | grep foo").toString(); // OK - wildcard and pipes
+execSync(`cat ${newpath}`, {uid: 1000}) // OK - non trivial options
 
-execSync(`cat ${newpath}`); // NOT OK
+exec('cat *.js | wc -l', { cwd: './' }, function (err, out) { }); // OK - wildcard and pipes
 
-exec("cat /proc/cpuinfo | grep name"); // OK - pipes
+execSync(`cat foo/bar/${newpath}`); // NOT OK ("encoding" is used EXACTLY the same way in fs.readFileSync)
 
-execSync(`cat ${newpath} | ${othertool}`); // OK - pipes
+execSync(`cat foo/bar/${newpath}`, {encoding: 'utf8'}); // NOT OK ("encoding" is used EXACTLY the same way in fs.readFileSync)
 
-execSync("sh -c 'cat " + newpath + "'"); // NOT OK. [but not flagged]
-
-exec(` cat ${newpath}`) // NOT OK
-
-exec(` cat ${newpath} | grep foo`) // OK - pipes
+execSync("/bin/cat /proc/cpuinfo", { uid: 1000, gid: 1000, encoding: 'utf8'}); // OK (fs.readFileSync cannot emulate uid / gid))
 
 execSync('cat /proc/cpuinfo > foo/bar/baz').toString(); // OK.
 
 execSync(`cat ${newpath} > ${destpath}`).toString(); // OK.
 
-const Opts = {encoding: 'utf8'}
-execSync(`cat foo/bar/${newpath}`, Opts).slice(0, 7); // NOT OK ("encoding" is used EXACTLY the same way in fs.readFileSync)
+execSync(`cat ${files.join(' ')} > ${outFile}`); // OK
 
-execSync("/bin/cat /proc/cpuinfo", { uid: 1000, gid: 1000, encoding: 'utf8'}); // OK (fs.readFileSync cannot emulate uid / gid))
+execSync(`cat ${files.join(' ')}`); // OK - not just a simple file read
+
+exec("cat /proc/cpuinfo | grep name"); // OK - pipes
+
+execSync(`cat ${newpath} | ${othertool}`); // OK - pipes
+
+function cat(file) {
+	return execSync('cat ' + file).toString(); // NOT OK
+}
+
+execSync("sh -c 'cat " + newpath + "'"); // NOT OK. [but not flagged]
+
+var execFile = child_process.execFile;
+var execFileSync = child_process.execFileSync;
+
+execFile('/bin/cat', [ 'pom.xml' ], function(error, stdout, stderr ) { // NOT OK
+  // Not using stderr
+  console.log(stdout);
+});
+
+execFile('/bin/cat', [ 'pom.xml' ], function(error, stdout, stderr ) { // OK. - stderr is used.
+  console.log(stderr); 
+});
+
+
+execFile('/bin/cat', [ 'pom.xml' ],  {encoding: 'utf8'}, function(error, stdout, stderr ) { // NOT OK
+  // Not using stderr
+  console.log(stdout);
+});
+
+execFileSync('/bin/cat', [ 'pom.xml' ],  {encoding: 'utf8'}); // NOT OK
+
+execFileSync('/bin/cat', [ 'pom.xml' ]);  // NOT OK
+
+var opts = {encoding: 'utf8'};
+execFileSync('/bin/cat', [ 'pom.xml' ],  opts); // NOT OK
+
+var anOptsFileNameThatIsTooLongToBePrintedByToString = {encoding: 'utf8'};
+execFileSync('/bin/cat', [ 'pom.xml' ],  anOptsFileNameThatIsTooLongToBePrintedByToString); // NOT OK
+
+execFileSync('/bin/cat', [ 'pom.xml' ],  {encoding: 'someEncodingValueThatIsCompletelyBogusAndTooLongForToString'}); // NOT OK [but not flagged]
+
+execFileSync('/bin/cat', [ "foo/" + newPath + "bar" ],  {encoding: 'utf8'}); // NOT OK
+
+execSync('cat /proc/cpuinfo' + foo).toString(); // NOT OK.
+
+execFileSync('/bin/cat', [ `foo/bar/${newpath}` ]); // NOT OK
+
+execFileSync('node', [ `foo/bar/${newpath}` ]); // OK - not a call to cat
