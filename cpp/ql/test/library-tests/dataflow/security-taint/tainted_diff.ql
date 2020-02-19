@@ -1,4 +1,4 @@
-import semmle.code.cpp.security.TaintTracking as AST
+import semmle.code.cpp.security.TaintTrackingImpl as AST
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IR
 import cpp
 

@@ -21,6 +21,9 @@ len(unknown()) < 7
 len(unknown()) == len(unknown())
 len(unknown()) < len(unknown())
 
+0+0 == 0
+0+1 == 0
+
 #All ops
 2 > 3
 2 == 3

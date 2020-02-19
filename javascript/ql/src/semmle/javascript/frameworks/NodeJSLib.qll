@@ -42,7 +42,18 @@ module NodeJSLib {
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
   predicate isCreateServer(CallExpr call) {
-    call = DataFlow::moduleMember(HTTP::httpOrHttps(), "createServer").getAnInvocation().asExpr()
+    exists(string pkg, string fn |
+      pkg = "http" and fn = "createServer"
+      or
+      pkg = "https" and fn = "createServer"
+      or
+      // http2 compatibility API
+      pkg = "http2" and fn = "createServer"
+      or
+      pkg = "http2" and fn = "createSecureServer"
+    |
+      call = DataFlow::moduleMember(pkg, fn).getAnInvocation().asExpr()
+    )
   }
 
   /**
@@ -356,10 +367,12 @@ module NodeJSLib {
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
   class Credentials extends CredentialsExpr {
     Credentials() {
-      this = DataFlow::moduleMember(HTTP::httpOrHttps(), "request")
-            .getACall()
-            .getOptionArgument(0, "auth")
-            .asExpr()
+      exists(string http | http = "http" or http = "https" |
+        this = DataFlow::moduleMember(http, "request")
+              .getACall()
+              .getOptionArgument(0, "auth")
+              .asExpr()
+      )
     }
 
     override string getCredentialsKind() { result = "credentials" }
@@ -880,7 +893,6 @@ module NodeJSLib {
 
     override string getSourceType() { result = "NodeJSClientRequest error event" }
   }
-
 
   /**
    * An NodeJS EventEmitter instance.
