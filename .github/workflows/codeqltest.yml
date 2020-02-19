@@ -1,0 +1,107 @@
+name: CodeQL tests
+on: [pull_request]
+jobs:
+
+  test-linux:
+    name: Test Linux (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Set up CodeQL CLI
+      run: |
+        echo "Removing old CodeQL Directory..."
+        rm -rf $HOME/codeql
+        echo "Done"
+        cd $HOME
+        echo "Downloading CodeQL CLI..."
+        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.0.3/codeql.zip -L -o codeql.zip
+        echo "Done"
+        echo "Unpacking CodeQL CLI..."
+        unzip -q codeql.zip
+        rm -f codeql.zip
+        echo "Done"
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: env PATH=$PATH:$HOME/codeql make
+
+    - name: Test
+      run: env PATH=$PATH:$HOME/codeql make test
+
+  test-mac:
+    name: Test MacOS
+    runs-on: macOS-latest
+    steps:
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Set up CodeQL CLI
+      run: |
+        echo "Removing old CodeQL Directory..."
+        rm -rf $HOME/codeql
+        echo "Done"
+        cd $HOME
+        echo "Downloading CodeQL CLI..."
+        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.0.3/codeql.zip -L -o codeql.zip
+        echo "Done"
+        echo "Unpacking CodeQL CLI..."
+        unzip -q codeql.zip
+        rm -f codeql.zip
+        echo "Done"
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: env PATH=$PATH:$HOME/codeql make
+
+    - name: Test
+      run: env PATH=$PATH:$HOME/codeql make test
+
+  test-win:
+    name: Test Windows
+    runs-on: windows-latest
+    steps:
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Set up CodeQL CLI
+      run: |
+        echo "Removing old CodeQL Directory..."
+        rmdir "$HOME\codeql" -Recurse -Force -ErrorAction SilentlyContinue
+        echo "Done"
+        cd "$HOME"
+        echo "Downloading CodeQL CLI..."
+        Invoke-WebRequest -Uri https://github.com/github/codeql-cli-binaries/releases/download/v2.0.3/codeql.zip -OutFile codeql.zip
+        echo "Done"
+        echo "Unpacking CodeQL CLI..."
+        unzip -q codeql.zip
+        rm -fo codeql.zip
+        echo "Done"
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        $Env:Path += ";$HOME\codeql"
+        make
+
+    - name: Test
+      run: |
+        $Env:Path += ";$HOME\codeql"
+        make test
