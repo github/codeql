@@ -20,8 +20,9 @@ import DataFlow::PathGraph
  */
 bindingset[pattern]
 predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
-  hostPart = pattern
-        .regexpCapture("(?i).*" +
+  hostPart =
+    pattern
+        .regexpCapture("(?i).*?" +
             // an unescaped single `.`
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in,
