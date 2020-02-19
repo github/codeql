@@ -78,6 +78,11 @@ class Value extends TObject {
     predicate isBuiltin() {
         this.(ObjectInternal).isBuiltin()
     }
+    
+    /** Retained for backwards compatibility. See Value.isBuiltin() */
+    predicate isC() {
+        this.isBuiltin()
+    }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
@@ -417,6 +422,15 @@ class ClassValue extends Value {
     predicate isDescriptorType() {
         this.hasAttribute("__get__")
     }
+    
+    /** Whether this class is a legal exception class. 
+     *  What constitutes a legal exception class differs between major versions */
+    predicate isLegalExceptionType() {
+        not this.isNewStyle() or
+        this.getASuperType() = ClassValue::baseException()
+        or
+        major_version() = 2 and this = ClassValue::tuple()
+    }
 
     /** Gets the qualified name for this class.
      * Should return the same name as the `__qualname__` attribute on classes in Python 3.
@@ -497,6 +511,9 @@ abstract class FunctionValue extends CallableValue {
 
     /** Gets the maximum number of parameters that can be correctly passed to this function */
     abstract int maxParameters();
+    
+    /** Gets a class that may be raised by this function */
+    abstract ClassValue getARaisedType();
 
     predicate isOverridingMethod() {
         exists(Value f | this.overrides(f))
@@ -504,6 +521,20 @@ abstract class FunctionValue extends CallableValue {
 
     predicate isOverriddenMethod() {
         exists(Value f | f.overrides(this))
+    }
+    
+    /** Whether `name` is a legal argument name for this function */
+    bindingset[name]
+    predicate isLegalArgumentName(string name) {
+        this.getScope().getAnArg().asName().getId() = name
+        or
+        this.getScope().getAKeywordOnlyArg().getId() = name
+        or
+        this.getScope().hasKwArg()
+    }
+    
+    predicate isAbstract() {
+        this.getARaisedType() = ClassValue::notImplementedError()
     }
 }
 
@@ -534,6 +565,10 @@ class PythonFunctionValue extends FunctionValue {
                 result = count(f.getAnArg())
         )
     }
+    
+    override ClassValue getARaisedType() {
+        scope_raises_valueapi(result, this.getScope())
+    }
 
     /** Gets a control flow node corresponding to a return statement in this function */
     ControlFlowNode getAReturnedNode() {
@@ -560,6 +595,11 @@ class BuiltinFunctionValue extends FunctionValue {
     override int maxParameters() {
         none()
     }
+    
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
+        none()
+    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -582,6 +622,11 @@ class BuiltinMethodValue extends FunctionValue {
     }
 
     override int maxParameters() {
+        none()
+    }
+    
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
         none()
     }
 
@@ -882,6 +927,16 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::builtin("KeyError"))
     }
     
+    /** Get the `ClassValue` for the `IndexError` class. */
+    ClassValue indexError() {
+        result = TBuiltinClassObject(Builtin::builtin("IndexError"))
+    }
+    
+    /** Get the `ClassValue` for the `ImportError` class. */
+    ClassValue lookupError() {
+        result = TBuiltinClassObject(Builtin::builtin("LookupError"))
+    }
+    
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() {
         result = TBuiltinClassObject(Builtin::builtin("IOError"))
@@ -895,6 +950,11 @@ module ClassValue {
     /** Get the `ClassValue` for the `ImportError` class. */
     ClassValue importError() {
         result = TBuiltinClassObject(Builtin::builtin("ImportError"))
+    }
+    
+    /** Get the `ClassValue` for the `SystemExit` class. */
+    ClassValue systemExit() {
+        result = TBuiltinClassObject(Builtin::builtin("SystemExit"))
     }
 
 }

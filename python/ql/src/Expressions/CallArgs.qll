@@ -45,26 +45,48 @@ int arg_count(Call call) {
 }
 
 /* Gets a call corresponding to the given class or function*/
-private ControlFlowNode get_a_call(Object callable) {
+deprecated private ControlFlowNode get_a_call(Object callable) {
   result = callable.(ClassObject).getACall()
   or
   result = callable.(FunctionObject).getACall()
 }
 
+/* Gets a call corresponding to the given class or function*/
+private ControlFlowNode get_a_call_valueapi(Value callable) {
+  result = callable.(ClassValue).getACall()
+  or
+  result = callable.(FunctionValue).getACall()
+}
+
 /* Gets the function object corresponding to the given class or function*/
-FunctionObject get_function_or_initializer(Object func_or_cls) {
+deprecated FunctionObject get_function_or_initializer(Object func_or_cls) {
   result = func_or_cls.(FunctionObject)
   or
   result = func_or_cls.(ClassObject).declaredAttribute("__init__")
 }
 
+/* Gets the function object corresponding to the given class or function*/
+FunctionValue get_function_or_initializer_valueapi(Value func_or_cls) {
+  result = func_or_cls.(FunctionValue)
+  or
+  result = func_or_cls.(ClassValue).declaredAttribute("__init__")
+}
+
 
 /**Whether there is an illegally named parameter called `name` in the `call` to `func` */
-predicate illegally_named_parameter(Call call, Object func, string name) {
+deprecated predicate illegally_named_parameter(Call call, Object func, string name) {
     not func.isC() and
     name = call.getANamedArgumentName() and
     call.getAFlowNode() = get_a_call(func) and
     not get_function_or_initializer(func).isLegalArgumentName(name)
+}
+
+/**Whether there is an illegally named parameter called `name` in the `call` to `func` */
+predicate illegally_named_parameter_valueapi(Call call, Value func, string name) {
+    not func.isC() and
+    name = call.getANamedArgumentName() and
+    call.getAFlowNode() = get_a_call_valueapi(func) and
+    not get_function_or_initializer_valueapi(func).isLegalArgumentName(name)
 }
 
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
