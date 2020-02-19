@@ -22,12 +22,12 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 Syntactic classes
 -----------------
 
-This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ and `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ in Wikipedia.
+This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ and `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ on Wikipedia.
 
 Scope
 ^^^^^
 
-A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``).
+A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes `Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
 
 -  ``Scope``
 
@@ -151,7 +151,7 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
 
 ➤ `See this in the query console <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
 
-Summary of syntactic classes
+Summary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The most commonly used standard classes in the syntactic part of the library are organized as follows:
@@ -237,7 +237,7 @@ Other
 Control flow classes
 --------------------
 
-This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into basic blocks. For more information, see `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__ in Wikipedia.
+This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into basic blocks. For more information, see `Basic block <http://en.wikipedia.org/wiki/Basic_block>`__ on Wikipedia.
 
 Example
 ^^^^^^^
@@ -332,7 +332,7 @@ Summary
 - `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
 - `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
-For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`".
+For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`."
 
 
 Further reading

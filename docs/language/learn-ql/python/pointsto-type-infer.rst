@@ -1,7 +1,7 @@
 Pointer analysis and type inference in Python
 =============================================
 
-At run time, each Python expression has a value with an associated type. You can learn how an expression behaves at run time using type-inference classes from the standard CodeQL library.
+At runtime, each Python expression has a value with an associated type. You can learn how an expression behaves at runtime using type-inference classes from the standard CodeQL library.
 
 
 This topic contains worked examples of how to write queries using the standard CodeQL library classes for Python type inference.
@@ -25,7 +25,7 @@ Class hierarchy for ``Value``:
 Points-to analysis and type inference
 -------------------------------------
 
-Points-to analysis, sometimes known as pointer analysis, allows us to determine which objects an expression may "point to" at runtime. Type inference allows us to infer what the types (classes) of an expression may be at runtime. For more information, see `pointer analysis <http://en.wikipedia.org/wiki/Pointer_analysis>`__ and `Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ on Wikipedia.
+Points-to analysis, sometimes known as pointer analysis, allows us to determine which objects an expression may "point to" at runtime. Type inference allows us to infer what the types (classes) of an expression may be at runtime. For more information, see `Pointer analysis <http://en.wikipedia.org/wiki/Pointer_analysis>`__ and `Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ on Wikipedia.
 
 The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flow node may "point to" at runtime.
 
@@ -124,7 +124,7 @@ Combining the parts of the query we get this:
    )
    select t, ex1, ex2
 
-➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard query: Unreachable 'except' block. For more information, see `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__ on LGTM.com.
+➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard "Unreachable 'except' block" query. For more information, see `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__ on LGTM.com.
 
 .. pull-quote::
 
@@ -184,7 +184,7 @@ The ``Value`` class has a method ``getACall()`` which allows us to find calls to
 
 If we wish to restrict the callables to actual functions we can use the ``FunctionValue`` class, which is a subclass of ``Value`` and corresponds to function objects in Python, in much the same way as the ``ClassValue`` class corresponds to class objects in Python.
 
-Returning to an example from ":doc:`Tutorial: Functions <functions>`," we wish to find calls to the ``eval`` function.
+Returning to an example from ":doc:`Functions in Python <functions>`," we wish to find calls to the ``eval`` function.
 
 The original query looked this:
 

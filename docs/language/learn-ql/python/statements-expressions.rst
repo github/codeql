@@ -197,7 +197,7 @@ The short version is usually used as this is easier to read.
 Example finding Java-style getters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Returning to the example from ":doc:`Tutorial: Functions <functions>`," the query identified all methods with a single line of code and a name starting with ``get``.
+Returning to the example from ":doc:`Functions in Python <functions>`," the query identified all methods with a single line of code and a name starting with ``get``.
 
 .. code-block:: ql
 
