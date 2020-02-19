@@ -50,10 +50,10 @@ execSync(cmd); // NOT OK
 execSync("cat /proc/cpuinfo | grep -c '" + someValue + "'"); // OK - pipes
 
 function cat(file) {
-	return execSync('cat ' + file).toString(); // NOT OK [flagged]
+	return execSync('cat ' + file).toString(); // NOT OK
 }
 
-execSync(`cat ${files.join(' ')} > ${outFile}`); // NOT OK [flagged]
+execSync(`cat ${files.join(' ')} > ${outFile}`); // OK
 
 var cmd = 'cat package.json | grep'
 exec(cmd); // OK - pipes!
@@ -71,3 +71,12 @@ execSync("sh -c 'cat " + newpath + "'"); // NOT OK. [but not flagged]
 exec(` cat ${newpath}`) // NOT OK
 
 exec(` cat ${newpath} | grep foo`) // OK - pipes
+
+execSync('cat /proc/cpuinfo > foo/bar/baz').toString(); // OK.
+
+execSync(`cat ${newpath} > ${destpath}`).toString(); // OK.
+
+const Opts = {encoding: 'utf8'}
+execSync(`cat foo/bar/${newpath}`, Opts).slice(0, 7); // NOT OK ("encoding" is used EXACTLY the same way in fs.readFileSync)
+
+execSync("/bin/cat /proc/cpuinfo", { uid: 1000, gid: 1000, encoding: 'utf8'}); // OK (fs.readFileSync cannot emulate uid / gid))

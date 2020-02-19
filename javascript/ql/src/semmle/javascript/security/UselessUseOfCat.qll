@@ -36,8 +36,8 @@ class UselessCat extends DataFlow::Node {
         commandString = getStartingString(command).trim() and
         (commandString = cat or commandString.regexpMatch(cat + " .*"))
       ) and
-      // `cat` is OK in combination with pipes and wildcards.
-      not getAString(command).regexpMatch(".*(\\*|\\|).*") and
+      // `cat` is OK in combination with pipes, wildcards, and redirections.
+      not getAString(command).regexpMatch(".*(\\*|\\||>|<).*") and
       // It is OK just to spawn "cat" without any arguments.
       not (
         command.mayHaveStringValue(cat) and
