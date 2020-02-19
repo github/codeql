@@ -168,7 +168,7 @@ Statements
   ``getStmt(i)`` to access the ``i``\ th statement in the body of this clause
 - ``RecvStmt``: a receive statement in a ``case`` clause of a ``select`` statement; use
   ``getLhs(i)`` to access the ``i``\ th left-hand side of this statement, and ``getExpr()`` to
-  access the underlying receive expression.
+  access the underlying receive expression
 
 Expressions
 ~~~~~~~~~~~
