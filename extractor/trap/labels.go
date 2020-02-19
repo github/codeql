@@ -2,7 +2,6 @@ package trap
 
 import (
 	"fmt"
-	"go/ast"
 	"go/types"
 )
 
@@ -25,7 +24,7 @@ type Labeler struct {
 
 	nextid       int
 	fileLabel    Label
-	nodeLabels   map[ast.Node]Label     // labels associated with AST nodes
+	nodeLabels   map[interface{}]Label  // labels associated with AST nodes
 	scopeLabels  map[*types.Scope]Label // labels associated with scopes
 	objectLabels map[types.Object]Label // labels associated with objects (that is, declared entities)
 	TypeLabels   map[types.Type]Label   // labels associated with types
@@ -37,7 +36,7 @@ func newLabeler(tw *Writer) *Labeler {
 		tw,
 		10000,
 		InvalidLabel,
-		make(map[ast.Node]Label),
+		make(map[interface{}]Label),
 		make(map[*types.Scope]Label),
 		make(map[types.Object]Label),
 		make(map[types.Type]Label),
@@ -72,7 +71,7 @@ func (l *Labeler) FileLabel() Label {
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it
-func (l *Labeler) LocalID(nd ast.Node) Label {
+func (l *Labeler) LocalID(nd interface{}) Label {
 	label, exists := l.nodeLabels[nd]
 	if !exists {
 		label = l.FreshID()
