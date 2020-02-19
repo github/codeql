@@ -103,6 +103,7 @@
 | scissors | rockpaperscissors.py:29 | SCISSORS |  | --> | scissors | rockpaperscissors.py:31 | x |  |
 | scissors | rockpaperscissors.py:30 | x |  | --> | paper | rockpaperscissors.py:30 | Attribute() |  |
 | scissors | rockpaperscissors.py:31 | x |  | --> | scissors | rockpaperscissors.py:6 | arg | p0 = scissors |
+| sequence of simple.test | assignment.py:13 | Tuple |  | --> | sequence of [simple.test] | assignment.py:13 | Tuple |  |
 | sequence of simple.test | test.py:168 | List |  | --> | sequence of simple.test | test.py:170 | l |  |
 | sequence of simple.test | test.py:168 | List |  | --> | sequence of simple.test | test.py:174 | l |  |
 | sequence of simple.test | test.py:170 | SSA variable x |  | --> | sequence of simple.test | test.py:172 | x |  |
@@ -112,6 +113,14 @@
 | sequence of simple.test | test.py:208 | List |  | --> | sequence of simple.test | test.py:209 | seq |  |
 | sequence of simple.test | test.py:209 | seq |  | --> | simple.test | test.py:209 | For |  |
 | sequence of simple.test | test.py:213 | flow_in_generator() |  | --> | simple.test | test.py:213 | For |  |
+| simple.test | assignment.py:5 | SOURCE |  | --> | sequence of simple.test | assignment.py:5 | Tuple |  |
+| simple.test | assignment.py:5 | SOURCE |  | --> | simple.test | assignment.py:6 | a |  |
+| simple.test | assignment.py:5 | SOURCE |  | --> | simple.test | assignment.py:7 | a |  |
+| simple.test | assignment.py:7 | a |  | --> | sequence of simple.test | assignment.py:7 | Tuple |  |
+| simple.test | assignment.py:7 | a |  | --> | simple.test | assignment.py:8 | b |  |
+| simple.test | assignment.py:13 | SOURCE |  | --> | sequence of simple.test | assignment.py:13 | Tuple |  |
+| simple.test | assignment.py:13 | SOURCE |  | --> | simple.test | assignment.py:14 | t1 |  |
+| simple.test | assignment.py:13 | SOURCE |  | --> | simple.test | assignment.py:14 | t2 |  |
 | simple.test | carrier.py:4 | arg | p1 = simple.test | --> | simple.test | carrier.py:5 | arg | p1 = simple.test |
 | simple.test | carrier.py:17 | SOURCE |  | --> | .attr = simple.test | carrier.py:17 | ImplicitCarrier() |  |
 | simple.test | carrier.py:17 | SOURCE |  | --> | simple.test | carrier.py:4 | arg | p1 = simple.test |

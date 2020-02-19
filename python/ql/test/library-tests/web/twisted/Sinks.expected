@@ -1,8 +1,0 @@
-| test.py:7 | response | externally controlled string |
-| test.py:14 | response | externally controlled string |
-| test.py:21 | response | externally controlled string |
-| test.py:36 | do_stuff_with() | externally controlled string |
-| test.py:40 | Str | externally controlled string |
-| test.py:44 | Str | externally controlled string |
-| test.py:45 | Str | externally controlled string |
-| test.py:46 | Str | externally controlled string |

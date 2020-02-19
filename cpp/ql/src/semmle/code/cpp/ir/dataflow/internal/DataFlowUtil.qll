@@ -3,9 +3,12 @@
  */
 
 private import cpp
+// The `ValueNumbering` library has to be imported right after `cpp` to ensure
+// that the cached IR gets the same checksum here as it does in queries that use
+// `ValueNumbering` without `DataFlow`.
+private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
@@ -300,10 +303,12 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 VariableNode variableNode(Variable v) { result.getVariable() = v }
 
 /**
+ * DEPRECATED: See UninitializedNode.
+ *
  * Gets the `Node` corresponding to the value of an uninitialized local
  * variable `v`.
  */
-UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
+Node uninitializedNode(LocalVariable v) { none() }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local

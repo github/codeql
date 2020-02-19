@@ -96,7 +96,7 @@ private module Cached {
   }
 
   cached
-  Instruction getMemoryOperandDefinition(
+  private Instruction getMemoryOperandDefinition0(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
     exists(OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand |
@@ -140,6 +140,19 @@ private module Cached {
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction) and
     overlap instanceof MustExactlyOverlap
+  }
+
+  cached
+  Instruction getMemoryOperandDefinition(
+    Instruction instruction, MemoryOperandTag tag, Overlap overlap
+  ) {
+    // getMemoryOperandDefinition0 currently has a bug where it can match with multiple overlaps.
+    // This predicate ensures that the chosen overlap is the most conservative if there's any doubt.
+    result = getMemoryOperandDefinition0(instruction, tag, overlap) and
+    not (
+      overlap instanceof MustExactlyOverlap and
+      exists(MustTotallyOverlap o | exists(getMemoryOperandDefinition0(instruction, tag, o)))
+    )
   }
 
   /**
