@@ -47,3 +47,4 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
   * The library now models data flow through `strdup` and similar functions.
   * The library now models data flow through formatting functions such as `sprintf`.
 * The security pack taint tracking library (`semmle.code.cpp.security.TaintTracking`) uses a new intermediate representation. This provides a more precise analysis of pointers to stack variables and flow through parameters, removing false positives and adding true positives in many security queries.
+* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering`) uses a new intermediate representation to provide a more precise analysis of heap allocated memory and pointers to stack variables.
