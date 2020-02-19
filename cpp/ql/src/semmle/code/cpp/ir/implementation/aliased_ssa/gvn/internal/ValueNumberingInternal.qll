@@ -136,7 +136,7 @@ private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRF
   instr.getEnclosingIRFunction() = irFunc
 }
 
-predicate constantValueNumber(
+private predicate constantValueNumber(
   ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
