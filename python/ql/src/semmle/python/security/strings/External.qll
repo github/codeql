@@ -18,6 +18,10 @@ abstract class ExternalStringKind extends StringKind {
         json_load(fromnode, tonode) and result.(ExternalJsonKind).getValue() = this
         or
         tonode.(DictNode).getAValue() = fromnode and result.(ExternalStringDictKind).getValue() = this
+        or
+        urlsplit(fromnode, tonode) and result.(ExternalUrlSplitResult).getItem() = this
+        or
+        urlparse(fromnode, tonode) and result.(ExternalUrlParseResult).getItem() = this
     }
 }
 
@@ -65,6 +69,65 @@ class ExternalStringSequenceDictKind extends DictKind {
     ExternalStringSequenceDictKind() { this.getValue() instanceof ExternalStringSequenceKind }
 }
 
+/** TaintKind for the result of `urlsplit(tainted_string)` */
+class ExternalUrlSplitResult extends ExternalStringSequenceKind {
+    // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
+    override TaintKind getTaintOfAttribute(string name) {
+        result = super.getTaintOfAttribute(name)
+        or
+        (
+            // namedtuple field names
+            name = "scheme" or
+            name = "netloc" or
+            name = "path" or
+            name = "query" or
+            name = "fragment" or
+            // class methods
+            name = "username" or
+            name = "password" or
+            name = "hostname"
+        ) and
+        result instanceof ExternalStringKind
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        result = super.getTaintOfMethodResult(name)
+        or
+        name = "geturl" and
+        result instanceof ExternalStringKind
+    }
+}
+
+/** TaintKind for the result of `urlparse(tainted_string)` */
+class ExternalUrlParseResult extends ExternalStringSequenceKind {
+    // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
+    override TaintKind getTaintOfAttribute(string name) {
+        result = super.getTaintOfAttribute(name)
+        or
+        (
+            // namedtuple field names
+            name = "scheme" or
+            name = "netloc" or
+            name = "path" or
+            name = "params" or
+            name = "query" or
+            name = "fragment" or
+            // class methods
+            name = "username" or
+            name = "password" or
+            name = "hostname"
+        ) and
+        result instanceof ExternalStringKind
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        result = super.getTaintOfMethodResult(name)
+        or
+        name = "geturl" and
+        result instanceof ExternalStringKind
+    }
+}
+
 /* Helper for getTaintForStep() */
 pragma[noinline]
 private predicate json_subscript_taint(
@@ -79,6 +142,44 @@ private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
     exists(FunctionObject json_loads |
         ModuleObject::named("json").attr("loads") = json_loads and
         json_loads.getACall() = tonode and
+        tonode.getArg(0) = fromnode
+    )
+}
+
+private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
+    // This could be implemented as `exists(FunctionValue` without the explicit six part,
+    // but then our tests will need to import +100 modules, so for now this slightly
+    // altered version gets to live on.
+    exists(Value urlsplit |
+        (
+            urlsplit = Value::named("six.moves.urllib.parse.urlsplit")
+            or
+            // Python 2
+            urlsplit = Value::named("urlparse.urlsplit")
+            or
+            // Python 3
+            urlsplit = Value::named("urllib.parse.urlsplit")
+        ) and
+        tonode = urlsplit.getACall() and
+        tonode.getArg(0) = fromnode
+    )
+}
+
+private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
+    // This could be implemented as `exists(FunctionValue` without the explicit six part,
+    // but then our tests will need to import +100 modules, so for now this slightly
+    // altered version gets to live on.
+    exists(Value urlparse |
+        (
+            urlparse = Value::named("six.moves.urllib.parse.urlparse")
+            or
+            // Python 2
+            urlparse = Value::named("urlparse.urlparse")
+            or
+            // Python 3
+            urlparse = Value::named("urllib.parse.urlparse")
+        ) and
+        tonode = urlparse.getACall() and
         tonode.getArg(0) = fromnode
     )
 }

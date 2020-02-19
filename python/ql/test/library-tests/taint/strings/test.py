@@ -59,3 +59,11 @@ def test_untrusted():
 
 def exc_untrusted_call(arg):
     return arg
+
+from six.moves.urllib.parse import urlsplit, urlparse
+
+def test_urlsplit_urlparse():
+    tainted_string = TAINTED_STRING
+    urlsplit_res = urlsplit(tainted_string)
+    urlparse_res = urlparse(tainted_string)
+    test(urlsplit_res, urlparse_res)
