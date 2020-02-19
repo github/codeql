@@ -3,8 +3,8 @@ CodeQL library for Java
 
 When you need to analyze a Java program, you can make use of the large collection of classes in the Java library for CodeQL.
 
-Overview
---------
+About the Java library
+----------------------
 
 There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
@@ -42,7 +42,7 @@ These classes represent named program elements: packages (``Package``), compilat
 
 Their common superclass is ``Element``, which provides general member predicates for determining the name of a program element and checking whether two elements are nested inside each other.
 
-It is often convenient to refer to an element that might either be a method or a constructor; the class ``Callable``, which is a common superclass of ``Method`` and ``Constructor``, can be used for this purpose.
+It's often convenient to refer to an element that might either be a method or a constructor; the class ``Callable``, which is a common superclass of ``Method`` and ``Constructor``, can be used for this purpose.
 
 Types
 ~~~~~
@@ -68,9 +68,9 @@ For example, the following query finds all variables of type ``int`` in the prog
        pt.hasName("int")
    select v
 
-➤ `See this in the query console <https://lgtm.com/query/660700018/>`__. You are likely to get many results when you run this query because most projects contain many variables of type ``int``.
+➤ `See this in the query console <https://lgtm.com/query/660700018/>`__. You're likely to get many results when you run this query because most projects contain many variables of type ``int``.
 
-Reference types can also be categorized according to their declaration scope:
+Reference types are also categorized according to their declaration scope:
 
 -  ``TopLevelType`` represents a reference type declared at the top-level of a compilation unit.
 -  ``NestedType`` is a type declared inside another type.
@@ -107,7 +107,7 @@ As an example, we can write a query that finds all nested classes that directly 
    where nc.getASupertype() instanceof TypeObject
    select nc
 
-➤ `See this in the query console <https://lgtm.com/query/672230026/>`__. You are likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
+➤ `See this in the query console <https://lgtm.com/query/672230026/>`__. You're likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
 
 Generics
 ~~~~~~~~
@@ -196,7 +196,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-More information on working with types can be found in the :doc:`tutorial on types and the class hierarchy <types-class-hierarchy>`.
+For more information on working with types, see the :doc:`tutorial on types and the class hierarchy <types-class-hierarchy>`.
 
 Variables
 ~~~~~~~~~
@@ -260,7 +260,7 @@ Finally, here is a query that finds method bodies:
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
-   For more information on working with AST classes, see the :doc:`tutorial on expressions and statements <expressions-statements>`.
+For more information on working with AST classes, see the :doc:`tutorial on expressions and statements <expressions-statements>`.
 
 Metadata
 --------
@@ -383,8 +383,8 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
 
 For more information about callables and calls, see the :doc:`call graph tutorial <call-graph>`.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Experiment with the worked examples in the CodeQL for Java tutorial topics: :doc:`Types and the class hierarchy <types-class-hierarchy>`, :doc:`Expressions and statements <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
 -  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.

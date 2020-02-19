@@ -58,7 +58,7 @@ Class ``Call`` provides two call graph navigation predicates:
 
 For instance, in our example ``getCallee`` of the second call in ``Client.main`` would return ``Super.getX``. At runtime, though, this call would actually invoke ``Sub.getX``.
 
-Class ``Callable`` defines a large number of member predicates; for our purposes, the two most important ones are as follows:
+Class ``Callable`` defines a large number of member predicates; for our purposes, the two most important ones are:
 
 -  ``calls(Callable target)`` succeeds if this callable contains a call whose callee is ``target``.
 -  ``polyCalls(Callable target)`` succeeds if this callable may call ``target`` at runtime; this is the case if it contains a call whose callee is either ``target`` or a method that ``target`` overrides.
@@ -86,7 +86,7 @@ Given this API, we can easily write a query that finds methods that are not call
 
    We have to use ``polyCalls`` instead of ``calls`` here: we want to be reasonably sure that ``callee`` is not called, either directly or via overriding.
 
-Running this query on a typical Java project results in lots of hits in the Java standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query as follows:
+Running this query on a typical Java project results in lots of hits in the Java standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query:
 
 .. code-block:: ql
 
@@ -144,7 +144,7 @@ A further special case is non-public default constructors: in the singleton patt
 
 ➤ `See this in the query console <https://lgtm.com/query/673060008/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
 
-Finally, on many Java projects there are methods that are invoked indirectly by reflection. Thus, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
+Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
 
 .. code-block:: ql
 
@@ -161,8 +161,8 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
 
 ➤ `See this in the query console <https://lgtm.com/query/665760002/>`__. This should give a further reduction in the number of results returned.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out how to query metadata and white space: :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
 -  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
