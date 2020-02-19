@@ -2258,7 +2258,8 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap) {
   exists(
-    AccessPath ap0, Node midnode, Configuration conf, Callable enclosing, LocalCallContext localCC
+    AccessPath ap0, Node midnode, Configuration conf, DataFlowCallable enclosing,
+    LocalCallContext localCC
   |
     pathIntoLocalStep(mid, midnode, cc, enclosing, sc, ap0, conf) and
     localCC = getLocalCallContext(cc, enclosing)
@@ -2297,8 +2298,8 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
 
 pragma[nomagic]
 private predicate pathIntoLocalStep(
-  PathNodeMid mid, Node midnode, CallContext cc, Callable enclosing, SummaryCtx sc, AccessPath ap0,
-  Configuration conf
+  PathNodeMid mid, Node midnode, CallContext cc, DataFlowCallable enclosing, SummaryCtx sc,
+  AccessPath ap0, Configuration conf
 ) {
   midnode = mid.getNode() and
   cc = mid.getCallContext() and
