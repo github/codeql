@@ -42,7 +42,7 @@ predicate side_effecting_descriptor_type(ClassValue descriptor) {
      * we want to treat them as having no effect.
      */
 
-    not descriptor = ClassValue::function() and
+    not descriptor = ClassValue::functionType() and
     not descriptor = ClassValue::staticmethod() and
     not descriptor = ClassValue::classmethod()
 }
