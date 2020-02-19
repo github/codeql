@@ -558,7 +558,7 @@ class BinaryOperationNode extends Node {
     exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
       rhs = asInstruction() and ids = rhs.getStmt()
     |
-      left = exprNode(ids.getExpr()) and
+      left = exprNode(ids.getOperand()) and
       right = instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
       op = ids.getOperator().charAt(0)
     )
@@ -757,7 +757,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
     succ.(ConversionExpr).getOperand() = pred or
-    succ.(TypeAssertExpr).getExpression() = pred
+    succ.(TypeAssertExpr).getExpr() = pred
   |
     nodeFrom = exprNode(pred) and
     nodeTo = exprNode(succ)

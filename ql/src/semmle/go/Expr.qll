@@ -320,12 +320,12 @@ class StructLit extends CompositeLit {
  */
 class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpr() { result = getChildExpr(0) }
 
-  override Expr stripParens() { result = getExpression().stripParens() }
+  override Expr stripParens() { result = getExpr().stripParens() }
 
   override predicate isPlatformIndependentConstant() {
-    getExpression().isPlatformIndependentConstant()
+    getExpr().isPlatformIndependentConstant()
   }
 
   override string toString() { result = "(...)" }
@@ -394,7 +394,7 @@ class SliceExpr extends @sliceexpr, Expr {
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
-  Expr getExpression() { result = getChildExpr(0) }
+  Expr getExpr() { result = getChildExpr(0) }
 
   /** Gets the expression representing the asserted type. */
   Expr getTypeExpr() { result = getChildExpr(1) }
@@ -402,7 +402,7 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override predicate isPlatformIndependentConstant() {
-    getExpression().isPlatformIndependentConstant()
+    getExpr().isPlatformIndependentConstant()
   }
 
   override string toString() { result = "type assertion" }
@@ -718,9 +718,9 @@ class AddressExpr extends @addressexpr, UnaryExpr {
 }
 
 /**
- * A unary arrow expression using `<-`.
+ * A unary receive expression using `<-`.
  */
-class ArrowExpr extends @arrowexpr, UnaryExpr {
+class RecvExpr extends @arrowexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string getOperator() { result = "<-" }
@@ -776,12 +776,12 @@ class ShiftExpr extends @shiftexpr, BitwiseBinaryExpr { }
 /**
  * A comparison expression, that is, `==`, `!=`, `<`, `<=`, `>=` or `>`.
  */
-class Comparison extends @comparison, BinaryExpr { }
+class ComparisonExpr extends @comparison, BinaryExpr { }
 
 /**
  * An equality test, that is, `==` or `!=`.
  */
-class EqualityTestExpr extends @equalitytest, Comparison {
+class EqualityTestExpr extends @equalitytest, ComparisonExpr {
   /** Gets the polarity of this equality test, that is, `true` for `==` and `false` for `!=`. */
   boolean getPolarity() { none() }
 }
@@ -789,7 +789,7 @@ class EqualityTestExpr extends @equalitytest, Comparison {
 /**
  * A relational comparison, that is, `<`, `<=`, `>=` or `>`.
  */
-class RelationalComparisonExpr extends @relationalcomparison, Comparison {
+class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
   /** Holds if this comparison is strict, that is, it implies inequality. */
   predicate isStrict() { none() }
 
@@ -1136,7 +1136,7 @@ private predicate isTypeExprBottomUp(Expr e) {
   e instanceof InterfaceTypeExpr or
   e instanceof MapTypeExpr or
   e instanceof ChanTypeExpr or
-  isTypeExprBottomUp(e.(ParenExpr).getExpression()) or
+  isTypeExprBottomUp(e.(ParenExpr).getExpr()) or
   isTypeExprBottomUp(e.(StarExpr).getBase()) or
   isTypeExprBottomUp(e.(Ellipsis).getOperand())
 }
@@ -1184,7 +1184,7 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(SelectorExpr sel | isTypeExprTopDown(sel)).getBase()
   or
-  e = any(ParenExpr pe | isTypeExprTopDown(pe)).getExpression()
+  e = any(ParenExpr pe | isTypeExprTopDown(pe)).getExpr()
   or
   e = any(StarExpr se | isTypeExprTopDown(se)).getBase()
   or
@@ -1216,7 +1216,7 @@ class ReferenceExpr extends Expr {
     not this = any(MethodSpec md).getNameExpr() and
     not this = any(StructLit sl).getKey(_)
     or
-    this.(ParenExpr).getExpression() instanceof ReferenceExpr
+    this.(ParenExpr).getExpr() instanceof ReferenceExpr
     or
     this.(StarExpr).getBase() instanceof ReferenceExpr
     or
@@ -1229,7 +1229,7 @@ class ReferenceExpr extends Expr {
   predicate isLvalue() {
     this = any(Assignment assgn).getLhs(_)
     or
-    this = any(IncDecStmt ids).getExpr()
+    this = any(IncDecStmt ids).getOperand()
     or
     exists(RangeStmt rs |
       this = rs.getKey() or
@@ -1247,7 +1247,7 @@ class ReferenceExpr extends Expr {
     or
     this = any(CompoundAssignStmt cmp).getLhs(_)
     or
-    this = any(IncDecStmt ids).getExpr()
+    this = any(IncDecStmt ids).getOperand()
   }
 }
 
@@ -1258,7 +1258,7 @@ class ValueExpr extends Expr {
     this instanceof BasicLit or
     this instanceof FuncLit or
     this instanceof CompositeLit or
-    this.(ParenExpr).getExpression() instanceof ValueExpr or
+    this.(ParenExpr).getExpr() instanceof ValueExpr or
     this instanceof SliceExpr or
     this instanceof TypeAssertExpr or
     this instanceof CallOrConversionExpr or

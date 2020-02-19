@@ -51,10 +51,10 @@ class AssocNestedExpr extends BinaryExpr {
 class HarmlessNestedExpr extends BinaryExpr {
   HarmlessNestedExpr() {
     exists(BinaryExpr parent | this = parent.getAChildExpr() |
-      parent instanceof Comparison and
+      parent instanceof ComparisonExpr and
       (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
       or
-      parent instanceof LogicalExpr and this instanceof Comparison
+      parent instanceof LogicalExpr and this instanceof ComparisonExpr
     )
   }
 }

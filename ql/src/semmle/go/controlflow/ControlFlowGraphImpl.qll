@@ -29,7 +29,7 @@ private predicate isCondRoot(Expr e) {
 private predicate isCond(Expr e) {
   isCondRoot(e) or
   e = any(LogicalBinaryExpr lbe | isCond(lbe)).getRightOperand() or
-  e = any(ParenExpr par | isCond(par)).getExpression()
+  e = any(ParenExpr par | isCond(par)).getExpr()
 }
 
 /**
@@ -309,7 +309,7 @@ newtype TWriteTarget =
       )
     )
     or
-    exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getExpr().stripParens())
+    exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getOperand().stripParens())
     or
     exists(ParameterOrReceiver parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
     or
@@ -703,7 +703,7 @@ module CFG {
       or
       i = 0 and result = this.(LabeledStmt).getStmt()
       or
-      i = 0 and result = this.(ParenExpr).getExpression()
+      i = 0 and result = this.(ParenExpr).getExpr()
       or
       result = this.(PlainBlock).getStmt(i)
     }
@@ -1385,7 +1385,7 @@ module CFG {
   }
 
   private class IncDecTree extends ControlFlowTree, IncDecStmt {
-    override predicate firstNode(ControlFlow::Node first) { firstNode(getExpr(), first) }
+    override predicate firstNode(ControlFlow::Node first) { firstNode(getOperand(), first) }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) {
       ControlFlowTree.super.lastNode(last, cmpl)
@@ -1395,7 +1395,7 @@ module CFG {
     }
 
     override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      lastNode(getExpr(), pred, normalCompletion()) and
+      lastNode(getOperand(), pred, normalCompletion()) and
       succ = MkImplicitOne(this)
       or
       pred = MkImplicitOne(this) and
@@ -1851,7 +1851,7 @@ module CFG {
       result = Panic()
     }
 
-    override ControlFlowTree getChildTree(int i) { i = 0 and result = getExpression() }
+    override ControlFlowTree getChildTree(int i) { i = 0 and result = getExpr() }
   }
 
   private class UnaryExprTree extends ControlFlowTree, UnaryExpr {

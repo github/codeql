@@ -103,8 +103,8 @@ class SendStmt extends @sendstmt, Stmt {
  * An increment or decrement statement.
  */
 class IncDecStmt extends @incdecstmt, Stmt {
-  /** Gets the expression. */
-  Expr getExpr() { result = getChildExpr(0) }
+  /** Gets the expression being incremented or decremented. */
+  Expr getOperand() { result = getChildExpr(0) }
 
   /** Gets the increment or decrement operator. */
   string getOperator() { none() }
@@ -530,7 +530,7 @@ class RecvStmt extends Stmt {
   int getNumLhs() { result = count(getLhs(_)) }
 
   /** Gets the receive expression of this receive statement. */
-  ArrowExpr getExpr() {
+  RecvExpr getExpr() {
     result = this.(ExprStmt).getExpr() or
     result = this.(Assignment).getRhs()
   }
