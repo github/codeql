@@ -29,7 +29,7 @@ abstract class SideEffectFunction extends Function {
    * returns. This memory could be from global variables, or from other memory that was reachable
    * from a pointer that was passed into the function. Output side-effects, and writes to memory
    * that cannot be visible to the caller (for example a buffer inside an I/O library) are not
-   * modelled here.
+   * modeled here.
    */
   abstract predicate hasOnlySpecificWriteSideEffects();
 
