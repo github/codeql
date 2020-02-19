@@ -45,6 +45,11 @@ newtype TValueNumber =
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
+  TLoadTotalOverlapValueNumber(
+    IRFunction irFunc, IRType type, TValueNumber memOperand, TValueNumber operand
+  ) {
+    none()
+  } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
 /**
@@ -191,6 +196,12 @@ private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
   not instr.getResultIRType() instanceof IRVoidType and
   not numberableInstruction(instr)
 }
+
+/**
+ * Gets the value number assigned to the exact definition of `op`, if any.
+ * Returns at most one result.
+ */
+TValueNumber tvalueNumberOfOperand(Operand op) { result = tvalueNumber(op.getDef()) }
 
 /**
  * Gets the value number assigned to `instr`, if any. Returns at most one result.
