@@ -316,8 +316,6 @@ nodes
 | GlobalDataFlow.cs:56:37:56:37 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:56:46:56:46 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:57:35:57:52 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
-| GlobalDataFlow.cs:60:38:60:50 | access to parameter nonSinkParam0 | semmle.label | access to parameter nonSinkParam0 |
-| GlobalDataFlow.cs:61:61:61:73 | access to parameter nonSinkParam0 | semmle.label | access to parameter nonSinkParam0 |
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String | semmle.label | call to method Return : String |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |

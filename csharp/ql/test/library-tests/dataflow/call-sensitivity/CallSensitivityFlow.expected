@@ -69,7 +69,6 @@ nodes
 | CallSensitivityFlow.cs:175:21:175:32 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | CallSensitivityFlow.cs:189:40:189:40 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:192:18:192:18 | access to parameter o | semmle.label | access to parameter o |
-| CallSensitivityFlow.cs:203:22:203:22 | access to parameter o | semmle.label | access to parameter o |
 #select
 | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | CallSensitivityFlow.cs:78:24:78:35 | object creation of type Object : Object | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | $@ | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | access to parameter o |
 | CallSensitivityFlow.cs:79:25:79:36 | object creation of type Object : Object | CallSensitivityFlow.cs:79:25:79:36 | object creation of type Object : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | $@ | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | access to parameter o |

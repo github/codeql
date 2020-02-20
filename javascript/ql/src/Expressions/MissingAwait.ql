@@ -43,7 +43,10 @@ predicate isBadPromiseContext(Expr expr) {
   or
   expr = any(LogicalBinaryExpr e).getLeftOperand()
   or
-  expr = any(UnaryExpr e).getOperand()
+  exists(UnaryExpr e |
+    expr = e.getOperand() and
+    not e instanceof VoidExpr
+  )
   or
   expr = any(UpdateExpr e).getOperand()
   or
