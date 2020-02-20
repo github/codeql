@@ -1482,8 +1482,8 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 }
 
 /**
-  * A check of the form `if(x)`, which sanitizes `x` in its "else" branch. 
-  * Can be added to a `isBarrier` in a configuration to add the sanitization.
+  * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
   */
 class VarAccessBarrier extends DataFlow::Node {
   VarAccessBarrier() {
