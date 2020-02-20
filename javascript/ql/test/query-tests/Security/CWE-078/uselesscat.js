@@ -96,3 +96,5 @@ exec("cat foo/bar", function (err, out) {}); // NOT OK
 exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
 
 exec("cat foo/bar", (err, out) => doSomethingWith(out)); // NOT OK
+
+execFileSync('/bin/cat', [ 'pom.xml' ],  unknownOptions); // OK - unknown options.

@@ -64,6 +64,7 @@ syncCommand
 | uselesscat.js:88:1:88:35 | execSyn ...  + foo) |
 | uselesscat.js:90:1:90:50 | execFil ... th}` ]) |
 | uselesscat.js:92:1:92:46 | execFil ... th}` ]) |
+| uselesscat.js:100:1:100:56 | execFil ... ptions) |
 #select
 | False negative | uselesscat.js:54:42:54:69 | // NOT  ... lagged] |
 | False negative | uselesscat.js:84:118:84:144 | // NOT  ... lagged] |

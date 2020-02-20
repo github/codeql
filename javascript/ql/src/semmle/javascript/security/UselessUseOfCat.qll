@@ -60,15 +60,20 @@ class UselessCat extends DataFlow::CallNode {
 
   UselessCat() {
     this = candidate and
+    exists(createReadFileCall(this)) and
     // wildcards, pipes, redirections, and multiple files are OK.
     // (The multiple files detection relies on the fileArgument not containing spaces anywhere)
     not candidate.getFileArgument().regexpMatch(".*(\\*|\\||>|<| ).*") and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
-    not exists(string prop |
-      not prop = "encoding" and
-      exists(candidate.getOptionsArg().getALocalSource().getAPropertyWrite(prop))
+    (
+      not exists(candidate.getOptionsArg())
+      or
+      forex(string prop |
+        exists(candidate.getOptionsArg().getALocalSource().getAPropertyWrite(prop))
+      |
+        prop = "encoding"
+      )
     ) and
-    exists(createReadFileCall(this)) and
     // If there is a callback, then it must either have one or two arguments, or if there is a third argument it must be unused.
     (
       not exists(candidate.getCallback())
