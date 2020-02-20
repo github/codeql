@@ -50,3 +50,19 @@ def safemembers(members):
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall(members=safemembers(tar))
+
+
+# Wrong sanitizer (is missing not)
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
+    if os.path.isabs(entry.name) or ".." in entry.name:
+        tar.extract(entry, "/tmp/unpack/") # TODO: FN
+
+
+# OK Sanitized using not
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
+    # using `if not (os.path.isabs(entry.name) or ".." in entry.name):`
+    # would make the sanitizer work, but for the wrong reasons since out library is a bit broken.
+    if not os.path.isabs(entry.name):
+        tar.extract(entry, "/tmp/unpack/")
