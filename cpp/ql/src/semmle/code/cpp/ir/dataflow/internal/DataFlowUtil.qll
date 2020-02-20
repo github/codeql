@@ -3,9 +3,12 @@
  */
 
 private import cpp
+// The `ValueNumbering` library has to be imported right after `cpp` to ensure
+// that the cached IR gets the same checksum here as it does in queries that use
+// `ValueNumbering` without `DataFlow`.
+private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
@@ -300,10 +303,12 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 VariableNode variableNode(Variable v) { result.getVariable() = v }
 
 /**
+ * DEPRECATED: See UninitializedNode.
+ *
  * Gets the `Node` corresponding to the value of an uninitialized local
  * variable `v`.
  */
-UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
+Node uninitializedNode(LocalVariable v) { none() }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -365,10 +370,10 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       modelOut.isReturnValueDeref() and
       iTo = call
       or
-      exists(WriteSideEffectInstruction outNode |
-        modelOut.isParameterDeref(outNode.getIndex()) and
+      exists(int index, WriteSideEffectInstruction outNode |
+        modelOut.isParameterDeref(index) and
         iTo = outNode and
-        outNode.getPrimaryInstruction() = call
+        outNode = getSideEffectFor(call, index)
       )
       // TODO: add write side effects for qualifiers
     ) and
@@ -380,8 +385,7 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       or
       exists(int index, ReadSideEffectInstruction read |
         modelIn.isParameterDeref(index) and
-        read.getIndex() = index and
-        read.getPrimaryInstruction() = call and
+        read = getSideEffectFor(call, index) and
         iFrom = read.getSideEffectOperand().getAnyDef()
       )
       or
@@ -390,6 +394,18 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       // TODO: add read side effects for qualifiers
     )
   )
+}
+
+/**
+ * Holds if the result is a side effect for instruction `call` on argument
+ * index `argument`. This helper predicate makes it easy to join on both of
+ * these columns at once, avoiding pathological join orders in case the
+ * argument index should get joined first.
+ */
+pragma[noinline]
+SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
+  call = result.getPrimaryInstruction() and
+  argument = result.(IndexedInstruction).getIndex()
 }
 
 /**

@@ -273,12 +273,12 @@ class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration
   override ConstantString getImportedPath() { result = getChildExpr(0) }
 
   override predicate exportsAs(LexicalName v, string name) {
-    getImportedModule().exportsAs(v, name) and
+    getReExportedES2015Module().exportsAs(v, name) and
     not isShadowedFromBulkExport(this, name)
   }
 
   override DataFlow::Node getSourceNode(string name) {
-    result = getImportedModule().getAnExport().getSourceNode(name)
+    result = getReExportedES2015Module().getAnExport().getSourceNode(name)
   }
 }
 
@@ -379,7 +379,7 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
     exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
       v = spec.getLocal().(LexicalAccess).getALexicalName()
       or
-      this.(ReExportDeclaration).getImportedModule().exportsAs(v, spec.getLocalName())
+      this.(ReExportDeclaration).getReExportedES2015Module().exportsAs(v, spec.getLocalName())
     )
   }
 
@@ -393,7 +393,7 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
       not exists(getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
       or
       exists(ReExportDeclaration red | red = this |
-        result = red.getImportedModule().getAnExport().getSourceNode(spec.getLocalName())
+        result = red.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
       )
     )
   }
@@ -545,13 +545,17 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier.
+ * A namespace export specifier, that is `*` or `* as x` occuring in an export declaration.
  *
- * Example:
+ * Examples:
  *
  * ```
  * export
  *   *          // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   * as x     // namespace export specifier
  *   from 'a';
  * ```
  */
@@ -564,6 +568,7 @@ class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifie
  *
  * ```
  * export * from 'a';               // bulk re-export declaration
+ * export * as x from 'a';          // namespace re-export declaration
  * export { x } from 'a';           // named re-export declaration
  * export x from 'a';               // default re-export declaration
  * ```
@@ -572,8 +577,23 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
 
-  /** Gets the module from which this declaration re-exports. */
+  /**
+   * DEPRECATED. Use `getReExportedES2015Module()` instead.
+   *
+   * Gets the module from which this declaration re-exports.
+   */
+  deprecated
   ES2015Module getImportedModule() {
+    result = getReExportedModule()
+  }
+
+  /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
+  ES2015Module getReExportedES2015Module() {
+    result = getReExportedModule()
+  }
+
+  /** Gets the module from which this declaration re-exports. */
+  Module getReExportedModule() {
     result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
     or
     result = resolveFromTypeRoot()

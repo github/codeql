@@ -97,6 +97,8 @@ class GVN extends TValueNumber {
     or
     this instanceof TInheritanceConversionValueNumber and result = "InheritanceConversion"
     or
+    this instanceof TLoadTotalOverlapValueNumber and result = "LoadTotalOverlap"
+    or
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 

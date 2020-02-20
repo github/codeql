@@ -1,3 +1,7 @@
+| assignment.py:5 | SOURCE | assignment.py:5 | Taint simple.test | a |
+| assignment.py:7 | a | assignment.py:7 | Taint simple.test | b |
+| assignment.py:13 | SOURCE | assignment.py:13 | Taint simple.test | t1 |
+| assignment.py:13 | SOURCE | assignment.py:13 | Taint simple.test | t2 |
 | carrier.py:4 | ParameterDefinition | carrier.py:4 | Taint explicit.carrier | arg |
 | carrier.py:4 | ParameterDefinition | carrier.py:4 | Taint simple.test | arg |
 | carrier.py:10 | ParameterDefinition | carrier.py:10 | Taint .attr = simple.test | self |

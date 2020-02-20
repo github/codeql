@@ -11,13 +11,19 @@ cached
 private newtype TOperand =
   TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
     defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
-    not Construction::isInCycle(useInstr)
+    not Construction::isInCycle(useInstr) and
+    strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
   } or
   TNonPhiMemoryOperand(
     Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
   ) {
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
-    not Construction::isInCycle(useInstr)
+    not Construction::isInCycle(useInstr) and
+    (
+      strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+      or
+      tag instanceof UnmodeledUseOperandTag
+    )
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap

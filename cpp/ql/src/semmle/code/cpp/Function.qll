@@ -140,6 +140,13 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   Parameter getAParameter() { params(unresolveElement(result), underlyingElement(this), _, _) }
 
   /**
+   * Gets an access of this function.
+   *
+   * To get calls to this function, use `getACallToThisFunction` instead.
+   */
+  FunctionAccess getAnAccess() { result.getTarget() = this }
+
+  /**
    * Gets the number of parameters of this function, _not_ including any
    * implicit `this` parameter or any `...` varargs pseudo-parameter.
    */
@@ -174,6 +181,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
     result = getParameter(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
   }
 
+  /** Gets a call to this function. */
   FunctionCall getACallToThisFunction() { result.getTarget() = this }
 
   /**

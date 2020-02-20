@@ -428,4 +428,11 @@ module TaintedPath {
   class AngularJSTemplateUrlSink extends Sink, DataFlow::ValueNode {
     AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
   }
+
+  /**
+   * The path argument of a [send](https://www.npmjs.com/package/send) call, viewed as a sink.
+   */
+  class SendPathSink extends Sink, DataFlow::ValueNode {
+    SendPathSink() { this = DataFlow::moduleImport("send").getACall().getArgument(1) }
+  }
 }
