@@ -657,7 +657,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     )
     or
     not stmt.hasDefaultCase() and
-    kind instanceof GotoEdge and
+    kind instanceof DefaultEdge and
     result = getParent().getChildSuccessor(this)
   }
 
