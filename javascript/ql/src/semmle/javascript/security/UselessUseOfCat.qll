@@ -17,10 +17,21 @@ string createReadFileCall(UselsesCatCandidates::UselessCatCandicate cat) {
       else extraArg = ""
     ) and
     if exists(cat.getCallback())
-    then callback = ", function(" + getCallbackArgs(cat.getCallback()) + ") {...}"
+    then callback = constructCallbackString(cat.getCallback())
     else callback = ""
   |
     result = "fs.readFile" + sync + "(" + cat.getFileArgument().trim() + extraArg + callback + ")"
+  )
+}
+
+string constructCallbackString(DataFlow::FunctionNode func) {
+  exists(string args | args = getCallbackArgs(func) |
+    if func.getFunction() instanceof ArrowFunctionExpr
+    then
+      if func.getFunction().getBody() instanceof Expr
+      then result = ", (" + args + ") => ..."
+      else result = ", (" + args + ") => {...}"
+    else result = ", function(" + args + ") {...}"
   )
 }
 
@@ -185,13 +196,16 @@ module UselsesCatCandidates {
   bindingset[str]
   private string getSimplifiedStringConcat(string str) {
     // Remove an initial ""+ (e.g. in `""+file`)
-    if str.prefix(3) = "\"\"+" then
-      result = str.suffix(3)
-    // prettify `${newpath}` to just newpath
-    else if str.prefix(3) = "`${" and str.suffix(str.length() - 2) = "}`" and not str.suffix(3).matches("%{%")  then
-      result = str.prefix(str.length() - 2).suffix(3)
+    if str.prefix(3) = "\"\"+"
+    then result = str.suffix(3)
     else
-     result = str
+      // prettify `${newpath}` to just newpath
+      if
+        str.prefix(3) = "`${" and
+        str.suffix(str.length() - 2) = "}`" and
+        not str.suffix(3).matches("%{%")
+      then result = str.prefix(str.length() - 2).suffix(3)
+      else result = str
   }
 
   /**

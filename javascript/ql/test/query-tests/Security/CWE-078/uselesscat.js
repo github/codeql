@@ -90,3 +90,9 @@ execSync('cat /proc/cpuinfo' + foo).toString(); // NOT OK.
 execFileSync('/bin/cat', [ `foo/bar/${newpath}` ]); // NOT OK
 
 execFileSync('node', [ `foo/bar/${newpath}` ]); // OK - not a call to cat
+
+exec("cat foo/bar", function (err, out) {}); // NOT OK
+
+exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
+
+exec("cat foo/bar", (err, out) => doSomethingWith(out)); // NOT OK

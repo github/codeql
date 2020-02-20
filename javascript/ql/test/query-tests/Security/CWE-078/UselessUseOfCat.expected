@@ -2,7 +2,7 @@ readFile
 | uselesscat.js:10:1:10:43 | exec("c ... ut) {}) | fs.readFile("foo/bar", function(err, out) {...}) |
 | uselesscat.js:12:1:14:2 | exec("c ... ut);\\n}) | fs.readFile("/proc/"+id+"/status", function(err, out) {...}) |
 | uselesscat.js:16:1:16:29 | execSyn ... uinfo') | fs.readFileSync("/proc/cpuinfo") |
-| uselesscat.js:18:1:18:26 | execSyn ... path}`) | fs.readFileSync(`${newpath}`) |
+| uselesscat.js:18:1:18:26 | execSyn ... path}`) | fs.readFileSync(newpath) |
 | uselesscat.js:32:1:32:34 | execSyn ... path}`) | fs.readFileSync(`foo/bar/${newpath}`) |
 | uselesscat.js:34:1:34:54 | execSyn ... utf8'}) | fs.readFileSync(`foo/bar/${newpath}`, {encoding: 'utf8'})) |
 | uselesscat.js:51:9:51:31 | execSyn ... + file) | fs.readFileSync(file) |
@@ -15,6 +15,9 @@ readFile
 | uselesscat.js:86:1:86:75 | execFil ... utf8'}) | fs.readFileSync("foo/"+newPath+"bar", {encoding: 'utf8'})) |
 | uselesscat.js:88:1:88:35 | execSyn ...  + foo) | fs.readFileSync("/proc/cpuinfo"+foo) |
 | uselesscat.js:90:1:90:50 | execFil ... th}` ]) | fs.readFileSync(`foo/bar/${newpath}`) |
+| uselesscat.js:94:1:94:43 | exec("c ... ut) {}) | fs.readFile("foo/bar", function(err, out) {...}) |
+| uselesscat.js:96:1:96:53 | exec("c ... (out)}) | fs.readFile("foo/bar", (err, out) => {...}) |
+| uselesscat.js:98:1:98:55 | exec("c ... h(out)) | fs.readFile("foo/bar", (err, out) => ...) |
 #select
 | False negative | uselesscat.js:54:42:54:69 | // NOT  ... lagged] |
 | False negative | uselesscat.js:84:118:84:144 | // NOT  ... lagged] |
