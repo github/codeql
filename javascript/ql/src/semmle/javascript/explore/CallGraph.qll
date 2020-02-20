@@ -71,7 +71,7 @@ predicate isStartOfCallPath(InvokeNode invoke) {
   not callEdge+(rootCall(), invoke)
 }
 
-/** Gets a function contains no calls to other functions. */
+/** Gets a function that contains no calls to other functions. */
 private FunctionNode leafFunction() {
   not callEdge(result, _)
 }
