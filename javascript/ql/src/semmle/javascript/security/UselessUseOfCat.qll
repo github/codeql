@@ -3,10 +3,9 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.IndirectCommandArgument
 
 /**
- * Gets a string representing an equivalent call to `fs.ReadFile` for a call to `cat`.
+ * Gets a string representation of an equivalent call to `fs.readFile` for a given command execution `cat`.
  */
 string createReadFileCall(UselsesCatCandidates::UselessCatCandicate cat) {
   exists(string sync, string extraArg, string callback |
@@ -24,6 +23,9 @@ string createReadFileCall(UselsesCatCandidates::UselessCatCandicate cat) {
   )
 }
 
+/**
+ * Constructs a string representing the callback `func`.
+ */
 string constructCallbackString(DataFlow::FunctionNode func) {
   exists(string args | args = getCallbackArgs(func) |
     if func.getFunction() instanceof ArrowFunctionExpr
@@ -36,20 +38,25 @@ string constructCallbackString(DataFlow::FunctionNode func) {
 }
 
 /**
- * Gets a string concatenation of the parameters to a function.
+ * Gets a string concatenation of the parameter names in a function `func`.
  */
 private string getCallbackArgs(DataFlow::FunctionNode func) {
-  result = concat(int i | i = [0 .. 2] | func.getParameter(i).getName(), ", ")
+  result =
+    concat(int i |
+      i = [0 .. func.getNumParameter()]
+    |
+      func.getParameter(i).getName(), ", " order by i
+    )
 }
 
 /**
- * Gets a string representation of the options argument from an exec-like call.
+ * Gets a string representation of the options argument `arg` from an exec-like call.
  */
-private string printOptionsArg(DataFlow::Node node) {
-  result = node.asExpr().(VarAccess).getVariable().getName()
+private string printOptionsArg(DataFlow::Node arg) {
+  result = arg.asExpr().(VarAccess).getVariable().getName()
   or
   // fall back to toString(), but ensure that we don't have dots in the middle.
-  result = node.(DataFlow::ObjectLiteralNode).toString() and not result.regexpMatch(".*\\.\\..*")
+  result = arg.(DataFlow::ObjectLiteralNode).toString() and not result.regexpMatch(".*\\.\\..*")
 }
 
 /**
@@ -60,6 +67,7 @@ class UselessCat extends DataFlow::CallNode {
 
   UselessCat() {
     this = candidate and
+    // We can create an equivalent `fs.readFile` call.
     exists(createReadFileCall(this)) and
     // wildcards, pipes, redirections, and multiple files are OK.
     // (The multiple files detection relies on the fileArgument not containing spaces anywhere)
@@ -96,28 +104,56 @@ class UselessCat extends DataFlow::CallNode {
 module UselsesCatCandidates {
   /**
    * A candidate for a useless use of `cat`.
-   * Subclasses of this class specify the structure of the `exec`-like call.
+   * This class describes the structure of a call to cat
+   * This class does not determine whether it is a useless call, or even if it is a call to `cat`.
    */
-  abstract class UselessCatCandicate extends DataFlow::CallNode {
+  class UselessCatCandicate extends DataFlow::CallNode {
+    SystemCommandExecution command;
+
+    UselessCatCandicate() { this = command }
+
     /**
      * Holds if the call is synchronous (e.g. `execFileSync`).
      */
-    abstract predicate isSync();
+    predicate isSync() { command.isSync() }
 
     /**
-     * Gets a string representation of the expression that determines what file is read.
+     * Holds if the executed command execution has an argument list as a separate argument.
      */
-    abstract string getFileArgument();
+    predicate hasArgumentList() { exists(command.getArgumentList()) }
 
     /**
-     * Gets the data-flow node for the options argument to the `exec`-like call.
+     * Gets a string representation of the expression that determines what file is read by `cat`.
      */
-    abstract DataFlow::Node getOptionsArg();
+    string getFileArgument() {
+      if hasArgumentList()
+      then
+        getArgument(0).mayHaveStringValue(cat()) and
+        result = getFileThatIsReadFromCommandList(this)
+      else result = getFileArgumentWithoutCat(getArgument(0))
+    }
 
     /**
-     * Gets the callback used for the `exec` like call (if it exists).
+     * Gets the data-flow node (if it exists) for the options argument to the `exec`-like call.
      */
-    abstract DataFlow::FunctionNode getCallback();
+    DataFlow::Node getOptionsArg() {
+      exists(int n |
+        n >= 1 and
+        // If there is a command-list, then the options is at least the third argument.
+        (not exists(command.getArgumentList()) or n >= 2) and
+        // async calls have a callback as their last call.
+        if this.isSync() then n < getNumArgument() else n < getNumArgument() - 1
+      |
+        result = getArgument(n)
+      )
+    }
+
+    /**
+     * Gets the callback (if it exists) for an async `exec` like call.
+     */
+    DataFlow::FunctionNode getCallback() {
+      not this.isSync() and result = getLastArgument().getALocalSource()
+    }
   }
 
   /**
@@ -214,61 +250,9 @@ module UselsesCatCandidates {
   }
 
   /**
-   * A call to child_process.exec that might be a useless call to cat.
+   * Gets the file that is read for a call with an explicit command list (e.g. `child_process.execFile/execFileSync`).
    */
-  private class ExecCall extends UselessCatCandicate {
-    string fileArgument;
-    boolean hasOptions;
-
-    ExecCall() {
-      this = DataFlow::moduleImport("child_process").getAMemberCall("exec") and
-      (
-        this.getNumArgument() = 2 and hasOptions = false
-        or
-        this.getNumArgument() = 3 and hasOptions = true
-      ) and
-      fileArgument = getFileArgumentWithoutCat(getArgument(0))
-    }
-
-    override predicate isSync() { none() }
-
-    override string getFileArgument() { result = fileArgument }
-
-    override DataFlow::Node getOptionsArg() { hasOptions = true and result = getArgument(1) }
-
-    override DataFlow::FunctionNode getCallback() { result = getLastArgument() }
-  }
-
-  /**
-   * A call to child_process.execSync that might be a useless call to cat.
-   */
-  private class ExecSyncCall extends UselessCatCandicate {
-    string fileArgument;
-    boolean hasOptions;
-
-    ExecSyncCall() {
-      this = DataFlow::moduleImport("child_process").getAMemberCall("execSync") and
-      (
-        this.getNumArgument() = 1 and hasOptions = false
-        or
-        this.getNumArgument() = 2 and hasOptions = true
-      ) and
-      fileArgument = getFileArgumentWithoutCat(getArgument(0))
-    }
-
-    override predicate isSync() { any() }
-
-    override string getFileArgument() { result = fileArgument }
-
-    override DataFlow::Node getOptionsArg() { hasOptions = true and result = getArgument(1) }
-
-    override DataFlow::FunctionNode getCallback() { none() }
-  }
-
-  /**
-   * Gets the file that is read for a call to child_process.execFile/execFileSync.
-   */
-  string getFileThatIsRead(DataFlow::CallNode call) {
+  string getFileThatIsReadFromCommandList(DataFlow::CallNode call) {
     exists(DataFlow::ArrayCreationNode array, DataFlow::Node element |
       array = call.getArgument(1).(DataFlow::ArrayCreationNode) and
       array.getSize() = 1 and
@@ -278,59 +262,5 @@ module UselsesCatCandidates {
       result = "\"" + element.getStringValue() + "\"" or
       result = createConcatRepresentation(element)
     )
-  }
-
-  /**
-   * A call to child_process.execFile that might be a useless call to cat.
-   */
-  private class ExecFileCall extends UselessCatCandicate {
-    string fileArgument;
-    boolean hasOptions;
-
-    ExecFileCall() {
-      this.getArgument(0).mayHaveStringValue(cat()) and
-      this = DataFlow::moduleImport("child_process").getAMemberCall("execFile") and
-      (
-        this.getNumArgument() = 3 and hasOptions = false
-        or
-        this.getNumArgument() = 4 and hasOptions = true
-      ) and
-      fileArgument = getFileThatIsRead(this)
-    }
-
-    override predicate isSync() { none() }
-
-    override string getFileArgument() { result = fileArgument }
-
-    override DataFlow::Node getOptionsArg() { hasOptions = true and result = getArgument(2) }
-
-    override DataFlow::FunctionNode getCallback() { result = getLastArgument() }
-  }
-
-  /**
-   * A call to child_process.execFileSync that might be a useless call to cat.
-   */
-  private class ExecFileSyncCall extends UselessCatCandicate {
-    string fileArgument;
-    boolean hasOptions;
-
-    ExecFileSyncCall() {
-      this.getArgument(0).mayHaveStringValue(cat()) and
-      this = DataFlow::moduleImport("child_process").getAMemberCall("execFileSync") and
-      (
-        this.getNumArgument() = 2 and hasOptions = false
-        or
-        this.getNumArgument() = 3 and hasOptions = true
-      ) and
-      fileArgument = getFileThatIsRead(this)
-    }
-
-    override predicate isSync() { any() }
-
-    override string getFileArgument() { result = fileArgument }
-
-    override DataFlow::Node getOptionsArg() { hasOptions = true and result = getArgument(2) }
-
-    override DataFlow::FunctionNode getCallback() { none() }
   }
 }
