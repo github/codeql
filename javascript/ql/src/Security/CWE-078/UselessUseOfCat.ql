@@ -13,9 +13,8 @@
 
 import javascript
 import semmle.javascript.security.UselessUseOfCat
+import semmle.javascript.RestrictedLocations
 
 
 from UselessCat cat
-select cat, "Useless use of `cat`. Can be replaced with: " + createReadFileCall(cat)
-
-
+select cat.asExpr().(FirstLineOf), "Useless use of `cat`. Can be replaced with: " + createReadFileCall(cat)
