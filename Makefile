@@ -87,7 +87,7 @@ ql/src/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-extractor$(EXE)
 build/stats/src.stamp:
 	mkdir -p $(@D)/src
 	git clone 'https://github.com/golang/tools' $(@D)/src
-	git -C $(@D)/src checkout ac4f524c1612 -q
+	git -C $(@D)/src checkout 9b52d559c609 -q
 	touch $@
 
 ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
