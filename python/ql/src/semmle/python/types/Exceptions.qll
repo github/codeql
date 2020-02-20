@@ -62,9 +62,7 @@ class RaisingNode extends ControlFlowNode {
   }
 
   pragma[noinline]
-  private ClassValue systemExitRaise() {
-    this.quits() and result = ClassValue::systemExit()
-  }
+  private ClassValue systemExitRaise() { this.quits() and result = ClassValue::systemExit() }
 
   pragma[noinline, nomagic]
   private ClassObject localRaisedType_objectapi() {
@@ -392,10 +390,10 @@ class ExceptFlowNode extends ControlFlowNode {
       element_from_tuple_objectapi(tup).refersTo(obj, cls, origin)
     )
   }
-  
+
   private predicate handledValue(Value val, ClassValue cls, ControlFlowNode origin) {
     //this.getType().pointsTo(val, cls, origin)
-    val = this.pointsTo() and cls = val.getClass() 
+    val = this.pointsTo() and cls = val.getClass()
     or
     exists(Value tup | this.handledValue(tup, ClassValue::tuple(), _) |
       //element_from_tuple(tup).pointsTo(val, cls, origin)
@@ -469,7 +467,7 @@ class ReraisingNode extends RaisingNode {
       b.getNode(_) = this
     )
   }
-  
+
   /** Gets a class that may be raised by this node */
   override ClassValue getARaisedType() {
     exists(BasicBlock b |

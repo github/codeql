@@ -16,11 +16,12 @@
 import python
 import Expressions.CallArgs
 
-
 from Call call, FunctionValue func, string name
 where
-illegally_named_parameter_valueapi(call, func, name) and
-not func.isAbstract() and
-not exists(FunctionValue overridden | func.overrides(overridden) and overridden.getScope().getAnArg().(Name).getId() = name)
-select
-call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", func, func.descriptiveString()
+  illegally_named_parameter_valueapi(call, func, name) and
+  not func.isAbstract() and
+  not exists(FunctionValue overridden |
+    func.overrides(overridden) and overridden.getScope().getAnArg().(Name).getId() = name
+  )
+select call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", func,
+  func.descriptiveString()
