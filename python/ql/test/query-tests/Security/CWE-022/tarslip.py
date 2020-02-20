@@ -65,4 +65,4 @@ for entry in tar:
     # using `if not (os.path.isabs(entry.name) or ".." in entry.name):`
     # would make the sanitizer work, but for the wrong reasons since out library is a bit broken.
     if not os.path.isabs(entry.name):
-        tar.extract(entry, "/tmp/unpack/") # TODO: FP
+        tar.extract(entry, "/tmp/unpack/")

@@ -124,8 +124,16 @@ class TarFileInfoSanitizer extends Sanitizer {
     /** The test `if <path_sanitizing_test>:` clears taint on its `false` edge. */
     override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
         taint instanceof TarFileInfo and
-        path_sanitizing_test(test.getTest()) and
-        test.getSense() = false
+        clears_taint_on_false_edge(test.getTest(), test.getSense())
+    }
+
+    private predicate clears_taint_on_false_edge(ControlFlowNode test, boolean sense) {
+        path_sanitizing_test(test) and
+        sense = false
+        or
+        // handle `not` (also nested)
+        test.(UnaryExprNode).getNode().getOp() instanceof Not and
+        clears_taint_on_false_edge(test.(UnaryExprNode).getOperand(), sense.booleanNot())
     }
 }
 
