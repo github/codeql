@@ -77,7 +77,7 @@ private FunctionNode leafFunction() {
 }
 
 /**
- * Holds if `invoke` should be used as the end point of a call path.
+ * Holds if `fun` should be used as the end point of a call path.
  */
 predicate isEndOfCallPath(FunctionNode fun) {
   // `fun` should either be a leaf function or part of a cycle with no leaves.
