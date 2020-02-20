@@ -87,22 +87,26 @@ module TaintTracking {
      */
     predicate isSanitizerGuard(SanitizerGuardNode guard) { none() }
 
-    final override predicate isBarrier(DataFlow::Node node) {
-      super.isBarrier(node) or
-      isSanitizer(node) or
-      node instanceof DataFlow::VarAccessBarrier
+    override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+      super.isLabeledBarrier(node, lbl)
+      or
+      isSanitizer(node) and lbl.isTaint()
     }
 
-    final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
-      super.isBarrierEdge(source, sink) or
-      isSanitizerEdge(source, sink)
+    override predicate isBarrier(DataFlow::Node node) {
+      super.isBarrier(node) or
+
+      // For variable accesses we block both the data and taint label, as a falsy value
+      // can't be an object, and thus can't have any tainted properties.
+      node instanceof DataFlow::VarAccessBarrier
     }
 
     final override predicate isBarrierEdge(
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
       super.isBarrierEdge(source, sink, lbl) or
-      isSanitizerEdge(source, sink, lbl)
+      isSanitizerEdge(source, sink, lbl) or
+      isSanitizerEdge(source, sink) and lbl.isTaint()
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
@@ -157,7 +161,7 @@ module TaintTracking {
    * them.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
-    override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
+    override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
@@ -166,6 +170,8 @@ module TaintTracking {
     abstract predicate sanitizes(boolean outcome, Expr e);
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e) and label.isTaint()
+      or
       sanitizes(outcome, e, label)
     }
 
