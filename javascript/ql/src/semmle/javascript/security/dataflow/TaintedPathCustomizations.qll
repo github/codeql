@@ -365,6 +365,11 @@ module TaintedPath {
   }
 
   /**
+   * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+   */
+  private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
+
+  /**
    * A source of remote user input, considered as a flow source for
    * tainted-path vulnerabilities.
    */
