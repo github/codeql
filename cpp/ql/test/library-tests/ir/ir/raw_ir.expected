@@ -6067,7 +6067,7 @@ ir.cpp:
 # 1175|     r1175_2(int)        = Load                   : &:r1175_1, ~mu1173_4
 # 1175|     v1175_3(void)       = Switch                 : r1175_2
 #-----|   Case[1] -> Block 1
-#-----|   Goto -> Block 2
+#-----|   Default -> Block 2
 
 # 1176|   Block 1
 # 1176|     v1176_1(void)       = NoOp               : 
@@ -6103,7 +6103,7 @@ ir.cpp:
 # 1184|     v1184_3(void)       = Switch                 : r1184_2
 #-----|   Case[1] -> Block 1
 #-----|   Case[2] -> Block 2
-#-----|   Goto -> Block 3
+#-----|   Default -> Block 3
 
 # 1185|   Block 1
 # 1185|     v1185_1(void)       = NoOp               : 
@@ -6146,7 +6146,7 @@ ir.cpp:
 # 1195|     v1195_3(void)       = Switch                 : r1195_2
 #-----|   Case[1] -> Block 1
 #-----|   Case[2] -> Block 2
-#-----|   Goto -> Block 3
+#-----|   Default -> Block 3
 
 # 1196|   Block 1
 # 1196|     v1196_1(void)       = NoOp               : 
