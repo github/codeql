@@ -12,7 +12,8 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
   GetsFunction() {
     exists(string name | name = getName() |
       name = "gets" or // gets(str)
-      name = "fgets" // fgets(str, num, stream)
+      name = "fgets" or // fgets(str, num, stream)
+      name = "fgetws" // fgetws(wstr, num, stream)
     )
   }
 

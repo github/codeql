@@ -42,7 +42,7 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
   * The `LocalScopeVariableReachability` library is deprecated in favor of
     `StackVariableReachability`. The functionality is the same.
 * The models library models `strlen` in more detail, and includes common variations such as `wcslen`.
-* The models library models `gets` and `fgets`.
+* The models library models `gets` and similar functions.
 * The taint tracking library (`semmle.code.cpp.dataflow.TaintTracking`) has had
   the following improvements:
   * The library now models data flow through `strdup` and similar functions.
