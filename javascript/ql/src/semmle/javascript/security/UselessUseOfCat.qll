@@ -69,6 +69,8 @@ class UselessCat extends DataFlow::CallNode {
     this = candidate and
     // We can create an equivalent `fs.readFile` call.
     exists(createReadFileCall(this)) and
+    // There is a file to read, and not just a pair of quotes.
+    candidate.getFileArgument().length() >= 3 and
     // wildcards, pipes, redirections, and multiple files are OK.
     // (The multiple files detection relies on the fileArgument not containing spaces anywhere)
     not candidate.getFileArgument().regexpMatch(".*(\\*|\\||>|<| ).*") and
