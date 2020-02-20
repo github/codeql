@@ -172,12 +172,26 @@ module UselsesCatCandidates {
       |
         (if root.asExpr() instanceof TemplateLiteral then quote = "`" else quote = "\"") and
         root.getFirstLeaf().getStringValue().prefix(cat.length()) = cat and
-        // Remove an initial ""+ (e.g. in `""+file`)
         exists(string rawConcat | rawConcat = quote + printed.suffix(cat.length()).trim() |
-          if rawConcat.prefix(3) = "\"\"+" then result = rawConcat.suffix(3) else result = rawConcat
+          result = getSimplifiedStringConcat(rawConcat)
         )
       )
     )
+  }
+
+  /**
+   * Gets a simplified and equivalent string concatenation for a given string concatenation `str`
+   */
+  bindingset[str]
+  private string getSimplifiedStringConcat(string str) {
+    // Remove an initial ""+ (e.g. in `""+file`)
+    if str.prefix(3) = "\"\"+" then
+      result = str.suffix(3)
+    // prettify `${newpath}` to just newpath
+    else if str.prefix(3) = "`${" and str.suffix(str.length() - 2) = "}`" and not str.suffix(3).matches("%{%")  then
+      result = str.prefix(str.length() - 2).suffix(3)
+    else
+     result = str
   }
 
   /**
