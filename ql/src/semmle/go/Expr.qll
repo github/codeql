@@ -312,7 +312,7 @@ class StructLit extends CompositeLit {
 
   StructLit() { st = getType().getUnderlyingType() }
 
-  /** Gets the type of this literal. */
+  /** Gets the struct type underlying this literal. */
   StructType getStructType() { result = st }
 }
 
