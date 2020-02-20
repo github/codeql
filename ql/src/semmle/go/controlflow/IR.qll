@@ -629,6 +629,7 @@ module IR {
 
     ExtractTupleElementInstruction() { this = MkExtractNode(s, i) }
 
+    /** Gets the instruction computing the tuple value from which one value is extracted. */
     Instruction getBase() {
       exists(Expr baseExpr |
         baseExpr = s.(Assignment).getRhs() or
@@ -655,12 +656,8 @@ module IR {
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
         exists(Type baseType |
           baseType = rangeType.(ArrayType).getElementType() or
-          baseType = rangeType
-                .(PointerType)
-                .getBaseType()
-                .getUnderlyingType()
-                .(ArrayType)
-                .getElementType() or
+          baseType =
+            rangeType.(PointerType).getBaseType().getUnderlyingType().(ArrayType).getElementType() or
           baseType = rangeType.(SliceType).getElementType()
         |
           i = 0 and

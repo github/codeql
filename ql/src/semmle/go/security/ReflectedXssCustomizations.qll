@@ -40,14 +40,17 @@ module ReflectedXss {
     HttpResponseBodySink() { not nonHtmlContentType(this) }
   }
 
-  predicate htmlTypeSpecified(HTTP::ResponseBody body) {
+  /**
+   * Holds if `body` specifies the response's content type to be HTML.
+   */
+  private predicate htmlTypeSpecified(HTTP::ResponseBody body) {
     exists(HTTP::HeaderWrite hw, string tp | hw = body.getResponseWriter().getAHeaderWrite() |
       hw.definesHeader("content-type", tp) and tp.regexpMatch("(?i).*html.*")
     )
   }
 
   /**
-   * Holds if `h` may send a response with a content type other than HTML.
+   * Holds if `body` may send a response with a content type other than HTML.
    */
   private predicate nonHtmlContentType(HTTP::ResponseBody body) {
     not htmlTypeSpecified(body) and

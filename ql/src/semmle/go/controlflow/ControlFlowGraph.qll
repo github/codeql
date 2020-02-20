@@ -7,9 +7,11 @@ private import ControlFlowGraphImpl
 
 /** Provides helper predicates for mapping btween CFG nodes and the AST. */
 module ControlFlow {
+  /** A file or function with which a CFG is associated. */
   class Root extends AstNode {
     Root() { exists(this.(File).getADecl()) or exists(this.(FuncDef).getBody()) }
 
+    /** Holds if `nd` belongs to this file or function. */
     predicate isRootOf(AstNode nd) {
       this = nd.getEnclosingFunction()
       or
@@ -17,8 +19,10 @@ module ControlFlow {
       this = nd.getFile()
     }
 
+    /** Gets the synthetic entry node of the CFG for this file or function. */
     EntryNode getEntryNode() { result = ControlFlow::entryNode(this) }
 
+    /** Gets the synthetic exit node of the CFG for this file or function. */
     ExitNode getExitNode() { result = ControlFlow::exitNode(this) }
   }
 
@@ -147,7 +151,6 @@ module ControlFlow {
    */
   class ConditionGuardNode extends IR::Instruction, MkConditionGuardNode {
     Expr cond;
-
     boolean outcome;
 
     ConditionGuardNode() { this = MkConditionGuardNode(cond, outcome) }

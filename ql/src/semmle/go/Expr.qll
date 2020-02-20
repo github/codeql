@@ -312,6 +312,7 @@ class StructLit extends CompositeLit {
 
   StructLit() { st = getType().getUnderlyingType() }
 
+  /** Gets the type of this literal. */
   StructType getStructType() { result = st }
 }
 
@@ -324,9 +325,7 @@ class ParenExpr extends @parenexpr, Expr {
 
   override Expr stripParens() { result = getExpr().stripParens() }
 
-  override predicate isPlatformIndependentConstant() {
-    getExpr().isPlatformIndependentConstant()
-  }
+  override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
 
   override string toString() { result = "(...)" }
 }
@@ -401,9 +400,7 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
 
   override predicate mayHaveOwnSideEffects() { any() }
 
-  override predicate isPlatformIndependentConstant() {
-    getExpr().isPlatformIndependentConstant()
-  }
+  override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
 
   override string toString() { result = "type assertion" }
 }

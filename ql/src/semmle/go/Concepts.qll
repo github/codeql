@@ -260,13 +260,12 @@ class RegexpMatchFunction extends Function {
 }
 
 module RegexpMatchFunction {
-  /*
+  /**
    * A function that matches a regexp with a string or byte slice.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexpPattern' instead.
    */
-
   abstract class Range extends Function {
     /**
      * Gets the function input that is the regexp being matched.
@@ -415,13 +414,12 @@ module HTTP {
     }
   }
 
-  /*
+  /**
    * A data-flow node that represents a write to an HTTP header.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::HeaderWrite::Range` instead.
    */
-
   class HeaderWrite extends DataFlow::ExprNode {
     HeaderWrite::Range self;
 
@@ -490,26 +488,24 @@ module HTTP {
   }
 
   module ResponseBody {
-    /*
+    /**
      * An expression which is written to an HTTP response body.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `HTTP::ResponseBody` instead.
      */
-
     abstract class Range extends DataFlow::Node {
       /** Gets the response writer associated with this header write, if any. */
       abstract ResponseWriter getResponseWriter();
     }
   }
 
-  /*
+  /**
    * An expression which is written to an HTTP response body.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::ResponseBody::Range` instead.
    */
-
   class ResponseBody extends DataFlow::Node {
     ResponseBody::Range self;
 

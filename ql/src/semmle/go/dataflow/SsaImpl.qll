@@ -36,14 +36,29 @@ private module Internal {
    */
   cached
   newtype TSsaDefinition =
+    /**
+     * An SSA definition that corresponds to an explicit assignment or other variable definition.
+     */
     TExplicitDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
       defAt(bb, i, v) and
       (liveAfterDef(bb, i, v) or v.isCaptured())
     } or
+    /**
+     * An SSA definition representing the capturing of an SSA-convertible variable
+     * in the closure of a nested function.
+     *
+     * Capturing definitions appear at the beginning of such functions, as well as
+     * at any function call that may affect the value of the variable.
+     */
     TCapture(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
       mayCapture(bb, i, v) and
       liveAfterDef(bb, i, v)
     } or
+    /**
+     * An SSA phi node, that is, a pseudo-definition for a variable at a point
+     * in the flow graph where otherwise two or more definitions for the variable
+     * would be visible.
+     */
     TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
       liveAtEntry(bb, v) and
       inDefDominanceFrontier(bb, v)
@@ -276,4 +291,5 @@ private module Internal {
     rewindReads(bb, i, v) = 1 and result = getDefReachingEndOf(bb.getImmediateDominator(), v)
   }
 }
+
 import Internal

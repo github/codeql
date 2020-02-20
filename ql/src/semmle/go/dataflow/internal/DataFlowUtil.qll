@@ -150,6 +150,9 @@ class InstructionNode extends Node, MkInstructionNode {
   }
 }
 
+/**
+ * An expression, viewed as a node in a data flow graph.
+ */
 class ExprNode extends InstructionNode {
   override IR::EvalInstruction insn;
   Expr expr;
@@ -158,6 +161,7 @@ class ExprNode extends InstructionNode {
 
   override Expr asExpr() { result = expr }
 
+  /** Gets the underlying expression this node corresponds to. */
   Expr getExpr() { result = expr }
 }
 
@@ -222,9 +226,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
 
   GlobalFunctionNode() { this = MkGlobalFunctionNode(func) }
 
-  override ParameterNode getParameter(int i) {
-    result = parameterNode(func.getParameter(i))
-  }
+  override ParameterNode getParameter(int i) { result = parameterNode(func.getParameter(i)) }
 
   override string getName() { result = func.getName() }
 
@@ -264,9 +266,7 @@ class CallNode extends ExprNode {
   /** Gets the declared target of this call */
   Function getTarget() { result = expr.getTarget() }
 
-  private DataFlow::Node getACalleeSource() {
-    result.getASuccessor*() = getCalleeNode()
-  }
+  private DataFlow::Node getACalleeSource() { result.getASuccessor*() = getCalleeNode() }
 
   /**
    * Gets the definition of a possible target of this call.
@@ -339,9 +339,7 @@ class CallNode extends ExprNode {
   Node getResult() { not getType() instanceof TupleType and result = this }
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
-  Node getReceiver() {
-    result = getACalleeSource().(MethodReadNode).getReceiver()
-  }
+  Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }
 }
 
 /** A data flow node that represents a call to a method. */
@@ -360,8 +358,10 @@ class ReceiverNode extends SsaNode {
 
   ReceiverNode() { ssa.getInstruction() = IR::initRecvInstruction(recv) }
 
+  /** Gets the receiver variable this node initializes. */
   ReceiverVariable asReceiverVariable() { result = recv }
 
+  /** Holds if this node initializes the receiver of `fd`. */
   predicate isReceiverOf(FuncDef fd) { recv = fd.(MethodDecl).getReceiver() }
 }
 
@@ -372,8 +372,10 @@ class ParameterNode extends SsaNode {
 
   ParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
 
+  /** Gets the parameter this node initializes. */
   override Parameter asParameter() { result = parm }
 
+  /** Holds if this node initializes the `i`th parameter of `fd`. */
   predicate isParameterOf(FuncDef fd, int i) { parm = fd.getParameter(i) }
 }
 
@@ -464,6 +466,10 @@ class ResultNode extends InstructionNode {
   }
 }
 
+/**
+ * A data-flow node that reads the value of a variable, constant, field or array element,
+ * or refers to a function.
+ */
 class ReadNode extends InstructionNode {
   override IR::ReadInstruction insn;
 
@@ -581,7 +587,7 @@ class BinaryOperationNode extends Node {
 }
 
 /**
- * An IR instruction corresponding to an expression with a unary operator.
+ * A data-flow node corresponding to an expression with a unary operator.
  */
 class UnaryOperationNode extends InstructionNode {
   UnaryOperationNode() {
@@ -621,7 +627,7 @@ class UnaryOperationNode extends InstructionNode {
 }
 
 /**
- * A pointer-dereference instruction.
+ * A data-flow node that dereferences a pointer.
  */
 class PointerDereferenceNode extends UnaryOperationNode {
   PointerDereferenceNode() {
@@ -634,29 +640,41 @@ class PointerDereferenceNode extends UnaryOperationNode {
 }
 
 /**
- * An address-of instruction.
+ * A data-flow node that takes the address of a memory location.
  */
 class AddressOperationNode extends UnaryOperationNode, ExprNode {
   override AddressExpr expr;
 }
 
+/**
+ * A data-flow node that reads the value of a field.
+ */
 class FieldReadNode extends ReadNode {
   override IR::FieldReadInstruction insn;
 
+  /** Gets the base node from which the field is read. */
   Node getBase() { result = instructionNode(insn.getBase()) }
 
+  /** Gets the field this node reads. */
   Field getField() { result = insn.getField() }
 
+  /** Gets the name of the field this node reads. */
   string getFieldName() { result = this.getField().getName() }
 }
 
+/**
+ * A data-flow node that refers to a method.
+ */
 class MethodReadNode extends ReadNode {
   override IR::MethodReadInstruction insn;
 
+  /** Gets the receiver node on which the method is referenced. */
   Node getReceiver() { result = instructionNode(insn.getReceiver()) }
 
+  /** Gets the method this node refers to. */
   Method getMethod() { result = insn.getMethod() }
 
+  /** Gets the name of the method this node refers to. */
   string getMethodName() { result = this.getMethod().getName() }
 }
 
@@ -701,6 +719,7 @@ class EqualityTestNode extends BinaryOperationNode, ExprNode {
  * values should be modeled by `TaintTracking::FunctionModel` instead.
  */
 abstract class FunctionModel extends Function {
+  /** Holds if data flows through this function from `input` to `output`. */
   abstract predicate hasDataFlow(FunctionInput input, FunctionOutput output);
 }
 

@@ -68,6 +68,7 @@ module StringBreak {
     override Quote getQuote() { result = quote }
   }
 
+  /** A call to `json.Unmarshal`, considered as a sanitizer for unsafe quoting. */
   class UnmarshalSanitizer extends Sanitizer {
     UnmarshalSanitizer() {
       exists(Function jsonUnmarshal | jsonUnmarshal.hasQualifiedName("encoding/json", "Unmarshal") |
@@ -76,6 +77,10 @@ module StringBreak {
     }
   }
 
+  /**
+   * A call to `strings.Replace` or `strings.ReplaceAll`, considered as a sanitizer
+   * for unsafe quoting.
+   */
   class ReplaceSanitizer extends Sanitizer {
     Quote quote;
 
