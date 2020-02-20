@@ -623,6 +623,10 @@ module NodeJSLib {
       // all of the above methods take the argument list as their second argument
       result = getArgument(1)
     }
+
+    override predicate isSync() {
+      "Sync" = methodName.suffix(methodName.length() - 4)
+    }
   }
 
   /**

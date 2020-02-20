@@ -9,6 +9,7 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
   int cmdArg;
 
   boolean shell;
+  boolean sync;
 
   SystemCommandExecutors() {
     exists(string mod, DataFlow::SourceNode callee |
@@ -31,9 +32,11 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
         ) and
         cmdArg = 0
       |
-        callee = DataFlow::moduleMember(mod, method)
+        callee = DataFlow::moduleMember(mod, method) and
+        sync = getSync(method)
       )
       or
+      sync = false and
       (
         shell = false and
         (
@@ -65,4 +68,19 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
   override predicate isShellInterpreted(DataFlow::Node arg) {
     arg = getACommandArgument() and shell = true
   }
+
+  override predicate isSync() {
+    sync = true
+  }
+}
+
+/**
+ * Gets a boolean reflecting if the name ends with "sync" or "Sync". 
+ */ 
+bindingset[name]
+private boolean getSync(string name) {
+  if name.suffix(name.length() - 4) = "Sync" or name.suffix(name.length() - 4) = "sync" then
+    result = true
+  else
+    result = false
 }

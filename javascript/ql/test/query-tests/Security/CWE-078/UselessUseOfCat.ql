@@ -18,3 +18,7 @@ where
 select msg, comment
 
 query string readFile(UselessCat cat) { result = createReadFileCall(cat) }
+
+query SystemCommandExecution syncCommand() {
+  result.isSync()	
+}

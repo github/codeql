@@ -22,6 +22,9 @@ abstract class SystemCommandExecution extends DataFlow::Node {
    * to the command.
    */
   DataFlow::Node getArgumentList() { none() }
+
+  /** Holds if the command execution happens synchronously. */
+  abstract predicate isSync();
 }
 
 /**
