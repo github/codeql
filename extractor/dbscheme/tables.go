@@ -58,6 +58,9 @@ var DocumentableType = NewUnionType("@documentable", NodeType)
 // ExprParentType is the type of AST nodes that can have expressions as children
 var ExprParentType = NewUnionType("@exprparent", NodeType)
 
+// ModExprParentType is the type of go.mod nodes that can have go.mod expressions as children
+var ModExprParentType = NewUnionType("@modexprparent", NodeType)
+
 // FieldParentType is the type of AST nodes that can have fields as children
 var FieldParentType = NewUnionType("@fieldparent", NodeType)
 
@@ -78,7 +81,7 @@ var ScopeNodeType = NewUnionType("@scopenode", NodeType)
 var LocationDefaultType = NewPrimaryKeyType("@location_default")
 
 // FileType is the type of file AST nodes
-var FileType = NewPrimaryKeyType("@file", ContainerType, DocumentableType, ExprParentType, DeclParentType, ScopeNodeType)
+var FileType = NewPrimaryKeyType("@file", ContainerType, DocumentableType, ExprParentType, ModExprParentType, DeclParentType, ScopeNodeType)
 
 // FolderType is the type of folders
 var FolderType = NewPrimaryKeyType("@folder", ContainerType)
@@ -618,6 +621,27 @@ var NamedType = TypeKind.NewBranch("@namedtype", CompositeType)
 // PackageType is the type of packages
 var PackageType = NewPrimaryKeyType("@package")
 
+// ModExprType is the type of go.mod expression nodes
+var ModExprType = NewPrimaryKeyType("@modexpr", ModExprParentType, DocumentableType)
+
+// ModExprKind is a case type for distinguishing different kinds of go.mod expression nodes
+var ModExprKind = NewCaseType(ModExprType, "kind")
+
+// ModCommentBlockType is the type of go.mod comment block AST nodes
+var ModCommentBlockType = ModExprKind.NewBranch("@modcommentblock")
+
+// ModLineType is the type of go.mod line AST nodes
+var ModLineType = ModExprKind.NewBranch("@modline")
+
+// ModLineBlockType is the type of go.mod line block AST nodes
+var ModLineBlockType = ModExprKind.NewBranch("@modlineblock")
+
+// ModLParenType is the type of go.mod line block start AST nodes
+var ModLParenType = ModExprKind.NewBranch("@modlparen")
+
+// ModRParenType is the type of go.mod line block end AST nodes
+var ModRParenType = ModExprKind.NewBranch("@modrparen")
+
 // LocationsDefaultTable is the table defining location objects
 var LocationsDefaultTable = NewTable("locations_default",
 	EntityColumn(LocationDefaultType, "id").Key(),
@@ -876,3 +900,18 @@ var PackagesTable = NewTable("packages",
 	StringColumn("path"),
 	EntityColumn(PackageScopeType, "scope"),
 )
+
+// ModExprsTable is the table defining expression AST nodes for go.mod files
+var ModExprsTable = NewTable("modexprs",
+	EntityColumn(ModExprType, "id").Key(),
+	IntColumn("kind"),
+	EntityColumn(ModExprParentType, "parent"),
+	IntColumn("idx"),
+).KeySet("parent", "idx")
+
+// ModTokensTable is the table associating go.mod tokens with their Line or LineBlock
+var ModTokensTable = NewTable("modtokens",
+	StringColumn("token"),
+	EntityColumn(ModExprType, "parent"),
+	IntColumn("idx"),
+).KeySet("parent", "idx")
