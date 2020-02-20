@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+	<p>
+		Useless use of cat
+	</p>
+
+
+</overview>
+<recommendation>
+	<p>
+		TODO: This is a placeholder
+	</p>
+
+</recommendation>
+<example>
+	<p>
+	</p>
+</example>
+<references>
+
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+	</li>
+
+</references>
+</qhelp>
