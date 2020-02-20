@@ -161,7 +161,7 @@ class PyFunctionObject extends FunctionObject {
     }
 
     override ClassObject getARaisedType() {
-        scope_raises(result, this.getFunction())
+        scope_raises_objectapi(result, this.getFunction())
     }
 
     override predicate raisesUnknownType() {

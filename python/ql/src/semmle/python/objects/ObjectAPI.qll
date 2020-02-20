@@ -70,9 +70,6 @@ class Value extends TObject {
    */
   predicate isBuiltin() { this.(ObjectInternal).isBuiltin() }
 
-  /** Retained for backwards compatibility. See Value.isBuiltin() */
-  predicate isC() { this.isBuiltin() }
-
   predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
     this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
     or
@@ -521,7 +518,7 @@ class PythonFunctionValue extends FunctionValue {
     )
   }
 
-  override ClassValue getARaisedType() { scope_raises_valueapi(result, this.getScope()) }
+  override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
 
   /** Gets a control flow node corresponding to a return statement in this function */
   ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }

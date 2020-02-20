@@ -27,9 +27,9 @@ private Keyword not_keyword_only_arg(Call call, FunctionObject func) {
  */
 
 private int positional_arg_count_for_call(Call call, Object callable) {
-    call = get_a_call(callable).getNode() and
+    call = get_a_call_objectapi(callable).getNode() and
     exists(int positional_keywords |
-      exists(FunctionObject func | func = get_function_or_initializer(callable) |
+      exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
           not func.getFunction().hasKwArg() and
           positional_keywords = count(not_keyword_only_arg(call, func))
         or
@@ -45,28 +45,28 @@ int arg_count(Call call) {
 }
 
 /* Gets a call corresponding to the given class or function*/
-deprecated private ControlFlowNode get_a_call(Object callable) {
+private ControlFlowNode get_a_call_objectapi(Object callable) {
   result = callable.(ClassObject).getACall()
   or
   result = callable.(FunctionObject).getACall()
 }
 
 /* Gets a call corresponding to the given class or function*/
-private ControlFlowNode get_a_call_valueapi(Value callable) {
+private ControlFlowNode get_a_call(Value callable) {
   result = callable.(ClassValue).getACall()
   or
   result = callable.(FunctionValue).getACall()
 }
 
 /* Gets the function object corresponding to the given class or function*/
-deprecated FunctionObject get_function_or_initializer(Object func_or_cls) {
+FunctionObject get_function_or_initializer_objectapi(Object func_or_cls) {
   result = func_or_cls.(FunctionObject)
   or
   result = func_or_cls.(ClassObject).declaredAttribute("__init__")
 }
 
 /* Gets the function object corresponding to the given class or function*/
-FunctionValue get_function_or_initializer_valueapi(Value func_or_cls) {
+FunctionValue get_function_or_initializer(Value func_or_cls) {
   result = func_or_cls.(FunctionValue)
   or
   result = func_or_cls.(ClassValue).declaredAttribute("__init__")
@@ -74,28 +74,28 @@ FunctionValue get_function_or_initializer_valueapi(Value func_or_cls) {
 
 
 /**Whether there is an illegally named parameter called `name` in the `call` to `func` */
-deprecated predicate illegally_named_parameter(Call call, Object func, string name) {
+predicate illegally_named_parameter_objectapi(Call call, Object func, string name) {
     not func.isC() and
+    name = call.getANamedArgumentName() and
+    call.getAFlowNode() = get_a_call_objectapi(func) and
+    not get_function_or_initializer_objectapi(func).isLegalArgumentName(name)
+}
+
+/**Whether there is an illegally named parameter called `name` in the `call` to `func` */
+predicate illegally_named_parameter(Call call, Value func, string name) {
+    not func.isBuiltin() and
     name = call.getANamedArgumentName() and
     call.getAFlowNode() = get_a_call(func) and
     not get_function_or_initializer(func).isLegalArgumentName(name)
 }
 
-/**Whether there is an illegally named parameter called `name` in the `call` to `func` */
-predicate illegally_named_parameter_valueapi(Call call, Value func, string name) {
-    not func.isC() and
-    name = call.getANamedArgumentName() and
-    call.getAFlowNode() = get_a_call_valueapi(func) and
-    not get_function_or_initializer_valueapi(func).isLegalArgumentName(name)
-}
-
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
 predicate too_few_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
-    not illegally_named_parameter(call, callable, _) and
+    not illegally_named_parameter_objectapi(call, callable, _) and
     not exists(call.getStarargs()) and not exists(call.getKwargs()) and
     arg_count(call) < limit and
-    exists(FunctionObject func | func = get_function_or_initializer(callable) |
+    exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
       call = func.getAFunctionCall().getNode() and limit = func.minParameters() and
       /* The combination of misuse of `mox.Mox().StubOutWithMock()`
        * and a bug in mox's implementation of methods results in having to
@@ -106,16 +106,16 @@ predicate too_few_args(Call call, Object callable, int limit) {
       call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
       or
       callable instanceof ClassObject and
-      call.getAFlowNode() = get_a_call(callable) and limit = func.minParameters() - 1
+      call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.minParameters() - 1
     )
 }
 
 /**Whether there are too many arguments in the `call` to `func` where `limit` is the highest number of legal arguments */
 predicate too_many_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
-    not illegally_named_parameter(call, callable, _) and
+    not illegally_named_parameter_objectapi(call, callable, _) and
     exists(FunctionObject func | 
-      func = get_function_or_initializer(callable) and
+      func = get_function_or_initializer_objectapi(callable) and
       not func.getFunction().hasVarArg() and limit >= 0 
       |
         call = func.getAFunctionCall().getNode() and limit = func.maxParameters()
@@ -123,7 +123,7 @@ predicate too_many_args(Call call, Object callable, int limit) {
         call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
       or
         callable instanceof ClassObject and
-        call.getAFlowNode() = get_a_call(callable) and limit = func.maxParameters() - 1
+        call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.maxParameters() - 1
     ) and
     positional_arg_count_for_call(call, callable) > limit
 }
