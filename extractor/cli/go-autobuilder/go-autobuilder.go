@@ -271,22 +271,20 @@ func main() {
 		log.Printf("GOPATH set to %s.\n", newGopath)
 	}
 
-	// if there is a build file, run the build tool in case it gets dependencies or generates code
+	// check whether an explicit dependency installation command was provided
+	inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
+	var install *exec.Cmd
+	if inst == "" {
+		// if there is a build file, run the corresponding build tool
+		buildSucceeded := tryBuild("Makefile", "make") ||
+			tryBuild("makefile", "make") ||
+			tryBuild("GNUmakefile", "make") ||
+			tryBuild("build.ninja", "ninja") ||
+			tryBuild("build", "./build") ||
+			tryBuild("build.sh", "./build.sh")
 
-	buildSucceeded := tryBuild("Makefile", "make") ||
-		tryBuild("makefile", "make") ||
-		tryBuild("GNUmakefile", "make") ||
-		tryBuild("build.ninja", "ninja") ||
-		tryBuild("build", "./build") ||
-		tryBuild("build.sh", "./build.sh")
-
-	if !buildSucceeded {
-		// no builds succeeded, install dependencies
-		inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
-		var install *exec.Cmd
-		if inst == "" {
+		if !buildSucceeded {
 			// automatically determine command to install dependencies
-
 			if depMode == Dep {
 				// set up the dep cache if SEMMLE_CACHE is set
 				cacheDir := os.Getenv("SEMMLE_CACHE")
@@ -330,42 +328,42 @@ func main() {
 				install = exec.Command("go", "get", "-v", "./...")
 				log.Println("Installing dependencies using `go get -v ./...`.")
 			}
+		}
+	} else {
+		// write custom build commands into a script, then run it
+		var (
+			ext    = ""
+			header = ""
+			footer = ""
+		)
+		if runtime.GOOS == "windows" {
+			ext = ".cmd"
+			header = "@echo on\n@prompt +$S\n"
+			footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
 		} else {
-			// write custom build commands into a script, then run it
-			var (
-				ext    = ""
-				header = ""
-				footer = ""
-			)
-			if runtime.GOOS == "windows" {
-				ext = ".cmd"
-				header = "@echo on\n@prompt +$S\n"
-				footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
-			} else {
-				ext = ".sh"
-				header = "#! /bin/bash\nset -xe +u\n"
-			}
-			script, err := ioutil.TempFile("", "go-build-command-*"+ext)
-			if err != nil {
-				log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
-			}
-			defer os.Remove(script.Name())
-			_, err = script.WriteString(header + inst + footer)
-			if err != nil {
-				log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
-			}
-			err = script.Close()
-			if err != nil {
-				log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
-			}
-			os.Chmod(script.Name(), 0700)
-			install = exec.Command(script.Name())
-			log.Println("Installing dependencies using custom build command.")
+			ext = ".sh"
+			header = "#! /bin/bash\nset -xe +u\n"
 		}
+		script, err := ioutil.TempFile("", "go-build-command-*"+ext)
+		if err != nil {
+			log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
+		}
+		defer os.Remove(script.Name())
+		_, err = script.WriteString(header + inst + footer)
+		if err != nil {
+			log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
+		}
+		err = script.Close()
+		if err != nil {
+			log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
+		}
+		os.Chmod(script.Name(), 0700)
+		install = exec.Command(script.Name())
+		log.Println("Installing dependencies using custom build command.")
+	}
 
-		if install != nil {
-			run(install)
-		}
+	if install != nil {
+		run(install)
 	}
 
 	// extract
