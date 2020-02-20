@@ -1,7 +1,7 @@
 Functions in Python
 ===================
 
-Functions are key building blocks of Python code bases. You can find functions and identify calls to them using syntactic classes from the standard CodeQL library.
+Functions are key building blocks of Python code bases. You can use syntactic classes from the standard CodeQL library to find functions and identify calls to them.
 
 These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`Introducing the Python libraries <introduce-libraries-python>`."
 

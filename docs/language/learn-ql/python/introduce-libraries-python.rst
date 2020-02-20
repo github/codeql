@@ -6,7 +6,7 @@ This is an overview of the extensive library you use to analyze databases genera
 About the CodeQL library for Python
 -----------------------------------
 
-The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form. This abstraction makes it easier for you to write queries.
+The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form.
 
 Each CodeQL library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
 
