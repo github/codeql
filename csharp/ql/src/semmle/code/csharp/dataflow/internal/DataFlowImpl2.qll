@@ -422,13 +422,13 @@ private predicate nodeCand1_0(Node node, boolean toReturn, Configuration config)
   or
   exists(Node mid |
     jumpStep(node, mid, config) and
-    nodeCand1(mid, config) and
+    nodeCand1(mid, _, config) and
     toReturn = false
   )
   or
   exists(Node mid |
     additionalJumpStep(node, mid, config) and
-    nodeCand1(mid, config) and
+    nodeCand1(mid, _, config) and
     toReturn = false
   )
   or
@@ -447,10 +447,10 @@ private predicate nodeCand1_0(Node node, boolean toReturn, Configuration config)
   or
   // flow into a callable
   exists(DataFlowCall call |
-    nodeCand1ParamArg(call, node, false, config) and
+    nodeCand1Arg(call, node, false, config) and
     toReturn = false
     or
-    nodeCand1ParamArgToReturn(call, node, config) and
+    nodeCand1ArgToReturn(call, node, config) and
     flowInCand1(call, toReturn, config)
   )
   or
@@ -468,7 +468,7 @@ private predicate nodeCand1(Node node, Configuration config) { nodeCand1(node, _
 pragma[nomagic]
 private predicate nodeCand1ReturnPosition(ReturnPosition pos, Configuration config) {
   exists(DataFlowCall call, ReturnKindExt kind, Node out |
-    nodeCand1(out, config) and
+    nodeCand1(out, _, config) and
     pos = viableReturnPos(call, kind) and
     out = kind.getAnOutNode(call)
   )
@@ -484,7 +484,7 @@ private predicate readCand1(Content f, Configuration config) {
     nodeCandFwd1(node, unbind(config)) and
     readDirect(node, f, mid) and
     storeCandFwd1(f, unbind(config)) and
-    nodeCand1(mid, config)
+    nodeCand1(mid, _, config)
   )
 }
 
@@ -515,7 +515,7 @@ private predicate viableParamArgCandFwd1(
 }
 
 pragma[nomagic]
-private predicate nodeCand1ParamArg(
+private predicate nodeCand1Arg(
   DataFlowCall call, ArgumentNode arg, boolean toReturn, Configuration config
 ) {
   exists(ParameterNode p |
@@ -525,10 +525,8 @@ private predicate nodeCand1ParamArg(
 }
 
 pragma[nomagic]
-private predicate nodeCand1ParamArgToReturn(
-  DataFlowCall call, ArgumentNode arg, Configuration config
-) {
-  nodeCand1ParamArg(call, arg, true, config)
+private predicate nodeCand1ArgToReturn(DataFlowCall call, ArgumentNode arg, Configuration config) {
+  nodeCand1Arg(call, arg, true, config)
 }
 
 /**
