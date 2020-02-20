@@ -430,10 +430,17 @@ class ArgumentNode extends Node {
    * Holds if this argument occurs at the given position in the given call.
    *
    * The receiver argument is considered to have index `-1`.
+   *
+   * Note that we currently do not track receiver arguments into calls to interface methods.
    */
   predicate argumentOf(CallExpr call, int pos) {
     call = c.asExpr() and
-    pos = i
+    pos = i and
+    (
+      i != -1
+      or
+      exists(c.(MethodCallNode).getTarget().getBody())
+    )
   }
 
   /**
