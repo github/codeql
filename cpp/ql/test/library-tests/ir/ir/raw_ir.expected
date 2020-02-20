@@ -6067,12 +6067,16 @@ ir.cpp:
 # 1175|     r1175_2(int)        = Load                   : &:r1175_1, ~mu1173_4
 # 1175|     v1175_3(void)       = Switch                 : r1175_2
 #-----|   Case[1] -> Block 1
+#-----|   Goto -> Block 2
 
 # 1176|   Block 1
 # 1176|     v1176_1(void)       = NoOp               : 
 # 1177|     r1177_1(int)        = Constant[2]        : 
 # 1177|     r1177_2(glval<int>) = VariableAddress[y] : 
 # 1177|     mu1177_3(int)       = Store              : &:r1177_2, r1177_1
+#-----|   Goto -> Block 2
+
+# 1179|   Block 2
 # 1179|     r1179_1(glval<int>) = VariableAddress[z] : 
 # 1179|     r1179_2(glval<int>) = VariableAddress[y] : 
 # 1179|     r1179_3(int)        = Load               : &:r1179_2, ~mu1173_4
@@ -6099,6 +6103,7 @@ ir.cpp:
 # 1184|     v1184_3(void)       = Switch                 : r1184_2
 #-----|   Case[1] -> Block 1
 #-----|   Case[2] -> Block 2
+#-----|   Goto -> Block 3
 
 # 1185|   Block 1
 # 1185|     v1185_1(void)       = NoOp               : 
@@ -6112,6 +6117,9 @@ ir.cpp:
 # 1188|     r1188_1(int)        = Constant[3]        : 
 # 1188|     r1188_2(glval<int>) = VariableAddress[y] : 
 # 1188|     mu1188_3(int)       = Store              : &:r1188_2, r1188_1
+#-----|   Goto -> Block 3
+
+# 1190|   Block 3
 # 1190|     r1190_1(glval<int>) = VariableAddress[z] : 
 # 1190|     r1190_2(glval<int>) = VariableAddress[y] : 
 # 1190|     r1190_3(int)        = Load               : &:r1190_2, ~mu1182_4
@@ -6138,6 +6146,7 @@ ir.cpp:
 # 1195|     v1195_3(void)       = Switch                 : r1195_2
 #-----|   Case[1] -> Block 1
 #-----|   Case[2] -> Block 2
+#-----|   Goto -> Block 3
 
 # 1196|   Block 1
 # 1196|     v1196_1(void)       = NoOp               : 
