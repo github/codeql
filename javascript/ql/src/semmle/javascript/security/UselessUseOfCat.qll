@@ -232,20 +232,6 @@ module UselsesCatCandidates {
     override DataFlow::FunctionNode getCallback() { none() }
   }
 
-  // TODO: No!
-  bindingset[str, quote]
-  string surroundInQuotes(string str, string quote) {
-    if not str.prefix(1) = quote and not str.suffix(str.length() - 1) = quote
-    then result = quote + str + quote
-    else
-      if not str.prefix(1) = quote
-      then result = str + quote
-      else
-        if not str.suffix(str.length() - 1) = quote
-        then result = quote + str
-        else result = str
-  }
-
   /**
    * Gets the file that is read for a call to child_process.execFile/execFileSync.
    */
