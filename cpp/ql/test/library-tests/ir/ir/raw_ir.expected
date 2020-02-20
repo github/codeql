@@ -6052,6 +6052,173 @@ ir.cpp:
 # 1169|     v1169_8(void)           = AliasedUse                      : ~mu1169_4
 # 1169|     v1169_9(void)           = ExitFunction                    : 
 
+# 1173| void switch1Case(int)
+# 1173|   Block 0
+# 1173|     v1173_1(void)       = EnterFunction          : 
+# 1173|     mu1173_2(unknown)   = AliasedDefinition      : 
+# 1173|     mu1173_3(unknown)   = InitializeNonLocal     : 
+# 1173|     mu1173_4(unknown)   = UnmodeledDefinition    : 
+# 1173|     r1173_5(glval<int>) = VariableAddress[x]     : 
+# 1173|     mu1173_6(int)       = InitializeParameter[x] : &:r1173_5
+# 1174|     r1174_1(glval<int>) = VariableAddress[y]     : 
+# 1174|     r1174_2(int)        = Constant[0]            : 
+# 1174|     mu1174_3(int)       = Store                  : &:r1174_1, r1174_2
+# 1175|     r1175_1(glval<int>) = VariableAddress[x]     : 
+# 1175|     r1175_2(int)        = Load                   : &:r1175_1, ~mu1173_4
+# 1175|     v1175_3(void)       = Switch                 : r1175_2
+#-----|   Case[1] -> Block 1
+
+# 1176|   Block 1
+# 1176|     v1176_1(void)       = NoOp               : 
+# 1177|     r1177_1(int)        = Constant[2]        : 
+# 1177|     r1177_2(glval<int>) = VariableAddress[y] : 
+# 1177|     mu1177_3(int)       = Store              : &:r1177_2, r1177_1
+# 1179|     r1179_1(glval<int>) = VariableAddress[z] : 
+# 1179|     r1179_2(glval<int>) = VariableAddress[y] : 
+# 1179|     r1179_3(int)        = Load               : &:r1179_2, ~mu1173_4
+# 1179|     mu1179_4(int)       = Store              : &:r1179_1, r1179_3
+# 1180|     v1180_1(void)       = NoOp               : 
+# 1173|     v1173_7(void)       = ReturnVoid         : 
+# 1173|     v1173_8(void)       = UnmodeledUse       : mu*
+# 1173|     v1173_9(void)       = AliasedUse         : ~mu1173_4
+# 1173|     v1173_10(void)      = ExitFunction       : 
+
+# 1182| void switch2Case_fallthrough(int)
+# 1182|   Block 0
+# 1182|     v1182_1(void)       = EnterFunction          : 
+# 1182|     mu1182_2(unknown)   = AliasedDefinition      : 
+# 1182|     mu1182_3(unknown)   = InitializeNonLocal     : 
+# 1182|     mu1182_4(unknown)   = UnmodeledDefinition    : 
+# 1182|     r1182_5(glval<int>) = VariableAddress[x]     : 
+# 1182|     mu1182_6(int)       = InitializeParameter[x] : &:r1182_5
+# 1183|     r1183_1(glval<int>) = VariableAddress[y]     : 
+# 1183|     r1183_2(int)        = Constant[0]            : 
+# 1183|     mu1183_3(int)       = Store                  : &:r1183_1, r1183_2
+# 1184|     r1184_1(glval<int>) = VariableAddress[x]     : 
+# 1184|     r1184_2(int)        = Load                   : &:r1184_1, ~mu1182_4
+# 1184|     v1184_3(void)       = Switch                 : r1184_2
+#-----|   Case[1] -> Block 1
+#-----|   Case[2] -> Block 2
+
+# 1185|   Block 1
+# 1185|     v1185_1(void)       = NoOp               : 
+# 1186|     r1186_1(int)        = Constant[2]        : 
+# 1186|     r1186_2(glval<int>) = VariableAddress[y] : 
+# 1186|     mu1186_3(int)       = Store              : &:r1186_2, r1186_1
+#-----|   Goto -> Block 2
+
+# 1187|   Block 2
+# 1187|     v1187_1(void)       = NoOp               : 
+# 1188|     r1188_1(int)        = Constant[3]        : 
+# 1188|     r1188_2(glval<int>) = VariableAddress[y] : 
+# 1188|     mu1188_3(int)       = Store              : &:r1188_2, r1188_1
+# 1190|     r1190_1(glval<int>) = VariableAddress[z] : 
+# 1190|     r1190_2(glval<int>) = VariableAddress[y] : 
+# 1190|     r1190_3(int)        = Load               : &:r1190_2, ~mu1182_4
+# 1190|     mu1190_4(int)       = Store              : &:r1190_1, r1190_3
+# 1191|     v1191_1(void)       = NoOp               : 
+# 1182|     v1182_7(void)       = ReturnVoid         : 
+# 1182|     v1182_8(void)       = UnmodeledUse       : mu*
+# 1182|     v1182_9(void)       = AliasedUse         : ~mu1182_4
+# 1182|     v1182_10(void)      = ExitFunction       : 
+
+# 1193| void switch2Case(int)
+# 1193|   Block 0
+# 1193|     v1193_1(void)       = EnterFunction          : 
+# 1193|     mu1193_2(unknown)   = AliasedDefinition      : 
+# 1193|     mu1193_3(unknown)   = InitializeNonLocal     : 
+# 1193|     mu1193_4(unknown)   = UnmodeledDefinition    : 
+# 1193|     r1193_5(glval<int>) = VariableAddress[x]     : 
+# 1193|     mu1193_6(int)       = InitializeParameter[x] : &:r1193_5
+# 1194|     r1194_1(glval<int>) = VariableAddress[y]     : 
+# 1194|     r1194_2(int)        = Constant[0]            : 
+# 1194|     mu1194_3(int)       = Store                  : &:r1194_1, r1194_2
+# 1195|     r1195_1(glval<int>) = VariableAddress[x]     : 
+# 1195|     r1195_2(int)        = Load                   : &:r1195_1, ~mu1193_4
+# 1195|     v1195_3(void)       = Switch                 : r1195_2
+#-----|   Case[1] -> Block 1
+#-----|   Case[2] -> Block 2
+
+# 1196|   Block 1
+# 1196|     v1196_1(void)       = NoOp               : 
+# 1197|     r1197_1(int)        = Constant[2]        : 
+# 1197|     r1197_2(glval<int>) = VariableAddress[y] : 
+# 1197|     mu1197_3(int)       = Store              : &:r1197_2, r1197_1
+# 1198|     v1198_1(void)       = NoOp               : 
+#-----|   Goto -> Block 3
+
+# 1199|   Block 2
+# 1199|     v1199_1(void)       = NoOp               : 
+# 1200|     r1200_1(int)        = Constant[3]        : 
+# 1200|     r1200_2(glval<int>) = VariableAddress[y] : 
+# 1200|     mu1200_3(int)       = Store              : &:r1200_2, r1200_1
+#-----|   Goto -> Block 3
+
+# 1201|   Block 3
+# 1201|     v1201_1(void)       = NoOp               : 
+# 1202|     r1202_1(glval<int>) = VariableAddress[z] : 
+# 1202|     r1202_2(glval<int>) = VariableAddress[y] : 
+# 1202|     r1202_3(int)        = Load               : &:r1202_2, ~mu1193_4
+# 1202|     mu1202_4(int)       = Store              : &:r1202_1, r1202_3
+# 1203|     v1203_1(void)       = NoOp               : 
+# 1193|     v1193_7(void)       = ReturnVoid         : 
+# 1193|     v1193_8(void)       = UnmodeledUse       : mu*
+# 1193|     v1193_9(void)       = AliasedUse         : ~mu1193_4
+# 1193|     v1193_10(void)      = ExitFunction       : 
+
+# 1205| void switch2Case_default(int)
+# 1205|   Block 0
+# 1205|     v1205_1(void)       = EnterFunction          : 
+# 1205|     mu1205_2(unknown)   = AliasedDefinition      : 
+# 1205|     mu1205_3(unknown)   = InitializeNonLocal     : 
+# 1205|     mu1205_4(unknown)   = UnmodeledDefinition    : 
+# 1205|     r1205_5(glval<int>) = VariableAddress[x]     : 
+# 1205|     mu1205_6(int)       = InitializeParameter[x] : &:r1205_5
+# 1206|     r1206_1(glval<int>) = VariableAddress[y]     : 
+# 1206|     r1206_2(int)        = Constant[0]            : 
+# 1206|     mu1206_3(int)       = Store                  : &:r1206_1, r1206_2
+# 1207|     r1207_1(glval<int>) = VariableAddress[x]     : 
+# 1207|     r1207_2(int)        = Load                   : &:r1207_1, ~mu1205_4
+# 1207|     v1207_3(void)       = Switch                 : r1207_2
+#-----|   Case[1] -> Block 1
+#-----|   Case[2] -> Block 2
+#-----|   Default -> Block 3
+
+# 1208|   Block 1
+# 1208|     v1208_1(void)       = NoOp               : 
+# 1209|     r1209_1(int)        = Constant[2]        : 
+# 1209|     r1209_2(glval<int>) = VariableAddress[y] : 
+# 1209|     mu1209_3(int)       = Store              : &:r1209_2, r1209_1
+# 1210|     v1210_1(void)       = NoOp               : 
+#-----|   Goto -> Block 4
+
+# 1212|   Block 2
+# 1212|     v1212_1(void)       = NoOp               : 
+# 1213|     r1213_1(int)        = Constant[3]        : 
+# 1213|     r1213_2(glval<int>) = VariableAddress[y] : 
+# 1213|     mu1213_3(int)       = Store              : &:r1213_2, r1213_1
+# 1214|     v1214_1(void)       = NoOp               : 
+#-----|   Goto -> Block 4
+
+# 1216|   Block 3
+# 1216|     v1216_1(void)       = NoOp               : 
+# 1217|     r1217_1(int)        = Constant[4]        : 
+# 1217|     r1217_2(glval<int>) = VariableAddress[y] : 
+# 1217|     mu1217_3(int)       = Store              : &:r1217_2, r1217_1
+#-----|   Goto -> Block 4
+
+# 1218|   Block 4
+# 1218|     v1218_1(void)       = NoOp               : 
+# 1219|     r1219_1(glval<int>) = VariableAddress[z] : 
+# 1219|     r1219_2(glval<int>) = VariableAddress[y] : 
+# 1219|     r1219_3(int)        = Load               : &:r1219_2, ~mu1205_4
+# 1219|     mu1219_4(int)       = Store              : &:r1219_1, r1219_3
+# 1220|     v1220_1(void)       = NoOp               : 
+# 1205|     v1205_7(void)       = ReturnVoid         : 
+# 1205|     v1205_8(void)       = UnmodeledUse       : mu*
+# 1205|     v1205_9(void)       = AliasedUse         : ~mu1205_4
+# 1205|     v1205_10(void)      = ExitFunction       : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
