@@ -399,7 +399,7 @@ class ExceptFlowNode extends ControlFlowNode {
     or
     exists(Value tup | this.handledValue(tup, ClassValue::tuple(), _) |
       //element_from_tuple(tup).pointsTo(val, cls, origin)
-      val = element_from_tuple_valueapi(tup).pointsTo() and
+      element_from_tuple(tup).pointsTo(val, origin) and
       cls = val.getClass()
     )
   }
