@@ -18,7 +18,7 @@ import Expressions.CallArgs
 
 from Call call, FunctionValue func, string name
 where
-  illegally_named_parameter_valueapi(call, func, name) and
+  illegally_named_parameter(call, func, name) and
   not func.isAbstract() and
   not exists(FunctionValue overridden |
     func.overrides(overridden) and overridden.getScope().getAnArg().(Name).getId() = name
