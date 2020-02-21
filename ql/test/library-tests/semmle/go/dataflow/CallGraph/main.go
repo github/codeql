@@ -33,3 +33,7 @@ func test(x *s1, y s2, z s3, b mybool, i I) {
 	id := func(x int) int { return x } // name: id
 	id(1)                              // callee: id
 }
+
+func test2(v interface{}) {
+	v.(interface{ m(int) }).m(0)       // callee: s3.m
+}

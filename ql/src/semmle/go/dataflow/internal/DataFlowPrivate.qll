@@ -1,6 +1,6 @@
 private import go
 private import DataFlowUtil
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 
 private newtype TReturnKind =
   TSingleReturn() or
@@ -270,3 +270,5 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     guard.dominates(n.getBasicBlock())
   )
 }
+
+int accessPathLimit() { result = 5 }
