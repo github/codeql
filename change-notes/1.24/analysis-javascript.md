@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* TypeScript 3.8 is now supported.
+
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
 
 * Imports with the `.js` extension can now be resolved to a TypeScript file,
