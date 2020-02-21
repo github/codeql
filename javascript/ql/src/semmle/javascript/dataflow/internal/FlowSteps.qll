@@ -99,7 +99,7 @@ private module CachedSteps {
   private predicate partiallyCalls(
     DataFlow::PartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f
   ) {
-    invk.isPartialArgument(callback, _, _) and
+    callback = invk.getACallbackNode() and
     exists(AbstractFunction callee | callee = callback.getAValue() |
       if callback.getAValue().isIndefinite("global")
       then f = callee.getFunction() and f.getFile() = invk.getFile()
@@ -134,6 +134,12 @@ private module CachedSteps {
       f.getParameter(i) = p and
       not p.isRestParameter() and
       parm = DataFlow::parameterNode(p)
+    )
+    or
+    exists(DataFlow::Node callback |
+      arg = invk.(DataFlow::PartialInvokeNode).getBoundReceiver(callback) and
+      partiallyCalls(invk, callback, f) and
+      parm = DataFlow::thisNode(f)
     )
   }
 

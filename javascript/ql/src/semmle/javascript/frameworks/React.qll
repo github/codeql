@@ -517,32 +517,24 @@ private class FactoryDefinition extends ReactElementDefinition {
 }
 
 /**
- * Flow analysis for `this` expressions inside a function that is called with
- * `React.Children.map` or a similar library function that binds `this` of a
- * callback.
- *
- * However, since the function could be invoked in another way, we additionally
- * still infer the ordinary abstract value.
+ * Partial invocation for calls to `React.Children.map` or a similar library function
+ * that binds `this` of a callback.
  */
-private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNode {
-  AnalyzedNode thisSource;
-
-  AnalyzedThisInBoundCallback() {
-    exists(DataFlow::CallNode bindingCall, string binderName |
+private class ReactCallbackPartialInvoke extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+  ReactCallbackPartialInvoke() {
+    exists(string name |
       // React.Children.map or React.Children.forEach
-      binderName = "map" or
-      binderName = "forEach"
+      name = "map" or
+      name = "forEach"
     |
-      bindingCall = react().getAPropertyRead("Children").getAMemberCall(binderName) and
-      3 = bindingCall.getNumArgument() and
-      getBinder() = bindingCall.getCallback(1) and
-      thisSource = bindingCall.getArgument(2)
+      this = react().getAPropertyRead("Children").getAMemberCall(name) and
+      3 = getNumArgument()
     )
   }
 
-  override AbstractValue getALocalValue() {
-    result = thisSource.getALocalValue() or
-    result = AnalyzedNode.super.getALocalValue()
+  override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+    callback = getArgument(1) and
+    result = getArgument(2)
   }
 }
 

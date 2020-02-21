@@ -1199,6 +1199,13 @@ class PartialInvokeNode extends DataFlow::Node {
 
   PartialInvokeNode() { this = range }
 
+  /** Gets a node holding a callback invoked by this partial invocation node. */
+  DataFlow::Node getACallbackNode() {
+    isPartialArgument(result, _, _)
+    or
+    exists(getBoundReceiver(result))
+  }
+
   /**
    * Holds if `argument` is passed as argument `index` to the function in `callback`.
    */
@@ -1216,7 +1223,12 @@ class PartialInvokeNode extends DataFlow::Node {
   /**
    * Gets the node holding the receiver to be passed to the bound function, if specified.
    */
-  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver() }
+  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver(_) }
+
+  /**
+   * Gets the node holding the receiver to be passed to the bound function, if specified.
+   */
+  DataFlow::Node getBoundReceiver(DataFlow::Node callback) { result = range.getBoundReceiver(callback) }
 }
 
 module PartialInvokeNode {
@@ -1235,9 +1247,17 @@ module PartialInvokeNode {
     DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
 
     /**
+     * DEPRECATED. Use the one-argument version of `getBoundReceiver` instead.
+     *
      * Gets the node holding the receiver to be passed to the bound function, if specified.
      */
+    deprecated
     DataFlow::Node getBoundReceiver() { none() }
+
+    /**
+     * Gets the node holding the receiver to be passed to `callback`.
+     */
+    DataFlow::Node getBoundReceiver(DataFlow::Node callback) { none() }
   }
 
   /**
@@ -1264,7 +1284,8 @@ module PartialInvokeNode {
       result = this
     }
 
-    override DataFlow::Node getBoundReceiver() {
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getReceiver() and
       result = getArgument(0)
     }
   }
@@ -1307,6 +1328,22 @@ module PartialInvokeNode {
       callback = getArgument(0) and
       boundArgs = getArgumentsArray().getSize() and
       result = this
+    }
+  }
+
+  /**
+   * A call to `for-in` or `for-own`, passing the context parameter to the target function.
+   */
+  class ForOwnInPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    ForOwnInPartialCall() {
+      exists(string name | name = "for-in" or name = "for-own" |
+        this = moduleImport(name).getACall()
+      )
+    }
+
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getArgument(1) and
+      result = getArgument(2)
     }
   }
 }

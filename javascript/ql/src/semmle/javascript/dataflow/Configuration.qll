@@ -1311,6 +1311,9 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip the exceptional return on functions, as this highlights the entire function.
     nd = any(DataFlow::FunctionNode f).getExceptionalReturn()
+    or
+    // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
+    nd = DataFlow::thisNode(_)
   }
 }
 
