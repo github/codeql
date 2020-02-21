@@ -110,7 +110,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     /* OK to use 'is' when comparing items from a known set of objects */
     not exists(Expr left, Expr right, Value val |
         comp.compares(left, op, right) and
-        exists(ImmutableLiteral il | il.getLiteralObject() = val) |
+        exists(ImmutableLiteral il | il.getLiteralValue() = val) |
         left.pointsTo(val) and right.pointsTo(val)
         or
         /* Simple constant in module, probably some sort of sentinel */
