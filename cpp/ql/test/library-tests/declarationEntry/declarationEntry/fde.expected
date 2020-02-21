@@ -10,3 +10,5 @@
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  |
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  |
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  |
+| macro.c:2:1:2:3 | declaration of foo |  |
+| macro.c:4:5:4:8 | definition of main |  |
