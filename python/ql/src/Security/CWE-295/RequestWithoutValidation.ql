@@ -10,24 +10,17 @@
  */
 
 import python
-
 import semmle.python.web.Http
 
-
-FunctionObject requestFunction() {
-    result = ModuleObject::named("requests").attr(httpVerbLower())
-}
+FunctionValue requestFunction() { result = Module::named("requests").attr(httpVerbLower()) }
 
 /** requests treats None as the default and all other "falsey" values as False */
-predicate falseNotNone(Object o) {
-    o.booleanValue() = false and not o = theNoneObject()
-}
+predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v = Value::none_() }
 
-from CallNode call, FunctionObject func, Object falsey, ControlFlowNode origin
-where 
-func = requestFunction() and
-func.getACall() = call and
-falseNotNone(falsey) and
-call.getArgByName("verify").refersTo(falsey, origin)
-
+from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
+where
+    func = requestFunction() and
+    func.getACall() = call and
+    falseNotNone(falsey) and
+    call.getArgByName("verify").pointsTo(falsey, origin)
 select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"

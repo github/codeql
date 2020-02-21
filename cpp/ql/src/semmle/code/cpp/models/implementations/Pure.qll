@@ -80,7 +80,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate parameterIsAlwaysReturned(int i) { none() }
 
-  override predicate hasOnlySpecificReadSideEffects() { none() }
+  override predicate hasOnlySpecificReadSideEffects() { any() }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 

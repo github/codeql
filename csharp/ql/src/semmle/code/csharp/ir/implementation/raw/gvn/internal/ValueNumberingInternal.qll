@@ -1,17 +1,10 @@
 private import ValueNumberingImports
-import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.Location
-
-class UnknownLocation = EmptyLocation;
-
-class UnknownDefaultLocation = EmptyLocation;
 
 newtype TValueNumber =
-  TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {
-    variableAddressValueNumber(_, irFunc, var)
+  TVariableAddressValueNumber(IRFunction irFunc, Language::AST ast) {
+    variableAddressValueNumber(_, irFunc, ast)
   } or
-  TInitializeParameterValueNumber(IRFunction irFunc, IRVariable var) {
+  TInitializeParameterValueNumber(IRFunction irFunc, Language::AST var) {
     initializeParameterValueNumber(_, irFunc, var)
   } or
   TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
@@ -25,25 +18,29 @@ newtype TValueNumber =
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
   TBinaryValueNumber(
-    IRFunction irFunc, Opcode opcode, IRType type, TValueNumber leftOperand,
-    TValueNumber rightOperand
+    IRFunction irFunc, Opcode opcode, TValueNumber leftOperand, TValueNumber rightOperand
   ) {
-    binaryValueNumber(_, irFunc, opcode, type, leftOperand, rightOperand)
+    binaryValueNumber(_, irFunc, opcode, leftOperand, rightOperand)
   } or
   TPointerArithmeticValueNumber(
-    IRFunction irFunc, Opcode opcode, IRType type, int elementSize, TValueNumber leftOperand,
+    IRFunction irFunc, Opcode opcode, int elementSize, TValueNumber leftOperand,
     TValueNumber rightOperand
   ) {
-    pointerArithmeticValueNumber(_, irFunc, opcode, type, elementSize, leftOperand, rightOperand)
+    pointerArithmeticValueNumber(_, irFunc, opcode, elementSize, leftOperand, rightOperand)
   } or
-  TUnaryValueNumber(IRFunction irFunc, Opcode opcode, IRType type, TValueNumber operand) {
-    unaryValueNumber(_, irFunc, opcode, type, operand)
+  TUnaryValueNumber(IRFunction irFunc, Opcode opcode, TValueNumber operand) {
+    unaryValueNumber(_, irFunc, opcode, operand)
   } or
   TInheritanceConversionValueNumber(
     IRFunction irFunc, Opcode opcode, Language::Class baseClass, Language::Class derivedClass,
     TValueNumber operand
   ) {
     inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
+  } or
+  TLoadTotalOverlapValueNumber(
+    IRFunction irFunc, IRType type, TValueNumber memOperand, TValueNumber operand
+  ) {
+    loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
@@ -61,9 +58,15 @@ newtype TValueNumber =
  * The use of `p.x` on line 3 is linked to the definition of `p` on line 1 as well, but is not
  * congruent to that definition because `p.x` accesses only a subset of the memory defined by `p`.
  */
-private class CongruentCopyInstruction extends CopyInstruction {
+class CongruentCopyInstruction extends CopyInstruction {
   CongruentCopyInstruction() {
     this.getSourceValueOperand().getDefinitionOverlap() instanceof MustExactlyOverlap
+  }
+}
+
+class LoadTotalOverlapInstruction extends LoadInstruction {
+  LoadTotalOverlapInstruction() {
+    this.getSourceValueOperand().getDefinitionOverlap() instanceof MustTotallyOverlap
   }
 }
 
@@ -91,20 +94,42 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof PointerArithmeticInstruction
   or
   instr instanceof CongruentCopyInstruction
+  or
+  instr instanceof LoadTotalOverlapInstruction
+}
+
+private predicate filteredNumberableInstruction(Instruction instr) {
+  // count rather than strictcount to handle missing AST elements
+  // separate instanceof and inline casts to avoid failed casts with a count of 0
+  instr instanceof VariableAddressInstruction and
+  count(instr.(VariableAddressInstruction).getIRVariable().getAST()) != 1
+  or
+  instr instanceof ConstantInstruction and
+  count(instr.getResultIRType()) != 1
+  or
+  instr instanceof FieldAddressInstruction and
+  count(instr.(FieldAddressInstruction).getField()) != 1
 }
 
 private predicate variableAddressValueNumber(
-  VariableAddressInstruction instr, IRFunction irFunc, IRVariable var
+  VariableAddressInstruction instr, IRFunction irFunc, Language::AST ast
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getIRVariable() = var
+  // The underlying AST element is used as value-numbering key instead of the
+  // `IRVariable` to work around a problem where a variable or expression with
+  // multiple types gives rise to multiple `IRVariable`s.
+  instr.getIRVariable().getAST() = ast and
+  strictcount(instr.getIRVariable().getAST()) = 1
 }
 
 private predicate initializeParameterValueNumber(
-  InitializeParameterInstruction instr, IRFunction irFunc, IRVariable var
+  InitializeParameterInstruction instr, IRFunction irFunc, Language::AST var
 ) {
   instr.getEnclosingIRFunction() = irFunc and
-  instr.getIRVariable() = var
+  // The underlying AST element is used as value-numbering key instead of the
+  // `IRVariable` to work around a problem where a variable or expression with
+  // multiple types gives rise to multiple `IRVariable`s.
+  instr.getIRVariable().getAST() = var
 }
 
 private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRFunction irFunc) {
@@ -115,6 +140,7 @@ private predicate constantValueNumber(
   ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
   instr.getEnclosingIRFunction() = irFunc and
+  strictcount(instr.getResultIRType()) = 1 and
   instr.getResultIRType() = type and
   instr.getValue() = value
 }
@@ -133,41 +159,40 @@ private predicate fieldAddressValueNumber(
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getField() = field and
+  strictcount(instr.getField()) = 1 and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
 
 private predicate binaryValueNumber(
-  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, TValueNumber leftOperand,
+  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, TValueNumber leftOperand,
   TValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof PointerArithmeticInstruction and
   instr.getOpcode() = opcode and
-  instr.getResultIRType() = type and
   tvalueNumber(instr.getLeft()) = leftOperand and
   tvalueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate pointerArithmeticValueNumber(
-  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, IRType type,
-  int elementSize, TValueNumber leftOperand, TValueNumber rightOperand
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
+  TValueNumber leftOperand, TValueNumber rightOperand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
-  instr.getResultIRType() = type and
   instr.getElementSize() = elementSize and
   tvalueNumber(instr.getLeft()) = leftOperand and
   tvalueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate unaryValueNumber(
-  UnaryInstruction instr, IRFunction irFunc, Opcode opcode, IRType type, TValueNumber operand
+  UnaryInstruction instr, IRFunction irFunc, Opcode opcode, TValueNumber operand
 ) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
+  not instr instanceof FieldAddressInstruction and
   instr.getOpcode() = opcode and
-  instr.getResultIRType() = type and
   tvalueNumber(instr.getUnary()) = operand
 }
 
@@ -182,6 +207,16 @@ private predicate inheritanceConversionValueNumber(
   tvalueNumber(instr.getUnary()) = operand
 }
 
+private predicate loadTotalOverlapValueNumber(
+  LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber memOperand,
+  TValueNumber operand
+) {
+  instr.getEnclosingIRFunction() = irFunc and
+  tvalueNumber(instr.getAnOperand().(MemoryOperand).getAnyDef()) = memOperand and
+  tvalueNumberOfOperand(instr.getAnOperand().(AddressOperand)) = operand and
+  instr.getResultIRType() = type
+}
+
 /**
  * Holds if `instr` should be assigned a unique value number because this library does not know how
  * to determine if two instances of that instruction are equivalent.
@@ -189,7 +224,11 @@ private predicate inheritanceConversionValueNumber(
 private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
   instr.getEnclosingIRFunction() = irFunc and
   not instr.getResultIRType() instanceof IRVoidType and
-  not numberableInstruction(instr)
+  (
+    not numberableInstruction(instr)
+    or
+    filteredNumberableInstruction(instr)
+  )
 }
 
 /**
@@ -206,6 +245,12 @@ TValueNumber tvalueNumber(Instruction instr) {
 }
 
 /**
+ * Gets the value number assigned to the exact definition of `op`, if any.
+ * Returns at most one result.
+ */
+TValueNumber tvalueNumberOfOperand(Operand op) { result = tvalueNumber(op.getDef()) }
+
+/**
  * Gets the value number assigned to `instr`, if any, unless that instruction is assigned a unique
  * value number.
  */
@@ -213,12 +258,12 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
   exists(IRFunction irFunc |
     irFunc = instr.getEnclosingIRFunction() and
     (
-      exists(IRVariable var |
-        variableAddressValueNumber(instr, irFunc, var) and
-        result = TVariableAddressValueNumber(irFunc, var)
+      exists(Language::AST ast |
+        variableAddressValueNumber(instr, irFunc, ast) and
+        result = TVariableAddressValueNumber(irFunc, ast)
       )
       or
-      exists(IRVariable var |
+      exists(Language::AST var |
         initializeParameterValueNumber(instr, irFunc, var) and
         result = TInitializeParameterValueNumber(irFunc, var)
       )
@@ -226,7 +271,7 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       initializeThisValueNumber(instr, irFunc) and
       result = TInitializeThisValueNumber(irFunc)
       or
-      exists(IRType type, string value |
+      exists(string value, IRType type |
         constantValueNumber(instr, irFunc, type, value) and
         result = TConstantValueNumber(irFunc, type, value)
       )
@@ -241,14 +286,14 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
         result = TFieldAddressValueNumber(irFunc, field, objectAddress)
       )
       or
-      exists(Opcode opcode, IRType type, TValueNumber leftOperand, TValueNumber rightOperand |
-        binaryValueNumber(instr, irFunc, opcode, type, leftOperand, rightOperand) and
-        result = TBinaryValueNumber(irFunc, opcode, type, leftOperand, rightOperand)
+      exists(Opcode opcode, TValueNumber leftOperand, TValueNumber rightOperand |
+        binaryValueNumber(instr, irFunc, opcode, leftOperand, rightOperand) and
+        result = TBinaryValueNumber(irFunc, opcode, leftOperand, rightOperand)
       )
       or
-      exists(Opcode opcode, IRType type, TValueNumber operand |
-        unaryValueNumber(instr, irFunc, opcode, type, operand) and
-        result = TUnaryValueNumber(irFunc, opcode, type, operand)
+      exists(Opcode opcode, TValueNumber operand |
+        unaryValueNumber(instr, irFunc, opcode, operand) and
+        result = TUnaryValueNumber(irFunc, opcode, operand)
       )
       or
       exists(
@@ -258,14 +303,15 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
         result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
       )
       or
-      exists(
-        Opcode opcode, IRType type, int elementSize, TValueNumber leftOperand,
-        TValueNumber rightOperand
-      |
-        pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
-          rightOperand) and
+      exists(Opcode opcode, int elementSize, TValueNumber leftOperand, TValueNumber rightOperand |
+        pointerArithmeticValueNumber(instr, irFunc, opcode, elementSize, leftOperand, rightOperand) and
         result =
-          TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand, rightOperand)
+          TPointerArithmeticValueNumber(irFunc, opcode, elementSize, leftOperand, rightOperand)
+      )
+      or
+      exists(IRType type, TValueNumber memOperand, TValueNumber operand |
+        loadTotalOverlapValueNumber(instr, irFunc, type, memOperand, operand) and
+        result = TLoadTotalOverlapValueNumber(irFunc, type, memOperand, operand)
       )
       or
       // The value number of a copy is just the value number of its source value.
