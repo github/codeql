@@ -26,7 +26,7 @@ where
         and bin.getRight().pointsTo(rval, right)
         and rval.getClass() = ClassValue::int_()
         // Ignore instances where integer division leaves no remainder
-        and not lval.(NumericValue).intValue() % rval.(NumericValue).intValue() = 0
+        and not lval.(NumericValue).getIntValue() % rval.(NumericValue).getIntValue() = 0
         and not bin.getNode().getEnclosingModule().hasFromFuture("division")
         // Filter out results wrapped in `int(...)`
         and not exists(CallNode c |
