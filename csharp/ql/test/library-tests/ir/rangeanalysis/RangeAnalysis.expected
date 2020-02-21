@@ -1,3 +1,5 @@
+switchInstructionWithoutDefaultEdge
+instructionBounds
 | test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:24:16:24 | InitializeParameter: x | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |
 | test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:31:16:31 | InitializeParameter: y | 0 | false | CompareLT: ... < ... | test.cs:18:9:18:13 | test.cs:18:9:18:13 |
 | test.cs:22:12:22:12 | Store: access to parameter x | test.cs:16:31:16:31 | InitializeParameter: y | 0 | false | NoReason | file://:0:0:0:0 | :0:0:0:0 |

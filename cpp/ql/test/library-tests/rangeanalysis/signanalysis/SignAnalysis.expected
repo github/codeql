@@ -1,3 +1,5 @@
+switchInstructionWithoutDefaultEdge
+#select
 | binary_logical_operator.c:2:11:2:25 | Constant: ... && ... | positive strictlyPositive |
 | binary_logical_operator.c:2:11:2:25 | Load: ... && ... | positive |
 | binary_logical_operator.c:2:11:2:25 | Phi: ... && ... | positive |
