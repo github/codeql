@@ -1,6 +1,8 @@
 CodeQL libraries for TypeScript
 ===============================
 
+This article is an overview of the libraries you can use to analyze databases generated from TypeScript codebases. Using thes libraries makes it easier for you to write queries.
+
 Overview
 --------
 
@@ -444,8 +446,8 @@ A `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascrip
 -  ``LocalNamespaceName.getADeclaration()`` gets an identifier that declares this local name.
 -  ``LocalNamespaceName.getNamespace()`` gets the namespace to which this name refers.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

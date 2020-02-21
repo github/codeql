@@ -1,6 +1,8 @@
 CodeQL libraries for JavaScript
 ===============================
 
+This article is an overview of the extensive libraries you can use to analyze databases generated from JavaScript codebases. Using thes libraries makes it easier for you to write queries.
+
 Overview
 --------
 
@@ -1026,8 +1028,8 @@ Alias nodes are represented by class `YAMLAliasNode <https://help.semmle.com/qld
 
 Predicate ``YAMLMapping.maps(key, value)`` models the key-value relation represented by a mapping, taking merge keys into account.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Learn about the standard CodeQL libraries used to write queries for TypeScript in :doc:`Introducing the TypeScript libraries <introduce-libraries-ts>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

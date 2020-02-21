@@ -1,6 +1,8 @@
 CodeQL for JavaScript
 =====================
 
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript codebases.
+
 .. toctree::
    :glob:
    :hidden:
@@ -29,7 +31,7 @@ These documents provide an overview of the CodeQL libraries for JavaScript and T
 
 -  :doc:`Data flow cheat sheet <dataflow-cheat-sheet>` lists parts of the CodeQL libraries that are commonly used for variant analysis and in data flow queries.
 
-Other resources
+Further reading
 ---------------
 
 -  For examples of how to query common JavaScript elements, see the `JavaScript cookbook <https://help.semmle.com/wiki/display/CBJS>`__.
