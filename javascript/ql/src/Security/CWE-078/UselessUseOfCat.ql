@@ -1,14 +1,13 @@
 /**
  * @name Useless use of cat
- * @description Using cat to simply read a file can lead to unintended bugs, and at worst security issues.
+ * @description Using `cat`-process to simply read a file is unnecessarily complex, inefficient, unportable, can lead to subtle bugs, or even security vulnerabilities.
  * @kind problem
  * @problem.severity error
  * @precision high
  * @id js/useless-use-of-cat
  * @tags correctness
  *       security
- *       external/cwe/cwe-078
- *       external/cwe/cwe-088
+ *       maintainability
  */
 
 import javascript

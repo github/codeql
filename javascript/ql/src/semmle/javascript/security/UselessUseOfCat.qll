@@ -11,13 +11,15 @@ string createReadFileCall(UselsesCatCandidates::UselessCatCandicate cat) {
   exists(string sync, string extraArg, string callback |
     (if cat.isSync() then sync = "Sync" else sync = "") and
     (
-      if exists(cat.getOptionsArg())
-      then extraArg = ", " + printOptionsArg(cat.getOptionsArg()) + ")"
-      else extraArg = ""
+      extraArg = ", " + printOptionsArg(cat.getOptionsArg()) + ")"
+      or
+      extraArg = "" and not exists(cat.getOptionsArg())
     ) and
-    if exists(cat.getCallback())
-    then callback = constructCallbackString(cat.getCallback())
-    else callback = ""
+    (
+      callback = constructCallbackString(cat.getCallback())
+      or
+      callback = "" and not exists(cat.getCallback())
+    )
   |
     result = "fs.readFile" + sync + "(" + cat.getFileArgument().trim() + extraArg + callback + ")"
   )
@@ -94,10 +96,7 @@ class UselessCat extends DataFlow::CallNode {
         func.getNumParameter() = 2
         or
         // `exec` can use 3 parameters, `readFile` can only use two, so it is OK to have a third parameter if it is unused,
-        func.getNumParameter() = 3 and
-        not exists(DataFlow::Node node |
-          not node = func.getParameter(2) and func.getParameter(2) = node.getALocalSource()
-        )
+        func.getNumParameter() = 3 and not exists(SSA::definition(func.getParameter(2).getParameter()))
       )
     )
   }
