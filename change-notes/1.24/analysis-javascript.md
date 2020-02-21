@@ -15,6 +15,8 @@
 
 * Calls can now be resolved to class members in more cases, leading to more results from the security queries.
 
+* Calls through partial invocations such as `.bind()` are now analyzed more precisely, leading to more results from the security queries.
+
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
