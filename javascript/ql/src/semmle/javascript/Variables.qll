@@ -689,7 +689,7 @@ class Parameterized extends @parameterized, Documentable {
  *   var [ a, b ] = rest;
  *   var c;
  *   try {
-*      x.m();
+ *      x.m();
  *   } catch(e) {} // `e` is a parameter declaration
  * }
  * ```
