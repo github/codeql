@@ -35,7 +35,7 @@ predicate invalid_to_use_is_portably(ClassValue c) {
 }
 
 predicate simple_constant(ControlFlowNode f) {
-    exists(Object obj | f.refersTo(obj) |  obj = theTrueObject() or obj = theFalseObject() or obj = theNoneObject())
+    exists(Value val | f.pointsTo(val) |  val = Value::named("True") or val = Value::named("False") or val = Value::named("None"))
 }
 
 private predicate cpython_interned_value(Expr e) {
@@ -66,14 +66,14 @@ private predicate universally_interned_value(Expr e) {
 
 predicate cpython_interned_constant(Expr e) {
     exists(Expr const | 
-        e.refersTo(_, const) | 
+        e.pointsTo(_, const) | 
         cpython_interned_value(const)
     )
 }
 
 predicate universally_interned_constant(Expr e) {
     exists(Expr const | 
-        e.refersTo(_, const) | 
+        e.pointsTo(_, const) | 
         universally_interned_value(const)
     )
 }
@@ -108,14 +108,14 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     )
     and
     /* OK to use 'is' when comparing items from a known set of objects */
-    not exists(Expr left, Expr right, Object obj |
+    not exists(Expr left, Expr right, Value val |
         comp.compares(left, op, right) and
-        exists(ImmutableLiteral il | il.getLiteralObject() = obj) |
-        left.refersTo(obj) and right.refersTo(obj)
+        exists(ImmutableLiteral il | il.getLiteralObject() = val) |
+        left.pointsTo(val) and right.pointsTo(val)
         or
         /* Simple constant in module, probably some sort of sentinel */
         exists(AstNode origin |
-            not left.refersTo(_) and right.refersTo(obj, origin) and
+            not left.pointsTo(_) and right.pointsTo(val, origin) and
             origin.getScope().getEnclosingModule() = comp.getScope().getEnclosingModule()
         )
     )
@@ -124,7 +124,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     not exists(Expr left, Expr right, AstNode origin |
         comp.compares(left, op, right) and
         enum_member(origin) |
-        left.refersTo(_, origin) or right.refersTo(_, origin)
+        left.pointsTo(_, origin) or right.pointsTo(_, origin)
     )
 }
 
