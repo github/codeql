@@ -1036,6 +1036,9 @@ module ClassNode {
         kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = getConstructor().getReceiver().getAPropertySource(name)
     }
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
@@ -1045,6 +1048,9 @@ module ClassNode {
         kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = getConstructor().getReceiver().getAPropertySource()
     }
 
     override FunctionNode getStaticMethod(string name) {
@@ -1063,6 +1069,8 @@ module ClassNode {
         method.isStatic() and
         result = method.getBody().flow()
       )
+      or
+      result = getAPropertySource()
     }
 
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }

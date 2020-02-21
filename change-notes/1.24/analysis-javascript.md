@@ -13,6 +13,8 @@
 
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
+* Calls can now be resolved to class members in more cases, leading to more results from the security queries.
+
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
