@@ -834,6 +834,10 @@ class TranslatedSwitchStmt extends TranslatedStmt {
       kind = this.getCaseEdge(caseStmt) and
       result = getTranslatedStmt(caseStmt).getFirstInstruction()
     )
+    or
+    not exists(stmt.getDefaultCase()) and
+    kind instanceof DefaultEdge and
+    result = getParent().getChildSuccessor(this)
   }
 
   private EdgeKind getCaseEdge(CaseStmt caseStmt) {
