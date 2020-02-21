@@ -6,7 +6,7 @@
 | test.py:20 | test_sanitizer | Attribute | NO TAINT |
 | test.py:23 | test_sanitizer | Subscript | NO TAINT |
 | test.py:26 | test_sanitizer | Attribute | NO TAINT |
-| test.py:29 | test_sanitizer | Attribute | externally controlled string |
+| test.py:29 | test_sanitizer | Attribute | NO TAINT |
 | test.py:32 | test_sanitizer | Attribute | externally controlled string |
 | test.py:42 | test_namedtuple | a | NO TAINT |
 | test.py:42 | test_namedtuple | b | NO TAINT |

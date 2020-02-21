@@ -26,7 +26,7 @@ def test_sanitizer():
         test(urlsplit_res.path) # FN
 
     if urlsplit_res.netloc in ["OK"]:
-        test(urlsplit_res.netloc) # FP
+        test(urlsplit_res.netloc)
 
     if urlsplit_res.netloc in ["OK", non_constant()]:
         test(urlsplit_res.netloc) # should be tainted

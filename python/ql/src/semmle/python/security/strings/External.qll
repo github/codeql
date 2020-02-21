@@ -230,6 +230,8 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
     private predicate clears_taint(ControlFlowNode final_test, ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
         test_equality_with_const(final_test, tainted, sense)
         or
+        test_in_const_seq(final_test, tainted, sense)
+        or
         test.(UnaryExprNode).getNode().getOp() instanceof Not and
         exists(ControlFlowNode nested_test |
             nested_test = test.(UnaryExprNode).getOperand() and
@@ -238,18 +240,33 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
     }
 
     /** holds for `== "KNOWN_VALUE"` on `true` edge, and `!= "KNOWN_VALUE"` on `false` edge */
-    private predicate test_equality_with_const(CompareNode cmp, ControlFlowNode operand, boolean sense) {
+    private predicate test_equality_with_const(CompareNode cmp, ControlFlowNode tainted, boolean sense) {
         exists(ControlFlowNode const, Cmpop op |
             const.getNode() instanceof StrConst
         |
             (
-                cmp.operands(const, op, operand)
+                cmp.operands(const, op, tainted)
                 or
-                cmp.operands(operand, op, const)
-            ) and (
+                cmp.operands(tainted, op, const)
+            ) and
+            (
                 op instanceof Eq and sense = true
                 or
                 op instanceof NotEq and sense = false
+            )
+        )
+    }
+
+    /** holds for `in ["KNOWN_VALUE", ...]` on `true` edge, and `not in ["KNOWN_VALUE", ...]` on `false` edge */
+    private predicate test_in_const_seq(CompareNode cmp, ControlFlowNode tainted, boolean sense) {
+        exists(SequenceNode const_seq, Cmpop op |
+            forall(ControlFlowNode elem | elem = const_seq.getAnElement() | elem.getNode() instanceof StrConst)
+        |
+            cmp.operands(tainted, op, const_seq) and
+            (
+                op instanceof In and sense = true
+                or
+                op instanceof NotIn and sense = false
             )
         )
     }
