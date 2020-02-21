@@ -1,5 +1,5 @@
-Introducing the CodeQL libraries for JavaScript
-===============================================
+CodeQL libraries for JavaScript
+===============================
 
 Overview
 --------

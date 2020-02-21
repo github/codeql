@@ -1,5 +1,5 @@
-Introducing the CodeQL libraries for TypeScript
-===============================================
+CodeQL libraries for TypeScript
+===============================
 
 Overview
 --------

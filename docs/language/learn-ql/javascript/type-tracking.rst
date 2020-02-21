@@ -1,5 +1,5 @@
-Tutorial: API modelling using type tracking
-===========================================
+Using type tracking for API modeling
+====================================
 
 This tutorial demonstrates how to build a simple model of the Firebase API
 using the CodeQL type-tracking library for JavaScript.

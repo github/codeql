@@ -1,5 +1,5 @@
-AST class reference
-===================
+Abstract syntax tree classes for JavaScript and TypeScript
+==========================================================
 
 Statement classes
 -----------------

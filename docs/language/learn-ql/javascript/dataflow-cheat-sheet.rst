@@ -1,5 +1,5 @@
-Data flow cheat sheet
-=====================
+Data flow cheat sheet for JavaScript
+====================================
 
 This page describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
