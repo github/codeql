@@ -294,8 +294,8 @@ public class ASTExtractor {
      * True if this occurs as part of a type annotation, i.e. it is {@link #typeBind} or {@link
      * #typeDecl}, {@link #typeLabel}, {@link #varInTypeBind}, or {@link #namespaceBind}.
      *
-     * <p>Does not hold for {@link #varAndTypeDecl} or {@link #typeOnlyImportExport} as these
-     * do not occur in type annotations.
+     * <p>Does not hold for {@link #varAndTypeDecl}, {@link #typeOnlyImport}, or @{link {@link #typeOnlyExport}
+     * as these do not occur in type annotations.
      */
     public boolean isInsideType() {
       return this == typeBind
