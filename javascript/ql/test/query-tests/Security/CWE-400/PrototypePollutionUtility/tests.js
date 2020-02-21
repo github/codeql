@@ -462,3 +462,14 @@ function copyUsingUnderscoreOrLodash(dst, src) {
         }
     });
 }
+
+let isPlainObject = require('is-plain-object');
+function copyPlainObject(dst, src) {
+    for (let key in src) {
+        if (dst[key] && isPlainObject(src)) {
+            copyPlainObject(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}
