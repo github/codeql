@@ -140,7 +140,11 @@ class Entity extends @object {
     or
     // otherwise fall back on dummy location
     not exists(getDeclaration()) and
-    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
   }
 }
 
@@ -259,6 +263,7 @@ class Field extends Variable {
 
   Field() { fieldstructs(this, declaringType) }
 
+  /** Gets the struct type declaring this field. */
   StructType getDeclaringType() { result = declaringType }
 
   /**

@@ -24,7 +24,9 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 
 private newtype TUnit = TMkUnit()
 
-class Unit extends TUnit {
+/** A singleton class containing a single dummy "unit" value. */
+private class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
   string toString() { result = "unit" }
 }
 
@@ -106,6 +108,7 @@ predicate functionModelStep(FunctionModel fn, DataFlow::Node pred, DataFlow::Nod
  * a parameter or qualifier to a result.
  */
 abstract class FunctionModel extends Function {
+  /** Holds if taint propagates through this function from `input` to `output`. */
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 }
 

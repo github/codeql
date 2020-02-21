@@ -74,6 +74,7 @@ class HashableNode extends AstNode {
 class HashableNullaryNode extends HashableNode {
   HashableNullaryNode() { not exists(getAChild()) }
 
+  /** Holds if this node has the given `kind` and `value`. */
   predicate unpack(int kind, string value) { kind = getKind() and value = getValue() }
 
   override HashedNode hash() {
@@ -87,6 +88,7 @@ class HashableNullaryNode extends HashableNode {
 class HashableUnaryNode extends HashableNode {
   HashableUnaryNode() { getNumChild() = 1 and exists(getChild(0)) }
 
+  /** Holds if this node has the given `kind` and `value`, and `child` is its only child. */
   predicate unpack(int kind, string value, HashedNode child) {
     kind = getKind() and value = getValue() and child = getChild(0).(HashableNode).hash()
   }
@@ -104,6 +106,7 @@ class HashableUnaryNode extends HashableNode {
 class HashableBinaryNode extends HashableNode {
   HashableBinaryNode() { getNumChild() = 2 and exists(getChild(0)) and exists(getChild(1)) }
 
+  /** Holds if this node has the given `kind` and `value`, and `left` and `right` are its children. */
   predicate unpack(int kind, string value, HashedNode left, HashedNode right) {
     kind = getKind() and
     value = getValue() and
@@ -128,10 +131,12 @@ class HashableNAryNode extends HashableNode {
     exists(int n | n = strictcount(getAChild()) | n > 2 or not exists(getChild([0 .. n - 1])))
   }
 
+  /** Holds if this node has the given `kind`, `value`, and `children`. */
   predicate unpack(int kind, string value, HashedChildren children) {
     kind = getKind() and value = getValue() and children = hashChildren()
   }
 
+  /** Holds if `child` is the `i`th child of this node, and `rest` are its subsequent children. */
   predicate childAt(int i, HashedNode child, HashedChildren rest) {
     child = getChild(i).(HashableNode).hash() and rest = hashChildren(i + 1)
   }
@@ -142,9 +147,11 @@ class HashableNAryNode extends HashableNode {
     )
   }
 
-  HashedChildren hashChildren() { result = hashChildren(0) }
+  /** Gets the hash of this node's children. */
+  private HashedChildren hashChildren() { result = hashChildren(0) }
 
-  HashedChildren hashChildren(int i) {
+  /** Gets the hash of this node's children, starting with the `i`th child. */
+  private HashedChildren hashChildren(int i) {
     i = max(int n | exists(getChild(n))) + 1 and result = Nil()
     or
     exists(HashedNode child, HashedChildren rest | childAt(i, child, rest) |
@@ -153,6 +160,13 @@ class HashableNAryNode extends HashableNode {
   }
 }
 
+/**
+ * A normalized ("hashed") representation of an AST node.
+ *
+ * The normalized representation only captures the tree structure of the AST, discarding
+ * any information about source location or node identity. Thus, if two parts of the AST
+ * have identical hashes they are structurally identical.
+ */
 newtype HashedNode =
   MkHashedNullaryNode(int kind, string value) { any(HashableNullaryNode nd).unpack(kind, value) } or
   MkHashedUnaryNode(int kind, string value, HashedNode child) {
@@ -165,7 +179,8 @@ newtype HashedNode =
     any(HashableNAryNode nd).unpack(kind, value, children)
   }
 
-newtype HashedChildren =
+/** A normalized ("hashed") representation of some or all of the children of a node. */
+private newtype HashedChildren =
   Nil() or
   AHashedChild(int i, HashedNode child, HashedChildren rest) {
     exists(HashableNAryNode nd | nd.childAt(i, child, rest))

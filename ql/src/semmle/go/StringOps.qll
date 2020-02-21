@@ -216,7 +216,10 @@ module StringOps {
      */
     pragma[noinline]
     private string getFormatComponentRegex() {
-      exists(string literal, string opt_flag, string width, string prec, string opt_width_and_prec, string operator, string verb |
+      exists(
+        string literal, string opt_flag, string width, string prec, string opt_width_and_prec,
+        string operator, string verb
+      |
         literal = "([^%]|%%)+" and
         opt_flag = "[-+ #0]?" and
         width = "\\d+|\\*" and
@@ -297,7 +300,7 @@ module StringOps {
     predicate taintStep(DataFlow::Node src, DataFlow::Node dst) { taintStep(src, dst, _, _) }
   }
 
-  newtype TConcatenationElement =
+  private newtype TConcatenationElement =
     /** A root concatenation element that is not itself an operand of a string concatenation. */
     MkConcatenationRoot(Concatenation cat) { not cat = any(Concatenation parent).getOperand(_) } or
     /** A concatenation element that is an operand of a string concatenation. */

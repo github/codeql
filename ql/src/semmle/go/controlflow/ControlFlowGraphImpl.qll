@@ -6,6 +6,7 @@
 
 import go
 
+/** A block statement that is not the body of a `switch` or `select` statement. */
 class PlainBlock extends BlockStmt {
   PlainBlock() {
     not this = any(SwitchStmt sw).getBody() and not this = any(SelectStmt sel).getBody()
@@ -320,6 +321,13 @@ newtype TWriteTarget =
   /** A write target for a returned expression, viewed as a write to the corresponding result variable. */
   MkResultWriteTarget(MkResultWriteNode w)
 
+/**
+ * A control-flow node that represents a no-op.
+ *
+ * These control-flow nodes correspond to Go statements that have no runtime semantics other than
+ * potentially influencing control flow: the branching statements `continue`, `break`,
+ * `fallthrough` and `goto`; empty blocks; empty statements; and import and type declarations.
+ */
 class SkipNode extends ControlFlow::Node, MkSkipNode {
   AstNode skip;
 
@@ -336,6 +344,9 @@ class SkipNode extends ControlFlow::Node, MkSkipNode {
   }
 }
 
+/**
+ * A control-flow node that represents the start of the execution of a function or file.
+ */
 class EntryNode extends ControlFlow::Node, MkEntryNode {
   ControlFlow::Root root;
 
@@ -354,6 +365,9 @@ class EntryNode extends ControlFlow::Node, MkEntryNode {
   }
 }
 
+/**
+ * A control-flow node that represents the end of the execution of a function or file.
+ */
 class ExitNode extends ControlFlow::Node, MkExitNode {
   ControlFlow::Root root;
 
@@ -1880,9 +1894,11 @@ module CFG {
     result = MkSkipNode(e)
   }
 
+  /** Holds if evaluation of `root` may start at `first`. */
   cached
   predicate firstNode(ControlFlowTree root, ControlFlow::Node first) { root.firstNode(first) }
 
+  /** Holds if evaluation of `root` may complete normally after `last`. */
   cached
   predicate lastNode(ControlFlowTree root, ControlFlow::Node last) {
     lastNode(root, last, normalCompletion())

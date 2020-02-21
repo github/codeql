@@ -152,10 +152,12 @@ class SsaDefinition extends TSsaDefinition {
  * An SSA definition that corresponds to an explicit assignment or other variable definition.
  */
 class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
+  /** Gets the instruction where the definition happens. */
   IR::Instruction getInstruction() {
     exists(BasicBlock bb, int i | this = TExplicitDef(bb, i, _) | result = bb.getNode(i))
   }
 
+  /** Gets the right-hand side of the definition. */
   IR::Instruction getRhs() { getInstruction().writes(_, result) }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
@@ -314,6 +316,7 @@ private IR::Instruction accessPathAux(TSsaWithFields base, Field f) {
   )
 }
 
+/** An SSA variable with zero or more fields read from it. */
 class SsaWithFields extends TSsaWithFields {
   /**
    * Gets the SSA variable corresponding to the base of this SSA variable with fields.

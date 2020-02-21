@@ -449,11 +449,8 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
 
   /** Gets the `i`th non-default case clause of this `switch` statement (0-based). */
   CaseClause getNonDefaultCase(int i) {
-    result = rank[i + 1](CaseClause cc, int j |
-        cc = getCase(j) and exists(cc.getExpr(_))
-      |
-        cc order by j
-      )
+    result =
+      rank[i + 1](CaseClause cc, int j | cc = getCase(j) and exists(cc.getExpr(_)) | cc order by j)
   }
 
   /** Gets a non-default case clause of this `switch` statement. */
@@ -555,15 +552,18 @@ class SelectStmt extends @selectstmt, Stmt {
 
   /** Gets the `i`th `case` clause in this `select` statement. */
   CommClause getNonDefaultCommClause(int i) {
-    result = rank[i + 1](CommClause cc, int j |
+    result =
+      rank[i + 1](CommClause cc, int j |
         cc = getCommClause(j) and exists(cc.getComm())
       |
         cc order by j
       )
   }
 
+  /** Gets the number of `case` clauses in this `select` statement. */
   int getNumNonDefaultCommClause() { result = count(getNonDefaultCommClause(_)) }
 
+  /** Gets the `default` clause in this `select` statement, if any. */
   CommClause getDefaultCommClause() {
     result = getCommClause(_) and
     not exists(result.getComm())
