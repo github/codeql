@@ -49,7 +49,8 @@ module StringBreak {
   class JsonMarshalAsSource extends Source {
     JsonMarshalAsSource() {
       exists(Function jsonMarshal | jsonMarshal.hasQualifiedName("encoding/json", "Marshal") |
-        this = jsonMarshal.getACall()
+        // we are only interested in the first result (the second result is an error)
+        this = DataFlow::extractTupleElement(jsonMarshal.getACall(), 0)
       )
     }
   }
