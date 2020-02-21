@@ -17,10 +17,10 @@ def test_sanitizer():
     urlsplit_res = urlsplit(tainted_string)
 
     if urlsplit_res.netloc == "OK":
-        test(urlsplit_res.netloc) # TODO: FP, should not be tainted here
+        test(urlsplit_res.netloc)
 
     if urlsplit_res[2] == "OK":
-        test(urlsplit_res[0]) # TODO: FP, should not be tainted here
+        test(urlsplit_res[0])
 
 def test_namedtuple():
     tainted_string = TAINTED_STRING

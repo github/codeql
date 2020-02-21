@@ -3,8 +3,8 @@
 | test.py:13 | test_basic | c | externally controlled string |
 | test.py:13 | test_basic | d | externally controlled string |
 | test.py:13 | test_basic | urlsplit_res | [externally controlled string] |
-| test.py:20 | test_sanitizer | Attribute | externally controlled string |
-| test.py:23 | test_sanitizer | Subscript | externally controlled string |
+| test.py:20 | test_sanitizer | Attribute | NO TAINT |
+| test.py:23 | test_sanitizer | Subscript | NO TAINT |
 | test.py:33 | test_namedtuple | a | NO TAINT |
 | test.py:33 | test_namedtuple | b | NO TAINT |
 | test.py:33 | test_namedtuple | c | NO TAINT |

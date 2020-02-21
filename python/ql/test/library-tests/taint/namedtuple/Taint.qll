@@ -25,3 +25,23 @@ class DictSource extends TaintSource {
 
     override string toString() { result = "dict taint source" }
 }
+
+class TestConfig extends TaintTracking::Configuration {
+    TestConfig() { this = "TestConfig" }
+
+    override predicate isSanitizer(Sanitizer sanitizer) {
+        sanitizer instanceof UrlsplitUrlparseTempSanitizer
+    }
+
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof SimpleSource
+        or
+        source instanceof ListSource
+        or
+        source instanceof DictSource
+    }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        none()
+    }
+}

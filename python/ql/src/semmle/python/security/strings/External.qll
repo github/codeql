@@ -195,3 +195,62 @@ class ExternalFileObject extends TaintKind {
         name = "read" and result = this.getValue()
     }
 }
+
+/**
+ * Temporary sanitizer for the tainted result from `urlsplit` and `urlparse`. Can be used to reduce FPs until
+ * we have better support for namedtuples.
+ *
+ * Will clear **all** taint on a test of the kind. That is, on the true edge of any matching test,
+ * all fields/indexes will be cleared of taint.
+ *
+ * Handles:
+ * - `if splitres.netloc == "KNOWN_VALUE"`
+ * - `if splitres[0] == "KNOWN_VALUE"`
+ */
+class UrlsplitUrlparseTempSanitizer extends Sanitizer {
+    // TODO: remove this once we have better support for named tuples
+
+    UrlsplitUrlparseTempSanitizer() { this = "UrlsplitUrlparseTempSanitizer" }
+
+    override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
+        (
+            taint instanceof ExternalUrlSplitResult
+            or
+            taint instanceof ExternalUrlParseResult
+        ) and
+        exists(ControlFlowNode foobar |
+            foobar.(SubscriptNode).getObject() = test.getInput().getAUse()
+            or
+            foobar.(AttrNode).getObject() = test.getInput().getAUse()
+        |
+            clears_taint(_, foobar, test.getTest(), test.getSense())
+        )
+    }
+
+    private predicate clears_taint(ControlFlowNode final_test, ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
+        test_equality_with_const(final_test, tainted, sense)
+        or
+        test.(UnaryExprNode).getNode().getOp() instanceof Not and
+        exists(ControlFlowNode nested_test |
+            nested_test = test.(UnaryExprNode).getOperand() and
+            clears_taint(final_test, tainted, nested_test, sense.booleanNot())
+        )
+    }
+
+    /** holds for `== "KNOWN_VALUE"` on `true` edge, and `!= "KNOWN_VALUE"` on `false` edge */
+    private predicate test_equality_with_const(CompareNode cmp, ControlFlowNode operand, boolean sense) {
+        exists(ControlFlowNode const, Cmpop op |
+            const.getNode() instanceof StrConst
+        |
+            (
+                cmp.operands(const, op, operand)
+                or
+                cmp.operands(operand, op, const)
+            ) and (
+                op instanceof Eq and sense = true
+                or
+                op instanceof NotEq and sense = false
+            )
+        )
+    }
+}
