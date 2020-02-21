@@ -17,7 +17,7 @@ where
   )
 select msg, comment
 
-query string readFile(UselessCat cat) { result = createReadFileCall(cat) }
+query string readFile(UselessCat cat) { result = PrettyPrintCatCall::createReadFileCall(cat) }
 
 query SystemCommandExecution syncCommand() {
   result.isSync()	

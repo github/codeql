@@ -1,6 +1,6 @@
 readFile
 | uselesscat.js:10:1:10:43 | exec("c ... ut) {}) | fs.readFile("foo/bar", function(err, out) {...}) |
-| uselesscat.js:12:1:14:2 | exec("c ... ut);\\n}) | fs.readFile("/proc/"+id+"/status", function(err, out) {...}) |
+| uselesscat.js:12:1:14:2 | exec("c ... ut);\\n}) | fs.readFile("/proc/" + id + "/status", function(err, out) {...}) |
 | uselesscat.js:16:1:16:29 | execSyn ... uinfo') | fs.readFileSync("/proc/cpuinfo") |
 | uselesscat.js:18:1:18:26 | execSyn ... path}`) | fs.readFileSync(newpath) |
 | uselesscat.js:32:1:32:34 | execSyn ... path}`) | fs.readFileSync(`foo/bar/${newpath}`) |
@@ -12,12 +12,14 @@ readFile
 | uselesscat.js:76:1:76:39 | execFil ... xml' ]) | fs.readFileSync("pom.xml") |
 | uselesscat.js:79:1:79:46 | execFil ...   opts) | fs.readFileSync("pom.xml", opts)) |
 | uselesscat.js:82:1:82:90 | execFil ... String) | fs.readFileSync("pom.xml", anOptsFileNameThatIsTooLongToBePrintedByToString)) |
-| uselesscat.js:86:1:86:75 | execFil ... utf8'}) | fs.readFileSync("foo/"+newPath+"bar", {encoding: 'utf8'})) |
-| uselesscat.js:88:1:88:35 | execSyn ...  + foo) | fs.readFileSync("/proc/cpuinfo"+foo) |
+| uselesscat.js:86:1:86:75 | execFil ... utf8'}) | fs.readFileSync("foo/" + newPath + "bar", {encoding: 'utf8'})) |
+| uselesscat.js:88:1:88:35 | execSyn ...  + foo) | fs.readFileSync("/proc/cpuinfo" + foo) |
 | uselesscat.js:90:1:90:50 | execFil ... th}` ]) | fs.readFileSync(`foo/bar/${newpath}`) |
 | uselesscat.js:94:1:94:43 | exec("c ... ut) {}) | fs.readFile("foo/bar", function(err, out) {...}) |
 | uselesscat.js:96:1:96:53 | exec("c ... (out)}) | fs.readFile("foo/bar", (err, out) => {...}) |
 | uselesscat.js:98:1:98:55 | exec("c ... h(out)) | fs.readFile("foo/bar", (err, out) => ...) |
+| uselesscat.js:121:12:121:64 | exec("c ... (out)}) | fs.readFile("foo/bar", (err, out) => {...}) |
+| uselesscat.js:127:14:127:66 | exec("c ... (out)}) | fs.readFile("foo/bar", (err, out) => {...}) |
 syncCommand
 | child_process-test.js:9:5:9:22 | cp.execSync("foo") |
 | child_process-test.js:11:5:11:26 | cp.exec ... ("foo") |
@@ -65,6 +67,7 @@ syncCommand
 | uselesscat.js:90:1:90:50 | execFil ... th}` ]) |
 | uselesscat.js:92:1:92:46 | execFil ... th}` ]) |
 | uselesscat.js:100:1:100:56 | execFil ... ptions) |
+| uselesscat.js:104:1:104:31 | execFil ... cat` ]) |
 #select
 | False negative | uselesscat.js:54:42:54:69 | // NOT  ... lagged] |
-| False negative | uselesscat.js:84:118:84:144 | // NOT  ... lagged] |
+| False positive | uselesscat.js:44:37:44:85 | // OK [ ... le read |

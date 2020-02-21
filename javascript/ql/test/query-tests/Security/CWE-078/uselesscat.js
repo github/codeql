@@ -41,7 +41,7 @@ execSync(`cat ${newpath} > ${destpath}`).toString(); // OK.
 
 execSync(`cat ${files.join(' ')} > ${outFile}`); // OK
 
-execSync(`cat ${files.join(' ')}`); // OK - not just a simple file read
+execSync(`cat ${files.join(' ')}`); // OK [but flagged] - not just a simple file read
 
 exec("cat /proc/cpuinfo | grep name"); // OK - pipes
 
@@ -81,7 +81,7 @@ execFileSync('/bin/cat', [ 'pom.xml' ],  opts); // NOT OK
 var anOptsFileNameThatIsTooLongToBePrintedByToString = {encoding: 'utf8'};
 execFileSync('/bin/cat', [ 'pom.xml' ],  anOptsFileNameThatIsTooLongToBePrintedByToString); // NOT OK
 
-execFileSync('/bin/cat', [ 'pom.xml' ],  {encoding: 'someEncodingValueThatIsCompletelyBogusAndTooLongForToString'}); // NOT OK [but not flagged]
+execFileSync('/bin/cat', [ 'pom.xml' ],  {encoding: 'someEncodingValueThatIsCompletelyBogusAndTooLongForToString'}); // NOT OK
 
 execFileSync('/bin/cat', [ "foo/" + newPath + "bar" ],  {encoding: 'utf8'}); // NOT OK
 
@@ -98,3 +98,37 @@ exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
 exec("cat foo/bar", (err, out) => doSomethingWith(out)); // NOT OK
 
 execFileSync('/bin/cat', [ 'pom.xml' ],  unknownOptions); // OK - unknown options.
+
+exec("node foo/bar", (err, out) => doSomethingWith(out)); // OK - Not a call to cat
+
+execFileSync('node', [ `cat` ]); // OK - not a call to cat
+
+exec("cat foo/bar&", function (err, out) {}); // OK - contains &
+exec("cat foo/bar,", function (err, out) {}); // OK - contains ,
+exec("cat foo/bar$", function (err, out) {}); // OK - contains $
+exec("cat foo/bar`", function (err, out) {}); // OK - contains `
+
+spawn('cat', { stdio: ['pipe', stdin, 'inherit'] }); // OK - Non trivial use. (But weird API use.)
+
+(function () {
+  const cat = spawn('cat', [filename]); // OK - non trivial use.
+  cat.stdout.on('data', (data) => {
+    res.write(data);
+  });
+  cat.stdout.on('end', () => res.end());
+})();
+
+var dead = exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
+
+var notDead = exec("cat foo/bar", (err, out) => {console.log(out)}); // OK
+console.log(notDead);
+
+(function () {
+  var dead = exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
+
+  someCall(
+	exec("cat foo/bar", (err, out) => {console.log(out)}) // OK - non-trivial use of returned proccess.
+  );
+
+  return exec("cat foo/bar", (err, out) => {console.log(out)}); // OK - non-trivial use of returned proccess.
+})();
