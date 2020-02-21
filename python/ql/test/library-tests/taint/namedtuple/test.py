@@ -22,6 +22,15 @@ def test_sanitizer():
     if urlsplit_res[2] == "OK":
         test(urlsplit_res[0])
 
+    if urlsplit_res.netloc == "OK":
+        test(urlsplit_res.path) # FN
+
+    if urlsplit_res.netloc in ["OK"]:
+        test(urlsplit_res.netloc) # FP
+
+    if urlsplit_res.netloc in ["OK", non_constant()]:
+        test(urlsplit_res.netloc) # should be tainted
+
 def test_namedtuple():
     tainted_string = TAINTED_STRING
     Point = namedtuple('Point', ['x', 'y'])
