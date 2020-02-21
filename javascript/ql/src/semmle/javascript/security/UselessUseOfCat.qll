@@ -59,9 +59,9 @@ private class CommandCall extends DataFlow::InvokeNode {
   }
 
   /**
-   * Gets the constant-string parts that are not part of the command itself. 
-   * E.g. for a command execution `exec("/bin/cat foo bar")` this predicate will have result `"foo bar"`. 
-   */ 
+   * Gets the constant-string parts that are not part of the command itself.
+   * E.g. for a command execution `exec("/bin/cat foo bar")` this predicate will have result `"foo bar"`.
+   */
   string getNonCommandConstantString() {
     if this.hasArgumentList()
     then
@@ -168,7 +168,13 @@ module PrettyPrintCatCall {
     exists(string sync, string extraArg, string callback |
       (if cat.isSync() then sync = "Sync" else sync = "") and
       (
-        extraArg = ", " + createOptionsArg(cat.getOptionsArg()) + ")"
+        exists(cat.getOptionsArg()) and
+        (
+          extraArg = ", " + createOptionsArg(cat.getOptionsArg())
+          or
+          not exists(createOptionsArg(cat.getOptionsArg())) and
+          extraArg = ", ..."
+        )
         or
         extraArg = "" and not exists(cat.getOptionsArg())
       ) and

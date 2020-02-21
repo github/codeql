@@ -132,3 +132,7 @@ console.log(notDead);
 
   return exec("cat foo/bar", (err, out) => {console.log(out)}); // OK - non-trivial use of returned proccess.
 })();
+
+const stdout2 = execSync('cat /etc/dnsmasq.conf', { // NOT OK.
+  encoding: 'utf8'
+});
