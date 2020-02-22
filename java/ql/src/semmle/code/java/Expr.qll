@@ -1130,7 +1130,17 @@ deprecated class ParExpr extends Expr, @parexpr {
 /** An `instanceof` expression. */
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
-  Expr getExpr() { result.isNthChildOf(this, 0) }
+  Expr getExpr() {
+    if isPattern()
+    then result = getLocalVariableDeclExpr().getInit()
+    else result.isNthChildOf(this, 0)
+  }
+
+  /** Holds if this `instanceof` expression uses pattern matching. */
+  predicate isPattern() { exists(getLocalVariableDeclExpr()) }
+
+  /** Gets the local variable declaration of this `instanceof` expression if pattern matching is used. */
+  LocalVariableDeclExpr getLocalVariableDeclExpr() { result.isNthChildOf(this, 0) }
 
   /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
@@ -1161,6 +1171,8 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     exists(ForStmt fs | fs.getAnInit() = this | result.isNthChildOf(fs, 0))
     or
     exists(EnhancedForStmt efs | efs.getVariable() = this | result.isNthChildOf(efs, -1))
+    or
+    exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
   }
 
   /** Gets the name of the variable declared by this local variable declaration expression. */
