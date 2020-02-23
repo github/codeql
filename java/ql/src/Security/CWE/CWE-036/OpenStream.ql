@@ -12,7 +12,7 @@ import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 class URLConstructor extends ClassInstanceExpr {
-  URLConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URL" }
+  URLConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
   Expr stringArg() {
     // Query only in URL's that were constructed by calling the single parameter string constructor.
@@ -26,7 +26,7 @@ class URLConstructor extends ClassInstanceExpr {
 
 class URLOpenStreamMethod extends Method {
   URLOpenStreamMethod() {
-    this.getDeclaringType().getQualifiedName() = "java.net.URL" and
+    this.getDeclaringType() instanceof TypeUrl and
     this.getName() = "openStream"
   }
 }
