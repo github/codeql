@@ -1,5 +1,3 @@
-switchInstructionWithoutDefaultEdge
-instructionBounds
 | test.cpp:10:10:10:10 | Store: x | test.cpp:6:15:6:15 | InitializeParameter: x | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:10:10:10:10 | Store: x | test.cpp:6:22:6:22 | InitializeParameter: y | 0 | false | CompareLT: ... < ... | test.cpp:7:7:7:11 | test.cpp:7:7:7:11 |
 | test.cpp:10:10:10:10 | Store: x | test.cpp:6:22:6:22 | InitializeParameter: y | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |

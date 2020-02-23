@@ -1,4 +1,3 @@
-switchInstructionWithoutDefaultEdge
 astGuards
 | test.c:7:9:7:13 | ... > ... |
 | test.c:17:8:17:12 | ... < ... |

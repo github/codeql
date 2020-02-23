@@ -266,16 +266,16 @@ module InstructionSanity {
       funcText = Language::getIdentityString(func.getFunction())
     )
   }
-}
 
-query predicate switchInstructionWithoutDefaultEdge(
-  SwitchInstruction switchInstr, string message, IRFunction func, string funcText
-) {
-  not exists(switchInstr.getDefaultSuccessor()) and
-  message =
-    "SwitchInstruction " + switchInstr.toString() + " without a DefaultEdge in function '$@'." and
-  func = switchInstr.getEnclosingIRFunction() and
-  funcText = Language::getIdentityString(func.getFunction())
+  query predicate switchInstructionWithoutDefaultEdge(
+    SwitchInstruction switchInstr, string message, IRFunction func, string funcText
+  ) {
+    not exists(switchInstr.getDefaultSuccessor()) and
+    message =
+      "SwitchInstruction " + switchInstr.toString() + " without a DefaultEdge in function '$@'." and
+    func = switchInstr.getEnclosingIRFunction() and
+    funcText = Language::getIdentityString(func.getFunction())
+  }
 }
 
 /**
