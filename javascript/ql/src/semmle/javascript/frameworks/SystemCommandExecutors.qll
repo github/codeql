@@ -7,6 +7,7 @@ import javascript
 
 private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {
   int cmdArg;
+  int optionsArg;
 
   boolean shell;
   boolean sync;
@@ -14,9 +15,9 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
   SystemCommandExecutors() {
     exists(string mod, DataFlow::SourceNode callee |
       exists(string method |
-        mod = "cross-spawn" and method = "sync" and cmdArg = 0 and shell = false
+        mod = "cross-spawn" and method = "sync" and cmdArg = 0 and shell = false and optionsArg = -1
         or
-        mod = "execa" and
+        mod = "execa" and optionsArg = -1 and
         (
           shell = false and
           (
@@ -40,21 +41,21 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
       (
         shell = false and
         (
-          mod = "cross-spawn" and cmdArg = 0
+          mod = "cross-spawn" and cmdArg = 0 and optionsArg = -1
           or
-          mod = "cross-spawn-async" and cmdArg = 0
+          mod = "cross-spawn-async" and cmdArg = 0 and optionsArg = -1
           or
-          mod = "exec-async" and cmdArg = 0
+          mod = "exec-async" and cmdArg = 0 and optionsArg = -1
           or
-          mod = "execa" and cmdArg = 0
+          mod = "execa" and cmdArg = 0 and optionsArg = -1  
         )
         or
         shell = true and
         (
-          mod = "exec" and
+          mod = "exec" and optionsArg = -2 and
           cmdArg = 0
           or
-          mod = "remote-exec" and cmdArg = 1
+          mod = "remote-exec" and cmdArg = 1 and optionsArg = -1
         )
       ) and
       callee = DataFlow::moduleImport(mod)
@@ -69,8 +70,16 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
     arg = getACommandArgument() and shell = true
   }
 
-  override predicate isSync() {
-    sync = true
+  override predicate isSync() { sync = true }
+
+  override DataFlow::Node getOptionsArg() {
+    (if optionsArg < 0 then
+     result = getArgument(getNumArgument() - optionsArg) 
+    else 
+     result = getArgument(optionsArg)) and
+    not result = getArgument(0) and
+    not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
+    not result.getALocalSource() instanceof DataFlow::ArrayCreationNode // looks like argumentlist
   }
 }
 

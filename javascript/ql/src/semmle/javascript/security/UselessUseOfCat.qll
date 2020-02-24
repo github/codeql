@@ -41,21 +41,7 @@ private class CommandCall extends DataFlow::InvokeNode {
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
    */
   DataFlow::Node getOptionsArg() {
-    exists(int n |
-      n >= 1 and
-      // if there is a command-list, then the options is at least the third argument.
-      (not exists(command.getArgumentList()) or n >= 2) and
-      // async exec calls can have a callback as their last call.
-      if command.isSync() or not exists(getCallback())
-      then n < getNumArgument()
-      else n < getNumArgument() - 1
-    |
-      result = getArgument(n)
-    )
-    or
-    // Fallback in case normal API conventions are broken.
-    result = getAnArgument() and
-    result.getALocalSource() instanceof DataFlow::ObjectLiteralNode
+    result = command.getOptionsArg()
   }
 
   /**
