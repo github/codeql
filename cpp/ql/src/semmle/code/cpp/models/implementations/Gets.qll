@@ -10,7 +10,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
   SideEffectFunction {
   GetsFunction() {
-    exists(string name | name = getName() |
+    exists(string name | hasGlobalOrStdName(name) |
       name = "gets" or // gets(str)
       name = "fgets" or // fgets(str, num, stream)
       name = "fgetws" // fgetws(wstr, num, stream)
