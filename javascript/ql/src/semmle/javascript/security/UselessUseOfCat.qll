@@ -40,9 +40,7 @@ private class CommandCall extends DataFlow::InvokeNode {
   /**
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
    */
-  DataFlow::Node getOptionsArg() {
-    result = command.getOptionsArg()
-  }
+  DataFlow::Node getOptionsArg() { result = command.getOptionsArg() }
 
   /**
    * Gets the constant-string parts that are not part of the command itself.
@@ -78,7 +76,7 @@ private class CommandCall extends DataFlow::InvokeNode {
 
 /**
  * Gets the constant string parts from a data-flow node.
- * Either the result is a constant string value that the node can hold, or the node is a string-concatenation and the result is the string parts from the concatenation. 
+ * Either the result is a constant string value that the node can hold, or the node is a string-concatenation and the result is the string parts from the concatenation.
  */
 private string getConstantStringParts(DataFlow::Node node) {
   node.mayHaveStringValue(result)
@@ -108,7 +106,7 @@ class UselessCat extends CommandCall {
         prop = "encoding"
       )
     ) and
-    // If there is a callback, then it must either have one or two arguments, or if there is a third argument it must be unused.
+    // If there is a callback, then it must either have one or two parameters, or if there is a third parameter it must be unused.
     (
       not exists(getCallback())
       or
