@@ -8,7 +8,7 @@ import Declarations.UnusedVariable
 
 /**
  * A call that executes a system command.
- * This class provide utility predicates for reasoning about command execution calls.
+ * This class provides utility predicates for reasoning about command execution calls.
  */
 private class CommandCall extends DataFlow::InvokeNode {
   SystemCommandExecution command;
@@ -38,7 +38,7 @@ private class CommandCall extends DataFlow::InvokeNode {
   predicate hasArgumentList() { exists(command.getArgumentList()) }
 
   /**
-   * Gets the data-flow node (if it exists) for a options argument for an `exec`-like call.
+   * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
    */
   DataFlow::Node getOptionsArg() {
     exists(int n |
