@@ -13,7 +13,7 @@
 
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
 
-* The call graph construction has been improved a few ways, leading to more results from the security queries:
+* The call graph construction has been improved, leading to more results from the security queries:
   - Calls can now be resolved to indirectly-defined class members in more cases.
   - Calls through partial invocations such as `.bind` can now be resolved in more cases.
 
