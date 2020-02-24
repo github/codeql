@@ -27,7 +27,8 @@ private import DataFlow
  *
  * There are edges from calls to their callees,
  * and from functions to their contained calls and in some cases
- * their inner functions.
+ * their inner functions to model functions invoked indirectly
+ * by being passed to another call.
  */
 predicate callEdge(Node pred, Node succ) {
     exists(InvokeNode invoke, Function f |
