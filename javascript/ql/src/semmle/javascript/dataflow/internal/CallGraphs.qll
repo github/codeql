@@ -74,7 +74,7 @@ module CallGraph {
    */
   pragma[nomagic]
   private
-  DataFlow::SourceNode getABoundFunctionReference(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t) {
+  DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t) {
     exists(DataFlow::PartialInvokeNode partial, DataFlow::Node callback |
       result = partial.getBoundFunction(callback, boundArgs) and
       getAFunctionReference(function, 0, t.continue()).flowsTo(callback)
@@ -90,7 +90,7 @@ module CallGraph {
   private
   DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t, DataFlow::StepSummary summary) {
     exists(DataFlow::SourceNode prev |
-      prev = getABoundFunctionReference(function, boundArgs, t) and
+      prev = getABoundFunctionReferenceAux(function, boundArgs, t) and
       DataFlow::StepSummary::step(prev, result, summary)
     )
   }
@@ -100,8 +100,12 @@ module CallGraph {
    * with `function` as the underlying function.
    */
   cached
-  DataFlow::SourceNode getABoundFunctionReference(DataFlow::FunctionNode function, int boundArgs) {
-    result = getABoundFunctionReference(function, boundArgs, DataFlow::TypeTracker::end())
+  DataFlow::SourceNode getABoundFunctionReference(DataFlow::FunctionNode function, int boundArgs, boolean contextDependent) {
+    exists(DataFlow::TypeTracker t |
+      result = getABoundFunctionReferenceAux(function, boundArgs, t) and
+      t.end() and
+      contextDependent = t.hasCall()
+    )
   }
 
   /**

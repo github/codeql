@@ -6,6 +6,7 @@
 
 import javascript
 import semmle.javascript.dataflow.Configuration
+import semmle.javascript.dataflow.internal.CallGraphs
 
 /**
  * Holds if flow should be tracked through properties of `obj`.
@@ -92,6 +93,32 @@ private module CachedSteps {
   predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
   /**
+   * Holds if `invk` may invoke a bound version of `f` with `boundArgs` already bound.
+   *
+   * The receiver is assumed to be bound as well, and should not propagate into `f`.
+   *
+   * Does not hold for context-dependent call sites, such as callback invocations.
+   */
+  cached
+  predicate callsBound(DataFlow::InvokeNode invk, Function f, int boundArgs) {
+    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, false).flowsTo(invk.getCalleeNode())
+  }
+
+  /**
+   * Holds if `pred` may flow to `succ` through an invocation of a bound function.
+   *
+   * Should only be used for graph pruning, as the edge may lead to spurious flow.
+   */
+  cached
+  predicate exploratoryBoundInvokeStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::InvokeNode invk, DataFlow::FunctionNode f, int i, int boundArgs |
+      CallGraph::getABoundFunctionReference(f, boundArgs, _).flowsTo(invk.getCalleeNode()) and
+      pred = invk.getArgument(i) and
+      succ = f.getParameter(i + boundArgs)
+    )
+  }
+
+  /**
    * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
    *
    * This only holds for explicitly modeled partial calls.
@@ -141,6 +168,14 @@ private module CachedSteps {
       partiallyCalls(invk, callback, f) and
       parm = DataFlow::thisNode(f)
     )
+    or
+    exists(int boundArgs, int i, Parameter p |
+      callsBound(invk, f, boundArgs) and
+      f.getParameter(boundArgs + i) = p and
+      not p.isRestParameter() and
+      arg = invk.getArgument(i) and
+      parm = DataFlow::parameterNode(p)
+    )
   }
 
   /**
@@ -158,7 +193,7 @@ private module CachedSteps {
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Function f | calls(succ, f) |
+    exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
       returnExpr(f, pred, _)
       or
       succ instanceof DataFlow::NewNode and
@@ -167,8 +202,11 @@ private module CachedSteps {
     or
     exists(InvokeExpr invoke, Function fun |
       DataFlow::exceptionalFunctionReturnNode(pred, fun) and
-      DataFlow::exceptionalInvocationReturnNode(succ, invoke) and
+      DataFlow::exceptionalInvocationReturnNode(succ, invoke)
+    |
       calls(invoke.flow(), fun)
+      or
+      callsBound(invoke.flow(), fun, _)
     )
   }
 
@@ -464,4 +502,3 @@ module PathSummary {
    */
   PathSummary return() { exists(FlowLabel lbl | result = MkPathSummary(true, false, lbl, lbl)) }
 }
-
