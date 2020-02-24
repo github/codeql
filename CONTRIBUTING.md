@@ -46,6 +46,8 @@ Follow the steps below to help other users understand what your query does, and 
    Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your new query. 
    For more information on writing query help, see the [Query help style guide](https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md).
 
+In addition to contributions to our standard queries and libraries, we also welcome contributions of a more experimental nature, which do not need to fulfill all the requirements listed above. See the guidelines for [experimental queries and libraries](docs/experimental.md) for details.
+
 ## Using your personal data
 
 If you contribute to this project, we will record your name and email
