@@ -161,7 +161,7 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
 
 private predicate nodeIsBarrierIn(DataFlow::Node node) {
   // don't use dataflow into taint sources, as this leads to duplicate results.
-  isUserInput(node.asExpr(), _)
+  node = getNodeForSource(any(Expr e))
 }
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
