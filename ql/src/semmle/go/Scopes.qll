@@ -266,6 +266,24 @@ class Field extends Variable {
   /** Gets the struct type declaring this field. */
   StructType getDeclaringType() { result = declaringType }
 
+  override Package getPackage() {
+    exists(Type tp | tp.getUnderlyingType() = declaringType |
+      result = tp.getPackage()
+    )
+  }
+
+  /**
+   * Holds if this field has name `f` and it belongs to a type with qualified name `tp`.
+   *
+   * Note that due to field embedding the same field may have multiple qualified names.
+   */
+  override predicate hasQualifiedName(string tp, string f) {
+    exists(Type base |
+      tp = base.getQualifiedName() and
+      this = base.getField(f)
+    )
+  }
+
   /**
    * Holds if this field has name `f` and it belongs to a type  `tp` declared in package `pkg`.
    *
