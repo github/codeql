@@ -102,7 +102,7 @@ class UselessCat extends CommandCall {
       )
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not getNonCommandConstantString().regexpMatch(".*(\\*|\\||>|<| |\\$|&|,|\\`).*") and
+    not exists(getNonCommandConstantString().regexpFind("\\*|\\||>|<| |\\$|&|,|\\`", _, _)) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
       not exists(getOptionsArg())
