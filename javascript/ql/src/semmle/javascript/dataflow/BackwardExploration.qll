@@ -8,8 +8,8 @@
  *
  * Data-flow exploration cannot be used with configurations depending on other configurations.
  *
- * NOTE: This library should only be used for debugging, not in production code. Backward
- * exploration in particular does not scale on non-trivial code bases and hence is of limited
+ * NOTE: This library should only be used for debugging and exploration, not in production code.
+ * Backward exploration in particular does not scale on non-trivial code bases and hence is of limited
  * usefulness as it stands.
  */
 

@@ -8,7 +8,7 @@
  *
  * Data-flow exploration cannot be used with configurations depending on other configurations.
  *
- * NOTE: This library should only be used for debugging, not in production code.
+ * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
 
 import javascript

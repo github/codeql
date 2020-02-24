@@ -18,6 +18,8 @@
  *   and function.getName() = "targetFunction"
  * select invoke, invoke, function, "Call path to 'targetFunction'"
  * ```
+ *
+ * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
 import javascript
 private import DataFlow
