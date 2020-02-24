@@ -108,6 +108,15 @@ module TaintedPath {
         not (isNormalized() and isAbsolute())
       }
     }
+
+    /**
+     * A flow label representing an array of path elements that may include "..". 
+     */ 
+    class SplitPath extends DataFlow::FlowLabel {
+      SplitPath() {
+        this = "splitPath"
+      }
+    }
   }
 
   /**
