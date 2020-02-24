@@ -151,12 +151,14 @@ int main(int argc, char **argv) {
 	printWrapper(i8);
 
 	// BAD: i9 value comes from argv
+
 	char *i9;
 	memcpy(1 ? i9++ : 0, argv[1], 1);
 	printf(i9);
 	printWrapper(i9);
 
 	// BAD: i91 value comes from argv
+
 	char *i91;
 	memcpy(0 ? 0 : (char *)((int) i91 * 2), argv[1], 1);
 	printf(i91);
