@@ -45,7 +45,7 @@ syncCommand
 | tst_shell-command-injection-from-environment.js:5:2:5:54 | cp.exec ... temp")) |
 | uselesscat.js:16:1:16:29 | execSyn ... uinfo') |
 | uselesscat.js:18:1:18:26 | execSyn ... path}`) |
-| uselesscat.js:20:1:20:50 | child_p ... wc -l') |
+| uselesscat.js:20:1:20:36 | execSyn ... wc -l') |
 | uselesscat.js:22:1:22:38 | execSyn ... o/bar') |
 | uselesscat.js:24:1:24:35 | execSyn ... o/bar`) |
 | uselesscat.js:28:1:28:39 | execSyn ...  1000}) |

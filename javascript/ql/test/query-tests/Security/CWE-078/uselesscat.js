@@ -17,7 +17,7 @@ execSync('cat /proc/cpuinfo').toString(); // NOT OK.
 
 execSync(`cat ${newpath}`) // NOT OK
 
-child_process.execSync('cat package.json | wc -l'); // OK - pipes!
+execSync('cat package.json | wc -l'); // OK - pipes!
 
 execSync('cat /proc/cpuinfo /foo/bar').toString(); // OK multiple files.
 
@@ -136,3 +136,7 @@ console.log(notDead);
 const stdout2 = execSync('cat /etc/dnsmasq.conf', { // NOT OK.
   encoding: 'utf8'
 });
+
+exec('/bin/cat', function (e, s) {});  // OK
+
+spawn("cat") // OK  

@@ -93,13 +93,10 @@ class UselessCat extends CommandCall {
   UselessCat() {
     this = command and
     isACallTo(getACatExecuteable()) and
-    // There is a file to read, and not just a pair of quotes.
-    (
-      not exists(PrettyPrintCatCall::createFileArgument(this))
-      or
-      exists(string fileArg | fileArg = PrettyPrintCatCall::createFileArgument(this) |
-        fileArg.length() >= 3
-      )
+    // There is a file to read, it's not just spawning `cat`.
+    not (
+      not exists(getArgumentList()) and
+      getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
     not exists(getNonCommandConstantString().regexpFind("\\*|\\||>|<| |\\$|&|,|\\`", _, _)) and
