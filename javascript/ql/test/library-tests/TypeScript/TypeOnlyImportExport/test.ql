@@ -15,3 +15,8 @@ query TypeDecl getATypeDecl(LocalTypeName t) {
 query Function calls(DataFlow::InvokeNode invoke) {
     result = invoke.getACallee()
 }
+
+query predicate exportsAs(ExportDeclaration exprt, LexicalName v, string name, string kind) {
+    exprt.exportsAs(v, name) and
+    kind = v.getDeclarationSpace()
+}
