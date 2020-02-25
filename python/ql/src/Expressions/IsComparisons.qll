@@ -28,9 +28,9 @@ predicate probablySingleton(ClassValue cls) {
 
 predicate invalid_to_use_is_portably(ClassValue c) {
     overrides_eq_or_cmp(c) and
-    /* Exclude type/builtin-function/bool as it is legitimate to compare them using 'is' but they implement __eq__ */
+    // Exclude type/builtin-function/bool as it is legitimate to compare them using 'is' but they implement __eq__
     not c = Value::named("type") and not c = ClassValue::builtinFunction() and not c = Value::named("bool") and
-    /* OK to compare with 'is' if a singleton */
+    // OK to compare with 'is' if a singleton
     not probablySingleton(c)
 }
 
@@ -95,7 +95,7 @@ private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
 }
 
 predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls) {
-    /* OK to use 'is' when defining '__eq__' */
+    // OK to use 'is' when defining '__eq__'
     not exists(Function eq | eq.getName() = "__eq__" or eq.getName() = "__ne__" | eq = comp.getScope().getScope*())
     and
     (
@@ -107,20 +107,20 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
         )
     )
     and
-    /* OK to use 'is' when comparing items from a known set of objects */
+    // OK to use 'is' when comparing items from a known set of objects
     not exists(Expr left, Expr right, Value val |
         comp.compares(left, op, right) and
         exists(ImmutableLiteral il | il.getLiteralValue() = val) |
         left.pointsTo(val) and right.pointsTo(val)
         or
-        /* Simple constant in module, probably some sort of sentinel */
+        // Simple constant in module, probably some sort of sentinel
         exists(AstNode origin |
             not left.pointsTo(_) and right.pointsTo(val, origin) and
             origin.getScope().getEnclosingModule() = comp.getScope().getEnclosingModule()
         )
     )
     and
-    /* OK to use 'is' when comparing with a member of an enum */
+    // OK to use 'is' when comparing with a member of an enumÏ
     not exists(Expr left, Expr right, AstNode origin |
         comp.compares(left, op, right) and
         enum_member(origin) |
