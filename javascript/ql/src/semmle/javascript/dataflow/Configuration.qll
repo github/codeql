@@ -149,7 +149,7 @@ abstract class Configuration extends string {
   predicate isBarrier(DataFlow::Node node) {
     exists(BarrierGuardNode guard |
       isBarrierGuardInternal(guard) and
-      guard.internalBlocks(node, "")
+      barrierGuardBlocksNode(guard, node, "")
     )
   }
 
@@ -183,7 +183,7 @@ abstract class Configuration extends string {
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
     exists(BarrierGuardNode guard |
       isBarrierGuardInternal(guard) and
-      guard.internalBlocks(node, lbl)
+      barrierGuardBlocksNode(guard, node, lbl)
     )
     or
     none() // relax type inference to account for overriding
@@ -319,43 +319,6 @@ module FlowLabel {
  * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
 abstract class BarrierGuardNode extends DataFlow::Node {
-  /**
-   * Holds if data flow node `nd` acts as a barrier for data flow, possibly due to aliasing
-   * through an access path.
-   *
-   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
-   *
-   * INTERNAL: this predicate should only be used from within `blocks(boolean, Expr)`.
-   */
-  predicate internalBlocks(DataFlow::Node nd, string label) {
-    // 1) `nd` is a use of a refinement node that blocks its input variable
-    exists(SsaRefinementNode ref, boolean outcome |
-      nd = DataFlow::ssaDefinitionNode(ref) and
-      outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
-      ssaRefinementBlocks(outcome, ref, label)
-    )
-    or
-    // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
-    exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
-      nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-      getEnclosingExpr() = cond.getTest() and
-      outcome = cond.getOutcome() and
-      barrierGuardBlocksAccessPath(this, outcome, p, label) and
-      cond.dominates(bb)
-    )
-  }
-
-  /**
-   * Holds if there exists an input variable of `ref` that blocks the label `label`.
-   *
-   * This predicate is outlined to give the optimizer a hint about the join ordering.
-   */
-  private predicate ssaRefinementBlocks(boolean outcome, SsaRefinementNode ref, string label) {
-    getEnclosingExpr() = ref.getGuard().getTest() and
-    forex(SsaVariable input | input = ref.getAnInput() |
-      barrierGuardBlocksExpr(this, outcome, input.getAUse(), label)
-    )
-  }
 
   /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
@@ -398,6 +361,42 @@ private predicate barrierGuardBlocksAccessPath(
   BarrierGuardNode guard, boolean outcome, AccessPath ap, string label
 ) {
   barrierGuardBlocksExpr(guard, outcome, ap.getAnInstance(), label)
+}
+
+/**
+ * Holds if there exists an input variable of `ref` that blocks the label `label`.
+ *
+ * This predicate is outlined to give the optimizer a hint about the join ordering.
+ */
+private predicate barrierGuardBlocksSsaRefinement(BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label) {
+  guard.getEnclosingExpr() = ref.getGuard().getTest() and
+  forex(SsaVariable input | input = ref.getAnInput() |
+    barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
+  )
+}
+
+/**
+ * Holds if data flow node `nd` acts as a barrier for data flow, possibly due to aliasing
+ * through an access path.
+ *
+ * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+ */
+private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node nd, string label) {
+  // 1) `nd` is a use of a refinement node that blocks its input variable
+  exists(SsaRefinementNode ref, boolean outcome |
+    nd = DataFlow::ssaDefinitionNode(ref) and
+    outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
+    barrierGuardBlocksSsaRefinement(guard, outcome, ref, label)
+  )
+  or
+  // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
+  exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
+    nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
+    guard.getEnclosingExpr() = cond.getTest() and
+    outcome = cond.getOutcome() and
+    barrierGuardBlocksAccessPath(guard, outcome, p, label) and
+    cond.dominates(bb)
+  )
 }
 
 /**
