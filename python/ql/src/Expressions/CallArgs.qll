@@ -26,7 +26,7 @@ private Keyword not_keyword_only_arg_objectapi(Call call, FunctionObject func) {
  *  plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
  */
 
-private int positional_arg_count_for_call_objectapi(Call call, Object callable) {
+private int positional_arg_count_objectapi_for_call_objectapi(Call call, Object callable) {
     call = get_a_call_objectapi(callable).getNode() and
     exists(int positional_keywords |
       exists(FunctionObject func | func = get_function_or_initializer(callable) |
@@ -40,7 +40,7 @@ private int positional_arg_count_for_call_objectapi(Call call, Object callable) 
     )
 }
 
-int arg_count(Call call) {
+int arg_count_objectapi(Call call) {
     result = count(call.getAnArg()) + varargs_length_objectapi(call) + count(call.getAKeyword())
 }
 
@@ -72,7 +72,7 @@ predicate too_few_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
     not illegally_named_parameter(call, callable, _) and
     not exists(call.getStarargs()) and not exists(call.getKwargs()) and
-    arg_count(call) < limit and
+    arg_count_objectapi(call) < limit and
     exists(FunctionObject func | func = get_function_or_initializer(callable) |
       call = func.getAFunctionCall().getNode() and limit = func.minParameters() and
       /* The combination of misuse of `mox.Mox().StubOutWithMock()`
@@ -103,7 +103,7 @@ predicate too_many_args(Call call, Object callable, int limit) {
         callable instanceof ClassObject and
         call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.maxParameters() - 1
     ) and
-    positional_arg_count_for_call_objectapi(call, callable) > limit
+    positional_arg_count_objectapi_for_call_objectapi(call, callable) > limit
 }
 
 /** Holds if `call` has too many or too few arguments for `func` */
@@ -118,9 +118,9 @@ predicate wrong_args(Call call, FunctionObject func, int limit, string too) {
  */
  bindingset[call, func]
 predicate correct_args_if_called_as_method(Call call, FunctionObject func) {
-    arg_count(call)+1 >= func.minParameters()
+    arg_count_objectapi(call)+1 >= func.minParameters()
     and
-    arg_count(call) < func.maxParameters()
+    arg_count_objectapi(call) < func.maxParameters()
 }
 
 /** Holds if `call` is a call to `overriding`, which overrides `func`. */
