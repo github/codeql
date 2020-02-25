@@ -12,7 +12,7 @@ class RequestsHttpRequest extends Client::HttpRequest {
 
     RequestsHttpRequest() {
         method = httpVerbLower() and
-        func = Module::named("requests").attr(method).(CallableValue) and
+        func = Module::named("requests").attr(method) and
         this = func.getACall()
     }
 
