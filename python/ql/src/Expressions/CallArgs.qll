@@ -60,7 +60,7 @@ FunctionObject get_function_or_initializer_objectapi(Object func_or_cls) {
 
 
 /**Whether there is an illegally named parameter called `name` in the `call` to `func` */
-predicate illegally_named_parameter(Call call, Object func, string name) {
+predicate illegally_named_parameter_objectapi(Call call, Object func, string name) {
     not func.isC() and
     name = call.getANamedArgumentName() and
     call.getAFlowNode() = get_a_call_objectapi(func) and
@@ -70,7 +70,7 @@ predicate illegally_named_parameter(Call call, Object func, string name) {
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
 predicate too_few_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
-    not illegally_named_parameter(call, callable, _) and
+    not illegally_named_parameter_objectapi(call, callable, _) and
     not exists(call.getStarargs()) and not exists(call.getKwargs()) and
     arg_count_objectapi(call) < limit and
     exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
@@ -91,7 +91,7 @@ predicate too_few_args(Call call, Object callable, int limit) {
 /**Whether there are too many arguments in the `call` to `func` where `limit` is the highest number of legal arguments */
 predicate too_many_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
-    not illegally_named_parameter(call, callable, _) and
+    not illegally_named_parameter_objectapi(call, callable, _) and
     exists(FunctionObject func | 
       func = get_function_or_initializer_objectapi(callable) and
       not func.getFunction().hasVarArg() and limit >= 0 
