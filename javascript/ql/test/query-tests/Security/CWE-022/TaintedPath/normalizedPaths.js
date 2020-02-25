@@ -249,3 +249,41 @@ app.get('/resolve-path', (req, res) => {
   else
     fs.readFileSync(path); // NOT OK - wrong polarity
 });
+
+var isPathInside = require("is-path-inside"),
+    pathIsInside = require("path-is-inside");
+app.get('/pseudo-normalizations', (req, res) => {
+	let path = req.query.path;
+	fs.readFileSync(path); // NOT OK
+	if (isPathInside(path, SAFE)) {
+		fs.readFileSync(path); // OK
+		return;
+	} else {
+		fs.readFileSync(path); // NOT OK
+
+	}
+	if (pathIsInside(path, SAFE)) {
+		fs.readFileSync(path); // NOT OK - can be of the form 'safe/directory/../../../etc/passwd'
+		return;
+	} else {
+		fs.readFileSync(path); // NOT OK
+
+	}
+
+	let normalizedPath = pathModule.join(SAFE, path);
+	if (pathIsInside(normalizedPath, SAFE)) {
+		fs.readFileSync(normalizedPath); // OK
+		return;
+	} else {
+		fs.readFileSync(normalizedPath); // NOT OK
+	}
+
+	if (pathIsInside(normalizedPath, SAFE)) {
+		fs.readFileSync(normalizedPath); // OK
+		return;
+	} else {
+		fs.readFileSync(normalizedPath); // NOT OK
+
+	}
+
+});

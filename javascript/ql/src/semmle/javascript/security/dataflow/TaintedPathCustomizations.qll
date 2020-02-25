@@ -370,6 +370,39 @@ module TaintedPath {
   private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
 
   /**
+   * An expression of form `isInside(x, y)` or similar, where `isInside` is
+   * a library check for the relation between `x` and `y`.
+   */
+  class IsInsideCheckSanitizer extends DataFlow::LabeledBarrierGuardNode {
+    DataFlow::Node checked;
+    boolean onlyNormalizedAbsolutePaths;
+
+    IsInsideCheckSanitizer() {
+      exists(string name, DataFlow::CallNode check |
+        name = "path-is-inside" and onlyNormalizedAbsolutePaths = true
+        or
+        name = "is-path-inside" and onlyNormalizedAbsolutePaths = false
+      |
+        check = DataFlow::moduleImport(name).getACall() and
+        checked = check.getArgument(0) and
+        check = this
+      )
+    }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      (
+        onlyNormalizedAbsolutePaths = true and
+        label.(Label::PosixPath).isNormalized() and
+        label.(Label::PosixPath).isAbsolute()
+        or
+        onlyNormalizedAbsolutePaths = false
+      ) and
+      e = checked.asExpr() and
+      outcome = true
+    }
+  }
+
+  /**
    * A source of remote user input, considered as a flow source for
    * tainted-path vulnerabilities.
    */
