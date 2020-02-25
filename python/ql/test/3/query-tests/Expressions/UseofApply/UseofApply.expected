@@ -1,1 +1,0 @@
-| UseofApply.py:19:3:19:17 | ControlFlowNode for apply() | Call to the obsolete builtin function 'apply'. |
