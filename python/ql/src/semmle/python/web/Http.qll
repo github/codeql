@@ -121,7 +121,7 @@ module Client {
       * conn = HTTPConnection('example.com')
         conn.request('GET', '/path')
       */
-    abstract class HttpRequest extends CallNode {
+    abstract class HttpRequest extends ControlFlowNode {
 
         /** Get any ControlFlowNode that is used to construct the final URL.
           *

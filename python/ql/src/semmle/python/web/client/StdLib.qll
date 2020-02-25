@@ -18,7 +18,7 @@ ClassValue httpConnectionClass() {
     result = Value::named("six.moves.http_client.HTTPSConnection")
 }
 
-class HttpConnectionHttpRequest extends Client::HttpRequest {
+class HttpConnectionHttpRequest extends Client::HttpRequest, CallNode {
     CallNode constructor_call;
     CallableValue func;
 
