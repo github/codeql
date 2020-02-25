@@ -161,7 +161,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, boo
 
 			if !isRecv {
 				scopeLbl := l.ScopeID(scope, object.Pkg())
-				label = l.GlobalID(fmt.Sprintf("{%s},%s;object", scopeLbl.String(), object.Name()))
+				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 			}
 		}
 		l.objectLabels[object] = label
@@ -176,7 +176,7 @@ func (l *Labeler) ReceiverObjectID(object types.Object, methlbl Label) (Label, b
 	label, exists := l.objectLabels[object]
 	if !exists {
 		// if we can't, construct a special label
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;receiver", methlbl.String(), object.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;receiver", methlbl, object.Name()))
 		l.objectLabels[object] = label
 	}
 	return label, exists
@@ -196,7 +196,7 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 		if field.Name() == "_" {
 			name = fmt.Sprintf("_%d", idx)
 		}
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;field", structlbl.String(), name))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;field", structlbl, name))
 		l.objectLabels[field] = label
 	}
 	return label, exists
@@ -208,7 +208,7 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 func (l *Labeler) MethodID(method types.Object, recvlbl Label) (Label, bool) {
 	label, exists := l.objectLabels[method]
 	if !exists {
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;method", recvlbl, method.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvlbl, method.Name()))
 		l.objectLabels[method] = label
 	}
 	return label, exists
