@@ -1,7 +1,7 @@
 CodeQL libraries for TypeScript
 ===============================
 
-This article is an overview of the libraries you can use to analyze databases generated from TypeScript codebases. Using thes libraries makes it easier for you to write queries.
+This article is an overview of the libraries you can use to analyze databases generated from TypeScript codebases. Using the libraries makes it easier for you to write queries.
 
 Overview
 --------
