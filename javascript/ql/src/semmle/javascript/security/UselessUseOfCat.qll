@@ -97,7 +97,7 @@ class UselessCat extends CommandCall {
       getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not exists(getNonCommandConstantString().regexpFind("\\*|\\||>|<| |\\$|&|,|\\`", _, _)) and
+    not exists(getNonCommandConstantString().regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| ", _, _)) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
       not exists(getOptionsArg())
@@ -135,7 +135,7 @@ class UselessCat extends CommandCall {
  * Gets a string used to call `cat`.
  */
 string getACatExecuteable() {
-  result = "cat" or result = "/bin/cat" or result = "sudo cat" or result = "sudo /bin/cat"
+  result = "cat" or result = "/bin/cat"
 }
 
 /**
