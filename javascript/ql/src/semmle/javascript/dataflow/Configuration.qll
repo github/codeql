@@ -354,6 +354,17 @@ private predicate barrierGuardBlocksExpr(
 }
 
 /**
+ * Holds if `guard` blocks the flow of a value reachable through exploratory flow.
+ */
+pragma[noinline]
+private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
+  exists(Expr e |
+    barrierGuardBlocksExpr(guard, _, e, _) and
+    isRelevantForward(e.flow(), _)
+  )
+}
+
+/**
  * Holds if data flow node `nd` acts as a barrier for data flow due to aliasing through
  * an access path.
  *
@@ -363,6 +374,7 @@ pragma[noinline]
 private predicate barrierGuardBlocksAccessPath(
   BarrierGuardNode guard, boolean outcome, AccessPath ap, string label
 ) {
+  barrierGuardIsRelevant(guard) and
   barrierGuardBlocksExpr(guard, outcome, ap.getAnInstance(), label)
 }
 
@@ -374,6 +386,7 @@ private predicate barrierGuardBlocksAccessPath(
 private predicate barrierGuardBlocksSsaRefinement(
   BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label
 ) {
+  barrierGuardIsRelevant(guard) and
   guard.getEnclosingExpr() = ref.getGuard().getTest() and
   forex(SsaVariable input | input = ref.getAnInput() |
     barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
@@ -395,6 +408,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
   )
   or
   // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
+  barrierGuardIsRelevant(guard) and
   exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
     nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
     guard.getEnclosingExpr() = cond.getTest() and
@@ -412,6 +426,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
 private predicate barrierGuardBlocksEdge(
   BarrierGuardNode guard, DataFlow::Node pred, DataFlow::Node succ, string label
 ) {
+  barrierGuardIsRelevant(guard) and
   exists(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
   |
@@ -573,11 +588,12 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
 
 /**
  * Holds if there is a flow step from `pred` to `succ` described by `summary`
- * under configuration `cfg`.
+ * under configuration `cfg`, disregarding barriers.
  *
  * Summary steps through function calls are not taken into account.
  */
-private predicate basicFlowStep(
+pragma[inline]
+private predicate basicFlowStepNoBarrier(
   DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
 ) {
   isLive() and
@@ -586,8 +602,7 @@ private predicate basicFlowStep(
     // Local flow
     exists(FlowLabel predlbl, FlowLabel succlbl |
       localFlowStep(pred, succ, cfg, predlbl, succlbl) and
-      not isLabeledBarrierEdge(cfg, pred, succ, predlbl) and
-      not isBarrierEdge(cfg, pred, succ) and
+      not cfg.isBarrierEdge(pred, succ) and
       summary = MkPathSummary(false, false, predlbl, succlbl)
     )
     or
@@ -610,6 +625,20 @@ private predicate basicFlowStep(
 }
 
 /**
+ * Holds if there is a flow step from `pred` to `succ` described by `summary`
+ * under configuration `cfg`.
+ *
+ * Summary steps through function calls are not taken into account.
+ */
+private predicate basicFlowStep(
+  DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
+) {
+  basicFlowStepNoBarrier(pred, succ, summary, cfg) and
+  not isLabeledBarrierEdge(cfg, pred, succ, summary.getStartLabel()) and
+  not isBarrierEdge(cfg, pred, succ)
+}
+
+/**
  * Holds if there is a flow step from `pred` to `succ` under configuration `cfg`,
  * including both basic flow steps and steps into/out of properties.
  *
@@ -619,7 +648,7 @@ private predicate basicFlowStep(
 private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
-  basicFlowStep(pred, succ, _, cfg) or
+  basicFlowStepNoBarrier(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
   basicLoadStep(pred, succ, _) or
   isAdditionalStoreStep(pred, succ, _, cfg) or
@@ -1446,6 +1475,7 @@ private class BarrierGuardFunction extends Function {
   string label;
 
   BarrierGuardFunction() {
+    barrierGuardIsRelevant(guard) and
     exists(Expr e |
       exists(Expr returnExpr |
         returnExpr = guard.asExpr()
