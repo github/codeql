@@ -226,25 +226,51 @@ class LocalVariable extends DeclaredVariable {
 }
 
 /**
- * A receiver variable or a parameter.
+ * A (named) function parameter.
+ *
+ * Note that receiver variables are considered parameters.
  */
-abstract class ParameterOrReceiver extends DeclaredVariable {
-  FuncDef fn;
+class Parameter extends DeclaredVariable {
+  FuncDef f;
+  int index;
+
+  Parameter() {
+    f.(MethodDecl).getReceiverDecl().getNameExpr() = this.getDeclaration() and
+    index = -1
+    or
+    exists(FuncTypeExpr tp | tp = f.getTypeExpr() |
+      this = rank[index + 1](DeclaredVariable parm, int j, int k |
+        parm.getDeclaration() = tp.getParameterDecl(j).getNameExpr(k)
+      |
+        parm order by j, k
+      )
+    )
+  }
 
   /** Gets the function to which this parameter belongs. */
-  FuncDef getFunction() { result = fn }
+  FuncDef getFunction() { result = f }
+
+  /**
+   * Gets the index of this parameter among all parameters of the function.
+   *
+   * The receiver is considered to have index -1.
+   */
+  int getIndex() { result = index }
+
+  /** Holds if this is the `i`th parameter of function `fd`. */
+  predicate isParameterOf(FuncDef fd, int i) {
+    fd = f and i = index
+  }
 }
 
 /** The receiver variable of a method. */
-class ReceiverVariable extends ParameterOrReceiver {
-  override MethodDecl fn;
+class ReceiverVariable extends Parameter {
+  override MethodDecl f;
 
-  ReceiverVariable() { fn.getReceiverDecl().getNameExpr() = this.getDeclaration() }
-}
+  ReceiverVariable() { index = -1 }
 
-/** A (named) function parameter. */
-class Parameter extends ParameterOrReceiver {
-  Parameter() { fn.getTypeExpr().getAParameterDecl().getNameExpr(_) = this.getDeclaration() }
+  /** Holds if this is the receiver variable of method `m`. */
+  predicate isReceiverOf(MethodDecl m) { m = f }
 }
 
 /** A (named) function result variable. */

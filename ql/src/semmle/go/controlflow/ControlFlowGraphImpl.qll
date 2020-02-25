@@ -226,11 +226,11 @@ newtype TControlFlowNode =
   /**
    * A control-flow node that represents the initialization of a parameter to its corresponding argument.
    */
-  MkParameterInit(ParameterOrReceiver parm) { exists(parm.getFunction().getBody()) } or
+  MkParameterInit(Parameter parm) { exists(parm.getFunction().getBody()) } or
   /**
    * A control-flow node that represents the argument corresponding to a parameter.
    */
-  MkArgumentNode(ParameterOrReceiver parm) { exists(parm.getFunction().getBody()) } or
+  MkArgumentNode(Parameter parm) { exists(parm.getFunction().getBody()) } or
   /**
    * A control-flow node that represents the initialization of a result variable to its zero value.
    */
@@ -312,7 +312,7 @@ newtype TWriteTarget =
     or
     exists(IncDecStmt ids | write = MkIncDecNode(ids) | lhs = ids.getOperand().stripParens())
     or
-    exists(ParameterOrReceiver parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
+    exists(Parameter parm | write = MkParameterInit(parm) | lhs = parm.getDeclaration())
     or
     exists(ResultVariable res | write = MkResultInit(res) | lhs = res.getDeclaration())
   } or
@@ -1286,20 +1286,18 @@ module CFG {
     pragma[noinline]
     private MkEntryNode getEntry() { result = MkEntryNode(this) }
 
-    private ParameterOrReceiver getReceiverOrParameter(int i) {
-      i = 0 and result.getDeclaration() = this.(MethodDecl).getReceiverDecl().getNameExpr()
-      or
-      result = getParameter(i - count(this.(MethodDecl).getReceiverDecl().getNameExpr()))
+    private Parameter getParameterRanked(int i) {
+      result = rank[i+1](Parameter p, int j | p = getParameter(j) | p order by j)
     }
 
     private ControlFlow::Node getPrologueNode(int i) {
       i = -1 and result = getEntry()
       or
       exists(int numParm, int numRes |
-        numParm = count(getReceiverOrParameter(_)) and
+        numParm = count(getParameter(_)) and
         numRes = count(getResultVar(_))
       |
-        exists(int j, ParameterOrReceiver p | p = getReceiverOrParameter(j) |
+        exists(int j, Parameter p | p = getParameterRanked(j) |
           i = 2 * j and result = MkArgumentNode(p)
           or
           i = 2 * j + 1 and result = MkParameterInit(p)

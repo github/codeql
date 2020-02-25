@@ -110,25 +110,23 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
 
   /** Gets a result variable of this function. */
   ResultVariable getAResultVar() {
-    result.getDeclaration() = getTypeExpr().getAResultDecl().getANameExpr()
+    result.getFunction() = this
   }
 
   /**
    * Gets the `i`th parameter of this function.
+   *
+   * The receiver variable, if any, is considered to be the -1st parameter.
    */
   Parameter getParameter(int i) {
-    result = rank[i + 1](Parameter parm, int j, int k |
-        parm.getDeclaration() = getTypeExpr().getParameterDecl(j).getNameExpr(k)
-      |
-        parm order by j, k
-      )
+    result.isParameterOf(this, i)
   }
 
   /**
    * Gets a parameter of this function.
    */
   Parameter getAParameter() {
-    result.getDeclaration() = getTypeExpr().getAParameterDecl().getNameExpr(_)
+    result.getFunction() = this
   }
 
   /**
