@@ -199,6 +199,10 @@ abstract class Configuration extends string {
    */
   predicate isBarrierGuard(BarrierGuardNode guard) { none() }
 
+  /**
+   * Holds if `guard` is a barrier guard for this configuration, added through
+   * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
+   */
   private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
     isBarrierGuard(guard)
     or
@@ -319,7 +323,6 @@ module FlowLabel {
  * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
 abstract class BarrierGuardNode extends DataFlow::Node {
-
   /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
    *
@@ -368,7 +371,9 @@ private predicate barrierGuardBlocksAccessPath(
  *
  * This predicate is outlined to give the optimizer a hint about the join ordering.
  */
-private predicate barrierGuardBlocksSsaRefinement(BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label) {
+private predicate barrierGuardBlocksSsaRefinement(
+  BarrierGuardNode guard, boolean outcome, SsaRefinementNode ref, string label
+) {
   guard.getEnclosingExpr() = ref.getGuard().getTest() and
   forex(SsaVariable input | input = ref.getAnInput() |
     barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
