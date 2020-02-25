@@ -140,3 +140,27 @@ const stdout2 = execSync('cat /etc/dnsmasq.conf', { // NOT OK.
 exec('/bin/cat', function (e, s) {});  // OK
 
 spawn("cat") // OK  
+
+
+var shelljs = require("shelljs");
+shelljs.exec("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
+shelljs.exec("cat foo/bar", {encoding: 'utf8'}); // NOT OK
+shelljs.exec("cat foo/bar", {encoding: 'utf8'}, (err, out) => {console.log(out)}); // NOT OK
+
+let cspawn = require('cross-spawn');
+cspawn('cat', ['foo/bar'], { encoding: 'utf8' }); // NOT OK
+cspawn('cat', ['foo/bar'], { encoding: 'utf8' }, (err, out) => {console.log(out)}); // NOT OK
+cspawn('cat', ['foo/bar'], (err, out) => {console.log(out)}); // NOT OK
+cspawn('cat', ['foo/bar']); // NOT OK
+cspawn('cat', (err, out) => {console.log(out)}); // OK
+cspawn('cat', { encoding: 'utf8' }); // OK
+ 
+let myResult = cspawn.sync('cat', ['foo/bar']); // NOT OK
+let myResult = cspawn.sync('cat', ['foo/bar'], { encoding: 'utf8' }); // NOT OK
+
+var execmod = require('exec');
+execmod("cat foo/bar", (err, out) => {console.log(out)}); // NOT OK
+execmod("cat foo/bar", {encoding: 'utf8'}); // NOT OK
+execmod("cat foo/bar", {encoding: 'utf8'}, (err, out) => {console.log(out)}); // NOT OK
+
+  

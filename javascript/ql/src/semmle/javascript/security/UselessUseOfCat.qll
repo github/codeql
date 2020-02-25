@@ -21,9 +21,9 @@ private class CommandCall extends DataFlow::InvokeNode {
   predicate isSync() { command.isSync() }
 
   /**
-   * Gets an argument to this command execution that specifies the argument list to the command.
+   * Gets a list that specifies the arguments given to the command.
    */
-  DataFlow::Node getArgumentList() { result = command.getArgumentList() }
+  DataFlow::ArrayCreationNode getArgumentList() { result = command.getArgumentList().getALocalSource() }
 
   /**
    * Gets the callback (if it exists) for an async `exec`-like call.
@@ -35,7 +35,7 @@ private class CommandCall extends DataFlow::InvokeNode {
   /**
    * Holds if the executed command execution has an argument list as a separate argument.
    */
-  predicate hasArgumentList() { exists(command.getArgumentList()) }
+  predicate hasArgumentList() { exists(getArgumentList()) }
 
   /**
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.

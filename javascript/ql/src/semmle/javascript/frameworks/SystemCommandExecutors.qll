@@ -70,14 +70,15 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
     arg = getACommandArgument() and shell = true
   }
 
+  override DataFlow::Node getArgumentList() { shell = false and result = getArgument(1) }
+
   override predicate isSync() { sync = true }
 
   override DataFlow::Node getOptionsArg() {
     (if optionsArg < 0 then
-     result = getArgument(getNumArgument() - optionsArg) 
+     result = getArgument(getNumArgument() + optionsArg) and getNumArgument() + optionsArg > cmdArg
     else 
      result = getArgument(optionsArg)) and
-    not result = getArgument(0) and
     not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
     not result.getALocalSource() instanceof DataFlow::ArrayCreationNode // looks like argumentlist
   }
