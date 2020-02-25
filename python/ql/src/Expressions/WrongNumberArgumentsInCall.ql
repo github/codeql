@@ -17,7 +17,7 @@ import CallArgs
 from Call call, FunctionObject func, string too, string should, int limit
 where
 (
-    too_many_args(call, func, limit) and too = "too many arguments" and should = "no more than "
+    too_many_args_objectapi(call, func, limit) and too = "too many arguments" and should = "no more than "
     or
     too_few_args_objectapi(call, func, limit) and too = "too few arguments" and should = "no fewer than "
 ) and

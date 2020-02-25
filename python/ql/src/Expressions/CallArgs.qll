@@ -89,7 +89,7 @@ predicate too_few_args_objectapi(Call call, Object callable, int limit) {
 }
 
 /**Whether there are too many arguments in the `call` to `func` where `limit` is the highest number of legal arguments */
-predicate too_many_args(Call call, Object callable, int limit) {
+predicate too_many_args_objectapi(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
     not illegally_named_parameter_objectapi(call, callable, _) and
     exists(FunctionObject func | 
@@ -110,7 +110,7 @@ predicate too_many_args(Call call, Object callable, int limit) {
 predicate wrong_args(Call call, FunctionObject func, int limit, string too) {
     too_few_args_objectapi(call, func, limit) and too = "too few"
     or
-    too_many_args(call, func, limit) and too = "too many"
+    too_many_args_objectapi(call, func, limit) and too = "too many"
 }
 
 /** Holds if `call` has correct number of arguments for `func`.
