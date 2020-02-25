@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>In Python 2, a call to the input() function, <code>input(prompt)</code> is equivalent to <code>eval(raw_input(prompt))</code>. Evaluating user input without any checking can be a serious security flaw.</p>
+<p>In Python 2, a call to the <code>input()</code> function, <code>input(prompt)</code> is equivalent to <code>eval(raw_input(prompt))</code>. Evaluating user input without any checking can be a serious security flaw.</p>
 
 </overview>
 <recommendation>
