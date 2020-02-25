@@ -185,20 +185,20 @@ module PrettyPrintCatCall {
    * Create a string representing the callback `func`.
    */
   string createCallbackString(DataFlow::FunctionNode func) {
-    exists(string args | args = createCallbackArgs(func) |
+    exists(string params | params = createCallbackParams(func) |
       if func.getFunction() instanceof ArrowFunctionExpr
       then
         if func.getFunction().getBody() instanceof Expr
-        then result = ", (" + args + ") => ..."
-        else result = ", (" + args + ") => {...}"
-      else result = ", function(" + args + ") {...}"
+        then result = ", (" + params + ") => ..."
+        else result = ", (" + params + ") => {...}"
+      else result = ", function(" + params + ") {...}"
     )
   }
 
   /**
    * Create a string concatenation of the parameter names in a function `func`.
    */
-  private string createCallbackArgs(DataFlow::FunctionNode func) {
+  private string createCallbackParams(DataFlow::FunctionNode func) {
     result =
       concat(int i |
         i = [0 .. func.getNumParameter()]
