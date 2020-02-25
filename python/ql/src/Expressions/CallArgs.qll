@@ -29,7 +29,7 @@ private Keyword not_keyword_only_arg_objectapi(Call call, FunctionObject func) {
 private int positional_arg_count_objectapi_for_call_objectapi(Call call, Object callable) {
     call = get_a_call_objectapi(callable).getNode() and
     exists(int positional_keywords |
-      exists(FunctionObject func | func = get_function_or_initializer(callable) |
+      exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
           not func.getFunction().hasKwArg() and
           positional_keywords = count(not_keyword_only_arg_objectapi(call, func))
         or
@@ -52,7 +52,7 @@ private ControlFlowNode get_a_call_objectapi(Object callable) {
 }
 
 /* Gets the function object corresponding to the given class or function*/
-FunctionObject get_function_or_initializer(Object func_or_cls) {
+FunctionObject get_function_or_initializer_objectapi(Object func_or_cls) {
   result = func_or_cls.(FunctionObject)
   or
   result = func_or_cls.(ClassObject).declaredAttribute("__init__")
@@ -64,7 +64,7 @@ predicate illegally_named_parameter(Call call, Object func, string name) {
     not func.isC() and
     name = call.getANamedArgumentName() and
     call.getAFlowNode() = get_a_call_objectapi(func) and
-    not get_function_or_initializer(func).isLegalArgumentName(name)
+    not get_function_or_initializer_objectapi(func).isLegalArgumentName(name)
 }
 
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
@@ -73,7 +73,7 @@ predicate too_few_args(Call call, Object callable, int limit) {
     not illegally_named_parameter(call, callable, _) and
     not exists(call.getStarargs()) and not exists(call.getKwargs()) and
     arg_count_objectapi(call) < limit and
-    exists(FunctionObject func | func = get_function_or_initializer(callable) |
+    exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
       call = func.getAFunctionCall().getNode() and limit = func.minParameters() and
       /* The combination of misuse of `mox.Mox().StubOutWithMock()`
        * and a bug in mox's implementation of methods results in having to
@@ -93,7 +93,7 @@ predicate too_many_args(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
     not illegally_named_parameter(call, callable, _) and
     exists(FunctionObject func | 
-      func = get_function_or_initializer(callable) and
+      func = get_function_or_initializer_objectapi(callable) and
       not func.getFunction().hasVarArg() and limit >= 0 
       |
         call = func.getAFunctionCall().getNode() and limit = func.maxParameters()
