@@ -945,15 +945,28 @@ private predicate reachableFromStoreBase(
         s2.getEndLabel())
   )
   or
-  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
-    reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
-    (
-      flowStep(mid, cfg, nd, newSummary)
-      or
-      isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
-      newSummary = PathSummary::level()
-    ) and
+  exists(PathSummary oldSummary, PathSummary newSummary |
+    reachableFromStoreBaseStep(prop, rhs, nd, cfg, oldSummary, newSummary) and
     summary = oldSummary.appendValuePreserving(newSummary)
+  )
+}
+
+/**
+ * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
+ * from the base of that write under configuration `cfg` (possibly through callees) along a
+ * path whose last step is summarized by `newSummary`, and the previous steps are summarized
+ * by `oldSummary`.
+ */
+pragma[noinline]
+private predicate reachableFromStoreBaseStep(
+  string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
+  PathSummary oldSummary, PathSummary newSummary
+) {
+  exists(DataFlow::Node mid | reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) |
+    flowStep(mid, cfg, nd, newSummary)
+    or
+    isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
+    newSummary = PathSummary::level()
   )
 }
 
@@ -968,10 +981,26 @@ pragma[noinline]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
-    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
-    loadStep(base, succ, prop, cfg, newSummary) and
+  exists(PathSummary oldSummary, PathSummary newSummary |
+    storeToLoad(pred, succ, cfg, oldSummary, newSummary) and
     summary = oldSummary.append(newSummary)
+  )
+}
+
+/**
+ * Holds if the value of `pred` is written to a property of some base object, and that base
+ * object may flow into the base of property read `succ` under configuration `cfg` along
+ * a path whose last step is summarized by `newSummary`, and the previous steps are summarized
+ * by `oldSummary`.
+ */
+pragma[noinline]
+private predicate storeToLoad(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary oldSummary,
+  PathSummary newSummary
+) {
+  exists(string prop, DataFlow::Node base |
+    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
+    loadStep(base, succ, prop, cfg, newSummary)
   )
 }
 
