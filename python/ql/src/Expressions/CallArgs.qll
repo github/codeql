@@ -124,7 +124,7 @@ predicate correct_args_if_called_as_method_objectapi(Call call, FunctionObject f
 }
 
 /** Holds if `call` is a call to `overriding`, which overrides `func`. */
-predicate overridden_call(FunctionObject func, FunctionObject overriding, Call call)  {
+predicate overridden_call_objectapi(FunctionObject func, FunctionObject overriding, Call call)  {
     overriding.overrides(func) and
     overriding.getACall().getNode() = call
 }
