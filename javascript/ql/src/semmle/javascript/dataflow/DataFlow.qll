@@ -147,7 +147,7 @@ module DataFlow {
     final FunctionNode getABoundFunctionValue(int boundArgs) {
       result = getAFunctionValue() and boundArgs = 0
       or
-      CallGraph::getABoundFunctionReference(result, boundArgs).flowsTo(this)
+      CallGraph::getABoundFunctionReference(result, boundArgs, _).flowsTo(this)
     }
 
     /**

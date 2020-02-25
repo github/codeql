@@ -38,14 +38,14 @@ predicate unnecessary_lambda(Lambda l, Expr e) {
     simple_wrapper(l, e) and 
     (
       /* plain class */
-      exists(ClassObject c | e.refersTo(c))
+      exists(ClassValue c | e.pointsTo(c))
       or
       /* plain function */
-      exists(FunctionObject f | e.refersTo(f))
+      exists(FunctionValue f | e.pointsTo(f))
       or
       /* bound-method of enclosing instance */
-      exists(ClassObject cls, Attribute a | 
-          cls.getPyClass() = l.getScope().getScope() and a = e |
+      exists(ClassValue cls, Attribute a | 
+          cls.getScope() = l.getScope().getScope() and a = e |
           ((Name)a.getObject()).getId() = "self" and
           cls.hasAttribute(a.getName())
       )

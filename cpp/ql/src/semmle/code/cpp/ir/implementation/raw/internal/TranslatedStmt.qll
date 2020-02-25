@@ -655,6 +655,11 @@ class TranslatedSwitchStmt extends TranslatedStmt {
       kind = getCaseEdge(switchCase) and
       result = getTranslatedStmt(switchCase).getFirstInstruction()
     )
+    or
+    not stmt.hasDefaultCase() and
+    tag = SwitchBranchTag() and
+    kind instanceof DefaultEdge and
+    result = getParent().getChildSuccessor(this)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

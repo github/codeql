@@ -8070,6 +8070,239 @@ ir.cpp:
 # 1170|               Type = [ArrayType] const char[4]
 # 1170|               Value = [StringLiteral] "foo"
 # 1170|               ValueCategory = lvalue
+# 1173| [TopLevelFunction] void switch1Case(int)
+# 1173|   params: 
+# 1173|     0: [Parameter] x
+# 1173|         Type = [IntType] int
+# 1173|   body: [Block] { ... }
+# 1174|     0: [DeclStmt] declaration
+# 1174|       0: [VariableDeclarationEntry] definition of y
+# 1174|           Type = [IntType] int
+# 1174|         init: [Initializer] initializer for y
+# 1174|           expr: [Literal] 0
+# 1174|               Type = [IntType] int
+# 1174|               Value = [Literal] 0
+# 1174|               ValueCategory = prvalue
+# 1175|     1: [SwitchStmt] switch (...) ... 
+# 1175|       0: [VariableAccess] x
+# 1175|           Type = [IntType] int
+# 1175|           ValueCategory = prvalue(load)
+# 1175|       1: [Block] { ... }
+# 1176|         0: [SwitchCase] case ...:
+# 1176|           0: [Literal] 1
+# 1176|               Type = [IntType] int
+# 1176|               Value = [Literal] 1
+# 1176|               ValueCategory = prvalue
+# 1177|         1: [ExprStmt] ExprStmt
+# 1177|           0: [AssignExpr] ... = ...
+# 1177|               Type = [IntType] int
+# 1177|               ValueCategory = lvalue
+# 1177|             0: [VariableAccess] y
+# 1177|                 Type = [IntType] int
+# 1177|                 ValueCategory = lvalue
+# 1177|             1: [Literal] 2
+# 1177|                 Type = [IntType] int
+# 1177|                 Value = [Literal] 2
+# 1177|                 ValueCategory = prvalue
+# 1179|     2: [DeclStmt] declaration
+# 1179|       0: [VariableDeclarationEntry] definition of z
+# 1179|           Type = [IntType] int
+# 1179|         init: [Initializer] initializer for z
+# 1179|           expr: [VariableAccess] y
+# 1179|               Type = [IntType] int
+# 1179|               ValueCategory = prvalue(load)
+# 1180|     3: [ReturnStmt] return ...
+# 1182| [TopLevelFunction] void switch2Case_fallthrough(int)
+# 1182|   params: 
+# 1182|     0: [Parameter] x
+# 1182|         Type = [IntType] int
+# 1182|   body: [Block] { ... }
+# 1183|     0: [DeclStmt] declaration
+# 1183|       0: [VariableDeclarationEntry] definition of y
+# 1183|           Type = [IntType] int
+# 1183|         init: [Initializer] initializer for y
+# 1183|           expr: [Literal] 0
+# 1183|               Type = [IntType] int
+# 1183|               Value = [Literal] 0
+# 1183|               ValueCategory = prvalue
+# 1184|     1: [SwitchStmt] switch (...) ... 
+# 1184|       0: [VariableAccess] x
+# 1184|           Type = [IntType] int
+# 1184|           ValueCategory = prvalue(load)
+# 1184|       1: [Block] { ... }
+# 1185|         0: [SwitchCase] case ...:
+# 1185|           0: [Literal] 1
+# 1185|               Type = [IntType] int
+# 1185|               Value = [Literal] 1
+# 1185|               ValueCategory = prvalue
+# 1186|         1: [ExprStmt] ExprStmt
+# 1186|           0: [AssignExpr] ... = ...
+# 1186|               Type = [IntType] int
+# 1186|               ValueCategory = lvalue
+# 1186|             0: [VariableAccess] y
+# 1186|                 Type = [IntType] int
+# 1186|                 ValueCategory = lvalue
+# 1186|             1: [Literal] 2
+# 1186|                 Type = [IntType] int
+# 1186|                 Value = [Literal] 2
+# 1186|                 ValueCategory = prvalue
+# 1187|         2: [SwitchCase] case ...:
+# 1187|           0: [Literal] 2
+# 1187|               Type = [IntType] int
+# 1187|               Value = [Literal] 2
+# 1187|               ValueCategory = prvalue
+# 1188|         3: [ExprStmt] ExprStmt
+# 1188|           0: [AssignExpr] ... = ...
+# 1188|               Type = [IntType] int
+# 1188|               ValueCategory = lvalue
+# 1188|             0: [VariableAccess] y
+# 1188|                 Type = [IntType] int
+# 1188|                 ValueCategory = lvalue
+# 1188|             1: [Literal] 3
+# 1188|                 Type = [IntType] int
+# 1188|                 Value = [Literal] 3
+# 1188|                 ValueCategory = prvalue
+# 1190|     2: [DeclStmt] declaration
+# 1190|       0: [VariableDeclarationEntry] definition of z
+# 1190|           Type = [IntType] int
+# 1190|         init: [Initializer] initializer for z
+# 1190|           expr: [VariableAccess] y
+# 1190|               Type = [IntType] int
+# 1190|               ValueCategory = prvalue(load)
+# 1191|     3: [ReturnStmt] return ...
+# 1193| [TopLevelFunction] void switch2Case(int)
+# 1193|   params: 
+# 1193|     0: [Parameter] x
+# 1193|         Type = [IntType] int
+# 1193|   body: [Block] { ... }
+# 1194|     0: [DeclStmt] declaration
+# 1194|       0: [VariableDeclarationEntry] definition of y
+# 1194|           Type = [IntType] int
+# 1194|         init: [Initializer] initializer for y
+# 1194|           expr: [Literal] 0
+# 1194|               Type = [IntType] int
+# 1194|               Value = [Literal] 0
+# 1194|               ValueCategory = prvalue
+# 1195|     1: [SwitchStmt] switch (...) ... 
+# 1195|       0: [VariableAccess] x
+# 1195|           Type = [IntType] int
+# 1195|           ValueCategory = prvalue(load)
+# 1195|       1: [Block] { ... }
+# 1196|         0: [SwitchCase] case ...:
+# 1196|           0: [Literal] 1
+# 1196|               Type = [IntType] int
+# 1196|               Value = [Literal] 1
+# 1196|               ValueCategory = prvalue
+# 1197|         1: [ExprStmt] ExprStmt
+# 1197|           0: [AssignExpr] ... = ...
+# 1197|               Type = [IntType] int
+# 1197|               ValueCategory = lvalue
+# 1197|             0: [VariableAccess] y
+# 1197|                 Type = [IntType] int
+# 1197|                 ValueCategory = lvalue
+# 1197|             1: [Literal] 2
+# 1197|                 Type = [IntType] int
+# 1197|                 Value = [Literal] 2
+# 1197|                 ValueCategory = prvalue
+# 1198|         2: [BreakStmt] break;
+# 1199|         3: [SwitchCase] case ...:
+# 1199|           0: [Literal] 2
+# 1199|               Type = [IntType] int
+# 1199|               Value = [Literal] 2
+# 1199|               ValueCategory = prvalue
+# 1200|         4: [ExprStmt] ExprStmt
+# 1200|           0: [AssignExpr] ... = ...
+# 1200|               Type = [IntType] int
+# 1200|               ValueCategory = lvalue
+# 1200|             0: [VariableAccess] y
+# 1200|                 Type = [IntType] int
+# 1200|                 ValueCategory = lvalue
+# 1200|             1: [Literal] 3
+# 1200|                 Type = [IntType] int
+# 1200|                 Value = [Literal] 3
+# 1200|                 ValueCategory = prvalue
+# 1201|     2: [LabelStmt] label ...:
+# 1202|     3: [DeclStmt] declaration
+# 1202|       0: [VariableDeclarationEntry] definition of z
+# 1202|           Type = [IntType] int
+# 1202|         init: [Initializer] initializer for z
+# 1202|           expr: [VariableAccess] y
+# 1202|               Type = [IntType] int
+# 1202|               ValueCategory = prvalue(load)
+# 1203|     4: [ReturnStmt] return ...
+# 1205| [TopLevelFunction] void switch2Case_default(int)
+# 1205|   params: 
+# 1205|     0: [Parameter] x
+# 1205|         Type = [IntType] int
+# 1205|   body: [Block] { ... }
+# 1206|     0: [DeclStmt] declaration
+# 1206|       0: [VariableDeclarationEntry] definition of y
+# 1206|           Type = [IntType] int
+# 1206|         init: [Initializer] initializer for y
+# 1206|           expr: [Literal] 0
+# 1206|               Type = [IntType] int
+# 1206|               Value = [Literal] 0
+# 1206|               ValueCategory = prvalue
+# 1207|     1: [SwitchStmt] switch (...) ... 
+# 1207|       0: [VariableAccess] x
+# 1207|           Type = [IntType] int
+# 1207|           ValueCategory = prvalue(load)
+# 1207|       1: [Block] { ... }
+# 1208|         0: [SwitchCase] case ...:
+# 1208|           0: [Literal] 1
+# 1208|               Type = [IntType] int
+# 1208|               Value = [Literal] 1
+# 1208|               ValueCategory = prvalue
+# 1209|         1: [ExprStmt] ExprStmt
+# 1209|           0: [AssignExpr] ... = ...
+# 1209|               Type = [IntType] int
+# 1209|               ValueCategory = lvalue
+# 1209|             0: [VariableAccess] y
+# 1209|                 Type = [IntType] int
+# 1209|                 ValueCategory = lvalue
+# 1209|             1: [Literal] 2
+# 1209|                 Type = [IntType] int
+# 1209|                 Value = [Literal] 2
+# 1209|                 ValueCategory = prvalue
+# 1210|         2: [BreakStmt] break;
+# 1212|         3: [SwitchCase] case ...:
+# 1212|           0: [Literal] 2
+# 1212|               Type = [IntType] int
+# 1212|               Value = [Literal] 2
+# 1212|               ValueCategory = prvalue
+# 1213|         4: [ExprStmt] ExprStmt
+# 1213|           0: [AssignExpr] ... = ...
+# 1213|               Type = [IntType] int
+# 1213|               ValueCategory = lvalue
+# 1213|             0: [VariableAccess] y
+# 1213|                 Type = [IntType] int
+# 1213|                 ValueCategory = lvalue
+# 1213|             1: [Literal] 3
+# 1213|                 Type = [IntType] int
+# 1213|                 Value = [Literal] 3
+# 1213|                 ValueCategory = prvalue
+# 1214|         5: [BreakStmt] break;
+# 1216|         6: [SwitchCase] default: 
+# 1217|         7: [ExprStmt] ExprStmt
+# 1217|           0: [AssignExpr] ... = ...
+# 1217|               Type = [IntType] int
+# 1217|               ValueCategory = lvalue
+# 1217|             0: [VariableAccess] y
+# 1217|                 Type = [IntType] int
+# 1217|                 ValueCategory = lvalue
+# 1217|             1: [Literal] 4
+# 1217|                 Type = [IntType] int
+# 1217|                 Value = [Literal] 4
+# 1217|                 ValueCategory = prvalue
+# 1218|     2: [LabelStmt] label ...:
+# 1219|     3: [DeclStmt] declaration
+# 1219|       0: [VariableDeclarationEntry] definition of z
+# 1219|           Type = [IntType] int
+# 1219|         init: [Initializer] initializer for z
+# 1219|           expr: [VariableAccess] y
+# 1219|               Type = [IntType] int
+# 1219|               ValueCategory = prvalue(load)
+# 1220|     4: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

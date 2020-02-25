@@ -225,9 +225,9 @@ tsutils@^2.12.1:
   dependencies:
     tslib "^1.8.1"
 
-typescript@3.7.5:
-  version "3.7.5"
-  resolved "typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
+typescript@3.8.2:
+  version "3.8.2"
+  resolved typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a
 
 wrappy@1:
   version "1.0.2"

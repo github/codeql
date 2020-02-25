@@ -71,6 +71,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
+private import internal.CallGraphs
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -620,10 +621,11 @@ private predicate exploratoryFlowStep(
   isAdditionalStoreStep(pred, succ, _, cfg) or
   isAdditionalLoadStep(pred, succ, _, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, cfg) or
-  // the following two disjuncts taken together over-approximate flow through
+  // the following three disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
-  succ = pred.(DataFlow::FunctionNode).getAParameter()
+  succ = pred.(DataFlow::FunctionNode).getAParameter() or
+  exploratoryBoundInvokeStep(pred, succ)
 }
 
 /**
@@ -751,7 +753,7 @@ private predicate flowThroughCall(
 ) {
   exists(Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
-    calls(output, f) and // Do not consider partial calls
+    (calls(output, f) or callsBound(output, f, _)) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
@@ -761,7 +763,7 @@ private predicate flowThroughCall(
   exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
     DataFlow::exceptionalFunctionReturnNode(ret, f) and
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
-    calls(invk, f) and
+    (calls(invk, f) or callsBound(invk, f, _)) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
@@ -1030,6 +1032,13 @@ private predicate flowIntoHigherOrderCall(
   exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
     higherOrderCall(pred, cb, i, cfg, oldSummary) and
     succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+  or
+  exists(DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary |
+    higherOrderCall(pred, cb, i, cfg, oldSummary) and
+    cb = CallGraph::getABoundFunctionReference(f, boundArgs, false) and
+    succ = f.getParameter(boundArgs + i) and
     summary = oldSummary.append(PathSummary::call())
   )
 }
