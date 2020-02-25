@@ -1,0 +1,14 @@
+| pkg1/tst.go:4:2:4:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:5:2:5:4 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:6:2:6:4 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:10:2:10:4 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:11:2:11:4 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:15:3:15:5 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:16:3:16:5 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:20:3:20:5 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:21:2:21:4 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:25:2:25:4 | val | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:26:2:26:5 | flag | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/tst.go:30:2:30:5 | flag | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg2/tst.go:4:2:4:2 | g | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 |
+| pkg2/tst.go:8:2:8:2 | g | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 |
