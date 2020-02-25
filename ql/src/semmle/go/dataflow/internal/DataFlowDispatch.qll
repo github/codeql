@@ -1,8 +1,6 @@
 private import go
 private import DataFlowPrivate
 
-DataFlowCallable viableImpl(DataFlowCall ma) { result = viableCallable(ma) }
-
 /**
  * Gets a function that might be called by `call`.
  */
