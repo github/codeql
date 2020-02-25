@@ -715,6 +715,25 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:53 | ControlFlowNode for Attribute() | 'b' | builtin-class str | 53 | import |
 | l_calls.py:53 | ControlFlowNode for F | class F | builtin-class type | 47 | import |
 | l_calls.py:53 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:58 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 58 | import |
+| l_calls.py:58 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 | import |
+| l_calls.py:58 | ControlFlowNode for int | builtin-class int | builtin-class type | 58 | import |
+| l_calls.py:59 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 59 | import |
+| l_calls.py:59 | ControlFlowNode for Attribute() | Attribute() | builtin-class int | 59 | import |
+| l_calls.py:59 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 59 | import |
+| l_calls.py:59 | ControlFlowNode for b | Attribute() | builtin-class int | 59 | import |
+| l_calls.py:59 | ControlFlowNode for int | builtin-class int | builtin-class type | 59 | import |
+| l_calls.py:62 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 62 | import |
+| l_calls.py:62 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 | import |
+| l_calls.py:62 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 62 | import |
+| l_calls.py:63 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 63 | import |
+| l_calls.py:63 | ControlFlowNode for Dict | Dict | builtin-class dict | 63 | import |
+| l_calls.py:63 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 63 | import |
+| l_calls.py:63 | ControlFlowNode for Str | 'foo' | builtin-class str | 63 | import |
+| l_calls.py:63 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 63 | import |
+| l_calls.py:64 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 | import |
+| l_calls.py:64 | ControlFlowNode for b | Attribute() | builtin-class int | 59 | import |
+| l_calls.py:64 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 | import |
 | m_attributes.py:3 | ControlFlowNode for C | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for object | builtin-class object | builtin-class type | 3 | import |
