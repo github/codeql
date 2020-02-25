@@ -68,7 +68,7 @@ predicate illegally_named_parameter_objectapi(Call call, Object func, string nam
 }
 
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
-predicate too_few_args(Call call, Object callable, int limit) {
+predicate too_few_args_objectapi(Call call, Object callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
     not illegally_named_parameter_objectapi(call, callable, _) and
     not exists(call.getStarargs()) and not exists(call.getKwargs()) and
@@ -108,7 +108,7 @@ predicate too_many_args(Call call, Object callable, int limit) {
 
 /** Holds if `call` has too many or too few arguments for `func` */
 predicate wrong_args(Call call, FunctionObject func, int limit, string too) {
-    too_few_args(call, func, limit) and too = "too few"
+    too_few_args_objectapi(call, func, limit) and too = "too few"
     or
     too_many_args(call, func, limit) and too = "too many"
 }

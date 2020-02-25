@@ -19,7 +19,7 @@ where
 (
     too_many_args(call, func, limit) and too = "too many arguments" and should = "no more than "
     or
-    too_few_args(call, func, limit) and too = "too few arguments" and should = "no fewer than "
+    too_few_args_objectapi(call, func, limit) and too = "too few arguments" and should = "no fewer than "
 ) and
 not func.isAbstract() and
 not exists(FunctionObject overridden | func.overrides(overridden) and correct_args_if_called_as_method(call, overridden))
