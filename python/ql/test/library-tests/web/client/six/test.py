@@ -1,4 +1,5 @@
-from http.client import HTTPConnection, HTTPSConnection
+from six.moves.http_client import HTTPConnection, HTTPSConnection
+from six.moves.urllib.parse import urlsplit
 
 
 def basic():
