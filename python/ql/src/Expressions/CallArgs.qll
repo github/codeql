@@ -2,7 +2,7 @@ import python
 
 import Testing.Mox
 
-private int varargs_length(Call call) {
+private int varargs_length_objectapi(Call call) {
     not exists(call.getStarargs()) and result = 0
     or
     exists(TupleObject t |
@@ -14,7 +14,7 @@ private int varargs_length(Call call) {
 }
 
 /** Gets a keyword argument that is not a keyword-only parameter. */
-private Keyword not_keyword_only_arg(Call call, FunctionObject func) {
+private Keyword not_keyword_only_arg_objectapi(Call call, FunctionObject func) {
     func.getACall().getNode() = call and
     result = call.getAKeyword() and
     not func.getFunction().getAKeywordOnlyArg().getId() = result.getArg()
@@ -26,26 +26,26 @@ private Keyword not_keyword_only_arg(Call call, FunctionObject func) {
  *  plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
  */
 
-private int positional_arg_count_for_call(Call call, Object callable) {
-    call = get_a_call(callable).getNode() and
+private int positional_arg_count_for_call_objectapi(Call call, Object callable) {
+    call = get_a_call_objectapi(callable).getNode() and
     exists(int positional_keywords |
       exists(FunctionObject func | func = get_function_or_initializer(callable) |
           not func.getFunction().hasKwArg() and
-          positional_keywords = count(not_keyword_only_arg(call, func))
+          positional_keywords = count(not_keyword_only_arg_objectapi(call, func))
         or
           func.getFunction().hasKwArg() and positional_keywords = 0
       )
       |
-      result = count(call.getAnArg()) + varargs_length(call) + positional_keywords
+      result = count(call.getAnArg()) + varargs_length_objectapi(call) + positional_keywords
     )
 }
 
 int arg_count(Call call) {
-    result = count(call.getAnArg()) + varargs_length(call) + count(call.getAKeyword())
+    result = count(call.getAnArg()) + varargs_length_objectapi(call) + count(call.getAKeyword())
 }
 
 /* Gets a call corresponding to the given class or function*/
-private ControlFlowNode get_a_call(Object callable) {
+private ControlFlowNode get_a_call_objectapi(Object callable) {
   result = callable.(ClassObject).getACall()
   or
   result = callable.(FunctionObject).getACall()
@@ -63,7 +63,7 @@ FunctionObject get_function_or_initializer(Object func_or_cls) {
 predicate illegally_named_parameter(Call call, Object func, string name) {
     not func.isC() and
     name = call.getANamedArgumentName() and
-    call.getAFlowNode() = get_a_call(func) and
+    call.getAFlowNode() = get_a_call_objectapi(func) and
     not get_function_or_initializer(func).isLegalArgumentName(name)
 }
 
@@ -84,7 +84,7 @@ predicate too_few_args(Call call, Object callable, int limit) {
       call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
       or
       callable instanceof ClassObject and
-      call.getAFlowNode() = get_a_call(callable) and limit = func.minParameters() - 1
+      call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.minParameters() - 1
     )
 }
 
@@ -101,9 +101,9 @@ predicate too_many_args(Call call, Object callable, int limit) {
         call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
       or
         callable instanceof ClassObject and
-        call.getAFlowNode() = get_a_call(callable) and limit = func.maxParameters() - 1
+        call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.maxParameters() - 1
     ) and
-    positional_arg_count_for_call(call, callable) > limit
+    positional_arg_count_for_call_objectapi(call, callable) > limit
 }
 
 /** Holds if `call` has too many or too few arguments for `func` */
