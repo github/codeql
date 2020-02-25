@@ -27,12 +27,15 @@ class HttpConnectionHttpRequest extends Client::HttpRequest, CallNode {
             cls = httpConnectionClass() and
             func = cls.lookup("request") and
             this = func.getACall() and
+            // since you can do `r = conn.request; r('GET', path)`, we need to find the origin
             this.getFunction().pointsTo(_, _, call_origin) and
+            // Since HTTPSConnection is a subtype of HTTPConnection, up until this point, `cls` could be either class,
+            // because `HTTPSConnection.request == HTTPConnection.request`. To avoid generating 2 results, we filter
+            // on the actual class used as the constructor
             call_origin.getObject().pointsTo(_, constructor_call_value, constructor_call) and
             cls = constructor_call_value.getClass() and
             constructor_call = cls.getACall()
         )
-
     }
 
     override ControlFlowNode getAUrlPart() {
