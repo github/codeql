@@ -333,10 +333,19 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
     }
 
     Builtin getReturnType() {
+        /* If we have a record of the return type in our stubs, use that. */
         exists(Builtin func |
             func = this.getBuiltin() |
             ext_rettype(func, result)
         )
+        or
+        /* Otherwise, if no such record exists, use `object` as the return type. */
+        not exists(Builtin func |
+            // We cannot do `this.getBuiltin()` here, as that would introduce negative recursion.
+            // Instead, we appeal directly to the underlying IPA type.
+            this = TBuiltinMethodObject(func) and
+            ext_rettype(func, _))
+        and result = Builtin::builtin("object")
     }
 
     override ControlFlowNode getOrigin() {

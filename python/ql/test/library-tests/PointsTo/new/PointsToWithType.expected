@@ -405,6 +405,7 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | g_class_init.py:35 | ControlFlowNode for super | builtin-class super | builtin-class type | 35 |
 | g_class_init.py:35 | ControlFlowNode for super() | super() | builtin-class super | 35 |
 | g_class_init.py:36 | ControlFlowNode for Attribute | super().__init__ | builtin-class method | 36 |
+| g_class_init.py:36 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 36 |
 | g_class_init.py:36 | ControlFlowNode for D | class D | builtin-class type | 32 |
 | g_class_init.py:36 | ControlFlowNode for self | self | class D | 34 |
 | g_class_init.py:36 | ControlFlowNode for super | builtin-class super | builtin-class type | 36 |
@@ -800,13 +801,16 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:62 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
 | l_calls.py:62 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 62 |
 | l_calls.py:63 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 63 |
+| l_calls.py:63 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 63 |
 | l_calls.py:63 | ControlFlowNode for Dict | Dict | builtin-class dict | 63 |
 | l_calls.py:63 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 63 |
 | l_calls.py:63 | ControlFlowNode for Str | 'foo' | builtin-class str | 63 |
+| l_calls.py:63 | ControlFlowNode for d | Attribute() | builtin-class object | 63 |
 | l_calls.py:63 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 63 |
 | l_calls.py:64 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 |
 | l_calls.py:64 | ControlFlowNode for b | Attribute() | builtin-class int | 59 |
 | l_calls.py:64 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
+| l_calls.py:64 | ControlFlowNode for d | Attribute() | builtin-class object | 63 |
 | s_scopes.py:4 | ControlFlowNode for True | bool True | builtin-class bool | 4 |
 | s_scopes.py:4 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
 | s_scopes.py:7 | ControlFlowNode for C2 | class C2 | builtin-class type | 7 |
