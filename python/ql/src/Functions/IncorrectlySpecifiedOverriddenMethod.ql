@@ -18,7 +18,7 @@ where
 not func.getName() = "__init__" and
 overriding.overrides(func) and
 call = overriding.getAMethodCall().getNode() and
-correct_args_if_called_as_method(call, overriding) and
+correct_args_if_called_as_method_objectapi(call, overriding) and
 (
     arg_count_objectapi(call)+1 < func.minParameters() and problem = "too few arguments"
     or

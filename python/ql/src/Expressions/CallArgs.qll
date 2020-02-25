@@ -117,7 +117,7 @@ predicate wrong_args_objectapi(Call call, FunctionObject func, int limit, string
  * Implies nothing about whether `call` could call `func`.
  */
  bindingset[call, func]
-predicate correct_args_if_called_as_method(Call call, FunctionObject func) {
+predicate correct_args_if_called_as_method_objectapi(Call call, FunctionObject func) {
     arg_count_objectapi(call)+1 >= func.minParameters()
     and
     arg_count_objectapi(call) < func.maxParameters()
