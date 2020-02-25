@@ -15,7 +15,7 @@ import Expressions.CallArgs
 from Call call, FunctionObject func, FunctionObject overridden, string problem
 where
 func.overrides(overridden) and (
-    wrong_args(call, func, _, problem) and correct_args_if_called_as_method(call, overridden)
+    wrong_args_objectapi(call, func, _, problem) and correct_args_if_called_as_method(call, overridden)
     or
     exists(string name | 
         illegally_named_parameter_objectapi(call, func, name) and problem = "an argument named '" + name + "'" and

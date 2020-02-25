@@ -107,7 +107,7 @@ predicate too_many_args_objectapi(Call call, Object callable, int limit) {
 }
 
 /** Holds if `call` has too many or too few arguments for `func` */
-predicate wrong_args(Call call, FunctionObject func, int limit, string too) {
+predicate wrong_args_objectapi(Call call, FunctionObject func, int limit, string too) {
     too_few_args_objectapi(call, func, limit) and too = "too few"
     or
     too_many_args_objectapi(call, func, limit) and too = "too many"
