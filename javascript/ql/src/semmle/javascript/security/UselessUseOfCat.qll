@@ -75,6 +75,14 @@ private class CommandCall extends DataFlow::InvokeNode {
 }
 
 /**
+ * Holds if the input `str` contains some character that might be interpreted in a non-trivial way by a shell. 
+ */ 
+bindingset[str]
+predicate containsNonTrivialBashChar(string str) {
+  exists(str.regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| ", _, _))
+}
+
+/**
  * Gets the constant string parts from a data-flow node.
  * Either the result is a constant string value that the node can hold, or the node is a string-concatenation and the result is the string parts from the concatenation.
  */
@@ -97,7 +105,7 @@ class UselessCat extends CommandCall {
       getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not exists(getNonCommandConstantString().regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| ", _, _)) and
+    not containsNonTrivialBashChar(getNonCommandConstantString()) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
       not exists(getOptionsArg())
@@ -146,7 +154,7 @@ module PrettyPrintCatCall {
    * Create a string representation of an equivalent call to `fs.readFile` for a given command execution `cat`.
    */
   string createReadFileCall(UselessCat cat) {
-    exists(string sync, string extraArg, string callback |
+    exists(string sync, string extraArg, string callback, string fileArg |
       (if cat.isSync() then sync = "Sync" else sync = "") and
       (
         exists(cat.getOptionsArg()) and
@@ -163,10 +171,12 @@ module PrettyPrintCatCall {
         callback = createCallbackString(cat.getCallback())
         or
         callback = "" and not exists(cat.getCallback())
-      )
+      ) and
+      fileArg = createFileArgument(cat).trim() and
+      not(containsNonTrivialBashChar(fileArg.regexpReplaceAll("\\$|\\`| ", ""))) // string concat might contain " ", template strings might contain "$" or `, and that is OK. 
     |
       result =
-        "fs.readFile" + sync + "(" + createFileArgument(cat).trim() + extraArg + callback + ")"
+        "fs.readFile" + sync + "(" + fileArg + extraArg + callback + ")"
     )
   }
 
