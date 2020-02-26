@@ -46,33 +46,26 @@ class DirectEval extends CallExpr {
 }
 
 /**
- * Flow analysis for `this` expressions inside a function that is called with
- * `Array.prototype.map` or a similar Array function that binds `this`.
- *
- * However, since the function could be invoked in another way, we additionally
- * still infer the ordinary abstract value.
+ * Models `Array.prototype.map` and friends as partial invocations that pass their second
+ * argument as the receiver to the callback.
  */
-private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlow::ThisNode {
-  AnalyzedNode thisSource;
-
-  AnalyzedThisInArrayIterationFunction() {
-    exists(DataFlow::MethodCallNode bindingCall, string name |
+private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range, DataFlow::MethodCallNode {
+  ArrayIterationCallbackAsPartialInvoke() {
+    getNumArgument() = 2 and
+    // Filter out library methods named 'forEach' etc
+    not DataFlow::moduleImport(_).flowsTo(getReceiver()) and
+    exists(string name | name = getMethodName() |
       name = "filter" or
       name = "forEach" or
       name = "map" or
       name = "some" or
       name = "every"
-    |
-      name = bindingCall.getMethodName() and
-      2 = bindingCall.getNumArgument() and
-      getBinder() = bindingCall.getCallback(0) and
-      thisSource = bindingCall.getArgument(1)
     )
   }
 
-  override AbstractValue getALocalValue() {
-    result = thisSource.getALocalValue() or
-    result = AnalyzedNode.super.getALocalValue()
+  override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+    callback = getArgument(0) and
+    result = getArgument(1)
   }
 }
 

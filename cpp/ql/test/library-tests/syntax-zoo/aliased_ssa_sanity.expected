@@ -568,6 +568,7 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

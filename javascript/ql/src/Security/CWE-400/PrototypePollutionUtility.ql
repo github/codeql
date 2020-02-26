@@ -188,12 +188,7 @@ class PropNameTracking extends DataFlow::Configuration {
   override predicate isBarrier(DataFlow::Node node) {
     super.isBarrier(node)
     or
-    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
-      node = DataFlow::ssaDefinitionNode(refinement) and
-      refinement.getGuard() = guard and
-      guard.getTest() instanceof VarAccess and
-      guard.getOutcome() = false
-    )
+    node instanceof DataFlow::VarAccessBarrier
   }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
@@ -204,7 +199,8 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
     node instanceof BlacklistInclusionGuard or
-    node instanceof WhitelistInclusionGuard
+    node instanceof WhitelistInclusionGuard or
+    node instanceof IsPlainObjectGuard
   }
 }
 
@@ -376,6 +372,25 @@ class WhitelistInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     this.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(outcome, e) and
     lbl instanceof UnsafePropLabel
+  }
+}
+
+/**
+ * A check of form `isPlainObject(e)` or similar, which sanitizes the `constructor`
+ * payload in the true case, since it rejects objects with a non-standard `constructor`
+ * property.
+ */
+class IsPlainObjectGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::CallNode {
+  IsPlainObjectGuard() {
+    exists(string name | name = "is-plain-object" or name = "is-extendable" |
+      this = moduleImport(name).getACall()
+    )
+  }
+
+  override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    e = getArgument(0).asExpr() and
+    outcome = true and
+    lbl = "constructor"
   }
 }
 

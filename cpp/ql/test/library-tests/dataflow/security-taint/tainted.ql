@@ -1,4 +1,4 @@
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.security.TaintTrackingImpl
 
 from Expr source, Element tainted, string globalVar
 where

@@ -1097,5 +1097,8 @@ private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::Cal
     result = this
   }
 
-  override DataFlow::Node getBoundReceiver() { result = getArgument(0) }
+  override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+    callback = getArgument(1) and
+    result = getArgument(0)
+  }
 }

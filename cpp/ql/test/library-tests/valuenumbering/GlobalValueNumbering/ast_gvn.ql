@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.valuenumbering.GlobalValueNumberingImpl
 
 from GVN g
 where strictcount(g.getAnExpr()) > 1

@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* TypeScript 3.8 is now supported.
+
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
 
 * Imports with the `.js` extension can now be resolved to a TypeScript file,
@@ -12,6 +14,10 @@
 * Export declarations of the form `export * as ns from "x"` are now analyzed more precisely.
 
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
+
+* The call graph construction has been improved, leading to more results from the security queries:
+  - Calls can now be resolved to indirectly-defined class members in more cases.
+  - Calls through partial invocations such as `.bind` can now be resolved in more cases.
 
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
