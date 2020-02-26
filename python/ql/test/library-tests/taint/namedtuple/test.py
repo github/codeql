@@ -16,6 +16,8 @@ def test_sanitizer():
     tainted_string = TAINTED_STRING
     urlsplit_res = urlsplit(tainted_string)
 
+    test(urlsplit_res.netloc) # should be tainted
+
     if urlsplit_res.netloc == "OK":
         test(urlsplit_res.netloc)
 
