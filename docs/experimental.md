@@ -2,7 +2,7 @@
 
 In addition to our standard CodeQL queries and libraries, this repository may also contain queries and libraries of a more experimental nature. Experimental queries and libraries can be improved incrementally and may eventually reach a sufficient maturity to be included in our standard libraries and queries.
 
-Experimental queries and libraries may not be actively maintained as the standard libraries evolve, may be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
+Experimental queries and libraries may not be actively maintained as the standard libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
 
 ## Requirements
 
