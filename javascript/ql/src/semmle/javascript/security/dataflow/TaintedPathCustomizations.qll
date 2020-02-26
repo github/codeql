@@ -12,9 +12,7 @@ module TaintedPath {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -22,9 +20,7 @@ module TaintedPath {
    */
   abstract class Sink extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -365,6 +361,42 @@ module TaintedPath {
   }
 
   /**
+   * A sanitizer that recognizes the following pattern:
+   * ```
+   * var relative = path.relative(webroot, pathname);
+   * if(relative.startsWith(".." + path.sep) || relative == "..") {
+   *   // pathname is unsafe
+   * } else {
+   *   // pathname is safe
+   * }
+   * ```
+   */
+  class RelativePathStartsWithDotDotSanitizer extends DataFlow::BarrierGuardNode {
+    StringOps::StartsWith startsWith;
+    DataFlow::CallNode relativeCall;
+
+    RelativePathStartsWithDotDotSanitizer() {
+      this = startsWith and
+      relativeCall = NodeJSLib::Path::moduleMember("relative").getACall() and
+      (
+        startsWith.getBaseString().getALocalSource() = relativeCall
+        or
+        startsWith
+            .getBaseString()
+            .getALocalSource()
+            .(NormalizingPathCall)
+            .getInput()
+            .getALocalSource() = relativeCall
+      ) and
+      isDotDotSlashPrefix(startsWith.getSubstring())
+    }
+
+    override predicate blocks(boolean outcome, Expr e) {
+      e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+    }
+  }
+  
+  /**
    * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
    */
   private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
@@ -443,9 +475,7 @@ module TaintedPath {
    * A path argument to a file system access, which disallows upward navigation.
    */
   private class FsPathSinkWithoutUpwardNavigation extends FsPathSink {
-    FsPathSinkWithoutUpwardNavigation() {
-      fileSystemAccess.isUpwardNavigationRejected(this)
-    }
+    FsPathSinkWithoutUpwardNavigation() { fileSystemAccess.isUpwardNavigationRejected(this) }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       // The protection is ineffective if the ../ segments have already

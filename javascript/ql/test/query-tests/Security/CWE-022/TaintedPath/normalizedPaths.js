@@ -250,6 +250,53 @@ app.get('/resolve-path', (req, res) => {
     fs.readFileSync(path); // NOT OK - wrong polarity
 });
 
+app.get('/relative-startswith', (req, res) => {
+  let path = pathModule.resolve(req.query.path);
+
+  fs.readFileSync(path); // NOT OK
+
+  var self = something();
+	
+  var relative = pathModule.relative(self.webroot, path);
+  if(relative.startsWith(".." + pathModule.sep) || relative == "..") {
+    fs.readFileSync(path); // NOT OK! 
+  } else {
+    fs.readFileSync(path); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('..' + pathModule.sep) === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK!
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('../') === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (pathModule.normalize(relativePath).indexOf('../') === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (pathModule.normalize(relativePath).indexOf('../')) {
+    fs.readFileSync(newpath); // OK!
+  } else {
+    fs.readFileSync(newpath); // NOT OK! 
+  }
+});
+
 var isPathInside = require("is-path-inside"),
     pathIsInside = require("path-is-inside");
 app.get('/pseudo-normalizations', (req, res) => {
