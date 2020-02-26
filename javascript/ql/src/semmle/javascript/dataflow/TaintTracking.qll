@@ -89,7 +89,8 @@ module TaintTracking {
 
     final override predicate isBarrier(DataFlow::Node node) {
       super.isBarrier(node) or
-      isSanitizer(node)
+      isSanitizer(node) or
+      node instanceof DataFlow::VarAccessBarrier
     }
 
     final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {

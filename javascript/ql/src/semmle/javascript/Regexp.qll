@@ -75,25 +75,22 @@ class RegExpTerm extends Locatable, @regexpterm {
 
   /** Gets the regular expression term that is matched (textually) before this one, if any. */
   RegExpTerm getPredecessor() {
-    exists(RegExpSequence seq, int i |
-      seq.getChild(i) = this and
-      seq.getChild(i - 1) = result
+    exists(RegExpTerm parent | parent = getParent() |
+      result = parent.(RegExpSequence).previousElement(this)
+      or
+      not exists(parent.(RegExpSequence).previousElement(this)) and
+      not parent instanceof RegExpSubPattern and
+      result = parent.getPredecessor()
     )
-    or
-    result = getParent().(RegExpTerm).getPredecessor()
   }
 
   /** Gets the regular expression term that is matched (textually) after this one, if any. */
   RegExpTerm getSuccessor() {
-    exists(RegExpSequence seq, int i |
-      seq.getChild(i) = this and
-      seq.getChild(i + 1) = result
-    )
-    or
-    exists(RegExpTerm parent |
-      parent = getParent() and
-      not parent instanceof RegExpSubPattern
-    |
+    exists(RegExpTerm parent | parent = getParent() |
+      result = parent.(RegExpSequence).nextElement(this)
+      or
+      not exists(parent.(RegExpSequence).nextElement(this)) and
+      not parent instanceof RegExpSubPattern and
       result = parent.getSuccessor()
     )
   }
@@ -312,6 +309,19 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
     result = ""
     or
     result = getChild(i).getConstantValue() + getConstantValue(i+1)
+  }
+
+    /** Gets the element preceding `element` in this sequence. */
+  RegExpTerm previousElement(RegExpTerm element) {
+    element = nextElement(result)
+  }
+
+  /** Gets the element following `element` in this sequence. */
+  RegExpTerm nextElement(RegExpTerm element) {
+    exists(int i |
+      element = this.getChild(i) and
+      result = this.getChild(i + 1)
+    )
   }
 }
 
