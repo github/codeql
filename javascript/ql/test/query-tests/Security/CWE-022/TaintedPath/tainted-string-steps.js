@@ -17,14 +17,15 @@ var server = http.createServer(function(req, res) {
 	fs.readFileSync(path.trim()); // NOT OK
 	fs.readFileSync(path.toLowerCase()); // NOT OK
 
-	fs.readFileSync(path.split('/')); // OK -- for now
+	fs.readFileSync(path.split('/')); // OK (readFile throws an exception when the filename is an array)
 	fs.readFileSync(path.split('/')[0]); // OK -- for now
-	fs.readFileSync(path.split('/')[i]); // OK -- for now
-	fs.readFileSync(path.split(/\//)[i]); // OK -- for now
+	fs.readFileSync(path.split('/')[i]); // NOT OK
+	fs.readFileSync(path.split(/\//)[i]); // NOT OK
 	fs.readFileSync(path.split("?")[0]); // NOT OK
 	fs.readFileSync(path.split(unknown)[i]); // NOT OK -- but not yet flagged
 	fs.readFileSync(path.split(unknown).whatever); // OK -- but still flagged
 	fs.readFileSync(path.split(unknown)); // NOT OK
+	fs.readFileSync(path.split("?")[i]); // NOT OK -- but not yet flagged
 });
 
 server.listen();

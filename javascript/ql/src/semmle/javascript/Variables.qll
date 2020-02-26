@@ -680,7 +680,7 @@ class Parameterized extends @parameterized, Documentable {
 }
 
 /**
- * A parameter declaration.
+ * A parameter declaration in a function or catch clause.
  *
  * Examples:
  *
@@ -688,6 +688,9 @@ class Parameterized extends @parameterized, Documentable {
  * function f(x, { y: z }, ...rest) {  // `x`, `{ y: z }` and `rest` are parameter declarations
  *   var [ a, b ] = rest;
  *   var c;
+ *   try {
+ *      x.m();
+ *   } catch(e) {} // `e` is a parameter declaration
  * }
  * ```
  */

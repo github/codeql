@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering as AST
+import semmle.code.cpp.valuenumbering.GlobalValueNumberingImpl as AST
 import semmle.code.cpp.ir.internal.ASTValueNumbering as IR
 import semmle.code.cpp.ir.IR
 
