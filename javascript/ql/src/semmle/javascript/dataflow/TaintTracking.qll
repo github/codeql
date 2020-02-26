@@ -48,7 +48,16 @@ module TaintTracking {
     // overridden to provide taint-tracking specific qldoc
     override predicate isSink(DataFlow::Node sink) { super.isSink(sink) }
 
-    /** Holds if the intermediate node `node` is a taint sanitizer. */
+    /**
+     * Holds if the intermediate node `node` is a taint sanitizer, that is,
+     * tainted values can not flow into or out of `node`.
+     *
+     * Note that this only blocks flow through nodes that operate directly on the tainted value.
+     * An object _containing_ a tainted value in a property can still flow into and out of `node`.
+     * To block such objects, override `isBarrier` or use a labeled sanitizer to block the `data` flow label.
+     *
+     * For operations that _check_ if a value is tainted or safe, use `isSanitizerGuard` instead.
+     */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
     /**
@@ -84,6 +93,10 @@ module TaintTracking {
      * For example, if `guard` is the comparison expression in
      * `if(x == 'some-constant'){ ... x ... }`, it could sanitize flow of
      * `x` into the "then" branch.
+     *
+     * Node that this only handles checks that operate directly on the tainted value.
+     * Objects that _contain_ a tainted value in a property may still flow across the check.
+     * To block such objects, use a labeled sanitizer guard to block the `data` label.
      */
     predicate isSanitizerGuard(SanitizerGuardNode guard) { none() }
 

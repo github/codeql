@@ -256,9 +256,11 @@ abstract class Configuration extends string {
 /**
  * A label describing the kind of information tracked by a flow configuration.
  *
- * There are two standard labels "data" and "taint", the former describing values
- * that directly originate from a flow source, the latter values that are derived
- * from a flow source via one or more transformations (such as string operations).
+ * There are two standard labels "data" and "taint".
+ * - "data" only propagates along value-preserving data flow, such as assignments
+ *   and parameter-passing, and is the default flow source for a `DataFlow::Configuration`.
+ * - "taint" additionally permits flow through transformations such as string operations,
+ *   and is the default flow source for a `TaintTracking::Configuration`.
  */
 abstract class FlowLabel extends string {
   bindingset[this]
