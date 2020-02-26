@@ -79,16 +79,6 @@ class Value extends TObject {
         this.(ObjectInternal).isBuiltin()
     }
     
-        /** INTERNAL -- Do not use */
-    Builtin asBuiltin() {
-        this = TBuiltinClassObject(result) or
-        this = TBuiltinFunctionObject(result) or
-        this = TBuiltinMethodObject(result) or
-        this = TBuiltinModuleObject(result) or
-        this = TBuiltinOpaqueObject(result) or
-        this = TBuiltinTuple(result)
-    }
-
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or
