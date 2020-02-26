@@ -508,8 +508,9 @@ cached module PointsToInternal {
 
     pragma [noinline]
     private predicate multi_assignment_points_to(MultiAssignmentDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(int index, ControlFlowNode rhs, SequenceObjectInternal sequence |
-            def.indexOf(index, rhs) and
+        exists(int index, ControlFlowNode lhs, ControlFlowNode rhs, SequenceObjectInternal sequence |
+            def.indexOf(index, lhs) and
+            lhs.(DefinitionNode).getValue() = rhs and
             sequence_index_points_to(rhs, context, sequence, value, index) and
             origin = def.getDefiningNode()
         )

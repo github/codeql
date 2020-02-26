@@ -8,6 +8,9 @@
 | a_simple.py:40 | ControlFlowNode for a | 38 |
 | a_simple.py:40 | ControlFlowNode for b | 38 |
 | a_simple.py:40 | ControlFlowNode for c | 38 |
+| a_simple.py:46 | ControlFlowNode for x | 42 |
+| a_simple.py:47 | ControlFlowNode for y | 42 |
+| a_simple.py:48 | ControlFlowNode for z | 42 |
 | a_simple.py:49 | ControlFlowNode for a | 38 |
 | a_simple.py:49 | ControlFlowNode for b | 38 |
 | a_simple.py:49 | ControlFlowNode for c | 38 |

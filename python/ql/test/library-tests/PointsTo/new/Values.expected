@@ -41,6 +41,11 @@
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, Unknown value, ) | builtin-class tuple |
+| a_simple.py:43 | ControlFlowNode for p | runtime | int 1 | builtin-class int |
+| a_simple.py:44 | ControlFlowNode for q | runtime | int 2 | builtin-class int |
+| a_simple.py:45 | ControlFlowNode for r | runtime | int 3 | builtin-class int |
+| a_simple.py:47 | ControlFlowNode for y | runtime | 'b' | builtin-class str |
+| a_simple.py:48 | ControlFlowNode for z | runtime | 'c' | builtin-class str |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', 'c', ) | builtin-class tuple |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
