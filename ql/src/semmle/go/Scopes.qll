@@ -283,7 +283,24 @@ class ResultVariable extends DeclaredVariable {
   FuncDef getFunction() { result = fn }
 }
 
-/** A struct field. */
+/**
+ * A struct field.
+ *
+ * Note that field identity is determined by type identity: if two struct types are identical in
+ * the sense of the Go language specification (https://golang.org/ref/spec#Type_identity), then
+ * any of their fields that have the same name are also identical. This, in turn, means that a
+ * field can have two or more declarations.
+ *
+ * For example, consider the following two type declarations:
+ *
+ * ```go
+ * type T1 struct { x int }
+ * type T2 struct { x int }
+ * ```
+ *
+ * Types `T1` and `T2` are different, but their underlying struct types are identical. Hence
+ * the two declarations of `x` refer to the same field.
+ */
 class Field extends Variable {
   StructType declaringType;
 
