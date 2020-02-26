@@ -25,7 +25,7 @@ Experimental queries and libraries may not be actively maintained as the standar
 
 4. **Compilation**
 
-    - Compilation of the query and any associated libraries and tests must be resilient to future development of the standard libraries. This means that the functionality cannot use internal APIs, cannot depend on the output of `getAQlClass` and cannot make use of regexp matching on `toString`.
+    - Compilation of the query and any associated libraries and tests must be resilient to future development of the standard libraries. This means that the functionality cannot use internal APIs, cannot depend on the output of `getAQlClass`, and cannot make use of regexp matching on `toString`.
     - The query and any associated libraries and tests must not cause any compiler warnings to be emitted (such as use of deprecated functionality or missing `override` annotations).
 
 5. **Results**
@@ -39,4 +39,3 @@ Experimental queries and libraries may not be actively maintained as the standar
 ## Non-requirements
 
 Other criteria typically required for our standard queries and libraries are not required for experimental queries and libraries. In particular, fully disciplined query [metadata](docs/query-metadata-style-guide.md), query [help](docs/query-help-style-guide.md), tests, a low false positive rate and performance tuning are not required (but nonetheless recommended).
-
