@@ -275,7 +275,7 @@ private predicate isChiForAllAliasedMemory(Instruction instr) {
   or
   isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
   or
-  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInputOperand().getAnyDef() )
+  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
 }
 
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {
