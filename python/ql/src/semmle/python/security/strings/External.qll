@@ -218,12 +218,12 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
             or
             taint instanceof ExternalUrlParseResult
         ) and
-        exists(ControlFlowNode foobar |
-            foobar.(SubscriptNode).getObject() = test.getInput().getAUse()
+        exists(ControlFlowNode full_use |
+            full_use.(SubscriptNode).getObject() = test.getInput().getAUse()
             or
-            foobar.(AttrNode).getObject() = test.getInput().getAUse()
+            full_use.(AttrNode).getObject() = test.getInput().getAUse()
         |
-            clears_taint(_, foobar, test.getTest(), test.getSense())
+            clears_taint(_, full_use, test.getTest(), test.getSense())
         )
     }
 
