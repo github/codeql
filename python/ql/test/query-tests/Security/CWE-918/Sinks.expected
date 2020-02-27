@@ -1,0 +1,17 @@
+| test.py:22:22:22:24 | url | test.py:20:1:20:20 | Function vuln_1 | externally controlled string |
+| test.py:29:27:29:30 | host | test.py:26:1:26:20 | Function vuln_2 | externally controlled string |
+| test.py:30:25:30:28 | path | test.py:26:1:26:20 | Function vuln_2 | externally controlled string |
+| test.py:38:27:38:30 | host | test.py:35:1:35:20 | Function vuln_3 | externally controlled string |
+| test.py:39:25:39:28 | path | test.py:35:1:35:20 | Function vuln_3 | externally controlled string |
+| test.py:49:24:49:26 | url | test.py:44:1:44:20 | Function vuln_4 | externally controlled string |
+| test.py:62:24:62:26 | url | test.py:53:1:53:28 | Function bad_sanitizer1 | externally controlled string |
+| test.py:76:24:76:26 | url | test.py:66:1:66:28 | Function bad_sanitizer2 | externally controlled string |
+| test.py:94:27:94:30 | host | test.py:80:1:80:28 | Function bad_sanitizer3 | externally controlled string |
+| test.py:95:25:95:28 | path | test.py:80:1:80:28 | Function bad_sanitizer3 | externally controlled string |
+| test.py:108:24:108:26 | url | test.py:99:1:99:28 | Function bad_sanitizer4 | externally controlled string |
+| test.py:119:22:119:24 | url | test.py:112:1:112:20 | Function safe_1 | externally controlled string |
+| test.py:135:27:135:30 | host | test.py:123:1:123:20 | Function safe_2 | externally controlled string |
+| test.py:136:25:136:28 | path | test.py:123:1:123:20 | Function safe_2 | externally controlled string |
+| test.py:154:27:154:30 | host | test.py:140:1:140:20 | Function safe_3 | externally controlled string |
+| test.py:155:25:155:28 | path | test.py:140:1:140:20 | Function safe_3 | externally controlled string |
+| test.py:169:18:169:20 | url | test.py:159:1:159:20 | Function safe_4 | externally controlled string |

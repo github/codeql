@@ -1,0 +1,11 @@
+| test.py:20:12:20:18 | request | test.py:20:1:20:20 | Function vuln_1 | django.request.HttpRequest |
+| test.py:26:12:26:18 | request | test.py:26:1:26:20 | Function vuln_2 | django.request.HttpRequest |
+| test.py:35:12:35:18 | request | test.py:35:1:35:20 | Function vuln_3 | django.request.HttpRequest |
+| test.py:44:12:44:18 | request | test.py:44:1:44:20 | Function vuln_4 | django.request.HttpRequest |
+| test.py:53:20:53:26 | request | test.py:53:1:53:28 | Function bad_sanitizer1 | django.request.HttpRequest |
+| test.py:66:20:66:26 | request | test.py:66:1:66:28 | Function bad_sanitizer2 | django.request.HttpRequest |
+| test.py:80:20:80:26 | request | test.py:80:1:80:28 | Function bad_sanitizer3 | django.request.HttpRequest |
+| test.py:112:12:112:18 | request | test.py:112:1:112:20 | Function safe_1 | django.request.HttpRequest |
+| test.py:123:12:123:18 | request | test.py:123:1:123:20 | Function safe_2 | django.request.HttpRequest |
+| test.py:140:12:140:18 | request | test.py:140:1:140:20 | Function safe_3 | django.request.HttpRequest |
+| test.py:159:12:159:18 | request | test.py:159:1:159:20 | Function safe_4 | django.request.HttpRequest |

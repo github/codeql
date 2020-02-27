@@ -1,0 +1,99 @@
+edges
+| test.py:20:12:20:18 | django.request.HttpRequest | test.py:21:11:21:17 | django.request.HttpRequest |
+| test.py:20:12:20:18 | django.request.HttpRequest | test.py:21:11:21:17 | django.request.HttpRequest |
+| test.py:21:11:21:17 | django.request.HttpRequest | test.py:21:11:21:21 | django.http.request.QueryDict |
+| test.py:21:11:21:17 | django.request.HttpRequest | test.py:21:11:21:21 | django.http.request.QueryDict |
+| test.py:21:11:21:21 | django.http.request.QueryDict | test.py:21:11:21:28 | externally controlled string |
+| test.py:21:11:21:21 | django.http.request.QueryDict | test.py:21:11:21:28 | externally controlled string |
+| test.py:21:11:21:28 | externally controlled string | test.py:22:22:22:24 | externally controlled string |
+| test.py:21:11:21:28 | externally controlled string | test.py:22:22:22:24 | externally controlled string |
+| test.py:26:12:26:18 | django.request.HttpRequest | test.py:27:12:27:18 | django.request.HttpRequest |
+| test.py:26:12:26:18 | django.request.HttpRequest | test.py:27:12:27:18 | django.request.HttpRequest |
+| test.py:26:12:26:18 | django.request.HttpRequest | test.py:28:12:28:18 | django.request.HttpRequest |
+| test.py:26:12:26:18 | django.request.HttpRequest | test.py:28:12:28:18 | django.request.HttpRequest |
+| test.py:27:12:27:18 | django.request.HttpRequest | test.py:27:12:27:22 | django.http.request.QueryDict |
+| test.py:27:12:27:18 | django.request.HttpRequest | test.py:27:12:27:22 | django.http.request.QueryDict |
+| test.py:27:12:27:22 | django.http.request.QueryDict | test.py:27:12:27:30 | externally controlled string |
+| test.py:27:12:27:22 | django.http.request.QueryDict | test.py:27:12:27:30 | externally controlled string |
+| test.py:27:12:27:30 | externally controlled string | test.py:29:27:29:30 | externally controlled string |
+| test.py:27:12:27:30 | externally controlled string | test.py:29:27:29:30 | externally controlled string |
+| test.py:28:12:28:18 | django.request.HttpRequest | test.py:28:12:28:22 | django.http.request.QueryDict |
+| test.py:28:12:28:18 | django.request.HttpRequest | test.py:28:12:28:22 | django.http.request.QueryDict |
+| test.py:28:12:28:22 | django.http.request.QueryDict | test.py:28:12:28:30 | externally controlled string |
+| test.py:28:12:28:22 | django.http.request.QueryDict | test.py:28:12:28:30 | externally controlled string |
+| test.py:28:12:28:30 | externally controlled string | test.py:30:25:30:28 | externally controlled string |
+| test.py:28:12:28:30 | externally controlled string | test.py:30:25:30:28 | externally controlled string |
+| test.py:35:12:35:18 | django.request.HttpRequest | test.py:36:11:36:17 | django.request.HttpRequest |
+| test.py:35:12:35:18 | django.request.HttpRequest | test.py:36:11:36:17 | django.request.HttpRequest |
+| test.py:36:11:36:17 | django.request.HttpRequest | test.py:36:11:36:21 | django.http.request.QueryDict |
+| test.py:36:11:36:17 | django.request.HttpRequest | test.py:36:11:36:21 | django.http.request.QueryDict |
+| test.py:36:11:36:21 | django.http.request.QueryDict | test.py:36:11:36:28 | externally controlled string |
+| test.py:36:11:36:21 | django.http.request.QueryDict | test.py:36:11:36:28 | externally controlled string |
+| test.py:36:11:36:28 | externally controlled string | test.py:37:55:37:57 | externally controlled string |
+| test.py:36:11:36:28 | externally controlled string | test.py:37:55:37:57 | externally controlled string |
+| test.py:37:46:37:58 | sequence of externally controlled string | test.py:38:27:38:30 | externally controlled string |
+| test.py:37:46:37:58 | sequence of externally controlled string | test.py:38:27:38:30 | externally controlled string |
+| test.py:37:46:37:58 | sequence of externally controlled string | test.py:39:25:39:28 | externally controlled string |
+| test.py:37:46:37:58 | sequence of externally controlled string | test.py:39:25:39:28 | externally controlled string |
+| test.py:37:55:37:57 | externally controlled string | test.py:37:46:37:58 | sequence of externally controlled string |
+| test.py:37:55:37:57 | externally controlled string | test.py:37:46:37:58 | sequence of externally controlled string |
+| test.py:53:20:53:26 | django.request.HttpRequest | test.py:55:12:55:18 | django.request.HttpRequest |
+| test.py:53:20:53:26 | django.request.HttpRequest | test.py:55:12:55:18 | django.request.HttpRequest |
+| test.py:55:12:55:18 | django.request.HttpRequest | test.py:55:12:55:22 | django.http.request.QueryDict |
+| test.py:55:12:55:18 | django.request.HttpRequest | test.py:55:12:55:22 | django.http.request.QueryDict |
+| test.py:55:12:55:22 | django.http.request.QueryDict | test.py:55:12:55:30 | externally controlled string |
+| test.py:55:12:55:22 | django.http.request.QueryDict | test.py:55:12:55:30 | externally controlled string |
+| test.py:55:12:55:30 | externally controlled string | test.py:61:39:61:42 | externally controlled string |
+| test.py:55:12:55:30 | externally controlled string | test.py:61:39:61:42 | externally controlled string |
+| test.py:61:11:61:43 | externally controlled string | test.py:62:24:62:26 | externally controlled string |
+| test.py:61:11:61:43 | externally controlled string | test.py:62:24:62:26 | externally controlled string |
+| test.py:61:39:61:42 | externally controlled string | test.py:61:11:61:43 | externally controlled string |
+| test.py:61:39:61:42 | externally controlled string | test.py:61:11:61:43 | externally controlled string |
+| test.py:66:20:66:26 | django.request.HttpRequest | test.py:67:12:67:18 | django.request.HttpRequest |
+| test.py:66:20:66:26 | django.request.HttpRequest | test.py:67:12:67:18 | django.request.HttpRequest |
+| test.py:66:20:66:26 | django.request.HttpRequest | test.py:68:12:68:18 | django.request.HttpRequest |
+| test.py:66:20:66:26 | django.request.HttpRequest | test.py:68:12:68:18 | django.request.HttpRequest |
+| test.py:67:12:67:18 | django.request.HttpRequest | test.py:67:12:67:22 | django.http.request.QueryDict |
+| test.py:67:12:67:18 | django.request.HttpRequest | test.py:67:12:67:22 | django.http.request.QueryDict |
+| test.py:67:12:67:22 | django.http.request.QueryDict | test.py:67:12:67:30 | externally controlled string |
+| test.py:67:12:67:22 | django.http.request.QueryDict | test.py:67:12:67:30 | externally controlled string |
+| test.py:67:12:67:30 | externally controlled string | test.py:75:33:75:36 | externally controlled string |
+| test.py:67:12:67:30 | externally controlled string | test.py:75:33:75:36 | externally controlled string |
+| test.py:68:12:68:18 | django.request.HttpRequest | test.py:68:12:68:22 | django.http.request.QueryDict |
+| test.py:68:12:68:18 | django.request.HttpRequest | test.py:68:12:68:22 | django.http.request.QueryDict |
+| test.py:68:12:68:22 | django.http.request.QueryDict | test.py:68:12:68:30 | externally controlled string |
+| test.py:68:12:68:22 | django.http.request.QueryDict | test.py:68:12:68:30 | externally controlled string |
+| test.py:68:12:68:30 | externally controlled string | test.py:75:39:75:42 | externally controlled string |
+| test.py:68:12:68:30 | externally controlled string | test.py:75:39:75:42 | externally controlled string |
+| test.py:75:11:75:43 | externally controlled string | test.py:76:24:76:26 | externally controlled string |
+| test.py:75:11:75:43 | externally controlled string | test.py:76:24:76:26 | externally controlled string |
+| test.py:75:33:75:36 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
+| test.py:75:33:75:36 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
+| test.py:75:39:75:42 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
+| test.py:75:39:75:42 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
+| test.py:112:12:112:18 | django.request.HttpRequest | test.py:114:11:114:17 | django.request.HttpRequest |
+| test.py:112:12:112:18 | django.request.HttpRequest | test.py:114:11:114:17 | django.request.HttpRequest |
+| test.py:114:11:114:17 | django.request.HttpRequest | test.py:114:11:114:21 | django.http.request.QueryDict |
+| test.py:114:11:114:17 | django.request.HttpRequest | test.py:114:11:114:21 | django.http.request.QueryDict |
+| test.py:114:11:114:21 | django.http.request.QueryDict | test.py:114:11:114:28 | externally controlled string |
+| test.py:114:11:114:21 | django.http.request.QueryDict | test.py:114:11:114:28 | externally controlled string |
+| test.py:114:11:114:28 | externally controlled string | test.py:119:22:119:24 | externally controlled string |
+| test.py:114:11:114:28 | externally controlled string | test.py:119:22:119:24 | externally controlled string |
+| test.py:159:12:159:18 | django.request.HttpRequest | test.py:160:11:160:17 | django.request.HttpRequest |
+| test.py:159:12:159:18 | django.request.HttpRequest | test.py:160:11:160:17 | django.request.HttpRequest |
+| test.py:160:11:160:17 | django.request.HttpRequest | test.py:160:11:160:21 | django.http.request.QueryDict |
+| test.py:160:11:160:17 | django.request.HttpRequest | test.py:160:11:160:21 | django.http.request.QueryDict |
+| test.py:160:11:160:21 | django.http.request.QueryDict | test.py:160:11:160:28 | externally controlled string |
+| test.py:160:11:160:21 | django.http.request.QueryDict | test.py:160:11:160:28 | externally controlled string |
+| test.py:160:11:160:28 | externally controlled string | test.py:169:18:169:20 | externally controlled string |
+| test.py:160:11:160:28 | externally controlled string | test.py:169:18:169:20 | externally controlled string |
+#select
+| test.py:22:22:22:24 | url | test.py:20:12:20:18 | django.request.HttpRequest | test.py:22:22:22:24 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:20:12:20:18 | request | a user-provided value |
+| test.py:29:27:29:30 | host | test.py:26:12:26:18 | django.request.HttpRequest | test.py:29:27:29:30 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:26:12:26:18 | request | a user-provided value |
+| test.py:30:25:30:28 | path | test.py:26:12:26:18 | django.request.HttpRequest | test.py:30:25:30:28 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:26:12:26:18 | request | a user-provided value |
+| test.py:38:27:38:30 | host | test.py:35:12:35:18 | django.request.HttpRequest | test.py:38:27:38:30 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:35:12:35:18 | request | a user-provided value |
+| test.py:39:25:39:28 | path | test.py:35:12:35:18 | django.request.HttpRequest | test.py:39:25:39:28 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:35:12:35:18 | request | a user-provided value |
+| test.py:62:24:62:26 | url | test.py:53:20:53:26 | django.request.HttpRequest | test.py:62:24:62:26 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:53:20:53:26 | request | a user-provided value |
+| test.py:76:24:76:26 | url | test.py:66:20:66:26 | django.request.HttpRequest | test.py:76:24:76:26 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:66:20:66:26 | request | a user-provided value |
+| test.py:119:22:119:24 | url | test.py:112:12:112:18 | django.request.HttpRequest | test.py:119:22:119:24 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:112:12:112:18 | request | a user-provided value |
+| test.py:169:18:169:20 | url | test.py:159:12:159:18 | django.request.HttpRequest | test.py:169:18:169:20 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:159:12:159:18 | request | a user-provided value |

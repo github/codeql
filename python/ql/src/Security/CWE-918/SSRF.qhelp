@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+something something something SSRF
+
+Althuogh the dangers are not as immediate in a blind SSRF, where the attacker is not able to exfiltrate the response for the SSRF-request, there is still a risk of being vulnerable.
+</p>
+</overview>
+
+<recommendation>
+<p>
+don't :)
+</p>
+</recommendation>
+
+<example>
+<p>
+text explaining the example
+</p>
+
+<sample src="bad.py"/>
+
+
+</example>
+
+<references>
+    <li>
+        PortSwigger: <a href="https://portswigger.net/web-security/ssrf">Server-side request forgery (SSRF)</a>
+    </li>
+    <li>
+        PortSwigger: <a href="https://portswigger.net/web-security/ssrf/blind">Blind SSRF vulnerabilities</a>
+    </li>
+    <li>
+        OWASP overview: <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">Server Side Request Forgery</a>
+    </li>
+    <li>
+        OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">Server-Side Request Forgery Cheat Sheet</a>
+    </li>
+</references>
+
+</qhelp>
