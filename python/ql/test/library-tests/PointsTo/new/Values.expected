@@ -54,6 +54,13 @@
 | a_simple.py:49 | ControlFlowNode for c | runtime | 'c' | builtin-class str |
 | a_simple.py:51 | ControlFlowNode for h | runtime | 'b' | builtin-class str |
 | a_simple.py:52 | ControlFlowNode for i | runtime | 'c' | builtin-class str |
+| a_simple.py:53 | ControlFlowNode for BinaryExpr | runtime | instance of tuple | builtin-class tuple |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | runtime | int 1 | builtin-class int |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
+| a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 1, ) | builtin-class tuple |
+| a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 2, ) | builtin-class tuple |
+| a_simple.py:54 | ControlFlowNode for l | runtime | instance of object | builtin-class object |
+| a_simple.py:55 | ControlFlowNode for m | runtime | instance of object | builtin-class object |
 | b_condition.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | b_condition.py:5 | ControlFlowNode for IfExp | runtime | None | builtin-class NoneType |
 | b_condition.py:5 | ControlFlowNode for None | runtime | None | builtin-class NoneType |

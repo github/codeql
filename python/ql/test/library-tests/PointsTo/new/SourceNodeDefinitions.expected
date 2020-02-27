@@ -46,6 +46,8 @@
 | a_simple.py:38 | Local Variable g | Entry node for Function multi_assign_and_packing | definition |
 | a_simple.py:38 | Local Variable h | Entry node for Function multi_assign_and_packing | definition |
 | a_simple.py:38 | Local Variable i | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable l | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable m | Entry node for Function multi_assign_and_packing | definition |
 | a_simple.py:38 | Local Variable p | Entry node for Function multi_assign_and_packing | definition |
 | a_simple.py:38 | Local Variable q | Entry node for Function multi_assign_and_packing | definition |
 | a_simple.py:38 | Local Variable r | Entry node for Function multi_assign_and_packing | definition |
@@ -65,6 +67,8 @@
 | a_simple.py:49 | Local Variable g | ControlFlowNode for g | definition |
 | a_simple.py:49 | Local Variable h | ControlFlowNode for h | definition |
 | a_simple.py:49 | Local Variable i | ControlFlowNode for i | definition |
+| a_simple.py:53 | Local Variable l | ControlFlowNode for l | definition |
+| a_simple.py:53 | Local Variable m | ControlFlowNode for m | definition |
 | b_condition.py:0 | Global Variable __name__ | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable __package__ | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable double_attr_check | Entry node for Module code.b_condition | definition |

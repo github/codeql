@@ -50,3 +50,6 @@ def multi_assign_and_packing(a, b="b", c="c"):
     g
     h
     i
+    l, m = (1,) + (2,)
+    l
+    m
