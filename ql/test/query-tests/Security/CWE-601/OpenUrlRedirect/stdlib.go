@@ -139,5 +139,29 @@ func serveStdlib() {
 		http.Redirect(w, r, target, 302)
 	})
 
+	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		// GOOD: Only safe parts of the URL are used
+		url := *r.URL
+		if url.Scheme == "http" {
+			url.Scheme = "https"
+			http.Redirect(w, r, url.String(), 302)
+		} else {
+			// ...
+		}
+	})
+
+	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		// GOOD: Only safe parts of the URL are used
+		if r.URL.Scheme == "http" {
+			http.Redirect(w, r, "https://"+r.URL.RequestURI(), 302)
+		} else {
+			// ...
+		}
+	})
+
 	http.ListenAndServe(":80", nil)
 }

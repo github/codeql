@@ -39,11 +39,25 @@ module OpenUrlRedirect {
     SafeUrlMethod() {
       this instanceof StringMethod
       or
-      exists(string m | this.hasQualifiedName("net/url", "URL", m) | m = "Hostname" or m = "Port")
+      exists(string m | this.hasQualifiedName("net/url", "URL", m) |
+        m = "Hostname" or m = "Port" or m = "RequestURI"
+      )
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
+    }
+  }
+
+  /**
+   * A function that trims the right hand side of a string, considered to preserve the safeness
+   * of taint flow from the full request URL.
+   */
+  class StringRightTrimmer extends Strings::Trimmer {
+    StringRightTrimmer() {
+      this.hasQualifiedName("strings", "TrimSuffix") or
+      this.hasQualifiedName("strings", "TrimRight") or
+      this.hasQualifiedName("strings", "TrimRightFunc")
     }
   }
 

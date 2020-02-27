@@ -58,6 +58,8 @@ module OpenUrlRedirect {
 
     override predicate isSource(DataFlow::Node source) {
       source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", "URL")
+      or
+      source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", "Host")
     }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
@@ -65,9 +67,32 @@ module OpenUrlRedirect {
     override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       TaintTracking::functionModelStep(any(SafeUrlMethod m), pred, succ)
       or
+      TaintTracking::functionModelStep(any(Path::PathManipulatingFunction pmf), pred, succ)
+      or
+      TaintTracking::functionModelStep(any(StringRightTrimmer rt), pred, succ)
+      or
+      TaintTracking::referenceStep(pred, succ)
+      or
+      TaintTracking::stringConcatStep(pred, succ)
+      or
+      TaintTracking::tupleStep(pred, succ)
+      or
       exists(DataFlow::FieldReadNode frn | succ = frn |
-        frn.getBase() = pred and frn.getFieldName() = "Host"
+        frn.getBase() = pred and
+        (frn.getFieldName() = "Host" or frn.getFieldName() = "Path")
+      )
+      or
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Path") |
+        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
+
+    override predicate isBarrierOut(DataFlow::Node node) {
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Path") |
+        w.writesField(node.getASuccessor(), f, _)
+      )
+    }
+
+    override int explorationLimit() { result = 30 }
   }
 }
