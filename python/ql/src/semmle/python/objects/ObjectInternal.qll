@@ -255,7 +255,10 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     pragma [noinline] override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() {
-        exists(this.getBuiltin().getItem(_))
+        exists(Builtin builtin |
+            builtin = this.getBuiltin() and
+            not exists(builtin.getItem(_))
+        )
     }
 
     override boolean isDescriptor() { result = false }
