@@ -222,8 +222,7 @@ abstract class BufferAccessOpcode extends Opcode {
 /**
  * An opcode that accesses a memory buffer of unknown size.
  */
-abstract class UnsizedBufferAccessOpcode extends BufferAccessOpcode {
-}
+abstract class UnsizedBufferAccessOpcode extends BufferAccessOpcode { }
 
 /**
  * An opcode that writes to a memory buffer of unknown size.
@@ -670,7 +669,8 @@ module Opcode {
     final override string toString() { result = "IndirectMayWriteSideEffect" }
   }
 
-  class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode, TBufferReadSideEffect {
+  class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode,
+    TBufferReadSideEffect {
     final override string toString() { result = "BufferReadSideEffect" }
   }
 
@@ -679,8 +679,8 @@ module Opcode {
     final override string toString() { result = "BufferMustWriteSideEffect" }
   }
 
-  class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode, MayWriteOpcode,
-    TBufferMayWriteSideEffect {
+  class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
+    MayWriteOpcode, TBufferMayWriteSideEffect {
     final override string toString() { result = "BufferMayWriteSideEffect" }
   }
 
