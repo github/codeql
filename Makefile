@@ -29,6 +29,7 @@ clean:
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
+.PHONY: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES)))
 $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))):
 	go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
@@ -38,16 +39,19 @@ tools-codeql-full: tools-linux64 tools-osx64 tools-win64
 
 tools-linux64: $(addprefix tools/linux64/,$(BINARIES))
 
+.PHONY: $(addprefix tools/linux64/,$(BINARIES))
 $(addprefix tools/linux64/,$(BINARIES)):
 	GOOS=linux GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
 
 tools-osx64: $(addprefix tools/osx64/,$(BINARIES))
 
+.PHONY: $(addprefix tools/osx64/,$(BINARIES))
 $(addprefix tools/osx64/,$(BINARIES)):
 	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
 
 tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 
+.PHONY: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
