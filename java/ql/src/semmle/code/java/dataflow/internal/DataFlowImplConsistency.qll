@@ -32,9 +32,7 @@ module Consistency {
       n instanceof RelevantNode and
       c = count(n.getEnclosingCallable()) and
       c != 1 and
-      if c > 1
-      then msg = "Node does not have unique enclosing callable."
-      else msg = "Node is missing an enclosing callable."
+      msg = "Node should have one enclosing callable but has " + c + "."
     )
   }
 
@@ -43,9 +41,7 @@ module Consistency {
       n instanceof RelevantNode and
       c = count(n.getTypeBound()) and
       c != 1 and
-      if c > 1
-      then msg = "Node does not have unique type bound."
-      else msg = "Node is missing a type bound."
+      msg = "Node should have one type bound but has " + c + "."
     )
   }
 
@@ -54,9 +50,7 @@ module Consistency {
       n instanceof RelevantNode and
       c = count(getErasedRepr(n.getTypeBound())) and
       c != 1 and
-      if c > 1
-      then msg = "Node does not have unique type representation."
-      else msg = "Node is missing a type representation."
+      msg = "Node should have one type representation but has " + c + "."
     )
   }
 
@@ -107,9 +101,7 @@ module Consistency {
     exists(int c |
       c = count(n.getPreUpdateNode()) and
       c != 1 and
-      if c > 1
-      then msg = "PostUpdateNode does not have unique pre-update node."
-      else msg = "PostUpdateNode is missing a pre-update node."
+      msg = "PostUpdateNode should have one pre-update node but has " + c + "."
     )
   }
 
