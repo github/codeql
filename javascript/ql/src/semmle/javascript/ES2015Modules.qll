@@ -78,9 +78,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
   }
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
-  predicate isTypeOnly() {
-    hasTypeKeyword(this)
-  }
+  predicate isTypeOnly() { hasTypeKeyword(this) }
 
   override predicate isAmbient() {
     Stmt.super.isAmbient() or
@@ -268,9 +266,7 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
   abstract DataFlow::Node getSourceNode(string name);
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
-  predicate isTypeOnly() {
-    hasTypeKeyword(this)
-  }
+  predicate isTypeOnly() { hasTypeKeyword(this) }
 
   override predicate isAmbient() {
     Stmt.super.isAmbient() or
@@ -614,15 +610,10 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    *
    * Gets the module from which this declaration re-exports.
    */
-  deprecated
-  ES2015Module getImportedModule() {
-    result = getReExportedModule()
-  }
+  deprecated ES2015Module getImportedModule() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
-  ES2015Module getReExportedES2015Module() {
-    result = getReExportedModule()
-  }
+  ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports. */
   Module getReExportedModule() {
@@ -635,7 +626,8 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
    */
   private Module resolveFromTypeRoot() {
-    result.getFile() = min(TypeRootFolder typeRoot |
+    result.getFile() =
+      min(TypeRootFolder typeRoot |
         |
         typeRoot.getModuleFile(getImportedPath().getStringValue())
         order by

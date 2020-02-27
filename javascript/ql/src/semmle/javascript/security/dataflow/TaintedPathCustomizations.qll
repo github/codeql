@@ -106,12 +106,10 @@ module TaintedPath {
     }
 
     /**
-     * A flow label representing an array of path elements that may include "..". 
-     */ 
+     * A flow label representing an array of path elements that may include "..".
+     */
     class SplitPath extends DataFlow::FlowLabel {
-      SplitPath() {
-        this = "splitPath"
-      }
+      SplitPath() { this = "splitPath" }
     }
   }
 
@@ -395,7 +393,7 @@ module TaintedPath {
       e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
     }
   }
-  
+
   /**
    * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
    */

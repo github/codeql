@@ -85,8 +85,13 @@ class DomMethodCallExpr extends MethodCallExpr {
         name = "setAttributeNS" and argPos = 2
       ) and
       // restrict to potentially dangerous attributes
-      exists(string attr | 
-        attr = "action" or attr = "formaction" or attr = "href" or attr = "src" or attr = "xlink:href" |
+      exists(string attr |
+        attr = "action" or
+        attr = "formaction" or
+        attr = "href" or
+        attr = "src" or
+        attr = "xlink:href"
+      |
         getArgument(argPos - 1).getStringValue().toLowerCase() = attr
       )
     )

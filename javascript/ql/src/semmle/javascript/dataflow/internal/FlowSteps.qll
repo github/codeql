@@ -440,8 +440,8 @@ class PathSummary extends TPathSummary {
     exists(Boolean hasReturn2, Boolean hasCall2, FlowLabel end2 |
       that = MkPathSummary(hasReturn2, hasCall2, end, end2)
     |
-      result = MkPathSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2), start,
-          end2) and
+      result =
+        MkPathSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2), start, end2) and
       // avoid constructing invalid paths
       not (hasCall = true and hasReturn2 = true)
     )
@@ -456,8 +456,8 @@ class PathSummary extends TPathSummary {
     exists(Boolean hasReturn2, Boolean hasCall2 |
       that = MkPathSummary(hasReturn2, hasCall2, FlowLabel::data(), FlowLabel::data())
     |
-      result = MkPathSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2), start,
-          end) and
+      result =
+        MkPathSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2), start, end) and
       // avoid constructing invalid paths
       not (hasCall = true and hasReturn2 = true)
     )
@@ -474,8 +474,9 @@ class PathSummary extends TPathSummary {
       (if hasReturn = true then withReturn = "with" else withReturn = "without") and
       (if hasCall = true then withCall = "with" else withCall = "without")
     |
-      result = "path " + withReturn + " return steps and " + withCall + " call steps " +
-          "transforming " + start + " into " + end
+      result =
+        "path " + withReturn + " return steps and " + withCall + " call steps " + "transforming " +
+          start + " into " + end
     )
   }
 }

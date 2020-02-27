@@ -7,7 +7,6 @@ import javascript
 
 private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {
   int cmdArg;
-
   boolean shell;
 
   SystemCommandExecutors() {
