@@ -78,8 +78,8 @@ private class CommandCall extends DataFlow::InvokeNode {
  * Holds if the input `str` contains some character that might be interpreted in a non-trivial way by a shell. 
  */ 
 bindingset[str]
-predicate containsNonTrivialBashChar(string str) {
-  exists(str.regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| ", _, _))
+private predicate containsNonTrivialShellChar(string str) {
+  exists(str.regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| |;", _, _))
 }
 
 /**
@@ -142,7 +142,7 @@ class UselessCat extends CommandCall {
 /**
  * Gets a string used to call `cat`.
  */
-string getACatExecuteable() {
+private string getACatExecuteable() {
   result = "cat" or result = "/bin/cat"
 }
 
@@ -173,6 +173,7 @@ module PrettyPrintCatCall {
         callback = "" and not exists(cat.getCallback())
       ) and
       fileArg = createFileArgument(cat).trim() and
+     // sanity check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
       not(containsNonTrivialBashChar(fileArg.regexpReplaceAll("\\$|\\`| ", ""))) // string concat might contain " ", template strings might contain "$" or `, and that is OK. 
     |
       result =
