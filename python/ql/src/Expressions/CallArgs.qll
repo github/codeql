@@ -26,7 +26,7 @@ private Keyword not_keyword_only_arg_objectapi(Call call, FunctionObject func) {
  *  plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
  */
 
-private int positional_arg_count_objectapi_for_call_objectapi(Call call, Object callable) {
+private int positional_arg_count_for_call_objectapi(Call call, Object callable) {
     call = get_a_call_objectapi(callable).getNode() and
     exists(int positional_keywords |
       exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
@@ -103,7 +103,7 @@ predicate too_many_args_objectapi(Call call, Object callable, int limit) {
         callable instanceof ClassObject and
         call.getAFlowNode() = get_a_call_objectapi(callable) and limit = func.maxParameters() - 1
     ) and
-    positional_arg_count_objectapi_for_call_objectapi(call, callable) > limit
+    positional_arg_count_for_call_objectapi(call, callable) > limit
 }
 
 /** Holds if `call` has too many or too few arguments for `func` */
