@@ -6,6 +6,7 @@
  * `PolynomialReDoS::Configuration` is needed, otherwise
  * `PolynomialReDoSCustomizations` should be imported instead.
  */
+
 import javascript
 
 module PolynomialReDoS {

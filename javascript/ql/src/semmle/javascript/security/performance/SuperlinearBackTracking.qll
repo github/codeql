@@ -128,8 +128,9 @@ class PolynomialBackTrackingTerm extends InfiniteRepetitionQuantifier {
         pred = getAMatchPredecessor(this.getPredecessor()) and
         compatible(pred.getAChild(), this.getAChild())
       |
-        reason = "it can start matching anywhere after the start of the preceeding '" +
-            pred.toString() + "'"
+        reason =
+          "it can start matching anywhere after the start of the preceeding '" + pred.toString() +
+            "'"
       )
     ) and
     not this.getParent*() instanceof RegExpSubPattern // too many corner cases

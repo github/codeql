@@ -341,7 +341,7 @@ module TaintTracking {
     pred = call.getAnArgument() and
     succ = call
     or
-    // `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`. 
+    // `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`.
     call.(DataFlow::MethodCallNode).calls(pred, "concat") and
     succ = call
     or
@@ -574,7 +574,6 @@ module TaintTracking {
       succ = this
     }
   }
-  
 
   /**
    * A taint propagating data flow edge arising from calling `String.prototype.match()`.
@@ -583,7 +582,7 @@ module TaintTracking {
     StringMatchTaintStep() {
       this.getMethodName() = "match" and
       this.getNumArgument() = 1 and
-      this.getArgument(0) .analyze().getAType() = TTRegExp()
+      this.getArgument(0).analyze().getAType() = TTRegExp()
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
@@ -696,9 +695,7 @@ module TaintTracking {
    * A taint step through the Node.JS function `util.inspect(..)`.
    */
   class UtilInspectTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
-    UtilInspectTaintStep() {
-      this = DataFlow::moduleImport("util").getAMemberCall("inspect")
-    }
+    UtilInspectTaintStep() { this = DataFlow::moduleImport("util").getAMemberCall("inspect") }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
@@ -719,14 +716,16 @@ module TaintTracking {
         mce = astNode and mce.calls(base, m) and firstArg = mce.getArgument(0)
       |
         // /re/.test(u) or /re/.exec(u)
-        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpObjectFromNode(base.flow()), sanitizedOutcome) and
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpObjectFromNode(base.flow()),
+          sanitizedOutcome) and
         (m = "test" or m = "exec") and
         firstArg = expr
         or
         // u.match(/re/) or u.match("re")
         base = expr and
         m = "match" and
-        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()), sanitizedOutcome)
+        RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()),
+          sanitizedOutcome)
       )
       or
       // m = /re/.exec(u) and similar

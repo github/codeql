@@ -127,7 +127,8 @@ class AdditionalStepSpec extends ExternalData {
     exists(string config |
       if getField(4) = "" then config = "any configuration" else config = getConfiguration()
     |
-      result = "edge from " + getStartPortal() + " to " + getEndPortal() + ", transforming " +
+      result =
+        "edge from " + getStartPortal() + " to " + getEndPortal() + ", transforming " +
           getStartFlowLabel() + " into " + getEndFlowLabel() + " for " + config
     )
   }

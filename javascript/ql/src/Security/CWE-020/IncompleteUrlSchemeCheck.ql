@@ -20,9 +20,7 @@ class DangerousScheme extends string {
 }
 
 /** Gets a data-flow node that checks `nd` against the given `scheme`. */
-DataFlow::Node schemeCheck(
-  DataFlow::Node nd, DangerousScheme scheme
-) {
+DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   // check of the form `nd.startsWith(scheme)`
   exists(StringOps::StartsWith sw | sw = result |
     sw.getBaseString() = nd and

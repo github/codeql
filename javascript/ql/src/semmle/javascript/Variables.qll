@@ -189,10 +189,8 @@ class Variable extends @variable, LexicalName {
    */
   predicate isCaptured() {
     this instanceof GlobalVariable or
-    getAnAccess().getContainer().getFunctionBoundary() != this
-          .(LocalVariable)
-          .getDeclaringContainer()
-          .getFunctionBoundary()
+    getAnAccess().getContainer().getFunctionBoundary() !=
+      this.(LocalVariable).getDeclaringContainer().getFunctionBoundary()
   }
 
   /** Holds if there is a declaration of this variable in `tl`. */
@@ -764,9 +762,7 @@ class Parameter extends BindingPattern {
    * function f(x?: number) {}
    * ```
    */
-  predicate isDeclaredOptional() {
-    isOptionalParameterDeclaration(this)
-  }
+  predicate isDeclaredOptional() { isOptionalParameterDeclaration(this) }
 }
 
 /**

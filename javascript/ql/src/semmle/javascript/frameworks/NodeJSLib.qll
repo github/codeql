@@ -368,10 +368,8 @@ module NodeJSLib {
   class Credentials extends CredentialsExpr {
     Credentials() {
       exists(string http | http = "http" or http = "https" |
-        this = DataFlow::moduleMember(http, "request")
-              .getACall()
-              .getOptionArgument(0, "auth")
-              .asExpr()
+        this =
+          DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth").asExpr()
       )
     }
 
@@ -937,16 +935,17 @@ module NodeJSLib {
    * By extending `NodeJSEventEmitter' we get data-flow on the events passing through this EventEmitter.
    */
   class CustomEventEmitter extends NodeJSEventEmitter {
-  	EventEmitterSubClass clazz;
+    EventEmitterSubClass clazz;
+
     CustomEventEmitter() {
-      if exists(clazz.getAClassReference().getAnInstantiation()) then
-        this = clazz.getAClassReference().getAnInstantiation()
+      if exists(clazz.getAClassReference().getAnInstantiation())
+      then this = clazz.getAClassReference().getAnInstantiation()
       else
-        // In case there are no explicit instantiations of the clazz, then we still want to track data flow between `this` nodes. 
-        // This cannot produce false flow as the `.ref()` method below is always used when creating event-registrations/event-dispatches. 
+        // In case there are no explicit instantiations of the clazz, then we still want to track data flow between `this` nodes.
+        // This cannot produce false flow as the `.ref()` method below is always used when creating event-registrations/event-dispatches.
         this = clazz
     }
-    
+
     override DataFlow::SourceNode ref() {
       result = NodeJSEventEmitter.super.ref() and not this = clazz
       or
@@ -988,25 +987,25 @@ module NodeJSLib {
 
     /**
      * Gets a reference to this server.
-     */ 
+     */
     DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
   }
-  
+
   /**
    * A connection opened on a NodeJS net server.
-   */ 
+   */
   private class NodeJSNetServerConnection extends EventEmitter::Range {
-  	NodeJSNetServer server;
-  	
-  	NodeJSNetServerConnection() {
-  	  exists(DataFlow::MethodCallNode call | 
-  	    call = server.ref().getAMethodCall("on") and 
-  	    call.getArgument(0).mayHaveStringValue("connection") 
-  	  | 
-  	    this = call.getCallback(1).getParameter(0)
-  	  )  	  	
-  	}
-  	
+    NodeJSNetServer server;
+
+    NodeJSNetServerConnection() {
+      exists(DataFlow::MethodCallNode call |
+        call = server.ref().getAMethodCall("on") and
+        call.getArgument(0).mayHaveStringValue("connection")
+      |
+        this = call.getCallback(1).getParameter(0)
+      )
+    }
+
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
   }
 
@@ -1030,32 +1029,25 @@ module NodeJSLib {
 
     override string getSourceType() { result = "NodeJS server" }
   }
-  
+
   /**
    * An instantiation of the `respjs` library, which is an EventEmitter.
    */
   private class RespJS extends NodeJSEventEmitter {
-  	RespJS() {
-  	  this = DataFlow::moduleImport("respjs").getAnInstantiation()	
-  	}
+    RespJS() { this = DataFlow::moduleImport("respjs").getAnInstantiation() }
   }
-  
+
   /**
-   * A event dispatch that serializes the input data and emits the result on the "data" channel. 
+   * A event dispatch that serializes the input data and emits the result on the "data" channel.
    */
-  private class RespWrite extends EventDispatch::DefaultEventDispatch,
-    DataFlow::MethodCallNode {
+  private class RespWrite extends EventDispatch::DefaultEventDispatch, DataFlow::MethodCallNode {
     override RespJS emitter;
 
     RespWrite() { this = emitter.ref().getAMethodCall("write") }
-    
-    override string getChannel() {
-      result = "data"
-    }
 
-    override DataFlow::Node getSentItem(int i) {
-      i = 0 and result = this.getArgument(i)
-    }
+    override string getChannel() { result = "data" }
+
+    override DataFlow::Node getSentItem(int i) { i = 0 and result = this.getArgument(i) }
   }
 
   /**

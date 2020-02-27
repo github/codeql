@@ -123,8 +123,7 @@ module HTTP {
    *
    * Gets the string `http` or `https`.
    */
-  deprecated
-  string httpOrHttps() { result = "http" or result = "https" }
+  deprecated string httpOrHttps() { result = "http" or result = "https" }
 
   /**
    * An expression whose value is sent as (part of) the body of an HTTP response.

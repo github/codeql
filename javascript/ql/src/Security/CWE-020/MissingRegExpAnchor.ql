@@ -46,9 +46,7 @@ predicate isInteriorAnchor(RegExpAnchor term) {
  * Holds if `term` contains an anchor that is not the first or last node
  * in its tree, such as `(foo|bar$|baz)`.
  */
-predicate containsInteriorAnchor(RegExpTerm term) {
-  isInteriorAnchor(term.getAChild*())
-}
+predicate containsInteriorAnchor(RegExpTerm term) { isInteriorAnchor(term.getAChild*()) }
 
 /**
  * Holds if `term` starts with a word boundary or lookbehind assertion,
@@ -78,9 +76,7 @@ predicate containsTrailingPseudoAnchor(RegExpSequence term) {
  * Holds if `term` is an empty sequence, usually arising from
  * literals with a trailing alternative such as `foo|`.
  */
-predicate isEmpty(RegExpSequence term) {
-  term.getNumChild() = 0
-}
+predicate isEmpty(RegExpSequence term) { term.getNumChild() = 0 }
 
 /**
  * Holds if `term` contains a letter constant.
@@ -131,14 +127,14 @@ predicate hasMisleadingAnchorPrecedence(RegExpPatternSource src, string msg) {
     (
       anchoredTerm = root.getChild(0) and
       anchoredTerm.getChild(0) instanceof RegExpCaret and
-      not containsLeadingPseudoAnchor(root.getChild([ 1 .. root.getNumChild() - 1 ])) and
-      containsLetters(root.getChild([ 1 .. root.getNumChild() - 1 ])) and
+      not containsLeadingPseudoAnchor(root.getChild([1 .. root.getNumChild() - 1])) and
+      containsLetters(root.getChild([1 .. root.getNumChild() - 1])) and
       direction = "beginning"
       or
       anchoredTerm = root.getLastChild() and
       anchoredTerm.getLastChild() instanceof RegExpDollar and
-      not containsTrailingPseudoAnchor(root.getChild([ 0 .. root.getNumChild() - 2 ])) and
-      containsLetters(root.getChild([ 0 .. root.getNumChild() - 2 ])) and
+      not containsTrailingPseudoAnchor(root.getChild([0 .. root.getNumChild() - 2])) and
+      containsLetters(root.getChild([0 .. root.getNumChild() - 2])) and
       direction = "end"
     ) and
     // is not used for replace
@@ -146,8 +142,10 @@ predicate hasMisleadingAnchorPrecedence(RegExpPatternSource src, string msg) {
       replace.getMethodName() = "replace" and
       src.getARegExpObject().flowsTo(replace.getArgument(0))
     ) and
-    msg = "Misleading operator precedence. The subexpression '" + anchoredTerm.getRawValue() +
-        "' is anchored at the " + direction + ", but the other parts of this regular expression are not"
+    msg =
+      "Misleading operator precedence. The subexpression '" + anchoredTerm.getRawValue() +
+        "' is anchored at the " + direction +
+        ", but the other parts of this regular expression are not"
   )
 }
 
@@ -181,7 +179,8 @@ predicate isSemiAnchoredHostnameRegExp(RegExpPatternSource src, string msg) {
     hasTopLevelDomainEnding(tld, i) and
     isFinalRegExpTerm(tld.getChild(i)) and // nothing is matched after the TLD
     tld.getChild(0) instanceof RegExpCaret and
-    msg = "This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end."
+    msg =
+      "This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end."
   )
 }
 
@@ -214,7 +213,8 @@ predicate isUnanchoredHostnameRegExp(RegExpPatternSource src, string msg) {
         name = "match" and exists(mcn.getAPropertyRead())
       )
     ) and
-    msg = "When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it."
+    msg =
+      "When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it."
   )
 }
 

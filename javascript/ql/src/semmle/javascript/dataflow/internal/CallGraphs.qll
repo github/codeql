@@ -1,6 +1,7 @@
 /**
  * Internal predicates for computing the call graph.
  */
+
 private import javascript
 
 cached
@@ -24,21 +25,22 @@ module CallGraph {
    * from underlying class tracking if the function came from a class or instance.
    */
   pragma[nomagic]
-  private
-  DataFlow::SourceNode getAFunctionReference(DataFlow::FunctionNode function, int imprecision, DataFlow::TypeTracker t) {
+  private DataFlow::SourceNode getAFunctionReference(
+    DataFlow::FunctionNode function, int imprecision, DataFlow::TypeTracker t
+  ) {
     t.start() and
     exists(Function fun |
       fun = function.getFunction() and
       fun = getAFunctionValue(result)
     |
-      if isIndefiniteGlobal(result) then
+      if isIndefiniteGlobal(result)
+      then
         fun.getFile() = result.getFile() and imprecision = 0
         or
         fun.inExternsFile() and imprecision = 1
         or
         imprecision = 2
-      else
-        imprecision = 0
+      else imprecision = 0
     )
     or
     imprecision = 0 and
@@ -73,8 +75,9 @@ module CallGraph {
    * with `function` as the underlying function.
    */
   pragma[nomagic]
-  private
-  DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t) {
+  private DataFlow::SourceNode getABoundFunctionReferenceAux(
+    DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t
+  ) {
     exists(DataFlow::PartialInvokeNode partial, DataFlow::Node callback |
       result = partial.getBoundFunction(callback, boundArgs) and
       getAFunctionReference(function, 0, t.continue()).flowsTo(callback)
@@ -87,8 +90,10 @@ module CallGraph {
   }
 
   pragma[noinline]
-  private
-  DataFlow::SourceNode getABoundFunctionReferenceAux(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t, DataFlow::StepSummary summary) {
+  private DataFlow::SourceNode getABoundFunctionReferenceAux(
+    DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t,
+    DataFlow::StepSummary summary
+  ) {
     exists(DataFlow::SourceNode prev |
       prev = getABoundFunctionReferenceAux(function, boundArgs, t) and
       DataFlow::StepSummary::step(prev, result, summary)
@@ -100,7 +105,9 @@ module CallGraph {
    * with `function` as the underlying function.
    */
   cached
-  DataFlow::SourceNode getABoundFunctionReference(DataFlow::FunctionNode function, int boundArgs, boolean contextDependent) {
+  DataFlow::SourceNode getABoundFunctionReference(
+    DataFlow::FunctionNode function, int boundArgs, boolean contextDependent
+  ) {
     exists(DataFlow::TypeTracker t |
       result = getABoundFunctionReferenceAux(function, boundArgs, t) and
       t.end() and
@@ -116,8 +123,9 @@ module CallGraph {
    * This predicate may be overridden to customize the class hierarchy analysis.
    */
   pragma[nomagic]
-  private
-  DataFlow::PropRead getAnInstanceMemberAccess(DataFlow::ClassNode cls, string name, DataFlow::TypeTracker t) {
+  private DataFlow::PropRead getAnInstanceMemberAccess(
+    DataFlow::ClassNode cls, string name, DataFlow::TypeTracker t
+  ) {
     result = cls.getAnInstanceReference(t.continue()).getAPropertyRead(name)
     or
     exists(DataFlow::ClassNode subclass |
