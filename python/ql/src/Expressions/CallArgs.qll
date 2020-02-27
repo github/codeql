@@ -37,9 +37,6 @@ private int positional_arg_count_objectapi_for_call_objectapi(Call call, Object 
       |
       result = count(call.getAnArg()) + varargs_length_objectapi(call) + positional_keywords
     )
-  |
-    result = count(call.getAnArg()) + varargs_length(call) + positional_keywords
-  )
 }
 
 int arg_count_objectapi(Call call) {
@@ -83,11 +80,11 @@ predicate illegally_named_parameter_objectapi(Call call, Object func, string nam
 }
 
 /**Whether there is an illegally named parameter called `name` in the `call` to `func` */
-predicate illegally_named_parameter_objectapi(Call call, Object func, string name) {
-    not func.isC() and
+predicate illegally_named_parameter(Call call, Value func, string name) {
+    not func.isBuiltin() and
     name = call.getANamedArgumentName() and
-    call.getAFlowNode() = get_a_call_objectapi(func) and
-    not get_function_or_initializer_objectapi(func).isLegalArgumentName(name)
+    call.getAFlowNode() = get_a_call(func) and
+    not get_function_or_initializer(func).isLegalArgumentName(name)
 }
 
 /**Whether there are too few arguments in the `call` to `callable` where `limit` is the lowest number of legal arguments */
