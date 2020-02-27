@@ -20,6 +20,7 @@
 | UnsignedGEZero.c:122:6:122:40 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.c:127:6:127:51 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.c:131:6:131:52 | ... >= ... | Pointless comparison of unsigned value to zero. |
+| UnsignedGEZero.c:136:6:136:12 | ... <= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.cpp:40:6:40:12 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.cpp:48:6:48:15 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.cpp:54:6:54:12 | ... >= ... | Pointless comparison of unsigned value to zero. |
@@ -41,3 +42,4 @@
 | UnsignedGEZero.cpp:122:6:122:40 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.cpp:127:6:127:51 | ... >= ... | Pointless comparison of unsigned value to zero. |
 | UnsignedGEZero.cpp:131:6:131:52 | ... >= ... | Pointless comparison of unsigned value to zero. |
+| UnsignedGEZero.cpp:136:6:136:12 | ... <= ... | Pointless comparison of unsigned value to zero. |

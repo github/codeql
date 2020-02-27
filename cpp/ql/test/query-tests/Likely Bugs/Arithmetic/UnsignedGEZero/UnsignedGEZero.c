@@ -133,7 +133,7 @@ void myFunction() {
 
 	if (ui <= 0) {
 	}
-	if (0 <= ui) { // violation [NOT DETECTED]
+	if (0 <= ui) { // violation
 	}
 	if (0 < ui) {
 	}
