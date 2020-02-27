@@ -505,6 +505,28 @@ abstract class FunctionValue extends CallableValue {
     predicate isOverriddenMethod() {
         exists(Value f | f.overrides(this))
     }
+    
+    /** Whether `name` is a legal argument name for this function */
+    bindingset[name]
+    predicate isLegalArgumentName(string name) {
+        this.getScope().getAnArg().asName().getId() = name
+        or
+        this.getScope().getAKeywordOnlyArg().getId() = name
+        or
+        this.getScope().hasKwArg()
+    }
+    
+    /** Whether this is a "normal" method, that is, it is exists as a class attribute 
+     *  which is not wrapped and not the __new__ method. */
+    predicate isNormalMethod() {
+        exists(ClassValue cls, string name |
+            cls.declaredAttribute(name) = this and
+            name != "__new__" and
+            exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) |
+              not origin instanceof Lambda
+            )
+        )
+    }
 }
 
 /** Class representing Python functions */
