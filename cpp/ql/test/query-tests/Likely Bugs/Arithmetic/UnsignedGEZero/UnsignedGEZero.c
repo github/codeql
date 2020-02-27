@@ -130,4 +130,11 @@ void myFunction() {
 	}
 	if ((signed int)(unsigned char)(signed char)si >= 0) { // violation
 	}
+
+	if (ui <= 0) {
+	}
+	if (0 <= ui) { // violation [NOT DETECTED]
+	}
+	if (0 < ui) {
+	}
 }
