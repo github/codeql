@@ -120,7 +120,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
         )
     )
     and
-    // OK to use 'is' when comparing with a member of an enumÏ
+    // OK to use 'is' when comparing with a member of an enum
     not exists(Expr left, Expr right, AstNode origin |
         comp.compares(left, op, right) and
         enum_member(origin) |
@@ -135,4 +135,3 @@ private predicate enum_member(AstNode obj) {
         asgn.getValue() = obj
     )
 }
-
