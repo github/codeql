@@ -8,26 +8,28 @@ private import DataFlowImplSpecific::Public
 private import TaintTrackingUtil
 
 module Consistency {
-  private predicate relevantNode(Node n) {
-    n instanceof ArgumentNode or
-    n instanceof ParameterNode or
-    n instanceof ReturnNode or
-    n = getAnOutNode(_, _) or
-    simpleLocalFlowStep(n, _) or
-    simpleLocalFlowStep(_, n) or
-    jumpStep(n, _) or
-    jumpStep(_, n) or
-    storeStep(n, _, _) or
-    storeStep(_, _, n) or
-    readStep(n, _, _) or
-    readStep(_, _, n) or
-    defaultAdditionalTaintStep(n, _) or
-    defaultAdditionalTaintStep(_, n)
+  private class RelevantNode extends Node {
+    RelevantNode() {
+      this instanceof ArgumentNode or
+      this instanceof ParameterNode or
+      this instanceof ReturnNode or
+      this = getAnOutNode(_, _) or
+      simpleLocalFlowStep(this, _) or
+      simpleLocalFlowStep(_, this) or
+      jumpStep(this, _) or
+      jumpStep(_, this) or
+      storeStep(this, _, _) or
+      storeStep(_, _, this) or
+      readStep(this, _, _) or
+      readStep(_, _, this) or
+      defaultAdditionalTaintStep(this, _) or
+      defaultAdditionalTaintStep(_, this)
+    }
   }
 
   query predicate uniqueEnclosingCallable(Node n, string msg) {
     exists(int c |
-      relevantNode(n) and
+      n instanceof RelevantNode and
       c = count(n.getEnclosingCallable()) and
       c != 1 and
       if c > 1
@@ -38,7 +40,7 @@ module Consistency {
 
   query predicate uniqueTypeBound(Node n, string msg) {
     exists(int c |
-      relevantNode(n) and
+      n instanceof RelevantNode and
       c = count(n.getTypeBound()) and
       c != 1 and
       if c > 1
@@ -49,7 +51,7 @@ module Consistency {
 
   query predicate uniqueTypeRepr(Node n, string msg) {
     exists(int c |
-      relevantNode(n) and
+      n instanceof RelevantNode and
       c = count(getErasedRepr(n.getTypeBound())) and
       c != 1 and
       if c > 1
@@ -99,6 +101,21 @@ module Consistency {
 
   query predicate postIsNotPre(PostUpdateNode n, string msg) {
     n.getPreUpdateNode() = n and msg = "PostUpdateNode should not equal its pre-update node."
+  }
+
+  query predicate postHasUniquePre(PostUpdateNode n, string msg) {
+    exists(int c |
+      c = count(n.getPreUpdateNode()) and
+      c != 1 and
+      if c > 1
+      then msg = "PostUpdateNode does not have unique pre-update node."
+      else msg = "PostUpdateNode is missing a pre-update node."
+    )
+  }
+
+  query predicate uniquePostUpdate(Node n, string msg) {
+    1 < strictcount(PostUpdateNode post | post.getPreUpdateNode() = n) and
+    msg = "Node has multiple PostUpdateNodes."
   }
 
   query predicate postIsInSameCallable(PostUpdateNode n, string msg) {
