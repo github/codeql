@@ -3,4 +3,4 @@
 | main.go:17:10:17:10 | x | main.go:17:10:17:10 | initialization of x |
 | main.go:17:26:17:26 | y | main.go:17:26:17:26 | initialization of y |
 | main.go:23:7:23:10 | recv | main.go:23:7:23:10 | initialization of recv |
-| types.go:24:22:24:22 | a | types.go:24:22:24:22 | initialization of a |
+| types.go:33:22:33:22 | a | types.go:33:22:33:22 | initialization of a |
