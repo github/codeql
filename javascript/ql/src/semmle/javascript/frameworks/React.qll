@@ -278,9 +278,7 @@ class FunctionalComponent extends ReactComponent, Function {
     t.start() and
     result = DataFlow::valueNode(this)
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = getAComponentCreatorReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAComponentCreatorReference(t2).track(t2, t))
   }
 
   override DataFlow::SourceNode getAComponentCreatorReference() {
@@ -446,9 +444,7 @@ class ES5Component extends ReactComponent, ObjectExpr {
     t.start() and
     result = create
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = getAComponentCreatorReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAComponentCreatorReference(t2).track(t2, t))
   }
 
   override DataFlow::SourceNode getAComponentCreatorReference() {
@@ -520,7 +516,8 @@ private class FactoryDefinition extends ReactElementDefinition {
  * Partial invocation for calls to `React.Children.map` or a similar library function
  * that binds `this` of a callback.
  */
-private class ReactCallbackPartialInvoke extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+private class ReactCallbackPartialInvoke extends DataFlow::PartialInvokeNode::Range,
+  DataFlow::CallNode {
   ReactCallbackPartialInvoke() {
     exists(string name |
       // React.Children.map or React.Children.forEach

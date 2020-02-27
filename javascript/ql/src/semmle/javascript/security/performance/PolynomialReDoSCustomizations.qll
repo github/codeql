@@ -63,7 +63,6 @@ module PolynomialReDoS {
     override RegExpTerm getRegExp() { result = term }
   }
 
-
   /**
    * An operation that limits the length of a string, seen as a sanitizer.
    */

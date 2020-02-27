@@ -647,9 +647,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     result = getDefReachingEndOf(bb, getSourceVariable())
   }
 
-  override SsaVariable getAnInput() {
-    result = getInputFromBlock(_)
-  }
+  override SsaVariable getAnInput() { result = getInputFromBlock(_) }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     bb = getBasicBlock() and v = getSourceVariable() and i = -1
@@ -676,9 +674,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
    * gets that variable.
    */
   SsaVariable getRephinedVariable() {
-    forex(SsaVariable input | input = getAnInput() |
-      result = getRefinedVariable(input)
-    )
+    forex(SsaVariable input | input = getAnInput() | result = getRefinedVariable(input))
   }
 }
 

@@ -138,9 +138,7 @@ module Electron {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
       }
 
-      override IPCDispatch getAReturnDispatch() {
-        result.getCalleeName() = "sendSync"
-      }
+      override IPCDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
     }
 
     /**
@@ -168,7 +166,7 @@ module Electron {
       }
 
       /**
-       * Gets a registration that this dispatch can send an event to. 
+       * Gets a registration that this dispatch can send an event to.
        */
       override IPCSendRegistration getAReceiver() {
         this.getEmitter() instanceof RendererProcess and

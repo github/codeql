@@ -14,8 +14,9 @@ import PortalExitSource
 import PortalEntrySink
 
 from
-  TaintTracking::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink, Portal p1,
-  Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2, DataFlow::MidPathNode last
+  TaintTracking::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink,
+  Portal p1, Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2,
+  DataFlow::MidPathNode last
 where
   cfg = source.getConfiguration() and
   last = source.getASuccessor*() and
