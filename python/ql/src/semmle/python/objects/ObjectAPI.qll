@@ -482,6 +482,10 @@ abstract class FunctionValue extends CallableValue {
     this.getScope().hasKwArg()
   }
 
+  /** Whether a function is abstract.
+   *
+   * As determined by whether or not it ever raises a `NotImplementedError`. 
+   */
   predicate isAbstract() { this.getARaisedType() = ClassValue::notImplementedError() }
 }
 
