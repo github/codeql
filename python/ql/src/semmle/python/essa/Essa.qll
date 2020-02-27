@@ -609,11 +609,7 @@ class MultiAssignmentDefinition extends EssaNodeDefinition {
         )
     }
 
-    /**
-     * Holds if `this` has index `index` in `lhs`.
-     *
-     * For example, for `a,b = t` the call `b.indexOf(1, t)` holds.
-     */
+    /** Holds if `this` has (zero-based) index `index` in `lhs`. */
     predicate indexOf(int index, SequenceNode lhs) {
         SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index, lhs)
     }
