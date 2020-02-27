@@ -7,7 +7,7 @@ import javascript
 
 private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {
   int cmdArg;
-  int optionsArg;
+  int optionsArg; // either a positive number representing the n'th argument, or a negative number representing the n'th last argument (e.g. -2 is the second last argument).
 
   boolean shell;
   boolean sync;
