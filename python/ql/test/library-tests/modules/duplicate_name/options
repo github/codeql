@@ -1,2 +1,1 @@
 semmle-extractor-options: -R .
-optimize: true
