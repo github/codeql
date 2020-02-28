@@ -53,3 +53,7 @@ def multi_assign_and_packing(a, b="b", c="c"):
     l, m = (1,) + (2,)
     l
     m
+    s, u = a
+    s
+    u
+

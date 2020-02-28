@@ -519,7 +519,7 @@ cached module PointsToInternal {
             sequence_index_points_to(rhs, context, sequence, value, index)
             or
             pointsTo(rhs, context, sequence, _) and
-            sequence instanceof UnknownInstanceInternal and
+            sequence.subscriptUnknown() and
             value = TUnknownInstance(ObjectInternal::builtin("object"))
         )
     }
