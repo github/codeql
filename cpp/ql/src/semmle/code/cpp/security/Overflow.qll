@@ -13,19 +13,32 @@ predicate guardedAbs(Operation e, Expr use) {
   )
 }
 
+pragma[inline]
+private predicate stmtDominates(Stmt dominator, Stmt dominated) {
+  // In same block
+  exists(BasicBlock block, int dominatorIndex, int dominatedIndex |
+    block.getNode(dominatorIndex) = dominator and
+    block.getNode(dominatedIndex) = dominated and
+    dominatedIndex >= dominatorIndex
+  )
+  or
+  // In (possibly) different blocks
+  bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
+}
+
 /** is the size of this use guarded to be less than something? */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getThen(), e.getEnclosingStmt())
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
   )
   or
   exists(Loop c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getStmt(), e.getEnclosingStmt())
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
   )
   or
   exists(ConditionalExpr c, RelationalOperation guard |
@@ -43,13 +56,13 @@ predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getThen(), e.getEnclosingStmt())
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
   )
   or
   exists(Loop c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getStmt(), e.getEnclosingStmt())
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
   )
   or
   exists(ConditionalExpr c, RelationalOperation guard |
