@@ -1,6 +1,6 @@
 /**
  * @name Useless use of cat
- * @description Using `cat`-process to simply read a file is unnecessarily complex, inefficient, unportable, can lead to subtle bugs, or even security vulnerabilities.
+ * @description Using the  `cat` process to read a file is unnecessarily complex, inefficient, unportable, and can lead to subtle bugs, or even security vulnerabilities.
  * @kind problem
  * @problem.severity error
  * @precision high

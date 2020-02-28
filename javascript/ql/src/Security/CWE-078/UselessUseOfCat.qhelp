@@ -3,9 +3,9 @@
 "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Using the unix command <code>cat</code> to simply read a file is a 
-unnecessarily complex way to achieve something that can be done simpler and 
-safer using the Node.js <code>fs.readFile</code> API.
+<p>Using the unix command <code>cat</code> only to read a file is a 
+an unnecessarily complex way to achieve something that can be done in a simpler and 
+safer manner using the Node.js <code>fs.readFile</code> API.
 </p>
 <p>
 The use of <code>cat</code> for simple file reads leads to code that is 
@@ -25,12 +25,11 @@ from the file system.
 
 <sample src="examples/useless-cat.js"/>
 
-<p>The code in the example will break if the input <code>name</code> contain 
-special characters (including space), the code does not work on windows,  
-and if the input is user controlled a command injection attack can happen.</p>
+<p>The code in the example will break if the input <code>name</code> contains 
+special characters (including space). Additionally, it does not work on Windows 
+and if the input is user-controlled, a command injection attack can happen.</p>
 
-<p>To avoid these potential issues the <code>fs.readFile</code> API can be 
-used instead: </p>
+<p>The <code>fs.readFile</code> API should be used to avoid these potential issues:
 
 <sample src="examples/useless-cat-fixed.js"/>
 
