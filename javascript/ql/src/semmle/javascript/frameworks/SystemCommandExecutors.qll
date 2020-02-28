@@ -8,7 +8,6 @@ import javascript
 private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {
   int cmdArg;
   int optionsArg; // either a positive number representing the n'th argument, or a negative number representing the n'th last argument (e.g. -2 is the second last argument).
-
   boolean shell;
   boolean sync;
 
@@ -17,7 +16,8 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
       exists(string method |
         mod = "cross-spawn" and method = "sync" and cmdArg = 0 and shell = false and optionsArg = -1
         or
-        mod = "execa" and optionsArg = -1 and
+        mod = "execa" and
+        optionsArg = -1 and
         (
           shell = false and
           (
@@ -47,12 +47,13 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
           or
           mod = "exec-async" and cmdArg = 0 and optionsArg = -1
           or
-          mod = "execa" and cmdArg = 0 and optionsArg = -1  
+          mod = "execa" and cmdArg = 0 and optionsArg = -1
         )
         or
         shell = true and
         (
-          mod = "exec" and optionsArg = -2 and
+          mod = "exec" and
+          optionsArg = -2 and
           cmdArg = 0
           or
           mod = "remote-exec" and cmdArg = 1 and optionsArg = -1
@@ -75,22 +76,24 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
   override predicate isSync() { sync = true }
 
   override DataFlow::Node getOptionsArg() {
-    (if optionsArg < 0 then
-     result = getArgument(getNumArgument() + optionsArg) and getNumArgument() + optionsArg > cmdArg
-    else 
-     result = getArgument(optionsArg)) and
+    (
+      if optionsArg < 0
+      then
+        result = getArgument(getNumArgument() + optionsArg) and
+        getNumArgument() + optionsArg > cmdArg
+      else result = getArgument(optionsArg)
+    ) and
     not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
     not result.getALocalSource() instanceof DataFlow::ArrayCreationNode // looks like argumentlist
   }
 }
 
 /**
- * Gets a boolean reflecting if the name ends with "sync" or "Sync". 
- */ 
+ * Gets a boolean reflecting if the name ends with "sync" or "Sync".
+ */
 bindingset[name]
 private boolean getSync(string name) {
-  if name.suffix(name.length() - 4) = "Sync" or name.suffix(name.length() - 4) = "sync" then
-    result = true
-  else
-    result = false
+  if name.suffix(name.length() - 4) = "Sync" or name.suffix(name.length() - 4) = "sync"
+  then result = true
+  else result = false
 }

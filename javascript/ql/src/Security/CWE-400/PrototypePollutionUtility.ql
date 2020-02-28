@@ -1,7 +1,7 @@
 /**
  * @name Prototype pollution in utility function
  * @description Recursively copying properties between objects may cause
-                accidental modification of a built-in prototype object.
+ *                accidental modification of a built-in prototype object.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
@@ -30,9 +30,7 @@ predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
 predicate isEnumeratedPropName(Node node) {
   node instanceof EnumeratedPropName
   or
-  exists(Node pred |
-    isEnumeratedPropName(pred)
-  |
+  exists(Node pred | isEnumeratedPropName(pred) |
     node = pred.getASuccessor()
     or
     argumentPassingStep(_, pred, _, node)
@@ -54,7 +52,6 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
   exists(Node base, Node key |
     dynamicPropReadStep(base, key, node) and
     isEnumeratedPropName(key) and
-
     // Ignore cases where the properties of `base` are enumerated, to avoid FPs
     // where the key came from that enumeration (and thus will not return Object.prototype).
     // For example, `src[key]` in `for (let key in src) { ... src[key] ... }` will generally
@@ -62,9 +59,7 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
     not arePropertiesEnumerated(base.getALocalSource())
   )
   or
-  exists(Node use |
-    isPotentiallyObjectPrototype(use.getALocalSource())
-  |
+  exists(Node use | isPotentiallyObjectPrototype(use.getALocalSource()) |
     argumentPassingStep(_, use, _, node)
   )
 }
@@ -87,7 +82,6 @@ predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::N
     rhs = write.getRhs().flow() and
     not exists(prop.getStringValue()) and
     not arePropertiesEnumerated(base.getALocalSource()) and
-
     // Prune writes that are unlikely to modify Object.prototype.
     // This is mainly for performance, but may block certain results due to
     // not tracking out of function returns and into callbacks.
@@ -188,12 +182,7 @@ class PropNameTracking extends DataFlow::Configuration {
   override predicate isBarrier(DataFlow::Node node) {
     super.isBarrier(node)
     or
-    exists(ConditionGuardNode guard, SsaRefinementNode refinement |
-      node = DataFlow::ssaDefinitionNode(refinement) and
-      refinement.getGuard() = guard and
-      guard.getTest() instanceof VarAccess and
-      guard.getOutcome() = false
-    )
+    node instanceof DataFlow::VarAccessBarrier
   }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
@@ -204,7 +193,8 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
     node instanceof BlacklistInclusionGuard or
-    node instanceof WhitelistInclusionGuard
+    node instanceof WhitelistInclusionGuard or
+    node instanceof IsPlainObjectGuard
   }
 }
 
@@ -380,6 +370,25 @@ class WhitelistInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
 }
 
 /**
+ * A check of form `isPlainObject(e)` or similar, which sanitizes the `constructor`
+ * payload in the true case, since it rejects objects with a non-standard `constructor`
+ * property.
+ */
+class IsPlainObjectGuard extends DataFlow::LabeledBarrierGuardNode, DataFlow::CallNode {
+  IsPlainObjectGuard() {
+    exists(string name | name = "is-plain-object" or name = "is-extendable" |
+      this = moduleImport(name).getACall()
+    )
+  }
+
+  override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    e = getArgument(0).asExpr() and
+    outcome = true and
+    lbl = "constructor"
+  }
+}
+
+/**
  * Gets a meaningful name for `node` if possible.
  */
 string getExprName(DataFlow::Node node) {
@@ -420,9 +429,7 @@ private DataFlow::SourceNode getANodeLeadingToBase(DataFlow::TypeBackTracker t, 
   isPrototypePollutingAssignment(base, _, _, _) and
   result = base.getALocalSource()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    result = getANodeLeadingToBase(t2, base).backtrack(t2, t)
-  )
+  exists(DataFlow::TypeBackTracker t2 | result = getANodeLeadingToBase(t2, base).backtrack(t2, t))
 }
 
 /**

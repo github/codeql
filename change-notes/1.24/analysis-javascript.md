@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* TypeScript 3.8 is now supported.
+
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
 
 * Imports with the `.js` extension can now be resolved to a TypeScript file,
@@ -12,6 +14,10 @@
 * Export declarations of the form `export * as ns from "x"` are now analyzed more precisely.
 
 * The analysis of sanitizer guards has improved, leading to fewer false-positive results from the security queries.
+
+* The call graph construction has been improved, leading to more results from the security queries:
+  - Calls can now be resolved to indirectly-defined class members in more cases.
+  - Calls through partial invocations such as `.bind` can now be resolved in more cases.
 
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
@@ -37,6 +43,7 @@
 | Cross-site scripting through exception (`js/xss-through-exception`) | security, external/cwe/cwe-079, external/cwe/cwe-116              | Highlights potential XSS vulnerabilities where an exception is written to the DOM. Results are not shown on LGTM by default. |
 | Regular expression always matches (`js/regex/always-matches`) | correctness, regular-expressions | Highlights regular expression checks that trivially succeed by matching an empty substring. Results are shown on LGTM by default. |
 | Missing await (`js/missing-await`) | correctness | Highlights expressions that operate directly on a promise object in a nonsensical way, instead of awaiting its result. Results are shown on LGTM by default. |
+| Polynomial regular expression used on uncontrolled data (`js/polynomial-redos`) | security, external/cwe/cwe-730, external/cwe/cwe-400 | Highlights expensive regular expressions that may be used on malicious input. Results are shown on LGTM by default. | 
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive copying operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | Highlights potential XSS vulnerabilities in unsafely designed jQuery plugins. Results are shown on LGTM by default. |
 | Useless use of cat (`js/useless-use-of-cat`) | correctness, security, maintainability | Highlights command executions of `cat` where the fs API should be used instead. Results are shown on LGTM by default. |

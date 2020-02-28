@@ -243,10 +243,8 @@ module DomBasedXss {
 
     VHtmlSourceWrite() {
       exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() = instance
-              .getTemplateElement()
-              .(Vue::Template::HtmlElement)
-              .getElement() and
+        attr.getAttr().getRoot() =
+          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and

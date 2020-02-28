@@ -343,6 +343,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
     cfg.hasFlow(getNodeForSource(source), sink) and
@@ -350,6 +351,7 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
+cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
   globalVar = ""

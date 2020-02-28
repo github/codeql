@@ -57,7 +57,8 @@ module CharacterEscapes {
       hasRawStringAndQuote(n, delim, rawStringNode, raw) and
       if rawStringNode instanceof RegExpLiteral
       then
-        additionalEscapeChars = Sets::regexpMetaChars() + Sets::regexpAssertionChars() + Sets::regexpCharClassChars() +
+        additionalEscapeChars =
+          Sets::regexpMetaChars() + Sets::regexpAssertionChars() + Sets::regexpCharClassChars() +
             Sets::regexpBackreferenceChars()
       else additionalEscapeChars = "b"
     |

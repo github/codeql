@@ -120,7 +120,7 @@ predicate jumpStep(Node node1, Node node2) {
  * Holds if `fa` is an access to an instance field that occurs as the
  * destination of an assignment of the value `src`.
  */
-predicate instanceFieldAssign(Expr src, FieldAccess fa) {
+private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   exists(AssignExpr a |
     a.getSource() = src and
     a.getDest() = fa and
