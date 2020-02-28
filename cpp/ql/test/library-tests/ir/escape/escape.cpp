@@ -1,5 +1,5 @@
-void CallByPointer(int* p);
-void CallByReference(int& r);
+void CallByPointer(int* no_p);
+void CallByReference(int& no_r);
 int *GetPointer();
 int &GetReference();
 
@@ -251,3 +251,16 @@ void Escape()
     CallByPointer(no_condTemp);
 }
 
+void *global;
+
+void CallByPointer(int* no_p){
+  global = no_p;
+}
+
+void CallByReference(int& no_r){
+  global = &no_r;
+}
+
+void CEscapes(C *no_c) {
+  global = no_c;
+}

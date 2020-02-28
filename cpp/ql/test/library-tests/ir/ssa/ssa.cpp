@@ -262,3 +262,9 @@ char StringLiteralAliasing2(bool b) {
   const char* s = "Literal";
   return s[2];
 }
+
+void *global;
+
+void Escape(void* p){
+  global = p;
+}

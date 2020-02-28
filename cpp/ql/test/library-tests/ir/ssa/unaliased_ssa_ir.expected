@@ -1147,3 +1147,24 @@ ssa.cpp:
 #  254|     v254_9(void)           = UnmodeledUse              : mu*
 #  254|     v254_10(void)          = AliasedUse                : ~mu254_4
 #  254|     v254_11(void)          = ExitFunction              : 
+
+#  268| void Escape(void*)
+#  268|   Block 0
+#  268|     v268_1(void)          = EnterFunction            : 
+#  268|     mu268_2(unknown)      = AliasedDefinition        : 
+#  268|     mu268_3(unknown)      = InitializeNonLocal       : 
+#  268|     mu268_4(unknown)      = UnmodeledDefinition      : 
+#  268|     r268_5(glval<void *>) = VariableAddress[p]       : 
+#  268|     m268_6(void *)        = InitializeParameter[p]   : &:r268_5
+#  268|     r268_7(void *)        = Load                     : &:r268_5, m268_6
+#  268|     mu268_8(unknown)      = InitializeIndirection[p] : &:r268_7
+#  269|     r269_1(glval<void *>) = VariableAddress[p]       : 
+#  269|     r269_2(void *)        = Load                     : &:r269_1, m268_6
+#  269|     r269_3(glval<void *>) = VariableAddress[global]  : 
+#  269|     mu269_4(void *)       = Store                    : &:r269_3, r269_2
+#  270|     v270_1(void)          = NoOp                     : 
+#  268|     v268_9(void)          = ReturnIndirection        : &:r268_7, ~mu268_4
+#  268|     v268_10(void)         = ReturnVoid               : 
+#  268|     v268_11(void)         = UnmodeledUse             : mu*
+#  268|     v268_12(void)         = AliasedUse               : ~mu268_4
+#  268|     v268_13(void)         = ExitFunction             : 
