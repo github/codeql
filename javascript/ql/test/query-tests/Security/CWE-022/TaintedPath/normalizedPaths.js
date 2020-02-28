@@ -334,3 +334,17 @@ app.get('/pseudo-normalizations', (req, res) => {
 	}
 
 });
+
+app.get('/yet-another-prefix', (req, res) => {
+	let path = pathModule.resolve(req.query.path);
+
+	fs.readFileSync(path); // NOT OK
+
+	var abs = pathModule.resolve(path); 
+
+	if (abs.indexOf(root) !== 0) {
+		fs.readFileSync(path); // NOT OK
+		return;
+    }
+	fs.readFileSync(path); // OK
+});
