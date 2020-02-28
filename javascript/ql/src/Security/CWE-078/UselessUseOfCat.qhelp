@@ -3,9 +3,9 @@
 "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Using the unix command <code>cat</code> only to read a file is a 
-an unnecessarily complex way to achieve something that can be done in a simpler and 
-safer manner using the Node.js <code>fs.readFile</code> API.
+<p>Using the unix command <code>cat</code> only to read a file is an 
+unnecessarily complex way to achieve something that can be done in a simpler 
+and safer manner using the Node.js <code>fs.readFile</code> API.
 </p>
 <p>
 The use of <code>cat</code> for simple file reads leads to code that is 
