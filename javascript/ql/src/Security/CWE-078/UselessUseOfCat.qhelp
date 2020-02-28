@@ -29,7 +29,7 @@ from the file system.
 special characters (including space). Additionally, it does not work on Windows 
 and if the input is user-controlled, a command injection attack can happen.</p>
 
-<p>The <code>fs.readFile</code> API should be used to avoid these potential issues:
+<p>The <code>fs.readFile</code> API should be used to avoid these potential issues: </p>
 
 <sample src="examples/useless-cat-fixed.js"/>
 
