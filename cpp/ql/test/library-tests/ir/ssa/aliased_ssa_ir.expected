@@ -928,10 +928,8 @@ ssa.cpp:
 #  207|     mu207_5(unknown)       = UnmodeledDefinition                : 
 #  207|     r207_6(glval<int>)     = VariableAddress[x]                 : 
 #  207|     m207_7(int)            = InitializeParameter[x]             : &:r207_6
-#  207|     m207_8(unknown)        = Chi                                : total:m207_4, partial:m207_7
 #  208|     r208_1(glval<int>)     = VariableAddress[y]                 : 
 #  208|     m208_2(int)            = Uninitialized[y]                   : &:r208_1
-#  208|     m208_3(unknown)        = Chi                                : total:m207_8, partial:m208_2
 #  209|     r209_1(glval<unknown>) = FunctionAddress[memcpy]            : 
 #  209|     r209_2(glval<int>)     = VariableAddress[y]                 : 
 #  209|     r209_3(int *)          = CopyValue                          : r209_2
@@ -943,16 +941,16 @@ ssa.cpp:
 #  209|     r209_9(void *)         = Call                               : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_8
 #  209|     v209_10(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_8, ~m207_7
 #  209|     m209_11(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r209_4, r209_8
-#  209|     m209_12(unknown)       = Chi                                : total:m208_3, partial:m209_11
+#  209|     m209_12(int)           = Chi                                : total:m208_2, partial:m209_11
 #  210|     r210_1(glval<int>)     = VariableAddress[#return]           : 
 #  210|     r210_2(glval<int>)     = VariableAddress[y]                 : 
 #  210|     r210_3(int)            = Load                               : &:r210_2, ~m209_12
 #  210|     m210_4(int)            = Store                              : &:r210_1, r210_3
-#  207|     r207_9(glval<int>)     = VariableAddress[#return]           : 
-#  207|     v207_10(void)          = ReturnValue                        : &:r207_9, m210_4
-#  207|     v207_11(void)          = UnmodeledUse                       : mu*
-#  207|     v207_12(void)          = AliasedUse                         : m207_3
-#  207|     v207_13(void)          = ExitFunction                       : 
+#  207|     r207_8(glval<int>)     = VariableAddress[#return]           : 
+#  207|     v207_9(void)           = ReturnValue                        : &:r207_8, m210_4
+#  207|     v207_10(void)          = UnmodeledUse                       : mu*
+#  207|     v207_11(void)          = AliasedUse                         : m207_3
+#  207|     v207_12(void)          = ExitFunction                       : 
 
 #  213| void InitArray()
 #  213|   Block 0
@@ -1157,8 +1155,8 @@ ssa.cpp:
 #  248|     r248_6(unsigned long)  = Constant[1]                        : 
 #  248|     r248_7(unsigned long)  = Mul                                : r248_5, r248_6
 #  248|     r248_8(void *)         = Call                               : func:r248_2, 0:r248_7
-#  248|     m248_9(unknown)        = ^CallSideEffect                    : ~m247_9
-#  248|     m248_10(unknown)       = Chi                                : total:m247_9, partial:m248_9
+#  248|     m248_9(unknown)        = ^CallSideEffect                    : ~m247_4
+#  248|     m248_10(unknown)       = Chi                                : total:m247_4, partial:m248_9
 #  248|     r248_11(char *)        = Convert                            : r248_8
 #  248|     m248_12(char *)        = Store                              : &:r248_1, r248_11
 #  249|     r249_1(char)           = Constant[97]                       : 
@@ -1166,7 +1164,7 @@ ssa.cpp:
 #  249|     r249_3(char *)         = Load                               : &:r249_2, m247_7
 #  249|     r249_4(glval<char>)    = CopyValue                          : r249_3
 #  249|     m249_5(char)           = Store                              : &:r249_4, r249_1
-#  249|     m249_6(unknown)        = Chi                                : total:m248_10, partial:m249_5
+#  249|     m249_6(unknown)        = Chi                                : total:m247_9, partial:m249_5
 #  250|     r250_1(glval<unknown>) = FunctionAddress[memcpy]            : 
 #  250|     r250_2(glval<char *>)  = VariableAddress[dst]               : 
 #  250|     r250_3(char *)         = Load                               : &:r250_2, m248_12
@@ -1179,12 +1177,12 @@ ssa.cpp:
 #  250|     r250_10(void *)        = Call                               : func:r250_1, 0:r250_4, 1:r250_7, 2:r250_9
 #  250|     v250_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r250_7, r250_9, ~m249_6
 #  250|     m250_12(unknown)       = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
-#  250|     m250_13(unknown)       = Chi                                : total:m249_6, partial:m250_12
+#  250|     m250_13(unknown)       = Chi                                : total:m248_10, partial:m250_12
 #  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
 #  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
 #  251|     r251_3(char *)         = Load                               : &:r251_2, m248_12
 #  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
-#  247|     v247_12(void)          = ReturnIndirection                  : &:r247_8, ~m250_13
+#  247|     v247_12(void)          = ReturnIndirection                  : &:r247_8, ~m249_6
 #  247|     r247_13(glval<char *>) = VariableAddress[#return]           : 
 #  247|     v247_14(void)          = ReturnValue                        : &:r247_13, m251_4
 #  247|     v247_15(void)          = UnmodeledUse                       : mu*

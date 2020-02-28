@@ -25,6 +25,13 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       or
       // Converting an address to a `bool` does not escape the address.
       instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
+      or
+      // Passing an address to a function for which IR was not generated does not escape the
+      // address.
+      exists(Language::Function f |
+        f = instr.(CallInstruction).getStaticCallTarget() and
+        not exists(IRFunction irf | irf.getFunction() = f)
+      )
     )
   )
   or
