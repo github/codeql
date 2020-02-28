@@ -12,10 +12,14 @@ private predicate re_module_function(string name, int flags) {
     name = "subn" and flags = 4
 }
 
+/**
+ * Holds if `s` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
+ * If regex mode is not known, `mode` will be `"None"`.
+ */
 predicate used_as_regex(Expr s, string mode) {
     (s instanceof Bytes or s instanceof Unicode)
     and
-    exists(ModuleValue re | re.getName() = "re" |
+    exists(ModuleValue re | re = Module::named("re") |
         /* Call to re.xxx(regex, ... [mode]) */
         exists(CallNode call, string name |
             call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
