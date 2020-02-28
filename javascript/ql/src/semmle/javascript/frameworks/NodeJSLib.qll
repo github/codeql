@@ -429,16 +429,27 @@ module NodeJSLib {
   }
 
   /**
-   * A member `member` from module `fs` or its drop-in replacements `graceful-fs` or `fs-extra`.
+   * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
    */
   private DataFlow::SourceNode fsModuleMember(string member) {
+    result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
+  }
+
+  private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
     exists(string moduleName |
       moduleName = "fs" or
       moduleName = "graceful-fs" or
-      moduleName = "fs-extra"
+      moduleName = "fs-extra" or
+      moduleName = "original-fs"
     |
-      result = DataFlow::moduleMember(moduleName, member)
-    )
+      result = DataFlow::moduleImport(moduleName)
+      or
+      // extra support for flexible names
+      result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
+    ) and
+    t.start()
+    or
+    exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
   }
 
   /**

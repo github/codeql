@@ -15,6 +15,13 @@ var server = http.createServer(function(req, res) {
 
   getFsModule(true).readFileSync(path); // NOT OK
   getFsModule(false).readFileSync(path); // NOT OK
+
+  require("./my-fs-module").require(true).readFileSync(path); // NOT OK
+
+  let flexibleModuleName = require(process.versions["electron"]
+    ? "original-fs"
+    : "fs");
+  flexibleModuleName.readFileSync(path); // NOT OK
 });
 
 function getFsModule(special) {

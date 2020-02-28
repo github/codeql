@@ -1,7 +1,4 @@
 | normalizedPaths.js:208:38:208:63 | // OK - ...  anyway | Spurious alert |
-| other-fs-libraries.js:14:34:14:42 | // NOT OK | Missing alert |
-| other-fs-libraries.js:16:41:16:49 | // NOT OK | Missing alert |
-| other-fs-libraries.js:17:42:17:50 | // NOT OK | Missing alert |
 | tainted-string-steps.js:25:43:25:74 | // NOT  ... flagged | Missing alert |
 | tainted-string-steps.js:26:49:26:74 | // OK - ... flagged | Spurious alert |
 | tainted-string-steps.js:28:39:28:70 | // NOT  ... flagged | Missing alert |
