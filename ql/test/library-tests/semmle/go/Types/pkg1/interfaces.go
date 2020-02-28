@@ -27,3 +27,7 @@ type AExtended interface {
 	A
 	n()
 }
+
+type A2 interface {
+	m()
+}

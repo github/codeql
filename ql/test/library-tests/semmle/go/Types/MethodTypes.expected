@@ -1,0 +1,15 @@
+| A | m | func()  |
+| A2 | m | func()  |
+| AC | m | func()  |
+| AC | n | func()  |
+| AC | o | func()  |
+| AEmbedded | m | func()  |
+| AExtended | m | func()  |
+| AExtended | n | func()  |
+| B | m | func()  |
+| B | n | func()  |
+| C | n | func()  |
+| C | o | func()  |
+| T | half | func() Foo |
+| T3 | half | func() Foo |
+| T4 | half | func() Foo |

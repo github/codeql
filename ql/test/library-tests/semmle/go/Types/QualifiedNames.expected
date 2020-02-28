@@ -1,4 +1,5 @@
 | A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A |
+| A2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A2 |
 | AC | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AC |
 | AEmbedded | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AEmbedded |
 | AExtended | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AExtended |
