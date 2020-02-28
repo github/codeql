@@ -305,18 +305,64 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  private class HttpResponseSink extends Sink, DataFlow::ValueNode {
+  class HttpResponseSink extends Sink, DataFlow::ValueNode {
     override HTTP::ResponseSendArgument astNode;
 
-    HttpResponseSink() { not nonHtmlContentType(astNode.getRouteHandler()) }
+    HttpResponseSink() { not exists(getAnonHtmlHeaderDefinition(astNode)) }
+  }
+
+  /**
+   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   */
+  HTTP::HeaderDefinition getAnonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
+    exists(HTTP::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = nonHtmlContentTypeHeader(h)
+    |
+      // not the case that the control just exists without potentially going to the worksFor.
+      not isIrrelevantFor(result, send)
+    )
   }
 
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  private predicate nonHtmlContentType(HTTP::RouteHandler h) {
-    exists(HTTP::HeaderDefinition hd | hd = h.getAResponseHeader("content-type") |
-      not exists(string tp | hd.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
+   * Holds if a header set in `header` is unlikely to affect a resonse send in `sender`.
+   */
+  predicate isIrrelevantFor(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+    not header.getBasicBlock().getASuccessor*() = sender.getBasicBlock() and
+    not sender.getBasicBlock().getASuccessor*() = header.getBasicBlock() and
+    (
+      // If there is another header `otherHeader` next to `sender`, then `header` is probably irrelevant.
+      exists(HTTP::HeaderDefinition otherHeader | not header = otherHeader |
+        otherHeader.getBasicBlock().getASuccessor*() = sender.getBasicBlock() and
+        not otherHeader = nonHtmlContentTypeHeader(sender.getRouteHandler())
+      )
+      or
+      // Tries to recognize variants of:
+      // ```
+      // response.writeHead(500, {'Content-Type': 'text/plain'});
+      // response.end('Some error');
+      // return;
+      // ```
+      exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
+        headerBlock.getASuccessor() instanceof ControlFlowExitNode and
+        strictcount(headerBlock.getASuccessor()) = 1 and
+        not (
+          exists(DataFlow::CallNode call |
+            exists(call.getACallee()) and
+            call.getBasicBlock() = headerBlock
+          )
+          or
+          exists(Expr e | e.getBasicBlock() = headerBlock and e instanceof Function)
+        )
+      )
     )
   }
 
