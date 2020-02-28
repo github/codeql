@@ -105,7 +105,7 @@ class UselessCat extends CommandCall {
       getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not containsNonTrivialBashChar(getNonCommandConstantString()) and
+    not containsNonTrivialShellChar(getNonCommandConstantString()) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
       not exists(getOptionsArg())
@@ -174,7 +174,7 @@ module PrettyPrintCatCall {
       ) and
       fileArg = createFileArgument(cat).trim() and
      // sanity check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
-      not(containsNonTrivialBashChar(fileArg.regexpReplaceAll("\\$|\\`| ", ""))) // string concat might contain " ", template strings might contain "$" or `, and that is OK. 
+      not(containsNonTrivialShellChar(fileArg.regexpReplaceAll("\\$|\\`| ", ""))) // string concat might contain " ", template strings might contain "$" or `, and that is OK. 
     |
       result =
         "fs.readFile" + sync + "(" + fileArg + extraArg + callback + ")"
