@@ -263,7 +263,8 @@ private predicate relevantLiteral(Literal literal, string value) {
 }
 
 private predicate valueOccurrenceCount(string value, int n) {
-  n = strictcount(Location loc |
+  n =
+    strictcount(Location loc |
       exists(Literal lit | relevantLiteral(lit, value) | lit.getLocation() = loc)
     ) and
   n > 20
@@ -289,7 +290,8 @@ private predicate check(Literal lit, string value, int n, File f) {
 }
 
 private predicate checkWithFileCount(string value, int overallCount, int fileCount, File f) {
-  fileCount = strictcount(Location loc |
+  fileCount =
+    strictcount(Location loc |
       exists(Literal lit | check(lit, value, overallCount, f) | lit.getLocation() = loc)
     )
 }
@@ -322,7 +324,8 @@ predicate isNumber(Literal lit) {
 predicate magicConstant(Literal e, string msg) {
   exists(string value, int n |
     firstOccurrence(e, value, n) and
-    msg = "Magic constant: literal '" + value + "' is repeated " + n.toString() +
+    msg =
+      "Magic constant: literal '" + value + "' is repeated " + n.toString() +
         " times and should be encapsulated in a constant."
   )
 }

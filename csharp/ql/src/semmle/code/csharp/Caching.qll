@@ -50,7 +50,7 @@ module Stages {
   cached
   module DataFlowStage {
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon::Public
+    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
     private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 
     cached
@@ -89,7 +89,9 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      exists(CompoundTypeKind k)
+      exists(Gvn::CompoundTypeKind k)
+      or
+      exists(any(Gvn::GvnType t).toString())
       or
       exists(Unification::UnconstrainedTypeParameter utp)
       or

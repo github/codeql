@@ -159,4 +159,53 @@ public class C {
       obj.hashCode(); // OK
     }
   }
+
+  private final Object finalObj = new Object();
+
+  public void ex12() {
+    finalObj.hashCode(); // OK
+    if (finalObj != null) {
+      finalObj.hashCode(); // OK
+    }
+  }
+
+  private void verifyBool(boolean b) {
+    if (!b) {
+      throw new Exception();
+    }
+  }
+
+  public void ex13(int[] a) {
+    int i = 0;
+    boolean b = false;
+    Object obj = null;
+    while (a[++i] != 0) {
+      if (a[i] == 1) {
+        obj = new Object();
+        b = true;
+      } else if (a[i] == 2) {
+        verifyBool(b);
+        obj.hashCode(); // NPE - false positive
+      }
+    }
+  }
+
+  private void verifyNotNull(Object obj) {
+    if (obj == null) {
+      throw new Exception();
+    }
+  }
+
+  public void ex14(int[] a) {
+    int i = 0;
+    Object obj = null;
+    while (a[++i] != 0) {
+      if (a[i] == 1) {
+        obj = new Object();
+      } else if (a[i] == 2) {
+        verifyNotNull(obj);
+        obj.hashCode(); // NPE - false positive
+      }
+    }
+  }
 }

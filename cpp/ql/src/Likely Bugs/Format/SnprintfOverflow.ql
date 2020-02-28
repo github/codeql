@@ -37,7 +37,7 @@ predicate flowsToExprImpl(Expr source, Expr sink, boolean pathMightOverflow) {
   pathMightOverflow = false and
   source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength()
   or
-  exists(RangeSsaDefinition def, LocalScopeVariable v |
+  exists(RangeSsaDefinition def, StackVariable v |
     flowsToDef(source, def, v, pathMightOverflow) and
     sink = def.getAUse(v)
   )
@@ -63,9 +63,7 @@ predicate flowsToExprImpl(Expr source, Expr sink, boolean pathMightOverflow) {
  * `pathMightOverflow` is true if there is an arithmetic operation
  * on the path that might overflow.
  */
-predicate flowsToDef(
-  Expr source, RangeSsaDefinition def, LocalScopeVariable v, boolean pathMightOverflow
-) {
+predicate flowsToDef(Expr source, RangeSsaDefinition def, StackVariable v, boolean pathMightOverflow) {
   // Might the current definition overflow?
   exists(boolean otherMightOverflow | flowsToDefImpl(source, def, v, otherMightOverflow) |
     if defMightOverflow(def, v)
@@ -86,7 +84,7 @@ predicate flowsToDef(
  * the path. But it is a good way to reduce the number of false positives.
  */
 predicate flowsToDefImpl(
-  Expr source, RangeSsaDefinition def, LocalScopeVariable v, boolean pathMightOverflow
+  Expr source, RangeSsaDefinition def, StackVariable v, boolean pathMightOverflow
 ) {
   // Assignment or initialization: `e = v;`
   exists(Expr e |

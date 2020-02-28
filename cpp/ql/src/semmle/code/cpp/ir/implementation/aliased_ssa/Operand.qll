@@ -11,13 +11,19 @@ cached
 private newtype TOperand =
   TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
     defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
-    not Construction::isInCycle(useInstr)
+    not Construction::isInCycle(useInstr) and
+    strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
   } or
   TNonPhiMemoryOperand(
     Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
   ) {
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
-    not Construction::isInCycle(useInstr)
+    not Construction::isInCycle(useInstr) and
+    (
+      strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+      or
+      tag instanceof UnmodeledUseOperandTag
+    )
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
@@ -170,7 +176,17 @@ class MemoryOperand extends Operand {
   /**
    * Gets the kind of memory access performed by the operand.
    */
-  MemoryAccessKind getMemoryAccess() { none() }
+  MemoryAccessKind getMemoryAccess() { result = getUse().getOpcode().getReadMemoryAccess() }
+
+  /**
+   * Holds if the memory access performed by this operand will not always read from every bit in the
+   * memory location. This is most commonly used for memory accesses that may or may not actually
+   * occur depending on runtime state (for example, the write side effect of an output parameter
+   * that is not written to on all paths), or for accesses where the memory location is a
+   * conservative estimate of the memory that might actually be accessed at runtime (for example,
+   * the global side effects of a function call).
+   */
+  predicate hasMayReadMemoryAccess() { getUse().getOpcode().hasMayReadMemoryAccess() }
 
   /**
    * Returns the operand that holds the memory address from which the current operand loads its
@@ -264,8 +280,6 @@ class LoadOperand extends TypedOperand {
   override LoadOperandTag tag;
 
   override string toString() { result = "Load" }
-
-  final override MemoryAccessKind getMemoryAccess() { result instanceof IndirectMemoryAccess }
 }
 
 /**
@@ -321,8 +335,6 @@ class UnmodeledUseOperand extends NonPhiMemoryOperand {
   override UnmodeledUseOperandTag tag;
 
   override string toString() { result = "UnmodeledUse" }
-
-  final override MemoryAccessKind getMemoryAccess() { result instanceof UnmodeledMemoryAccess }
 }
 
 /**
@@ -372,35 +384,6 @@ class PositionalArgumentOperand extends ArgumentOperand {
 
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
-
-  override MemoryAccessKind getMemoryAccess() {
-    useInstr instanceof AliasedUseInstruction and
-    result instanceof NonLocalMayMemoryAccess
-    or
-    useInstr instanceof CallSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
-    or
-    useInstr instanceof CallReadSideEffectInstruction and
-    result instanceof EscapedMayMemoryAccess
-    or
-    useInstr instanceof IndirectReadSideEffectInstruction and
-    result instanceof IndirectMemoryAccess
-    or
-    useInstr instanceof BufferReadSideEffectInstruction and
-    result instanceof BufferMemoryAccess
-    or
-    useInstr instanceof IndirectMustWriteSideEffectInstruction and
-    result instanceof IndirectMemoryAccess
-    or
-    useInstr instanceof BufferMustWriteSideEffectInstruction and
-    result instanceof BufferMemoryAccess
-    or
-    useInstr instanceof IndirectMayWriteSideEffectInstruction and
-    result instanceof IndirectMayMemoryAccess
-    or
-    useInstr instanceof BufferMayWriteSideEffectInstruction and
-    result instanceof BufferMayMemoryAccess
-  }
 }
 
 /**

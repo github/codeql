@@ -40,11 +40,9 @@ class MetricFile extends File {
    * expressions (`+`, `*`, `&`, `->`, `=`, ...) as well as most statements.
    */
   int getHalsteadN1() {
-    result = sum(MetricFunction mf, int toSum |
-          mf.getFile() = this and toSum = mf.getHalsteadN1()
-        |
-          toSum
-        ) +
+    result =
+      sum(MetricFunction mf, int toSum | mf.getFile() = this and toSum = mf.getHalsteadN1() | toSum)
+        +
         // Each class counts once as an operator
         count(Class c | c.getFile() = this) +
         // Each variable declaration that is not in a function counts once as an operator
@@ -61,11 +59,9 @@ class MetricFile extends File {
    * An operand is either a variable, constant, type name, class name, or function name.
    */
   int getHalsteadN2() {
-    result = sum(MetricFunction mf, int toSum |
-          mf.getFile() = this and toSum = mf.getHalsteadN2()
-        |
-          toSum
-        ) +
+    result =
+      sum(MetricFunction mf, int toSum | mf.getFile() = this and toSum = mf.getHalsteadN2() | toSum)
+        +
         // Each class counts once as an operand
         count(Class c | c.getFile() = this) +
         // Each variable declaration that is not in a function counts once as an operand
@@ -179,7 +175,8 @@ class MetricFile extends File {
    * operators, and further proportional to the ratio of total operands to unique operands.
    */
   float getHalsteadDifficulty() {
-    result = (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
+    result =
+      (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
         (2 * this.getHalsteadN2Distinct()).(float)
   }
 

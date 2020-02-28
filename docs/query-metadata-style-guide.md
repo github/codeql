@@ -113,7 +113,7 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
     *   `low `
     *   `medium `
     *   `high `
-    *   `very high`
+    *   `very-high`
 *   `@problem.severity`–defines the level of severity of the alert: 
     *   `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
     *   `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.

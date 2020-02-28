@@ -37,7 +37,8 @@ class FunctionalInterface extends Interface {
  * `n`th parameter.
  */
 private predicate runner(Method m, int n, Method runmethod) {
-  m.getParameterType(n).(RefType).getSourceDeclaration().(FunctionalInterface).getRunMethod() = runmethod and
+  m.getParameterType(n).(RefType).getSourceDeclaration().(FunctionalInterface).getRunMethod() =
+    runmethod and
   (
     m.isNative()
     or

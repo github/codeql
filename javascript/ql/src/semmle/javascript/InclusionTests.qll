@@ -1,6 +1,7 @@
 /**
  * Contains classes for recognizing array and string inclusion tests.
  */
+
 private import javascript
 
 /**

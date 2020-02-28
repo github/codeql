@@ -15,6 +15,11 @@ nodes
 | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:2:12:2:28 | document.location |
+| exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:86:17:86:19 | foo |
 | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:33 | document.location |
 | jquery.js:2:17:2:33 | document.location |
@@ -229,92 +234,113 @@ nodes
 | tst.js:110:11:110:44 | documen ... bstr(1) |
 | tst.js:113:18:113:18 | v |
 | tst.js:113:18:113:18 | v |
-| tst.js:145:29:145:43 | window.location |
-| tst.js:145:29:145:43 | window.location |
-| tst.js:145:29:145:50 | window. ... .search |
-| tst.js:148:29:148:29 | v |
-| tst.js:148:49:148:49 | v |
-| tst.js:148:49:148:49 | v |
-| tst.js:152:29:152:46 | xssSourceService() |
-| tst.js:152:29:152:46 | xssSourceService() |
-| tst.js:155:40:155:54 | window.location |
-| tst.js:155:40:155:54 | window.location |
-| tst.js:155:40:155:61 | window. ... .search |
-| tst.js:174:9:174:41 | target |
-| tst.js:174:18:174:34 | document.location |
-| tst.js:174:18:174:34 | document.location |
-| tst.js:174:18:174:41 | documen ... .search |
-| tst.js:177:28:177:33 | target |
-| tst.js:177:28:177:33 | target |
-| tst.js:181:9:181:42 | tainted |
-| tst.js:181:19:181:35 | document.location |
-| tst.js:181:19:181:35 | document.location |
-| tst.js:181:19:181:42 | documen ... .search |
-| tst.js:183:31:183:37 | tainted |
-| tst.js:183:31:183:37 | tainted |
-| tst.js:185:42:185:48 | tainted |
-| tst.js:185:42:185:48 | tainted |
-| tst.js:186:33:186:39 | tainted |
-| tst.js:186:33:186:39 | tainted |
-| tst.js:188:54:188:60 | tainted |
-| tst.js:188:54:188:60 | tainted |
-| tst.js:189:45:189:51 | tainted |
-| tst.js:189:45:189:51 | tainted |
-| tst.js:194:9:194:42 | tainted |
-| tst.js:194:19:194:35 | document.location |
-| tst.js:194:19:194:35 | document.location |
-| tst.js:194:19:194:42 | documen ... .search |
-| tst.js:196:67:196:73 | tainted |
-| tst.js:196:67:196:73 | tainted |
-| tst.js:197:67:197:73 | tainted |
-| tst.js:197:67:197:73 | tainted |
-| tst.js:201:35:201:41 | tainted |
-| tst.js:203:46:203:52 | tainted |
-| tst.js:204:38:204:44 | tainted |
-| tst.js:205:35:205:41 | tainted |
-| tst.js:209:28:209:46 | this.state.tainted1 |
-| tst.js:209:28:209:46 | this.state.tainted1 |
-| tst.js:210:28:210:46 | this.state.tainted2 |
-| tst.js:210:28:210:46 | this.state.tainted2 |
-| tst.js:211:28:211:46 | this.state.tainted3 |
-| tst.js:211:28:211:46 | this.state.tainted3 |
-| tst.js:215:32:215:49 | prevState.tainted4 |
-| tst.js:215:32:215:49 | prevState.tainted4 |
-| tst.js:222:28:222:46 | this.props.tainted1 |
-| tst.js:222:28:222:46 | this.props.tainted1 |
-| tst.js:223:28:223:46 | this.props.tainted2 |
-| tst.js:223:28:223:46 | this.props.tainted2 |
-| tst.js:224:28:224:46 | this.props.tainted3 |
-| tst.js:224:28:224:46 | this.props.tainted3 |
-| tst.js:228:32:228:49 | prevProps.tainted4 |
-| tst.js:228:32:228:49 | prevProps.tainted4 |
-| tst.js:233:35:233:41 | tainted |
-| tst.js:235:20:235:26 | tainted |
-| tst.js:237:23:237:29 | tainted |
-| tst.js:238:23:238:29 | tainted |
-| tst.js:244:39:244:55 | props.propTainted |
-| tst.js:248:60:248:82 | this.st ... Tainted |
-| tst.js:248:60:248:82 | this.st ... Tainted |
-| tst.js:252:23:252:29 | tainted |
-| tst.js:256:7:256:17 | window.name |
-| tst.js:256:7:256:17 | window.name |
-| tst.js:256:7:256:17 | window.name |
-| tst.js:257:7:257:10 | name |
-| tst.js:257:7:257:10 | name |
-| tst.js:257:7:257:10 | name |
-| tst.js:261:11:261:21 | window.name |
-| tst.js:261:11:261:21 | window.name |
-| tst.js:261:11:261:21 | window.name |
-| tst.js:277:22:277:29 | location |
-| tst.js:277:22:277:29 | location |
-| tst.js:277:22:277:29 | location |
-| tst.js:282:9:282:29 | tainted |
-| tst.js:282:9:282:29 | tainted |
-| tst.js:282:19:282:29 | window.name |
-| tst.js:282:19:282:29 | window.name |
-| tst.js:285:59:285:65 | tainted |
-| tst.js:285:59:285:65 | tainted |
-| tst.js:285:59:285:65 | tainted |
+| tst.js:139:18:139:18 | v |
+| tst.js:139:18:139:18 | v |
+| tst.js:151:29:151:43 | window.location |
+| tst.js:151:29:151:43 | window.location |
+| tst.js:151:29:151:50 | window. ... .search |
+| tst.js:154:29:154:29 | v |
+| tst.js:154:49:154:49 | v |
+| tst.js:154:49:154:49 | v |
+| tst.js:158:29:158:46 | xssSourceService() |
+| tst.js:158:29:158:46 | xssSourceService() |
+| tst.js:161:40:161:54 | window.location |
+| tst.js:161:40:161:54 | window.location |
+| tst.js:161:40:161:61 | window. ... .search |
+| tst.js:180:9:180:41 | target |
+| tst.js:180:18:180:34 | document.location |
+| tst.js:180:18:180:34 | document.location |
+| tst.js:180:18:180:41 | documen ... .search |
+| tst.js:183:28:183:33 | target |
+| tst.js:183:28:183:33 | target |
+| tst.js:187:9:187:42 | tainted |
+| tst.js:187:19:187:35 | document.location |
+| tst.js:187:19:187:35 | document.location |
+| tst.js:187:19:187:42 | documen ... .search |
+| tst.js:189:31:189:37 | tainted |
+| tst.js:189:31:189:37 | tainted |
+| tst.js:191:42:191:48 | tainted |
+| tst.js:191:42:191:48 | tainted |
+| tst.js:192:33:192:39 | tainted |
+| tst.js:192:33:192:39 | tainted |
+| tst.js:194:54:194:60 | tainted |
+| tst.js:194:54:194:60 | tainted |
+| tst.js:195:45:195:51 | tainted |
+| tst.js:195:45:195:51 | tainted |
+| tst.js:200:9:200:42 | tainted |
+| tst.js:200:19:200:35 | document.location |
+| tst.js:200:19:200:35 | document.location |
+| tst.js:200:19:200:42 | documen ... .search |
+| tst.js:202:67:202:73 | tainted |
+| tst.js:202:67:202:73 | tainted |
+| tst.js:203:67:203:73 | tainted |
+| tst.js:203:67:203:73 | tainted |
+| tst.js:207:35:207:41 | tainted |
+| tst.js:209:46:209:52 | tainted |
+| tst.js:210:38:210:44 | tainted |
+| tst.js:211:35:211:41 | tainted |
+| tst.js:215:28:215:46 | this.state.tainted1 |
+| tst.js:215:28:215:46 | this.state.tainted1 |
+| tst.js:216:28:216:46 | this.state.tainted2 |
+| tst.js:216:28:216:46 | this.state.tainted2 |
+| tst.js:217:28:217:46 | this.state.tainted3 |
+| tst.js:217:28:217:46 | this.state.tainted3 |
+| tst.js:221:32:221:49 | prevState.tainted4 |
+| tst.js:221:32:221:49 | prevState.tainted4 |
+| tst.js:228:28:228:46 | this.props.tainted1 |
+| tst.js:228:28:228:46 | this.props.tainted1 |
+| tst.js:229:28:229:46 | this.props.tainted2 |
+| tst.js:229:28:229:46 | this.props.tainted2 |
+| tst.js:230:28:230:46 | this.props.tainted3 |
+| tst.js:230:28:230:46 | this.props.tainted3 |
+| tst.js:234:32:234:49 | prevProps.tainted4 |
+| tst.js:234:32:234:49 | prevProps.tainted4 |
+| tst.js:239:35:239:41 | tainted |
+| tst.js:241:20:241:26 | tainted |
+| tst.js:243:23:243:29 | tainted |
+| tst.js:244:23:244:29 | tainted |
+| tst.js:250:39:250:55 | props.propTainted |
+| tst.js:254:60:254:82 | this.st ... Tainted |
+| tst.js:254:60:254:82 | this.st ... Tainted |
+| tst.js:258:23:258:29 | tainted |
+| tst.js:262:7:262:17 | window.name |
+| tst.js:262:7:262:17 | window.name |
+| tst.js:262:7:262:17 | window.name |
+| tst.js:263:7:263:10 | name |
+| tst.js:263:7:263:10 | name |
+| tst.js:263:7:263:10 | name |
+| tst.js:267:11:267:21 | window.name |
+| tst.js:267:11:267:21 | window.name |
+| tst.js:267:11:267:21 | window.name |
+| tst.js:283:22:283:29 | location |
+| tst.js:283:22:283:29 | location |
+| tst.js:283:22:283:29 | location |
+| tst.js:288:9:288:29 | tainted |
+| tst.js:288:19:288:29 | window.name |
+| tst.js:288:19:288:29 | window.name |
+| tst.js:291:59:291:65 | tainted |
+| tst.js:291:59:291:65 | tainted |
+| tst.js:304:9:304:16 | location |
+| tst.js:304:9:304:16 | location |
+| tst.js:305:10:305:10 | e |
+| tst.js:306:20:306:20 | e |
+| tst.js:306:20:306:20 | e |
+| tst.js:311:10:311:17 | location |
+| tst.js:311:10:311:17 | location |
+| tst.js:313:10:313:10 | e |
+| tst.js:314:20:314:20 | e |
+| tst.js:314:20:314:20 | e |
+| tst.js:319:35:319:42 | location |
+| tst.js:319:35:319:42 | location |
+| tst.js:319:35:319:42 | location |
+| typeahead.js:20:13:20:45 | target |
+| typeahead.js:20:22:20:38 | document.location |
+| typeahead.js:20:22:20:38 | document.location |
+| typeahead.js:20:22:20:45 | documen ... .search |
+| typeahead.js:21:12:21:17 | target |
+| typeahead.js:24:30:24:32 | val |
+| typeahead.js:25:18:25:20 | val |
+| typeahead.js:25:18:25:20 | val |
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location |
@@ -342,6 +368,10 @@ edges
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:6:2:28 | foo | exception-xss.js:86:17:86:19 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
+| exception-xss.js:2:12:2:28 | document.location | exception-xss.js:2:6:2:28 | foo |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
@@ -527,83 +557,98 @@ edges
 | tst.js:105:25:105:41 | document.location | tst.js:105:25:105:48 | documen ... .search |
 | tst.js:110:7:110:44 | v | tst.js:113:18:113:18 | v |
 | tst.js:110:7:110:44 | v | tst.js:113:18:113:18 | v |
+| tst.js:110:7:110:44 | v | tst.js:139:18:139:18 | v |
+| tst.js:110:7:110:44 | v | tst.js:139:18:139:18 | v |
 | tst.js:110:11:110:27 | document.location | tst.js:110:11:110:34 | documen ... .search |
 | tst.js:110:11:110:27 | document.location | tst.js:110:11:110:34 | documen ... .search |
 | tst.js:110:11:110:34 | documen ... .search | tst.js:110:11:110:44 | documen ... bstr(1) |
 | tst.js:110:11:110:44 | documen ... bstr(1) | tst.js:110:7:110:44 | v |
-| tst.js:145:29:145:43 | window.location | tst.js:145:29:145:50 | window. ... .search |
-| tst.js:145:29:145:43 | window.location | tst.js:145:29:145:50 | window. ... .search |
-| tst.js:145:29:145:50 | window. ... .search | tst.js:148:29:148:29 | v |
-| tst.js:148:29:148:29 | v | tst.js:148:49:148:49 | v |
-| tst.js:148:29:148:29 | v | tst.js:148:49:148:49 | v |
-| tst.js:155:40:155:54 | window.location | tst.js:155:40:155:61 | window. ... .search |
-| tst.js:155:40:155:54 | window.location | tst.js:155:40:155:61 | window. ... .search |
-| tst.js:155:40:155:61 | window. ... .search | tst.js:152:29:152:46 | xssSourceService() |
-| tst.js:155:40:155:61 | window. ... .search | tst.js:152:29:152:46 | xssSourceService() |
-| tst.js:174:9:174:41 | target | tst.js:177:28:177:33 | target |
-| tst.js:174:9:174:41 | target | tst.js:177:28:177:33 | target |
-| tst.js:174:18:174:34 | document.location | tst.js:174:18:174:41 | documen ... .search |
-| tst.js:174:18:174:34 | document.location | tst.js:174:18:174:41 | documen ... .search |
-| tst.js:174:18:174:41 | documen ... .search | tst.js:174:9:174:41 | target |
-| tst.js:181:9:181:42 | tainted | tst.js:183:31:183:37 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:183:31:183:37 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:185:42:185:48 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:185:42:185:48 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:186:33:186:39 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:186:33:186:39 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:188:54:188:60 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:188:54:188:60 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:189:45:189:51 | tainted |
-| tst.js:181:9:181:42 | tainted | tst.js:189:45:189:51 | tainted |
-| tst.js:181:19:181:35 | document.location | tst.js:181:19:181:42 | documen ... .search |
-| tst.js:181:19:181:35 | document.location | tst.js:181:19:181:42 | documen ... .search |
-| tst.js:181:19:181:42 | documen ... .search | tst.js:181:9:181:42 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:196:67:196:73 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:196:67:196:73 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:197:67:197:73 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:197:67:197:73 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:201:35:201:41 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:203:46:203:52 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:204:38:204:44 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:205:35:205:41 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:233:35:233:41 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:235:20:235:26 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:237:23:237:29 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:238:23:238:29 | tainted |
-| tst.js:194:9:194:42 | tainted | tst.js:252:23:252:29 | tainted |
-| tst.js:194:19:194:35 | document.location | tst.js:194:19:194:42 | documen ... .search |
-| tst.js:194:19:194:35 | document.location | tst.js:194:19:194:42 | documen ... .search |
-| tst.js:194:19:194:42 | documen ... .search | tst.js:194:9:194:42 | tainted |
-| tst.js:201:35:201:41 | tainted | tst.js:209:28:209:46 | this.state.tainted1 |
-| tst.js:201:35:201:41 | tainted | tst.js:209:28:209:46 | this.state.tainted1 |
-| tst.js:203:46:203:52 | tainted | tst.js:210:28:210:46 | this.state.tainted2 |
-| tst.js:203:46:203:52 | tainted | tst.js:210:28:210:46 | this.state.tainted2 |
-| tst.js:204:38:204:44 | tainted | tst.js:211:28:211:46 | this.state.tainted3 |
-| tst.js:204:38:204:44 | tainted | tst.js:211:28:211:46 | this.state.tainted3 |
-| tst.js:205:35:205:41 | tainted | tst.js:215:32:215:49 | prevState.tainted4 |
-| tst.js:205:35:205:41 | tainted | tst.js:215:32:215:49 | prevState.tainted4 |
-| tst.js:233:35:233:41 | tainted | tst.js:222:28:222:46 | this.props.tainted1 |
-| tst.js:233:35:233:41 | tainted | tst.js:222:28:222:46 | this.props.tainted1 |
-| tst.js:235:20:235:26 | tainted | tst.js:223:28:223:46 | this.props.tainted2 |
-| tst.js:235:20:235:26 | tainted | tst.js:223:28:223:46 | this.props.tainted2 |
-| tst.js:237:23:237:29 | tainted | tst.js:224:28:224:46 | this.props.tainted3 |
-| tst.js:237:23:237:29 | tainted | tst.js:224:28:224:46 | this.props.tainted3 |
-| tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
-| tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
-| tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
-| tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
-| tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
-| tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name |
-| tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name |
-| tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name |
-| tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted |
-| tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
-| tst.js:282:19:282:29 | window.name | tst.js:282:9:282:29 | tainted |
-| tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted |
+| tst.js:151:29:151:43 | window.location | tst.js:151:29:151:50 | window. ... .search |
+| tst.js:151:29:151:43 | window.location | tst.js:151:29:151:50 | window. ... .search |
+| tst.js:151:29:151:50 | window. ... .search | tst.js:154:29:154:29 | v |
+| tst.js:154:29:154:29 | v | tst.js:154:49:154:49 | v |
+| tst.js:154:29:154:29 | v | tst.js:154:49:154:49 | v |
+| tst.js:161:40:161:54 | window.location | tst.js:161:40:161:61 | window. ... .search |
+| tst.js:161:40:161:54 | window.location | tst.js:161:40:161:61 | window. ... .search |
+| tst.js:161:40:161:61 | window. ... .search | tst.js:158:29:158:46 | xssSourceService() |
+| tst.js:161:40:161:61 | window. ... .search | tst.js:158:29:158:46 | xssSourceService() |
+| tst.js:180:9:180:41 | target | tst.js:183:28:183:33 | target |
+| tst.js:180:9:180:41 | target | tst.js:183:28:183:33 | target |
+| tst.js:180:18:180:34 | document.location | tst.js:180:18:180:41 | documen ... .search |
+| tst.js:180:18:180:34 | document.location | tst.js:180:18:180:41 | documen ... .search |
+| tst.js:180:18:180:41 | documen ... .search | tst.js:180:9:180:41 | target |
+| tst.js:187:9:187:42 | tainted | tst.js:189:31:189:37 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:189:31:189:37 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:191:42:191:48 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:191:42:191:48 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:192:33:192:39 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:192:33:192:39 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:194:54:194:60 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:194:54:194:60 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
+| tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
+| tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
+| tst.js:187:19:187:42 | documen ... .search | tst.js:187:9:187:42 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:202:67:202:73 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:202:67:202:73 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:203:67:203:73 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:203:67:203:73 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:207:35:207:41 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:209:46:209:52 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:210:38:210:44 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:211:35:211:41 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:239:35:239:41 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:241:20:241:26 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:243:23:243:29 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:244:23:244:29 | tainted |
+| tst.js:200:9:200:42 | tainted | tst.js:258:23:258:29 | tainted |
+| tst.js:200:19:200:35 | document.location | tst.js:200:19:200:42 | documen ... .search |
+| tst.js:200:19:200:35 | document.location | tst.js:200:19:200:42 | documen ... .search |
+| tst.js:200:19:200:42 | documen ... .search | tst.js:200:9:200:42 | tainted |
+| tst.js:207:35:207:41 | tainted | tst.js:215:28:215:46 | this.state.tainted1 |
+| tst.js:207:35:207:41 | tainted | tst.js:215:28:215:46 | this.state.tainted1 |
+| tst.js:209:46:209:52 | tainted | tst.js:216:28:216:46 | this.state.tainted2 |
+| tst.js:209:46:209:52 | tainted | tst.js:216:28:216:46 | this.state.tainted2 |
+| tst.js:210:38:210:44 | tainted | tst.js:217:28:217:46 | this.state.tainted3 |
+| tst.js:210:38:210:44 | tainted | tst.js:217:28:217:46 | this.state.tainted3 |
+| tst.js:211:35:211:41 | tainted | tst.js:221:32:221:49 | prevState.tainted4 |
+| tst.js:211:35:211:41 | tainted | tst.js:221:32:221:49 | prevState.tainted4 |
+| tst.js:239:35:239:41 | tainted | tst.js:228:28:228:46 | this.props.tainted1 |
+| tst.js:239:35:239:41 | tainted | tst.js:228:28:228:46 | this.props.tainted1 |
+| tst.js:241:20:241:26 | tainted | tst.js:229:28:229:46 | this.props.tainted2 |
+| tst.js:241:20:241:26 | tainted | tst.js:229:28:229:46 | this.props.tainted2 |
+| tst.js:243:23:243:29 | tainted | tst.js:230:28:230:46 | this.props.tainted3 |
+| tst.js:243:23:243:29 | tainted | tst.js:230:28:230:46 | this.props.tainted3 |
+| tst.js:244:23:244:29 | tainted | tst.js:234:32:234:49 | prevProps.tainted4 |
+| tst.js:244:23:244:29 | tainted | tst.js:234:32:234:49 | prevProps.tainted4 |
+| tst.js:250:39:250:55 | props.propTainted | tst.js:254:60:254:82 | this.st ... Tainted |
+| tst.js:250:39:250:55 | props.propTainted | tst.js:254:60:254:82 | this.st ... Tainted |
+| tst.js:258:23:258:29 | tainted | tst.js:250:39:250:55 | props.propTainted |
+| tst.js:262:7:262:17 | window.name | tst.js:262:7:262:17 | window.name |
+| tst.js:263:7:263:10 | name | tst.js:263:7:263:10 | name |
+| tst.js:267:11:267:21 | window.name | tst.js:267:11:267:21 | window.name |
+| tst.js:283:22:283:29 | location | tst.js:283:22:283:29 | location |
+| tst.js:288:9:288:29 | tainted | tst.js:291:59:291:65 | tainted |
+| tst.js:288:9:288:29 | tainted | tst.js:291:59:291:65 | tainted |
+| tst.js:288:19:288:29 | window.name | tst.js:288:9:288:29 | tainted |
+| tst.js:288:19:288:29 | window.name | tst.js:288:9:288:29 | tainted |
+| tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
+| tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
+| tst.js:305:10:305:10 | e | tst.js:306:20:306:20 | e |
+| tst.js:305:10:305:10 | e | tst.js:306:20:306:20 | e |
+| tst.js:311:10:311:17 | location | tst.js:313:10:313:10 | e |
+| tst.js:311:10:311:17 | location | tst.js:313:10:313:10 | e |
+| tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
+| tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
+| tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location |
+| typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
+| typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
+| typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
+| typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
+| typeahead.js:21:12:21:17 | target | typeahead.js:24:30:24:32 | val |
+| typeahead.js:24:30:24:32 | val | typeahead.js:25:18:25:20 | val |
+| typeahead.js:24:30:24:32 | val | typeahead.js:25:18:25:20 | val |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
 | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted |
@@ -620,6 +665,7 @@ edges
 | addEventListener.js:2:20:2:29 | event.data | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:29 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:1:43:1:47 | event | user-provided value |
 | addEventListener.js:6:20:6:23 | data | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:6:20:6:23 | data | Cross-site scripting vulnerability due to $@. | addEventListener.js:5:43:5:48 | {data} | user-provided value |
 | addEventListener.js:12:24:12:33 | event.data | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:33 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:10:21:10:25 | event | user-provided value |
+| exception-xss.js:86:17:86:19 | foo | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:86:17:86:19 | foo | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
 | jquery.js:4:5:4:11 | tainted | jquery.js:2:17:2:33 | document.location | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
@@ -667,32 +713,35 @@ edges
 | tst.js:99:30:99:53 | documen ... .search | tst.js:99:30:99:46 | document.location | tst.js:99:30:99:53 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:99:30:99:46 | document.location | user-provided value |
 | tst.js:105:25:105:48 | documen ... .search | tst.js:105:25:105:41 | document.location | tst.js:105:25:105:48 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:105:25:105:41 | document.location | user-provided value |
 | tst.js:113:18:113:18 | v | tst.js:110:11:110:27 | document.location | tst.js:113:18:113:18 | v | Cross-site scripting vulnerability due to $@. | tst.js:110:11:110:27 | document.location | user-provided value |
-| tst.js:148:49:148:49 | v | tst.js:145:29:145:43 | window.location | tst.js:148:49:148:49 | v | Cross-site scripting vulnerability due to $@. | tst.js:145:29:145:43 | window.location | user-provided value |
-| tst.js:152:29:152:46 | xssSourceService() | tst.js:155:40:155:54 | window.location | tst.js:152:29:152:46 | xssSourceService() | Cross-site scripting vulnerability due to $@. | tst.js:155:40:155:54 | window.location | user-provided value |
-| tst.js:177:28:177:33 | target | tst.js:174:18:174:34 | document.location | tst.js:177:28:177:33 | target | Cross-site scripting vulnerability due to $@. | tst.js:174:18:174:34 | document.location | user-provided value |
-| tst.js:183:31:183:37 | tainted | tst.js:181:19:181:35 | document.location | tst.js:183:31:183:37 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
-| tst.js:185:42:185:48 | tainted | tst.js:181:19:181:35 | document.location | tst.js:185:42:185:48 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
-| tst.js:186:33:186:39 | tainted | tst.js:181:19:181:35 | document.location | tst.js:186:33:186:39 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
-| tst.js:188:54:188:60 | tainted | tst.js:181:19:181:35 | document.location | tst.js:188:54:188:60 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
-| tst.js:189:45:189:51 | tainted | tst.js:181:19:181:35 | document.location | tst.js:189:45:189:51 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
-| tst.js:196:67:196:73 | tainted | tst.js:194:19:194:35 | document.location | tst.js:196:67:196:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:197:67:197:73 | tainted | tst.js:194:19:194:35 | document.location | tst.js:197:67:197:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:209:28:209:46 | this.state.tainted1 | tst.js:194:19:194:35 | document.location | tst.js:209:28:209:46 | this.state.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:210:28:210:46 | this.state.tainted2 | tst.js:194:19:194:35 | document.location | tst.js:210:28:210:46 | this.state.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:211:28:211:46 | this.state.tainted3 | tst.js:194:19:194:35 | document.location | tst.js:211:28:211:46 | this.state.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:215:32:215:49 | prevState.tainted4 | tst.js:194:19:194:35 | document.location | tst.js:215:32:215:49 | prevState.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:222:28:222:46 | this.props.tainted1 | tst.js:194:19:194:35 | document.location | tst.js:222:28:222:46 | this.props.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:223:28:223:46 | this.props.tainted2 | tst.js:194:19:194:35 | document.location | tst.js:223:28:223:46 | this.props.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:224:28:224:46 | this.props.tainted3 | tst.js:194:19:194:35 | document.location | tst.js:224:28:224:46 | this.props.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:228:32:228:49 | prevProps.tainted4 | tst.js:194:19:194:35 | document.location | tst.js:228:32:228:49 | prevProps.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:248:60:248:82 | this.st ... Tainted | tst.js:194:19:194:35 | document.location | tst.js:248:60:248:82 | this.st ... Tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
-| tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:256:7:256:17 | window.name | user-provided value |
-| tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | Cross-site scripting vulnerability due to $@. | tst.js:257:7:257:10 | name | user-provided value |
-| tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:261:11:261:21 | window.name | user-provided value |
-| tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location | tst.js:277:22:277:29 | location | Cross-site scripting vulnerability due to $@. | tst.js:277:22:277:29 | location | user-provided value |
-| tst.js:285:59:285:65 | tainted | tst.js:282:9:282:29 | tainted | tst.js:285:59:285:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:282:9:282:29 | tainted | user-provided value |
-| tst.js:285:59:285:65 | tainted | tst.js:282:19:282:29 | window.name | tst.js:285:59:285:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:282:19:282:29 | window.name | user-provided value |
-| tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted | tst.js:285:59:285:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:285:59:285:65 | tainted | user-provided value |
+| tst.js:139:18:139:18 | v | tst.js:110:11:110:27 | document.location | tst.js:139:18:139:18 | v | Cross-site scripting vulnerability due to $@. | tst.js:110:11:110:27 | document.location | user-provided value |
+| tst.js:154:49:154:49 | v | tst.js:151:29:151:43 | window.location | tst.js:154:49:154:49 | v | Cross-site scripting vulnerability due to $@. | tst.js:151:29:151:43 | window.location | user-provided value |
+| tst.js:158:29:158:46 | xssSourceService() | tst.js:161:40:161:54 | window.location | tst.js:158:29:158:46 | xssSourceService() | Cross-site scripting vulnerability due to $@. | tst.js:161:40:161:54 | window.location | user-provided value |
+| tst.js:183:28:183:33 | target | tst.js:180:18:180:34 | document.location | tst.js:183:28:183:33 | target | Cross-site scripting vulnerability due to $@. | tst.js:180:18:180:34 | document.location | user-provided value |
+| tst.js:189:31:189:37 | tainted | tst.js:187:19:187:35 | document.location | tst.js:189:31:189:37 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:191:42:191:48 | tainted | tst.js:187:19:187:35 | document.location | tst.js:191:42:191:48 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:192:33:192:39 | tainted | tst.js:187:19:187:35 | document.location | tst.js:192:33:192:39 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:194:54:194:60 | tainted | tst.js:187:19:187:35 | document.location | tst.js:194:54:194:60 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:195:45:195:51 | tainted | tst.js:187:19:187:35 | document.location | tst.js:195:45:195:51 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:202:67:202:73 | tainted | tst.js:200:19:200:35 | document.location | tst.js:202:67:202:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:203:67:203:73 | tainted | tst.js:200:19:200:35 | document.location | tst.js:203:67:203:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:215:28:215:46 | this.state.tainted1 | tst.js:200:19:200:35 | document.location | tst.js:215:28:215:46 | this.state.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:216:28:216:46 | this.state.tainted2 | tst.js:200:19:200:35 | document.location | tst.js:216:28:216:46 | this.state.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:217:28:217:46 | this.state.tainted3 | tst.js:200:19:200:35 | document.location | tst.js:217:28:217:46 | this.state.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:221:32:221:49 | prevState.tainted4 | tst.js:200:19:200:35 | document.location | tst.js:221:32:221:49 | prevState.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:228:28:228:46 | this.props.tainted1 | tst.js:200:19:200:35 | document.location | tst.js:228:28:228:46 | this.props.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:229:28:229:46 | this.props.tainted2 | tst.js:200:19:200:35 | document.location | tst.js:229:28:229:46 | this.props.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:230:28:230:46 | this.props.tainted3 | tst.js:200:19:200:35 | document.location | tst.js:230:28:230:46 | this.props.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:234:32:234:49 | prevProps.tainted4 | tst.js:200:19:200:35 | document.location | tst.js:234:32:234:49 | prevProps.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:254:60:254:82 | this.st ... Tainted | tst.js:200:19:200:35 | document.location | tst.js:254:60:254:82 | this.st ... Tainted | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
+| tst.js:262:7:262:17 | window.name | tst.js:262:7:262:17 | window.name | tst.js:262:7:262:17 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:262:7:262:17 | window.name | user-provided value |
+| tst.js:263:7:263:10 | name | tst.js:263:7:263:10 | name | tst.js:263:7:263:10 | name | Cross-site scripting vulnerability due to $@. | tst.js:263:7:263:10 | name | user-provided value |
+| tst.js:267:11:267:21 | window.name | tst.js:267:11:267:21 | window.name | tst.js:267:11:267:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:267:11:267:21 | window.name | user-provided value |
+| tst.js:283:22:283:29 | location | tst.js:283:22:283:29 | location | tst.js:283:22:283:29 | location | Cross-site scripting vulnerability due to $@. | tst.js:283:22:283:29 | location | user-provided value |
+| tst.js:291:59:291:65 | tainted | tst.js:288:19:288:29 | window.name | tst.js:291:59:291:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:288:19:288:29 | window.name | user-provided value |
+| tst.js:306:20:306:20 | e | tst.js:304:9:304:16 | location | tst.js:306:20:306:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:304:9:304:16 | location | user-provided value |
+| tst.js:314:20:314:20 | e | tst.js:311:10:311:17 | location | tst.js:314:20:314:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:311:10:311:17 | location | user-provided value |
+| tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location | Cross-site scripting vulnerability due to $@. | tst.js:319:35:319:42 | location | user-provided value |
+| typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:38 | document.location | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:38 | document.location | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
 | winjs.js:4:43:4:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:4:43:4:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |

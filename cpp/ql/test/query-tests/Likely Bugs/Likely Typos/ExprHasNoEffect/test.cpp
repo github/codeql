@@ -21,8 +21,8 @@ public:
 		MyIterator arg1, arg2;
 		_It arg3;
 
-		++arg1; // pure, does nothing
-		++arg2; // pure, does nothing
+		++arg1; // pure, does nothing [NOT DETECTED]
+		++arg2; // pure, does nothing [NOT DETECTED]
 		++arg3; // not pure in all cases (when _It is int this has a side-effect)
 
 		return arg2;

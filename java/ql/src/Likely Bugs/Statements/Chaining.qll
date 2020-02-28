@@ -48,7 +48,7 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
     or
     // A method on the wrong object is called.
     not (
-      delegateCall.getQualifier().getProperExpr() instanceof ThisAccess or
+      delegateCall.getQualifier() instanceof ThisAccess or
       not exists(delegateCall.getQualifier())
     )
     or

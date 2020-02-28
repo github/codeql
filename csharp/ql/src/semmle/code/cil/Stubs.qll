@@ -21,9 +21,8 @@ private module Cached {
   predicate assemblyIsStubImpl(Assembly asm) {
     exists(int totalInstructions, int totalImplementations |
       totalInstructions = count(Instruction i | i.getImplementation().getLocation() = asm) and
-      totalImplementations = count(MethodImplementation i |
-          i.getImplementation().getLocation() = asm
-        ) and
+      totalImplementations =
+        count(MethodImplementation i | i.getImplementation().getLocation() = asm) and
       totalInstructions.(float) / totalImplementations.(float) < stubInstructionThreshold()
     )
   }

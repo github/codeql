@@ -35,7 +35,9 @@ module TaintedPath {
       guard instanceof StartsWithDotDotSanitizer or
       guard instanceof StartsWithDirSanitizer or
       guard instanceof IsAbsoluteSanitizer or
-      guard instanceof ContainsDotDotSanitizer
+      guard instanceof ContainsDotDotSanitizer or
+      guard instanceof RelativePathStartsWithDotDotSanitizer or
+      guard instanceof IsInsideCheckSanitizer
     }
 
     override predicate isAdditionalFlowStep(
@@ -66,6 +68,95 @@ module TaintedPath {
         src = read.getBase() and
         read.getPropertyName() != "length" and
         srclabel = dstlabel
+      )
+      or
+      // string method calls of interest
+      exists(DataFlow::MethodCallNode mcn, string name |
+        srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
+      |
+        exists(string substringMethodName |
+          substringMethodName = "substr" or
+          substringMethodName = "substring" or
+          substringMethodName = "slice"
+        |
+          name = substringMethodName and
+          // to avoid very dynamic transformations, require at least one fixed index
+          exists(mcn.getAnArgument().asExpr().getIntValue())
+        )
+        or
+        exists(string argumentlessMethodName |
+          argumentlessMethodName = "toLocaleLowerCase" or
+          argumentlessMethodName = "toLocaleUpperCase" or
+          argumentlessMethodName = "toLowerCase" or
+          argumentlessMethodName = "toUpperCase" or
+          argumentlessMethodName = "trim" or
+          argumentlessMethodName = "trimLeft" or
+          argumentlessMethodName = "trimRight"
+        |
+          name = argumentlessMethodName
+        )
+      )
+      or
+      // array method calls of interest
+      exists(DataFlow::MethodCallNode mcn, string name | dst = mcn and mcn.calls(src, name) |
+        // A `str.split()` call can either split into path elements (`str.split("/")`) or split by some other string.
+        name = "split" and
+        (
+          if
+            exists(DataFlow::Node splitBy | splitBy = mcn.getArgument(0) |
+              splitBy.mayHaveStringValue("/") or
+              any(DataFlow::RegExpCreationNode reg | reg.getRoot().getAMatchedString() = "/")
+                  .flowsTo(splitBy)
+            )
+          then
+            srclabel.(Label::PosixPath).canContainDotDotSlash() and
+            dstlabel instanceof Label::SplitPath
+          else srclabel = dstlabel
+        )
+        or
+        (
+          name = "pop" or
+          name = "shift"
+        ) and
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
+        or
+        (
+          name = "slice" or
+          name = "splice" or
+          name = "concat"
+        ) and
+        dstlabel instanceof Label::SplitPath and
+        srclabel instanceof Label::SplitPath
+        or
+        name = "join" and
+        mcn.getArgument(0).mayHaveStringValue("/") and
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
+      )
+      or
+      // prefix.concat(path)
+      exists(DataFlow::MethodCallNode mcn |
+        mcn.getMethodName() = "concat" and mcn.getAnArgument() = src
+      |
+        dst = mcn and
+        dstlabel instanceof Label::SplitPath and
+        srclabel instanceof Label::SplitPath
+      )
+      or
+      // reading unknown property of split path
+      exists(DataFlow::PropRead read | read = dst |
+        src = read.getBase() and
+        not read.getPropertyName() = "length" and
+        not exists(read.getPropertyNameExpr().getIntValue()) and
+        // split[split.length - 1]
+        not exists(BinaryExpr binop |
+          read.getPropertyNameExpr() = binop and
+          binop.getAnOperand().getIntValue() = 1 and
+          binop.getAnOperand().(PropAccess).getPropertyName() = "length"
+        ) and
+        srclabel instanceof Label::SplitPath and
+        dstlabel.(Label::PosixPath).canContainDotDotSlash()
       )
     }
 
@@ -108,7 +199,7 @@ module TaintedPath {
       or
       // path.join()
       exists(DataFlow::CallNode join, int n |
-        join = DataFlow::moduleMember("path", "join").getACall()
+        join = NodeJSLib::Path::moduleMember("join").getACall()
       |
         src = join.getArgument(n) and
         dst = join and

@@ -22,6 +22,39 @@ namespace NUnit.Framework
     class TestAttribute : Attribute
     {
     }
+
+    class Assert
+    {
+        public void True(bool condition) { }
+        public void True(bool condition, string message, params object[] parms) { }
+
+        public void IsTrue(bool condition) { }
+        public void IsTrue(bool condition, string message, params object[] parms) { }
+
+        public void False(bool condition) { }
+        public void False(bool condition, string message, params object[] parms) { }
+
+        public void IsFalse(bool condition) { }
+        public void IsFalse(bool condition, string message, params object[] parms) { }
+
+        public void Null(object anObject) { }
+        public void Null(object anObject, string message, params object[] parms) { }
+
+        public void IsNull(object anObject) { }
+        public void IsNull(object anObject, string message, params object[] parms) { }
+
+        public void NotNull(object anObject) { }
+        public void NotNull(object anObject, string message, params object[] parms) { }
+
+        public void IsNotNull(object anObject) { }
+        public void IsNotNull(object anObject, string message, params object[] parms) { }
+
+        public void That(bool condition) { }
+        public void That(bool condition, string message, params object[] parms) { }
+        public void That(bool condition, Func<string> getExceptionMessage) { }
+    }
+
+    public class AssertionException : Exception { }
 }
 
 namespace NUnitTests

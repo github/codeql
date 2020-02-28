@@ -132,16 +132,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-/**
- * Holds if `call` passes an implicit or explicit qualifier, i.e., a
- * `this` parameter.
- */
-predicate callHasQualifier(Call call) {
-  call.hasQualifier()
-  or
-  call.getTarget() instanceof Destructor
-}
-
 private newtype TContent =
   TFieldContent(Field f) or
   TCollectionContent() or
@@ -219,7 +209,6 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
       node1.asExpr() = a and
       a.getLValue() = fa
     ) and
-    not fa.getTarget().isStatic() and
     node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
     f.(FieldContent).getField() = fa.getTarget()
   )
@@ -283,8 +272,6 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = Type;
 
-class DataFlowLocation = Location;
-
 /** A function call relevant for data flow. */
 class DataFlowCall extends Expr {
   DataFlowCall() { this instanceof Call }
@@ -304,3 +291,5 @@ class DataFlowCall extends Expr {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }

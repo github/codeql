@@ -9,9 +9,9 @@ module Koa {
   /**
    * An expression that creates a new Koa application.
    */
-  class AppDefinition extends HTTP::Servers::StandardServerDefinition, NewExpr {
+  class AppDefinition extends HTTP::Servers::StandardServerDefinition, InvokeExpr {
     AppDefinition() {
-      // `app = new Koa()`
+      // `app = new Koa()` / `app = Koa()`
       this = DataFlow::moduleImport("koa").getAnInvocation().asExpr()
     }
   }
@@ -113,6 +113,26 @@ module Koa {
      * Gets the route handler that provides this response.
      */
     override RouteHandler getRouteHandler() { result = ctx.getRouteHandler() }
+  }
+
+  /**
+   * A Koa request source, accessed through the a request property of a
+   * generator route handler (deprecated in Koa 3).
+   */
+  private class GeneratorRequestSource extends HTTP::Servers::RequestSource {
+    RouteHandler rh;
+
+    GeneratorRequestSource() {
+      exists(DataFlow::FunctionNode fun | fun = rh |
+        fun.getFunction().isGenerator() and
+        fun.getReceiver().getAPropertyRead("request") = this
+      )
+    }
+
+    /**
+     * Gets the route handler that provides this response.
+     */
+    override RouteHandler getRouteHandler() { result = rh }
   }
 
   /**

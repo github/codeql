@@ -197,3 +197,7 @@ app.get('/some/path', function(req, res) {
 	s.replace('"', '').replace('"', ''); // OK
 	s.replace("'", "").replace("'", ""); // OK
 });
+
+function bad18(p) {
+  return p.replace("/../", ""); // NOT OK
+}

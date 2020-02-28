@@ -37,7 +37,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2019-11-26";
+  public static final String EXTRACTOR_VERSION = "2020-02-14";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -140,14 +140,15 @@ public class Main {
     for (File projectFile : projectFiles) {
 
       long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
-      ParsedProject project = tsParser.openProject(projectFile);
+      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty);
       verboseLogEndTimer(ap, start);
       // Extract all files belonging to this project which are also matched
       // by our include/exclude filters.
       List<File> filesToExtract = new ArrayList<>();
       for (File sourceFile : project.getSourceFiles()) {
         if (files.contains(normalizeFile(sourceFile))
-            && !extractedFiles.contains(sourceFile.getAbsoluteFile())) {
+            && !extractedFiles.contains(sourceFile.getAbsoluteFile())
+            && FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourceFile))) {
           filesToExtract.add(sourceFile);
         }
       }
@@ -194,7 +195,13 @@ public class Main {
   }
 
   private void extractTypeTable(File fileHandle, TypeTable table) {
-    TrapWriter trapWriter = extractorOutputConfig.getTrapWriterFactory().mkTrapWriter(fileHandle);
+    TrapWriter trapWriter =
+        extractorOutputConfig
+            .getTrapWriterFactory()
+            .mkTrapWriter(
+                new File(
+                    fileHandle.getParentFile(),
+                    fileHandle.getName() + ".codeql-typescript-typetable"));
     try {
       new TypeExtractor(trapWriter, table).extract();
     } finally {

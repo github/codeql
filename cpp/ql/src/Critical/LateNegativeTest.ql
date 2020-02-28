@@ -13,7 +13,7 @@
 
 import cpp
 
-predicate negativeCheck(LocalScopeVariable v, ComparisonOperation op) {
+predicate negativeCheck(StackVariable v, ComparisonOperation op) {
   exists(int varindex, string constant, Literal lit |
     op.getChild(varindex) = v.getAnAccess() and
     op.getChild(1 - varindex) = lit and
@@ -38,7 +38,7 @@ predicate negativeCheck(LocalScopeVariable v, ComparisonOperation op) {
   )
 }
 
-from LocalScopeVariable v, ArrayExpr dangerous, Expr check
+from StackVariable v, ArrayExpr dangerous, Expr check
 where
   useUsePair(v, dangerous.getArrayOffset(), check.getAChild()) and
   negativeCheck(v, check) and

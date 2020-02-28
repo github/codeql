@@ -39,6 +39,7 @@ import * as ast_extractor from "./ast_extractor";
 
 import { Project } from "./common";
 import { TypeTable } from "./type_table";
+import { VirtualSourceRoot } from "./virtual_source_root";
 
 interface ParseCommand {
     command: "parse";
@@ -47,6 +48,9 @@ interface ParseCommand {
 interface OpenProjectCommand {
     command: "open-project";
     tsConfig: string;
+    virtualSourceRoot: string | null;
+    packageEntryPoints: [string, string][];
+    packageJsonFiles: [string, string][];
 }
 interface CloseProjectCommand {
     command: "close-project";
@@ -126,7 +130,7 @@ function checkCycle(root: any) {
 function isBlacklistedProperty(k: string) {
     return k === "parent" || k === "pos" || k === "end"
         || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode"
+        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode" || k === "fallthroughFlowNode"
         || k === "nextContainer" || k === "locals"
         || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
 }
@@ -242,24 +246,92 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
     return {ast, code};
 }
 
+/**
+ * Matches a path segment referencing a package in a node_modules folder, and extracts
+ * two capture groups: the package name, and the relative path in the package.
+ *
+ * For example `lib/node_modules/@foo/bar/src/index.js` extracts the capture groups [`@foo/bar`, `src/index.js`].
+ */
+const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
+
 function handleOpenProjectCommand(command: OpenProjectCommand) {
+    Error.stackTraceLimit = Infinity;
     let tsConfigFilename = String(command.tsConfig);
     let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
     let basePath = pathlib.dirname(tsConfigFilename);
 
+    let packageEntryPoints = new Map(command.packageEntryPoints);
+    let packageJsonFiles = new Map(command.packageJsonFiles);
+    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), command.virtualSourceRoot);
+
+    /**
+     * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
+     * the location of package PACK in the source tree, if it exists.
+     */
+    function redirectNodeModulesPath(path: string) {
+        let nodeModulesMatch = nodeModulesRex.exec(path);
+        if (nodeModulesMatch == null) return null;
+        let packageName = nodeModulesMatch[1];
+        let packageJsonFile = packageJsonFiles.get(packageName);
+        if (packageJsonFile == null) return null;
+        let packageDir = pathlib.dirname(packageJsonFile);
+        let suffix = nodeModulesMatch[2];
+        let finalPath = pathlib.join(packageDir, suffix);
+        if (!ts.sys.fileExists(finalPath)) return null;
+        return finalPath;
+    }
+
+    /**
+     * Create the host passed to the tsconfig.json parser.
+     *
+     * We override its file system access in case there is an "extends"
+     * clause pointing into "./node_modules", which must be redirected to
+     * the location of an installed package or a checked-in package.
+     */
     let parseConfigHost: ts.ParseConfigHost = {
         useCaseSensitiveFileNames: true,
-        readDirectory: ts.sys.readDirectory,
-        fileExists: (path: string) => fs.existsSync(path),
-        readFile: ts.sys.readFile,
+        readDirectory: ts.sys.readDirectory, // No need to override traversal/glob matching
+        fileExists: (path: string) => {
+            return ts.sys.fileExists(path)
+                || virtualSourceRoot.toVirtualPathIfFileExists(path) != null
+                || redirectNodeModulesPath(path) != null;
+        },
+        readFile: (path: string) => {
+            if (!ts.sys.fileExists(path)) {
+                let virtualPath = virtualSourceRoot.toVirtualPathIfFileExists(path);
+                if (virtualPath != null) return ts.sys.readFile(virtualPath);
+                virtualPath = redirectNodeModulesPath(path);
+                if (virtualPath != null) return ts.sys.readFile(virtualPath);
+            }
+            return ts.sys.readFile(path);
+        }
     };
-    let config = ts.parseJsonConfigFileContent(tsConfig, parseConfigHost, basePath);
-    let project = new Project(tsConfigFilename, config, state.typeTable);
+    let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
+    let project = new Project(tsConfigFilename, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
     project.load();
 
     state.project = project;
     let program = project.program;
     let typeChecker = program.getTypeChecker();
+
+    let diagnostics = program.getSemanticDiagnostics()
+        .filter(d => d.category === ts.DiagnosticCategory.Error);
+    if (diagnostics.length > 0) {
+        console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
+    }
+    for (let diagnostic of diagnostics) {
+        let text = diagnostic.messageText;
+        if (text && typeof text !== 'string') {
+            text = text.messageText;
+        }
+        let locationStr = '';
+        let { file } = diagnostic;
+        if (file != null) {
+            let { line, character } = file.getLineAndCharacterOfPosition(diagnostic.start);
+            locationStr = `${file.fileName}:${line}:${character}`;
+        }
+        console.warn(`TypeScript: ${locationStr} ${text}`);
+    }
 
     // Associate external module names with the corresponding file symbols.
     // We need these mappings to identify which module a given external type comes from.
@@ -272,7 +344,9 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     });
 
     for (let typeRoot of typeRoots || []) {
-        traverseTypeRoot(typeRoot, "");
+        if (fs.existsSync(typeRoot) && fs.statSync(typeRoot).isDirectory()) {
+            traverseTypeRoot(typeRoot, "");
+        }
     }
 
     for (let sourceFile of program.getSourceFiles()) {
@@ -509,6 +583,9 @@ if (process.argv.length > 2) {
         handleOpenProjectCommand({
             command: "open-project",
             tsConfig: argument,
+            packageEntryPoints: [],
+            packageJsonFiles: [],
+            virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {
             if (pathlib.basename(sf.fileName) === "lib.d.ts") continue;

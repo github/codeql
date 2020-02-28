@@ -17,13 +17,15 @@ namespace Semmle.Autobuild
         readonly EscapeMode escapingMode;
         readonly string workingDirectory;
         readonly IDictionary<string, string> environment;
+        readonly bool silent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Semmle.Autobuild.CommandBuilder"/> class.
         /// </summary>
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="environment">Additional environment variables.</param>
-        public CommandBuilder(IBuildActions actions, string workingDirectory = null, IDictionary<string, string> environment = null)
+        /// <param name="silent">Whether this command should be run silently.</param>
+        public CommandBuilder(IBuildActions actions, string workingDirectory = null, IDictionary<string, string> environment = null, bool silent = false)
         {
             arguments = new StringBuilder();
             if (actions.IsWindows())
@@ -40,6 +42,7 @@ namespace Semmle.Autobuild
             firstCommand = true;
             this.workingDirectory = workingDirectory;
             this.environment = environment;
+            this.silent = silent;
         }
 
         void OdasaIndex(string odasa)
@@ -190,6 +193,6 @@ namespace Semmle.Autobuild
         /// <summary>
         /// Returns a build script that contains just this command.
         /// </summary>
-        public BuildScript Script => BuildScript.Create(executable, arguments.ToString(), workingDirectory, environment);
+        public BuildScript Script => BuildScript.Create(executable, arguments.ToString(), silent, workingDirectory, environment);
     }
 }

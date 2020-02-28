@@ -65,7 +65,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             protected Expression DeclareRangeVariable(Context cx, IExpressionParentEntity parent, int child, bool getElement, ISymbol variableSymbol, SyntaxToken name)
             {
                 var type = Type.Create(cx, cx.GetType(Expr));
-                Extraction.Entities.Location nameLoc;
 
                 AnnotatedType declType;
                 TypeSyntax declTypeSyntax = null;
@@ -90,7 +89,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     declType,
                     declTypeSyntax,
                     cx.Create(node.GetLocation()),
-                    nameLoc = cx.Create(name.GetLocation()),
                     true,
                     parent,
                     child
@@ -98,8 +96,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 Expression.Create(cx, Expr, decl, 0);
 
+                var nameLoc = cx.Create(name.GetLocation());
                 var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, false, null));
-                cx.TrapWriter.Writer.expr_access(access, LocalVariable.GetAlreadyCreated(cx, variableSymbol));
+                cx.TrapWriter.Writer.expr_access(access, LocalVariable.Create(cx, variableSymbol));
 
                 return decl;
             }

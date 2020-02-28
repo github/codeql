@@ -114,11 +114,9 @@ class AndroidComponentXmlElement extends XMLElement {
   string getResolvedComponentName() {
     if getComponentName().matches(".%")
     then
-      result = getParent()
-              .(XMLElement)
-              .getParent()
-              .(AndroidManifestXmlElement)
-              .getPackageAttributeValue() + getComponentName()
+      result =
+        getParent().(XMLElement).getParent().(AndroidManifestXmlElement).getPackageAttributeValue() +
+          getComponentName()
     else result = getComponentName()
   }
 

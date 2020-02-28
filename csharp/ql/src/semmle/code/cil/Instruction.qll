@@ -49,9 +49,8 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
    */
   Handler getHandler(int i) {
     result.isInScope(this) and
-    result.getIndex() = rank[i + 1](int hi |
-        exists(Handler h | h.isInScope(this) and hi = h.getIndex())
-      )
+    result.getIndex() =
+      rank[i + 1](int hi | exists(Handler h | h.isInScope(this) and hi = h.getIndex()))
   }
 
   override Type getType() { result = ControlFlowNode.super.getType() }

@@ -21,15 +21,6 @@ C# built-in support
      :class: fullWidthTable
      :widths: auto
 
-COBOL built-in support
-===================================
-
-.. include:: cobol-note.rst
-
-* Embedded SQL
-* Embedded CICS
-
-
 Java built-in support
 ==================================
 

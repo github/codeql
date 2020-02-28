@@ -189,10 +189,8 @@ class Variable extends @variable, LexicalName {
    */
   predicate isCaptured() {
     this instanceof GlobalVariable or
-    getAnAccess().getContainer().getFunctionBoundary() != this
-          .(LocalVariable)
-          .getDeclaringContainer()
-          .getFunctionBoundary()
+    getAnAccess().getContainer().getFunctionBoundary() !=
+      this.(LocalVariable).getDeclaringContainer().getFunctionBoundary()
   }
 
   /** Holds if there is a declaration of this variable in `tl`. */
@@ -680,7 +678,7 @@ class Parameterized extends @parameterized, Documentable {
 }
 
 /**
- * A parameter declaration.
+ * A parameter declaration in a function or catch clause.
  *
  * Examples:
  *
@@ -688,6 +686,9 @@ class Parameterized extends @parameterized, Documentable {
  * function f(x, { y: z }, ...rest) {  // `x`, `{ y: z }` and `rest` are parameter declarations
  *   var [ a, b ] = rest;
  *   var c;
+ *   try {
+ *      x.m();
+ *   } catch(e) {} // `e` is a parameter declaration
  * }
  * ```
  */
@@ -749,6 +750,19 @@ class Parameter extends BindingPattern {
   JSDocTag getJSDocTag() {
     none() // overridden in SimpleParameter
   }
+
+  /**
+   * Holds if this is a parameter declared optional with the `?` token.
+   *
+   * Note that this does not hold for rest parameters, and does not in general
+   * hold for parameters with defaults.
+   *
+   * For example, `x`, is declared optional below:
+   * ```
+   * function f(x?: number) {}
+   * ```
+   */
+  predicate isDeclaredOptional() { isOptionalParameterDeclaration(this) }
 }
 
 /**

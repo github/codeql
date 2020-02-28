@@ -74,7 +74,7 @@
 | type_alias.ts:5:6:5:17 | ValueOrArray | ValueOrArray<T> |
 | type_alias.ts:5:19:5:19 | T | T |
 | type_alias.ts:5:24:5:24 | T | T |
-| type_alias.ts:5:24:5:49 | T \| Arr ... ray<T>> | ValueOrArray<T> |
+| type_alias.ts:5:24:5:49 | T \| Arr ... ray<T>> | T \| ValueOrArray<T>[] |
 | type_alias.ts:5:28:5:32 | Array | T[] |
 | type_alias.ts:5:28:5:49 | Array<V ... ray<T>> | ValueOrArray<T>[] |
 | type_alias.ts:5:34:5:45 | ValueOrArray | ValueOrArray<T> |
@@ -84,7 +84,7 @@
 | type_alias.ts:7:8:7:27 | ValueOrArray<number> | ValueOrArray<number> |
 | type_alias.ts:7:21:7:26 | number | number |
 | type_alias.ts:9:6:9:9 | Json | Json |
-| type_alias.ts:10:5:15:12 | \| strin ...  Json[] | Json |
+| type_alias.ts:10:5:15:12 | \| strin ...  Json[] | string \| number \| boolean \| { [property: string... |
 | type_alias.ts:10:7:10:12 | string | string |
 | type_alias.ts:11:7:11:12 | number | number |
 | type_alias.ts:12:7:12:13 | boolean | boolean |
@@ -96,7 +96,7 @@
 | type_alias.ts:15:7:15:12 | Json[] | Json[] |
 | type_alias.ts:17:11:17:14 | Json | Json |
 | type_alias.ts:19:6:19:16 | VirtualNode | VirtualNode |
-| type_alias.ts:20:5:21:56 | \| strin ... Node[]] | VirtualNode |
+| type_alias.ts:20:5:21:56 | \| strin ... Node[]] | string \| [string, { [key: string]: any; }, ...V... |
 | type_alias.ts:20:7:20:12 | string | string |
 | type_alias.ts:21:7:21:56 | [string ... Node[]] | [string, { [key: string]: any; }, ...VirtualNod... |
 | type_alias.ts:21:8:21:13 | string | string |
@@ -123,7 +123,7 @@
 | type_definitions.ts:21:6:21:10 | Alias | Alias<T> |
 | type_definitions.ts:21:12:21:12 | T | T |
 | type_definitions.ts:21:17:21:17 | T | T |
-| type_definitions.ts:21:17:21:19 | T[] | Alias<T> |
+| type_definitions.ts:21:17:21:19 | T[] | T[] |
 | type_definitions.ts:22:26:22:30 | Alias | Alias<T> |
 | type_definitions.ts:22:26:22:38 | Alias<number> | Alias<number> |
 | type_definitions.ts:22:32:22:37 | number | number |

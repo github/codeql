@@ -20,6 +20,7 @@
 
 import javascript
 private import internal.CallGraphs
+private import internal.FlowSteps as FlowSteps
 
 module DataFlow {
   cached
@@ -86,10 +87,10 @@ module DataFlow {
     Expr asExpr() { this = TValueNode(result) }
 
     /**
-     * Gets the expression enclosing this data flow node. 
-     * In most cases the result is the same as `asExpr()`, however this method 
-     * additionally the `InvokeExpr` corresponding to reflective calls, and the `Parameter` 
-     * for a `DataFlow::ParameterNode`. 
+     * Gets the expression enclosing this data flow node.
+     * In most cases the result is the same as `asExpr()`, however this method
+     * additionally the `InvokeExpr` corresponding to reflective calls, and the `Parameter`
+     * for a `DataFlow::ParameterNode`.
      */
     Expr getEnclosingExpr() {
       result = asExpr() or
@@ -146,7 +147,7 @@ module DataFlow {
     final FunctionNode getABoundFunctionValue(int boundArgs) {
       result = getAFunctionValue() and boundArgs = 0
       or
-      CallGraph::getABoundFunctionReference(result, boundArgs).flowsTo(this)
+      CallGraph::getABoundFunctionReference(result, boundArgs, _).flowsTo(this)
     }
 
     /**
@@ -206,6 +207,11 @@ module DataFlow {
       exists(SsaRefinementNode refinement |
         this = TSsaDefNode(refinement) and
         result = TSsaDefNode(refinement.getAnInput())
+      )
+      or
+      exists(SsaPhiNode phi |
+        this = TSsaDefNode(phi) and
+        result = TSsaDefNode(phi.getRephinedVariable())
       )
       or
       // IIFE call -> return value of IIFE
@@ -530,6 +536,13 @@ module DataFlow {
      */
     pragma[noinline]
     predicate accesses(Node base, string p) { getBase() = base and getPropertyName() = p }
+
+    /**
+     * Holds if this data flow node reads or writes a private field in a class.
+     */
+    predicate isPrivateField() {
+      getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
   }
 
   /**
@@ -840,16 +853,18 @@ module DataFlow {
    * An array element pattern viewed as a property read; for instance, in
    * `var [ x, y ] = arr`, `x` is a read of property 0 of `arr` and similar
    * for `y`.
-   *
-   * Note: We currently do not expose the array index as the property name,
-   * instead treating it as a read of an unknown property.
    */
   private class ElementPatternAsPropRead extends PropRead, ElementPatternNode {
     override Node getBase() { result = TDestructuringPatternNode(pattern) }
 
     override Expr getPropertyNameExpr() { none() }
 
-    override string getPropertyName() { none() }
+    override string getPropertyName() {
+      exists(int i |
+        elt = pattern.getElement(i) and
+        result = i.toString()
+      )
+    }
   }
 
   /**
@@ -857,7 +872,6 @@ module DataFlow {
    */
   private class ImportSpecifierAsPropRead extends PropRead, ValueNode {
     override ImportSpecifier astNode;
-
     ImportDeclaration imprt;
 
     ImportSpecifierAsPropRead() {
@@ -879,9 +893,7 @@ module DataFlow {
   private class ForOfLvalueAsPropRead extends PropRead {
     ForOfStmt stmt;
 
-    ForOfLvalueAsPropRead() {
-      this = lvalueNode(stmt.getLValue())
-    }
+    ForOfLvalueAsPropRead() { this = lvalueNode(stmt.getLValue()) }
 
     override Node getBase() { result = stmt.getIterationDomain().flow() }
 
@@ -995,7 +1007,7 @@ module DataFlow {
    * Gets a pseudo-node representing the root of a global access path.
    */
   DataFlow::Node globalAccessPathRootPseudoNode() { result instanceof TGlobalAccessPathRoot }
-  
+
   /**
    * Gets a data flow node representing the underlying call performed by the given
    * call to `Function.prototype.call` or `Function.prototype.apply`.
@@ -1463,6 +1475,8 @@ module DataFlow {
     )
   }
 
+  predicate argumentPassingStep = FlowSteps::argumentPassing/4;
+
   /**
    * Gets the data flow node representing the source of definition `def`, taking
    * flow through IIFE calls into account.
@@ -1573,4 +1587,6 @@ module DataFlow {
   import Configuration
   import TrackedNodes
   import TypeTracking
+
+  predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

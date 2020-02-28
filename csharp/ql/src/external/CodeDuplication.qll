@@ -114,7 +114,8 @@ predicate similarLines(File f, int line) {
 }
 
 private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(SimilarBlock b, int toSum |
+  lines =
+    strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -126,7 +127,8 @@ pragma[noopt]
 private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             similarLinesPerEquivalenceClass(equivClass, num, f) and
             similarLinesPerEquivalenceClass(equivClass, num, otherFile) and
@@ -136,7 +138,8 @@ private predicate similarLinesCovered(File f, int coveredLines, File otherFile) 
       exists(int n, int product | product = coveredApprox * 100 and n = product / numLines | n > 75)
     ) and
     exists(int notCovered |
-      notCovered = count(int j |
+      notCovered =
+        count(int j |
           j in [1 .. numLines] and
           not similarLines(f, j)
         ) and
@@ -152,7 +155,8 @@ predicate duplicateLines(File f, int line) {
 }
 
 private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(DuplicateBlock b, int toSum |
+  lines =
+    strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -164,7 +168,8 @@ pragma[noopt]
 private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             duplicateLinesPerEquivalenceClass(equivClass, num, f) and
             duplicateLinesPerEquivalenceClass(equivClass, num, otherFile) and
@@ -174,7 +179,8 @@ private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile
       exists(int n, int product | product = coveredApprox * 100 and n = product / numLines | n > 75)
     ) and
     exists(int notCovered |
-      notCovered = count(int j |
+      notCovered =
+        count(int j |
           j in [1 .. numLines] and
           not duplicateLines(f, j)
         ) and
@@ -205,7 +211,8 @@ predicate duplicateFiles(File f, File other, int percent) {
 pragma[noopt]
 predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
   exists(int numDup |
-    numDup = strictcount(Method m1 |
+    numDup =
+      strictcount(Method m1 |
         exists(Method m2 |
           duplicateMethod(m1, m2) and
           m1 = sourceMethod() and
@@ -224,7 +231,8 @@ predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
 
 pragma[noopt]
 private predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
-  numDup = strictcount(Method m1 |
+  numDup =
+    strictcount(Method m1 |
       exists(Method m2 |
         duplicateMethod(m1, m2) and
         m1 = sourceMethod() and

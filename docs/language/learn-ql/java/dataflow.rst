@@ -45,7 +45,7 @@ or using the predicates ``exprNode`` and ``parameterNode``:
     */
    ParameterNode parameterNode(Parameter p) { ... }
 
-The predicate ``localFlowStep(Node nodeFrom, Node, nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
+The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
 For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
 
@@ -113,7 +113,7 @@ Then we can make the source more specific, for example an access to a public par
    where
      fileReader.getDeclaringType().hasQualifiedName("java.io", "FileReader") and
      call.getCallee() = fileReader and
-     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(fc.getArgument(0)))
+     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
    select p
 
 The following example finds calls to formatting functions where the format string is not hard-coded.

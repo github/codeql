@@ -139,7 +139,7 @@ void MergeMustExactlyWithMustTotallyOverlap(bool c, Point p, int x1) {
   else {
     a = p;
   }
-  int x = a.x;  // Only one reaching def must exactly overlap, but we should still get a Phi for it.
+  int x = a.x;  // Only one (non-Chi) reaching def must exactly overlap, but we should still get a Phi for it.
 }
 
 void MergeMustExactlyWithMayPartiallyOverlap(bool c, Point p, int x1) {
@@ -242,4 +242,23 @@ void ExplicitConstructorCalls() {
   c.g();
   Constructible c2 = Constructible(2);
   c2.g();
+}
+
+char *VoidStarIndirectParameters(char *src, int size) {
+  char *dst = new char[size];
+  *src = 'a';
+  memcpy(dst, src, size);
+  return dst;
+}
+
+char StringLiteralAliasing2(bool b) {
+  if (b) {
+    ExternalFunc();
+  }
+  else {
+    ExternalFunc();
+  }
+
+  const char* s = "Literal";
+  return s[2];
 }

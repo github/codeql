@@ -12,9 +12,7 @@ module TaintedPath {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -22,9 +20,7 @@ module TaintedPath {
    */
   abstract class Sink extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -108,6 +104,13 @@ module TaintedPath {
         not (isNormalized() and isAbsolute())
       }
     }
+
+    /**
+     * A flow label representing an array of path elements that may include "..".
+     */
+    class SplitPath extends DataFlow::FlowLabel {
+      SplitPath() { this = "splitPath" }
+    }
   }
 
   /**
@@ -124,7 +127,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     NormalizingPathCall() {
-      this = DataFlow::moduleMember("path", "normalize").getACall() and
+      this = NodeJSLib::Path::moduleMember("normalize").getACall() and
       input = getArgument(0) and
       output = this
     }
@@ -148,7 +151,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     ResolvingPathCall() {
-      this = DataFlow::moduleMember("path", "resolve").getACall() and
+      this = NodeJSLib::Path::moduleMember("resolve").getACall() and
       input = getAnArgument() and
       output = this
       or
@@ -180,7 +183,7 @@ module TaintedPath {
     DataFlow::Node output;
 
     NormalizingRelativePathCall() {
-      this = DataFlow::moduleMember("path", "relative").getACall() and
+      this = NodeJSLib::Path::moduleMember("relative").getACall() and
       input = getAnArgument() and
       output = this
     }
@@ -205,7 +208,7 @@ module TaintedPath {
 
     PreservingPathCall() {
       exists(string name | name = "dirname" or name = "toNamespacedPath" |
-        this = DataFlow::moduleMember("path", name).getACall() and
+        this = NodeJSLib::Path::moduleMember(name).getACall() and
         input = getAnArgument() and
         output = this
       )
@@ -244,7 +247,7 @@ module TaintedPath {
     // ".." + path.sep
     exists(StringOps::Concatenation conc | node = conc |
       conc.getOperand(0).getStringValue() = ".." and
-      conc.getOperand(1).getALocalSource() = DataFlow::moduleMember("path", "sep") and
+      conc.getOperand(1).getALocalSource() = NodeJSLib::Path::moduleMember("sep") and
       conc.getNumOperand() = 2
     )
   }
@@ -311,7 +314,7 @@ module TaintedPath {
 
     IsAbsoluteSanitizer() {
       exists(DataFlow::CallNode call | this = call |
-        call = DataFlow::moduleMember("path", "isAbsolute").getACall() and
+        call = NodeJSLib::Path::moduleMember("isAbsolute").getACall() and
         operand = call.getArgument(0) and
         polarity = true and
         negatable = true
@@ -356,6 +359,80 @@ module TaintedPath {
   }
 
   /**
+   * A sanitizer that recognizes the following pattern:
+   * ```
+   * var relative = path.relative(webroot, pathname);
+   * if(relative.startsWith(".." + path.sep) || relative == "..") {
+   *   // pathname is unsafe
+   * } else {
+   *   // pathname is safe
+   * }
+   * ```
+   */
+  class RelativePathStartsWithDotDotSanitizer extends DataFlow::BarrierGuardNode {
+    StringOps::StartsWith startsWith;
+    DataFlow::CallNode relativeCall;
+
+    RelativePathStartsWithDotDotSanitizer() {
+      this = startsWith and
+      relativeCall = NodeJSLib::Path::moduleMember("relative").getACall() and
+      (
+        startsWith.getBaseString().getALocalSource() = relativeCall
+        or
+        startsWith
+            .getBaseString()
+            .getALocalSource()
+            .(NormalizingPathCall)
+            .getInput()
+            .getALocalSource() = relativeCall
+      ) and
+      isDotDotSlashPrefix(startsWith.getSubstring())
+    }
+
+    override predicate blocks(boolean outcome, Expr e) {
+      e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+    }
+  }
+
+  /**
+   * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+   */
+  private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
+
+  /**
+   * An expression of form `isInside(x, y)` or similar, where `isInside` is
+   * a library check for the relation between `x` and `y`.
+   */
+  class IsInsideCheckSanitizer extends DataFlow::LabeledBarrierGuardNode {
+    DataFlow::Node checked;
+    boolean onlyNormalizedAbsolutePaths;
+
+    IsInsideCheckSanitizer() {
+      exists(string name, DataFlow::CallNode check |
+        name = "path-is-inside" and onlyNormalizedAbsolutePaths = true
+        or
+        name = "is-path-inside" and onlyNormalizedAbsolutePaths = false
+      |
+        check = DataFlow::moduleImport(name).getACall() and
+        checked = check.getArgument(0) and
+        check = this
+      )
+    }
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      (
+        onlyNormalizedAbsolutePaths = true and
+        label.(Label::PosixPath).isNormalized() and
+        label.(Label::PosixPath).isAbsolute()
+        or
+        onlyNormalizedAbsolutePaths = false
+      ) and
+      e = checked.asExpr() and
+      outcome = true
+    }
+  }
+
+  /**
    * A source of remote user input, considered as a flow source for
    * tainted-path vulnerabilities.
    */
@@ -396,9 +473,7 @@ module TaintedPath {
    * A path argument to a file system access, which disallows upward navigation.
    */
   private class FsPathSinkWithoutUpwardNavigation extends FsPathSink {
-    FsPathSinkWithoutUpwardNavigation() {
-      fileSystemAccess.isUpwardNavigationRejected(this)
-    }
+    FsPathSinkWithoutUpwardNavigation() { fileSystemAccess.isUpwardNavigationRejected(this) }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       // The protection is ineffective if the ../ segments have already
@@ -427,5 +502,12 @@ module TaintedPath {
    */
   class AngularJSTemplateUrlSink extends Sink, DataFlow::ValueNode {
     AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
+  }
+
+  /**
+   * The path argument of a [send](https://www.npmjs.com/package/send) call, viewed as a sink.
+   */
+  class SendPathSink extends Sink, DataFlow::ValueNode {
+    SendPathSink() { this = DataFlow::moduleImport("send").getACall().getArgument(1) }
   }
 }

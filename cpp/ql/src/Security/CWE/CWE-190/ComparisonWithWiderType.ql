@@ -56,9 +56,12 @@ where
   // very noisy on codebases that started as 32-bit
   small.getExplicitlyConverted().getType().getSize() < 4 and
   // Ignore cases where integer promotion has occurred on /, -, or >> expressions.
-  not getComparisonSize(large.(DivExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
-  not getComparisonSize(large.(SubExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
-  not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
+  not getComparisonSize(large.(DivExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
+  not getComparisonSize(large.(SubExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
+  not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
   // ignore loop-invariant smaller variables
   loopVariant(small, l)
 select rel,

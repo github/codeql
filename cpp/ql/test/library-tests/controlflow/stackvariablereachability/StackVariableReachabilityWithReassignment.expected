@@ -1,0 +1,13 @@
+| stackVariableReachability.c:11:2:11:2 | a | ... + ... |
+| stackVariableReachability.c:11:6:11:6 | a | 10 |
+| stackVariableReachability.c:12:2:12:2 | a | 40 |
+| stackVariableReachability.c:13:2:13:2 | a | 40 |
+| stackVariableReachability.c:14:4:14:4 | a | 40 |
+| stackVariableReachability.c:15:2:15:2 | a | call to f |
+| stackVariableReachability.c:15:8:15:8 | a | 40 |
+| stackVariableReachability.c:16:2:16:2 | a | call to f |
+| stackVariableReachability.c:19:3:19:3 | b | 50 |
+| stackVariableReachability.c:21:3:21:3 | b | 60 |
+| stackVariableReachability.c:23:2:23:2 | c | b |
+| stackVariableReachability.c:23:6:23:6 | b | 50, 60 |
+| stackVariableReachability.c:24:2:24:2 | c | 50, 60, b |

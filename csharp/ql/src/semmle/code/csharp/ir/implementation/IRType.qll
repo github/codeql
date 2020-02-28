@@ -252,7 +252,8 @@ module IRTypeSanity {
 
   query predicate multipleCanonicalLanguageTypes(IRType type, string message) {
     strictcount(type.getCanonicalLanguageType()) > 1 and
-    message = "Type has multiple canonical `LanguageType`s: " +
+    message =
+      "Type has multiple canonical `LanguageType`s: " +
         concat(type.getCanonicalLanguageType().toString(), ", ")
   }
 
@@ -263,7 +264,8 @@ module IRTypeSanity {
 
   query predicate multipleIRTypes(Language::LanguageType type, string message) {
     strictcount(type.getIRType()) > 1 and
-    message = "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " +
+    message =
+      "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " +
         concat(type.getIRType().toString(), ", ")
   }
 

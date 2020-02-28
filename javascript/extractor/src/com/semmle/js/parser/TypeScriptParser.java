@@ -1,12 +1,32 @@
 package com.semmle.js.parser;
 
-import ch.qos.logback.classic.Level;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.ProcessBuilder.Redirect;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.DependencyInstallationResult;
+import com.semmle.js.extractor.EnvironmentVariables;
 import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.extractor.TypeTable;
@@ -22,21 +42,8 @@ import com.semmle.util.logging.LogbackUtils;
 import com.semmle.util.process.AbstractProcessBuilder;
 import com.semmle.util.process.Builder;
 import com.semmle.util.process.Env;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * The Java half of our wrapper for invoking the TypeScript parser.
@@ -290,14 +297,12 @@ public class TypeScriptParser {
     File parserWrapper;
     LogbackUtils.getLogger(AbstractProcessBuilder.class).setLevel(Level.INFO);
     String explicitPath = Env.systemEnv().get(PARSER_WRAPPER_PATH_ENV_VAR);
-    String semmleDistVar = Env.systemEnv().get(Env.Var.SEMMLE_DIST.name());
-    if (semmleDistVar != null && !semmleDistVar.isEmpty()) {
-      parserWrapper = new File(semmleDistVar, "tools/typescript-parser-wrapper/main.js");
-    } else if (explicitPath != null) {
+    if (explicitPath != null) {
       parserWrapper = new File(explicitPath);
     } else {
-      throw new CatastrophicError(
-          "Could not find TypeScript parser: " + Env.Var.SEMMLE_DIST.name() + " is not set.");
+      parserWrapper =
+          new File(
+              EnvironmentVariables.getExtractorRoot(), "tools/typescript-parser-wrapper/main.js");
     }
     if (!parserWrapper.isFile())
       throw new ResourceError(
@@ -403,6 +408,21 @@ public class TypeScriptParser {
   }
 
   /**
+   * Converts a map to an array of [key, value] pairs.
+   */
+  private JsonArray mapToArray(Map<String, Path> map) {
+    JsonArray result = new JsonArray();
+    map.forEach(
+        (key, path) -> {
+          JsonArray entry = new JsonArray();
+          entry.add(key);
+          entry.add(path.toString());
+          result.add(entry);
+        });
+    return result;
+  }
+
+  /**
    * Opens a new project based on a tsconfig.json file. The compiler will analyze all files in the
    * project.
    *
@@ -410,10 +430,15 @@ public class TypeScriptParser {
    *
    * <p>Only one project should be opened at once.
    */
-  public ParsedProject openProject(File tsConfigFile) {
+  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps) {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive("open-project"));
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
+    request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
+    request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
+    request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");

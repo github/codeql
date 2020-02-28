@@ -15,7 +15,8 @@ import java
 
 from CompilationUnit f, int n
 where
-  n = count(File g |
+  n =
+    count(File g |
       exists(Class c | c.fromSource() and c.getCompilationUnit() = g |
         exists(Class d | d.fromSource() and d.getCompilationUnit() = f | depends(d, c))
       )

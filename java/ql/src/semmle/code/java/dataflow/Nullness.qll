@@ -45,7 +45,6 @@ private import semmle.code.java.frameworks.Assertions
 /** Gets an expression that may be `null`. */
 Expr nullExpr() {
   result instanceof NullLiteral or
-  result.(ParExpr).getExpr() = nullExpr() or
   result.(ConditionalExpr).getTrueExpr() = nullExpr() or
   result.(ConditionalExpr).getFalseExpr() = nullExpr() or
   result.(AssignExpr).getSource() = nullExpr() or
@@ -131,11 +130,8 @@ predicate dereference(Expr e) {
  * The `VarAccess` is included for nicer error reporting.
  */
 private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
-  exists(Expr e |
-    dereference(e) and
-    e = sameValue(v, va) and
-    result = e.getProperExpr()
-  )
+  dereference(result) and
+  result = sameValue(v, va)
 }
 
 /**
@@ -442,8 +438,8 @@ private predicate nullDerefCandidate(SsaVariable origin, VarAccess va) {
 /** A variable that is assigned `null` if the given condition takes the given branch. */
 private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond, boolean branch) {
   exists(ConditionalExpr condexpr |
-    v.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = condexpr and
-    condexpr.getCondition().getProperExpr() = cond.getCondition()
+    v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
+    condexpr.getCondition() = cond.getCondition()
   |
     condexpr.getTrueExpr() = nullExpr() and
     branch = true and
@@ -514,6 +510,18 @@ private predicate correlatedConditions(
       cond1.getCondition() = enumConstEquality(v.getAUse(), pol1, c) and
       cond2.getCondition() = enumConstEquality(v.getAUse(), pol2, c) and
       inverted = pol1.booleanXor(pol2)
+    )
+    or
+    exists(SsaVariable v, Type type |
+      cond1.getCondition() = instanceofExpr(v, type) and
+      cond2.getCondition() = instanceofExpr(v, type) and
+      inverted = false
+    )
+    or
+    exists(SsaVariable v1, SsaVariable v2, boolean branch1, boolean branch2 |
+      cond1.getCondition() = varEqualityTestExpr(v1, v2, branch1) and
+      cond2.getCondition() = varEqualityTestExpr(v1, v2, branch2) and
+      inverted = branch1.booleanXor(branch2)
     )
   )
 }

@@ -19,17 +19,17 @@ class WsgiEnvironment extends TaintKind {
         result = this and Implementation::copyCall(fromnode, tonode)
         or
         result = this and
-        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getFunction().pointsTo(ClassValue::dict()) and
         tonode.(CallNode).getArg(0) = fromnode
         or
-        exists(StringObject key, string text |
+        exists(Value key, string text |
             tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode and
-            tonode.(CallNode).getArg(0).refersTo(key)
+            tonode.(CallNode).getArg(0).pointsTo(key)
             or
             tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad() and
-            tonode.(SubscriptNode).getIndex().refersTo(key)
+            tonode.(SubscriptNode).getIndex().pointsTo(key)
             |
-            text = key.getText() and result instanceof ExternalStringKind and
+            key = Value::forString(text) and result instanceof ExternalStringKind and
             (
                 text = "QUERY_STRING" or
                 text = "PATH_INFO" or
@@ -89,7 +89,7 @@ abstract class CookieSet extends CookieOperation {}
 /** Generic taint sink in a http response */
 abstract class HttpResponseTaintSink extends TaintSink {
 
-    override predicate sinks(TaintKind kind) { 
+    override predicate sinks(TaintKind kind) {
         kind instanceof ExternalStringKind
     }
 
@@ -97,9 +97,51 @@ abstract class HttpResponseTaintSink extends TaintSink {
 
 abstract class HttpRedirectTaintSink extends TaintSink {
 
-    override predicate sinks(TaintKind kind) { 
+    override predicate sinks(TaintKind kind) {
         kind instanceof ExternalStringKind
     }
 
 }
 
+module Client {
+
+    // TODO: user-input in other than URL:
+    // - `data`, `json` for `requests.post`
+    // - `body` for `HTTPConnection.request`
+    // - headers?
+
+    // TODO: Add more library support
+    // - urllib3 https://github.com/urllib3/urllib3
+    // - httpx https://github.com/encode/httpx
+
+    /**
+      * An outgoing http request
+      *
+      * For example:
+      * conn = HTTPConnection('example.com')
+        conn.request('GET', '/path')
+      */
+    abstract class HttpRequest extends ControlFlowNode {
+
+        /** Get any ControlFlowNode that is used to construct the final URL.
+          *
+          * In the HTTPConnection example, there is a result for both `'example.com'` and for `'/path'`.
+          */
+        abstract ControlFlowNode getAUrlPart();
+
+        abstract string getMethodUpper();
+    }
+
+    /** Taint sink for the URL-part of an outgoing http request */
+    class HttpRequestUrlTaintSink extends TaintSink {
+
+        HttpRequestUrlTaintSink() {
+            this = any(HttpRequest r).getAUrlPart()
+        }
+
+        override predicate sinks(TaintKind kind) {
+            kind instanceof ExternalStringKind
+        }
+
+    }
+}

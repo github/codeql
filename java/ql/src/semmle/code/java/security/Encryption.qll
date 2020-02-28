@@ -75,7 +75,8 @@ private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
   // alphabetical characters in the same case. This handles the upper and lower
   // case cases.
-  result = "((^|.*[^A-Z])(" + algorithmString + ")([^A-Z].*|$))" +
+  result =
+    "((^|.*[^A-Z])(" + algorithmString + ")([^A-Z].*|$))" +
       // or...
       "|" +
       // For lowercase, we want to be careful to avoid being confused by camelCase
@@ -113,7 +114,8 @@ private string algorithmBlacklistString(int i) {
 
 /** Gets a regex for matching strings that look like they contain a blacklisted algorithm. */
 string algorithmBlacklistRegex() {
-  result = algorithmRegex(algorithmBlacklistString(max(int i | exists(rankedAlgorithmBlacklist(i)))))
+  result =
+    algorithmRegex(algorithmBlacklistString(max(int i | exists(rankedAlgorithmBlacklist(i)))))
 }
 
 /** Gets a whitelist of algorithms that are known to be secure. */
@@ -138,7 +140,8 @@ private string algorithmWhitelistString(int i) {
 
 /** Gets a regex for matching strings that look like they contain a whitelisted algorithm. */
 string algorithmWhitelistRegex() {
-  result = algorithmRegex(algorithmWhitelistString(max(int i | exists(rankedAlgorithmWhitelist(i)))))
+  result =
+    algorithmRegex(algorithmWhitelistString(max(int i | exists(rankedAlgorithmWhitelist(i)))))
 }
 
 /**

@@ -21,9 +21,10 @@ private class WalkFileNameSource extends FileNameSource {
   WalkFileNameSource() {
     // `stats.name` in `require('walk').walk(_).on(_,  (_, stats) => stats.name)`
     exists(DataFlow::FunctionNode callback |
-      callback = DataFlow::moduleMember("walk", "walk")
+      callback =
+        DataFlow::moduleMember("walk", "walk")
             .getACall()
-            .getAMethodCall("on")
+            .getAMethodCall(EventEmitter::on())
             .getCallback(1)
     |
       this = callback.getParameter(1).getAPropertyRead("name")
@@ -66,7 +67,8 @@ private class GlobbyFileNameSource extends FileNameSource {
       this = DataFlow::moduleMember(moduleName, "sync").getACall()
       or
       // `files` in `require('globby')(_).then(files => ...)`
-      this = DataFlow::moduleImport(moduleName)
+      this =
+        DataFlow::moduleImport(moduleName)
             .getACall()
             .getAMethodCall("then")
             .getCallback(0)
@@ -95,9 +97,10 @@ private class FastGlobFileNameSource extends FileNameSource {
       )
       or
       // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
-      this = DataFlow::moduleMember(moduleName, "stream")
+      this =
+        DataFlow::moduleMember(moduleName, "stream")
             .getACall()
-            .getAMethodCall("on")
+            .getAMethodCall(EventEmitter::on())
             .getCallback(1)
             .getParameter(0)
     )

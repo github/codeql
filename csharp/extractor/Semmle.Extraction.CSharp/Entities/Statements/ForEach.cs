@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             var location = cx.Create(Stmt.Identifier.GetLocation());
 
-            Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, location, Stmt.Type.IsVar, this, 0);
+            Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 
             Statement.Create(cx, Stmt.Statement, this, 2);
         }

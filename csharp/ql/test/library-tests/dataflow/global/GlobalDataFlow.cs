@@ -101,7 +101,7 @@ public class DataFlow
         Check(nonSink0);
         nonSink0 = (string)typeof(DataFlow).GetMethod("Return").Invoke(null, new object[] { nonSink0 });
         Check(nonSink0);
-        ReturnOut("", out nonSink0, out var _);
+        ReturnOut("", out nonSink0, out string _);
         Check(nonSink0);
         ReturnOut(sink1, out var _, out nonSink0);
         Check(nonSink0);

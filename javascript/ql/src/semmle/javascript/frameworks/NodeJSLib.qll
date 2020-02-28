@@ -42,7 +42,18 @@ module NodeJSLib {
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
   predicate isCreateServer(CallExpr call) {
-    call = DataFlow::moduleMember(HTTP::httpOrHttps(), "createServer").getAnInvocation().asExpr()
+    exists(string pkg, string fn |
+      pkg = "http" and fn = "createServer"
+      or
+      pkg = "https" and fn = "createServer"
+      or
+      // http2 compatibility API
+      pkg = "http2" and fn = "createServer"
+      or
+      pkg = "http2" and fn = "createSecureServer"
+    |
+      call = DataFlow::moduleMember(pkg, fn).getAnInvocation().asExpr()
+    )
   }
 
   /**
@@ -356,10 +367,10 @@ module NodeJSLib {
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
   class Credentials extends CredentialsExpr {
     Credentials() {
-      this = DataFlow::moduleMember(HTTP::httpOrHttps(), "request")
-            .getACall()
-            .getOptionArgument(0, "auth")
-            .asExpr()
+      exists(string http | http = "http" or http = "https" |
+        this =
+          DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth").asExpr()
+      )
     }
 
     override string getCredentialsKind() { result = "credentials" }
@@ -530,7 +541,7 @@ module NodeJSLib {
     FileStreamRead() {
       stream.getMethodName() = "createReadStream" and
       this = stream.getAMemberCall(method) and
-      (method = "read" or method = "pipe" or method = "on")
+      (method = "read" or method = "pipe" or method = EventEmitter::on())
     }
 
     override DataFlow::Node getADataNode() {
@@ -540,7 +551,7 @@ module NodeJSLib {
       method = "pipe" and
       result = getArgument(0)
       or
-      method = "on" and
+      method = EventEmitter::on() and
       getArgument(0).mayHaveStringValue("data") and
       result = getCallback(1).getParameter(0)
     }
@@ -751,7 +762,7 @@ module NodeJSLib {
       promise = false and
       exists(DataFlow::ParameterNode res, DataFlow::CallNode onData |
         res = getCallback(1).getParameter(0) and
-        onData = res.getAMethodCall("on") and
+        onData = res.getAMethodCall(EventEmitter::on()) and
         onData.getArgument(0).mayHaveStringValue("data") and
         result = onData.getCallback(1).getParameter(0) and
         responseType = "arraybuffer"
@@ -768,7 +779,7 @@ module NodeJSLib {
 
     ClientRequestHandler() {
       exists(DataFlow::MethodCallNode mcn |
-        clientRequest.getAMethodCall("on") = mcn and
+        clientRequest.getAMethodCall(EventEmitter::on()) = mcn and
         mcn.getArgument(0).mayHaveStringValue(handledEvent) and
         flowsTo(mcn.getArgument(1))
       )
@@ -805,7 +816,7 @@ module NodeJSLib {
   private class ClientRequestDataEvent extends RemoteFlowSource {
     ClientRequestDataEvent() {
       exists(DataFlow::MethodCallNode mcn, ClientRequestResponseEvent cr |
-        cr.getAMethodCall("on") = mcn and
+        cr.getAMethodCall(EventEmitter::on()) = mcn and
         mcn.getArgument(0).mayHaveStringValue("data") and
         this = mcn.getCallback(1).getParameter(0)
       )
@@ -879,5 +890,184 @@ module NodeJSLib {
     }
 
     override string getSourceType() { result = "NodeJSClientRequest error event" }
+  }
+
+  /**
+   * An NodeJS EventEmitter instance.
+   * Events dispatched on this EventEmitter will be handled by event handlers registered on this EventEmitter.
+   * (That is opposed to e.g. SocketIO, which implements the same interface, but where events cross object boundaries).
+   */
+  abstract class NodeJSEventEmitter extends EventEmitter::Range {
+    /**
+     * Get a Node that refers to a NodeJS EventEmitter instance.
+     */
+    DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
+  }
+
+  /**
+   * Gets an import of the NodeJS EventEmitter.
+   */
+  private DataFlow::SourceNode getAnEventEmitterImport() {
+    result = DataFlow::moduleImport("events") or
+    result = DataFlow::moduleMember("events", "EventEmitter")
+  }
+
+  /**
+   * An instance of an EventEmitter that is imported through the 'events' module.
+   */
+  private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
+    ImportedNodeJSEventEmitter() { this = getAnEventEmitterImport().getAnInstantiation() }
+  }
+
+  /**
+   * A class that extends EventEmitter.
+   */
+  private class EventEmitterSubClass extends DataFlow::ClassNode {
+    EventEmitterSubClass() {
+      this.getASuperClassNode().getALocalSource() = getAnEventEmitterImport() or
+      this.getADirectSuperClass() instanceof EventEmitterSubClass
+    }
+  }
+
+  /**
+   * An instantiation of a class that extends EventEmitter.
+   *
+   * By extending `NodeJSEventEmitter' we get data-flow on the events passing through this EventEmitter.
+   */
+  class CustomEventEmitter extends NodeJSEventEmitter {
+    EventEmitterSubClass clazz;
+
+    CustomEventEmitter() {
+      if exists(clazz.getAClassReference().getAnInstantiation())
+      then this = clazz.getAClassReference().getAnInstantiation()
+      else
+        // In case there are no explicit instantiations of the clazz, then we still want to track data flow between `this` nodes.
+        // This cannot produce false flow as the `.ref()` method below is always used when creating event-registrations/event-dispatches.
+        this = clazz
+    }
+
+    override DataFlow::SourceNode ref() {
+      result = NodeJSEventEmitter.super.ref() and not this = clazz
+      or
+      result = clazz.getAReceiverNode()
+    }
+  }
+
+  /**
+   * A registration of an event handler on a NodeJS EventEmitter instance.
+   */
+  private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration,
+    DataFlow::MethodCallNode {
+    override NodeJSEventEmitter emitter;
+
+    NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+  }
+
+  /**
+   * A dispatch of an event on a NodeJS EventEmitter instance.
+   */
+  private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch,
+    DataFlow::MethodCallNode {
+    override NodeJSEventEmitter emitter;
+
+    NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
+  }
+
+  /**
+   * An instance of net.createServer(), which creates a new TCP/IPC server.
+   */
+  private class NodeJSNetServer extends DataFlow::SourceNode {
+    NodeJSNetServer() { this = DataFlow::moduleMember("net", "createServer").getAnInvocation() }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and result = this
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to this server.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+  }
+
+  /**
+   * A connection opened on a NodeJS net server.
+   */
+  private class NodeJSNetServerConnection extends EventEmitter::Range {
+    NodeJSNetServer server;
+
+    NodeJSNetServerConnection() {
+      exists(DataFlow::MethodCallNode call |
+        call = server.ref().getAMethodCall("on") and
+        call.getArgument(0).mayHaveStringValue("connection")
+      |
+        this = call.getCallback(1).getParameter(0)
+      )
+    }
+
+    DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
+  }
+
+  /**
+   * A registration of an event handler on a NodeJS net server instance.
+   */
+  private class NodeJSNetServerRegistration extends EventRegistration::DefaultEventRegistration,
+    DataFlow::MethodCallNode {
+    override NodeJSNetServerConnection emitter;
+
+    NodeJSNetServerRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+  }
+
+  /**
+   * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
+   */
+  private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
+    NodeJSNetServerRegistration reg;
+
+    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
+
+    override string getSourceType() { result = "NodeJS server" }
+  }
+
+  /**
+   * An instantiation of the `respjs` library, which is an EventEmitter.
+   */
+  private class RespJS extends NodeJSEventEmitter {
+    RespJS() { this = DataFlow::moduleImport("respjs").getAnInstantiation() }
+  }
+
+  /**
+   * A event dispatch that serializes the input data and emits the result on the "data" channel.
+   */
+  private class RespWrite extends EventDispatch::DefaultEventDispatch, DataFlow::MethodCallNode {
+    override RespJS emitter;
+
+    RespWrite() { this = emitter.ref().getAMethodCall("write") }
+
+    override string getChannel() { result = "data" }
+
+    override DataFlow::Node getSentItem(int i) { i = 0 and result = this.getArgument(i) }
+  }
+
+  /**
+   * Provides predicates for working with the "path" module and its platform-specific instances as a single module.
+   */
+  module Path {
+    /**
+     * Gets a node that imports the "path" module, or one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleImport() {
+      result = DataFlow::moduleImport("path") or
+      result = DataFlow::moduleMember("path", "posix") or
+      result = DataFlow::moduleMember("path", "win32")
+    }
+
+    /**
+     * Gets an access to member `member` of the "path" module, or one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleMember(string member) {
+      result = moduleImport().getAPropertyRead(member)
+    }
   }
 }

@@ -2,10 +2,10 @@ using System;
 
 public class Guards
 {
-    public string Field;
-    public Guards Property { get; set; }
+    public string? Field;
+    public Guards? Property { get; set; }
 
-    void M1(string s)
+    void M1(string? s)
     {
         if (!!(s == null))
             return;
@@ -19,7 +19,7 @@ public class Guards
         }
     }
 
-    void M2(string s)
+    void M2(string? s)
     {
         if (s != null)
         {
@@ -27,7 +27,7 @@ public class Guards
         }
     }
 
-    void M3(string x, string y)
+    void M3(string? x, string? y)
     {
         if (!string.IsNullOrEmpty(x) & !(y == null))
             Console.WriteLine(x + y); // null guarded
@@ -63,7 +63,7 @@ public class Guards
         Console.WriteLine(g.Property.Field); // not null guarded
     }
 
-    void M6(string s)
+    void M6(string? s)
     {
         while (s != null)
         {
@@ -73,7 +73,7 @@ public class Guards
         }
     }
 
-    void M7(string s)
+    void M7(string? s)
     {
         if (s?.Length == 0)
             Console.WriteLine(s); // null guarded
@@ -119,34 +119,34 @@ public class Guards
         Console.WriteLine(g.Property.Field); // not null guarded
     }
 
-    void M10(string s1, string s2)
+    void M10(string? s1, string? s2)
     {
         var b1 = s1.Equals(s2); // not null guarded
         var b2 = s1?.Equals(s1); // null guarded
     }
 
-    int M11(string s)
+    int M11(string? s)
     {
         if (s is null)
             return s.Length; // not null guarded
         return s.Length; // null guarded
     }
 
-    int M12(string s)
+    int M12(string? s)
     {
         if (s is string _)
             return s.Length; // null guarded
         return s.Length; // not null guarded
     }
 
-    string M13(object o)
+    string M13(object? o)
     {
         if (o is string s)
             return s; // not null (but not a guard)
         return o.ToString(); // not null guarded
     }
 
-    string M14(object o)
+    string M14(object? o)
     {
         switch (o)
         {
@@ -163,28 +163,28 @@ public class Guards
         }
     }
 
-    void M15(string x)
+    void M15(string? x)
     {
         if (!string.IsNullOrWhiteSpace(x))
             Console.WriteLine(x); // null guarded
     }
 
-    bool NullTest1(object o) => o == null;
+    bool NullTest1(object? o) => o == null;
 
-    bool NullTest2(object o)
+    bool NullTest2(object? o)
     {
         if (o is null)
             return true;
         return false;
     }
 
-    bool NullTest3(object o) => o == null ? true : false;
+    bool NullTest3(object? o) => o == null ? true : false;
 
-    bool NotNullTest4(object o) => !NullTest3(o);
+    bool NotNullTest4(object? o) => !NullTest3(o);
 
-    bool NullTestWrong(object o) => o == null ? true : true;
+    bool NullTestWrong(object? o) => o == null ? true : true;
 
-    void M16(string s)
+    void M16(string? s)
     {
         if (!NullTest1(s))
             Console.WriteLine(s); // null guarded
@@ -198,7 +198,7 @@ public class Guards
             Console.WriteLine(s); // not null guarded
     }
 
-    void M17(object o, string[] args)
+    void M17(object? o, string[] args)
     {
         if (o != null)
         {
@@ -217,9 +217,9 @@ public class Guards
             b2 = false;
         switch (b2)
         {
-            case true :
+            case true:
                 return;
-            return;
+                return;
         }
     }
 
@@ -230,9 +230,9 @@ public class Guards
             b2 = true;
         switch (b2)
         {
-            case true :
+            case true:
                 return;
-            return;
+                return;
         }
     }
 
@@ -243,9 +243,9 @@ public class Guards
             i = 1;
         switch (i)
         {
-            case 1 :
+            case 1:
                 return;
-            return;
+                return;
         }
     }
 
@@ -257,21 +257,21 @@ public class Guards
             e = E.B;
         switch (e)
         {
-            case E.B :
+            case E.B:
                 return;
-            return;
+                return;
         }
     }
 
-    void M22(object o1, object o2)
+    void M22(object? o1, object? o2)
     {
         if (o1?.GetType() == o2.GetType())
-          o1.ToString(); // null guarded
+            o1.ToString(); // null guarded
         if (o1?.GetType() == o2?.GetType())
-          o1.ToString(); // not null guarded
+            o1.ToString(); // not null guarded
     }
 
-    string M23(object o)
+    string M23(object? o)
     {
         return o switch
         {
@@ -336,3 +336,4 @@ public class Guards
         };
     }
 }
+

@@ -64,9 +64,11 @@ private string doctest_in_scope(Scope scope) {
 pragma[noinline]
 private string typehint_annotation_in_file(File file) {
     exists(StrConst annotation |
-        annotation = any(Arguments a).getAnAnnotation()
+        annotation = any(Arguments a).getAnAnnotation().getASubExpression*()
         or
-        annotation = any(AnnAssign a).getAnnotation()
+        annotation = any(AnnAssign a).getAnnotation().getASubExpression*()
+        or
+        annotation = any(FunctionExpr f).getReturns().getASubExpression*()
     |
         annotation.pointsTo(Value::forString(result)) and
         file = annotation.getLocation().getFile()

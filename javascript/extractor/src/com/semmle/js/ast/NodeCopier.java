@@ -45,6 +45,7 @@ import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
+import com.semmle.util.data.IntList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,10 @@ public class NodeCopier implements Visitor<Void, INode> {
     List<T> result = new ArrayList<T>();
     for (T t : ts) result.add(copy(t));
     return result;
+  }
+
+  private IntList copy(IntList list) {
+    return new IntList(list);
   }
 
   @Override
@@ -138,7 +143,8 @@ public class NodeCopier implements Visitor<Void, INode> {
         copy(nd.getTypeParameters()),
         copy(nd.getParameterTypes()),
         copy(nd.getReturnType()),
-        copy(nd.getThisParameterType()));
+        copy(nd.getThisParameterType()),
+        copy(nd.getOptionalParameterIndices()));
   }
 
   @Override
@@ -367,7 +373,8 @@ public class NodeCopier implements Visitor<Void, INode> {
         copy(nd.getParameterTypes()),
         copy(nd.getParameterDecorators()),
         copy(nd.getReturnType()),
-        copy(nd.getThisParameterType()));
+        copy(nd.getThisParameterType()),
+        copy(nd.getOptionalParameterIndices()));
   }
 
   @Override
@@ -427,7 +434,8 @@ public class NodeCopier implements Visitor<Void, INode> {
         nd.isAsync(),
         copy(nd.getTypeParameters()),
         copy(nd.getParameterTypes()),
-        copy(nd.getReturnType()));
+        copy(nd.getReturnType()),
+        copy(nd.getOptionalParameterIndices()));
   }
 
   @Override

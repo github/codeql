@@ -46,7 +46,9 @@ namespace Semmle.Extraction
 
         public bool InFileScope(string path) => path == filepath;
 
-        public bool InScope(ISymbol symbol) => Equals(symbol.ContainingAssembly, assembly) || Equals(symbol, assembly);
+        public bool InScope(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol.ContainingAssembly, assembly) ||
+            SymbolEqualityComparer.Default.Equals(symbol, assembly);
     }
 
     /// <summary>

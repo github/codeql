@@ -63,9 +63,12 @@ abstract class TranslatedExpr extends TranslatedElement {
    * Holds if the result of this `TranslatedExpr` is a glvalue.
    */
   predicate isResultGLValue() {
-    // This implementation is overridden in `TranslatedCoreExpr` to mark them
-    // as glvalues if they have loads on them. It's not overridden in
-    // `TranslatedResultCopy` since result copies never have loads.
+    // This implementation is overridden in `TranslatedCoreExpr` to mark them as
+    // glvalues if they have loads on them. It's also overridden in
+    // `TranslatedLoad` to always mark loads as glvalues since a
+    // `TranslatedLoad` may have been created as a result of
+    // `needsLoadForParentExpr`. It's not overridden in `TranslatedResultCopy`
+    // since result copies never have loads.
     expr.isGLValueCategory()
   }
 
@@ -103,18 +106,13 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     or
     // If this TranslatedExpr doesn't produce the result, then it must represent
     // a glvalue that is then loaded by a TranslatedLoad.
-    hasLoad()
-  }
-
-  final predicate hasLoad() {
-    expr.hasLValueToRValueConversion() and
-    not ignoreLoad(expr)
+    hasTranslatedLoad(expr)
   }
 
   final override predicate producesExprResult() {
     // If there's no load, then this is the only TranslatedExpr for this
     // expression.
-    not hasLoad() and
+    not hasTranslatedLoad(expr) and
     // If there's a result copy, then this expression's result is the copy.
     not exprNeedsCopyIfNotLoaded(expr)
   }
@@ -270,6 +268,8 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     resultType = getResultType()
   }
 
+  override predicate isResultGLValue() { none() }
+
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
     result = getParent().getChildSuccessor(this) and
@@ -298,7 +298,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     any()
   }
 
-  private TranslatedCoreExpr getOperand() { result.getExpr() = expr }
+  TranslatedCoreExpr getOperand() { result.getExpr() = expr }
 }
 
 /**
@@ -387,7 +387,7 @@ private int getElementSize(Type type) {
 abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   override CrementOperation expr;
 
-  final override TranslatedElement getChild(int id) { id = 0 and result = getOperand() }
+  final override TranslatedElement getChild(int id) { id = 0 and result = getLoadedOperand() }
 
   final override string getInstructionConstantValue(InstructionTag tag) {
     tag = CrementConstantTag() and
@@ -416,10 +416,6 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = CrementLoadTag() and
-    opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(expr.getType())
-    or
     tag = CrementConstantTag() and
     opcode instanceof Opcode::Constant and
     resultType = getConstantType()
@@ -434,19 +430,10 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = CrementLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
-    or
     tag = CrementOpTag() and
     (
       operandTag instanceof LeftOperandTag and
-      result = getInstruction(CrementLoadTag())
+      result = getLoadedOperand().getResult()
       or
       operandTag instanceof RightOperandTag and
       result = getInstruction(CrementConstantTag())
@@ -455,21 +442,20 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     tag = CrementStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getOperand().getResult()
+      result = getUnloadedOperand().getResult()
       or
       operandTag instanceof StoreValueOperandTag and
       result = getInstruction(CrementOpTag())
     )
   }
 
-  final override Instruction getFirstInstruction() { result = getOperand().getFirstInstruction() }
+  final override Instruction getFirstInstruction() {
+    result = getLoadedOperand().getFirstInstruction()
+  }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
-      tag = CrementLoadTag() and
-      result = getInstruction(CrementConstantTag())
-      or
       tag = CrementConstantTag() and
       result = getInstruction(CrementOpTag())
       or
@@ -482,7 +468,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(CrementLoadTag())
+    child = getLoadedOperand() and result = getInstruction(CrementConstantTag())
   }
 
   final override int getInstructionElementSize(InstructionTag tag) {
@@ -494,9 +480,19 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     result = getElementSize(expr.getType())
   }
 
-  final TranslatedExpr getOperand() {
+  /**
+   * Gets the `TranslatedLoad` on the `e` in this `e++`, which is the element
+   * that holds the value to be cremented. It's guaranteed that there's a load
+   * on `e` because of the `needsLoadForParentExpr` predicate.
+   */
+  final TranslatedLoad getLoadedOperand() {
     result = getTranslatedExpr(expr.getOperand().getFullyConverted())
   }
+
+  /**
+   * Gets the address to which the result of this crement will be stored.
+   */
+  final TranslatedExpr getUnloadedOperand() { result = getLoadedOperand().getOperand() }
 
   final Opcode getOpcode() {
     exists(Type resultType |
@@ -534,17 +530,14 @@ class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
     else
       // This is C++, where the result is an lvalue for the operand, and that
       // lvalue is not being loaded as part of this expression.
-      result = getOperand().getResult()
+      result = getUnloadedOperand().getResult()
   }
 }
 
 class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   override PostfixCrementOperation expr;
 
-  override Instruction getResult() {
-    // The result is a prvalue copy of the original value
-    result = getInstruction(CrementLoadTag())
-  }
+  override Instruction getResult() { result = getLoadedOperand().getResult() }
 }
 
 /**
@@ -1231,8 +1224,8 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 }
 
-abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
-  override Assignment expr;
+class TranslatedAssignExpr extends TranslatedNonConstantExpr {
+  override AssignExpr expr;
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = getLeftOperand()
@@ -1252,7 +1245,7 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
       // value assigned to the left operand. If this is C++, then the result is
       // an lvalue, but that lvalue is being loaded as part of this expression.
       // EDG doesn't mark this as a load.
-      result = getStoredValue()
+      result = getRightOperand().getResult()
     else
       // This is C++, where the result is an lvalue for the left operand,
       // and that lvalue is not being loaded as part of this expression.
@@ -1268,10 +1261,6 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
   final TranslatedExpr getRightOperand() {
     result = getTranslatedExpr(expr.getRValue().getFullyConverted())
   }
-}
-
-class TranslatedAssignExpr extends TranslatedAssignment {
-  TranslatedAssignExpr() { expr instanceof AssignExpr }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = AssignmentStoreTag() and
@@ -1304,23 +1293,57 @@ class TranslatedAssignExpr extends TranslatedAssignment {
       result = getRightOperand().getResult()
     )
   }
-
-  override Instruction getStoredValue() { result = getRightOperand().getResult() }
 }
 
-class TranslatedAssignOperation extends TranslatedAssignment {
+class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   override AssignOperation expr;
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = getLoadedLeftOperand()
+    or
+    id = 1 and result = getRightOperand()
+  }
+
+  final override Instruction getFirstInstruction() {
+    // Evaluation is right-to-left
+    result = getRightOperand().getFirstInstruction()
+  }
+
+  final override Instruction getResult() {
+    if expr.isPRValueCategory()
+    then
+      // If this is C, then the result of an assignment is a prvalue for the new
+      // value assigned to the left operand. If this is C++, then the result is
+      // an lvalue, but that lvalue is being loaded as part of this expression.
+      // EDG doesn't mark this as a load.
+      result = getStoredValue()
+    else
+      // This is C++, where the result is an lvalue for the left operand,
+      // and that lvalue is not being loaded as part of this expression.
+      result = getUnloadedLeftOperand().getResult()
+  }
+
+  final TranslatedExpr getUnloadedLeftOperand() { result = getLoadedLeftOperand().getOperand() }
+
+  /**
+   * Gets the `TranslatedLoad` on the `e` in this `e += ...` which is the
+   * element that holds the value to be cremented. It's guaranteed that there's
+   * a load on `e` because of the `needsLoadForParentExpr` predicate.
+   */
+  final TranslatedLoad getLoadedLeftOperand() {
+    result = getTranslatedExpr(expr.getLValue().getFullyConverted())
+  }
+
+  /**
+   * Gets the address to which the result of this operation will be stored.
+   */
+  final TranslatedExpr getRightOperand() {
+    result = getTranslatedExpr(expr.getRValue().getFullyConverted())
+  }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
-      (
-        tag = AssignOperationLoadTag() and
-        if leftOperandNeedsConversion()
-        then result = getInstruction(AssignOperationConvertLeftTag())
-        else result = getInstruction(AssignOperationOpTag())
-      )
-      or
       tag = AssignOperationConvertLeftTag() and
       result = getInstruction(AssignOperationOpTag())
       or
@@ -1342,13 +1365,15 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   override Instruction getChildSuccessor(TranslatedElement child) {
     // Operands are evaluated right-to-left.
     child = getRightOperand() and
-    result = getLeftOperand().getFirstInstruction()
+    result = getLoadedLeftOperand().getFirstInstruction()
     or
-    child = getLeftOperand() and
-    result = getInstruction(AssignOperationLoadTag())
+    child = getLoadedLeftOperand() and
+    if leftOperandNeedsConversion()
+    then result = getInstruction(AssignOperationConvertLeftTag())
+    else result = getInstruction(AssignOperationOpTag())
   }
 
-  override Instruction getStoredValue() {
+  private Instruction getStoredValue() {
     if leftOperandNeedsConversion()
     then result = getInstruction(AssignOperationConvertResultTag())
     else result = getInstruction(AssignOperationOpTag())
@@ -1368,16 +1393,15 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       // anyway. If we really want to model this case perfectly, we'll need the
       // extractor to tell us what the promoted type of the left operand would
       // be.
-      result = getLeftOperand().getExpr().getType()
+      result = getLoadedLeftOperand().getExpr().getType()
     else
       // The right operand has already been converted to the type of the op.
       result = getRightOperand().getExpr().getType()
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType().getUnspecifiedType() != getLeftOperand()
-          .getExpr()
-          .getUnspecifiedType()
+    getConvertedLeftOperandType().getUnspecifiedType() !=
+      getLoadedLeftOperand().getExpr().getUnspecifiedType()
   }
 
   private Opcode getOpcode() {
@@ -1407,10 +1431,6 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = AssignOperationLoadTag() and
-    opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(getLeftOperand().getExpr().getType())
-    or
     tag = AssignOperationOpTag() and
     opcode = getOpcode() and
     resultType = getTypeForPRValue(getConvertedLeftOperandType())
@@ -1426,7 +1446,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       resultType = getTypeForPRValue(getConvertedLeftOperandType())
       or
       tag = AssignOperationConvertResultTag() and
-      resultType = getTypeForPRValue(getLeftOperand().getExpr().getType())
+      resultType = getTypeForPRValue(getLoadedLeftOperand().getExpr().getType())
     )
   }
 
@@ -1440,19 +1460,10 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = AssignOperationLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getLeftOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
-    or
     leftOperandNeedsConversion() and
     tag = AssignOperationConvertLeftTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getInstruction(AssignOperationLoadTag())
+    result = getLoadedLeftOperand().getResult()
     or
     tag = AssignOperationOpTag() and
     (
@@ -1460,7 +1471,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
         operandTag instanceof LeftOperandTag and
         if leftOperandNeedsConversion()
         then result = getInstruction(AssignOperationConvertLeftTag())
-        else result = getInstruction(AssignOperationLoadTag())
+        else result = getLoadedLeftOperand().getResult()
       )
       or
       operandTag instanceof RightOperandTag and
@@ -1475,7 +1486,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     tag = AssignmentStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getLeftOperand().getResult()
+      result = getUnloadedLeftOperand().getResult()
       or
       operandTag instanceof StoreValueOperandTag and
       result = getStoredValue()
@@ -1932,40 +1943,22 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
  * IR translation of a `throw` expression with an argument
  * (e.g. `throw std::bad_alloc()`).
  */
-class TranslatedThrowValueExpr extends TranslatedThrowExpr, InitializationContext {
+class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableInitialization {
   TranslatedThrowValueExpr() { not expr instanceof ReThrowExpr }
-
-  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
-
-  override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     TranslatedThrowExpr.super.hasInstruction(opcode, tag, resultType)
     or
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getExceptionType())
+    TranslatedVariableInitialization.super.hasInstruction(opcode, tag, resultType)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = TranslatedThrowExpr.super.getInstructionSuccessor(tag, kind)
     or
-    tag = InitializerVariableAddressTag() and
-    result = getInitialization().getFirstInstruction() and
-    kind instanceof GotoEdge
+    result = TranslatedVariableInitialization.super.getInstructionSuccessor(tag, kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
-    result = getInstruction(ThrowTag())
-  }
-
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = InitializerVariableAddressTag() and
-    result = getIRTempVariable(expr, ThrowTempVar())
-  }
+  final override Instruction getInitializationSuccessor() { result = getInstruction(ThrowTag()) }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     tag = ThrowTempVar() and
@@ -1973,6 +1966,8 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, InitializationContex
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    result = TranslatedVariableInitialization.super.getInstructionOperand(tag, operandTag)
+    or
     tag = ThrowTag() and
     (
       operandTag instanceof AddressOperandTag and
@@ -1989,15 +1984,13 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, InitializationContex
     result = getTypeForPRValue(getExceptionType())
   }
 
-  override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
   override Type getTargetType() { result = getExceptionType() }
 
-  TranslatedInitialization getInitialization() {
+  final override TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr.getExpr().getFullyConverted())
   }
+
+  final override IRVariable getIRVariable() { result = getIRTempVariable(expr, ThrowTempVar()) }
 
   final override Opcode getThrowOpcode() { result instanceof Opcode::ThrowValue }
 
@@ -2475,6 +2468,9 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
     or
     expr instanceof PrefixCrementOperation and
     not expr.isPRValueCategory() // is C++
+    or
+    // Because the load is on the `e` in `e++`.
+    expr instanceof PostfixCrementOperation
     or
     expr instanceof PointerDereferenceExpr
     or

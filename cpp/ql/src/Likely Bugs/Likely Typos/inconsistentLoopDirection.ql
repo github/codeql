@@ -111,17 +111,20 @@ predicate illDefinedForStmt(ForStmt for, string message) {
     illDefinedForStmtWrongDirection(for, v, initialCondition, terminalCondition, isIncr) and
     if for.conditionAlwaysFalse()
     then
-      message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
+      message =
+        "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
           forLoopdirection(isIncr) + " from a value (" + initialCondition +
           "), but the terminal condition is always false."
     else
       if for.conditionAlwaysTrue()
       then
-        message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
+        message =
+          "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
             forLoopdirection(isIncr) + " from a value (" + initialCondition +
             "), but the terminal condition is always true."
       else
-        message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
+        message =
+          "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " +
             forLoopdirection(isIncr) + " from a value (" + initialCondition +
             "), but the terminal condition is " + forLoopTerminalConditionRelationship(isIncr) +
             " (" + terminalCondition + ")."

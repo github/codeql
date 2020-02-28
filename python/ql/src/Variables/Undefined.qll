@@ -4,9 +4,7 @@ import semmle.python.security.TaintTracking
 
 /** Marker for "uninitialized". */
 class Uninitialized extends TaintKind {
-
     Uninitialized() { this = "undefined" }
-
 }
 
 private predicate loop_entry_variables(EssaVariable pred, EssaVariable succ) {
@@ -26,7 +24,8 @@ private predicate loop_entry_edge(BasicBlock pred, BasicBlock loop) {
     )
 }
 
-/** Since any use of a local will raise if it is uninitialized, then
+/**
+ * Since any use of a local will raise if it is uninitialized, then
  * any use dominated by another use of the same variable must be defined, or is unreachable.
  */
 private predicate first_use(NameNode u, EssaVariable v) {
@@ -37,18 +36,16 @@ private predicate first_use(NameNode u, EssaVariable v) {
     )
 }
 
-/* Holds if `call` is a call of the form obj.method_name(...) and 
+/**
+ * Holds if `call` is a call of the form obj.method_name(...) and
  * there is a function called `method_name` that can exit the program.
  */
 private predicate maybe_call_to_exiting_function(CallNode call) {
-    exists(FunctionObject exits, string name |
-        exits.neverReturns() and exits.getName() = name
-        |
+    exists(FunctionValue exits, string name | exits.neverReturns() and exits.getName() = name |
         call.getFunction().(NameNode).getId() = name or
         call.getFunction().(AttrNode).getName() = name
     )
 }
-
 
 predicate exitFunctionGuardedEdge(EssaVariable pred, EssaVariable succ) {
     exists(CallNode exit_call |
@@ -58,17 +55,15 @@ predicate exitFunctionGuardedEdge(EssaVariable pred, EssaVariable succ) {
 }
 
 class UninitializedConfig extends TaintTracking::Configuration {
-
-    UninitializedConfig() {
-        this = "Unitialized local config"
-    }
+    UninitializedConfig() { this = "Unitialized local config" }
 
     override predicate isSource(DataFlow::Node source, TaintKind kind) {
         kind instanceof Uninitialized and
         exists(EssaVariable var |
             source.asVariable() = var and
             var.getSourceVariable() instanceof FastLocalVariable and
-            not var.getSourceVariable().(Variable).escapes() |
+            not var.getSourceVariable().(Variable).escapes()
+        |
             var instanceof ScopeEntryDefinition
             or
             var instanceof DeletionDefinition
@@ -110,14 +105,13 @@ class UninitializedConfig extends TaintTracking::Configuration {
     }
 
     override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) {
-        /* If we are guaranteed to iterate over a loop at least once, then we can prune any edges that
+        /*
+         * If we are guaranteed to iterate over a loop at least once, then we can prune any edges that
          * don't pass through the body.
          */
+
         loop_entry_variables(src.asVariable(), dest.asVariable())
         or
         exitFunctionGuardedEdge(src.asVariable(), dest.asVariable())
     }
-
 }
-
-

@@ -2035,7 +2035,8 @@ class VlaDeclStmt extends Stmt, @stmt_vla_decl {
   int getNumberOfVlaDimensionStmts() {
     exists(Block b, int j |
       this = b.getStmt(j) and
-      result = j - 1 -
+      result =
+        j - 1 -
           max(int i |
             i in [0 .. j - 1] and
             not b.getStmt(i) instanceof VlaDimensionStmt

@@ -30,7 +30,7 @@ predicate mutates_globals(ModuleValue m) {
     |
         exists(AttrNode attr | attr.getObject() = globals)
         or
-        exists(SubscriptNode sub | sub.getValue() = globals and sub.isStore())
+        exists(SubscriptNode sub | sub.getObject() = globals and sub.isStore())
     )
     or
     exists(Value enum_convert, ClassValue enum_class |

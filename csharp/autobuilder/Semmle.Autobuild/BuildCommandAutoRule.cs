@@ -43,9 +43,9 @@ namespace Semmle.Autobuild
             var dir = Path.GetDirectoryName(scriptPath);
 
             // A specific .NET Core version may be required
-            return chmodScript & DotNetRule.WithDotNet(builder, dotNet =>
+            return chmodScript & DotNetRule.WithDotNet(builder, environment =>
             {
-                var command = new CommandBuilder(builder.Actions, dir, dotNet?.Environment);
+                var command = new CommandBuilder(builder.Actions, dir, environment);
 
                 // A specific Visual Studio version may be required
                 var vsTools = MsBuildRule.GetVcVarsBatFile(builder);

@@ -34,15 +34,14 @@ ValueOrRefType getAReferencedType(Type t) {
 
 predicate isTypeExternallyInitialized(ValueOrRefType t) {
   // The type got created via a call to PtrToStructure().
-  exists(MethodCall mc |
+  exists(MethodCall mc, Type t0, Expr arg |
     mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureTypeMethod() and
-    t = getAReferencedType(mc.getArgument(1).(TypeofExpr).getTypeAccess().getTarget())
-  )
-  or
-  // The type got created via a call to PtrToStructure().
-  exists(MethodCall mc |
-    mc.getTarget() = any(SystemRuntimeInteropServicesMarshalClass c).getPtrToStructureObjectMethod() and
-    t = getAReferencedType(mc.getArgument(1).getType())
+    t = getAReferencedType(t0) and
+    arg = mc.getArgument(1)
+  |
+    t0 = arg.(TypeofExpr).getTypeAccess().getTarget()
+    or
+    t0 = arg.getType()
   )
   or
   // An extern method exists which could initialize the type.

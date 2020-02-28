@@ -1,5 +1,13 @@
 package com.semmle.js.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -34,6 +42,7 @@ import com.semmle.js.ast.ExportAllDeclaration;
 import com.semmle.js.ast.ExportDeclaration;
 import com.semmle.js.ast.ExportDefaultDeclaration;
 import com.semmle.js.ast.ExportNamedDeclaration;
+import com.semmle.js.ast.ExportNamespaceSpecifier;
 import com.semmle.js.ast.ExportSpecifier;
 import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
@@ -143,13 +152,7 @@ import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.semmle.util.data.IntList;
 
 /**
  * Utility class for converting a <a
@@ -333,7 +336,11 @@ public class TypeScriptASTConverter {
   private Node convertNodeUntyped(JsonObject node, String defaultKind) throws ParseError {
     String kind = getKind(node);
     if (kind == null) kind = defaultKind;
-    if (kind == null) kind = "Identifier";
+    if (kind == null) {
+      // Identifiers and PrivateIdentifiers do not have a "kind" property like other nodes.
+      // Since we encode identifiers and private identifiers the same, default to Identifier.
+      kind = "Identifier";
+    }
     SourceLocation loc = getSourceLocation(node);
     switch (kind) {
       case "AnyKeyword":
@@ -440,6 +447,7 @@ public class TypeScriptASTConverter {
       case "FunctionType":
         return convertFunctionType(node, loc);
       case "Identifier":
+      case "PrivateIdentifier":
         return convertIdentifier(node, loc);
       case "IfStatement":
         return convertIfStatement(node, loc);
@@ -506,6 +514,8 @@ public class TypeScriptASTConverter {
         return convertNamespaceDeclaration(node, loc);
       case "ModuleBlock":
         return convertModuleBlock(node, loc);
+      case "NamespaceExport":
+        return convertNamespaceExport(node, loc);
       case "NamespaceExportDeclaration":
         return convertNamespaceExportDeclaration(node, loc);
       case "NamespaceImport":
@@ -804,7 +814,8 @@ public class TypeScriptASTConverter {
             hasModifier(node, "AsyncKeyword"),
             convertChildrenNotNull(node, "typeParameters"),
             convertParameterTypes(node),
-            convertChildAsType(node, "type"));
+            convertChildAsType(node, "type"),
+            getOptionalParameterIndices(node));
     attachDeclaredSignature(function, node);
     return function;
   }
@@ -1063,7 +1074,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             null,
-            null);
+            null,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(value, node);
     attachStaticType(value, node);
     attachDeclaredSignature(value, node);
@@ -1167,11 +1179,12 @@ public class TypeScriptASTConverter {
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     if (hasChild(node, "exportClause")) {
-      return new ExportNamedDeclaration(
-          loc,
-          null,
-          convertChildren(node.get("exportClause").getAsJsonObject(), "elements"),
-          source);
+      boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
+      List<ExportSpecifier> specifiers =
+          hasKind(node.get("exportClause"), "NamespaceExport")
+              ? Collections.singletonList(convertChild(node, "exportClause"))
+              : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
+      return new ExportNamedDeclaration(loc, null, specifiers, source, hasTypeKeyword);
     } else {
       return new ExportAllDeclaration(loc, source);
     }
@@ -1182,6 +1195,11 @@ public class TypeScriptASTConverter {
         loc,
         convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name"),
         convertChild(node, "name"));
+  }
+
+  private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
+    // Convert the "* as ns" from an export declaration.
+    return new ExportNamespaceSpecifier(loc, convertChild(node, "name"));
   }
 
   private Node convertExpressionStatement(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1199,7 +1217,9 @@ public class TypeScriptASTConverter {
 
   private Node convertExternalModuleReference(JsonObject node, SourceLocation loc)
       throws ParseError {
-    return new ExternalModuleReference(loc, convertChild(node, "expression"));
+    ExternalModuleReference moduleRef = new ExternalModuleReference(loc, convertChild(node, "expression"));
+    attachSymbolInformation(moduleRef, node);
+    return moduleRef;
   }
 
   private Node convertFalseKeyword(SourceLocation loc) {
@@ -1262,7 +1282,8 @@ public class TypeScriptASTConverter {
             typeParameters,
             paramTypes,
             returnType,
-            thisParam);
+            thisParam,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(function, node);
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
@@ -1291,7 +1312,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             returnType,
-            thisParam);
+            thisParam,
+            getOptionalParameterIndices(node));
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
     return function;
@@ -1347,6 +1369,7 @@ public class TypeScriptASTConverter {
   private Node convertImportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     List<ImportSpecifier> specifiers = new ArrayList<>();
+    boolean hasTypeKeyword = false;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1360,8 +1383,11 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
+      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    return new ImportDeclaration(loc, specifiers, src);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, hasTypeKeyword);
+    attachSymbolInformation(importDecl, node);
+    return importDecl;
   }
 
   private Node convertImportEqualsDeclaration(JsonObject node, SourceLocation loc)
@@ -1645,7 +1671,8 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             returnType,
-            thisType);
+            thisType,
+            getOptionalParameterIndices(node));
     attachSymbolInformation(function, node);
     attachStaticType(function, node);
     attachDeclaredSignature(function, node);
@@ -1888,6 +1915,18 @@ public class TypeScriptASTConverter {
       result.add(convertChildAsType(param.getAsJsonObject(), "type"));
     }
     return result;
+  }
+
+  private IntList getOptionalParameterIndices(JsonObject function) throws ParseError {
+    IntList list = IntList.create(0);
+    int index = -1;
+    for (JsonElement param : getProperParameters(function)) {
+      ++index;
+      if (param.getAsJsonObject().has("questionToken")) {
+        list.add(index);
+      }
+    }
+    return list;
   }
 
   private List<FieldDefinition> convertParameterFields(JsonObject function) throws ParseError {

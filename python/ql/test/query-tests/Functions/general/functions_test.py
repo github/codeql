@@ -168,3 +168,28 @@ def issue1143(expr, param=[]):
         return result
     for i in param:
         param.remove(i) # Mutation here
+
+
+# Type guarding of modification of parameter with default:
+
+def do_stuff_based_on_type(x):
+    if isinstance(x, str):
+        x = x.split()
+    elif isinstance(x, dict):
+        x.setdefault('foo', 'bar')
+    elif isinstance(x, list):
+        x.append(5)
+    elif isinstance(x, tuple):
+        x = x.unknown_method()
+
+def str_default(x="hello world"):
+    do_stuff_based_on_type(x)
+
+def dict_default(x={'baz':'quux'}):
+    do_stuff_based_on_type(x)
+
+def list_default(x=[1,2,3,4]):
+    do_stuff_based_on_type(x)
+
+def tuple_default(x=(1,2)):
+    do_stuff_based_on_type(x)

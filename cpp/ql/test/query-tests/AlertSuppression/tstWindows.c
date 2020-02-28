@@ -26,3 +26,12 @@ int x = 0; // lgtm
 // LGTM[js/debugger-statement]
 // lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function]
 // lgtm[js/debugger-statement]; lgtm
+/* lgtm[] */
+/* lgtm[js/invocation-of-non-function] */
+/* lgtm
+*/
+/* lgtm
+
+*/
+/* lgtm[@tag:nullness,js/invocation-of-non-function] */
+/* lgtm[@tag:nullness] */

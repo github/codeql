@@ -234,3 +234,11 @@ def func():
     except TypeError:
       return 1
     return 0
+
+# False positive for py/member-test-non-container
+
+# Container wrapped in MappingProxyType
+from types import MappingProxyType
+
+def mpt_arg(d=MappingProxyType({})):
+    return 1 in d

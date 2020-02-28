@@ -11,7 +11,8 @@ import Configurations
 import PortalEntrySink
 import SourceFromAnnotation
 
-from DataFlow::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink,
+from
+  DataFlow::Configuration cfg, DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink,
   Portal p, DataFlow::MidPathNode last
 where
   cfg = source.getConfiguration() and

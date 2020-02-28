@@ -108,7 +108,8 @@ where
   exists(Expr source, Expr cmd, QuotedCommandInCreateProcessFunctionConfiguration quotedConfig |
     cmd = call.getArgument(call.getCommandLineArgumentId()) and
     quotedConfig.hasFlow(DataFlow2::exprNode(source), DataFlow2::exprNode(cmd)) and
-    msg2 = " and with an unquoted lpCommandLine (" + cmd +
+    msg2 =
+      " and with an unquoted lpCommandLine (" + cmd +
         ") introduces a security vulnerability if the path contains spaces."
   )
 select call, msg1 + " " + msg2

@@ -88,7 +88,7 @@ class FlowVar extends TFlowVar {
    *   `FlowVar` instance for the uninitialized value of that variable.
    */
   cached
-  abstract predicate definedByInitialValue(LocalScopeVariable v);
+  abstract predicate definedByInitialValue(StackVariable v);
 
   /** Gets a textual representation of this element. */
   cached
@@ -133,8 +133,7 @@ private module PartialDefinitions {
     TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
-    not fa.getTarget().isStatic() and
-    assignmentLikeOperation(node, fa.getTarget(), fa, _)
+    assignmentLikeOperation(node, _, fa, _)
   }
 
   class PartialDefinition extends TPartialDefinition {
@@ -269,7 +268,7 @@ module FlowVar_internal {
    * Holds if `sbb` is the `SubBasicBlock` where `v` receives its initial value.
    * See the documentation for `FlowVar.definedByInitialValue`.
    */
-  predicate blockVarDefinedByVariable(SubBasicBlock sbb, LocalScopeVariable v) {
+  predicate blockVarDefinedByVariable(SubBasicBlock sbb, StackVariable v) {
     sbb = v.(Parameter).getFunction().getEntryPoint()
     or
     exists(DeclStmt declStmt |
@@ -280,7 +279,7 @@ module FlowVar_internal {
   }
 
   newtype TFlowVar =
-    TSsaVar(SsaDefinition def, LocalScopeVariable v) {
+    TSsaVar(SsaDefinition def, StackVariable v) {
       fullySupportedSsaVariable(v) and
       v = def.getAVariable()
     } or
@@ -304,7 +303,7 @@ module FlowVar_internal {
    */
   class SsaVar extends TSsaVar, FlowVar {
     SsaDefinition def;
-    LocalScopeVariable v;
+    StackVariable v;
 
     SsaVar() { this = TSsaVar(def, v) }
 
@@ -344,7 +343,7 @@ module FlowVar_internal {
 
     override predicate definedPartiallyAt(Expr e) { none() }
 
-    override predicate definedByInitialValue(LocalScopeVariable param) {
+    override predicate definedByInitialValue(StackVariable param) {
       def.definedByParameter(param) and
       param = v
     }
@@ -408,7 +407,7 @@ module FlowVar_internal {
       getAReachedBlockVarSBB(this).getANode() = p.getFunction()
     }
 
-    override predicate definedByInitialValue(LocalScopeVariable lsv) {
+    override predicate definedByInitialValue(StackVariable lsv) {
       blockVarDefinedByVariable(sbb, lsv) and
       lsv = v
     }
@@ -648,11 +647,8 @@ module FlowVar_internal {
   /**
    * A local variable that is uninitialized immediately after its declaration.
    */
-  class UninitializedLocalVariable extends LocalVariable {
-    UninitializedLocalVariable() {
-      not this.hasInitializer() and
-      not this.isStatic()
-    }
+  class UninitializedLocalVariable extends LocalVariable, StackVariable {
+    UninitializedLocalVariable() { not this.hasInitializer() }
   }
 
   /** Holds if `va` may be an uninitialized access to `v`. */
@@ -757,13 +753,15 @@ module FlowVar_internal {
     ControlFlowNode node, Variable v, VariableAccess va, Expr assignedExpr
   ) {
     // Together, the two following cases cover `Assignment`
-    node = any(AssignExpr ae |
+    node =
+      any(AssignExpr ae |
         va = ae.getLValue() and
         v = va.getTarget() and
         assignedExpr = ae.getRValue()
       )
     or
-    node = any(AssignOperation ao |
+    node =
+      any(AssignOperation ao |
         va = ao.getLValue() and
         v = va.getTarget() and
         // Here and in the `PrefixCrementOperation` case, we say that the assigned
@@ -775,7 +773,8 @@ module FlowVar_internal {
     or
     // This case does not add further data flow paths, except if a
     // `PrefixCrementOperation` is itself a source
-    node = any(CrementOperation op |
+    node =
+      any(CrementOperation op |
         va = op.getOperand() and
         v = va.getTarget() and
         assignedExpr = op

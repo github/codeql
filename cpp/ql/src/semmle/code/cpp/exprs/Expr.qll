@@ -461,11 +461,11 @@ class Expr extends StmtParent, @expr {
 /**
  * A C/C++ operation.
  *
- * This is the QL abstract root class for all operations.
+ * This is the QL root class for all operations.
  */
-abstract class Operation extends Expr {
+class Operation extends Expr, @op_expr {
   /** Gets the operator of this operation. */
-  abstract string getOperator();
+  string getOperator() { none() }
 
   /** Gets an operand of this operation. */
   Expr getAnOperand() { result = this.getAChild() }
@@ -474,7 +474,7 @@ abstract class Operation extends Expr {
 /**
  * A C/C++ unary operation.
  */
-abstract class UnaryOperation extends Operation {
+class UnaryOperation extends Operation, @un_op_expr {
   /** Gets the operand of this unary operation. */
   Expr getOperand() { this.hasChild(result, 0) }
 
@@ -488,7 +488,7 @@ abstract class UnaryOperation extends Operation {
 /**
  * A C/C++ binary operation.
  */
-abstract class BinaryOperation extends Operation {
+class BinaryOperation extends Operation, @bin_op_expr {
   /** Gets the left operand of this binary operation. */
   Expr getLeftOperand() { this.hasChild(result, 0) }
 
@@ -890,12 +890,8 @@ class DeleteExpr extends Expr, @delete_expr {
    * Gets the compile-time type of the object being deleted.
    */
   Type getDeletedObjectType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**
@@ -968,12 +964,8 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
    * Gets the element type of the array being deleted.
    */
   Type getDeletedElementType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**

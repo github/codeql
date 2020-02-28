@@ -71,6 +71,9 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         py_exports(this.getSourceModule(), name)
     }
 
+    /** Whether the complete set of names "exported" by this module can be accurately determined */
+    abstract predicate hasCompleteExportInfo();
+
     override predicate isNotSubscriptedType() { any() }
 
 }
@@ -123,6 +126,10 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
 
     override ControlFlowNode getOrigin() {
         none()
+    }
+
+    override predicate hasCompleteExportInfo() {
+        any()
     }
 
 }
@@ -230,6 +237,12 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         exists(this.submodule(name))
     }
 
+    override predicate hasCompleteExportInfo() {
+
+        not exists(this.getInitModule())
+        or
+        this.getInitModule().hasCompleteExportInfo()
+    }
 }
 
 /** A class representing Python modules */
@@ -300,6 +313,15 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         )
     }
 
+    override predicate hasCompleteExportInfo() {
+        not exists(Call modify, Attribute attr, GlobalVariable all |
+            modify.getScope() = this.getSourceModule() and
+            modify.getFunc() = attr and
+            all.getId() = "__all__" |
+            attr.getObject().(Name).uses(all)
+        )
+    }
+
 }
 
 /** A class representing a module that is missing from the DB, but inferred to exists from imports. */
@@ -354,6 +376,9 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
         none()
     }
 
+    override predicate hasCompleteExportInfo() {
+        none()
+    }
 }
 
 /** A class representing an attribute of a missing module. */
@@ -453,4 +478,3 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     override predicate isNotSubscriptedType() { any() }
 
 }
-

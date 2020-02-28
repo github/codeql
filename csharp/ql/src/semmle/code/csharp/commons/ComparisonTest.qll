@@ -116,8 +116,8 @@ private newtype TComparisonTest =
       m = any(SystemCollectionsIComparerInterface i).getCompareMethod()
       or
       m = any(SystemCollectionsGenericIComparerTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemCollectionsGenericIComparerTInterface i)
-            .getCompareMethod()
+      m.getSourceDeclaration() =
+        any(SystemCollectionsGenericIComparerTInterface i).getCompareMethod()
     )
   } or
   TComparisonOperatorCall(OperatorCall oc, ComparisonKind kind, Expr first, Expr second) {

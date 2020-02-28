@@ -90,12 +90,17 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         isSuccessor = true
       )
       or
-      e1 = e2.(LogicalOperation).getAnOperand() and
+      e1 = e2.(UnaryLogicalOperation).getAnOperand() and
+      scope = e2 and
+      isSuccessor = false
+      or
+      e1 = e2.(BinaryLogicalOperation).getAnOperand() and
       scope = e2 and
       isSuccessor = false
       or
       // Taint from tuple argument
-      e2 = any(TupleExpr te |
+      e2 =
+        any(TupleExpr te |
           e1 = te.getAnArgument() and
           te.isReadAccess() and
           scope = e2 and
@@ -107,9 +112,18 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       isSuccessor = true
       or
       // Taint from tuple expression
-      e2 = any(MemberAccess ma |
+      e2 =
+        any(MemberAccess ma |
           ma.getQualifier().getType() instanceof TupleType and
           e1 = ma.getQualifier() and
+          scope = e2 and
+          isSuccessor = true
+        )
+      or
+      e2 =
+        any(OperatorCall oc |
+          oc.getTarget().(ConversionOperator).fromLibrary() and
+          e1 = oc.getAnArgument() and
           scope = e2 and
           isSuccessor = true
         )
@@ -123,8 +137,8 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
     // Taint from `foreach` expression
     exists(ForeachStmt fs |
       e = fs.getIterableExpr() and
-      defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = fs
-            .getVariableDeclExpr() and
+      defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() =
+        fs.getVariableDeclExpr() and
       isSuccessor = true
     |
       scope = fs and

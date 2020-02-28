@@ -1166,4 +1166,57 @@ int ModeledCallTarget(int x) {
   return y;
 }
 
+String ReturnObjectImpl() {
+  return String("foo");
+}
+
+void switch1Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+    }
+    int z = y;
+}
+
+void switch2Case_fallthrough(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        break;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case_default(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+            y = 2;
+            break;
+
+        case 2:
+            y = 3;
+            break;
+
+        default:
+            y = 4;
+    }
+    int z = y;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

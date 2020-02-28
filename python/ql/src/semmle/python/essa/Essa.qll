@@ -37,7 +37,7 @@ class EssaVariable extends TEssaDefinition {
         result = "SSA variable " + this.getName()
     }
 
-    /** Gets a string representation of this variable. 
+    /** Gets a string representation of this variable.
      * WARNING: The format of this may change and it may be very inefficient to compute.
      * To used for debugging and testing only.
      */
@@ -50,8 +50,16 @@ class EssaVariable extends TEssaDefinition {
      * Note that this differs from `EssaVariable.getAUse()`.
      */
     ControlFlowNode getASourceUse() {
+        exists(SsaSourceVariable var |
+            result = use_for_var(var) and
+            result = var.getASourceUse()
+        )
+    }
+
+    pragma[nomagic]
+    private ControlFlowNode use_for_var(SsaSourceVariable var) {
         result = this.getAUse() and
-        result = this.getSourceVariable().getASourceUse()
+        var = this.getSourceVariable()
     }
 
     /** Gets the scope of this variable. */
@@ -69,7 +77,7 @@ class EssaVariable extends TEssaDefinition {
 
 }
 
-/* Helper for location_string 
+/* Helper for location_string
  * NOTE: This is Python specific, to make `getRepresentation()` portable will require further work.
  */
 private int exception_handling(BasicBlock b) {
@@ -153,10 +161,10 @@ abstract class EssaDefinition extends TEssaDefinition {
     abstract predicate reachesEndOfBlock(BasicBlock b);
 
     /** Gets the location of a control flow node that is indicative of this definition.
-     * Since definitions may occur on edges of the control flow graph, the given location may 
+     * Since definitions may occur on edges of the control flow graph, the given location may
      * be imprecise.
      * Distinct `EssaDefinitions` may return the same ControlFlowNode even for
-     * the same variable. 
+     * the same variable.
      */
     abstract Location getLocation();
 
@@ -174,9 +182,9 @@ abstract class EssaDefinition extends TEssaDefinition {
 
 }
 
-/** An ESSA definition corresponding to an edge refinement of the underlying variable. 
+/** An ESSA definition corresponding to an edge refinement of the underlying variable.
  * For example, the edges leaving a test on a variable both represent refinements of that
- * variable. On one edge the test is true, on the other it is false. 
+ * variable. On one edge the test is true, on the other it is false.
  */
 class EssaEdgeRefinement extends EssaDefinition, TEssaEdgeDefinition {
 
@@ -268,11 +276,16 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
         not exists(this.inputEdgeRefinement(result))
     }
 
+    pragma[noinline]
+    private SsaSourceVariable pred_var(BasicBlock pred) {
+        result = this.getSourceVariable() and
+        pred = this.nonPiInput()
+    }
+
     /** Gets another definition of the same source variable that reaches this definition. */
     private EssaDefinition reachingDefinition(BasicBlock pred) {
         result.getScope() = this.getScope() and
-        result.getSourceVariable() = this.getSourceVariable() and
-        pred = this.nonPiInput() and
+        result.getSourceVariable() = pred_var(pred) and
         result.reachesEndOfBlock(pred)
     }
 
@@ -348,7 +361,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 
     private EssaEdgeRefinement piInputDefinition(EssaVariable input) {
-        input = this.getAnInput() and 
+        input = this.getAnInput() and
         result = input.getDefinition()
         or
         input = this.getAnInput() and result = input.getDefinition().(PhiFunction).piInputDefinition(_)
@@ -851,4 +864,3 @@ class PyEdgeRefinement extends EssaEdgeRefinement {
     }
 
 }
-

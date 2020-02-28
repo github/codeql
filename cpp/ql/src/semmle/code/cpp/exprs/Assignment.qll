@@ -7,9 +7,9 @@ import semmle.code.cpp.exprs.BitwiseOperation
  * etc. A C++ overloaded assignment operation looks syntactically identical but is instead
  * a `FunctionCall`.
  *
- * This is an abstract root QL class for all (non-overloaded) assignments.
+ * This is a QL base class for all (non-overloaded) assignments.
  */
-abstract class Assignment extends Operation {
+class Assignment extends Operation, @assign_expr {
   /** Gets the _lvalue_ of this assignment. */
   Expr getLValue() { this.hasChild(result, 0) }
 
@@ -21,11 +21,10 @@ abstract class Assignment extends Operation {
   override predicate mayBeGloballyImpure() {
     this.getRValue().mayBeGloballyImpure()
     or
-    not exists(VariableAccess va, LocalScopeVariable v |
+    not exists(VariableAccess va, StackVariable v |
       va = this.getLValue() and
       v = va.getTarget() and
-      not va.getConversion+() instanceof ReferenceDereferenceExpr and
-      not v.isStatic()
+      not va.getConversion+() instanceof ReferenceDereferenceExpr
     )
   }
 }
@@ -48,7 +47,7 @@ class AssignExpr extends Assignment, @assignexpr {
 /**
  * A non-overloaded binary assignment operation other than `=`.
  */
-abstract class AssignOperation extends Assignment {
+class AssignOperation extends Assignment, @assign_op_expr {
   override string toString() { result = "... " + this.getOperator() + " ..." }
 }
 
@@ -56,7 +55,7 @@ abstract class AssignOperation extends Assignment {
  * A non-overloaded arithmetic assignment operation on a non-pointer _lvalue_:
  * `+=`, `-=`, `*=`, `/=` and `%=`.
  */
-abstract class AssignArithmeticOperation extends AssignOperation { }
+class AssignArithmeticOperation extends AssignOperation, @assign_arith_expr { }
 
 /**
  * A non-overloaded `+=` assignment expression on a non-pointer _lvalue_.
@@ -122,7 +121,7 @@ class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
  * A non-overloaded bitwise assignment operation:
  * `&=`, `|=`, `^=`, `<<=`, and `>>=`.
  */
-abstract class AssignBitwiseOperation extends AssignOperation { }
+class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr { }
 
 /**
  * A non-overloaded AND (`&=`) assignment expression.
