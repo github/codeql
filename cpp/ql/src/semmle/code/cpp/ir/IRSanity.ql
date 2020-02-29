@@ -6,3 +6,4 @@
  */
 
 import implementation.aliased_ssa.IRSanity
+import implementation.UseSoundEscapeAnalysis

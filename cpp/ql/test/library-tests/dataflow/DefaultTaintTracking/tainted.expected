@@ -161,6 +161,8 @@
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:111:10:111:16 | (const char *)... |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:111:10:111:16 | access to array |
 | test_diff.cpp:115:11:115:14 | argv | defaulttainttracking.cpp:9:11:9:20 | p#0 |
+| test_diff.cpp:115:11:115:14 | argv | file://:0:0:0:0 | (DerivedCallsSinkDiamond1 *)... |
+| test_diff.cpp:115:11:115:14 | argv | file://:0:0:0:0 | this |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:1:11:1:20 | p#0 |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:24:20:24:29 | p#0 |
 | test_diff.cpp:115:11:115:14 | argv | test_diff.cpp:41:24:41:24 | p |

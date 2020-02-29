@@ -23,4 +23,6 @@
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:1:11:1:20 | p#0 | AST only |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:29:24:29:24 | p | AST only |
 | test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:30:14:30:14 | p | AST only |
+| test_diff.cpp:115:11:115:14 | argv | file://:0:0:0:0 | (DerivedCallsSinkDiamond1 *)... | IR only |
+| test_diff.cpp:115:11:115:14 | argv | file://:0:0:0:0 | this | IR only |
 | test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:76:24:76:24 | p | IR only |
