@@ -34,9 +34,7 @@ class AnnotatedCall extends InvokeExpr {
 
   AnnotatedFunction getAnExpectedCallee() { result.getCalleeName() = getCallTargetName() }
 
-  int getBoundArgs() {
-    result = getAnnotation(this, "boundArgs").toInt()
-  }
+  int getBoundArgs() { result = getAnnotation(this, "boundArgs").toInt() }
 
   int getBoundArgsOrMinusOne() {
     result = getBoundArgs()
