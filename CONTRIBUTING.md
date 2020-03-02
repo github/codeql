@@ -40,7 +40,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 The standard CodeQL libraries must evolve in a backwards compatible manner. If any backwards incompatible changes need to be made, the existing API must first be marked as deprecated. This is done by adding a `deprecated` annotation along with a QLDoc reference to the replacement API. Only after at least one full release cycle has elapsed may the old API be removed.
 
-In addition to contributions to our standard queries and libraries, we also welcome contributions of a more experimental nature, which do not need to fulfill all the requirements listed above. See the guidelines for [experimental queries and libraries](docs/experimental.md) for details.
+In addition to contributions to our standard queries and libraries, we also welcome contributions of a more experimental nature, which do not need to fulfill all the requirements listed above. See the guidelines for [experimental queries and libraries](ql/docs/experimental.md) for details.
 
 ## Resources
 
