@@ -104,7 +104,7 @@ private predicate brace_pair(PossibleAdvancedFormatString fmt, int start, int en
      )
 }
 
-private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
+private predicate advanced_format_call_objectapi(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
     exists(CallNode call | 
         call = format_expr.getAFlowNode() |
         call.getFunction().refersTo(Object::builtin("format")) and call.getArg(0).refersTo(_, fmt.getAFlowNode()) and
@@ -115,27 +115,27 @@ private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatS
     )
 }
 
-class AdvancedFormatString extends PossibleAdvancedFormatString {
+class AdvancedFormatString_objectapi extends PossibleAdvancedFormatString {
 
-    AdvancedFormatString() {
-        advanced_format_call(_, this, _)
+    AdvancedFormatString_objectapi() {
+        advanced_format_call_objectapi(_, this, _)
     }
 
 }
 
-class AdvancedFormattingCall extends Call {
+class AdvancedFormattingCall_objectapi extends Call {
 
-    AdvancedFormattingCall() {
-        advanced_format_call(this, _, _) 
+    AdvancedFormattingCall_objectapi() {
+        advanced_format_call_objectapi(this, _, _) 
     }
 
     /** Count of the arguments actually provided */
     int providedArgCount() {
-        advanced_format_call(this, _, result)
+        advanced_format_call_objectapi(this, _, result)
     }
 
-    AdvancedFormatString getAFormat() {
-        advanced_format_call(this, result, _)
+    AdvancedFormatString_objectapi getAFormat() {
+        advanced_format_call_objectapi(this, result, _)
     }
 
 }
