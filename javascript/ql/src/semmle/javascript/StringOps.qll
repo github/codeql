@@ -86,6 +86,8 @@ module StringOps {
           result = this.getArgument(arg)
         )
       }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
     }
 
     /**
