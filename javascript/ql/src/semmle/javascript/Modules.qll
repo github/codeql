@@ -140,7 +140,8 @@ abstract class Import extends ASTNode {
    * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
    */
   private Module resolveFromTypeRoot() {
-    result.getFile() = min(TypeRootFolder typeRoot |
+    result.getFile() =
+      min(TypeRootFolder typeRoot |
         |
         typeRoot.getModuleFile(getImportedPath().getValue())
         order by

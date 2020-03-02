@@ -78,7 +78,7 @@ class Value extends TObject {
     predicate isBuiltin() {
         this.(ObjectInternal).isBuiltin()
     }
-
+    
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or

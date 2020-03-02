@@ -36,6 +36,7 @@ module TaintedPath {
       guard instanceof StartsWithDirSanitizer or
       guard instanceof IsAbsoluteSanitizer or
       guard instanceof ContainsDotDotSanitizer or
+      guard instanceof RelativePathStartsWithSanitizer or
       guard instanceof IsInsideCheckSanitizer
     }
 

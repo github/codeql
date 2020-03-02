@@ -553,10 +553,10 @@ module ClientRequest {
   /**
    * Gets a reference to an instance of `chrome-remote-interface`.
    *
-   * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise. 
-   * 
-   * The `isPromise` parameter reflects whether the reference is a promise containing 
-   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`. 
+   * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise.
+   *
+   * The `isPromise` parameter reflects whether the reference is a promise containing
+   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`.
    */
   private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t, boolean isPromise) {
     t.start() and

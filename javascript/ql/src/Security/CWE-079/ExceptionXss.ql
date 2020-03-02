@@ -15,10 +15,8 @@ import javascript
 import semmle.javascript.security.dataflow.ExceptionXss::ExceptionXss
 import DataFlow::PathGraph
 
-from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where
-  cfg.hasFlowPath(source, sink)
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  sink.getNode().(Xss::Shared::Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
-  "user-provided value"
+  sink.getNode().(Xss::Shared::Sink).getVulnerabilityKind() + " vulnerability due to $@.",
+  source.getNode(), "user-provided value"

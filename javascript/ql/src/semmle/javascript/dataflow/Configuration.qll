@@ -1035,7 +1035,9 @@ private predicate flowIntoHigherOrderCall(
     summary = oldSummary.append(PathSummary::call())
   )
   or
-  exists(DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary |
+  exists(
+    DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary
+  |
     higherOrderCall(pred, cb, i, cfg, oldSummary) and
     cb = CallGraph::getABoundFunctionReference(f, boundArgs, false) and
     succ = f.getParameter(boundArgs + i) and
@@ -1494,9 +1496,9 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 }
 
 /**
-  * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
-  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
-  */
+ * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+ * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
+ */
 class VarAccessBarrier extends DataFlow::Node {
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |

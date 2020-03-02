@@ -1495,51 +1495,165 @@ nodes
 | normalizedPaths.js:250:21:250:24 | path |
 | normalizedPaths.js:250:21:250:24 | path |
 | normalizedPaths.js:250:21:250:24 | path |
-| normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path |
-| normalizedPaths.js:256:13:256:26 | req.query.path |
-| normalizedPaths.js:256:13:256:26 | req.query.path |
-| normalizedPaths.js:256:13:256:26 | req.query.path |
-| normalizedPaths.js:256:13:256:26 | req.query.path |
-| normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
-| normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:285:19:285:32 | normalizedPath |
+| normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path |
+| normalizedPaths.js:254:33:254:46 | req.query.path |
+| normalizedPaths.js:254:33:254:46 | req.query.path |
+| normalizedPaths.js:254:33:254:46 | req.query.path |
+| normalizedPaths.js:254:33:254:46 | req.query.path |
+| normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path |
+| normalizedPaths.js:303:13:303:26 | req.query.path |
+| normalizedPaths.js:303:13:303:26 | req.query.path |
+| normalizedPaths.js:303:13:303:26 | req.query.path |
+| normalizedPaths.js:303:13:303:26 | req.query.path |
+| normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path |
+| normalizedPaths.js:339:32:339:45 | req.query.path |
+| normalizedPaths.js:339:32:339:45 | req.query.path |
+| normalizedPaths.js:339:32:339:45 | req.query.path |
+| normalizedPaths.js:339:32:339:45 | req.query.path |
+| normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:346:19:346:22 | path |
 | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-require.js:7:19:7:37 | req.param("module") |
@@ -4273,65 +4387,201 @@ edges
 | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:236:14:236:47 | pathMod ... y.path) |
 | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:236:14:236:47 | pathMod ... y.path) |
 | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:236:14:236:47 | pathMod ... y.path) |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:257:18:257:21 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:262:19:262:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:266:19:266:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:269:19:269:22 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:256:6:256:26 | path | normalizedPaths.js:273:45:273:48 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:256:6:256:26 | path |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:278:19:278:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:6:273:49 | normalizedPath | normalizedPaths.js:285:19:285:32 | normalizedPath |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) | normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) | normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:23:273:49 | pathMod ... , path) | normalizedPaths.js:273:6:273:49 | normalizedPath |
-| normalizedPaths.js:273:45:273:48 | path | normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
-| normalizedPaths.js:273:45:273:48 | path | normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
-| normalizedPaths.js:273:45:273:48 | path | normalizedPaths.js:273:23:273:49 | pathMod ... , path) |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:267:38:267:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:275:38:275:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:283:38:283:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:291:38:291:41 | path |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:47 | path |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:42 | newpath |
+| normalizedPaths.js:267:38:267:41 | path | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:38:267:41 | path | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:38:267:41 | path | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:267:38:267:41 | path | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:42 | newpath |
+| normalizedPaths.js:275:38:275:41 | path | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:38:275:41 | path | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:38:275:41 | path | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:275:38:275:41 | path | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:42 | newpath |
+| normalizedPaths.js:283:38:283:41 | path | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:38:283:41 | path | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:38:283:41 | path | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:283:38:283:41 | path | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:42 | newpath |
+| normalizedPaths.js:291:38:291:41 | path | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:38:291:41 | path | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:38:291:41 | path | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:291:38:291:41 | path | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:320:45:320:48 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) | normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) | normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) | normalizedPaths.js:320:6:320:49 | normalizedPath |
+| normalizedPaths.js:320:45:320:48 | path | normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:320:45:320:48 | path | normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:320:45:320:48 | path | normalizedPaths.js:320:23:320:49 | pathMod ... , path) |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:46 | path |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
+| normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) |
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") |
 | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") |
@@ -5200,12 +5450,20 @@ edges
 | normalizedPaths.js:238:19:238:22 | path | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:238:19:238:22 | path | This path depends on $@. | normalizedPaths.js:236:33:236:46 | req.query.path | a user-provided value |
 | normalizedPaths.js:245:21:245:24 | path | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:245:21:245:24 | path | This path depends on $@. | normalizedPaths.js:236:33:236:46 | req.query.path | a user-provided value |
 | normalizedPaths.js:250:21:250:24 | path | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:250:21:250:24 | path | This path depends on $@. | normalizedPaths.js:236:33:236:46 | req.query.path | a user-provided value |
-| normalizedPaths.js:257:18:257:21 | path | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:257:18:257:21 | path | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
-| normalizedPaths.js:262:19:262:22 | path | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:262:19:262:22 | path | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
-| normalizedPaths.js:266:19:266:22 | path | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:266:19:266:22 | path | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
-| normalizedPaths.js:269:19:269:22 | path | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:269:19:269:22 | path | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
-| normalizedPaths.js:278:19:278:32 | normalizedPath | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:278:19:278:32 | normalizedPath | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
-| normalizedPaths.js:285:19:285:32 | normalizedPath | normalizedPaths.js:256:13:256:26 | req.query.path | normalizedPaths.js:285:19:285:32 | normalizedPath | This path depends on $@. | normalizedPaths.js:256:13:256:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:256:19:256:22 | path | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:256:19:256:22 | path | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:262:21:262:24 | path | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:262:21:262:24 | path | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:270:21:270:27 | newpath | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:270:21:270:27 | newpath | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:278:21:278:27 | newpath | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:278:21:278:27 | newpath | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:286:21:286:27 | newpath | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:286:21:286:27 | newpath | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:296:21:296:27 | newpath | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:296:21:296:27 | newpath | This path depends on $@. | normalizedPaths.js:254:33:254:46 | req.query.path | a user-provided value |
+| normalizedPaths.js:304:18:304:21 | path | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:304:18:304:21 | path | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:309:19:309:22 | path | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:309:19:309:22 | path | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:313:19:313:22 | path | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:313:19:313:22 | path | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:316:19:316:22 | path | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:316:19:316:22 | path | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:325:19:325:32 | normalizedPath | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:325:19:325:32 | normalizedPath | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:332:19:332:32 | normalizedPath | normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:332:19:332:32 | normalizedPath | This path depends on $@. | normalizedPaths.js:303:13:303:26 | req.query.path | a user-provided value |
+| normalizedPaths.js:341:18:341:21 | path | normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:341:18:341:21 | path | This path depends on $@. | normalizedPaths.js:339:32:339:45 | req.query.path | a user-provided value |
+| normalizedPaths.js:346:19:346:22 | path | normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:346:19:346:22 | path | This path depends on $@. | normalizedPaths.js:339:32:339:45 | req.query.path | a user-provided value |
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | This path depends on $@. | tainted-require.js:7:19:7:37 | req.param("module") | a user-provided value |
 | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | a user-provided value |
 | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | a user-provided value |

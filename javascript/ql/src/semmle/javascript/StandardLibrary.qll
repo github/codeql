@@ -49,7 +49,8 @@ class DirectEval extends CallExpr {
  * Models `Array.prototype.map` and friends as partial invocations that pass their second
  * argument as the receiver to the callback.
  */
-private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range, DataFlow::MethodCallNode {
+private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
+  DataFlow::MethodCallNode {
   ArrayIterationCallbackAsPartialInvoke() {
     getNumArgument() = 2 and
     // Filter out library methods named 'forEach' etc

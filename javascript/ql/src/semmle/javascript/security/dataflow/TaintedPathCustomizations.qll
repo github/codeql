@@ -12,9 +12,7 @@ module TaintedPath {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a source. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -22,9 +20,7 @@ module TaintedPath {
    */
   abstract class Sink extends DataFlow::Node {
     /** Gets a flow label denoting the type of value for which this is a sink. */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result instanceof Label::PosixPath
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result instanceof Label::PosixPath }
   }
 
   /**
@@ -110,12 +106,10 @@ module TaintedPath {
     }
 
     /**
-     * A flow label representing an array of path elements that may include "..". 
-     */ 
+     * A flow label representing an array of path elements that may include "..".
+     */
     class SplitPath extends DataFlow::FlowLabel {
-      SplitPath() {
-        this = "splitPath"
-      }
+      SplitPath() { this = "splitPath" }
     }
   }
 
@@ -365,6 +359,56 @@ module TaintedPath {
   }
 
   /**
+   * A sanitizer that recognizes the following pattern:
+   * ```
+   * var relative = path.relative(webroot, pathname);
+   * if(relative.startsWith(".." + path.sep) || relative == "..") {
+   *   // pathname is unsafe
+   * } else {
+   *   // pathname is safe
+   * }
+   * ```
+   * 
+   * or
+   * ```
+   * var relative = path.resolve(pathname); // or path.normalize
+   * if(relative.startsWith(webroot) {
+   *   // pathname is safe
+   * } else {
+   *   // pathname is unsafe
+   * }
+   * ```
+   */
+  class RelativePathStartsWithSanitizer extends DataFlow::BarrierGuardNode {
+    StringOps::StartsWith startsWith;
+    DataFlow::CallNode pathCall;
+    string member;
+
+    RelativePathStartsWithSanitizer() {
+      (member = "relative" or member = "resolve" or member = "normalize") and
+      this = startsWith and
+      pathCall = NodeJSLib::Path::moduleMember(member).getACall() and
+      (
+        startsWith.getBaseString().getALocalSource() = pathCall
+        or
+        startsWith
+            .getBaseString()
+            .getALocalSource()
+            .(NormalizingPathCall)
+            .getInput()
+            .getALocalSource() = pathCall
+      ) and
+      (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
+    }
+
+    override predicate blocks(boolean outcome, Expr e) {
+      member = "relative" and e = pathCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+      or
+      not member = "relative" and e = pathCall.getArgument(0).asExpr() and outcome = startsWith.getPolarity()
+    }
+  }
+
+  /**
    * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
    */
   private class VarAccessBarrier extends Sanitizer, DataFlow::VarAccessBarrier { }
@@ -443,9 +487,7 @@ module TaintedPath {
    * A path argument to a file system access, which disallows upward navigation.
    */
   private class FsPathSinkWithoutUpwardNavigation extends FsPathSink {
-    FsPathSinkWithoutUpwardNavigation() {
-      fileSystemAccess.isUpwardNavigationRejected(this)
-    }
+    FsPathSinkWithoutUpwardNavigation() { fileSystemAccess.isUpwardNavigationRejected(this) }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       // The protection is ineffective if the ../ segments have already

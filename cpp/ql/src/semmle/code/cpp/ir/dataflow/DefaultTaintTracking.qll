@@ -267,7 +267,7 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
 
 /**
  * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
- * Taint shoud not pass through these instructions since they tend to mix up
+ * Taint should not pass through these instructions since they tend to mix up
  * unrelated objects.
  */
 private predicate isChiForAllAliasedMemory(Instruction instr) {
