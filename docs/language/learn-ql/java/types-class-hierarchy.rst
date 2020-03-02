@@ -1,5 +1,5 @@
-Types in Java
-=============
+Java types
+==========
 
 You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
 
@@ -299,6 +299,6 @@ Adding these three improvements, our final query becomes:
 Further reading
 ---------------
 
--  Take a look at some of the other tutorials: :doc:`Tutorial: Expressions and statements <expressions-statements>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Take a look at some of the other articles in this section: :doc:`Overflow-prone comparisons in Java <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>`, and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

@@ -167,7 +167,7 @@ Now we can define a class for representing deprecated methods:
        }
    }
 
-Finally, we use these classes to find calls to deprecated methods, excluding calls that themselves appear in deprecated methods (see :doc:`Tutorial: Navigating the call graph <call-graph>` for more information on class ``Call``):
+Finally, we use these classes to find calls to deprecated methods, excluding calls that themselves appear in deprecated methods:
 
 .. code-block:: ql
 
@@ -178,7 +178,9 @@ Finally, we use these classes to find calls to deprecated methods, excluding cal
        and not call.getCaller() instanceof DeprecatedMethod
    select call, "This call invokes a deprecated method."
 
-On our example, this query flags the call to ``A.m`` in ``A.r``, but not the one in ``A.n``.
+In our example, this query flags the call to ``A.m`` in ``A.r``, but not the one in ``A.n``.
+
+For more information about the class ``Call``, see :doc:`Navigating the call graph <call-graph>`.
 
 Improvements
 ~~~~~~~~~~~~
@@ -238,6 +240,6 @@ Now we can extend our query to filter out calls in methods carrying a ``Suppress
 Further reading
 ---------------
 
--  Take a look at some of the other tutorials: :doc:`Tutorial: Javadoc <javadoc>` and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Take a look at some of the other articles in this section: :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

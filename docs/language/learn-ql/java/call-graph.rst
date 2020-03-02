@@ -1,10 +1,10 @@
 Navigating the call graph
 =========================
 
-CodeQL provides an API for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
+CodeQL has classes for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
 
-Call graph API
---------------
+Call graph classes
+------------------
 
 The CodeQL library for Java provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
 
@@ -68,7 +68,7 @@ In our example, ``Client.main`` calls the constructor ``Sub(int)`` and the metho
 Example: Finding unused methods
 -------------------------------
 
-Given this API, we can easily write a query that finds methods that are not called by any other method:
+We can use the ``Callable`` class to write a query that finds methods that are not called by any other method:
 
 .. code-block:: ql
 
@@ -164,6 +164,6 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
 Further reading
 ---------------
 
--  Find out how to query metadata and white space: :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Find out how to query metadata and white space: :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>`, and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

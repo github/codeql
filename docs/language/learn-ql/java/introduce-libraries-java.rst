@@ -1,10 +1,10 @@
 CodeQL library for Java
 =======================
 
-When you need to analyze a Java program, you can make use of the large collection of classes in the Java library for CodeQL.
+When you're analyzing a Java program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL library for Java.
 
-About the Java library
-----------------------
+About the CodeQL library for Java
+---------------------------------
 
 There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
@@ -14,13 +14,13 @@ The library is implemented as a set of QL modules, that is, files with the exten
 
    import java
 
-The rest of this topic briefly summarizes the most important classes and predicates provided by this library.
+The rest of this article briefly summarizes the most important classes and predicates provided by this library.
 
 .. pull-quote::
 
    Note
 
-   The example queries in this topic illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The tutorial topics show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
+   The example queries in this article illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The other articles in this section of the help show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
 
 Summary of the library classes
 ------------------------------
@@ -196,7 +196,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-For more information on working with types, see the :doc:`tutorial on types and the class hierarchy <types-class-hierarchy>`.
+For more information on working with types, see the :doc:`article on Java types <types-class-hierarchy>`.
 
 Variables
 ~~~~~~~~~
@@ -210,7 +210,7 @@ Class ``Variable`` represents a variable `in the Java sense <http://docs.oracle.
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). See the :doc:`AST class reference <ast-class-reference>` for an exhaustive list of all expression and statement types available in the standard QL library.
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see :doc:`Classes for working with Java code <ast-class-reference>`.
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
@@ -260,7 +260,7 @@ Finally, here is a query that finds method bodies:
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
-For more information on working with AST classes, see the :doc:`tutorial on expressions and statements <expressions-statements>`.
+For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java <expressions-statements>`.
 
 Metadata
 --------
@@ -292,7 +292,7 @@ These annotations are represented by class ``Annotation``. An annotation is simp
 
 ➤ `See this in the query console <https://lgtm.com/query/659662167/>`__. Only constructors with the ``@deprecated`` annotation are reported this time.
 
-For more information on working with annotations, see the :doc:`tutorial on annotations <annotations>`.
+For more information on working with annotations, see the :doc:`article on annotations <annotations>`.
 
 For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a delegate ``Documentable`` object, which can then be queried for its attached Javadoc comments. For example, the following query finds Javadoc comments on private fields:
 
@@ -327,7 +327,7 @@ Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocEle
 
    On line 5 we used ``getParent+`` to capture tags that are nested at any depth within the Javadoc comment.
 
-For more information on working with Javadoc, see the :doc:`tutorial on Javadoc <javadoc>`.
+For more information on working with Javadoc, see the :doc:`article on Javadoc <javadoc>`.
 
 Metrics
 -------
@@ -381,11 +381,11 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
 
 ➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
 
-For more information about callables and calls, see the :doc:`call graph tutorial <call-graph>`.
+For more information about callables and calls, see the :doc:`article on the call graph <call-graph>`.
 
 Further reading
 ---------------
 
--  Experiment with the worked examples in the CodeQL for Java tutorial topics: :doc:`Types and the class hierarchy <types-class-hierarchy>`, :doc:`Expressions and statements <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Experiment with the worked examples in the CodeQL for Java articles: :doc:`Java types <types-class-hierarchy>`, :doc:`Overflow-prone comparisons in Java <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

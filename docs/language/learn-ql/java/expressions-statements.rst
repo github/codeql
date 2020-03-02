@@ -1,4 +1,4 @@
-Expressions and statements in Java
+Overflow-prone comparisons in Java
 ==================================
 
 You can use CodeQL to check for comparisons in Java code where one side of the comparison is prone to overflow.
@@ -26,7 +26,7 @@ If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.
 
-We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions, a full list of which can be found in the :doc:`AST class reference <ast-class-reference>`.
+We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see :doc:`Classes for working with Java code <ast-class-reference>`.
 
 Initial query
 -------------
@@ -125,6 +125,6 @@ Now we rewrite our query to make use of these new classes:
 Further reading
 ---------------
 
--  Have a look at some of the other tutorials: :doc:`Tutorial: Types and the class hierarchy <types-class-hierarchy>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
+-  Have a look at some of the other articles in this section: :doc:`Java types <types-class-hierarchy>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>`, and :doc:`Working with source locations <source-locations>`.
+-  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
