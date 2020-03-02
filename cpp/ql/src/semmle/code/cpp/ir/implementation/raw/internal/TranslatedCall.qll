@@ -503,7 +503,7 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   }
 
   override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    if hasSpecificReadSideEffect(any(BufferAccessOpcode op))
     then
       result = getUnknownType() and
       tag instanceof OnlyInstructionTag and
