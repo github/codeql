@@ -1,10 +1,10 @@
 /**
- * @name Useless use of cat
+ * @name Unnecessary use of `cat` process
  * @description Using the  `cat` process to read a file is unnecessarily complex, inefficient, unportable, and can lead to subtle bugs, or even security vulnerabilities.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id js/useless-use-of-cat
+ * @id js/unnecessary-use-of-cat
  * @tags correctness
  *       security
  *       maintainability
@@ -22,4 +22,4 @@ where
   if cat.isSync()
   then message = " Can be replaced with a call to fs.readFileSync(..)."
   else message = " Can be replaced with a call to fs.readFile(..)."
-select cat.asExpr().(FirstLineOf), "Useless use of `cat`." + message
+select cat.asExpr().(FirstLineOf), "Unnecessary use of `cat` process." + message
