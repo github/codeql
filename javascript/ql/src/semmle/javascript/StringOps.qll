@@ -288,6 +288,41 @@ module StringOps {
     }
 
     /**
+     * A call to a utility function (`callee`) that performs an EndsWith check (`inner`).
+     */
+    private class IndirectEndsWith extends Range, DataFlow::CallNode {
+      EndsWith inner;
+      Function callee;
+
+      IndirectEndsWith() {
+        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+        this.getACallee() = callee and
+        count(this.getACallee()) = 1 and
+        count(callee.getAReturnedExpr()) = 1 and 
+        not this.isImprecise() and
+        inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+        inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      }
+
+      override DataFlow::Node getBaseString() {
+        exists(int arg |
+          inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override DataFlow::Node getSubstring() {
+        exists(int arg |
+          inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
+    }
+
+
+    /**
      * A call of form `A.endsWith(B)`.
      */
     private class EndsWith_Native extends Range, DataFlow::MethodCallNode {
