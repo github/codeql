@@ -101,7 +101,7 @@ Unfortunately this will only give the expression in the argument, not the values
      and DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
    select src
 
-Then we can make the source more specific, for example an access to a public parameter. This query finds instances of a public parameter being used to open a file:
+Then we can make the source more specific, for example an access to a public parameter. This query finds instances where a public parameter is used to open a file:
 
 .. code-block:: ql
 

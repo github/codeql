@@ -1,12 +1,12 @@
-CodeQL library for C#
-=====================
+CodeQL libraries for C#
+=======================
 
-When you need to analyze a C# program, you can make use of the large collection of classes in the C# library for CodeQL.
+When you're analyzing a C# program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL libraries for C#.
 
-About the C# library
---------------------
+About the CodeQL libraries for C#
+---------------------------------
 
-There is an extensive library for analyzing CodeQL databases extracted from C# projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``csharp.qll`` imports all the core C# library modules, so you can include the complete library by beginning your query with:
+There is an extensive core library for analyzing CodeQL databases extracted from C# projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``csharp.qll`` imports all the core C# library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
