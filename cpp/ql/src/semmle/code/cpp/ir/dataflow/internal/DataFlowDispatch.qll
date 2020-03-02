@@ -22,7 +22,13 @@ Function viableCallable(CallInstruction call) {
   )
   or
   // Virtual dispatch
-  result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+  result = call.(VirtualDispatch::DataSensitiveCall).resolve() and
+  (
+    call.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+    call.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+    or
+    result.isVarargs()
+  )
 }
 
 /**

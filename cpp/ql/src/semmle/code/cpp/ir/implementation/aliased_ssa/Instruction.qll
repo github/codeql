@@ -1202,6 +1202,11 @@ class CallInstruction extends Instruction {
   final Instruction getPositionalArgument(int index) {
     result = getPositionalArgumentOperand(index).getDef()
   }
+
+  /**
+   * Gets the number of arguments of the call, including the `this` pointer, if any.
+   */
+  final int getNumberOfArguments() { result = count(this.getAnArgumentOperand()) }
 }
 
 /**
