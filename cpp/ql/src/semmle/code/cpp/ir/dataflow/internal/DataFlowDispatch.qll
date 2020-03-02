@@ -22,13 +22,7 @@ Function viableCallable(CallInstruction call) {
   )
   or
   // Virtual dispatch
-  result = call.(VirtualDispatch::DataSensitiveCall).resolve() and
-  (
-    call.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
-    call.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
-    or
-    result.isVarargs()
-  )
+  result = call.(VirtualDispatch::DataSensitiveCall).resolve()
 }
 
 /**
@@ -141,6 +135,12 @@ private module VirtualDispatch {
       exists(FunctionInstruction fi |
         this.flowsFrom(DataFlow::instructionNode(fi), _) and
         result = fi.getFunctionSymbol()
+      ) and
+      (
+        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        or
+        result.isVarargs()
       )
     }
   }
