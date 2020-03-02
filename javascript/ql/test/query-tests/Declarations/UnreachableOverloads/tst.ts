@@ -17,6 +17,9 @@ declare class Foobar {
   foo(this: string): string;
   foo(this: number): number; // OK
 
+  bar(this: number): string;
+  bar(this: number): number; // NOT OK
+
 }
 
 declare class Base {
