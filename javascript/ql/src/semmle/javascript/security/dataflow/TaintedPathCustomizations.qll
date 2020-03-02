@@ -213,17 +213,24 @@ module TaintedPath {
         output = this
       )
       or
-      // non-global replace or replace of something other than /\.\./g
+      // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
       this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal, RegExpSequence seq |
+      not exists(RegExpLiteral literal |
         getArgument(0).getALocalSource().asExpr() = literal and
-        literal.isGlobal() and
-        literal.getRoot() = seq and
-        seq.getChild(0).(RegExpConstant).getValue() = "." and
-        seq.getChild(1).(RegExpConstant).getValue() = "." and
-        seq.getNumChild() = 2
+        literal.isGlobal()
+      |
+        exists(RegExpSequence seq | literal.getRoot() = seq |
+          seq.getChild(0).(RegExpConstant).getValue() = "." and
+          seq.getChild(1).(RegExpConstant).getValue() = "." and
+          seq.getNumChild() = 2
+        )
+        or
+        exists(RegExpCharacterClass choice | literal.getRoot() = choice |
+          choice.getAMatchedString() = "/" or
+          choice.getAMatchedString() = "."
+        )
       )
     }
 
