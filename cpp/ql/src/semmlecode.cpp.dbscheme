@@ -1231,6 +1231,7 @@ funbind(
              | @ltexpr
              | @geexpr
              | @leexpr
+             | @spaceshipexpr
              ;
 
 @bin_bitwise_op_expr = @lshiftexpr
@@ -1636,6 +1637,7 @@ case @expr.kind of
 | 323 = @vec_fill
 | 324 = @builtinconvertvector
 | 325 = @builtincomplex
+| 326 = @spaceshipexpr
 ;
 
 new_allocated_type(

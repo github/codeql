@@ -1216,3 +1216,18 @@ private predicate constantTemplateLiteral(Expr e) {
   or
   constantTemplateLiteral(e.(Cast).getExpr())
 }
+
+/**
+ * A C++ three-way comparison operation, also known as the _spaceship
+ * operation_.  This is specific to C++20 and later.
+ * ```
+ * auto c = (a <=> b);
+ * ```
+ */
+class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
+  override string getCanonicalQLClass() { result = "SpaceshipExpr" }
+
+  override int getPrecedence() { result = 11 }
+
+  override string getOperator() { result = "<=>" }
+}
