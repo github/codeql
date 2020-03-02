@@ -1096,7 +1096,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Named:
 			kind = dbscheme.NamedType.Index()
 			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
-			extractUnderlyingType(tw, lbl, tp.Underlying())
+			underlying := tp.Underlying()
+			extractUnderlyingType(tw, lbl, underlying)
 
 			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
@@ -1117,6 +1118,19 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				methlbl, exists := tw.Labeler.MethodID(tp.Method(i), recvTypeLbl)
 				if !exists {
 					extractObject(tw, meth, methlbl)
+				}
+			}
+
+			// associate all methods of underlying interface with this type
+			if underlyingInterface, ok := underlying.(*types.Interface); ok {
+				underlyingInterfaceLabel, _ := getTypeLabel(tw, underlyingInterface)
+				for i := 0; i < underlyingInterface.NumMethods(); i++ {
+					meth := underlyingInterface.Method(i)
+					methlbl, exists := tw.Labeler.MethodID(underlyingInterface.Method(i), underlyingInterfaceLabel)
+					if !exists {
+						log.Printf("No label for method %s of type %s yet.", meth.Name(), tp.Obj().Name())
+					}
+					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
 			}
 		default:

@@ -1,3 +1,14 @@
-| T | half | func() Foo |
-| T3 | half | func() Foo |
-| T4 | half | func() Foo |
+| * Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| A | m | pkg1/interfaces.go:4:2:4:2 | m |
+| A2 | m | pkg1/interfaces.go:32:2:32:2 | m |
+| AC | m | pkg1/interfaces.go:4:2:4:2 | m |
+| AC | n | pkg1/interfaces.go:13:2:13:2 | n |
+| AC | o | pkg1/interfaces.go:14:2:14:2 | o |
+| AEmbedded | m | pkg1/interfaces.go:4:2:4:2 | m |
+| AExtended | m | pkg1/interfaces.go:4:2:4:2 | m |
+| AExtended | n | pkg1/interfaces.go:28:2:28:2 | n |
+| B | m | pkg1/interfaces.go:8:2:8:2 | m |
+| B | n | pkg1/interfaces.go:9:2:9:2 | n |
+| C | n | pkg1/interfaces.go:13:2:13:2 | n |
+| C | o | pkg1/interfaces.go:14:2:14:2 | o |
+| Foo | half | pkg1/tst.go:33:16:33:19 | half |

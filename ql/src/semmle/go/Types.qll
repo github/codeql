@@ -575,6 +575,13 @@ class NamedType extends @namedtype, CompositeType {
   /** Gets the type which this type is defined to be. */
   Type getBaseType() { underlying_type(this, result) }
 
+  override Method getMethod(string m) {
+    result = CompositeType.super.getMethod(m)
+    or
+    methodhosts(result, this) and
+    result.getName() = m
+  }
+
   override Type getUnderlyingType() { result = getBaseType().getUnderlyingType() }
 }
 
