@@ -1,7 +1,7 @@
 Expressions and statements in Python
 ====================================
 
-Expressions define a value. Statements represent a command or action. You can explore how they are used in a code base using syntactic classes from the standard CodeQL library.
+You can use syntactic classes from the CodeQL library to explore how Python expressions and statements are used in a code base.
 
 Statements
 ----------
