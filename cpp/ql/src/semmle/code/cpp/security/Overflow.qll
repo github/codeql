@@ -13,12 +13,16 @@ predicate guardedAbs(Operation e, Expr use) {
   )
 }
 
+/** This is `BasicBlock.getNode`, restricted to `Stmt` for performance. */
+pragma[noinline]
+private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
+
 pragma[inline]
 private predicate stmtDominates(Stmt dominator, Stmt dominated) {
   // In same block
   exists(BasicBlock block, int dominatorIndex, int dominatedIndex |
-    block.getNode(dominatorIndex) = dominator and
-    block.getNode(dominatedIndex) = dominated and
+    dominatorIndex = getStmtIndexInBlock(block, dominator) and
+    dominatedIndex = getStmtIndexInBlock(block, dominated) and
     dominatedIndex >= dominatorIndex
   )
   or
