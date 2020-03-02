@@ -368,7 +368,7 @@ module TaintedPath {
    *   // pathname is safe
    * }
    * ```
-   * 
+   *
    * or
    * ```
    * var relative = path.resolve(pathname); // or path.normalize
@@ -402,9 +402,13 @@ module TaintedPath {
     }
 
     override predicate blocks(boolean outcome, Expr e) {
-      member = "relative" and e = pathCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+      member = "relative" and
+      e = pathCall.getArgument(1).asExpr() and
+      outcome = startsWith.getPolarity().booleanNot()
       or
-      not member = "relative" and e = pathCall.getArgument(0).asExpr() and outcome = startsWith.getPolarity()
+      not member = "relative" and
+      e = pathCall.getArgument(0).asExpr() and
+      outcome = startsWith.getPolarity()
     }
   }
 
