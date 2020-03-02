@@ -642,7 +642,7 @@ class AddressOfExpr extends UnaryOperation, @address_of {
 
   override string getOperator() { result = "&" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() { this.getOperand().mayBeImpure() }
 
@@ -664,7 +664,7 @@ class ReferenceToExpr extends Conversion, @reference_to {
 
   override string getCanonicalQLClass() { result = "ReferenceToExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -687,7 +687,7 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
 
   override string getOperator() { result = "*" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() {
     this.getChild(0).mayBeImpure() or
@@ -721,7 +721,7 @@ class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
  * A C++ `new` or `new[]` expression.
  */
 class NewOrNewArrayExpr extends Expr, @any_new_expr {
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the `operator new` or `operator new[]` that allocates storage.
@@ -898,7 +898,7 @@ class DeleteExpr extends Expr, @delete_expr {
 
   override string getCanonicalQLClass() { result = "DeleteExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the compile-time type of the object being deleted.
@@ -972,7 +972,7 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
 
   override string getCanonicalQLClass() { result = "DeleteArrayExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the element type of the array being deleted.
