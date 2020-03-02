@@ -341,16 +341,32 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     )
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) { none() }
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    expr.getTarget() instanceof AllocationFunction and
+    opcode instanceof Opcode::InitializeDynamicAllocation and
+    tag = OnlyInstructionTag() and
+    type = getUnknownType()
+  }
 
-  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    if expr.getTarget() instanceof AllocationFunction
+    then result = getInstruction(OnlyInstructionTag())
+    else result = getChild(0).getFirstInstruction()
+  }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind = gotoEdge() and
+    expr.getTarget() instanceof AllocationFunction and
+    if exists(getChild(0))
+    then result = getChild(0).getFirstInstruction()
+    else result = getParent().getChildSuccessor(this)
+  }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
-
-  override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    none()
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
   }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {

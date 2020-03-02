@@ -262,3 +262,11 @@ char StringLiteralAliasing2(bool b) {
   const char* s = "Literal";
   return s[2];
 }
+
+void *malloc(int size);
+
+void *MallocAliasing(void *s, int size) {
+  void *buf = malloc(size);
+  memcpy(buf, s, size);
+  return buf;
+}

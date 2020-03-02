@@ -68,8 +68,12 @@ private newtype TMemoryLocation =
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TEntireAllocationMemoryLocation(IndirectParameterAllocation var, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
+  TEntireAllocationMemoryLocation(Allocation var, boolean isMayAccess) {
+    (
+      var instanceof IndirectParameterAllocation or
+      var instanceof DynamicAllocation
+    ) and
+    (isMayAccess = false or isMayAccess = true)
   } or
   TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
     isMayAccess = false or isMayAccess = true
