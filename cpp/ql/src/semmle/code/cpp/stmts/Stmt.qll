@@ -1613,7 +1613,9 @@ class EnumSwitch extends SwitchStmt {
   }
 
   pragma[noinline]
-  private predicate matchesValue(string value) { value = this.getASwitchCase().getExpr().getValue() }
+  private predicate matchesValue(string value) {
+    value = this.getASwitchCase().getExpr().getValue()
+  }
 }
 
 /**
