@@ -308,13 +308,13 @@ module ReflectedXss {
   class HttpResponseSink extends Sink, DataFlow::ValueNode {
     override HTTP::ResponseSendArgument astNode;
 
-    HttpResponseSink() { not exists(getAnonHtmlHeaderDefinition(astNode)) }
+    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
   }
 
   /**
    * Gets a HeaderDefinition that defines a non-html content-type for `send`.
    */
-  HTTP::HeaderDefinition getAnonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
+  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
     exists(HTTP::RouteHandler h |
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
