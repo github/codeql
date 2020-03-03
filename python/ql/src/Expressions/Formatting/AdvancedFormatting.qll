@@ -1,4 +1,5 @@
 import python
+private import semmle.python.types.Builtins
 
 
 library class PossibleAdvancedFormatString extends StrConst {
@@ -104,39 +105,38 @@ private predicate brace_pair(PossibleAdvancedFormatString fmt, int start, int en
      )
 }
 
-private predicate advanced_format_call_objectapi(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
+private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
     exists(CallNode call | 
         call = format_expr.getAFlowNode() |
-        call.getFunction().refersTo(Object::builtin("format")) and call.getArg(0).refersTo(_, fmt.getAFlowNode()) and
+        call.getFunction().pointsTo(Value::named("format")) and call.getArg(0).pointsTo(_, fmt.getAFlowNode()) and
         args = count(format_expr.getAnArg()) - 1
         or
-        call.getFunction().(AttrNode).getObject("format").refersTo(_, fmt.getAFlowNode()) and
+        call.getFunction().(AttrNode).getObject("format").pointsTo(_, fmt.getAFlowNode()) and
         args = count(format_expr.getAnArg())
     )
 }
 
-class AdvancedFormatString_objectapi extends PossibleAdvancedFormatString {
+class AdvancedFormatString extends PossibleAdvancedFormatString {
 
-    AdvancedFormatString_objectapi() {
-        advanced_format_call_objectapi(_, this, _)
+    AdvancedFormatString() {
+        advanced_format_call(_, this, _)
     }
 
 }
 
-class AdvancedFormattingCall_objectapi extends Call {
+class AdvancedFormattingCall extends Call {
 
-    AdvancedFormattingCall_objectapi() {
-        advanced_format_call_objectapi(this, _, _) 
+    AdvancedFormattingCall() {
+        advanced_format_call(this, _, _) 
     }
 
     /** Count of the arguments actually provided */
     int providedArgCount() {
-        advanced_format_call_objectapi(this, _, result)
+        advanced_format_call(this, _, result)
     }
 
-    AdvancedFormatString_objectapi getAFormat() {
-        advanced_format_call_objectapi(this, result, _)
+    AdvancedFormatString getAFormat() {
+        advanced_format_call(this, result, _)
     }
 
 }
-

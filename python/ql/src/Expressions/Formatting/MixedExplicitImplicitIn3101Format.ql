@@ -13,6 +13,6 @@
 import python
 import AdvancedFormatting
 
-from AdvancedFormattingCall_objectapi call, AdvancedFormatString_objectapi fmt
+from AdvancedFormattingCall call, AdvancedFormatString fmt
 where call.getAFormat() = fmt and fmt.isImplicitlyNumbered() and fmt.isExplicitlyNumbered()
 select fmt, "Formatting string mixes implicitly and explicitly numbered fields."

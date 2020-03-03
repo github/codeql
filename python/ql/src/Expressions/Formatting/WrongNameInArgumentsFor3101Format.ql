@@ -14,7 +14,7 @@
 import python
 import AdvancedFormatting
 
-from AdvancedFormattingCall_objectapi call, AdvancedFormatString_objectapi fmt, string name
+from AdvancedFormattingCall call, AdvancedFormatString fmt, string name
 where call.getAFormat() = fmt and 
 not name = call.getAKeyword().getArg() and
 fmt.getFieldName(_, _) = name
