@@ -64,7 +64,7 @@ predicate subscript(Stmt s) {
     s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode(Expr ex, ClassObject type) {
+predicate encode_decode_objectapi(Expr ex, ClassObject type) {
     exists(string name |
         ex.(Call).getFunc().(Attribute).getName() = name |
         name = "encode" and type = Object::builtin("UnicodeEncodeError")
@@ -73,7 +73,7 @@ predicate encode_decode(Expr ex, ClassObject type) {
     )
 }
 
-predicate small_handler(ExceptStmt ex, Stmt s, ClassObject type) {
+predicate small_handler_objectapi(ExceptStmt ex, Stmt s, ClassObject type) {
     not exists(ex.getTry().getStmt(1)) and
     s = ex.getTry().getStmt(0) and
     ex.getType().refersTo(type)
@@ -82,16 +82,16 @@ predicate small_handler(ExceptStmt ex, Stmt s, ClassObject type) {
 /** Holds if this exception handler is sufficiently small in scope to not need a comment
  * as to what it is doing.
  */
-predicate focussed_handler(ExceptStmt ex) {
+predicate focussed_handler_objectapi(ExceptStmt ex) {
     exists(Stmt s, ClassObject type |
-        small_handler(ex, s, type) |
+        small_handler_objectapi(ex, s, type) |
         subscript(s) and type.getAnImproperSuperType() = theLookupErrorType()
         or
         attribute_access(s) and type = theAttributeErrorType()
         or
         s.(ExprStmt).getValue() instanceof Name and type = theNameErrorType()
         or
-        encode_decode(s.(ExprStmt).getValue(), type)
+        encode_decode_objectapi(s.(ExprStmt).getValue(), type)
     )
 }
 
@@ -102,5 +102,5 @@ Try try_return() {
 from ExceptStmt ex
 where empty_except(ex) and no_else(ex) and no_comment(ex) and not non_local_control_flow(ex)
   and not ex.getTry() = try_return() and try_has_normal_exit(ex.getTry()) and
-  not focussed_handler(ex)
+  not focussed_handler_objectapi(ex)
 select ex, "'except' clause does nothing but pass and there is no explanatory comment."
