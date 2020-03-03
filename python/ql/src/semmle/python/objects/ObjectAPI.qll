@@ -481,6 +481,15 @@ class ClassValue extends Value {
     predicate declaresAttribute(string name) {
         this.(ClassObjectInternal).getClassDeclaration().declaresAttribute(name)
     }
+    
+    /** Whether this class is a legal exception class. 
+     *  What constitutes a legal exception class differs between major versions */
+    predicate isLegalExceptionType() {
+        not this.isNewStyle() or
+        this.getASuperType() = ClassValue::baseException()
+        or
+        major_version() = 2 and this = ClassValue::tuple()
+    }
 
 }
 
