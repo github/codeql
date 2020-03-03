@@ -179,4 +179,6 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/[./]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/[foobar/foobar]/g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\//g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
 });

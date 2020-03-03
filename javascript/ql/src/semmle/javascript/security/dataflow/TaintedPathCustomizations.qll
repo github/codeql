@@ -227,9 +227,9 @@ module TaintedPath {
           seq.getNumChild() = 2
         )
         or
-        exists(RegExpCharacterClass choice | literal.getRoot() = choice |
-          choice.getAMatchedString() = "/" or
-          choice.getAMatchedString() = "."
+        exists(RegExpTerm term | literal.getRoot() = term |
+          term.getAMatchedString() = "/" or
+          term.getAMatchedString() = "."
         )
       )
     }
