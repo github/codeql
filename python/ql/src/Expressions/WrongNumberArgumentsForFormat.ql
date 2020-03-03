@@ -16,7 +16,8 @@ import python
 import semmle.python.strings
 
 predicate string_format(BinaryExpr operation, StrConst str, Value args, AstNode origin) {
-    exists(Value fmt, Context ctx | operation.getOp() instanceof Mod |
+    operation.getOp() instanceof Mod and
+    exists(Value fmt, Context ctx |
            operation.getLeft().pointsTo(ctx, fmt, str) and
            operation.getRight().pointsTo(ctx, args, origin)
     )
