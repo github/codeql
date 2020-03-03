@@ -172,7 +172,7 @@ var server = http.createServer(function(req, res) {
 var server = http.createServer(function(req, res) {
   let path = url.parse(req.url, true).query.path;
   
-  // Removal of forward-slash.
+  // Removal of forward-slash or dots.
   res.write(fs.readFileSync(path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''))); // OK.
   res.write(fs.readFileSync(path.replace(/[abcd]/g, ''))); // NOT OK
   res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // OK (can still be absolute)
@@ -181,4 +181,6 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync(path.replace(/[foobar/foobar]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/\//g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\.|\//g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // OK
 });

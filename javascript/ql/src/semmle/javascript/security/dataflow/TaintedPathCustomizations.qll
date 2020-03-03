@@ -217,20 +217,14 @@ module TaintedPath {
       this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal |
+      not exists(RegExpLiteral literal, RegExpTerm term |
         getArgument(0).getALocalSource().asExpr() = literal and
-        literal.isGlobal()
+        literal.isGlobal() and
+        literal.getRoot() = term
       |
-        exists(RegExpSequence seq | literal.getRoot() = seq |
-          seq.getChild(0).(RegExpConstant).getValue() = "." and
-          seq.getChild(1).(RegExpConstant).getValue() = "." and
-          seq.getNumChild() = 2
-        )
-        or
-        exists(RegExpTerm term | literal.getRoot() = term |
-          term.getAMatchedString() = "/" or
-          term.getAMatchedString() = "."
-        )
+        term.getAMatchedString() = "/" or
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
       )
     }
 
