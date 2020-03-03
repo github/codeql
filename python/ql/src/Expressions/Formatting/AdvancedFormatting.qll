@@ -1,5 +1,4 @@
 import python
-private import semmle.python.types.Builtins
 
 
 library class PossibleAdvancedFormatString extends StrConst {
