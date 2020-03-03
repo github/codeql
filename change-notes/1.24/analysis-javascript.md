@@ -44,7 +44,7 @@
 | Regular expression always matches (`js/regex/always-matches`) | correctness, regular-expressions | Highlights regular expression checks that trivially succeed by matching an empty substring. Results are shown on LGTM by default. |
 | Missing await (`js/missing-await`) | correctness | Highlights expressions that operate directly on a promise object in a nonsensical way, instead of awaiting its result. Results are shown on LGTM by default. |
 | Polynomial regular expression used on uncontrolled data (`js/polynomial-redos`) | security, external/cwe/cwe-730, external/cwe/cwe-400 | Highlights expensive regular expressions that may be used on malicious input. Results are shown on LGTM by default. | 
-| Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive copying operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
+| Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive assignment operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | Highlights potential XSS vulnerabilities in unsafely designed jQuery plugins. Results are shown on LGTM by default. |
 | Unnecessary use of `cat` process (`js/unnecessary-use-of-cat`) | correctness, security, maintainability | Highlights command executions of `cat` where the fs API should be used instead. Results are shown on LGTM by default. |
 
