@@ -348,3 +348,26 @@ app.get('/yet-another-prefix', (req, res) => {
     }
 	fs.readFileSync(path); // OK
 });
+
+var rootPath = process.cwd();
+app.get('/yet-another-prefix2', (req, res) => {
+  let path = req.query.path;
+
+  fs.readFileSync(path); // NOT OK
+
+  var requestPath = pathModule.join(rootPath, path);
+
+  var targetPath;
+  if (!allowPath(requestPath, rootPath)) {
+    targetPath = rootPath;
+    fs.readFileSync(requestPath); // NOT OK
+  } else {
+    targetPath = requestPath;
+    fs.readFileSync(requestPath); // OK
+  }
+  fs.readFileSync(targetPath); // OK
+
+  function allowPath(requestPath, rootPath) {
+    return requestPath.indexOf(rootPath) === 0;
+  }
+});
