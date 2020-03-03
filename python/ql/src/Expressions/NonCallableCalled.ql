@@ -19,6 +19,6 @@ where f = c.getFunc() and f.pointsTo(v, origin) and t = v.getClass() and
       not t.isCallable() and not t.failedInference(_)
       and not t.hasAttribute("__get__")
       and not v = Value::named("None")
-      and not use_of_not_implemented_in_raise_objectapi(_, f)
+      and not use_of_not_implemented_in_raise(_, f)
 
 select c, "Call to a $@ of $@.", origin, "non-callable", t, t.toString()
