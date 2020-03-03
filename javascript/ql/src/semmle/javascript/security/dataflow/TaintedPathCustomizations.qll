@@ -240,6 +240,39 @@ module TaintedPath {
   }
 
   /**
+   * A call that removes all "." or ".." from a path, without also removing all forward slashes.
+   */
+  class DotRemovingReplaceCall extends DataFlow::CallNode {
+    DataFlow::Node input;
+    DataFlow::Node output;
+
+    DotRemovingReplaceCall() {
+      this.getCalleeName() = "replace" and
+      input = getReceiver() and
+      output = this and
+      exists(RegExpLiteral literal, RegExpTerm term |
+        getArgument(0).getALocalSource().asExpr() = literal and
+        literal.isGlobal() and
+        literal.getRoot() = term and
+        not term.getAMatchedString() = "/"
+      |
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
+      )
+    }
+
+    /**
+     * Gets the input path to be normalized.
+     */
+    DataFlow::Node getInput() { result = input }
+
+    /**
+     * Gets the normalized path.
+     */
+    DataFlow::Node getOutput() { result = output }
+  }
+
+  /**
    * Holds if `node` is a prefix of the string `../`.
    */
   private predicate isDotDotSlashPrefix(DataFlow::Node node) {

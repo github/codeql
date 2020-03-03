@@ -175,12 +175,20 @@ var server = http.createServer(function(req, res) {
   // Removal of forward-slash or dots.
   res.write(fs.readFileSync(path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''))); // OK.
   res.write(fs.readFileSync(path.replace(/[abcd]/g, ''))); // NOT OK
-  res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // OK (can still be absolute)
-  res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/[./]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/[foobar/foobar]/g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/\//g, ''))); // OK
-  res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
   res.write(fs.readFileSync(path.replace(/\.|\//g, ''))); // OK
-  res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // OK
+
+  res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/\./g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // NOT OK (can be absolute)
+
+  if (!pathModule.isAbsolute(path)) {
+    res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // OK
+  	res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // OK
+    res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
+  	res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // OK
+  }
 });
