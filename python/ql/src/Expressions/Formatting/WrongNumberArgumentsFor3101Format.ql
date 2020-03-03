@@ -14,7 +14,7 @@
 import python
 import AdvancedFormatting
 
-from AdvancedFormattingCall call, AdvancedFormatString fmt, 
+from AdvancedFormattingCall_objectapi call, AdvancedFormatString_objectapi fmt, 
 int arg_count, int max_field, string provided
 where arg_count = call.providedArgCount() and max_field = max(fmt.getFieldNumber(_, _)) and
 call.getAFormat() = fmt and not exists(call.getStarargs()) and arg_count <= max_field and

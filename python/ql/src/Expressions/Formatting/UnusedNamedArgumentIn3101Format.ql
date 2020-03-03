@@ -13,10 +13,10 @@
 import python
 import AdvancedFormatting
 
-from AdvancedFormattingCall call, AdvancedFormatString fmt, string name, string fmt_repr
+from AdvancedFormattingCall_objectapi call, AdvancedFormatString_objectapi fmt, string name, string fmt_repr
 where call.getAFormat() = fmt and 
 name = call.getAKeyword().getArg() and
-forall(AdvancedFormatString format | format = call.getAFormat() | not format.getFieldName(_, _) = name)
+forall(AdvancedFormatString_objectapi format | format = call.getAFormat() | not format.getFieldName(_, _) = name)
 and not exists(call.getKwargs()) and
 (strictcount(call.getAFormat()) = 1 and fmt_repr = "format \"" + fmt.getText() + "\""
  or

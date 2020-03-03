@@ -2,7 +2,7 @@
 import python
 import Expressions.Formatting.AdvancedFormatting
 
-from AdvancedFormatString a, string name, int start, int end
+from AdvancedFormatString_objectapi a, string name, int start, int end
 where 
 name = "'" + a.getFieldName(start, end) + "'"
 or
