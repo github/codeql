@@ -22,15 +22,6 @@ private predicate shouldPrintFunction(Language::Function func) {
   exists(PrintIRConfiguration config | config.shouldPrintFunction(func))
 }
 
-/**
- * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
- */
-private class FilteredIRConfiguration extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Language::Function func) {
-    shouldPrintFunction(func)
-  }
-}
-
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
   exists(IRPropertyProvider provider | result = provider.getInstructionProperty(instr, key))
 }
