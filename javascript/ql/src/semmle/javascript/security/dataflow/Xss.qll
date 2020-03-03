@@ -319,8 +319,8 @@ module ReflectedXss {
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
     |
-      // The HeaderDefinition affects a response sent at `send`. 
-      not isIrrelevantFor(result, send)
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
     )
   }
 
@@ -333,37 +333,44 @@ module ReflectedXss {
   }
 
   /**
-   * Holds if a header set in `header` is unlikely to affect a response sent at `sender`.
+   * Holds if a header set in `header` is likely to affect a response sent at `sender`.
    */
-  predicate isIrrelevantFor(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
     sender.getRouteHandler() = header.getRouteHandler() and
-    not header.getBasicBlock().getASuccessor*() = sender.getBasicBlock() and
-    not sender.getBasicBlock().getASuccessor*() = header.getBasicBlock() and
     (
-      // If there is another header `otherHeader` next to `sender`, then `header` is probably irrelevant.
-      exists(HTTP::HeaderDefinition otherHeader | not header = otherHeader |
-        otherHeader.getBasicBlock().getASuccessor*() = sender.getBasicBlock() and
-        not otherHeader = nonHtmlContentTypeHeader(sender.getRouteHandler())
-      )
+      // `sender` is affected by a dominating `header`.
+      header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       or
-      // Tries to recognize variants of:
-      // ```
-      // response.writeHead(500, {'Content-Type': 'text/plain'});
-      // response.end('Some error');
-      // return;
-      // ```
-      exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
-        headerBlock.getASuccessor() instanceof ControlFlowExitNode and
-        strictcount(headerBlock.getASuccessor()) = 1 and
-        not (
-          exists(DataFlow::CallNode call |
-            exists(call.getACallee()) and
-            call.getBasicBlock() = headerBlock
-          )
-          or
-          exists(Expr e | e.getBasicBlock() = headerBlock and e instanceof Function)
-        )
+      // There is no dominating header, and `header` is non-local.
+      not isLocalHeaderDefinition(header) and
+      not exists(HTTP::HeaderDefinition dominatingHeader |
+        dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
+    )
+  }
+
+  /**
+   * Holds if the HeaderDefinition `header` seems to be local.
+   * A HeaderDefinition is local if it dominates exactly one `ResponseSendArgument`.
+   *
+   * Recognizes variants of:
+   * ```
+   * response.writeHead(500, ...);
+   * response.end('Some error');
+   * return;
+   * ```
+   */
+  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+    exists(ReachableBasicBlock headerBlock |
+      headerBlock = header.getBasicBlock().(ReachableBasicBlock)
+    |
+      1 =
+        strictcount(HTTP::ResponseSendArgument sender |
+          sender.getRouteHandler() = header.getRouteHandler() and
+          header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+        ) and
+      // doesn't dominate something that looks like a callback.
+      not exists(Expr e | e instanceof Function | headerBlock.dominates(e.getBasicBlock()))
     )
   }
 

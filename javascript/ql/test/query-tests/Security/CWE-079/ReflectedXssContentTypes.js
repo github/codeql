@@ -64,8 +64,16 @@ app.get('/user/:id', function (req, res) {
     return;
   }
   doSomething();
-  somethingMOre();
+  somethingMore();
   while(Math.random()) {};
   res.writeHead(404);
   res.send("FOO: " + req.params.id); // NOT OK - content type is not set.
+});
+
+app.get('/user/:id', function (req, res) {
+  res.header({'Content-Type': textContentType()});
+  myFancyFunction(() => {
+	res.send("FOO: " + req.params.id); // OK
+  });
+  res.end("FOO: " + req.params.id); // OK
 });
