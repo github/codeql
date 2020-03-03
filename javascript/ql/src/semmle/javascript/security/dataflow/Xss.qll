@@ -319,7 +319,7 @@ module ReflectedXss {
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
     |
-      // not the case that the control just exists without potentially going to the worksFor.
+      // The HeaderDefinition affects a response sent at `send`. 
       not isIrrelevantFor(result, send)
     )
   }
@@ -333,9 +333,10 @@ module ReflectedXss {
   }
 
   /**
-   * Holds if a header set in `header` is unlikely to affect a resonse send in `sender`.
+   * Holds if a header set in `header` is unlikely to affect a response sent at `sender`.
    */
   predicate isIrrelevantFor(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+    sender.getRouteHandler() = header.getRouteHandler() and
     not header.getBasicBlock().getASuccessor*() = sender.getBasicBlock() and
     not sender.getBasicBlock().getASuccessor*() = header.getBasicBlock() and
     (
