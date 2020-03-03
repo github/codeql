@@ -1,7 +1,7 @@
 import python
 
 /** Whether the raise statement 'r' raises 'type' from origin 'orig' */ 
-predicate type_or_typeof(Raise r, ClassObject type, AstNode orig) {
+predicate type_or_typeof_objectapi(Raise r, ClassObject type, AstNode orig) {
      exists(Expr exception |
         exception = r.getRaised() |
         exception.refersTo(type, _, orig)
