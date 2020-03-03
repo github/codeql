@@ -46,6 +46,8 @@
 | Polynomial regular expression used on uncontrolled data (`js/polynomial-redos`) | security, external/cwe/cwe-730, external/cwe/cwe-400 | Highlights expensive regular expressions that may be used on malicious input. Results are shown on LGTM by default. | 
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | security, external/cwe/cwe-400, external/cwe/cwe-471 | Highlights recursive copying operations that are susceptible to prototype pollution. Results are shown on LGTM by default. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | Highlights potential XSS vulnerabilities in unsafely designed jQuery plugins. Results are shown on LGTM by default. |
+| Unnecessary use of `cat` process (`js/unnecessary-use-of-cat`) | correctness, security, maintainability | Highlights command executions of `cat` where the fs API should be used instead. Results are shown on LGTM by default. |
+
 
 ## Changes to existing queries
 

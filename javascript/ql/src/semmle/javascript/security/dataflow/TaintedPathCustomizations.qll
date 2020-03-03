@@ -368,29 +368,47 @@ module TaintedPath {
    *   // pathname is safe
    * }
    * ```
+   *
+   * or
+   * ```
+   * var relative = path.resolve(pathname); // or path.normalize
+   * if(relative.startsWith(webroot) {
+   *   // pathname is safe
+   * } else {
+   *   // pathname is unsafe
+   * }
+   * ```
    */
-  class RelativePathStartsWithDotDotSanitizer extends DataFlow::BarrierGuardNode {
+  class RelativePathStartsWithSanitizer extends DataFlow::BarrierGuardNode {
     StringOps::StartsWith startsWith;
-    DataFlow::CallNode relativeCall;
+    DataFlow::CallNode pathCall;
+    string member;
 
-    RelativePathStartsWithDotDotSanitizer() {
+    RelativePathStartsWithSanitizer() {
+      (member = "relative" or member = "resolve" or member = "normalize") and
       this = startsWith and
-      relativeCall = NodeJSLib::Path::moduleMember("relative").getACall() and
+      pathCall = NodeJSLib::Path::moduleMember(member).getACall() and
       (
-        startsWith.getBaseString().getALocalSource() = relativeCall
+        startsWith.getBaseString().getALocalSource() = pathCall
         or
         startsWith
             .getBaseString()
             .getALocalSource()
             .(NormalizingPathCall)
             .getInput()
-            .getALocalSource() = relativeCall
+            .getALocalSource() = pathCall
       ) and
-      isDotDotSlashPrefix(startsWith.getSubstring())
+      (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
     }
 
     override predicate blocks(boolean outcome, Expr e) {
-      e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+      member = "relative" and
+      e = pathCall.getArgument(1).asExpr() and
+      outcome = startsWith.getPolarity().booleanNot()
+      or
+      not member = "relative" and
+      e = pathCall.getArgument(0).asExpr() and
+      outcome = startsWith.getPolarity()
     }
   }
 

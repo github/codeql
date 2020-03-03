@@ -632,6 +632,22 @@ module NodeJSLib {
       // all of the above methods take the argument list as their second argument
       result = getArgument(1)
     }
+
+    override predicate isSync() {
+      "Sync" = methodName.suffix(methodName.length() - 4)
+    }
+
+    override DataFlow::Node getOptionsArg() {
+      not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
+      not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
+      not result = getArgument(0) and
+      // fork/spawn and all sync methos always has options as the last argument
+      if methodName.regexpMatch("fork.*") or methodName.regexpMatch("spawn.*") or methodName.regexpMatch(".*Sync") then
+        result = getLastArgument()
+      else 
+        // the rest (exec/execFile) has the options argument as their second last.
+        result = getArgument(this.getNumArgument() - 2)
+    }
   }
 
   /**

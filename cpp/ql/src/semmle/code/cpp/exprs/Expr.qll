@@ -443,6 +443,20 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
+   * Gets the unique non-`Conversion` expression `e` for which
+   * `this = e.getConversion*()`.
+   *
+   * For example, if called on the expression `(int)(char)x`, this predicate
+   * gets the expression `x`.
+   */
+  Expr getUnconverted() {
+    not this instanceof Conversion and
+    result = this
+    or
+    result = this.(Conversion).getExpr().getUnconverted()
+  }
+
+  /**
    * Gets the type of this expression, after any implicit conversions and explicit casts, and after resolving typedefs.
    *
    * As an example, consider the AST fragment `(i64)(void*)0` in the context of `typedef long long i64;`. The fragment
