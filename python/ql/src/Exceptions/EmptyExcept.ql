@@ -31,7 +31,7 @@ predicate no_comment(ExceptStmt ex) {
 }
 
 predicate non_local_control_flow(ExceptStmt ex) {
-    ex.getType().refersTo(theStopIterationType())
+    ex.getType().pointsTo(ClassValue::stopIteration())
 }
 
 predicate try_has_normal_exit(Try try) {
