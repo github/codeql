@@ -178,7 +178,8 @@ class Folder extends Container, @folder {
 }
 
 /** A file. */
-class File extends Container, @file, Documentable, ExprParent, DeclParent, ScopeNode {
+class File extends Container, @file, Documentable, ExprParent, GoModExprParent, DeclParent,
+  ScopeNode {
   override Location getLocation() { has_location(this, result) }
 
   override string getAbsolutePath() { files(this, result, _, _, _) }
