@@ -54,3 +54,14 @@ app.post('/documents/find', (req, res) => {
       doc.find(query);
     });
 });
+
+app.post('/documents/find', (req, res) => {
+	const query = {};
+	query.title = req.query.title;
+	MongoClient.connect('mongodb://localhost:27017/test', (err, client) => {
+		let doc = client.db("MASTER").collection('doc');
+
+		// NOT OK: query is tainted by user-provided object value
+		doc.find(query);
+	});
+});
