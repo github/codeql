@@ -882,6 +882,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::builtin("KeyError"))
     }
     
+    /** Get the `ClassValue` for the `LookupError` class. */
+    ClassValue lookupError() {
+        result = TBuiltinClassObject(Builtin::builtin("LookupError"))
+    }
+    
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() {
         result = TBuiltinClassObject(Builtin::builtin("IOError"))
@@ -895,6 +900,16 @@ module ClassValue {
     /** Get the `ClassValue` for the `ImportError` class. */
     ClassValue importError() {
         result = TBuiltinClassObject(Builtin::builtin("ImportError"))
+    }
+    
+    /** Get the `ClassValue` for the `UnicodeEncodeError` class. */
+    ClassValue unicodeEncodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeEncodeError"))
+    }
+    
+    /** Get the `ClassValue` for the `UnicodeDecodeError` class. */
+    ClassValue unicodeDecodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeDecodeError"))
     }
 
 }
