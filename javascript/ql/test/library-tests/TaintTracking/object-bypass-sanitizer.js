@@ -6,19 +6,32 @@ function sanitizer_id(x) {
     return null;
 }
 
-function f(x) {
+function useTaintedValue(x) {
     if (isSafe(x)) {
-        sink(x);
-        sink(x.foo); // NOT OK
+        sink(x); // OK
+        sink(x.foo); // OK
     }
 
     sink(sanitizer_id(x)); // OK
     sink(sanitizer_id(x.foo)); // OK
-    sink(sanitizer_id(x).foo); // NOT OK
+    sink(sanitizer_id(x).foo); // OK
 }
 
-function g() {
-    f(source()); // OK
-    f(null);
-    f({foo: source()}); // NOT OK
+function useTaintedObject(obj) {
+    if (isSafe(obj)) {
+        sink(obj); // OK
+        sink(obj.foo); // NOT OK
+    }
+
+    sink(sanitizer_id(obj)); // OK
+    sink(sanitizer_id(obj.foo)); // OK
+    sink(sanitizer_id(obj).foo); // NOT OK
+}
+
+function test() {
+    useTaintedValue(source());
+    useTaintedValue(null);
+
+    useTaintedObject({ foo: source() });
+    useTaintedObject(null);
 }
