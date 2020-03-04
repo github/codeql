@@ -1,1 +1,2 @@
 | test.c:17:11:17:18 | fileName | This argument to a file access function is derived from $@ and then passed to fopen(filename) | test.c:9:23:9:26 | argv | user input (argv) |
+| test.c:47:9:47:19 | config_home | This argument to a file access function is derived from $@ and then passed to fopen(filename) | test.c:45:17:45:22 | call to getenv | user input (getenv) |

@@ -28,3 +28,22 @@ int main(int argc, char** argv) {
   }
 }
 
+char *use_varargs(int ignored, ...)
+{
+  char* buf;
+  __builtin_va_list ap;
+
+  __builtin_va_start(ap, ignored);
+  buf = __builtin_va_arg(ap, const char*);
+  __builtin_va_end(ap);
+  return buf;
+}
+
+void test(const char *filename)
+{
+  char *config_home, *config_home_copy;
+  config_home = getenv("HOME");
+  config_home_copy = use_varargs(0, config_home);
+  fopen(config_home, "r");  // BAD
+  fopen(config_home_copy, "r");  // BAD [NOT DETECTED]
+}
