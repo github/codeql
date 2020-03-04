@@ -788,7 +788,7 @@ var FieldStructsTable = NewTable("fieldstructs",
 
 // MethodHostsTable maps interface methods to the named type they belong to
 var MethodHostsTable = NewTable("methodhosts",
-	EntityColumn(ObjectType, "method").Unique(),
+	EntityColumn(ObjectType, "method"),
 	EntityColumn(NamedType, "host"),
 )
 

@@ -89,7 +89,7 @@ methodreceivers(unique int method: @object ref, int receiver: @object ref);
 
 fieldstructs(unique int field: @object ref, int struct: @structtype ref);
 
-methodhosts(unique int method: @object ref, int host: @namedtype ref);
+methodhosts(int method: @object ref, int host: @namedtype ref);
 
 defs(int ident: @ident ref, int object: @object ref);
 
