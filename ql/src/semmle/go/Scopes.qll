@@ -391,7 +391,13 @@ class Function extends ValueEntity, @functionobject {
   Parameter getAParameter() { result = getParameter(_) }
 }
 
-/** A method, that is, a function with a receiver variable. */
+/**
+ * A method, that is, a function with a receiver variable, or a function declared in an interface.
+ *
+ * Note that method identity is determined by receiver type identity: if two methods have the same
+ * name and their receiver types are identical in the sense of the Go language specification
+ * (https://golang.org/ref/spec#Type_identity), then the two methods are identical as well.
+ */
 class Method extends Function {
   Variable receiver;
 
