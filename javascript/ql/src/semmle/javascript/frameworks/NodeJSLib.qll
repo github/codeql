@@ -947,6 +947,15 @@ module NodeJSLib {
   }
 
   /**
+   * The NodeJS `process` object as an EventEmitter subclass.
+   */
+  private class ProcessAsNodeJSEventEmitter extends NodeJSEventEmitter {
+    ProcessAsNodeJSEventEmitter() {
+      this = process()
+    }
+  }
+
+  /**
    * A class that extends EventEmitter.
    */
   private class EventEmitterSubClass extends DataFlow::ClassNode {
