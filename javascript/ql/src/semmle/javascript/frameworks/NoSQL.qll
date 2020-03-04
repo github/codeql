@@ -44,7 +44,7 @@ private module MongoDB {
   /** Gets a data flow node that leads to a `connect` callback. */
   private DataFlow::SourceNode getAMongoDbCallback(DataFlow::TypeBackTracker t) {
     t.start() and
-    result = getAMongoClient().getAMemberCall("connect").getArgument(1).getALocalSource()
+    result = getAMongoClient().getAMemberCall("connect").getLastArgument().getALocalSource()
     or
     exists(DataFlow::TypeBackTracker t2 | result = getAMongoDbCallback(t2).backtrack(t2, t))
   }
