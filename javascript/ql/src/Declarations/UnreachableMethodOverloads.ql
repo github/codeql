@@ -105,7 +105,8 @@ predicate signaturesMatch(MethodSignature method, MethodSignature other) {
     not exists(method.getBody().getThisTypeAnnotation()) and
     not exists(other.getBody().getThisTypeAnnotation())
     or
-    method.getBody().getThisTypeAnnotation().getType() = other.getBody().getThisTypeAnnotation().getType()
+    method.getBody().getThisTypeAnnotation().getType() =
+      other.getBody().getThisTypeAnnotation().getType()
   ) and
   // The types are compared in matchingCallSignature. This is sanity-check that the textual representation of the type-annotations are somewhat similar.
   forall(int i | i in [0 .. -1 + method.getBody().getNumParameter()] |

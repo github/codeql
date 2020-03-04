@@ -23,7 +23,9 @@ private class CommandCall extends DataFlow::InvokeNode {
   /**
    * Gets a list that specifies the arguments given to the command.
    */
-  DataFlow::ArrayCreationNode getArgumentList() { result = command.getArgumentList().getALocalSource() }
+  DataFlow::ArrayCreationNode getArgumentList() {
+    result = command.getArgumentList().getALocalSource()
+  }
 
   /**
    * Gets the callback (if it exists) for an async `exec`-like call.
@@ -75,8 +77,8 @@ private class CommandCall extends DataFlow::InvokeNode {
 }
 
 /**
- * Holds if the input `str` contains some character that might be interpreted in a non-trivial way by a shell. 
- */ 
+ * Holds if the input `str` contains some character that might be interpreted in a non-trivial way by a shell.
+ */
 bindingset[str]
 private predicate containsNonTrivialShellChar(string str) {
   exists(str.regexpFind("\\*|\\||>|<| |\\$|&|,|\\`| |;", _, _))
@@ -142,9 +144,7 @@ class UselessCat extends CommandCall {
 /**
  * Gets a string used to call `cat`.
  */
-private string getACatExecuteable() {
-  result = "cat" or result = "/bin/cat"
-}
+private string getACatExecuteable() { result = "cat" or result = "/bin/cat" }
 
 /**
  * Predicates for creating an equivalent call to `fs.readFile` from a command execution of `cat`.
@@ -173,11 +173,10 @@ module PrettyPrintCatCall {
         callback = "" and not exists(cat.getCallback())
       ) and
       fileArg = createFileArgument(cat).trim() and
-     // sanity check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
-      not(containsNonTrivialShellChar(fileArg.regexpReplaceAll("\\$|\\`| ", ""))) // string concat might contain " ", template strings might contain "$" or `, and that is OK. 
+      // sanity check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
+      not containsNonTrivialShellChar(fileArg.regexpReplaceAll("\\$|\\`| ", "")) // string concat might contain " ", template strings might contain "$" or `, and that is OK.
     |
-      result =
-        "fs.readFile" + sync + "(" + fileArg + extraArg + callback + ")"
+      result = "fs.readFile" + sync + "(" + fileArg + extraArg + callback + ")"
     )
   }
 
