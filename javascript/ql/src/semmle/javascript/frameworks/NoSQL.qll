@@ -23,7 +23,15 @@ private module MongoDB {
    */
   private DataFlow::SourceNode getAMongoClient(DataFlow::TypeTracker t) {
     t.start() and
-    result = mongodb().getAPropertyRead("MongoClient")
+    (
+      result = mongodb().getAPropertyRead("MongoClient")
+      or
+      exists(DataFlow::ParameterNode p |
+        p = result and
+        p = getAMongoDbCallback().getParameter(1) and
+        not p.getName().toLowerCase() = "db" // mongodb v2 provides a `Db` here
+      )
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAMongoClient(t2).track(t2, t))
   }
@@ -51,7 +59,15 @@ private module MongoDB {
    */
   private DataFlow::SourceNode getAMongoDb(DataFlow::TypeTracker t) {
     t.start() and
-    result = getAMongoDbCallback().getParameter(1)
+    (
+      exists(DataFlow::ParameterNode p |
+        p = result and
+        p = getAMongoDbCallback().getParameter(1) and
+        not p.getName().toLowerCase() = "client" // mongodb v3 provides a `Mongoclient` here
+      )
+      or
+      result = getAMongoClient().getAMethodCall("db")
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAMongoDb(t2).track(t2, t))
   }
