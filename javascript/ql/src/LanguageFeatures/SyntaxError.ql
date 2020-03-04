@@ -7,7 +7,7 @@
  * @tags reliability
  *       correctness
  *       language-features
- * @precision high
+ * @precision very-high
  */
 
 import javascript
