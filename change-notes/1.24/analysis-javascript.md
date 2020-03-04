@@ -31,6 +31,7 @@
   - [for-own](https://www.npmjs.com/package/for-own)
   - [http2](https://nodejs.org/api/http2.html)
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
   - [react](https://www.npmjs.com/package/react)
   - [send](https://www.npmjs.com/package/send)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
