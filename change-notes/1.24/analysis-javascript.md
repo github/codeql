@@ -32,6 +32,7 @@
   - [http2](https://nodejs.org/api/http2.html)
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
   - [react](https://www.npmjs.com/package/react)
+  - [request](https://www.npmjs.com/package/request)
   - [send](https://www.npmjs.com/package/send)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
   - [ws](https://github.com/websockets/ws)
