@@ -161,7 +161,7 @@ module ShellJS {
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
 
-    override predicate isSync() {none ()}
+    override predicate isSync() { none() }
 
     override DataFlow::Node getOptionsArg() {
       result = getLastArgument() and
