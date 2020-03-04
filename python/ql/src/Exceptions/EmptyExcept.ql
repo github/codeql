@@ -64,15 +64,6 @@ predicate subscript(Stmt s) {
     s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode_objectapi(Expr ex, ClassObject type) {
-    exists(string name |
-        ex.(Call).getFunc().(Attribute).getName() = name |
-        name = "encode" and type = Object::builtin("UnicodeEncodeError")
-        or
-        name = "decode" and type = Object::builtin("UnicodeDecodeError")
-    )
-}
-
 predicate encode_decode(Expr ex, ClassValue type) {
     exists(string name |
         ex.(Call).getFunc().(Attribute).getName() = name |
@@ -82,32 +73,10 @@ predicate encode_decode(Expr ex, ClassValue type) {
     )
 }
 
-predicate small_handler_objectapi(ExceptStmt ex, Stmt s, ClassObject type) {
-    not exists(ex.getTry().getStmt(1)) and
-    s = ex.getTry().getStmt(0) and
-    ex.getType().refersTo(type)
-}
-
 predicate small_handler(ExceptStmt ex, Stmt s, ClassValue type) {
     not exists(ex.getTry().getStmt(1)) and
     s = ex.getTry().getStmt(0) and
     ex.getType().pointsTo(type)
-}
-
-/** Holds if this exception handler is sufficiently small in scope to not need a comment
- * as to what it is doing.
- */
-predicate focussed_handler_objectapi(ExceptStmt ex) {
-    exists(Stmt s, ClassObject type |
-        small_handler_objectapi(ex, s, type) |
-        subscript(s) and type.getAnImproperSuperType() = theLookupErrorType()
-        or
-        attribute_access(s) and type = theAttributeErrorType()
-        or
-        s.(ExprStmt).getValue() instanceof Name and type = theNameErrorType()
-        or
-        encode_decode_objectapi(s.(ExprStmt).getValue(), type)
-    )
 }
 
 predicate focussed_handler(ExceptStmt ex) {
