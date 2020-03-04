@@ -271,7 +271,7 @@ class ExceptFlowNode extends ControlFlowNode {
 
     /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
     pragma [noinline]
-    predicate handledException(Object obj, ClassObject cls, ControlFlowNode origin) {
+    predicate handledException_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.handledObject(obj, cls, origin) and not cls = theTupleType()
         or
         not exists(this.getNode().(ExceptStmt).getType()) and obj = theBaseExceptionType() and cls = theTypeType() and
@@ -281,7 +281,7 @@ class ExceptFlowNode extends ControlFlowNode {
     /** Whether this `except` handles `cls` */
     predicate handles(ClassObject cls) {
         exists(ClassObject handled |
-            this.handledException(handled, _, _) |
+            this.handledException_objectapi(handled, _, _) |
             cls.getAnImproperSuperType() = handled
         )
     }

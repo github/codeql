@@ -14,7 +14,7 @@
 import python
 
 from ExceptFlowNode ex, Value t, ClassValue c, ControlFlowNode origin, string what
-where ex.handledException(t, c, origin) and 
+where ex.handledException_objectapi(t, c, origin) and 
 (
   exists(ClassValue x | x = t |
     not x.isLegalExceptionType() and
