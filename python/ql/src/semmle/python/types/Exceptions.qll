@@ -268,6 +268,18 @@ class ExceptFlowNode extends ControlFlowNode {
             element_from_tuple_objectapi(tup).refersTo(obj, cls, origin)
         )
     }
+    
+    private predicate handledObject(Value val, ClassValue cls, ControlFlowNode origin) {
+        val.getClass() = cls and
+        (
+            this.getType().pointsTo(val, origin)
+            or
+            exists(Value tup |
+                this.handledObject(val, ClassValue::tuple(), _) |
+                element_from_tuple(tup).pointsTo(val, origin)
+            )
+        )
+    }
 
     /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
     pragma [noinline]
@@ -277,6 +289,17 @@ class ExceptFlowNode extends ControlFlowNode {
         not exists(this.getNode().(ExceptStmt).getType()) and obj = theBaseExceptionType() and cls = theTypeType() and
         origin = this
     }
+    
+    /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
+    pragma [noinline]
+    predicate handledException(Value val, ClassValue cls, ControlFlowNode origin) {
+        this.handledObject(val, cls, origin) and not cls = ClassValue::tuple()
+        or
+        not exists(this.getNode().(ExceptStmt).getType()) and val = ClassValue::baseException() and cls = ClassValue::type() and
+        origin = this
+    }
+    
+    
 
     /** Whether this `except` handles `cls` */
     predicate handles(ClassObject cls) {
@@ -291,6 +314,12 @@ class ExceptFlowNode extends ControlFlowNode {
 private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
     exists(Tuple t |
         t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode()
+    )
+}
+
+private ControlFlowNode element_from_tuple(Value tuple) {
+    exists(Expr x, Tuple t |
+        x.pointsTo(tuple,t) and result = t.getAnElt().getAFlowNode()
     )
 }
 
