@@ -86,6 +86,8 @@ class State {
 }
 let state = new State();
 
+const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
+
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
  *
@@ -529,26 +531,36 @@ function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaul
     return value != null ? parse(value) : defaultValue;
 }
 
+/**
+ * Whether the memory usage was last observed to be above the threshold for restarting the TypeScript compiler.
+ */
+let isAboveReloadThreshold = false;
+
+/**
+ * If memory usage has moved above a the threshold, reboot the TypeScript compiler instance.
+ */
+function checkMemoryUsage() {
+    let bytesUsed = process.memoryUsage().heapUsed;
+    let megabytesUsed = bytesUsed / 1000000;
+    if (!isAboveReloadThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
+        console.warn('Restarting TypeScript compiler due to memory usage');
+        state.project.reload();
+        isAboveReloadThreshold = true;
+    }
+    else if (isAboveReloadThreshold && megabytesUsed < reloadMemoryThresholdMb) {
+        isAboveReloadThreshold = false;
+    }
+}
+
 function runReadLineInterface() {
     reset();
-    let reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
-    let isAboveReloadThreshold = false;
     let rl = readline.createInterface({ input: process.stdin, output: process.stdout });
     rl.on("line", (line: string) => {
         let req: Command = JSON.parse(line);
         switch (req.command) {
         case "parse":
             handleParseCommand(req);
-            // If memory usage has moved above the threshold, reboot the TypeScript compiler instance.
-            let bytesUsed = process.memoryUsage().heapUsed;
-            let megabytesUsed = bytesUsed / 1000000;
-            if (!isAboveReloadThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
-                console.warn('Restarting TypeScript compiler due to memory usage');
-                state.project.reload();
-                isAboveReloadThreshold = true;
-            } else if (isAboveReloadThreshold && megabytesUsed < reloadMemoryThresholdMb) {
-                isAboveReloadThreshold = false;
-            }
+            checkMemoryUsage();
             break;
         case "open-project":
             handleOpenProjectCommand(req);
