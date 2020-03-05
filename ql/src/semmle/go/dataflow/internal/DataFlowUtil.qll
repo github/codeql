@@ -402,7 +402,7 @@ class PostUpdateNode extends Node {
       preupd = this.(SsaNode).getAUse()
       or
       preupd = this and
-      not exists(getAPredecessor())
+      not basicLocalFlowStep(_, this)
     )
   }
 
@@ -766,13 +766,10 @@ Node extractTupleElement(Node t, int i) {
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
- * INTERNAL: do not use.
- *
- * This is the local flow predicate that's used as a building block in global
- * data flow. It may have less flow than the `localFlowStep` predicate.
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step, not taking function models into account.
  */
-cached
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Instruction -> Instruction
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
@@ -808,6 +805,17 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // GlobalFunctionNode -> use
   nodeTo = MkGlobalFunctionNode(nodeFrom.asExpr().(FunctionName).getTarget())
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * This is the local flow predicate that's used as a building block in global
+ * data flow. It may have less flow than the `localFlowStep` predicate.
+ */
+cached
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  basicLocalFlowStep(nodeFrom, nodeTo)
   or
   // step through function model
   exists(FunctionModel m, CallNode c, FunctionInput inp, FunctionOutput outp |
