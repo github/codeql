@@ -61,5 +61,18 @@ app.post('/documents/find', (req, res) => {
 
     // NOT OK: query is tainted by user-provided object value
     Document.updateOne(query);
-});
 
+	Document.findByIdAndUpdate(X, query); // NOT OK
+
+	new Mongoose.Query(X, Y, query)	// NOT OK
+		.and(query) // NOT OK
+	;
+
+	Document.where(query)	// NOT OK
+		.and(query) // NOT OK
+		.or(query) // NOT OK
+		.distinct(X, query) // NOT OK
+		.comment(query) // OK
+		.count(query) // NOT OK
+	;
+});
