@@ -263,6 +263,14 @@ char StringLiteralAliasing2(bool b) {
   return s[2];
 }
 
+void *malloc(int size);
+
+void *MallocAliasing(void *s, int size) {
+  void *buf = malloc(size);
+  memcpy(buf, s, size);
+  return buf;
+}
+
 void *global;
 
 void Escape(void* p){

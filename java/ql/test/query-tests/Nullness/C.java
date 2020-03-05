@@ -208,4 +208,16 @@ public class C {
       }
     }
   }
+
+  public void ex15(Object o1, Object o2) {
+    if (o1 == null && o2 != null) {
+      return;
+    }
+    if (o1 == o2) {
+      return;
+    }
+    if (o1.equals(o2)) { // NPE - false positive
+      return;
+    }
+  }
 }

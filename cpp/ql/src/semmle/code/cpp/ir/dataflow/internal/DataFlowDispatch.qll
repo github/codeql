@@ -135,6 +135,12 @@ private module VirtualDispatch {
       exists(FunctionInstruction fi |
         this.flowsFrom(DataFlow::instructionNode(fi), _) and
         result = fi.getFunctionSymbol()
+      ) and
+      (
+        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        or
+        result.isVarargs()
       )
     }
   }

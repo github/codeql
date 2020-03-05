@@ -1,5 +1,6 @@
 /** Provides all default Java QL imports. */
 
+import Customizations
 import semmle.code.FileSystem
 import semmle.code.Location
 import semmle.code.java.Annotation

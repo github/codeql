@@ -36,7 +36,7 @@ module TaintedPath {
       guard instanceof StartsWithDirSanitizer or
       guard instanceof IsAbsoluteSanitizer or
       guard instanceof ContainsDotDotSanitizer or
-      guard instanceof RelativePathStartsWithDotDotSanitizer or
+      guard instanceof RelativePathStartsWithSanitizer or
       guard instanceof IsInsideCheckSanitizer
     }
 
@@ -195,6 +195,15 @@ module TaintedPath {
         src = call.getInput() and
         dst = call.getOutput() and
         srclabel = dstlabel
+      )
+      or
+      // foo.replace(/\./, "") and similar
+      exists(DotRemovingReplaceCall call |
+        src = call.getInput() and
+        dst = call.getOutput() and
+        srclabel.isAbsolute() and
+        dstlabel.isAbsolute() and
+        dstlabel.isNormalized()
       )
       or
       // path.join()
