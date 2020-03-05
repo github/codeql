@@ -163,6 +163,7 @@ function extractFile(filename: string): string {
 function prepareNextFile() {
     if (state.pendingResponse != null) return;
     if (state.pendingFileIndex < state.pendingFiles.length) {
+        checkMemoryUsage();
         let nextFilename = state.pendingFiles[state.pendingFileIndex];
         state.pendingResponse = extractFile(nextFilename);
     }
@@ -538,6 +539,8 @@ let isAboveReloadThreshold = false;
 
 /**
  * If memory usage has moved above a the threshold, reboot the TypeScript compiler instance.
+ *
+ * Make sure to call this only when stdout has been flushed.
  */
 function checkMemoryUsage() {
     let bytesUsed = process.memoryUsage().heapUsed;
@@ -560,7 +563,6 @@ function runReadLineInterface() {
         switch (req.command) {
         case "parse":
             handleParseCommand(req);
-            checkMemoryUsage();
             break;
         case "open-project":
             handleOpenProjectCommand(req);
