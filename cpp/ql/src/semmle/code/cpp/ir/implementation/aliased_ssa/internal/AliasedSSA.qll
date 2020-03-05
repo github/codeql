@@ -419,7 +419,7 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
     )
     or
     def.getVirtualVariable() = use.getVirtualVariable() and
-    def instanceof EntireAllocationMemoryLocation and
+    def instanceof EntireAllocationVirtualVariable and
     (
       // EntireAllocationMemoryLocation exactly overlaps itself.
       use instanceof EntireAllocationMemoryLocation and

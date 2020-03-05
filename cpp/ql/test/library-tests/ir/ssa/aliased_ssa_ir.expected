@@ -848,8 +848,8 @@ ssa.cpp:
 #  190|     r190_4(glval<unsigned int &>)  = VariableAddress[d]       : 
 #  190|     r190_5(unsigned int &)         = Load                     : &:r190_4, m184_19
 #  190|     r190_6(unsigned int)           = Load                     : &:r190_5, ~m184_21
-#  186|     m186_1(unknown)                = InlineAsm                : ~m184_13, 0:r189_3, 1:r189_6, 2:r190_3, 3:r190_6
-#  186|     m186_2(unknown)                = Chi                      : total:m184_13, partial:m186_1
+#  186|     m186_1(unknown)                = InlineAsm                : ~m184_4, 0:r189_3, 1:r189_6, 2:r190_3, 3:r190_6
+#  186|     m186_2(unknown)                = Chi                      : total:m184_4, partial:m186_1
 #  192|     v192_1(void)                   = NoOp                     : 
 #  184|     v184_22(void)                  = ReturnIndirection        : &:r184_8, ~m186_2
 #  184|     v184_23(void)                  = ReturnIndirection        : &:r184_12, ~m186_2
@@ -1252,7 +1252,7 @@ ssa.cpp:
 #  269|     r269_2(void *)        = Load                     : &:r269_1, m268_7
 #  269|     r269_3(glval<void *>) = VariableAddress[global]  : 
 #  269|     m269_4(void *)        = Store                    : &:r269_3, r269_2
-#  269|     m269_5(unknown)       = Chi                      : total:m268_9, partial:m269_4
+#  269|     m269_5(unknown)       = Chi                      : total:m268_4, partial:m269_4
 #  270|     v270_1(void)          = NoOp                     : 
 #  268|     v268_10(void)         = ReturnIndirection        : &:r268_8, ~m269_5
 #  268|     v268_11(void)         = ReturnVoid               : 
@@ -1274,7 +1274,7 @@ ssa.cpp:
 #  273|     r273_1(glval<int>)     = VariableAddress[x]           : 
 #  273|     r273_2(int)            = Constant[0]                  : 
 #  273|     m273_3(int)            = Store                        : &:r273_1, r273_2
-#  273|     m273_4(unknown)        = Chi                          : total:m272_9, partial:m273_3
+#  273|     m273_4(unknown)        = Chi                          : total:m272_4, partial:m273_3
 #  274|     r274_1(glval<unknown>) = FunctionAddress[Escape]      : 
 #  274|     r274_2(glval<int *>)   = VariableAddress[p]           : 
 #  274|     r274_3(int *)          = Load                         : &:r274_2, m272_7
