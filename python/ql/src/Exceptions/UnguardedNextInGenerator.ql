@@ -12,12 +12,12 @@
 
 import python
 
-FunctionObject iter() {
-    result = Object::builtin("iter")
+FunctionValue iter() {
+    result = Value::named("iter")
 }
 
-BuiltinFunctionObject next() {
-    result = Object::builtin("next")
+BuiltinFunctionValue next() {
+    result = Value::named("next")
 }
 
 predicate call_to_iter(CallNode call, EssaVariable sequence) {
@@ -43,7 +43,7 @@ predicate iter_not_exhausted(EssaVariable iterator) {
 predicate stop_iteration_handled(CallNode call) {
     exists(Try t |
         t.containsInScope(call.getNode()) and
-        t.getAHandler().getType().refersTo(theStopIterationType())
+        t.getAHandler().getType().pointsTo(ClassValue::stopIteration())
     )
 }
 
