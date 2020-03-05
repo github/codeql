@@ -10,7 +10,7 @@ class DependencySemVer extends string {
   string normalized;
 
   DependencySemVer() {
-    this = dep.getDepVer() and
+    this = dep.getDepVersion() and
     normalized = normalizeSemver(this)
   }
 
@@ -76,10 +76,10 @@ private string normalizeSemver(string orig) {
  *
  * Pre-release information and build metadata is not yet supported.
  */
-class DependencySemShaVer extends DependencySemVer {
+class DependencySemShaVersion extends DependencySemVer {
   string sha;
 
-  DependencySemShaVer() { sha = this.regexpCapture(".*-([0-9a-f]+)", 1) }
+  DependencySemShaVersion() { sha = this.regexpCapture(".*-([0-9a-f]+)", 1) }
 
   /**
    * Gets the commit SHA associated with this version.
@@ -88,9 +88,9 @@ class DependencySemShaVer extends DependencySemVer {
 
   bindingset[other]
   override predicate is(string other) {
-    this.getSha() = other.(DependencySemShaVer).getSha()
+    this.getSha() = other.(DependencySemShaVersion).getSha()
     or
-    not other instanceof DependencySemShaVer and
+    not other instanceof DependencySemShaVersion and
     super.is(other)
   }
 }

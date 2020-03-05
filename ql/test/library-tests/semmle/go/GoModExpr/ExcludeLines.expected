@@ -1,3 +1,3 @@
-| pkg1/go.mod:10:1:10:44 | go.mod exclude line | module | github.com/github/codeql-go | v1.23.1 |
-| pkg2/go.mod:14:2:14:35 | go.mod exclude line | module | github.com/sirupsen/logrus | v1.4.2 |
-| pkg2/go.mod:15:2:15:37 | go.mod exclude line | module | github.com/github/codeql-go | v1.23.1 |
+| pkg1/go.mod:10:1:10:44 | go.mod exclude line | codeql-go-tests/gomod/dep1 | github.com/github/codeql-go | v1.23.1 |
+| pkg2/go.mod:14:2:14:35 | go.mod exclude line | codeql-go-tests/gomod/dep2 | github.com/sirupsen/logrus | v1.4.2 |
+| pkg2/go.mod:15:2:15:37 | go.mod exclude line | codeql-go-tests/gomod/dep2 | github.com/github/codeql-go | v1.23.1 |

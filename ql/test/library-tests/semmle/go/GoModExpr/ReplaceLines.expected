@@ -1,0 +1,1 @@
+| pkg2/go.mod:5:1:5:55 | go.mod replace line | codeql-go-tests/gomod/dep2 | github.com/Masterminds/squirrel | no version | ../squirrel | no version |

@@ -1,11 +1,18 @@
 import go
 
-from GoModReplaceLine repl, GoModModuleLine mod, string repVer
+from GoModReplaceLine repl, string origVersion, string repVersion
 where
-  repl.getFile() = mod.getFile() and
   (
-    repVer = repl.getReplacementVer() or
-    repVer = "no version"
+    repVersion = repl.getReplacementVersion()
+    or
+    not exists(repl.getReplacementVersion()) and
+    repVersion = "no version"
+  ) and
+  (
+    origVersion = repl.getOriginalVersion()
+    or
+    not exists(repl.getOriginalVersion()) and
+    origVersion = "no version"
   )
-select repl, mod.getPath(), repl.getOriginalPath(), repl.getReplacementPath(),
-  repl.getReplacementVer()
+select repl, repl.getModulePath(), repl.getOriginalPath(), origVersion, repl.getReplacementPath(),
+  repVersion

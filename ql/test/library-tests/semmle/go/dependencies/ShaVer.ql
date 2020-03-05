@@ -1,4 +1,4 @@
 import semmle.go.dependencies.SemVer
 
-from DependencySemShaVer ver
+from DependencySemShaVersion ver
 select ver, ver.getSha()

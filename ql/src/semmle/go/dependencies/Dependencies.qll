@@ -21,7 +21,7 @@ abstract class Dependency extends Locatable {
   string getDepPath() { this.info(result, _) }
 
   /** Gets the version of this dependency. */
-  string getDepVer() { this.info(_, result) }
+  string getDepVersion() { this.info(_, result) }
 
   /**
    * An import of this dependency.
@@ -51,9 +51,9 @@ class GoModDependency extends Dependency, GoModRequireLine {
     |
       path = replace.getReplacementPath() and
       (
-        v = replace.getReplacementVer()
+        v = replace.getReplacementVersion()
         or
-        not exists(replace.getReplacementVer()) and
+        not exists(replace.getReplacementVersion()) and
         v = "unknown"
       )
     )
@@ -62,17 +62,20 @@ class GoModDependency extends Dependency, GoModRequireLine {
   /**
    * Get a version that was excluded for this dependency.
    */
-  string getAnExcludedVer() {
+  string getAnExcludedVersion() {
     exists(GoModExcludeLine exclude |
       exclude.getFile() = this.getFile() and
       exclude.getPath() = this.getPath()
     |
-      result = exclude.getVer()
+      result = exclude.getVersion()
     )
   }
 
   /**
    * Holds if this require line originally states dependency `path` had version `ver`.
+   *
+   * The actual info of this dependency can change based on `replace` directives in the same go.mod
+   * file, which replace a dependency with another one.
    */
-  predicate originalInfo(string path, string v) { path = this.getPath() and v = this.getVer() }
+  predicate originalInfo(string path, string v) { path = this.getPath() and v = this.getVersion() }
 }
