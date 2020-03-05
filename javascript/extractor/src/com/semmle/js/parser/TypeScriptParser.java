@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -37,7 +38,6 @@ import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.InterruptedError;
 import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
-import com.semmle.util.io.WholeIO;
 import com.semmle.util.logging.LogbackUtils;
 import com.semmle.util.process.AbstractProcessBuilder;
 import com.semmle.util.process.Builder;
@@ -113,6 +113,18 @@ public class TypeScriptParser {
    * <p>Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
    */
   public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
+
+  /**
+   * Exit code for Node.js in case of a fatal error from V8. This exit code sometimes occurs
+   * when the process runs out of memory.
+   */
+  private static final int NODEJS_EXIT_CODE_FATAL_ERROR = 5;
+
+  /**
+   * Exit code for Node.js in case it exits due to <code>SIGABRT</code>. This exit code sometimes occurs
+   * when the process runs out of memory.
+   */
+  private static final int NODEJS_EXIT_CODE_SIG_ABORT = 128 + 6;
 
   /** The Node.js parser wrapper process, if it has been started already. */
   private Process parserWrapperProcess;
@@ -318,15 +330,7 @@ public class TypeScriptParser {
     if (parserWrapperProcess == null) setupParserWrapper();
 
     if (!parserWrapperProcess.isAlive()) {
-      int exitCode = 0;
-      try {
-        exitCode = parserWrapperProcess.waitFor();
-      } catch (InterruptedException e) {
-        Exceptions.ignore(e, "This is for diagnostic purposes only.");
-      }
-      String err = new WholeIO().strictReadString(parserWrapperProcess.getErrorStream());
-      throw new CatastrophicError(
-          "TypeScript parser wrapper terminated with exit code " + exitCode + "; stderr: " + err);
+      throw getExceptionFromMalformedResponse(null, null);
     }
 
     String response = null;
@@ -335,13 +339,14 @@ public class TypeScriptParser {
       toParserWrapper.newLine();
       toParserWrapper.flush();
       response = fromParserWrapper.readLine();
-      if (response == null)
-        throw new CatastrophicError(
-            "Could not communicate with TypeScript parser wrapper "
-                + "(command: "
-                + parserWrapperCommand
-                + ").");
-      return new JsonParser().parse(response).getAsJsonObject();
+      if (response == null || response.isEmpty()) {
+        throw getExceptionFromMalformedResponse(response, null);
+      }
+      try {
+        return new JsonParser().parse(response).getAsJsonObject();
+      } catch (JsonParseException | IllegalStateException e) {
+        throw getExceptionFromMalformedResponse(response, e);
+      }
     } catch (IOException e) {
       throw new CatastrophicError(
           "Could not communicate with TypeScript parser wrapper "
@@ -349,15 +354,35 @@ public class TypeScriptParser {
               + parserWrapperCommand
               + ").",
           e);
-    } catch (JsonParseException | IllegalStateException e) {
-      throw new CatastrophicError(
-          "TypeScript parser wrapper sent unexpected response: "
-              + response
-              + " (command: "
-              + parserWrapperCommand
-              + ").",
-          e);
     }
+  }
+
+  /**
+   * Creates an exception object describing the best known reason for the TypeScript parser wrapper
+   * failing to behave as expected.
+   *
+   * Note that the stderr stream is redirected to our stderr so a more descriptive error is likely
+   * to be found in the log, but we try to make the Java exception descriptive as well.
+   */
+  private RuntimeException getExceptionFromMalformedResponse(String response, Exception e) {
+    try {
+      Integer exitCode = null;
+      if (parserWrapperProcess.waitFor(1L, TimeUnit.SECONDS)) {
+        exitCode = parserWrapperProcess.waitFor();
+      }
+      if (exitCode != null && (exitCode == NODEJS_EXIT_CODE_FATAL_ERROR || exitCode == NODEJS_EXIT_CODE_SIG_ABORT)) {
+        return new ResourceError("The TypeScript parser wrapper crashed, possibly from running out of memory.", e);
+      }
+      if (exitCode != null) {
+        return new CatastrophicError("The TypeScript parser wrapper crashed with exit code " + exitCode);
+      }
+    } catch (InterruptedException e1) {
+      Exceptions.ignore(e, "This is for diagnostic purposes only.");
+    }
+    if (response == null) {
+      return new CatastrophicError("No response from TypeScript parser wrapper", e);
+    }
+    return new CatastrophicError("Unexpected response from TypeScript parser wrapper:\n" + response, e);
   }
 
   /**
