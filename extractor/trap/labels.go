@@ -2,7 +2,6 @@ package trap
 
 import (
 	"fmt"
-	"go/ast"
 	"go/types"
 )
 
@@ -25,7 +24,7 @@ type Labeler struct {
 
 	nextid       int
 	fileLabel    Label
-	nodeLabels   map[ast.Node]Label     // labels associated with AST nodes
+	nodeLabels   map[interface{}]Label  // labels associated with AST nodes
 	scopeLabels  map[*types.Scope]Label // labels associated with scopes
 	objectLabels map[types.Object]Label // labels associated with objects (that is, declared entities)
 	TypeLabels   map[types.Type]Label   // labels associated with types
@@ -37,7 +36,7 @@ func newLabeler(tw *Writer) *Labeler {
 		tw,
 		10000,
 		InvalidLabel,
-		make(map[ast.Node]Label),
+		make(map[interface{}]Label),
 		make(map[*types.Scope]Label),
 		make(map[types.Object]Label),
 		make(map[types.Type]Label),
@@ -72,7 +71,7 @@ func (l *Labeler) FileLabel() Label {
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it
-func (l *Labeler) LocalID(nd ast.Node) Label {
+func (l *Labeler) LocalID(nd interface{}) Label {
 	label, exists := l.nodeLabels[nd]
 	if !exists {
 		label = l.FreshID()
@@ -162,7 +161,7 @@ func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, boo
 
 			if !isRecv {
 				scopeLbl := l.ScopeID(scope, object.Pkg())
-				label = l.GlobalID(fmt.Sprintf("{%s},%s;object", scopeLbl.String(), object.Name()))
+				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 			}
 		}
 		l.objectLabels[object] = label
@@ -177,7 +176,7 @@ func (l *Labeler) ReceiverObjectID(object types.Object, methlbl Label) (Label, b
 	label, exists := l.objectLabels[object]
 	if !exists {
 		// if we can't, construct a special label
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;receiver", methlbl.String(), object.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;receiver", methlbl, object.Name()))
 		l.objectLabels[object] = label
 	}
 	return label, exists
@@ -197,7 +196,7 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 		if field.Name() == "_" {
 			name = fmt.Sprintf("_%d", idx)
 		}
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;field", structlbl.String(), name))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;field", structlbl, name))
 		l.objectLabels[field] = label
 	}
 	return label, exists
@@ -209,7 +208,7 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 func (l *Labeler) MethodID(method types.Object, recvlbl Label) (Label, bool) {
 	label, exists := l.objectLabels[method]
 	if !exists {
-		label = l.GlobalID(fmt.Sprintf("{%s},%s;method", recvlbl, method.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvlbl, method.Name()))
 		l.objectLabels[method] = label
 	}
 	return label, exists
