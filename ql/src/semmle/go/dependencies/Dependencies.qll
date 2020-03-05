@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.dependencies.DependencyCustomizations
 
 /**
  * An abstract representation of a dependency.
