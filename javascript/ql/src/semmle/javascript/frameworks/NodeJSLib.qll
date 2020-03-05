@@ -252,10 +252,11 @@ module NodeJSLib {
   private class WriteHead extends HeaderDefinition {
     WriteHead() {
       astNode.getMethodName() = "writeHead" and
-      astNode.getNumArgument() > 1
+      astNode.getNumArgument() >= 1
     }
 
     override predicate definesExplicitly(string headerName, Expr headerValue) {
+      astNode.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
         headers.flowsToExpr(astNode.getLastArgument()) and
         headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
