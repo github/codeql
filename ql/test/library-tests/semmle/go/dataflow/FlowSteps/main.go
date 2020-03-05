@@ -33,3 +33,11 @@ func test3(b bool, x interface{}) string {
 func main() {
 	test1(test2()(), test2())
 }
+
+func test9() {
+	s := []int{1, 2, 3}
+	s1 := append(s, 4, 5, 6)
+	s2 := append(s, s1...)
+	s4 := make([]int, 4)
+	copy(s, s4)
+}

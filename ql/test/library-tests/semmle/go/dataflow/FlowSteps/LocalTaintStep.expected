@@ -1,5 +1,6 @@
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[1] |
+| main.go:42:10:42:11 | s4 | main.go:38:2:38:2 | definition of s |
 | strings.go:9:24:9:24 | s | strings.go:9:8:9:38 | call to Replace |
 | strings.go:9:32:9:34 | "_" | strings.go:9:8:9:38 | call to Replace |
 | strings.go:10:27:10:27 | s | strings.go:10:8:10:42 | call to ReplaceAll |

@@ -97,9 +97,18 @@ private newtype TFunctionOutput =
     // one among several results
     exists(SignatureType s | exists(s.getResultType(index)))
   }
+  or
+  TOutParameter(int index) {
+    // the receiver parameter
+    index = -1
+    or
+    // another parameter
+    exists(SignatureType s | exists(s.getParameterType(index)))
+  }
 
 /**
- * An abstract representation of an output of a function, which is one of its results.
+ * An abstract representation of an output of a function, which is one of its results
+ * or a parameter with mutable type.
  */
 class FunctionOutput extends TFunctionOutput {
   /** Holds if this represents the (single) result of a function. */
@@ -109,6 +118,16 @@ class FunctionOutput extends TFunctionOutput {
 
   /** Holds if this represents the `i`th result of a function. */
   predicate isResult(int i) {
+    none()
+  }
+
+  /** Holds if this represents the receiver of a function. */
+  predicate isReceiver() {
+    none()
+  }
+
+  /** Holds if this represents the `i`th parameter of a function. */
+  predicate isParameter(int i) {
     none()
   }
 
@@ -168,6 +187,42 @@ private class OutResult extends FunctionOutput, TOutResult {
     index = -1 and result = c.getResult()
     or
     result = c.getResult(index)
+  }
+
+  override string toString() {
+    index = -1 and result = "result"
+    or
+    index >= 0 and result = "result " + index
+  }
+}
+
+/** A result position of a function, viewed as an output. */
+private class OutParameter extends FunctionOutput, TOutParameter {
+  int index;
+
+  OutParameter() {
+    this = TOutParameter(index)
+  }
+
+  override predicate isReceiver() {
+    index = -1
+  }
+
+  override predicate isParameter(int i) {
+    i = index and i >= 0
+  }
+
+  override DataFlow::Node getEntryNode(FuncDef f) {
+    // there is no generic way of assigning to a parameter; operations that taint a parameter
+    // have to be handled on a case-by-case basis
+    none()
+  }
+
+  override DataFlow::Node getExitNode(DataFlow::CallNode c) {
+    exists(DataFlow::ArgumentNode arg |
+      arg.argumentOf(c.asExpr(), index) and
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
+    )
   }
 
   override string toString() {
