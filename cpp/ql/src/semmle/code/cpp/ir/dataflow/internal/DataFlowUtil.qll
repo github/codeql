@@ -55,7 +55,7 @@ class Node extends TIRDataFlowNode {
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
@@ -142,18 +142,22 @@ class ExprNode extends InstructionNode {
   override string toString() { result = this.asConvertedExpr().toString() }
 }
 
-/**
- * The value of a parameter at function entry, viewed as a node in a data
- * flow graph.
- */
-class ParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
-
+abstract class ParameterNode extends InstructionNode {
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+  abstract predicate isParameterOf(Function f, int i);
+}
+
+/**
+ * The value of a parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+class ExplicitParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
   Parameter getParameter() { result = instr.getParameter() }
 
@@ -164,6 +168,16 @@ private class ThisParameterNode extends InstructionNode {
   override InitializeThisInstruction instr;
 
   override string toString() { result = "this" }
+}
+
+class VarArgParameterNode extends ParameterNode {
+  override VarArgsStartInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) {
+    i instanceof ParameterIndex and
+    instr.getEnclosingFunction() = f and
+    f.getNumberOfParameters() <= i
+  }
 }
 
 /**
@@ -294,7 +308,7 @@ ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
@@ -323,7 +337,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
-private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
+predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
   or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
@@ -334,6 +348,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
   or
   iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  or
+  iFrom instanceof VarArgsStartInstruction and iTo instanceof VarArgInstruction
   or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias

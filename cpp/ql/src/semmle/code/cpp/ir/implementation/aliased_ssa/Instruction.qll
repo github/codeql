@@ -1616,3 +1616,15 @@ class BuiltInInstruction extends BuiltInOperationInstruction {
 
   final override string getImmediateString() { result = getBuiltInOperation().toString() }
 }
+
+class VarArgsStartInstruction extends BuiltInOperationInstruction {
+  VarArgsStartInstruction() { getOpcode() instanceof Opcode::VarArgsStart }
+}
+
+class VarArgsEndInstruction extends BuiltInOperationInstruction {
+  VarArgsEndInstruction() { getOpcode() instanceof Opcode::VarArgsEnd }
+}
+
+class VarArgInstruction extends BuiltInOperationInstruction {
+  VarArgInstruction() { getOpcode() instanceof Opcode::VarArg }
+}
