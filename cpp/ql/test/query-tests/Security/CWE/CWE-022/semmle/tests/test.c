@@ -45,5 +45,5 @@ void test(const char *filename)
   config_home = getenv("HOME");
   config_home_copy = use_varargs(0, config_home);
   fopen(config_home, "r");  // BAD
-  fopen(config_home_copy, "r");  // BAD [NOT DETECTED]
+  fopen(config_home_copy, "r");  // BAD
 }
