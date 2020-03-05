@@ -397,6 +397,9 @@ class PostUpdateNode extends Node {
         or
         preupd = base.(PointerDereferenceNode).getOperand()
       )
+      or
+      preupd instanceof ArgumentNode and
+      mutableType(preupd.getType())
     ) and
     (
       preupd = this.(SsaNode).getAUse()
@@ -453,6 +456,20 @@ class ArgumentNode extends Node {
    * Gets the `CallNode` this is an argument to.
    */
   CallNode getCall() { result = c }
+}
+
+/**
+ * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
+ *
+ * If a value with a mutable type is passed to a function, the function could potentially
+ * mutate it or something it points to.
+ */
+predicate mutableType(Type tp) {
+  tp instanceof ArrayType or
+  tp instanceof SliceType or
+  tp instanceof MapType or
+  tp instanceof PointerType or
+  tp instanceof InterfaceType
 }
 
 /**
