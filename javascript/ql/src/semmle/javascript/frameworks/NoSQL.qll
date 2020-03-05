@@ -151,6 +151,11 @@ private module MongoDB {
           or
           m = "updateOne" and queryArgIdx = 1
         )
+        or
+        // sugar-methods in mongoose (which extends mongodb)
+        (
+          m = "findByIdAndUpdate" and queryArgIdx = 1
+        )        
       )
     }
 
