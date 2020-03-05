@@ -64,6 +64,7 @@
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional ways dangerous paths can be constructed and used. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional ways of constructing arguments to `cmd.exe` and `/bin/sh`. |
 | Syntax error (`js/syntax-error`) | Lower severity | This results of this query are now displayed with lower severity. |
+| Use of password hash with insufficient computational effort (`js/insufficient-password-hash`) | Fewer false positive results | This query now recognizes additional cases that do not require secure hashing. |
 
 ## Changes to libraries
 
