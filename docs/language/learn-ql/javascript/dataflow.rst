@@ -470,7 +470,7 @@ What next?
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
--  Learn about writing more precise data-flow analyses in :doc:`Advanced data-flow analysis using flow labels <flow-labels>`
+-  Learn about writing more precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`
 
 Answers
 -------
