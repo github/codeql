@@ -14,7 +14,6 @@ import (
 )
 
 func extractGoMod(path string) error {
-
 	if normPath, err := filepath.EvalSymlinks(path); err == nil {
 		path = normPath
 	}

@@ -123,26 +123,32 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	log.Printf("Walking file tree from %s to discover go.mod files...", cwd)
 
+	goModPaths := make([]string, 0, 10)
+
 	filepath.Walk(cwd, func(path string, info os.FileInfo, err error) error {
 		if filepath.Base(path) == "go.mod" && info != nil && info.Mode().IsRegular() {
 			if err != nil {
 				log.Printf("Found go.mod with path %s, but encountered error %s", path, err.Error())
 			}
 
-			log.Printf("Extracting %s", path)
-			start := time.Now()
-
-			err := extractGoMod(path)
-			if err != nil {
-				log.Printf("Failed to extract go.mod: %s", err.Error())
-			}
-
-			end := time.Since(start)
-			log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
+			goModPaths = append(goModPaths, path)
 		}
 
 		return nil
 	})
+
+	for _, path := range goModPaths {
+		log.Printf("Extracting %s", path)
+		start := time.Now()
+
+		err := extractGoMod(path)
+		if err != nil {
+			log.Printf("Failed to extract go.mod: %s", err.Error())
+		}
+
+		end := time.Since(start)
+		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
+	}
 
 	return nil
 }
