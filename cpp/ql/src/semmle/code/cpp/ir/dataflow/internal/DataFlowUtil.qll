@@ -142,7 +142,7 @@ class ExprNode extends InstructionNode {
   override string toString() { result = this.asConvertedExpr().toString() }
 }
 
-abstract class ParameterNode extends InstructionNode {
+class ParameterNode extends InstructionNode {
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
@@ -337,7 +337,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
-predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
+private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
   or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
