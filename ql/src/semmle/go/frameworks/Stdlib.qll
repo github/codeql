@@ -519,16 +519,35 @@ module Log {
 
 /** Provides models of some functions in the `encoding/json` package. */
 module EncodingJson {
-  private class MarshalFunction extends TaintTracking::FunctionModel {
+  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/json", "Marshal") or
       this.hasQualifiedName("encoding/json", "MarshalIndent")
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp.isParameter(0) and
-      outp.isResult(0)
+      inp = getAnInput() and outp = getOutput()
     }
+
+    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+
+    override DataFlow::FunctionOutput getOutput() { result.isResult(0) }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+    UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
+
+    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+      inp = getAnInput() and outp = getOutput()
+    }
+
+    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+
+    override DataFlow::FunctionOutput getOutput() { result.isParameter(1) }
+
+    override string getFormat() { result = "JSON" }
   }
 }
 

@@ -48,9 +48,8 @@ module StringBreak {
   /** A call to `json.Marshal`, considered as a taint source for unsafe quoting. */
   class JsonMarshalAsSource extends Source {
     JsonMarshalAsSource() {
-      exists(Function jsonMarshal | jsonMarshal.hasQualifiedName("encoding/json", "Marshal") |
-        // we are only interested in the first result (the second result is an error)
-        this = DataFlow::extractTupleElement(jsonMarshal.getACall(), 0)
+      exists(MarshalingFunction jsonMarshal | jsonMarshal.getFormat() = "JSON" |
+        this = jsonMarshal.getOutput().getNode(jsonMarshal.getACall())
       )
     }
   }
@@ -72,8 +71,8 @@ module StringBreak {
   /** A call to `json.Unmarshal`, considered as a sanitizer for unsafe quoting. */
   class UnmarshalSanitizer extends Sanitizer {
     UnmarshalSanitizer() {
-      exists(Function jsonUnmarshal | jsonUnmarshal.hasQualifiedName("encoding/json", "Unmarshal") |
-        this = jsonUnmarshal.getACall()
+      exists(UnmarshalingFunction jsonUnmarshal | jsonUnmarshal.getFormat() = "JSON" |
+        this = jsonUnmarshal.getOutput().getNode(jsonUnmarshal.getACall())
       )
     }
   }

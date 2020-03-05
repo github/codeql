@@ -589,3 +589,83 @@ module LoggerCall {
     abstract DataFlow::Node getAMessageComponent();
   }
 }
+
+/**
+ * A function that encodes data into a binary or textual format.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `MarshalingFunction::Range` instead.
+ */
+class MarshalingFunction extends Function {
+  MarshalingFunction::Range self;
+
+  MarshalingFunction() { this = self }
+
+  /** Gets an input that is encoded by this function. */
+  DataFlow::FunctionInput getAnInput() { result = self.getAnInput() }
+
+  /** Gets the output that contains the encoded data produced by this function. */
+  DataFlow::FunctionOutput getOutput() { result = self.getOutput() }
+
+  /** Gets an identifier for the format this function encodes into, such as "JSON". */
+  string getFormat() { result = self.getFormat() }
+}
+
+module MarshalingFunction {
+  /**
+   * A function that encodes data into a binary or textual format.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `MarshalingFunction` instead.
+   */
+  abstract class Range extends Function {
+    /** Gets an input that is encoded by this function. */
+    abstract DataFlow::FunctionInput getAnInput();
+
+    /** Gets the output that contains the encoded data produced by this function. */
+    abstract DataFlow::FunctionOutput getOutput();
+
+    /** Gets an identifier for the format this function encodes into, such as "JSON". */
+    abstract string getFormat();
+  }
+}
+
+/**
+ * A function that decodes data from a binary or textual format.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `UnmarshalingFunction::Range` instead.
+ */
+class UnmarshalingFunction extends Function {
+  UnmarshalingFunction::Range self;
+
+  UnmarshalingFunction() { this = self }
+
+  /** Gets an input that is decoded by this function. */
+  DataFlow::FunctionInput getAnInput() { result = self.getAnInput() }
+
+  /** Gets the output that contains the decoded data produced by this function. */
+  DataFlow::FunctionOutput getOutput() { result = self.getOutput() }
+
+  /** Gets an identifier for the format this function decodes from, such as "JSON". */
+  string getFormat() { result = self.getFormat() }
+}
+
+module UnmarshalingFunction {
+  /**
+   * A function that decodes data from a binary or textual format.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `UnmarshalingFunction` instead.
+   */
+  abstract class Range extends Function {
+    /** Gets an input that is decoded by this function. */
+    abstract DataFlow::FunctionInput getAnInput();
+
+    /** Gets the output that contains the decoded data produced by this function. */
+    abstract DataFlow::FunctionOutput getOutput();
+
+    /** Gets an identifier for the format this function decodes from, such as "JSON". */
+    abstract string getFormat();
+  }
+}
