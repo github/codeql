@@ -413,18 +413,24 @@ class PostUpdateNode extends Node {
 }
 
 /**
+ * Gets the `i`th argument of call `c`, where the receiver of a method call
+ * counts as argument -1.
+ */
+private Node getArgument(CallNode c, int i) {
+  result = c.getArgument(i)
+  or
+  result = c.(MethodCallNode).getReceiver() and
+  i = -1
+}
+
+/**
  * A data-flow node that occurs as an argument in a call, including receiver arguments.
  */
 class ArgumentNode extends Node {
   CallNode c;
   int i;
 
-  ArgumentNode() {
-    this = c.getArgument(i)
-    or
-    this = c.(MethodCallNode).getReceiver() and
-    i = -1
-  }
+  ArgumentNode() { this = getArgument(c, i) }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
