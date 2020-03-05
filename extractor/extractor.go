@@ -121,8 +121,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		cwd = rcwd
 	}
 
-	log.Printf("Walking file tree from %s to discover go.mod files...", cwd)
-
 	goModPaths := make([]string, 0, 10)
 
 	filepath.Walk(cwd, func(path string, info os.FileInfo, err error) error {
