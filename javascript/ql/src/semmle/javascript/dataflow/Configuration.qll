@@ -901,8 +901,14 @@ private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  isRelevant(rhs, cfg) and
-  storeStep(rhs, nd, prop, cfg, summary)
+  exists(PathSummary s1, PathSummary s2 |
+    reachableFromSource(rhs, cfg, s1)
+    or
+    reachableFromStoreBase(_, _, rhs, cfg, s1)
+  |
+    storeStep(rhs, nd, prop, cfg, s2) and
+    summary = MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(), s2.getEndLabel())
+  )
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
