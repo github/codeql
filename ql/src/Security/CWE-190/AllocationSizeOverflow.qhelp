@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Performing calculations involving the size of potentially large strings or slices can result in an
+overflow (for signed integer types) or a wraparound (for unsigned types). An overflow causes the
+result of the calculation to become negative, while a wraparound results in a small (positive)
+number.
+</p>
+<p>
+This can cause further issues. If, for example, the result is then used in an allocation, it will
+cause a runtime panic if it is negative, and allocate an unexpectedly small buffer otherwise.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always guard against overflow in arithmetic operations involving potentially large numbers by doing
+one of the following:
+</p>
+<ul>
+<li>Validate the size of the data from which the numbers are computed.</li>
+<li>Define a guard on the arithmetic expression, so that the operation is performed only if the
+result can be known to be less than, or equal to, the maximum value for the type.</li>
+<li>Use a wider type (such as <code>uint64</code> instead of <code>int</code>), so that larger input
+values do not cause overflow.</li>
+</ul>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume that there is a function <code>encryptBuffer</code> that encrypts
+byte slices whose length must be padded to be a multiple of 16. The function
+<code>encryptValue</code> provides a convenience wrapper around this function: when passed an
+arbitrary value, it first encodes that value as JSON, pads the resulting byte slice, and then passes
+it to <code>encryptBuffer</code>.
+</p>
+<sample src="AllocationSizeOverflow.go"/>
+<p>
+When passed a value whose JSON encoding is close to the maximum value of type <code>int</code> in
+length, the computation of <code>size</code> will overflow, producing a negative value. When that
+negative value is passed to <code>make</code>, a runtime panic will occur.
+</p>
+<p>
+To guard against this, the function should be improved to check the length of the JSON-encoded
+value. For example, here is a version of <code>encryptValue</code> that ensures the value is no
+larger than 64 MB, which fits comfortably within an <code>int</code> and avoids the overflow:
+</p>
+<sample src="AllocationSizeOverflowGood.go"/>
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Integer_overflow">Integer overflow</a>.</li>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Making_slices_maps_and_channels">Making slices, maps and channels</a>.</li>
+</references>
+</qhelp>
