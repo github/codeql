@@ -268,3 +268,10 @@ void *global;
 void Escape(void* p){
   global = p;
 }
+
+int ParameterEscapes(int *p) {
+  static int x = 0;
+  Escape(p);
+  x = 1;
+  return *p;
+}
