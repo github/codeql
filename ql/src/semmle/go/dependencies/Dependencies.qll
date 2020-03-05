@@ -26,7 +26,12 @@ abstract class Dependency extends Locatable {
   /**
    * An import of this dependency.
    */
-  ImportSpec getAnImport() { result.getPath() = this.getDepPath() }
+  ImportSpec getAnImport() {
+    result.getPath() = this.getDepPath() and
+    exists(Folder parent | parent.getAFile() = this.getFile() |
+      parent.getAFolder*().getAFile() = result.getFile()
+    )
+  }
 }
 
 /**
