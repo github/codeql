@@ -262,7 +262,7 @@ public class TypeScriptParser {
     int mainMemoryMb =
         typescriptRam != 0
             ? typescriptRam
-            : getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_SUFFIX, 1000);
+            : getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_SUFFIX, 2000);
     int reserveMemoryMb = getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_RESERVE_SUFFIX, 400);
 
     File parserWrapper = getParserWrapper();
