@@ -1,7 +1,7 @@
-Data flow cheat sheet
-=====================
+Data flow cheat sheet for JavaScript
+====================================
 
-This page describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
+This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
 Taint tracking path queries
 ---------------------------
@@ -39,7 +39,7 @@ See also: `Global data flow <https://help.semmle.com/QL/learn-ql/javascript/data
 DataFlow module
 ---------------
 
-Use data flow nodes to match program elements independently of syntax. See also: :doc:`Analyzing data flow in JavaScript/TypeScript <dataflow>`.
+Use data flow nodes to match program elements independently of syntax. See also: :doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>`.
 
 Predicates in the ``DataFlow::`` module:
 
@@ -142,7 +142,7 @@ Files
 AST nodes
 ---------
 
-See also: :doc:`AST class reference <ast-class-reference>`.
+See also: :doc:`Abstract syntax tree classes for JavaScript and TypeScript <ast-class-reference>`.
 
 Conversion between DataFlow and AST nodes:
 
@@ -163,7 +163,7 @@ String matching
 Type tracking
 -------------
 
-See also: :doc:`Type tracking tutorial <type-tracking>`.
+See also: :doc:`Using type tracking for API modeling <type-tracking>`.
 
 Use the following template to define forward type tracking predicates:
 

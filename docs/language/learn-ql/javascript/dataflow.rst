@@ -1,12 +1,11 @@
 Analyzing data flow in JavaScript and TypeScript
 ================================================
 
+This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
+
 Overview
 --------
-
-This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
-
+The various sections in this article describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 As our running example, we will develop a query that identifies command-line arguments that are passed as a file path to the standard Node.js ``readFile`` function.
 While this is not a problematic pattern as such, it is typical of the kind of reasoning that is frequently used in security queries.
 
@@ -470,7 +469,7 @@ What next?
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
--  Learn about writing more precise data-flow analyses in :doc:`Advanced data-flow analysis using flow labels <flow-labels>`
+-  Learn about writing more precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`
 
 Answers
 -------

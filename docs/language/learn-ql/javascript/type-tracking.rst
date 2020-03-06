@@ -1,9 +1,11 @@
-Tutorial: API modelling using type tracking
-===========================================
+Using type tracking for API modeling
+====================================
 
-This tutorial demonstrates how to build a simple model of the Firebase API
+You can track data through an API by creating a model 
 using the CodeQL type-tracking library for JavaScript.
 
+Overview
+--------
 The type-tracking library makes it possible to track values through properties and function calls,
 usually to recognize method calls and properties accessed on a specific type of object.
 
@@ -489,7 +491,7 @@ Prefer type tracking when:
 Prefer data-flow configurations when:
 
 - Tracking user-controlled data -- use `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
-- Differentiating between different kinds of user-controlled data -- use :doc:`flow labels <flow-labels>`.
+- Differentiating between different kinds of user-controlled data -- see :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
 - Generating a path from source to sink -- see :doc:`constructing path queries <../writing-queries/path-queries>`.
@@ -522,4 +524,4 @@ What next?
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
--  Learn about writing precise data-flow analyses in :doc:`Advanced data-flow analysis using flow labels <flow-labels>`.
+-  Learn about writing precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
