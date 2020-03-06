@@ -74,6 +74,7 @@ private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
     (
         tonode.getAnArg() = fromnode
         or
+        // TODO: if this case is not covered by tonode.getAnArg(), we should change it so it is :\
         tonode.getNode().getAKeyword().getValue() = fromnode.getNode()
     )
 }
@@ -93,10 +94,13 @@ private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = str(fromnode)*/
 private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getAnArg() = fromnode and
-    exists(ClassObject str |
-        tonode.getFunction().refersTo(str) |
-        str = theUnicodeType() or str = theBytesType()
-    )
+    tonode = ClassValue::str().getACall()
+    // TODO: should it instead be this?
+    // (
+    //     tonode = ClassValue::bytes().getACall()
+    //     or
+    //     tonode = ClassValue::unicode().getACall()
+    // )
 }
 
 /* tonode = fromnode[:] */
@@ -110,11 +114,8 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
 
 /* tonode = os.path.join(..., fromnode, ...) */
 private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
-    exists(FunctionObject path_join |
-        path_join = ModuleObject::named("os").attr("path").(ModuleObject).attr("join")
-        and
-        tonode = path_join.getACall() and tonode.getAnArg() = fromnode 
-    )
+    tonode = Value::named("os.path.join").getACall()
+    and tonode.getAnArg() = fromnode
 }
 
 /** A kind of "taint", representing a dictionary mapping str->"taint" */
@@ -125,5 +126,3 @@ class StringDictKind extends DictKind {
     }
 
 }
-
-
