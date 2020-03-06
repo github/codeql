@@ -827,7 +827,7 @@ private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // GlobalFunctionNode -> use
-  nodeTo = MkGlobalFunctionNode(nodeFrom.asExpr().(FunctionName).getTarget())
+  nodeFrom = MkGlobalFunctionNode(nodeTo.asExpr().(FunctionName).getTarget())
 }
 
 /**
