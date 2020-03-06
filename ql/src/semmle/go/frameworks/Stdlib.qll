@@ -14,6 +14,18 @@ class StringMethod extends TaintTracking::FunctionModel, Method {
 }
 
 /**
+ * A model of the built-in `append` function, which propagates taint from its arguments to its
+ * result.
+ */
+private class AppendFunction extends TaintTracking::FunctionModel {
+  AppendFunction() { this = Builtin::append() }
+
+  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    inp.isParameter(_) and outp.isResult()
+  }
+}
+
+/**
  * A model of the built-in `copy` function, which propagates taint from its second argument
  * to its first.
  */
