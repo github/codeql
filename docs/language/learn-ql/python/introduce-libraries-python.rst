@@ -154,7 +154,7 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
 ➤ `See this in the query console <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
 
 Summary
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^
 
 The most commonly used standard classes in the syntactic part of the library are organized as follows:
 
