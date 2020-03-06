@@ -9,7 +9,7 @@ import semmle.go.Concepts
 import semmle.go.Decls
 import semmle.go.Expr
 import semmle.go.Files
-import semmle.go.GoModExpr
+import semmle.go.GoMod
 import semmle.go.Locations
 import semmle.go.Packages
 import semmle.go.Scopes

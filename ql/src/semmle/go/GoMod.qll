@@ -4,6 +4,16 @@
 
 import go
 
+/** A go.mod file. */
+class GoModFile extends File {
+  GoModFile() { this.getBaseName() = "go.mod" }
+
+  /**
+   * Gets the module declaration of this file, that is, the line declaring the path of this module.
+   */
+  GoModModuleLine getModuleDeclaration() { result.getFile() = this }
+}
+
 /**
  * An expression in a go.mod file, which is used to declare dependencies.
  */
@@ -22,10 +32,10 @@ class GoModExpr extends @modexpr, GoModExprParent {
    */
   DocComment getComments() { result.getDocumentedElement() = this }
 
+  override GoModFile getFile() { result = GoModExprParent.super.getFile() }
+
   /** Gets path of the module of this go.mod expression. */
-  string getModulePath() {
-    exists(GoModModuleLine mod | this.getFile() = mod.getFile() | result = mod.getPath())
-  }
+  string getModulePath() { result = this.getFile().getModuleDeclaration().getPath() }
 
   override string toString() { result = "go.mod expression" }
 }
