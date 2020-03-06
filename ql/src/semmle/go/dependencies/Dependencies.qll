@@ -23,7 +23,7 @@ abstract class Dependency extends Locatable {
   string getDepVersion() { this.info(_, result) }
 
   /**
-   * This dependency is relevant for imports in file `file`. That is, an import of this
+   * Holds if this dependency is relevant for imports in file `file`. That is, an import of this
    * dependency's path that is in `file` will use this dependency.
    */
   abstract predicate relevantForFile(File file);

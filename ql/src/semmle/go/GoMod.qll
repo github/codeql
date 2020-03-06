@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with go.mod expressions.
+ * Provides classes for working with go.mod files.
  */
 
 import go
