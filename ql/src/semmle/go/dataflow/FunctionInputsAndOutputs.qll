@@ -226,8 +226,8 @@ private class OutParameter extends FunctionOutput, TOutParameter {
   }
 
   override string toString() {
-    index = -1 and result = "result"
+    index = -1 and result = "receiver"
     or
-    index >= 0 and result = "result " + index
+    index >= 0 and result = "parameter " + index
   }
 }
