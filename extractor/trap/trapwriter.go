@@ -1,6 +1,7 @@
 package trap
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"go/types"
@@ -15,7 +16,8 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
-	w            *os.File
+	w            *bufio.Writer
+	file         *os.File
 	Labeler      *Labeler
 	path         string
 	trapFilePath string
@@ -40,6 +42,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		return nil, err
 	}
 	tw := &Writer{
+		bufio.NewWriter(tmpFile),
 		tmpFile,
 		nil,
 		path,
@@ -67,15 +70,15 @@ func trapFolder() (string, error) {
 
 // Close the underlying file writer
 func (tw *Writer) Close() error {
-	err := tw.w.Sync()
+	err := tw.w.Flush()
 	if err != nil {
 		return err
 	}
-	err = tw.w.Close()
+	err = tw.file.Close()
 	if err != nil {
 		return err
 	}
-	return os.Rename(tw.w.Name(), tw.trapFilePath)
+	return os.Rename(tw.file.Name(), tw.trapFilePath)
 }
 
 // ForEachObject iterates over all objects labeled by this labeler, and invokes
