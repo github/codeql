@@ -1,5 +1,5 @@
 | pkg1/go.mod:6:2:6:67 | go.mod require line | codeql-go-tests/gomod/dep1 | github.com/github/codeql-go | v1.23.2-0.20200302182241-5e71a04fdf30 |
 | pkg1/go.mod:7:2:7:55 | go.mod require line | codeql-go-tests/gomod/dep1 | golang.org/x/tools | v0.0.0-20200109174759-ac4f524c1612 |
-| pkg2/go.mod:7:1:7:38 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/gorilla/mux | v1.7.4 |
-| pkg2/go.mod:9:2:9:35 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/sirupsen/logrus | v1.4.1 |
-| pkg2/go.mod:10:2:10:40 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/Masterminds/squirrel | v1.2.0 |
+| pkg2/go.mod:8:1:8:38 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/gorilla/mux | v1.7.4 |
+| pkg2/go.mod:10:2:10:35 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/Sirupsen/logrus | v1.4.1 |
+| pkg2/go.mod:11:2:11:40 | go.mod require line | codeql-go-tests/gomod/dep2 | github.com/Masterminds/squirrel | v1.2.0 |
