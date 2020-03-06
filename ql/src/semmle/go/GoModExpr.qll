@@ -40,9 +40,40 @@ class GoModCommentBlock extends @modcommentblock, GoModExpr { }
  */
 class GoModLine extends @modline, GoModExpr {
   /**
-   * Gets the `i`th token on this line.
+   * Gets the `i`th token on this line, 0-based.
+   *
+   * Generally, one should use `getToken`, as that accounts for lines inside of line blocks.
    */
-  string getToken(int i) { modtokens(result, this, i) }
+  string getRawToken(int i) { modtokens(result, this, i) }
+
+  /**
+   * Gets the `i`th token of `line`, including the token in the line block declaration, if it there is
+   * one, 0-based.
+   *
+   * This compensates for the fact that lines in line blocks have their 0th token in the line block
+   * declaration, and makes dealing with lines more uniform.
+   *
+   * For example, `.getToken(1)` will result in the dependency path (`github.com/github/codeql-go`)
+   * for both lines for normal require lines like `require "github.com/github/codeql-go" v1.2.3` and
+   * in a line block like
+   *
+   * ```
+   * require (
+   *   "github.com/github/codeql-go" v1.2.3
+   *   ...
+   * )
+   * ```
+   *
+   * As a special case, when `i` is `0` and the line is in a line block, the result will be the
+   * token from the line block.
+   */
+  string getToken(int i) {
+    i = 0 and result = this.getParent().(GoModLineBlock).getRawToken(0)
+    or
+    if this.getParent() instanceof GoModLineBlock
+    then result = this.getRawToken(i - 1)
+    else result = this.getRawToken(i)
+  }
 
   override string toString() { result = "go.mod line" }
 }
@@ -58,38 +89,26 @@ class GoModLine extends @modline, GoModExpr {
  */
 class GoModLineBlock extends @modlineblock, GoModExpr {
   /**
-   * Gets the `i`th token of this line block.
+   * Gets the `i`th token of this line block, 0-based.
+   *
+   * Usually one should not have to use this, as `GoModLine.getToken(0)` will get the token from its
+   * parent line block, if any.
    */
-  string getToken(int i) { modtokens(result, this, i) }
+  string getRawToken(int i) { modtokens(result, this, i) }
 
   override string toString() { result = "go.mod line block" }
 }
 
 /**
- * Gets the `i`th token of `line`, including the token in the line block declaration, if it there is
- * one.
- */
-private string getOffsetToken(GoModLine line, int i) {
-  if line.getParent() instanceof GoModLineBlock
-  then result = line.getToken(i - 1)
-  else result = line.getToken(i)
-}
-
-/**
- * A line that contains the module information
+ * A line that contains the module's package path, for example `module github.com/github/codeql-go`.
  */
 class GoModModuleLine extends GoModLine {
-  GoModModuleLine() {
-    this.getParent().(GoModLineBlock).getToken(0) = "module"
-    or
-    not this.getParent() instanceof GoModLineBlock and
-    this.getToken(0) = "module"
-  }
+  GoModModuleLine() { this.getToken(0) = "module" }
 
   /**
    * Get the path of the module being declared.
    */
-  string getPath() { result = getOffsetToken(this, 1) }
+  string getPath() { result = this.getToken(1) }
 
   override string toString() { result = "go.mod module line" }
 }
@@ -110,18 +129,13 @@ class GoModGoLine extends GoModLine {
  * A line that declares a requirement, for example `require "github.com/github/codeql-go" v1.2.3`.
  */
 class GoModRequireLine extends GoModLine {
-  GoModRequireLine() {
-    this.getParent().(GoModLineBlock).getToken(0) = "require"
-    or
-    not this.getParent() instanceof GoModLineBlock and
-    this.getToken(0) = "require"
-  }
+  GoModRequireLine() { this.getToken(0) = "require" }
 
   /** Gets the path of the dependency. */
-  string getPath() { result = getOffsetToken(this, 1) }
+  string getPath() { result = this.getToken(1) }
 
   /** Gets the version of the dependency. */
-  string getVersion() { result = getOffsetToken(this, 2) }
+  string getVersion() { result = this.getToken(2) }
 
   override string toString() { result = "go.mod require line" }
 }
@@ -131,18 +145,13 @@ class GoModRequireLine extends GoModLine {
  * `exclude "github.com/github/codeql-go" v1.2.3`.
  */
 class GoModExcludeLine extends GoModLine {
-  GoModExcludeLine() {
-    this.getParent().(GoModLineBlock).getToken(0) = "exclude"
-    or
-    not this.getParent() instanceof GoModLineBlock and
-    this.getToken(0) = "exclude"
-  }
+  GoModExcludeLine() { this.getToken(0) = "exclude" }
 
   /** Gets the path of the dependency to exclude a version of. */
-  string getPath() { result = getOffsetToken(this, 1) }
+  string getPath() { result = this.getToken(1) }
 
   /** Gets the excluded version. */
-  string getVersion() { result = getOffsetToken(this, 2) }
+  string getVersion() { result = this.getToken(2) }
 
   override string toString() { result = "go.mod exclude line" }
 }
@@ -152,31 +161,26 @@ class GoModExcludeLine extends GoModLine {
  * `replace "golang.org/x/tools" => "github.com/golang/tools" v1.2.3`.
  */
 class GoModReplaceLine extends GoModLine {
-  GoModReplaceLine() {
-    this.getParent().(GoModLineBlock).getToken(0) = "replace"
-    or
-    not this.getParent() instanceof GoModLineBlock and
-    this.getToken(0) = "replace"
-  }
+  GoModReplaceLine() { this.getToken(0) = "replace" }
 
   /** Gets the path of the dependency to be replaced. */
-  string getOriginalPath() { result = getOffsetToken(this, 1) }
+  string getOriginalPath() { result = this.getToken(1) }
 
   /** Gets the path of the dependency to be replaced, if any. */
-  string getOriginalVersion() { result = getOffsetToken(this, 2) and not result = "=>" }
+  string getOriginalVersion() { result = this.getToken(2) and not result = "=>" }
 
   /** Gets the path of the replacement dependency. */
   string getReplacementPath() {
     if exists(this.getOriginalVersion())
-    then result = getOffsetToken(this, 4)
-    else result = getOffsetToken(this, 3)
+    then result = this.getToken(4)
+    else result = this.getToken(3)
   }
 
   /** Gets the version of the replacement dependency. */
   string getReplacementVersion() {
     if exists(this.getOriginalVersion())
-    then result = getOffsetToken(this, 5)
-    else result = getOffsetToken(this, 4)
+    then result = this.getToken(5)
+    else result = this.getToken(4)
   }
 
   override string toString() { result = "go.mod replace line" }
