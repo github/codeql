@@ -13,6 +13,30 @@ class StringMethod extends TaintTracking::FunctionModel, Method {
   }
 }
 
+/**
+ * A model of the built-in `append` function, which propagates taint from its arguments to its
+ * result.
+ */
+private class AppendFunction extends TaintTracking::FunctionModel {
+  AppendFunction() { this = Builtin::append() }
+
+  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    inp.isParameter(_) and outp.isResult()
+  }
+}
+
+/**
+ * A model of the built-in `copy` function, which propagates taint from its second argument
+ * to its first.
+ */
+private class CopyFunction extends TaintTracking::FunctionModel {
+  CopyFunction() { this = Builtin::copy() }
+
+  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    inp.isParameter(1) and outp.isParameter(0)
+  }
+}
+
 /** Provides models of commonly used functions in the `path/filepath` package. */
 module PathFilePath {
   /** A path-manipulating function in the `path/filepath` package. */

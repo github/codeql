@@ -83,7 +83,8 @@ predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 /** Holds if taint flows from `pred` to `succ` via string concatenation. */
 predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(DataFlow::BinaryOperationNode conc | conc.getOperator() = "+" |
+  exists(DataFlow::BinaryOperationNode conc |
+    conc.getOperator() = "+" and conc.getType() instanceof StringType |
     succ = conc and conc.getAnOperand() = pred
   )
 }

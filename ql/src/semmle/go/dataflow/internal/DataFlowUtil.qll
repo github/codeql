@@ -397,12 +397,15 @@ class PostUpdateNode extends Node {
         or
         preupd = base.(PointerDereferenceNode).getOperand()
       )
+      or
+      preupd instanceof ArgumentNode and
+      mutableType(preupd.getType())
     ) and
     (
       preupd = this.(SsaNode).getAUse()
       or
       preupd = this and
-      not exists(getAPredecessor())
+      not basicLocalFlowStep(_, this)
     )
   }
 
@@ -413,18 +416,24 @@ class PostUpdateNode extends Node {
 }
 
 /**
+ * Gets the `i`th argument of call `c`, where the receiver of a method call
+ * counts as argument -1.
+ */
+private Node getArgument(CallNode c, int i) {
+  result = c.getArgument(i)
+  or
+  result = c.(MethodCallNode).getReceiver() and
+  i = -1
+}
+
+/**
  * A data-flow node that occurs as an argument in a call, including receiver arguments.
  */
 class ArgumentNode extends Node {
   CallNode c;
   int i;
 
-  ArgumentNode() {
-    this = c.getArgument(i)
-    or
-    this = c.(MethodCallNode).getReceiver() and
-    i = -1
-  }
+  ArgumentNode() { this = getArgument(c, i) }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
@@ -447,6 +456,20 @@ class ArgumentNode extends Node {
    * Gets the `CallNode` this is an argument to.
    */
   CallNode getCall() { result = c }
+}
+
+/**
+ * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
+ *
+ * If a value with a mutable type is passed to a function, the function could potentially
+ * mutate it or something it points to.
+ */
+predicate mutableType(Type tp) {
+  tp instanceof ArrayType or
+  tp instanceof SliceType or
+  tp instanceof MapType or
+  tp instanceof PointerType or
+  tp instanceof InterfaceType
 }
 
 /**
@@ -766,13 +789,10 @@ Node extractTupleElement(Node t, int i) {
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
- * INTERNAL: do not use.
- *
- * This is the local flow predicate that's used as a building block in global
- * data flow. It may have less flow than the `localFlowStep` predicate.
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step, not taking function models into account.
  */
-cached
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+private predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Instruction -> Instruction
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
@@ -807,7 +827,18 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // GlobalFunctionNode -> use
-  nodeTo = MkGlobalFunctionNode(nodeFrom.asExpr().(FunctionName).getTarget())
+  nodeFrom = MkGlobalFunctionNode(nodeTo.asExpr().(FunctionName).getTarget())
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * This is the local flow predicate that's used as a building block in global
+ * data flow. It may have less flow than the `localFlowStep` predicate.
+ */
+cached
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  basicLocalFlowStep(nodeFrom, nodeTo)
   or
   // step through function model
   exists(FunctionModel m, CallNode c, FunctionInput inp, FunctionOutput outp |
