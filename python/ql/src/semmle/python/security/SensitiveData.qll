@@ -166,9 +166,9 @@ module SensitiveData {
 
         SensitiveRequestParameter() {
             this.(CallNode).getFunction().(AttrNode).getName() = "get" and
-            exists(string sensitive |
-                this.(CallNode).getAnArg().refersTo(any(StringObject s | s.getText() = sensitive)) and
-                data = HeuristicNames::getSensitiveDataForName(sensitive)
+            exists(StringValue sensitive |
+                this.(CallNode).getAnArg().pointsTo(sensitive) and
+                data = HeuristicNames::getSensitiveDataForName(sensitive.getText())
             )
         }
 

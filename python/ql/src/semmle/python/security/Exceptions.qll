@@ -27,7 +27,7 @@ class ExceptionInfo extends StringKind {
 
 }
 
-/** A class representing sources of information about 
+/** A class representing sources of information about
  * execution state exposed in tracebacks and the like.
  */
 abstract class ErrorInfoSource extends TaintSource {}
@@ -59,9 +59,9 @@ class ExceptionKind extends TaintKind {
 class ExceptionSource extends ErrorInfoSource {
 
     ExceptionSource() {
-        exists(ClassObject cls |
-            cls.isSubclassOf(theExceptionType()) and
-            this.(ControlFlowNode).refersTo(_, cls, _)
+        exists(ClassValue cls |
+            cls.getASuperType() = ClassValue::baseException() and
+            this.(ControlFlowNode).pointsTo().getClass() = cls
         )
         or
         this = any(ExceptStmt s).getName().getAFlowNode()
@@ -116,7 +116,7 @@ class CallToTracebackFunction extends ErrorInfoSource {
     }
 }
 
-/** 
+/**
  * Represents calls to functions in the `traceback` module that return a single
  * string of information about an exception.
  */

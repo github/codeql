@@ -12,13 +12,12 @@ abstract class WeakCryptoSink extends TaintSink {
     }
 }
 
+/** Modeling the 'pycrypto' pacakge https://github.com/dlitz/pycrypto (latest release 2013) */
 module Pycrypto {
 
-    ModuleObject cipher(string name) {
-        exists(PackageObject crypto |
-            crypto.getName() = "Crypto.Cipher" |
-            crypto.submodule(name) = result
-        )
+    ModuleValue cipher(string name) {
+        result = Module::named("Crypto.Cipher").attr(name) and
+        result.isPackage()
     }
 
     class CipherInstance extends TaintKind {
@@ -51,7 +50,7 @@ module Pycrypto {
         CipherInstanceSource() {
             exists(AttrNode attr |
                 this.(CallNode).getFunction() = attr and
-                attr.getObject("new").refersTo(cipher(instance.getName()))
+                attr.getObject("new").pointsTo(cipher(instance.getName()))
             )
         }
 
@@ -59,7 +58,7 @@ module Pycrypto {
             result = "Source of " + instance
         }
 
-        override predicate isSourceOf(TaintKind kind) { 
+        override predicate isSourceOf(TaintKind kind) {
             kind = instance
         }
 
@@ -70,12 +69,12 @@ module Pycrypto {
         string name;
 
         PycryptoWeakCryptoSink() {
-            exists(CallNode call, AttrNode method, CipherInstance Cipher |
+            exists(CallNode call, AttrNode method, CipherInstance cipher |
                 call.getAnArg() = this and
                 call.getFunction() = method and
-                Cipher.taints(method.getObject("encrypt")) and
-                Cipher.isWeak() and
-                Cipher.getName() = name
+                cipher.taints(method.getObject("encrypt")) and
+                cipher.isWeak() and
+                cipher.getName() = name
             )
         }
 
@@ -89,25 +88,25 @@ module Pycrypto {
 
 module Cryptography {
 
-    PackageObject ciphers() {
-        result.getName() = "cryptography.hazmat.primitives.ciphers"
+    ModuleValue ciphers() {
+        result = Module::named("cryptography.hazmat.primitives.ciphers") and
+        result.isPackage()
     }
 
-    class CipherClass extends ClassObject {
+    class CipherClass extends ClassValue {
         CipherClass() {
             ciphers().attr("Cipher") = this
         }
-
     }
 
-    class AlgorithmClass extends ClassObject {
+    class AlgorithmClass extends ClassValue {
 
         AlgorithmClass()  {
-            ciphers().submodule("algorithms").attr(_) = this
+            ciphers().attr("algorithms").attr(_) = this
         }
 
         string getAlgorithmName() {
-            result = this.declaredAttribute("name").(StringObject).getText()
+            result = this.declaredAttribute("name").(StringValue).getText()
         }
 
         predicate isWeak() {
@@ -134,7 +133,7 @@ module Cryptography {
             cls.isWeak()
         }
 
-        override TaintKind getTaintOfMethodResult(string name) { 
+        override TaintKind getTaintOfMethodResult(string name) {
             name = "encryptor" and
             result.(Encryptor).getAlgorithm() = this.getAlgorithm()
         }
@@ -144,11 +143,11 @@ module Cryptography {
     class CipherSource extends TaintSource {
 
         CipherSource() {
-            this.(CallNode).getFunction().refersTo(any(CipherClass cls))
+            this.(CallNode).getFunction().pointsTo(any(CipherClass cls))
         }
 
         override predicate isSourceOf(TaintKind kind) {
-            this.(CallNode).getArg(0).refersTo(_, kind.(CipherInstance).getAlgorithm(), _)
+            this.(CallNode).getArg(0).pointsTo().getClass() = kind.(CipherInstance).getAlgorithm()
         }
 
         override string toString() {
@@ -203,5 +202,3 @@ private class CipherConfig extends TaintTracking::Configuration {
     }
 
 }
-
-
