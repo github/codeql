@@ -1,3 +1,7 @@
+/**
+ * Provides classes for dealing with semantic versions, for strings that dependency's versions.
+ */
+
 import semmle.go.dependencies.Dependencies
 
 /**

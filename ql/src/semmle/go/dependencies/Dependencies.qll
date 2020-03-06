@@ -23,13 +23,17 @@ abstract class Dependency extends Locatable {
   string getDepVersion() { this.info(_, result) }
 
   /**
+   * This dependency is relevant for imports in file `file`. That is, an import of this
+   * dependency's path that is in `file` will use this dependency.
+   */
+  abstract predicate relevantForFile(File file);
+
+  /**
    * An import of this dependency.
    */
   ImportSpec getAnImport() {
     result.getPath() = this.getDepPath() and
-    exists(Folder parent | parent.getAFile() = this.getFile() |
-      parent.getAFolder*().getAFile() = result.getFile()
-    )
+    this.relevantForFile(result.getFile())
   }
 }
 
@@ -44,8 +48,14 @@ class GoModDependency extends Dependency, GoModRequireLine {
     this.originalInfo(path, v)
   }
 
+  override predicate relevantForFile(File file) {
+    exists(Folder parent | parent.getAFile() = this.getFile() |
+      parent.getAFolder*().getAFile() = file
+    )
+  }
+
   /**
-   * Holds if there is a replace line that replaces this dependency with a dependency to `path`,
+   * Holds if there is a replace line that replaces this dependency with a dependency on `path`,
    * version `v`.
    */
   predicate replacementInfo(string path, string v) {
