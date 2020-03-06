@@ -907,7 +907,9 @@ private predicate reachableFromStoreBase(
     reachableFromStoreBase(_, _, rhs, cfg, s1)
   |
     storeStep(rhs, nd, prop, cfg, s2) and
-    summary = MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(), s2.getEndLabel())
+    summary =
+      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(),
+        s2.getEndLabel())
   )
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
