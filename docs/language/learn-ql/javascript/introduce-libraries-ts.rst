@@ -12,7 +12,7 @@ Support for analyzing TypeScript code is bundled with the CodeQL libraries for J
 
    import javascript
 
-The :doc:`CodeQL libraries for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript documentation with the TypeScript-specific classes and predicates.
+:doc:`CodeQL libraries for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript documentation with the TypeScript-specific classes and predicates.
 
 Syntax
 ------
