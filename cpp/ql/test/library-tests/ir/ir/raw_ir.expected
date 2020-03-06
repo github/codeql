@@ -6297,43 +6297,24 @@ struct_init.cpp:
 
 #   20| void declare_static_infos()
 #   20|   Block 0
-#   20|     v20_1(void)             = EnterFunction                    : 
-#   20|     mu20_2(unknown)         = AliasedDefinition                : 
-#   20|     mu20_3(unknown)         = InitializeNonLocal               : 
-#   20|     mu20_4(unknown)         = UnmodeledDefinition              : 
-#   21|     r21_1(glval<Info[2]>)   = VariableAddress[static_infos]    : 
-#   21|     mu21_2(Info[2])         = Uninitialized[static_infos]      : &:r21_1
-#   21|     r21_3(int)              = Constant[0]                      : 
-#   21|     r21_4(glval<Info>)      = PointerAdd[16]                   : r21_1, r21_3
-#   22|     r22_1(glval<char *>)    = FieldAddress[name]               : r21_4
-#   22|     r22_2(glval<char[2]>)   = StringConstant["1"]              : 
-#   22|     r22_3(char *)           = Convert                          : r22_2
-#   22|     mu22_4(char *)          = Store                            : &:r22_1, r22_3
-#   22|     r22_5(glval<..(*)(..)>) = FieldAddress[handler]            : r21_4
-#   22|     r22_6(..(*)(..))        = FunctionAddress[handler1]        : 
-#   22|     mu22_7(..(*)(..))       = Store                            : &:r22_5, r22_6
-#   21|     r21_5(int)              = Constant[1]                      : 
-#   21|     r21_6(glval<Info>)      = PointerAdd[16]                   : r21_1, r21_5
-#   23|     r23_1(glval<char *>)    = FieldAddress[name]               : r21_6
-#   23|     r23_2(glval<char[2]>)   = StringConstant["2"]              : 
-#   23|     r23_3(char *)           = Convert                          : r23_2
-#   23|     mu23_4(char *)          = Store                            : &:r23_1, r23_3
-#   23|     r23_5(glval<..(*)(..)>) = FieldAddress[handler]            : r21_6
-#   23|     r23_6(glval<..()(..)>)  = FunctionAddress[handler2]        : 
-#   23|     r23_7(..(*)(..))        = CopyValue                        : r23_6
-#   23|     mu23_8(..(*)(..))       = Store                            : &:r23_5, r23_7
-#   25|     r25_1(glval<unknown>)   = FunctionAddress[let_info_escape] : 
-#   25|     r25_2(glval<Info[2]>)   = VariableAddress[static_infos]    : 
-#   25|     r25_3(Info *)           = Convert                          : r25_2
-#   25|     v25_4(void)             = Call                             : func:r25_1, 0:r25_3
-#   25|     mu25_5(unknown)         = ^CallSideEffect                  : ~mu20_4
-#   25|     v25_6(void)             = ^BufferReadSideEffect[0]         : &:r25_3, ~mu20_4
-#   25|     mu25_7(unknown)         = ^BufferMayWriteSideEffect[0]     : &:r25_3
-#   26|     v26_1(void)             = NoOp                             : 
-#   20|     v20_5(void)             = ReturnVoid                       : 
-#   20|     v20_6(void)             = UnmodeledUse                     : mu*
-#   20|     v20_7(void)             = AliasedUse                       : ~mu20_4
-#   20|     v20_8(void)             = ExitFunction                     : 
+#   20|     v20_1(void)           = EnterFunction                    : 
+#   20|     mu20_2(unknown)       = AliasedDefinition                : 
+#   20|     mu20_3(unknown)       = InitializeNonLocal               : 
+#   20|     mu20_4(unknown)       = UnmodeledDefinition              : 
+#   21|     r21_1(glval<Info[2]>) = VariableAddress[static_infos]    : 
+#   21|     mu21_2(Info[2])       = Uninitialized[static_infos]      : &:r21_1
+#   25|     r25_1(glval<unknown>) = FunctionAddress[let_info_escape] : 
+#   25|     r25_2(glval<Info[2]>) = VariableAddress[static_infos]    : 
+#   25|     r25_3(Info *)         = Convert                          : r25_2
+#   25|     v25_4(void)           = Call                             : func:r25_1, 0:r25_3
+#   25|     mu25_5(unknown)       = ^CallSideEffect                  : ~mu20_4
+#   25|     v25_6(void)           = ^BufferReadSideEffect[0]         : &:r25_3, ~mu20_4
+#   25|     mu25_7(unknown)       = ^BufferMayWriteSideEffect[0]     : &:r25_3
+#   26|     v26_1(void)           = NoOp                             : 
+#   20|     v20_5(void)           = ReturnVoid                       : 
+#   20|     v20_6(void)           = UnmodeledUse                     : mu*
+#   20|     v20_7(void)           = AliasedUse                       : ~mu20_4
+#   20|     v20_8(void)           = ExitFunction                     : 
 
 #   28| void declare_local_infos()
 #   28|   Block 0
