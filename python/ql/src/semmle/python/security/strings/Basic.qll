@@ -104,7 +104,7 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
     exists(Slice all |
         all = tonode.getIndex().getNode() and
         not exists(all.getStart()) and not exists(all.getStop()) and
-        tonode.getValue() = fromnode
+        tonode.getObject() = fromnode
     )
 }
 

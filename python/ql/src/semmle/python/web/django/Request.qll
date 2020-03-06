@@ -21,7 +21,7 @@ class DjangoRequest extends TaintKind {
 /* Helper for getTaintForStep() */
 pragma[noinline]
 private predicate subscript_taint(SubscriptNode sub, ControlFlowNode obj, TaintKind kind) {
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     kind instanceof ExternalStringKind
 }
 
