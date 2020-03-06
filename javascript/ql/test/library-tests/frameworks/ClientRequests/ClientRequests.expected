@@ -52,6 +52,9 @@ test_ClientRequest
 | tst.js:147:5:147:19 | got.stream(url) |
 | tst.js:151:5:151:23 | superagent.get(url) |
 | tst.js:160:5:160:17 | xhr.send(url) |
+| tst.js:171:2:171:10 | base(url) |
+| tst.js:172:2:172:14 | variant1(url) |
+| tst.js:173:2:173:14 | variant2(url) |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -144,6 +147,9 @@ test_getUrl
 | tst.js:147:5:147:19 | got.stream(url) | tst.js:147:16:147:18 | url |
 | tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:20:151:22 | url |
 | tst.js:160:5:160:17 | xhr.send(url) | tst.js:160:14:160:16 | url |
+| tst.js:171:2:171:10 | base(url) | tst.js:171:7:171:9 | url |
+| tst.js:172:2:172:14 | variant1(url) | tst.js:172:11:172:13 | url |
+| tst.js:173:2:173:14 | variant2(url) | tst.js:173:11:173:13 | url |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |

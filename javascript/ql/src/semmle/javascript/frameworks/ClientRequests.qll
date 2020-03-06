@@ -111,28 +111,36 @@ module ClientRequest {
   private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
   /**
+   * Gets a model of an instance of the `request` library, or one of
+   * its wrappers, `promise` is true if the instance uses promises
+   * rather than callbacks.
+   */
+  private DataFlow::SourceNode getRequestLibrary(boolean promise) {
+    exists(string moduleName | result = DataFlow::moduleImport(moduleName) |
+      promise = false and
+      moduleName = "request"
+      or
+      promise = true and
+      (
+        moduleName = "request-promise" or
+        moduleName = "request-promise-any" or
+        moduleName = "request-promise-native"
+      )
+    )
+    or
+    result = getRequestLibrary(promise).getAMethodCall("defaults")
+  }
+
+  /**
    * A model of a URL request made using the `request` library.
    */
   class RequestUrlRequest extends ClientRequest::Range, DataFlow::CallNode {
     boolean promise;
 
     RequestUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          promise = false and
-          moduleName = "request"
-          or
-          promise = true and
-          (
-            moduleName = "request-promise" or
-            moduleName = "request-promise-any" or
-            moduleName = "request-promise-native"
-          )
-        ) and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName())
-        )
+      exists(DataFlow::SourceNode callee | this = callee.getACall() |
+        callee = getRequestLibrary(promise) or
+        callee = getRequestLibrary(promise).getAPropertyRead(httpMethodName())
       )
     }
 
