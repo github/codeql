@@ -1,7 +1,7 @@
 CodeQL libraries for JavaScript
 ===============================
 
-This article is an overview of the extensive libraries you can use to analyze databases generated from JavaScript codebases. Using the libraries makes it easier for you to write queries.
+You can use the extensive libraries described in this article to analyze databases generated from JavaScript codebases. Using these libraries makes it easier for you to write queries.
 
 Overview
 --------

@@ -1,9 +1,11 @@
 Using type tracking for API modeling
 ====================================
 
-This tutorial demonstrates how to build a simple model of the Firebase API
+You can build a simple model of the Firebase API
 using the CodeQL type-tracking library for JavaScript.
 
+Overview
+--------
 The type-tracking library makes it possible to track values through properties and function calls,
 usually to recognize method calls and properties accessed on a specific type of object.
 

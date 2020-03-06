@@ -1,6 +1,11 @@
 Using flow labels for precise data flow analysis
 ================================================
 
+You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
+
+Overview
+--------
+
 You can use basic inter-procedural data-flow analysis and taint tracking as described in
 :doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>` to check whether there is a path in
 the data-flow graph from some source node to a sink node that does not pass through any sanitizer
