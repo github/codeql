@@ -108,6 +108,20 @@ module IoUtil {
 
     override DataFlow::Node getAPathArgument() { result = getArgument(0) }
   }
+
+  /**
+   * A taint model of the `ioutil.ReadAll` function, recording that it propagates taint
+   * from its first argument to its first result.
+   */
+  private class ReadAll extends TaintTracking::FunctionModel {
+    ReadAll() {
+      hasQualifiedName("io/ioutil", "ReadAll")
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isParameter(0) and outp.isResult(0)
+    }
+  }
 }
 
 /** Provides models of commonly used functions in the `os` package. */
