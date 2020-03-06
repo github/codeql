@@ -1,7 +1,7 @@
 Data flow cheat sheet for JavaScript
 ====================================
 
-This page describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
+This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
 Taint tracking path queries
 ---------------------------
