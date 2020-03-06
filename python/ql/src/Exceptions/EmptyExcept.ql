@@ -64,9 +64,9 @@ predicate subscript(Stmt s) {
     s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode(Expr ex, ClassValue type) {
+predicate encode_decode(Call ex, ClassValue type) {
     exists(string name |
-        ex.(Call).getFunc().(Attribute).getName() = name |
+        ex.getFunc().(Attribute).getName() = name |
         name = "encode" and type = ClassValue::unicodeEncodeError()
         or
         name = "decode" and type = ClassValue::unicodeDecodeError()
