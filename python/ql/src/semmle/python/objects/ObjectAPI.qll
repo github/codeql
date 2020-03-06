@@ -485,7 +485,8 @@ class ClassValue extends Value {
     /** Whether this class is a legal exception class. 
      *  What constitutes a legal exception class differs between major versions */
     predicate isLegalExceptionType() {
-        not this.isNewStyle() or
+        not this.isNewStyle()
+        or
         this.getASuperType() = ClassValue::baseException()
         or
         major_version() = 2 and this = ClassValue::tuple()
