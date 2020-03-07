@@ -107,8 +107,8 @@ module TaintTracking {
     }
 
     override predicate isBarrier(DataFlow::Node node) {
-      super.isBarrier(node) or
-
+      super.isBarrier(node)
+      or
       // For variable accesses we block both the data and taint label, as a falsy value
       // can't be an object, and thus can't have any tainted properties.
       node instanceof DataFlow::VarAccessBarrier
@@ -117,8 +117,10 @@ module TaintTracking {
     final override predicate isBarrierEdge(
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
-      super.isBarrierEdge(source, sink, lbl) or
-      isSanitizerEdge(source, sink, lbl) or
+      super.isBarrierEdge(source, sink, lbl)
+      or
+      isSanitizerEdge(source, sink, lbl)
+      or
       isSanitizerEdge(source, sink) and lbl.isTaint()
     }
 

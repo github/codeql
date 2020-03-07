@@ -669,10 +669,9 @@ private predicate exploratoryFlowStep(
 private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
   (
-    if cfg instanceof TaintTracking::Configuration then
-      lbl = FlowLabel::taint()
-    else
-      lbl = FlowLabel::data()
+    if cfg instanceof TaintTracking::Configuration
+    then lbl = FlowLabel::taint()
+    else lbl = FlowLabel::data()
   )
   or
   nd.(AdditionalSource).isSourceFor(cfg, lbl)
@@ -686,10 +685,9 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
 private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
   (
-    if cfg instanceof TaintTracking::Configuration then
-      lbl = FlowLabel::taint()
-    else
-      lbl = FlowLabel::data()
+    if cfg instanceof TaintTracking::Configuration
+    then lbl = FlowLabel::taint()
+    else lbl = FlowLabel::data()
   )
   or
   nd.(AdditionalSink).isSinkFor(cfg, lbl)
