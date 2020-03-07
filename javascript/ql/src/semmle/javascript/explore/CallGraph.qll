@@ -21,6 +21,7 @@
  *
  * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
+
 import javascript
 private import DataFlow
 
@@ -33,22 +34,22 @@ private import DataFlow
  * by being passed to another call.
  */
 predicate callEdge(Node pred, Node succ) {
-    exists(InvokeNode invoke, Function f |
-      invoke.getACallee() = f and
-      pred = invoke and
-      succ = f.flow()
-      or
-      invoke.getContainer() = f and
-      pred = f.flow() and
-      succ = invoke
-    )
+  exists(InvokeNode invoke, Function f |
+    invoke.getACallee() = f and
+    pred = invoke and
+    succ = f.flow()
     or
-    exists(Function inner, Function outer |
-      inner.getEnclosingContainer() = outer and
-      not inner = outer.getAReturnedExpr() and
-      pred = outer.flow() and
-      succ = inner.flow()
-    )
+    invoke.getContainer() = f and
+    pred = f.flow() and
+    succ = invoke
+  )
+  or
+  exists(Function inner, Function outer |
+    inner.getEnclosingContainer() = outer and
+    not inner = outer.getAReturnedExpr() and
+    pred = outer.flow() and
+    succ = inner.flow()
+  )
 }
 
 /** Holds if `pred -> succ` is an edge in the call graph. */
@@ -56,14 +57,12 @@ query predicate edges = callEdge/2;
 
 /** Holds if `node` is part of the call graph. */
 query predicate nodes(Node node) {
-    node instanceof InvokeNode or
-    node instanceof FunctionNode
+  node instanceof InvokeNode or
+  node instanceof FunctionNode
 }
 
 /** Gets a call in a function that has no known call sites. */
-private InvokeNode rootCall() {
-  not any(InvokeNode i).getACallee() = result.getContainer()
-}
+private InvokeNode rootCall() { not any(InvokeNode i).getACallee() = result.getContainer() }
 
 /**
  * Holds if `invoke` should be used as the starting point of a call path.
@@ -75,9 +74,7 @@ predicate isStartOfCallPath(InvokeNode invoke) {
 }
 
 /** Gets a function that contains no calls to other functions. */
-private FunctionNode leafFunction() {
-  not callEdge(result, _)
-}
+private FunctionNode leafFunction() { not callEdge(result, _) }
 
 /**
  * Holds if `fun` should be used as the end point of a call path.
