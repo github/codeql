@@ -848,7 +848,7 @@ module ClassValue {
     
     /** Get the `ClassValue` for the `StopIteration` class. */
     ClassValue stopIteration() {
-        result = TBuiltinClassObject(Builtin::special("StopIteration"))
+        result = TBuiltinClassObject(Builtin::builtin("StopIteration"))
     }
 
     /** Get the `ClassValue` for the class of modules. */
