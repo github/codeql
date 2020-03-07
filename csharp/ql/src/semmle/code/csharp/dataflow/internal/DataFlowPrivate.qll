@@ -3,7 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
@@ -380,7 +380,9 @@ private module Cached {
         a = cfn.getElement() and
         t = a.stripCasts().getType()
       |
-        t instanceof RefType or
+        t instanceof RefType and
+        not t instanceof NullType
+        or
         t = any(TypeParameter tp | not tp.isValueType())
       )
       or
@@ -554,15 +556,10 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
 
 private module ParameterNodes {
   /**
-   * Holds if SSA definition node `node` is an entry definition for parameter `p`.
+   * Holds if definition node `node` is an entry definition for parameter `p`.
    */
-  predicate explicitParameterNode(SsaDefinitionNode node, Parameter p) {
-    exists(Ssa::ExplicitDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef |
-      node = TSsaDefinitionNode(def)
-    |
-      pdef = def.getADefinition() and
-      p = pdef.getParameter()
-    )
+  predicate explicitParameterNode(AssignableDefinitionNode node, Parameter p) {
+    p = node.getDefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter()
   }
 
   /**
@@ -1126,13 +1123,14 @@ private module OutNodes {
    * A data flow node that reads a value returned by a callable using an
    * `out` or `ref` parameter.
    */
-  class ParamOutNode extends OutNode, SsaDefinitionNode {
+  class ParamOutNode extends OutNode, AssignableDefinitionNode {
     private AssignableDefinitions::OutRefDefinition outRefDef;
+    private ControlFlow::Node cfn;
 
-    ParamOutNode() { outRefDef = this.getDefinition().(Ssa::ExplicitDefinition).getADefinition() }
+    ParamOutNode() { outRefDef = this.getDefinitionAtNode(cfn) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result = csharpCall(_, this.getDefinition().getControlFlowNode()) and
+      result = csharpCall(_, cfn) and
       exists(Parameter p |
         p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
         outRefDef.getTargetAccess() = result.getExpr().(Call).getArgumentForParameter(p)
@@ -1458,10 +1456,8 @@ class CastNode extends Node {
   CastNode() {
     this.asExpr() instanceof Cast
     or
-    exists(Ssa::ExplicitDefinition def |
-      def = this.(SsaDefinitionNode).getDefinition() and
-      def.getADefinition() instanceof AssignableDefinitions::PatternDefinition
-    )
+    this.(AssignableDefinitionNode).getDefinition() instanceof
+      AssignableDefinitions::PatternDefinition
     or
     readStep(_, _, this)
     or
@@ -1501,3 +1497,5 @@ private predicate viableConstantBooleanParamArg(
     b = arg.getBooleanValue()
   )
 }
+
+int accessPathLimit() { result = 3 }

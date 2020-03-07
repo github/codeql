@@ -16,7 +16,6 @@ import semmle.javascript.security.dataflow.DomBasedXss::DomBasedXss
 import DataFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink,

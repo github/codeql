@@ -34,7 +34,6 @@
 | taint.cpp:352:7:352:7 | taint.cpp:330:6:330:11 | AST only |
 | taint.cpp:372:7:372:7 | taint.cpp:365:24:365:29 | AST only |
 | taint.cpp:374:7:374:7 | taint.cpp:365:24:365:29 | AST only |
-| taint.cpp:382:7:382:7 | taint.cpp:377:23:377:28 | AST only |
 | taint.cpp:391:7:391:7 | taint.cpp:385:27:385:32 | AST only |
 | taint.cpp:423:7:423:7 | taint.cpp:422:14:422:19 | AST only |
 | taint.cpp:424:9:424:17 | taint.cpp:422:14:422:19 | AST only |

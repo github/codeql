@@ -41,6 +41,9 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
   or
+  localAdditionalTaintUpdateStep(src.asExpr(),
+    sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+  or
   exists(Argument arg |
     src.asExpr() = arg and
     arg.isVararg() and
@@ -105,35 +108,45 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(LogicExpr).getAnOperand() = src
   or
-  exists(Assignment assign | assign.getSource() = src |
-    sink = assign.getDest().(ArrayAccess).getArray()
-  )
-  or
   exists(EnhancedForStmt for, SsaExplicitUpdate v |
     for.getExpr() = src and
     v.getDefiningExpr() = for.getVariable() and
     v.getAFirstUse() = sink
   )
   or
-  containerStep(src, sink)
+  containerReturnValueStep(src, sink)
   or
   constructorStep(src, sink)
   or
   qualifierToMethodStep(src, sink)
   or
-  qualifierToArgumentStep(src, sink)
-  or
   argToMethodStep(src, sink)
-  or
-  argToArgStep(src, sink)
-  or
-  argToQualifierStep(src, sink)
   or
   comparisonStep(src, sink)
   or
   stringBuilderStep(src, sink)
   or
   serializationStep(src, sink)
+}
+
+/**
+ * Holds if taint can flow in one local step from `src` to `sink` excluding
+ * local data flow steps. That is, `src` and `sink` are likely to represent
+ * different objects.
+ * This is restricted to cases where the step updates the value of `sink`.
+ */
+private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
+  exists(Assignment assign | assign.getSource() = src |
+    sink = assign.getDest().(ArrayAccess).getArray()
+  )
+  or
+  containerUpdateStep(src, sink)
+  or
+  qualifierToArgumentStep(src, sink)
+  or
+  argToArgStep(src, sink)
+  or
+  argToQualifierStep(src, sink)
 }
 
 private class BulkData extends RefType {
@@ -242,7 +255,7 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
 }
 
 /** Access to a method that passes taint from qualifier to argument. */
-private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
+private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, int arg |
     taintPreservingQualifierToArgument(ma.getMethod(), arg) and
     tracked = ma.getQualifier() and
@@ -367,10 +380,25 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     taintPreservingArgumentToMethod(m, i) and
     tracked = sink.(MethodAccess).getArgument(i)
   )
+  or
+  exists(MethodAccess ma |
+    taintPreservingArgumentToMethod(ma.getMethod()) and
+    tracked = ma.getAnArgument() and
+    sink = ma
+  )
 }
 
 /**
- * Holds if `method` is a library method that return tainted data if its
+ * Holds if `method` is a library method that returns tainted data if any
+ * of its arguments are tainted.
+ */
+private predicate taintPreservingArgumentToMethod(Method method) {
+  method.getDeclaringType() instanceof TypeString and
+  (method.hasName("format") or method.hasName("join"))
+}
+
+/**
+ * Holds if `method` is a library method that returns tainted data if its
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
@@ -458,7 +486,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
  * Holds if `tracked` and `sink` are arguments to a method that transfers taint
  * between arguments.
  */
-private predicate argToArgStep(Expr tracked, RValue sink) {
+private predicate argToArgStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, Method method, int input, int output |
     taintPreservingArgToArg(method, input, output) and
     ma.getMethod() = method and

@@ -284,7 +284,7 @@ cached module PointsToInternal {
         ssa_definition_points_to(var.getDefinition(), context, value, origin)
         or
         exists(EssaVariable prev |
-            ssaShortCut(prev, var) and
+            ssaShortCut+(prev, var) and
             variablePointsTo(prev, context, value, origin)
         )
     }
@@ -304,10 +304,6 @@ cached module PointsToInternal {
         exists(ArgumentRefinement def |
             start = def.getInput() and
             end.getDefinition() = def
-        )
-        or
-        exists(EssaVariable mid |
-            ssaShortCut(start, mid) and ssaShortCut(mid, end)
         )
     }
 

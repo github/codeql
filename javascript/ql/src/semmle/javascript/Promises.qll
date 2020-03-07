@@ -128,17 +128,13 @@ private module PromiseFlow {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
-  string resolveField() {
-    result = "$PromiseResolveField$"
-  }
+  string resolveField() { result = "$PromiseResolveField$" }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
-  string rejectField() {
-    result = "$PromiseRejectField$"
-  }
-  
+  string rejectField() { result = "$PromiseRejectField$" }
+
   /**
    * A flow step describing a promise definition.
    *
@@ -146,9 +142,8 @@ private module PromiseFlow {
    */
   class PromiseDefitionStep extends DataFlow::AdditionalFlowStep {
     PromiseDefinition promise;
-    PromiseDefitionStep() {
-      this = promise
-    }
+
+    PromiseDefitionStep() { this = promise }
 
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
@@ -170,15 +165,14 @@ private module PromiseFlow {
       succ = this
     }
   }
-  
+
   /**
    * A flow step describing the a Promise.resolve (and similar) call.
    */
   class CreationStep extends DataFlow::AdditionalFlowStep {
     PromiseCreationCall promise;
-    CreationStep() {
-      this = promise
-    }
+
+    CreationStep() { this = promise }
 
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
@@ -194,7 +188,6 @@ private module PromiseFlow {
     }
   }
 
-
   /**
    * A load step loading the pseudo-field describing that the promise is rejected.
    * The rejected value is thrown as a exception.
@@ -202,6 +195,7 @@ private module PromiseFlow {
   class AwaitStep extends DataFlow::AdditionalFlowStep {
     DataFlow::Node operand;
     AwaitExpr await;
+
     AwaitStep() {
       this.getEnclosingExpr() = await and
       operand.getEnclosingExpr() = await.getOperand()
@@ -222,9 +216,7 @@ private module PromiseFlow {
    * A flow step describing the data-flow related to the `.then` method of a promise.
    */
   class ThenStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ThenStep() {
-      this.getMethodName() = "then"
-    }
+    ThenStep() { this.getMethodName() = "then" }
 
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
@@ -235,7 +227,7 @@ private module PromiseFlow {
       pred = getReceiver() and
       succ = getCallback(1).getParameter(0)
     }
-    
+
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       not exists(this.getArgument(1)) and
       prop = rejectField() and
@@ -244,17 +236,17 @@ private module PromiseFlow {
       or
       // read the value of a resolved/rejected promise that is returned
       (prop = rejectField() or prop = resolveField()) and
-      pred = getCallback([0..1]).getAReturn() and
+      pred = getCallback([0 .. 1]).getAReturn() and
       succ = this
     }
-    
+
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = resolveField() and
-      pred = getCallback([0..1]).getAReturn() and
+      pred = getCallback([0 .. 1]).getAReturn() and
       succ = this
       or
       prop = rejectField() and
-      pred = getCallback([0..1]).getExceptionalReturn() and
+      pred = getCallback([0 .. 1]).getExceptionalReturn() and
       succ = this
     }
   }
@@ -263,9 +255,7 @@ private module PromiseFlow {
    * A flow step describing the data-flow related to the `.catch` method of a promise.
    */
   class CatchStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    CatchStep() {
-      this.getMethodName() = "catch"
-    }
+    CatchStep() { this.getMethodName() = "catch" }
 
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = rejectField() and
@@ -299,9 +289,7 @@ private module PromiseFlow {
    * A flow step describing the data-flow related to the `.finally` method of a promise.
    */
   class FinallyStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    FinallyStep() {
-      this.getMethodName() = "finally"
-    }
+    FinallyStep() { this.getMethodName() = "finally" }
 
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       (prop = resolveField() or prop = rejectField()) and
@@ -332,15 +320,13 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   // from `x` to `Promise.resolve(x)`
   pred = succ.(PromiseCreationCall).getValue()
   or
-  exists(DataFlow::MethodCallNode thn |
-    thn.getMethodName() = "then"
-  |
+  exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
     // from `p` to `x` in `p.then(x => ...)`
     pred = thn.getReceiver() and
     succ = thn.getCallback(0).getParameter(0)
     or
     // from `v` to `p.then(x => return v)`
-    pred = thn.getCallback([0..1]).getAReturn() and
+    pred = thn.getCallback([0 .. 1]).getAReturn() and
     succ = thn
   )
   or
@@ -406,22 +392,19 @@ module Bluebird {
 
     override DataFlow::Node getValue() { result = getArgument(0) }
   }
-  
+
   /**
-   * An aggregated promise produced either by `Promise.all`, `Promise.race` or `Promise.map`. 
+   * An aggregated promise produced either by `Promise.all`, `Promise.race` or `Promise.map`.
    */
   class AggregateBluebirdPromiseDefinition extends PromiseCreationCall {
     AggregateBluebirdPromiseDefinition() {
-      exists(string m | m = "all" or m = "race" or m = "map" | 
-        this = bluebird().getAMemberCall(m)
-      )
+      exists(string m | m = "all" or m = "race" or m = "map" | this = bluebird().getAMemberCall(m))
     }
 
     override DataFlow::Node getValue() {
       result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
     }
   }
-  
 }
 
 /**

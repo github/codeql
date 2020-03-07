@@ -1,5 +1,0 @@
-| test.py:8 | BinaryExpr | externally controlled string |
-| test.py:14 | BinaryExpr | externally controlled string |
-| test.py:19 | BinaryExpr | externally controlled string |
-| test.py:23 | BinaryExpr | externally controlled string |
-| test.py:27 | Dict | {externally controlled string} |

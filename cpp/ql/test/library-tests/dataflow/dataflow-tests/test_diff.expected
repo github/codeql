@@ -1,3 +1,4 @@
+| BarrierGuard.cpp:49:10:49:15 | BarrierGuard.cpp:51:13:51:13 | AST only |
 | BarrierGuard.cpp:60:11:60:16 | BarrierGuard.cpp:62:14:62:14 | AST only |
 | clang.cpp:12:9:12:20 | clang.cpp:22:8:22:20 | AST only |
 | clang.cpp:28:27:28:32 | clang.cpp:30:27:30:34 | AST only |
@@ -16,6 +17,8 @@
 | dispatch.cpp:107:17:107:22 | dispatch.cpp:96:8:96:8 | IR only |
 | dispatch.cpp:140:8:140:13 | dispatch.cpp:96:8:96:8 | IR only |
 | dispatch.cpp:144:8:144:13 | dispatch.cpp:96:8:96:8 | IR only |
+| globals.cpp:13:23:13:28 | globals.cpp:12:10:12:24 | IR only |
+| globals.cpp:23:23:23:28 | globals.cpp:19:10:19:24 | IR only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:14:3:14:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |

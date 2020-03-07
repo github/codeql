@@ -13,7 +13,7 @@ import javascript
 import Expressions.ExprHasNoEffect
 
 DataFlow::SourceNode callsArray(DataFlow::TypeBackTracker t, DataFlow::MethodCallNode call) {
-  isIgnoredPureArrayCall(call) and 
+  isIgnoredPureArrayCall(call) and
   t.start() and
   result = call.getReceiver().getALocalSource()
   or
@@ -39,7 +39,7 @@ predicate isIgnoredPureArrayCall(DataFlow::MethodCallNode call) {
 }
 
 from DataFlow::MethodCallNode call
-where 
+where
   callsArray(call) instanceof DataFlow::ArrayCreationNode and
   not call.getReceiver().asExpr().(ArrayExpr).getSize() = 0
 select call, "Result from call to " + call.getMethodName() + " ignored."

@@ -28440,6 +28440,17 @@
 <dependencies/>
 </relation>
 <relation>
+<name>stackalloc_array_creation</name>
+<cardinality>50</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>50</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>mutator_invocation_mode</name>
 <cardinality>0</cardinality>
 <columnsizes>

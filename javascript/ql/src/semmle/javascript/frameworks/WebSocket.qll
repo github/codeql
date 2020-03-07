@@ -83,7 +83,9 @@ module ClientWebSocket {
   /**
    * Gets a handler, that is registered using method `methodName` and receives messages sent to `emitter`.
    */
-  private DataFlow::FunctionNode getAMessageHandler(ClientWebSocket::ClientSocket emitter, string methodName) {
+  private DataFlow::FunctionNode getAMessageHandler(
+    ClientWebSocket::ClientSocket emitter, string methodName
+  ) {
     exists(DataFlow::CallNode call |
       call = emitter.getAMemberCall(methodName) and
       call.getArgument(0).mayHaveStringValue("message") and
@@ -93,8 +95,8 @@ module ClientWebSocket {
 
   /**
    * A handler that receives a message using the WebSocket API.
-   * The WebSocket API is used both by the WebSocket library in browsers, and the same API is also implemented as part of the "ws" library. 
-   * This class therefore models both the WebSocket library, and a subset of the "ws" library. 
+   * The WebSocket API is used both by the WebSocket library in browsers, and the same API is also implemented as part of the "ws" library.
+   * This class therefore models both the WebSocket library, and a subset of the "ws" library.
    */
   private class WebSocketReceiveNode extends ClientWebSocket::ReceiveNode {
     WebSocketReceiveNode() {
@@ -109,18 +111,16 @@ module ClientWebSocket {
   }
 
   /**
-   * A handler that receives a message using the API from the "ws" library. 
-   * The "ws" library additionally implements the WebSocket API, which is modeled in the `WebSocketReceiveNode` class. 
+   * A handler that receives a message using the API from the "ws" library.
+   * The "ws" library additionally implements the WebSocket API, which is modeled in the `WebSocketReceiveNode` class.
    */
   private class WSReceiveNode extends ClientWebSocket::ReceiveNode {
-    WSReceiveNode () {
+    WSReceiveNode() {
       emitter.isNode() and
       this = getAMessageHandler(emitter, EventEmitter::on())
     }
 
-    override DataFlow::Node getReceivedItem(int i) {
-      i = 0 and result = this.getParameter(0)
-    }
+    override DataFlow::Node getReceivedItem(int i) { i = 0 and result = this.getParameter(0) }
   }
 }
 
@@ -134,7 +134,8 @@ module ServerWebSocket {
   class ServerSocket extends EventEmitter::Range, DataFlow::SourceNode {
     ServerSocket() {
       exists(DataFlow::CallNode onCall |
-        onCall = DataFlow::moduleImport("ws")
+        onCall =
+          DataFlow::moduleImport("ws")
               .getAConstructorInvocation("Server")
               .getAMemberCall(EventEmitter::on()) and
         onCall.getArgument(0).mayHaveStringValue("connection")

@@ -31,4 +31,6 @@ function f(A, B) {
 
     if (strings.startsWith(A, B)) {}
     if (strings.caseInsensitiveStartsWith(A, B)) {}
+    if (A.slice(0, B.length) !== B) {}
+    if (A.slice(0, B.foo.length) !== B.foo) {}
 }
