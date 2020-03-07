@@ -13,13 +13,17 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.TaintTracking
+
+predicate argumentMayBeRoot(Expr e) {
+  e.getValue() = "0" or
+  e.(VariableAccess).getTarget().getName().matches("%oot%")
+}
 
 class SetuidLikeFunctionCall extends FunctionCall {
   SetuidLikeFunctionCall() {
+    (getTarget().hasGlobalName("setuid") or getTarget().hasGlobalName("setresuid")) and
     // setuid/setresuid with the root user are false positives.
-    getTarget().hasGlobalName("setuid") or
-    getTarget().hasGlobalName("setresuid")
+    not argumentMayBeRoot(getArgument(0))
   }
 }
 
@@ -41,13 +45,16 @@ class SetuidLikeWrapperCall extends FunctionCall {
 
 class CallBeforeSetuidFunctionCall extends FunctionCall {
   CallBeforeSetuidFunctionCall() {
-    // setgid/setresgid with the root group are false positives.
-    getTarget().hasGlobalName("setgid") or
-    getTarget().hasGlobalName("setresgid") or
-    // Compatibility may require skipping initgroups and setgroups return checks.
-    // A stricter best practice is to check the result and errnor for EPERM.
-    getTarget().hasGlobalName("initgroups") or
-    getTarget().hasGlobalName("setgroups")
+    (
+      getTarget().hasGlobalName("setgid") or
+      getTarget().hasGlobalName("setresgid") or
+      // Compatibility may require skipping initgroups and setgroups return checks.
+      // A stricter best practice is to check the result and errnor for EPERM.
+      getTarget().hasGlobalName("initgroups") or
+      getTarget().hasGlobalName("setgroups")
+    ) and
+    // setgid/setresgid/etc with the root group are false positives.
+    not argumentMayBeRoot(getArgument(0))
   }
 }
 
@@ -73,12 +80,11 @@ predicate setuidBeforeSetgid(
   setgidWrapper.getAPredecessor+() = setuidWrapper
 }
 
-predicate flowsToCondition(Expr fc) {
-  exists(DataFlow::Node source, DataFlow::Node sink |
-    TaintTracking::localTaint(source, sink) and
-    fc = source.asExpr() and
-    (sink.asExpr().getParent*().(ControlFlowNode).isCondition() or sink.asExpr().isCondition())
-  )
+predicate isAccessed(FunctionCall fc) {
+  exists(Variable v | v.getAnAssignedValue() = fc) or
+  exists(Operation c | fc = c.getAChild() | c.isCondition()) or
+  // ignore pattern where result is intentionally ignored by a cast to void.
+  fc.hasExplicitConversion()
 }
 
 from
@@ -87,11 +93,12 @@ from
   SetuidLikeFunctionCall setuid
 where
   setuidBeforeSetgid(setuid, fc) and
-  // Require the call return code to be used in a condition.
+  // Require the call return code to be used in a condition or assigned.
   // This introduces false negatives where the return is checked but then
   // errno == EPERM allows execution to continue.
-  (not flowsToCondition(fc) or not flowsToCondition(setuid)) and
+  not isAccessed(fc) and
   func = fc.getEnclosingFunction()
 select fc, "This function is called within " + func + ", and potentially after " +
-  "$@, and may not succeed. Be sure to check the return code and errno.",
+  "$@, and may not succeed. Be sure to check the return code and errno, otherwise permissions " +
+  "may not be dropped.",
   setuid, setuid.getTarget().getName()
