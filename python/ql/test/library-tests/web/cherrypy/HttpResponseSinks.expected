@@ -1,0 +1,3 @@
+| red.py:8:16:8:20 | cherrypy handler function result | externally controlled string |
+| test.py:11:16:11:29 | cherrypy handler function result | externally controlled string |
+| test.py:17:16:17:27 | cherrypy handler function result | externally controlled string |

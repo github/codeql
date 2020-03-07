@@ -19,7 +19,7 @@ import Expressions.CallArgs
 
 from Call call, FunctionObject func, string name
 where
-illegally_named_parameter(call, func, name) and
+illegally_named_parameter_objectapi(call, func, name) and
 not func.isAbstract() and
 not exists(FunctionObject overridden | func.overrides(overridden) and overridden.getFunction().getAnArg().(Name).getId() = name)
 select

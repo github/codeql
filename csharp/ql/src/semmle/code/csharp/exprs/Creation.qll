@@ -373,6 +373,13 @@ class ArrayCreation extends Expr, @array_creation_expr {
 }
 
 /**
+ * A `stackalloc` array creation, for example `stackalloc char[] { 'x', 'y' }`.
+ */
+class Stackalloc extends ArrayCreation {
+  Stackalloc() { stackalloc_array_creation(this) }
+}
+
+/**
  * An anonymous function. Either a lambda expression (`LambdaExpr`) or an
  * anonymous method expression (`AnonymousMethodExpr`).
  */

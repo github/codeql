@@ -39,17 +39,13 @@
 | file://:0:0:0:0 | __va_list_tag && |
 | file://:0:0:0:0 | abstract |
 | file://:0:0:0:0 | action<ActionT> * |
-| file://:0:0:0:0 | action<ActionT> *const |
 | file://:0:0:0:0 | action<actor1<composite<int>>> & |
 | file://:0:0:0:0 | action<actor1<composite<int>>> && |
 | file://:0:0:0:0 | action<actor1<composite<int>>> * |
-| file://:0:0:0:0 | action<actor1<composite<int>>> *const |
 | file://:0:0:0:0 | actor1<BaseT> * |
-| file://:0:0:0:0 | actor1<BaseT> *const |
 | file://:0:0:0:0 | actor1<composite<int>> & |
 | file://:0:0:0:0 | actor1<composite<int>> && |
 | file://:0:0:0:0 | actor1<composite<int>> * |
-| file://:0:0:0:0 | actor1<composite<int>> *const |
 | file://:0:0:0:0 | atomic |
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | auto |

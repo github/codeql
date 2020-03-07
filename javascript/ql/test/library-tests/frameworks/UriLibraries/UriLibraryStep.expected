@@ -24,6 +24,12 @@
 | closureUri.js:23:1:23:18 | utils.getPath(uri) | closureUri.js:23:15:23:17 | uri | closureUri.js:23:1:23:18 | utils.getPath(uri) |
 | closureUri.js:27:1:27:23 | stringU ... code(x) | closureUri.js:27:22:27:22 | x | closureUri.js:27:1:27:23 | stringU ... code(x) |
 | closureUri.js:28:1:28:23 | stringU ... code(x) | closureUri.js:28:22:28:22 | x | closureUri.js:28:1:28:23 | stringU ... code(x) |
+| path-parse.js:4:1:4:13 | path.parse(x) | path-parse.js:4:12:4:12 | x | path-parse.js:4:1:4:13 | path.parse(x) |
+| path-parse.js:5:1:5:13 | path_parse(x) | path-parse.js:5:12:5:12 | x | path-parse.js:5:1:5:13 | path_parse(x) |
+| path-parse.js:6:1:6:19 | path.posix.parse(x) | path-parse.js:6:18:6:18 | x | path-parse.js:6:1:6:19 | path.posix.parse(x) |
+| path-parse.js:7:1:7:19 | path_parse.posix(x) | path-parse.js:7:18:7:18 | x | path-parse.js:7:1:7:19 | path_parse.posix(x) |
+| path-parse.js:8:1:8:19 | path.win32.parse(x) | path-parse.js:8:18:8:18 | x | path-parse.js:8:1:8:19 | path.win32.parse(x) |
+| path-parse.js:9:1:9:19 | path_parse.win32(x) | path-parse.js:9:18:9:18 | x | path-parse.js:9:1:9:19 | path_parse.win32(x) |
 | punycode.js:3:9:3:26 | punycode.decode(x) | punycode.js:3:25:3:25 | x | punycode.js:3:9:3:26 | punycode.decode(x) |
 | punycode.js:5:5:5:22 | punycode.encode(x) | punycode.js:5:21:5:21 | x | punycode.js:5:5:5:22 | punycode.encode(x) |
 | punycode.js:7:5:7:25 | punycod ... code(x) | punycode.js:7:24:7:24 | x | punycode.js:7:5:7:25 | punycod ... code(x) |

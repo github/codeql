@@ -120,15 +120,22 @@ Z().meth(0)
 
 
 
-# The `__init_subclass__` method is a new method introduced into Python 3.6
-# which does not follow the normal conventions, and is in fact a class method
+# The `__init_subclass__` (introduced in Python 3.6)
+# and `__class_getitem__` (introduced in Python 3.7) methods are methods
+# which do not follow the normal conventions, and are in fact class methods
 # despite not being marked as such with other means. The name alone is what
 # makes it such. As a consequence, the query `py/not-named-self` and other
 # relevant queries need to account for this.
 #
 # This has come up in the wild via LGTM as a false positive. For example,
-# https://docs.python.org/3/reference/datamodel.html#customizing-class-creation
+# `__init_subclass__`:
+#   https://docs.python.org/3/reference/datamodel.html#customizing-class-creation
+# `__class_getitem__`:
+#   https://docs.python.org/3/reference/datamodel.html#emulating-generic-types
 
-class InitSubclass(object):
+class SpecialMethodNames(object):
     def __init_subclass__(cls):
+        pass
+
+    def __class_getitem__(cls):
         pass

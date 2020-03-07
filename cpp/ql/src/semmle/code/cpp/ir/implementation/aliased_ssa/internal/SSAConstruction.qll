@@ -96,7 +96,7 @@ private module Cached {
   }
 
   cached
-  Instruction getMemoryOperandDefinition(
+  private Instruction getMemoryOperandDefinition0(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
     exists(OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand |
@@ -140,6 +140,19 @@ private module Cached {
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction) and
     overlap instanceof MustExactlyOverlap
+  }
+
+  cached
+  Instruction getMemoryOperandDefinition(
+    Instruction instruction, MemoryOperandTag tag, Overlap overlap
+  ) {
+    // getMemoryOperandDefinition0 currently has a bug where it can match with multiple overlaps.
+    // This predicate ensures that the chosen overlap is the most conservative if there's any doubt.
+    result = getMemoryOperandDefinition0(instruction, tag, overlap) and
+    not (
+      overlap instanceof MustExactlyOverlap and
+      exists(MustTotallyOverlap o | exists(getMemoryOperandDefinition0(instruction, tag, o)))
+    )
   }
 
   /**
@@ -652,17 +665,18 @@ module DefUse {
   private predicate definitionReachesRank(
     Alias::MemoryLocation useLocation, OldBlock block, int defRank, int reachesRank
   ) {
+    // The def always reaches the next use, even if there is also a def on the
+    // use instruction.
     hasDefinitionAtRank(useLocation, _, block, defRank, _) and
-    reachesRank <= exitRank(useLocation, block) and // Without this, the predicate would be infinite.
-    (
-      // The def always reaches the next use, even if there is also a def on the
-      // use instruction.
-      reachesRank = defRank + 1
-      or
-      // If the def reached the previous rank, it also reaches the current rank,
-      // unless there was another def at the previous rank.
-      definitionReachesRank(useLocation, block, defRank, reachesRank - 1) and
-      not hasDefinitionAtRank(useLocation, _, block, reachesRank - 1, _)
+    reachesRank = defRank + 1
+    or
+    // If the def reached the previous rank, it also reaches the current rank,
+    // unless there was another def at the previous rank.
+    exists(int prevRank |
+      reachesRank = prevRank + 1 and
+      definitionReachesRank(useLocation, block, defRank, prevRank) and
+      not prevRank = exitRank(useLocation, block) and
+      not hasDefinitionAtRank(useLocation, _, block, prevRank, _)
     )
   }
 
@@ -759,7 +773,21 @@ module DefUse {
       then defLocation = useLocation
       else (
         definitionHasPhiNode(defLocation, block) and
-        defLocation = useLocation.getVirtualVariable()
+        defLocation = useLocation.getVirtualVariable() and
+        // Handle the unusual case where a virtual variable does not overlap one of its member
+        // locations. For example, a definition of the virtual variable representing all aliased
+        // memory does not overlap a use of a string literal, because the contents of a string
+        // literal can never be redefined. The string literal's location could still be a member of
+        // the `AliasedVirtualVariable` due to something like:
+        // ```
+        // char s[10];
+        // strcpy(s, p);
+        // const char* p = b ? "SomeLiteral" : s;
+        // return p[3];
+        // ```
+        // In the above example, `p[3]` may access either the string literal or the local variable
+        // `s`, so both of those locations must be members of the `AliasedVirtualVariable`.
+        exists(Alias::getOverlap(defLocation, useLocation))
       )
     )
     or

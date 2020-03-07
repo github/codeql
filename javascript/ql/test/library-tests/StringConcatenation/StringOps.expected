@@ -45,6 +45,7 @@ concatenation
 | tst.js:87:5:87:14 | x += 'two' |
 | tst.js:89:3:89:14 | x |
 | tst.js:89:3:89:14 | x += 'three' |
+| tst.js:95:7:95:30 | x.conca ... three') |
 concatenationOperand
 | closure.js:5:1:5:37 | build(' ... 'four') |
 | closure.js:5:7:5:11 | 'one' |
@@ -123,6 +124,9 @@ concatenationOperand
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
 | tst.js:89:8:89:14 | 'three' |
+| tst.js:95:7:95:7 | x |
+| tst.js:95:16:95:20 | 'two' |
+| tst.js:95:23:95:29 | 'three' |
 concatenationLeaf
 | closure.js:5:7:5:11 | 'one' |
 | closure.js:5:14:5:18 | 'two' |
@@ -192,6 +196,9 @@ concatenationLeaf
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
 | tst.js:89:8:89:14 | 'three' |
+| tst.js:95:7:95:7 | x |
+| tst.js:95:16:95:20 | 'two' |
+| tst.js:95:23:95:29 | 'three' |
 concatenationNode
 | closure.js:5:1:5:37 | build(' ... 'four') |
 | closure.js:5:1:5:46 | build(' ...  'five' |
@@ -307,6 +314,10 @@ concatenationNode
 | tst.js:89:3:89:14 | x |
 | tst.js:89:3:89:14 | x += 'three' |
 | tst.js:89:8:89:14 | 'three' |
+| tst.js:95:7:95:7 | x |
+| tst.js:95:7:95:30 | x.conca ... three') |
+| tst.js:95:16:95:20 | 'two' |
+| tst.js:95:23:95:29 | 'three' |
 operand
 | closure.js:5:1:5:37 | build(' ... 'four') | 0 | closure.js:5:7:5:11 | 'one' |
 | closure.js:5:1:5:37 | build(' ... 'four') | 1 | closure.js:5:14:5:28 | 'two' + 'three' |
@@ -407,6 +418,9 @@ operand
 | tst.js:89:3:89:14 | x | 1 | tst.js:89:8:89:14 | 'three' |
 | tst.js:89:3:89:14 | x += 'three' | 0 | tst.js:89:3:89:3 | x |
 | tst.js:89:3:89:14 | x += 'three' | 1 | tst.js:89:8:89:14 | 'three' |
+| tst.js:95:7:95:30 | x.conca ... three') | 0 | tst.js:95:7:95:7 | x |
+| tst.js:95:7:95:30 | x.conca ... three') | 1 | tst.js:95:16:95:20 | 'two' |
+| tst.js:95:7:95:30 | x.conca ... three') | 2 | tst.js:95:23:95:29 | 'three' |
 nextLeaf
 | closure.js:5:7:5:11 | 'one' | closure.js:5:14:5:18 | 'two' |
 | closure.js:5:14:5:18 | 'two' | closure.js:5:22:5:28 | 'three' |
@@ -450,6 +464,8 @@ nextLeaf
 | tst.js:61:27:61:27 | x | tst.js:61:29:61:33 |  last |
 | tst.js:87:5:87:5 | x | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x | tst.js:89:8:89:14 | 'three' |
+| tst.js:95:7:95:7 | x | tst.js:95:16:95:20 | 'two' |
+| tst.js:95:16:95:20 | 'two' | tst.js:95:23:95:29 | 'three' |
 htmlRoot
 | html-concat.js:2:14:2:26 | `<b>${x}</b>` |
 | html-concat.js:3:14:3:26 | `<B>${x}</B>` |

@@ -5,15 +5,17 @@ The following changes in version 1.24 affect Java analysis in all applications.
 ## General improvements
 
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+* A `Customizations.qll` file has been added to allow customizations of the standard library that apply to all queries.
 
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Disabled Spring CSRF protection (`java/spring-disabled-csrf-protection`) | security, external/cwe/cwe-352 | Finds disabled Cross-Site Request Forgery (CSRF) protection in Spring. |
+| Disabled Spring CSRF protection (`java/spring-disabled-csrf-protection`) | security, external/cwe/cwe-352 | Finds disabled Cross-Site Request Forgery (CSRF) protection in Spring. Results are shown on LGTM by default. |
 | Failure to use HTTPS or SFTP URL in Maven artifact upload/download (`java/maven/non-https-url`) | security, external/cwe/cwe-300, external/cwe/cwe-319, external/cwe/cwe-494, external/cwe/cwe-829 | Finds use of insecure protocols during Maven dependency resolution. Results are shown on LGTM by default. |
+| LDAP query built from user-controlled sources (`java/ldap-injection`) | security, external/cwe/cwe-090 | Finds LDAP queries vulnerable to injection of unsanitized user-controlled input. Results are shown on LGTM by default. |
 | Left shift by more than the type width (`java/lshift-larger-than-type-width`) | correctness | Finds left shifts of ints by 32 bits or more and left shifts of longs by 64 bits or more. Results are shown on LGTM by default. |
-| Suspicious date format (`java/suspicious-date-format`) | correctness | Finds date format patterns that use placeholders that are likely to be incorrect. |
+| Suspicious date format (`java/suspicious-date-format`) | correctness | Finds date format patterns that use placeholders that are likely to be incorrect. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -25,10 +27,10 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 ## Changes to libraries
 
-* The data-flow library has been improved when flow through methods needs to be
-  combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves most security queries, which may
-  report additional results.
+* The data-flow library has been improved, which affects and improves most security queries. The improvements are:
+  - Track flow through methods that combine taint tracking with flow through fields.
+  - Track flow through clone-like methods, that is, methods that read contents of a field from a
+    parameter and stores the value in the field of a returned object.
 * Identification of test classes has been improved. Previously, one of the
   match conditions would classify any class with a name containing the string
   "Test" as a test class, but now this matching has been replaced with one that

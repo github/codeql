@@ -14,28 +14,24 @@
 
 import python
 import semmle.python.security.Paths
-
 /* Sources */
 import semmle.python.web.HttpRequest
-
 /* Sinks */
-
 import semmle.python.web.HttpResponse
-
 /* Flow */
 import semmle.python.security.strings.Untrusted
 
-
 class ReflectedXssConfiguration extends TaintTracking::Configuration {
-
     ReflectedXssConfiguration() { this = "Reflected XSS configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof HttpRequestTaintSource
+    }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof HttpResponseTaintSink }
-
 }
 
 from ReflectedXssConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(), "user-provided value"
+select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(),
+    "a user-provided value"
