@@ -615,6 +615,11 @@ class Class extends RefType, @class {
   }
 }
 
+/** A record declaration. */
+class Record extends Class {
+  Record() { isRecord(this) }
+}
+
 /** An intersection type. */
 class IntersectionType extends RefType, @class {
   IntersectionType() {
