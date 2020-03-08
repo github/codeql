@@ -390,6 +390,16 @@ class StmtContainer extends @stmt_container, ASTNode {
    * See Annex C of the ECMAScript language specification.
    */
   predicate isStrict() { getEnclosingContainer().isStrict() }
+
+  /**
+   * Gets the number of enclosing containers.
+   */
+  cached
+  int getContainerDepth() {
+    this instanceof TopLevel and result = 0
+    or
+    result = 1 + getEnclosingContainer().getContainerDepth()
+  }
 }
 
 /**

@@ -186,27 +186,28 @@ private module CachedSteps {
   predicate callStep(DataFlow::Node pred, DataFlow::Node succ) { argumentPassing(_, pred, _, succ) }
 
   /**
-   * Holds if there is a flow step from `pred` to `succ` through:
-   * - returning a value from a function call, or
-   * - throwing an exception out of a function call, or
-   * - the receiver flowing out of a constructor call.
+   * Holds if there is a flow step from `pred` to `succ` out of the function `f` through:
+   * - returning a value from `invoke`, or
+   * - throwing an exception out of `invoke`, or
+   * - the receiver flowing out of the constructor call `invoke`.
    */
   cached
-  predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
+  predicate returnStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::Node invoke, Function f) {
+    (calls(invoke, f) or callsBound(invoke, f, _)) and
+    succ = invoke and
+    (
       returnExpr(f, pred, _)
       or
-      succ instanceof DataFlow::NewNode and
+      invoke instanceof DataFlow::NewNode and
       DataFlow::thisNode(pred, f)
     )
     or
-    exists(InvokeExpr invoke, Function fun |
-      DataFlow::exceptionalFunctionReturnNode(pred, fun) and
-      DataFlow::exceptionalInvocationReturnNode(succ, invoke)
-    |
-      calls(invoke.flow(), fun)
+    DataFlow::exceptionalFunctionReturnNode(pred, f) and
+    DataFlow::exceptionalInvocationReturnNode(succ, invoke.asExpr()) and
+    (
+      calls(invoke, f)
       or
-      callsBound(invoke.flow(), fun, _)
+      callsBound(invoke, f, _)
     )
   }
 
@@ -381,6 +382,11 @@ private module CachedSteps {
 }
 
 import CachedSteps
+
+/**
+ * Holds if there is a step `pred -> succ` stepping out of a function to a call site.
+ */
+predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) { returnStep(pred, succ, _, _) }
 
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.

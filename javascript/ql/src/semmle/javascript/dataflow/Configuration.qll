@@ -384,7 +384,7 @@ pragma[noinline]
 private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
   exists(Expr e |
     barrierGuardBlocksExpr(guard, _, e, _) and
-    isRelevantForward(e.flow(), _)
+    isRelevantForward(e.flow(), _, _)
   )
 }
 
@@ -673,33 +673,6 @@ private predicate basicFlowStep(
 }
 
 /**
- * Holds if there is a flow step from `pred` to `succ` under configuration `cfg`,
- * including both basic flow steps and steps into/out of properties.
- *
- * This predicate is field insensitive (it does not distinguish between `x` and `x.p`)
- * and hence should only be used for purposes of approximation.
- */
-private predicate exploratoryFlowStep(
-  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
-) {
-  isRelevantForward(pred, cfg) and
-  isLive() and
-  (
-    basicFlowStepNoBarrier(pred, succ, _, cfg) or
-    basicStoreStep(pred, succ, _) or
-    basicLoadStep(pred, succ, _) or
-    isAdditionalStoreStep(pred, succ, _, cfg) or
-    isAdditionalLoadStep(pred, succ, _, cfg) or
-    isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
-    // the following three disjuncts taken together over-approximate flow through
-    // higher-order calls
-    callback(pred, succ) or
-    succ = pred.(DataFlow::FunctionNode).getAParameter() or
-    exploratoryBoundInvokeStep(pred, succ)
-  )
-}
-
-/**
  * Holds if `nd` is a source node for configuration `cfg`.
  */
 private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
@@ -724,14 +697,165 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLab
 }
 
 /**
- * Holds if `nd` may be reachable from a source under `cfg`.
+ * Holds if there is an exploratory flow step `pred -> succ` in `cfg`.
  *
- * No call/return matching is done, so this is a relatively coarse over-approximation.
+ * These disregard flow labels and store/load matching, but do not step
+ * in and out of functions.
  */
-private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isSource(nd, cfg, _)
+predicate basicExploratoryFlowStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  isRelevantForward(pred, cfg, _) and
+  (
+    localFlowStep(pred, succ, cfg, _, _)
+    or
+    isAdditionalStoreStep(pred, succ, _, cfg)
+    or
+    isAdditionalLoadStep(pred, succ, _, cfg)
+    or
+    isAdditionalLoadStoreStep(pred, succ, _, _, cfg)
+    or
+    propertyFlowStep(pred, succ)
+    or
+    globalFlowStep(pred, succ)
+    or
+    basicStoreStep(pred, succ, _)
+    or
+    basicLoadStep(pred, succ, _)
+    or
+    callback(pred, succ)
+    or
+    succ = pred.(DataFlow::FunctionNode).getAParameter()
+  )
+}
+
+/**
+ * Gets the container depth of the given function or function input (parameter or receiver),
+ * or -1 if `nd` is the pseudo-node indicating "no parameter".
+ *
+ * The depth is used by exploratory flow to determine it can step out of a function to a
+ * given call site.
+ */
+cached
+private int getContainerDepthFromInputNode(DataFlow::Node nd) {
+  exists(Function f |
+    nd = DataFlow::parameterNode(f.getAParameter())
+    or
+    nd = DataFlow::thisNode(f)
+    or
+    nd = DataFlow::valueNode(f)
+  |
+    result = f.getContainerDepth()
+  )
   or
-  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) and exploratoryFlowStep(mid, nd, cfg))
+  nd = DataFlow::globalAccessPathRootPseudoNode() and
+  result = -1
+}
+
+/**
+ * Holds if `nd` is an assignment to a captured variable declared
+ * in the function `scope`.
+ */
+cached
+private predicate capturedVariableScope(DataFlow::Node nd, DataFlow::Node scope) {
+  exists(SsaExplicitDefinition ssa, LocalVariable v |
+    nd = DataFlow::ssaDefinitionNode(ssa) and
+    v = ssa.getSourceVariable() and
+    v.isCaptured() and
+    scope = DataFlow::valueNode(v.getADeclaration().getContainer().getFunctionBoundary())
+  )
+}
+
+/**
+ * Holds if `nd` may be reachable from a source under `cfg`, and `param` is the most
+ * recently used parameter.
+ *
+ * No store/load matching is done and flow labels are ignored (effectively merged into a single label).
+ */
+private predicate isRelevantForward(
+  DataFlow::Node nd, DataFlow::Configuration cfg, DataFlow::Node param
+) {
+  isSource(nd, cfg, _) and param = DataFlow::globalAccessPathRootPseudoNode()
+  or
+  exists(DataFlow::Node mid |
+    isRelevantForward(mid, cfg, param) and
+    basicExploratoryFlowStep(mid, nd, cfg)
+  )
+  or
+  // Step into a function parameter, while setting the `param` to that parameter.
+  exists(DataFlow::Node arg |
+    isRelevantForward(arg, cfg, _) and
+    (argumentPassing(_, arg, _, nd) or exploratoryBoundInvokeStep(arg, nd)) and
+    param = nd
+  )
+  or
+  // Step through a return if the originating parameter is within the shared environment
+  // of caller and callee (or if no calls have been seen).
+  exists(DataFlow::Node ret, Function f |
+    isRelevantForward(ret, cfg, param) and
+    returnStep(ret, nd, _, f) and
+    getContainerDepthFromInputNode(param) < f.getContainerDepth()
+  )
+  or
+  // Step through a summarized function.
+  exists(DataFlow::Node mid |
+    isRelevantForward(mid, cfg, param) and
+    exploratoryFlowThroughFunction(mid, nd, cfg)
+  )
+  or
+  // When reaching a captured variable, switch `param` to the scope declaring that variable.
+  // This means we we can freely step out to any caller that has the captured variable in scope.
+  isRelevantForward(nd, cfg, _) and
+  capturedVariableScope(nd, param)
+}
+
+/**
+ * Holds if there is a step `pred -> succ` through a function summarized by exploratory flow.
+ */
+pragma[nomagic]
+private predicate exploratoryFlowThroughFunction(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(DataFlow::InvokeNode invk, Function f, DataFlow::Node returnedParam, DataFlow::Node ret |
+    isRelevantForward(ret, cfg, returnedParam) and
+    returnStep(ret, succ, invk, f) and
+    argumentPassing(invk, pred, f, returnedParam)
+  )
+}
+
+/**
+ * Holds if there exists a forward-relevant sink in any configuration.
+ */
+pragma[nomagic]
+private predicate existsRelevantSink() {
+  exists(DataFlow::Node sink, DataFlow::Configuration cfg |
+    isSink(sink, cfg, _) and
+    isRelevantForward(sink, cfg, _)
+  )
+}
+
+/**
+ * Holds if `pred -> succ` is a step usable by exploratory flow, disregarding call/return
+ * matching.
+ *
+ * Since call/return matching has already been enforced in the forward pass, there is little
+ * benefit in enforcing it in the backwards pass.
+ */
+pragma[nomagic]
+private predicate isRelevantBackwardStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  existsRelevantSink() and
+  isRelevantForward(pred, cfg, _) and
+  (
+    basicExploratoryFlowStep(pred, succ, cfg)
+    or
+    exploratoryBoundInvokeStep(pred, succ)
+    or
+    argumentPassing(_, pred, _, succ)
+    or
+    returnStep(pred, succ)
+  )
 }
 
 /**
@@ -740,13 +864,12 @@ private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration c
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isRelevantForward(nd, cfg) and
-  isSink(nd, cfg, _)
+  isSink(nd, cfg, _) and
+  isRelevantForward(nd, cfg, _)
   or
   exists(DataFlow::Node mid |
     isRelevant(mid, cfg) and
-    exploratoryFlowStep(nd, mid, cfg) and
-    isRelevantForward(nd, cfg)
+    isRelevantBackwardStep(nd, mid, cfg)
   )
 }
 
@@ -1031,7 +1154,7 @@ private predicate reachableFromStoreBaseStep(
  *
  * In other words, `pred` may flow to `succ` through a property.
  */
-pragma[noinline]
+pragma[noopt]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
