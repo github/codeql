@@ -361,21 +361,21 @@ function mergePlainObjectsOnly(target, source) {
     return target;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function mergePlainObjectsOnlyNoClosure(target, source) {
+    if (isNonArrayObject(target) && isNonArrayObject(source)) {
+        for (let key of Object.keys(source)) {
+            if (key === '__proto__') {
+                return;
+            }
+            if (isNonArrayObject(source[key]) && key in target) {
+                target[key] = mergePlainObjectsOnlyNoClosure(target[key], source[key], options);
+            } else {
+                target[key] = source[key]; // OK
+            }
+        }
+    }
+    return target;
+}
 
 function forEachProp(obj, callback) {
     for (let key in obj) {
