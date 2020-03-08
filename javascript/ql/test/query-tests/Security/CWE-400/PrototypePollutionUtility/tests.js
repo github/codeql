@@ -354,7 +354,7 @@ function mergePlainObjectsOnly(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnly(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK - but flagged anyway
+                target[key] = source[key]; // OK - but flagged anyway due to imprecise barrier for captured variable
             }
         });
     }
