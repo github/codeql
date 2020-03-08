@@ -831,13 +831,27 @@ nodes
 | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
 | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
 | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target |
 | PrototypePollutionUtility/tests.js:348:40:348:45 | source |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key |
+| PrototypePollutionUtility/tests.js:355:17:355:22 | target |
+| PrototypePollutionUtility/tests.js:355:17:355:22 | target |
+| PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:53:355:58 | target |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] |
+| PrototypePollutionUtility/tests.js:355:60:355:62 | key |
 | PrototypePollutionUtility/tests.js:355:66:355:71 | source |
 | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] |
 | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] |
 | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] |
+| PrototypePollutionUtility/tests.js:357:17:357:22 | target |
+| PrototypePollutionUtility/tests.js:357:17:357:22 | target |
 | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:357:31:357:36 | source |
@@ -2296,14 +2310,33 @@ edges
 | PrototypePollutionUtility/tests.js:338:28:338:30 | src | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
 | PrototypePollutionUtility/tests.js:338:28:338:30 | src | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
 | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] | PrototypePollutionUtility/tests.js:338:28:338:35 | src[key] |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target | PrototypePollutionUtility/tests.js:355:17:355:22 | target |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target | PrototypePollutionUtility/tests.js:355:17:355:22 | target |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target | PrototypePollutionUtility/tests.js:355:53:355:58 | target |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target | PrototypePollutionUtility/tests.js:357:17:357:22 | target |
+| PrototypePollutionUtility/tests.js:348:32:348:37 | target | PrototypePollutionUtility/tests.js:357:17:357:22 | target |
 | PrototypePollutionUtility/tests.js:348:40:348:45 | source | PrototypePollutionUtility/tests.js:355:66:355:71 | source |
 | PrototypePollutionUtility/tests.js:348:40:348:45 | source | PrototypePollutionUtility/tests.js:357:31:357:36 | source |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:24:355:26 | key |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:60:355:62 | key |
+| PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:355:60:355:62 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:24:357:26 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:38:357:40 | key |
 | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:38:357:40 | key |
+| PrototypePollutionUtility/tests.js:355:53:355:58 | target | PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:348:32:348:37 | target |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:348:32:348:37 | target |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] | PrototypePollutionUtility/tests.js:355:31:355:86 | mergePl ... ptions) |
+| PrototypePollutionUtility/tests.js:355:60:355:62 | key | PrototypePollutionUtility/tests.js:355:53:355:63 | target[key] |
 | PrototypePollutionUtility/tests.js:355:66:355:71 | source | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] |
 | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] | PrototypePollutionUtility/tests.js:348:40:348:45 | source |
 | PrototypePollutionUtility/tests.js:355:66:355:76 | source[key] | PrototypePollutionUtility/tests.js:348:40:348:45 | source |
@@ -2854,6 +2887,7 @@ edges
 | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | PrototypePollutionUtility/tests.js:276:34:276:36 | key | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:276:21:276:23 | src | src | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | PrototypePollutionUtility/tests.js:302:14:302:16 | key | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:302:21:302:23 | src | src | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | dst |
 | PrototypePollutionUtility/tests.js:322:17:322:19 | dst | PrototypePollutionUtility/tests.js:315:14:315:16 | key | PrototypePollutionUtility/tests.js:322:17:322:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:315:21:315:23 | src | src | PrototypePollutionUtility/tests.js:322:17:322:19 | dst | dst |
+| PrototypePollutionUtility/tests.js:357:17:357:22 | target | PrototypePollutionUtility/tests.js:350:37:350:39 | key | PrototypePollutionUtility/tests.js:357:17:357:22 | target | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:350:21:350:26 | source | source | PrototypePollutionUtility/tests.js:357:17:357:22 | target | target |
 | PrototypePollutionUtility/tests.js:387:13:387:15 | dst | PrototypePollutionUtility/tests.js:365:14:365:16 | key | PrototypePollutionUtility/tests.js:387:13:387:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:365:21:365:23 | obj | obj | PrototypePollutionUtility/tests.js:387:13:387:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:403:13:403:15 | dst | PrototypePollutionUtility/tests.js:397:14:397:16 | key | PrototypePollutionUtility/tests.js:403:13:403:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:397:21:397:23 | src | src | PrototypePollutionUtility/tests.js:403:13:403:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:420:13:420:15 | dst | PrototypePollutionUtility/tests.js:414:14:414:16 | key | PrototypePollutionUtility/tests.js:420:13:420:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:414:21:414:23 | src | src | PrototypePollutionUtility/tests.js:420:13:420:15 | dst | dst |
