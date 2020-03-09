@@ -94,13 +94,11 @@ private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = str(fromnode)*/
 private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getAnArg() = fromnode and
-    tonode = ClassValue::str().getACall()
-    // TODO: should it instead be this?
-    // (
-    //     tonode = ClassValue::bytes().getACall()
-    //     or
-    //     tonode = ClassValue::unicode().getACall()
-    // )
+    (
+        tonode = ClassValue::bytes().getACall()
+        or
+        tonode = ClassValue::unicode().getACall()
+    )
 }
 
 /* tonode = fromnode[:] */
