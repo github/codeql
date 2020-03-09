@@ -534,8 +534,11 @@ function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaul
 
 /**
  * Whether the memory usage was last observed to be above the threshold for restarting the TypeScript compiler.
+ *
+ * This is to prevent repeatedly restarting the compiler if the GC does not immediately bring us below the
+ * threshold again.
  */
-let isAboveReloadThreshold = false;
+let hasReloadedSinceExceedingThreshold = false;
 
 /**
  * If memory usage has moved above a the threshold, reboot the TypeScript compiler instance.
@@ -545,13 +548,13 @@ let isAboveReloadThreshold = false;
 function checkMemoryUsage() {
     let bytesUsed = process.memoryUsage().heapUsed;
     let megabytesUsed = bytesUsed / 1000000;
-    if (!isAboveReloadThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
+    if (!hasReloadedSinceExceedingThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
         console.warn('Restarting TypeScript compiler due to memory usage');
         state.project.reload();
-        isAboveReloadThreshold = true;
+        hasReloadedSinceExceedingThreshold = true;
     }
-    else if (isAboveReloadThreshold && megabytesUsed < reloadMemoryThresholdMb) {
-        isAboveReloadThreshold = false;
+    else if (hasReloadedSinceExceedingThreshold && megabytesUsed < reloadMemoryThresholdMb) {
+        hasReloadedSinceExceedingThreshold = false;
     }
 }
 
