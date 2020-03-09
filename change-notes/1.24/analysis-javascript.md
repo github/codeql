@@ -19,6 +19,8 @@
   - Calls can now be resolved to indirectly-defined class members in more cases.
   - Calls through partial invocations such as `.bind` can now be resolved in more cases.
 
+* Support for flow summaries has been more clearly marked as being experimental and moved to the new `experimental` folder.
+
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
