@@ -263,6 +263,8 @@ module TaintTracking {
     }
   }
 
+  predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
+
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
    * `k` is not a constant and `o` refers to some object literal; in this case, we consider
