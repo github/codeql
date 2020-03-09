@@ -3,7 +3,7 @@ private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Classes and predicates for modelling TaintTracking steps for arrays.
- */ 
+ */
 module ArrayTaintTracking {
   /**
    * A taint propagating data flow edge caused by the builtin array functions.
@@ -90,5 +90,203 @@ module ArrayTaintTracking {
     call.(DataFlow::MethodCallNode).getMethodName() = "concat" and
     succ = call and
     pred = call.getAnArgument()
+  }
+}
+
+/**
+ * Classes and predicates for modelling data-flow for arrays.
+ */
+private module ArrayDataFlow {
+  /**
+   * Gets a pseudo-field representing an element inside an array.
+   */
+  private string arrayElement() { result = "$arrayElement$" }
+
+  /**
+   * A step for storing an element on an array using `arr.push(e)` or `arr.unshift(e)`.
+   */
+  private class ArrayAppendStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArrayAppendStep() {
+      this.getMethodName() = "push" or
+      this.getMethodName() = "unshift"
+    }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      (pred = this.getAnArgument() or pred = this.getASpreadArgument()) and
+      succ = this.getReceiver().getALocalSource()
+    }
+  }
+
+  /**
+   * A step for reading/writing an element from an array inside a for-loop.
+   * E.g. a read from `foo[i]` to `bar` in `for(var i = 0; i < arr.length; i++) {bar = foo[i]}`.
+   */
+  private class ArrayIndexingStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
+    DataFlow::PropRef read;
+
+    ArrayIndexingStep() {
+      read = this and
+      forex(InferredType type | type = read.getPropertyNameExpr().flow().analyze().getAType() |
+        type = TTNumber()
+      ) and
+      exists(VarAccess i, ExprOrVarDecl init |
+        i = read.getPropertyNameExpr() and init = any(ForStmt f).getInit()
+      |
+        i.getVariable().getADefinition() = init or
+        i.getVariable().getADefinition().(VariableDeclarator).getDeclStmt() = init
+      )
+    }
+
+    /**
+     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+     */
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.(DataFlow::PropRead).getBase() and
+      succ = this
+    }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.(DataFlow::PropWrite).getRhs() and
+      this = succ.(DataFlow::SourceNode).getAPropertyWrite()
+    }
+  }
+
+  /**
+   * A step for retrieving an element from an array using `.pop()` or `.shift()`.
+   * E.g. `array.pop()`.
+   */
+  private class ArrayPopStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArrayPopStep() {
+      getMethodName() = "pop" or
+      getMethodName() = "shift"
+    }
+
+    /**
+     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+     */
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.getReceiver() and
+      succ = this
+    }
+  }
+
+  /**
+   * A step for iterating an array using `map` or `forEach`.
+   *
+   * Array elements can be loaded from the array `arr` to `e` in e.g: `arr.forEach(e => ...)`.
+   *
+   * And array elements can be stored into a resulting array using `map(...)`.
+   * E.g. in `arr.map(e => foo)`, the resulting array (`arr.map(e => foo)`) will contain the element `foo`.
+   */
+  private class ArrayIteration extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArrayIteration() {
+      this.getMethodName() = "map" or
+      this.getMethodName() = "forEach"
+    }
+
+    /**
+     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
+     */
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.getReceiver() and
+      succ = getCallback(0).getParameter(any(int i | i = 0 or i = 2))
+    }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      this.getMethodName() = "map" and
+      prop = arrayElement() and
+      pred = this.getCallback(0).getAReturn() and
+      succ = this
+    }
+  }
+
+  /**
+   * A step for creating an array and storing the elements in the array.
+   */
+  private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
+    ArrayCreationStep() {
+      this = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() or
+      this instanceof DataFlow::ArrayCreationNode
+    }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      succ = this and
+      (
+        pred = this.(DataFlow::CallNode).getAnArgument() or
+        pred = this.(DataFlow::ArrayCreationNode).getAnElement()
+      )
+    }
+  }
+
+  /**
+   * A step modelling that `splice` can insert elements into an array.
+   * For example in `array.splice(i, del, e)`: if `e` is tainted, then so is `array
+   */
+  private class ArraySpliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArraySpliceStep() { this.getMethodName() = "splice" }
+
+    /**
+     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+     */
+    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = getArgument(2) and
+      succ = this.getReceiver().getALocalSource()
+    }
+  }
+
+  /**
+   * A step for modelling `concat`.
+   * For example in `e = arr1.concat(arr2, arr3)`: if any of the `arr` is tainted, then so is `e`.
+   */
+  private class ArrayConcatStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArrayConcatStep() { this.getMethodName() = "concat" }
+
+    /**
+     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+     */
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      (pred = this.getReceiver() or pred = this.getAnArgument()) and
+      succ = this
+    }
+  }
+
+  /**
+   * A step for modelling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
+   */
+  private class ArraySliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
+    ArraySliceStep() {
+      this.getMethodName() = "slice" or
+      this.getMethodName() = "splice" or
+      this.getMethodName() = "filter"
+    }
+
+    /**
+     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+     */
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.getReceiver() and
+      succ = this
+    }
   }
 }
