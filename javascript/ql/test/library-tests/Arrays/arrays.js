@@ -19,7 +19,7 @@
 
   sink(arr.pop()); // NOT OK
 
-  var arr2 = Array.from("source");
+  var arr2 = ["source"];
   sink(arr2.pop()); // NOT OK
 
   var arr3 = ["source"];
@@ -41,7 +41,7 @@
   sink(arr6.pop()); // NOT OK
 
 
-  Array.from("source").forEach((e, i, ary) => {
+  ["source"].forEach((e, i, ary) => {
     sink(ary.pop()); // NOT OK
     sink(ary); // OK - its the array itself, not an element.
   })
