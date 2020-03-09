@@ -2949,7 +2949,7 @@ private module FlowExploration {
     config = mid.getConfiguration()
   }
 
-  pragma[noinline]
+  pragma[nomagic]
   private predicate partialPathOutOfCallable1(
     PartialPathNodePriv mid, DataFlowCall call, ReturnKindExt kind, CallContext cc,
     PartialAccessPath ap, Configuration config
