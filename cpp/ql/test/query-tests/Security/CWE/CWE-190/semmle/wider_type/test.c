@@ -69,3 +69,10 @@ void test10(int x) {
 		} while (0);
 	}
 }
+
+extern const int const256;
+
+void test11() {
+	short s;
+	for(s = 0; s < const256; ++s) {}
+}
