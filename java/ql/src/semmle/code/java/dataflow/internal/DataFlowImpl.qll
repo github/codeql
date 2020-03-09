@@ -1402,32 +1402,13 @@ private predicate flowCandFwd(
   else any()
 }
 
-/**
- * A node that requires an empty access path and should have its tracked type
- * (re-)computed. This is either a source or a node reached through an
- * additional step.
- */
-private class AccessPathFrontNilNode extends NormalNodeExt {
-  AccessPathFrontNilNode() {
-    nodeCand(this, _) and
-    (
-      any(Configuration c).isSource(this.getNode())
-      or
-      additionalJumpStepExt(_, this, _)
-    )
-  }
-
-  /** Gets the `nil` path front for this node. */
-  AccessPathFrontNil getApf() { result = TFrontNil(this.getErasedNodeTypeBound()) }
-}
-
 private predicate flowCandFwd0(
   NodeExt node, boolean fromArg, AccessPathFront apf, Configuration config
 ) {
   nodeCand2(node, _, false, config) and
   config.isSource(node.getNode()) and
   fromArg = false and
-  apf = node.(AccessPathFrontNilNode).getApf()
+  apf = TFrontNil(node.getErasedNodeTypeBound())
   or
   nodeCand(node, unbind(config)) and
   (
@@ -1451,7 +1432,7 @@ private predicate flowCandFwd0(
       flowCandFwd(mid, _, nil, config) and
       additionalJumpStepExt(mid, node, config) and
       fromArg = false and
-      apf = node.(AccessPathFrontNilNode).getApf()
+      apf = TFrontNil(node.getErasedNodeTypeBound())
     )
     or
     exists(NodeExt mid, boolean allowsFieldFlow |
@@ -1815,18 +1796,6 @@ private predicate popWithFront(AccessPath ap0, Content f, AccessPathFront apf, A
 private AccessPath push(Content f, AccessPath ap) { ap = pop(f, result) }
 
 /**
- * A node that requires an empty access path and should have its tracked type
- * (re-)computed. This is either a source or a node reached through an
- * additional step.
- */
-private class AccessPathNilNode extends NormalNodeExt {
-  AccessPathNilNode() { flowCand(this.(AccessPathFrontNilNode), _, _, _) }
-
-  /** Gets the `nil` path for this node. */
-  AccessPathNil getAp() { result = TNil(this.getErasedNodeTypeBound()) }
-}
-
-/**
  * Holds if data can flow from a source to `node` with the given `ap`.
  */
 private predicate flowFwd(
@@ -1842,7 +1811,7 @@ private predicate flowFwd0(
   flowCand(node, _, _, config) and
   config.isSource(node.getNode()) and
   fromArg = false and
-  ap = node.(AccessPathNilNode).getAp() and
+  ap = TNil(node.getErasedNodeTypeBound()) and
   apf = ap.(AccessPathNil).getFront()
   or
   flowCand(node, _, _, unbind(config)) and
@@ -1868,7 +1837,7 @@ private predicate flowFwd0(
       flowFwd(mid, _, _, nil, config) and
       additionalJumpStepExt(mid, node, config) and
       fromArg = false and
-      ap = node.(AccessPathNilNode).getAp() and
+      ap = TNil(node.getErasedNodeTypeBound()) and
       apf = ap.(AccessPathNil).getFront()
     )
     or
@@ -2167,7 +2136,7 @@ private newtype TPathNode =
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
+    ap = TNil(getErasedNodeTypeBound(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -2376,7 +2345,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
+  ap = TNil(getErasedNodeTypeBound(node))
   or
   exists(Content f, AccessPath ap0 | pathReadStep(mid, node, ap0, f, cc) and ap = pop(f, ap0)) and
   sc = mid.getSummaryCtx()
