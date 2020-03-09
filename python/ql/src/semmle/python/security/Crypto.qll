@@ -16,8 +16,7 @@ abstract class WeakCryptoSink extends TaintSink {
 module Pycrypto {
 
     ModuleValue cipher(string name) {
-        result = Module::named("Crypto.Cipher").attr(name) and
-        result.isPackage()
+        result = Module::named("Crypto.Cipher").attr(name)
     }
 
     class CipherInstance extends TaintKind {
