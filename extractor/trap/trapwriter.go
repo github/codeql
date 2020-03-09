@@ -2,6 +2,7 @@ package trap
 
 import (
 	"bufio"
+	"compress/gzip"
 	"errors"
 	"fmt"
 	"go/types"
@@ -17,6 +18,7 @@ import (
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
 	w            *bufio.Writer
+	zip          *gzip.Writer
 	file         *os.File
 	Labeler      *Labeler
 	path         string
@@ -31,7 +33,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
-	trapFilePath := filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap")
+	trapFilePath := filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap.gz")
 	trapFileDir := filepath.Dir(trapFilePath)
 	err = os.MkdirAll(trapFileDir, 0755)
 	if err != nil {
@@ -41,8 +43,10 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
+	zipWriter := gzip.NewWriter(tmpFile)
 	tw := &Writer{
-		bufio.NewWriter(tmpFile),
+		bufio.NewWriter(zipWriter),
+		zipWriter,
 		tmpFile,
 		nil,
 		path,
@@ -73,6 +77,12 @@ func (tw *Writer) Close() error {
 	err := tw.w.Flush()
 	if err != nil {
 		// throw away close error because write errors are likely to be more important
+		tw.file.Close()
+		return err
+	}
+	err = tw.zip.Close()
+	if err != nil {
+		// return zip-close error, but ignore file-close error
 		tw.file.Close()
 		return err
 	}
