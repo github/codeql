@@ -39,4 +39,10 @@
     arr6[i] = arr5[i];
   }
   sink(arr6.pop()); // NOT OK
+
+
+  Array.from("source").forEach((e, i, ary) => {
+    sink(ary.pop()); // NOT OK
+    sink(ary); // OK - its the array itself, not an element.
+  })
 });

@@ -612,7 +612,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   DataFlow::ValueNode getElement(int i) {
     result = this.(ArrayLiteralNode).getElement(i) or
     result = this.(ArrayConstructorInvokeNode).getElement(i) or
-    exists(DataFlow::CallNode call | call.getCalleeName() = "from" | 
+    exists(DataFlow::CallNode call | call.getCalleeName() = "from" and call = this | 
       result = call.getArgument(i)
     )
   }
@@ -624,7 +624,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   int getSize() {
     result = this.(ArrayLiteralNode).getSize() or
     result = this.(ArrayConstructorInvokeNode).getSize() or
-    exists(DataFlow::CallNode call | call.getCalleeName() = "from" | 
+    exists(DataFlow::CallNode call | call.getCalleeName() = "from" and call = this | 
       result = call.getNumArgument()
     )
   }

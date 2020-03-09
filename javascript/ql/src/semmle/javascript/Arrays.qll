@@ -187,6 +187,8 @@ private module ArrayDataFlow {
    *
    * And array elements can be stored into a resulting array using `map(...)`.
    * E.g. in `arr.map(e => foo)`, the resulting array (`arr.map(e => foo)`) will contain the element `foo`.
+   *
+   * And the second parameter in the callback is the array ifself, so there is a `loadStoreStep` from the array to that second parameter.
    */
   private class ArrayIteration extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
     ArrayIteration() {
@@ -200,7 +202,7 @@ private module ArrayDataFlow {
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = arrayElement() and
       pred = this.getReceiver() and
-      succ = getCallback(0).getParameter(any(int i | i = 0 or i = 2))
+      succ = getCallback(0).getParameter(0)
     }
 
     /**
@@ -211,6 +213,15 @@ private module ArrayDataFlow {
       prop = arrayElement() and
       pred = this.getCallback(0).getAReturn() and
       succ = this
+    }
+
+    /**
+     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+     */
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      prop = arrayElement() and
+      pred = this.getReceiver() and
+      succ = getCallback(0).getParameter(2)
     }
   }
 
