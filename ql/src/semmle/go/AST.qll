@@ -16,6 +16,7 @@ class AstNode extends @node, Locatable {
    */
   AstNode getChild(int i) {
     result = this.(ExprParent).getChildExpr(i) or
+    result = this.(GoModExprParent).getChildGoModExpr(i) or
     result = this.(StmtParent).getChildStmt(i) or
     result = this.(DeclParent).getDecl(i) or
     result = this.(GenDecl).getSpec(i) or
@@ -68,6 +69,29 @@ class ExprParent extends @exprparent, AstNode {
    * Gets the number of child expressions of this node.
    */
   int getNumChildExpr() { result = count(getAChildExpr()) }
+}
+
+/**
+ * An AST node whose children include go.mod expressions.
+ */
+class GoModExprParent extends @modexprparent, AstNode {
+  /**
+   * Gets the `i`th child expression of this node.
+   *
+   * Note that the precise indices of child expressions are considered an implementation detail
+   * and are subject to change without notice.
+   */
+  GoModExpr getChildGoModExpr(int i) { modexprs(result, _, this, i) }
+
+  /**
+   * Gets an expression that is a child node of this node in the AST.
+   */
+  GoModExpr getAChildGoModExpr() { result = getChildGoModExpr(_) }
+
+  /**
+   * Gets the number of child expressions of this node.
+   */
+  int getNumChildGoModExpr() { result = count(getAChildGoModExpr()) }
 }
 
 /**
