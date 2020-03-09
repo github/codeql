@@ -52,7 +52,7 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
     result = pred.backtrack(t2, t)
     or
     t = t2.continue() and
-    TaintTracking::arrayFunctionTaintStep(result, pred, _)
+    ArrayTaintTracking::arrayFunctionTaintStep(result, pred, _)
   )
 }
 
