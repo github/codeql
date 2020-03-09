@@ -44,5 +44,7 @@
   ["source"].forEach((e, i, ary) => {
     sink(ary.pop()); // NOT OK
     sink(ary); // OK - its the array itself, not an element.
-  })
+  });
+
+  sink(arr[0]); // OK - tuple like usage. 
 });
