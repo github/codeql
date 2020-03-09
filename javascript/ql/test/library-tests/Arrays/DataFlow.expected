@@ -10,3 +10,4 @@
 | arrays.js:29:21:29:28 | "source" | arrays.js:33:8:33:17 | arr5.pop() |
 | arrays.js:29:21:29:28 | "source" | arrays.js:35:8:35:26 | arr5.slice(2).pop() |
 | arrays.js:29:21:29:28 | "source" | arrays.js:41:8:41:17 | arr6.pop() |
+| arrays.js:44:14:44:21 | "source" | arrays.js:45:10:45:18 | ary.pop() |
