@@ -96,16 +96,21 @@ private float wideningUpperBounds(ArithmeticType t) {
  * This predicate also handles the case of constant variables initialized in compilation units,
  * which doesn't necessarily have a getValue() result from the extractor.
  */
-private string getValue(Expr e) {
+private string getValue0(Expr e) {
   if exists(e.getValue())
   then result = e.getValue()
   else
     exists(VariableAccess access, Variable v |
       e = access and
       v = access.getTarget() and
-      v.getType().isConst() and
-      result = getValue(v.getAnAssignedValue())
+      v.getUnderlyingType().isConst() and
+      result = getValue0(v.getAnAssignedValue())
     )
+}
+
+private string getValue(Expr e) {
+  result = min(getValue0(e)) and
+  result = max(getValue0(e))
 }
 
 /** Set of expressions which we know how to analyze. */
@@ -382,8 +387,8 @@ private float getTruncatedLowerBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getLowerBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by getLowerBoundsImpl might
       // overflow, so we replace invalid bounds with exprMinVal.
@@ -435,8 +440,8 @@ private float getTruncatedUpperBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getUpperBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
