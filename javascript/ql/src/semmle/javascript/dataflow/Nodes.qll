@@ -587,8 +587,8 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
 }
 
 /**
- * A data flow node corresponding to the creation or a new array, either through an array literal
- * or an invocation of the `Array` constructor.
+ * A data flow node corresponding to the creation or a new array, either through an array literal, 
+ * an invocation of the `Array` constructor, or the `Array.from` method.
  *
  *
  * Examples:
@@ -598,18 +598,23 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
  * new Array('apple', 'orange')
  * Array(16)
  * new Array(16)
+ * Array.from(1,2,3);
  * ```
  */
 class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   ArrayCreationNode() {
     this instanceof ArrayLiteralNode or
-    this instanceof ArrayConstructorInvokeNode
+    this instanceof ArrayConstructorInvokeNode or
+    this = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall()
   }
 
   /** Gets the `i`th initial element of this array, if one is provided. */
   DataFlow::ValueNode getElement(int i) {
     result = this.(ArrayLiteralNode).getElement(i) or
-    result = this.(ArrayConstructorInvokeNode).getElement(i)
+    result = this.(ArrayConstructorInvokeNode).getElement(i) or
+    exists(DataFlow::CallNode call | call.getCalleeName() = "from" | 
+      result = call.getArgument(i)
+    )
   }
 
   /** Gets an initial element of this array, if one if provided. */
@@ -618,7 +623,10 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   /** Gets the initial size of the created array, if it can be determined. */
   int getSize() {
     result = this.(ArrayLiteralNode).getSize() or
-    result = this.(ArrayConstructorInvokeNode).getSize()
+    result = this.(ArrayConstructorInvokeNode).getSize() or
+    exists(DataFlow::CallNode call | call.getCalleeName() = "from" | 
+      result = call.getNumArgument()
+    )
   }
 }
 

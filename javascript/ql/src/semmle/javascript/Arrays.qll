@@ -219,7 +219,6 @@ private module ArrayDataFlow {
    */
   private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
     ArrayCreationStep() {
-      this = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() or
       this instanceof DataFlow::ArrayCreationNode
     }
 
@@ -228,11 +227,8 @@ private module ArrayDataFlow {
      */
     override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = arrayElement() and
-      succ = this and
-      (
-        pred = this.(DataFlow::CallNode).getAnArgument() or
-        pred = this.(DataFlow::ArrayCreationNode).getAnElement()
-      )
+      pred = this.(DataFlow::ArrayCreationNode).getAnElement() and
+      succ = this
     }
   }
 
