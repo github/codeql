@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd"> 
+<qhelp>
+<overview>
+<p>
+The Apache Commons Mail library by default, does not verify the host 
+when connecting to the server.  This is equivalent to trusting all certificates. 
+This may lead to Man in the Middle attacks and the application leaking sensitive 
+user information on a broken SSL connection.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The identity of the serve should be checked using the 
+<code>setSSLCheckServerIdentity(true);</code> call.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+Here since the send() is called without the SSLCheckServerIdentity variable 
+set to true, the application is vulnerable to attacks.
+ <sample language="java" src="example/email.java">
+</p>
+
+<p>
+Here in this case, we enable the server idenetitiy checks. Hence, fixing the issue.
+</p>
+<sample src="example/emailCorrect.java" />
+</example>
+
+<references>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/297.html">CWE 297</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A3-Sensitive_Data_Exposure">A3 - Sensitive Data Exposure</a>.</li>
+</references>
+</qhelp>
