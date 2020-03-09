@@ -36,12 +36,9 @@ predicate maybe_side_effecting_attribute(Attribute attr) {
 
 predicate side_effecting_descriptor_type(ClassValue descriptor) {
     descriptor.isDescriptorType() and
-    /*
-     * Technically all descriptor gets have side effects,
-     * but some are indicative of a missing call and
-     * we want to treat them as having no effect.
-     */
-
+    // Technically all descriptor gets have side effects,
+    // but some are indicative of a missing call and
+    // we want to treat them as having no effect.
     not descriptor = ClassValue::functionType() and
     not descriptor = ClassValue::staticmethod() and
     not descriptor = ClassValue::classmethod()

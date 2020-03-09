@@ -22,11 +22,8 @@ where
     not e instanceof Subscript and
     not e instanceof Attribute and
     not exists(Stmt s | s.(While).contains(del) or s.(For).contains(del)) and
-    /*
-     * False positive: calling `sys.exc_info` within a function results in a
-     *       reference cycle, and an explicit call to `del` helps break this cycle.
-     */
-
+    // False positive: calling `sys.exc_info` within a function results in a
+    //       reference cycle, and an explicit call to `del` helps break this cycle.
     not exists(FunctionValue ex |
         ex = Value::named("sys.exc_info") and
         ex.getACall().getScope() = f
