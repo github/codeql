@@ -73,9 +73,6 @@ private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getName() = "format" and
     (
         tonode.getAnArg() = fromnode
-        or
-        // TODO: if this case is not covered by tonode.getAnArg(), we should change it so it is :\
-        tonode.getNode().getAKeyword().getValue() = fromnode.getNode()
     )
 }
 
