@@ -111,13 +111,10 @@ private module ArrayDataFlow {
       this.getMethodName() = "unshift"
     }
 
-    /**
-     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-     */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
-      (pred = this.getAnArgument() or pred = this.getASpreadArgument()) and
-      succ = this.getReceiver().getALocalSource()
+      (element = this.getAnArgument() or element = this.getASpreadArgument()) and
+      obj = this.getReceiver().getALocalSource()
     }
   }
 
@@ -141,22 +138,16 @@ private module ArrayDataFlow {
       )
     }
 
-    /**
-     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-     */
-    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       prop = arrayElement() and
-      pred = this.(DataFlow::PropRead).getBase() and
-      succ = this
+      obj = this.(DataFlow::PropRead).getBase() and
+      element = this
     }
 
-    /**
-     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-     */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
-      pred = this.(DataFlow::PropWrite).getRhs() and
-      this = succ.(DataFlow::SourceNode).getAPropertyWrite()
+      element = this.(DataFlow::PropWrite).getRhs() and
+      this = obj.(DataFlow::SourceNode).getAPropertyWrite()
     }
   }
 
@@ -170,13 +161,10 @@ private module ArrayDataFlow {
       getMethodName() = "shift"
     }
 
-    /**
-     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-     */
-    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       prop = arrayElement() and
-      pred = this.getReceiver() and
-      succ = this
+      obj = this.getReceiver() and
+      element = this
     }
   }
 
@@ -196,28 +184,19 @@ private module ArrayDataFlow {
       this.getMethodName() = "forEach"
     }
 
-    /**
-     * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-     */
-    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       prop = arrayElement() and
-      pred = this.getReceiver() and
-      succ = getCallback(0).getParameter(0)
+      obj = this.getReceiver() and
+      element = getCallback(0).getParameter(0)
     }
 
-    /**
-     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-     */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       this.getMethodName() = "map" and
       prop = arrayElement() and
-      pred = this.getCallback(0).getAReturn() and
-      succ = this
+      element = this.getCallback(0).getAReturn() and
+      obj = this
     }
 
-    /**
-     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-     */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = arrayElement() and
       pred = this.getReceiver() and
@@ -233,13 +212,10 @@ private module ArrayDataFlow {
       this instanceof DataFlow::ArrayCreationNode
     }
 
-    /**
-     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-     */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
-      pred = this.(DataFlow::ArrayCreationNode).getAnElement() and
-      succ = this
+      element = this.(DataFlow::ArrayCreationNode).getAnElement() and
+      obj = this
     }
   }
 
@@ -250,13 +226,10 @@ private module ArrayDataFlow {
   private class ArraySpliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
     ArraySpliceStep() { this.getMethodName() = "splice" }
 
-    /**
-     * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-     */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
-      pred = getArgument(2) and
-      succ = this.getReceiver().getALocalSource()
+      element = getArgument(2) and
+      obj = this.getReceiver().getALocalSource()
     }
   }
 
@@ -267,9 +240,6 @@ private module ArrayDataFlow {
   private class ArrayConcatStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
     ArrayConcatStep() { this.getMethodName() = "concat" }
 
-    /**
-     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-     */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = arrayElement() and
       (pred = this.getReceiver() or pred = this.getAnArgument()) and
@@ -287,9 +257,6 @@ private module ArrayDataFlow {
       this.getMethodName() = "filter"
     }
 
-    /**
-     * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-     */
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       prop = arrayElement() and
       pred = this.getReceiver() and
