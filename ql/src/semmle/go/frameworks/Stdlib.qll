@@ -108,6 +108,20 @@ module IoUtil {
 
     override DataFlow::Node getAPathArgument() { result = getArgument(0) }
   }
+
+  /**
+   * A taint model of the `ioutil.ReadAll` function, recording that it propagates taint
+   * from its first argument to its first result.
+   */
+  private class ReadAll extends TaintTracking::FunctionModel {
+    ReadAll() {
+      hasQualifiedName("io/ioutil", "ReadAll")
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isParameter(0) and outp.isResult(0)
+    }
+  }
 }
 
 /** Provides models of commonly used functions in the `os` package. */
@@ -519,16 +533,35 @@ module Log {
 
 /** Provides models of some functions in the `encoding/json` package. */
 module EncodingJson {
-  private class MarshalFunction extends TaintTracking::FunctionModel {
+  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/json", "Marshal") or
       this.hasQualifiedName("encoding/json", "MarshalIndent")
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp.isParameter(0) and
-      outp.isResult(0)
+      inp = getAnInput() and outp = getOutput()
     }
+
+    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+
+    override DataFlow::FunctionOutput getOutput() { result.isResult(0) }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+    UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
+
+    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+      inp = getAnInput() and outp = getOutput()
+    }
+
+    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+
+    override DataFlow::FunctionOutput getOutput() { result.isParameter(1) }
+
+    override string getFormat() { result = "JSON" }
   }
 }
 

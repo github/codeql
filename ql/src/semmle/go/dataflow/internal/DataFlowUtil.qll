@@ -392,6 +392,10 @@ class PostUpdateNode extends Node {
     (
       preupd instanceof AddressOperationNode
       or
+      preupd = any(AddressOperationNode addr).getOperand()
+      or
+      preupd = any(PointerDereferenceNode deref).getOperand()
+      or
       exists(Write w, DataFlow::Node base | w.writesField(base, _, _) |
         preupd = base
         or

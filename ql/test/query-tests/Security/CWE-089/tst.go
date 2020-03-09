@@ -10,5 +10,19 @@ func marshal(version interface{}) string {
 	if err != nil {
 		return fmt.Sprintf("error: '%v'", err) // OK
 	}
-	return versionJSON
+	return string(versionJSON)
+}
+
+type StringWrapper struct {
+	s string
+}
+
+func marshalUnmarshal(w1 StringWrapper) (string, error) {
+	buf, err := json.Marshal(w1)
+	if err != nil {
+		return "", err
+	}
+	var w2 StringWrapper
+	json.Unmarshal(buf, &w2)
+	return fmt.Sprintf("wrapped string: '%s'", w2.s), nil // OK
 }

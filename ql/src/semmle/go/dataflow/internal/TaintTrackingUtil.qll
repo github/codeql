@@ -59,11 +59,32 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(AdditionalTaintStep a).step(pred, succ)
 }
 
-/** Holds if taint flows from `pred` to `succ` via a reference or dereference. */
+/**
+ * Holds if taint flows from `pred` to `succ` via a reference or dereference.
+ *
+ * The taint-tracking library does not distinguish between a reference and its referent,
+ * treating one as tainted if the other is.
+ */
 predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
-  succ.(DataFlow::AddressOperationNode).getOperand() = pred
+  exists(DataFlow::AddressOperationNode addr |
+    // from `x` to `&x`
+    pred = addr.getOperand() and
+    succ = addr
+    or
+    // from `&x` to `x`
+    pred = addr and
+    succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = addr.getOperand()
+  )
   or
-  succ.(DataFlow::PointerDereferenceNode).getOperand() = pred
+  exists(DataFlow::PointerDereferenceNode deref |
+    // from `x` to `*x`
+    pred = deref.getOperand() and
+    succ = deref
+    or
+    // from `*x` to `x`
+    pred = deref and
+    succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = deref.getOperand()
+  )
 }
 
 /** Holds if taint flows from `pred` to `succ` via a field read. */
