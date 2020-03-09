@@ -13,16 +13,16 @@
 
 import python
 
-from ExceptFlowNode ex, Object t, ClassObject c, ControlFlowNode origin, string what
-where ex.handledException_objectapi(t, c, origin) and 
+from ExceptFlowNode ex, Value t, ClassValue c, ControlFlowNode origin, string what
+where ex.handledException(t, c, origin) and 
 (
-  exists(ClassObject x | x = t |
+  exists(ClassValue x | x = t |
     not x.isLegalExceptionType() and
-    not x.failedInference() and
+    not x.failedInference(_) and
     what = "class '" + x.getName() + "'"
   )
   or
-  not t instanceof ClassObject and
+  not t instanceof ClassValue and
   what = "instance of '" + c.getName() + "'"
 )
 
