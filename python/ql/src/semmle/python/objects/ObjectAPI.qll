@@ -427,7 +427,7 @@ class ClassValue extends Value {
         or
         this.getASuperType() = ClassValue::list()
         or
-        this.getASuperType() = ClassValue::rangeType()
+        this.getASuperType() = ClassValue::range()
         or
         this.getASuperType() = ClassValue::bytes()
         or
@@ -820,13 +820,6 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("complex"))
     }
     
-    /** The builtin class '(x)range' */
-    ClassValue rangeType() {
-        result = TBuiltinClassObject(Builtin::special("xrange"))
-        or
-        major_version() = 3 and result = TBuiltinClassObject(Builtin::special("range"))
-    }
-
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
     ClassValue bytes() {
         result = TBuiltinClassObject(Builtin::special("bytes"))
