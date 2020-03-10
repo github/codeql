@@ -82,7 +82,7 @@ private predicate tracking_step(ControlFlowNode src, ControlFlowNode dest) {
     or
     src = dest.(AttrNode).getObject()
     or
-    src = dest.(SubscriptNode).getValue()
+    src = dest.(SubscriptNode).getObject()
     or
     tracked_call_step(src, dest)
     or

@@ -26,7 +26,7 @@ class WsgiEnvironment extends TaintKind {
             tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode and
             tonode.(CallNode).getArg(0).pointsTo(key)
             or
-            tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad() and
+            tonode.(SubscriptNode).getObject() = fromnode and tonode.isLoad() and
             tonode.(SubscriptNode).getIndex().pointsTo(key)
             |
             key = Value::forString(text) and result instanceof ExternalStringKind and
@@ -66,7 +66,7 @@ class UntrustedCookie extends TaintKind {
     }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        tonode.(SubscriptNode).getValue() = fromnode and
+        tonode.(SubscriptNode).getObject() = fromnode and
         result instanceof UntrustedMorsel
     }
 
