@@ -6,7 +6,6 @@
  * @problem.severity warning
  * @tags reliability
  *       correctness
- * @problem.severity warning
  * @sub-severity high
  * @precision very-high
  * @id py/inheritance/signature-mismatch
@@ -19,8 +18,8 @@ from FunctionValue base, PythonFunctionValue derived
 where
   not exists(base.getACall()) and
   not exists(FunctionValue a_derived |
-      a_derived.overrides(base) and
-      exists(a_derived.getACall())
+    a_derived.overrides(base) and
+    exists(a_derived.getACall())
   ) and
   not derived.getScope().isSpecialMethod() and
   derived.getName() != "__init__" and
@@ -28,8 +27,9 @@ where
   not derived.getScope().isSpecialMethod() and
   // call to overrides distributed for efficiency
   (
-    (derived.overrides(base) and derived.minParameters() > base.maxParameters())
+    derived.overrides(base) and derived.minParameters() > base.maxParameters()
     or
-    (derived.overrides(base) and derived.maxParameters() < base.minParameters())
+    derived.overrides(base) and derived.maxParameters() < base.minParameters()
   )
-select derived, "Overriding method '" + derived.getName() + "' has signature mismatch with $@.", base, "overridden method"
+select derived, "Overriding method '" + derived.getName() + "' has signature mismatch with $@.",
+  base, "overridden method"
