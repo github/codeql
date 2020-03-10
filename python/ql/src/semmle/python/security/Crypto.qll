@@ -12,7 +12,7 @@ abstract class WeakCryptoSink extends TaintSink {
     }
 }
 
-/** Modeling the 'pycrypto' pacakge https://github.com/dlitz/pycrypto (latest release 2013) */
+/** Modeling the 'pycrypto' package https://github.com/dlitz/pycrypto (latest release 2013) */
 module Pycrypto {
 
     ModuleValue cipher(string name) {
