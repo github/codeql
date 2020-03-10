@@ -1,10 +1,10 @@
-CodeQL libraries for C and C++
-==============================
+CodeQL library for C and C++
+============================
 
-Explore the standard CodeQL libraries for C and C++.
+When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
 
-About the CodeQL libraries for C and C++
-----------------------------------------
+About the CodeQL library for C and C++
+--------------------------------------
 
 There is an extensive library for analyzing CodeQL databases extracted from C/C++ projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. 
 The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``cpp.qll`` imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:
@@ -14,10 +14,6 @@ The library is implemented as a set of QL modules, that is, files with the exten
    import cpp
 
 The rest of this topic summarizes the available CodeQL classes and corresponding C/C++ constructs.
-
-.. pull-quote:: Note
-
-   You can find related classes and features using the query console's auto-complete feature.  You can also press *F3* to jump to the definition of any element. Library files are opened in new tabs in the console.
 
 Commonly-used library classes
 ------------------------------
