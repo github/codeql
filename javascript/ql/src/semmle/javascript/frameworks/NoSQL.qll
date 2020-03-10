@@ -210,23 +210,22 @@ private module Mongoose {
   }
 
   /**
-   * A Mongoose collection object.
+   * Gets a data flow node referring to a Mongoose model object.
    */
-  class Model extends DataFlow::SourceNode {
-    Model() {
-      this = getAMongooseInstance().getAMemberCall("model") or
-      this.hasUnderlyingType("mongoose", "Model")
-    }
-
-    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-      result = this and
-      t.start()
-      or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-    }
-
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+  private DataFlow::SourceNode getAModel(DataFlow::TypeTracker t) {
+    (
+      result = getAMongooseInstance().getAMemberCall("model") or
+      result.hasUnderlyingType("mongoose", "Model")
+    ) and
+    t.start()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getAModel(t2).track(t2, t))
   }
+
+  /**
+   * Gets a data flow node referring to a Mongoose model object.
+   */
+  DataFlow::SourceNode getAModel() { result = getAModel(DataFlow::TypeTracker::end()) }
 
   /**
    * Provides signatures for the Model methods.
@@ -398,9 +397,9 @@ private module Mongoose {
    */
   private class QueryFromModel extends DataFlow::MethodCallNode {
     QueryFromModel() {
-      exists(string name, Model m |
+      exists(string name |
         ModelMethodSignatures::returnsQuery(name) and
-        m.ref().getAMethodCall(name) = this
+        getAModel().getAMethodCall(name) = this
       )
     }
   }
@@ -460,9 +459,9 @@ private module Mongoose {
    */
   class MongoDBQueryPart extends NoSQL::Query {
     MongoDBQueryPart() {
-      exists(Model m, DataFlow::MethodCallNode mcn, string method, int n |
+      exists(DataFlow::MethodCallNode mcn, string method, int n |
         ModelMethodSignatures::interpretsArgumentAsQuery(method, n) and
-        mcn = m.ref().getAMethodCall(method) and
+        mcn = getAModel().getAMethodCall(method) and
         this = mcn.getArgument(n).asExpr()
       )
       or
@@ -483,9 +482,9 @@ private module Mongoose {
     MongoDBQueryEvaluation() {
       this = mcn and
       (
-        exists(Model m, string method |
+        exists(string method |
           ModelMethodSignatures::returnsQuery(method) and
-          mcn = m.ref().getAMethodCall(method) and
+          mcn = getAModel().getAMethodCall(method) and
           // callback provided to a Model method call
           exists(mcn.getCallback(mcn.getNumArgument() - 1))
         )
