@@ -258,26 +258,99 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * A model of a URL request made using the `jQuery.ajax` or `jQuery.getJSON`.
+ * A model of a URL request made using the `jQuery.ajax`.
  */
-private class JQueryClientRequest extends ClientRequest::Range {
-  JQueryClientRequest() {
-    exists(string name |
-      name = "ajax" or
-      name = "getJSON"
-    |
-      this = jquery().getAMemberCall(name)
-    )
-  }
+private class JQueryAjaxCall extends ClientRequest::Range {
+  JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
 
   override DataFlow::Node getUrl() {
-    result = getArgument(0) or
+    result = getArgument(0) and not exists(getOptionArgument(0, _)) or
     result = getOptionArgument([0 .. 1], "url")
   }
 
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+
+  private string getResponseType() {
+    getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    (
+      responseType = getResponseType()
+      or
+      not exists(getResponseType()) and responseType = ""
+    ) and
+    promise = false and
+    result =
+      getOptionArgument([0 .. 1], "success")
+          .getALocalSource()
+          .(DataFlow::FunctionNode)
+          .getParameter(0)
+  }
+}
+
+/**
+ * A model of a URL request made using a `jQuery.ajax` shorthand.
+ * E.g. `jQuery.getJSON`, `jQuery.post` etc.
+ * See: https://api.jquery.com/category/ajax/shorthand-methods/.
+ * 
+ * The method signatures: 
+ * jQuery.get( url [, data ] [, success ] [, dataType ] )
+ * jQuery.getJSON( url [, data ] [, success ] )
+ * jQuery.getScript( url [, success ] )
+ * jQuery.post( url [, data ] [, success ] [, dataType ] )
+ * .load( url [, data ] [, complete ] )
+ */
+private class JQueryAjaxShortHand extends ClientRequest::Range {
+  string name;
+
+  JQueryAjaxShortHand() {
+    (
+      name = "get" or
+      name = "getJSON" or
+      name = "getScript" or
+      name = "post"
+    ) and
+    this = jquery().getAMemberCall(name)
+    or
+    name = "load" and
+    this = JQuery::objectRef().getAMethodCall(name)
+  }
+
+  override DataFlow::Node getUrl() { result = getArgument(0) }
+
+  override DataFlow::Node getHost() { none() }
+
+  override DataFlow::Node getADataNode() {
+    result = getArgument(1) and
+    not name = "getScript" and // doesn't have a data-node.
+    not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
+  }
+
+  string getResponseType() {
+    (name = "get" or name = "post") and
+    getLastArgument().mayHaveStringValue(result)
+    or
+    name = "getJSON" and result = "json"
+    or
+    (name = "getScript" or name = "load") and
+    result = "text"
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    (
+      responseType = getResponseType()
+      or
+      not exists(getResponseType()) and responseType = ""
+    ) and
+    promise = false and
+    // one of the two last arguments
+    result =
+      getCallback([getNumArgument() - 2 .. getNumArgument() - 1])
+          .getParameter(0)
+  }
 }
 
 module JQuery {
