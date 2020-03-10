@@ -27,6 +27,7 @@
 | auto | AutoType |  |  |  |  |
 | bool | BoolType |  |  |  |  |
 | char | MicrosoftInt8Type, PlainCharType |  |  |  |  |
+| char8_t | Char8Type |  |  |  |  |
 | char16_t | Char16Type |  |  |  |  |
 | char32_t | Char32Type |  |  |  |  |
 | char * | CharPointerType |  | char |  |  |
