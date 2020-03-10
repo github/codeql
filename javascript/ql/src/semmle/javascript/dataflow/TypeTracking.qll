@@ -16,7 +16,17 @@ private class PropertyName extends string {
     AccessPath::isAssignedInUniqueFile(this)
     or
     exists(AccessPath::getAnAssignmentTo(_, this))
+    or
+    this instanceof TypeTrackingPseudoProperty
   }
+}
+
+/**
+ * A pseudo-property that can be used in type-tracking.
+ */
+abstract class TypeTrackingPseudoProperty extends string {
+  bindingset[this]
+  TypeTrackingPseudoProperty() { any() }
 }
 
 private class OptionalPropertyName extends string {
@@ -26,7 +36,7 @@ private class OptionalPropertyName extends string {
 /**
  * A description of a step on an inter-procedural data flow path.
  */
-private newtype TStepSummary =
+newtype TStepSummary =
   LevelStep() or
   CallStep() or
   ReturnStep() or
