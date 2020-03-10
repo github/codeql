@@ -136,6 +136,9 @@ module StepSummary {
       name != ""
     )
     or
+    // Step in/out of a promise
+    succ = PromiseTypeTracking::promiseStep(pred, summary)
+    or
     // Summarize calls with flow directly from a parameter to a return.
     exists(DataFlow::ParameterNode param, DataFlow::FunctionNode fun |
       (
@@ -225,6 +228,20 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking.
    */
   predicate start() { hasCall = false and prop = "" }
+
+  /**
+   * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`. 
+   * The type tracking only ends after the property has been loaded. 
+   */
+  predicate startInProp(PropertyName propName) { hasCall = false and prop = propName }
+
+  /**
+   * Holds if this is the starting point of type tracking, and the initial value is a promise.
+   * The type tracking only ends after the value has been extracted from the promise.
+   */
+  predicate startInPromise() {
+    startInProp(Promises::valueProp())
+  }
 
   /**
    * Holds if this is the starting point of type tracking

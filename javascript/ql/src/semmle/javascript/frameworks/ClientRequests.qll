@@ -571,20 +571,13 @@ module ClientRequest {
       call = DataFlow::moduleImport("chrome-remote-interface").getAnInvocation()
     |
       // the client is inside in a promise.
-      t = PromiseTypeTracking::valueInPromiseTracker() and result = call
+      t.startInPromise() and result = call
       or
       // the client is accessed directly using a callback.
       t.start() and result = call.getCallback([0 .. 1]).getParameter(0)
     )
     or
-    // standard type-tracking steps
     exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2).track(t2, t))
-    or
-    // Simple promise tracking.
-    exists(DataFlow::TypeTracker t2, DataFlow::StepSummary summary |
-      result = PromiseTypeTracking::promiseStep(chromeRemoteInterface(t2), summary) and
-      t = t2.append(summary)
-    )
   }
 
   /**

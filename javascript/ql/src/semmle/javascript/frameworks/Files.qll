@@ -68,7 +68,7 @@ private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
     result = DataFlow::moduleMember(moduleName, "sync").getACall()
     or
     // `files` in `require('globby')(_).then(files => ...)`
-    t = PromiseTypeTracking::valueInPromiseTracker() and
+    t.startInPromise() and
     result = DataFlow::moduleImport(moduleName).getACall()
   )
   or
@@ -93,8 +93,7 @@ private class GlobbyFileNameSource extends FileNameSource {
 private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
   exists(string moduleName | moduleName = "fast-glob" |
     // `require('fast-glob').sync(_)
-    t.start() and
-    result = DataFlow::moduleMember(moduleName, "sync").getACall()
+    t.start() and result = DataFlow::moduleMember(moduleName, "sync").getACall()
     or
     exists(DataFlow::SourceNode f |
       f = DataFlow::moduleImport(moduleName)
@@ -103,8 +102,7 @@ private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
     |
       // `files` in `require('fast-glob')(_).then(files => ...)` and
       // `files` in `require('fast-glob').async(_).then(files => ...)`
-      t = PromiseTypeTracking::valueInPromiseTracker() and
-      result = f.getACall()
+      t.startInPromise() and result = f.getACall()
     )
     or
     // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
