@@ -96,7 +96,7 @@ private float wideningUpperBounds(ArithmeticType t) {
  * This predicate also handles the case of constant variables initialized in compilation units,
  * which doesn't necessarily have a getValue() result from the extractor.
  */
-private string getValue0(Expr e) {
+private string getValue(Expr e) {
   if exists(e.getValue())
   then result = e.getValue()
   else
@@ -104,13 +104,8 @@ private string getValue0(Expr e) {
       e = access and
       v = access.getTarget() and
       v.getUnderlyingType().isConst() and
-      result = getValue0(v.getAnAssignedValue())
+      result = getValue(v.getAnAssignedValue())
     )
-}
-
-private string getValue(Expr e) {
-  result = min(getValue0(e)) and
-  result = max(getValue0(e))
 }
 
 /** Set of expressions which we know how to analyze. */
