@@ -59,6 +59,7 @@ private class GlobFileNameSource extends FileNameSource {
 
 /**
  * Gets a file name or an array of file names from the `globby` library.
+ * The predicate uses type-tracking. However, type-tracking is only used to track a step out of a promise.
  */
 private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
   exists(string moduleName | moduleName = "globby" |
@@ -67,13 +68,14 @@ private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
     result = DataFlow::moduleMember(moduleName, "sync").getACall()
     or
     // `files` in `require('globby')(_).then(files => ...)`
-    t.start() and
-    result =
-      DataFlow::moduleImport(moduleName)
-          .getACall()
-          .getAMethodCall("then")
-          .getCallback(0)
-          .getParameter(0)
+    t = PromiseTypeTracking::valueInPromiseTracker() and
+    result = DataFlow::moduleImport(moduleName).getACall()
+  )
+  or
+  // Tracking out of a promise
+  exists(DataFlow::TypeTracker t2, DataFlow::StepSummary summary |
+    result = PromiseTypeTracking::promiseStep(globbyFileNameSource(t2), summary) and
+    t = t2.append(summary)
   )
 }
 
@@ -86,6 +88,7 @@ private class GlobbyFileNameSource extends FileNameSource {
 
 /**
  * Gets a file name or an array of file names from the `fast-glob` library.
+ * The predicate uses type-tracking. However, type-tracking is only used to track a step out of a promise.
  */
 private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
   exists(string moduleName | moduleName = "fast-glob" |
@@ -100,8 +103,8 @@ private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
     |
       // `files` in `require('fast-glob')(_).then(files => ...)` and
       // `files` in `require('fast-glob').async(_).then(files => ...)`
-      t.start() and
-      result = f.getACall().getAMethodCall("then").getCallback(0).getParameter(0)
+      t = PromiseTypeTracking::valueInPromiseTracker() and
+      result = f.getACall()
     )
     or
     // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
@@ -112,6 +115,12 @@ private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
           .getAMethodCall(EventEmitter::on())
           .getCallback(1)
           .getParameter(0)
+  )
+  or
+  // Tracking out of a promise
+  exists(DataFlow::TypeTracker t2, DataFlow::StepSummary summary |
+    result = PromiseTypeTracking::promiseStep(fastGlobFileNameSource(t2), summary) and
+    t = t2.append(summary)
   )
 }
 

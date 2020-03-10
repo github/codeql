@@ -10,3 +10,7 @@
 | tst-file-names.js:25:18:25:22 | files |
 | tst-file-names.js:27:24:27:28 | files |
 | tst-file-names.js:29:27:29:30 | file |
+| tst-file-names.js:32:34:32:38 | files |
+| tst-file-names.js:34:15:34:29 | await globby(_) |
+| tst-file-names.js:36:16:36:38 | await f ... sync(_) |
+| tst-file-names.js:38:16:38:57 | await f ...  => {}) |
