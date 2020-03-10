@@ -1182,7 +1182,7 @@ ssa.cpp:
 #  271|     r271_2(glval<void *>)  = VariableAddress[buf]               : 
 #  271|     r271_3(void *)         = Load                               : &:r271_2, m269_8
 #  271|     m271_4(void *)         = Store                              : &:r271_1, r271_3
-#  268|     v268_11(void)          = ReturnIndirection                  : &:r268_7, ~mu268_4
+#  268|     v268_11(void)          = ReturnIndirection[s]               : &:r268_7, ~mu268_4
 #  268|     r268_12(glval<void *>) = VariableAddress[#return]           : 
 #  268|     v268_13(void)          = ReturnValue                        : &:r268_12, m271_4
 #  268|     v268_14(void)          = UnmodeledUse                       : mu*
