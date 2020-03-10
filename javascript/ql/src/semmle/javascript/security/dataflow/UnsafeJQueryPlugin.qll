@@ -34,7 +34,6 @@ module UnsafeJQueryPlugin {
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       // prefixing prevents forced html/css confusion:
-
       // prefixing through concatenation:
       StringConcatenation::taintStep(pred, succ, _, any(int i | i >= 1))
       or

@@ -11,7 +11,7 @@ private import semmle.javascript.dataflow.internal.FlowSteps
  * Gets a node that refers to an element of `array`, likely obtained
  * as a result of enumerating the elements of the array.
  */
-private SourceNode getAnEnumeratedArrayElement(SourceNode array) {
+SourceNode getAnEnumeratedArrayElement(SourceNode array) {
   exists(MethodCallNode call, string name |
     call = array.getAMethodCall(name) and
     (name = "forEach" or name = "map") and

@@ -9,4 +9,5 @@
 import semmle.javascript.meta.ExtractionMetrics::ExtractionMetrics
 
 from PhaseName phaseName
-select phaseName, Aggregated::getCpuTime(phaseName) as CPU_NANO, Aggregated::getWallclockTime(phaseName) as WALLCLOCK_NANO
+select phaseName, Aggregated::getCpuTime(phaseName) as CPU_NANO,
+  Aggregated::getWallclockTime(phaseName) as WALLCLOCK_NANO
