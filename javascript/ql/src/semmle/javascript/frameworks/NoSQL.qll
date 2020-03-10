@@ -425,7 +425,7 @@ private module Mongoose {
       result = succ.track(t2, t)
       or
       result = succ.getAMethodCall(any(string name | QueryMethodSignatures::returnsQuery(name))) and
-      t = t2
+      t = t2.continue()
     )
   }
 
