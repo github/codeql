@@ -609,7 +609,8 @@ private module Forge {
     NonKeyCipher() {
       exists(string algorithmName | algorithm.matchesName(algorithmName) |
         // require("forge").md.md5.create().update('The quick brown fox jumps over the lazy dog');
-        this = getAnImportNode()
+        this =
+          getAnImportNode()
               .getAPropertyRead("md")
               .getAPropertyRead(algorithmName)
               .getAMemberCall("create")

@@ -12,3 +12,5 @@
 | tst.js:28:17:28:22 | "blab" | tst.js:25:16:25:20 | event |
 | tst.js:34:18:34:22 | "BOH" | tst.js:33:17:33:17 | x |
 | tst.js:40:20:40:27 | "yabity" | tst.js:39:19:39:19 | x |
+| tst.js:46:28:46:38 | 'FirstData' | tst.js:43:45:43:49 | first |
+| tst.js:47:29:47:40 | 'SecondData' | tst.js:44:37:44:42 | second |

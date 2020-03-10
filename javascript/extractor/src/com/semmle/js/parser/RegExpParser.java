@@ -281,8 +281,19 @@ public class RegExpParser {
     if (this.match("+")) return this.finishTerm(new Plus(loc, atom, !this.match("?")));
     if (this.match("?")) return this.finishTerm(new Opt(loc, atom, !this.match("?")));
     if (this.match("{")) {
-      Double lo = toNumber(this.readDigits(false)), hi = null;
-      if (this.match(",") && !this.lookahead("}")) hi = toNumber(this.readDigits(false));
+      Double lo = toNumber(this.readDigits(false)), hi;
+      if (this.match(",")) {
+        if (!this.lookahead("}")) {
+          // atom{lo, hi}
+          hi = toNumber(this.readDigits(false));
+        } else {
+          // atom{lo,}
+          hi = null;
+        }
+      } else {
+        // atom{lo}
+        hi = lo;
+      }
       this.expectRBrace();
       return this.finishTerm(new Range(loc, atom, !this.match("?"), lo, hi));
     }

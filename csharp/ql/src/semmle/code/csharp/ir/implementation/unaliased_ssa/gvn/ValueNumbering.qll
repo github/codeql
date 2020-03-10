@@ -27,19 +27,19 @@ class ValueNumber extends TValueNumber {
   final Language::Location getLocation() {
     if
       exists(Instruction i |
-        i = getAnInstruction() and not i.getLocation() instanceof UnknownLocation
+        i = getAnInstruction() and not i.getLocation() instanceof Language::UnknownLocation
       )
     then
       result =
         min(Language::Location l |
-          l = getAnInstruction().getLocation() and not l instanceof UnknownLocation
+          l = getAnInstruction().getLocation() and not l instanceof Language::UnknownLocation
         |
           l
           order by
             l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
             l.getEndColumn()
         )
-    else result instanceof UnknownDefaultLocation
+    else result instanceof Language::UnknownDefaultLocation
   }
 
   /**

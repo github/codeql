@@ -1,8 +1,7 @@
 /**
  * Provides default sources for reasoning about DOM-based
- * cross-site scripting vulnerabilities. 
+ * cross-site scripting vulnerabilities.
  */
-
 
 import javascript
 

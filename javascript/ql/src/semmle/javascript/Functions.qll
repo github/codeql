@@ -206,7 +206,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Gets the cyclomatic complexity of this function. */
   int getCyclomaticComplexity() {
-    result = 2 +
+    result =
+      2 +
         sum(Expr nd |
           nd.getContainer() = this and nd.isBranch()
         |
@@ -420,9 +421,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /**
    * Gets the call signature of this function, as determined by the TypeScript compiler, if any.
    */
-  CallSignatureType getCallSignature() {
-    declared_function_signature(this, result)
-  }
+  CallSignatureType getCallSignature() { declared_function_signature(this, result) }
 }
 
 /**
