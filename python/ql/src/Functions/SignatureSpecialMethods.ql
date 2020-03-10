@@ -112,7 +112,7 @@ predicate is_quad_op(string name) {
     name = "__setslice__" or name = "__exit__"
 }
 
-int argument_count(PyFunctionObject f, string name, ClassObject cls) {
+int argument_count(PythonFunctionValue f, string name, ClassValue cls) {
     cls.declaredAttribute(name) = f and
     (
         is_unary_op(name) and result = 1
@@ -125,7 +125,7 @@ int argument_count(PyFunctionObject f, string name, ClassObject cls) {
     )
 }
 
-predicate incorrect_special_method_defn(PyFunctionObject func, string message, boolean show_counts, string name, ClassObject owner) {
+predicate incorrect_special_method_defn(PythonFunctionValue func, string message, boolean show_counts, string name, ClassValue owner) {
    exists(int required |
           required = argument_count(func, name, owner) |
           /* actual_non_default <= actual */
@@ -133,14 +133,14 @@ predicate incorrect_special_method_defn(PyFunctionObject func, string message, b
               (message = "Too few parameters" and show_counts = true)
           else if required < func.minParameters() then
               (message = "Too many parameters" and show_counts = true)
-          else if (func.minParameters() < required and not func.getFunction().hasVarArg()) then
+          else if (func.minParameters() < required and not func.getScope().hasVarArg()) then
               (message = (required -func.minParameters()) +  " default values(s) will never be used" and show_counts = false)
           else
               none()
    )
 }
 
-predicate incorrect_pow(FunctionObject func, string message, boolean show_counts, ClassObject owner) {
+predicate incorrect_pow(FunctionValue func, string message, boolean show_counts, ClassValue owner) {
     owner.declaredAttribute("__pow__") = func and
     (
        func.maxParameters() < 2 and message = "Too few parameters" and show_counts = true
@@ -153,19 +153,19 @@ predicate incorrect_pow(FunctionObject func, string message, boolean show_counts
      )
 }
 
-predicate incorrect_get(FunctionObject func, string message, boolean show_counts, ClassObject owner) {
+predicate incorrect_get(FunctionValue func, string message, boolean show_counts, ClassValue owner) {
     owner.declaredAttribute("__get__") = func and
     (
        func.maxParameters() < 3 and message = "Too few parameters" and show_counts = true
        or
        func.minParameters() > 3 and message = "Too many parameters" and show_counts = true
        or
-       func.minParameters() < 2 and not func.getFunction().hasVarArg() and
+       func.minParameters() < 2 and not func.getScope().hasVarArg() and
        message = (2 - func.minParameters()) + " default value(s) will never be used" and show_counts = false
      )
 }
 
-string should_have_parameters(PyFunctionObject f, string name, ClassObject owner) {
+string should_have_parameters(PythonFunctionValue f, string name, ClassValue owner) {
     exists(int i | i = argument_count(f, name, owner) | 
         result = i.toString()
     )
@@ -173,7 +173,7 @@ string should_have_parameters(PyFunctionObject f, string name, ClassObject owner
     owner.declaredAttribute(name) = f and (name = "__get__" or name = "__pow__") and result = "2 or 3"
 }
 
-string has_parameters(PyFunctionObject f) {
+string has_parameters(PythonFunctionValue f) {
     exists(int i | i = f.minParameters() |
         i = 0 and result = "no parameters"
         or
@@ -183,7 +183,7 @@ string has_parameters(PyFunctionObject f) {
     )
 }
 
-from PyFunctionObject f, string message, string sizes, boolean show_counts, string name, ClassObject owner
+from PythonFunctionValue f, string message, string sizes, boolean show_counts, string name, ClassValue owner
 where 
   (
     incorrect_special_method_defn(f, message, show_counts, name, owner)
