@@ -24,28 +24,26 @@ module SocketIO {
   }
 
   /**
-   * A common superclass for all socket-like objects on the serverside of SocketIO. 
-   * All of the subclasses can be used to send data to SocketIO clients (see the `SendNode` class). 
+   * A common superclass for all socket-like objects on the serverside of SocketIO.
+   * All of the subclasses can be used to send data to SocketIO clients (see the `SendNode` class).
    */
   abstract private class SocketIOObject extends DataFlow::SourceNode, EventEmitter::Range {
     /**
      * Gets a node that refers to this SocketIOObject object.
      */
     abstract DataFlow::SourceNode ref();
-    
+
     /** Gets the namespace belonging to this object. */
     abstract NamespaceObject getNamespace();
   }
 
   /** A socket.io server. */
   class ServerObject extends SocketIOObject {
-    ServerObject() {
-      this = newServer()
-    }
+    ServerObject() { this = newServer() }
 
     /** Gets the default namespace of this server. */
     NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
-    
+
     /** Gets the default namespace of this server. */
     override NamespaceObject getNamespace() { result = getDefaultNamespace() }
 
@@ -331,9 +329,7 @@ module SocketIO {
     /**
      * Gets the namespace to which data is sent.
      */
-    NamespaceObject getNamespace() {
-      result = emitter.getNamespace()
-    }
+    NamespaceObject getNamespace() { result = emitter.getNamespace() }
 
     /** Gets the event name associated with the data, if it can be determined. */
     override string getChannel() {
@@ -366,7 +362,7 @@ module SocketIO {
 
   /**
    * An acknowledgment callback registered when sending a message to a client.
-   * Responses from clients are received using this callback. 
+   * Responses from clients are received using this callback.
    */
   class SendCallback extends EventRegistration::Range, DataFlow::FunctionNode {
     SendNode send;
@@ -617,7 +613,7 @@ module SocketIOClient {
     }
   }
 
-  /** 
+  /**
    * An acknowledgment callback registered when sending a message to a server.
    * Responses from servers are received using this callback.
    */

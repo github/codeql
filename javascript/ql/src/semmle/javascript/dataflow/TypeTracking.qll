@@ -137,10 +137,11 @@ module StepSummary {
           summary = LoadStep(prop)
         )
       ) and
-      if param = fun.getAParameter() then (
+      if param = fun.getAParameter()
+      then
         // Step from argument to call site.
         argumentPassing(succ, pred, fun.getFunction(), param)
-      ) else (
+      else (
         // Step from captured parameter to local call sites
         pred = param and
         succ = fun.getAnInvocation()

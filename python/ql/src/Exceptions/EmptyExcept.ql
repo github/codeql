@@ -31,7 +31,7 @@ predicate no_comment(ExceptStmt ex) {
 }
 
 predicate non_local_control_flow(ExceptStmt ex) {
-    ex.getType().refersTo(theStopIterationType())
+    ex.getType().pointsTo(ClassValue::stopIteration())
 }
 
 predicate try_has_normal_exit(Try try) {
@@ -64,32 +64,29 @@ predicate subscript(Stmt s) {
     s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode(Expr ex, ClassObject type) {
+predicate encode_decode(Call ex, ClassValue type) {
     exists(string name |
-        ex.(Call).getFunc().(Attribute).getName() = name |
-        name = "encode" and type = Object::builtin("UnicodeEncodeError")
+        ex.getFunc().(Attribute).getName() = name |
+        name = "encode" and type = ClassValue::unicodeEncodeError()
         or
-        name = "decode" and type = Object::builtin("UnicodeDecodeError")
+        name = "decode" and type = ClassValue::unicodeDecodeError()
     )
 }
 
-predicate small_handler(ExceptStmt ex, Stmt s, ClassObject type) {
+predicate small_handler(ExceptStmt ex, Stmt s, ClassValue type) {
     not exists(ex.getTry().getStmt(1)) and
     s = ex.getTry().getStmt(0) and
-    ex.getType().refersTo(type)
+    ex.getType().pointsTo(type)
 }
 
-/** Holds if this exception handler is sufficiently small in scope to not need a comment
- * as to what it is doing.
- */
 predicate focussed_handler(ExceptStmt ex) {
-    exists(Stmt s, ClassObject type |
+    exists(Stmt s, ClassValue type |
         small_handler(ex, s, type) |
-        subscript(s) and type.getAnImproperSuperType() = theLookupErrorType()
+        subscript(s) and type.getASuperType() = ClassValue::lookupError()
         or
-        attribute_access(s) and type = theAttributeErrorType()
+        attribute_access(s) and type = ClassValue::attributeError()
         or
-        s.(ExprStmt).getValue() instanceof Name and type = theNameErrorType()
+        s.(ExprStmt).getValue() instanceof Name and type = ClassValue::nameError()
         or
         encode_decode(s.(ExprStmt).getValue(), type)
     )

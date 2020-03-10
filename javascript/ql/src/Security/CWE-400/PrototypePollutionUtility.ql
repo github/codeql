@@ -1,7 +1,7 @@
 /**
  * @name Prototype pollution in utility function
- * @description Recursively copying properties between objects may cause
-                accidental modification of a built-in prototype object.
+ * @description Recursively assigning properties on objects may cause
+ *              accidental modification of a built-in prototype object.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
@@ -17,6 +17,81 @@ import PathGraph
 import semmle.javascript.DynamicPropertyAccess
 
 /**
+ * A call of form `x.split(".")` where `x` is a parameter.
+ *
+ * We restrict this to parameter nodes to focus on "deep assignment" functions.
+ */
+class SplitCall extends MethodCallNode {
+  SplitCall() {
+    getMethodName() = "split" and
+    getArgument(0).mayHaveStringValue(".") and
+    getReceiver().getALocalSource() instanceof ParameterNode
+  }
+}
+
+/**
+ * Holds if `pred -> succ` should preserve polluted property names.
+ */
+predicate copyArrayStep(SourceNode pred, SourceNode succ) {
+  // x -> [...x]
+  exists(SpreadElement spread |
+    pred.flowsTo(spread.getOperand().flow()) and
+    succ.asExpr().(ArrayExpr).getAnElement() = spread
+  )
+  or
+  // `x -> y` in `y.push( x[i] )`
+  exists(MethodCallNode push |
+    push = succ.getAMethodCall("push") and
+    (
+      getAnEnumeratedArrayElement(pred).flowsTo(push.getAnArgument())
+      or
+      pred.flowsTo(push.getASpreadArgument())
+    )
+  )
+  or
+  // x -> x.concat(...)
+  exists(MethodCallNode concat_ |
+    concat_.getMethodName() = "concat" and
+    (pred = concat_.getReceiver() or pred = concat_.getAnArgument()) and
+    succ = concat_
+  )
+}
+
+/**
+ * Holds if `node` may refer to a `SplitCall` or a copy thereof, possibly
+ * returned through a function call.
+ */
+predicate isSplitArray(SourceNode node) {
+  node instanceof SplitCall
+  or
+  exists(SourceNode pred | isSplitArray(pred) |
+    copyArrayStep(pred, node)
+    or
+    pred.flowsToExpr(node.(CallNode).getACallee().getAReturnedExpr())
+  )
+}
+
+/**
+ * A property name originating from a `x.split(".")` call.
+ */
+class SplitPropName extends SourceNode {
+  SourceNode array;
+
+  SplitPropName() {
+    isSplitArray(array) and
+    this = getAnEnumeratedArrayElement(array)
+  }
+
+  /**
+   * Gets the array from which this property name was obtained (the result from `split`).
+   */
+  SourceNode getArray() { result = array }
+
+  /** Gets an element accessed on the same underlying array. */
+  SplitPropName getAnAlias() { result.getArray() = getArray() }
+}
+
+/**
  * Holds if the properties of `node` are enumerated locally.
  */
 predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
@@ -24,15 +99,23 @@ predicate arePropertiesEnumerated(DataFlow::SourceNode node) {
 }
 
 /**
- * Holds if `node` may flow from an enumerated prop name, possibly
- * into function calls (but not returns).
+ * Holds if `node` is a source of property names that we consider possible
+ * prototype pollution payloads.
  */
-predicate isEnumeratedPropName(Node node) {
+predicate isPollutedPropNameSource(DataFlow::Node node) {
   node instanceof EnumeratedPropName
   or
-  exists(Node pred |
-    isEnumeratedPropName(pred)
-  |
+  node instanceof SplitPropName
+}
+
+/**
+ * Holds if `node` may flow from a source of polluted propery names, possibly
+ * into function calls (but not returns).
+ */
+predicate isPollutedPropName(Node node) {
+  isPollutedPropNameSource(node)
+  or
+  exists(Node pred | isPollutedPropName(pred) |
     node = pred.getASuccessor()
     or
     argumentPassingStep(_, pred, _, node)
@@ -53,8 +136,7 @@ predicate isEnumeratedPropName(Node node) {
 predicate isPotentiallyObjectPrototype(SourceNode node) {
   exists(Node base, Node key |
     dynamicPropReadStep(base, key, node) and
-    isEnumeratedPropName(key) and
-
+    isPollutedPropName(key) and
     // Ignore cases where the properties of `base` are enumerated, to avoid FPs
     // where the key came from that enumeration (and thus will not return Object.prototype).
     // For example, `src[key]` in `for (let key in src) { ... src[key] ... }` will generally
@@ -62,9 +144,7 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
     not arePropertiesEnumerated(base.getALocalSource())
   )
   or
-  exists(Node use |
-    isPotentiallyObjectPrototype(use.getALocalSource())
-  |
+  exists(Node use | isPotentiallyObjectPrototype(use.getALocalSource()) |
     argumentPassingStep(_, use, _, node)
   )
 }
@@ -87,11 +167,16 @@ predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::N
     rhs = write.getRhs().flow() and
     not exists(prop.getStringValue()) and
     not arePropertiesEnumerated(base.getALocalSource()) and
-
     // Prune writes that are unlikely to modify Object.prototype.
     // This is mainly for performance, but may block certain results due to
     // not tracking out of function returns and into callbacks.
-    isPotentiallyObjectPrototype(base.getALocalSource())
+    isPotentiallyObjectPrototype(base.getALocalSource()) and
+    // Ignore writes with an obviously safe RHS.
+    not exists(Expr e | e = rhs.asExpr() |
+      e instanceof Literal or
+      e instanceof ObjectExpr or
+      e instanceof ArrayExpr
+    )
   )
 }
 
@@ -147,10 +232,10 @@ class PropNameTracking extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node, FlowLabel label) {
     label instanceof UnsafePropLabel and
-    exists(EnumeratedPropName prop |
-      node = prop
+    (
+      isPollutedPropNameSource(node)
       or
-      node = prop.getASourceProp()
+      node = any(EnumeratedPropName prop).getASourceProp()
     )
   }
 
@@ -410,22 +495,29 @@ string deriveExprName(DataFlow::Node node) {
   result = getExprName(node)
   or
   not exists(getExprName(node)) and
-  result = "this object"
+  result = "here"
 }
 
 /**
  * Holds if the dynamic property write `base[prop] = rhs` can pollute the prototype
- * of `base` due to flow from `enum`.
+ * of `base` due to flow from `propNameSource`.
  *
  * In most cases this will result in an alert, the exception being the case where
  * `base` does not have a prototype at all.
  */
-predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, EnumeratedPropName enum) {
+predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, Node propNameSource) {
   dynamicPropWrite(base, prop, rhs) and
+  isPollutedPropNameSource(propNameSource) and
   exists(PropNameTracking cfg |
-    cfg.hasFlow(enum, base) and
-    cfg.hasFlow(enum, prop) and
-    cfg.hasFlow(enum.getASourceProp(), rhs)
+    cfg.hasFlow(propNameSource, base) and
+    if propNameSource instanceof EnumeratedPropName
+    then
+      cfg.hasFlow(propNameSource, prop) and
+      cfg.hasFlow(propNameSource.(EnumeratedPropName).getASourceProp(), rhs)
+    else (
+      cfg.hasFlow(propNameSource.(SplitPropName).getAnAlias(), prop) and
+      rhs.getALocalSource() instanceof ParameterNode
+    )
   )
 }
 
@@ -435,9 +527,7 @@ private DataFlow::SourceNode getANodeLeadingToBase(DataFlow::TypeBackTracker t, 
   isPrototypePollutingAssignment(base, _, _, _) and
   result = base.getALocalSource()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    result = getANodeLeadingToBase(t2, base).backtrack(t2, t)
-  )
+  exists(DataFlow::TypeBackTracker t2 | result = getANodeLeadingToBase(t2, base).backtrack(t2, t))
 }
 
 /**
@@ -472,18 +562,29 @@ class ObjectCreateNullCall extends CallNode {
 }
 
 from
-  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, EnumeratedPropName enum,
-  Node base
+  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node prop, Node base,
+  string msg, Node col1, Node col2
 where
+  isPollutedPropName(prop) and
   cfg.hasFlowPath(source, sink) and
-  isPrototypePollutingAssignment(base, _, _, enum) and
+  isPrototypePollutingAssignment(base, _, _, prop) and
   sink.getNode() = base and
-  source.getNode() = enum and
+  source.getNode() = prop and
   (
     getANodeLeadingToBaseBase(base) instanceof ObjectLiteralNode
     or
     not getANodeLeadingToBaseBase(base) instanceof ObjectCreateNullCall
+  ) and
+  // Generate different messages for deep merge and deep assign cases.
+  if prop instanceof EnumeratedPropName
+  then (
+    col1 = prop.(EnumeratedPropName).getSourceObject() and
+    col2 = base and
+    msg = "Properties are copied from $@ to $@ without guarding against prototype pollution."
+  ) else (
+    col1 = prop and
+    col2 = base and
+    msg =
+      "The property chain $@ is recursively assigned to $@ without guarding against prototype pollution."
   )
-select base, source, sink,
-  "Properties are copied from $@ to $@ without guarding against prototype pollution.",
-  enum.getSourceObject(), deriveExprName(enum.getSourceObject()), base, deriveExprName(base)
+select base, source, sink, msg, col1, deriveExprName(col1), col2, deriveExprName(col2)

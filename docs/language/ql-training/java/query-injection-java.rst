@@ -77,7 +77,7 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
 
 .. note::
 
-  - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
+  - When performing variant analysis, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
   - In this case, we start by looking for all the method calls that appear to run, before trying to refine the query to find cases which are vulnerable to query injection.
   - The ``select`` clause defines what this query is looking for:
   
