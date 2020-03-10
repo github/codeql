@@ -404,7 +404,9 @@ private predicate runtimeExprInStaticInitializer(Expr e) {
 
 /** Holds if `e` is part of the initializer of a `StaticStorageDurationVariable`. */
 private predicate inStaticInitializer(Expr e) {
-  exists(StaticStorageDurationVariable var | e.getParent+() = var.getInitializer())
+  exists(StaticStorageDurationVariable var | e = var.getInitializer().getExpr())
+  or
+  inStaticInitializer(e.getParent())
 }
 
 /**
