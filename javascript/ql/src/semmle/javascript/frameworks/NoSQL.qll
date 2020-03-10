@@ -213,7 +213,10 @@ private module Mongoose {
    * A Mongoose collection object.
    */
   class Model extends DataFlow::SourceNode {
-    Model() { this = getAMongooseInstance().getAMemberCall("model") }
+    Model() {
+      this = getAMongooseInstance().getAMemberCall("model") or
+      this.hasUnderlyingType("mongoose", "Model")
+    }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       result = this and
@@ -417,7 +420,8 @@ private module Mongoose {
   private DataFlow::SourceNode getAQuery(DataFlow::TypeTracker t) {
     (
       result instanceof QueryFromConstructor or
-      result instanceof QueryFromModel
+      result instanceof QueryFromModel or
+      result.hasUnderlyingType("mongoose", "Query")
     ) and
     t.start()
     or
