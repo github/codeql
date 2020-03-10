@@ -517,7 +517,7 @@ abstract class FunctionValue extends CallableValue {
     }
     
     /** Whether this is a "normal" method, that is, it is exists as a class attribute 
-     *  which is not wrapped and not the __new__ method. */
+     *  which is not a lambda and not the __new__ method. */
     predicate isNormalMethod() {
         exists(ClassValue cls, string name |
             cls.declaredAttribute(name) = this and
