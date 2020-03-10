@@ -160,6 +160,15 @@ module ShellJS {
     override DataFlow::Node getACommandArgument() { result = getArgument(0) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
+
+    override predicate isSync() { none() }
+
+    override DataFlow::Node getOptionsArg() {
+      result = getLastArgument() and
+      not result = getArgument(0) and
+      not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
+      not result.getALocalSource() instanceof DataFlow::ArrayCreationNode // looks like argumentlist
+    }
   }
 
   /**

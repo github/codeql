@@ -411,7 +411,9 @@ newtype TTranslatedElement =
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
   TTranslatedSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
+    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+    expr instanceof ConstructorCall or
+    expr.getTarget() instanceof AllocationFunction
   } or // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (

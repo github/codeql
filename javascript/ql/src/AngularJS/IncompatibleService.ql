@@ -130,7 +130,8 @@ where
   kind = getServiceKind(request, name) and
   exists(request.getAServiceDefinition(name)) and // ignore unknown/undefined services
   not isCompatibleRequestedService(request, kind) and
-  compatibleWithString = concat(string compatibleKind |
+  compatibleWithString =
+    concat(string compatibleKind |
       isCompatibleRequestedService(request, compatibleKind) and
       not isWildcardKind(compatibleKind)
     |

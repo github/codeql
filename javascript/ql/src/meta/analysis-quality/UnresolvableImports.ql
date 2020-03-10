@@ -11,8 +11,6 @@
 import javascript
 import CallGraphQuality
 
-Import unresolvableImport() {
-    not exists(result.getImportedModule())
-}
+Import unresolvableImport() { not exists(result.getImportedModule()) }
 
 select projectRoot(), count(unresolvableImport())

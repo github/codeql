@@ -63,10 +63,11 @@ module HeuristicNames {
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of data
-   * that is hashed or encrypted, and hence rendered non-sensitive.
+   * that is hashed or encrypted, and hence rendered non-sensitive, or contains special characters
+   * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
    */
   string notSensitive() {
-    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+    result = "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
 

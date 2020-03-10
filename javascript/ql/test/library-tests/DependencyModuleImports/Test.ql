@@ -32,9 +32,8 @@ class SampleVersionSink extends DataFlow::Node {
       functionName = "m1" and
       argNumber = 0
     |
-      this = DataFlow::dependencyModuleImport(dep)
-            .getAMemberCall(functionName)
-            .getArgument(argNumber) and
+      this =
+        DataFlow::dependencyModuleImport(dep).getAMemberCall(functionName).getArgument(argNumber) and
       dep.info(dependencyName, vDep) and
       vDep.maybeBetween(vFrom, vTo)
     )

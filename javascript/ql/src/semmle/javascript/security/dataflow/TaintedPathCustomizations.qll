@@ -106,12 +106,10 @@ module TaintedPath {
     }
 
     /**
-     * A flow label representing an array of path elements that may include "..". 
-     */ 
+     * A flow label representing an array of path elements that may include "..".
+     */
     class SplitPath extends DataFlow::FlowLabel {
-      SplitPath() {
-        this = "splitPath"
-      }
+      SplitPath() { this = "splitPath" }
     }
   }
 
@@ -215,17 +213,51 @@ module TaintedPath {
         output = this
       )
       or
-      // non-global replace or replace of something other than /\.\./g
+      // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
       this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal, RegExpSequence seq |
+      not exists(RegExpLiteral literal, RegExpTerm term |
         getArgument(0).getALocalSource().asExpr() = literal and
         literal.isGlobal() and
-        literal.getRoot() = seq and
-        seq.getChild(0).(RegExpConstant).getValue() = "." and
-        seq.getChild(1).(RegExpConstant).getValue() = "." and
-        seq.getNumChild() = 2
+        literal.getRoot() = term
+      |
+        term.getAMatchedString() = "/" or
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
+      )
+    }
+
+    /**
+     * Gets the input path to be normalized.
+     */
+    DataFlow::Node getInput() { result = input }
+
+    /**
+     * Gets the normalized path.
+     */
+    DataFlow::Node getOutput() { result = output }
+  }
+
+  /**
+   * A call that removes all "." or ".." from a path, without also removing all forward slashes.
+   */
+  class DotRemovingReplaceCall extends DataFlow::CallNode {
+    DataFlow::Node input;
+    DataFlow::Node output;
+
+    DotRemovingReplaceCall() {
+      this.getCalleeName() = "replace" and
+      input = getReceiver() and
+      output = this and
+      exists(RegExpLiteral literal, RegExpTerm term |
+        getArgument(0).getALocalSource().asExpr() = literal and
+        literal.isGlobal() and
+        literal.getRoot() = term and
+        not term.getAMatchedString() = "/"
+      |
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
       )
     }
 
@@ -370,32 +402,50 @@ module TaintedPath {
    *   // pathname is safe
    * }
    * ```
+   *
+   * or
+   * ```
+   * var relative = path.resolve(pathname); // or path.normalize
+   * if(relative.startsWith(webroot) {
+   *   // pathname is safe
+   * } else {
+   *   // pathname is unsafe
+   * }
+   * ```
    */
-  class RelativePathStartsWithDotDotSanitizer extends DataFlow::BarrierGuardNode {
+  class RelativePathStartsWithSanitizer extends DataFlow::BarrierGuardNode {
     StringOps::StartsWith startsWith;
-    DataFlow::CallNode relativeCall;
+    DataFlow::CallNode pathCall;
+    string member;
 
-    RelativePathStartsWithDotDotSanitizer() {
+    RelativePathStartsWithSanitizer() {
+      (member = "relative" or member = "resolve" or member = "normalize") and
       this = startsWith and
-      relativeCall = NodeJSLib::Path::moduleMember("relative").getACall() and
+      pathCall = NodeJSLib::Path::moduleMember(member).getACall() and
       (
-        startsWith.getBaseString().getALocalSource() = relativeCall
+        startsWith.getBaseString().getALocalSource() = pathCall
         or
         startsWith
             .getBaseString()
             .getALocalSource()
             .(NormalizingPathCall)
             .getInput()
-            .getALocalSource() = relativeCall
+            .getALocalSource() = pathCall
       ) and
-      isDotDotSlashPrefix(startsWith.getSubstring())
+      (not member = "relative" or isDotDotSlashPrefix(startsWith.getSubstring()))
     }
 
     override predicate blocks(boolean outcome, Expr e) {
-      e = relativeCall.getArgument(1).asExpr() and outcome = startsWith.getPolarity().booleanNot()
+      member = "relative" and
+      e = pathCall.getArgument(1).asExpr() and
+      outcome = startsWith.getPolarity().booleanNot()
+      or
+      not member = "relative" and
+      e = pathCall.getArgument(0).asExpr() and
+      outcome = startsWith.getPolarity()
     }
   }
-  
+
   /**
    * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
    */
