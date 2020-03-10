@@ -5,7 +5,8 @@
 
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
-private import TaintTrackingUtil
+private import tainttracking1.TaintTrackingParameter::Private
+private import tainttracking1.TaintTrackingParameter::Public
 
 module Consistency {
   private class RelevantNode extends Node {
