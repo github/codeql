@@ -134,7 +134,7 @@ private predicate json_subscript_taint(
     SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
     sub.isLoad() and
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     key = seq.getValue()
 }
 
