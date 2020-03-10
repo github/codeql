@@ -910,6 +910,10 @@ private AstNode assigned_value(Expr lhs) {
 
 predicate nested_sequence_assign(Expr left_parent, Expr right_parent,
         Expr left_result, Expr right_result) {
+    exists(Assign a |
+        a.getATarget().getASubExpression*() = left_parent and
+        a.getValue().getASubExpression*() = right_parent
+    ) and
     exists(int i, Expr left_elem, Expr right_elem
     |
         (

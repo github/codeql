@@ -36,7 +36,8 @@ private predicate isBoundInMethod(MethodDeclaration method) {
       mod = "react-autobind"
     |
       thiz.flowsTo(DataFlow::moduleImport(mod).getACall().getArgument(0))
-    ) or
+    )
+    or
     // heuristic reflective binders
     exists(DataFlow::CallNode binder, string calleeName |
       (
@@ -92,8 +93,8 @@ private DOM::AttributeDefinition getAnEventHandlerAttribute() {
 from MethodDeclaration callback, DOM::AttributeDefinition attribute, ThisExpr unbound
 where
   attribute = getAnEventHandlerAttribute() and
-  attribute.getValueNode().analyze().getAValue().(AbstractFunction).getFunction() = callback
-        .getBody() and
+  attribute.getValueNode().analyze().getAValue().(AbstractFunction).getFunction() =
+    callback.getBody() and
   unbound.getBinder() = callback.getBody() and
   not isBoundInMethod(callback)
 select attribute,

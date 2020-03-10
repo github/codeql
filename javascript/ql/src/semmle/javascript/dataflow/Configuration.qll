@@ -901,8 +901,16 @@ private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  isRelevant(rhs, cfg) and
-  storeStep(rhs, nd, prop, cfg, summary)
+  exists(PathSummary s1, PathSummary s2 |
+    reachableFromSource(rhs, cfg, s1)
+    or
+    reachableFromStoreBase(_, _, rhs, cfg, s1)
+  |
+    storeStep(rhs, nd, prop, cfg, s2) and
+    summary =
+      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(),
+        s2.getEndLabel())
+  )
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
@@ -1035,7 +1043,9 @@ private predicate flowIntoHigherOrderCall(
     summary = oldSummary.append(PathSummary::call())
   )
   or
-  exists(DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary |
+  exists(
+    DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary
+  |
     higherOrderCall(pred, cb, i, cfg, oldSummary) and
     cb = CallGraph::getABoundFunctionReference(f, boundArgs, false) and
     succ = f.getParameter(boundArgs + i) and
@@ -1494,9 +1504,9 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 }
 
 /**
-  * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
-  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
-  */
+ * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+ * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
+ */
 class VarAccessBarrier extends DataFlow::Node {
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |

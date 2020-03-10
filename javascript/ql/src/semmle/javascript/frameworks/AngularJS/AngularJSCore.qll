@@ -832,7 +832,8 @@ private newtype TAngularScope =
   } or
   MkIsolateScope(CustomDirective dir) { dir.hasIsolateScope() } or
   MkElementScope(DOM::ElementDefinition elem) {
-    any(DirectiveInstance d | not d.(CustomDirective).hasIsolateScope()).getAMatchingElement() = elem
+    any(DirectiveInstance d | not d.(CustomDirective).hasIsolateScope()).getAMatchingElement() =
+      elem
   }
 
 /**

@@ -43,9 +43,8 @@ abstract class EmailSender extends DataFlow::SourceNode {
  */
 private class NodemailerEmailSender extends EmailSender, DataFlow::MethodCallNode {
   NodemailerEmailSender() {
-    this = DataFlow::moduleMember("nodemailer", "createTransport")
-          .getACall()
-          .getAMethodCall("sendMail")
+    this =
+      DataFlow::moduleMember("nodemailer", "createTransport").getACall().getAMethodCall("sendMail")
   }
 
   override DataFlow::Node getPlainTextBody() { result = getOptionArgument(0, "text") }
