@@ -15,17 +15,17 @@
 import python
 import Expressions.CallArgs
 
-from FunctionObject base, PyFunctionObject derived
+from FunctionValue base, PythonFunctionValue derived
 where
   not exists(base.getACall()) and
-  not exists(FunctionObject a_derived |
+  not exists(FunctionValue a_derived |
       a_derived.overrides(base) and
       exists(a_derived.getACall())
   ) and
-  not derived.getFunction().isSpecialMethod() and
+  not derived.getScope().isSpecialMethod() and
   derived.getName() != "__init__" and
   derived.isNormalMethod() and
-  not derived.getFunction().isSpecialMethod() and
+  not derived.getScope().isSpecialMethod() and
   // call to overrides distributed for efficiency
   (
     (derived.overrides(base) and derived.minParameters() > base.maxParameters())
