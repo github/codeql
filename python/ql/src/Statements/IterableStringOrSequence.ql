@@ -14,9 +14,9 @@
 import python
 
 predicate has_string_type(Value v) {
-    v.getClass() = ClassValue::bytes() and major_version() = 2
+    v.getClass() = ClassValue::str()
     or
-    v.getClass() = ClassValue::unicode()
+    v.getClass() = ClassValue::unicode() and major_version() = 2
 }
 
 from
