@@ -58,51 +58,66 @@ private class GlobFileNameSource extends FileNameSource {
 }
 
 /**
+ * Gets a file name or an array of file names from the `globby` library.
+ */
+private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
+  exists(string moduleName | moduleName = "globby" |
+    // `require('globby').sync(_)`
+    t.start() and
+    result = DataFlow::moduleMember(moduleName, "sync").getACall()
+    or
+    // `files` in `require('globby')(_).then(files => ...)`
+    t.start() and
+    result =
+      DataFlow::moduleImport(moduleName)
+          .getACall()
+          .getAMethodCall("then")
+          .getCallback(0)
+          .getParameter(0)
+  )
+}
+
+/**
  * A file name or an array of file names from the `globby` library.
  */
 private class GlobbyFileNameSource extends FileNameSource {
-  GlobbyFileNameSource() {
-    exists(string moduleName | moduleName = "globby" |
-      // `require('globby').sync(_)`
-      this = DataFlow::moduleMember(moduleName, "sync").getACall()
+  GlobbyFileNameSource() { this = globbyFileNameSource(DataFlow::TypeTracker::end()) }
+}
+
+/**
+ * Gets a file name or an array of file names from the `fast-glob` library.
+ */
+private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
+  exists(string moduleName | moduleName = "fast-glob" |
+    // `require('fast-glob').sync(_)
+    t.start() and
+    result = DataFlow::moduleMember(moduleName, "sync").getACall()
+    or
+    exists(DataFlow::SourceNode f |
+      f = DataFlow::moduleImport(moduleName)
       or
-      // `files` in `require('globby')(_).then(files => ...)`
-      this =
-        DataFlow::moduleImport(moduleName)
-            .getACall()
-            .getAMethodCall("then")
-            .getCallback(0)
-            .getParameter(0)
+      f = DataFlow::moduleMember(moduleName, "async")
+    |
+      // `files` in `require('fast-glob')(_).then(files => ...)` and
+      // `files` in `require('fast-glob').async(_).then(files => ...)`
+      t.start() and
+      result = f.getACall().getAMethodCall("then").getCallback(0).getParameter(0)
     )
-  }
+    or
+    // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
+    t.start() and
+    result =
+      DataFlow::moduleMember(moduleName, "stream")
+          .getACall()
+          .getAMethodCall(EventEmitter::on())
+          .getCallback(1)
+          .getParameter(0)
+  )
 }
 
 /**
  * A file name or an array of file names from the `fast-glob` library.
  */
 private class FastGlobFileNameSource extends FileNameSource {
-  FastGlobFileNameSource() {
-    exists(string moduleName | moduleName = "fast-glob" |
-      // `require('fast-glob').sync(_)`
-      this = DataFlow::moduleMember(moduleName, "sync").getACall()
-      or
-      exists(DataFlow::SourceNode f |
-        f = DataFlow::moduleImport(moduleName)
-        or
-        f = DataFlow::moduleMember(moduleName, "async")
-      |
-        // `files` in `require('fast-glob')(_).then(files => ...)` and
-        // `files` in `require('fast-glob').async(_).then(files => ...)`
-        this = f.getACall().getAMethodCall("then").getCallback(0).getParameter(0)
-      )
-      or
-      // `file` in `require('fast-glob').stream(_).on(_,  file => ...)`
-      this =
-        DataFlow::moduleMember(moduleName, "stream")
-            .getACall()
-            .getAMethodCall(EventEmitter::on())
-            .getCallback(1)
-            .getParameter(0)
-    )
-  }
+  FastGlobFileNameSource() { this = fastGlobFileNameSource(DataFlow::TypeTracker::end()) }
 }
