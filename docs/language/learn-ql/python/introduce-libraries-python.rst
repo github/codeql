@@ -1,7 +1,7 @@
 CodeQL library for Python
 =========================
 
-When you need to analyze a Python program, you can make use of the large collection of classes in the Python library for CodeQL.
+When you need to analyze a Python program, you can make use of the large collection of classes in the CodeQL library for Python.
 
 About the CodeQL library for Python
 -----------------------------------
