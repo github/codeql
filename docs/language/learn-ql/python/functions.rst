@@ -1,7 +1,9 @@
-Tutorial: Functions
+Functions in Python
 ===================
 
-This example uses the standard CodeQL class ``Function`` (see :doc:`Introducing the Python libraries <introduce-libraries-python>`).
+You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
+
+These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`Introducing the Python libraries <introduce-libraries-python>`."
 
 Finding all functions called "get..."
 -------------------------------------
@@ -55,7 +57,7 @@ We can modify the query further to include only methods whose body consists of a
     and count(f.getAStmt()) = 1
    select f, "This function is (probably) a getter."
 
-➤ `See this in the query console <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in :doc:`Tutorial: Statements and expressions <statements-expressions>`.
+➤ `See this in the query console <https://lgtm.com/query/667290044/>`__. This query returns fewer results, but if you examine the results you can see that there are still refinements to be made. This is refined further in ":doc:`Expressions and statements in Python <statements-expressions>`."
 
 Finding a call to a specific function
 -------------------------------------
@@ -76,8 +78,12 @@ The ``Call`` class represents calls in Python. The ``Call.getFunc()`` predicate 
 Due to the dynamic nature of Python, this query will select any call of the form ``eval(...)`` regardless of whether it is a call to the built-in function ``eval`` or not.
 In a later tutorial we will see how to use the type-inference library to find calls to the built-in function ``eval`` regardless of name of the variable called.
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the following tutorial topics: :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, and :doc:`Points-to analysis and type inference <pointsto-type-infer>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+- ":doc:`Expressions and statements in Python <statements-expressions>`"
+- ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
+- ":doc:`Analyzing control flow in Python <control-flow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+
+.. include:: ../../reusables/python-other-resources.rst

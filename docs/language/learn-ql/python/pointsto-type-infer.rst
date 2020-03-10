@@ -1,7 +1,7 @@
-Tutorial: Points-to analysis and type inference
-===============================================
+Pointer analysis and type inference in Python
+=============================================
 
-This topic contains worked examples of how to write queries using the standard CodeQL library classes for Python type inference.
+At runtime, each Python expression has a value with an associated type. You can learn how an expression behaves at runtime by using type-inference classes from the standard CodeQL library.
 
 The ``Value`` class
 --------------------
@@ -9,7 +9,7 @@ The ``Value`` class
 The ``Value`` class and its subclasses ``FunctionValue``, ``ClassValue``, and ``ModuleValue`` represent the values an expression may hold at runtime.
 
 Summary
-~~~~~~~
+^^^^^^^
 
 Class hierarchy for ``Value``:
 
@@ -22,9 +22,7 @@ Class hierarchy for ``Value``:
 Points-to analysis and type inference
 -------------------------------------
 
-Points-to analysis, sometimes known as `pointer analysis <http://en.wikipedia.org/wiki/Pointer_analysis>`__, allows us to determine which objects an expression may "point to" at runtime.
-
-`Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ allows us to infer what the types (classes) of an expression may be at runtime.
+Points-to analysis, sometimes known as pointer analysis, allows us to determine which objects an expression may "point to" at runtime. Type inference allows us to infer what the types (classes) of an expression may be at runtime. For more information, see `Pointer analysis <http://en.wikipedia.org/wiki/Pointer_analysis>`__ and `Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ on Wikipedia.
 
 The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flow node may "point to" at runtime.
 
@@ -123,7 +121,7 @@ Combining the parts of the query we get this:
    )
    select t, ex1, ex2
 
-➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard query: `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__.
+➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard "Unreachable 'except' block" query. For more information, see `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__ on LGTM.com.
 
 .. pull-quote::
 
@@ -183,7 +181,7 @@ The ``Value`` class has a method ``getACall()`` which allows us to find calls to
 
 If we wish to restrict the callables to actual functions we can use the ``FunctionValue`` class, which is a subclass of ``Value`` and corresponds to function objects in Python, in much the same way as the ``ClassValue`` class corresponds to class objects in Python.
 
-Returning to an example from :doc:`Tutorial: Functions <functions>`, we wish to find calls to the ``eval`` function.
+Returning to an example from ":doc:`Functions in Python <functions>`," we wish to find calls to the ``eval`` function.
 
 The original query looked this:
 
@@ -225,8 +223,10 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
 
 ➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Read a description of the CodeQL database in :doc:`What's in a CodeQL database? <../database>`
+- ":doc:`Analyzing control flow in Python <control-flow>`"
+- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+
+.. include:: ../../reusables/python-other-resources.rst
