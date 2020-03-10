@@ -1,4 +1,4 @@
-import javascript
+import python
 
 predicate publicPredicate(Expr e) {
     none()

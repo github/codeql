@@ -1,4 +1,4 @@
-import javascript
+import java
 
 predicate publicPredicate(Expr e) {
     none()

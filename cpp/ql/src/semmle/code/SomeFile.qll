@@ -1,4 +1,4 @@
-import javascript
+import cpp
 
 predicate publicPredicate(Expr e) {
     none()
