@@ -430,6 +430,11 @@ private module Mongoose {
   }
 
   /**
+   * Gets a data flow node referring to a Mongoose query object.
+   */
+  private DataFlow::SourceNode getAQuery() { result = getAQuery(DataFlow::TypeTracker::end()) }
+
+  /**
    * An expression passed to `mongoose.createConnection` to supply credentials.
    */
   class Credentials extends CredentialsExpr {
@@ -460,9 +465,43 @@ private module Mongoose {
       this = any(QueryFromConstructor c).getArgument(2).asExpr()
       or
       exists(string method, int n | QueryMethodSignatures::interpretsArgumentAsQuery(method, n) |
-        this =
-          getAQuery(DataFlow::TypeTracker::end()).getAMethodCall(method).getArgument(n).asExpr()
+        this = getAQuery().getAMethodCall(method).getArgument(n).asExpr()
       )
+    }
+  }
+
+  /**
+   * An evaluation of a MongoDB query.
+   */
+  class MongoDBQueryEvaluation extends DatabaseAccess {
+    DataFlow::MethodCallNode mcn;
+
+    MongoDBQueryEvaluation() {
+      this = mcn and
+      (
+        exists(Model m, string method |
+          ModelMethodSignatures::returnsQuery(method) and
+          mcn = m.ref().getAMethodCall(method) and
+          // callback provided to a Model method call
+          exists(mcn.getCallback(mcn.getNumArgument() - 1))
+        )
+        or
+        getAQuery().getAMethodCall() = mcn and
+        (
+          // explicit execution using a Query method call
+          exists(string executor | executor = "exec" or executor = "then" or executor = "catch" |
+            mcn.getMethodName() = executor
+          )
+          or
+          // callback provided to a Query method call
+          exists(mcn.getCallback(mcn.getNumArgument() - 1))
+        )
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      // NB: this does not account for all of the chained calls leading to this execution
+      mcn.getAnArgument().asExpr().(MongoDBQueryPart).flow() = result
     }
   }
 }
