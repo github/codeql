@@ -5,6 +5,9 @@ class LenFunction extends BuiltinFunction {
   LenFunction() { this.getName().matches("len") }
 }
 
+Expr getAUse(SsaDefinition def) {
+  result = def.getVariable().getAUse().(IR::EvalInstruction).getExpr()
+}
 /*
  *  calculate the upper bound of an expression
  */
@@ -43,7 +46,7 @@ float getUpperBounds(Expr expr) {
     //if an expression with parenthesis, strip the parenthesis first
     exists(ParenExpr paren |
       paren = expr and
-      result = getUpperBounds(paren.getExpression())
+      result = getUpperBounds(paren.stripParens())
     )
     or
     //if this expression is an identifier
@@ -200,7 +203,7 @@ float getLowerBounds(Expr expr) {
   else (
     exists(ParenExpr paren |
       paren = expr and
-      result = getLowerBounds(paren.getExpression())
+      result = getLowerBounds(paren.stripParens())
     )
     or
     //if this expression is an identifer
@@ -387,7 +390,7 @@ float getDefUpperBounds(SsaDefinition def) {
             CompoundAssignStmt compoundAssign, float prevBound, float delta
           |
             assignInstr = explicitDef.getInstruction() and
-            prevDef.getAUse() = compoundAssign.getLhs() and
+            getAUse(prevDef) = compoundAssign.getLhs() and
             assignInstr = IR::assignInstruction(compoundAssign, 0) and
             prevBound = getDefUpperBounds(prevDef) and
             if compoundAssign instanceof AddAssignStmt
@@ -407,7 +410,7 @@ float getDefUpperBounds(SsaDefinition def) {
           then
             exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
               instr = explicitDef.getInstruction() and
-              exprLB = getUpperBounds(incOrDec.getExpr()) and
+              exprLB = getUpperBounds(incOrDec.getOperand()) and
               instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
               (
                 //IncStmt(x++)
@@ -480,7 +483,7 @@ float getDefLowerBounds(SsaDefinition def) {
             CompoundAssignStmt compoundAssign, float prevBound, float delta
           |
             assignInstr = explicitDef.getInstruction() and
-            prevDef.getAUse() = compoundAssign.getLhs() and
+            getAUse(prevDef) = compoundAssign.getLhs() and
             assignInstr = IR::assignInstruction(compoundAssign, 0) and
             prevBound = getDefLowerBounds(prevDef) and
             if compoundAssign instanceof AddAssignStmt
@@ -500,7 +503,7 @@ float getDefLowerBounds(SsaDefinition def) {
           then
             exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
               instr = explicitDef.getInstruction() and
-              exprLB = getLowerBounds(incOrDec.getExpr()) and
+              exprLB = getLowerBounds(incOrDec.getOperand()) and
               instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
               (
                 //IncStmt(x++)
@@ -565,7 +568,7 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
     (compoundAssign instanceof AddAssignStmt or compoundAssign instanceof SubAssignStmt) and
     nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(compoundAssign, 0) and
     (
-      prevDef.getAUse() = compoundAssign.getLhs() or
+      getAUse(prevDef) = compoundAssign.getLhs() or
       defDependsOnExpr(prevDef, compoundAssign.getRhs())
     )
   )
@@ -579,7 +582,7 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
         .getRhs()
         .(IR::EvalIncDecRhsInstruction)
         .getStmt() = incDec and
-    defDependsOnExpr(prevDef, incDec.getExpr())
+    defDependsOnExpr(prevDef, incDec.getOperand())
   )
   or
   //if `nextDef` coresponding to the init of a parameter, there is no coresponding `prevDef`
@@ -598,12 +601,12 @@ predicate defDependsOnExpr(SsaDefinition def, Expr expr) {
     //if an expression with parenthesis, strip the parenthesis
     exists(ParenExpr paren |
       paren = expr and
-      defDependsOnExpr(def, paren.getExpression())
+      defDependsOnExpr(def, paren.stripParens())
     )
     or
     exists(Ident ident |
       ident = expr and
-      def.getAUse() = ident
+      getAUse(def) = ident
     )
     or
     exists(AddExpr add | add = expr and defDependsOnExpr(def, add.getAnOperand()))
