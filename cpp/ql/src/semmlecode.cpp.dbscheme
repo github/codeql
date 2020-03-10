@@ -616,6 +616,7 @@ enumconstants(
   | 48 = _Float64x
   | 49 = _Float128
   | 50 = _Float128x
+  | 51 = char8_t
   ;
 */
 builtintypes(
