@@ -376,6 +376,8 @@ private predicate isIntegralType(@builtintype type, int kind) {
     kind = 43
     or
     kind = 44
+    or
+    kind = 51
   )
 }
 
@@ -991,6 +993,18 @@ class WideCharType extends IntegralType {
   WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
 
   override string getCanonicalQLClass() { result = "WideCharType" }
+}
+
+/**
+ * The C/C++ `char8_t` type.  This is available starting with C++20.
+ * ```
+ * char8_t c8;
+ * ```
+ */
+class Char8Type extends IntegralType {
+  Char8Type() { builtintypes(underlyingElement(this), _, 51, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Char8Type" }
 }
 
 /**
