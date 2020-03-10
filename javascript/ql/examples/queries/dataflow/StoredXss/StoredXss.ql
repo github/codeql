@@ -22,7 +22,8 @@ import DataFlow::PathGraph
  */
 class MysqlSource extends StoredXss::Source {
   MysqlSource() {
-    this = moduleImport("mysql")
+    this =
+      moduleImport("mysql")
           .getAMemberCall("createConnection")
           .getAMethodCall("query")
           .getCallback(1)

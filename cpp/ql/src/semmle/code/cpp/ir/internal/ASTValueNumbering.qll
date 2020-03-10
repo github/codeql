@@ -51,6 +51,7 @@ private import semmle.code.cpp.ir.IR
  * methods.
  */
 class GVN extends TValueNumber {
+  pragma[noinline]
   GVN() {
     exists(Instruction instr |
       this = tvalueNumber(instr) and exists(instr.getUnconvertedResultExpression())

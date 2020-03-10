@@ -131,10 +131,7 @@ class ExprNode extends InstructionNode {
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr getExpr() {
-    result.getConversion*() = instr.getConvertedResultExpression() and
-    not result instanceof Conversion
-  }
+  Expr getExpr() { result = instr.getUnconvertedResultExpression() }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned

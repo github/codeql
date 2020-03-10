@@ -125,7 +125,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @callex
 /**
  * An attribute defined using jQuery APIs.
  */
-abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition {}
+abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition { }
 
 /**
  * An attribute definition supplied when constructing a DOM element using `$(...)`.
@@ -150,9 +150,7 @@ private class JQueryAttributeDefinitionInElement extends JQueryAttributeDefiniti
 }
 
 /** Gets the `attr` or `prop` string. */
-private string attrOrProp() {
-  result = "attr" or result = "prop"
-}
+private string attrOrProp() { result = "attr" or result = "prop" }
 
 /**
  * An attribute definition using `elt.attr(name, value)` or `elt.prop(name, value)`
@@ -382,9 +380,7 @@ module JQuery {
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
-  private DataFlow::Node legacyObjectSource() {
-    result = any(JQueryObjectInternal e).flow()
-  }
+  private DataFlow::Node legacyObjectSource() { result = any(JQueryObjectInternal e).flow() }
 
   /** Gets a source of jQuery objects. */
   private DataFlow::SourceNode objectSource(DataFlow::TypeTracker t) {

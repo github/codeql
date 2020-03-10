@@ -142,5 +142,6 @@ class Locatable extends @locatable {
  */
 private class FileLocatable extends File, Locatable {
   override Location getLocation() { result = File.super.getLocation() }
+
   override string toString() { result = File.super.toString() }
 }

@@ -1,6 +1,8 @@
+| fields.ts:2:16:2:32 | (x: string) => {} | Foo.m | method |
 | namespace.js:5:32:5:44 | function() {} | Baz.method | method |
 | tst2.js:6:9:9:3 | () {\\n   ... .x;\\n  } | C.method | method |
 | tst2.js:11:13:13:3 | () {\\n   ... .x;\\n  } | C.getter | getter |
+| tst2.js:18:14:18:22 | (x) => {} | D.f | method |
 | tst.js:4:17:4:21 | () {} | A.instanceMethod | method |
 | tst.js:7:6:7:10 | () {} | A.bar | method |
 | tst.js:9:10:9:14 | () {} | A.baz | getter |

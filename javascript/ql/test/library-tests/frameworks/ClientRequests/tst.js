@@ -163,3 +163,12 @@ import {ClientRequest, net} from 'electron';
         xhr.getResponseHeaders();
     });
 })
+
+(function() {
+	let base = request;
+	let variant1 = base.defaults({});
+	let variant2 = variant1.defaults({});
+	base(url);
+	variant1(url);
+	variant2(url);
+});

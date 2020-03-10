@@ -62,6 +62,28 @@ is preferred over::
 
 From the type context, the query optimizer deduces that some parts of the program are redundant and removes them, or *specializes* them.
 
+Determine the most specific types of a variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are unfamiliar with the library used in a query, you can use CodeQL to determine what types an entity has. There is a predicate called ``getAQlClass()``, which returns the most specific QL types of the entity that it is called on.
+
+For example, if you were working with a Java database, you might use ``getAQlClass()`` on every ``Expr`` in a callable called ``c``:
+
+.. code-block:: ql
+
+   import java
+
+   from Expr e, Callable c
+   where
+       c.getDeclaringType().hasQualifiedName("my.namespace.name", "MyClass")
+       and c.getName() = "c"
+       and e.getEnclosingCallable() = c
+   select e, e.getAQlClass()
+
+The result of this query is a list of the most specific types of every ``Expr`` in that function. You will see multiple results for expressions that are represented by more than one type, so it will likely return a very large table of results.
+
+Use ``getAQlClass()`` as a debugging tool, but don't include it in the final version of your query, as it slows down performance.
+
 Avoid complex recursion
 ~~~~~~~~~~~~~~~~~~~~~~~
 

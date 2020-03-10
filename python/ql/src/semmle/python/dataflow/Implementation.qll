@@ -726,6 +726,8 @@ private class EssaTaintTracking extends string {
     private TaintKind iterable_unpacking_descent(
         SequenceNode left_parent, ControlFlowNode left_defn, CollectionKind parent_kind
     ) {
+        //TODO: Fix the cartesian product in this predicate
+        none() and
         left_parent.getAnElement() = left_defn and
         // Handle `a, *b = some_iterable`
         if left_defn instanceof StarredNode
