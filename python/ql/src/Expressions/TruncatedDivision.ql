@@ -18,19 +18,20 @@ where
     // Only relevant for Python 2, as all later versions implement true division
     major_version() = 2
     and
-    exists(BinaryExprNode bin, Object lobj, Object robj |
+    exists(BinaryExprNode bin, Value lval, Value rval |
         bin = div.getAFlowNode()
         and bin.getNode().getOp() instanceof Div
-        and bin.getLeft().refersTo(lobj, theIntType(), left)
-        and bin.getRight().refersTo(robj, theIntType(), right)
+        and bin.getLeft().pointsTo(lval, left)
+        and lval.getClass() = ClassValue::int_()
+        and bin.getRight().pointsTo(rval, right)
+        and rval.getClass() = ClassValue::int_()
         // Ignore instances where integer division leaves no remainder
-        and not lobj.(NumericObject).intValue() % robj.(NumericObject).intValue() = 0
+        and not lval.(NumericValue).getIntValue() % rval.(NumericValue).getIntValue() = 0
         and not bin.getNode().getEnclosingModule().hasFromFuture("division")
         // Filter out results wrapped in `int(...)`
-        and not exists(CallNode c, ClassObject cls |
-            c.getAnArg() = bin
-            and c.getFunction().refersTo(cls)
-            and cls.getName() = "int"
+        and not exists(CallNode c |
+            c = ClassValue::int_().getACall()
+            and c.getAnArg() = bin
         )
     )
 select div, "Result of division may be truncated as its $@ and $@ arguments may both be integers.",

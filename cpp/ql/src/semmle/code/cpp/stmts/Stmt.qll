@@ -1604,29 +1604,17 @@ class EnumSwitch extends SwitchStmt {
    * ```
    * there are results `GREEN` and `BLUE`.
    */
-  pragma[noopt]
   EnumConstant getAMissingCase() {
     exists(Enum et |
-      exists(Expr e, Type t |
-        e = this.getExpr() and
-        this instanceof EnumSwitch and
-        t = e.getType() and
-        et = t.getUnderlyingType()
-      ) and
+      et = this.getExpr().getUnderlyingType() and
       result = et.getAnEnumConstant() and
-      not exists(string value |
-        exists(SwitchCase sc, Expr e |
-          sc = this.getASwitchCase() and
-          e = sc.getExpr() and
-          value = e.getValue()
-        ) and
-        exists(Initializer init, Expr e |
-          init = result.getInitializer() and
-          e = init.getExpr() and
-          e.getValue() = value
-        )
-      )
+      not this.matchesValue(result.getInitializer().getExpr().getValue())
     )
+  }
+
+  pragma[noinline]
+  private predicate matchesValue(string value) {
+    value = this.getASwitchCase().getExpr().getValue()
   }
 }
 

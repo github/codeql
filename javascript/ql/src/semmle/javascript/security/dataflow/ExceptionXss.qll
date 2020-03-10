@@ -37,7 +37,8 @@ module ExceptionXss {
    * Holds if `node` is unlikely to cause an exception containing sensitive information to be thrown.
    */
   private predicate isUnlikelyToThrowSensitiveInformation(DataFlow::Node node) {
-    node = any(DataFlow::CallNode call | call.getCalleeName() = getAnUnlikelyToThrowMethodName())
+    node =
+      any(DataFlow::CallNode call | call.getCalleeName() = getAnUnlikelyToThrowMethodName())
           .getAnArgument()
     or
     node = DataFlow::globalVarRef("console").getAMemberCall(_).getAnArgument()

@@ -7984,6 +7984,17 @@
 <dependencies/>
 </relation>
 <relation>
+<name>hasTypeKeyword</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>isOptionalMember</name>
 <cardinality>3668</cardinality>
 <columnsizes>

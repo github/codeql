@@ -73,8 +73,8 @@ For more information on using CodeQL to query code written in a specific languag
    javascript/ql-for-javascript
    python/ql-for-python
 
-Advanced QL and technical information
-*************************************
+Technical information
+*********************
 
 For more technical information see:
 
@@ -82,7 +82,6 @@ For more technical information see:
    :maxdepth: 2
    :includehidden:
 
-   advanced/advanced-ql
    technical-info    
 
 Reference topics

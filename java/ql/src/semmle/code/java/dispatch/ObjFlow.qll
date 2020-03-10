@@ -305,6 +305,7 @@ private module Unification {
     arg2 = t2.getTypeArgument(pos)
   }
 
+  pragma[nomagic]
   predicate failsUnification(Type t1, Type t2) {
     unificationTargets(t1, t2) and
     (

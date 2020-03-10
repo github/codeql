@@ -58,7 +58,8 @@ predicate regExpMatchesString(RegExpTerm t, string s) {
     or
     // sequences match the concatenation of their elements
     exists(RegExpSequence seq | seq = t |
-      s = concat(int i, RegExpTerm child |
+      s =
+        concat(int i, RegExpTerm child |
           child = seq.getChild(i)
         |
           any(string subs | regExpMatchesString(child, subs)) order by i

@@ -28,6 +28,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
+  override string getCanonicalQLClass() { result = "Variable" }
+
   /** Gets the initializer of this variable, if any. */
   Initializer getInitializer() { result.getDeclaration() = this }
 
@@ -351,6 +353,8 @@ class StackVariable extends LocalScopeVariable {
  * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
+  override string getCanonicalQLClass() { result = "LocalVariable" }
+
   override string getName() { localvariables(underlyingElement(this), _, result) }
 
   override Type getType() { localvariables(underlyingElement(this), unresolveElement(result), _) }
@@ -396,6 +400,8 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
   NamespaceVariable() {
     exists(Namespace n | namespacembrs(unresolveElement(n), underlyingElement(this)))
   }
+
+  override string getCanonicalQLClass() { result = "NamespaceVariable" }
 }
 
 /**
@@ -415,6 +421,8 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
  */
 class GlobalVariable extends GlobalOrNamespaceVariable {
   GlobalVariable() { not this instanceof NamespaceVariable }
+
+  override string getCanonicalQLClass() { result = "GlobalVariable" }
 }
 
 /**
@@ -433,6 +441,8 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
  */
 class MemberVariable extends Variable, @membervariable {
   MemberVariable() { this.isMember() }
+
+  override string getCanonicalQLClass() { result = "MemberVariable" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

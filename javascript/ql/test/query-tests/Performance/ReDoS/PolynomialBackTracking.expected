@@ -1,0 +1,139 @@
+| polynomial-redos.js:7:24:7:26 | \\s+ | it can start matching anywhere |
+| polynomial-redos.js:8:17:8:18 |  * | it can start matching anywhere |
+| polynomial-redos.js:9:19:9:21 | \\s* | it can start matching anywhere |
+| polynomial-redos.js:11:19:11:20 | .* | it can start matching anywhere |
+| polynomial-redos.js:12:19:12:20 | .* | it can start matching anywhere |
+| polynomial-redos.js:15:28:15:35 | [\\s\\S]*? | it can start matching anywhere after the start of the preceeding '\\s*' |
+| polynomial-redos.js:18:17:18:22 | [0-9]* | it can start matching anywhere |
+| polynomial-redos.js:18:83:18:100 | [\\u0600-\\u06FF\\/]+ | it can start matching anywhere |
+| polynomial-redos.js:19:17:19:22 | [0-9]* | it can start matching anywhere |
+| polynomial-redos.js:20:56:20:58 | \\d+ | it can start matching anywhere after the start of the preceeding '\\d*' |
+| polynomial-redos.js:20:56:20:58 | \\d+ | it can start matching anywhere after the start of the preceeding '\\d+' |
+| polynomial-redos.js:22:57:22:59 | \\d+ | it can start matching anywhere after the start of the preceeding '\\d*' |
+| polynomial-redos.js:22:57:22:59 | \\d+ | it can start matching anywhere after the start of the preceeding '\\d+' |
+| polynomial-redos.js:25:37:25:56 | [a-zA-Z0-9+\\/ \\t\\n]+ | it can start matching anywhere after the start of the preceeding '[ \\t]+' |
+| polynomial-redos.js:27:14:27:22 | [A-Z]{2,} | it can start matching anywhere |
+| polynomial-redos.js:30:19:30:22 | [?]+ | it can start matching anywhere |
+| polynomial-redos.js:31:42:31:43 | -+ | it can start matching anywhere |
+| polynomial-redos.js:32:45:32:47 | \\n* | it can start matching anywhere |
+| polynomial-redos.js:33:17:33:20 | (.)* | it can start matching anywhere |
+| regexplib/address.js:18:26:18:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
+| regexplib/address.js:20:144:20:147 | [ ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9 \\-.]{6,}' |
+| regexplib/address.js:24:26:24:31 | [ \\w]* | it can start matching anywhere after the start of the preceeding '[ \\w]{3,}' |
+| regexplib/address.js:27:3:27:5 | \\s* | it can start matching anywhere |
+| regexplib/address.js:27:48:27:50 | \\s* | it can start matching anywhere |
+| regexplib/address.js:27:93:27:95 | \\s* | it can start matching anywhere |
+| regexplib/address.js:38:39:38:45 | [ 0-9]* | it can start matching anywhere after the start of the preceeding '[ \|\\.]*' |
+| regexplib/address.js:51:235:51:239 | \\x20* | it can start matching anywhere after the start of the preceeding '\\x20*' |
+| regexplib/address.js:51:631:51:635 | \\x20* | it can start matching anywhere after the start of the preceeding '\\x20*' |
+| regexplib/address.js:51:796:51:798 | \\s+ | it can start matching anywhere after the start of the preceeding '\\s+' |
+| regexplib/address.js:67:379:67:755 | [a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\' ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\']+' |
+| regexplib/address.js:69:3:69:5 | \\s* | it can start matching anywhere |
+| regexplib/address.js:69:48:69:50 | \\s* | it can start matching anywhere |
+| regexplib/address.js:69:93:69:95 | \\s* | it can start matching anywhere |
+| regexplib/address.js:75:235:75:239 | \\x20* | it can start matching anywhere after the start of the preceeding '\\x20*' |
+| regexplib/address.js:75:631:75:635 | \\x20* | it can start matching anywhere after the start of the preceeding '\\x20*' |
+| regexplib/address.js:75:796:75:798 | \\s+ | it can start matching anywhere after the start of the preceeding '\\s+' |
+| regexplib/address.js:85:15:85:49 | ([0-9]\|[ ]\|[-]\|[\\(]\|[\\)]\|ext.\|[,])+ | it can start matching anywhere |
+| regexplib/address.js:85:51:85:67 | ([ ]\|[:]\|\\t\|[-])* | it can start matching anywhere after the start of the preceeding '([0-9]\|[ ]\|[-]\|[\\(]\|[\\)]\|ext.\|[,])+' |
+| regexplib/address.js:93:3:93:5 | \\s* | it can start matching anywhere |
+| regexplib/address.js:93:48:93:50 | \\s* | it can start matching anywhere |
+| regexplib/address.js:93:93:93:95 | \\s* | it can start matching anywhere |
+| regexplib/address.js:95:379:95:755 | [a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\' ]+ | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#255;\\.\\,\\-\\/\\']+' |
+| regexplib/email.js:8:16:8:49 | [^ \\t\\(\\)\\<\\>@,;\\:\\\\\\"\\.\\[\\]\\r\\n]+ | it can start matching anywhere |
+| regexplib/email.js:12:2:12:4 | \\w+ | it can start matching anywhere |
+| regexplib/email.js:15:28:15:30 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/email.js:20:3:20:6 | \\w+? | it can start matching anywhere |
+| regexplib/email.js:28:2:28:4 | \\w+ | it can start matching anywhere |
+| regexplib/email.js:28:27:28:29 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/email.js:28:73:28:87 | [0-9a-zA-Z'\\.]+ | it can start matching anywhere |
+| regexplib/email.js:28:125:28:139 | [0-9a-zA-Z'\\.]+ | it can start matching anywhere |
+| regexplib/email.js:29:2:29:7 | [\\w-]+ | it can start matching anywhere |
+| regexplib/markup.js:6:99:6:113 | [\\s\\w\\d\\)\\(\\,]* | it can start matching anywhere after the start of the preceeding '[\\d\\w]+' |
+| regexplib/markup.js:19:2:19:12 | (<meta\\s+)* | it can start matching anywhere |
+| regexplib/markup.js:20:155:20:156 | '+ | it can start matching anywhere after the start of the preceeding ''+' |
+| regexplib/markup.js:20:197:20:198 | "+ | it can start matching anywhere after the start of the preceeding '"+' |
+| regexplib/markup.js:37:15:37:19 | [\\w]* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/markup.js:53:15:53:19 | [\\w]* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/markup.js:62:39:62:45 | [\\"\\']+ | it can start matching anywhere after the start of the preceeding '[\\s\\"\\']+' |
+| regexplib/misc.js:76:2:76:27 | (AUX\|PRN\|NUL\|COM\\d\|LPT\\d)+ | it can start matching anywhere |
+| regexplib/misc.js:83:15:83:17 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/misc.js:83:69:83:71 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/misc.js:93:3:93:4 | .* | it can start matching anywhere |
+| regexplib/misc.js:112:3:112:5 | \\s* | it can start matching anywhere |
+| regexplib/misc.js:112:32:112:34 | \\s* | it can start matching anywhere |
+| regexplib/misc.js:119:9:119:11 | \\s* | it can start matching anywhere |
+| regexplib/misc.js:119:12:119:14 | \\(* | it can start matching anywhere |
+| regexplib/misc.js:119:16:119:18 | \\s* | it can start matching anywhere |
+| regexplib/misc.js:119:16:119:18 | \\s* | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/misc.js:119:20:119:22 | \\w+ | it can start matching anywhere |
+| regexplib/misc.js:162:15:162:17 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/misc.js:162:69:162:71 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/misc.js:163:41:163:43 | \\s* | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/misc.js:163:75:163:77 | \\s* | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/misc.js:168:3:168:4 | .* | it can start matching anywhere |
+| regexplib/numbers.js:9:14:9:16 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/numbers.js:13:9:13:11 | \\d* | it can start matching anywhere after the start of the preceeding '\\d*' |
+| regexplib/strings.js:2:2:2:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:14:35:14:37 | \\w* | it can start matching anywhere after the start of the preceeding '\\w*' |
+| regexplib/strings.js:14:107:14:109 | \\w* | it can start matching anywhere after the start of the preceeding '\\w*' |
+| regexplib/strings.js:19:69:19:95 | [a-z&#230;&#248;&#229;0-9]+ | it can start matching anywhere after the start of the preceeding '[a-z&#230;&#248;&#229;0-9]+' |
+| regexplib/strings.js:26:6:26:17 | [a-zA-Z,\\s]+ | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/strings.js:26:18:26:20 | \\s* | it can start matching anywhere after the start of the preceeding '[a-zA-Z,\\s]+' |
+| regexplib/strings.js:29:2:29:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:30:2:30:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:32:35:32:37 | \\w* | it can start matching anywhere after the start of the preceeding '\\w*' |
+| regexplib/strings.js:32:119:32:121 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/strings.js:40:3:40:5 | \\w+ | it can start matching anywhere |
+| regexplib/strings.js:47:2:47:7 | (\\S*)+ | it can start matching anywhere |
+| regexplib/strings.js:47:3:47:5 | \\S* | it can start matching anywhere |
+| regexplib/strings.js:48:3:48:12 | [^\\.\\?\\!]* | it can start matching anywhere |
+| regexplib/strings.js:49:3:49:5 | \\S+ | it can start matching anywhere |
+| regexplib/strings.js:54:9:54:11 | \\s* | it can start matching anywhere |
+| regexplib/strings.js:54:12:54:14 | \\(* | it can start matching anywhere |
+| regexplib/strings.js:54:16:54:18 | \\s* | it can start matching anywhere |
+| regexplib/strings.js:54:16:54:18 | \\s* | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/strings.js:54:20:54:22 | \\w+ | it can start matching anywhere |
+| regexplib/strings.js:64:3:64:5 | \\w+ | it can start matching anywhere |
+| regexplib/strings.js:70:6:70:17 | [a-zA-Z,\\s]+ | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/strings.js:70:18:70:20 | \\s* | it can start matching anywhere after the start of the preceeding '[a-zA-Z,\\s]+' |
+| regexplib/strings.js:72:35:72:37 | \\w* | it can start matching anywhere after the start of the preceeding '\\w*' |
+| regexplib/strings.js:72:119:72:121 | \\w* | it can start matching anywhere after the start of the preceeding '\\w+' |
+| regexplib/strings.js:73:2:73:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:74:2:74:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:75:2:75:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:76:2:76:3 | .* | it can start matching anywhere |
+| regexplib/strings.js:82:9:82:11 | \\s* | it can start matching anywhere |
+| regexplib/strings.js:82:12:82:14 | \\(* | it can start matching anywhere |
+| regexplib/strings.js:82:16:82:18 | \\s* | it can start matching anywhere |
+| regexplib/strings.js:82:16:82:18 | \\s* | it can start matching anywhere after the start of the preceeding '\\s*' |
+| regexplib/strings.js:82:20:82:22 | \\w+ | it can start matching anywhere |
+| regexplib/strings.js:88:3:88:12 | [^\\.\\?\\!]* | it can start matching anywhere |
+| regexplib/strings.js:89:3:89:5 | \\S+ | it can start matching anywhere |
+| regexplib/strings.js:91:2:91:7 | (\\S*)+ | it can start matching anywhere |
+| regexplib/strings.js:91:3:91:5 | \\S* | it can start matching anywhere |
+| regexplib/uri.js:2:45:2:66 | [\\w\\-\\.,@?^=%&:/~\\+#]* | it can start matching anywhere after the start of the preceeding '[\\w\\-_]+' |
+| regexplib/uri.js:13:69:13:102 | [a-zA-Z0-9\\-\\.\\?\\,\\'\\/\\\\\\+&%\\$#_]* | it can start matching anywhere after the start of the preceeding '[a-zA-Z0-9\\-\\._]+' |
+| regexplib/uri.js:18:47:18:96 | ([ A-Za-z0-9'~` !@#$%&^_+=\\(\\){},\\-\\[\\];]\|([.]))*? | it can start matching anywhere after the start of the preceeding '([A-Za-z0-9'~`!@#$%&^_+=\\(\\){},\\-\\[\\]\\;])+?' |
+| regexplib/uri.js:18:148:18:189 | ([A-Za-z0-9'~`!@#$%&^_+=\\(\\){},\\-\\[ \\];])+ | it can start matching anywhere after the start of the preceeding '[ A-Za-z0-9'~`!@#$ %&^_+=\\(\\){},\\-\\[\\]\\;]*?' |
+| regexplib/uri.js:23:2:23:74 | (((file\|gopher\|news\|nntp\|telnet\|http\|ftp\|https\|ftps\|sftp):\\/\\/)\|(www\\.))+ | it can start matching anywhere |
+| regexplib/uri.js:28:2:28:13 | [a-zA-Z]{3,} | it can start matching anywhere |
+| regexplib/uri.js:29:2:29:45 | ((http\\:\\/\\/\|https\\:\\/\\/\|ftp\\:\\/\\/)\|(www.))+ | it can start matching anywhere |
+| regexplib/uri.js:34:3:34:9 | [^\\=&]+ | it can start matching anywhere |
+| regexplib/uri.js:44:2:44:4 | .*? | it can start matching anywhere |
+| regexplib/uri.js:53:3:53:9 | [^\\=&]+ | it can start matching anywhere |
+| regexplib/uri.js:58:2:58:45 | ((http\\:\\/\\/\|https\\:\\/\\/\|ftp\\:\\/\\/)\|(www.))+ | it can start matching anywhere |
+| regexplib/uri.js:59:2:59:13 | [a-zA-Z]{3,} | it can start matching anywhere |
+| regexplib/uri.js:73:2:73:4 | .*? | it can start matching anywhere |
+| tst.js:14:13:14:18 | (.*,)+ | it can start matching anywhere |
+| tst.js:14:14:14:15 | .* | it can start matching anywhere |
+| tst.js:47:15:47:37 | (?:[^"']\|".*?"\|'.*?')*? | it can start matching anywhere |
+| tst.js:66:15:66:44 | ([\\w#:.~>+()\\s-]+\|\\*\|\\[.*?\\])+ | it can start matching anywhere |
+| tst.js:66:16:66:31 | [\\w#:.~>+()\\s-]+ | it can start matching anywhere |
+| tst.js:66:46:66:48 | \\s* | it can start matching anywhere after the start of the preceeding '[\\w#:.~>+()\\s-]+' |
+| tst.js:74:14:74:21 | (b\|a?b)* | it can start matching anywhere |
+| tst.js:77:14:77:21 | (a\|aa?)* | it can start matching anywhere |
+| tst.js:80:14:80:20 | (.\|\\n)* | it can start matching anywhere |
+| tst.js:83:14:83:20 | (.\|\\n)* | it can start matching anywhere |
+| tst.js:89:25:89:32 | (a\|aa?)* | it can start matching anywhere |
+| tst.js:92:14:92:21 | (a\|aa?)* | it can start matching anywhere |

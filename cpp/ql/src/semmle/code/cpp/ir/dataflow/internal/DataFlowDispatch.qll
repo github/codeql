@@ -3,8 +3,6 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
-Function viableImpl(CallInstruction call) { result = viableCallable(call) }
-
 /**
  * Gets a function that might be called by `call`.
  */
@@ -137,6 +135,12 @@ private module VirtualDispatch {
       exists(FunctionInstruction fi |
         this.flowsFrom(DataFlow::instructionNode(fi), _) and
         result = fi.getFunctionSymbol()
+      ) and
+      (
+        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        or
+        result.isVarargs()
       )
     }
   }
