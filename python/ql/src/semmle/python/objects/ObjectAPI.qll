@@ -433,8 +433,9 @@ class ClassValue extends Value {
         or
         this.getASuperType() = ClassValue::unicode()
         or
-        /* Does this inherit from abc.Sequence? */
-        this.getASuperType().getName() = "Sequence"
+        major_version() = 2 and this.getASuperType() = Value::named("collections.Sequence")
+        or
+        major_version() = 3 and this.getASuperType() = Value::named("collections.abc.Sequence")
         or
         /* Does it have an index or __reversed__ method? */
         this.isContainer() and
