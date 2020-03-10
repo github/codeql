@@ -374,7 +374,7 @@ class CallableValue extends Value {
 
 /** Class representing classes in the Python program, both Python and built-in.
  */
-class ClassValue extends Value {
+class   ClassValue extends Value {
 
     ClassValue() {
         this.(ObjectInternal).isClass() = true
@@ -411,6 +411,26 @@ class ClassValue extends Value {
         this.hasAttribute("__aiter__")
         or
         this.hasAttribute("__getitem__")
+    }
+
+    /** Holds if this class is an iterator. */
+    predicate isIterator() {
+        this.hasAttribute("__iter__") and 
+        (major_version() = 3 and this.hasAttribute("__next__")
+         or   
+         /* Because 'next' is a common method name we need to check that an __iter__
+          * method actually returns this class. This is not needed for Py3 as the
+          * '__next__' method exists to define a class as an iterator.
+          */
+         major_version() = 2 and this.hasAttribute("next") and 
+         exists(ClassObject other, FunctionObject iter | 
+            other.declaredAttribute("__iter__") = iter |
+            iter.getAnInferredReturnType() = this
+         )
+        )
+        or
+        /* This will be redundant when we have C class information */
+        this = ClassValue::generator()
     }
 
     /** Holds if this class is a descriptor. */
