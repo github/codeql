@@ -31,37 +31,6 @@ private Element getRealParent(Expr expr) {
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
-/**
- * Holds if the expression in this initializer is evaluated at compile time.
- */
-private predicate skipInitializer(Initializer init) {
-  exists(LocalVariable local |
-    init = local.getInitializer() and
-    local.isStatic() and
-    not runtimeExprInStaticInitializer(init.getExpr())
-  )
-}
-
-/**
- * Holds if `e` is an expression in a static initializer that must be evaluated
- * at run time. This predicate computes "is non-const" instead of "is const" in
- * order to avoid recursion through forall.
- */
-private predicate runtimeExprInStaticInitializer(Expr e) {
-  inStaticInitializer(e) and
-  if e instanceof AggregateLiteral
-  then runtimeExprInStaticInitializer(e.getAChild())
-  else not e.getFullyConverted().isConstant()
-}
-
-/** Holds if `e` is part of the initializer of a local static variable. */
-private predicate inStaticInitializer(Expr e) {
-  exists(LocalVariable local |
-    local.isStatic() and
-    e.getParent+() = local.getInitializer()
-  )
-}
-
 // Pulled out to work around QL-796
 private predicate isOrphan(Expr expr) { not exists(getRealParent(expr)) }
 
@@ -83,8 +52,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   or
   // Only translate the initializer of a static local if it uses run-time data.
   // Otherwise the initializer does not run in function scope.
-  exists(Initializer init |
-    skipInitializer(init) and
+  exists(Initializer init, StaticStorageDurationVariable var |
+    init = var.getInitializer() and
+    var.hasConstantInitialization() and
     expr = init.getExpr().getFullyConverted()
   )
   or
