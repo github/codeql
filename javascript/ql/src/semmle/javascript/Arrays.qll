@@ -208,9 +208,7 @@ private module ArrayDataFlow {
    * A step for creating an array and storing the elements in the array.
    */
   private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
-    ArrayCreationStep() {
-      this instanceof DataFlow::ArrayCreationNode
-    }
+    ArrayCreationStep() { this instanceof DataFlow::ArrayCreationNode }
 
     override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
