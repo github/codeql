@@ -72,6 +72,8 @@ func trapFolder() (string, error) {
 func (tw *Writer) Close() error {
 	err := tw.w.Flush()
 	if err != nil {
+		// throw away close error because write errors are likely to be more important
+		tw.file.Close()
 		return err
 	}
 	err = tw.file.Close()
