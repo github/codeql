@@ -167,6 +167,10 @@ func main() {
 		log.Println("Found glide.yaml, enabling go modules")
 	}
 
+	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
+	// skip the dependency installation step and run the extractor with `-mod=vendor`
+	hasVendor := fileExists("vendor/modules.txt")
+
 	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
 	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
 		inLGTM = true
@@ -284,49 +288,53 @@ func main() {
 			tryBuild("build.sh", "./build.sh")
 
 		if !buildSucceeded {
-			// automatically determine command to install dependencies
-			if depMode == Dep {
-				// set up the dep cache if SEMMLE_CACHE is set
-				cacheDir := os.Getenv("SEMMLE_CACHE")
-				if cacheDir != "" {
-					depCacheDir := filepath.Join(cacheDir, "go", "dep")
-					log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
-					err := os.MkdirAll(depCacheDir, 0755)
-					if err != nil {
-						log.Printf("Failed to create dep cache directory: %s\n", err.Error())
-					} else {
-						log.Printf("Setting dep cache directory to %s\n", depCacheDir)
-						err = os.Setenv("DEPCACHEDIR", depCacheDir)
+			if hasVendor {
+				log.Printf("Skipping depedency installation because a Go vendor directory was found.")
+			} else {
+				// automatically determine command to install dependencies
+				if depMode == Dep {
+					// set up the dep cache if SEMMLE_CACHE is set
+					cacheDir := os.Getenv("SEMMLE_CACHE")
+					if cacheDir != "" {
+						depCacheDir := filepath.Join(cacheDir, "go", "dep")
+						log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
+						err := os.MkdirAll(depCacheDir, 0755)
 						if err != nil {
-							log.Println("Failed to set dep cache directory")
+							log.Printf("Failed to create dep cache directory: %s\n", err.Error())
 						} else {
-							err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+							log.Printf("Setting dep cache directory to %s\n", depCacheDir)
+							err = os.Setenv("DEPCACHEDIR", depCacheDir)
 							if err != nil {
-								log.Println("Failed to set dep cache age")
+								log.Println("Failed to set dep cache directory")
+							} else {
+								err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+								if err != nil {
+									log.Println("Failed to set dep cache age")
+								}
 							}
 						}
 					}
-				}
 
-				if fileExists("Gopkg.lock") {
-					// if Gopkg.lock exists, don't update it and only vendor dependencies
-					install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+					if fileExists("Gopkg.lock") {
+						// if Gopkg.lock exists, don't update it and only vendor dependencies
+						install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+					} else {
+						install = exec.Command("dep", "ensure", "-v")
+					}
+					log.Println("Installing dependencies using `dep ensure`.")
+				} else if depMode == Glide {
+					install = exec.Command("glide", "install")
+					log.Println("Installing dependencies using `glide install`")
 				} else {
-					install = exec.Command("dep", "ensure", "-v")
-				}
-				log.Println("Installing dependencies using `dep ensure`.")
-			} else if depMode == Glide {
-				install = exec.Command("glide", "install")
-				log.Println("Installing dependencies using `glide install`")
-			} else {
-				if depMode == GoGetWithModules {
-					// enable go modules if used
-					os.Setenv("GO111MODULE", "on")
-				}
+					if depMode == GoGetWithModules {
+						// enable go modules if used
+						os.Setenv("GO111MODULE", "on")
+					}
 
-				// get dependencies
-				install = exec.Command("go", "get", "-v", "./...")
-				log.Println("Installing dependencies using `go get -v ./...`.")
+					// get dependencies
+					install = exec.Command("go", "get", "-v", "./...")
+					log.Println("Installing dependencies using `go get -v ./...`.")
+				}
 			}
 		}
 	} else {
@@ -382,7 +390,13 @@ func main() {
 	}
 	log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
 
-	cmd := exec.Command(extractor, "./...")
+	var cmd *exec.Cmd
+	// check for `vendor/modules.txt` and not just `vendor` in order to distinguish non-go vendor dirs
+	if depMode == GoGetWithModules && hasVendor {
+		cmd = exec.Command(extractor, "-mod=vendor", "./...")
+	} else {
+		cmd = exec.Command(extractor, "./...")
+	}
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
