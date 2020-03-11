@@ -587,7 +587,7 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
 }
 
 /**
- * A data flow node corresponding to the creation or a new array, either through an array literal, 
+ * A data flow node corresponding to the creation or a new array, either through an array literal,
  * an invocation of the `Array` constructor, or the `Array.from` method.
  *
  *
