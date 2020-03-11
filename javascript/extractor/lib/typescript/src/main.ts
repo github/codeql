@@ -134,7 +134,8 @@ function isBlacklistedProperty(k: string) {
         || k === "symbol" || k === "localSymbol"
         || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode" || k === "fallthroughFlowNode"
         || k === "nextContainer" || k === "locals"
-        || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
+        || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics"
+        || k === "relatedInformation";
 }
 
 /**
