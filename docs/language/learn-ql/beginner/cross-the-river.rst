@@ -1,7 +1,7 @@
 Cross the river
 ===============
 
-You can use common QL features to write a query that finds a solution to the "River crossing" logic puzzle.
+Use common QL features to write a query that finds a solution to the "River crossing" logic puzzle.
 
 Introduction
 ------------

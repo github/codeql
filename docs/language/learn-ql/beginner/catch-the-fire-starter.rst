@@ -1,7 +1,7 @@
 Catch the fire starter
 ======================
 
-You can use QL predicates and classes to solve your second mystery as a QL detective.
+Learn about QL predicates and classes to solve your second mystery as a QL detective.
 
 Just as you've successfully found the thief and returned the golden crown to the castle, another terrible crime is committed. Early in the morning, a few people start a fire in a field in the north of the village and destroy all the crops!
 
