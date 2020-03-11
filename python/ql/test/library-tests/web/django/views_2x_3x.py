@@ -25,13 +25,13 @@ def http_resp_write(request):
 class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
-    # TODO: Currently we don't flag `untrusted` as a DjangoRequestParameter
+
     def post(self, request, untrusted):
         return HttpResponse('Foo post: {}'.format(untrusted))
 
 
 class ClassView(View, Foo):
-    # TODO: Currently we don't flag `untrusted` as a DjangoRequestParameter
+
     def get(self, request, untrusted):
         return HttpResponse('ClassView get: {}'.format(untrusted))
 

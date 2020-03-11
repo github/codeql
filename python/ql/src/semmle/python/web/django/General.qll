@@ -6,10 +6,10 @@ import semmle.python.web.Http
 // a FunctionValue, so we can't use `FunctionValue.getArgumentForCall`
 // https://github.com/django/django/blob/master/django/urls/conf.py#L76
 abstract class DjangoRoute extends CallNode {
-    FunctionValue getViewFunction() {
-        result = this.getArg(1).pointsTo()
+    DjangoViewHandler getViewHandler() {
+        result = view_handler_from_view_arg(this.getArg(1))
         or
-        result = this.getArgByName("view").pointsTo()
+        result = view_handler_from_view_arg(this.getArgByName("view"))
     }
 
     abstract string getANamedArgument();
@@ -19,6 +19,60 @@ abstract class DjangoRoute extends CallNode {
      * Will only return a result if there are no named arguments.
      */
     abstract int getNumPositionalArguments();
+}
+
+/**
+ * For function based views -- also see `DjangoClassBasedViewHandler`
+ * https://docs.djangoproject.com/en/1.11/topics/http/views/
+ * https://docs.djangoproject.com/en/3.0/topics/http/views/
+ */
+class DjangoViewHandler extends PythonFunctionValue {
+
+    /** Gets the index of the 'request' argument */
+    int getRequestArgIndex() {
+        result = 0
+    }
+}
+
+/**
+ * Class based views
+ * https://docs.djangoproject.com/en/1.11/topics/class-based-views/
+ * https://docs.djangoproject.com/en/3.0/topics/class-based-views/
+ */
+private class DjangoViewClass extends ClassValue {
+    DjangoViewClass() {
+        Value::named("django.views.generic.View") = this.getASuperType()
+        or
+        Value::named("django.views.View") = this.getASuperType()
+    }
+}
+
+class DjangoClassBasedViewHandler extends DjangoViewHandler {
+    DjangoClassBasedViewHandler() {
+        exists(DjangoViewClass cls |
+            cls.lookup(httpVerbLower()) = this
+        )
+    }
+
+    override int getRequestArgIndex() {
+        // due to `self` being the first parameter
+        result = 1
+    }
+}
+
+/**
+ * Gets the function that will handle requests when `view_arg` is used as the view argument to a
+ * django route. That is, this methods handles Class-based Views and its `as_view()` function.
+ */
+private DjangoViewHandler view_handler_from_view_arg(ControlFlowNode view_arg) {
+    // Function-based view
+    result = view_arg.pointsTo()
+    or
+    // Class-based view
+    exists(ClassValue cls |
+        cls = view_arg.(CallNode).getFunction().(AttrNode).getObject("as_view").pointsTo() and
+        result = cls.lookup(httpVerbLower())
+    )
 }
 
 // We need this "dummy" class, since otherwise the regex argument would not be considered

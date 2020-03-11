@@ -39,60 +39,35 @@ class DjangoQueryDict extends TaintKind {
     }
 }
 
-abstract class DjangoRequestSource extends HttpRequestTaintSource {
+/** A Django request parameter */
+class DjangoRequestSource extends HttpRequestTaintSource {
+    DjangoRequestSource() {
+        exists(DjangoRoute route, DjangoViewHandler view, int request_arg_index |
+            route.getViewHandler() = view and
+            request_arg_index = view.getRequestArgIndex() and
+            this = view.getScope().getArg(request_arg_index).asName().getAFlowNode()
+        )
+    }
+
     override string toString() { result = "Django request source" }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoRequest }
 }
 
-/**
- * Function based views
- * https://docs.djangoproject.com/en/1.11/topics/http/views/
- * https://docs.djangoproject.com/en/3.0/topics/http/views/
- */
-private class DjangoFunctionBasedViewRequestArgument extends DjangoRequestSource {
-    DjangoFunctionBasedViewRequestArgument() {
-        exists(DjangoRoute route, FunctionValue view |
-            route.getViewFunction() = view and
-            this = view.getScope().getArg(0).asName().getAFlowNode()
-        )
-    }
-}
-
-/**
- * Class based views
- * https://docs.djangoproject.com/en/1.11/topics/class-based-views/
- * https://docs.djangoproject.com/en/3.0/topics/class-based-views/
- */
-private class DjangoView extends ClassValue {
-    DjangoView() {
-        Value::named("django.views.generic.View") = this.getASuperType()
-        or
-        Value::named("django.views.View") = this.getASuperType()
-    }
-}
-
-private FunctionValue djangoViewHttpMethod() {
-    exists(DjangoView view | view.lookup(httpVerbLower()) = result)
-}
-
-class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
-    DjangoClassBasedViewRequestArgument() {
-        this = djangoViewHttpMethod().getScope().getArg(1).asName().getAFlowNode()
-    }
-}
-
 /** An argument specified in a url routing table */
 class DjangoRequestParameter extends HttpRequestTaintSource {
     DjangoRequestParameter() {
-        exists(DjangoRoute route, Function f |
-            f = route.getViewFunction().getScope() |
+        exists(DjangoRoute route, Function f, DjangoViewHandler view, int request_arg_index |
+            route.getViewHandler() = view and
+            request_arg_index = view.getRequestArgIndex() and
+            f = view.getScope()
+        |
             this.(ControlFlowNode).getNode() = f.getArgByName(route.getANamedArgument())
             or
             exists(int i | i >= 0 |
                 i < route.getNumPositionalArguments() and
                 // +1 because first argument is always the request
-                this.(ControlFlowNode).getNode() = f.getArg(i+1)
+                this.(ControlFlowNode).getNode() = f.getArg(request_arg_index + 1 + i)
             )
         )
     }

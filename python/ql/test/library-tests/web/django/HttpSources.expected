@@ -13,7 +13,9 @@
 | views_1x.py:15:21:15:27 | request | django.request.HttpRequest |
 | views_1x.py:19:21:19:27 | request | django.request.HttpRequest |
 | views_1x.py:29:20:29:26 | request | django.request.HttpRequest |
+| views_1x.py:29:29:29:37 | untrusted | externally controlled string |
 | views_1x.py:35:19:35:25 | request | django.request.HttpRequest |
+| views_1x.py:35:28:35:36 | untrusted | externally controlled string |
 | views_1x.py:39:19:39:25 | request | django.request.HttpRequest |
 | views_1x.py:39:28:39:38 | page_number | externally controlled string |
 | views_1x.py:44:24:44:30 | request | django.request.HttpRequest |
@@ -29,7 +31,9 @@
 | views_2x_3x.py:15:21:15:27 | request | django.request.HttpRequest |
 | views_2x_3x.py:19:21:19:27 | request | django.request.HttpRequest |
 | views_2x_3x.py:29:20:29:26 | request | django.request.HttpRequest |
+| views_2x_3x.py:29:29:29:37 | untrusted | externally controlled string |
 | views_2x_3x.py:35:19:35:25 | request | django.request.HttpRequest |
+| views_2x_3x.py:35:28:35:36 | untrusted | externally controlled string |
 | views_2x_3x.py:39:19:39:25 | request | django.request.HttpRequest |
 | views_2x_3x.py:39:28:39:38 | page_number | externally controlled string |
 | views_2x_3x.py:44:24:44:30 | request | django.request.HttpRequest |
