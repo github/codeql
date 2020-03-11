@@ -8,6 +8,7 @@ class LenFunction extends BuiltinFunction {
 Expr getAUse(SsaDefinition def) {
   result = def.getVariable().getAUse().(IR::EvalInstruction).getExpr()
 }
+
 /*
  *  calculate the upper bound of an expression
  */
