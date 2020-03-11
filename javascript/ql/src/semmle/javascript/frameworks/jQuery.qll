@@ -284,12 +284,24 @@ private class JQueryAjaxCall extends ClientRequest::Range {
       not exists(getResponseType()) and responseType = ""
     ) and
     promise = false and
-    result =
-      getOptionArgument([0 .. 1], "success")
-          .getALocalSource()
-          .(DataFlow::FunctionNode)
-          .getParameter(0)
+    (
+      result =
+        getOptionArgument([0 .. 1], "success")
+            .getALocalSource()
+            .(DataFlow::FunctionNode)
+            .getParameter(0)
+      or
+      result = getAnAjaxCallbackDataNode(this)
+    )
   }
+}
+
+/** 
+ * Gets the response data node from a call to a jqXHR Object. 
+ */ 
+DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
+  result =
+    request.getAMemberCall(any(string s | s = "done" or s = "then")).getCallback(0).getParameter(0)
 }
 
 /**
@@ -332,7 +344,8 @@ private class JQueryAjaxShortHand extends ClientRequest::Range {
 
   string getResponseType() {
     (name = "get" or name = "post") and
-    getLastArgument().mayHaveStringValue(result)
+    getLastArgument().mayHaveStringValue(result) and
+    getNumArgument() > 1
     or
     name = "getJSON" and result = "json"
     or
@@ -348,7 +361,11 @@ private class JQueryAjaxShortHand extends ClientRequest::Range {
     ) and
     promise = false and
     // one of the two last arguments
-    result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+    (
+      result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+      or
+      result = getAnAjaxCallbackDataNode(this)
+    )
   }
 }
 

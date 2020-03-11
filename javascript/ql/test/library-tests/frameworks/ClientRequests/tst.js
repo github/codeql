@@ -193,4 +193,9 @@ import {ClientRequest, net} from 'electron';
 	});
 	
 	$.get( "ajax/test.json", function( data ) {}, "json");
+	
+	$.ajax({url: "ajax/blob", dataType: "blob"})
+      .done(function( data ) {});
+
+	$.get("example.php").done(function(response) {})
 });
