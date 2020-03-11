@@ -71,9 +71,7 @@ private predicate str_method_call(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = ....format(fromnode) */
 private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getName() = "format" and
-    (
-        tonode.getAnArg() = fromnode
-    )
+    tonode.getAnArg() = fromnode
 }
 
 /* tonode = codec.[en|de]code(fromnode)*/
