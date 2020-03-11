@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+    This query is used to find the integer overflow problem that may occur when processing arithmetic operations in the program. Integer overflow often causes the results of the program to be incorrect, or the program crashes and exits.
+    </overview>
+    <recommendation>
+    Before performing an integer operation that may cause an overflow, check it first. For example, two int32 values a and b. Before calculating their sum, first determine whether a is greater than 2147483647 (the maximum value of int32) minus b.
+    </recommendation>
+    <example>
+    An integer overflow occus in calculate expression `start + offset`
+    <sample src="integer-overflow-example.go" />
+    Here's the solution to this issue.
+    <sample src="integer-overflow-solution-example.go" />
+    </example>
+    <references>
+    <li>Wikipedia
+    https://en.wikipedia.org/wiki/Integer_overflow</li>
+    </references>
+</qhelp>
