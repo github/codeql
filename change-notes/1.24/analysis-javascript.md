@@ -32,6 +32,7 @@
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
   - [http2](https://nodejs.org/api/http2.html)
+  - [jQuery](https://jquery.com/)
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
   - [react](https://www.npmjs.com/package/react)
   - [request](https://www.npmjs.com/package/request)
