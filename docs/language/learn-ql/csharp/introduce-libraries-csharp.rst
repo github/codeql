@@ -1,7 +1,7 @@
 CodeQL libraries for C#
 =======================
 
-When you're analyzing a C# program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL libraries for C#.
+When you're analyzing a C# program, you can make use of the large collection of classes in the CodeQL libraries for C#.
 
 About the CodeQL libraries for C#
 ---------------------------------
