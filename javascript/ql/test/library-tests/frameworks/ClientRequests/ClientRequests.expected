@@ -64,6 +64,8 @@ test_ClientRequest
 | tst.js:195:2:195:54 | $.get(  ... "json") |
 | tst.js:197:2:197:45 | $.ajax( ... blob"}) |
 | tst.js:200:2:200:21 | $.get("example.php") |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) |
+| tst.js:210:2:210:21 | $.get("example.php") |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -169,6 +171,8 @@ test_getUrl
 | tst.js:195:2:195:54 | $.get(  ... "json") | tst.js:195:9:195:24 | "ajax/test.json" |
 | tst.js:197:2:197:45 | $.ajax( ... blob"}) | tst.js:197:15:197:25 | "ajax/blob" |
 | tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:8:200:20 | "example.php" |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:203:10:203:22 | "example.php" |
+| tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:8:210:20 | "example.php" |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
@@ -227,3 +231,5 @@ test_getAResponseDataNode
 | tst.js:195:2:195:54 | $.get(  ... "json") | tst.js:195:37:195:40 | data | json | false |
 | tst.js:197:2:197:45 | $.ajax( ... blob"}) | tst.js:198:23:198:26 | data | blob | false |
 | tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:37:200:44 | response |  | false |
+| tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:207:21:207:36 | err.responseText | json | false |
+| tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:55:210:70 | xhr.responseText |  | false |

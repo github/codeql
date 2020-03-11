@@ -291,7 +291,16 @@ private class JQueryAjaxCall extends ClientRequest::Range {
             .(DataFlow::FunctionNode)
             .getParameter(0)
       or
+      result =
+        getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
+            any(string method | method = "error" or method = "complete"))
+              .getALocalSource()
+              .(DataFlow::FunctionNode)
+              .getParameter(0))
+      or
       result = getAnAjaxCallbackDataNode(this)
+      or
+      result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
     )
   }
 }
@@ -302,6 +311,25 @@ private class JQueryAjaxCall extends ClientRequest::Range {
 DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
   result =
     request.getAMemberCall(any(string s | s = "done" or s = "then")).getCallback(0).getParameter(0)
+}
+
+/**
+ * Gets the `jqXHR` object from a call to `fail` on the result from an ajax call (`request`).
+ */
+DataFlow::SourceNode getAnXHRObject(ClientRequest::Range request) {
+  result = request.getAMemberCall("fail").getCallback(0).getParameter(0)
+}
+
+/**
+ * Gets a node refering to the response contained in an `jqXHR` object (`obj`).
+ */
+DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
+  result =
+    obj
+        .getAPropertyRead(any(string s |
+            s = "responseText" or
+            s = "responseXML"
+          ))
 }
 
 /**
@@ -360,11 +388,13 @@ private class JQueryAjaxShortHand extends ClientRequest::Range {
       not exists(getResponseType()) and responseType = ""
     ) and
     promise = false and
-    // one of the two last arguments
     (
+      // one of the two last arguments
       result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
       or
       result = getAnAjaxCallbackDataNode(this)
+      or
+      result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
     )
   }
 }

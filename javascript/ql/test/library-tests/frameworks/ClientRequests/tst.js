@@ -198,4 +198,14 @@ import {ClientRequest, net} from 'electron';
       .done(function( data ) {});
 
 	$.get("example.php").done(function(response) {})
+	
+    $.ajax({
+    url: "example.php",
+    type: 'POST',
+    dataType: "json",
+    error: function (err) {
+        console.log(err.responseText)
+    }});
+
+	$.get("example.php").fail(function(xhr) {console.log(xhr.responseText)});
 });
