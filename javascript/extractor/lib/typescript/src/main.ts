@@ -69,8 +69,11 @@ interface PrepareFilesCommand {
     command: "prepare-files";
     filenames: string[];
 }
+interface GetMetadataCommand {
+    command: "get-metadata";
+}
 type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
-    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand;
+    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
 class State {
@@ -91,7 +94,7 @@ const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
  *
- * If cycles are found, additional properties should be added to `isBlacklistedProperty`.
+ * If cycles are found, the whitelist in `astProperties` is too permissive.
  */
 // tslint:disable-next-line:no-unused-variable
 function checkCycle(root: any) {
@@ -104,7 +107,7 @@ function checkCycle(root: any) {
         obj.$cycle_visiting = true;
         for (let k in obj) {
             if (!obj.hasOwnProperty(k)) continue;
-            if (isBlacklistedProperty(k)) continue;
+            if (+k !== +k && !astPropertySet.has(k)) continue;
             if (k === "$cycle_visiting") continue;
             let cycle = visit(obj[k]);
             if (cycle) {
@@ -122,31 +125,133 @@ function checkCycle(root: any) {
     }
 }
 
-/**
- * A property that should not be serialized as part of the AST, because they
- * lead to cycles or are just not needed.
- *
- * Because of restrictions on `JSON.stringify`, these properties may also not
- * be used as part of a command response.
- */
-function isBlacklistedProperty(k: string) {
-    return k === "parent" || k === "pos" || k === "end"
-        || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode" || k === "fallthroughFlowNode"
-        || k === "nextContainer" || k === "locals"
-        || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics"
-        || k === "relatedInformation";
-}
+/** Property names to extract from the TypeScript AST. */
+const astProperties: string[] = [
+    "$declarationKind",
+    "$declaredSignature",
+    "$end",
+    "$lineStarts",
+    "$overloadIndex",
+    "$pos",
+    "$resolvedSignature",
+    "$symbol",
+    "$tokens",
+    "$type",
+    "argument",
+    "argumentExpression",
+    "arguments",
+    "assertsModifier",
+    "asteriskToken",
+    "attributes",
+    "block",
+    "body",
+    "caseBlock",
+    "catchClause",
+    "checkType",
+    "children",
+    "clauses",
+    "closingElement",
+    "closingFragment",
+    "condition",
+    "constraint",
+    "constructor",
+    "declarationList",
+    "declarations",
+    "decorators",
+    "default",
+    "delete",
+    "dotDotDotToken",
+    "elements",
+    "elementType",
+    "elementTypes",
+    "elseStatement",
+    "escapedText",
+    "exclamationToken",
+    "exportClause",
+    "expression",
+    "exprName",
+    "extendsType",
+    "falseType",
+    "finallyBlock",
+    "flags",
+    "head",
+    "heritageClauses",
+    "importClause",
+    "incrementor",
+    "indexType",
+    "init",
+    "initializer",
+    "isExportEquals",
+    "isTypeOf",
+    "isTypeOnly",
+    "keywordToken",
+    "kind",
+    "label",
+    "left",
+    "literal",
+    "members",
+    "messageText",
+    "modifiers",
+    "moduleReference",
+    "moduleSpecifier",
+    "name",
+    "namedBindings",
+    "objectType",
+    "openingElement",
+    "openingFragment",
+    "operand",
+    "operator",
+    "operatorToken",
+    "parameterName",
+    "parameters",
+    "parseDiagnostics",
+    "properties",
+    "propertyName",
+    "qualifier",
+    "questionDotToken",
+    "questionToken",
+    "right",
+    "selfClosing",
+    "statement",
+    "statements",
+    "tag",
+    "tagName",
+    "template",
+    "templateSpans",
+    "text",
+    "thenStatement",
+    "token",
+    "tokenPos",
+    "trueType",
+    "tryBlock",
+    "type",
+    "typeArguments",
+    "typeName",
+    "typeParameter",
+    "typeParameters",
+    "types",
+    "variableDeclaration",
+    "whenFalse",
+    "whenTrue",
+];
+
+/** Property names used in a parse command response, in addition to the AST itself. */
+const astMetaProperties: string[] = [
+    "ast",
+    "type",
+];
+
+/** Property names to extract in an AST response. */
+const astPropertySet = new Set([...astProperties, ...astMetaProperties]);
 
 /**
- * Converts (part of) an AST to a JSON string, ignoring parent pointers.
+ * Converts (part of) an AST to a JSON string, ignoring properties we're not interested in.
  */
 function stringifyAST(obj: any) {
     return JSON.stringify(obj, (k, v) => {
-        if (isBlacklistedProperty(k)) {
-            return undefined;
-        }
-        return v;
+        // Filter out properties that aren't numeric, empty, or whitelisted.
+        // Note `k` is the empty string for the root object, which is also covered by +k === +k.
+        return (+k === +k || astPropertySet.has(k)) ? v : undefined;
     });
 }
 
@@ -156,8 +261,6 @@ function extractFile(filename: string): string {
     return stringifyAST({
         type: "ast",
         ast,
-        nodeFlags: ts.NodeFlags,
-        syntaxKinds: ts.SyntaxKind
     });
 }
 
@@ -523,6 +626,14 @@ function handlePrepareFilesCommand(command: PrepareFilesCommand) {
     });
 }
 
+function handleGetMetadataCommand(command: GetMetadataCommand) {
+    console.log(JSON.stringify({
+        type: "metadata",
+        syntaxKinds: ts.SyntaxKind,
+        nodeFlags: ts.NodeFlags,
+    }));
+}
+
 function reset() {
     state = new State();
     state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
@@ -582,6 +693,9 @@ function runReadLineInterface() {
             break;
         case "reset":
             handleResetCommand(req);
+            break;
+        case "get-metadata":
+            handleGetMetadataCommand(req);
             break;
         case "quit":
             rl.close();
