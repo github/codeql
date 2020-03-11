@@ -1167,7 +1167,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					meth := underlyingInterface.Method(i)
 					methlbl, exists := tw.Labeler.MethodID(meth, underlyingInterfaceLabel)
 					if !exists {
-						log.Printf("No label for method %s of type %s yet.", meth.Name(), tp.Obj().Name())
+						extractObject(tw, meth, methlbl)
 					}
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
