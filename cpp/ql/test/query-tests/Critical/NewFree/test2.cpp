@@ -27,7 +27,7 @@ public:
 
 		int *ptr_d = (int *)malloc(sizeof(int));
 		d = new(ptr_d) int;
-		free(d); // GOOD [FALSE POSITIVE]
+		free(d); // GOOD
 	}
 
 	int *c, *d;
