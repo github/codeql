@@ -1,6 +1,8 @@
 Find the thief
 ==============
 
+Take on the role of a detective to find the thief in this fictional village. You will learn how to use logical connectives, quantifiers, and aggregates in QL along the way.
+
 Introduction
 ------------
 
