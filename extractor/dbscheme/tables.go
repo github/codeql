@@ -558,7 +558,7 @@ var BasicTypes = map[gotypes.BasicKind]*BranchType{
 	gotypes.Uint16:         TypeKind.NewBranch("@uint16type", UnsignedIntegerType),
 	gotypes.Uint32:         TypeKind.NewBranch("@uint32type", UnsignedIntegerType),
 	gotypes.Uint64:         TypeKind.NewBranch("@uint64type", UnsignedIntegerType),
-	gotypes.Uintptr:        TypeKind.NewBranch("@uintptrtype", BasicType),
+	gotypes.Uintptr:        TypeKind.NewBranch("@uintptrtype", UnsignedIntegerType),
 	gotypes.Float32:        TypeKind.NewBranch("@float32type", FloatType),
 	gotypes.Float64:        TypeKind.NewBranch("@float64type", FloatType),
 	gotypes.Complex64:      TypeKind.NewBranch("@complex64type", ComplexType),
