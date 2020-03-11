@@ -1,5 +1,10 @@
-Defining 'select' statements
-============================
+Defining the results of a query
+===============================
+
+You can control how analysis results are displayed in source code by modifying a query's ``select`` statement.
+
+About query results
+-------------------
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
 When you write your own queries in the query console or in the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ there are no constraints on what can be selected.

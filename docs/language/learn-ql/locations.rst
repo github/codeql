@@ -3,6 +3,9 @@ Locations and strings for QL entities
 
 .. Not sure how much of this topic needs to change, and what the title should be
 
+CodeQL includes mechanisms for extracting the location of elements in a codebase. Use these mechanisms when writing custom CodeQL queries and libraries to help display information to users.
+
+
 Providing locations
 -------------------
 

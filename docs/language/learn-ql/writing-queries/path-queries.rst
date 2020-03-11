@@ -1,5 +1,7 @@
-Constructing path queries
-#########################
+Creating path queries
+#####################
+
+You can create path queries to visualize the flow of information through a codebase.
 
 Overview
 ========

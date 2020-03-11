@@ -1,14 +1,17 @@
-Introduction to query files
-###########################
+About CodeQL queries
+####################
+
+CodeQL queries are used to analyze code for issues related to security, correctness, maintainability, and readability. 
 
 Overview
 ********
 
-Queries are programs written with CodeQL. They are designed to highlight issues related to the security, correctness, maintainability, and readability of a code base. You can also write custom queries to find specific issues relevant to your own project. Three important types of query are:
+CodeQL includes queries to find the relevant and interesting problems for a each supported language. You can also write custom queries to find specific issues relevant to your own project.
+
+The important types of query are:
 
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
-- **Metric queries**: queries that compute statistics for your code.
 
 You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__.
 
@@ -78,7 +81,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 - C/C++: ``cpp``
 - C#: ``csharp``
-- COBOL: ``cobol``
+- Go: ``go``
 - Java: ``java``
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
@@ -87,11 +90,10 @@ There are also libraries containing commonly used predicates, types, and other m
 
 You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
-
 Optional CodeQL classes and predicates
 --------------------------------------
 
-You can customize your analysis by defining your own predicates and classes in the query. See `Defining a predicate <https://help.semmle.com/QL/ql-handbook/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__ for further details. 
+You can customize your analysis by defining your own predicates and classes in the query. For further information, see `Defining a predicate <https://help.semmle.com/QL/ql-handbook/predicates.html#defining-a-predicate>`__ and `Defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__. 
 
 From clause
 ===========

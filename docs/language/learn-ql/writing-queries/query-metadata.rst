@@ -1,5 +1,10 @@
-Query metadata
-==============
+Metadata for CodeQL queries
+===========================
+
+Metadata is used to tell users important information about CodeQL queries. You must include the correct query metadata in a query to be able to view query results in source code.
+
+About query metadata
+--------------------
 
 Any query that is run as part of an analysis includes a number of properties, known as query metadata. Metadata is included at the top of each query file as the content of a `QLDoc <https://help.semmle.com/QL/ql-spec/qldoc.html>`__ comment. 
 For alerts and path queries, this metadata tells LGTM and the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ how to handle the query and display its results correctly. 
