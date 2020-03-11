@@ -147,6 +147,6 @@ You have found the two fire starters! They are arrested and the villagers are on
 What next?
 ----------
 
--  Find out who will be the new ruler of the village in the :doc:`next tutorial <heir>`.
+-  Find out who will be the new ruler of the village in the :doc:`next tutorial <crown-the-rightful-heir>`.
 -  Learn more about predicates and classes in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Explore the libraries that help you get data about code in :doc:`Learning CodeQL <../../index>`.

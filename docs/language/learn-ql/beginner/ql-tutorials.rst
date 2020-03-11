@@ -18,7 +18,7 @@ Currently the following detective tutorials are available:
 
 -  :doc:`Find the thief <find-the-thief>`—a three part mystery that introduces logical connectives, quantifiers, and aggregates
 -  :doc:`Catch the fire starter <catch-the-fire-starter>`—an intriguing search that introduces predicates and classes
--  :doc:`Crown the rightful heir <heir>`—a detective puzzle that introduces recursion
+-  :doc:`Crown the rightful heir <crown-the-rightful-heir>`—a detective puzzle that introduces recursion
 
 Further resources
 -----------------
