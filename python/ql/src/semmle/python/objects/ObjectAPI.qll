@@ -456,6 +456,45 @@ class ClassValue extends Value {
         or
         this.hasAttribute("__getitem__")
     }
+    
+    /** Holds if this class is a container(). That is, does it have a __getitem__ method.*/
+    predicate isContainer() {
+        exists(this.lookup("__getitem__"))
+    }
+    
+    /** Holds if this class is probably a sequence. */
+    predicate isSequence() {
+        /* To determine whether something is a sequence or a mapping is not entirely clear,
+         * so we need to guess a bit.
+         */
+        this.getASuperType() = ClassValue::tuple()
+        or
+        this.getASuperType() = ClassValue::list()
+        or
+        this.getASuperType() = ClassValue::range()
+        or
+        this.getASuperType() = ClassValue::bytes()
+        or
+        this.getASuperType() = ClassValue::unicode()
+        or
+        major_version() = 2 and this.getASuperType() = Value::named("collections.Sequence")
+        or
+        major_version() = 3 and this.getASuperType() = Value::named("collections.abc.Sequence")
+        or
+        /* Does it have an index or __reversed__ method? */
+        this.isContainer() and
+        (
+            this.hasAttribute("index") or
+            this.hasAttribute("__reversed__")
+        )
+    }
+    
+    /** Holds if this class is a mapping. */
+    predicate isMapping() {
+        this.hasAttribute("__getitem__")
+        and
+        not this.isSequence()
+    }
 
     /** Holds if this class is a descriptor. */
     predicate isDescriptorType() {
@@ -859,7 +898,7 @@ module ClassValue {
     ClassValue complex() {
         result = TBuiltinClassObject(Builtin::special("complex"))
     }
-
+    
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
     ClassValue bytes() {
         result = TBuiltinClassObject(Builtin::special("bytes"))
