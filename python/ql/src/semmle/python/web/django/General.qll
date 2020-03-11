@@ -6,7 +6,11 @@ import semmle.python.web.Http
 // a FunctionValue, so we can't use `FunctionValue.getArgumentForCall`
 // https://github.com/django/django/blob/master/django/urls/conf.py#L76
 abstract class DjangoRoute extends CallNode {
-    abstract FunctionValue getViewFunction();
+    FunctionValue getViewFunction() {
+        result = this.getArg(1).pointsTo()
+        or
+        result = this.getArgByName("view").pointsTo()
+    }
 
     abstract string getANamedArgument();
 
@@ -25,14 +29,12 @@ class DjangoRouteRegex extends RegexString {
 
 class DjangoRegexRoute extends DjangoRoute {
     ControlFlowNode route;
-    FunctionValue view;
 
     DjangoRegexRoute() {
         exists(FunctionValue route_maker |
-            // Django 1.x
+            // Django 1.x: https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
             Value::named("django.conf.urls.url") = route_maker and
-            route_maker.getArgumentForCall(this, 0) = route and
-            route_maker.getArgumentForCall(this, 1).pointsTo(view)
+            route_maker.getArgumentForCall(this, 0) = route
         )
         or
         // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#re-path
@@ -41,15 +43,8 @@ class DjangoRegexRoute extends DjangoRoute {
             route = this.getArg(0)
             or
             route = this.getArgByName("route")
-        ) and
-        (
-            this.getArg(1).pointsTo(view)
-            or
-            this.getArgByName("view").pointsTo(view)
         )
     }
-
-    override FunctionValue getViewFunction() { result = view }
 
     ControlFlowNode getRouteArg() { result = route }
 
@@ -69,7 +64,6 @@ class DjangoRegexRoute extends DjangoRoute {
 
 class DjangoPathRoute extends DjangoRoute {
     ControlFlowNode route;
-    FunctionValue view;
 
     DjangoPathRoute() {
         // Django 2.x and 3.x: https://docs.djangoproject.com/en/3.0/ref/urls/#path
@@ -78,15 +72,8 @@ class DjangoPathRoute extends DjangoRoute {
             route = this.getArg(0)
             or
             route = this.getArgByName("route")
-        ) and
-        (
-            this.getArg(1).pointsTo(view)
-            or
-            this.getArgByName("view").pointsTo(view)
         )
     }
-
-    override FunctionValue getViewFunction() { result = view }
 
     override string getANamedArgument() {
         // regexp taken from django:
