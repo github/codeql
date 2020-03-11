@@ -264,7 +264,8 @@ private class JQueryAjaxCall extends ClientRequest::Range {
   JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
 
   override DataFlow::Node getUrl() {
-    result = getArgument(0) and not exists(getOptionArgument(0, _)) or
+    result = getArgument(0) and not exists(getOptionArgument(0, _))
+    or
     result = getOptionArgument([0 .. 1], "url")
   }
 
@@ -295,8 +296,8 @@ private class JQueryAjaxCall extends ClientRequest::Range {
  * A model of a URL request made using a `jQuery.ajax` shorthand.
  * E.g. `jQuery.getJSON`, `jQuery.post` etc.
  * See: https://api.jquery.com/category/ajax/shorthand-methods/.
- * 
- * The method signatures: 
+ *
+ * The method signatures:
  * jQuery.get( url [, data ] [, success ] [, dataType ] )
  * jQuery.getJSON( url [, data ] [, success ] )
  * jQuery.getScript( url [, success ] )
@@ -347,9 +348,7 @@ private class JQueryAjaxShortHand extends ClientRequest::Range {
     ) and
     promise = false and
     // one of the two last arguments
-    result =
-      getCallback([getNumArgument() - 2 .. getNumArgument() - 1])
-          .getParameter(0)
+    result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
   }
 }
 
