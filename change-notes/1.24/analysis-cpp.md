@@ -27,10 +27,10 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
-* The data-flow library has been improved when flow through functions needs to be
-  combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves some security queries, which may
-  report additional results.
+* The data-flow library has been improved, which affects and improves some security queries. The improvements are:
+  - Track flow through functions that combine taint tracking with flow through fields.
+  - Track flow through clone-like functions, that is, functions that read contents of a field from a
+    parameter and stores the value in the field of a returned object.
 * Created the `semmle.code.cpp.models.interfaces.Allocation` library to model allocation such as `new` expressions and calls to `malloc`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
 * Created the `semmle.code.cpp.models.interfaces.Deallocation` library to model deallocation such as `delete` expressions and calls to `free`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
 * The new class `StackVariable` should be used in place of `LocalScopeVariable`
@@ -46,3 +46,5 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
   the following improvements:
   * The library now models data flow through `strdup` and similar functions.
   * The library now models data flow through formatting functions such as `sprintf`.
+* The security pack taint tracking library (`semmle.code.cpp.security.TaintTracking`) uses a new intermediate representation. This provides a more precise analysis of pointers to stack variables and flow through parameters, improving the results of many security queries.
+* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering`) uses a new intermediate representation to provide a more precise analysis of heap allocated memory and pointers to stack variables.

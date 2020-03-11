@@ -266,7 +266,8 @@ predicate similarLines(File f, int line) {
 }
 
 private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(SimilarBlock b, int toSum |
+  lines =
+    strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -278,7 +279,8 @@ pragma[noopt]
 private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             similarLinesPerEquivalenceClass(equivClass, num, f) and
             similarLinesPerEquivalenceClass(equivClass, num, otherFile) and
@@ -301,7 +303,8 @@ predicate duplicateLines(File f, int line) {
 }
 
 private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(DuplicateBlock b, int toSum |
+  lines =
+    strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -313,7 +316,8 @@ pragma[noopt]
 private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             duplicateLinesPerEquivalenceClass(equivClass, num, f) and
             duplicateLinesPerEquivalenceClass(equivClass, num, otherFile) and

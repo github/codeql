@@ -1,11 +1,12 @@
 import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.Exceptions
 
 
 class SimpleSource extends TaintSource {
 
-    SimpleSource() { this.(NameNode).getId() = "TAINTED" }
+    SimpleSource() { this.(NameNode).getId() = "TAINTED_STRING" }
 
     override predicate isSourceOf(TaintKind kind) {
         kind instanceof ExternalStringKind
@@ -46,3 +47,16 @@ class DictSource extends TaintSource {
 }
 
 
+class ExceptionInfoSource extends TaintSource {
+
+    ExceptionInfoSource() { this.(NameNode).getId() = "TAINTED_EXCEPTION_INFO" }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof ExceptionInfo
+    }
+
+    override string toString() {
+        result = "Exception info source"
+    }
+
+}

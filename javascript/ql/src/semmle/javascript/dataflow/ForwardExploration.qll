@@ -16,9 +16,7 @@ import javascript
 private class ForwardExploringConfiguration extends DataFlow::Configuration {
   DataFlow::Configuration cfg;
 
-  ForwardExploringConfiguration() {
-    this = cfg
-  }
+  ForwardExploringConfiguration() { this = cfg }
 
   override predicate isSink(DataFlow::Node node) { any() }
 

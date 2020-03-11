@@ -26,7 +26,7 @@ private predicate hasResultMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if type.getByteSize() > 0
+    if exists(type.getByteSize())
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -43,7 +43,7 @@ private predicate hasOperandMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if type.getByteSize() > 0
+    if exists(type.getByteSize())
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -68,8 +68,12 @@ private newtype TMemoryLocation =
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TEntireAllocationMemoryLocation(IndirectParameterAllocation var, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
+  TEntireAllocationMemoryLocation(Allocation var, boolean isMayAccess) {
+    (
+      var instanceof IndirectParameterAllocation or
+      var instanceof DynamicAllocation
+    ) and
+    (isMayAccess = false or isMayAccess = true)
   } or
   TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
     isMayAccess = false or isMayAccess = true

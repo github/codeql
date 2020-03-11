@@ -753,9 +753,8 @@ class DefinitionNode extends ControlFlowNode {
         or
         augstore(_, this)
         or
-        exists(Assign a | a.getATarget().(Tuple).getAnElt().getAFlowNode() = this)
-        or
-        exists(Assign a | a.getATarget().(List).getAnElt().getAFlowNode() = this)
+        // `x, y = 1, 2` where LHS is a combination of list or tuples
+        exists(Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
         or
         exists(For for | for.getTarget().getAFlowNode() = this)
     }
@@ -766,6 +765,18 @@ class DefinitionNode extends ControlFlowNode {
         and
         (result.getBasicBlock().dominates(this.getBasicBlock()) or result.isImport())
     }
+}
+
+private Expr list_or_tuple_nested_element(Expr list_or_tuple) {
+    exists(Expr elt |
+        elt = list_or_tuple.(Tuple).getAnElt()
+        or
+        elt = list_or_tuple.(List).getAnElt()
+    |
+        result = elt
+        or
+        result = list_or_tuple_nested_element(elt)
+    )
 }
 
 /** A control flow node corresponding to a deletion statement, such as `del x`.
@@ -887,16 +898,40 @@ private AstNode assigned_value(Expr lhs) {
     /* lhs += x  =>  result = (lhs + x) */
     exists(AugAssign a, BinaryExpr b | b = a.getOperation() and result = b and lhs = b.getLeft())
     or
-    /* ..., lhs, ... = ..., result, ... */
-    exists(Assign a, Tuple target, Tuple values, int index |
-        a.getATarget() = target and
-        a.getValue() = values and
-        lhs = target.getElt(index) and
-        result = values.getElt(index)
-    )
+    /* ..., lhs, ... = ..., result, ...
+     * or
+     * ..., (..., lhs, ...), ... = ..., (..., result, ...), ...
+    */
+    exists(Assign a | nested_sequence_assign(a.getATarget(), a.getValue(), lhs, result))
     or
     /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
     result.(For).getTarget() = lhs
+}
+
+predicate nested_sequence_assign(Expr left_parent, Expr right_parent,
+        Expr left_result, Expr right_result) {
+    exists(Assign a |
+        a.getATarget().getASubExpression*() = left_parent and
+        a.getValue().getASubExpression*() = right_parent
+    ) and
+    exists(int i, Expr left_elem, Expr right_elem
+    |
+        (
+            left_elem = left_parent.(Tuple).getElt(i)
+            or
+            left_elem = left_parent.(List).getElt(i)
+        )
+        and
+        (
+            right_elem = right_parent.(Tuple).getElt(i)
+            or
+            right_elem = right_parent.(List).getElt(i)
+        )
+    |
+        left_result = left_elem and right_result = right_elem
+        or
+        nested_sequence_assign(left_elem, right_elem, left_result, right_result)
+    )
 }
 
 /** A flow node for a `for` statement. */
@@ -1035,6 +1070,17 @@ class NameConstantNode extends NameNode {
      * a serious performance impact.
     deprecated predicate uses(Variable v) { none() }
     */
+}
+
+/** A control flow node correspoinding to a starred expression, `*a`. */
+class StarredNode extends ControlFlowNode {
+    StarredNode() {
+        toAst(this) instanceof Starred
+    }
+
+    ControlFlowNode getValue() {
+        toAst(result) = toAst(this).(Starred).getValue()
+    }
 }
 
 private module Scopes {

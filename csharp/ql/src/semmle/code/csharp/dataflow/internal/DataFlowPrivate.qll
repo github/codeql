@@ -3,7 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
@@ -380,7 +380,9 @@ private module Cached {
         a = cfn.getElement() and
         t = a.stripCasts().getType()
       |
-        t instanceof RefType or
+        t instanceof RefType and
+        not t instanceof NullType
+        or
         t = any(TypeParameter tp | not tp.isValueType())
       )
       or
@@ -1495,3 +1497,5 @@ private predicate viableConstantBooleanParamArg(
     b = arg.getBooleanValue()
   )
 }
+
+int accessPathLimit() { result = 3 }
