@@ -183,6 +183,20 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 	}
 }
 
+// extractMethod extracts a method `meth` and emits it to the objects table, then returns its label
+func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
+	// get the receiver type of the method
+	recvtyp := meth.Type().(*types.Signature).Recv().Type()
+	recvlbl := extractType(tw, recvtyp) // ensure receiver type has been extracted
+	// if the method label does not exist, extract it
+	methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
+	if !exists {
+		extractObject(tw, meth, methlbl)
+	}
+
+	return methlbl
+}
+
 // extractObject extracts a single object and emits it to the objects table.
 func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	name := obj.Name()
@@ -1093,15 +1107,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < tp.NumMethods(); i++ {
 				meth := tp.Method(i)
 
-				// get the receiver type of component methods; for interfaces
-				// this can be different from the type used to get the method
-				recvTyp := meth.Type().(*types.Signature).Recv().Type()
-				recvlbl := extractType(tw, recvTyp) // ensure receiver type has a label
-				// ensure the method is associated with a label
-				methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
-				if !exists {
-					extractObject(tw, meth, methlbl)
-				}
+				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
 			}
@@ -1151,24 +1157,14 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// ensure all methods have labels
 			for i := 0; i < tp.NumMethods(); i++ {
 				meth := tp.Method(i)
-				recv := meth.Type().(*types.Signature).Recv()
-				typ := recv.Type()
-				recvTypeLbl := extractType(tw, typ) // ensure receiver type has a label
-				methlbl, exists := tw.Labeler.MethodID(meth, recvTypeLbl)
-				if !exists {
-					extractObject(tw, meth, methlbl)
-				}
+
+				extractMethod(tw, meth)
 			}
 
 			// associate all methods of underlying interface with this type
 			if underlyingInterface, ok := underlying.(*types.Interface); ok {
-				underlyingInterfaceLabel, _ := getTypeLabel(tw, underlyingInterface)
 				for i := 0; i < underlyingInterface.NumMethods(); i++ {
-					meth := underlyingInterface.Method(i)
-					methlbl, exists := tw.Labeler.MethodID(meth, underlyingInterfaceLabel)
-					if !exists {
-						extractObject(tw, meth, methlbl)
-					}
+					methlbl := extractMethod(tw, underlyingInterface.Method(i))
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
 			}
