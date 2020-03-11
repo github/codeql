@@ -55,6 +55,44 @@ module Consistency {
     )
   }
 
+  query predicate uniqueNodeLocation(Node n, string msg) {
+    exists(int c |
+      c =
+        count(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+          n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        ) and
+      c != 1 and
+      msg = "Node should have one location but has " + c + "."
+    )
+  }
+
+  query predicate missingLocation(string msg) {
+    exists(int c |
+      c =
+        strictcount(Node n |
+          not exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+            n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+          )
+        ) and
+      msg = "Nodes without location: " + c
+    )
+  }
+
+  query predicate uniqueNodeToString(Node n, string msg) {
+    exists(int c |
+      c = count(n.toString()) and
+      c != 1 and
+      msg = "Node should have one toString but has " + c + "."
+    )
+  }
+
+  query predicate missingToString(string msg) {
+    exists(int c |
+      c = strictcount(Node n | not exists(n.toString())) and
+      msg = "Nodes without toString: " + c
+    )
+  }
+
   query predicate parameterCallable(ParameterNode p, string msg) {
     exists(DataFlowCallable c | p.isParameterOf(c, _) and c != p.getEnclosingCallable()) and
     msg = "Callable mismatch for parameter."
