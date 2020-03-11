@@ -1,7 +1,10 @@
-River crossing puzzle
-#####################
+Cross the river
+===============
 
-The aim of this tutorial is to write a query that finds a solution to the following classical logic puzzle:
+Use common QL features to write a query that finds a solution to the "River crossing" logic puzzle.
+
+Introduction
+------------
 
 .. pull-quote::
 

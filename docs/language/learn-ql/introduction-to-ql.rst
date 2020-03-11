@@ -163,6 +163,6 @@ Java
 Learning CodeQL
 ---------------
 
--  To find out more about how to write your own queries, try working through the :doc:`QL detective tutorials <beginner/ql-tutorials>`.
+-  To find out more about how to write your own queries, try working through the :doc:`QL tutorials <beginner/ql-tutorials>`.
 -  For an overview of the other available resources, see :doc:`Learning CodeQL <../index>`.
 -  For a more technical description of the underlying language, see :doc:`About QL <about-ql>`.
