@@ -354,7 +354,7 @@ private predicate barrierGuardBlocksExpr(
 }
 
 /**
- * Holds if `guard` blocks the flow of a value reachable through exploratory flow.
+ * Holds if `guard` may block the flow of a value reachable through exploratory flow.
  */
 pragma[noinline]
 private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
