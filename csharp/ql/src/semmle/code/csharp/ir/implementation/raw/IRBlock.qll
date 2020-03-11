@@ -27,7 +27,7 @@ class IRBlockBase extends TIRBlock {
    * by debugging and printing code only.
    */
   int getDisplayIndex() {
-    exists(IRConfiguration config |
+    exists(IRConfiguration::IRConfiguration config |
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
     this =
