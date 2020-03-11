@@ -1,13 +1,10 @@
-Tutorial: Expressions, types and statements
-===========================================
+Expressions, types, and statements in C and C++
+===============================================
 
-Overview
---------
+You can use CodeQL to explore expressions, types, and statements in C and C++ code to find, for example, incorrect assignments.
 
-This topic contains worked examples of how to write queries using the standard CodeQL library classes for C/C++ expressions, types, and statements.
-
-Expressions and types
----------------------
+Expressions and types in CodeQL
+-------------------------------
 
 Each part of an expression in C becomes an instance of the ``Expr`` class. For example, the C code ``x = x + 1`` becomes an ``AssignExpr``, an ``AddExpr``, two instances of ``VariableAccess`` and a ``Literal``. All of these CodeQL classes extend ``Expr``.
 
@@ -34,7 +31,7 @@ It is also worth noting that the query above would find this C code:
 
    yPtr = NULL;
 
-This is because the database contains a representation of the code base after the preprocessor transforms have run (for more information, see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__). This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the database. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers.
+This is because the database contains a representation of the code base after the preprocessor transforms have run. This means that any macro invocations, such as the ``NULL`` define used here, are expanded during the creation of the database. If you want to write queries about macros then there are some special library classes that have been designed specifically for this purpose (for example, the ``Macro``, ``MacroInvocation`` classes and predicates like ``Element.isInMacroExpansion()``). In this case, it is good that macros are expanded, but we do not want to find assignments to pointers. For more information, see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ on LGTM.com.
 
 Finding assignments of 0 to an integer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,8 +58,8 @@ This checks that the left side of the assignment has a type that is some kind of
 
    i = 0;
 
-Statements
-----------
+Statements in CodeQL
+--------------------
 
 We can refine the query further using statements. In this case we use the class ``ForStmt``:
 
@@ -136,6 +133,6 @@ What next?
 ----------
 
 -  Explore other ways of finding types and statements using examples from the C/C++ cookbook for `types <https://help.semmle.com/wiki/label/CBCPP/type>`__ and `statements <https://help.semmle.com/wiki/label/CBCPP/statement>`__.
--  Take a look at the :doc:`Conversions and classes <conversions-classes>` and :doc:`Analyzing data flow in C/C++ <dataflow>` tutorials.
+-  Take a look at the :doc:`Conversions and classes in C and C++ <conversions-classes>` and :doc:`Analyzing data flow in C and C++ <dataflow>` tutorials.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

@@ -1,13 +1,12 @@
-Analyzing data flow in C/C++
-============================
+Analyzing data flow in C and C++
+================================
 
-Overview
---------
+You can use data-flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
-This topic describes how data flow analysis is implemented in the CodeQL libraries for C/C++ and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
+About data flow
+---------------
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For more background information, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -299,7 +298,7 @@ Exercise 4: Using the answers from 2 and 3, write a query which finds all global
 What next?
 ----------
 
--  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>` and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
+-  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>` and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
 

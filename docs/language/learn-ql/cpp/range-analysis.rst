@@ -1,10 +1,10 @@
 Using range analysis for C and C++
 ==================================
 
-Overview
---------
+You can use range analysis to determine the upper or lower bounds on an expression, or whether an expression could potentially over or underflow.
 
-Range analysis determines upper and lower bounds for an expression.
+About the range analysis library
+--------------------------------
 
 The range analysis library (defined in ``semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis``) provides a set of predicates for determining constant upper and lower bounds on expressions, as well as recognizing integer overflows. For performance, the library performs automatic widening and therefore may not provide the tightest possible bounds.
 

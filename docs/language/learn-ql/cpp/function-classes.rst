@@ -1,10 +1,12 @@
-Tutorial: Function classes
-==========================
+Functions in C and C++
+=======================
+
+You can use CodeQL to explore functions in C and C++ code.
 
 Overview
 --------
 
-The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`).
+The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`).
 
 The example queries in this topic explore some of the most useful library predicates for querying functions.
 
@@ -26,7 +28,7 @@ This query is very general, so there are probably too many results to be interes
 Finding functions that are not called
 -------------------------------------
 
-It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
+It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
 
 .. code-block:: ql
 
@@ -91,6 +93,6 @@ What next?
 ----------
 
 -  Explore other ways of finding functions using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/function>`__.
--  Take a look at some of the other tutorials: :doc:`Expressions, types and statements <expressions-types>`, :doc:`Conversions and classes <conversions-classes>`, and :doc:`Analyzing data flow in C/C++ <dataflow>`.
+-  Take a look at some other tutorials: :doc:`Expressions, types and statements in C and C++ <introduce-libraries-cpp>`, :doc:`Conversions and classes in C and C++ <conversions-classes>`, and :doc:`Analyzing data flow in C and C++ <dataflow>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
