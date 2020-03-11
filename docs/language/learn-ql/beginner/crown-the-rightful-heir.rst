@@ -1,7 +1,7 @@
 Crown the rightful heir
 =======================
 
-This is QL detective puzzle that shows you how to use recursion in QL to write more complex queries.
+This is a QL detective puzzle that shows you how to use recursion in QL to write more complex queries.
 
 King Basil's heir
 -----------------
