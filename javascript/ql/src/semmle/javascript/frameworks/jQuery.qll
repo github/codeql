@@ -296,9 +296,9 @@ private class JQueryAjaxCall extends ClientRequest::Range {
   }
 }
 
-/** 
- * Gets the response data node from a call to a jqXHR Object. 
- */ 
+/**
+ * Gets the response data node from a call to a jqXHR Object.
+ */
 DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
   result =
     request.getAMemberCall(any(string s | s = "done" or s = "then")).getCallback(0).getParameter(0)
