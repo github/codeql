@@ -1095,7 +1095,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 
 				// get the receiver type of component methods; for interfaces
 				// this can be different from the type used to get the method
-				recvTyp := tp.Method(i).Type().(*types.Signature).Recv().Type()
+				recvTyp := meth.Type().(*types.Signature).Recv().Type()
 				recvlbl := extractType(tw, recvTyp) // ensure receiver type has a label
 				// ensure the method is associated with a label
 				methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
@@ -1154,7 +1154,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				recv := meth.Type().(*types.Signature).Recv()
 				typ := recv.Type()
 				recvTypeLbl := extractType(tw, typ) // ensure receiver type has a label
-				methlbl, exists := tw.Labeler.MethodID(tp.Method(i), recvTypeLbl)
+				methlbl, exists := tw.Labeler.MethodID(meth, recvTypeLbl)
 				if !exists {
 					extractObject(tw, meth, methlbl)
 				}
@@ -1165,7 +1165,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				underlyingInterfaceLabel, _ := getTypeLabel(tw, underlyingInterface)
 				for i := 0; i < underlyingInterface.NumMethods(); i++ {
 					meth := underlyingInterface.Method(i)
-					methlbl, exists := tw.Labeler.MethodID(underlyingInterface.Method(i), underlyingInterfaceLabel)
+					methlbl, exists := tw.Labeler.MethodID(meth, underlyingInterfaceLabel)
 					if !exists {
 						log.Printf("No label for method %s of type %s yet.", meth.Name(), tp.Obj().Name())
 					}
