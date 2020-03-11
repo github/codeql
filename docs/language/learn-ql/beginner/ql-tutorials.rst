@@ -7,8 +7,8 @@ Before starting these tutorials, you can read the :doc:`Introduction to QL <../i
 
 .. toctree::
    :glob:
-   :hidden:
 
    find-the-thief
    catch-the-fire-starter
    crown-the-rightful-heir
+   cross-the-river
