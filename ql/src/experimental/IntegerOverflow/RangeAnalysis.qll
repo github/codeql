@@ -1,52 +1,40 @@
 import go
 
-//Builtin function `len`
-class LenFunction extends BuiltinFunction {
-  LenFunction() { this.getName().matches("len") }
-}
-
 Expr getAUse(SsaDefinition def) {
   result = def.getVariable().getAUse().(IR::EvalInstruction).getExpr()
 }
-/*
- *  calculate the upper bound of an expression
+
+/**
+ * Gets the upper bound of expression `expr`.
  */
+float getUpperBound(Expr expr) { result = max(getAnUpperBound(expr)) }
 
-float upperBound(Expr expr) { result = max(getUpperBounds(expr)) }
-
-/*
- *  calculate the lower bound of an expression
+/**
+ * Gets the lower bound of expression `expr`.
  */
+float getLowerBound(Expr expr) { result = min(getALowerBound(expr)) }
 
-float lowerBound(Expr expr) { result = min(getLowerBounds(expr)) }
-
-/*
- *  calculate the upper bound of an SSA definition
+/**
+ * Gets the upper bound of SSA definition `def`.
  */
+float getSsaUpperBound(SsaDefinition def) { result = max(getAnSsaUpperBound(def)) }
 
-float defUpperBound(SsaDefinition def) { result = max(getDefUpperBounds(def)) }
-
-/*
- *  calculate the lower bound of an SSA definition
+/**
+ * Gets the lower bound of SSA definition `def`.
  */
+float getSsaLowerBound(SsaDefinition def) { result = min(getAnSsaLowerBound(def)) }
 
-float defLowerBound(SsaDefinition def) { result = min(getDefLowerBounds(def)) }
-
-/*
- *  calculate all possible upper bounds of an expression
+/**
+ * Gets a possible upper bound of expression `expr`.
  */
-
-float getUpperBounds(Expr expr) {
+float getAnUpperBound(Expr expr) {
   if expr.isConst()
-  then
-    result = expr.getFloatValue() or
-    result = expr.getIntValue() or
-    result = expr.getExactValue().toFloat()
+  then result = expr.getNumericValue()
   else (
     //if an expression with parenthesis, strip the parenthesis first
     exists(ParenExpr paren |
       paren = expr and
-      result = getUpperBounds(paren.stripParens())
+      result = getAnUpperBound(paren.stripParens())
     )
     or
     //if this expression is an identifier
@@ -83,27 +71,27 @@ float getUpperBounds(Expr expr) {
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
               e.getParent*() = greater.asExpr()
             ) and
-            result = getUpperBounds(greater.asExpr()) + bias
+            result = getAnUpperBound(greater.asExpr()) + bias
           )
         else
-          //If not, find the coresponding `SsaDefinition`, then call `getDefUpperBounds` on it.
-          result = getDefUpperBounds(v.getDefinition())
+          //If not, find the coresponding `SsaDefinition`, then call `getAnSsaUpperBound` on it.
+          result = getAnSsaUpperBound(v.getDefinition())
       )
     )
     or
     //if this expression is an add expression
     exists(AddExpr add, float lhsUB, float rhsUB |
       add = expr and
-      lhsUB = getUpperBounds(add.getLeftOperand()) and
-      rhsUB = getUpperBounds(add.getRightOperand()) and
+      lhsUB = getAnUpperBound(add.getLeftOperand()) and
+      rhsUB = getAnUpperBound(add.getRightOperand()) and
       result = addRoundingUp(lhsUB, rhsUB)
     )
     or
     //if this expression is an sub expression
     exists(SubExpr sub, float lhsUB, float rhsLB |
       sub = expr and
-      lhsUB = getUpperBounds(sub.getLeftOperand()) and
-      rhsLB = getLowerBounds(sub.getRightOperand()) and
+      lhsUB = getAnUpperBound(sub.getLeftOperand()) and
+      rhsLB = getALowerBound(sub.getRightOperand()) and
       result = addRoundingUp(lhsUB, -rhsLB)
     )
     or
@@ -112,10 +100,10 @@ float getUpperBounds(Expr expr) {
       result = 0
       or
       exists(float lhsUB, float rhsLB, float rhsUB |
-        lhsUB = getUpperBounds(rem.getLeftOperand()) and
+        lhsUB = getAnUpperBound(rem.getLeftOperand()) and
         lhsUB > 0 and
-        rhsLB = getLowerBounds(rem.getRightOperand()) and
-        rhsUB = getUpperBounds(rem.getRightOperand())
+        rhsLB = getALowerBound(rem.getRightOperand()) and
+        rhsUB = getAnUpperBound(rem.getRightOperand())
       |
         result = rhsLB.abs() or
         result = rhsUB.abs()
@@ -125,13 +113,13 @@ float getUpperBounds(Expr expr) {
     //if this expression is an unary plus expression
     exists(PlusExpr plus |
       plus = expr and
-      result = getUpperBounds(plus.getOperand())
+      result = getAnUpperBound(plus.getOperand())
     )
     or
     //if this expression is an unary minus expression
     exists(MinusExpr minus |
       minus = expr and
-      result = -getLowerBounds(minus.getOperand())
+      result = -getALowerBound(minus.getOperand())
     )
     or
     //if this expression is an multiply expression and one of the operator is a constant integer.
@@ -143,16 +131,16 @@ float getUpperBounds(Expr expr) {
         exists(float lhs |
           lhs = mul.getLeftOperand().getIntValue() and
           (
-            result = lhs * getUpperBounds(mul.getRightOperand()) or
-            result = lhs * getLowerBounds(mul.getRightOperand())
+            result = lhs * getAnUpperBound(mul.getRightOperand()) or
+            result = lhs * getALowerBound(mul.getRightOperand())
           )
         )
       else
         exists(float rhs |
           rhs = mul.getRightOperand().getIntValue() and
           (
-            result = rhs * getUpperBounds(mul.getLeftOperand()) or
-            result = rhs * getLowerBounds(mul.getLeftOperand())
+            result = rhs * getAnUpperBound(mul.getLeftOperand()) or
+            result = rhs * getALowerBound(mul.getLeftOperand())
           )
         )
     )
@@ -190,11 +178,10 @@ float getUpperBounds(Expr expr) {
   )
 }
 
-/*
- *  calculate all possible lower bounds of an expression
+/**
+ * Gets a possible lower bound of expression `expr`.
  */
-
-float getLowerBounds(Expr expr) {
+float getALowerBound(Expr expr) {
   if expr.isConst()
   then
     result = expr.getFloatValue() or
@@ -203,7 +190,7 @@ float getLowerBounds(Expr expr) {
   else (
     exists(ParenExpr paren |
       paren = expr and
-      result = getLowerBounds(paren.stripParens())
+      result = getALowerBound(paren.stripParens())
     )
     or
     //if this expression is an identifer
@@ -240,28 +227,28 @@ float getLowerBounds(Expr expr) {
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
               e.getParent*() = lesser.asExpr()
             ) and
-            lbs = getLowerBounds(lesser.asExpr()) and
+            lbs = getALowerBound(lesser.asExpr()) and
             result = lbs - bias
           )
         else
-          //find coresponding SSA definition and calls `getDefLowerBounds` on it.
-          result = getDefLowerBounds(v.getDefinition())
+          //find coresponding SSA definition and calls `getAnSsaLowerBound` on it.
+          result = getAnSsaLowerBound(v.getDefinition())
       )
     )
     or
     //add expr
     exists(AddExpr add, float lhsLB, float rhsLB |
       add = expr and
-      lhsLB = getLowerBounds(add.getLeftOperand()) and
-      rhsLB = getLowerBounds(add.getRightOperand()) and
+      lhsLB = getALowerBound(add.getLeftOperand()) and
+      rhsLB = getALowerBound(add.getRightOperand()) and
       result = addRoundingDown(lhsLB, rhsLB)
     )
     or
     //sub expr
     exists(SubExpr sub, float lhsLB, float rhsUB |
       sub = expr and
-      lhsLB = getLowerBounds(sub.getLeftOperand()) and
-      rhsUB = getUpperBounds(sub.getRightOperand()) and
+      lhsLB = getALowerBound(sub.getLeftOperand()) and
+      rhsUB = getAnUpperBound(sub.getRightOperand()) and
       result = addRoundingDown(lhsLB, -rhsUB)
     )
     or
@@ -270,10 +257,10 @@ float getLowerBounds(Expr expr) {
       result = 0
       or
       exists(float lhsLB, float rhsLB, float rhsUB |
-        lhsLB = getLowerBounds(rem.getLeftOperand()) and
+        lhsLB = getALowerBound(rem.getLeftOperand()) and
         lhsLB < 0 and
-        rhsLB = getLowerBounds(rem.getRightOperand()) and
-        rhsUB = getUpperBounds(rem.getRightOperand()) and
+        rhsLB = getALowerBound(rem.getRightOperand()) and
+        rhsUB = getAnUpperBound(rem.getRightOperand()) and
         (
           result = -rhsLB.abs() or
           result = -rhsUB.abs()
@@ -284,13 +271,13 @@ float getLowerBounds(Expr expr) {
     //unary plus expr
     exists(PlusExpr plus |
       plus = expr and
-      result = getLowerBounds(plus.getOperand())
+      result = getALowerBound(plus.getOperand())
     )
     or
     //unary minus expr
     exists(MinusExpr minus |
       minus = expr and
-      result = -getUpperBounds(minus.getOperand())
+      result = -getAnUpperBound(minus.getOperand())
     )
     or
     //multiply expression and one of the operator is an constant integer
@@ -302,16 +289,16 @@ float getLowerBounds(Expr expr) {
         exists(float lhs |
           lhs = mul.getLeftOperand().getIntValue() and
           (
-            result = lhs * getUpperBounds(mul.getRightOperand()) or
-            result = lhs * getLowerBounds(mul.getRightOperand())
+            result = lhs * getAnUpperBound(mul.getRightOperand()) or
+            result = lhs * getALowerBound(mul.getRightOperand())
           )
         )
       else
         exists(float rhs |
           rhs = mul.getRightOperand().getIntValue() and
           (
-            result = rhs * getUpperBounds(mul.getLeftOperand()) or
-            result = rhs * getLowerBounds(mul.getLeftOperand())
+            result = rhs * getAnUpperBound(mul.getLeftOperand()) or
+            result = rhs * getALowerBound(mul.getLeftOperand())
           )
         )
     )
@@ -332,7 +319,7 @@ float getLowerBounds(Expr expr) {
     //call expression when the function is builtin function `len`
     exists(CallExpr call |
       call = expr and
-      if call.getTarget() instanceof LenFunction
+      if call.getTarget() = Builtin::len()
       then result = 0
       else result = typeMinValue(call.getType())
     )
@@ -356,11 +343,10 @@ float getLowerBounds(Expr expr) {
   )
 }
 
-/*
- *  calculate all possible upper bounds of an SSA definition
+/**
+ * Gets a possible upper bound of SSA definition `def`.
  */
-
-float getDefUpperBounds(SsaDefinition def) {
+float getAnSsaUpperBound(SsaDefinition def) {
   if recursiveSelfDef(def)
   then none()
   else (
@@ -373,7 +359,7 @@ float getDefUpperBounds(SsaDefinition def) {
           exists(IR::AssignInstruction assignInstr, SimpleAssignStmt simpleAssign |
             assignInstr = explicitDef.getInstruction() and
             assignInstr.getRhs().(IR::EvalInstruction).getExpr() = simpleAssign.getRhs() and
-            result = getUpperBounds(simpleAssign.getRhs())
+            result = getAnUpperBound(simpleAssign.getRhs())
           )
           or
           //SSA definition coresponding to a ValueSpec(used in a variable declaration)
@@ -381,7 +367,7 @@ float getDefUpperBounds(SsaDefinition def) {
             declInstr = explicitDef.getInstruction() and
             declInstr = IR::initInstruction(vs, i) and
             init = vs.getInit(i) and
-            result = getUpperBounds(init)
+            result = getAnUpperBound(init)
           )
           or
           //SSA definition coresponding to an `AddAssignStmt` (x += y) or `SubAssignStmt` (x -= y)
@@ -392,15 +378,15 @@ float getDefUpperBounds(SsaDefinition def) {
             assignInstr = explicitDef.getInstruction() and
             getAUse(prevDef) = compoundAssign.getLhs() and
             assignInstr = IR::assignInstruction(compoundAssign, 0) and
-            prevBound = getDefUpperBounds(prevDef) and
+            prevBound = getAnSsaUpperBound(prevDef) and
             if compoundAssign instanceof AddAssignStmt
             then
-              delta = getUpperBounds(compoundAssign.getRhs()) and
+              delta = getAnUpperBound(compoundAssign.getRhs()) and
               result = addRoundingUp(prevBound, delta)
             else
               if compoundAssign instanceof SubAssignStmt
               then
-                delta = getLowerBounds(compoundAssign.getRhs()) and
+                delta = getALowerBound(compoundAssign.getRhs()) and
                 result = addRoundingUp(prevBound, -delta)
               else none()
           )
@@ -410,7 +396,7 @@ float getDefUpperBounds(SsaDefinition def) {
           then
             exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
               instr = explicitDef.getInstruction() and
-              exprLB = getUpperBounds(incOrDec.getOperand()) and
+              exprLB = getAnUpperBound(incOrDec.getOperand()) and
               instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
               (
                 //IncStmt(x++)
@@ -443,17 +429,16 @@ float getDefUpperBounds(SsaDefinition def) {
       then
         exists(SsaPhiNode phi |
           phi = def and
-          result = getDefUpperBounds(phi.getAnInput().getDefinition())
+          result = getAnSsaUpperBound(phi.getAnInput().getDefinition())
         )
       else none()
   )
 }
 
-/*
- *  calculate all possible lower bounds of an SSA definition
+/**
+ * Gets a possible lower bound of SSA definition `def`.
  */
-
-float getDefLowerBounds(SsaDefinition def) {
+float getAnSsaLowerBound(SsaDefinition def) {
   if recursiveSelfDef(def)
   then none()
   else (
@@ -466,7 +451,7 @@ float getDefLowerBounds(SsaDefinition def) {
           exists(IR::AssignInstruction assignInstr, SimpleAssignStmt simpleAssign |
             assignInstr = explicitDef.getInstruction() and
             assignInstr.getRhs().(IR::EvalInstruction).getExpr() = simpleAssign.getRhs() and
-            result = getLowerBounds(simpleAssign.getRhs())
+            result = getALowerBound(simpleAssign.getRhs())
           )
           or
           //ValueSpec
@@ -474,7 +459,7 @@ float getDefLowerBounds(SsaDefinition def) {
             declInstr = explicitDef.getInstruction() and
             declInstr = IR::initInstruction(vs, i) and
             init = vs.getInit(i) and
-            result = getLowerBounds(init)
+            result = getALowerBound(init)
           )
           or
           //AddAssignStmt(x += y)
@@ -485,15 +470,15 @@ float getDefLowerBounds(SsaDefinition def) {
             assignInstr = explicitDef.getInstruction() and
             getAUse(prevDef) = compoundAssign.getLhs() and
             assignInstr = IR::assignInstruction(compoundAssign, 0) and
-            prevBound = getDefLowerBounds(prevDef) and
+            prevBound = getAnSsaLowerBound(prevDef) and
             if compoundAssign instanceof AddAssignStmt
             then
-              delta = getLowerBounds(compoundAssign.getRhs()) and
+              delta = getALowerBound(compoundAssign.getRhs()) and
               result = addRoundingDown(prevBound, delta)
             else
               if compoundAssign instanceof SubAssignStmt
               then
-                delta = getUpperBounds(compoundAssign.getRhs()) and
+                delta = getAnUpperBound(compoundAssign.getRhs()) and
                 result = addRoundingDown(prevBound, -delta)
               else none()
           )
@@ -503,7 +488,7 @@ float getDefLowerBounds(SsaDefinition def) {
           then
             exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
               instr = explicitDef.getInstruction() and
-              exprLB = getLowerBounds(incOrDec.getOperand()) and
+              exprLB = getALowerBound(incOrDec.getOperand()) and
               instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
               (
                 //IncStmt(x++)
@@ -536,23 +521,23 @@ float getDefLowerBounds(SsaDefinition def) {
       then
         exists(SsaPhiNode phi |
           phi = def and
-          result = getDefLowerBounds(phi.getAnInput().getDefinition())
+          result = getAnSsaLowerBound(phi.getAnInput().getDefinition())
         )
       else none()
   )
 }
 
-/*
- *  decide if an SSA definition is depends on another SSA definition directively.
- *  The structure of this function needs to be same as `getDefLowerBounds`
+/**
+ * Checks if SSA definition `nextDef` depends on SSA definition `prevDef` directly.
+ *
+ * The structure of this function needs to be same as `getAnSsaLowerBound`
  */
-
-predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
+predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
   //SSA definition coresponding to a `SimpleAssignStmt`
   exists(SimpleAssignStmt simpleAssign, int i |
     nextDef.(SsaExplicitDefinition).getInstruction().(IR::AssignInstruction) =
       IR::assignInstruction(simpleAssign, i) and
-    defDependsOnExpr(prevDef, simpleAssign.getRhs())
+    ssaDependsOnExpr(prevDef, simpleAssign.getRhs())
   )
   or
   //SSA definition coresponding to a `ValueSpec`(used in variable declaration)
@@ -560,7 +545,7 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
     declInstr = nextDef.(SsaExplicitDefinition).getInstruction() and
     declInstr = IR::initInstruction(vs, i) and
     init = vs.getInit(i) and
-    defDependsOnExpr(prevDef, init)
+    ssaDependsOnExpr(prevDef, init)
   )
   or
   //SSA definition coresponding to a `AddAssignStmt` or `SubAssignStmt`
@@ -569,7 +554,7 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
     nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(compoundAssign, 0) and
     (
       getAUse(prevDef) = compoundAssign.getLhs() or
-      defDependsOnExpr(prevDef, compoundAssign.getRhs())
+      ssaDependsOnExpr(prevDef, compoundAssign.getRhs())
     )
   )
   or
@@ -582,7 +567,7 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
         .getRhs()
         .(IR::EvalIncDecRhsInstruction)
         .getStmt() = incDec and
-    defDependsOnExpr(prevDef, incDec.getOperand())
+    ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
   or
   //if `nextDef` coresponding to the init of a parameter, there is no coresponding `prevDef`
@@ -590,18 +575,19 @@ predicate defDependsOnDef(SsaDefinition nextDef, SsaDefinition prevDef) {
   exists(SsaPhiNode phi | nextDef = phi and phi.getAnInput().getDefinition() = prevDef)
 }
 
-/*
- *  decide if a SSA definition depends on an expr. The structure of this function needs to be same as `getUpperBounds`
+/**
+ * Checks if SSA definition `def` depends on the value of `expr`.
+ *
+ * The structure of this function needs to be same as `getAnUpperBound`
  */
-
-predicate defDependsOnExpr(SsaDefinition def, Expr expr) {
+predicate ssaDependsOnExpr(SsaDefinition def, Expr expr) {
   if expr.isConst()
   then none()
   else (
     //if an expression with parenthesis, strip the parenthesis
     exists(ParenExpr paren |
       paren = expr and
-      defDependsOnExpr(def, paren.stripParens())
+      ssaDependsOnExpr(def, paren.stripParens())
     )
     or
     exists(Ident ident |
@@ -609,145 +595,105 @@ predicate defDependsOnExpr(SsaDefinition def, Expr expr) {
       getAUse(def) = ident
     )
     or
-    exists(AddExpr add | add = expr and defDependsOnExpr(def, add.getAnOperand()))
+    exists(AddExpr add | add = expr and ssaDependsOnExpr(def, add.getAnOperand()))
     or
-    exists(SubExpr sub | sub = expr and defDependsOnExpr(def, sub.getAnOperand()))
+    exists(SubExpr sub | sub = expr and ssaDependsOnExpr(def, sub.getAnOperand()))
     or
-    exists(RemExpr rem | rem = expr and defDependsOnExpr(def, rem.getAnOperand()))
+    exists(RemExpr rem | rem = expr and ssaDependsOnExpr(def, rem.getAnOperand()))
     or
     exists(PlusExpr plus |
       plus = expr and
-      defDependsOnExpr(def, plus.getOperand())
+      ssaDependsOnExpr(def, plus.getOperand())
     )
     or
     exists(MinusExpr minus |
       minus = expr and
-      defDependsOnExpr(def, minus.getOperand())
+      ssaDependsOnExpr(def, minus.getOperand())
     )
     or
     exists(MulExpr mul |
       mul = expr and
-      defDependsOnExpr(def, mul.getAnOperand())
+      ssaDependsOnExpr(def, mul.getAnOperand())
     )
     or
     //if the expr is a selector expression, we currently do not support analyze it.
     //if the expr is a conversion
     exists(ConversionExpr conv |
       conv = expr and
-      defDependsOnExpr(def, conv.getOperand())
+      ssaDependsOnExpr(def, conv.getOperand())
     )
     or
     exists(AndExpr bitAnd |
       bitAnd = expr and
-      defDependsOnExpr(def, bitAnd.getAnOperand())
+      ssaDependsOnExpr(def, bitAnd.getAnOperand())
     )
   )
 }
 
-/*
- *  decide if a SSA definition depends on another SSA definition transitively
+/**
+ * Checks if SSA definition `def` depends on self.
  */
+predicate recursiveSelfDef(SsaDefinition def) { ssaDependsOnSsa+(def, def) }
 
-predicate defDependsOnDefTransitively(SsaDefinition nextDef, SsaDefinition prevDef) {
-  defDependsOnDef(nextDef, prevDef)
-  or
-  exists(SsaDefinition midDef |
-    defDependsOnDef(nextDef, midDef) and
-    defDependsOnDefTransitively(midDef, prevDef)
-  )
-}
-
-/*
- *  decide if a SSA definition depends on self.
+/**
+ * Gets the maximum value expression `expr` can represent.
  */
+float getMaxRepresentableValue(Expr expr) { result = typeMaxValue(expr.getType()) }
 
-predicate recursiveSelfDef(SsaDefinition def) { defDependsOnDefTransitively(def, def) }
-
-/*
- *  get the maximum value an expression can represent.
+/**
+ * Gets the minimum value expression `expr` can represent.
  */
+float getMinRepresentableValue(Expr expr) { result = typeMinValue(expr.getType()) }
 
-float getMaxRepresentableValue(Expr expr) {
-  exists(Type t |
-    t = expr.getType() and
-    result = typeMaxValue(t)
-  )
-}
-
-/*
- *  get the minimum value an expression can represent.
+/**
+ * Gets the maximum value type `t` can represent.
  */
-
-float getMinRepresentableValue(Expr expr) {
-  exists(Type t |
-    t = expr.getType() and
-    result = typeMinValue(t)
-  )
-}
-
-/*
- *  get maximum value a type can represent.
- */
-
 float typeMaxValue(Type t) {
-  if t instanceof IntegerType
-  then
-    exists(IntegerType integerTp, int bits |
-      integerTp = t and
-      bits = min(integerTp.getASize()) and
-      if integerTp instanceof SignedIntegerType
-      then result = 2.pow(bits - 1) - 1
-      else result = 2.pow(bits) - 1
-    )
-  else
-    if t instanceof FloatType
-    then result = 1.0 / 0.0
-    else
-      if t instanceof UintptrType
-      then
-        exists(UintptrType upt |
-          upt = t and
-          result = 2.pow(64) - 1
-        )
-      else none()
+  exists(IntegerType integerTp, int bits |
+    integerTp = t and
+    not integerTp instanceof UintptrType and
+    bits = min(integerTp.getASize()) and
+    if integerTp instanceof SignedIntegerType
+    then result = 2.pow(bits - 1) - 1
+    else result = 2.pow(bits) - 1
+  )
+  or
+  t instanceof FloatType and
+  result = 1.0 / 0.0
+  or
+  t instanceof UintptrType and
+  result = 2.pow(64) - 1
 }
 
-/*
- *  get minimum value a type can represent
+/**
+ * Gets the minimum value type `t` can represent.
  */
-
 float typeMinValue(Type t) {
-  if t instanceof IntegerType
-  then
-    exists(IntegerType integerTp, int bits |
-      integerTp = t and
-      bits = min(integerTp.getASize()) and
-      if integerTp instanceof SignedIntegerType then result = -2.pow(bits - 1) else result = 0
-    )
-  else
-    if t instanceof FloatType
-    then result = -1.0 / 0.0
-    else
-      if t instanceof UintptrType
-      then
-        exists(UintptrType upt |
-          upt = t and
-          result = 0
-        )
-      else none()
+  exists(IntegerType integerTp, int bits |
+    integerTp = t and
+    not integerTp instanceof UintptrType and
+    bits = min(integerTp.getASize()) and
+    if integerTp instanceof SignedIntegerType then result = -2.pow(bits - 1) else result = 0
+  )
+  or
+  t instanceof FloatType and
+  result = -1.0 / 0.0
+  or
+  t instanceof UintptrType and
+  result = 0
 }
 
 /*
  *  decide if an expression may overflow
  */
 
-predicate exprMayOverflow(Expr expr) { upperBound(expr) > getMaxRepresentableValue(expr) }
+predicate exprMayOverflow(Expr expr) { getUpperBound(expr) > getMaxRepresentableValue(expr) }
 
 /*
  *  decide if an expression may underflow
  */
 
-predicate exprMayUnderflow(Expr expr) { lowerBound(expr) < getMinRepresentableValue(expr) }
+predicate exprMayUnderflow(Expr expr) { getLowerBound(expr) < getMinRepresentableValue(expr) }
 
 /**
  * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
