@@ -1,6 +1,11 @@
 Crown the rightful heir
 =======================
 
+This is QL detective puzzle that shows you how to use recursion in QL to write more complex queries.
+
+King Basil's heir
+-----------------
+
 Phew! No more crimes in the village—you can finally leave the village and go home.
 
 But then... During your last night in the village, the old king—the great King Basil—dies in his sleep and there is chaos everywhere!
@@ -8,9 +13,6 @@ But then... During your last night in the village, the old king—the great King
 The king never married and he had no children, so nobody knows who should inherit the king's castle and fortune. Immediately, lots of villagers claim that they are somehow descended from the king's family and that they are the true heir. People argue and fight and the situation seems hopeless.
 
 Eventually you decide to stay in the village to resolve the argument and find the true heir to the throne.
-
-King Basil's heir
------------------
 
 You want to find out if anyone in the village is actually related to the king. This seems like a difficult task at first, but you start work confidently. You know the villagers quite well by now, and you have a list of all the parents in the village and their children.
 
