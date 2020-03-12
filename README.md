@@ -1,7 +1,8 @@
 # Go analysis support for CodeQL
 
 This open-source repository contains the extractor, CodeQL libraries, and queries that power Go
-support in [LGTM](https://lgtm.com), CodeQL, and other Semmle products.
+support in [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com)
+makes available to its customers worldwide.
 
 It contains two major components:
   - an extractor, itself written in Go, that parses Go source code and converts it into a database

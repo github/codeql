@@ -21,7 +21,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 3. **Make sure your query has the correct metadata**
 
-   Query metadata is used by Semmle's analysis to identify your query and make sure the query results are displayed properly. 
+   Query metadata is used to identify your query and make sure the query results are displayed properly.
    The most important metadata to include are the `@name`, `@description`, and the `@kind`.
    Other metadata properties (`@precision`, `@severity`, and `@tags`) are usually added after the query has been reviewed by the maintainers.
    For more information on writing query metadata, see the [Query metadata style guide](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
