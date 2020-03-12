@@ -270,3 +270,11 @@ void *MallocAliasing(void *s, int size) {
   memcpy(buf, s, size);
   return buf;
 }
+
+void unknownFunction(int argc, char **argv);
+
+int main(int argc, char **argv) {
+  unknownFunction(argc, argv);
+  unknownFunction(argc, argv);
+  return **argv; // Chi chain goes through side effects from unknownFunction
+}
