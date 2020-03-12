@@ -55,7 +55,7 @@ func (l *Labeler) GlobalID(key string) Label {
 	label, exists := l.keyLabels[key]
 	if !exists {
 		id := l.nextID()
-		fmt.Fprintf(l.tw.w, "%s=@\"%s\"\n", id, escapeString(key))
+		fmt.Fprintf(l.tw.zip, "%s=@\"%s\"\n", id, escapeString(key))
 		label = Label{id}
 		l.keyLabels[key] = label
 	}
@@ -83,7 +83,7 @@ func (l *Labeler) LocalID(nd interface{}) Label {
 // FreshID creates a fresh label and returns it
 func (l *Labeler) FreshID() Label {
 	id := l.nextID()
-	fmt.Fprintf(l.tw.w, "%s=*\n", id)
+	fmt.Fprintf(l.tw.zip, "%s=*\n", id)
 	return Label{id}
 }
 

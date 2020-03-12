@@ -2,6 +2,7 @@ package trap
 
 import (
 	"bufio"
+	"compress/gzip"
 	"errors"
 	"fmt"
 	"go/types"
@@ -16,6 +17,7 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
+	zip          *gzip.Writer
 	w            *bufio.Writer
 	file         *os.File
 	Labeler      *Labeler
@@ -31,7 +33,7 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
-	trapFilePath := filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap")
+	trapFilePath := filepath.Join(trapFolder, srcarchive.AppendablePath(path)+".trap.gz")
 	trapFileDir := filepath.Dir(trapFilePath)
 	err = os.MkdirAll(trapFileDir, 0755)
 	if err != nil {
@@ -41,8 +43,11 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 	if err != nil {
 		return nil, err
 	}
+	bufioWriter := bufio.NewWriter(tmpFile)
+	zipWriter := gzip.NewWriter(bufioWriter)
 	tw := &Writer{
-		bufio.NewWriter(tmpFile),
+		zipWriter,
+		bufioWriter,
 		tmpFile,
 		nil,
 		path,
@@ -70,7 +75,13 @@ func trapFolder() (string, error) {
 
 // Close the underlying file writer
 func (tw *Writer) Close() error {
-	err := tw.w.Flush()
+	err := tw.zip.Close()
+	if err != nil {
+		// return zip-close error, but ignore file-close error
+		tw.file.Close()
+		return err
+	}
+	err = tw.w.Flush()
 	if err != nil {
 		// throw away close error because write errors are likely to be more important
 		tw.file.Close()
@@ -110,22 +121,22 @@ func capStringLength(s string) string {
 
 // Emit writes out a tuple of values for the given `table`
 func (tw *Writer) Emit(table string, values []interface{}) error {
-	fmt.Fprintf(tw.w, "%s(", table)
+	fmt.Fprintf(tw.zip, "%s(", table)
 	for i, value := range values {
 		if i > 0 {
-			fmt.Fprint(tw.w, ", ")
+			fmt.Fprint(tw.zip, ", ")
 		}
 		switch value := value.(type) {
 		case Label:
-			fmt.Fprint(tw.w, value.id)
+			fmt.Fprint(tw.zip, value.id)
 		case string:
-			fmt.Fprintf(tw.w, "\"%s\"", escapeString(capStringLength(value)))
+			fmt.Fprintf(tw.zip, "\"%s\"", escapeString(capStringLength(value)))
 		case int:
-			fmt.Fprintf(tw.w, "%d", value)
+			fmt.Fprintf(tw.zip, "%d", value)
 		default:
 			return errors.New("Cannot emit value")
 		}
 	}
-	fmt.Fprintf(tw.w, ")\n")
+	fmt.Fprintf(tw.zip, ")\n")
 	return nil
 }
