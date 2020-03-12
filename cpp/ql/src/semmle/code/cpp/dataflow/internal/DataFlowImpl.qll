@@ -1307,15 +1307,20 @@ private predicate localFlowExit(Node node, Configuration config) {
  */
 pragma[nomagic]
 private predicate localFlowStepPlus(
-  Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext cc
+  Node node1, Node node2, boolean preservesValue, DataFlowType t, Configuration config,
+  LocalCallContext cc
 ) {
   not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
   (
     localFlowEntry(node1, config) and
     (
-      localFlowStep(node1, node2, config) and preservesValue = true
+      localFlowStep(node1, node2, config) and
+      preservesValue = true and
+      t = getErasedNodeTypeBound(node1)
       or
-      additionalLocalFlowStep(node1, node2, config) and preservesValue = false
+      additionalLocalFlowStep(node1, node2, config) and
+      preservesValue = false and
+      t = getErasedNodeTypeBound(node2)
     ) and
     node1 != node2 and
     cc.relevantFor(node1.getEnclosingCallable()) and
@@ -1323,17 +1328,18 @@ private predicate localFlowStepPlus(
     nodeCand(TNormalNode(node2), unbind(config))
     or
     exists(Node mid |
-      localFlowStepPlus(node1, mid, preservesValue, config, cc) and
+      localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
       localFlowStep(mid, node2, config) and
       not mid instanceof CastNode and
       nodeCand(TNormalNode(node2), unbind(config))
     )
     or
     exists(Node mid |
-      localFlowStepPlus(node1, mid, _, config, cc) and
+      localFlowStepPlus(node1, mid, _, _, config, cc) and
       additionalLocalFlowStep(mid, node2, config) and
       not mid instanceof CastNode and
       preservesValue = false and
+      t = getErasedNodeTypeBound(node2) and
       nodeCand(TNormalNode(node2), unbind(config))
     )
   )
@@ -1345,17 +1351,18 @@ private predicate localFlowStepPlus(
  */
 pragma[nomagic]
 private predicate localFlowBigStep(
-  Node node1, Node node2, boolean preservesValue, Configuration config, LocalCallContext callContext
+  Node node1, Node node2, boolean preservesValue, DataFlowType t, Configuration config,
+  LocalCallContext callContext
 ) {
-  localFlowStepPlus(node1, node2, preservesValue, config, callContext) and
+  localFlowStepPlus(node1, node2, preservesValue, t, config, callContext) and
   localFlowExit(node2, config)
 }
 
 pragma[nomagic]
 private predicate localFlowBigStepExt(
-  NodeExt node1, NodeExt node2, boolean preservesValue, Configuration config
+  NodeExt node1, NodeExt node2, boolean preservesValue, AccessPathFrontNil apf, Configuration config
 ) {
-  localFlowBigStep(node1.getNode(), node2.getNode(), preservesValue, config, _)
+  localFlowBigStep(node1.getNode(), node2.getNode(), preservesValue, apf.getType(), config, _)
 }
 
 private newtype TAccessPathFront =
@@ -1395,46 +1402,24 @@ private predicate flowCandFwd(
   else any()
 }
 
-/**
- * A node that requires an empty access path and should have its tracked type
- * (re-)computed. This is either a source or a node reached through an
- * additional step.
- */
-private class AccessPathFrontNilNode extends NormalNodeExt {
-  AccessPathFrontNilNode() {
-    nodeCand(this, _) and
-    (
-      any(Configuration c).isSource(this.getNode())
-      or
-      localFlowBigStepExt(_, this, false, _)
-      or
-      additionalJumpStepExt(_, this, _)
-    )
-  }
-
-  /** Gets the `nil` path front for this node. */
-  AccessPathFrontNil getApf() { result = TFrontNil(this.getErasedNodeTypeBound()) }
-}
-
 private predicate flowCandFwd0(
   NodeExt node, boolean fromArg, AccessPathFront apf, Configuration config
 ) {
   nodeCand2(node, _, false, config) and
   config.isSource(node.getNode()) and
   fromArg = false and
-  apf = node.(AccessPathFrontNilNode).getApf()
+  apf = TFrontNil(node.getErasedNodeTypeBound())
   or
   nodeCand(node, unbind(config)) and
   (
     exists(NodeExt mid |
       flowCandFwd(mid, fromArg, apf, config) and
-      localFlowBigStepExt(mid, node, true, config)
+      localFlowBigStepExt(mid, node, true, _, config)
     )
     or
     exists(NodeExt mid, AccessPathFrontNil nil |
       flowCandFwd(mid, fromArg, nil, config) and
-      localFlowBigStepExt(mid, node, false, config) and
-      apf = node.(AccessPathFrontNilNode).getApf()
+      localFlowBigStepExt(mid, node, false, apf, config)
     )
     or
     exists(NodeExt mid |
@@ -1447,7 +1432,7 @@ private predicate flowCandFwd0(
       flowCandFwd(mid, _, nil, config) and
       additionalJumpStepExt(mid, node, config) and
       fromArg = false and
-      apf = node.(AccessPathFrontNilNode).getApf()
+      apf = TFrontNil(node.getErasedNodeTypeBound())
     )
     or
     exists(NodeExt mid, boolean allowsFieldFlow |
@@ -1589,13 +1574,13 @@ private predicate flowCand0(
   apf instanceof AccessPathFrontNil
   or
   exists(NodeExt mid |
-    localFlowBigStepExt(node, mid, true, config) and
+    localFlowBigStepExt(node, mid, true, _, config) and
     flowCand(mid, toReturn, apf, config)
   )
   or
   exists(NodeExt mid, AccessPathFrontNil nil |
     flowCandFwd(node, _, apf, config) and
-    localFlowBigStepExt(node, mid, false, config) and
+    localFlowBigStepExt(node, mid, false, _, config) and
     flowCand(mid, toReturn, nil, config) and
     apf instanceof AccessPathFrontNil
   )
@@ -1811,18 +1796,6 @@ private predicate popWithFront(AccessPath ap0, Content f, AccessPathFront apf, A
 private AccessPath push(Content f, AccessPath ap) { ap = pop(f, result) }
 
 /**
- * A node that requires an empty access path and should have its tracked type
- * (re-)computed. This is either a source or a node reached through an
- * additional step.
- */
-private class AccessPathNilNode extends NormalNodeExt {
-  AccessPathNilNode() { flowCand(this.(AccessPathFrontNilNode), _, _, _) }
-
-  /** Gets the `nil` path for this node. */
-  AccessPathNil getAp() { result = TNil(this.getErasedNodeTypeBound()) }
-}
-
-/**
  * Holds if data can flow from a source to `node` with the given `ap`.
  */
 private predicate flowFwd(
@@ -1838,20 +1811,19 @@ private predicate flowFwd0(
   flowCand(node, _, _, config) and
   config.isSource(node.getNode()) and
   fromArg = false and
-  ap = node.(AccessPathNilNode).getAp() and
+  ap = TNil(node.getErasedNodeTypeBound()) and
   apf = ap.(AccessPathNil).getFront()
   or
   flowCand(node, _, _, unbind(config)) and
   (
     exists(NodeExt mid |
       flowFwd(mid, fromArg, apf, ap, config) and
-      localFlowBigStepExt(mid, node, true, config)
+      localFlowBigStepExt(mid, node, true, _, config)
     )
     or
     exists(NodeExt mid, AccessPathNil nil |
       flowFwd(mid, fromArg, _, nil, config) and
-      localFlowBigStepExt(mid, node, false, config) and
-      ap = node.(AccessPathNilNode).getAp() and
+      localFlowBigStepExt(mid, node, false, apf, config) and
       apf = ap.(AccessPathNil).getFront()
     )
     or
@@ -1865,7 +1837,7 @@ private predicate flowFwd0(
       flowFwd(mid, _, _, nil, config) and
       additionalJumpStepExt(mid, node, config) and
       fromArg = false and
-      ap = node.(AccessPathNilNode).getAp() and
+      ap = TNil(node.getErasedNodeTypeBound()) and
       apf = ap.(AccessPathNil).getFront()
     )
     or
@@ -1982,13 +1954,13 @@ private predicate flow0(NodeExt node, boolean toReturn, AccessPath ap, Configura
   ap instanceof AccessPathNil
   or
   exists(NodeExt mid |
-    localFlowBigStepExt(node, mid, true, config) and
+    localFlowBigStepExt(node, mid, true, _, config) and
     flow(mid, toReturn, ap, config)
   )
   or
   exists(NodeExt mid, AccessPathNil nil |
     flowFwd(node, _, _, ap, config) and
-    localFlowBigStepExt(node, mid, false, config) and
+    localFlowBigStepExt(node, mid, false, _, config) and
     flow(mid, toReturn, nil, config) and
     ap instanceof AccessPathNil
   )
@@ -2164,7 +2136,7 @@ private newtype TPathNode =
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
+    ap = TNil(getErasedNodeTypeBound(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -2357,12 +2329,11 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
     pathIntoLocalStep(mid, midnode, cc, enclosing, sc, ap0, conf) and
     localCC = getLocalCallContext(cc, enclosing)
   |
-    localFlowBigStep(midnode, node, true, conf, localCC) and
+    localFlowBigStep(midnode, node, true, _, conf, localCC) and
     ap = ap0
     or
-    localFlowBigStep(midnode, node, false, conf, localCC) and
-    ap0 instanceof AccessPathNil and
-    ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
+    localFlowBigStep(midnode, node, false, ap.(AccessPathNil).getType(), conf, localCC) and
+    ap0 instanceof AccessPathNil
   )
   or
   jumpStep(mid.getNode(), node, mid.getConfiguration()) and
@@ -2374,7 +2345,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = any(AccessPathNilNode nil | nil.getNode() = node).getAp()
+  ap = TNil(getErasedNodeTypeBound(node))
   or
   exists(Content f, AccessPath ap0 | pathReadStep(mid, node, ap0, f, cc) and ap = pop(f, ap0)) and
   sc = mid.getSummaryCtx()
@@ -2397,7 +2368,7 @@ private predicate pathIntoLocalStep(
   midnode = mid.getNode() and
   cc = mid.getCallContext() and
   conf = mid.getConfiguration() and
-  localFlowBigStep(midnode, _, _, conf, _) and
+  localFlowBigStep(midnode, _, _, _, conf, _) and
   enclosing = midnode.getEnclosingCallable() and
   sc = mid.getSummaryCtx() and
   ap0 = mid.getAp()
@@ -2949,7 +2920,7 @@ private module FlowExploration {
     config = mid.getConfiguration()
   }
 
-  pragma[noinline]
+  pragma[nomagic]
   private predicate partialPathOutOfCallable1(
     PartialPathNodePriv mid, DataFlowCall call, ReturnKindExt kind, CallContext cc,
     PartialAccessPath ap, Configuration config

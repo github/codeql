@@ -134,16 +134,13 @@ private predicate json_subscript_taint(
     SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
     sub.isLoad() and
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     key = seq.getValue()
 }
 
 private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
-    exists(FunctionObject json_loads |
-        ModuleObject::named("json").attr("loads") = json_loads and
-        json_loads.getACall() = tonode and
-        tonode.getArg(0) = fromnode
-    )
+    tonode = Value::named("json.loads").getACall() and
+    tonode.getArg(0) = fromnode
 }
 
 private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {

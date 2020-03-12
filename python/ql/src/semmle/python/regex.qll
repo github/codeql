@@ -12,25 +12,27 @@ private predicate re_module_function(string name, int flags) {
     name = "subn" and flags = 4
 }
 
+/**
+ * Holds if `s` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
+ * If regex mode is not known, `mode` will be `"None"`.
+ */
 predicate used_as_regex(Expr s, string mode) {
     (s instanceof Bytes or s instanceof Unicode)
     and
-    exists(ModuleValue re | re.getName() = "re" |
-        /* Call to re.xxx(regex, ... [mode]) */
-        exists(CallNode call, string name |
-            call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
-            call.getFunction().pointsTo(re.attr(name)) |
-            mode = "None"
-            or
-            exists(Value obj |
-                mode = mode_from_mode_object(obj) |
-                exists(int flags_arg |
-                    re_module_function(name, flags_arg) and
-                    call.getArg(flags_arg).pointsTo(obj)
-                )
-                or
-                call.getArgByName("flags").pointsTo(obj)
+    /* Call to re.xxx(regex, ... [mode]) */
+    exists(CallNode call, string name |
+        call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
+        call.getFunction().pointsTo(Module::named("re").attr(name)) |
+        mode = "None"
+        or
+        exists(Value obj |
+            mode = mode_from_mode_object(obj) |
+            exists(int flags_arg |
+                re_module_function(name, flags_arg) and
+                call.getArg(flags_arg).pointsTo(obj)
             )
+            or
+            call.getArgByName("flags").pointsTo(obj)
         )
     )
 }

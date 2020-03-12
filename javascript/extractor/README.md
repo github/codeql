@@ -6,4 +6,4 @@ The extractor consists of a parser for the latest version of ECMAScript, includi
 
 ## License
 
-Like the LGTM queries, the JavaScript extractor is licensed under [Apache License 2.0](LICENSE) by [Semmle](https://semmle.com). Some code is derived from other projects, whose licenses are noted in other `LICENSE-*.md` files in this folder.
+Like the LGTM queries, the JavaScript extractor is licensed under [Apache License 2.0](LICENSE) by [GitHub](https://github.com). Some code is derived from other projects, whose licenses are noted in other `LICENSE-*.md` files in this folder.

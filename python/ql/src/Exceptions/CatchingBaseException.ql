@@ -19,7 +19,7 @@ predicate doesnt_reraise(ExceptStmt ex) {
 }
 
 predicate catches_base_exception(ExceptStmt ex) {
-     ex.getType().refersTo(theBaseExceptionType())
+     ex.getType().pointsTo(ClassValue::baseException())
      or
      not exists(ex.getType())
 }
