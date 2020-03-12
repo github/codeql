@@ -27,16 +27,13 @@ class XPathInjectionConfiguration extends TaintTracking::Configuration {
 class XPathInjectionSink extends DataFlow::ExprNode {
   XPathInjectionSink() {
     exists(Method m, MethodAccess ma | ma.getMethod() = m |
-      (
-        m.getDeclaringType().hasQualifiedName("javax.xml.xpath", "XPath") and
-        (m.hasName("evaluate") or m.hasName("compile")) and
-        ma.getArgument(0) = this.getExpr()
-      ) or
-      (
-        m.getDeclaringType().hasQualifiedName("org.dom4j", "Node") and
-        (m.hasName("selectNodes") or m.hasName("selectSingleNode")) and
-        ma.getArgument(0) = this.getExpr()
-      )
+      m.getDeclaringType().hasQualifiedName("javax.xml.xpath", "XPath") and
+      (m.hasName("evaluate") or m.hasName("compile")) and
+      ma.getArgument(0) = this.getExpr()
+      or
+      m.getDeclaringType().hasQualifiedName("org.dom4j", "Node") and
+      (m.hasName("selectNodes") or m.hasName("selectSingleNode")) and
+      ma.getArgument(0) = this.getExpr()
     )
   }
 }

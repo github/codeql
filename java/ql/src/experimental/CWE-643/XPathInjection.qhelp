@@ -15,24 +15,24 @@ If user input must be included in an XPath expression, pre-compile the query and
 references to include the user input.
 </p>
 <p>
-XPath injection can also be prevented by using XQuery
+XPath injection can also be prevented by using XQuery.
 </p>
 
 </recommendation>
 
 <example>
 <p>
-In the first, second, and third example, the code accepts a user and password specified by the user, and uses this
+In the first, second, and third example, the code accepts a name and password specified by the user, and uses this
 unvalidated and unsanitized value in an XPath expression. This is vulnerable to the user providing
 special characters or string sequences that change the meaning of the XPath expression to search
 for different values.
 </p>
 
 <p>
-In the forth example, the code utilizes setXPathVariableResolver which prevents XPath Injection
+In the fourth example, the code utilizes setXPathVariableResolver which prevents XPath Injection.
 </p>
 <p>
-The fifth example is dom4j xpath injection example
+The fifth example is a dom4j XPath injection example
 </p>
 <sample src="XPathInjection.java" />
 </example>
