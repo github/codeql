@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking tracking configuration for reasoning about allocation-size overflow.
+ * Provides a taint-tracking configuration for reasoning about allocation-size overflow.
  *
  * Note, for performance reasons: only import this file if `AllocationSizeOverflow::Configuration`
  * is needed, otherwise `AllocationSizeOverflowCustomizations` should be imported instead.
