@@ -32,6 +32,10 @@ where
     exists(Ident id | id = xe.getRightOperand() |
       id.getName().regexpMatch("(?i)_*((exp(onent)?)|pow(er)?)")
     )
+  ) and
+  // exclude the right hand side of assignments to variables that have "mask" in their name
+  not exists(Assignment assign | assign.getRhs() = xe.getParent*() |
+    assign.getLhs().getAChild*().(Ident).getName().regexpMatch(".*(^m|M)ask($|\\p{Lu}).*")
   )
 select xe,
   "This expression uses the bitwise exclusive-or operator when exponentiation was likely meant."
