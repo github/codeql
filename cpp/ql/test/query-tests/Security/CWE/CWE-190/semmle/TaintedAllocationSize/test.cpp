@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
 	int tainted = atoi(argv[1]);
 
 	MyStruct *arr1 = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD
-	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD
+	MyStruct *arr2 = (MyStruct *)malloc(tainted); // DUBIOUS (not multiplied by anything)
 	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // BAD
 	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // BAD [NOT DETECTED]
-	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // BAD [NOT DETECTED]
+	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // DUBIOUS (not multiplied by anything)
 
 	int size = tainted * 8;
 	char *chars1 = (char *)malloc(size); // BAD
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 	arr1 = (MyStruct *)realloc(arr1, sizeof(MyStruct) * tainted); // BAD
 
 	size = 8;
-	chars3 = new char[size]; // GOOD [FALSE POSITIVE]
+	chars3 = new char[size]; // GOOD
 
 	return 0;
 }
@@ -120,9 +120,9 @@ int bounded(int x, int limit) {
 }
 
 void open_file_bounded () {
-	int size = size = atoi(getenv("USER"));
+	int size = atoi(getenv("USER"));
 	int bounded_size = bounded(size, MAX_SIZE);
 	
-	int* a = (int*)malloc(bounded_size); // GOOD
-	int* b = (int*)malloc(size); // BAD
+	int* a = (int*)malloc(bounded_size * sizeof(int)); // GOOD
+	int* b = (int*)malloc(size * sizeof(int)); // BAD
 }

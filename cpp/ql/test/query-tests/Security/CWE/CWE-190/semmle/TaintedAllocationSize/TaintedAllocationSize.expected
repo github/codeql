@@ -6,4 +6,5 @@
 | test.cpp:49:17:49:30 | new[] | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:52:21:52:27 | call to realloc | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:52:35:52:60 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
-| test.cpp:127:17:127:22 | call to malloc | This allocation size is derived from $@ and might overflow | test.cpp:123:25:123:30 | call to getenv | user input (getenv) |
+| test.cpp:127:17:127:22 | call to malloc | This allocation size is derived from $@ and might overflow | test.cpp:123:18:123:23 | call to getenv | user input (getenv) |
+| test.cpp:127:24:127:41 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:123:18:123:23 | call to getenv | user input (getenv) |
