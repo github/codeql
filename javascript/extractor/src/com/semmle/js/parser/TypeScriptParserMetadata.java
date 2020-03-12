@@ -17,14 +17,12 @@ import com.google.gson.JsonPrimitive;
 public class TypeScriptParserMetadata {
   private final JsonObject nodeFlags;
   private final JsonObject syntaxKinds;
-  private final Map<Integer, String> nodeFlagMap = new LinkedHashMap<>();
   private final Map<Integer, String> syntaxKindMap = new LinkedHashMap<>();
 
   public TypeScriptParserMetadata(JsonObject metadata) {
     this.nodeFlags = metadata.get("nodeFlags").getAsJsonObject();
     this.syntaxKinds = metadata.get("syntaxKinds").getAsJsonObject();
-    makeEnumIdMap(getNodeFlags(), getNodeFlagMap());
-    makeEnumIdMap(getSyntaxKinds(), getSyntaxKindMap());
+    makeEnumIdMap(syntaxKinds, syntaxKindMap);
   }
 
   /** Builds a mapping from ID to name given a TypeScript enum object. */
@@ -38,30 +36,41 @@ public class TypeScriptParserMetadata {
   }
 
   /**
-   * Returns the <code>NodeFlags</code> enum object from the TypeScript API.
+   * Returns the logical name associated with syntax kind ID <code>id</code>,
+   * or throws an exception if it does not exist.
    */
-  public JsonObject getNodeFlags() {
-    return nodeFlags;
+  String getSyntaxKindName(int id) {
+    String name = syntaxKindMap.get(id);
+    if (name == null) {
+      throw new RuntimeException(
+          "Incompatible version of TypeScript installed. Missing syntax kind ID " + id);
+    }
+    return name;
   }
 
   /**
-   * Returns the <code>SyntaxKind</code> enum object from the TypeScript API.
+   * Returns the syntax kind ID corresponding to the logical name <code>name</code>,
+   * or throws an exception if it does not exist.
    */
-  public JsonObject getSyntaxKinds() {
-    return syntaxKinds;
+  int getSyntaxKindId(String name) {
+    JsonElement elm = syntaxKinds.get(name);
+    if (elm == null) {
+      throw new RuntimeException(
+          "Incompatible version of TypeScript installed. Missing syntax kind " + name);
+    }
+    return elm.getAsInt();
   }
 
   /**
-   * Returns the mapping from node flag bit to its name.
+   * Returns the NodeFlag ID from the logical name <code>name</code>
+   * or throws an exception if it does not exist.
    */
-  public Map<Integer, String> getNodeFlagMap() {
-    return nodeFlagMap;
-  }
-
-  /**
-   * Returns the mapping from syntax kind ID to its name.
-   */
-  public Map<Integer, String> getSyntaxKindMap() {
-    return syntaxKindMap;
+  int getNodeFlagId(String name) {
+    JsonElement elm = nodeFlags.get(name);
+    if (elm == null) {
+      throw new RuntimeException(
+          "Incompatible version of TypeScript installed. Missing node flag " + name);
+    }
+    return elm.getAsInt();
   }
 }
