@@ -12,5 +12,3 @@
 | test.cpp:134:10:134:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:132:19:132:24 | call to getenv | user input (getenv) |
 | test.cpp:142:4:142:9 | call to malloc | This allocation size is derived from $@ and might overflow | test.cpp:138:19:138:24 | call to getenv | user input (getenv) |
 | test.cpp:142:11:142:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:138:19:138:24 | call to getenv | user input (getenv) |
-| test.cpp:169:4:169:9 | call to malloc | This allocation size is derived from $@ and might overflow | test.cpp:165:19:165:24 | call to getenv | user input (getenv) |
-| test.cpp:169:11:169:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:165:19:165:24 | call to getenv | user input (getenv) |

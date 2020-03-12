@@ -166,7 +166,7 @@ void more_bounded_tests() {
 
 		if ((100 > size) && (0 < size))
 		{
-			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+			malloc(size * sizeof(int)); // GOOD
 		}
 	}
 
