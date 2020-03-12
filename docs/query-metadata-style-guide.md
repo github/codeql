@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document outlines the structure of Semmle query files. You should adopt this structure when contributing custom queries to this repository, in order to ensure that new queries are consistent with the standard Semmle queries.
+This document outlines the structure of CodeQL query files. You should adopt this structure when contributing custom queries to this repository, in order to ensure that new queries are consistent with the standard CodeQL queries.
 
 ## Query files (.ql extension)
 
@@ -67,7 +67,7 @@ You must define an `@description` property for your query. This property defines
 
 ### Query ID `@id`
 
-You must specify an `@id` property for your query. It must be unique in the Semmle namespace and should follow the standard Semmle convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash. The following language codes are supported:
+You must specify an `@id` property for your query. It must be unique and should follow the standard CodeQL convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash. The following language codes are supported:
 
 *   C and C++: `cpp`
 *   C#: `cs`
@@ -105,7 +105,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 *   alerts (`@kind problem`)
 *   alerts containing path information (`@kind path-problem`)
 
-Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
+Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested, prior to deployment to LGTM. The following information is for reference:
 
 
 
