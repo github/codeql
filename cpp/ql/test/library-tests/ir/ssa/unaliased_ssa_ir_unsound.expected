@@ -1221,8 +1221,7 @@ ssa.cpp:
 #  280|     r280_7(int *)          = Load                         : &:r280_5, m280_6
 #  280|     mu280_8(unknown)       = InitializeIndirection[p]     : &:r280_7
 #  281|     r281_1(glval<int>)     = VariableAddress[x]           : 
-#  281|     r281_2(int)            = Constant[0]                  : 
-#  281|     mu281_3(int)           = Store                        : &:r281_1, r281_2
+#  281|     mu281_2(int)           = Uninitialized[x]             : &:r281_1
 #  282|     r282_1(glval<unknown>) = FunctionAddress[Escape]      : 
 #  282|     r282_2(glval<int *>)   = VariableAddress[p]           : 
 #  282|     r282_3(int *)          = Load                         : &:r282_2, m280_6
