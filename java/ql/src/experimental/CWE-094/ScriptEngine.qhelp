@@ -4,16 +4,16 @@
 <qhelp>
 
 <overview>
-<p> The ScriptEngine api is available since the release of Java 6.
-It allows application to interact with script written in language such as JavaScript.</p>
+<p>The ScriptEngine API has been available since the release of Java 6.
+It allows applications to interact with scripts written in languages such as JavaScript.</p>
 </overview>
 
 <recommendation>
-Use "Cloudbees Rhino Sandbox" or sandboxing with SecurityManager or use <a href="https://www.graalvm.org/">graalvm</a> instead
+<p>Use "Cloudbees Rhino Sandbox" or sandboxing with SecurityManager or use <a href="https://www.graalvm.org/">graalvm</a> instead.</p>
 </recommendation>
 
 <example>
-The following code could executes random JavaScript code
+<p>The following code could execute random JavaScript code</p>
 <sample src="ScriptEngine.java" />
 </example>
 

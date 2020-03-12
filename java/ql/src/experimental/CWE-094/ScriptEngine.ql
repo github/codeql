@@ -1,6 +1,6 @@
 /**
- * @name Script engine eval
- * @description Malicious javascript code could caused arbitrary command execution on OS level
+ * @name ScriptEngine evaluation
+ * @description Malicious Javascript code could cause arbitrary command execution at the OS level
  * @kind path-problem
  * @problem.severity error
  * @precision high
@@ -47,5 +47,5 @@ class ScriptEngineConfiguration extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ScriptEngineConfiguration conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode().(ScriptEngineSink).getMethodAccess(), source, sink, "Script engine eval $@.",
+select sink.getNode().(ScriptEngineSink).getMethodAccess(), source, sink, "ScriptEngine eval $@.",
   source.getNode(), "user input"
