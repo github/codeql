@@ -34,8 +34,12 @@ where
     )
   ) and
   // exclude the right hand side of assignments to variables that have "mask" in their name
-  not exists(Assignment assign | assign.getRhs() = xe.getParent*() |
-    assign.getLhs().getAChild*().(Ident).getName().regexpMatch(".*(^m|M)ask($|\\p{Lu}).*")
+  not exists(Assignment assign, Ident id | assign.getRhs() = xe.getParent*() |
+    id.getName().regexpMatch("(?i).*mask.*") and
+    (
+      assign.getLhs() = id or
+      assign.getLhs().(SelectorExpr).getSelector() = id
+    )
   )
 select xe,
   "This expression uses the bitwise exclusive-or operator when exponentiation was likely meant."
