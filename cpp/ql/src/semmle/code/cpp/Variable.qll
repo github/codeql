@@ -381,10 +381,10 @@ class StaticStorageDurationVariable extends Variable {
   }
 
   /**
-   * Holds if the initializer for this variable is evaluated at compile time.
+   * Holds if the initializer for this variable is evaluated at runtime.
    */
-  predicate hasConstantInitialization() {
-    not runtimeExprInStaticInitializer(this.getInitializer().getExpr())
+  predicate hasDynamicInitialization() {
+    runtimeExprInStaticInitializer(this.getInitializer().getExpr())
   }
 }
 

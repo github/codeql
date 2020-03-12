@@ -6,6 +6,7 @@ private import semmle.code.cpp.ir.internal.IRUtilities
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedFunction
 private import TranslatedInitialization
 
 /**
@@ -66,15 +67,150 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
 }
 
 /**
- * Represents the IR translation of a local variable declaration within a declaration statement.
+ * The IR translation of a local variable declaration within a declaration statement.
  */
-class TranslatedVariableDeclarationEntry extends TranslatedLocalVariableDeclaration,
+class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDeclaration,
   TranslatedDeclarationEntry {
   LocalVariable var;
 
-  TranslatedVariableDeclarationEntry() { var = entry.getDeclaration() }
+  TranslatedAutoVariableDeclarationEntry() { var = entry.getDeclaration() and not var.isStatic() }
 
   override LocalVariable getVariable() { result = var }
+}
+
+/**
+ * The IR translation of the declaration of a static local variable.
+ * This element generates the logic that determines whether or not the variable has already been
+ * initialized, and if not, invokes the initializer and sets the dynamic initialization flag for the
+ * variable. The actual initialization code is handled in
+ * `TranslatedStaticLocalVariableInitialization`, which is a child of this element.
+ */
+class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclarationEntry {
+  LocalVariable var;
+
+  TranslatedStaticLocalVariableDeclarationEntry() {
+    var = entry.getDeclaration() and var.isStatic()
+  }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    tag = DynamicInitializationFlagAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    type = getBoolGLValueType()
+    or
+    tag = DynamicInitializationFlagLoadTag() and
+    opcode instanceof Opcode::Load and
+    type = getBoolType()
+    or
+    tag = DynamicInitializationConditionalBranchTag() and
+    opcode instanceof Opcode::ConditionalBranch and
+    type = getVoidType()
+    or
+    tag = DynamicInitializationFlagConstantTag() and
+    opcode instanceof Opcode::Constant and
+    type = getBoolType()
+    or
+    tag = DynamicInitializationFlagStoreTag() and
+    opcode instanceof Opcode::Store and
+    type = getBoolType()
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = getInstruction(DynamicInitializationFlagAddressTag())
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = DynamicInitializationFlagAddressTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(DynamicInitializationFlagLoadTag())
+    or
+    tag = DynamicInitializationFlagLoadTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(DynamicInitializationConditionalBranchTag())
+    or
+    tag = DynamicInitializationConditionalBranchTag() and
+    (
+      kind instanceof TrueEdge and
+      result = getParent().getChildSuccessor(this)
+      or
+      kind instanceof FalseEdge and
+      result = getInitialization().getFirstInstruction()
+    )
+    or
+    tag = DynamicInitializationFlagConstantTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(DynamicInitializationFlagStoreTag())
+    or
+    tag = DynamicInitializationFlagStoreTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and
+    result = getInstruction(DynamicInitializationFlagConstantTag())
+  }
+
+  final override IRDynamicInitializationFlag getInstructionVariable(InstructionTag tag) {
+    tag = DynamicInitializationFlagAddressTag() and
+    result.getVariable() = var
+  }
+
+  final override string getInstructionConstantValue(InstructionTag tag) {
+    tag = DynamicInitializationFlagConstantTag() and result = "1"
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = DynamicInitializationFlagLoadTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(DynamicInitializationFlagAddressTag())
+      or
+      operandTag instanceof LoadOperandTag and
+      result = getTranslatedFunction(var.getFunction()).getUnmodeledDefinitionInstruction()
+    )
+    or
+    tag = DynamicInitializationConditionalBranchTag() and
+    operandTag instanceof ConditionOperandTag and
+    result = getInstruction(DynamicInitializationFlagLoadTag())
+    or
+    tag = DynamicInitializationFlagStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(DynamicInitializationFlagAddressTag())
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = getInstruction(DynamicInitializationFlagConstantTag())
+    )
+  }
+
+  private TranslatedStaticLocalVariableInitialization getInitialization() {
+    result.getVariable() = var
+  }
+}
+
+/**
+ * The initialization of a static local variable. This element will only exist for a static variable
+ * with a dynamic initializer.
+ */
+class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
+  TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
+  VariableDeclarationEntry entry;
+  LocalVariable var;
+
+  TranslatedStaticLocalVariableInitialization() {
+    this = TTranslatedStaticLocalVariableInitialization(entry) and
+    var = entry.getDeclaration()
+  }
+
+  final override string toString() { result = "init: " + entry.toString() }
+
+  final override Locatable getAST() { result = entry }
+
+  final override LocalVariable getVariable() { result = var }
+
+  final override Function getFunction() { result = var.getFunction() }
 }
 
 /**

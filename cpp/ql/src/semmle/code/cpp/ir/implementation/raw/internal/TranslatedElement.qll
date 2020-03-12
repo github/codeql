@@ -54,7 +54,7 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // Otherwise the initializer does not run in function scope.
   exists(Initializer init, StaticStorageDurationVariable var |
     init = var.getInitializer() and
-    var.hasConstantInitialization() and
+    not var.hasDynamicInitialization() and
     expr = init.getExpr().getFullyConverted()
   )
   or
@@ -394,11 +394,25 @@ newtype TTranslatedElement =
   } or
   // A local declaration
   TTranslatedDeclarationEntry(DeclarationEntry entry) {
-    exists(DeclStmt declStmt |
+    exists(DeclStmt declStmt, LocalVariable var |
       translateStmt(declStmt) and
       declStmt.getADeclarationEntry() = entry and
       // Only declarations of local variables need to be translated to IR.
-      entry.getDeclaration() instanceof LocalVariable
+      var = entry.getDeclaration() and
+      (
+        not var.isStatic()
+        or
+        // Ignore static variables unless they have a dynamic initializer.
+        var.(StaticStorageDurationVariable).hasDynamicInitialization()
+      )
+    )
+  } or
+  // The dynamic initialization of a static local variable. This is a separate object from the
+  // declaration entry.
+  TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
+    exists(TTranslatedDeclarationEntry translatedEntry |
+      translatedEntry = TTranslatedDeclarationEntry(entry) and
+      entry.getDeclaration().(LocalVariable).isStatic()
     )
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a

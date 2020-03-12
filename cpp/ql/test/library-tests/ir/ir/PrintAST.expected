@@ -8303,6 +8303,70 @@ ir.cpp:
 # 1219|               Type = [IntType] int
 # 1219|               ValueCategory = prvalue(load)
 # 1220|     4: [ReturnStmt] return ...
+# 1222| [TopLevelFunction] int staticLocalInit(int)
+# 1222|   params: 
+# 1222|     0: [Parameter] x
+# 1222|         Type = [IntType] int
+# 1222|   body: [Block] { ... }
+# 1223|     0: [DeclStmt] declaration
+# 1223|       0: [VariableDeclarationEntry] definition of a
+# 1223|           Type = [IntType] int
+# 1223|         init: [Initializer] initializer for a
+# 1223|           expr: [Literal] 0
+# 1223|               Type = [IntType] int
+# 1223|               Value = [Literal] 0
+# 1223|               ValueCategory = prvalue
+# 1224|     1: [DeclStmt] declaration
+# 1224|       0: [VariableDeclarationEntry] definition of b
+# 1224|           Type = [IntType] int
+# 1224|         init: [Initializer] initializer for b
+# 1224|           expr: [CStyleCast] (int)...
+# 1224|               Conversion = [IntegralConversion] integral conversion
+# 1224|               Type = [IntType] int
+# 1224|               Value = [CStyleCast] 4
+# 1224|               ValueCategory = prvalue
+# 1224|             expr: [SizeofExprOperator] sizeof(<expr>)
+# 1224|                 Type = [LongType] unsigned long
+# 1224|                 Value = [SizeofExprOperator] 4
+# 1224|                 ValueCategory = prvalue
+# 1224|               0: [ParenthesisExpr] (...)
+# 1224|                   Type = [IntType] int
+# 1224|                   ValueCategory = lvalue
+# 1224|                 expr: [VariableAccess] x
+# 1224|                     Type = [IntType] int
+# 1224|                     ValueCategory = lvalue
+# 1225|     2: [DeclStmt] declaration
+# 1225|       0: [VariableDeclarationEntry] definition of c
+# 1225|           Type = [IntType] int
+# 1225|         init: [Initializer] initializer for c
+# 1225|           expr: [VariableAccess] x
+# 1225|               Type = [IntType] int
+# 1225|               ValueCategory = prvalue(load)
+# 1226|     3: [DeclStmt] declaration
+# 1226|       0: [VariableDeclarationEntry] definition of d
+# 1226|           Type = [IntType] int
+# 1228|     4: [ReturnStmt] return ...
+# 1228|       0: [AddExpr] ... + ...
+# 1228|           Type = [IntType] int
+# 1228|           ValueCategory = prvalue
+# 1228|         0: [AddExpr] ... + ...
+# 1228|             Type = [IntType] int
+# 1228|             ValueCategory = prvalue
+# 1228|           0: [AddExpr] ... + ...
+# 1228|               Type = [IntType] int
+# 1228|               ValueCategory = prvalue
+# 1228|             0: [VariableAccess] a
+# 1228|                 Type = [IntType] int
+# 1228|                 ValueCategory = prvalue(load)
+# 1228|             1: [VariableAccess] b
+# 1228|                 Type = [IntType] int
+# 1228|                 ValueCategory = prvalue(load)
+# 1228|           1: [VariableAccess] c
+# 1228|               Type = [IntType] int
+# 1228|               ValueCategory = prvalue(load)
+# 1228|         1: [VariableAccess] d
+# 1228|             Type = [IntType] int
+# 1228|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

@@ -8,6 +8,11 @@ newtype TInstructionTag =
   InitializerStoreTag() or
   InitializerIndirectAddressTag() or
   InitializerIndirectStoreTag() or
+  DynamicInitializationFlagAddressTag() or
+  DynamicInitializationFlagLoadTag() or
+  DynamicInitializationConditionalBranchTag() or
+  DynamicInitializationFlagConstantTag() or
+  DynamicInitializationFlagStoreTag() or
   ZeroPadStringConstantTag() or
   ZeroPadStringElementIndexTag() or
   ZeroPadStringElementAddressTag() or
@@ -186,4 +191,14 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = AsmTag() and result = "Asm"
   or
   exists(int index | tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")")
+  or
+  tag = DynamicInitializationFlagAddressTag() and result = "DynInitFlagAddr"
+  or
+  tag = DynamicInitializationFlagLoadTag() and result = "DynInitFlagLoad"
+  or
+  tag = DynamicInitializationConditionalBranchTag() and result = "DynInitCondBranch"
+  or
+  tag = DynamicInitializationFlagConstantTag() and result = "DynInitFlagConst"
+  or
+  tag = DynamicInitializationFlagStoreTag() and result = "DynInitFlagStore"
 }
