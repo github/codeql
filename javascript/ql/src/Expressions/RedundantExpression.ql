@@ -64,7 +64,10 @@ class RedundantIdemnecantOperand extends RedundantOperand {
  * arguments to integers. For example, `x&x` is a common idiom for converting `x` to an integer.
  */
 class RedundantIdempotentOperand extends RedundantOperand {
-  RedundantIdempotentOperand() { getParent() instanceof LogicalBinaryExpr }
+  RedundantIdempotentOperand() {
+    getParent() instanceof LogicalBinaryExpr and
+    not exists(UpdateExpr e | e.getParentExpr+() = this)
+  }
 }
 
 /**
