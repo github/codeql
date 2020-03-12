@@ -22,12 +22,10 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | a_simple.py:18 | ControlFlowNode for multi_loop | Function multi_loop | builtin-class function | 18 | import |
 | a_simple.py:19 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 19 | runtime |
 | a_simple.py:19 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 19 | runtime |
-| a_simple.py:21 | ControlFlowNode for x | x | builtin-class object | 20 | runtime |
 | a_simple.py:23 | ControlFlowNode for FunctionExpr | Function with_definition | builtin-class function | 23 | import |
 | a_simple.py:23 | ControlFlowNode for with_definition | Function with_definition | builtin-class function | 23 | import |
 | a_simple.py:27 | ControlFlowNode for FunctionExpr | Function multi_loop_in_try | builtin-class function | 27 | import |
 | a_simple.py:27 | ControlFlowNode for multi_loop_in_try | Function multi_loop_in_try | builtin-class function | 27 | import |
-| a_simple.py:30 | ControlFlowNode for p | p | builtin-class object | 29 | runtime |
 | a_simple.py:31 | ControlFlowNode for KeyError | builtin-class KeyError | builtin-class type | 31 | runtime |
 | a_simple.py:34 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 34 | import |
 | a_simple.py:34 | ControlFlowNode for args | args | builtin-class tuple | 34 | runtime |
@@ -75,10 +73,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | a_simple.py:53 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 53 | runtime |
 | a_simple.py:53 | ControlFlowNode for Tuple | BinaryExpr | builtin-class tuple | 53 | runtime |
 | a_simple.py:53 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 53 | runtime |
-| a_simple.py:54 | ControlFlowNode for l | l | builtin-class object | 53 | runtime |
-| a_simple.py:55 | ControlFlowNode for m | m | builtin-class object | 53 | runtime |
-| a_simple.py:57 | ControlFlowNode for s | s | builtin-class object | 56 | runtime |
-| a_simple.py:58 | ControlFlowNode for u | u | builtin-class object | 56 | runtime |
 | b_condition.py:4 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 4 | import |
 | b_condition.py:4 | ControlFlowNode for f | Function f | builtin-class function | 4 | import |
 | b_condition.py:5 | ControlFlowNode for IfExp | NoneType None | builtin-class NoneType | 5 | runtime |
@@ -1084,7 +1078,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | r_regressions.py:42 | ControlFlowNode for FunctionExpr | Function find_library | builtin-class function | 42 | import |
 | r_regressions.py:42 | ControlFlowNode for find_library | Function find_library | builtin-class function | 42 | import |
 | r_regressions.py:43 | ControlFlowNode for List | List | builtin-class list | 43 | runtime |
-| r_regressions.py:44 | ControlFlowNode for data | data | builtin-class object | 43 | runtime |
 | r_regressions.py:46 | ControlFlowNode for FunctionExpr | Function fail | builtin-class function | 46 | import |
 | r_regressions.py:46 | ControlFlowNode for fail | Function fail | builtin-class function | 46 | import |
 | r_regressions.py:49 | ControlFlowNode for C | class C | builtin-class type | 49 | import |

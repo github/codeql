@@ -11,10 +11,8 @@
 | a_simple.py:16 | ControlFlowNode for d | runtime | instance of dict | builtin-class dict |
 | a_simple.py:18 | ControlFlowNode for FunctionExpr | import | Function multi_loop | builtin-class function |
 | a_simple.py:19 | ControlFlowNode for None | runtime | None | builtin-class NoneType |
-| a_simple.py:21 | ControlFlowNode for x | runtime | instance of object | builtin-class object |
 | a_simple.py:23 | ControlFlowNode for FunctionExpr | import | Function with_definition | builtin-class function |
 | a_simple.py:27 | ControlFlowNode for FunctionExpr | import | Function multi_loop_in_try | builtin-class function |
-| a_simple.py:30 | ControlFlowNode for p | runtime | instance of object | builtin-class object |
 | a_simple.py:31 | ControlFlowNode for KeyError | runtime | builtin-class KeyError | builtin-class type |
 | a_simple.py:34 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | a_simple.py:35 | ControlFlowNode for IntegerLiteral | runtime | int 0 | builtin-class int |
@@ -61,10 +59,6 @@
 | a_simple.py:53 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
 | a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 1, ) | builtin-class tuple |
 | a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 2, ) | builtin-class tuple |
-| a_simple.py:54 | ControlFlowNode for l | runtime | instance of object | builtin-class object |
-| a_simple.py:55 | ControlFlowNode for m | runtime | instance of object | builtin-class object |
-| a_simple.py:57 | ControlFlowNode for s | runtime | instance of object | builtin-class object |
-| a_simple.py:58 | ControlFlowNode for u | runtime | instance of object | builtin-class object |
 | b_condition.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | b_condition.py:5 | ControlFlowNode for IfExp | runtime | None | builtin-class NoneType |
 | b_condition.py:5 | ControlFlowNode for None | runtime | None | builtin-class NoneType |
@@ -870,7 +864,6 @@
 | r_regressions.py:36 | ControlFlowNode for z | runtime | int 0 | builtin-class int |
 | r_regressions.py:42 | ControlFlowNode for FunctionExpr | import | Function find_library | builtin-class function |
 | r_regressions.py:43 | ControlFlowNode for List | runtime | List | builtin-class list |
-| r_regressions.py:44 | ControlFlowNode for data | runtime | instance of object | builtin-class object |
 | r_regressions.py:46 | ControlFlowNode for FunctionExpr | import | Function fail | builtin-class function |
 | r_regressions.py:49 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | r_regressions.py:49 | ControlFlowNode for object | import | builtin-class object | builtin-class type |

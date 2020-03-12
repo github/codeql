@@ -520,7 +520,7 @@ cached module PointsToInternal {
             or
             pointsTo(rhs, context, sequence, _) and
             sequence.subscriptUnknown() and
-            value = TUnknownInstance(ObjectInternal::builtin("object"))
+            value = TUnknown()
         )
     }
 
