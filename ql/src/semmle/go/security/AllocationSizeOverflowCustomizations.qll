@@ -30,6 +30,17 @@ module AllocationSizeOverflow {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /**
+   * A data-flow node that is an operand to an operation that may overflow.
+   */
+  abstract class OverflowProneOperand extends DataFlow::Node { }
+
+  /**
+   * A data-flow node that represents the size argument of an allocation, such as the `n` in
+   * `make([]byte, n)`.
+   */
+  abstract class AllocationSize extends DataFlow::Node { }
+
   /** A call to a marshaling function, considered as a source of taint. */
   class MarshalingSource extends Source {
     MarshalingSource() {
@@ -64,17 +75,10 @@ module AllocationSizeOverflow {
    * allocation size.
    */
   class DefaultSink extends Sink {
-    DataFlow::Node allocsz;
+    AllocationSize allocsz;
 
     DefaultSink() {
-      exists(OperatorExpr parent | isOverflowProne(parent) |
-        this.asExpr() = parent.getAnOperand() and
-        // don't flag a sink if it is an operand of another sink to avoid double reporting
-        not exists(OperatorExpr grandparent | parent = grandparent.getAnOperand().stripParens() |
-          isOverflowProne(grandparent)
-        )
-      ) and
-      isAllocationSize(allocsz) and
+      this instanceof OverflowProneOperand and
       localStep*(this, allocsz)
     }
 
@@ -106,13 +110,26 @@ module AllocationSizeOverflow {
   /** Holds if `e` is an arithmetic expression that could cause overflow. */
   private predicate isOverflowProne(ArithmeticBinaryExpr e) {
     (e instanceof AddExpr or e instanceof MulExpr) and
-    // rule out string concatenation
-    e.getType() instanceof NumericType
+    // rule out string concatenation and floating-point operations
+    e.getType() instanceof IntegerType
   }
 
-  /** Holds if `nd` is a data-flow node whose result is interpreted as an allocation size. */
-  private predicate isAllocationSize(DataFlow::Node nd) {
-    nd = Builtin::make().getACall().getArgument(0)
+  /** An operand of an arithmetic expression that could cause overflow. */
+  private class DefaultOverflowProneOperand extends OverflowProneOperand {
+    DefaultOverflowProneOperand() {
+      exists(OperatorExpr parent | isOverflowProne(parent) |
+        this.asExpr() = parent.getAnOperand() and
+        // only consider outermost operands to avoid double reporting
+        not exists(OperatorExpr grandparent | parent = grandparent.getAnOperand().stripParens() |
+          isOverflowProne(grandparent)
+        )
+      )
+    }
+  }
+
+  /** The first (non-type) argument to a call to `make`, considered as an allocation size. */
+  private class DefaultAllocationSize extends AllocationSize {
+    DefaultAllocationSize() { this = Builtin::make().getACall().getArgument(0) }
   }
 
   /** Holds if `t` is a type whose values are likely to marshal to relatively small blobs. */
