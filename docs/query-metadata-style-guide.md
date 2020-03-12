@@ -71,7 +71,6 @@ You must specify an `@id` property for your query. It must be unique and should 
 
 *   C and C++: `cpp`
 *   C#: `cs`
-*   COBOL: `cobol`
 *   Java: `java`
 *   JavaScript and TypeScript: `js`
 *   Python: `py`
