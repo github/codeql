@@ -150,7 +150,7 @@ module AllocationSizeOverflow {
   private predicate isSmall(Expr e) {
     isSmallType(e.getType())
     or
-    exists(e.getExactValue())
+    e.isConst()
     or
     exists(KeyValueExpr kv | kv = e |
       isSmall(kv.getKey()) and
