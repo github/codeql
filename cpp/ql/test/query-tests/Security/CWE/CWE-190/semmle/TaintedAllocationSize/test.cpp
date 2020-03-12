@@ -126,3 +126,67 @@ void open_file_bounded () {
 	int* a = (int*)malloc(bounded_size * sizeof(int)); // GOOD
 	int* b = (int*)malloc(size * sizeof(int)); // BAD
 }
+
+void more_bounded_tests() {
+	{
+		int size = atoi(getenv("USER"));
+
+		malloc(size * sizeof(int)); // BAD
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size > 0)
+		{
+			malloc(size * sizeof(int)); // BAD
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size < 100)
+		{
+			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if ((size > 0) && (size < 100))
+		{
+			malloc(size * sizeof(int)); // GOOD
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if ((100 > size) && (0 < size))
+		{
+			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+
+		if ((size > 0) && (size < 100))
+		{
+			// ...
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size > 100)
+		{
+			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+		}
+	}
+}
