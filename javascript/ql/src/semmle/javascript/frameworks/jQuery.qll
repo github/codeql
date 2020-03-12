@@ -258,144 +258,152 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * A model of a URL request made using the `jQuery.ajax`.
+ * Classes and predicates for modelling `ClientRequest`s in JQuery.
  */
-private class JQueryAjaxCall extends ClientRequest::Range {
-  JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
+private module JQueryClientRequest {
+  /**
+   * A model of a URL request made using the `jQuery.ajax`.
+   */
+  private class JQueryAjaxCall extends ClientRequest::Range {
+    JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
 
-  override DataFlow::Node getUrl() {
-    result = getArgument(0) and not exists(getOptionArgument(0, _))
-    or
-    result = getOptionArgument([0 .. 1], "url")
-  }
-
-  override DataFlow::Node getHost() { none() }
-
-  override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
-
-  private string getResponseType() {
-    getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
-  }
-
-  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-    (
-      responseType = getResponseType()
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) and not exists(getOptionArgument(0, _))
       or
-      not exists(getResponseType()) and responseType = ""
-    ) and
-    promise = false and
-    (
-      result =
-        getOptionArgument([0 .. 1], "success")
-            .getALocalSource()
-            .(DataFlow::FunctionNode)
-            .getParameter(0)
-      or
-      result =
-        getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
-            any(string method | method = "error" or method = "complete"))
+      result = getOptionArgument([0 .. 1], "url")
+    }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+
+    private string getResponseType() {
+      getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      (
+        responseType = getResponseType()
+        or
+        not exists(getResponseType()) and responseType = ""
+      ) and
+      promise = false and
+      (
+        result =
+          getOptionArgument([0 .. 1], "success")
               .getALocalSource()
               .(DataFlow::FunctionNode)
-              .getParameter(0))
-      or
-      result = getAnAjaxCallbackDataNode(this)
-      or
-      result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
-    )
-  }
-}
-
-/**
- * Gets the response data node from a call to a jqXHR Object.
- */
-DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
-  result =
-    request.getAMemberCall(any(string s | s = "done" or s = "then")).getCallback(0).getParameter(0)
-}
-
-/**
- * Gets the `jqXHR` object from a call to `fail` on the result from an ajax call (`request`).
- */
-DataFlow::SourceNode getAnXHRObject(ClientRequest::Range request) {
-  result = request.getAMemberCall("fail").getCallback(0).getParameter(0)
-}
-
-/**
- * Gets a node refering to the response contained in an `jqXHR` object (`obj`).
- */
-DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
-  result =
-    obj
-        .getAPropertyRead(any(string s |
-            s = "responseText" or
-            s = "responseXML"
-          ))
-}
-
-/**
- * A model of a URL request made using a `jQuery.ajax` shorthand.
- * E.g. `jQuery.getJSON`, `jQuery.post` etc.
- * See: https://api.jquery.com/category/ajax/shorthand-methods/.
- *
- * The method signatures:
- * jQuery.get( url [, data ] [, success ] [, dataType ] )
- * jQuery.getJSON( url [, data ] [, success ] )
- * jQuery.getScript( url [, success ] )
- * jQuery.post( url [, data ] [, success ] [, dataType ] )
- * .load( url [, data ] [, complete ] )
- */
-private class JQueryAjaxShortHand extends ClientRequest::Range {
-  string name;
-
-  JQueryAjaxShortHand() {
-    (
-      name = "get" or
-      name = "getJSON" or
-      name = "getScript" or
-      name = "post"
-    ) and
-    this = jquery().getAMemberCall(name)
-    or
-    name = "load" and
-    this = JQuery::objectRef().getAMethodCall(name)
+              .getParameter(0)
+        or
+        result =
+          getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
+              any(string method | method = "error" or method = "complete"))
+                .getALocalSource()
+                .(DataFlow::FunctionNode)
+                .getParameter(0))
+        or
+        result = getAnAjaxCallbackDataNode(this)
+        or
+        result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
+      )
+    }
   }
 
-  override DataFlow::Node getUrl() { result = getArgument(0) }
-
-  override DataFlow::Node getHost() { none() }
-
-  override DataFlow::Node getADataNode() {
-    result = getArgument(1) and
-    not name = "getScript" and // doesn't have a data-node.
-    not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
+  /**
+   * Gets a response data node from a call to a method on jqXHR Object.
+   */
+  private DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
+    result =
+      request
+          .getAMemberCall(any(string s | s = "done" or s = "then"))
+          .getCallback(0)
+          .getParameter(0)
   }
 
-  string getResponseType() {
-    (name = "get" or name = "post") and
-    getLastArgument().mayHaveStringValue(result) and
-    getNumArgument() > 1
-    or
-    name = "getJSON" and result = "json"
-    or
-    (name = "getScript" or name = "load") and
-    result = "text"
+  /**
+   * Gets a `jqXHR` object from a call to the `fail(..)` method on jqXHR Object.
+   */
+  private DataFlow::SourceNode getAnXHRObject(ClientRequest::Range request) {
+    result = request.getAMemberCall("fail").getCallback(0).getParameter(0)
   }
 
-  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-    (
-      responseType = getResponseType()
+  /**
+   * Gets a node refering to the response contained in an `jqXHR` object.
+   */
+  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
+    result =
+      obj
+          .getAPropertyRead(any(string s |
+              s = "responseText" or
+              s = "responseXML"
+            ))
+  }
+
+  /**
+   * A model of a URL request made using a `jQuery.ajax` shorthand.
+   * E.g. `jQuery.getJSON`, `jQuery.post` etc.
+   * See: https://api.jquery.com/category/ajax/shorthand-methods/.
+   *
+   * Models the following method signatures:
+   * - `jQuery.get( url [, data ] [, success ] [, dataType ] )`
+   * - `jQuery.getJSON( url [, data ] [, success ] )`
+   * - `jQuery.getScript( url [, success ] )`
+   * - `jQuery.post( url [, data ] [, success ] [, dataType ] )`
+   * - `.load( url [, data ] [, complete ] )`
+   */
+  private class JQueryAjaxShortHand extends ClientRequest::Range {
+    string name;
+
+    JQueryAjaxShortHand() {
+      (
+        name = "get" or
+        name = "getJSON" or
+        name = "getScript" or
+        name = "post"
+      ) and
+      this = jquery().getAMemberCall(name)
       or
-      not exists(getResponseType()) and responseType = ""
-    ) and
-    promise = false and
-    (
-      // one of the two last arguments
-      result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+      name = "load" and
+      this = JQuery::objectRef().getAMethodCall(name)
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() {
+      result = getArgument(1) and
+      not name = "getScript" and // doesn't have a data-node.
+      not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
+    }
+
+    private string getResponseType() {
+      (name = "get" or name = "post") and
+      getLastArgument().mayHaveStringValue(result) and
+      getNumArgument() > 1
       or
-      result = getAnAjaxCallbackDataNode(this)
+      name = "getJSON" and result = "json"
       or
-      result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
-    )
+      (name = "getScript" or name = "load") and
+      result = "text"
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      (
+        responseType = getResponseType()
+        or
+        not exists(getResponseType()) and responseType = ""
+      ) and
+      promise = false and
+      (
+        // one of the two last arguments
+        result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+        or
+        result = getAnAjaxCallbackDataNode(this)
+        or
+        result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
+      )
+    }
   }
 }
 
