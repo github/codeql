@@ -49,9 +49,8 @@ private class DefaultHtmlSanitizerCall extends HtmlSanitizerCall {
       callee = LodashUnderscore::member("escape")
       or
       exists(string name | name = "encode" or name = "encodeNonUTF" |
-        callee = DataFlow::moduleMember("html-entities", _)
-              .getAnInstantiation()
-              .getAPropertyRead(name) or
+        callee =
+          DataFlow::moduleMember("html-entities", _).getAnInstantiation().getAPropertyRead(name) or
         callee = DataFlow::moduleMember("html-entities", _).getAPropertyRead(name)
       )
       or

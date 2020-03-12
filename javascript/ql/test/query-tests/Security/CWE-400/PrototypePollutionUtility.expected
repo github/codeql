@@ -1,4 +1,85 @@
 nodes
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key |
+| PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key |
+| PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key |
+| PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key |
+| PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key |
+| PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key |
+| PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] |
 | PrototypePollutionUtility/tests.js:3:25:3:27 | dst |
 | PrototypePollutionUtility/tests.js:3:25:3:27 | dst |
 | PrototypePollutionUtility/tests.js:3:30:3:32 | src |
@@ -1042,6 +1123,54 @@ nodes
 | PrototypePollutionUtility/tests.js:461:24:461:28 | value |
 | PrototypePollutionUtility/tests.js:461:24:461:28 | value |
 | PrototypePollutionUtility/tests.js:461:24:461:28 | value |
+| PrototypePollutionUtility/tests.js:467:26:467:28 | dst |
+| PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key |
+| PrototypePollutionUtility/tests.js:471:29:471:31 | dst |
+| PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] |
+| PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] |
+| PrototypePollutionUtility/tests.js:471:33:471:35 | key |
+| PrototypePollutionUtility/tests.js:471:39:471:41 | src |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:471:43:471:45 | key |
+| PrototypePollutionUtility/tests.js:473:13:473:15 | dst |
+| PrototypePollutionUtility/tests.js:473:13:473:15 | dst |
+| PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:28:473:30 | key |
+| PrototypePollutionUtility/tests.js:478:32:478:34 | src |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:23 | src |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:482:25:482:27 | key |
+| PrototypePollutionUtility/tests.js:484:38:484:42 | value |
+| PrototypePollutionUtility/tests.js:484:38:484:42 | value |
+| PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:486:24:486:28 | value |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst |
 | examples/PrototypePollutionUtility.js:1:21:1:23 | src |
@@ -1125,6 +1254,94 @@ nodes
 | examples/PrototypePollutionUtility_fixed.js:7:28:7:30 | key |
 | examples/PrototypePollutionUtility_fixed.js:7:28:7:30 | key |
 edges
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key | PrototypePollutionUtility/path-assignment.js:15:20:15:22 | key |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:8:13:8:25 | key |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target | PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:27 | target | PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] | PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target |
+| PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] | PrototypePollutionUtility/path-assignment.js:13:13:13:32 | target |
+| PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key | PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:13:29:13:31 | key | PrototypePollutionUtility/path-assignment.js:13:22:13:32 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:25:42:27 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key |
+| PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key | PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:41:13:41:25 | key |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:18:42:23 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} | PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target |
+| PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} | PrototypePollutionUtility/path-assignment.js:42:9:42:48 | target |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target | PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:37 | target | PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] | PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] | PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] | PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] | PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} | PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:32:42:48 | target[key] \|\| {} | PrototypePollutionUtility/path-assignment.js:42:18:42:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key | PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:42:39:42:41 | key | PrototypePollutionUtility/path-assignment.js:42:32:42:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] | PrototypePollutionUtility/path-assignment.js:44:12:44:18 | keys[i] |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:25:59:27 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key |
+| PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key | PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:58:13:58:25 | key |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:18:59:23 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} | PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target |
+| PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} | PrototypePollutionUtility/path-assignment.js:59:9:59:48 | target |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target | PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:37 | target | PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] | PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] | PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] | PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] | PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} | PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:32:59:48 | target[key] \|\| {} | PrototypePollutionUtility/path-assignment.js:59:18:59:48 | target[ ... ] \|\| {} |
+| PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key | PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:59:39:59:41 | key | PrototypePollutionUtility/path-assignment.js:59:32:59:42 | target[key] |
+| PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] | PrototypePollutionUtility/path-assignment.js:61:12:61:18 | keys[i] |
 | PrototypePollutionUtility/tests.js:3:25:3:27 | dst | PrototypePollutionUtility/tests.js:6:28:6:30 | dst |
 | PrototypePollutionUtility/tests.js:3:25:3:27 | dst | PrototypePollutionUtility/tests.js:6:28:6:30 | dst |
 | PrototypePollutionUtility/tests.js:3:25:3:27 | dst | PrototypePollutionUtility/tests.js:8:13:8:15 | dst |
@@ -2457,6 +2674,64 @@ edges
 | PrototypePollutionUtility/tests.js:459:41:459:48 | dst[key] | PrototypePollutionUtility/tests.js:456:38:456:40 | dst |
 | PrototypePollutionUtility/tests.js:459:45:459:47 | key | PrototypePollutionUtility/tests.js:459:41:459:48 | dst[key] |
 | PrototypePollutionUtility/tests.js:459:45:459:47 | key | PrototypePollutionUtility/tests.js:459:41:459:48 | dst[key] |
+| PrototypePollutionUtility/tests.js:467:26:467:28 | dst | PrototypePollutionUtility/tests.js:471:29:471:31 | dst |
+| PrototypePollutionUtility/tests.js:467:26:467:28 | dst | PrototypePollutionUtility/tests.js:473:13:473:15 | dst |
+| PrototypePollutionUtility/tests.js:467:26:467:28 | dst | PrototypePollutionUtility/tests.js:473:13:473:15 | dst |
+| PrototypePollutionUtility/tests.js:467:31:467:33 | src | PrototypePollutionUtility/tests.js:471:39:471:41 | src |
+| PrototypePollutionUtility/tests.js:467:31:467:33 | src | PrototypePollutionUtility/tests.js:473:24:473:26 | src |
+| PrototypePollutionUtility/tests.js:467:31:467:33 | src | PrototypePollutionUtility/tests.js:473:24:473:26 | src |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:471:33:471:35 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:471:33:471:35 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:471:43:471:45 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:471:43:471:45 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:17:473:19 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:28:473:30 | key |
+| PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:28:473:30 | key |
+| PrototypePollutionUtility/tests.js:471:29:471:31 | dst | PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] |
+| PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] | PrototypePollutionUtility/tests.js:467:26:467:28 | dst |
+| PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] | PrototypePollutionUtility/tests.js:467:26:467:28 | dst |
+| PrototypePollutionUtility/tests.js:471:33:471:35 | key | PrototypePollutionUtility/tests.js:471:29:471:36 | dst[key] |
+| PrototypePollutionUtility/tests.js:471:39:471:41 | src | PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] | PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] | PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] | PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] | PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] | PrototypePollutionUtility/tests.js:467:31:467:33 | src |
+| PrototypePollutionUtility/tests.js:471:43:471:45 | key | PrototypePollutionUtility/tests.js:471:39:471:46 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:26 | src | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:28:473:30 | key | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:473:28:473:30 | key | PrototypePollutionUtility/tests.js:473:24:473:31 | src[key] |
+| PrototypePollutionUtility/tests.js:478:32:478:34 | src | PrototypePollutionUtility/tests.js:482:21:482:23 | src |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:482:25:482:27 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:482:25:482:27 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:479:14:479:16 | key | PrototypePollutionUtility/tests.js:486:17:486:19 | key |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:484:38:484:42 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:484:38:484:42 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:13:482:28 | value | PrototypePollutionUtility/tests.js:486:24:486:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:23 | src | PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] | PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] | PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] | PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] | PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] | PrototypePollutionUtility/tests.js:482:13:482:28 | value |
+| PrototypePollutionUtility/tests.js:482:25:482:27 | key | PrototypePollutionUtility/tests.js:482:21:482:28 | src[key] |
+| PrototypePollutionUtility/tests.js:484:38:484:42 | value | PrototypePollutionUtility/tests.js:478:32:478:34 | src |
+| PrototypePollutionUtility/tests.js:484:38:484:42 | value | PrototypePollutionUtility/tests.js:478:32:478:34 | src |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:5:19:5:21 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:5:19:5:21 | dst |
 | examples/PrototypePollutionUtility.js:1:16:1:18 | dst | examples/PrototypePollutionUtility.js:7:13:7:15 | dst |
@@ -2563,6 +2838,9 @@ edges
 | examples/PrototypePollutionUtility_fixed.js:7:28:7:30 | key | examples/PrototypePollutionUtility_fixed.js:7:24:7:31 | src[key] |
 | examples/PrototypePollutionUtility_fixed.js:7:28:7:30 | key | examples/PrototypePollutionUtility_fixed.js:7:24:7:31 | src[key] |
 #select
+| PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target | PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target | The property chain $@ is recursively assigned to $@ without guarding against prototype pollution. | PrototypePollutionUtility/path-assignment.js:8:19:8:25 | keys[i] | here | PrototypePollutionUtility/path-assignment.js:15:13:15:18 | target | target |
+| PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target | PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target | The property chain $@ is recursively assigned to $@ without guarding against prototype pollution. | PrototypePollutionUtility/path-assignment.js:41:19:41:25 | keys[i] | here | PrototypePollutionUtility/path-assignment.js:44:5:44:10 | target | target |
+| PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target | PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target | The property chain $@ is recursively assigned to $@ without guarding against prototype pollution. | PrototypePollutionUtility/path-assignment.js:58:19:58:25 | keys[i] | here | PrototypePollutionUtility/path-assignment.js:61:5:61:10 | target | target |
 | PrototypePollutionUtility/tests.js:8:13:8:15 | dst | PrototypePollutionUtility/tests.js:4:14:4:16 | key | PrototypePollutionUtility/tests.js:8:13:8:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:4:21:4:23 | src | src | PrototypePollutionUtility/tests.js:8:13:8:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:18:13:18:15 | dst | PrototypePollutionUtility/tests.js:14:30:14:32 | key | PrototypePollutionUtility/tests.js:18:13:18:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:14:17:14:19 | src | src | PrototypePollutionUtility/tests.js:18:13:18:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:36:9:36:11 | dst | PrototypePollutionUtility/tests.js:25:18:25:20 | key | PrototypePollutionUtility/tests.js:36:9:36:11 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:25:25:25:30 | source | source | PrototypePollutionUtility/tests.js:36:9:36:11 | dst | dst |
@@ -2571,7 +2849,7 @@ edges
 | PrototypePollutionUtility/tests.js:109:13:109:15 | dst | PrototypePollutionUtility/tests.js:102:14:102:16 | key | PrototypePollutionUtility/tests.js:109:13:109:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:102:21:102:23 | src | src | PrototypePollutionUtility/tests.js:109:13:109:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:154:13:154:15 | dst | PrototypePollutionUtility/tests.js:150:14:150:16 | key | PrototypePollutionUtility/tests.js:154:13:154:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:150:21:150:23 | src | src | PrototypePollutionUtility/tests.js:154:13:154:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:196:13:196:15 | dst | PrototypePollutionUtility/tests.js:192:19:192:25 | keys[i] | PrototypePollutionUtility/tests.js:196:13:196:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:190:28:190:30 | src | src | PrototypePollutionUtility/tests.js:196:13:196:15 | dst | dst |
-| PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | PrototypePollutionUtility/tests.js:238:14:238:16 | key | PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:238:21:238:24 | data | data | PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | this object |
+| PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | PrototypePollutionUtility/tests.js:238:14:238:16 | key | PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:238:21:238:24 | data | data | PrototypePollutionUtility/tests.js:233:5:233:13 | map[key1] | here |
 | PrototypePollutionUtility/tests.js:270:13:270:15 | dst | PrototypePollutionUtility/tests.js:265:19:265:26 | entry[0] | PrototypePollutionUtility/tests.js:270:13:270:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:264:20:264:22 | src | src | PrototypePollutionUtility/tests.js:270:13:270:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | PrototypePollutionUtility/tests.js:276:34:276:36 | key | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:276:21:276:23 | src | src | PrototypePollutionUtility/tests.js:280:13:280:15 | dst | dst |
 | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | PrototypePollutionUtility/tests.js:302:14:302:16 | key | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:302:21:302:23 | src | src | PrototypePollutionUtility/tests.js:308:17:308:19 | dst | dst |
@@ -2583,4 +2861,5 @@ edges
 | PrototypePollutionUtility/tests.js:450:30:450:32 | dst | PrototypePollutionUtility/tests.js:444:25:444:27 | key | PrototypePollutionUtility/tests.js:450:30:450:32 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:444:12:444:14 | src | src | PrototypePollutionUtility/tests.js:450:30:450:32 | dst | dst |
 | PrototypePollutionUtility/tests.js:451:30:451:32 | dst | PrototypePollutionUtility/tests.js:444:25:444:27 | key | PrototypePollutionUtility/tests.js:451:30:451:32 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:444:12:444:14 | src | src | PrototypePollutionUtility/tests.js:451:30:451:32 | dst | dst |
 | PrototypePollutionUtility/tests.js:461:13:461:15 | dst | PrototypePollutionUtility/tests.js:457:25:457:27 | key | PrototypePollutionUtility/tests.js:461:13:461:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:457:12:457:14 | src | src | PrototypePollutionUtility/tests.js:461:13:461:15 | dst | dst |
+| PrototypePollutionUtility/tests.js:473:13:473:15 | dst | PrototypePollutionUtility/tests.js:468:14:468:16 | key | PrototypePollutionUtility/tests.js:473:13:473:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | PrototypePollutionUtility/tests.js:468:21:468:23 | src | src | PrototypePollutionUtility/tests.js:473:13:473:15 | dst | dst |
 | examples/PrototypePollutionUtility.js:7:13:7:15 | dst | examples/PrototypePollutionUtility.js:2:14:2:16 | key | examples/PrototypePollutionUtility.js:7:13:7:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | examples/PrototypePollutionUtility.js:2:21:2:23 | src | src | examples/PrototypePollutionUtility.js:7:13:7:15 | dst | dst |

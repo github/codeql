@@ -71,6 +71,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
+private import internal.CallGraphs
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -620,10 +621,11 @@ private predicate exploratoryFlowStep(
   isAdditionalStoreStep(pred, succ, _, cfg) or
   isAdditionalLoadStep(pred, succ, _, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, cfg) or
-  // the following two disjuncts taken together over-approximate flow through
+  // the following three disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
-  succ = pred.(DataFlow::FunctionNode).getAParameter()
+  succ = pred.(DataFlow::FunctionNode).getAParameter() or
+  exploratoryBoundInvokeStep(pred, succ)
 }
 
 /**
@@ -751,7 +753,7 @@ private predicate flowThroughCall(
 ) {
   exists(Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
-    calls(output, f) and // Do not consider partial calls
+    (calls(output, f) or callsBound(output, f, _)) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
@@ -761,7 +763,7 @@ private predicate flowThroughCall(
   exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
     DataFlow::exceptionalFunctionReturnNode(ret, f) and
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
-    calls(invk, f) and
+    (calls(invk, f) or callsBound(invk, f, _)) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
@@ -899,8 +901,16 @@ private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  isRelevant(rhs, cfg) and
-  storeStep(rhs, nd, prop, cfg, summary)
+  exists(PathSummary s1, PathSummary s2 |
+    reachableFromSource(rhs, cfg, s1)
+    or
+    reachableFromStoreBase(_, _, rhs, cfg, s1)
+  |
+    storeStep(rhs, nd, prop, cfg, s2) and
+    summary =
+      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), s2.getStartLabel(),
+        s2.getEndLabel())
+  )
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
@@ -1030,6 +1040,15 @@ private predicate flowIntoHigherOrderCall(
   exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
     higherOrderCall(pred, cb, i, cfg, oldSummary) and
     succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+  or
+  exists(
+    DataFlow::SourceNode cb, DataFlow::FunctionNode f, int i, int boundArgs, PathSummary oldSummary
+  |
+    higherOrderCall(pred, cb, i, cfg, oldSummary) and
+    cb = CallGraph::getABoundFunctionReference(f, boundArgs, false) and
+    succ = f.getParameter(boundArgs + i) and
     summary = oldSummary.append(PathSummary::call())
   )
 }
@@ -1311,6 +1330,9 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip the exceptional return on functions, as this highlights the entire function.
     nd = any(DataFlow::FunctionNode f).getExceptionalReturn()
+    or
+    // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
+    nd = DataFlow::thisNode(_)
   }
 }
 
@@ -1482,9 +1504,9 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
 }
 
 /**
-  * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
-  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
-  */
+ * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
+ * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
+ */
 class VarAccessBarrier extends DataFlow::Node {
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |

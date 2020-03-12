@@ -939,9 +939,7 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
   /**
    * Holds if this is a type of form `asserts E is T` or `asserts E`.
    */
-  predicate hasAssertsKeyword() {
-    hasAssertsKeyword(this)
-  }
+  predicate hasAssertsKeyword() { hasAssertsKeyword(this) }
 }
 
 /**
@@ -954,9 +952,7 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
  * ```
  */
 class IsTypeExpr extends PredicateTypeExpr {
-  IsTypeExpr() {
-    exists(getPredicateType())
-  }
+  IsTypeExpr() { exists(getPredicateType()) }
 }
 
 /**
@@ -2312,18 +2308,14 @@ class EnumLiteralType extends TypeReference {
  * A type that refers to a type alias.
  */
 class TypeAliasReference extends TypeReference {
-  TypeAliasReference() {
-    type_alias(this, _)
-  }
+  TypeAliasReference() { type_alias(this, _) }
 
   /**
    * Gets the type behind the type alias.
    *
    * For example, for `type B<T> = T[][]`, this maps the type `B<number>` to `number[][]`.
    */
-  Type getAliasedType() {
-    type_alias(this, result)
-  }
+  Type getAliasedType() { type_alias(this, result) }
 }
 
 /**
@@ -2635,9 +2627,7 @@ class CallSignatureType extends @signature_type {
    *
    * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
    */
-  PlainArrayType getRestParameterArrayType() {
-    signature_rest_parameter(this, result)
-  }
+  PlainArrayType getRestParameterArrayType() { signature_rest_parameter(this, result) }
 }
 
 /**

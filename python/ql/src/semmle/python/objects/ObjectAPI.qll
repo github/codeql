@@ -78,7 +78,7 @@ class Value extends TObject {
     predicate isBuiltin() {
         this.(ObjectInternal).isBuiltin()
     }
-
+    
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or
@@ -481,6 +481,15 @@ class ClassValue extends Value {
     predicate declaresAttribute(string name) {
         this.(ClassObjectInternal).getClassDeclaration().declaresAttribute(name)
     }
+    
+    /** Whether this class is a legal exception class. 
+     *  What constitutes a legal exception class differs between major versions */
+    predicate isLegalExceptionType() {
+        not this.isNewStyle() or
+        this.getASuperType() = ClassValue::baseException()
+        or
+        major_version() = 2 and this = ClassValue::tuple()
+    }
 
 }
 
@@ -504,6 +513,28 @@ abstract class FunctionValue extends CallableValue {
 
     predicate isOverriddenMethod() {
         exists(Value f | f.overrides(this))
+    }
+    
+    /** Whether `name` is a legal argument name for this function */
+    bindingset[name]
+    predicate isLegalArgumentName(string name) {
+        this.getScope().getAnArg().asName().getId() = name
+        or
+        this.getScope().getAKeywordOnlyArg().getId() = name
+        or
+        this.getScope().hasKwArg()
+    }
+    
+    /** Whether this is a "normal" method, that is, it is exists as a class attribute 
+     *  which is not a lambda and not the __new__ method. */
+    predicate isNormalMethod() {
+        exists(ClassValue cls, string name |
+            cls.declaredAttribute(name) = this and
+            name != "__new__" and
+            exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) |
+              not origin instanceof Lambda
+            )
+        )
     }
 }
 
@@ -839,7 +870,7 @@ module ClassValue {
     
     /** Get the `ClassValue` for the `StopIteration` class. */
     ClassValue stopIteration() {
-        result = TBuiltinClassObject(Builtin::special("StopIteration"))
+        result = TBuiltinClassObject(Builtin::builtin("StopIteration"))
     }
 
     /** Get the `ClassValue` for the class of modules. */
@@ -882,6 +913,11 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::builtin("KeyError"))
     }
     
+    /** Get the `ClassValue` for the `LookupError` class. */
+    ClassValue lookupError() {
+        result = TBuiltinClassObject(Builtin::builtin("LookupError"))
+    }
+    
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() {
         result = TBuiltinClassObject(Builtin::builtin("IOError"))
@@ -895,6 +931,16 @@ module ClassValue {
     /** Get the `ClassValue` for the `ImportError` class. */
     ClassValue importError() {
         result = TBuiltinClassObject(Builtin::builtin("ImportError"))
+    }
+    
+    /** Get the `ClassValue` for the `UnicodeEncodeError` class. */
+    ClassValue unicodeEncodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeEncodeError"))
+    }
+    
+    /** Get the `ClassValue` for the `UnicodeDecodeError` class. */
+    ClassValue unicodeDecodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeDecodeError"))
     }
 
 }
