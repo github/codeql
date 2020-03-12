@@ -32,7 +32,7 @@ for different values.
 In the fourth example, the code utilizes setXPathVariableResolver which prevents XPath Injection.
 </p>
 <p>
-The fifth example is a dom4j XPath injection example
+The fifth example is a dom4j XPath injection example.
 </p>
 <sample src="XPathInjection.java" />
 </example>
