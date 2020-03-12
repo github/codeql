@@ -296,9 +296,7 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
     forall(RegExpTerm child | child = getAChild() | child.isNullable())
   }
 
-  override string getConstantValue() {
-    result = getConstantValue(0)
-  }
+  override string getConstantValue() { result = getConstantValue(0) }
 
   /**
    * Gets the single string matched by the `i`th child and all following children of
@@ -308,13 +306,11 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
     i = getNumChild() and
     result = ""
     or
-    result = getChild(i).getConstantValue() + getConstantValue(i+1)
+    result = getChild(i).getConstantValue() + getConstantValue(i + 1)
   }
 
-    /** Gets the element preceding `element` in this sequence. */
-  RegExpTerm previousElement(RegExpTerm element) {
-    element = nextElement(result)
-  }
+  /** Gets the element preceding `element` in this sequence. */
+  RegExpTerm previousElement(RegExpTerm element) { element = nextElement(result) }
 
   /** Gets the element following `element` in this sequence. */
   RegExpTerm nextElement(RegExpTerm element) {
@@ -834,7 +830,7 @@ class RegExpParseError extends Error, @regexp_parse_error {
 }
 
 /**
- * Holds if `func` is a method defined on `String.prototype` with name `name`. 
+ * Holds if `func` is a method defined on `String.prototype` with name `name`.
  */
 private predicate isNativeStringMethod(Function func, string name) {
   exists(ExternalInstanceMemberDecl decl |
@@ -856,9 +852,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     exists(DataFlow::MethodCallNode mce, string methodName |
       mce.getReceiver().analyze().getAType() = TTString() and
       mce.getMethodName() = methodName and
-      not exists(Function func |
-        func = mce.getACallee()
-      |
+      not exists(Function func | func = mce.getACallee() |
         not isNativeStringMethod(func, methodName)
       )
     |

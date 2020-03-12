@@ -76,6 +76,14 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
     // `import { createServer } from 'http'`
     result = DataFlow::destructuredModuleImportNode(this)
   }
+
+  /** Holds if this is declared with the `type` keyword, so it only imports types. */
+  predicate isTypeOnly() { hasTypeKeyword(this) }
+
+  override predicate isAmbient() {
+    Stmt.super.isAmbient() or
+    isTypeOnly()
+  }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
@@ -256,6 +264,14 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
    * to module `a` or possibly to some other module from which `a` re-exports.
    */
   abstract DataFlow::Node getSourceNode(string name);
+
+  /** Holds if is declared with the `type` keyword, so only types are exported. */
+  predicate isTypeOnly() { hasTypeKeyword(this) }
+
+  override predicate isAmbient() {
+    Stmt.super.isAmbient() or
+    isTypeOnly()
+  }
 }
 
 /**
@@ -410,6 +426,18 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   override predicate isAmbient() {
     // An export such as `export declare function f()` should be seen as ambient.
     hasDeclareKeyword(getOperand()) or getParent().isAmbient()
+  }
+}
+
+/**
+ * An export declaration with the `type` modifier.
+ */
+private class TypeOnlyExportDeclaration extends ExportNamedDeclaration {
+  TypeOnlyExportDeclaration() { isTypeOnly() }
+
+  override predicate exportsAs(LexicalName v, string name) {
+    super.exportsAs(v, name) and
+    not v instanceof Variable
   }
 }
 
@@ -582,15 +610,10 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    *
    * Gets the module from which this declaration re-exports.
    */
-  deprecated
-  ES2015Module getImportedModule() {
-    result = getReExportedModule()
-  }
+  deprecated ES2015Module getImportedModule() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
-  ES2015Module getReExportedES2015Module() {
-    result = getReExportedModule()
-  }
+  ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports. */
   Module getReExportedModule() {
@@ -603,7 +626,8 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
    */
   private Module resolveFromTypeRoot() {
-    result.getFile() = min(TypeRootFolder typeRoot |
+    result.getFile() =
+      min(TypeRootFolder typeRoot |
         |
         typeRoot.getModuleFile(getImportedPath().getStringValue())
         order by

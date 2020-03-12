@@ -84,9 +84,7 @@ private module MongoDB {
    * of `mongodb.Collection`.
    */
   private class CollectionFromType extends Collection {
-    CollectionFromType() {
-      hasUnderlyingType("mongodb", "Collection")
-    }
+    CollectionFromType() { hasUnderlyingType("mongodb", "Collection") }
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */

@@ -61,9 +61,12 @@ predicate isIncompleteHostNameRegExpPattern(RegExpTerm regexp, RegExpSequence se
     unescapedDot = seq.getChild([0 .. i - 1]).getAChild*() and
     unescapedDot != seq.getChild(i - 1) and // Should not be the '.' immediately before the TLD
     not hasConsecutiveDots(unescapedDot.getParent()) and
-    hostname = seq.getChild(i - 2).getRawValue() + seq.getChild(i - 1).getRawValue() + seq.getChild(i).getRawValue()
+    hostname =
+      seq.getChild(i - 2).getRawValue() + seq.getChild(i - 1).getRawValue() +
+        seq.getChild(i).getRawValue()
   |
-    if unescapedDot.getParent() instanceof RegExpQuantifier then (
+    if unescapedDot.getParent() instanceof RegExpQuantifier
+    then
       // `.*\.example.com` can match `evil.com/?x=.example.com`
       //
       // This problem only occurs when the pattern is applied against a full URL, not just a hostname/origin.
@@ -73,16 +76,20 @@ predicate isIncompleteHostNameRegExpPattern(RegExpTerm regexp, RegExpSequence se
       seq.getChild(0) instanceof RegExpCaret and
       not seq.getAChild() instanceof RegExpDollar and
       seq.getChild([i .. i + 1]).(RegExpConstant).getValue().regexpMatch(".*[/?#].*") and
-      msg = "has an unrestricted wildcard '" +
-          unescapedDot.getParent().(RegExpQuantifier).getRawValue() +
-          "' which may cause '" + hostname + "' to be matched anywhere in the URL, outside the hostname."
-    ) else (
-      msg = "has an unescaped '.' before '" + hostname + "', so it might match more hosts than expected."
-    )
+      msg =
+        "has an unrestricted wildcard '" + unescapedDot.getParent().(RegExpQuantifier).getRawValue()
+          + "' which may cause '" + hostname +
+          "' to be matched anywhere in the URL, outside the hostname."
+    else
+      msg =
+        "has an unescaped '.' before '" + hostname +
+          "', so it might match more hosts than expected."
   )
 }
 
-from RegExpPatternSource re, RegExpTerm regexp, RegExpSequence hostSequence, string msg, string kind, DataFlow::Node aux
+from
+  RegExpPatternSource re, RegExpTerm regexp, RegExpSequence hostSequence, string msg, string kind,
+  DataFlow::Node aux
 where
   regexp = re.getRegExpTerm() and
   isIncompleteHostNameRegExpPattern(regexp, hostSequence, msg) and
@@ -96,5 +103,4 @@ where
     )
   ) and
   not CharacterEscapes::hasALikelyRegExpPatternMistake(re)
-select hostSequence,
-  "This " + kind + " " + msg, aux, "here"
+select hostSequence, "This " + kind + " " + msg, aux, "here"

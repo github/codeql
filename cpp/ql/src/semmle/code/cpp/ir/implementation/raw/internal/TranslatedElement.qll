@@ -50,6 +50,14 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Only translate the initializer of a static local if it uses run-time data.
+  // Otherwise the initializer does not run in function scope.
+  exists(Initializer init, StaticStorageDurationVariable var |
+    init = var.getInitializer() and
+    var.hasConstantInitialization() and
+    expr = init.getExpr().getFullyConverted()
+  )
+  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -411,7 +419,9 @@ newtype TTranslatedElement =
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
   TTranslatedSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
+    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+    expr instanceof ConstructorCall or
+    expr.getTarget() instanceof AllocationFunction
   } or // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
