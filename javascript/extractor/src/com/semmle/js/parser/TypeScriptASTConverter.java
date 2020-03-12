@@ -177,7 +177,7 @@ public class TypeScriptASTConverter {
 
   TypeScriptASTConverter(TypeScriptParserMetadata metadata) {
     this.metadata = metadata;
-    this.syntaxKindExtends = getSyntaxKind("ExtendsKeyword");
+    this.syntaxKindExtends = metadata.getSyntaxKindId("ExtendsKeyword");
   }
 
   /**
@@ -2525,11 +2525,6 @@ public class TypeScriptASTConverter {
       return (flags.getAsInt() & flagId) != 0;
     }
     return false;
-  }
-
-  /** Gets the numeric value of the syntax kind enum with the given name. */
-  private int getSyntaxKind(String syntaxKind) {
-    return metadata.getSyntaxKindId(syntaxKind);
   }
 
   /** Check whether a node has a child with a given name. */
