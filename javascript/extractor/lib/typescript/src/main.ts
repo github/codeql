@@ -107,6 +107,7 @@ function checkCycle(root: any) {
         obj.$cycle_visiting = true;
         for (let k in obj) {
             if (!obj.hasOwnProperty(k)) continue;
+            // Ignore numeric and whitelisted properties.
             if (+k !== +k && !astPropertySet.has(k)) continue;
             if (k === "$cycle_visiting") continue;
             let cycle = visit(obj[k]);
