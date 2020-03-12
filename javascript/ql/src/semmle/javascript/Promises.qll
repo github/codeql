@@ -145,17 +145,17 @@ module Promises {
  * The below is an example of a type-tracking predicate where the initial value is a promise:
  * ```
  * DataFlow::SourceNode myType(DataFlow::TypeTracker t) {
- *  t.startInPromise() and 
+ *  t.startInPromise() and
  *  result = <the promise value> and
  *  or
  *  exists(DataFlow::TypeTracker t2 | result = myType(t2).track(t2, t))
  * }
  * ```
- * 
- * The type-tracking predicate above will only end (`t = DataFlow::TypeTracker::end()`) after the tracked value has been 
+ *
+ * The type-tracking predicate above will only end (`t = DataFlow::TypeTracker::end()`) after the tracked value has been
  * extracted from the promise.
- * 
- * The `PromiseTypeTracking::promiseStep` predicate can be used instead of `SourceNode::track` 
+ *
+ * The `PromiseTypeTracking::promiseStep` predicate can be used instead of `SourceNode::track`
  * to get type-tracking only for promise steps.
  *
  * Replace `t.startInPromise()` in the above example with `t.start()` to create a type-tracking predicate
@@ -241,6 +241,7 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
  */
 private module PromiseFlow {
   private predicate valueProp = Promises::valueProp/0;
+
   private predicate errorProp = Promises::errorProp/0;
 
   /**

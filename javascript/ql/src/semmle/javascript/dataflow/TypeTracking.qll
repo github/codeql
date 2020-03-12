@@ -230,8 +230,8 @@ class TypeTracker extends TTypeTracker {
   predicate start() { hasCall = false and prop = "" }
 
   /**
-   * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`. 
-   * The type tracking only ends after the property has been loaded. 
+   * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`.
+   * The type tracking only ends after the property has been loaded.
    */
   predicate startInProp(PropertyName propName) { hasCall = false and prop = propName }
 
@@ -239,9 +239,7 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking, and the initial value is a promise.
    * The type tracking only ends after the value has been extracted from the promise.
    */
-  predicate startInPromise() {
-    startInProp(Promises::valueProp())
-  }
+  predicate startInPromise() { startInProp(Promises::valueProp()) }
 
   /**
    * Holds if this is the starting point of type tracking
