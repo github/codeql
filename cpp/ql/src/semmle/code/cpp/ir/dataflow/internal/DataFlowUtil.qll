@@ -54,8 +54,8 @@ class Node extends TIRDataFlowNode {
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
-  /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  /** Gets the positional parameter corresponding to this node, if any. */
+  Parameter asParameter() { result = this.(PositionalParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
@@ -143,27 +143,69 @@ class ExprNode extends InstructionNode {
 }
 
 /**
+ * INTERNAL: do not use. Translates a parameter/argument index into a negative
+ * number that denotes the index of its side effect (pointer indirection).
+ */
+bindingset[index]
+int getArgumentPosOfSideEffect(int index) {
+  // -1 -> -2
+  //  0 -> -3
+  //  1 -> -4
+  // ...
+  result = -3 - index
+}
+
+/**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
-
+abstract class ParameterNode extends InstructionNode {
   /**
-   * Holds if this node is the parameter of `c` at the specified (zero-based)
-   * position. The implicit `this` parameter is considered to have index `-1`.
+   * Holds if this node is the parameter of `f` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
-
-  Parameter getParameter() { result = instr.getParameter() }
-
-  override string toString() { result = instr.getParameter().toString() }
+  abstract predicate isParameterOf(Function f, int pos);
 }
 
-private class ThisParameterNode extends InstructionNode {
+private class ThisParameterNode extends ParameterNode {
   override InitializeThisInstruction instr;
 
+  override predicate isParameterOf(Function f, int pos) {
+    pos = -1 and
+    instr.getEnclosingFunction() = f
+  }
+
   override string toString() { result = "this" }
+}
+
+class PositionalParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  override predicate isParameterOf(Function f, int pos) {
+    f.getParameter(pos) = instr.getParameter()
+  }
+
+  /** Gets the `Parameter` associated with this node. */
+  Parameter getParameter() { result = instr.getParameter() }
+
+  override string toString() { result = this.getParameter().toString() }
+}
+
+private class ParameterIndirectionNode extends ParameterNode {
+  override InitializeIndirectionInstruction instr;
+
+  override predicate isParameterOf(Function f, int pos) {
+    exists(int index |
+      f.getParameter(index) = instr.getParameter() and
+      pos = getArgumentPosOfSideEffect(index)
+    )
+  }
+
+  /** Gets the `Parameter` associated with this node. */
+  Parameter getParameter() { result = instr.getParameter() }
+
+  override string toString() { result = "*" + this.getParameter().toString() }
 }
 
 /**
@@ -294,7 +336,7 @@ ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+PositionalParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
@@ -327,6 +369,24 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   iTo.(CopyInstruction).getSourceValue() = iFrom
   or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  or
+  // A read side effect is almost never exact since we don't know exactly how
+  // much memory the callee will read.
+  iTo.(ReadSideEffectInstruction).getSideEffectOperand().getAnyDef() = iFrom and
+  not iFrom.isResultConflated()
+  or
+  // Loading a single `int` from an `int *` parameter is not an exact load since
+  // the parameter may point to an entire array rather than a single `int`. The
+  // following rule ensures that any flow going into the
+  // `InitializeIndirectionInstruction`, even if it's for a different array
+  // element, will propagate to a load of the first element.
+  //
+  // Since we're linking `InitializeIndirectionInstruction` and
+  // `LoadInstruction` together directly, this rule will break if there's any
+  // reassignment of the parameter indirection, including a conditional one that
+  // leads to a phi node.
+  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() =
+    iFrom.(InitializeIndirectionInstruction)
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom
