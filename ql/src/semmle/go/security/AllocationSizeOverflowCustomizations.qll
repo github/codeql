@@ -127,9 +127,11 @@ module AllocationSizeOverflow {
     }
   }
 
-  /** The first (non-type) argument to a call to `make`, considered as an allocation size. */
+  /**
+   * The first or second (non-type) argument to a call to `make`, considered as an allocation size.
+   */
   private class DefaultAllocationSize extends AllocationSize {
-    DefaultAllocationSize() { this = Builtin::make().getACall().getArgument(0) }
+    DefaultAllocationSize() { this = Builtin::make().getACall().getArgument([0 .. 1]) }
   }
 
   /** Holds if `t` is a type whose values are likely to marshal to relatively small blobs. */

@@ -24,7 +24,7 @@ func test(x int, s string, xs []int, ys [16]int, ss [16]string, h *header) {
 	ignore(make([]byte, len(jsonData)+1)) // OK: data is small
 
 	jsonData, _ = json.Marshal(ss)
-	ignore(make([]byte, len(jsonData)+1)) // NOT OK: data might be big
+	ignore(make([]byte, 10, len(jsonData)+1)) // NOT OK: data might be big
 
 	jsonData, _ = json.Marshal(h)
 	ignore(make([]byte, len(jsonData)+1)) // OK: data is small
