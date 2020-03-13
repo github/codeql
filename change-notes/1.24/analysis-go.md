@@ -28,3 +28,4 @@ The CodeQL library for Go now contains a folder of simple "cookbook" queries tha
 | Incomplete regular expression for hostnames (`go/incomplete-hostname-regexp`) | More results | The query now flags unescaped dots before the TLD in a hostname regex. |
 | Reflected cross-site scripting (`go/reflected-xss`) | Fewer results | Untrusted input flowing into an HTTP header definition or into an `fmt.Fprintf` call with a constant prefix is no longer flagged, since it is in both cases often harmless. |
 | Useless assignment to field (`go/useless-assignment-to-field`) | Fewer false positives | The query now conservatively handles fields promoted through embedded pointer types. |
+| Bitwise exclusive-or used like exponentiation (`go/mistyped-exponentiation`) | Fewer false positives | The query now identifies when the value of an xor is assigned to a mask object, and excludes such results. |
