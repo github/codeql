@@ -45,7 +45,7 @@ Basic query structure
     where /* ... logical formula ... */
     select /* ... expressions ... */
 
-The following sections describe the information that is typically included in a query file for alerts and metrics. Path queries are discussed in more detail in :doc:`Constructing path queries <path-queries>`. 
+The following sections describe the information that is typically included in a query file for alerts and metrics. Path queries are discussed in more detail in :doc:`Creating path queries <path-queries>`. 
 
 Query metadata
 ==============
@@ -84,7 +84,7 @@ When writing your own alert queries, you would typically import the standard lib
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
 
-There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Constructing path queries <path-queries>` for further information.
+There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. See :doc:`Creating path queries <path-queries>` for further information.
 
 You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/semmle/ql>`__.
 
@@ -117,9 +117,9 @@ Select clauses for alert queries (``@kind problem``) consist of two 'columns', w
 - ``element``: a code element that is identified by the query, which defines where the alert is displayed.
 - ``string``: a message, which can also include links and placeholders, explaining why the alert was generated. 
 
-The alert message defined in the final column of the ``select`` statement can be developed to give more detail about the alert or path found by the query using links and placeholders. For further information, see :doc:`Defining 'select' statements <select-statement>`. 
+The alert message defined in the final column of the ``select`` statement can be developed to give more detail about the alert or path found by the query using links and placeholders. For further information, see :doc:`Defining the results of a query <select-statement>`. 
 
-Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. See :doc:`Constructing path queries <path-queries>` for further information.
+Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. See :doc:`Creating path queries <path-queries>` for further information.
 
 Select clauses for metric queries (``@kind metric``) consist of two 'columns', with the following structure::
 
@@ -141,21 +141,21 @@ Contributing queries
 Contributions to the standard queries and libraries are very welcome---see our `contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ for further information.
 If you are contributing a query to the open source GitHub repository, writing a custom query for LGTM, or using a custom query in an analysis with the CodeQL CLI, then you need to include extra metadata in your query to ensure that the query results are interpreted and displayed correctly. See the following topics for more information on query metadata:
 
--  :doc:`Query metadata reference <query-metadata>`
+-  :doc:`Metadata for CodeQL queries <query-metadata>`
 -  `Query metadata style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md>`__
 
-Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ and the :doc:`Query help reference <query-help>`.
+Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ and the :doc:`Query help files <query-help>`.
 
 Query help files
 ****************
 
-When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub, and the :doc:`Query help reference <query-help>`. 
+When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub, and the :doc:`Query help files <query-help>`. 
 
 What next?
 ==========
 
 - See the queries used in real-life variant analysis on the `GitHub Security Lab website <https://securitylab.github.com/research>`__.
-- To learn more about writing path queries, see :doc:`Constructing path queries <path-queries>`.
+- To learn more about writing path queries, see :doc:`Creating path queries <path-queries>`.
 - Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in CodeQL.
 - Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.
 - For a full list of resources to help you learn CodeQL, including beginner tutorials and language-specific examples, visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__.

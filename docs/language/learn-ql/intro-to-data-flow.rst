@@ -24,7 +24,7 @@ See the following tutorials for more information about analyzing data flow in sp
 
     Note
 
-    Data flow analysis is used extensively in path queries. To learn more about path queries, see :doc:`Constructing path queries <writing-queries/path-queries>`.  
+    Data flow analysis is used extensively in path queries. To learn more about path queries, see :doc:`Creating path queries <writing-queries/path-queries>`.  
 
 .. _data-flow-graph:
 

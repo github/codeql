@@ -9,7 +9,7 @@ About this article
 This article describes how data flow analysis is implemented in the CodeQL libraries for C# and includes examples to help you write your own data flow queries.
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
