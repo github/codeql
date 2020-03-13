@@ -1,62 +1,65 @@
 # Contributing to CodeQL
 
-We welcome contributions to our standard library and standard checks. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request!
+We welcome contributions to our CodeQL libraries and queries. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request!
 
-Before we accept your pull request, we require that you have agreed to our Contributor License Agreement, this is not something that you need to do before you submit your pull request, but until you've done so, we will be unable to accept your contribution.
+There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
-## Adding a new query
 
-If you have an idea for a query that you would like to share with other CodeQL users, please open a pull request to add it to this repository.
-Follow the steps below to help other users understand what your query does, and to ensure that your query is consistent with the other CodeQL queries.
+## Submitting a new experimental query
 
-1. **Consult the documentation for query writers**
+If you have an idea for a query that you would like to share with other CodeQL users, please open a pull request to add it to this repository. New queries start out in a `<language>/ql/src/experimental` directory, to which they can be merged when they meet the following requirements.
 
-   There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+1. **Directory structure**
 
-2. **Format your code correctly**
+    There are five language-specific query directories in this repository:
 
-   All CodeQL standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+      * C/C++: `cpp/ql/src`
+      * C#: `csharp/ql/src`
+      * Java: `java/ql/src`
+      * JavaScript: `javascript/ql/src`
+      * Python: `python/ql/src`
 
-3. **Make sure your query has the correct metadata**
+    Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
+    - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/Semmle/ql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
+    - The structure of an `experimental` subdirectory mirrors the structure of its parent directory.
+    - Select or create an appropriate directory in `experimental` based on the existing directory structure of `experimental` or its parent directory.
 
-   Query metadata is used to identify your query and make sure the query results are displayed properly.
-   The most important metadata to include are the `@name`, `@description`, and the `@kind`.
-   Other metadata properties (`@precision`, `@severity`, and `@tags`) are usually added after the query has been reviewed by GitHub staff.
-   For more information on writing query metadata, see the [Query metadata style guide](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
+2. **Query metadata**
 
-4. **Make sure the `select` statement is compatible with the query type**
+    - The query `@id` must conform to all the requirements in the [guide on query metadata](docs/query-metadata-style-guide.md#query-id-id). In particular, it must not clash with any other queries in the repository, and it must start with the appropriate language-specific prefix.
+    - The query must have a `@name` and `@description` to explain its purpose.
+    - The query must have a `@kind` and `@problem.severity` as required by CodeQL tools.
 
-   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and CodeQL for VS Code.
-   For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+    For details, see the [guide on query metadata](docs/query-metadata-style-guide.md).
 
-5. **Save your query in a `.ql` file in the correct language directory in this repository**
+    Make sure the `select` statement is compatible with the query `@kind`. See [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
-   There are five language-specific directories in this repository:
-   
-     * C/C++: `ql/cpp/ql/src`
-     * C#: `ql/csharp/ql/src`
-     * Java: `ql/java/ql/src`
-     * JavaScript: `ql/javascript/ql/src`
-     * Python: `ql/python/ql/src`
+3. **Formatting**
 
-   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Select the appropriate subdirectory for your new query, or create a new one if necessary.
+    - The queries and libraries must be [autoformatted](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
 
-6. **Write a query help file**
+4. **Compilation**
 
-   Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your new query.
-   For more information on writing query help, see the [Query help style guide](https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md).
+    - Compilation of the query and any associated libraries and tests must be resilient to future development of the [supported](docs/supported-queries.md) libraries. This means that the functionality cannot use internal libraries, cannot depend on the output of `getAQlClass`, and cannot make use of regexp matching on `toString`.
+    - The query and any associated libraries and tests must not cause any compiler warnings to be emitted (such as use of deprecated functionality or missing `override` annotations).
 
-7. **Maintain backwards compatibility**
+5. **Results**
 
-The standard CodeQL libraries must evolve in a backwards compatible manner. If any backwards incompatible changes need to be made, the existing API must first be marked as deprecated. This is done by adding a `deprecated` annotation along with a QLDoc reference to the replacement API. Only after at least one full release cycle has elapsed may the old API be removed.
+    - The query must have at least one true positive result on some revision of a real project.
 
-In addition to contributions to our standard queries and libraries, we also welcome contributions of a more experimental nature, which do not need to fulfill all the requirements listed above. See the guidelines for [experimental queries and libraries](docs/experimental.md) for details.
+6. **Contributor License Agreement**
+
+    - The contributor can satisfy the [CLA](#contributor-license-agreement).
+
+Experimental queries and libraries may not be actively maintained as the [supported](docs/supported-queries.md) libraries evolve. They may also be changed in backwards-incompatible ways or may be removed entirely in the future without deprecation warnings.
+
+After the experimental query is merged, we welcome pull requests to improve it. Before a query can be moved out of the `experimental` subdirectory, it must satisfy [the requirements for being a supported query](docs/supported-queries.md).
 
 ## Using your personal data
 
 If you contribute to this project, we will record your name and email
 address (as provided by you with your contributions) as part of the code
-repositories, which might be made public. We might also use this information
+repositories, which are public. We might also use this information
 to contact you in relation to your contributions, as well as in the
 normal course of software development. We also store records of your
 CLA agreements. Under GDPR legislation, we do this
