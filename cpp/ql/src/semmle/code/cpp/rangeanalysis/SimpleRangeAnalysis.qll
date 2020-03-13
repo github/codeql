@@ -101,9 +101,20 @@ private string getValue(Expr e) {
   then result = e.getValue()
   else
     exists(VariableAccess access, Variable v |
+      /*
+       * It should be safe to propagate the initialization value to a variable if:
+       * The type of v is const, and
+       * The type of v is not volatile, and
+       * Either:
+       *   v is a local/global variable, or
+       *   v is a static member variable
+       */
+
+      (v instanceof StaticStorageDurationVariable or v instanceof LocalVariable) and
+      not v.getUnderlyingType().isVolatile() and
+      v.getUnderlyingType().isConst() and
       e = access and
       v = access.getTarget() and
-      v.getUnderlyingType().isConst() and
       result = getValue(v.getAnAssignedValue())
     )
 }

@@ -1,5 +1,5 @@
 void func_with_default_arg(const int n = 0) {
-    if(n <= 10) {} // GOOD [FALSE POSITIVE]
+    if(n <= 10) {}
 }
 
 struct A {
@@ -13,7 +13,7 @@ struct A {
 
 struct B {
     B(const int n = 0) {
-        if(n <= 10) {} // GOOD [FALSE POSITIVE]
+        if(n <= 10) {}
     }
 };
 
@@ -25,5 +25,5 @@ void test1() {
     A a(100);
     if(a.int_member <= 10) {}
 
-    if(volatile_const_global <= 10) {} // GOOD [FALSE POSITIVE]
+    if(volatile_const_global <= 10) {}
 }
