@@ -78,7 +78,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 - C/C++: ``cpp``
 - C#: ``csharp``
-- COBOL: ``cobol``
+- Go: ``go``
 - Java: ``java``
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
