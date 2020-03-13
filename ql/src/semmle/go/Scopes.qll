@@ -427,21 +427,40 @@ class Method extends Function {
     )
   }
 
-  /**
-   * Holds if this method has name `m` and its receiver base type has qualified name `tp`.
-   */
-  override predicate hasQualifiedName(string tp, string m) {
-    tp = getReceiverBaseType().getQualifiedName() and
-    m = getName()
+  /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
+  private predicate isIn(NamedType tp, string m) {
+    this = tp.getMethod(m) or
+    this = tp.getPointerType().getMethod(m)
   }
 
   /**
-   * Holds if this method has name `m` and its receiver base type is declared in package `pkg` and
-   * has name `tp`.
+   * Holds if this method has name `m` and belongs to the method set of a type `T` or `*T` where
+   * `T` has qualified name `tp`.
+   *
+   * Note that `meth.hasQualifiedName(tp, m)` is almost, but not quite, equivalent to
+   * `exists(Type t | tp = t.getQualifiedName() and meth = t.getMethod(m))`: the latter
+   * distinguishes between the method sets of `T` and `*T`, while the former does not.
+   */
+  override predicate hasQualifiedName(string tp, string m) {
+    exists(NamedType t |
+      this.isIn(t, m) and
+      tp = t.getQualifiedName()
+    )
+  }
+
+  /**
+   * Holds if this method has name `m` and belongs to the method set of a type `T` or `*T` where
+   * `T` is declared in package `pkg` and has name `tp`.
+   *
+   * Note that `meth.hasQualifiedName(pkg, tp, m)` is almost, but not quite, equivalent to
+   * `exists(Type t | t.hasQualifiedName(pkg, tp) and meth = t.getMethod(m))`: the latter
+   * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
   predicate hasQualifiedName(string pkg, string tp, string m) {
-    getReceiverBaseType().hasQualifiedName(pkg, tp) and
-    m = getName()
+    exists(NamedType t |
+      this.isIn(t, m) and
+      t.hasQualifiedName(pkg, tp)
+    )
   }
 
   /**
