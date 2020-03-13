@@ -38,5 +38,8 @@
 | PointlessComparison.c:303:9:303:14 | ... >= ... | Comparison is always false because c <= 0. |
 | PointlessComparison.c:312:9:312:14 | ... >= ... | Comparison is always false because c <= 0. |
 | PointlessComparison.c:337:14:337:21 | ... >= ... | Comparison is always true because x >= 0. |
+| PointlessComparison.cpp:2:8:2:14 | ... <= ... | Comparison is always true because n <= 0. |
+| PointlessComparison.cpp:16:12:16:18 | ... <= ... | Comparison is always true because n <= 0. |
+| PointlessComparison.cpp:28:8:28:34 | ... <= ... | Comparison is always true because volatile_const_global <= 0. |
 | RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |
 | Templates.cpp:9:10:9:24 | ... <= ... | Comparison is always true because local <= 32767. |
