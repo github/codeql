@@ -2088,6 +2088,8 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
 
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
+  int getParameterPos() { p.isParameterOf(_, result) }
+
   override string toString() { result = p + ": " + ap }
 
   predicate hasLocationInfo(
@@ -2481,13 +2483,15 @@ pragma[nomagic]
 private predicate paramFlowsThrough(
   ReturnKindExt kind, CallContextCall cc, SummaryCtxSome sc, AccessPath ap, Configuration config
 ) {
-  exists(PathNodeMid mid, ReturnNodeExt ret |
+  exists(PathNodeMid mid, ReturnNodeExt ret, int pos |
     mid.getNode() = ret and
     kind = ret.getKind() and
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
     config = mid.getConfiguration() and
-    ap = mid.getAp()
+    ap = mid.getAp() and
+    pos = sc.getParameterPos() and
+    not kind.(ParamUpdateReturnKind).getPosition() = pos
   )
 }
 
