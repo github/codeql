@@ -13,3 +13,8 @@
 | T | half | func() Foo |
 | T3 | half | func() Foo |
 | T4 | half | func() Foo |
+| embedder | f | func() int |
+| embedder2 | f | func() int |
+| embedder3 | f | func() int |
+| ptrembedder | f | func() int |
+| ptrembedder | g | func() int |

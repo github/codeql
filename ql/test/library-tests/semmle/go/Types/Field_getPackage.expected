@@ -1,3 +1,9 @@
+| pkg1/embedding.go:19:23:19:26 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/embedding.go:22:27:22:30 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/embedding.go:25:24:25:31 | embedder | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/embedding.go:28:24:28:31 | embedder | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/embedding.go:36:2:36:5 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/embedding.go:37:2:37:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:4:2:4:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:5:2:5:4 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:6:2:6:4 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |

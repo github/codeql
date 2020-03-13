@@ -1,1 +1,4 @@
 | Foo | half | pkg1/tst.go:33:1:35:1 | function declaration |
+| base | f | pkg1/embedding.go:10:1:12:1 | function declaration |
+| base | g | pkg1/embedding.go:14:1:16:1 | function declaration |
+| embedder3 | f | pkg1/embedding.go:30:1:32:1 | function declaration |

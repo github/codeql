@@ -1,4 +1,15 @@
 | * Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| * base | f | pkg1/embedding.go:10:13:10:13 | f |
+| * base | g | pkg1/embedding.go:14:14:14:14 | g |
+| * embedder | f | pkg1/embedding.go:10:13:10:13 | f |
+| * embedder | g | pkg1/embedding.go:14:14:14:14 | g |
+| * embedder2 | f | pkg1/embedding.go:10:13:10:13 | f |
+| * embedder2 | g | pkg1/embedding.go:14:14:14:14 | g |
+| * embedder3 | f | pkg1/embedding.go:30:18:30:18 | f |
+| * embedder3 | g | pkg1/embedding.go:14:14:14:14 | g |
+| * embedder4 | g | pkg1/embedding.go:14:14:14:14 | g |
+| * ptrembedder | f | pkg1/embedding.go:10:13:10:13 | f |
+| * ptrembedder | g | pkg1/embedding.go:14:14:14:14 | g |
 | A | m | pkg1/interfaces.go:4:2:4:2 | m |
 | A2 | m | pkg1/interfaces.go:32:2:32:2 | m |
 | AC | m | pkg1/interfaces.go:4:2:4:2 | m |
@@ -12,3 +23,12 @@
 | C | n | pkg1/interfaces.go:13:2:13:2 | n |
 | C | o | pkg1/interfaces.go:14:2:14:2 | o |
 | Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| T | half | pkg1/tst.go:33:16:33:19 | half |
+| T3 | half | pkg1/tst.go:33:16:33:19 | half |
+| T4 | half | pkg1/tst.go:33:16:33:19 | half |
+| base | f | pkg1/embedding.go:10:13:10:13 | f |
+| embedder | f | pkg1/embedding.go:10:13:10:13 | f |
+| embedder2 | f | pkg1/embedding.go:10:13:10:13 | f |
+| embedder3 | f | pkg1/embedding.go:30:18:30:18 | f |
+| ptrembedder | f | pkg1/embedding.go:10:13:10:13 | f |
+| ptrembedder | g | pkg1/embedding.go:14:14:14:14 | g |
