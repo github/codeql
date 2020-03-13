@@ -403,7 +403,7 @@ newtype TTranslatedElement =
         not var.isStatic()
         or
         // Ignore static variables unless they have a dynamic initializer.
-        var.(StaticStorageDurationVariable).hasDynamicInitialization()
+        var.(StaticLocalVariable).hasDynamicInitialization()
       )
     )
   } or
@@ -412,7 +412,7 @@ newtype TTranslatedElement =
   TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
     exists(TTranslatedDeclarationEntry translatedEntry |
       translatedEntry = TTranslatedDeclarationEntry(entry) and
-      entry.getDeclaration().(LocalVariable).isStatic()
+      entry.getDeclaration() instanceof StaticLocalVariable
     )
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a

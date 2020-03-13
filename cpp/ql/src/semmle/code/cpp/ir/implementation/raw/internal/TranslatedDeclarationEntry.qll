@@ -71,9 +71,9 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
  */
 class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDeclaration,
   TranslatedDeclarationEntry {
-  LocalVariable var;
+  StackVariable var;
 
-  TranslatedAutoVariableDeclarationEntry() { var = entry.getDeclaration() and not var.isStatic() }
+  TranslatedAutoVariableDeclarationEntry() { var = entry.getDeclaration() }
 
   override LocalVariable getVariable() { result = var }
 }
@@ -86,10 +86,10 @@ class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDecl
  * `TranslatedStaticLocalVariableInitialization`, which is a child of this element.
  */
 class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclarationEntry {
-  LocalVariable var;
+  StaticLocalVariable var;
 
   TranslatedStaticLocalVariableDeclarationEntry() {
-    var = entry.getDeclaration() and var.isStatic()
+    var = entry.getDeclaration()
   }
 
   final override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
@@ -197,7 +197,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
 class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
   VariableDeclarationEntry entry;
-  LocalVariable var;
+  StaticLocalVariable var;
 
   TranslatedStaticLocalVariableInitialization() {
     this = TTranslatedStaticLocalVariableInitialization(entry) and

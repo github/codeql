@@ -8367,6 +8367,43 @@ ir.cpp:
 # 1228|         1: [VariableAccess] d
 # 1228|             Type = [IntType] int
 # 1228|             ValueCategory = prvalue(load)
+# 1231| [TopLevelFunction] void staticLocalWithConstructor(char const*)
+# 1231|   params: 
+# 1231|     0: [Parameter] dynamic
+# 1231|         Type = [PointerType] const char *
+# 1231|   body: [Block] { ... }
+# 1232|     0: [DeclStmt] declaration
+# 1232|       0: [VariableDeclarationEntry] definition of a
+# 1232|           Type = [Struct] String
+#-----|         init: [Initializer] initializer for a
+#-----|           expr: [ConstructorCall] call to String
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 1233|     1: [DeclStmt] declaration
+# 1233|       0: [VariableDeclarationEntry] definition of b
+# 1233|           Type = [Struct] String
+# 1233|         init: [Initializer] initializer for b
+# 1233|           expr: [ConstructorCall] call to String
+# 1233|               Type = [VoidType] void
+# 1233|               ValueCategory = prvalue
+# 1233|             0: [ArrayToPointerConversion] array to pointer conversion
+# 1233|                 Type = [PointerType] const char *
+# 1233|                 ValueCategory = prvalue
+# 1233|               expr: static
+# 1233|                   Type = [ArrayType] const char[7]
+# 1233|                   Value = [StringLiteral] "static"
+# 1233|                   ValueCategory = lvalue
+# 1234|     2: [DeclStmt] declaration
+# 1234|       0: [VariableDeclarationEntry] definition of c
+# 1234|           Type = [Struct] String
+# 1234|         init: [Initializer] initializer for c
+# 1234|           expr: [ConstructorCall] call to String
+# 1234|               Type = [VoidType] void
+# 1234|               ValueCategory = prvalue
+# 1234|             0: [VariableAccess] dynamic
+# 1234|                 Type = [PointerType] const char *
+# 1234|                 ValueCategory = prvalue(load)
+# 1235|     3: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

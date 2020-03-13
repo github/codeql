@@ -52,10 +52,8 @@ private module Cached {
   }
 
   cached
-  predicate hasDynamicInitializationFlag(
-    Function func, StaticStorageDurationVariable var, CppType type
-  ) {
-    var.(LocalVariable).getFunction() = func and
+  predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
+    var.getFunction() = func and
     var.hasDynamicInitialization() and
     type = getBoolType()
   }

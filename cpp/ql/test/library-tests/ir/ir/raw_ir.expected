@@ -6271,6 +6271,82 @@ ir.cpp:
 # 1225|     mu1225_9(bool)      = Store              : &:r1225_1, r1225_8
 #-----|   Goto -> Block 1
 
+# 1231| void staticLocalWithConstructor(char const*)
+# 1231|   Block 0
+# 1231|     v1231_1(void)          = EnterFunction                  : 
+# 1231|     mu1231_2(unknown)      = AliasedDefinition              : 
+# 1231|     mu1231_3(unknown)      = InitializeNonLocal             : 
+# 1231|     mu1231_4(unknown)      = UnmodeledDefinition            : 
+# 1231|     r1231_5(glval<char *>) = VariableAddress[dynamic]       : 
+# 1231|     mu1231_6(char *)       = InitializeParameter[dynamic]   : &:r1231_5
+# 1231|     r1231_7(char *)        = Load                           : &:r1231_5, ~mu1231_6
+# 1231|     mu1231_8(unknown)      = InitializeIndirection[dynamic] : &:r1231_7
+# 1232|     r1232_1(glval<bool>)   = VariableAddress[a#init]        : 
+# 1232|     r1232_2(bool)          = Load                           : &:r1232_1, ~mu1231_4
+# 1232|     v1232_3(void)          = ConditionalBranch              : r1232_2
+#-----|   False -> Block 6
+#-----|   True -> Block 1
+
+# 1233|   Block 1
+# 1233|     r1233_1(glval<bool>) = VariableAddress[b#init] : 
+# 1233|     r1233_2(bool)        = Load                    : &:r1233_1, ~mu1231_4
+# 1233|     v1233_3(void)        = ConditionalBranch       : r1233_2
+#-----|   False -> Block 2
+#-----|   True -> Block 3
+
+# 1233|   Block 2
+# 1233|     r1233_4(glval<String>)  = VariableAddress[b]              : 
+# 1233|     r1233_5(glval<unknown>) = FunctionAddress[String]         : 
+# 1233|     r1233_6(glval<char[7]>) = StringConstant["static"]        : 
+# 1233|     r1233_7(char *)         = Convert                         : r1233_6
+# 1233|     v1233_8(void)           = Call                            : func:r1233_5, this:r1233_4, 0:r1233_7
+# 1233|     mu1233_9(unknown)       = ^CallSideEffect                 : ~mu1231_4
+# 1233|     mu1233_10(String)       = ^IndirectMayWriteSideEffect[-1] : &:r1233_4
+# 1233|     v1233_11(void)          = ^BufferReadSideEffect[0]        : &:r1233_7, ~mu1231_4
+# 1233|     mu1233_12(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1233_7
+# 1233|     r1233_13(bool)          = Constant[1]                     : 
+# 1233|     mu1233_14(bool)         = Store                           : &:r1233_1, r1233_13
+#-----|   Goto -> Block 3
+
+# 1234|   Block 3
+# 1234|     r1234_1(glval<bool>) = VariableAddress[c#init] : 
+# 1234|     r1234_2(bool)        = Load                    : &:r1234_1, ~mu1231_4
+# 1234|     v1234_3(void)        = ConditionalBranch       : r1234_2
+#-----|   False -> Block 4
+#-----|   True -> Block 5
+
+# 1234|   Block 4
+# 1234|     r1234_4(glval<String>)  = VariableAddress[c]              : 
+# 1234|     r1234_5(glval<unknown>) = FunctionAddress[String]         : 
+# 1234|     r1234_6(glval<char *>)  = VariableAddress[dynamic]        : 
+# 1234|     r1234_7(char *)         = Load                            : &:r1234_6, ~mu1231_4
+# 1234|     v1234_8(void)           = Call                            : func:r1234_5, this:r1234_4, 0:r1234_7
+# 1234|     mu1234_9(unknown)       = ^CallSideEffect                 : ~mu1231_4
+# 1234|     mu1234_10(String)       = ^IndirectMayWriteSideEffect[-1] : &:r1234_4
+# 1234|     v1234_11(void)          = ^BufferReadSideEffect[0]        : &:r1234_7, ~mu1231_4
+# 1234|     mu1234_12(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1234_7
+# 1234|     r1234_13(bool)          = Constant[1]                     : 
+# 1234|     mu1234_14(bool)         = Store                           : &:r1234_1, r1234_13
+#-----|   Goto -> Block 5
+
+# 1235|   Block 5
+# 1235|     v1235_1(void)  = NoOp              : 
+# 1231|     v1231_9(void)  = ReturnIndirection : &:r1231_7, ~mu1231_4
+# 1231|     v1231_10(void) = ReturnVoid        : 
+# 1231|     v1231_11(void) = UnmodeledUse      : mu*
+# 1231|     v1231_12(void) = AliasedUse        : ~mu1231_4
+# 1231|     v1231_13(void) = ExitFunction      : 
+
+# 1232|   Block 6
+# 1232|     r1232_4(glval<String>) = VariableAddress[a]              : 
+#-----|     r0_1(glval<unknown>)   = FunctionAddress[String]         : 
+#-----|     v0_2(void)             = Call                            : func:r0_1, this:r1232_4
+#-----|     mu0_3(unknown)         = ^CallSideEffect                 : ~mu1231_4
+#-----|     mu0_4(String)          = ^IndirectMayWriteSideEffect[-1] : &:r1232_4
+# 1232|     r1232_5(bool)          = Constant[1]                     : 
+# 1232|     mu1232_6(bool)         = Store                           : &:r1232_1, r1232_5
+#-----|   Goto -> Block 1
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
@@ -6430,26 +6506,25 @@ struct_init.cpp:
 
 #   37|   Block 2
 #   37|     r37_4(glval<Info[2]>)   = VariableAddress[static_infos] : 
-#   37|     mu37_5(Info[2])         = Uninitialized[static_infos]   : &:r37_4
-#   37|     r37_6(int)              = Constant[0]                   : 
-#   37|     r37_7(glval<Info>)      = PointerAdd[16]                : r37_4, r37_6
-#   38|     r38_1(glval<char *>)    = FieldAddress[name]            : r37_7
+#   37|     r37_5(int)              = Constant[0]                   : 
+#   37|     r37_6(glval<Info>)      = PointerAdd[16]                : r37_4, r37_5
+#   38|     r38_1(glval<char *>)    = FieldAddress[name]            : r37_6
 #   38|     r38_2(glval<char *>)    = VariableAddress[name1]        : 
 #   38|     r38_3(char *)           = Load                          : &:r38_2, ~mu36_4
 #   38|     mu38_4(char *)          = Store                         : &:r38_1, r38_3
-#   38|     r38_5(glval<..(*)(..)>) = FieldAddress[handler]         : r37_7
+#   38|     r38_5(glval<..(*)(..)>) = FieldAddress[handler]         : r37_6
 #   38|     r38_6(..(*)(..))        = FunctionAddress[handler1]     : 
 #   38|     mu38_7(..(*)(..))       = Store                         : &:r38_5, r38_6
-#   37|     r37_8(int)              = Constant[1]                   : 
-#   37|     r37_9(glval<Info>)      = PointerAdd[16]                : r37_4, r37_8
-#   39|     r39_1(glval<char *>)    = FieldAddress[name]            : r37_9
+#   37|     r37_7(int)              = Constant[1]                   : 
+#   37|     r37_8(glval<Info>)      = PointerAdd[16]                : r37_4, r37_7
+#   39|     r39_1(glval<char *>)    = FieldAddress[name]            : r37_8
 #   39|     r39_2(glval<char[2]>)   = StringConstant["2"]           : 
 #   39|     r39_3(char *)           = Convert                       : r39_2
 #   39|     mu39_4(char *)          = Store                         : &:r39_1, r39_3
-#   39|     r39_5(glval<..(*)(..)>) = FieldAddress[handler]         : r37_9
+#   39|     r39_5(glval<..(*)(..)>) = FieldAddress[handler]         : r37_8
 #   39|     r39_6(glval<..()(..)>)  = FunctionAddress[handler2]     : 
 #   39|     r39_7(..(*)(..))        = CopyValue                     : r39_6
 #   39|     mu39_8(..(*)(..))       = Store                         : &:r39_5, r39_7
-#   37|     r37_10(bool)            = Constant[1]                   : 
-#   37|     mu37_11(bool)           = Store                         : &:r37_1, r37_10
+#   37|     r37_9(bool)             = Constant[1]                   : 
+#   37|     mu37_10(bool)           = Store                         : &:r37_1, r37_9
 #-----|   Goto -> Block 1

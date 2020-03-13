@@ -1228,4 +1228,10 @@ int staticLocalInit(int x) {
     return a + b + c + d;
 }
 
+void staticLocalWithConstructor(const char* dynamic) {
+    static String a;
+    static String b("static");
+    static String c(dynamic);
+}
+
 // semmle-extractor-options: -std=c++17 --clang
