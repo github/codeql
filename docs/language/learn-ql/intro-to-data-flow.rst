@@ -17,7 +17,7 @@ See the following tutorials for more information about analyzing data flow in sp
 - :doc:`Analyzing data flow in C# <csharp/dataflow>`
 - :doc:`Analyzing data flow in Java <java/dataflow>`
 - :doc:`Analyzing data flow in JavaScript/TypeScript <javascript/dataflow>`
-- :doc:`Taint tracking and data flow analysis in Python <python/taint-tracking>`
+- :doc:`Analyzing data flow and tracking tainted data in Python <python/taint-tracking>`
 
 .. pull-quote::
 
