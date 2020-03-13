@@ -88,9 +88,7 @@ class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDecl
 class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclarationEntry {
   StaticLocalVariable var;
 
-  TranslatedStaticLocalVariableDeclarationEntry() {
-    var = entry.getDeclaration()
-  }
+  TranslatedStaticLocalVariableDeclarationEntry() { var = entry.getDeclaration() }
 
   final override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
 
