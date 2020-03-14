@@ -218,7 +218,13 @@ private module Mongoose {
      */
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       (
-        result = getAMongooseInstance().getAMemberCall("model") or
+        result = getAMongooseInstance().getAMemberCall("model")
+        or
+        exists(DataFlow::SourceNode conn | conn = createConnection() |
+          result = conn.getAMemberCall("model") or
+          result = conn.getAPropertyRead("models").getAPropertyRead()
+        )
+        or
         result.hasUnderlyingType("mongoose", "Model")
       ) and
       t.start()
