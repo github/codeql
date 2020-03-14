@@ -10,6 +10,7 @@ private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.frameworks.Protobuf
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
+private import semmle.code.java.frameworks.jackson.JacksonSerializability
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -491,6 +492,11 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   exists(ProtobufMessageLite m | method = m.getAParseFromMethod()) and
   arg = 0
+  or
+  // Jackson serialization methods that return the serialized data
+  method instanceof JacksonWriteValueMethod and
+  method.getNumberOfParameters() = 1 and
+  arg = 0
 }
 
 /**
@@ -537,6 +543,12 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   method.hasName("arraycopy") and
   input = 0 and
   output = 2
+  or
+  // Jackson serialization methods that write data to the first argument
+  method instanceof JacksonWriteValueMethod and
+  method.getNumberOfParameters() > 1 and
+  input = method.getNumberOfParameters() - 1 and
+  output = 0
 }
 
 /**
