@@ -77,4 +77,7 @@ app.post('/documents/find', (req, res) => {
 		.exec()
 	;
 
+	Mongoose.createConnection(X).count(query); // OK (invalid program)
+	Mongoose.createConnection(X).model(Y).count(query); // NOT OK
+	Mongoose.createConnection(X).models[Y].count(query); // NOT OK
 });
