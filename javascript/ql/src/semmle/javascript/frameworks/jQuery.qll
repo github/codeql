@@ -303,14 +303,12 @@ private module JQueryClientRequest {
                 .getParameter(0))
         or
         result = getAnAjaxCallbackDataNode(this)
-        or
-        result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
       )
     }
   }
 
   /**
-   * Gets a response data node from a call to a method on jqXHR Object.
+   * Gets a response data node from a call to a method on jqXHR Object `request`.
    */
   private DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
     result =
@@ -318,13 +316,9 @@ private module JQueryClientRequest {
           .getAMemberCall(any(string s | s = "done" or s = "then"))
           .getCallback(0)
           .getParameter(0)
-  }
-
-  /**
-   * Gets a `jqXHR` object from a call to the `fail(..)` method on jqXHR Object.
-   */
-  private DataFlow::SourceNode getAnXHRObject(ClientRequest::Range request) {
-    result = request.getAMemberCall("fail").getCallback(0).getParameter(0)
+    or
+    result =
+      getAResponseNodeFromAnXHRObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
   }
 
   /**
@@ -400,8 +394,6 @@ private module JQueryClientRequest {
         result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
         or
         result = getAnAjaxCallbackDataNode(this)
-        or
-        result = getAResponseNodeFromAnXHRObject(getAnXHRObject(this))
       )
     }
   }
