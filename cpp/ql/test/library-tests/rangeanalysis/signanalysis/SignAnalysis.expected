@@ -137,8 +137,12 @@
 | test.c:109:14:109:16 | Constant: 44 | positive strictlyPositive |
 | test.c:110:14:110:14 | Constant: 1 | positive strictlyPositive |
 | test.c:110:14:110:14 | Store: 1 | positive strictlyPositive |
+| test.c:118:20:118:20 | Uninitialized: definition of n | positive |
+| test.c:119:10:119:10 | Load: n | positive |
 | test.c:119:10:119:12 | Add: ... ++ | positive strictlyPositive |
 | test.c:119:10:119:12 | Constant: ... ++ | positive strictlyPositive |
+| test.c:119:10:119:12 | CopyValue: ... ++ | positive |
+| test.c:119:10:119:12 | Store: ... ++ | positive |
 | test.c:119:10:119:12 | Store: ... ++ | positive strictlyPositive |
 | test.c:124:11:124:15 | Load: Start | positive |
 | test.c:124:11:124:15 | Phi: Start | positive |

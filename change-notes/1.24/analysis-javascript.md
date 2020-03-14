@@ -33,6 +33,7 @@
   - [for-own](https://www.npmjs.com/package/for-own)
   - [http2](https://nodejs.org/api/http2.html)
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
   - [react](https://www.npmjs.com/package/react)
   - [request](https://www.npmjs.com/package/request)
   - [send](https://www.npmjs.com/package/send)
@@ -67,6 +68,8 @@
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional ways of constructing arguments to `cmd.exe` and `/bin/sh`. |
 | Syntax error (`js/syntax-error`) | Lower severity | This results of this query are now displayed with lower severity. |
 | Use of password hash with insufficient computational effort (`js/insufficient-password-hash`) | Fewer false positive results | This query now recognizes additional cases that do not require secure hashing. |
+| Useless regular-expression character escape (`js/useless-regexp-character-escape`) | Fewer false positive results | This query now distinguishes escapes in strings and regular expression literals. |
+| Identical operands (`js/redundant-operation`) | Fewer results | This query now recognizes cases where the operands change a value using ++/-- expressions. |
 
 ## Changes to libraries
 

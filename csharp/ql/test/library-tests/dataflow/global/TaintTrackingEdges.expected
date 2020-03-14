@@ -1381,7 +1381,7 @@
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : Object | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1391,7 +1391,7 @@
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1401,7 +1401,7 @@
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : T | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1413,7 +1413,7 @@
 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 : String | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 : String | GlobalDataFlow.cs:287:50:287:50 | z : String |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1421,7 +1421,7 @@
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1429,7 +1429,7 @@
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 : T | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 |
@@ -1439,7 +1439,7 @@
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1449,7 +1449,7 @@
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:13:80:85 | SSA def(sink13) : IEnumerable<T> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1461,7 +1461,7 @@
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1473,7 +1473,7 @@
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1491,19 +1491,19 @@
 | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
 | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : Object | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : Object |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... |
-| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:80:44:80:65 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:80:59:80:63 | access to local variable sink3 : T | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
@@ -1521,7 +1521,7 @@
 | GlobalDataFlow.cs:80:84:80:84 | access to parameter x : String | GlobalDataFlow.cs:431:44:431:47 | delegate call |
 | GlobalDataFlow.cs:80:84:80:84 | access to parameter x : String | GlobalDataFlow.cs:431:44:431:47 | delegate call : String |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1529,7 +1529,7 @@
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:72 | call to method First |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:72 | call to method First : String |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 |
@@ -1539,7 +1539,7 @@
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 |
@@ -1553,7 +1553,7 @@
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1569,7 +1569,7 @@
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 |
@@ -1583,7 +1583,7 @@
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:22:82:95 | call to method Select : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1605,19 +1605,19 @@
 | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
 | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:72 | call to method First |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<String> | GlobalDataFlow.cs:82:59:82:72 | call to method First : String |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:59:82:72 | call to method First |
 | GlobalDataFlow.cs:82:59:82:64 | access to local variable sink13 : IEnumerable<T> | GlobalDataFlow.cs:82:59:82:72 | call to method First : String |
 | GlobalDataFlow.cs:82:59:82:72 | call to method First : String | GlobalDataFlow.cs:82:23:82:74 | (...) ... |
-| GlobalDataFlow.cs:82:59:82:72 | call to method First : String | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:59:82:72 | call to method First : String | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:59:82:72 | call to method First : String | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:59:82:72 | call to method First : String | GlobalDataFlow.cs:82:44:82:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:82:13:82:95 | SSA def(sink14) |
@@ -1627,7 +1627,7 @@
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 |
@@ -1641,7 +1641,7 @@
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : String | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1659,7 +1659,7 @@
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 |
@@ -1673,7 +1673,7 @@
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1685,7 +1685,7 @@
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 |
@@ -1699,7 +1699,7 @@
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1713,7 +1713,7 @@
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 |
@@ -1721,7 +1721,7 @@
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First : String |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 |
@@ -1733,7 +1733,7 @@
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 |
@@ -1741,7 +1741,7 @@
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First : String |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:22:84:136 | call to method Zip : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 |
@@ -1759,7 +1759,7 @@
 | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
 | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:84:59:84:72 | call to method First |
@@ -1771,7 +1771,7 @@
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -1783,13 +1783,13 @@
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 |
 | GlobalDataFlow.cs:84:59:84:64 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:84:59:84:72 | call to method First : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... |
-| GlobalDataFlow.cs:84:59:84:72 | call to method First : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:59:84:72 | call to method First : String | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:59:84:72 | call to method First : String | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] |
 | GlobalDataFlow.cs:84:59:84:72 | call to method First : String | GlobalDataFlow.cs:84:44:84:74 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:103:84:121 | array creation of type String[] : String[] | GlobalDataFlow.cs:84:82:84:121 | (...) ... |
 | GlobalDataFlow.cs:84:103:84:121 | array creation of type String[] : String[] | GlobalDataFlow.cs:84:82:84:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:118:84:119 | "" : String | GlobalDataFlow.cs:84:82:84:121 | (...) ... |
-| GlobalDataFlow.cs:84:118:84:119 | "" : String | GlobalDataFlow.cs:84:82:84:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:118:84:119 | "" : String | GlobalDataFlow.cs:84:82:84:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:118:84:119 | "" : String | GlobalDataFlow.cs:84:103:84:121 | array creation of type String[] |
 | GlobalDataFlow.cs:84:118:84:119 | "" : String | GlobalDataFlow.cs:84:103:84:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:84:13:84:136 | SSA def(sink15) |
@@ -1799,7 +1799,7 @@
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 |
@@ -1807,7 +1807,7 @@
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:106:86:119 | call to method First |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:106:86:119 | call to method First : String |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 |
@@ -1835,7 +1835,7 @@
 | GlobalDataFlow.cs:84:135:84:135 | access to parameter x : String | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... |
 | GlobalDataFlow.cs:84:135:84:135 | access to parameter x : String | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 |
@@ -1843,7 +1843,7 @@
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First : String |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 |
@@ -1859,7 +1859,7 @@
 | GlobalDataFlow.cs:86:44:86:62 | array creation of type String[] : String[] | GlobalDataFlow.cs:86:23:86:62 | (...) ... |
 | GlobalDataFlow.cs:86:44:86:62 | array creation of type String[] : String[] | GlobalDataFlow.cs:86:23:86:62 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:59:86:60 | "" : String | GlobalDataFlow.cs:86:23:86:62 | (...) ... |
-| GlobalDataFlow.cs:86:59:86:60 | "" : String | GlobalDataFlow.cs:86:23:86:62 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:86:59:86:60 | "" : String | GlobalDataFlow.cs:86:23:86:62 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:59:86:60 | "" : String | GlobalDataFlow.cs:86:44:86:62 | array creation of type String[] |
 | GlobalDataFlow.cs:86:59:86:60 | "" : String | GlobalDataFlow.cs:86:44:86:62 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... |
@@ -1873,13 +1873,13 @@
 | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
 | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:86:106:86:119 | call to method First : String |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 |
@@ -1887,7 +1887,7 @@
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:117 | call to method First |
 | GlobalDataFlow.cs:86:106:86:111 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:117 | call to method First : String |
 | GlobalDataFlow.cs:86:106:86:119 | call to method First : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... |
-| GlobalDataFlow.cs:86:106:86:119 | call to method First : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:86:106:86:119 | call to method First : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
 | GlobalDataFlow.cs:86:106:86:119 | call to method First : String | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] |
 | GlobalDataFlow.cs:86:106:86:119 | call to method First : String | GlobalDataFlow.cs:86:91:86:121 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:13:86:136 | SSA def(sink16) |
@@ -1927,7 +1927,7 @@
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -2069,13 +2069,13 @@
 | GlobalDataFlow.cs:90:44:90:62 | array creation of type String[] : String[] | GlobalDataFlow.cs:90:23:90:62 | (...) ... |
 | GlobalDataFlow.cs:90:44:90:62 | array creation of type String[] : String[] | GlobalDataFlow.cs:90:23:90:62 | (...) ... : String[] |
 | GlobalDataFlow.cs:90:59:90:60 | "" : String | GlobalDataFlow.cs:90:23:90:62 | (...) ... |
-| GlobalDataFlow.cs:90:59:90:60 | "" : String | GlobalDataFlow.cs:90:23:90:62 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:90:59:90:60 | "" : String | GlobalDataFlow.cs:90:23:90:62 | (...) ... : String[] |
 | GlobalDataFlow.cs:90:59:90:60 | "" : String | GlobalDataFlow.cs:90:44:90:62 | array creation of type String[] |
 | GlobalDataFlow.cs:90:59:90:60 | "" : String | GlobalDataFlow.cs:90:44:90:62 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:90:75:90:80 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 |
@@ -2365,13 +2365,13 @@
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2383,13 +2383,13 @@
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) : T | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2407,13 +2407,13 @@
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2423,13 +2423,13 @@
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2461,13 +2461,13 @@
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2477,13 +2477,13 @@
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2491,25 +2491,25 @@
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 : T | GlobalDataFlow.cs:287:50:287:50 | z : T |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2537,21 +2537,21 @@
 | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
 | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... |
-| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:25:112:70 | (...) ... : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:112:46:112:70 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:112:61:112:68 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 |
@@ -2585,11 +2585,11 @@
 | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
 | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : String | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... |
-| GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:21:114:66 | (...) ... : String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] |
 | GlobalDataFlow.cs:114:57:114:64 | access to local variable nonSink0 : T | GlobalDataFlow.cs:114:42:114:66 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:114:76:114:76 | x : IEnumerable<String> | GlobalDataFlow.cs:114:76:114:76 | x |
@@ -2627,7 +2627,7 @@
 | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
 | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:116:57:116:70 | call to method First |
@@ -2637,7 +2637,7 @@
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 |
 | GlobalDataFlow.cs:116:57:116:62 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:122:20:122:25 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:116:57:116:70 | call to method First : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... |
-| GlobalDataFlow.cs:116:57:116:70 | call to method First : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:116:57:116:70 | call to method First : String | GlobalDataFlow.cs:116:21:116:72 | (...) ... : String[] |
 | GlobalDataFlow.cs:116:57:116:70 | call to method First : String | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] |
 | GlobalDataFlow.cs:116:57:116:70 | call to method First : String | GlobalDataFlow.cs:116:42:116:72 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:116:80:116:119 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:116:123:116:133 | [output] (...) => ... |
@@ -2651,7 +2651,7 @@
 | GlobalDataFlow.cs:116:101:116:119 | array creation of type String[] : String[] | GlobalDataFlow.cs:116:80:116:119 | (...) ... |
 | GlobalDataFlow.cs:116:101:116:119 | array creation of type String[] : String[] | GlobalDataFlow.cs:116:80:116:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:116:116:116:117 | "" : String | GlobalDataFlow.cs:116:80:116:119 | (...) ... |
-| GlobalDataFlow.cs:116:116:116:117 | "" : String | GlobalDataFlow.cs:116:80:116:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:116:116:116:117 | "" : String | GlobalDataFlow.cs:116:80:116:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:116:116:116:117 | "" : String | GlobalDataFlow.cs:116:101:116:119 | array creation of type String[] |
 | GlobalDataFlow.cs:116:116:116:117 | "" : String | GlobalDataFlow.cs:116:101:116:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:116:123:116:133 | [output] (...) => ... : String | GlobalDataFlow.cs:116:9:116:134 | SSA def(nonSink1) |
@@ -2701,19 +2701,19 @@
 | GlobalDataFlow.cs:118:42:118:60 | array creation of type String[] : String[] | GlobalDataFlow.cs:118:21:118:60 | (...) ... |
 | GlobalDataFlow.cs:118:42:118:60 | array creation of type String[] : String[] | GlobalDataFlow.cs:118:21:118:60 | (...) ... : String[] |
 | GlobalDataFlow.cs:118:57:118:58 | "" : String | GlobalDataFlow.cs:118:21:118:60 | (...) ... |
-| GlobalDataFlow.cs:118:57:118:58 | "" : String | GlobalDataFlow.cs:118:21:118:60 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:118:57:118:58 | "" : String | GlobalDataFlow.cs:118:21:118:60 | (...) ... : String[] |
 | GlobalDataFlow.cs:118:57:118:58 | "" : String | GlobalDataFlow.cs:118:42:118:60 | array creation of type String[] |
 | GlobalDataFlow.cs:118:57:118:58 | "" : String | GlobalDataFlow.cs:118:42:118:60 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
 | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:117 | call to method First |
 | GlobalDataFlow.cs:118:104:118:109 | access to local variable sink15 : IEnumerable<String> | GlobalDataFlow.cs:118:104:118:117 | call to method First : String |
 | GlobalDataFlow.cs:118:104:118:117 | call to method First : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... |
-| GlobalDataFlow.cs:118:104:118:117 | call to method First : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:118:104:118:117 | call to method First : String | GlobalDataFlow.cs:118:68:118:119 | (...) ... : String[] |
 | GlobalDataFlow.cs:118:104:118:117 | call to method First : String | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] |
 | GlobalDataFlow.cs:118:104:118:117 | call to method First : String | GlobalDataFlow.cs:118:89:118:119 | array creation of type String[] : String[] |
 | GlobalDataFlow.cs:118:123:118:133 | [output] (...) => ... : String | GlobalDataFlow.cs:118:9:118:134 | SSA def(nonSink1) |
@@ -3833,17 +3833,17 @@
 | GlobalDataFlow.cs:222:19:222:39 | call to method Select : IQueryable<String> | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink |
 | GlobalDataFlow.cs:222:19:222:39 | call to method Select : IQueryable<String> | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) |
-| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) : IEnumerable<String> |
+| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:222:19:222:39 | call to method Select |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:222:19:222:39 | call to method Select : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink |
-| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink : IEnumerable<String> |
+| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : String | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) |
-| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) : IEnumerable<String> |
+| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:222:9:222:39 | SSA def(nonSink) : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:222:19:222:39 | call to method Select |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:222:19:222:39 | call to method Select : IQueryable<String> |
 | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink |
-| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink : IEnumerable<String> |
+| GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f2 : T | GlobalDataFlow.cs:223:15:223:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:224:9:224:39 | SSA def(nonSink) : IEnumerable<String> | GlobalDataFlow.cs:225:15:225:21 | access to local variable nonSink |
 | GlobalDataFlow.cs:224:9:224:39 | SSA def(nonSink) : IEnumerable<String> | GlobalDataFlow.cs:225:15:225:21 | access to local variable nonSink : IEnumerable<String> |
 | GlobalDataFlow.cs:224:19:224:28 | access to parameter notTainted : IQueryable<String> | GlobalDataFlow.cs:218:35:218:46 | nonSinkParam |
@@ -3879,17 +3879,17 @@
 | GlobalDataFlow.cs:226:19:226:39 | call to method Select : IQueryable<String> | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink |
 | GlobalDataFlow.cs:226:19:226:39 | call to method Select : IQueryable<String> | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) |
-| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) : IEnumerable<String> |
+| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:226:19:226:39 | call to method Select |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:226:19:226:39 | call to method Select : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink |
-| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink : IEnumerable<String> |
+| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : String | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) |
-| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) : IEnumerable<String> |
+| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:226:9:226:39 | SSA def(nonSink) : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:226:19:226:39 | call to method Select |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:226:19:226:39 | call to method Select : IQueryable<String> |
 | GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink |
-| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink : IEnumerable<String> |
+| GlobalDataFlow.cs:226:37:226:38 | [output] access to local variable f4 : T | GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink : IQueryable<String> |
 | GlobalDataFlow.cs:228:9:228:49 | SSA def(nonSink) : IEnumerable<String> | GlobalDataFlow.cs:229:15:229:21 | access to local variable nonSink |
 | GlobalDataFlow.cs:228:9:228:49 | SSA def(nonSink) : IEnumerable<String> | GlobalDataFlow.cs:229:15:229:21 | access to local variable nonSink : IEnumerable<String> |
 | GlobalDataFlow.cs:228:19:228:28 | access to parameter notTainted : IQueryable<String> | GlobalDataFlow.cs:228:37:228:48 | [output] delegate creation of type Func<String,String> |

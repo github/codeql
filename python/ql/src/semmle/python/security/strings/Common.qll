@@ -5,12 +5,12 @@ import python
 predicate copy_call(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode
     or
-    exists(ModuleObject copy, string name |
+    exists(ModuleValue copy, string name |
         name = "copy" or name = "deepcopy" |
-        copy.attr(name).(FunctionObject).getACall() = tonode and
+        copy.attr(name).(FunctionValue).getACall() = tonode and
         tonode.getArg(0) = fromnode
     )
     or
-    tonode.getFunction().refersTo(Object::builtin("reversed")) and
+    tonode.getFunction().pointsTo(Value::named("reversed")) and
     tonode.getArg(0) = fromnode
 }
