@@ -277,6 +277,16 @@ private module Mongoose {
         name = "updateOne" or
         name = "where"
       }
+
+      /**
+       * Holds if Model method `name` returns one or more documents, the
+       * documents are wrapped in an array if `asArray` is true.
+       */
+      predicate returnsDocument(string name, boolean asArray) {
+        asArray = false and name = "findOne"
+        or
+        asArray = true and name = "find"
+      }
     }
   }
 
@@ -297,6 +307,18 @@ private module Mongoose {
     }
 
     /**
+     * A Mongoose query object as a result of a Document method call.
+     */
+    private class QueryFromDocument extends DataFlow::MethodCallNode {
+      QueryFromDocument() {
+        exists(string name |
+          Document::MethodSignatures::returnsQuery(name) and
+          Document::ref().getAMethodCall(name) = this
+        )
+      }
+    }
+
+    /**
      * A Mongoose query object as a result of a Query constructor invocation.
      */
     class QueryFromConstructor extends DataFlow::NewNode {
@@ -312,6 +334,7 @@ private module Mongoose {
       (
         result instanceof QueryFromConstructor or
         result instanceof QueryFromModel or
+        result instanceof QueryFromDocument or
         result.hasUnderlyingType("mongoose", "Query")
       ) and
       t.start()
@@ -450,6 +473,138 @@ private module Mongoose {
         name = "within" or
         name = "wtimeout"
       }
+
+      /**
+       * Holds if Query method `name` returns one or more documents, the
+       * documents are wrapped in an array if `asArray` is true.
+       */
+      predicate returnsDocument(string name, boolean asArray) {
+        asArray = false and name = "findOne"
+        or
+        asArray = true and name = "find"
+      }
+    }
+  }
+
+  /**
+   * Provides classes modeling the Mongoose Document class
+   */
+  module Document {
+    /**
+     * A Mongoose Document that is retrieved from the backing database.
+     */
+    class RetrievedDocument extends DataFlow::SourceNode {
+      RetrievedDocument() {
+        exists(boolean asArray, DataFlow::ParameterNode param |
+          exists(DataFlow::SourceNode base, DataFlow::MethodCallNode call, string name |
+            base = Query::ref() and Query::MethodSignatures::returnsDocument(name, asArray)
+            or
+            base = Model::ref() and Model::MethodSignatures::returnsDocument(name, asArray)
+            or
+            base = ref() and MethodSignatures::returnsDocument(name, asArray)
+          |
+            call = base.getAMethodCall(name) and
+            param = call.getCallback(call.getNumArgument() - 1).getParameter(1)
+          )
+          or
+          exists(
+            DataFlow::SourceNode base, DataFlow::MethodCallNode call, string executor,
+            int paramIndex
+          |
+            executor = "then" and paramIndex = 0
+            or
+            executor = "exec" and paramIndex = 1
+          |
+            base = Query::ref() and
+            call = base.getAMethodCall(executor) and
+            param = call.getCallback(0).getParameter(paramIndex) and
+            exists(DataFlow::MethodCallNode pred |
+              // limitation: look at the previous method call
+              Query::MethodSignatures::returnsDocument(pred.getMethodName(), asArray) and
+              pred.getAMethodCall() = call
+            )
+          )
+        |
+          asArray = false and this = param
+          or
+          asArray = true and
+          exists(DataFlow::PropRead access |
+            // limitation: look for direct accesses
+            access = param.getAPropertyRead() and
+            not exists(access.getPropertyName()) and
+            this = access
+          )
+        )
+      }
+    }
+
+    /**
+     * Gets a data flow node referring to a Mongoose Document object.
+     */
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      (
+        result instanceof RetrievedDocument or
+        result.hasUnderlyingType("mongoose", "Document")
+      ) and
+      t.start()
+      or
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode succ | succ = ref(t2) |
+        result = succ.track(t2, t)
+        or
+        result =
+          succ.getAMethodCall(any(string name | MethodSignatures::returnsDocument(name, true))) and
+        t = t2.continue()
+      )
+    }
+
+    /**
+     * Gets a data flow node referring to a Mongoose Document object.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+
+    module MethodSignatures {
+      /**
+       * Holds if Document method `name` returns a Query.
+       */
+      predicate returnsQuery(string name) {
+        // Documents are subtypes of Models
+        Model::MethodSignatures::returnsQuery(name) or
+        name = "replaceOne" or
+        name = "update" or
+        name = "updateOne"
+      }
+
+      /**
+       * Holds if Document method `name` interprets parameter `n` as a query.
+       */
+      predicate interpretsArgumentAsQuery(string name, int n) {
+        // Documents are subtypes of Models
+        Model::MethodSignatures::interpretsArgumentAsQuery(name, n)
+        or
+        n = 0 and
+        (
+          name = "replaceOne" or
+          name = "update" or
+          name = "updateOne"
+        )
+      }
+
+      /**
+       * Holds if Document method `name` returns one or more documents, the
+       * documents are wrapped in an array if `asArray` is true.
+       */
+      predicate returnsDocument(string name, boolean asArray) {
+        // Documents are subtypes of Models
+        Model::MethodSignatures::returnsDocument(name, asArray)
+        or
+        asArray = false and
+        (
+          name = "depopulate" or
+          name = "init" or
+          name = "populate" or
+          name = "overwrite"
+        )
+      }
     }
   }
 
@@ -486,6 +641,12 @@ private module Mongoose {
       exists(string method, int n | Query::MethodSignatures::interpretsArgumentAsQuery(method, n) |
         this = Query::ref().getAMethodCall(method).getArgument(n).asExpr()
       )
+      or
+      exists(DataFlow::MethodCallNode mcn, string method, int n |
+        Document::MethodSignatures::interpretsArgumentAsQuery(method, n) and
+        mcn = Document::ref().getAMethodCall(method) and
+        this = mcn.getArgument(n).asExpr()
+      )
     }
   }
 
@@ -513,6 +674,13 @@ private module Mongoose {
           )
           or
           // callback provided to a Query method call
+          exists(mcn.getCallback(mcn.getNumArgument() - 1))
+        )
+        or
+        exists(string method |
+          Document::MethodSignatures::returnsQuery(method) and
+          mcn = Document::ref().getAMethodCall(method) and
+          // callback provided to a Document method call
           exists(mcn.getCallback(mcn.getNumArgument() - 1))
         )
       )
