@@ -422,8 +422,10 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     let program = project.program;
     let typeChecker = program.getTypeChecker();
 
-    let diagnostics = program.getSemanticDiagnostics()
-        .filter(d => d.category === ts.DiagnosticCategory.Error);
+    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", Boolean, false);
+    let diagnostics = shouldReportDiagnostics
+        ? program.getSemanticDiagnostics().filter(d => d.category === ts.DiagnosticCategory.Error)
+        : [];
     if (diagnostics.length > 0) {
         console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
     }
