@@ -292,7 +292,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | g_class_init.py:35 | ControlFlowNode for super | builtin-class super | builtin-class type | 35 | runtime |
 | g_class_init.py:35 | ControlFlowNode for super() | super() | builtin-class super | 35 | runtime |
 | g_class_init.py:36 | ControlFlowNode for Attribute | super().__init__ | builtin-class method | 36 | runtime |
-| g_class_init.py:36 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 36 | runtime |
 | g_class_init.py:36 | ControlFlowNode for D | class D | builtin-class type | 32 | runtime |
 | g_class_init.py:36 | ControlFlowNode for self | self | class D | 34 | runtime |
 | g_class_init.py:36 | ControlFlowNode for super | builtin-class super | builtin-class type | 36 | runtime |
@@ -728,16 +727,13 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:62 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 | import |
 | l_calls.py:62 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 62 | import |
 | l_calls.py:63 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 63 | import |
-| l_calls.py:63 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 63 | import |
 | l_calls.py:63 | ControlFlowNode for Dict | Dict | builtin-class dict | 63 | import |
 | l_calls.py:63 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 63 | import |
 | l_calls.py:63 | ControlFlowNode for Str | 'foo' | builtin-class str | 63 | import |
-| l_calls.py:63 | ControlFlowNode for d | Attribute() | builtin-class object | 63 | import |
 | l_calls.py:63 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 63 | import |
 | l_calls.py:64 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 | import |
 | l_calls.py:64 | ControlFlowNode for b | Attribute() | builtin-class int | 59 | import |
 | l_calls.py:64 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 | import |
-| l_calls.py:64 | ControlFlowNode for d | Attribute() | builtin-class object | 63 | import |
 | m_attributes.py:3 | ControlFlowNode for C | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for object | builtin-class object | builtin-class type | 3 | import |
@@ -884,8 +880,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | q_super.py:3 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 3 | import |
 | q_super.py:4 | ControlFlowNode for Attribute | super().__init__ | builtin-class method | 4 | code/q_super.py:12 from runtime |
 | q_super.py:4 | ControlFlowNode for Attribute | super().__init__ | builtin-class method | 4 | runtime |
-| q_super.py:4 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 4 | code/q_super.py:12 from runtime |
-| q_super.py:4 | ControlFlowNode for Attribute() | Attribute() | builtin-class object | 4 | runtime |
 | q_super.py:4 | ControlFlowNode for Base2 | class Base2 | builtin-class type | 1 | code/q_super.py:12 from runtime |
 | q_super.py:4 | ControlFlowNode for Base2 | class Base2 | builtin-class type | 1 | runtime |
 | q_super.py:4 | ControlFlowNode for self | self | class Base2 | 3 | runtime |
@@ -1055,7 +1049,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | q_super.py:75 | ControlFlowNode for i | super().__init__ | builtin-class method | 75 | runtime |
 | q_super.py:75 | ControlFlowNode for s | super() | builtin-class super | 74 | runtime |
 | q_super.py:76 | ControlFlowNode for i | super().__init__ | builtin-class method | 75 | runtime |
-| q_super.py:76 | ControlFlowNode for i() | i() | builtin-class object | 76 | runtime |
 | r_regressions.py:5 | ControlFlowNode for ClassExpr | class Queue | builtin-class type | 5 | import |
 | r_regressions.py:5 | ControlFlowNode for Queue | class Queue | builtin-class type | 5 | import |
 | r_regressions.py:5 | ControlFlowNode for object | builtin-class object | builtin-class type | 5 | import |

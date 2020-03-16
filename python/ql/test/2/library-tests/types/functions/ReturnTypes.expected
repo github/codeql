@@ -1,4 +1,3 @@
-| 4 | bump_version | builtin-class object |
 | 6 | ok1 | builtin-class NoneType |
 | 12 | ok2 | builtin-class int |
 | 12 | ok2 | builtin-class str |

@@ -232,7 +232,6 @@
 | g_class_init.py:35 | ControlFlowNode for super | runtime | builtin-class super | builtin-class type |
 | g_class_init.py:35 | ControlFlowNode for super() | runtime | super(class D, self instance of D) | builtin-class super |
 | g_class_init.py:36 | ControlFlowNode for Attribute | runtime | Method(builtin method __init__, self instance of D) | builtin-class method |
-| g_class_init.py:36 | ControlFlowNode for Attribute() | runtime | instance of object | builtin-class object |
 | g_class_init.py:36 | ControlFlowNode for D | runtime | class D | builtin-class type |
 | g_class_init.py:36 | ControlFlowNode for self | runtime | self instance of D | class D |
 | g_class_init.py:36 | ControlFlowNode for super | runtime | builtin-class super | builtin-class type |
@@ -585,7 +584,6 @@
 | l_calls.py:62 | ControlFlowNode for Attribute | import | builtin method get | builtin-class method_descriptor |
 | l_calls.py:62 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
 | l_calls.py:63 | ControlFlowNode for Attribute | import | builtin method get | builtin-class method_descriptor |
-| l_calls.py:63 | ControlFlowNode for Attribute() | import | instance of object | builtin-class object |
 | l_calls.py:63 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
 | l_calls.py:63 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
 | l_calls.py:63 | ControlFlowNode for Str | import | 'foo' | builtin-class str |
@@ -593,7 +591,6 @@
 | l_calls.py:64 | ControlFlowNode for a | import | builtin method bit_length | builtin-class method_descriptor |
 | l_calls.py:64 | ControlFlowNode for b | import | instance of int | builtin-class int |
 | l_calls.py:64 | ControlFlowNode for c | import | builtin method get | builtin-class method_descriptor |
-| l_calls.py:64 | ControlFlowNode for d | import | instance of object | builtin-class object |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | m_attributes.py:3 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | m_attributes.py:5 | ControlFlowNode for FunctionExpr | import | Function C.__init__ | builtin-class function |
@@ -705,8 +702,6 @@
 | q_super.py:3 | ControlFlowNode for FunctionExpr | import | Function Base2.__init__ | builtin-class function |
 | q_super.py:4 | ControlFlowNode for Attribute | code/q_super.py:12 from runtime | Method(builtin method __init__, self instance of Derived4) | builtin-class method |
 | q_super.py:4 | ControlFlowNode for Attribute | runtime | Method(builtin method __init__, self instance of Base2) | builtin-class method |
-| q_super.py:4 | ControlFlowNode for Attribute() | code/q_super.py:12 from runtime | instance of object | builtin-class object |
-| q_super.py:4 | ControlFlowNode for Attribute() | runtime | instance of object | builtin-class object |
 | q_super.py:4 | ControlFlowNode for Base2 | code/q_super.py:12 from runtime | class Base2 | builtin-class type |
 | q_super.py:4 | ControlFlowNode for Base2 | runtime | class Base2 | builtin-class type |
 | q_super.py:4 | ControlFlowNode for self | code/q_super.py:12 from runtime | self instance of Derived4 | class Derived4 |
@@ -847,7 +842,6 @@
 | q_super.py:75 | ControlFlowNode for Attribute | runtime | Method(builtin method __init__, self instance of M) | builtin-class method |
 | q_super.py:75 | ControlFlowNode for s | runtime | super(class M, self instance of M) | builtin-class super |
 | q_super.py:76 | ControlFlowNode for i | runtime | Method(builtin method __init__, self instance of M) | builtin-class method |
-| q_super.py:76 | ControlFlowNode for i() | runtime | instance of object | builtin-class object |
 | r_regressions.py:5 | ControlFlowNode for ClassExpr | import | class Queue | builtin-class type |
 | r_regressions.py:5 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | r_regressions.py:7 | ControlFlowNode for FunctionExpr | import | Function Queue.__init__ | builtin-class function |
