@@ -21,7 +21,7 @@ app.post('/documents/find', (req, res) => {
     query.title = req.body.title;
 
     // NOT OK: query is tainted by user-provided object value
-    Document.aggregate('type', query);
+    Document.aggregate([query]);
 
     // NOT OK: query is tainted by user-provided object value
     Document.count(query);
