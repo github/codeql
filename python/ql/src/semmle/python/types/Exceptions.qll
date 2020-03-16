@@ -276,7 +276,7 @@ class ExceptFlowNode extends ControlFlowNode {
             or
             exists(TupleValue tup |
                 this.handledObject(tup, ClassValue::tuple(), _) |
-                element_from_tuple(tup).pointsTo(val,origin) 
+                val = tup.getItem(_) and origin = val.getOrigin()
             )
         )
     }
@@ -312,12 +312,6 @@ class ExceptFlowNode extends ControlFlowNode {
 }
 
 private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
-    exists(Tuple t |
-        t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode()
-    )
-}
-
-private ControlFlowNode element_from_tuple(Value tuple) {
     exists(Tuple t |
         t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode()
     )
