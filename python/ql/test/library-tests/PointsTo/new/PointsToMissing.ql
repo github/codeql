@@ -3,7 +3,7 @@ import Util
 import semmle.python.pointsto.PointsTo
 import semmle.python.objects.ObjectInternal
 
-/* Ideally, this test should return _no_ results. */
+/* This test should return _no_ results. */
 
 predicate relevant_node(ControlFlowNode n) {
     exists(CallNode c |
