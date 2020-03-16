@@ -137,7 +137,7 @@ module Promises {
 
 /**
  * A module for supporting promises in type-tracking predicates.
- * The `PromiseTypeTracking::promiseStep` is used for type tracking in and out of promises,
+ * The `PromiseTypeTracking::promiseStep` predicate is used for type tracking in and out of promises,
  * and is included in the standard type-tracking steps (`SourceNode::track`).
  * The `TypeTracker::startInPromise()` predicate can be used to initiate a type-tracker
  * where the tracked value is a promise.
