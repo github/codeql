@@ -44,6 +44,12 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
+    /** Gets the origin AST node for this value. */
+    AstNode getOrigin() {
+        result = this.(ObjectInternal).getOrigin().getNode()
+    }
+
+
     /** Gets the class of this object.
      * Strictly, the `Value` representing the class of the objects
      * represented by this Value.
