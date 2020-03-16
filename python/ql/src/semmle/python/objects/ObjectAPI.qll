@@ -45,8 +45,8 @@ class Value extends TObject {
     }
 
     /** Gets the origin AST node for this value. */
-    AstNode getOrigin() {
-        result = this.(ObjectInternal).getOrigin().getNode()
+    ControlFlowNode getOrigin() {
+        result = this.(ObjectInternal).getOrigin()
     }
 
 
