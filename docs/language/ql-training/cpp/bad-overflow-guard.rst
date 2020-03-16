@@ -141,7 +141,7 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
 
 .. note::
 
-  - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
+  - When performing variant analysis, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
   - In this case, we start by looking for all the *overflow* checks, before trying to refine the query to find all *bad overflow* checks.
   - The ``select`` clause defines what this query is looking for:
 

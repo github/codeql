@@ -176,7 +176,7 @@ IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
 
 /**
  * A temporary variable introduced by IR construction. The most common examples are the variable
- * generated to hold the return value of afunction, or the variable generated to hold the result of
+ * generated to hold the return value of a function, or the variable generated to hold the result of
  * a condition operator (`a ? b : c`).
  */
 class IRTempVariable extends IRGeneratedVariable, IRAutomaticVariable, TIRTempVariable {

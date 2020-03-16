@@ -77,6 +77,19 @@ void guard() {
     char **node = (char **) malloc(len * sizeof(char *));
 }
 
+const char *alias_global;
+
+void mallocBuffer() {
+    const char *userName = getenv("USER_NAME");
+	char *alias = (char*)malloc(4096);
+	char *copy = (char*)malloc(4096);
+	strcpy(copy, userName);
+	alias_global = alias; // to force a Chi node on all aliased memory
+	if (!strcmp(copy, "admin")) { // copy should be tainted
+		isAdmin = true;
+	}
+}
+
 char *gets(char *s);
 
 void test_gets()

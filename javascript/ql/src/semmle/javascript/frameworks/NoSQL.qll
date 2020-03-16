@@ -23,7 +23,15 @@ private module MongoDB {
    */
   private DataFlow::SourceNode getAMongoClient(DataFlow::TypeTracker t) {
     t.start() and
-    result = mongodb().getAPropertyRead("MongoClient")
+    (
+      result = mongodb().getAPropertyRead("MongoClient")
+      or
+      exists(DataFlow::ParameterNode p |
+        p = result and
+        p = getAMongoDbCallback().getParameter(1) and
+        not p.getName().toLowerCase() = "db" // mongodb v2 provides a `Db` here
+      )
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAMongoClient(t2).track(t2, t))
   }
@@ -36,7 +44,7 @@ private module MongoDB {
   /** Gets a data flow node that leads to a `connect` callback. */
   private DataFlow::SourceNode getAMongoDbCallback(DataFlow::TypeBackTracker t) {
     t.start() and
-    result = getAMongoClient().getAMemberCall("connect").getArgument(1).getALocalSource()
+    result = getAMongoClient().getAMemberCall("connect").getLastArgument().getALocalSource()
     or
     exists(DataFlow::TypeBackTracker t2 | result = getAMongoDbCallback(t2).backtrack(t2, t))
   }
@@ -51,7 +59,15 @@ private module MongoDB {
    */
   private DataFlow::SourceNode getAMongoDb(DataFlow::TypeTracker t) {
     t.start() and
-    result = getAMongoDbCallback().getParameter(1)
+    (
+      exists(DataFlow::ParameterNode p |
+        p = result and
+        p = getAMongoDbCallback().getParameter(1) and
+        not p.getName().toLowerCase() = "client" // mongodb v3 provides a `Mongoclient` here
+      )
+      or
+      result = getAMongoClient().getAMethodCall("db")
+    )
     or
     exists(DataFlow::TypeTracker t2 | result = getAMongoDb(t2).track(t2, t))
   }
@@ -84,9 +100,7 @@ private module MongoDB {
    * of `mongodb.Collection`.
    */
   private class CollectionFromType extends Collection {
-    CollectionFromType() {
-      hasUnderlyingType("mongodb", "Collection")
-    }
+    CollectionFromType() { hasUnderlyingType("mongodb", "Collection") }
   }
 
   /** Gets a data flow node referring to a MongoDB collection. */
@@ -106,41 +120,69 @@ private module MongoDB {
 
     QueryCall() {
       exists(string m | this = getACollection().getAMethodCall(m) |
-        m = "aggregate" and queryArgIdx = 0
-        or
-        m = "count" and queryArgIdx = 0
-        or
-        m = "deleteMany" and queryArgIdx = 0
-        or
-        m = "deleteOne" and queryArgIdx = 0
-        or
-        m = "distinct" and queryArgIdx = 1
-        or
-        m = "find" and queryArgIdx = 0
-        or
-        m = "findOne" and queryArgIdx = 0
-        or
-        m = "findOneAndDelete" and queryArgIdx = 0
-        or
-        m = "findOneAndRemove" and queryArgIdx = 0
-        or
-        m = "findOneAndDelete" and queryArgIdx = 0
-        or
-        m = "findOneAndUpdate" and queryArgIdx = 0
-        or
-        m = "remove" and queryArgIdx = 0
-        or
-        m = "replaceOne" and queryArgIdx = 0
-        or
-        m = "update" and queryArgIdx = 0
-        or
-        m = "updateMany" and queryArgIdx = 0
-        or
-        m = "updateOne" and queryArgIdx = 0
+        CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
       )
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+  }
+
+  /**
+   * Provides signatures for the Collection methods.
+   */
+  module CollectionMethodSignatures {
+    /**
+     * Holds if Collection method `name` interprets parameter `n` as a query.
+     */
+    predicate interpretsArgumentAsQuery(string name, int n) {
+      // FilterQuery
+      (
+        name = "aggregate" and n = 0
+        or
+        name = "count" and n = 0
+        or
+        name = "countDocuments" and n = 0
+        or
+        name = "deleteMany" and n = 0
+        or
+        name = "deleteOne" and n = 0
+        or
+        name = "distinct" and n = 1
+        or
+        name = "find" and n = 0
+        or
+        name = "findOne" and n = 0
+        or
+        name = "findOneAndDelete" and n = 0
+        or
+        name = "findOneAndRemove" and n = 0
+        or
+        name = "findOneAndReplace" and n = 0
+        or
+        name = "findOneAndUpdate" and n = 0
+        or
+        name = "remove" and n = 0
+        or
+        name = "replaceOne" and n = 0
+        or
+        name = "update" and n = 0
+        or
+        name = "updateMany" and n = 0
+        or
+        name = "updateOne" and n = 0
+      )
+      or
+      // UpdateQuery
+      (
+        name = "findOneAndUpdate" and n = 1
+        or
+        name = "update" and n = 1
+        or
+        name = "updateMany" and n = 1
+        or
+        name = "updateOne" and n = 1
+      )
+    }
   }
 
   /**
@@ -168,10 +210,241 @@ private module Mongoose {
   }
 
   /**
-   * A Mongoose collection object.
+   * Provides classes modeling the Mongoose Model class
    */
-  class Model extends MongoDB::Collection {
-    Model() { this = getAMongooseInstance().getAMemberCall("model") }
+  module Model {
+    /**
+     * Gets a data flow node referring to a Mongoose Model object.
+     */
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      (
+        result = getAMongooseInstance().getAMemberCall("model") or
+        result.hasUnderlyingType("mongoose", "Model")
+      ) and
+      t.start()
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    /**
+     * Gets a data flow node referring to a Mongoose model object.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+
+    /**
+     * Provides signatures for the Model methods.
+     */
+    module MethodSignatures {
+      /**
+       * Holds if Model method `name` interprets parameter `n` as a query.
+       */
+      predicate interpretsArgumentAsQuery(string name, int n) {
+        // implement lots of the MongoDB collection interface
+        MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, n)
+        or
+        name = "findByIdAndUpdate" and n = 1
+      }
+
+      /**
+       * Holds if Model method `name` returns a Query.
+       */
+      predicate returnsQuery(string name) {
+        name = "$where" or
+        name = "count" or
+        name = "countDocuments" or
+        name = "deleteMany" or
+        name = "deleteOne" or
+        name = "find" or
+        name = "findById" or
+        name = "findByIdAndDelete" or
+        name = "findByIdAndRemove" or
+        name = "findByIdAndUpdate" or
+        name = "findOne" or
+        name = "findOneAndDelete" or
+        name = "findOneAndRemove" or
+        name = "findOneAndReplace" or
+        name = "findOneAndUpdate" or
+        name = "geosearch" or
+        name = "replaceOne" or
+        name = "update" or
+        name = "updateMany" or
+        name = "updateOne" or
+        name = "where"
+      }
+    }
+  }
+
+  /**
+   * Provides classes modeling the Mongoose Query class
+   */
+  module Query {
+    /**
+     * A Mongoose query object as a result of a Model method call.
+     */
+    private class QueryFromModel extends DataFlow::MethodCallNode {
+      QueryFromModel() {
+        exists(string name |
+          Model::MethodSignatures::returnsQuery(name) and
+          Model::ref().getAMethodCall(name) = this
+        )
+      }
+    }
+
+    /**
+     * A Mongoose query object as a result of a Query constructor invocation.
+     */
+    class QueryFromConstructor extends DataFlow::NewNode {
+      QueryFromConstructor() {
+        this = getAMongooseInstance().getAPropertyRead("Query").getAnInstantiation()
+      }
+    }
+
+    /**
+     * Gets a data flow node referring to a Mongoose query object.
+     */
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      (
+        result instanceof QueryFromConstructor or
+        result instanceof QueryFromModel or
+        result.hasUnderlyingType("mongoose", "Query")
+      ) and
+      t.start()
+      or
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode succ | succ = ref(t2) |
+        result = succ.track(t2, t)
+        or
+        result = succ.getAMethodCall(any(string name | MethodSignatures::returnsQuery(name))) and
+        t = t2.continue()
+      )
+    }
+
+    /**
+     * Gets a data flow node referring to a Mongoose query object.
+     */
+    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+
+    /**
+     * Provides signatures for the Query methods.
+     */
+    module MethodSignatures {
+      /**
+       * Holds if Query method `name` interprets parameter `n` as a query.
+       */
+      predicate interpretsArgumentAsQuery(string name, int n) {
+        n = 0 and
+        (
+          name = "and" or
+          name = "count" or
+          name = "countDocuments" or
+          name = "deleteMany" or
+          name = "deleteOne" or
+          name = "elemMatch" or
+          name = "find" or
+          name = "findOne" or
+          name = "findOneAndDelete" or
+          name = "findOneAndRemove" or
+          name = "findOneAndReplace" or
+          name = "findOneAndUpdate" or
+          name = "merge" or
+          name = "nor" or
+          name = "or" or
+          name = "remove" or
+          name = "replaceOne" or
+          name = "setQuery" or
+          name = "setUpdate" or
+          name = "update" or
+          name = "updateMany" or
+          name = "updateOne" or
+          name = "where"
+        )
+        or
+        n = 1 and
+        (
+          name = "distinct" or
+          name = "findOneAndUpdate" or
+          name = "update" or
+          name = "updateMany" or
+          name = "updateOne"
+        )
+      }
+
+      /**
+       * Holds if Query method `name` returns a Query.
+       */
+      predicate returnsQuery(string name) {
+        name = "$where" or
+        name = "J" or
+        name = "all" or
+        name = "and" or
+        name = "batchsize" or
+        name = "box" or
+        name = "center" or
+        name = "centerSphere" or
+        name = "circle" or
+        name = "collation" or
+        name = "comment" or
+        name = "count" or
+        name = "countDocuments" or
+        name = "distinct" or
+        name = "elemMatch" or
+        name = "equals" or
+        name = "error" or
+        name = "estimatedDocumentCount" or
+        name = "exists" or
+        name = "explain" or
+        name = "find" or
+        name = "findById" or
+        name = "findOne" or
+        name = "findOneAndRemove" or
+        name = "findOneAndUpdate" or
+        name = "geometry" or
+        name = "get" or
+        name = "gt" or
+        name = "gte" or
+        name = "hint" or
+        name = "in" or
+        name = "intersects" or
+        name = "lean" or
+        name = "limit" or
+        name = "lt" or
+        name = "lte" or
+        name = "map" or
+        name = "map" or
+        name = "maxDistance" or
+        name = "maxTimeMS" or
+        name = "maxscan" or
+        name = "mod" or
+        name = "ne" or
+        name = "near" or
+        name = "nearSphere" or
+        name = "nin" or
+        name = "or" or
+        name = "orFail" or
+        name = "polygon" or
+        name = "populate" or
+        name = "read" or
+        name = "readConcern" or
+        name = "regexp" or
+        name = "remove" or
+        name = "select" or
+        name = "session" or
+        name = "set" or
+        name = "setOptions" or
+        name = "setQuery" or
+        name = "setUpdate" or
+        name = "size" or
+        name = "skip" or
+        name = "slaveOk" or
+        name = "slice" or
+        name = "snapshot" or
+        name = "sort" or
+        name = "update" or
+        name = "w" or
+        name = "where" or
+        name = "within" or
+        name = "wtimeout"
+      }
+    }
   }
 
   /**
@@ -189,5 +462,59 @@ private module Mongoose {
     }
 
     override string getCredentialsKind() { result = kind }
+  }
+
+  /**
+   * An expression that is interpreted as a (part of a) MongoDB query.
+   */
+  class MongoDBQueryPart extends NoSQL::Query {
+    MongoDBQueryPart() {
+      exists(DataFlow::MethodCallNode mcn, string method, int n |
+        Model::MethodSignatures::interpretsArgumentAsQuery(method, n) and
+        mcn = Model::ref().getAMethodCall(method) and
+        this = mcn.getArgument(n).asExpr()
+      )
+      or
+      this = any(Query::QueryFromConstructor c).getArgument(2).asExpr()
+      or
+      exists(string method, int n | Query::MethodSignatures::interpretsArgumentAsQuery(method, n) |
+        this = Query::ref().getAMethodCall(method).getArgument(n).asExpr()
+      )
+    }
+  }
+
+  /**
+   * An evaluation of a MongoDB query.
+   */
+  class MongoDBQueryEvaluation extends DatabaseAccess {
+    DataFlow::MethodCallNode mcn;
+
+    MongoDBQueryEvaluation() {
+      this = mcn and
+      (
+        exists(string method |
+          Model::MethodSignatures::returnsQuery(method) and
+          mcn = Model::ref().getAMethodCall(method) and
+          // callback provided to a Model method call
+          exists(mcn.getCallback(mcn.getNumArgument() - 1))
+        )
+        or
+        Query::ref().getAMethodCall() = mcn and
+        (
+          // explicit execution using a Query method call
+          exists(string executor | executor = "exec" or executor = "then" or executor = "catch" |
+            mcn.getMethodName() = executor
+          )
+          or
+          // callback provided to a Query method call
+          exists(mcn.getCallback(mcn.getNumArgument() - 1))
+        )
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      // NB: this does not account for all of the chained calls leading to this execution
+      mcn.getAnArgument().asExpr().(MongoDBQueryPart).flow() = result
+    }
   }
 }

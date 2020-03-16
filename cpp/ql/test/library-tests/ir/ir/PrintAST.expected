@@ -8070,6 +8070,239 @@ ir.cpp:
 # 1170|               Type = [ArrayType] const char[4]
 # 1170|               Value = [StringLiteral] "foo"
 # 1170|               ValueCategory = lvalue
+# 1173| [TopLevelFunction] void switch1Case(int)
+# 1173|   params: 
+# 1173|     0: [Parameter] x
+# 1173|         Type = [IntType] int
+# 1173|   body: [Block] { ... }
+# 1174|     0: [DeclStmt] declaration
+# 1174|       0: [VariableDeclarationEntry] definition of y
+# 1174|           Type = [IntType] int
+# 1174|         init: [Initializer] initializer for y
+# 1174|           expr: [Literal] 0
+# 1174|               Type = [IntType] int
+# 1174|               Value = [Literal] 0
+# 1174|               ValueCategory = prvalue
+# 1175|     1: [SwitchStmt] switch (...) ... 
+# 1175|       0: [VariableAccess] x
+# 1175|           Type = [IntType] int
+# 1175|           ValueCategory = prvalue(load)
+# 1175|       1: [Block] { ... }
+# 1176|         0: [SwitchCase] case ...:
+# 1176|           0: [Literal] 1
+# 1176|               Type = [IntType] int
+# 1176|               Value = [Literal] 1
+# 1176|               ValueCategory = prvalue
+# 1177|         1: [ExprStmt] ExprStmt
+# 1177|           0: [AssignExpr] ... = ...
+# 1177|               Type = [IntType] int
+# 1177|               ValueCategory = lvalue
+# 1177|             0: [VariableAccess] y
+# 1177|                 Type = [IntType] int
+# 1177|                 ValueCategory = lvalue
+# 1177|             1: [Literal] 2
+# 1177|                 Type = [IntType] int
+# 1177|                 Value = [Literal] 2
+# 1177|                 ValueCategory = prvalue
+# 1179|     2: [DeclStmt] declaration
+# 1179|       0: [VariableDeclarationEntry] definition of z
+# 1179|           Type = [IntType] int
+# 1179|         init: [Initializer] initializer for z
+# 1179|           expr: [VariableAccess] y
+# 1179|               Type = [IntType] int
+# 1179|               ValueCategory = prvalue(load)
+# 1180|     3: [ReturnStmt] return ...
+# 1182| [TopLevelFunction] void switch2Case_fallthrough(int)
+# 1182|   params: 
+# 1182|     0: [Parameter] x
+# 1182|         Type = [IntType] int
+# 1182|   body: [Block] { ... }
+# 1183|     0: [DeclStmt] declaration
+# 1183|       0: [VariableDeclarationEntry] definition of y
+# 1183|           Type = [IntType] int
+# 1183|         init: [Initializer] initializer for y
+# 1183|           expr: [Literal] 0
+# 1183|               Type = [IntType] int
+# 1183|               Value = [Literal] 0
+# 1183|               ValueCategory = prvalue
+# 1184|     1: [SwitchStmt] switch (...) ... 
+# 1184|       0: [VariableAccess] x
+# 1184|           Type = [IntType] int
+# 1184|           ValueCategory = prvalue(load)
+# 1184|       1: [Block] { ... }
+# 1185|         0: [SwitchCase] case ...:
+# 1185|           0: [Literal] 1
+# 1185|               Type = [IntType] int
+# 1185|               Value = [Literal] 1
+# 1185|               ValueCategory = prvalue
+# 1186|         1: [ExprStmt] ExprStmt
+# 1186|           0: [AssignExpr] ... = ...
+# 1186|               Type = [IntType] int
+# 1186|               ValueCategory = lvalue
+# 1186|             0: [VariableAccess] y
+# 1186|                 Type = [IntType] int
+# 1186|                 ValueCategory = lvalue
+# 1186|             1: [Literal] 2
+# 1186|                 Type = [IntType] int
+# 1186|                 Value = [Literal] 2
+# 1186|                 ValueCategory = prvalue
+# 1187|         2: [SwitchCase] case ...:
+# 1187|           0: [Literal] 2
+# 1187|               Type = [IntType] int
+# 1187|               Value = [Literal] 2
+# 1187|               ValueCategory = prvalue
+# 1188|         3: [ExprStmt] ExprStmt
+# 1188|           0: [AssignExpr] ... = ...
+# 1188|               Type = [IntType] int
+# 1188|               ValueCategory = lvalue
+# 1188|             0: [VariableAccess] y
+# 1188|                 Type = [IntType] int
+# 1188|                 ValueCategory = lvalue
+# 1188|             1: [Literal] 3
+# 1188|                 Type = [IntType] int
+# 1188|                 Value = [Literal] 3
+# 1188|                 ValueCategory = prvalue
+# 1190|     2: [DeclStmt] declaration
+# 1190|       0: [VariableDeclarationEntry] definition of z
+# 1190|           Type = [IntType] int
+# 1190|         init: [Initializer] initializer for z
+# 1190|           expr: [VariableAccess] y
+# 1190|               Type = [IntType] int
+# 1190|               ValueCategory = prvalue(load)
+# 1191|     3: [ReturnStmt] return ...
+# 1193| [TopLevelFunction] void switch2Case(int)
+# 1193|   params: 
+# 1193|     0: [Parameter] x
+# 1193|         Type = [IntType] int
+# 1193|   body: [Block] { ... }
+# 1194|     0: [DeclStmt] declaration
+# 1194|       0: [VariableDeclarationEntry] definition of y
+# 1194|           Type = [IntType] int
+# 1194|         init: [Initializer] initializer for y
+# 1194|           expr: [Literal] 0
+# 1194|               Type = [IntType] int
+# 1194|               Value = [Literal] 0
+# 1194|               ValueCategory = prvalue
+# 1195|     1: [SwitchStmt] switch (...) ... 
+# 1195|       0: [VariableAccess] x
+# 1195|           Type = [IntType] int
+# 1195|           ValueCategory = prvalue(load)
+# 1195|       1: [Block] { ... }
+# 1196|         0: [SwitchCase] case ...:
+# 1196|           0: [Literal] 1
+# 1196|               Type = [IntType] int
+# 1196|               Value = [Literal] 1
+# 1196|               ValueCategory = prvalue
+# 1197|         1: [ExprStmt] ExprStmt
+# 1197|           0: [AssignExpr] ... = ...
+# 1197|               Type = [IntType] int
+# 1197|               ValueCategory = lvalue
+# 1197|             0: [VariableAccess] y
+# 1197|                 Type = [IntType] int
+# 1197|                 ValueCategory = lvalue
+# 1197|             1: [Literal] 2
+# 1197|                 Type = [IntType] int
+# 1197|                 Value = [Literal] 2
+# 1197|                 ValueCategory = prvalue
+# 1198|         2: [BreakStmt] break;
+# 1199|         3: [SwitchCase] case ...:
+# 1199|           0: [Literal] 2
+# 1199|               Type = [IntType] int
+# 1199|               Value = [Literal] 2
+# 1199|               ValueCategory = prvalue
+# 1200|         4: [ExprStmt] ExprStmt
+# 1200|           0: [AssignExpr] ... = ...
+# 1200|               Type = [IntType] int
+# 1200|               ValueCategory = lvalue
+# 1200|             0: [VariableAccess] y
+# 1200|                 Type = [IntType] int
+# 1200|                 ValueCategory = lvalue
+# 1200|             1: [Literal] 3
+# 1200|                 Type = [IntType] int
+# 1200|                 Value = [Literal] 3
+# 1200|                 ValueCategory = prvalue
+# 1201|     2: [LabelStmt] label ...:
+# 1202|     3: [DeclStmt] declaration
+# 1202|       0: [VariableDeclarationEntry] definition of z
+# 1202|           Type = [IntType] int
+# 1202|         init: [Initializer] initializer for z
+# 1202|           expr: [VariableAccess] y
+# 1202|               Type = [IntType] int
+# 1202|               ValueCategory = prvalue(load)
+# 1203|     4: [ReturnStmt] return ...
+# 1205| [TopLevelFunction] void switch2Case_default(int)
+# 1205|   params: 
+# 1205|     0: [Parameter] x
+# 1205|         Type = [IntType] int
+# 1205|   body: [Block] { ... }
+# 1206|     0: [DeclStmt] declaration
+# 1206|       0: [VariableDeclarationEntry] definition of y
+# 1206|           Type = [IntType] int
+# 1206|         init: [Initializer] initializer for y
+# 1206|           expr: [Literal] 0
+# 1206|               Type = [IntType] int
+# 1206|               Value = [Literal] 0
+# 1206|               ValueCategory = prvalue
+# 1207|     1: [SwitchStmt] switch (...) ... 
+# 1207|       0: [VariableAccess] x
+# 1207|           Type = [IntType] int
+# 1207|           ValueCategory = prvalue(load)
+# 1207|       1: [Block] { ... }
+# 1208|         0: [SwitchCase] case ...:
+# 1208|           0: [Literal] 1
+# 1208|               Type = [IntType] int
+# 1208|               Value = [Literal] 1
+# 1208|               ValueCategory = prvalue
+# 1209|         1: [ExprStmt] ExprStmt
+# 1209|           0: [AssignExpr] ... = ...
+# 1209|               Type = [IntType] int
+# 1209|               ValueCategory = lvalue
+# 1209|             0: [VariableAccess] y
+# 1209|                 Type = [IntType] int
+# 1209|                 ValueCategory = lvalue
+# 1209|             1: [Literal] 2
+# 1209|                 Type = [IntType] int
+# 1209|                 Value = [Literal] 2
+# 1209|                 ValueCategory = prvalue
+# 1210|         2: [BreakStmt] break;
+# 1212|         3: [SwitchCase] case ...:
+# 1212|           0: [Literal] 2
+# 1212|               Type = [IntType] int
+# 1212|               Value = [Literal] 2
+# 1212|               ValueCategory = prvalue
+# 1213|         4: [ExprStmt] ExprStmt
+# 1213|           0: [AssignExpr] ... = ...
+# 1213|               Type = [IntType] int
+# 1213|               ValueCategory = lvalue
+# 1213|             0: [VariableAccess] y
+# 1213|                 Type = [IntType] int
+# 1213|                 ValueCategory = lvalue
+# 1213|             1: [Literal] 3
+# 1213|                 Type = [IntType] int
+# 1213|                 Value = [Literal] 3
+# 1213|                 ValueCategory = prvalue
+# 1214|         5: [BreakStmt] break;
+# 1216|         6: [SwitchCase] default: 
+# 1217|         7: [ExprStmt] ExprStmt
+# 1217|           0: [AssignExpr] ... = ...
+# 1217|               Type = [IntType] int
+# 1217|               ValueCategory = lvalue
+# 1217|             0: [VariableAccess] y
+# 1217|                 Type = [IntType] int
+# 1217|                 ValueCategory = lvalue
+# 1217|             1: [Literal] 4
+# 1217|                 Type = [IntType] int
+# 1217|                 Value = [Literal] 4
+# 1217|                 ValueCategory = prvalue
+# 1218|     2: [LabelStmt] label ...:
+# 1219|     3: [DeclStmt] declaration
+# 1219|       0: [VariableDeclarationEntry] definition of z
+# 1219|           Type = [IntType] int
+# 1219|         init: [Initializer] initializer for z
+# 1219|           expr: [VariableAccess] y
+# 1219|               Type = [IntType] int
+# 1219|               ValueCategory = prvalue(load)
+# 1220|     4: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
@@ -8116,3 +8349,184 @@ perf-regression.cpp:
 #   12|           Type = [IntType] int
 #   12|           Value = [Literal] 0
 #   12|           ValueCategory = prvalue
+struct_init.cpp:
+#    1| [TopLevelFunction] int handler1(void*)
+#    1|   params: 
+#    1|     0: [Parameter] p
+#    1|         Type = [VoidPointerType] void *
+#    2| [TopLevelFunction] int handler2(void*)
+#    2|   params: 
+#    2|     0: [Parameter] p
+#    2|         Type = [VoidPointerType] void *
+#    4| [CopyAssignmentOperator] Info& Info::operator=(Info const&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const Info &
+#    4| [MoveAssignmentOperator] Info& Info::operator=(Info&&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] Info &&
+#   16| [TopLevelFunction] void let_info_escape(Info*)
+#   16|   params: 
+#   16|     0: [Parameter] info
+#   16|         Type = [PointerType] Info *
+#   16|   body: [Block] { ... }
+#   17|     0: [ExprStmt] ExprStmt
+#   17|       0: [AssignExpr] ... = ...
+#   17|           Type = [PointerType] Info *
+#   17|           ValueCategory = lvalue
+#   17|         0: [VariableAccess] global_pointer
+#   17|             Type = [PointerType] Info *
+#   17|             ValueCategory = lvalue
+#   17|         1: [VariableAccess] info
+#   17|             Type = [PointerType] Info *
+#   17|             ValueCategory = prvalue(load)
+#   18|     1: [ReturnStmt] return ...
+#   20| [TopLevelFunction] void declare_static_infos()
+#   20|   params: 
+#   20|   body: [Block] { ... }
+#   21|     0: [DeclStmt] declaration
+#   21|       0: [VariableDeclarationEntry] definition of static_infos
+#   21|           Type = [ArrayType] Info[]
+#   21|         init: [Initializer] initializer for static_infos
+#   21|           expr: [ArrayAggregateLiteral] {...}
+#   21|               Type = [ArrayType] Info[2]
+#   21|               ValueCategory = prvalue
+#   22|             [0]: [ClassAggregateLiteral] {...}
+#   22|                 Type = [Struct] Info
+#   22|                 ValueCategory = prvalue
+#   22|               .name: [ArrayToPointerConversion] array to pointer conversion
+#   22|                   Type = [PointerType] const char *
+#   22|                   ValueCategory = prvalue
+#   22|                 expr: 1
+#   22|                     Type = [ArrayType] const char[2]
+#   22|                     Value = [StringLiteral] "1"
+#   22|                     ValueCategory = lvalue
+#   22|               .handler: [FunctionAccess] handler1
+#   22|                   Type = [FunctionPointerType] ..(*)(..)
+#   22|                   ValueCategory = prvalue(load)
+#   23|             [1]: [ClassAggregateLiteral] {...}
+#   23|                 Type = [Struct] Info
+#   23|                 ValueCategory = prvalue
+#   23|               .name: [ArrayToPointerConversion] array to pointer conversion
+#   23|                   Type = [PointerType] const char *
+#   23|                   ValueCategory = prvalue
+#   23|                 expr: 2
+#   23|                     Type = [ArrayType] const char[2]
+#   23|                     Value = [StringLiteral] "2"
+#   23|                     ValueCategory = lvalue
+#   23|               .handler: [AddressOfExpr] & ...
+#   23|                   Type = [FunctionPointerType] ..(*)(..)
+#   23|                   ValueCategory = prvalue
+#   23|                 0: [FunctionAccess] handler2
+#   23|                     Type = [RoutineType] ..()(..)
+#   23|                     ValueCategory = lvalue
+#   25|     1: [ExprStmt] ExprStmt
+#   25|       0: [FunctionCall] call to let_info_escape
+#   25|           Type = [VoidType] void
+#   25|           ValueCategory = prvalue
+#   25|         0: [ArrayToPointerConversion] array to pointer conversion
+#   25|             Type = [PointerType] Info *
+#   25|             ValueCategory = prvalue
+#   25|           expr: [VariableAccess] static_infos
+#   25|               Type = [ArrayType] Info[2]
+#   25|               ValueCategory = lvalue
+#   26|     2: [ReturnStmt] return ...
+#   28| [TopLevelFunction] void declare_local_infos()
+#   28|   params: 
+#   28|   body: [Block] { ... }
+#   29|     0: [DeclStmt] declaration
+#   29|       0: [VariableDeclarationEntry] definition of local_infos
+#   29|           Type = [ArrayType] Info[]
+#   29|         init: [Initializer] initializer for local_infos
+#   29|           expr: [ArrayAggregateLiteral] {...}
+#   29|               Type = [ArrayType] Info[2]
+#   29|               ValueCategory = prvalue
+#   30|             [0]: [ClassAggregateLiteral] {...}
+#   30|                 Type = [Struct] Info
+#   30|                 ValueCategory = prvalue
+#   30|               .name: [ArrayToPointerConversion] array to pointer conversion
+#   30|                   Type = [PointerType] const char *
+#   30|                   ValueCategory = prvalue
+#   30|                 expr: 1
+#   30|                     Type = [ArrayType] const char[2]
+#   30|                     Value = [StringLiteral] "1"
+#   30|                     ValueCategory = lvalue
+#   30|               .handler: [FunctionAccess] handler1
+#   30|                   Type = [FunctionPointerType] ..(*)(..)
+#   30|                   ValueCategory = prvalue(load)
+#   31|             [1]: [ClassAggregateLiteral] {...}
+#   31|                 Type = [Struct] Info
+#   31|                 ValueCategory = prvalue
+#   31|               .name: [ArrayToPointerConversion] array to pointer conversion
+#   31|                   Type = [PointerType] const char *
+#   31|                   ValueCategory = prvalue
+#   31|                 expr: 2
+#   31|                     Type = [ArrayType] const char[2]
+#   31|                     Value = [StringLiteral] "2"
+#   31|                     ValueCategory = lvalue
+#   31|               .handler: [AddressOfExpr] & ...
+#   31|                   Type = [FunctionPointerType] ..(*)(..)
+#   31|                   ValueCategory = prvalue
+#   31|                 0: [FunctionAccess] handler2
+#   31|                     Type = [RoutineType] ..()(..)
+#   31|                     ValueCategory = lvalue
+#   33|     1: [ExprStmt] ExprStmt
+#   33|       0: [FunctionCall] call to let_info_escape
+#   33|           Type = [VoidType] void
+#   33|           ValueCategory = prvalue
+#   33|         0: [ArrayToPointerConversion] array to pointer conversion
+#   33|             Type = [PointerType] Info *
+#   33|             ValueCategory = prvalue
+#   33|           expr: [VariableAccess] local_infos
+#   33|               Type = [ArrayType] Info[2]
+#   33|               ValueCategory = lvalue
+#   34|     2: [ReturnStmt] return ...
+#   36| [TopLevelFunction] void declare_static_runtime_infos(char const*)
+#   36|   params: 
+#   36|     0: [Parameter] name1
+#   36|         Type = [PointerType] const char *
+#   36|   body: [Block] { ... }
+#   37|     0: [DeclStmt] declaration
+#   37|       0: [VariableDeclarationEntry] definition of static_infos
+#   37|           Type = [ArrayType] Info[]
+#   37|         init: [Initializer] initializer for static_infos
+#   37|           expr: [ArrayAggregateLiteral] {...}
+#   37|               Type = [ArrayType] Info[2]
+#   37|               ValueCategory = prvalue
+#   38|             [0]: [ClassAggregateLiteral] {...}
+#   38|                 Type = [Struct] Info
+#   38|                 ValueCategory = prvalue
+#   38|               .name: [VariableAccess] name1
+#   38|                   Type = [PointerType] const char *
+#   38|                   ValueCategory = prvalue(load)
+#   38|               .handler: [FunctionAccess] handler1
+#   38|                   Type = [FunctionPointerType] ..(*)(..)
+#   38|                   ValueCategory = prvalue(load)
+#   39|             [1]: [ClassAggregateLiteral] {...}
+#   39|                 Type = [Struct] Info
+#   39|                 ValueCategory = prvalue
+#   39|               .name: [ArrayToPointerConversion] array to pointer conversion
+#   39|                   Type = [PointerType] const char *
+#   39|                   ValueCategory = prvalue
+#   39|                 expr: 2
+#   39|                     Type = [ArrayType] const char[2]
+#   39|                     Value = [StringLiteral] "2"
+#   39|                     ValueCategory = lvalue
+#   39|               .handler: [AddressOfExpr] & ...
+#   39|                   Type = [FunctionPointerType] ..(*)(..)
+#   39|                   ValueCategory = prvalue
+#   39|                 0: [FunctionAccess] handler2
+#   39|                     Type = [RoutineType] ..()(..)
+#   39|                     ValueCategory = lvalue
+#   41|     1: [ExprStmt] ExprStmt
+#   41|       0: [FunctionCall] call to let_info_escape
+#   41|           Type = [VoidType] void
+#   41|           ValueCategory = prvalue
+#   41|         0: [ArrayToPointerConversion] array to pointer conversion
+#   41|             Type = [PointerType] Info *
+#   41|             ValueCategory = prvalue
+#   41|           expr: [VariableAccess] static_infos
+#   41|               Type = [ArrayType] Info[2]
+#   41|               ValueCategory = lvalue
+#   42|     2: [ReturnStmt] return ...

@@ -18,7 +18,8 @@ import javascript
  * Indexing is 1-based.
  */
 predicate constantInCharacterClass(RegExpCharacterClass recc, int i, RegExpConstant cc, string val) {
-  cc = rank[i](RegExpConstant cc2, int j |
+  cc =
+    rank[i](RegExpConstant cc2, int j |
       cc2 = recc.getChild(j) and cc2.isCharacter() and cc2.getValue() = val
     |
       cc2 order by j

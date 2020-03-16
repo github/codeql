@@ -6,8 +6,8 @@ Before we accept your pull request, we require that you have agreed to our Contr
 
 ## Adding a new query
 
-If you have an idea for a query that you would like to share with other Semmle users, please open a pull request to add it to this repository. 
-Follow the steps below to help other users understand what your query does, and to ensure that your query is consistent with the other Semmle queries.
+If you have an idea for a query that you would like to share with other CodeQL users, please open a pull request to add it to this repository.
+Follow the steps below to help other users understand what your query does, and to ensure that your query is consistent with the other CodeQL queries.
 
 1. **Consult the documentation for query writers**
 
@@ -15,13 +15,13 @@ Follow the steps below to help other users understand what your query does, and 
 
 2. **Format your code correctly**
 
-   All of Semmle's standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+   All CodeQL standard queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting). For more information, see the [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 
-   Query metadata is used by Semmle's analysis to identify your query and make sure the query results are displayed properly. 
+   Query metadata is used to identify your query and make sure the query results are displayed properly.
    The most important metadata to include are the `@name`, `@description`, and the `@kind`.
-   Other metadata properties (`@precision`, `@severity`, and `@tags`) are usually added after the query has been reviewed by Semmle staff.
+   Other metadata properties (`@precision`, `@severity`, and `@tags`) are usually added after the query has been reviewed by GitHub staff.
    For more information on writing query metadata, see the [Query metadata style guide](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
 
 4. **Make sure the `select` statement is compatible with the query type**
@@ -39,12 +39,18 @@ Follow the steps below to help other users understand what your query does, and 
      * JavaScript: `ql/javascript/ql/src`
      * Python: `ql/python/ql/src`
 
-   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Select the appropriate subdirectory for your new query, or create a new one if necessary. 
+   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Select the appropriate subdirectory for your new query, or create a new one if necessary.
 
 6. **Write a query help file**
 
-   Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your new query. 
+   Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your new query.
    For more information on writing query help, see the [Query help style guide](https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md).
+
+7. **Maintain backwards compatibility**
+
+The standard CodeQL libraries must evolve in a backwards compatible manner. If any backwards incompatible changes need to be made, the existing API must first be marked as deprecated. This is done by adding a `deprecated` annotation along with a QLDoc reference to the replacement API. Only after at least one full release cycle has elapsed may the old API be removed.
+
+In addition to contributions to our standard queries and libraries, we also welcome contributions of a more experimental nature, which do not need to fulfill all the requirements listed above. See the guidelines for [experimental queries and libraries](docs/experimental.md) for details.
 
 ## Using your personal data
 

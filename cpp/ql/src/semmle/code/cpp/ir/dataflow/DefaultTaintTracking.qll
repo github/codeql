@@ -278,7 +278,7 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
 
 /**
  * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
- * Taint shoud not pass through these instructions since they tend to mix up
+ * Taint should not pass through these instructions since they tend to mix up
  * unrelated objects.
  */
 private predicate isChiForAllAliasedMemory(Instruction instr) {
@@ -286,7 +286,7 @@ private predicate isChiForAllAliasedMemory(Instruction instr) {
   or
   isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
   or
-  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInput())
+  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
 }
 
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {
@@ -354,6 +354,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
     cfg.hasFlow(getNodeForSource(source), sink) and
@@ -361,6 +362,7 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
+cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
   globalVar = ""

@@ -5,6 +5,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 ## General improvements
 
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+* A `Customizations.qll` file has been added to allow customizations of the standard library that apply to all queries.
 
 ## New queries
 

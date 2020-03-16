@@ -68,14 +68,7 @@ private module Cached {
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    exists(Expr converted |
-      result = converted.(Conversion).getExpr+()
-      or
-      result = converted
-    |
-      not result instanceof Conversion and
-      converted = getInstructionConvertedResultExpression(instruction)
-    )
+    result = getInstructionConvertedResultExpression(instruction).getUnconverted()
   }
 
   cached
