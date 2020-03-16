@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import dataflow.internal.StepSummary
 
 /**
  * A definition of a `Promise` object.
@@ -165,26 +166,37 @@ module PromiseTypeTracking {
   /**
    * Gets the result from a single step through a promise, from `pred` to `result` summarized by `summary`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
-   *
-   * See the qldoc for the `PromiseTypeTracking` module for an example of how to use this predicate.
    */
-  DataFlow::SourceNode promiseStep(DataFlow::SourceNode pred, DataFlow::StepSummary summary) {
+  DataFlow::SourceNode promiseStep(DataFlow::SourceNode pred, StepSummary summary) {
     exists(PromiseFlowStep step, string field | field = Promises::valueProp() |
-      summary = DataFlow::LoadStep(field) and
+      summary = LoadStep(field) and
       step.load(pred, result, field)
       or
-      summary = DataFlow::StoreStep(field) and
+      summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = DataFlow::LevelStep() and
+      summary = LevelStep() and
       step.loadStore(pred, result, field)
+    )
+  }
+
+  /**
+   * Gets the result from a single step through a promise, from `pred` with tracker `t2` to `result` with tracker `t`.
+   * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
+   */ 
+  DataFlow::SourceNode promiseStep(
+    DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2
+  ) {
+    exists(StepSummary summary |
+      result = PromiseTypeTracking::promiseStep(pred, summary) and
+      t = t2.append(summary)
     )
   }
 
   /**
    * A class enabling the use of the `resolveField` as a pseudo-property in type-tracking predicates.
    */
-  private class ResolveFieldAsTypeTrackingProperty extends DataFlow::TypeTrackingPseudoProperty {
+  private class ResolveFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
     ResolveFieldAsTypeTrackingProperty() { this = Promises::valueProp() }
   }
 }

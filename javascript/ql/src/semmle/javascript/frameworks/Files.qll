@@ -73,9 +73,8 @@ private DataFlow::SourceNode globbyFileNameSource(DataFlow::TypeTracker t) {
   )
   or
   // Tracking out of a promise
-  exists(DataFlow::TypeTracker t2, DataFlow::StepSummary summary |
-    result = PromiseTypeTracking::promiseStep(globbyFileNameSource(t2), summary) and
-    t = t2.append(summary)
+  exists(DataFlow::TypeTracker t2 |
+    result = PromiseTypeTracking::promiseStep(globbyFileNameSource(t2), t, t2)
   )
 }
 
@@ -116,9 +115,8 @@ private DataFlow::Node fastGlobFileNameSource(DataFlow::TypeTracker t) {
   )
   or
   // Tracking out of a promise
-  exists(DataFlow::TypeTracker t2, DataFlow::StepSummary summary |
-    result = PromiseTypeTracking::promiseStep(fastGlobFileNameSource(t2), summary) and
-    t = t2.append(summary)
+  exists(DataFlow::TypeTracker t2 |
+    result = PromiseTypeTracking::promiseStep(fastGlobFileNameSource(t2), t, t2)
   )
 }
 

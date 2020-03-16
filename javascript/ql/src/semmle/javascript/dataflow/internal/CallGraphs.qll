@@ -3,6 +3,7 @@
  */
 
 private import javascript
+private import StepSummary
 
 cached
 module CallGraph {
@@ -83,7 +84,7 @@ module CallGraph {
       getAFunctionReference(function, 0, t.continue()).flowsTo(callback)
     )
     or
-    exists(DataFlow::StepSummary summary, DataFlow::TypeTracker t2 |
+    exists(StepSummary summary, DataFlow::TypeTracker t2 |
       result = getABoundFunctionReferenceAux(function, boundArgs, t2, summary) and
       t = t2.append(summary)
     )
@@ -92,11 +93,11 @@ module CallGraph {
   pragma[noinline]
   private DataFlow::SourceNode getABoundFunctionReferenceAux(
     DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t,
-    DataFlow::StepSummary summary
+    StepSummary summary
   ) {
     exists(DataFlow::SourceNode prev |
       prev = getABoundFunctionReferenceAux(function, boundArgs, t) and
-      DataFlow::StepSummary::step(prev, result, summary)
+      StepSummary::step(prev, result, summary)
     )
   }
 
