@@ -584,12 +584,6 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
 
 /** A named type. */
 class NamedType extends @namedtype, CompositeType {
-  /** Gets a method with name `m` defined on this type or its pointer type. */
-  MethodDecl getMethodDecl(string m) {
-    result.getName() = m and
-    this = result.getReceiverBaseType()
-  }
-
   /** Gets the type which this type is defined to be. */
   Type getBaseType() { underlying_type(this, result) }
 
