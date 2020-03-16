@@ -210,9 +210,48 @@ private module Mongoose {
   }
 
   /**
+   * A common interface for various Mongoose calls.
+   */
+  private class CommonInterface extends DataFlow::InvokeNode {
+    /**
+     * Holds if this call returns an object of type `Query`.
+     */
+    abstract predicate returnsQuery();
+
+    /**
+     * Holds if this call returns a `Query` that evaluates to a one or
+     * more Documents (`asArray` is false if it evaluates to a single
+     * Document).
+     */
+    abstract predicate returnsDocumentQuery(boolean asArray);
+
+    /**
+     * Holds if this call interprets `arg` as a query.
+     */
+    abstract predicate interpretsArgumentAsQuery(DataFlow::Node arg);
+  }
+
+  /**
    * Provides classes modeling the Mongoose Model class
    */
   module Model {
+    private class ModelAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
+      ModelAsCommonInterface() { this = ref().getAMethodCall() }
+
+      override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
+
+      override predicate returnsDocumentQuery(boolean asArray) {
+        MethodSignatures::returnsDocumentQuery(getMethodName(), asArray)
+      }
+
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) {
+        exists(int n |
+          MethodSignatures::interpretsArgumentAsQuery(this.getMethodName(), n) and
+          arg = this.getArgument(n)
+        )
+      }
+    }
+
     /**
      * Gets a data flow node referring to a Mongoose Model object.
      */
@@ -279,10 +318,11 @@ private module Mongoose {
       }
 
       /**
-       * Holds if Model method `name` returns one or more documents, the
-       * documents are wrapped in an array if `asArray` is true.
+       * Holds if Document method `name` returns a query that results in
+       * one or more documents, the documents are wrapped in an array
+       * if `asArray` is true.
        */
-      predicate returnsDocument(string name, boolean asArray) {
+      predicate returnsDocumentQuery(string name, boolean asArray) {
         asArray = false and name = "findOne"
         or
         asArray = true and name = "find"
@@ -294,37 +334,33 @@ private module Mongoose {
    * Provides classes modeling the Mongoose Query class
    */
   module Query {
-    /**
-     * A Mongoose query object as a result of a Model method call.
-     */
-    private class QueryFromModel extends DataFlow::MethodCallNode {
-      QueryFromModel() {
-        exists(string name |
-          Model::MethodSignatures::returnsQuery(name) and
-          Model::ref().getAMethodCall(name) = this
+    private class QueryAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
+      QueryAsCommonInterface() { this = ref().getAMethodCall() }
+
+      override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
+
+      override predicate returnsDocumentQuery(boolean asArray) {
+        MethodSignatures::returnsDocumentQuery(getMethodName(), asArray)
+      }
+
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) {
+        exists(int n |
+          MethodSignatures::interpretsArgumentAsQuery(this.getMethodName(), n) and
+          arg = this.getArgument(n)
         )
       }
     }
 
-    /**
-     * A Mongoose query object as a result of a Document method call.
-     */
-    private class QueryFromDocument extends DataFlow::MethodCallNode {
-      QueryFromDocument() {
-        exists(string name |
-          Document::MethodSignatures::returnsQuery(name) and
-          Document::ref().getAMethodCall(name) = this
-        )
-      }
-    }
-
-    /**
-     * A Mongoose query object as a result of a Query constructor invocation.
-     */
-    class QueryFromConstructor extends DataFlow::NewNode {
-      QueryFromConstructor() {
+    private class NewQueryAsCommonInterface extends CommonInterface {
+      NewQueryAsCommonInterface() {
         this = getAMongooseInstance().getAPropertyRead("Query").getAnInstantiation()
       }
+
+      override predicate returnsQuery() { any() }
+
+      override predicate returnsDocumentQuery(boolean asArray) { none() }
+
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) { arg = this.getArgument(2) }
     }
 
     /**
@@ -332,9 +368,7 @@ private module Mongoose {
      */
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       (
-        result instanceof QueryFromConstructor or
-        result instanceof QueryFromModel or
-        result instanceof QueryFromDocument or
+        result.(CommonInterface).returnsQuery() or
         result.hasUnderlyingType("mongoose", "Query")
       ) and
       t.start()
@@ -475,10 +509,11 @@ private module Mongoose {
       }
 
       /**
-       * Holds if Query method `name` returns one or more documents, the
-       * documents are wrapped in an array if `asArray` is true.
+       * Holds if Query method `name` returns a query that results in
+       * one or more documents, the documents are wrapped in an array
+       * if `asArray` is true.
        */
-      predicate returnsDocument(string name, boolean asArray) {
+      predicate returnsDocumentQuery(string name, boolean asArray) {
         asArray = false and name = "findOne"
         or
         asArray = true and name = "find"
@@ -490,20 +525,31 @@ private module Mongoose {
    * Provides classes modeling the Mongoose Document class
    */
   module Document {
+    private class DocumentAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
+      DocumentAsCommonInterface() { this = ref().getAMethodCall() }
+
+      override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
+
+      override predicate returnsDocumentQuery(boolean asArray) {
+        MethodSignatures::returnsDocumentQuery(getMethodName(), asArray)
+      }
+
+      override predicate interpretsArgumentAsQuery(DataFlow::Node arg) {
+        exists(int n |
+          MethodSignatures::interpretsArgumentAsQuery(this.getMethodName(), n) and
+          arg = this.getArgument(n)
+        )
+      }
+    }
+
     /**
      * A Mongoose Document that is retrieved from the backing database.
      */
     class RetrievedDocument extends DataFlow::SourceNode {
       RetrievedDocument() {
         exists(boolean asArray, DataFlow::ParameterNode param |
-          exists(DataFlow::SourceNode base, DataFlow::MethodCallNode call, string name |
-            base = Query::ref() and Query::MethodSignatures::returnsDocument(name, asArray)
-            or
-            base = Model::ref() and Model::MethodSignatures::returnsDocument(name, asArray)
-            or
-            base = ref() and MethodSignatures::returnsDocument(name, asArray)
-          |
-            call = base.getAMethodCall(name) and
+          exists(CommonInterface call |
+            call.returnsDocumentQuery(asArray) and
             param = call.getCallback(call.getNumArgument() - 1).getParameter(1)
           )
           or
@@ -520,7 +566,7 @@ private module Mongoose {
             param = call.getCallback(0).getParameter(paramIndex) and
             exists(DataFlow::MethodCallNode pred |
               // limitation: look at the previous method call
-              Query::MethodSignatures::returnsDocument(pred.getMethodName(), asArray) and
+              Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
               pred.getAMethodCall() = call
             )
           )
@@ -551,8 +597,7 @@ private module Mongoose {
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode succ | succ = ref(t2) |
         result = succ.track(t2, t)
         or
-        result =
-          succ.getAMethodCall(any(string name | MethodSignatures::returnsDocument(name, true))) and
+        result = succ.getAMethodCall(any(string name | MethodSignatures::returnsDocument(name))) and
         t = t2.continue()
       )
     }
@@ -562,7 +607,7 @@ private module Mongoose {
      */
     DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
 
-    module MethodSignatures {
+    private module MethodSignatures {
       /**
        * Holds if Document method `name` returns a Query.
        */
@@ -590,20 +635,23 @@ private module Mongoose {
       }
 
       /**
-       * Holds if Document method `name` returns one or more documents, the
-       * documents are wrapped in an array if `asArray` is true.
+       * Holds if Document method `name` returns a query that results in
+       * one or more documents, the documents are wrapped in an array
+       * if `asArray` is true.
        */
-      predicate returnsDocument(string name, boolean asArray) {
+      predicate returnsDocumentQuery(string name, boolean asArray) {
         // Documents are subtypes of Models
-        Model::MethodSignatures::returnsDocument(name, asArray)
-        or
-        asArray = false and
-        (
-          name = "depopulate" or
-          name = "init" or
-          name = "populate" or
-          name = "overwrite"
-        )
+        Model::MethodSignatures::returnsDocumentQuery(name, asArray)
+      }
+
+      /**
+       * Holds if Document method `name` returns a Document.
+       */
+      predicate returnsDocument(string name) {
+        name = "depopulate" or
+        name = "init" or
+        name = "populate" or
+        name = "overwrite"
       }
     }
   }
@@ -629,66 +677,39 @@ private module Mongoose {
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
   class MongoDBQueryPart extends NoSQL::Query {
-    MongoDBQueryPart() {
-      exists(DataFlow::MethodCallNode mcn, string method, int n |
-        Model::MethodSignatures::interpretsArgumentAsQuery(method, n) and
-        mcn = Model::ref().getAMethodCall(method) and
-        this = mcn.getArgument(n).asExpr()
-      )
-      or
-      this = any(Query::QueryFromConstructor c).getArgument(2).asExpr()
-      or
-      exists(string method, int n | Query::MethodSignatures::interpretsArgumentAsQuery(method, n) |
-        this = Query::ref().getAMethodCall(method).getArgument(n).asExpr()
-      )
-      or
-      exists(DataFlow::MethodCallNode mcn, string method, int n |
-        Document::MethodSignatures::interpretsArgumentAsQuery(method, n) and
-        mcn = Document::ref().getAMethodCall(method) and
-        this = mcn.getArgument(n).asExpr()
-      )
-    }
+    MongoDBQueryPart() { any(CommonInterface call).interpretsArgumentAsQuery(this.flow()) }
   }
 
   /**
    * An evaluation of a MongoDB query.
    */
-  class MongoDBQueryEvaluation extends DatabaseAccess {
-    DataFlow::MethodCallNode mcn;
+  class ShorthandQueryEvaluation extends DatabaseAccess {
+    CommonInterface common;
 
-    MongoDBQueryEvaluation() {
-      this = mcn and
-      (
-        exists(string method |
-          Model::MethodSignatures::returnsQuery(method) and
-          mcn = Model::ref().getAMethodCall(method) and
-          // callback provided to a Model method call
-          exists(mcn.getCallback(mcn.getNumArgument() - 1))
-        )
-        or
-        Query::ref().getAMethodCall() = mcn and
-        (
-          // explicit execution using a Query method call
-          exists(string executor | executor = "exec" or executor = "then" or executor = "catch" |
-            mcn.getMethodName() = executor
-          )
-          or
-          // callback provided to a Query method call
-          exists(mcn.getCallback(mcn.getNumArgument() - 1))
-        )
-        or
-        exists(string method |
-          Document::MethodSignatures::returnsQuery(method) and
-          mcn = Document::ref().getAMethodCall(method) and
-          // callback provided to a Document method call
-          exists(mcn.getCallback(mcn.getNumArgument() - 1))
-        )
+    ShorthandQueryEvaluation() {
+      this = common and
+      // shorthand for execution: provide a callback
+      common.returnsQuery() and
+      exists(common.getCallback(common.getNumArgument() - 1))
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      // NB: the complete information is not easily accessible for deeply chained calls
+      common.interpretsArgumentAsQuery(result)
+    }
+  }
+
+  class ExplicitQueryEvaluation extends DatabaseAccess {
+    ExplicitQueryEvaluation() {
+      // explicit execution using a Query method call
+      exists(string executor | executor = "exec" or executor = "then" or executor = "catch" |
+        Query::ref().getAMethodCall(executor) = this
       )
     }
 
     override DataFlow::Node getAQueryArgument() {
-      // NB: this does not account for all of the chained calls leading to this execution
-      mcn.getAnArgument().asExpr().(MongoDBQueryPart).flow() = result
+      // NB: the complete information is not easily accessible for deeply chained calls
+      none()
     }
   }
 }
