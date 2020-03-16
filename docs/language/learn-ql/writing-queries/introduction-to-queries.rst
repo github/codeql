@@ -131,9 +131,9 @@ Select clauses for metric queries (``@kind metric``) consist of two 'columns', w
 Viewing the standard CodeQL queries
 ***********************************
 
-One of the easiest ways to get started writing your own queries is to modify an existing query. To see view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/semmle/ql>`__ and `CodeQL for Go <https://github.com/github/codeql-qo>`__ repositories on GitHub. 
+One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/semmle/ql>`__ and `CodeQL for Go <https://github.com/github/codeql-qo>`__ repositories on GitHub. 
 
-You can also find examples of queries developed to find security vulnerabilities and bugs in open-source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
+You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
 
 Contributing queries
 ********************
