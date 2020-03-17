@@ -84,6 +84,28 @@ class TranslatedAutoVariableDeclarationEntry extends TranslatedLocalVariableDecl
  * initialized, and if not, invokes the initializer and sets the dynamic initialization flag for the
  * variable. The actual initialization code is handled in
  * `TranslatedStaticLocalVariableInitialization`, which is a child of this element.
+ *
+ * The generated code to do the initialization only once is:
+ * ```
+ * Block 1
+ *   r1225_1(glval<bool>) = VariableAddress[c#init] :
+ *   r1225_2(bool)        = Load                    : &:r1225_1, ~mu1222_4
+ *   v1225_3(void)        = ConditionalBranch       : r1225_2
+ * False -> Block 2
+ * True -> Block 3
+ *
+ * Block 2
+ *   r1225_4(glval<int>) = VariableAddress[c] :
+ * <actual initialization of `c`>
+ *   r1225_8(bool)       = Constant[1]        :
+ *   mu1225_9(bool)      = Store              : &:r1225_1, r1225_8
+ * Goto -> Block 3
+ *
+ * Block 3
+ * ```
+ *
+ * Note that the flag variable, `c#init`, is assumed to be zero-initialized at program startup, just
+ * like any other variable with static storage duration.
  */
 class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclarationEntry {
   StaticLocalVariable var;
