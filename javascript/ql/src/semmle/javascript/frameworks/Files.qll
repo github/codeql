@@ -11,14 +11,14 @@ abstract private class FileNameProducer extends DataFlow::Node {
   /**
    * Gets a file name produced by this producer.
    */
-  abstract DataFlow::Node getAFileNameSource();
+  abstract DataFlow::Node getAFileName();
 }
 
 /**
  * A node that contains a file name, and is produced by a `ProducesFileNames`.
  */
 private class ProducedFileName extends FileNameSource {
-  ProducedFileName() { this = any(ProducesFileNames producer).getAFileNameSource() }
+  ProducedFileName() { this = any(FileNameProducer producer).getAFileName() }
 }
 
 /**
@@ -176,12 +176,12 @@ private class WriteFileAtomic extends FileSystemWriteAccess, DataFlow::CallNode 
 /**
  * A call to the library `recursive-readdir`.
  */
-private class RecursiveReadDir extends FileSystemAccess, ProducesFileNames, DataFlow::CallNode {
+private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, DataFlow::CallNode {
   RecursiveReadDir() { this = DataFlow::moduleImport("recursive-readdir").getACall() }
 
   override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getAFileNameSource() { result = getCallback([1 .. 2]).getParameter(1) }
+  override DataFlow::Node getAFileName() { result = getCallback([1 .. 2]).getParameter(1) }
 }
 
 /**
