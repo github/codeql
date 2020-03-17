@@ -44,7 +44,7 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
-    /** Gets the origin AST node for this value. */
+    /** Gets the origin CFG node for this value. */
     ControlFlowNode getOrigin() {
         result = this.(ObjectInternal).getOrigin()
     }
