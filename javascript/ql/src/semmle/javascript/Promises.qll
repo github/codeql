@@ -183,7 +183,7 @@ module PromiseTypeTracking {
   /**
    * Gets the result from a single step through a promise, from `pred` with tracker `t2` to `result` with tracker `t`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
-   */ 
+   */
   DataFlow::SourceNode promiseStep(
     DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2
   ) {
