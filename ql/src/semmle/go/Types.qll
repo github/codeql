@@ -40,6 +40,9 @@ class Type extends @type {
 
   /**
    * Gets the method `m` belonging to the method set of this type, if any.
+   *
+   * Note that this predicate never has a result for struct types. Methods are associated
+   * with the corresponding named type instead.
    */
   Method getMethod(string m) {
     result.getReceiverType() = this and
@@ -441,11 +444,29 @@ class PointerType extends @pointertype, CompositeType {
   override Package getPackage() { result = this.getBaseType().getPackage() }
 
   override Method getMethod(string m) {
-    // https://golang.org/ref/spec#Method_sets: "the method set of a pointer type *T is
-    // the set of all methods declared with receiver *T or T"
     result = CompositeType.super.getMethod(m)
     or
+    // https://golang.org/ref/spec#Method_sets: "the method set of a pointer type *T is
+    // the set of all methods declared with receiver *T or T"
     result = getBaseType().getMethod(m)
+    or
+    // promoted methods from embedded types
+    exists(StructType s, Type embedded |
+      s = getBaseType().(NamedType).getUnderlyingType() and
+      s.hasOwnField(_, _, embedded, true) and
+      // ensure that `m` can be promoted
+      not s.hasOwnField(_, m, _, _) and
+      not exists(Method m2 | m2.getReceiverBaseType() = getBaseType() and m2.getName() = m)
+    |
+      result = embedded.getMethod(m)
+      or
+      // If S contains an embedded field T, the method set of *S includes promoted methods with receiver T or T*
+      not embedded instanceof PointerType and
+      result = embedded.getPointerType().getMethod(m)
+      or
+      // If S contains an embedded field *T, the method set of *S includes promoted methods with receiver T or *T
+      result = embedded.(PointerType).getBaseType().getMethod(m)
+    )
   }
 
   override string pp() { result = "* " + getBaseType().pp() }
@@ -566,12 +587,6 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
 
 /** A named type. */
 class NamedType extends @namedtype, CompositeType {
-  /** Gets a method with name `m` defined on this type. */
-  MethodDecl getMethodDecl(string m) {
-    result.getName() = m and
-    this = result.getReceiverBaseType()
-  }
-
   /** Gets the type which this type is defined to be. */
   Type getBaseType() { underlying_type(this, result) }
 
@@ -580,6 +595,21 @@ class NamedType extends @namedtype, CompositeType {
     or
     methodhosts(result, this) and
     result.getName() = m
+    or
+    // handle promoted methods
+    exists(StructType s, Type embedded |
+      s = getBaseType() and
+      s.hasOwnField(_, _, embedded, true) and
+      // ensure `m` can be promoted
+      not s.hasOwnField(_, m, _, _) and
+      not exists(Method m2 | m2.getReceiverType() = this and m2.getName() = m)
+    |
+      // If S contains an embedded field T, the method set of S includes promoted methods with receiver T
+      result = embedded.getMethod(m)
+      or
+      // If S contains an embedded field *T, the method set of S includes promoted methods with receiver T or *T
+      result = embedded.(PointerType).getBaseType().getMethod(m)
+    )
   }
 
   override Type getUnderlyingType() { result = getBaseType().getUnderlyingType() }

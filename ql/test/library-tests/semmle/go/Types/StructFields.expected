@@ -19,3 +19,15 @@
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | Foo | * Foo |
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | flag | bool |
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | val | int |
+| embedder | pkg1/embedding.go:19:15:19:28 | struct type | base | base |
+| embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
+| embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
+| embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
+| embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
+| embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
+| embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
+| embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
+| embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
+| embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
+| embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
+| ptrembedder | pkg1/embedding.go:22:18:22:32 | struct type | base | * base |
