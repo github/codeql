@@ -213,17 +213,51 @@ module TaintedPath {
         output = this
       )
       or
-      // non-global replace or replace of something other than /\.\./g
+      // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
       this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal, RegExpSequence seq |
+      not exists(RegExpLiteral literal, RegExpTerm term |
         getArgument(0).getALocalSource().asExpr() = literal and
         literal.isGlobal() and
-        literal.getRoot() = seq and
-        seq.getChild(0).(RegExpConstant).getValue() = "." and
-        seq.getChild(1).(RegExpConstant).getValue() = "." and
-        seq.getNumChild() = 2
+        literal.getRoot() = term
+      |
+        term.getAMatchedString() = "/" or
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
+      )
+    }
+
+    /**
+     * Gets the input path to be normalized.
+     */
+    DataFlow::Node getInput() { result = input }
+
+    /**
+     * Gets the normalized path.
+     */
+    DataFlow::Node getOutput() { result = output }
+  }
+
+  /**
+   * A call that removes all "." or ".." from a path, without also removing all forward slashes.
+   */
+  class DotRemovingReplaceCall extends DataFlow::CallNode {
+    DataFlow::Node input;
+    DataFlow::Node output;
+
+    DotRemovingReplaceCall() {
+      this.getCalleeName() = "replace" and
+      input = getReceiver() and
+      output = this and
+      exists(RegExpLiteral literal, RegExpTerm term |
+        getArgument(0).getALocalSource().asExpr() = literal and
+        literal.isGlobal() and
+        literal.getRoot() = term and
+        not term.getAMatchedString() = "/"
+      |
+        term.getAMatchedString() = "." or
+        term.getAMatchedString() = ".."
       )
     }
 

@@ -252,10 +252,11 @@ module NodeJSLib {
   private class WriteHead extends HeaderDefinition {
     WriteHead() {
       astNode.getMethodName() = "writeHead" and
-      astNode.getNumArgument() > 1
+      astNode.getNumArgument() >= 1
     }
 
     override predicate definesExplicitly(string headerName, Expr headerValue) {
+      astNode.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
         headers.flowsToExpr(astNode.getLastArgument()) and
         headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
@@ -633,18 +634,19 @@ module NodeJSLib {
       result = getArgument(1)
     }
 
-    override predicate isSync() {
-      "Sync" = methodName.suffix(methodName.length() - 4)
-    }
+    override predicate isSync() { "Sync" = methodName.suffix(methodName.length() - 4) }
 
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
       not result = getArgument(0) and
       // fork/spawn and all sync methos always has options as the last argument
-      if methodName.regexpMatch("fork.*") or methodName.regexpMatch("spawn.*") or methodName.regexpMatch(".*Sync") then
-        result = getLastArgument()
-      else 
+      if
+        methodName.regexpMatch("fork.*") or
+        methodName.regexpMatch("spawn.*") or
+        methodName.regexpMatch(".*Sync")
+      then result = getLastArgument()
+      else
         // the rest (exec/execFile) has the options argument as their second last.
         result = getArgument(this.getNumArgument() - 2)
     }
@@ -944,6 +946,13 @@ module NodeJSLib {
    */
   private class ImportedNodeJSEventEmitter extends NodeJSEventEmitter {
     ImportedNodeJSEventEmitter() { this = getAnEventEmitterImport().getAnInstantiation() }
+  }
+
+  /**
+   * The NodeJS `process` object as an EventEmitter subclass.
+   */
+  private class ProcessAsNodeJSEventEmitter extends NodeJSEventEmitter {
+    ProcessAsNodeJSEventEmitter() { this = process() }
   }
 
   /**

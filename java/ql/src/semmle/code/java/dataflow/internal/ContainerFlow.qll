@@ -115,11 +115,19 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.(CollectionMethod).hasName("remove") and m.getParameterType(0).(PrimitiveType).hasName("int")
   or
+  m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
+  or
   m.(CollectionMethod).hasName("subList")
   or
   m.(CollectionMethod).hasName("firstElement")
   or
   m.(CollectionMethod).hasName("lastElement")
+  or
+  m.(CollectionMethod).hasName("poll")
+  or
+  m.(CollectionMethod).hasName("peek")
+  or
+  m.(CollectionMethod).hasName("element")
 }
 
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
@@ -147,6 +155,8 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   method.(CollectionMethod).hasName("addElement") and arg = 0
   or
   method.(CollectionMethod).hasName("set") and arg = 1
+  or
+  method.(CollectionMethod).hasName("offer") and arg = 0
 }
 
 private predicate argToQualifierStep(Expr tracked, Expr sink) {

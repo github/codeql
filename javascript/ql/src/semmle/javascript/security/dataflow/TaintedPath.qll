@@ -197,6 +197,15 @@ module TaintedPath {
         srclabel = dstlabel
       )
       or
+      // foo.replace(/\./, "") and similar
+      exists(DotRemovingReplaceCall call |
+        src = call.getInput() and
+        dst = call.getOutput() and
+        srclabel.isAbsolute() and
+        dstlabel.isAbsolute() and
+        dstlabel.isNormalized()
+      )
+      or
       // path.join()
       exists(DataFlow::CallNode join, int n |
         join = NodeJSLib::Path::moduleMember("join").getACall()

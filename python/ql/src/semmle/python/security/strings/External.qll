@@ -134,16 +134,13 @@ private predicate json_subscript_taint(
     SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
     sub.isLoad() and
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     key = seq.getValue()
 }
 
 private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
-    exists(FunctionObject json_loads |
-        ModuleObject::named("json").attr("loads") = json_loads and
-        json_loads.getACall() = tonode and
-        tonode.getArg(0) = fromnode
-    )
+    tonode = Value::named("json.loads").getACall() and
+    tonode.getArg(0) = fromnode
 }
 
 private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
@@ -223,19 +220,19 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
             or
             full_use.(AttrNode).getObject() = test.getInput().getAUse()
         |
-            clears_taint(_, full_use, test.getTest(), test.getSense())
+            clears_taint(full_use, test.getTest(), test.getSense())
         )
     }
 
-    private predicate clears_taint(ControlFlowNode final_test, ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
-        test_equality_with_const(final_test, tainted, sense)
+    private predicate clears_taint(ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
+        test_equality_with_const(test, tainted, sense)
         or
-        test_in_const_seq(final_test, tainted, sense)
+        test_in_const_seq(test, tainted, sense)
         or
         test.(UnaryExprNode).getNode().getOp() instanceof Not and
         exists(ControlFlowNode nested_test |
             nested_test = test.(UnaryExprNode).getOperand() and
-            clears_taint(final_test, tainted, nested_test, sense.booleanNot())
+            clears_taint(tainted, nested_test, sense.booleanNot())
         )
     }
 

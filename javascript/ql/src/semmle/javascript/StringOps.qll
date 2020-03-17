@@ -67,7 +67,7 @@ module StringOps {
         inner.getEnclosingExpr() = callee.getAReturnedExpr() and
         this.getACallee() = callee and
         count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and 
+        count(callee.getAReturnedExpr()) = 1 and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
@@ -298,7 +298,7 @@ module StringOps {
         inner.getEnclosingExpr() = callee.getAReturnedExpr() and
         this.getACallee() = callee and
         count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and 
+        count(callee.getAReturnedExpr()) = 1 and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
@@ -320,7 +320,6 @@ module StringOps {
 
       override boolean getPolarity() { result = inner.getPolarity() }
     }
-
 
     /**
      * A call of form `A.endsWith(B)`.

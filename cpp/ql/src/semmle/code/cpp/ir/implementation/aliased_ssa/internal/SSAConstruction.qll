@@ -665,17 +665,18 @@ module DefUse {
   private predicate definitionReachesRank(
     Alias::MemoryLocation useLocation, OldBlock block, int defRank, int reachesRank
   ) {
+    // The def always reaches the next use, even if there is also a def on the
+    // use instruction.
     hasDefinitionAtRank(useLocation, _, block, defRank, _) and
-    reachesRank <= exitRank(useLocation, block) and // Without this, the predicate would be infinite.
-    (
-      // The def always reaches the next use, even if there is also a def on the
-      // use instruction.
-      reachesRank = defRank + 1
-      or
-      // If the def reached the previous rank, it also reaches the current rank,
-      // unless there was another def at the previous rank.
-      definitionReachesRank(useLocation, block, defRank, reachesRank - 1) and
-      not hasDefinitionAtRank(useLocation, _, block, reachesRank - 1, _)
+    reachesRank = defRank + 1
+    or
+    // If the def reached the previous rank, it also reaches the current rank,
+    // unless there was another def at the previous rank.
+    exists(int prevRank |
+      reachesRank = prevRank + 1 and
+      definitionReachesRank(useLocation, block, defRank, prevRank) and
+      not prevRank = exitRank(useLocation, block) and
+      not hasDefinitionAtRank(useLocation, _, block, prevRank, _)
     )
   }
 

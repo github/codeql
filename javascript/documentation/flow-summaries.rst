@@ -14,6 +14,10 @@ added as external data), and are picked up by the standard security queries, all
 about flow into, out of and through the npm packages as though they had been included as part of the
 build.
 
+Note that flow summaries are an experimental technology, and not ready to be used in production
+queries or libraries. Also note that flow summaries do not currently work with CodeQL, but require
+the legacy Semmle Core toolchain.
+
 Motivating example
 ------------------
 
@@ -87,11 +91,11 @@ package. (Note that this requires a working installation of Semmle Core.)
 There are three default summary extraction queries:
 
 - Extract flow step summaries (``js/step-summary-extraction``,
-  ``Security/Summaries/ExtractSourceSummaries.ql``)
+  ``experimental/Summaries/ExtractSourceSummaries.ql``)
 - Extract sink summaries (``js/sink-summary-extraction``,
-  ``Security/Summaries/ExtractSinkSummaries.ql``)
+  ``experimental/Summaries/ExtractSinkSummaries.ql``)
 - Extract source summaries (``js/source-summary-extraction``,
-  ``Security/Summaries/ExtractSourceSummaries.ql``)
+  ``experimental/Summaries/ExtractSourceSummaries.ql``)
 
 You can run these queries individually against a snapshot of the npm package you want to create
 flow summaries for using ``odasa runQuery``, and store the output as CSV files named
@@ -103,7 +107,7 @@ project, we can extract sink summaries using the command
 .. code-block:: bash
 
   odasa runQuery \
-        --query $SEMMLE_DIST/queries/semmlecode-javascript-queries/Security/Summaries/ExtractSinkSummaries.ql \
+        --query $SEMMLE_DIST/queries/semmlecode-javascript-queries/experimental/Summaries/ExtractSinkSummaries.ql \
         --output-file additional-sinks.csv --snapshot mkdirp-snapshot
 
 
