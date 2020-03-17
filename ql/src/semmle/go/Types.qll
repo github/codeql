@@ -40,6 +40,9 @@ class Type extends @type {
 
   /**
    * Gets the method `m` belonging to the method set of this type, if any.
+   *
+   * Note that this predicate never has a result for struct types. Methods are associated
+   * with the corresponding named type instead.
    */
   Method getMethod(string m) {
     result.getReceiverType() = this and
