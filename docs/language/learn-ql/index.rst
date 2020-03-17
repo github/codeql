@@ -67,7 +67,6 @@ For more information on using CodeQL to query code written in a specific languag
 
    cpp/ql-for-cpp
    csharp/ql-for-csharp
-   cobol/ql-for-cobol
    go/ql-for-go
    java/ql-for-java
    javascript/ql-for-javascript

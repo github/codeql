@@ -260,35 +260,58 @@ class ExceptFlowNode extends ControlFlowNode {
         )
     }
 
-    private predicate handledObject(Object obj, ClassObject cls, ControlFlowNode origin) {
+    private predicate handledObject_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.getType().refersTo(obj, cls, origin)
         or
         exists(Object tup |
-            this.handledObject(tup, theTupleType(), _) |
-            element_from_tuple(tup).refersTo(obj, cls, origin)
+            this.handledObject_objectapi(tup, theTupleType(), _) |
+            element_from_tuple_objectapi(tup).refersTo(obj, cls, origin)
+        )
+    }
+    
+    private predicate handledObject(Value val, ClassValue cls, ControlFlowNode origin) {
+        val.getClass() = cls and
+        (
+            this.getType().pointsTo(val, origin)
+            or
+            exists(TupleValue tup |
+                this.handledObject(tup, ClassValue::tuple(), _) |
+                val = tup.getItem(_) and origin = val.getOrigin()
+            )
         )
     }
 
     /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
     pragma [noinline]
-    predicate handledException(Object obj, ClassObject cls, ControlFlowNode origin) {
-        this.handledObject(obj, cls, origin) and not cls = theTupleType()
+    predicate handledException_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
+        this.handledObject_objectapi(obj, cls, origin) and not cls = theTupleType()
         or
         not exists(this.getNode().(ExceptStmt).getType()) and obj = theBaseExceptionType() and cls = theTypeType() and
         origin = this
     }
+    
+    /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
+    pragma [noinline]
+    predicate handledException(Value val, ClassValue cls, ControlFlowNode origin) {
+        this.handledObject(val, cls, origin) and not cls = ClassValue::tuple()
+        or
+        not exists(this.getNode().(ExceptStmt).getType()) and val = ClassValue::baseException() and cls = ClassValue::type() and
+        origin = this
+    }
+    
+    
 
     /** Whether this `except` handles `cls` */
     predicate handles(ClassObject cls) {
         exists(ClassObject handled |
-            this.handledException(handled, _, _) |
+            this.handledException_objectapi(handled, _, _) |
             cls.getAnImproperSuperType() = handled
         )
     }
 
 }
 
-private ControlFlowNode element_from_tuple(Object tuple) {
+private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
     exists(Tuple t |
         t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode()
     )
