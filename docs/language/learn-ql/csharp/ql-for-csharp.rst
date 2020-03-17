@@ -20,7 +20,7 @@ These topics provide an overview of the CodeQL libraries for C# and show example
 
    <!-- Working with generic types and methods(generics) - how to query generic types and methods. -->
 
--  :doc:`Tutorial: Analyzing data flow in C# <dataflow>` demonstrates how to write queries using the standard data flow and taint tracking libraries for C#.
+-  :doc:`Analyzing data flow in C# <dataflow>` demonstrates how to write queries using the standard data flow and taint tracking libraries for C#.
 
 
 Other resources
