@@ -62,4 +62,4 @@ More resources
 
 - If you are completely new to CodeQL, look at our introductory topics in :doc:`Learning CodeQL <index>`.
 - To find more detailed information about how to write queries for specific languages, visit the links in :ref:`Writing CodeQL queries <writing-ql-queries>`.
-- To see examples of CodeQL queries that have been used to find security vulnerabilities and bugs in open-source software projects, visit the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and the associated `repository <https://github.com/github/security-lab>`__.
+- To see examples of CodeQL queries that have been used to find security vulnerabilities and bugs in open source software projects, visit the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and the associated `repository <https://github.com/github/security-lab>`__.

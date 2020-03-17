@@ -1,5 +1,10 @@
-Query writing: common performance issues
-========================================
+Troubleshooting query performance
+=================================
+
+Improve the performance of your CodeQL queries by following a few simple guidelines.
+
+About query performance
+-----------------------
 
 This topic offers some simple tips on how to avoid common problems that can affect the performance of your queries.
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
@@ -19,9 +24,7 @@ Eliminate cartesian products
 The performance of a predicate can often be judged by considering roughly how many results it has. 
 One way of creating badly performing predicates is by using two variables without relating them in any way, or only relating them using a negation.
 This leads to computing the `Cartesian product <https://en.wikipedia.org/wiki/Cartesian_product>`__ between the sets of possible values for each variable, potentially generating a huge table of results.
-
 This can occur if you don't specify restrictions on your variables. 
-
 For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``::
 
    predicate mayAccess(Method m, Field f) {
