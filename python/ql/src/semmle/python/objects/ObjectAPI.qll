@@ -44,6 +44,12 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
+    /** Gets the origin CFG node for this value. */
+    ControlFlowNode getOrigin() {
+        result = this.(ObjectInternal).getOrigin()
+    }
+
+
     /** Gets the class of this object.
      * Strictly, the `Value` representing the class of the objects
      * represented by this Value.
