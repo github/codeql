@@ -466,6 +466,10 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method.getName() = "toString" and arg = 0
   )
   or
+  method.getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
+  method.hasName("decode") and
+  arg = 0
+  or
   // A URI created from a tainted string is still tainted.
   method.getDeclaringType().hasQualifiedName("java.net", "URI") and
   method.hasName("create") and
