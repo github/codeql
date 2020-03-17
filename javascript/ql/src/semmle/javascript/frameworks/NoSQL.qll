@@ -210,9 +210,9 @@ private module Mongoose {
   }
 
   /**
-   * A common interface for various Mongoose calls.
+   * A common interface for various Mongoose function invocations.
    */
-  private class CommonInterface extends DataFlow::InvokeNode {
+  private class InvokeNode extends DataFlow::InvokeNode {
     /**
      * Holds if this call returns an object of type `Query`.
      */
@@ -235,8 +235,8 @@ private module Mongoose {
    * Provides classes modeling the Mongoose Model class
    */
   module Model {
-    private class ModelAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
-      ModelAsCommonInterface() { this = ref().getAMethodCall() }
+    private class ModelInvokeNode extends InvokeNode, DataFlow::MethodCallNode {
+      ModelInvokeNode() { this = ref().getAMethodCall() }
 
       override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
 
@@ -334,8 +334,8 @@ private module Mongoose {
    * Provides classes modeling the Mongoose Query class
    */
   module Query {
-    private class QueryAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
-      QueryAsCommonInterface() { this = ref().getAMethodCall() }
+    private class QueryInvokeNode extends InvokeNode, DataFlow::MethodCallNode {
+      QueryInvokeNode() { this = ref().getAMethodCall() }
 
       override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
 
@@ -351,8 +351,8 @@ private module Mongoose {
       }
     }
 
-    private class NewQueryAsCommonInterface extends CommonInterface {
-      NewQueryAsCommonInterface() {
+    private class NewQueryInvokeNode extends InvokeNode {
+      NewQueryInvokeNode() {
         this = getAMongooseInstance().getAPropertyRead("Query").getAnInstantiation()
       }
 
@@ -368,7 +368,7 @@ private module Mongoose {
      */
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       (
-        result.(CommonInterface).returnsQuery() or
+        result.(InvokeNode).returnsQuery() or
         result.hasUnderlyingType("mongoose", "Query")
       ) and
       t.start()
@@ -525,8 +525,8 @@ private module Mongoose {
    * Provides classes modeling the Mongoose Document class
    */
   module Document {
-    private class DocumentAsCommonInterface extends CommonInterface, DataFlow::MethodCallNode {
-      DocumentAsCommonInterface() { this = ref().getAMethodCall() }
+    private class DocumentInvokeNode extends InvokeNode, DataFlow::MethodCallNode {
+      DocumentInvokeNode() { this = ref().getAMethodCall() }
 
       override predicate returnsQuery() { MethodSignatures::returnsQuery(getMethodName()) }
 
@@ -548,7 +548,7 @@ private module Mongoose {
     class RetrievedDocument extends DataFlow::SourceNode {
       RetrievedDocument() {
         exists(boolean asArray, DataFlow::ParameterNode param |
-          exists(CommonInterface call |
+          exists(InvokeNode call |
             call.returnsDocumentQuery(asArray) and
             param = call.getCallback(call.getNumArgument() - 1).getParameter(1)
           )
@@ -677,25 +677,25 @@ private module Mongoose {
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
   class MongoDBQueryPart extends NoSQL::Query {
-    MongoDBQueryPart() { any(CommonInterface call).interpretsArgumentAsQuery(this.flow()) }
+    MongoDBQueryPart() { any(InvokeNode call).interpretsArgumentAsQuery(this.flow()) }
   }
 
   /**
    * An evaluation of a MongoDB query.
    */
   class ShorthandQueryEvaluation extends DatabaseAccess {
-    CommonInterface common;
+    InvokeNode invk;
 
     ShorthandQueryEvaluation() {
-      this = common and
+      this = invk and
       // shorthand for execution: provide a callback
-      common.returnsQuery() and
-      exists(common.getCallback(common.getNumArgument() - 1))
+      invk.returnsQuery() and
+      exists(invk.getCallback(invk.getNumArgument() - 1))
     }
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      common.interpretsArgumentAsQuery(result)
+      invk.interpretsArgumentAsQuery(result)
     }
   }
 
