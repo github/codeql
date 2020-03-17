@@ -28,6 +28,10 @@ predicate call_to_next(CallNode call, ControlFlowNode iter) {
     iter = next().getArgumentForCall(call, 0)
 }
 
+predicate call_to_next_has_default(CallNode call) {
+    exists(call.getArg(1))
+}
+
 predicate guarded_not_empty_sequence(EssaVariable sequence) {
     sequence.getDefinition() instanceof EssaEdgeRefinement
 }
@@ -49,6 +53,7 @@ predicate stop_iteration_handled(CallNode call) {
 
 from CallNode call
 where call_to_next(call, _) and
+not call_to_next_has_default(call) and
 not exists(EssaVariable iterator |
     call_to_next(call, iterator.getAUse()) and
     iter_not_exhausted(iterator)
