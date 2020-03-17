@@ -3,7 +3,7 @@
  */
 
 private import javascript
-private import StepSummary
+private import semmle.javascript.dataflow.internal.StepSummary
 
 cached
 module CallGraph {
@@ -92,8 +92,7 @@ module CallGraph {
 
   pragma[noinline]
   private DataFlow::SourceNode getABoundFunctionReferenceAux(
-    DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t,
-    StepSummary summary
+    DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t, StepSummary summary
   ) {
     exists(DataFlow::SourceNode prev |
       prev = getABoundFunctionReferenceAux(function, boundArgs, t) and
