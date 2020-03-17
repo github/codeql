@@ -382,6 +382,9 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedEllipsisParameter(Function func) {
+    translateFunction(func) and func.isVarargs()
+  } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
   // The read side effects in a function's return block
   TTranslatedReadEffect(Parameter param) {

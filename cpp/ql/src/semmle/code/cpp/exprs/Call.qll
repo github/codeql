@@ -3,6 +3,13 @@ import semmle.code.cpp.Function
 private import semmle.code.cpp.dataflow.EscapesTree
 
 /**
+ * Gets the index of the `...` parameter, if any.
+ */
+private int getEllipsisParameterIndex(RoutineType type) {
+  type.getParameterType(result) instanceof UnknownType
+}
+
+/**
  * A C/C++ call.
  *
  * This is the abstract root QL class for all types of calls.
@@ -77,6 +84,32 @@ abstract class Call extends Expr, NameQualifiableElement {
   override int getPrecedence() { result = 17 }
 
   override string toString() { none() }
+
+  /**
+   * Gets the index of the `...` parameter, if any. This will be one greater than the index of the
+   * last declared positional parameter.
+   */
+  abstract int getEllipsisParameterIndex();
+
+  /**
+   * Gets the index of the parameter that will be initialized with the value of the argument
+   * specified by `argIndex`. For ordinary positional parameters, the argument and parameter indices
+   * will be equal. For a call to a varargs function, all arguments passed to the `...` will be
+   * mapped to the index returned by `getEllipsisParameterIndex()`.
+   */
+  final int getParameterIndexForArgument(int argIndex) {
+    exists(getArgument(argIndex)) and
+    if argIndex >= getEllipsisParameterIndex()
+    then result = getEllipsisParameterIndex()
+    else result = argIndex
+  }
+
+  /**
+   * Holds if the argument specified by `index` is an argument to the `...` of a varargs function.
+   */
+  final predicate isEllipsisArgumentIndex(int index) {
+    exists(getArgument(index)) and index >= getEllipsisParameterIndex()
+  }
 
   /**
    * Holds if this call passes the variable accessed by `va` by
@@ -259,6 +292,12 @@ class FunctionCall extends Call, @funbindexpr {
     else result = "call to unknown function"
   }
 
+  final override int getEllipsisParameterIndex() {
+    if getTargetType() instanceof RoutineType
+    then result = getEllipsisParameterIndex(getTargetType())
+    else result = getTarget().getEllipsisParameterIndex()
+  }
+
   override predicate mayBeImpure() {
     this.getChild(_).mayBeImpure() or
     this.getTarget().mayHaveSideEffects() or
@@ -378,6 +417,10 @@ class ExprCall extends Call, @callexpr {
   override string toString() { result = "call to expression" }
 
   override Function getTarget() { none() }
+
+  final override int getEllipsisParameterIndex() {
+    result = getEllipsisParameterIndex(getExpr().getType().stripType())
+  }
 }
 
 /**

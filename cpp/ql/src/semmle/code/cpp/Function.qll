@@ -364,6 +364,12 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /** Holds if this function is a varargs function. */
   predicate isVarargs() { hasSpecifier("varargs") }
 
+  /**
+   * Gets the index of the `...` parameter, if any. If present, the value will always be equal to
+   * `getNumberOfParameters()`.
+   */
+  int getEllipsisParameterIndex() { isVarargs() and result = getNumberOfParameters() }
+
   /** Gets a type that is specified to be thrown by the function. */
   Type getAThrownType() { result = getADeclarationEntry().getAThrownType() }
 
