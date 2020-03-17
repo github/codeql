@@ -315,6 +315,7 @@ class Instruction extends Construction::TInstruction {
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     )
   }
+
   /**
    * Gets a string describing the operation of this instruction. This includes
    * the opcode and the immediate value, if any. For example:
