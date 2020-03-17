@@ -724,18 +724,16 @@ private predicate readStoreNode(
 
 private newtype TNodeExt =
   TNormalNode(Node node) { nodeCand1(node, _) } or
-  TReadStoreNode(DataFlowCall call, ArgumentNode arg, Content f1) {
-    exists(Configuration config |
-      nodeCand1(arg, config) and
-      readStoreNode(call, arg, f1, config) and
-      readStoreCand1(f1, unbind(config))
-    )
+  TReadStoreNode(DataFlowCall call, ArgumentNode arg, Content f1, Configuration config) {
+    nodeCand1(arg, config) and
+    readStoreNode(call, arg, f1, config) and
+    readStoreCand1(f1, unbind(config))
   } or
   TReadTaintNode(ArgumentNode arg, Content f, Configuration config) {
     argumentFlowsThrough(arg, _, _, _, TSummaryReadTaint(f), config)
   } or
-  TTaintStoreNode(ArgumentNode arg, Content f, DataFlowType t, Configuration config) {
-    argumentFlowsThrough(arg, _, t, _, TSummaryTaintStore(f), config)
+  TTaintStoreNode(ArgumentNode arg, DataFlowType t, Configuration config) {
+    argumentFlowsThrough(arg, _, t, _, TSummaryTaintStore(_), config)
   }
 
 /**
@@ -794,8 +792,9 @@ private class ReadStoreNodeExt extends CastingNodeExt, TReadStoreNode {
   private DataFlowCall call;
   private ArgumentNode arg;
   private Content f1;
+  private Configuration config0;
 
-  ReadStoreNodeExt() { this = TReadStoreNode(call, arg, f1) }
+  ReadStoreNodeExt() { this = TReadStoreNode(call, arg, f1, config0) }
 
   override Node getNode() { none() }
 
@@ -803,14 +802,14 @@ private class ReadStoreNodeExt extends CastingNodeExt, TReadStoreNode {
 
   override DataFlowCallable getEnclosingCallable() { result = arg.getEnclosingCallable() }
 
-  override predicate isCand1(Configuration config) { nodeCand1(arg, config) }
+  override predicate isCand1(Configuration config) { config = config0 }
 
   override string toString() { result = "(inside) " + call.toString() + " [read " + f1 + "]" }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    call.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    arg.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -840,11 +839,10 @@ private class ReadTaintNode extends NodeExt, TReadTaintNode {
 
 private class TaintStoreNode extends NodeExt, TTaintStoreNode {
   private ArgumentNode arg;
-  private Content f;
   private DataFlowType t;
   private Configuration config0;
 
-  TaintStoreNode() { this = TTaintStoreNode(arg, f, t, config0) }
+  TaintStoreNode() { this = TTaintStoreNode(arg, t, config0) }
 
   override Node getNode() { none() }
 
@@ -854,7 +852,7 @@ private class TaintStoreNode extends NodeExt, TTaintStoreNode {
 
   override predicate isCand1(Configuration config) { config = config0 }
 
-  override string toString() { result = arg.toString() + " [taint store " + f + "]" }
+  override string toString() { result = arg.toString() + " [taint store]" }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -871,15 +869,14 @@ private predicate additionalLocalFlowStepExt(
     argumentFlowsThrough(arg, node2.getNode(), _, t, TSummaryReadTaint(f), config)
   )
   or
-  node2 = TTaintStoreNode(node1.getNode(), _, t, config)
+  node2 = TTaintStoreNode(node1.getNode(), t, config)
 }
 
 pragma[nomagic]
 private predicate readExt(NodeExt node1, Content f, NodeExt node2, Configuration config) {
   read(node1.getNode(), f, node2.getNode(), config)
   or
-  node2 = TReadStoreNode(_, node1.getNode(), f) and
-  node2.isCand1(config)
+  node2 = TReadStoreNode(_, node1.getNode(), f, config)
   or
   node2 = TReadTaintNode(node1.getNode(), f, config)
 }
@@ -889,15 +886,15 @@ private predicate storeExt(NodeExt node1, Content f, NodeExt node2, Configuratio
   store(node1.getNode(), f, node2.getNode(), config)
   or
   exists(DataFlowCall call, ArgumentNode arg, Content f1, Node n2 |
-    node1 = TReadStoreNode(call, arg, f1) and
+    node1 = TReadStoreNode(call, arg, f1, config) and
     n2 = node2.getNode() and
     argumentValueFlowsThrough(call, arg, TContentSome(f1), TContentSome(f), n2) and
-    nodeCand1(n2, config) and
+    nodeCand1(n2, unbind(config)) and
     readStoreCand1(f, unbind(config))
   )
   or
   exists(ArgumentNode arg, DataFlowType t |
-    node1 = TTaintStoreNode(arg, f, t, config) and
+    node1 = TTaintStoreNode(arg, t, config) and
     argumentFlowsThrough(arg, node2.getNode(), t, _, TSummaryTaintStore(f), config)
   )
 }
@@ -1266,7 +1263,7 @@ private predicate flowOutOfCallableNodeCand2(
   NodeExt node1, NodeExt node2, boolean allowsFieldFlow, Configuration config
 ) {
   flowOutOfCallableNodeCand1(node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, _, _, config) and
+  nodeCand2(node2, config) and
   nodeCand2(node1, unbind(config))
 }
 
@@ -1275,7 +1272,7 @@ private predicate flowIntoCallableNodeCand2(
   NodeExt node1, NodeExt node2, boolean allowsFieldFlow, Configuration config
 ) {
   flowIntoCallableNodeCand1(node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, _, _, config) and
+  nodeCand2(node2, config) and
   nodeCand2(node1, unbind(config))
 }
 
