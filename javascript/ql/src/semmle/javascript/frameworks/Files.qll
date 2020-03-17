@@ -7,7 +7,7 @@ import javascript
 /**
  * A call that can produce a file name.
  */
-abstract private class ProducesFileNames extends DataFlow::Node {
+abstract private class FileNameProducer extends DataFlow::Node {
   /**
    * Gets a file name produced by this producer.
    */
@@ -185,11 +185,11 @@ private class RecursiveReadDir extends FileSystemAccess, ProducesFileNames, Data
 }
 
 /**
- * Models for the NodeJS library `jsonfile`.
+ * Classes and predicates for modelling the `jsonfile` library (https://www.npmjs.com/package/jsonfile).
  */
 private module JSONFile {
   /**
-   * Reading a JSON file using the `jsonfile` library.
+   * A reader for JSON files.
    */
   class JSONFileReader extends FileSystemReadAccess, DataFlow::CallNode {
     JSONFileReader() {
@@ -208,7 +208,7 @@ private module JSONFile {
   }
 
   /**
-   * Writing a JSON file using the `jsonfile` library.
+   * A writer for JSON files.
    */
   class JSONFileWriter extends FileSystemWriteAccess, DataFlow::CallNode {
     JSONFileWriter() {
