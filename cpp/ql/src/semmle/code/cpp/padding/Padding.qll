@@ -157,6 +157,8 @@ abstract class Architecture extends string {
     or
     t instanceof WideCharType and result = wideCharSize()
     or
+    t instanceof Char8Type and result = 8
+    or
     t instanceof Char16Type and result = 16
     or
     t instanceof Char32Type and result = 32
