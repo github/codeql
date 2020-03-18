@@ -3,6 +3,7 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.IRUtilities
+private import semmle.code.cpp.ir.internal.VarArgs
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
@@ -28,7 +29,7 @@ private int getEllipsisVariableByteSize() {
         max(Call call, int callSize |
           callSize =
             sum(int argIndex |
-              call.isEllipsisArgumentIndex(argIndex)
+              isEllipsisArgumentIndex(call, argIndex)
             |
               call.getArgument(argIndex).getType().getSize()
             )
@@ -87,7 +88,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final private TranslatedParameter getParameter(int index) {
     result = getTranslatedParameter(func.getParameter(index))
     or
-    index = func.getEllipsisParameterIndex() and
+    index = getEllipsisParameterIndexForFunction(func) and
     result = getTranslatedEllipsisParameter(func)
   }
 
@@ -144,7 +145,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       child = getParameter(paramIndex) and
       if
         exists(func.getParameter(paramIndex + 1)) or
-        func.getEllipsisParameterIndex() = paramIndex + 1
+        getEllipsisParameterIndexForFunction(func) = paramIndex + 1
       then result = getParameter(paramIndex + 1).getFirstInstruction()
       else result = getConstructorInitList().getFirstInstruction()
     )
