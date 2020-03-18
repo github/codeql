@@ -146,6 +146,8 @@ module TaintTracking {
     ) {
       isAdditionalFlowStep(pred, succ) and valuePreserving = false
     }
+
+    override DataFlow::FlowLabel getDefaultSourceLabel() { result.isTaint() }
   }
 
   /**
@@ -201,10 +203,6 @@ module TaintTracking {
    * A sanitizer guard node that only blocks specific flow labels.
    */
   abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
-    final override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      sanitizes(outcome, e, label)
-    }
-
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 
