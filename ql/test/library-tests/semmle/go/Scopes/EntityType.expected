@@ -13,10 +13,13 @@
 | types.go:7:6:7:15 | twoMethods | twoMethods |
 | types.go:8:2:8:6 | meth1 | func() bool |
 | types.go:9:2:9:6 | meth2 | func() int |
-| types.go:12:6:12:13 | starImpl | starImpl |
-| types.go:14:18:14:22 | meth1 | func() bool |
-| types.go:18:17:18:21 | meth2 | func() int |
-| types.go:22:6:22:12 | notImpl | notImpl |
-| types.go:24:16:24:20 | meth1 | func(int) bool |
-| types.go:24:22:24:22 | a | int |
-| types.go:28:16:28:20 | meth2 | func() int |
+| types.go:12:6:12:15 | meth1Iface | meth1Iface |
+| types.go:13:2:13:6 | meth1 | func() bool |
+| types.go:16:6:16:23 | twoMethodsEmbedded | twoMethodsEmbedded |
+| types.go:21:6:21:13 | starImpl | starImpl |
+| types.go:23:18:23:22 | meth1 | func() bool |
+| types.go:27:17:27:21 | meth2 | func() int |
+| types.go:31:6:31:12 | notImpl | notImpl |
+| types.go:33:16:33:20 | meth1 | func(int) bool |
+| types.go:33:22:33:22 | a | int |
+| types.go:37:16:37:20 | meth2 | func() int |

@@ -9,6 +9,15 @@ type twoMethods interface {
 	meth2() int
 }
 
+type meth1Iface interface {
+	meth1() bool
+}
+
+type twoMethodsEmbedded interface {
+	meth1Iface
+	twoMethods
+}
+
 type starImpl struct{}
 
 func (*starImpl) meth1() bool {

@@ -19,6 +19,10 @@ private module StdlibHttp {
     HeaderGetCall() { this.getTarget().hasQualifiedName("net/http", "Header", "Get") }
   }
 
+  private class HeaderValuesCall extends UntrustedFlowSource::Range, DataFlow::MethodCallNode {
+    HeaderValuesCall() { this.getTarget().hasQualifiedName("net/http", "Header", "Values") }
+  }
+
   private class StdlibResponseWriter extends HTTP::ResponseWriter::Range {
     StdlibResponseWriter() { this.getType().implements("net/http", "ResponseWriter") }
 

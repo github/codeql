@@ -32,7 +32,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	head.Add("Age", "342232")
 	server := "Server"
 	head.Add(server, fmt.Sprintf("Server: %s", "example"))
-	head.Set(LOC_HEADER, rfs4+"/redir")
+	head.Set(LOC_HEADER, rfs4.String()+"/redir")
 	head["Unknown-Header"] = []string{"Some value!"}
 
 	w.Write([]byte("Some more body text\n"))
