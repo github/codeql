@@ -397,7 +397,7 @@ class StaticStorageDurationVariable extends Variable {
  */
 private predicate runtimeExprInStaticInitializer(Expr e) {
   inStaticInitializer(e) and
-  if e instanceof AggregateLiteral
+  if e instanceof AggregateLiteral // in sync with the cast in `inStaticInitializer`
   then runtimeExprInStaticInitializer(e.getAChild())
   else not e.getFullyConverted().isConstant()
 }
@@ -409,6 +409,8 @@ private predicate runtimeExprInStaticInitializer(Expr e) {
 private predicate inStaticInitializer(Expr e) {
   exists(StaticStorageDurationVariable var | e = var.getInitializer().getExpr())
   or
+  // The cast to `AggregateLiteral` ensures we only compute what'll later be
+  // needed by `runtimeExprInStaticInitializer`.
   inStaticInitializer(e.getParent().(AggregateLiteral))
 }
 
