@@ -1219,4 +1219,16 @@ void switch2Case_default(int x) {
     int z = y;
 }
 
+// --- strings ---
+
+char *strcpy(char *destination, const char *source);
+char *strcat(char *destination, const char *source);
+
+void test_strings(char *s1, char *s2) {
+	char buffer[1024] = {0};
+
+	strcpy(buffer, s1);
+	strcat(buffer, s2);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

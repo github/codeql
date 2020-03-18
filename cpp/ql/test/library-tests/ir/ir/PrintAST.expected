@@ -8303,6 +8303,76 @@ ir.cpp:
 # 1219|               Type = [IntType] int
 # 1219|               ValueCategory = prvalue(load)
 # 1220|     4: [ReturnStmt] return ...
+# 1224| [TopLevelFunction] char* strcpy(char*, char const*)
+# 1224|   params: 
+# 1224|     0: [Parameter] destination
+# 1224|         Type = [CharPointerType] char *
+# 1224|     1: [Parameter] source
+# 1224|         Type = [PointerType] const char *
+# 1225| [TopLevelFunction] char* strcat(char*, char const*)
+# 1225|   params: 
+# 1225|     0: [Parameter] destination
+# 1225|         Type = [CharPointerType] char *
+# 1225|     1: [Parameter] source
+# 1225|         Type = [PointerType] const char *
+# 1227| [TopLevelFunction] void test_strings(char*, char*)
+# 1227|   params: 
+# 1227|     0: [Parameter] s1
+# 1227|         Type = [CharPointerType] char *
+# 1227|     1: [Parameter] s2
+# 1227|         Type = [CharPointerType] char *
+# 1227|   body: [Block] { ... }
+# 1228|     0: [DeclStmt] declaration
+# 1228|       0: [VariableDeclarationEntry] definition of buffer
+# 1228|           Type = [ArrayType] char[1024]
+# 1228|         init: [Initializer] initializer for buffer
+# 1228|           expr: [ArrayAggregateLiteral] {...}
+# 1228|               Type = [ArrayType] char[1024]
+# 1228|               ValueCategory = prvalue
+# 1228|             [0]: [CStyleCast] (char)...
+# 1228|                 Conversion = [IntegralConversion] integral conversion
+# 1228|                 Type = [PlainCharType] char
+# 1228|                 Value = [CStyleCast] 0
+# 1228|                 ValueCategory = prvalue
+# 1228|               expr: [Literal] 0
+# 1228|                   Type = [IntType] int
+# 1228|                   Value = [Literal] 0
+# 1228|                   ValueCategory = prvalue
+# 1230|     1: [ExprStmt] ExprStmt
+# 1230|       0: [FunctionCall] call to strcpy
+# 1230|           Type = [CharPointerType] char *
+# 1230|           ValueCategory = prvalue
+# 1230|         0: [ArrayToPointerConversion] array to pointer conversion
+# 1230|             Type = [CharPointerType] char *
+# 1230|             ValueCategory = prvalue
+# 1230|           expr: [VariableAccess] buffer
+# 1230|               Type = [ArrayType] char[1024]
+# 1230|               ValueCategory = lvalue
+# 1230|         1: [CStyleCast] (const char *)...
+# 1230|             Conversion = [PointerConversion] pointer conversion
+# 1230|             Type = [PointerType] const char *
+# 1230|             ValueCategory = prvalue
+# 1230|           expr: [VariableAccess] s1
+# 1230|               Type = [CharPointerType] char *
+# 1230|               ValueCategory = prvalue(load)
+# 1231|     2: [ExprStmt] ExprStmt
+# 1231|       0: [FunctionCall] call to strcat
+# 1231|           Type = [CharPointerType] char *
+# 1231|           ValueCategory = prvalue
+# 1231|         0: [ArrayToPointerConversion] array to pointer conversion
+# 1231|             Type = [CharPointerType] char *
+# 1231|             ValueCategory = prvalue
+# 1231|           expr: [VariableAccess] buffer
+# 1231|               Type = [ArrayType] char[1024]
+# 1231|               ValueCategory = lvalue
+# 1231|         1: [CStyleCast] (const char *)...
+# 1231|             Conversion = [PointerConversion] pointer conversion
+# 1231|             Type = [PointerType] const char *
+# 1231|             ValueCategory = prvalue
+# 1231|           expr: [VariableAccess] s2
+# 1231|               Type = [CharPointerType] char *
+# 1231|               ValueCategory = prvalue(load)
+# 1232|     3: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
