@@ -226,7 +226,7 @@ private module Mongoose {
     abstract predicate returnsDocumentQuery(boolean asArray);
 
     /**
-     * Holds if this call interprets `arg` as a query.
+     * Holds if this invocation interprets `arg` as a query.
      */
     abstract predicate interpretsArgumentAsQuery(DataFlow::Node arg);
   }
