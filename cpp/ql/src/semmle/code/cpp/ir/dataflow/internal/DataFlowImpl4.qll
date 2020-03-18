@@ -1247,13 +1247,14 @@ private predicate storeCand2(Content f, boolean stored, Configuration conf) {
 
 /**
  * Holds if `f` is the target of both a store and a read in the path graph
- * covered by `nodeCand2`. `apNonEmpty` indiciates whether some access path
- * before the store (and after the read) is non-empty.
+ * covered by `nodeCand2`.
  */
 pragma[noinline]
-private predicate readStoreCand(Content f, boolean apNonEmpty, Configuration conf) {
-  storeCand2(f, apNonEmpty, conf) and
-  readCand2(f, apNonEmpty, conf)
+private predicate readStoreCand(Content f, Configuration conf) {
+  exists(boolean apNonEmpty |
+    storeCand2(f, apNonEmpty, conf) and
+    readCand2(f, apNonEmpty, conf)
+  )
 }
 
 private predicate nodeCand2(NodeExt node, Configuration config) { nodeCand2(node, _, _, config) }
@@ -1393,29 +1394,19 @@ private module LocalFlowBigStep {
 private import LocalFlowBigStep
 
 pragma[nomagic]
-private predicate readExtCand2_0(Content f, NodeExt node1, NodeExt node2, Configuration config) {
-  readExt(node1, f, node2, config) and
-  nodeCand2(node1, _, true, config)
-}
-
-pragma[nomagic]
 private predicate readExtCand2(NodeExt node1, Content f, NodeExt node2, Configuration config) {
-  readExtCand2_0(f, node1, node2, config) and
+  readExt(node1, f, node2, config) and
+  nodeCand2(node1, _, true, unbind(config)) and
   nodeCand2(node2, config) and
-  readStoreCand(f, _, unbind(config))
-}
-
-pragma[nomagic]
-private predicate storeExtCand2_0(Content f, NodeExt node1, NodeExt node2, Configuration config) {
-  storeExt(node1, f, node2, config) and
-  nodeCand2(node1, config)
+  readStoreCand(f, unbind(config))
 }
 
 pragma[nomagic]
 private predicate storeExtCand2(NodeExt node1, Content f, NodeExt node2, Configuration config) {
-  storeExtCand2_0(f, node1, node2, config) and
-  nodeCand2(node2, _, true, config) and
-  readStoreCand(f, _, unbind(config))
+  storeExt(node1, f, node2, config) and
+  nodeCand2(node1, config) and
+  nodeCand2(node2, _, true, unbind(config)) and
+  readStoreCand(f, unbind(config))
 }
 
 private newtype TAccessPathFront =
@@ -2031,7 +2022,6 @@ private predicate readFwd(
 
 pragma[nomagic]
 private predicate flowConsCand(Content f, AccessPath ap, Configuration config) {
-  flowConsCandFwd(f, _, ap, unbind(config)) and
   exists(NodeExt n, NodeExt mid |
     flow(mid, _, ap, config) and
     readFwd(n, f, mid, _, ap, config)
