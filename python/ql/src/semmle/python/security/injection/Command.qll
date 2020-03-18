@@ -59,7 +59,7 @@ class FirstElementFlow extends DataFlowExtension::DataFlowNode {
 }
 
 /** A taint sink that is potentially vulnerable to malicious shell commands.
- *  The `vuln` in `subprocess.call(shell=vuln)` and similar calls.
+ * The `vuln` in `subprocess.call(shell=vuln)` and similar calls.
  */
 class ShellCommand extends TaintSink {
 
@@ -98,7 +98,7 @@ class ShellCommand extends TaintSink {
 }
 
 /** A taint sink that is potentially vulnerable to malicious shell commands.
- *  The `vuln` in `subprocess.call(vuln, ...)` and similar calls.
+ * The `vuln` in `subprocess.call(vuln, ...)` and similar calls.
  */
 class OsCommandFirstArgument extends TaintSink {
 

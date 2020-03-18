@@ -70,27 +70,26 @@ abstract class FunctionObject extends Object {
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
+     * This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
     */
     ControlFlowNode getArgumentForCall(CallNode call, int n) {
         result = theCallable().getArgumentForCall(call, n)
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the self argument.
+     * This predicate will correctly handle `x.y()`, treating `x` as the self argument.
     */
     ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
         result = theCallable().getNamedArgumentForCall(call, name)
     }
 
-    /** Whether this function never returns. This is an approximation.
-     */
+    /** Whether this function never returns. This is an approximation. */
     predicate neverReturns() {
         theCallable().neverReturns()
     }
 
     /** Whether this is a "normal" method, that is, it is exists as a class attribute 
-     *  which is not wrapped and not the __new__ method. */
+     * which is not wrapped and not the __new__ method. */
     predicate isNormalMethod() {
         exists(ClassObject cls, string name |
             cls.declaredAttribute(name) = this and
