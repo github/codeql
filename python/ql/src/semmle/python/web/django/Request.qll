@@ -79,14 +79,13 @@ class DjangoClassBasedViewRequestArgument extends DjangoRequestSource {
 /** An argument specified in a url routing table */
 class DjangoRequestParameter extends HttpRequestTaintSource {
     DjangoRequestParameter() {
-        exists(DjangoRoute route, Function f |
-            f = route.getViewFunction().getScope() |
+        exists(DjangoRoute route, Function f | f = route.getViewFunction().getScope() |
             this.(ControlFlowNode).getNode() = f.getArgByName(route.getNamedArgument())
             or
             exists(int i | i >= 0 |
                 i < route.getNumPositionalArguments() and
                 // +1 because first argument is always the request
-                this.(ControlFlowNode).getNode() = f.getArg(i+1)
+                this.(ControlFlowNode).getNode() = f.getArg(i + 1)
             )
         )
     }
