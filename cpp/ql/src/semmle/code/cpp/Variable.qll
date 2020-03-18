@@ -402,11 +402,14 @@ private predicate runtimeExprInStaticInitializer(Expr e) {
   else not e.getFullyConverted().isConstant()
 }
 
-/** Holds if `e` is part of the initializer of a `StaticStorageDurationVariable`. */
+/**
+ * Holds if `e` is the initializer of a `StaticStorageDurationVariable`, either
+ * directly or below some top-level `AggregateLiteral`s.
+ */
 private predicate inStaticInitializer(Expr e) {
   exists(StaticStorageDurationVariable var | e = var.getInitializer().getExpr())
   or
-  inStaticInitializer(e.getParent())
+  inStaticInitializer(e.getParent().(AggregateLiteral))
 }
 
 /**
