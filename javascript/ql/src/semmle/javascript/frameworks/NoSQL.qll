@@ -219,7 +219,7 @@ private module Mongoose {
     abstract predicate returnsQuery();
 
     /**
-     * Holds if this call returns a `Query` that evaluates to a one or
+     * Holds if this invocation returns a `Query` that evaluates to a one or
      * more Documents (`asArray` is false if it evaluates to a single
      * Document).
      */
