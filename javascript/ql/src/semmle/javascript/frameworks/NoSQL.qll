@@ -210,7 +210,7 @@ private module Mongoose {
   }
 
   /**
-   * A common interface for various Mongoose function invocations.
+   * A Mongoose function invocation.
    */
   private class InvokeNode extends DataFlow::InvokeNode {
     /**
