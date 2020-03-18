@@ -52,6 +52,13 @@ private module Cached {
   }
 
   cached
+  predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
+    var.getFunction() = func and
+    var.hasDynamicInitialization() and
+    type = getBoolType()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached

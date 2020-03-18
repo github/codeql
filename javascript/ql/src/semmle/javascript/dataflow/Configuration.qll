@@ -354,7 +354,7 @@ private predicate barrierGuardBlocksExpr(
 }
 
 /**
- * Holds if `guard` blocks the flow of a value reachable through exploratory flow.
+ * Holds if `guard` may block the flow of a value reachable through exploratory flow.
  */
 pragma[noinline]
 private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
@@ -1106,6 +1106,7 @@ private predicate flowStep(
     // Flow into higher-order call
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
+  isRelevant(succ, cfg) and
   not cfg.isBarrier(succ) and
   not isBarrierEdge(cfg, pred, succ) and
   not isLabeledBarrierEdge(cfg, pred, succ, summary.getEndLabel()) and

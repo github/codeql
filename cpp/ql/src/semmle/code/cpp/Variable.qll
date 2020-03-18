@@ -381,10 +381,10 @@ class StaticStorageDurationVariable extends Variable {
   }
 
   /**
-   * Holds if the initializer for this variable is evaluated at compile time.
+   * Holds if the initializer for this variable is evaluated at runtime.
    */
-  predicate hasConstantInitialization() {
-    not runtimeExprInStaticInitializer(this.getInitializer().getExpr())
+  predicate hasDynamicInitialization() {
+    runtimeExprInStaticInitializer(this.getInitializer().getExpr())
   }
 }
 
@@ -408,6 +408,11 @@ private predicate inStaticInitializer(Expr e) {
   or
   inStaticInitializer(e.getParent())
 }
+
+/**
+ * A C++ local variable declared as `static`.
+ */
+class StaticLocalVariable extends LocalVariable, StaticStorageDurationVariable { }
 
 /**
  * A C/C++ variable which has global scope or namespace scope. For example the

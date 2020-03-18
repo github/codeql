@@ -76,6 +76,8 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
@@ -96,6 +98,8 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
@@ -119,6 +123,8 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
@@ -151,6 +157,11 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
     readsVariable(node.asInstruction(), checkedVar) and
     hasUpperBoundsCheck(checkedVar)
   )
+}
+
+private predicate nodeIsBarrierIn(DataFlow::Node node) {
+  // don't use dataflow into taint sources, as this leads to duplicate results.
+  node = getNodeForSource(any(Expr e))
 }
 
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
