@@ -445,6 +445,13 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method.getName() = "wrap" and arg = 0
   )
   or
+  method.getDeclaringType().hasQualifiedName("org.apache.commons.codec.binary", "Base64") and
+  (
+    method.getName() = "decodeBase64" and arg = 0
+    or
+    method.getName().matches("encodeBase64%") and arg = 0
+  )
+  or
   method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
   (
     method.getName() = "buffer" and arg = 0
