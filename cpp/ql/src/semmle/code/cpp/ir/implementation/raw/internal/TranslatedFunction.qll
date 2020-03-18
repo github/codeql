@@ -3,7 +3,6 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.IRUtilities
-private import semmle.code.cpp.ir.internal.VarArgs
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
@@ -11,6 +10,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
+private import VarArgs
 
 /**
  * Gets the `TranslatedFunction` that represents function `func`.

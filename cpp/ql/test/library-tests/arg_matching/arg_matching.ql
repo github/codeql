@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.ir.internal.VarArgs
+import semmle.code.cpp.ir.implementation.raw.internal.VarArgs
 
 from Call call, int argIndex, int paramIndex
 where
