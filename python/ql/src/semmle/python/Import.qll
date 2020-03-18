@@ -2,7 +2,7 @@ import python
 private import semmle.python.types.Builtins
 
 /** An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
-    `import x` is transformed into `import x as x` */
+ * `import x` is transformed into `import x as x` */
 class Alias extends Alias_ {
 
     Location getLocation() {
@@ -38,7 +38,7 @@ class ImportExpr extends ImportExpr_ {
     }
 
     /** The language specifies level as -1 if relative imports are to be tried first, 0 for absolute imports,
-        and level > 0 for explicit relative imports. */
+     * and level > 0 for explicit relative imports. */
     override int getLevel() {
         exists(int l | l = super.getLevel() |
             l > 0 and result = l
@@ -73,8 +73,8 @@ class ImportExpr extends ImportExpr_ {
     }
 
     /** Gets the name by which the lowest level module or package is imported. 
-     *  NOTE: This is the name that used to import the module, 
-     *  which may not be the name of the module. */
+     * NOTE: This is the name that used to import the module, 
+     * which may not be the name of the module. */
     string bottomModuleName() {
         result = relativeTopName() + this.remainderOfName()
         or
@@ -95,8 +95,8 @@ class ImportExpr extends ImportExpr_ {
     }
 
     /** Gets the full name of the module resulting from evaluating this import.
-     *  NOTE: This is the name that used to import the module,
-     *  which may not be the name of the module. */
+     * NOTE: This is the name that used to import the module,
+     * which may not be the name of the module. */
     string getImportedModuleName() {
         exists(string bottomName | bottomName = this.bottomModuleName() |
             if this.isTop() then
@@ -158,8 +158,8 @@ class ImportMember extends ImportMember_ {
     }
 
     /** Gets the full name of the module resulting from evaluating this import.
-     *  NOTE: This is the name that used to import the module, 
-     *  which may not be the name of the module. */
+     * NOTE: This is the name that used to import the module, 
+     * which may not be the name of the module. */
     string getImportedModuleName() {
         result = this.getModule().(ImportExpr).getImportedModuleName() + "." + this.getName()
     }

@@ -1,7 +1,6 @@
 | test.c:21:17:21:17 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:18:13:18:16 | call to rand | Uncontrolled value |
 | test.c:35:5:35:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:34:13:34:18 | call to rand | Uncontrolled value |
 | test.c:40:5:40:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:39:13:39:21 | ... % ... | Uncontrolled value |
-| test.c:40:5:40:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:39:13:39:22 | call to rand | Uncontrolled value |
 | test.c:45:5:45:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:44:13:44:16 | call to rand | Uncontrolled value |
 | test.c:56:5:56:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:54:13:54:16 | call to rand | Uncontrolled value |
 | test.c:67:5:67:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:66:13:66:16 | call to rand | Uncontrolled value |

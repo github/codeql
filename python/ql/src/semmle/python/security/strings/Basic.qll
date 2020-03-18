@@ -3,8 +3,7 @@ private import Common
 
 import semmle.python.security.TaintTracking
 
-/** An extensible kind of taint representing any kind of string.
- */
+/** An extensible kind of taint representing any kind of string. */
 abstract class StringKind extends TaintKind {
 
     bindingset[this]

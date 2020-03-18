@@ -81,8 +81,8 @@ class PythonUse extends DependencyKind {
 }
 
 /** Whether there is a more specific dependency source than this one. 
- *  E.g. if the expression pack.mod.func is a dependency on the function 'func' in 'pack.mod'
- *  don't make pack.mod depend on the module 'pack.mod'
+ * E.g. if the expression pack.mod.func is a dependency on the function 'func' in 'pack.mod'
+ * don't make pack.mod depend on the module 'pack.mod'
  */
 private predicate has_more_specific_dependency_source(Expr e) {
     exists(Attribute member |

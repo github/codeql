@@ -17,7 +17,7 @@ string remove_prefix_before_substring(string str, string sub) {
 }
 
 /** Removes the part of the `resources/lib` Python library path that may vary
- *  from machine to machine. */
+ * from machine to machine. */
 
 string remove_library_prefix(Location loc) {
   result = remove_prefix_before_substring(loc.toString(), "resources/lib")

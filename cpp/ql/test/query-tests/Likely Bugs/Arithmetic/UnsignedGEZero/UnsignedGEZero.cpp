@@ -112,4 +112,29 @@ void myFunction() {
 	assert(CHECK_RANGE(ui, 0, 10)); // reasonable use
 	assert(UI >= ZERO); // violation (not detected)
 	assert(ui GE 0); // violation
+
+	if ((unsigned char)si >= 0) { // violation
+	}
+	if ((unsigned char)(signed int)si >= 0) { // violation
+	}
+	if ((signed int)(unsigned char)si >= 0) { // violation
+	}
+	if ((unsigned char)(signed char)si >= 0) { // violation
+	}
+	if ((signed char)(unsigned char)si >= 0) {
+	}
+
+	if ((signed int)(unsigned char)(signed int)si >= 0) { // violation
+	}
+	if ((signed char)(unsigned char)(signed int)si >= 0) {
+	}
+	if ((signed int)(unsigned char)(signed char)si >= 0) { // violation
+	}
+
+	if (ui <= 0) {
+	}
+	if (0 <= ui) { // violation
+	}
+	if (0 < ui) {
+	}
 }

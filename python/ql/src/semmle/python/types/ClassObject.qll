@@ -73,13 +73,13 @@ class ClassObject extends Object {
     }
 
     /** Whether this class is a new style class. 
-        A new style class is one that implicitly or explicitly inherits from `object`. */
+     * A new style class is one that implicitly or explicitly inherits from `object`. */
     predicate isNewStyle() {
         Types::isNewStyle(theClass())
     }
 
     /** Whether this class is an old style class. 
-        An old style class is one that does not inherit from `object`. */
+     * An old style class is one that does not inherit from `object`. */
     predicate isOldStyle() {
         Types::isOldStyle(theClass())
     }
@@ -112,7 +112,7 @@ class ClassObject extends Object {
     }
 
     /** Returns an attribute as it would be when looked up at runtime on this class.
-      Will include attributes of super-classes */
+     * Will include attributes of super-classes */
     Object lookupAttribute(string name) {
         exists(ObjectInternal val |
             theClass().lookup(name, val, _) and
@@ -155,7 +155,7 @@ class ClassObject extends Object {
     }
 
     /** Whether it is impossible to know all the attributes of this class. Usually because it is
-        impossible to calculate the full class hierarchy or because some attribute is too dynamic. */
+     * impossible to calculate the full class hierarchy or because some attribute is too dynamic. */
     predicate unknowableAttributes() {
         /* True for a class with undeterminable superclasses, unanalysable metaclasses, or other confusions */
         this.failedInference()
@@ -204,8 +204,8 @@ class ClassObject extends Object {
     }
 
     /** Gets an object which is the sole instance of this class, if this class is probably a singleton.
-     *  Note the 'probable' in the name; there is no guarantee that this class is in fact a singleton.
-     *  It is guaranteed that getProbableSingletonInstance() returns at most one Object for each ClassObject. */
+     * Note the 'probable' in the name; there is no guarantee that this class is in fact a singleton.
+     * It is guaranteed that getProbableSingletonInstance() returns at most one Object for each ClassObject. */
     Object getProbableSingletonInstance() {
         exists(ControlFlowNode use, Expr origin |
             use.refersTo(result, this, origin.getAFlowNode())
@@ -284,9 +284,9 @@ class ClassObject extends Object {
     }
 
     /** Holds if this class is an improper subclass of the other class.
-     *  True if this is a sub-class of other or this is the same class as other.
+     * True if this is a sub-class of other or this is the same class as other.
      *
-     *  Equivalent to the Python builtin function issubclass().
+     * Equivalent to the Python builtin function issubclass().
      */
     predicate isSubclassOf(ClassObject other) {
         this = other or this.getASuperType() = other

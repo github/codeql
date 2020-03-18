@@ -39,9 +39,9 @@ private Keyword not_keyword_only_arg(Call call, FunctionValue func) {
 }
 
 /** Gets the count of arguments that are passed as positional parameters even if they
- *  are named in the call.
- *  This is the sum of the number of positional arguments, the number of elements in any explicit tuple passed as *arg
- *  plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
+ * are named in the call.
+ * This is the sum of the number of positional arguments, the number of elements in any explicit tuple passed as *arg
+ * plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
  */
 
 private int positional_arg_count_for_call_objectapi(Call call, Object callable) {
@@ -59,9 +59,9 @@ private int positional_arg_count_for_call_objectapi(Call call, Object callable) 
 }
 
 /** Gets the count of arguments that are passed as positional parameters even if they
- *  are named in the call.
- *  This is the sum of the number of positional arguments, the number of elements in any explicit tuple passed as *arg
- *  plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
+ * are named in the call.
+ * This is the sum of the number of positional arguments, the number of elements in any explicit tuple passed as *arg
+ * plus the number of keyword arguments that do not match keyword-only arguments (if the function does not take **kwargs).
  */
 
 private int positional_arg_count_for_call(Call call, Value callable) {
@@ -139,10 +139,9 @@ predicate too_few_args_objectapi(Call call, Object callable, int limit) {
     arg_count_objectapi(call) < limit and
     exists(FunctionObject func | func = get_function_or_initializer_objectapi(callable) |
       call = func.getAFunctionCall().getNode() and limit = func.minParameters() and
-      /* The combination of misuse of `mox.Mox().StubOutWithMock()`
-       * and a bug in mox's implementation of methods results in having to
-       * pass 1 too few arguments to the mocked function.
-       */
+      // The combination of misuse of `mox.Mox().StubOutWithMock()`
+      // and a bug in mox's implementation of methods results in having to
+      // pass 1 too few arguments to the mocked function.
       not (useOfMoxInModule(call.getEnclosingModule()) and func.isNormalMethod())
       or
       call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
@@ -160,10 +159,9 @@ predicate too_few_args(Call call, Value callable, int limit) {
     arg_count(call) < limit and
     exists(FunctionValue func | func = get_function_or_initializer(callable) |
       call = func.getACall().getNode() and limit = func.minParameters() and
-      /* The combination of misuse of `mox.Mox().StubOutWithMock()`
-       * and a bug in mox's implementation of methods results in having to
-       * pass 1 too few arguments to the mocked function.
-       */
+      // The combination of misuse of `mox.Mox().StubOutWithMock()`
+      // and a bug in mox's implementation of methods results in having to
+      // pass 1 too few arguments to the mocked function.
       not (useOfMoxInModule(call.getEnclosingModule()) and func.isNormalMethod())
       or
       call = func.getACall().getNode() and limit = func.minParameters() - 1

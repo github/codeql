@@ -93,17 +93,27 @@ private float wideningUpperBounds(ArithmeticType t) {
 
 /**
  * Gets the value of the expression `e`, if it is a constant.
- * This predicate also handles the case of constant variables initialized in compilation units,
- * which doesn't necessarily have a getValue() result from the extractor.
+ * This predicate also handles the case of constant variables initialized in different
+ * compilation units, which doesn't necessarily have a getValue() result from the extractor.
  */
 private string getValue(Expr e) {
   if exists(e.getValue())
   then result = e.getValue()
   else
-    exists(VariableAccess access, Variable v |
+    /*
+     * It should be safe to propagate the initialization value to a variable if:
+     * The type of v is const, and
+     * The type of v is not volatile, and
+     * Either:
+     *   v is a local/global variable, or
+     *   v is a static member variable
+     */
+
+    exists(VariableAccess access, StaticStorageDurationVariable v |
+      not v.getUnderlyingType().isVolatile() and
+      v.getUnderlyingType().isConst() and
       e = access and
       v = access.getTarget() and
-      v.getUnderlyingType().isConst() and
       result = getValue(v.getAnAssignedValue())
     )
 }

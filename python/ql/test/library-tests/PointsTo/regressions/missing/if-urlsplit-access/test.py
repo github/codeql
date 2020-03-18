@@ -14,4 +14,4 @@ def func(url):
         return # using `pass` here instead makes points-to work
 
     foo = 2
-    check(foo) # no points-to information
+    check(foo) # Points-to was missing here. Fixed by https://github.com/Semmle/ql/pull/2922
