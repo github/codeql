@@ -79,7 +79,7 @@ abstract class ModuleObject extends Object {
     }
 
     /** Whether this module "exports" `name`. That is, whether using `import *` on this module
-     will result in `name` being added to the namespace. */
+     * will result in `name` being added to the namespace. */
     predicate exports(string name) {
         theModule().exports(name)
     }

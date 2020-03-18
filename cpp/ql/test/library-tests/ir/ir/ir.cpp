@@ -1219,6 +1219,21 @@ void switch2Case_default(int x) {
     int z = y;
 }
 
+int staticLocalInit(int x) {
+    static int a = 0;  // Constant initialization
+    static int b = sizeof(x);  // Constant initialization
+    static int c = x;  // Dynamic initialization
+    static int d;  // Zero initialization
+
+    return a + b + c + d;
+}
+
+void staticLocalWithConstructor(const char* dynamic) {
+    static String a;
+    static String b("static");
+    static String c(dynamic);
+}
+
 // --- strings ---
 
 char *strcpy(char *destination, const char *source);

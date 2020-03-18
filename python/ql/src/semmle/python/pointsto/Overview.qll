@@ -1,4 +1,4 @@
-/**
+/*
  * 
  * ## Points-to analysis for Python
  * 

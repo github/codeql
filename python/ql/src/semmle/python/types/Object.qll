@@ -44,8 +44,8 @@ class Object extends @py_object {
         this = unknownValue() and result = theUnknownType()
     }
 
-    /** Whether this a builtin object. A builtin object is one defined by the implementation, 
-        such as the integer 4 or by a native extension, such as a NumPy array class. */
+    /** Whether this is a builtin object. A builtin object is one defined by the implementation, 
+     * such as the integer 4 or by a native extension, such as a NumPy array class. */
     predicate isBuiltin() {
         exists(this.asBuiltin())
     }
@@ -57,7 +57,7 @@ class Object extends @py_object {
 
     /** Gets the point in the source code from which this object "originates".
      *
-     *  WARNING: The lack of context makes this less accurate than f.refersTo(this, _, result)
+     * WARNING: The lack of context makes this less accurate than f.refersTo(this, _, result)
      * for a control flow node 'f'.
      */
     AstNode getOrigin() {
@@ -114,8 +114,8 @@ class Object extends @py_object {
     }
 
     /** Whether this overrides o. In this context, "overrides" means that this object
-     *  is a named attribute of a some class C and `o` is a named attribute of another
-     *  class S, both attributes having the same name, and S is a super class of C.
+     * is a named attribute of a some class C and `o` is a named attribute of another
+     * class S, both attributes having the same name, and S is a super class of C.
      */
     predicate overrides(Object o) {
         exists(string name |
@@ -216,8 +216,8 @@ private Object findByName3(string longName) {
 
 
 /** Numeric objects (ints and floats). 
- *  Includes those occurring in the source as a literal
- *  or in a builtin module as a value.
+ * Includes those occurring in the source as a literal
+ * or in a builtin module as a value.
  */
 class NumericObject extends Object {
 
@@ -228,7 +228,7 @@ class NumericObject extends Object {
     }
 
     /** Gets the Boolean value that this object
-     *  would evaluate to in a Boolean context,
+     * would evaluate to in a Boolean context,
      * such as `bool(x)` or `if x: ...`
      */
     override boolean booleanValue() {
@@ -272,8 +272,8 @@ class NumericObject extends Object {
 }
 
 /** String objects (unicode or bytes).
- *  Includes those occurring in the source as a literal
- *  or in a builtin module as a value.
+ * Includes those occurring in the source as a literal
+ * or in a builtin module as a value.
  */
 class StringObject extends Object {
 

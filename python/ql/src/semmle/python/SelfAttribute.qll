@@ -41,10 +41,9 @@ class SelfAttributeRead extends SelfAttribute {
 
     SelfAttributeRead() {
         this.getCtx() instanceof Load and
-        /* Be stricter for loads. 
-         * We want to generous as to what is defined (ie stores),
-         * but strict as to what needs to be defined (ie loads).
-         */
+        // Be stricter for loads. 
+        // We want to generous as to what is defined (i.e. stores),
+        // but strict as to what needs to be defined (i.e. loads).
         exists(ClassObject cls, FunctionObject func |
             cls.declaredAttribute(_) = func |
             func.getFunction() = this.getScope() and

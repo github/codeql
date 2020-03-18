@@ -232,8 +232,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     Builtin getReturnType() {
         exists(Builtin func |
             func = this.getBuiltin() |
-            /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
-            */
+            /* Enumerate the types of a few builtin functions, that the CPython analysis misses. */
             func = Builtin::builtin("hex") and result = Builtin::special("str")
             or
             func = Builtin::builtin("oct") and result = Builtin::special("str")
@@ -294,8 +293,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
 }
 
-/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
- */
+/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`. */
 class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethodObject {
 
     override Builtin getBuiltin() {

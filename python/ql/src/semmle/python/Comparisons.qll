@@ -1,8 +1,7 @@
 
 import python
 
-/* A class representing the six comparison operators, ==, !=, <, <=, > and >=.
- *  */
+/** A class representing the six comparison operators, ==, !=, <, <=, > and >=. */
 class CompareOp extends int {
 
     CompareOp() { 

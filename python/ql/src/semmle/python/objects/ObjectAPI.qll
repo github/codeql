@@ -44,6 +44,12 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
+    /** Gets the origin CFG node for this value. */
+    ControlFlowNode getOrigin() {
+        result = this.(ObjectInternal).getOrigin()
+    }
+
+
     /** Gets the class of this object.
      * Strictly, the `Value` representing the class of the objects
      * represented by this Value.
@@ -107,8 +113,8 @@ class Value extends TObject {
     }
 
     /** Whether this overrides v. In this context, "overrides" means that this object
-     *  is a named attribute of a some class C and `v` is a named attribute of another
-     *  class S, both attributes having the same name, and S is a super class of C.
+     * is a named attribute of a some class C and `v` is a named attribute of another
+     * class S, both attributes having the same name, and S is a super class of C.
      */
     predicate overrides(Value v) {
         exists(ClassValue my_class, ClassValue other_class, string name |
@@ -536,13 +542,13 @@ class ClassValue extends Value {
     }
 
     /** Holds if this class is a new style class.
-        A new style class is one that implicitly or explicitly inherits from `object`. */
+     * A new style class is one that implicitly or explicitly inherits from `object`. */
     predicate isNewStyle() {
         Types::isNewStyle(this)
     }
 
     /** Holds if this class is an old style class.
-        An old style class is one that does not inherit from `object`. */
+     * An old style class is one that does not inherit from `object`. */
     predicate isOldStyle() {
         Types::isOldStyle(this)
     }
@@ -572,7 +578,7 @@ class ClassValue extends Value {
     }
 
     /** Whether this class is a legal exception class.
-     *  What constitutes a legal exception class differs between major versions */
+     * What constitutes a legal exception class differs between major versions */
     predicate isLegalExceptionType() {
         not this.isNewStyle()
         or
@@ -616,7 +622,7 @@ abstract class FunctionValue extends CallableValue {
     }
 
     /** Whether this is a "normal" method, that is, it is exists as a class attribute
-     *  which is not a lambda and not the __new__ method. */
+     * which is not a lambda and not the __new__ method. */
     predicate isNormalMethod() {
         exists(ClassValue cls, string name |
             cls.declaredAttribute(name) = this and
@@ -736,7 +742,7 @@ class TupleValue extends SequenceValue {
 }
 
 /** A class representing strings, either present in the source as a literal, or
-in a builtin as a value. */
+ * in a builtin as a value. */
 
 class StringValue extends Value {
     StringValue() {
@@ -752,7 +758,7 @@ class StringValue extends Value {
 }
 
 /** A class representing numbers (ints and floats), either present in the source as a literal,
- *  or in a builtin as a value.
+ * or in a builtin as a value.
  */
 class NumericValue extends Value {
     NumericValue() {
@@ -912,7 +918,7 @@ module ClassValue {
     }
 
     /** Get the `ClassValue` for the `str` class. This is `bytes` in Python 2,
-    and `str` in Python 3. */
+     * and `str` in Python 3. */
     ClassValue str() {
         if major_version() = 2 then
            result = bytes()

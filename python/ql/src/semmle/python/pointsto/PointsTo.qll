@@ -1176,7 +1176,7 @@ module InterProceduralPointsTo {
     }
 
     /** INTERNAL -- Use `FunctionObject.neverReturns()` instead.
-     *  Whether function `func` never returns. Slightly conservative approximation, this predicate may be false
+     * Whether function `func` never returns. Slightly conservative approximation, this predicate may be false
      * for a function that can never return. */
     cached predicate neverReturns(Function f) {
         /* A Python function never returns if it has no normal exits that are not dominated by a

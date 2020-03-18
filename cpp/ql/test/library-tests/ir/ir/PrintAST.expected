@@ -8303,76 +8303,177 @@ ir.cpp:
 # 1219|               Type = [IntType] int
 # 1219|               ValueCategory = prvalue(load)
 # 1220|     4: [ReturnStmt] return ...
-# 1224| [TopLevelFunction] char* strcpy(char*, char const*)
-# 1224|   params: 
-# 1224|     0: [Parameter] destination
-# 1224|         Type = [CharPointerType] char *
-# 1224|     1: [Parameter] source
-# 1224|         Type = [PointerType] const char *
-# 1225| [TopLevelFunction] char* strcat(char*, char const*)
-# 1225|   params: 
-# 1225|     0: [Parameter] destination
-# 1225|         Type = [CharPointerType] char *
-# 1225|     1: [Parameter] source
-# 1225|         Type = [PointerType] const char *
-# 1227| [TopLevelFunction] void test_strings(char*, char*)
-# 1227|   params: 
-# 1227|     0: [Parameter] s1
-# 1227|         Type = [CharPointerType] char *
-# 1227|     1: [Parameter] s2
-# 1227|         Type = [CharPointerType] char *
-# 1227|   body: [Block] { ... }
-# 1228|     0: [DeclStmt] declaration
-# 1228|       0: [VariableDeclarationEntry] definition of buffer
-# 1228|           Type = [ArrayType] char[1024]
-# 1228|         init: [Initializer] initializer for buffer
-# 1228|           expr: [ArrayAggregateLiteral] {...}
-# 1228|               Type = [ArrayType] char[1024]
+# 1222| [TopLevelFunction] int staticLocalInit(int)
+# 1222|   params: 
+# 1222|     0: [Parameter] x
+# 1222|         Type = [IntType] int
+# 1222|   body: [Block] { ... }
+# 1223|     0: [DeclStmt] declaration
+# 1223|       0: [VariableDeclarationEntry] definition of a
+# 1223|           Type = [IntType] int
+# 1223|         init: [Initializer] initializer for a
+# 1223|           expr: [Literal] 0
+# 1223|               Type = [IntType] int
+# 1223|               Value = [Literal] 0
+# 1223|               ValueCategory = prvalue
+# 1224|     1: [DeclStmt] declaration
+# 1224|       0: [VariableDeclarationEntry] definition of b
+# 1224|           Type = [IntType] int
+# 1224|         init: [Initializer] initializer for b
+# 1224|           expr: [CStyleCast] (int)...
+# 1224|               Conversion = [IntegralConversion] integral conversion
+# 1224|               Type = [IntType] int
+# 1224|               Value = [CStyleCast] 4
+# 1224|               ValueCategory = prvalue
+# 1224|             expr: [SizeofExprOperator] sizeof(<expr>)
+# 1224|                 Type = [LongType] unsigned long
+# 1224|                 Value = [SizeofExprOperator] 4
+# 1224|                 ValueCategory = prvalue
+# 1224|               0: [ParenthesisExpr] (...)
+# 1224|                   Type = [IntType] int
+# 1224|                   ValueCategory = lvalue
+# 1224|                 expr: [VariableAccess] x
+# 1224|                     Type = [IntType] int
+# 1224|                     ValueCategory = lvalue
+# 1225|     2: [DeclStmt] declaration
+# 1225|       0: [VariableDeclarationEntry] definition of c
+# 1225|           Type = [IntType] int
+# 1225|         init: [Initializer] initializer for c
+# 1225|           expr: [VariableAccess] x
+# 1225|               Type = [IntType] int
+# 1225|               ValueCategory = prvalue(load)
+# 1226|     3: [DeclStmt] declaration
+# 1226|       0: [VariableDeclarationEntry] definition of d
+# 1226|           Type = [IntType] int
+# 1228|     4: [ReturnStmt] return ...
+# 1228|       0: [AddExpr] ... + ...
+# 1228|           Type = [IntType] int
+# 1228|           ValueCategory = prvalue
+# 1228|         0: [AddExpr] ... + ...
+# 1228|             Type = [IntType] int
+# 1228|             ValueCategory = prvalue
+# 1228|           0: [AddExpr] ... + ...
+# 1228|               Type = [IntType] int
 # 1228|               ValueCategory = prvalue
-# 1228|             [0]: [CStyleCast] (char)...
-# 1228|                 Conversion = [IntegralConversion] integral conversion
-# 1228|                 Type = [PlainCharType] char
-# 1228|                 Value = [CStyleCast] 0
-# 1228|                 ValueCategory = prvalue
-# 1228|               expr: [Literal] 0
-# 1228|                   Type = [IntType] int
-# 1228|                   Value = [Literal] 0
-# 1228|                   ValueCategory = prvalue
-# 1230|     1: [ExprStmt] ExprStmt
-# 1230|       0: [FunctionCall] call to strcpy
-# 1230|           Type = [CharPointerType] char *
-# 1230|           ValueCategory = prvalue
-# 1230|         0: [ArrayToPointerConversion] array to pointer conversion
-# 1230|             Type = [CharPointerType] char *
-# 1230|             ValueCategory = prvalue
-# 1230|           expr: [VariableAccess] buffer
-# 1230|               Type = [ArrayType] char[1024]
-# 1230|               ValueCategory = lvalue
-# 1230|         1: [CStyleCast] (const char *)...
-# 1230|             Conversion = [PointerConversion] pointer conversion
-# 1230|             Type = [PointerType] const char *
-# 1230|             ValueCategory = prvalue
-# 1230|           expr: [VariableAccess] s1
-# 1230|               Type = [CharPointerType] char *
-# 1230|               ValueCategory = prvalue(load)
-# 1231|     2: [ExprStmt] ExprStmt
-# 1231|       0: [FunctionCall] call to strcat
-# 1231|           Type = [CharPointerType] char *
-# 1231|           ValueCategory = prvalue
-# 1231|         0: [ArrayToPointerConversion] array to pointer conversion
-# 1231|             Type = [CharPointerType] char *
-# 1231|             ValueCategory = prvalue
-# 1231|           expr: [VariableAccess] buffer
-# 1231|               Type = [ArrayType] char[1024]
-# 1231|               ValueCategory = lvalue
-# 1231|         1: [CStyleCast] (const char *)...
-# 1231|             Conversion = [PointerConversion] pointer conversion
-# 1231|             Type = [PointerType] const char *
-# 1231|             ValueCategory = prvalue
-# 1231|           expr: [VariableAccess] s2
-# 1231|               Type = [CharPointerType] char *
-# 1231|               ValueCategory = prvalue(load)
-# 1232|     3: [ReturnStmt] return ...
+# 1228|             0: [VariableAccess] a
+# 1228|                 Type = [IntType] int
+# 1228|                 ValueCategory = prvalue(load)
+# 1228|             1: [VariableAccess] b
+# 1228|                 Type = [IntType] int
+# 1228|                 ValueCategory = prvalue(load)
+# 1228|           1: [VariableAccess] c
+# 1228|               Type = [IntType] int
+# 1228|               ValueCategory = prvalue(load)
+# 1228|         1: [VariableAccess] d
+# 1228|             Type = [IntType] int
+# 1228|             ValueCategory = prvalue(load)
+# 1231| [TopLevelFunction] void staticLocalWithConstructor(char const*)
+# 1231|   params: 
+# 1231|     0: [Parameter] dynamic
+# 1231|         Type = [PointerType] const char *
+# 1231|   body: [Block] { ... }
+# 1232|     0: [DeclStmt] declaration
+# 1232|       0: [VariableDeclarationEntry] definition of a
+# 1232|           Type = [Struct] String
+#-----|         init: [Initializer] initializer for a
+#-----|           expr: [ConstructorCall] call to String
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 1233|     1: [DeclStmt] declaration
+# 1233|       0: [VariableDeclarationEntry] definition of b
+# 1233|           Type = [Struct] String
+# 1233|         init: [Initializer] initializer for b
+# 1233|           expr: [ConstructorCall] call to String
+# 1233|               Type = [VoidType] void
+# 1233|               ValueCategory = prvalue
+# 1233|             0: [ArrayToPointerConversion] array to pointer conversion
+# 1233|                 Type = [PointerType] const char *
+# 1233|                 ValueCategory = prvalue
+# 1233|               expr: static
+# 1233|                   Type = [ArrayType] const char[7]
+# 1233|                   Value = [StringLiteral] "static"
+# 1233|                   ValueCategory = lvalue
+# 1234|     2: [DeclStmt] declaration
+# 1234|       0: [VariableDeclarationEntry] definition of c
+# 1234|           Type = [Struct] String
+# 1234|         init: [Initializer] initializer for c
+# 1234|           expr: [ConstructorCall] call to String
+# 1234|               Type = [VoidType] void
+# 1234|               ValueCategory = prvalue
+# 1234|             0: [VariableAccess] dynamic
+# 1234|                 Type = [PointerType] const char *
+# 1234|                 ValueCategory = prvalue(load)
+# 1235|     3: [ReturnStmt] return ...
+# 1239| [TopLevelFunction] char* strcpy(char*, char const*)
+# 1239|   params: 
+# 1239|     0: [Parameter] destination
+# 1239|         Type = [CharPointerType] char *
+# 1239|     1: [Parameter] source
+# 1239|         Type = [PointerType] const char *
+# 1240| [TopLevelFunction] char* strcat(char*, char const*)
+# 1240|   params: 
+# 1240|     0: [Parameter] destination
+# 1240|         Type = [CharPointerType] char *
+# 1240|     1: [Parameter] source
+# 1240|         Type = [PointerType] const char *
+# 1242| [TopLevelFunction] void test_strings(char*, char*)
+# 1242|   params: 
+# 1242|     0: [Parameter] s1
+# 1242|         Type = [CharPointerType] char *
+# 1242|     1: [Parameter] s2
+# 1242|         Type = [CharPointerType] char *
+# 1242|   body: [Block] { ... }
+# 1243|     0: [DeclStmt] declaration
+# 1243|       0: [VariableDeclarationEntry] definition of buffer
+# 1243|           Type = [ArrayType] char[1024]
+# 1243|         init: [Initializer] initializer for buffer
+# 1243|           expr: [ArrayAggregateLiteral] {...}
+# 1243|               Type = [ArrayType] char[1024]
+# 1243|               ValueCategory = prvalue
+# 1243|             [0]: [CStyleCast] (char)...
+# 1243|                 Conversion = [IntegralConversion] integral conversion
+# 1243|                 Type = [PlainCharType] char
+# 1243|                 Value = [CStyleCast] 0
+# 1243|                 ValueCategory = prvalue
+# 1243|               expr: [Literal] 0
+# 1243|                   Type = [IntType] int
+# 1243|                   Value = [Literal] 0
+# 1243|                   ValueCategory = prvalue
+# 1245|     1: [ExprStmt] ExprStmt
+# 1245|       0: [FunctionCall] call to strcpy
+# 1245|           Type = [CharPointerType] char *
+# 1245|           ValueCategory = prvalue
+# 1245|         0: [ArrayToPointerConversion] array to pointer conversion
+# 1245|             Type = [CharPointerType] char *
+# 1245|             ValueCategory = prvalue
+# 1245|           expr: [VariableAccess] buffer
+# 1245|               Type = [ArrayType] char[1024]
+# 1245|               ValueCategory = lvalue
+# 1245|         1: [CStyleCast] (const char *)...
+# 1245|             Conversion = [PointerConversion] pointer conversion
+# 1245|             Type = [PointerType] const char *
+# 1245|             ValueCategory = prvalue
+# 1245|           expr: [VariableAccess] s1
+# 1245|               Type = [CharPointerType] char *
+# 1245|               ValueCategory = prvalue(load)
+# 1246|     2: [ExprStmt] ExprStmt
+# 1246|       0: [FunctionCall] call to strcat
+# 1246|           Type = [CharPointerType] char *
+# 1246|           ValueCategory = prvalue
+# 1246|         0: [ArrayToPointerConversion] array to pointer conversion
+# 1246|             Type = [CharPointerType] char *
+# 1246|             ValueCategory = prvalue
+# 1246|           expr: [VariableAccess] buffer
+# 1246|               Type = [ArrayType] char[1024]
+# 1246|               ValueCategory = lvalue
+# 1246|         1: [CStyleCast] (const char *)...
+# 1246|             Conversion = [PointerConversion] pointer conversion
+# 1246|             Type = [PointerType] const char *
+# 1246|             ValueCategory = prvalue
+# 1246|           expr: [VariableAccess] s2
+# 1246|               Type = [CharPointerType] char *
+# 1246|               ValueCategory = prvalue(load)
+# 1247|     3: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
