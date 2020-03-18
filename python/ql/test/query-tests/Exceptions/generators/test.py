@@ -50,3 +50,6 @@ def next_in_comp(seq, fields):
 
 def ok5(seq):
     yield next(iter([]), 'foo')
+
+def ok6(seq):
+    yield next(iter([]), default='foo')    
