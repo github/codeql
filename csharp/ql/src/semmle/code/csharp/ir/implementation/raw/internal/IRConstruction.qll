@@ -62,6 +62,11 @@ private module Cached {
   }
 
   cached
+  predicate hasDynamicInitializationFlag(Callable callable, Language::Variable var, CSharpType type) {
+    none()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached

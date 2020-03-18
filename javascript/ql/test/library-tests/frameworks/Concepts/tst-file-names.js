@@ -27,3 +27,13 @@ fastGlob(_).then(files => files);
 fastGlob.async(_).then(files => files);
 
 fastGlob.stream(_).on(_,  file => file); // XXX
+
+async function foo() {
+  globby(_).catch(() => {}).then(files => files);
+
+  var files = await globby(_);
+
+  var files2 = await fastGlob.async(_);
+
+  var files2 = await fastGlob.async(_).catch((wat) => {});
+}

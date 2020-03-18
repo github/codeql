@@ -3,8 +3,7 @@ private import Common
 
 import semmle.python.security.TaintTracking
 
-/** An extensible kind of taint representing any kind of string.
- */
+/** An extensible kind of taint representing any kind of string. */
 abstract class StringKind extends TaintKind {
 
     bindingset[this]
@@ -71,11 +70,7 @@ private predicate str_method_call(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = ....format(fromnode) */
 private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getName() = "format" and
-    (
-        tonode.getAnArg() = fromnode
-        or
-        tonode.getNode().getAKeyword().getValue() = fromnode.getNode()
-    )
+    tonode.getAnArg() = fromnode
 }
 
 /* tonode = codec.[en|de]code(fromnode)*/
@@ -93,9 +88,10 @@ private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = str(fromnode)*/
 private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getAnArg() = fromnode and
-    exists(ClassObject str |
-        tonode.getFunction().refersTo(str) |
-        str = theUnicodeType() or str = theBytesType()
+    (
+        tonode = ClassValue::bytes().getACall()
+        or
+        tonode = ClassValue::unicode().getACall()
     )
 }
 
@@ -110,11 +106,8 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
 
 /* tonode = os.path.join(..., fromnode, ...) */
 private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
-    exists(FunctionObject path_join |
-        path_join = ModuleObject::named("os").attr("path").(ModuleObject).attr("join")
-        and
-        tonode = path_join.getACall() and tonode.getAnArg() = fromnode 
-    )
+    tonode = Value::named("os.path.join").getACall()
+    and tonode.getAnArg() = fromnode
 }
 
 /** A kind of "taint", representing a dictionary mapping str->"taint" */
@@ -125,5 +118,3 @@ class StringDictKind extends DictKind {
     }
 
 }
-
-

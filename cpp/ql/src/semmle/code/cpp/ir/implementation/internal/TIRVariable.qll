@@ -10,6 +10,11 @@ newtype TIRVariable =
   ) {
     Construction::hasTempVariable(func, ast, tag, type)
   } or
+  TIRDynamicInitializationFlag(
+    Language::Function func, Language::Variable var, Language::LanguageType type
+  ) {
+    Construction::hasDynamicInitializationFlag(func, var, type)
+  } or
   TIRStringLiteral(
     Language::Function func, Language::AST ast, Language::LanguageType type,
     Language::StringLiteral literal

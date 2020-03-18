@@ -15,9 +15,9 @@ predicate slice_method_name(string name) {
   name = "__getslice__" or name = "__setslice__" or name = "__delslice__"
 }
 
-from PyFunctionObject f, string meth
+from PythonFunctionValue f, string meth
 
-where f.getFunction().isMethod() and not f.isOverridingMethod() and
+where f.getScope().isMethod() and not f.isOverridingMethod() and
       slice_method_name(meth) and f.getName() = meth
   
       

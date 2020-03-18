@@ -308,9 +308,8 @@ private Builtin getBuiltinFunctionReturnType(Builtin func) {
     )
 }
 
+/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`. */
 
-/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
- */
 class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethodObject {
 
     override Builtin getBuiltin() {

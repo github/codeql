@@ -92,7 +92,7 @@ class ClassDef extends Assign {
 class Class extends Class_, Scope, AstNode {
 
     /** Use getADecorator() instead of getDefinition().getADecorator() 
-     *  Use getMetaClass() instead of getDefinition().getMetaClass()
+     * Use getMetaClass() instead of getDefinition().getMetaClass()
      */
     deprecated ClassExpr getDefinition() {
         result = this.getParent()
