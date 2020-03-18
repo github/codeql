@@ -1430,7 +1430,7 @@ abstract private class AccessPathFront extends TAccessPathFront {
 
   abstract DataFlowType getType();
 
-  abstract boolean toBool();
+  abstract boolean toBoolNonEmpty();
 
   predicate headUsesContent(Content f) { this = TFrontHead(f) }
 }
@@ -1442,7 +1442,7 @@ private class AccessPathFrontNil extends AccessPathFront, TFrontNil {
 
   override DataFlowType getType() { this = TFrontNil(result) }
 
-  override boolean toBool() { result = false }
+  override boolean toBoolNonEmpty() { result = false }
 }
 
 private class AccessPathFrontHead extends AccessPathFront, TFrontHead {
@@ -1452,7 +1452,7 @@ private class AccessPathFrontHead extends AccessPathFront, TFrontHead {
     exists(Content head | this = TFrontHead(head) | result = head.getContainerType())
   }
 
-  override boolean toBool() { result = true }
+  override boolean toBoolNonEmpty() { result = true }
 }
 
 /**
@@ -1476,6 +1476,16 @@ private predicate flowCandFwd0(
   config.isSource(node.getNode()) and
   fromArg = false and
   apf = TFrontNil(node.getErasedNodeTypeBound())
+  or
+  exists(NodeExt mid |
+    flowCandFwd(mid, fromArg, apf, config) and
+    localFlowBigStepExt(mid, node, true, _, config)
+  )
+  or
+  exists(NodeExt mid, AccessPathFrontNil nil |
+    flowCandFwd(mid, fromArg, nil, config) and
+    localFlowBigStepExt(mid, node, false, apf, config)
+  )
   or
   nodeCand2(node, unbind(config)) and
   (
@@ -1518,16 +1528,6 @@ private predicate flowCandFwd0(
     )
   )
   or
-  exists(NodeExt mid |
-    flowCandFwd(mid, fromArg, apf, config) and
-    localFlowBigStepExt(mid, node, true, _, config)
-  )
-  or
-  exists(NodeExt mid, AccessPathFrontNil nil |
-    flowCandFwd(mid, fromArg, nil, config) and
-    localFlowBigStepExt(mid, node, false, apf, config)
-  )
-  or
   exists(NodeExt mid, Content f |
     flowCandFwd(mid, fromArg, _, config) and
     storeExtCand2(mid, f, node, config) and
@@ -1538,7 +1538,7 @@ private predicate flowCandFwd0(
   exists(Content f |
     flowCandFwdRead(f, node, fromArg, config) and
     consCandFwd(f, apf, config) and
-    nodeCand2(node, _, unbindBool(apf.toBool()), unbind(config))
+    nodeCand2(node, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
   )
 }
 
@@ -1897,7 +1897,7 @@ private predicate flowFwdStore1(
   flowFwdStore0(mid, f, node, apf0, config) and
   consCand(f, apf0, config) and
   apf.headUsesContent(f) and
-  flowCand(node, _, apf, config)
+  flowCand(node, _, apf, unbind(config))
 }
 
 pragma[nomagic]
@@ -2025,7 +2025,8 @@ private predicate readFwd(
 ) {
   readExtCand2(node1, f, node2, config) and
   flowFwdRead(node2, f, ap, _, config) and
-  ap0 = pop(f, ap)
+  ap0 = pop(f, ap) and
+  flowConsCandFwd(f, _, ap0, unbind(config))
 }
 
 pragma[nomagic]
