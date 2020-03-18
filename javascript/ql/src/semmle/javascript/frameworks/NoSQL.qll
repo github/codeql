@@ -214,7 +214,7 @@ private module Mongoose {
    */
   private class InvokeNode extends DataFlow::InvokeNode {
     /**
-     * Holds if this call returns an object of type `Query`.
+     * Holds if this invocation returns an object of type `Query`.
      */
     abstract predicate returnsQuery();
 
