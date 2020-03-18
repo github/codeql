@@ -49,3 +49,44 @@ vfs.dest('./', { sourcemaps: true });
 
 var ncp = require('ncp').ncp;
 ncp("from", "to", function (err) {});
+
+
+const loadJsonFile = require('load-json-file');
+(async () => {
+    console.log(await loadJsonFile('foo.json'));
+	console.log(loadJsonFile.sync('foo.json'));
+})();
+
+const writeJsonFile = require('write-json-file');
+ (async () => {
+    writeJsonFile('bar.json', {bar: true});
+	writeJsonFile.sync('bar.json', {bar: false}, {indent: " "})
+})();
+
+var readdirp = require("readdirp");
+readdirp('.', {fileFilter: '*.js'}).on('data', (entry) => { /* steam and promise api not modelled yet */ })
+
+var recursive = require("recursive-readdir");
+recursive("directory/to/read", function (err, files) {
+  console.log(files);
+});
+recursive("directory/to/read").then(files2 => console.log(files2));
+
+jsonfile.readFile('baz.json').then(obj => console.log(obj))
+
+(async function () {
+	var walk = require('walkdir');
+	walk('../', function(path, stat) {
+	  console.log('found: ', path);
+	});
+	var emitter = walk('../');
+	emitter.on('file', function(filename, stat) { });
+	walk.sync('../', function(path, stat) {
+	  console.log('found sync:', path);
+	});
+	var paths = walk.sync('../');
+	let result = await walk.async('../')
+})();
+
+var walker = require("walker");
+walker('/etc/').filterDir(() => {}).on('entry', () => {}); // only file access modelled.

@@ -201,7 +201,18 @@ private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, DataF
 
   override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-  override DataFlow::Node getAFileName() { result = getCallback([1 .. 2]).getParameter(1) }
+  override DataFlow::Node getAFileName() { result = trackFileSource(DataFlow::TypeTracker::end()) }
+
+  private DataFlow::SourceNode trackFileSource(DataFlow::TypeTracker t) {
+    t.start() and result = getCallback([1 .. 2]).getParameter(1)
+    or
+    t.startInPromise() and not exists(getCallback([1 .. 2])) and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackFileSource(t2), t, t2)
+    )
+  }
 }
 
 /**
@@ -220,10 +231,24 @@ private module JSONFile {
 
     override DataFlow::Node getAPathArgument() { result = getArgument(0) }
 
-    override DataFlow::Node getADataNode() {
-      this.getCalleeName() = "readFile" and result = getCallback([1 .. 2]).getParameter(1)
+    override DataFlow::Node getADataNode() { result = trackRead(DataFlow::TypeTracker::end()) }
+
+    private DataFlow::SourceNode trackRead(DataFlow::TypeTracker t) {
+      this.getCalleeName() = "readFile" and
+      (
+        t.start() and result = getCallback([1 .. 2]).getParameter(1)
+        or
+        t.startInPromise() and not exists(getCallback([1 .. 2])) and result = this
+      )
       or
-      this.getCalleeName() = "readFileSync" and result = this
+      t.start() and
+      this.getCalleeName() = "readFileSync" and
+      result = this
+      or
+      // Tracking out of a promise
+      exists(DataFlow::TypeTracker t2 |
+        result = PromiseTypeTracking::promiseStep(trackRead(t2), t, t2)
+      )
     }
   }
 
@@ -244,6 +269,122 @@ private module JSONFile {
 }
 
 /**
+ * A call to the library `load-json-file`.
+ */
+private class LoadJsonFile extends FileSystemReadAccess, DataFlow::CallNode {
+  LoadJsonFile() {
+    this = DataFlow::moduleImport("load-json-file").getACall()
+    or
+    this = DataFlow::moduleMember("load-json-file", "sync").getACall()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+
+  override DataFlow::Node getADataNode() { result = trackRead(DataFlow::TypeTracker::end()) }
+
+  private DataFlow::SourceNode trackRead(DataFlow::TypeTracker t) {
+    this.getCalleeName() = "sync" and t.start() and result = this
+    or
+    not this.getCalleeName() = "sync" and t.startInPromise() and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackRead(t2), t, t2)
+    )
+  }
+}
+
+/**
+ * A call to the library `write-json-file`.
+ */
+private class WriteJsonFile extends FileSystemWriteAccess, DataFlow::CallNode {
+  WriteJsonFile() {
+    this = DataFlow::moduleImport("write-json-file").getACall()
+    or
+    this = DataFlow::moduleMember("write-json-file", "sync").getACall()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+
+  override DataFlow::Node getADataNode() { result = getArgument(1) }
+}
+
+/**
+ * A call to the library `walkdir`.
+ */
+private class WalkDir extends FileNameProducer, FileSystemAccess, DataFlow::CallNode {
+  WalkDir() {
+    this = DataFlow::moduleImport("walkdir").getACall()
+    or
+    this = DataFlow::moduleMember("walkdir", "sync").getACall()
+    or
+    this = DataFlow::moduleMember("walkdir", "async").getACall()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+
+  override DataFlow::Node getAFileName() { result = trackFileSource(DataFlow::TypeTracker::end()) }
+
+  private DataFlow::SourceNode trackFileSource(DataFlow::TypeTracker t) {
+    not this.getCalleeName() = any(string s | s = "sync" or s = "async") and
+    t.start() and
+    (
+      result = getCallback(getNumArgument() - 1).getParameter(0)
+      or
+      result = getAMethodCall(EventEmitter::on()).getCallback(1).getParameter(0)
+    )
+    or
+    t.start() and this.getCalleeName() = "sync" and result = this
+    or
+    t.startInPromise() and this.getCalleeName() = "async" and result = this
+    or
+    // Tracking out of a promise
+    exists(DataFlow::TypeTracker t2 |
+      result = PromiseTypeTracking::promiseStep(trackFileSource(t2), t, t2)
+    )
+  }
+}
+
+/**
+ * A call to the library `globule`.
+ */
+private class Globule extends FileNameProducer, FileSystemAccess, DataFlow::CallNode {
+  Globule() {
+    this = DataFlow::moduleMember("globule", "find").getACall()
+    or
+    this = DataFlow::moduleMember("globule", "match").getACall()
+    or
+    this = DataFlow::moduleMember("globule", "isMatch").getACall()
+    or
+    this = DataFlow::moduleMember("globule", "mapping").getACall()
+    or
+    this = DataFlow::moduleMember("globule", "findMapping").getACall()
+  }
+
+  override DataFlow::Node getAPathArgument() {
+    (this.getCalleeName() = "match" or this.getCalleeName() = "isMatch") and
+    result = getArgument(1)
+    or
+    this.getCalleeName() = "mapping" and
+    (
+      result = getAnArgument() and not exists(result.getALocalSource().getAPropertyWrite("src"))
+      or
+      result = getAnArgument().getALocalSource().getAPropertyWrite("src").getRhs()
+    )
+  }
+
+  override DataFlow::Node getAFileName() {
+    result = this and
+    (
+      this.getCalleeName() = "find" or
+      this.getCalleeName() = "match" or
+      this.getCalleeName() = "findMapping" or
+      this.getCalleeName() = "mapping"
+    )
+  }
+}
+
+/**
  * A file system access made by a NodeJS library.
  * This class models multiple NodeJS libraries that access files.
  */
@@ -256,6 +397,10 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
       this = DataFlow::moduleImport("path-exists").getACall()
       or
       this = DataFlow::moduleImport("rimraf").getACall()
+      or
+      this = DataFlow::moduleImport("readdirp").getACall()
+      or
+      this = DataFlow::moduleImport("walker").getACall()
       or
       this =
         DataFlow::moduleMember("node-dir",
