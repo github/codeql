@@ -29,7 +29,7 @@ predicate call_to_next(CallNode call, ControlFlowNode iter) {
 }
 
 predicate call_to_next_has_default(CallNode call) {
-    exists(call.getArg(1))
+    exists(call.getArg(1)) or exists(call.getArgByName("default"))
 }
 
 predicate guarded_not_empty_sequence(EssaVariable sequence) {
@@ -63,4 +63,3 @@ not exists(Comp comp | comp.contains(call.getNode())) and
 not stop_iteration_handled(call)
 
 select call, "Call to next() in a generator"
-
