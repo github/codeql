@@ -59,8 +59,7 @@
 | variables.cpp:37:6:37:8 | ap3 | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  |  |
 | variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | LocalVariable |  |  |
 | variables.cpp:41:7:41:11 | local | file://:0:0:0:0 | char[] | SemanticStackVariable |  |  |
-| variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | LocalVariable |  | static |
-| variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | StaticStorageDurationVariable |  | static |
+| variables.cpp:43:14:43:18 | local | file://:0:0:0:0 | int | StaticLocalVariable |  | static |
 | variables.cpp:48:9:48:12 | name | file://:0:0:0:0 | char * | Field |  |  |
 | variables.cpp:49:12:49:17 | number | file://:0:0:0:0 | long | Field |  |  |
 | variables.cpp:50:9:50:14 | street | file://:0:0:0:0 | char * | Field |  |  |
