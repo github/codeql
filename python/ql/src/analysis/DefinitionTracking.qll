@@ -10,8 +10,7 @@ private newtype TDefinition =
         a instanceof Expr or a instanceof Stmt or a instanceof Module
     }
 
-/** A definition for the purposes of jump-to-definition.
- */
+/** A definition for the purposes of jump-to-definition. */
 class Definition extends TLocalDefinition {
 
 
@@ -159,8 +158,7 @@ private predicate delete_defn(DeletionDefinition def, Definition defn) {
     none()
 }
 
-/* Implicit "defn" of the names of submodules at the start of an `__init__.py` file.
- */
+/* Implicit "defn" of the names of submodules at the start of an `__init__.py` file. */
 private predicate implicit_submodule_defn(ImplicitSubModuleDefinition def, Definition defn) {
     exists(PackageObject package, ModuleObject mod |
         package.getInitModule().getModule() = def.getDefiningNode().getScope() and
@@ -170,7 +168,9 @@ private predicate implicit_submodule_defn(ImplicitSubModuleDefinition def, Defin
 
 }
 
-/* Helper for scope_entry_value_transfer(...). Transfer of values from the callsite to the callee, for enclosing variables, but not arguments/parameters */
+/* Helper for scope_entry_value_transfer(...). 
+ * Transfer of values from the callsite to the callee, for enclosing variables, but not arguments/parameters 
+ */
 private predicate scope_entry_value_transfer_at_callsite(EssaVariable pred_var, ScopeEntryDefinition succ_def) {
     exists(CallNode callsite, FunctionObject f |
         f.getACall() = callsite and
@@ -469,8 +469,8 @@ class NiceLocationExpr extends @py_expr {
         or
         this.(Name).getLocation().hasLocationInfo(f, bl, bc, el, ec)
         or
-        /* Show xxx for `xxx` in `from xxx import y` or
-         * for `import xxx` or for `import xxx as yyy`. */
+        // Show xxx for `xxx` in `from xxx import y` or
+        // for `import xxx` or for `import xxx as yyy`.
         this.(ImportExpr).getLocation().hasLocationInfo(f, bl, bc, el, ec)
         or
         /* Show y for `y` in `from xxx import y` */

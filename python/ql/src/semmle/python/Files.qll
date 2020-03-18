@@ -129,8 +129,10 @@ class Folder extends Container {
 
 }
 
-/** A container is an abstract representation of a file system object that can
-    hold elements of interest. */
+/** 
+ * A container is an abstract representation of a file system object that can
+ * hold elements of interest. 
+ */
 abstract class Container extends @container {
 
     Container getParent() {
@@ -473,8 +475,10 @@ class Line extends @py_line {
 
 }
 
-/** A syntax error. Note that if there is a syntax error in a module,
-   much information about that module will be lost */
+/** 
+ * A syntax error. Note that if there is a syntax error in a module,
+ * much information about that module will be lost 
+ */
 class SyntaxError extends Location {
 
     SyntaxError() {
@@ -492,8 +496,10 @@ class SyntaxError extends Location {
 
 }
 
-/** An encoding error. Note that if there is an encoding error in a module,
-   much information about that module will be lost */
+/** 
+ * An encoding error. Note that if there is an encoding error in a module,
+ * much information about that module will be lost 
+ */
 class EncodingError extends SyntaxError {
 
     EncodingError() {

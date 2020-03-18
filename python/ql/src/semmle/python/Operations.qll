@@ -170,7 +170,7 @@ class Compare extends Compare_ {
     }
 
     /** Whether as part of this comparison 'left' is compared with 'right' using the operator 'op'.
-     *  For example, the comparison `a<b<c` compares(`a`, `b`, `<`) and compares(`b`, `c`, `<`). */
+     * For example, the comparison `a<b<c` compares(`a`, `b`, `<`) and compares(`b`, `c`, `<`). */
     predicate compares(Expr left, Cmpop op, Expr right)
     {
         this.getLeft() = left and this.getComparator(0) = right and op = this.getOp(0)

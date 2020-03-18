@@ -35,7 +35,7 @@ class RaisingNode extends ControlFlowNode {
     }
 
     /** Gets the type of an exception that may be raised
-        at this control flow node */
+     * at this control flow node */
     ClassObject getARaisedType() {
         result = this.localRaisedType()
         or
@@ -118,8 +118,7 @@ class RaisingNode extends ControlFlowNode {
         )
     }
 
-    /** Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
-     */
+    /** Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ. */
     predicate unlikelySuccessor(ControlFlowNode succ) {
         succ = this.getAnExceptionalSuccessor() and
         not this.viableExceptionEdge(succ, _) and

@@ -22,8 +22,8 @@ predicate multiple_calls_to_superclass_method(ClassObject self, FunctionObject m
         multiple_invocation_paths(top, i1, i2, multi) and
         top.runtime(self.declaredAttribute(name)) and
         self.getASuperType().declaredAttribute(name) = multi |
-        /* Only called twice if called from different functions,
-         * or if one call-site can reach the other */
+        // Only called twice if called from different functions,
+        // or if one call-site can reach the other.
         i1.getCall().getScope() != i2.getCall().getScope()
         or
         i1.getCall().strictlyReaches(i2.getCall())

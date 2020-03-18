@@ -1,7 +1,6 @@
 import python
 
-/** Whether `mox` or `.StubOutWithMock()` is used in thin module `m`.
- */
+/** Whether `mox` or `.StubOutWithMock()` is used in thin module `m`. */
 predicate useOfMoxInModule(Module m) {
     exists(ModuleObject mox |
         mox.getName() = "mox" or mox.getName() = "mox3.mox" |
