@@ -64,9 +64,7 @@ deprecated class MessageExpr extends Expr, Call {
 
   override int getPrecedence() { none() }
 
-  final override int getEllipsisParameterIndex() {
-    none()
-  }
+  final override int getEllipsisParameterIndex() { none() }
 }
 
 /**
