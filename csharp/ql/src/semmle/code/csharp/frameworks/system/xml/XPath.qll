@@ -30,5 +30,20 @@ module SystemXmlXPath {
     csharp::Method getASelectMethod() {
       result = this.getAMethod() and result.getName().matches("Select%")
     }
+
+    /** Gets the `Compile` method. */
+    csharp::Method getCompileMethod() {
+      result = this.getAMethod("Compile")
+    }
+
+    /** Gets an `Evaluate` method. */
+    csharp::Method getAnEvaluateMethod() {
+      result = this.getAMethod("Evaluate")
+    }
+
+    /** Gets a `Matches` method. */
+    csharp::Method getAMatchesMethod() {
+      result = this.getAMethod("Matches")
+    }
   }
 }
