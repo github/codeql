@@ -21,7 +21,7 @@ module UnvalidatedDynamicMethodCall {
      */
     DataFlow::FlowLabel getFlowLabel() { result = taint() }
   }
-  
+
   /**
    * A data flow sink for unvalidated dynamic method calls.
    */
