@@ -6066,7 +6066,7 @@ ir.cpp:
 #  892|       0: [VariableDeclarationEntry] definition of args2
 #  892|           Type = [ArrayType] __va_list_tag[1]
 #  893|     3: [ExprStmt] ExprStmt
-#  893|       0: [BuiltInVarArgsStart] __builtin_va_start
+#  893|       0: [BuiltInVarArgCopy] __builtin_va_copy
 #  893|           Type = [VoidType] void
 #  893|           ValueCategory = prvalue
 #  893|         0: [ArrayToPointerConversion] array to pointer conversion
@@ -6099,11 +6099,11 @@ ir.cpp:
 #  895|           Type = [FloatType] float
 #  895|         init: [Initializer] initializer for f
 #  895|           expr: [CStyleCast] (float)...
-#  895|               Conversion = [FloatingPointConversion] floating point conversion
+#  895|               Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 #  895|               Type = [FloatType] float
 #  895|               ValueCategory = prvalue
 #  895|             expr: [BuiltInVarArg] __builtin_va_arg
-#  895|                 Type = [DoubleType] double
+#  895|                 Type = [IntType] int
 #  895|                 ValueCategory = prvalue(load)
 #  895|               0: [ArrayToPointerConversion] array to pointer conversion
 #  895|                   Type = [PointerType] __va_list_tag *

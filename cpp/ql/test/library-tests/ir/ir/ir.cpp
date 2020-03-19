@@ -890,9 +890,9 @@ void VarArgUsage(int x, ...) {
 
   __builtin_va_start(args, x);
   __builtin_va_list args2;
-  __builtin_va_start(args2, args);
+  __builtin_va_copy(args2, args);
   double d = __builtin_va_arg(args, double);
-  float f = __builtin_va_arg(args, float);
+  float f = __builtin_va_arg(args, int);
   __builtin_va_end(args);
   __builtin_va_end(args2);
 }

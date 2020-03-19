@@ -83,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**
@@ -109,6 +113,22 @@ private predicate ignoreExprOnly(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getDestructorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getDestructorCall() = expr)
+  or
+  expr instanceof Conversion and
+  exists(VarArgsExpr parent |
+    // Ignore any conversions applied to a `va_list` argument to a varargs-related macro. In the
+    // Unix ABI, the `va_list` undergoes an array-to-pointer conversion, but we only want the
+    // underlying variable access.
+    expr = parent.(BuiltInVarArgsStart).getVAList().getFullyConverted()
+    or
+    expr = parent.(BuiltInVarArgsEnd).getVAList().getFullyConverted()
+    or
+    expr = parent.(BuiltInVarArg).getVAList().getFullyConverted()
+    or
+    expr = parent.(BuiltInVarArgCopy).getSourceVAList().getFullyConverted()
+    or
+    expr = parent.(BuiltInVarArgCopy).getDestinationVAList().getFullyConverted()
+  )
 }
 
 /**
