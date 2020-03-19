@@ -18,15 +18,12 @@
    <recommendation>
       <p>Calculate the mid-point in a way that is not susceptible to overflow:
       </p>
+      <p>Instead of calculating <code>int mid = (low+high)/2</code>
+            or <code>int mid = (low+high) >> 1</code>, calculate one of the following:</p>
       <ul>
-         <li>Instead of calculating <code>int mid = (low+high)/2</code>
-            or <code>int mid = (low+high) >> 1</code>, calculate
-            <code>int mid = low + (high - low) / 2</code>
+         <li> <code>int mid = low + (high - low) / 2</code>
          </li>
-         or
          <li>
-            Instead of calculating <code>int mid = (low+high)/2</code>
-            or <code>int mid = (low+high) >> 1</code>, calculate
             <code>int mid = (low + high) >>> 1</code>
          </li>
       </ul>
