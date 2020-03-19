@@ -1,8 +1,7 @@
 /**
  * @name Query for detecting potential overflow in divide and conquer algorithms leading to crash
- * @description Divide and conquer algorithms (binary search, merge sort, ...)
- *              will fail for large values, when calculating the mid-point overflows.
- *              This can lead to an ArrayIndexOutOfBoundsException, if the (negative!) mid-point is used as an array index. 
+ * @description Calculating the mid-point in a divide and conquer operation
+ *             (binary search, merge sort, ...) may lead to overflow. 
  * @kind problem
  * @problem.severity error
  * @precision medium
