@@ -10,11 +10,38 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
+private import VarArgs
 
 /**
  * Gets the `TranslatedFunction` that represents function `func`.
  */
 TranslatedFunction getTranslatedFunction(Function func) { result.getAST() = func }
+
+/**
+ * Gets the size, in bytes, of the variable used to represent the `...` parameter in a varargs
+ * function. This is determined by finding the total size of all of the arguments passed to the
+ * `...` in each call in the program, and choosing the maximum of those, with a minimum of 8 bytes.
+ */
+private int getEllipsisVariableByteSize() {
+  result =
+    max(int variableSize |
+      variableSize =
+        max(Call call, int callSize |
+          callSize =
+            sum(int argIndex |
+              isEllipsisArgumentIndex(call, argIndex)
+            |
+              call.getArgument(argIndex).getType().getSize()
+            )
+        |
+          callSize
+        )
+      or
+      variableSize = 8
+    |
+      variableSize
+    )
+}
 
 /**
  * Represents the IR translation of a function. This is the root elements for
@@ -60,6 +87,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
 
   final private TranslatedParameter getParameter(int index) {
     result = getTranslatedParameter(func.getParameter(index))
+    or
+    index = getEllipsisParameterIndexForFunction(func) and
+    result = getTranslatedEllipsisParameter(func)
   }
 
   final override Instruction getFirstInstruction() { result = getInstruction(EnterFunctionTag()) }
@@ -113,7 +143,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int paramIndex |
       child = getParameter(paramIndex) and
-      if exists(func.getParameter(paramIndex + 1))
+      if
+        exists(func.getParameter(paramIndex + 1)) or
+        getEllipsisParameterIndexForFunction(func) = paramIndex + 1
       then result = getParameter(paramIndex + 1).getFirstInstruction()
       else result = getConstructorInitList().getFirstInstruction()
     )
@@ -237,10 +269,18 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = getReturnVariable()
   }
 
+  final override predicate needsUnknownOpaqueType(int byteSize) {
+    byteSize = getEllipsisVariableByteSize()
+  }
+
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     tag = ReturnValueTempVar() and
     hasReturnValue() and
     type = getTypeForPRValue(getReturnType())
+    or
+    tag = EllipsisTempVar() and
+    func.isVarargs() and
+    type = getUnknownOpaqueType(getEllipsisVariableByteSize())
   }
 
   /**
@@ -316,33 +356,28 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
 }
 
 /**
- * Gets the `TranslatedParameter` that represents parameter `param`.
+ * Gets the `TranslatedPositionalParameter` that represents parameter `param`.
  */
-TranslatedParameter getTranslatedParameter(Parameter param) { result.getAST() = param }
+TranslatedPositionalParameter getTranslatedParameter(Parameter param) { result.getAST() = param }
 
 /**
- * Represents the IR translation of a function parameter, including the
- * initialization of that parameter with the incoming argument.
+ * Gets the `TranslatedEllipsisParameter` for function `func`, if one exists.
  */
-class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
-  Parameter param;
+TranslatedEllipsisParameter getTranslatedEllipsisParameter(Function func) {
+  result.getFunction() = func
+}
 
-  TranslatedParameter() { this = TTranslatedParameter(param) }
-
-  final override string toString() { result = param.toString() }
-
-  final override Locatable getAST() { result = param }
-
-  final override Function getFunction() {
-    result = param.getFunction() or
-    result = param.getCatchBlock().getEnclosingFunction()
-  }
+/**
+ * The IR translation of a parameter to a function. This can be either a user-declared parameter
+ * (`TranslatedPositionParameter`) or the synthesized parameter used to represent a `...` in a
+ * varargs function (`TranslatedEllipsisParameter`).
+ */
+abstract class TranslatedParameter extends TranslatedElement {
+  final override TranslatedElement getChild(int id) { none() }
 
   final override Instruction getFirstInstruction() {
     result = getInstruction(InitializerVariableAddressTag())
   }
-
-  final override TranslatedElement getChild(int id) { none() }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
@@ -368,16 +403,16 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getVariableType(param))
+    resultType = getGLValueType()
     or
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::InitializeParameter and
-    resultType = getTypeForPRValue(getVariableType(param))
+    resultType = getPRValueType()
     or
     hasIndirection() and
     tag = InitializerIndirectAddressTag() and
     opcode instanceof Opcode::Load and
-    resultType = getTypeForPRValue(getVariableType(param))
+    resultType = getPRValueType()
     or
     hasIndirection() and
     tag = InitializerIndirectStoreTag() and
@@ -391,7 +426,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       tag = InitializerVariableAddressTag() or
       tag = InitializerIndirectStoreTag()
     ) and
-    result = getIRUserVariable(getFunction(), param)
+    result = getIRVariable()
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -416,13 +451,74 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     result = getInstruction(InitializerIndirectAddressTag())
   }
 
-  predicate hasIndirection() {
+  abstract predicate hasIndirection();
+
+  abstract CppType getGLValueType();
+
+  abstract CppType getPRValueType();
+
+  abstract IRAutomaticVariable getIRVariable();
+}
+
+/**
+ * Represents the IR translation of a function parameter, including the
+ * initialization of that parameter with the incoming argument.
+ */
+class TranslatedPositionalParameter extends TranslatedParameter, TTranslatedParameter {
+  Parameter param;
+
+  TranslatedPositionalParameter() { this = TTranslatedParameter(param) }
+
+  final override string toString() { result = param.toString() }
+
+  final override Locatable getAST() { result = param }
+
+  final override Function getFunction() {
+    result = param.getFunction() or
+    result = param.getCatchBlock().getEnclosingFunction()
+  }
+
+  final override predicate hasIndirection() {
     exists(Type t | t = param.getUnspecifiedType() |
       t instanceof ArrayType or
       t instanceof PointerType or
       t instanceof ReferenceType
     )
   }
+
+  final override CppType getGLValueType() { result = getTypeForGLValue(getVariableType(param)) }
+
+  final override CppType getPRValueType() { result = getTypeForPRValue(getVariableType(param)) }
+
+  final override IRAutomaticUserVariable getIRVariable() {
+    result = getIRUserVariable(getFunction(), param)
+  }
+}
+
+/**
+ * The IR translation of the synthesized parameter used to represent the `...` in a varargs
+ * function.
+ */
+class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllipsisParameter {
+  Function func;
+
+  TranslatedEllipsisParameter() { this = TTranslatedEllipsisParameter(func) }
+
+  final override string toString() { result = "..." }
+
+  final override Locatable getAST() { result = func }
+
+  final override Function getFunction() { result = func }
+
+  final override predicate hasIndirection() { any() }
+
+  final override CppType getGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
+
+  final override CppType getPRValueType() {
+    result = getUnknownOpaqueType(getEllipsisVariableByteSize())
+  }
+
+  final override IREllipsisVariable getIRVariable() { result.getEnclosingFunction() = func }
 }
 
 private TranslatedConstructorInitList getTranslatedConstructorInitList(Function func) {
