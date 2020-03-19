@@ -21,4 +21,14 @@ module SystemXmlXPath {
   class XPathExpression extends Class {
     XPathExpression() { this.hasName("XPathExpression") }
   }
+
+  /** The `System.Xml.XPath.XPathNavigator` class. */
+  class XPathNavigator extends Class {
+    XPathNavigator() { this.hasName("XPathNavigator") }
+
+    /** Gets a method that selects nodes. */
+    csharp::Method getASelectMethod() {
+      result = this.getAMethod() and result.getName().matches("Select%")
+    }
+  }
 }

@@ -65,6 +65,17 @@ module XPathInjection {
     }
   }
 
+  /** The `xpath` argument to an `XPathNavigator.Select*(..)` call. */
+  class XmlNavigatorSink extends Sink {
+    XmlNavigatorSink() {
+      this.getExpr() =
+        any(SystemXmlXPath::XPathNavigator xmlNav)
+            .getASelectMethod()
+            .getACall()
+            .getArgumentForName("xpath")
+    }
+  }
+
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
   private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
