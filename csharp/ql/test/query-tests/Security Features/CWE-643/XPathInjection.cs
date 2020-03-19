@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Private.Xml.dll /r:System.Xml.XPath.dll /r:System.Data.Common.dll
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Private.Xml.dll /r:System.Xml.XPath.dll /r:System.Data.Common.dll /r:System.Runtime.Extensions.dll
 
 using System;
 using System.Web;
@@ -19,7 +19,22 @@ public class XPathInjectionHandler : IHttpHandler
         xmlNode.SelectNodes("//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()");
 
         // GOOD: Uses parameters to avoid including user input directly in XPath expression
-        XPathExpression.Compile("//users/user[login/text()=$username]/home_dir/text()");
+        var expr = XPathExpression.Compile("//users/user[login/text()=$username]/home_dir/text()");
+
+        var doc = new XPathDocument("");
+        var nav = doc.CreateNavigator();
+
+        // BAD
+        nav.Select("//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()");
+
+        // BAD
+        nav.SelectSingleNode("//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()");
+
+        // GOOD
+        nav.Select(expr);
+
+        // GOOD
+        nav.SelectSingleNode(expr);
     }
 
     public bool IsReusable
