@@ -3,7 +3,7 @@
  * @description Calculating the mid-point in a divide and conquer operation
  *             (binary search, merge sort, ...) may lead to overflow. 
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision medium
  * @id java/divide-and-conquer-mid-point-overflow
  * @tags security
