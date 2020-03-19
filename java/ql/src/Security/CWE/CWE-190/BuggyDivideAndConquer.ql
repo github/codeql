@@ -6,8 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/divide-and-conquer-mid-point-overflow
- * @tags security
- *       correctness
+ * @tags correctness
  *       external/cwe/cwe-190
  */
 
