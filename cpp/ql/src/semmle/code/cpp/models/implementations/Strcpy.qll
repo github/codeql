@@ -80,16 +80,16 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
-  predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and
     buffer = true and
     mustWrite = true
   }
 
-  predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     i = 1 and
     buffer = true
   }
 
-  ParameterIndex getParameterSizeIndex(ParameterIndex i) { hasArrayWithVariableSize(i, result) }
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) { hasArrayWithVariableSize(i, result) }
 }
