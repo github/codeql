@@ -23,22 +23,16 @@ class DivideBy2Expr extends BinaryExpr {
   }
 }
 
-predicate hasALiteralOperand(AddExpr add) {
-  add.getLeftOperand() instanceof Literal 
-  or
-  add.getRightOperand() instanceof Literal
-}
-
 predicate refersToSameVar(Expr a, Expr b) {
   a.(VarAccess).getVariable() = b.(VarAccess).getVariable()
 }
 
-from DivideBy2Expr div, AddExpr add, LessThanComparison lt
+from DivideBy2Expr div, AddExpr add, LessThanComparison lt, VarAccess low, VarAccess high
 where div.getLeftOperand().getAChildExpr*() = add and
-  not hasALiteralOperand(add) and
-  refersToSameVar(lt.getLesserOperand(), add.getAnOperand()) and
-  refersToSameVar(lt.getGreaterOperand(), add.getAnOperand()) and
-  lt.getGreaterOperand() != lt.getLesserOperand()
+  refersToSameVar(add.getLeftOperand(), low) and
+  refersToSameVar(add.getRightOperand(), high) and
+  refersToSameVar(lt.getAnOperand(), low) and
+  refersToSameVar(lt.getAnOperand(), high) and
+  not refersToSameVar(lt.getLeftOperand(), lt.getRightOperand())
 select add, "Adding $@ and $@ may overflow before division takes place and lead to a crash.",
-  add.getLeftOperand(), add.getLeftOperand().(VarAccess).getVariable().getName(), add.getRightOperand(),
-  add.getRightOperand().(VarAccess).getVariable().getName()
+  add.getLeftOperand(), low.getVariable().getName(), add.getRightOperand(),  high.getVariable().getName()
