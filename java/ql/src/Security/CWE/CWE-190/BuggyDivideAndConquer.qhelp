@@ -31,7 +31,6 @@
    <example>
       <p>
          In this example, a buggy binary search and merge sort is shown.
-         Both are divide and conquer algorithms.
          Both algorithms calculate the mid-point in a way that is susceptible to overflow when used for very large
          arrays (2^30 or more elements).
          Calculating the mid-point in a way that doesn't overflow fixes the problem.
