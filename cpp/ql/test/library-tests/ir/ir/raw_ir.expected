@@ -6330,12 +6330,12 @@ ir.cpp:
 #-----|   Goto -> Block 5
 
 # 1235|   Block 5
-# 1235|     v1235_1(void)  = NoOp              : 
-# 1231|     v1231_9(void)  = ReturnIndirection : &:r1231_7, ~mu1231_4
-# 1231|     v1231_10(void) = ReturnVoid        : 
-# 1231|     v1231_11(void) = UnmodeledUse      : mu*
-# 1231|     v1231_12(void) = AliasedUse        : ~mu1231_4
-# 1231|     v1231_13(void) = ExitFunction      : 
+# 1235|     v1235_1(void)  = NoOp                       : 
+# 1231|     v1231_9(void)  = ReturnIndirection[dynamic] : &:r1231_7, ~mu1231_4
+# 1231|     v1231_10(void) = ReturnVoid                 : 
+# 1231|     v1231_11(void) = UnmodeledUse               : mu*
+# 1231|     v1231_12(void) = AliasedUse                 : ~mu1231_4
+# 1231|     v1231_13(void) = ExitFunction               : 
 
 # 1232|   Block 6
 # 1232|     r1232_4(glval<String>) = VariableAddress[a]              : 
@@ -6408,7 +6408,7 @@ struct_init.cpp:
 #   17|     r17_3(glval<Info *>) = VariableAddress[global_pointer] : 
 #   17|     mu17_4(Info *)       = Store                           : &:r17_3, r17_2
 #   18|     v18_1(void)          = NoOp                            : 
-#   16|     v16_9(void)          = ReturnIndirection               : &:r16_7, ~mu16_4
+#   16|     v16_9(void)          = ReturnIndirection[info]         : &:r16_7, ~mu16_4
 #   16|     v16_10(void)         = ReturnVoid                      : 
 #   16|     v16_11(void)         = UnmodeledUse                    : mu*
 #   16|     v16_12(void)         = AliasedUse                      : ~mu16_4
@@ -6498,7 +6498,7 @@ struct_init.cpp:
 #   41|     v41_6(void)           = ^BufferReadSideEffect[0]         : &:r41_3, ~mu36_4
 #   41|     mu41_7(unknown)       = ^BufferMayWriteSideEffect[0]     : &:r41_3
 #   42|     v42_1(void)           = NoOp                             : 
-#   36|     v36_9(void)           = ReturnIndirection                : &:r36_7, ~mu36_4
+#   36|     v36_9(void)           = ReturnIndirection[name1]         : &:r36_7, ~mu36_4
 #   36|     v36_10(void)          = ReturnVoid                       : 
 #   36|     v36_11(void)          = UnmodeledUse                     : mu*
 #   36|     v36_12(void)          = AliasedUse                       : ~mu36_4

@@ -1301,7 +1301,7 @@ ssa.cpp:
 #  277|     m277_8(unknown)        = Chi                              : total:m276_4, partial:m277_7
 #  277|     v277_9(void)           = ^BufferReadSideEffect[1]         : &:r277_5, ~m276_11
 #  277|     m277_10(unknown)       = ^BufferMayWriteSideEffect[1]     : &:r277_5
-#  277|     m277_11(char *)        = Chi                              : total:m276_11, partial:m277_10
+#  277|     m277_11(unknown)       = Chi                              : total:m276_11, partial:m277_10
 #  278|     r278_1(glval<unknown>) = FunctionAddress[unknownFunction] : 
 #  278|     r278_2(glval<int>)     = VariableAddress[argc]            : 
 #  278|     r278_3(int)            = Load                             : &:r278_2, m276_7
@@ -1312,7 +1312,7 @@ ssa.cpp:
 #  278|     m278_8(unknown)        = Chi                              : total:m277_8, partial:m278_7
 #  278|     v278_9(void)           = ^BufferReadSideEffect[1]         : &:r278_5, ~m277_11
 #  278|     m278_10(unknown)       = ^BufferMayWriteSideEffect[1]     : &:r278_5
-#  278|     m278_11(char *)        = Chi                              : total:m277_11, partial:m278_10
+#  278|     m278_11(unknown)       = Chi                              : total:m277_11, partial:m278_10
 #  279|     r279_1(glval<int>)     = VariableAddress[#return]         : 
 #  279|     r279_2(glval<char **>) = VariableAddress[argv]            : 
 #  279|     r279_3(char **)        = Load                             : &:r279_2, m276_9
