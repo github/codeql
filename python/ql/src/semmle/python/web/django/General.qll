@@ -27,9 +27,9 @@ class DjangoRoute extends CallNode {
     }
 
     /**
-      * Get the number of positional arguments that will be passed to the view.
-      * Will only return a result if there are no named arguments.
-      */
+     * Get the number of positional arguments that will be passed to the view.
+     * Will only return a result if there are no named arguments.
+     */
     int getNumPositionalArguments() {
         exists(DjangoRouteRegex regex |
             django_route(this, regex.getAFlowNode(), _) and
