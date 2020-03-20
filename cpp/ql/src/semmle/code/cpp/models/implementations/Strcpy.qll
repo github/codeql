@@ -91,5 +91,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     buffer = true
   }
 
-  override ParameterIndex getParameterSizeIndex(ParameterIndex i) { hasArrayWithVariableSize(i, result) }
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
+    hasArrayWithVariableSize(i, result)
+  }
 }
