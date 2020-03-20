@@ -11,14 +11,16 @@ private predicate is_normal_module(ModuleObject m) {
 }
 
 private predicate is_script(ModuleObject m) {
-    not is_normal_module(m) and (
+    not is_normal_module(m) and
+    (
         m.getModule().getFile().getExtension() != ".py"
         or
-        exists(If i, Name name, StrConst main, Cmpop op | 
+        exists(If i, Name name, StrConst main, Cmpop op |
             i.getScope() = m.getModule() and
             op instanceof Eq and
             i.getTest().(Compare).compares(name, op, main) and
-            name.getId() = "__name__" and main.getText() = "__main__"
+            name.getId() = "__name__" and
+            main.getText() = "__main__"
         )
     )
 }
@@ -29,7 +31,8 @@ private predicate is_plugin(ModuleObject m) {
     not is_script(m)
 }
 
-/** Gets the kind for module `m` will be one of
+/**
+ * Gets the kind for module `m` will be one of
  * "module", "script" or "plugin"
  */
 string getKindForModule(ModuleObject m) {
