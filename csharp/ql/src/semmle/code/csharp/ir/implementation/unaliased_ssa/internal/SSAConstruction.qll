@@ -76,11 +76,6 @@ private module Cached {
     exists(OldInstruction oldInstruction | instruction = Chi(oldInstruction) |
       Alias::getResultMemoryLocation(oldInstruction).getVirtualVariable() instanceof
         Alias::AliasedVirtualVariable
-      or
-      // If there is no memory location for a memory result, then it's unmodeled
-      // and therefore conflated with every other unmodeled instruction.
-      oldInstruction.hasMemoryResult() and
-      not exists(Alias::getResultMemoryLocation(oldInstruction))
     )
     or
     exists(Alias::MemoryLocation location |
