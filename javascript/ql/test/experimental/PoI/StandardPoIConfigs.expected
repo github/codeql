@@ -1,0 +1,3 @@
+| tst.js:4:1:4:16 | (req, res) => 42 | UnpromotedRouteHandlerPoI | tst.js:4:1:4:16 | (req, res) => 42 | irrelevant | tst.js:4:1:4:16 | (req, res) => 42 | irrelevant |
+| tst.js:4:1:4:16 | (req, res) => 42 | UnpromotedRouteHandlerWithFlowPoI: $@ | tst.js:4:1:4:16 | (req, res) => 42 | ends here | tst.js:4:1:4:16 | (req, res) => 42 | irrelevant |
+| tst.js:11:1:11:36 | otherAp ... h", rh) | UnpromotedRouteSetupPoI | tst.js:11:1:11:36 | otherAp ... h", rh) | irrelevant | tst.js:11:1:11:36 | otherAp ... h", rh) | irrelevant |
