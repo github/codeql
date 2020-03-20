@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint tracking configuration for reasoning about
+ * path-traversal vulnerabilities.
+ */
 module TaintedPath {
   /**
    * A data flow source for path-traversal vulnerabilities.

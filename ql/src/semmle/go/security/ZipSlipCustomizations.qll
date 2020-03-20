@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint tracking configuration for reasoning about
+ * zip-slip vulnerabilities.
+ */
 module ZipSlip {
   private import TaintedPathCustomizations
 

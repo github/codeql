@@ -7,6 +7,9 @@
 
 import go
 
+/**
+ * Provides a taint tracking configuration for reasoning about SQL-injection vulnerabilities.
+ */
 module SqlInjection {
   import SqlInjectionCustomizations::SqlInjection
 
@@ -25,6 +28,8 @@ module SqlInjection {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof SanitizerGuard }
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

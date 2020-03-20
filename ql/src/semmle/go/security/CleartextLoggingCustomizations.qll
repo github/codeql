@@ -7,6 +7,10 @@
 import go
 private import semmle.go.security.SensitiveActions::HeuristicNames
 
+/**
+ * Provides extension points for customizing the data-flow tracking configuration for reasoning
+ * about clear-text logging of sensitive information.
+ */
 module CleartextLogging {
   /**
    * A data-flow source for clear-text logging of sensitive information.

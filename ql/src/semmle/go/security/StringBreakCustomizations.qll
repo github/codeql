@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint tracking configuration for reasoning about
+ * unsafe-quoting vulnerabilities.
+ */
 module StringBreak {
   /** A (single or double) quote. */
   class Quote extends string {

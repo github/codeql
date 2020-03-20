@@ -1,6 +1,6 @@
 /**
  * Provides a taint tracking configuration for reasoning about command
- * injection vulnerabilities
+ * injection vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
  * `CommandInjection::Configuration` is needed, otherwise
@@ -9,6 +9,10 @@
 
 import go
 
+/**
+ * Provides a taint tracking configuration for reasoning about command
+ * injection vulnerabilities.
+ */
 module CommandInjection {
   import CommandInjectionCustomizations::CommandInjection
 
@@ -27,6 +31,8 @@ module CommandInjection {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof SanitizerGuard }
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

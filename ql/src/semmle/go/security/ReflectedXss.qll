@@ -1,10 +1,18 @@
 /**
  * Provides a taint-tracking configuration for reasoning about reflected
  * cross-site scripting vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `ReflectedXss::Configuration` is needed, otherwise
+ * `ReflectedXssCustomizations` should be imported instead.
  */
 
 import go
 
+/**
+ * Provides a taint-tracking configuration for reasoning about reflected
+ * cross-site scripting vulnerabilities.
+ */
 module ReflectedXss {
   import ReflectedXssCustomizations::ReflectedXss
 
@@ -23,6 +31,8 @@ module ReflectedXss {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof SanitizerGuard }
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

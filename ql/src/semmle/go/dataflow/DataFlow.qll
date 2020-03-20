@@ -17,6 +17,10 @@
 
 import go
 
+/**
+ * Provides a library for local (intra-procedural) and global (inter-procedural)
+ * data flow analysis.
+ */
 module DataFlow {
   import semmle.go.dataflow.internal.DataFlowImpl
   import Properties

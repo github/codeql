@@ -1,5 +1,5 @@
 /**
- * Provides a taint tracking configuration for reasoning about zip-slip vulnerabilities
+ * Provides a taint tracking configuration for reasoning about zip-slip vulnerabilities.
  *
  * Note: for performance reasons, only import this file if `ZipSlip::Configuration` is needed,
  * otherwise `ZipSlipCustomizations` should be imported instead.
@@ -7,6 +7,7 @@
 
 import go
 
+/** Provides a taint tracking configuration for reasoning about zip-slip vulnerabilities. */
 module ZipSlip {
   import ZipSlipCustomizations::ZipSlip
 
@@ -25,6 +26,8 @@ module ZipSlip {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof SanitizerGuard }
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

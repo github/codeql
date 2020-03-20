@@ -2,6 +2,7 @@
 
 import go
 
+/** Provides models of commonly used functions in the `github.com/golang/glog` package. */
 module Glog {
   private class GlogCall extends LoggerCall::Range, DataFlow::CallNode {
     GlogCall() {

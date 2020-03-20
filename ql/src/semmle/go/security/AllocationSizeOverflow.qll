@@ -7,6 +7,9 @@
 
 import go
 
+/**
+ * Provides a taint-tracking configuration for reasoning about allocation-size overflow.
+ */
 module AllocationSizeOverflow {
   import AllocationSizeOverflowCustomizations::AllocationSizeOverflow
 

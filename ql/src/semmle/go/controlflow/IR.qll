@@ -13,6 +13,7 @@
 import go
 private import semmle.go.controlflow.ControlFlowGraphImpl
 
+/** Provides predicates and classes for working with IR constructs. */
 module IR {
   /**
    * An IR instruction.

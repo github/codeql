@@ -181,6 +181,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 }
 
+/** Provides a helper predicate for working with explicit SSA definitions. */
 module SsaExplicitDefinition {
   /**
    * Gets the SSA definition corresponding to definition `def`.

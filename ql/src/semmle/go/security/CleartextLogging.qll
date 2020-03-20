@@ -9,6 +9,10 @@
 
 import go
 
+/**
+ * Provides a data-flow tracking configuration for reasoning about
+ * clear-text logging of sensitive information.
+ */
 module CleartextLogging {
   import CleartextLoggingCustomizations::CleartextLogging
 

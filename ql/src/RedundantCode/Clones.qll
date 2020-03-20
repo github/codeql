@@ -168,13 +168,17 @@ class HashableNAryNode extends HashableNode {
  * have identical hashes they are structurally identical.
  */
 newtype HashedNode =
+  /** A hashed representation of an AST node without any child nodes. */
   MkHashedNullaryNode(int kind, string value) { any(HashableNullaryNode nd).unpack(kind, value) } or
+  /** A hashed representation of an AST node with a single child node. */
   MkHashedUnaryNode(int kind, string value, HashedNode child) {
     any(HashableUnaryNode nd).unpack(kind, value, child)
   } or
+  /** A hashed representation of an AST node with two child nodes. */
   MkHashedBinaryNode(int kind, string value, HashedNode left, HashedNode right) {
     any(HashableBinaryNode nd).unpack(kind, value, left, right)
   } or
+  /** A hashed representation of an AST node with three or more child nodes. */
   MkHashedNAryNode(int kind, string value, HashedChildren children) {
     any(HashableNAryNode nd).unpack(kind, value, children)
   }
