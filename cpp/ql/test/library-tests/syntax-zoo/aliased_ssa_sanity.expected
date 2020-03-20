@@ -568,6 +568,8 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

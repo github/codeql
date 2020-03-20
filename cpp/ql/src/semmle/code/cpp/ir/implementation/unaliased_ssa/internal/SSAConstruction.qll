@@ -66,6 +66,30 @@ private module Cached {
   }
 
   cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+    or
+    exists(OldInstruction oldInstruction | instruction = Chi(oldInstruction) |
+      Alias::getResultMemoryLocation(oldInstruction).getVirtualVariable() instanceof
+        Alias::AliasedVirtualVariable
+      or
+      // If there is no memory location for a memory result, then it's unmodeled
+      // and therefore conflated with every other unmodeled instruction.
+      oldInstruction.hasMemoryResult() and
+      not exists(Alias::getResultMemoryLocation(oldInstruction))
+    )
+    or
+    exists(Alias::MemoryLocation location |
+      instruction = Phi(_, location) and
+      location.getVirtualVariable() instanceof Alias::AliasedVirtualVariable
+    )
+  }
+
+  cached
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
     exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
       oldInstruction = getOldInstruction(instruction) and

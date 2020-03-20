@@ -354,6 +354,7 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   final override predicate isMayAccess() { isMayAccess = true }
 }
 
+/** A virtual variable that groups all escaped memory within a function. */
 class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
   AliasedVirtualVariable() { not isMayAccess() }
 }
