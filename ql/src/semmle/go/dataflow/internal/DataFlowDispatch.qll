@@ -2,10 +2,75 @@ private import go
 private import DataFlowPrivate
 
 /**
+ * Holds if `call` is an interface call to method `m`, meaning that its receiver `recv` has an
+ * interface type.
+ */
+private predicate isInterfaceCallReceiver(DataFlow::CallNode call, DataFlow::Node recv, string m) {
+  call.getReceiver() = recv and
+  recv.getType().getUnderlyingType() instanceof InterfaceType and
+  m = call.getCalleeName()
+}
+
+/** Holds if `nd` may flow into the receiver value of `call`, which is an interface value. */
+private DataFlow::Node getInterfaceCallReceiverSource(DataFlow::CallNode call) {
+  isInterfaceCallReceiver(call, result.getASuccessor*(), _)
+}
+
+/** Gets the type of `nd`, which must be a valid type and not an interface type. */
+private Type getConcreteType(DataFlow::Node nd) {
+  result = nd.getType() and
+  not result.getUnderlyingType() instanceof InterfaceType and
+  not result instanceof InvalidType
+}
+
+/**
+ * Holds if all concrete (that is, non-interface) types of `nd` concrete types can be determined by
+ * local reasoning.
+ *
+ * `nd` is restricted to nodes that flow into the receiver value of an interface call, since that is
+ * all we are ultimately interested in.
+ */
+private predicate isConcreteValue(DataFlow::Node nd) {
+  nd = getInterfaceCallReceiverSource(_) and
+  (
+    exists(getConcreteType(nd))
+    or
+    forex(DataFlow::Node pred | pred = nd.getAPredecessor() | isConcreteValue(pred))
+  )
+}
+
+/**
+ * Holds if `call` is an interface call to method `m` with receiver `recv`, where the concrete
+ * types of `recv` can be established by local reasoning.
+ */
+private predicate isConcreteInterfaceCall(DataFlow::Node call, DataFlow::Node recv, string m) {
+  isInterfaceCallReceiver(call, recv, m) and isConcreteValue(recv)
+}
+
+/**
+ * Gets a function that might be called by `call`, where the receiver of `call` has interface type,
+ * but its concrete types can be determined by local reasoning.
+ */
+private FuncDecl getConcreteTarget(DataFlow::CallNode call) {
+  exists(DataFlow::Node recv, string m |
+    isConcreteInterfaceCall(call, recv, m) |
+    exists(Type concreteReceiverType, DeclaredFunction concreteTarget |
+      concreteReceiverType = getConcreteType(getInterfaceCallReceiverSource(call)) and
+      concreteTarget = concreteReceiverType.getMethod(m) and
+      result = concreteTarget.getFuncDecl()
+    )
+  )
+}
+
+/**
  * Gets a function that might be called by `call`.
  */
 DataFlowCallable viableCallable(CallExpr ma) {
-  result = DataFlow::exprNode(ma).(DataFlow::CallNode).getACallee()
+  exists(DataFlow::CallNode call | call.asExpr() = ma |
+    if isConcreteInterfaceCall(call, _, _)
+    then result = getConcreteTarget(call)
+    else result = call.getACallee()
+  )
 }
 
 /**
