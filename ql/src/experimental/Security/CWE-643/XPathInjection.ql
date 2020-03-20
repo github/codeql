@@ -11,36 +11,43 @@
  */
 
 import go
-import semmle.go.dataflow.TaintTracking
 import DataFlow::PathGraph
+
+class ByteSliceType extends SliceType {
+  ByteSliceType() { this.getElementType() instanceof Uint8Type }
+}
 
 class XPathInjectionConfiguration extends TaintTracking::Configuration {
   XPathInjectionConfiguration() { this = "XPathInjectionConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { 
-    source instanceof UntrustedFlowSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    not node.asExpr().getType() instanceof StringType or
+    not node.asExpr().getType() instanceof ByteSliceType
+  }
 }
 
 abstract class XPathInjectionSink extends DataFlow::Node { }
 
-Function getAMatchingFunction(string package, int argumentNumber, CallExpr call, Expr argument) {
-  result.getPackage().getName() = package and
-  call.getTarget() = result and
-  call.getArgument(argumentNumber) = argument
-}
-
 // https://github.com/antchfx/xpath
 class XPathSink extends XPathInjectionSink {
   XPathSink() {
-    exists(CallExpr call |
-      getAMatchingFunction("xpath", 0, call, this.asExpr()).getName().matches("Compile")
-      or 
-      getAMatchingFunction("xpath", 0, call, this.asExpr()).getName().matches("MustCompile")
-      or 
-      getAMatchingFunction("xpath", 1, call, this.asExpr()).getName().matches("Select")
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/xpath", "Compile%") and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/xpath", "MustCompile%") and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/xpath", "Select%") and
+      this = f.getACall().getArgument(1)
     )
   }
 }
@@ -48,12 +55,19 @@ class XPathSink extends XPathInjectionSink {
 // https://github.com/antchfx/htmlquery
 class HtmlQuerySink extends XPathInjectionSink {
   HtmlQuerySink() {
-    exists(CallExpr call |
-      getAMatchingFunction("htmlquery", 1, call, this.asExpr()).getName().matches("Find%")
-      or 
-      getAMatchingFunction("htmlquery", 1, call, this.asExpr()).getName().matches("Query%")
-      or 
-      getAMatchingFunction("htmlquery", 0, call, this.asExpr()).getName().matches("getQuery")
+    exists(Function f, string name | name.matches("Find%") |
+      f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f, string name | name.matches("Query%") |
+      f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/htmlquery", "getQuery") and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -61,14 +75,24 @@ class HtmlQuerySink extends XPathInjectionSink {
 // https://github.com/antchfx/xmlquery
 class XmlQuerySink extends XPathInjectionSink {
   XmlQuerySink() {
-    exists(CallExpr call |
-      getAMatchingFunction("xmlquery", 1, call, this.asExpr()).getName().matches("Find%")
-      or 
-      getAMatchingFunction("xmlquery", 1, call, this.asExpr()).getName().matches("Query%")
-      or 
-      getAMatchingFunction("xmlquery", 0, call, this.asExpr()).getName().matches("getQuery")
-      or 
-      getAMatchingFunction("xmlquery", 0, call, this.asExpr()).getName().matches("Select%")
+    exists(Function f, string name | name.matches("Find%") |
+      f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f, string name | name.matches("Query%") |
+      f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f, string name | name.matches("Select%") |
+      f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/xmlquery", "getQuery") and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -76,12 +100,19 @@ class XmlQuerySink extends XPathInjectionSink {
 // https://github.com/antchfx/jsonquery
 class JsonQuerySink extends XPathInjectionSink {
   JsonQuerySink() {
-    exists(CallExpr call |
-      getAMatchingFunction("jsonquery", 1, call, this.asExpr()).getName().matches("Find%")
-      or 
-      getAMatchingFunction("jsonquery", 1, call, this.asExpr()).getName().matches("Query%")
-      or 
-      getAMatchingFunction("jsonquery", 0, call, this.asExpr()).getName().matches("getQuery")
+    exists(Function f, string name | name.matches("Find%") |
+      f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f, string name | name.matches("Query%") |
+      f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
+      this = f.getACall().getArgument(1)
+    )
+    or
+    exists(Function f |
+      f.hasQualifiedName("github.com/antchfx/jsonquery", "getQuery") and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -89,10 +120,14 @@ class JsonQuerySink extends XPathInjectionSink {
 // https://github.com/go-xmlpath/xmlpath
 class XmlPathSink extends XPathInjectionSink {
   XmlPathSink() {
-    exists(CallExpr call |
-      getAMatchingFunction("xmlpath", 0, call, this.asExpr()).getName().matches("Compile%")
-      or 
-      getAMatchingFunction("xmlpath", 0, call, this.asExpr()).getName().matches("MustCompile")
+    exists(Function f, string name | name.matches("Compile%") |
+      f.hasQualifiedName("github.com/go-xmlpath/xmlpath", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f, string name | name.matches("MustCompile%") |
+      f.hasQualifiedName("github.com/go-xmlpath/xmlpath", name) and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -100,12 +135,14 @@ class XmlPathSink extends XPathInjectionSink {
 // https://github.com/ChrisTrenkamp/goxpath
 class GoXPathSink extends XPathInjectionSink {
   GoXPathSink() {
-    exists(CallExpr call |
-      getAMatchingFunction("goxpath", 0, call, this.asExpr()).getName().matches("Parse")
-      or 
-      getAMatchingFunction("goxpath", 0, call, this.asExpr()).getName().matches("MustParse")
-      or 
-      getAMatchingFunction("goxpath", 0, call, this.asExpr()).getName().matches("ParseExec")
+    exists(Function f, string name | name.matches("Parse%") |
+      f.hasQualifiedName("github.com/ChrisTrenkamp/goxpath", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f, string name | name.matches("MustParse%") |
+      f.hasQualifiedName("github.com/ChrisTrenkamp/goxpath", name) and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -113,10 +150,14 @@ class GoXPathSink extends XPathInjectionSink {
 // https://github.com/santhosh-tekuri/xpathparser
 class XPathParserSink extends XPathInjectionSink {
   XPathParserSink() {
-    exists(CallExpr call |
-      getAMatchingFunction("xpathparser", 0, call, this.asExpr()).getName().matches("Parse")
-      or 
-      getAMatchingFunction("xpathparser", 0, call, this.asExpr()).getName().matches("MustParse")
+    exists(Function f, string name | name.matches("Parse%") |
+      f.hasQualifiedName("github.com/santhosh-tekuri/xpathparser", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f, string name | name.matches("MustParse%") |
+      f.hasQualifiedName("github.com/santhosh-tekuri/xpathparser", name) and
+      this = f.getACall().getArgument(0)
     )
   }
 }
@@ -124,20 +165,24 @@ class XPathParserSink extends XPathInjectionSink {
 // https://github.com/moovweb/gokogiri
 class GokogiriSink extends XPathInjectionSink {
   GokogiriSink() {
-    exists(CallExpr call |
-      getAMatchingFunction("xpath", 0, call, this.asExpr()).getName().matches("Compile")
-      or 
-      // TODO: The following cases will have false positives in case a *xpath.Expression is supplied
-      // I don't know how to fix this, since I'm new to the Go QL flavour.
-      // https://github.com/moovweb/gokogiri/blob/a1a828153468a7518b184e698f6265904108d957/xml/node.go#L613
-      getAMatchingFunction("xml", 0, call, this.asExpr()).getName().matches("Search%")
-      or
-      getAMatchingFunction("xml", 0, call, this.asExpr()).getName().matches("EvalXPath%")    
+    exists(Function f, string name | name.matches("Compile%") |
+      f.hasQualifiedName("github.com/moovweb/gokogiri/xpath", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f, string name | name.matches("Search%") |
+      f.hasQualifiedName("github.com/moovweb/gokogiri/xml", name) and
+      this = f.getACall().getArgument(0)
+    )
+    or
+    exists(Function f, string name | name.matches("EvalXPath%") |
+      f.hasQualifiedName("github.com/moovweb/gokogiri/xml", name) and
+      this = f.getACall().getArgument(0)
     )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c
-where c.hasFlowPath(source, sink)
+from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c, Function f
+where c.hasFlowPath(source, sink) and f.getName().matches("Compile%")
 select sink.getNode(), source, sink, "$@ flows here and is used in an XPath expression.",
   source.getNode(), "A user-provided value"
