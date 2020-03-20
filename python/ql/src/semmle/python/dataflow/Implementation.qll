@@ -57,8 +57,8 @@ private newtype TAttributePath =
      * It might make sense to add another level, attribute of attribute.
      * But some experimentation would be needed.
      */
-    TAttribute(string name) { exists(Attribute a | a.getName() = name) }
 
+    TAttribute(string name) { exists(Attribute a | a.getName() = name) }
 
 /**
  * The attribute of the tracked value holding the taint.
@@ -445,9 +445,8 @@ class TaintTrackingImplementation extends string {
             context = TNoParam() and
             src = TTaintTrackingNode_(retval, TNoParam(), path, kind, this) and
             node.asCfgNode() = call and
-            retval.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope())
-                        .getValue()
-                        .getAFlowNode()
+            retval.asCfgNode() =
+                any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
         ) and
         edgeLabel = "return"
     }
@@ -469,9 +468,8 @@ class TaintTrackingImplementation extends string {
             this.callContexts(call, src, pyfunc, context, callee) and
             retnode = TTaintTrackingNode_(retval, callee, path, kind, this) and
             node.asCfgNode() = call and
-            retval.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope())
-                        .getValue()
-                        .getAFlowNode()
+            retval.asCfgNode() =
+                any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
         ) and
         edgeLabel = "call"
     }
@@ -717,7 +715,8 @@ private class EssaTaintTracking extends string {
             path.noAttribute()
         |
             assign.getValue().getAFlowNode() = srcnode.asCfgNode() and
-            kind = iterable_unpacking_descent(assign.getATarget().getAFlowNode(), defn.getDefiningNode(),
+            kind =
+                iterable_unpacking_descent(assign.getATarget().getAFlowNode(), defn.getDefiningNode(),
                     srckind)
         )
     }
@@ -734,8 +733,8 @@ private class EssaTaintTracking extends string {
         then result = parent_kind
         else result = parent_kind.getMember()
         or
-        result = iterable_unpacking_descent(left_parent.getAnElement(), left_defn,
-                parent_kind.getMember())
+        result =
+            iterable_unpacking_descent(left_parent.getAnElement(), left_defn, parent_kind.getMember())
     }
 
     pragma[noinline]
