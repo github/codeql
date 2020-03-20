@@ -3,6 +3,7 @@
  */
 
 import go
+import semmle.go.security.UrlConcatenation
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {
@@ -23,6 +24,9 @@ module RequestForgery {
 
   /** A sanitizer for request forgery vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
+
+  /** An outgoing sanitizer edge for request forgery vulnerabilities. */
+  abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
    * A sanitizer guard for request forgery vulnerabilities.
@@ -45,5 +49,9 @@ module RequestForgery {
     override DataFlow::Node getARequest() { result = request }
 
     override string getKind() { result = "URL" }
+  }
+
+  private class HostnameSanitizer extends SanitizerEdge {
+    HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
   }
 }

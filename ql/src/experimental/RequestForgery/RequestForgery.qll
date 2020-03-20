@@ -23,6 +23,11 @@ module RequestForgery {
       node instanceof Sanitizer
     }
 
+    override predicate isSanitizerOut(DataFlow::Node node) {
+      super.isSanitizerOut(node) or
+      node instanceof SanitizerEdge
+    }
+
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
     }
