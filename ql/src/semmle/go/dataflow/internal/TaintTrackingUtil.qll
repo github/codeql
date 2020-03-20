@@ -50,6 +50,7 @@ class AdditionalTaintStep extends Unit {
  */
 predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   referenceStep(pred, succ) or
+  elementWriteStep(pred, succ) or
   fieldReadStep(pred, succ) or
   arrayStep(pred, succ) or
   tupleStep(pred, succ) or
@@ -87,6 +88,14 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
+/**
+ * Holds if there is an assignment of the form `succ[idx] = pred`, meaning that `pred` may taint
+ * `succ`.
+ */
+predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
+  any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+}
+
 /** Holds if taint flows from `pred` to `succ` via a field read. */
 predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ.(DataFlow::FieldReadNode).getBase() = pred
@@ -105,7 +114,8 @@ predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
 /** Holds if taint flows from `pred` to `succ` via string concatenation. */
 predicate stringConcatStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(DataFlow::BinaryOperationNode conc |
-    conc.getOperator() = "+" and conc.getType() instanceof StringType |
+    conc.getOperator() = "+" and conc.getType() instanceof StringType
+  |
     succ = conc and conc.getAnOperand() = pred
   )
 }

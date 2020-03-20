@@ -11,6 +11,13 @@
 | main.go:12:14:12:52 | call to MarshalIndent | main.go:12:2:12:52 | ... := ...[0] |
 | main.go:12:14:12:52 | call to MarshalIndent | main.go:12:2:12:52 | ... := ...[1] |
 | main.go:12:33:12:33 | v | main.go:12:2:12:52 | ... := ...[0] |
+| main.go:13:25:13:25 | b | main.go:13:9:13:41 | composite literal |
+| main.go:13:28:13:30 | err | main.go:13:9:13:41 | composite literal |
+| main.go:13:33:13:34 | b2 | main.go:13:9:13:41 | composite literal |
+| main.go:13:37:13:40 | err2 | main.go:13:9:13:41 | composite literal |
 | main.go:18:18:18:42 | call to DecodeString | main.go:18:2:18:42 | ... := ...[0] |
 | main.go:18:18:18:42 | call to DecodeString | main.go:18:2:18:42 | ... := ...[1] |
 | main.go:18:35:18:41 | encoded | main.go:18:2:18:42 | ... := ...[0] |
+| main.go:22:25:22:31 | decoded | main.go:22:9:22:48 | composite literal |
+| main.go:22:34:22:36 | err | main.go:22:9:22:48 | composite literal |
+| main.go:22:39:22:47 | reEncoded | main.go:22:9:22:48 | composite literal |

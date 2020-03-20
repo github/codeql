@@ -396,7 +396,9 @@ class PostUpdateNode extends Node {
       or
       preupd = any(PointerDereferenceNode deref).getOperand()
       or
-      exists(Write w, DataFlow::Node base | w.writesField(base, _, _) |
+      exists(Write w, DataFlow::Node base |
+        w.writesField(base, _, _) or w.writesElement(base, _, _)
+      |
         preupd = base
         or
         preupd = base.(PointerDereferenceNode).getOperand()
