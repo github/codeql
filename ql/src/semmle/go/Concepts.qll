@@ -527,6 +527,43 @@ module HTTP {
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
   }
 
+  /** Provides a class for modeling new HTTP client request APIs. */
+  module ClientRequest {
+    /**
+     * A call that performs a request to a URL.
+     *
+     * Example: An HTTP POST request is a client request that sends some
+     * `data` to a `url`, where both the headers and the body of the request
+     * contribute to the `data`.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::ClientRequest` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the URL of the request.
+       */
+      abstract DataFlow::Node getUrl();
+    }
+  }
+
+  /**
+   * A call that performs a request to a URL.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::ClientRequest::Range` instead.
+   */
+  class ClientRequest extends DataFlow::Node {
+    ClientRequest::Range self;
+
+    ClientRequest() { this = self }
+
+    /**
+     * Gets the URL of the request.
+     */
+    DataFlow::Node getUrl() { result = self.getUrl() }
+  }
+
   /** Provides a class for modeling new HTTP redirect APIs. */
   module Redirect {
     /**
