@@ -62,13 +62,13 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
-  predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = 0 and
     buffer = true and
     mustWrite = false
   }
 
-  predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     (i = 0 or i = 1) and
     buffer = true
   }
