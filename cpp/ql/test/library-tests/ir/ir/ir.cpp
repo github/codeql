@@ -885,6 +885,14 @@ void FuncPtrConversions(int(*pfn)(int), void* p) {
   pfn = (int(*)(int))p;
 }
 
+void VAListUsage(int x, __builtin_va_list args) {
+  __builtin_va_list args2;
+  __builtin_va_copy(args2, args);
+  double d = __builtin_va_arg(args, double);
+  float f = __builtin_va_arg(args, int);
+  __builtin_va_end(args2);
+}
+
 void VarArgUsage(int x, ...) {
   __builtin_va_list args;
 
@@ -894,6 +902,7 @@ void VarArgUsage(int x, ...) {
   double d = __builtin_va_arg(args, double);
   float f = __builtin_va_arg(args, int);
   __builtin_va_end(args);
+  VAListUsage(x, args2);
   __builtin_va_end(args2);
 }
 
