@@ -82,17 +82,17 @@ module OpenUrlRedirect {
         (frn.getFieldName() = "Host" or frn.getFieldName() = "Path")
       )
       or
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Path") |
+      // propagate to a URL when its host is assigned to
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
 
     override predicate isBarrierOut(DataFlow::Node node) {
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Path") |
+      // block propagation of this safe value when its host is overwritten
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(node.getASuccessor(), f, _)
       )
     }
-
-    override int explorationLimit() { result = 30 }
   }
 }
