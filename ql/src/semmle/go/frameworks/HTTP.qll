@@ -147,4 +147,21 @@ private module StdlibHttp {
 
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
   }
+
+  /** A call to a function in the `net/http` package that performs an HTTP request to a URL. */
+  private class RequestCall extends HTTP::ClientRequest::Range, DataFlow::CallNode {
+    RequestCall() {
+      exists(string functionName |
+        (
+          this.getTarget().hasQualifiedName("net/http", functionName)
+          or
+          this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
+        ) and
+        (functionName = "Get" or functionName = "Post" or functionName = "PostForm")
+      )
+    }
+
+    /** Gets the URL of the request. */
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
+  }
 }
