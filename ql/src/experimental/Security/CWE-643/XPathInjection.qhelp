@@ -15,10 +15,9 @@ If user input must be included in an XPath expression, pre-compile the query and
 references to include the user input.
 </p>
 <p>
-For example, when using the <code>github.com/moovweb/gokogiri</code> API, this can be done by creating a custom subtype of
-<code>xpath.VariableScope</code>, and implementing
-<code>ResolveVariable(string, string)</code> to return the user provided data. This
-custom scope can be specified when calling <code>SearchWithVariables()</code>, <code>EvalXPath()</code>, or <code>EvalXPathAsBoolean()</code>.
+For example, when using the <code>github.com/ChrisTrenkamp/goxpath</code> API, this can be done by creating a function that takes an <code>*goxpath.Opts</code> structure.
+In this structure you can then set the values of the variable references.
+This function can then be specified when calling <code>Exec()</code>, <code>Exec{Bool|Num|Node}()</code>, <code>ParseExec()</code> or <code>MustExec()</code>.
 </p>
 
 </recommendation>
@@ -33,7 +32,7 @@ for different values.
 
 <p>
 In the second example, the XPath expression is a hard-coded string that specifies some variables,
-which are safely replaced at runtime using a custom <code>xpath.VariableScope</code>.
+which are safely resolved at runtime using the <code>goxpath.Opts</code> structure.
 </p>
 <sample src="XPathInjection.go" />
 </example>
