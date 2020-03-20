@@ -139,5 +139,5 @@ class GokogiriSink extends XPathInjectionSink {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an XPath expression.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "$@ flows here and is used in an XPath expression.",
+  source.getNode(), "A user-provided value"

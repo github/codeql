@@ -15,10 +15,10 @@ If user input must be included in an XPath expression, pre-compile the query and
 references to include the user input.
 </p>
 <p>
-For exmaple, when using the <code>github.com/moovweb/gokogiri</code> API, this can be done by creating a custom subtype of
+For example, when using the <code>github.com/moovweb/gokogiri</code> API, this can be done by creating a custom subtype of
 <code>xpath.VariableScope</code>, and implementing
 <code>ResolveVariable(string, string)</code> to return the user provided data. This
-custom scope can be specified when calling <code>SearchWithVariables(), EvalXPath() or EvalXPathAsBoolean()</code>.
+custom scope can be specified when calling <code>SearchWithVariables()</code>, <code>EvalXPath()</code>, or <code>EvalXPathAsBoolean()</code>.
 </p>
 
 </recommendation>
