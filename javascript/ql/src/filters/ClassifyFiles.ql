@@ -6,6 +6,7 @@
  * @kind file-classifier
  * @id js/file-classifier
  */
+
 import javascript
 import ClassifyFiles
 
