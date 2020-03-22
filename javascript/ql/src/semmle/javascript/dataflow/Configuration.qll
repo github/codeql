@@ -1207,10 +1207,23 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
   not cfg.isLabeledBarrier(nd, summary.getEndLabel())
   or
   exists(DataFlow::Node mid, PathSummary stepSummary |
-    reachableFromSource(nd, cfg, summary) and
-    flowStep(nd, id(cfg), mid, stepSummary) and
+    onPathStep(nd, cfg, summary, stepSummary, mid) and
     onPath(mid, id(cfg), summary.append(stepSummary))
   )
+}
+
+/**
+ * Holds if `nd` can be reached from a source under `cfg`,
+ * and there is a flowStep from `nd` (with summary `summary`) to `mid` (with summary `stepSummary`).
+ *
+ * This predicate has been outlined from `onPath` to give the optimizer a hint about join-ordering.
+ */
+private predicate onPathStep(
+  DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary, PathSummary stepSummary,
+  DataFlow::Node mid
+) {
+  reachableFromSource(nd, cfg, summary) and
+  flowStep(nd, id(cfg), mid, stepSummary)
 }
 
 /**
