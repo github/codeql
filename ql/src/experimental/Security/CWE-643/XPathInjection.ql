@@ -25,8 +25,9 @@ class XPathInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    not node.asExpr().getType() instanceof StringType or
-    not node.asExpr().getType() instanceof ByteSliceType
+  exists(Type t | t = node.getType().getUnderlyingType() |
+    not t instanceof StringType or not t instanceof ByteSliceType
+  )
   }
 }
 
