@@ -4,7 +4,6 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @id go/xml/xpath-injection
  * @tags security
  *       external/cwe/cwe-643
@@ -25,9 +24,9 @@ class XPathInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-  exists(Type t | t = node.getType().getUnderlyingType() |
-    not t instanceof StringType or not t instanceof ByteSliceType
-  )
+    exists(Type t | t = node.getType().getUnderlyingType() |
+      not t instanceof StringType or not t instanceof ByteSliceType
+    )
   }
 }
 
@@ -36,18 +35,18 @@ abstract class XPathInjectionSink extends DataFlow::Node { }
 // https://github.com/antchfx/xpath
 class XPathSink extends XPathInjectionSink {
   XPathSink() {
-    exists(Function f |
-      f.hasQualifiedName("github.com/antchfx/xpath", "Compile%") and
+    exists(Function f, string name | name.matches("Compile%") |
+      f.hasQualifiedName("github.com/antchfx/xpath", name) and
       this = f.getACall().getArgument(0)
     )
     or
-    exists(Function f |
-      f.hasQualifiedName("github.com/antchfx/xpath", "MustCompile%") and
+    exists(Function f, string name | name.matches("MustCompile%") |
+      f.hasQualifiedName("github.com/antchfx/xpath", name) and
       this = f.getACall().getArgument(0)
     )
     or
-    exists(Function f |
-      f.hasQualifiedName("github.com/antchfx/xpath", "Select%") and
+    exists(Function f, string name | name.matches("Select%") |
+      f.hasQualifiedName("github.com/antchfx/xpath", name) and
       this = f.getACall().getArgument(1)
     )
   }
@@ -183,7 +182,7 @@ class GokogiriSink extends XPathInjectionSink {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c, Function f
-where c.hasFlowPath(source, sink) and f.getName().matches("Compile%")
+from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c
+where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows here and is used in an XPath expression.",
   source.getNode(), "A user-provided value"
