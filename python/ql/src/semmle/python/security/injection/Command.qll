@@ -123,3 +123,107 @@ class OsCommandFirstArgument extends CommandSink {
     }
 
 }
+
+// -------------------------------------------------------------------------- //
+// Modeling of the 'invoke' package and 'fabric' package (v 2.x)
+//
+// Since fabric build so closely upon invoke, we model them together to avoid
+// duplication
+// -------------------------------------------------------------------------- //
+
+/** A taint sink that is potentially vulnerable to malicious shell commands.
+ * The `vuln` in `invoke.run(vuln, ...)` and similar calls.
+ */
+class InvokeRun extends CommandSink {
+    InvokeRun() {
+        this = Value::named("invoke.run").(FunctionValue).getArgumentForCall(_, 0)
+        or
+        this = Value::named("invoke.sudo").(FunctionValue).getArgumentForCall(_, 0)
+    }
+
+    override string toString() { result = "InvokeRun" }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof ExternalStringKind
+    }
+}
+
+/** Internal TaintKind to track the invoke.Context instance passed to functions
+ * marked with @invoke.task
+ */
+private class InvokeContextArg extends TaintKind {
+    InvokeContextArg() { this = "InvokeContextArg" }
+}
+
+/** Internal TaintSource to track the context passed to functions marked with @invoke.task */
+private class InvokeContextArgSource extends TaintSource {
+    InvokeContextArgSource() {
+        exists(Function f, Expr decorator |
+            count(f.getADecorator()) = 1 and
+            (
+                decorator = f.getADecorator() and not decorator instanceof Call
+                or
+                decorator = f.getADecorator().(Call).getFunc()
+
+            ) and
+            (
+                decorator.pointsTo(Value::named("invoke.task"))
+                or
+                decorator.pointsTo(Value::named("fabric.task"))
+            )
+        |
+            this.(ControlFlowNode).getNode() = f.getArg(0)
+        )
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof InvokeContextArg
+    }
+}
+
+/** A taint sink that is potentially vulnerable to malicious shell commands.
+ * The `vuln` in `invoke.Context().run(vuln, ...)` and similar calls.
+ */
+class InvokeContextRun extends CommandSink {
+    InvokeContextRun() {
+        exists(CallNode call |
+            any(InvokeContextArg k).taints(call.getFunction().(AttrNode).getObject("run"))
+            or
+            call = Value::named("invoke.Context").(ClassValue).lookup("run").getACall()
+            or
+            // fabric.connection.Connection is a subtype of invoke.context.Context
+            // since fabric.Connection.run has a decorator, it doesn't work with FunctionValue :|
+            // and `Value::named("fabric.Connection").(ClassValue).lookup("run").getACall()` returned no results,
+            // so here is the hacky solution that works :\
+            call.getFunction().(AttrNode).getObject("run").pointsTo().getClass() = Value::named("fabric.Connection")
+        |
+            this = call.getArg(0)
+            or
+            this = call.getArgByName("command")
+        )
+    }
+
+    override string toString() { result = "InvokeContextRun" }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof ExternalStringKind
+    }
+}
+
+/** A taint sink that is potentially vulnerable to malicious shell commands.
+ * The `vuln` in `fabric.Group().run(vuln, ...)` and similar calls.
+ */
+class FabricGroupRun extends CommandSink {
+    FabricGroupRun() {
+        exists(ClassValue cls |
+            cls.getASuperType() =  Value::named("fabric.Group") and
+            this = cls.lookup("run").(FunctionValue).getArgumentForCall(_, 1)
+        )
+    }
+
+    override string toString() { result = "FabricGroupRun" }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof ExternalStringKind
+    }
+}
