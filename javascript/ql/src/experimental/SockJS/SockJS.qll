@@ -8,18 +8,18 @@ import javascript
  * A model of the `SockJS` websocket data handler (https://sockjs.org).
  */
 module SockJS {
+  /**
+   * Access to user-controlled data object received from websocket
+   * For example:
+   * ```
+   * server.on('connection', function(conn) {
+   *     conn.on('data', function(message) {
+   *       ...
+   *     });
+   *  });
+   * ```
+   */
   class SourceFromSocketJS extends RemoteFlowSource {
-    /**
-     * Access to user-controlled data object received from websocket
-     * For example:
-     * ```
-     * server.on('connection', function(conn) {
-     *     conn.on('data', function(message) {
-     *       ...
-     *     });
-     *  });
-     * ```
-     */
     SourceFromSocketJS() {
       exists(
         DataFlow::CallNode createServer, DataFlow::CallNode connNode,
