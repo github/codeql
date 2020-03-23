@@ -80,6 +80,7 @@
 | Use of password hash with insufficient computational effort (`js/insufficient-password-hash`) | Fewer false positive results | This query now recognizes additional cases that do not require secure hashing. |
 | Useless regular-expression character escape (`js/useless-regexp-character-escape`) | Fewer false positive results | This query now distinguishes escapes in strings and regular expression literals. |
 | Identical operands (`js/redundant-operation`) | Fewer results | This query now recognizes cases where the operands change a value using ++/-- expressions. |
+| Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer results | This query now recognizes cases where a function uses the `Function.arguments` value to process a variable number of parameters. |
 
 ## Changes to libraries
 
