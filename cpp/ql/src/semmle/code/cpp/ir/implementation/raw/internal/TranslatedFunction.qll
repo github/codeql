@@ -43,6 +43,12 @@ private int getEllipsisVariableByteSize() {
     )
 }
 
+CppType getEllipsisVariablePRValueType() {
+  result = getUnknownOpaqueType(getEllipsisVariableByteSize())
+}
+
+CppType getEllipsisVariableGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
+
 /**
  * Represents the IR translation of a function. This is the root elements for
  * all other elements associated with this function.
@@ -280,7 +286,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     or
     tag = EllipsisTempVar() and
     func.isVarargs() and
-    type = getUnknownOpaqueType(getEllipsisVariableByteSize())
+    type = getEllipsisVariablePRValueType()
   }
 
   /**
@@ -297,6 +303,11 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final IRReturnVariable getReturnVariable() {
     result = getIRTempVariable(func, ReturnValueTempVar())
   }
+
+  /**
+   * Get the variable that represents the `...` parameter, if any.
+   */
+  final IREllipsisVariable getEllipsisVariable() { result.getEnclosingFunction() = func }
 
   /**
    * Holds if the function has a non-`void` return type.
@@ -512,13 +523,13 @@ class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllips
 
   final override predicate hasIndirection() { any() }
 
-  final override CppType getGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
+  final override CppType getGLValueType() { result = getEllipsisVariableGLValueType() }
 
-  final override CppType getPRValueType() {
-    result = getUnknownOpaqueType(getEllipsisVariableByteSize())
+  final override CppType getPRValueType() { result = getEllipsisVariablePRValueType() }
+
+  final override IREllipsisVariable getIRVariable() {
+    result = getTranslatedFunction(func).getEllipsisVariable()
   }
-
-  final override IREllipsisVariable getIRVariable() { result.getEnclosingFunction() = func }
 }
 
 private TranslatedConstructorInitList getTranslatedConstructorInitList(Function func) {
