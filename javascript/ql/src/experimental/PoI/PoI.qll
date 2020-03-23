@@ -272,8 +272,20 @@ module PoI {
 
   /**
    * An alert query for a point of interest.
+
+   * Should be used as:
    *
-   * Should be used as: `query predicate problems = PoI::alertQuery/6;`
+   * ```
+   * query predicate problems = PoI::alertQuery/6;`
+   * ```
+   *
+   * Or alternatively:
+   *
+   * ```
+   * from Locatable l1line, string msg, Node l2, string s2, Node l3, string s3
+   * where PoI::alertQuery(l1line, msg, l2, s2, l3, s3)
+   * select l1line, msg, l2, s2, l3, s3
+   * ```
    *
    * Note that some points of interest do not have auxiliary
    * locations, so `l2`,`l3`, `s2`, `s3` may have placeholder values.
