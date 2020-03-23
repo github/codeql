@@ -323,7 +323,7 @@ class Instruction extends Construction::TInstruction {
 
   /**
    * Holds if this is an instruction with a memory result that represents a
-   * conflation of more than one object.
+   * conflation of more than one memory allocation.
    *
    * This happens in practice when dereferencing a pointer that cannot be
    * tracked back to a single local allocation. Such memory is instead modeled
