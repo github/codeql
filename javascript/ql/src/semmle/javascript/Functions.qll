@@ -118,8 +118,9 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Holds if the body of this function refers to the function's `arguments` variable. */
   predicate usesArgumentsObject() {
-    exists(getArgumentsVariable().getAnAccess()) or
-    exists(PropAccess read | 
+    exists(getArgumentsVariable().getAnAccess())
+    or
+    exists(PropAccess read |
       read.getBase() = getVariable().getAnAccess() and
       read.getPropertyName() = "arguments"
     )
