@@ -4,7 +4,10 @@
 
 import go
 
-/** Provides classes and predicates for the reflected XSS query. */
+/**
+ * Provides extension points for customizing the taint-tracking configuration for reasoning about
+ * reflected cross-site scripting vulnerabilities.
+ */
 module ReflectedXss {
   /** A data flow source for reflected XSS vulnerabilities. */
   abstract class Source extends DataFlow::Node { }

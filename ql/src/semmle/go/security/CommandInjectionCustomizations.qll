@@ -6,6 +6,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint tracking configuration for reasoning about
+ * command injection vulnerabilities.
+ */
 module CommandInjection {
   /**
    * A data flow source for command-injection vulnerabilities.

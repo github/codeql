@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint-tracking configuration for reasoning
+ * about allocation-size overflow.
+ */
 module AllocationSizeOverflow {
   /**
    * A source of data that might cause an allocation-size overflow.

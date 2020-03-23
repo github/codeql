@@ -1,5 +1,5 @@
 /**
- * Provides a taint tracking configuration for reasoning about path-traversal vulnerabilities
+ * Provides a taint tracking configuration for reasoning about path-traversal vulnerabilities.
  *
  * Note: for performance reasons, only import this file if `TaintedPath::Configuration` is needed,
  * otherwise `TaintedPathCustomizations` should be imported instead.
@@ -7,6 +7,7 @@
 
 import go
 
+/** Provides a taint tracking configuration for reasoning about path-traversal vulnerabilities. */
 module TaintedPath {
   import TaintedPathCustomizations::TaintedPath
 
@@ -25,6 +26,8 @@ module TaintedPath {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof SanitizerGuard }
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

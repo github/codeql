@@ -10,6 +10,10 @@
 import go
 import UrlConcatenation
 
+/**
+ * Provides a taint-tracking configuration for reasoning about
+ * unvalidated URL redirection problems on the server side.
+ */
 module OpenUrlRedirect {
   import OpenUrlRedirectCustomizations::OpenUrlRedirect
 

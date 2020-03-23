@@ -7,6 +7,9 @@
 
 import go
 
+/**
+ * Provides a taint tracking configuration for reasoning about unsafe-quoting vulnerabilities.
+ */
 module StringBreak {
   import StringBreakCustomizations::StringBreak
 

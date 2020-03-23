@@ -447,6 +447,7 @@ module URL {
   }
 }
 
+/** Provides models of commonly used APIs in the `regexp` package. */
 module Regexp {
   private class Pattern extends RegexpPattern::Range, DataFlow::ArgumentNode {
     string fnName;

@@ -23,6 +23,7 @@ class SystemCommandExecution extends DataFlow::Node {
   DataFlow::Node getCommandName() { result = self.getCommandName() }
 }
 
+/** Provides a class for modeling new system-command execution APIs. */
 module SystemCommandExecution {
   /**
    * A data-flow node that executes an operating system command,
@@ -61,6 +62,7 @@ class TemplateInstantiation extends DataFlow::Node {
   DataFlow::Node getADataArgument() { result = self.getADataArgument() }
 }
 
+/** Provides a class for modeling new template-instantiation APIs. */
 module TemplateInstantiation {
   /**
    * An instantiation of a template; that is, a call which fills out a template with data.
@@ -99,6 +101,7 @@ class FileSystemAccess extends DataFlow::Node {
   DataFlow::Node getAPathArgument() { result = self.getAPathArgument() }
 }
 
+/** Provides a class for modeling new file-system access APIs. */
 module FileSystemAccess {
   /**
    * A data-flow node that performs a file system access, including reading and writing data,
@@ -127,6 +130,7 @@ class EscapeFunction extends Function {
   string kind() { result = self.kind() }
 }
 
+/** Provides a class for modeling new escape-function APIs. */
 module EscapeFunction {
   /**
    * A function that escapes meta-characters to prevent injection attacks.
@@ -198,6 +202,7 @@ class RegexpPattern extends DataFlow::Node {
   DataFlow::Node getAUse() { result = self.getAUse() }
 }
 
+/** Provides a class for modeling new regular-expression APIs. */
 module RegexpPattern {
   /**
    * A node whose value is interpreted as a part of a regular expression.
@@ -259,6 +264,7 @@ class RegexpMatchFunction extends Function {
   FunctionOutput getResult() { result = self.getResult() }
 }
 
+/** Provides a class for modeling new regular-expression matcher APIs. */
 module RegexpMatchFunction {
   /**
    * A function that matches a regexp with a string or byte slice.
@@ -321,6 +327,7 @@ class RegexpReplaceFunction extends Function {
   FunctionOutput getResult() { result = self.getResult() }
 }
 
+/** Provides a class for modeling new regular-expression replacer APIs. */
 module RegexpReplaceFunction {
   /**
    * A function that uses a regexp to replace parts of a string or byte slice.
@@ -348,7 +355,9 @@ module RegexpReplaceFunction {
   }
 }
 
+/** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  /** Provides a class for modeling new HTTP response-writer APIs. */
   module ResponseWriter {
     /**
      * A variable that is an HTTP response writer.
@@ -386,6 +395,7 @@ module HTTP {
     DataFlow::Node getANode() { result = self.getANode() }
   }
 
+  /** Provides a class for modeling new HTTP header-write APIs. */
   module HeaderWrite {
     /**
      * A data-flow node that represents a write to an HTTP header.
@@ -465,6 +475,7 @@ module HTTP {
     HeaderName() { this = hw.getName() }
   }
 
+  /** Provides a class for modeling new HTTP request-body APIs. */
   module RequestBody {
     /**
      * An expression representing a reader whose content is written to an HTTP request body.
@@ -487,6 +498,7 @@ module HTTP {
     RequestBody() { this = self }
   }
 
+  /** Provides a class for modeling new HTTP response-body APIs. */
   module ResponseBody {
     /**
      * An expression which is written to an HTTP response body.
@@ -515,6 +527,7 @@ module HTTP {
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
   }
 
+  /** Provides a class for modeling new HTTP redirect APIs. */
   module Redirect {
     /**
      * An HTTP redirect.
@@ -577,6 +590,7 @@ class LoggerCall extends DataFlow::Node {
   DataFlow::Node getAMessageComponent() { result = self.getAMessageComponent() }
 }
 
+/** Provides a class for modeling new logging APIs. */
 module LoggerCall {
   /**
    * A call to a logging mechanism.
@@ -611,6 +625,7 @@ class MarshalingFunction extends Function {
   string getFormat() { result = self.getFormat() }
 }
 
+/** Provides a class for modeling new marshaling APIs. */
 module MarshalingFunction {
   /**
    * A function that encodes data into a binary or textual format.
@@ -651,6 +666,7 @@ class UnmarshalingFunction extends Function {
   string getFormat() { result = self.getFormat() }
 }
 
+/** Provides a class for modeling new unmarshaling APIs. */
 module UnmarshalingFunction {
   /**
    * A function that decodes data from a binary or textual format.

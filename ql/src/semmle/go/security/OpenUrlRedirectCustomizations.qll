@@ -7,6 +7,10 @@
 import go
 import UrlConcatenation
 
+/**
+ * Provides extension points for customizing the taint-tracking configuration for reasoning about
+ * unvalidated URL redirection problems on the server side.
+ */
 module OpenUrlRedirect {
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.

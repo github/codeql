@@ -27,9 +27,7 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of
    * user names or other account information.
    */
-  string maybeAccountInfo() {
-    result = "(?is).*(puid|username|userid).*"
-  }
+  string maybeAccountInfo() { result = "(?is).*(puid|username|userid).*" }
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of
@@ -72,6 +70,7 @@ abstract class SensitiveExpr extends Expr {
   abstract SensitiveExpr::Classification getClassification();
 }
 
+/** Provides classes and predicates for classifying different kinds of sensitive data. */
 module SensitiveExpr {
   /**
    * A classification of different kinds of sensitive data:

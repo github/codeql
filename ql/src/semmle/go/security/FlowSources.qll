@@ -16,6 +16,7 @@ class UntrustedFlowSource extends DataFlow::Node {
   UntrustedFlowSource() { this = self }
 }
 
+/** Provides a class for modeling new sources of untrusted data. */
 module UntrustedFlowSource {
   /**
    * A source of data that is controlled by an untrusted user.

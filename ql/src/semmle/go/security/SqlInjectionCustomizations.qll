@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint tracking configuration for reasoning about
+ * SQL-injection vulnerabilities.
+ */
 module SqlInjection {
   /**
    * A data flow source for SQL-injection vulnerabilities.

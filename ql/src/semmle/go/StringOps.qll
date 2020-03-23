@@ -4,6 +4,7 @@
 
 import go
 
+/** Provides predicates and classes for working with string operations. */
 module StringOps {
   /**
    * An expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
@@ -37,6 +38,7 @@ module StringOps {
 
   class StartsWith = HasPrefix;
 
+  /** Provides predicates and classes for working with prefix checks. */
   module HasPrefix {
     /**
      * An expression that is equivalent to `strings.HasPrefix(A, B)` or `!strings.HasPrefix(A, B)`.
@@ -170,6 +172,7 @@ module StringOps {
     int getNumOperand() { result = self.getNumOperand() }
   }
 
+  /** Provides predicates and classes for working with string concatenations. */
   module Concatenation {
     /**
      * A data-flow node that performs string concatenation.

@@ -4,6 +4,7 @@
 
 import go
 
+/** Provides classes for working with SQL-related APIs. */
 module SQL {
   /**
    * A data-flow node whose string value is interpreted as (part of) a SQL query.
@@ -17,6 +18,7 @@ module SQL {
     QueryString() { this = self }
   }
 
+  /** Provides classes for working with SQL query strings. */
   module QueryString {
     /**
      * A data-flow node whose string value is interpreted as (part of) a SQL query.

@@ -2,6 +2,7 @@
 
 import go
 
+/** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 module Logrus {
   private string getAPkgName() {
     result = "github.com/sirupsen/logrus"
