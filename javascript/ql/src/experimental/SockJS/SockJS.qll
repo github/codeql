@@ -3,7 +3,6 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 
 /**
  * A model of the `SockJS` websocket data handler (https://sockjs.org).
