@@ -10,6 +10,8 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
 
+/** Abstract taint sink that is potentially vulnerable to malicious shell commands. */
+abstract class CommandSink extends TaintSink { }
 
 private ModuleObject osOrPopenModule() {
     result.getName() = "os" or
@@ -20,7 +22,7 @@ private Object makeOsCall() {
     exists(string name |
         result = ModuleObject::named("subprocess").attr(name) |
         name = "Popen" or
-        name = "call" or 
+        name = "call" or
         name = "check_call" or
         name = "check_output" or
         name = "run"
@@ -61,7 +63,7 @@ class FirstElementFlow extends DataFlowExtension::DataFlowNode {
 /** A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `subprocess.call(shell=vuln)` and similar calls.
  */
-class ShellCommand extends TaintSink {
+class ShellCommand extends CommandSink {
 
     override string toString() { result = "shell command" }
 
@@ -100,7 +102,7 @@ class ShellCommand extends TaintSink {
 /** A taint sink that is potentially vulnerable to malicious shell commands.
  * The `vuln` in `subprocess.call(vuln, ...)` and similar calls.
  */
-class OsCommandFirstArgument extends TaintSink {
+class OsCommandFirstArgument extends CommandSink {
 
     override string toString() { result = "OS command first argument" }
 
