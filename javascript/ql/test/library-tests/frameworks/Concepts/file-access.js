@@ -64,7 +64,7 @@ const writeJsonFile = require('write-json-file');
 })();
 
 var readdirp = require("readdirp");
-readdirp('.', {fileFilter: '*.js'}).on('data', (entry) => { /* steam and promise api not modelled yet */ })
+readdirp('.', {fileFilter: '*.js'}).on('data', (entry) => { /* stream and promise api not modelled yet */ })
 
 var recursive = require("recursive-readdir");
 recursive("directory/to/read", function (err, files) {
