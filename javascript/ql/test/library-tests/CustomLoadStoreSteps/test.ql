@@ -13,7 +13,7 @@ class Configuration extends TaintTracking::Configuration {
 
   // When the source code states that "foo" is being read, "bar" is additionally being read.
   override predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    exists(DataFlow::PropRead read | read = succ | 
+    exists(DataFlow::PropRead read | read = succ |
       read.getBase() = pred and
       read.getPropertyName() = "foo"
     ) and

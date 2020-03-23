@@ -37,7 +37,7 @@ class EssaVariable extends TEssaDefinition {
         result = "SSA variable " + this.getName()
     }
 
-    /** Gets a string representation of this variable. 
+    /** Gets a string representation of this variable.
      * WARNING: The format of this may change and it may be very inefficient to compute.
      * To used for debugging and testing only.
      */
@@ -77,7 +77,7 @@ class EssaVariable extends TEssaDefinition {
 
 }
 
-/* Helper for location_string 
+/* Helper for location_string
  * NOTE: This is Python specific, to make `getRepresentation()` portable will require further work.
  */
 private int exception_handling(BasicBlock b) {
@@ -142,8 +142,8 @@ private cached newtype TEssaDefinition =
     }
 
 /** Definition of an extended-SSA (ESSA) variable.
- *  There is exactly one definition for each variable,
- *  and exactly one variable for each definition.
+ * There is exactly one definition for each variable,
+ * and exactly one variable for each definition.
  */
 abstract class EssaDefinition extends TEssaDefinition {
 
@@ -161,10 +161,10 @@ abstract class EssaDefinition extends TEssaDefinition {
     abstract predicate reachesEndOfBlock(BasicBlock b);
 
     /** Gets the location of a control flow node that is indicative of this definition.
-     * Since definitions may occur on edges of the control flow graph, the given location may 
+     * Since definitions may occur on edges of the control flow graph, the given location may
      * be imprecise.
      * Distinct `EssaDefinitions` may return the same ControlFlowNode even for
-     * the same variable. 
+     * the same variable.
      */
     abstract Location getLocation();
 
@@ -182,9 +182,9 @@ abstract class EssaDefinition extends TEssaDefinition {
 
 }
 
-/** An ESSA definition corresponding to an edge refinement of the underlying variable. 
+/** An ESSA definition corresponding to an edge refinement of the underlying variable.
  * For example, the edges leaving a test on a variable both represent refinements of that
- * variable. On one edge the test is true, on the other it is false. 
+ * variable. On one edge the test is true, on the other it is false.
  */
 class EssaEdgeRefinement extends EssaDefinition, TEssaEdgeDefinition {
 
@@ -361,7 +361,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 
     private EssaEdgeRefinement piInputDefinition(EssaVariable input) {
-        input = this.getAnInput() and 
+        input = this.getAnInput() and
         result = input.getDefinition()
         or
         input = this.getAnInput() and result = input.getDefinition().(PhiFunction).piInputDefinition(_)
@@ -471,8 +471,7 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
 
 }
 
-/** A definition of an ESSA variable that takes another ESSA variable as an input.
- */
+/** A definition of an ESSA variable that takes another ESSA variable as an input. */
 class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
 
     override string toString() {
@@ -609,6 +608,7 @@ class MultiAssignmentDefinition extends EssaNodeDefinition {
         )
     }
 
+    /** Holds if `this` has (zero-based) index `index` in `lhs`. */
     predicate indexOf(int index, SequenceNode lhs) {
         SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index, lhs)
     }
@@ -864,4 +864,3 @@ class PyEdgeRefinement extends EssaEdgeRefinement {
     }
 
 }
-

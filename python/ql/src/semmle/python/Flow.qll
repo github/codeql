@@ -27,8 +27,8 @@ private AstNode toAst(ControlFlowNode n) {
 
 /** A control flow node. Control flow nodes have a many-to-one relation with syntactic nodes,
  * although most syntactic nodes have only one corresponding control flow node.
-*  Edges between control flow nodes include exceptional as well as normal control flow.
-*/
+ * Edges between control flow nodes include exceptional as well as normal control flow.
+ */
 class ControlFlowNode extends @py_flow_node {
 
     /** Whether this control flow node is a load (including those in augmented assignments) */
@@ -235,18 +235,18 @@ class ControlFlowNode extends @py_flow_node {
         PointsTo::pointsTo(this, context, value, origin)
     }
 
-    /** Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
-     *  analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
-     *  precise, but may not provide information for a significant number of flow-nodes.
-     *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
+    /** 
+     * Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
+     * analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
+     * precise, but may not provide information for a significant number of flow-nodes.
+     * If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
     pragma [nomagic]
     predicate refersTo(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.refersTo(_, obj, cls, origin)
     }
 
-    /** Gets what this expression might "refer-to" in the given `context`.
-     */
+    /** Gets what this expression might "refer-to" in the given `context`. */
     pragma [nomagic]
     predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
         not obj = unknownValue() and
@@ -329,8 +329,8 @@ class ControlFlowNode extends @py_flow_node {
         exists(BasicBlock b |
             start_bb_likely_reachable(b) and
             not end_bb_likely_reachable(b) and
-            /* If there is an unlikely successor edge earlier in the BB
-             * than this node, then this node must be unreachable */
+            // If there is an unlikely successor edge earlier in the BB
+            // than this node, then this node must be unreachable.
             exists(ControlFlowNode p, int i, int j |
                 p.(RaisingNode).unlikelySuccessor(_) and
                 p = b.getNode(i) and
@@ -531,7 +531,7 @@ class AttrNode extends ControlFlowNode {
     }
 
     /** Gets the flow node corresponding to the object of the attribute expression corresponding to this flow node,
-        with the matching name */
+     * with the matching name */
     ControlFlowNode getObject(string name) {
         exists(Attribute a |
             this.getNode() = a and a.getObject() = result.getNode() and
@@ -555,7 +555,7 @@ class ImportMemberNode extends ControlFlowNode {
     }
 
     /** Gets the flow node corresponding to the module in the import-member expression corresponding to this flow node,
-        with the matching name*/
+     * with the matching name */
     ControlFlowNode getModule(string name) {
         exists(ImportMember i |
             this.getNode() = i and i.getModule() = result.getNode() |
@@ -753,9 +753,8 @@ class DefinitionNode extends ControlFlowNode {
         or
         augstore(_, this)
         or
-        exists(Assign a | a.getATarget().(Tuple).getAnElt().getAFlowNode() = this)
-        or
-        exists(Assign a | a.getATarget().(List).getAnElt().getAFlowNode() = this)
+        // `x, y = 1, 2` where LHS is a combination of list or tuples
+        exists(Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
         or
         exists(For for | for.getTarget().getAFlowNode() = this)
     }
@@ -766,6 +765,18 @@ class DefinitionNode extends ControlFlowNode {
         and
         (result.getBasicBlock().dominates(this.getBasicBlock()) or result.isImport())
     }
+}
+
+private Expr list_or_tuple_nested_element(Expr list_or_tuple) {
+    exists(Expr elt |
+        elt = list_or_tuple.(Tuple).getAnElt()
+        or
+        elt = list_or_tuple.(List).getAnElt()
+    |
+        result = elt
+        or
+        result = list_or_tuple_nested_element(elt)
+    )
 }
 
 /** A control flow node corresponding to a deletion statement, such as `del x`.
@@ -887,16 +898,40 @@ private AstNode assigned_value(Expr lhs) {
     /* lhs += x  =>  result = (lhs + x) */
     exists(AugAssign a, BinaryExpr b | b = a.getOperation() and result = b and lhs = b.getLeft())
     or
-    /* ..., lhs, ... = ..., result, ... */
-    exists(Assign a, Tuple target, Tuple values, int index |
-        a.getATarget() = target and
-        a.getValue() = values and
-        lhs = target.getElt(index) and
-        result = values.getElt(index)
-    )
+    /* ..., lhs, ... = ..., result, ...
+     * or
+     * ..., (..., lhs, ...), ... = ..., (..., result, ...), ...
+    */
+    exists(Assign a | nested_sequence_assign(a.getATarget(), a.getValue(), lhs, result))
     or
     /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
     result.(For).getTarget() = lhs
+}
+
+predicate nested_sequence_assign(Expr left_parent, Expr right_parent,
+        Expr left_result, Expr right_result) {
+    exists(Assign a |
+        a.getATarget().getASubExpression*() = left_parent and
+        a.getValue().getASubExpression*() = right_parent
+    ) and
+    exists(int i, Expr left_elem, Expr right_elem
+    |
+        (
+            left_elem = left_parent.(Tuple).getElt(i)
+            or
+            left_elem = left_parent.(List).getElt(i)
+        )
+        and
+        (
+            right_elem = right_parent.(Tuple).getElt(i)
+            or
+            right_elem = right_parent.(List).getElt(i)
+        )
+    |
+        left_result = left_elem and right_result = right_elem
+        or
+        nested_sequence_assign(left_elem, right_elem, left_result, right_result)
+    )
 }
 
 /** A flow node for a `for` statement. */
@@ -1035,6 +1070,17 @@ class NameConstantNode extends NameNode {
      * a serious performance impact.
     deprecated predicate uses(Variable v) { none() }
     */
+}
+
+/** A control flow node correspoinding to a starred expression, `*a`. */
+class StarredNode extends ControlFlowNode {
+    StarredNode() {
+        toAst(this) instanceof Starred
+    }
+
+    ControlFlowNode getValue() {
+        toAst(result) = toAst(this).(Starred).getValue()
+    }
 }
 
 private module Scopes {

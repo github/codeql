@@ -4,7 +4,7 @@ import python
 class FunctionMetrics extends Function {
 
     /** Gets the total number of lines (including blank lines)
-       from the definition to the end of the function */
+     * from the definition to the end of the function */
     int getNumberOfLines() {
         py_alllines(this, result)
     }
@@ -53,8 +53,8 @@ class FunctionMetrics extends Function {
     }
   
     /** Dependency of Callables
-        One callable "this" depends on another callable "result"
-        if "this" makes some call to a method that may end up being "result".
+     * One callable "this" depends on another callable "result"
+     * if "this" makes some call to a method that may end up being "result".
     */
     FunctionMetrics getADependency() {
         result != this and
@@ -78,17 +78,17 @@ class FunctionMetrics extends Function {
     }
   
     /** Afferent Coupling
-        the number of callables that depend on this method.
-        This is sometimes called the "fan-in" of a method.
-    */
+     * the number of callables that depend on this method.
+     * This is sometimes called the "fan-in" of a method.
+     */
     int getAfferentCoupling() {
        result = count(FunctionMetrics m | m.getADependency() = this )
     }
   
     /** Efferent Coupling
-        the number of methods that this method depends on
-        This is sometimes called the "fan-out" of a method.
-    */
+     * the number of methods that this method depends on
+     * This is sometimes called the "fan-out" of a method.
+     */
     int getEfferentCoupling() {
        result = count(FunctionMetrics m | this.getADependency() = m)
     }
@@ -112,7 +112,7 @@ class FunctionMetrics extends Function {
 class ClassMetrics extends Class {
 
     /** Gets the total number of lines (including blank lines)
-       from the definition to the end of the class */
+     * from the definition to the end of the class */
     int getNumberOfLines() {
         py_alllines(this, result)
     }
@@ -149,14 +149,14 @@ class ClassMetrics extends Class {
     }
     
     /** The afferent coupling of a class is the number of classes that
-     *  directly depend on it. 
+     * directly depend on it. 
      */
     int getAfferentCoupling() {
         result = count(ClassMetrics t | t.dependsOn(this))
     }
   
     /** The efferent coupling of a class is the number of classes that
-     *  it directly depends on.
+     * it directly depends on.
      */
     int getEfferentCoupling() {
           result = count(ClassMetrics t | this.dependsOn(t))
@@ -172,20 +172,19 @@ class ClassMetrics extends Class {
     /* -------- CHIDAMBER AND KEMERER LACK OF COHESION IN METHODS ------------ */
    
     /* The aim of this metric is to try and determine whether a class
-       represents one abstraction (good) or multiple abstractions (bad).
-       If a class represents multiple abstractions, it should be split
-       up into multiple classes.
-    
-       In the Chidamber and Kemerer method, this is measured as follows:
-          n1 = number of pairs of distinct methods in a class that do *not*
-               have at least one commonly accessed field
-          n2 = number of pairs of distinct methods in a class that do
-               have at least one commonly accessed field
-          lcom = ((n1 - n2)/2 max 0)
-          
-      We divide by 2 because each pair (m1,m2) is counted twice in n1 and n2.
-          
-    */
+      * represents one abstraction (good) or multiple abstractions (bad).
+      * If a class represents multiple abstractions, it should be split
+      * up into multiple classes.
+    *
+      * In the Chidamber and Kemerer method, this is measured as follows:
+      *    n1 = number of pairs of distinct methods in a class that do *not*
+      *         have at least one commonly accessed field
+      *    n2 = number of pairs of distinct methods in a class that do
+      *         have at least one commonly accessed field
+      *    lcom = ((n1 - n2)/2 max 0)
+      *    
+     * We divide by 2 because each pair (m1,m2) is counted twice in n1 and n2.
+     */
    
     /** should function f be excluded from the cohesion computation? */
     predicate ignoreLackOfCohesion(Function f) {

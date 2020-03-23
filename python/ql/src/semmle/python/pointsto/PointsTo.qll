@@ -506,12 +506,21 @@ cached module PointsToInternal {
         value = sequence.getItem(index)
     }
 
-    pragma [noinline]
-    private predicate multi_assignment_points_to(MultiAssignmentDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(int index, ControlFlowNode rhs, SequenceObjectInternal sequence |
-            def.indexOf(index, rhs) and
-            sequence_index_points_to(rhs, context, sequence, value, index) and
+    pragma[noinline]
+    private predicate multi_assignment_points_to(
+        MultiAssignmentDefinition def, PointsToContext context, ObjectInternal value,
+        ControlFlowNode origin
+    ) {
+        exists(int index, ControlFlowNode lhs, ControlFlowNode rhs, ObjectInternal sequence |
+            def.indexOf(index, lhs) and
+            lhs.(DefinitionNode).getValue() = rhs and
             origin = def.getDefiningNode()
+        |
+            sequence_index_points_to(rhs, context, sequence, value, index)
+            or
+            pointsTo(rhs, context, sequence, _) and
+            sequence.subscriptUnknown() and
+            value = TUnknown()
         )
     }
 
@@ -1176,7 +1185,7 @@ module InterProceduralPointsTo {
     }
 
     /** INTERNAL -- Use `FunctionObject.neverReturns()` instead.
-     *  Whether function `func` never returns. Slightly conservative approximation, this predicate may be false
+     * Whether function `func` never returns. Slightly conservative approximation, this predicate may be false
      * for a function that can never return. */
     cached predicate neverReturns(Function f) {
         /* A Python function never returns if it has no normal exits that are not dominated by a

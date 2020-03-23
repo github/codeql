@@ -43,7 +43,7 @@ module ClearTextLogging {
         PrintSink() {
             exists(CallNode call |
                 call.getAnArg() = this and
-                thePrintFunction().(FunctionObject).getACall() = call
+                call = Value::named("print").getACall()
             )
         }
     }

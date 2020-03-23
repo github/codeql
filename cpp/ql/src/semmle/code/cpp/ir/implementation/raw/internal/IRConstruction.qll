@@ -52,6 +52,13 @@ private module Cached {
   }
 
   cached
+  predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
+    var.getFunction() = func and
+    var.hasDynamicInitialization() and
+    type = getBoolType()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
@@ -68,14 +75,7 @@ private module Cached {
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    exists(Expr converted |
-      result = converted.(Conversion).getExpr+()
-      or
-      result = converted
-    |
-      not result instanceof Conversion and
-      converted = getInstructionConvertedResultExpression(instruction)
-    )
+    result = getInstructionConvertedResultExpression(instruction).getUnconverted()
   }
 
   cached
@@ -103,6 +103,19 @@ private module Cached {
   }
 
   /**
+   * Gets a non-phi instruction that defines an operand of `instr` but only if
+   * both `instr` and the result have neighbor on the other side of the edge
+   * between them. This is a necessary condition for being in a cycle, and it
+   * removes about two thirds of the tuples that would otherwise be in this
+   * predicate.
+   */
+  private Instruction getNonPhiOperandDefOfIntermediate(Instruction instr) {
+    result = getNonPhiOperandDef(instr) and
+    exists(getNonPhiOperandDef(result)) and
+    instr = getNonPhiOperandDef(_)
+  }
+
+  /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
    *
@@ -115,7 +128,7 @@ private module Cached {
   cached
   predicate isInCycle(Instruction instr) {
     instr instanceof Instruction and
-    getNonPhiOperandDef+(instr) = instr
+    getNonPhiOperandDefOfIntermediate+(instr) = instr
   }
 
   cached

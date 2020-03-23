@@ -78,3 +78,12 @@ void test_dynamic_cast() {
 
     dynamic_cast<D3*>(b2)->f(getenv("VAR")); // tainted [FALSE POSITIVE]
 }
+
+namespace std {
+  template< class T >
+  T&& move( T&& t ) noexcept;
+}
+
+void test_std_move() {
+  sink(std::move(getenv("VAR")));
+}

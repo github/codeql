@@ -35,6 +35,9 @@
 | dispatch.cpp:96:8:96:8 | x | dispatch.cpp:107:17:107:22 | call to source |
 | dispatch.cpp:96:8:96:8 | x | dispatch.cpp:140:8:140:13 | call to source |
 | dispatch.cpp:96:8:96:8 | x | dispatch.cpp:144:8:144:13 | call to source |
+| globals.cpp:6:10:6:14 | local | globals.cpp:5:17:5:22 | call to source |
+| globals.cpp:12:10:12:24 | flowTestGlobal1 | globals.cpp:13:23:13:28 | call to source |
+| globals.cpp:19:10:19:24 | flowTestGlobal2 | globals.cpp:23:23:23:28 | call to source |
 | lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |

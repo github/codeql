@@ -1,0 +1,14 @@
+| Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |  -->  | Taint [[externally controlled string]] | test.py:22 | test.py:22:28:22:29 | ll |  |
+| Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |  -->  | Taint [[externally controlled string]] | test.py:26 | test.py:26:28:26:29 | ll |  |
+| Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |  -->  | Taint [[externally controlled string]] | test.py:30 | test.py:30:28:30:29 | ll |  |
+| Taint [externally controlled string] | test.py:6 | test.py:6:9:6:20 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:7 | test.py:7:15:7:15 | l |  |
+| Taint [externally controlled string] | test.py:12 | test.py:12:9:12:20 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:13 | test.py:13:17:13:17 | l |  |
+| Taint [externally controlled string] | test.py:18 | test.py:18:9:18:20 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:19 | test.py:19:11:19:11 | l |  |
+| Taint [externally controlled string] | test.py:18 | test.py:18:9:18:20 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:19 | test.py:19:14:19:14 | l |  |
+| Taint [externally controlled string] | test.py:18 | test.py:18:9:18:20 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:19 | test.py:19:17:19:17 | l |  |
+| Taint [externally controlled string] | test.py:19 | test.py:19:11:19:11 | l |  |  -->  | Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |
+| Taint [externally controlled string] | test.py:19 | test.py:19:14:19:14 | l |  |  -->  | Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |
+| Taint [externally controlled string] | test.py:19 | test.py:19:17:19:17 | l |  |  -->  | Taint [[externally controlled string]] | test.py:19 | test.py:19:10:19:18 | List |  |
+| Taint [externally controlled string] | test.py:43 | test.py:43:20:43:31 | TAINTED_LIST |  |  -->  | Taint [externally controlled string] | test.py:47 | test.py:47:28:47:39 | tainted_list |  |
+| Taint [externally controlled string] | test.py:47 | test.py:47:28:47:39 | tainted_list |  |  -->  | Taint [[externally controlled string]] | test.py:47 | test.py:47:28:47:54 | Tuple |  |
+| Taint [externally controlled string] | test.py:55 | test.py:55:27:55:38 | TAINTED_LIST |  |  -->  | Taint [[externally controlled string]] | test.py:55 | test.py:55:25:55:40 | List |  |

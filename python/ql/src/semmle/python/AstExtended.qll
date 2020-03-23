@@ -24,7 +24,7 @@ abstract class AstNode extends AstNode_ {
     }
 
     /** Whether this syntactic element is artificial, that is it is generated 
-     *  by the compiler and is not present in the source */
+     * by the compiler and is not present in the source */
     predicate isArtificial() {
         none()
     }

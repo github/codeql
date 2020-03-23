@@ -132,16 +132,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-/**
- * Holds if `call` passes an implicit or explicit qualifier, i.e., a
- * `this` parameter.
- */
-predicate callHasQualifier(Call call) {
-  call.hasQualifier()
-  or
-  call.getTarget() instanceof Destructor
-}
-
 private newtype TContent =
   TFieldContent(Field f) or
   TCollectionContent() or
@@ -301,3 +291,5 @@ class DataFlowCall extends Expr {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }

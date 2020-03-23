@@ -22,3 +22,7 @@ secret;
 
 require("process").exit();
 global.process.exit();
+
+get("https://example.com/news?password=true")
+get("https://username:password@example.com")
+execute("SELECT * FROM users WHERE password=?")

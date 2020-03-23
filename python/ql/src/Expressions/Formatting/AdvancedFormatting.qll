@@ -107,10 +107,10 @@ private predicate brace_pair(PossibleAdvancedFormatString fmt, int start, int en
 private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
     exists(CallNode call | 
         call = format_expr.getAFlowNode() |
-        call.getFunction().refersTo(Object::builtin("format")) and call.getArg(0).refersTo(_, fmt.getAFlowNode()) and
+        call.getFunction().pointsTo(Value::named("format")) and call.getArg(0).pointsTo(_, fmt.getAFlowNode()) and
         args = count(format_expr.getAnArg()) - 1
         or
-        call.getFunction().(AttrNode).getObject("format").refersTo(_, fmt.getAFlowNode()) and
+        call.getFunction().(AttrNode).getObject("format").pointsTo(_, fmt.getAFlowNode()) and
         args = count(format_expr.getAnArg())
     )
 }
@@ -139,4 +139,3 @@ class AdvancedFormattingCall extends Call {
     }
 
 }
-

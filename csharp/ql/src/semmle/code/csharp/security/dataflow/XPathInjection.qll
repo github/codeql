@@ -65,6 +65,20 @@ module XPathInjection {
     }
   }
 
+  /** The `xpath` argument to an `XPathNavigator` call. */
+  class XmlNavigatorSink extends Sink {
+    XmlNavigatorSink() {
+      exists(SystemXmlXPath::XPathNavigator xmlNav, Method m |
+        this.getExpr() = m.getACall().getArgumentForName("xpath")
+      |
+        m = xmlNav.getASelectMethod() or
+        m = xmlNav.getCompileMethod() or
+        m = xmlNav.getAnEvaluateMethod() or
+        m = xmlNav.getAMatchesMethod()
+      )
+    }
+  }
+
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
   private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }

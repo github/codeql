@@ -44,6 +44,12 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
+    /** Gets the origin CFG node for this value. */
+    ControlFlowNode getOrigin() {
+        result = this.(ObjectInternal).getOrigin()
+    }
+
+
     /** Gets the class of this object.
      * Strictly, the `Value` representing the class of the objects
      * represented by this Value.
@@ -107,8 +113,8 @@ class Value extends TObject {
     }
 
     /** Whether this overrides v. In this context, "overrides" means that this object
-     *  is a named attribute of a some class C and `v` is a named attribute of another
-     *  class S, both attributes having the same name, and S is a super class of C.
+     * is a named attribute of a some class C and `v` is a named attribute of another
+     * class S, both attributes having the same name, and S is a super class of C.
      */
     predicate overrides(Value v) {
         exists(ClassValue my_class, ClassValue other_class, string name |
@@ -118,9 +124,19 @@ class Value extends TObject {
         )
     }
 
-    /** Gets the boolean value of this value. */
-    boolean booleanValue() {
+    /** Gets the boolean interpretation of this value.
+      * Could be both `true` and `false`, if we can't determine the result more precisely.
+      */
+    boolean getABooleanValue() {
         result = this.(ObjectInternal).booleanValue()
+    }
+
+    /** Gets the boolean interpretation of this value, only if we can determine the result precisely.
+      * The result can be `none()`, but never both `true` and `false`.
+      */
+    boolean getDefiniteBooleanValue() {
+        result = getABooleanValue() and
+        not (getABooleanValue() = true and getABooleanValue() = false)
     }
 }
 
@@ -177,6 +193,37 @@ class ModuleValue extends Value {
         result.importedAs(this.getScope().getAnImportedModuleName())
     }
 
+    /** When used as a normal module (for example, imported and used by other modules) */
+    predicate isUsedAsModule() {
+        this.isBuiltin()
+        or
+        this.isPackage()
+        or
+        exists(ImportingStmt i | this.importedAs(i.getAnImportedModuleName()))
+        or
+        this.getPath().getBaseName() = "__init__.py"
+    }
+
+    /** When used (exclusively) as a script (will not include normal modules that can also be run as a script) */
+    predicate isUsedAsScript() {
+        not isUsedAsModule() and
+        (
+            not this.getPath().getExtension() = "py"
+            or
+            exists(If i, Name name, StrConst main, Cmpop op |
+                i.getScope() = this.getScope() and
+                op instanceof Eq and
+                i.getTest().(Compare).compares(name, op, main) and
+                name.getId() = "__name__" and main.getText() = "__main__"
+            )
+            or
+            exists(Comment c |
+                c.getLocation().getFile() = this.getPath() and
+                c.getLocation().getStartLine() = 1 and
+                c.getText().regexpMatch("^#!/.*python(2|3)?[ \\\\t]*$")
+            )
+        )
+    }
 }
 
 module Module {
@@ -241,14 +288,14 @@ module Value {
         name = "False" and result = TFalse()
     }
 
-    /** Gets the `Value` for the integer constant `i`, if it exists.
-     * There will be no `Value` for most integers, but the following are
+    /** Gets the `NumericValue` for the integer constant `i`, if it exists.
+     * There will be no `NumericValue` for most integers, but the following are
      * guaranteed to exist:
      * * From zero to 511 inclusive.
      * * All powers of 2 (up to 2**30)
      * * Any integer explicitly mentioned in the source program.
      */
-    Value forInt(int i) {
+    NumericValue forInt(int i) {
         result.(IntObjectInternal).intValue() = i
     }
 
@@ -256,7 +303,7 @@ module Value {
      * There will be no `Value` for most byte strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forBytes(string bytes) {
+    StringValue forBytes(string bytes) {
         result.(BytesObjectInternal).strValue() = bytes
     }
 
@@ -264,7 +311,7 @@ module Value {
      * There will be no `Value` for most text strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forUnicode(string text) {
+    StringValue forUnicode(string text) {
         result.(UnicodeObjectInternal).strValue() = text
     }
 
@@ -272,7 +319,7 @@ module Value {
      * There will be no `Value` for most strings, unless it is explicitly
      * declared in the source program.
      */
-    Value forString(string text) {
+    StringValue forString(string text) {
         result.(UnicodeObjectInternal).strValue() = text
         or
         major_version() = 2 and
@@ -291,6 +338,19 @@ module Value {
         result = ObjectInternal::none_()
     }
 
+    /**
+     * Shorcuts added by the `site` module to exit your interactive session.
+     *
+     * see https://docs.python.org/3/library/constants.html#constants-added-by-the-site-module
+     */
+    Value siteQuitter(string name) {
+        (
+            name = "exit"
+            or
+            name = "quit"
+        ) and
+        result = Value::named(name)
+    }
 }
 
 /** Class representing callables in the Python program
@@ -402,10 +462,55 @@ class ClassValue extends Value {
         or
         this.hasAttribute("__getitem__")
     }
+    
+    /** Holds if this class is a container(). That is, does it have a __getitem__ method.*/
+    predicate isContainer() {
+        exists(this.lookup("__getitem__"))
+    }
+    
+    /** Holds if this class is probably a sequence. */
+    predicate isSequence() {
+        /* To determine whether something is a sequence or a mapping is not entirely clear,
+         * so we need to guess a bit.
+         */
+        this.getASuperType() = ClassValue::tuple()
+        or
+        this.getASuperType() = ClassValue::list()
+        or
+        this.getASuperType() = ClassValue::range()
+        or
+        this.getASuperType() = ClassValue::bytes()
+        or
+        this.getASuperType() = ClassValue::unicode()
+        or
+        major_version() = 2 and this.getASuperType() = Value::named("collections.Sequence")
+        or
+        major_version() = 3 and this.getASuperType() = Value::named("collections.abc.Sequence")
+        or
+        /* Does it have an index or __reversed__ method? */
+        this.isContainer() and
+        (
+            this.hasAttribute("index") or
+            this.hasAttribute("__reversed__")
+        )
+    }
+    
+    /** Holds if this class is a mapping. */
+    predicate isMapping() {
+        this.hasAttribute("__getitem__")
+        and
+        not this.isSequence()
+    }
 
     /** Holds if this class is a descriptor. */
     predicate isDescriptorType() {
         this.hasAttribute("__get__")
+    }
+
+    /** Holds if this class is a context manager. */
+    predicate isContextManager() {
+        this.hasAttribute("__enter__") and
+        this.hasAttribute("__exit__")
     }
 
     /** Gets the qualified name for this class.
@@ -437,13 +542,13 @@ class ClassValue extends Value {
     }
 
     /** Holds if this class is a new style class.
-        A new style class is one that implicitly or explicitly inherits from `object`. */
+     * A new style class is one that implicitly or explicitly inherits from `object`. */
     predicate isNewStyle() {
         Types::isNewStyle(this)
     }
 
     /** Holds if this class is an old style class.
-        An old style class is one that does not inherit from `object`. */
+     * An old style class is one that does not inherit from `object`. */
     predicate isOldStyle() {
         Types::isOldStyle(this)
     }
@@ -472,6 +577,16 @@ class ClassValue extends Value {
         this.(ClassObjectInternal).getClassDeclaration().declaresAttribute(name)
     }
 
+    /** Whether this class is a legal exception class.
+     * What constitutes a legal exception class differs between major versions */
+    predicate isLegalExceptionType() {
+        not this.isNewStyle()
+        or
+        this.getASuperType() = ClassValue::baseException()
+        or
+        major_version() = 2 and this = ClassValue::tuple()
+    }
+
 }
 
 
@@ -494,6 +609,28 @@ abstract class FunctionValue extends CallableValue {
 
     predicate isOverriddenMethod() {
         exists(Value f | f.overrides(this))
+    }
+
+    /** Whether `name` is a legal argument name for this function */
+    bindingset[name]
+    predicate isLegalArgumentName(string name) {
+        this.getScope().getAnArg().asName().getId() = name
+        or
+        this.getScope().getAKeywordOnlyArg().getId() = name
+        or
+        this.getScope().hasKwArg()
+    }
+
+    /** Whether this is a "normal" method, that is, it is exists as a class attribute
+     * which is not a lambda and not the __new__ method. */
+    predicate isNormalMethod() {
+        exists(ClassValue cls, string name |
+            cls.declaredAttribute(name) = this and
+            name != "__new__" and
+            exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) |
+              not origin instanceof Lambda
+            )
+        )
     }
 }
 
@@ -605,7 +742,7 @@ class TupleValue extends SequenceValue {
 }
 
 /** A class representing strings, either present in the source as a literal, or
-in a builtin as a value. */
+ * in a builtin as a value. */
 
 class StringValue extends Value {
     StringValue() {
@@ -618,6 +755,54 @@ class StringValue extends Value {
         or
         result = this.(UnicodeObjectInternal).strValue()
     }
+}
+
+/** A class representing numbers (ints and floats), either present in the source as a literal,
+ * or in a builtin as a value.
+ */
+class NumericValue extends Value {
+    NumericValue() {
+        this instanceof IntObjectInternal or
+        this instanceof FloatObjectInternal
+    }
+
+    /** Gets the integer-value if it is a constant integer, and it fits in a QL int */
+    int getIntValue() {
+        result = this.(IntObjectInternal).intValue()
+    }
+
+    /** Gets the float-value if it is a constant float */
+    int getFloatValue() {
+        result = this.(FloatObjectInternal).floatValue()
+    }
+}
+
+/** A Python property:
+ *     @property
+ *     def f():
+ *         ....
+ *
+ * https://docs.python.org/3/howto/descriptor.html#properties
+ * https://docs.python.org/3/library/functions.html#property
+ */
+class PropertyValue extends Value {
+
+    PropertyValue() {
+        this instanceof PropertyInternal
+    }
+
+    CallableValue getGetter(){
+        result = this.(PropertyInternal).getGetter()
+    }
+
+    CallableValue getSetter(){
+        result = this.(PropertyInternal).getSetter()
+    }
+
+    CallableValue getDeleter(){
+        result = this.(PropertyInternal).getDeleter()
+    }
+
 }
 
 /** A method-resolution-order sequence of classes */
@@ -669,34 +854,9 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }
 
-    /** Get the `ClassValue` for the `dict` class. */
-    ClassValue dict() {
-        result = TBuiltinClassObject(Builtin::special("dict"))
-    }
-
-    /** Get the `ClassValue` for the class of Python functions. */
-    ClassValue function() {
-        result = TBuiltinClassObject(Builtin::special("FunctionType"))
-    }
-
-    /** Get the `ClassValue` for the `type` class. */
-    ClassValue type() {
-        result = TType()
-    }
-
-    /** Get the `ClassValue` for the class of builtin functions. */
-    ClassValue builtinFunction() {
-        result = Value::named("len").getClass()
-    }
-
-    /** Get the `ClassValue` for the `int` class. */
-    ClassValue int_() {
-        result = TBuiltinClassObject(Builtin::special("int"))
-    }
-
-    /** Get the `ClassValue` for the `float` class. */
-    ClassValue float_() {
-        result = TBuiltinClassObject(Builtin::special("float"))
+    /** Get the `ClassValue` for the `tuple` class. */
+    ClassValue tuple() {
+        result = TBuiltinClassObject(Builtin::special("tuple"))
     }
 
     /** Get the `ClassValue` for the `list` class. */
@@ -704,6 +864,48 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("list"))
     }
 
+    /** Get the `ClassValue` for `xrange` (Python 2), or `range` (only Python 3) */
+    ClassValue range() {
+        major_version() = 2 and result = TBuiltinClassObject(Builtin::special("xrange"))
+        or
+        major_version() = 3 and result = TBuiltinClassObject(Builtin::special("range"))
+    }
+
+    /** Get the `ClassValue` for the `dict` class. */
+    ClassValue dict() {
+        result = TBuiltinClassObject(Builtin::special("dict"))
+    }
+
+    /** Get the `ClassValue` for the `set` class. */
+    ClassValue set() {
+        result = TBuiltinClassObject(Builtin::special("set"))
+    }
+
+    /** Get the `ClassValue` for the `object` class. */
+    ClassValue object() {
+        result = TBuiltinClassObject(Builtin::special("object"))
+    }
+
+    /** Get the `ClassValue` for the `int` class. */
+    ClassValue int_() {
+        result = TBuiltinClassObject(Builtin::special("int"))
+    }
+
+    /** Get the `ClassValue` for the `long` class. */
+    ClassValue long() {
+        result = TBuiltinClassObject(Builtin::special("long"))
+    }
+
+    /** Get the `ClassValue` for the `float` class. */
+    ClassValue float_() {
+        result = TBuiltinClassObject(Builtin::special("float"))
+    }
+
+    /** Get the `ClassValue` for the `complex` class. */
+    ClassValue complex() {
+        result = TBuiltinClassObject(Builtin::special("complex"))
+    }
+    
     /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
     ClassValue bytes() {
         result = TBuiltinClassObject(Builtin::special("bytes"))
@@ -716,12 +918,52 @@ module ClassValue {
     }
 
     /** Get the `ClassValue` for the `str` class. This is `bytes` in Python 2,
-    and `str` in Python 3. */
+     * and `str` in Python 3. */
     ClassValue str() {
         if major_version() = 2 then
            result = bytes()
         else
            result = unicode()
+    }
+
+    /** Get the `ClassValue` for the `property` class. */
+    ClassValue property() {
+        result = TBuiltinClassObject(Builtin::special("property"))
+    }
+
+    /** Get the `ClassValue` for the class of Python functions. */
+    ClassValue functionType() {
+        result = TBuiltinClassObject(Builtin::special("FunctionType"))
+    }
+
+    /** Get the `ClassValue` for the class of builtin functions. */
+    ClassValue builtinFunction() {
+        result = Value::named("len").getClass()
+    }
+
+    /** Get the `ClassValue` for the `generatorType` class. */
+    ClassValue generator() {
+        result = TBuiltinClassObject(Builtin::special("generator"))
+    }
+
+    /** Get the `ClassValue` for the `type` class. */
+    ClassValue type() {
+        result = TType()
+    }
+
+    /** Get the `ClassValue` for `ClassType`. */
+    ClassValue classType() {
+        result = TBuiltinClassObject(Builtin::special("ClassType"))
+    }
+
+    /** Get the `ClassValue` for `InstanceType`. */
+    ClassValue instanceType() {
+        result = TBuiltinClassObject(Builtin::special("InstanceType"))
+    }
+
+    /** Get the `ClassValue` for `super`. */
+    ClassValue super_() {
+        result = TBuiltinClassObject(Builtin::special("super"))
     }
 
     /** Get the `ClassValue` for the `classmethod` class. */
@@ -734,9 +976,40 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("StaticMethod"))
     }
 
+    /** Get the `ClassValue` for the `MethodType` class. */
+    pragma [noinline]
+    ClassValue methodType() {
+        result = TBuiltinClassObject(Builtin::special("MethodType"))
+    }
+
+    /** Get the `ClassValue` for the `MethodDescriptorType` class. */
+    ClassValue methodDescriptorType() {
+        result = TBuiltinClassObject(Builtin::special("MethodDescriptorType"))
+    }
+
+    /** Get the `ClassValue` for the `GetSetDescriptorType` class. */
+    ClassValue getSetDescriptorType() {
+        result = TBuiltinClassObject(Builtin::special("GetSetDescriptorType"))
+    }
+
+    /** Get the `ClassValue` for the `StopIteration` class. */
+    ClassValue stopIteration() {
+        result = TBuiltinClassObject(Builtin::builtin("StopIteration"))
+    }
+
     /** Get the `ClassValue` for the class of modules. */
     ClassValue module_() {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
+    }
+
+    /** Get the `ClassValue` for the `Exception` class. */
+    ClassValue exception() {
+        result = TBuiltinClassObject(Builtin::special("Exception"))
+    }
+
+    /** Get the `ClassValue` for the `BaseException` class. */
+    ClassValue baseException() {
+        result = TBuiltinClassObject(Builtin::special("BaseException"))
     }
 
     /** Get the `ClassValue` for the `NoneType` class. */
@@ -744,9 +1017,54 @@ module ClassValue {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
+    /** Get the `ClassValue` for the `TypeError` class */
+    ClassValue typeError() {
+        result = TBuiltinClassObject(Builtin::special("TypeError"))
+    }
+
     /** Get the `ClassValue` for the `NameError` class. */
     ClassValue nameError() {
         result = TBuiltinClassObject(Builtin::builtin("NameError"))
+    }
+
+    /** Get the `ClassValue` for the `AttributeError` class. */
+    ClassValue attributeError() {
+        result = TBuiltinClassObject(Builtin::builtin("AttributeError"))
+    }
+
+    /** Get the `ClassValue` for the `KeyError` class. */
+    ClassValue keyError() {
+        result = TBuiltinClassObject(Builtin::builtin("KeyError"))
+    }
+
+    /** Get the `ClassValue` for the `LookupError` class. */
+    ClassValue lookupError() {
+        result = TBuiltinClassObject(Builtin::builtin("LookupError"))
+    }
+
+    /** Get the `ClassValue` for the `IOError` class. */
+    ClassValue ioError() {
+        result = TBuiltinClassObject(Builtin::builtin("IOError"))
+    }
+
+    /** Get the `ClassValue` for the `NotImplementedError` class. */
+    ClassValue notImplementedError() {
+        result = TBuiltinClassObject(Builtin::builtin("NotImplementedError"))
+    }
+
+    /** Get the `ClassValue` for the `ImportError` class. */
+    ClassValue importError() {
+        result = TBuiltinClassObject(Builtin::builtin("ImportError"))
+    }
+
+    /** Get the `ClassValue` for the `UnicodeEncodeError` class. */
+    ClassValue unicodeEncodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeEncodeError"))
+    }
+
+    /** Get the `ClassValue` for the `UnicodeDecodeError` class. */
+    ClassValue unicodeDecodeError() {
+        result = TBuiltinClassObject(Builtin::builtin("UnicodeDecodeError"))
     }
 
 }

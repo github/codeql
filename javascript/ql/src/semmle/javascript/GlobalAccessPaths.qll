@@ -5,23 +5,18 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
 
-deprecated
-module GlobalAccessPath {
+deprecated module GlobalAccessPath {
   /**
    * DEPRECATED. Instead use `AccessPath::getAReferenceTo` with the result and parameter reversed.
    */
   pragma[inline]
-  string fromReference(DataFlow::Node node) {
-    node = AccessPath::getAReferenceTo(result)
-  }
+  string fromReference(DataFlow::Node node) { node = AccessPath::getAReferenceTo(result) }
 
   /**
    * DEPRECATED. Instead use `AccessPath::getAnAssignmentTo` with the result and parameter reversed.
    */
   pragma[inline]
-  string fromRhs(DataFlow::Node node) {
-    node = AccessPath::getAnAssignmentTo(result)
-  }
+  string fromRhs(DataFlow::Node node) { node = AccessPath::getAnAssignmentTo(result) }
 
   /**
    * DEPRECATED. Use `AccessPath::getAReferenceOrAssignmentTo`.
@@ -67,9 +62,7 @@ module AccessPath {
     }
 
     /** Holds if this represents the root of the global access path. */
-    predicate isGlobal() {
-      this = DataFlow::globalAccessPathRootPseudoNode()
-    }
+    predicate isGlobal() { this = DataFlow::globalAccessPathRootPseudoNode() }
   }
 
   /**
@@ -212,7 +205,8 @@ module AccessPath {
    * ```
    */
   private predicate isSelfAssignment(DataFlow::Node rhs) {
-    fromRhs(rhs, DataFlow::globalAccessPathRootPseudoNode()) = fromReference(rhs, DataFlow::globalAccessPathRootPseudoNode())
+    fromRhs(rhs, DataFlow::globalAccessPathRootPseudoNode()) =
+      fromReference(rhs, DataFlow::globalAccessPathRootPseudoNode())
   }
 
   /**
@@ -418,8 +412,8 @@ module AccessPath {
    */
   pragma[inline]
   DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
-    exists(DataFlow::SourceNode root, string accessPath | 
-      node = AccessPath::getAReferenceTo(root, accessPath) and 
+    exists(DataFlow::SourceNode root, string accessPath |
+      node = AccessPath::getAReferenceTo(root, accessPath) and
       result = AccessPath::getAReferenceTo(root, accessPath)
     )
     or

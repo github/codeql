@@ -15,6 +15,7 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

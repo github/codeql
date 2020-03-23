@@ -356,7 +356,7 @@ class Repr extends Repr_ {
 /* Constants */
 
 /** A bytes constant, such as `b'ascii'`. Note that unadorned string constants such as
-   `"hello"` are treated as Bytes for Python2, but Unicode for Python3. */
+  * `"hello"` are treated as Bytes for Python2, but Unicode for Python3. */
 class Bytes extends StrConst {
 
     /* syntax: b"hello" */
@@ -395,8 +395,7 @@ class Ellipsis extends Ellipsis_ {
 }
 
 /** Immutable literal expressions (except tuples).
- *  Consists of string (both unicode and byte) literals
- *  and numeric literals.
+ * Consists of string (both unicode and byte) literals and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
 
@@ -433,8 +432,10 @@ class IntegerLiteral extends Num {
         not this instanceof FloatLiteral and not this instanceof ImaginaryLiteral
     }
 
-    /** Gets the (integer) value of this constant. Will not return a result if the value does not fit into
-        a 32 bit signed value */
+    /**
+     * Gets the (integer) value of this constant. Will not return a result if the value does not fit into
+     * a 32 bit signed value 
+     */
     int getValue() {
         result = this.getN().toInt()
     }
@@ -540,8 +541,10 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
         py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
-    /** Gets the (integer) value of this constant. Will not return a result if the value does not fit into
-        a 32 bit signed value */
+    /** 
+     * Gets the (integer) value of this constant. Will not return a result if the value does not fit into
+     * a 32 bit signed value 
+     */
     int getValue() {
         result = -(this.getOperand().(IntegerLiteral).getValue())
     }
@@ -549,7 +552,8 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
 }
 
 /** A unicode string expression, such as `u"\u20ac"`. Note that unadorned string constants such as
-   "hello" are treated as Bytes for Python2, but Unicode for Python3. */
+ * "hello" are treated as Bytes for Python2, but Unicode for Python3. 
+ */
 class Unicode extends StrConst {
 
     /* syntax: "hello" */

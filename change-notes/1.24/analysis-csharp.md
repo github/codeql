@@ -20,22 +20,27 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the variable is named `_` in a `foreach` statement. | 
 | Potentially dangerous use of non-short-circuit logic (`cs/non-short-circuit`) | Fewer false positive results | Results have been removed when the expression contains an `out` parameter. |
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | More results | Results are reported from parameters with a default value of `null`. |
+| Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the value assigned is an (implicitly or explicitly) cast default-like value. For example, `var s = (string)null` and `string s = default`. |
+| XPath injection (`cs/xml/xpath-injection`) | More results | The query now recognizes calls to methods on `System.Xml.XPath.XPathNavigator` objects. |
 
 ## Removal of old queries
 
 ## Changes to code extraction
 
 * Tuple expressions, for example `(int,bool)` in `default((int,bool))` are now extracted correctly.
-* Expression nullability flow state is extracted. 
+* Expression nullability flow state is extracted.
+* Implicitly typed `stackalloc` expressions are now extracted correctly.
+* The difference between `stackalloc` array creations and normal array creations is extracted.
 
 ## Changes to libraries
 
-* The data-flow library has been improved when flow through methods needs to be
-  combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves most security queries, which may
-  report additional results.
+* The data-flow library has been improved, which affects and improves most security queries. The improvements are:
+  - Track flow through methods that combine taint tracking with flow through fields.
+  - Track flow through clone-like methods, that is, methods that read contents of a field from a
+    parameter and stores the value in the field of a returned object.
 * The taint tracking library now tracks flow through (implicit or explicit) conversion operator calls.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.
+* `stackalloc` array creations are now represented by the QL class `Stackalloc`. Previously they were represented by the class `ArrayCreation`.
 
 ## Changes to autobuilder

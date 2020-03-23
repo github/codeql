@@ -1,0 +1,9 @@
+| test.py:11 | extended_unpacking | first | NO TAINT |
+| test.py:11 | extended_unpacking | last | NO TAINT |
+| test.py:11 | extended_unpacking | rest | NO TAINT |
+| test.py:16 | also_allowed | a | NO TAINT |
+| test.py:24 | also_allowed | b | NO TAINT |
+| test.py:24 | also_allowed | c | NO TAINT |
+| test.py:31 | nested | x | NO TAINT |
+| test.py:31 | nested | xs | NO TAINT |
+| test.py:31 | nested | ys | NO TAINT |
