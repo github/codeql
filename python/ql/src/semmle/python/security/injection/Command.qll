@@ -227,3 +227,31 @@ class FabricGroupRun extends CommandSink {
         kind instanceof ExternalStringKind
     }
 }
+
+
+// -------------------------------------------------------------------------- //
+// Modeling of the 'invoke' package and 'fabric' package (v 1.x)
+// -------------------------------------------------------------------------- //
+class FabricV1Commands extends CommandSink {
+    FabricV1Commands() {
+        // since `run` and `sudo` are decorated, we can't use FunctionValue's :(
+        exists(CallNode call
+        |
+            call = Value::named("fabric.api.local").getACall()
+            or
+            call = Value::named("fabric.api.run").getACall()
+            or
+            call = Value::named("fabric.api.sudo").getACall()
+        |
+            this = call.getArg(0)
+            or
+            this = call.getArgByName("command")
+        )
+    }
+
+    override string toString() { result = "FabricV1Commands" }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof ExternalStringKind
+    }
+}
