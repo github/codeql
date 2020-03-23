@@ -48,7 +48,16 @@ module TaintTracking {
     // overridden to provide taint-tracking specific qldoc
     override predicate isSink(DataFlow::Node sink) { super.isSink(sink) }
 
-    /** Holds if the intermediate node `node` is a taint sanitizer. */
+    /**
+     * Holds if the intermediate node `node` is a taint sanitizer, that is,
+     * tainted values can not flow into or out of `node`.
+     *
+     * Note that this only blocks flow through nodes that operate directly on the tainted value.
+     * An object _containing_ a tainted value in a property can still flow into and out of `node`.
+     * To block such objects, override `isBarrier` or use a labeled sanitizer to block the `data` flow label.
+     *
+     * For operations that _check_ if a value is tainted or safe, use `isSanitizerGuard` instead.
+     */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
     /**
@@ -84,25 +93,35 @@ module TaintTracking {
      * For example, if `guard` is the comparison expression in
      * `if(x == 'some-constant'){ ... x ... }`, it could sanitize flow of
      * `x` into the "then" branch.
+     *
+     * Node that this only handles checks that operate directly on the tainted value.
+     * Objects that _contain_ a tainted value in a property may still flow across the check.
+     * To block such objects, use a labeled sanitizer guard to block the `data` label.
      */
     predicate isSanitizerGuard(SanitizerGuardNode guard) { none() }
 
-    final override predicate isBarrier(DataFlow::Node node) {
-      super.isBarrier(node) or
-      isSanitizer(node) or
-      node instanceof DataFlow::VarAccessBarrier
+    override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+      super.isLabeledBarrier(node, lbl)
+      or
+      isSanitizer(node) and lbl.isTaint()
     }
 
-    final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
-      super.isBarrierEdge(source, sink) or
-      isSanitizerEdge(source, sink)
+    override predicate isBarrier(DataFlow::Node node) {
+      super.isBarrier(node)
+      or
+      // For variable accesses we block both the data and taint label, as a falsy value
+      // can't be an object, and thus can't have any tainted properties.
+      node instanceof DataFlow::VarAccessBarrier
     }
 
     final override predicate isBarrierEdge(
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
-      super.isBarrierEdge(source, sink, lbl) or
+      super.isBarrierEdge(source, sink, lbl)
+      or
       isSanitizerEdge(source, sink, lbl)
+      or
+      isSanitizerEdge(source, sink) and lbl.isTaint()
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
@@ -127,6 +146,8 @@ module TaintTracking {
     ) {
       isAdditionalFlowStep(pred, succ) and valuePreserving = false
     }
+
+    override DataFlow::FlowLabel getDefaultSourceLabel() { result.isTaint() }
   }
 
   /**
@@ -157,7 +178,7 @@ module TaintTracking {
    * them.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
-    override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
+    override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
@@ -166,6 +187,8 @@ module TaintTracking {
     abstract predicate sanitizes(boolean outcome, Expr e);
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e) and label.isTaint()
+      or
       sanitizes(outcome, e, label)
     }
 
@@ -180,10 +203,6 @@ module TaintTracking {
    * A sanitizer guard node that only blocks specific flow labels.
    */
   abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
-    final override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      sanitizes(outcome, e, label)
-    }
-
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 

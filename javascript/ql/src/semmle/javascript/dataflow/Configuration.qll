@@ -99,6 +99,17 @@ abstract class Configuration extends string {
   predicate isSource(DataFlow::Node source) { none() }
 
   /**
+   * Gets the flow label to associate with sources added by the 1-argument `isSource` predicate.
+   *
+   * For taint-tracking configurations, this defaults to `taint` and for other data-flow configurations
+   * it defaults to `data`.
+   *
+   * Overriding this predicate is rarely needed, and overriding the 2-argument `isSource` predicate
+   * should be preferred when possible.
+   */
+  FlowLabel getDefaultSourceLabel() { result = FlowLabel::data() }
+
+  /**
    * Holds if `source` is a source of flow labeled with `lbl` that is relevant
    * for this configuration.
    */
@@ -256,9 +267,11 @@ abstract class Configuration extends string {
 /**
  * A label describing the kind of information tracked by a flow configuration.
  *
- * There are two standard labels "data" and "taint", the former describing values
- * that directly originate from a flow source, the latter values that are derived
- * from a flow source via one or more transformations (such as string operations).
+ * There are two standard labels "data" and "taint".
+ * - "data" only propagates along value-preserving data flow, such as assignments
+ *   and parameter-passing, and is the default flow source for a `DataFlow::Configuration`.
+ * - "taint" additionally permits flow through transformations such as string operations,
+ *   and is the default flow source for a `TaintTracking::Configuration`.
  */
 abstract class FlowLabel extends string {
   bindingset[this]
@@ -666,7 +679,7 @@ private predicate exploratoryFlowStep(
  */
 private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
-  lbl = FlowLabel::data()
+  lbl = cfg.getDefaultSourceLabel()
   or
   nd.(AdditionalSource).isSourceFor(cfg, lbl)
   or
