@@ -157,11 +157,11 @@ class InvokeNode extends DataFlow::SourceNode {
    * `name` is set to `result`.
    */
   DataFlow::ValueNode getOptionArgument(int i, string name) {
-    exists(ObjectLiteralNode obj |
-      obj.flowsTo(getArgument(i)) and
-      obj.hasPropertyWrite(name, result)
-    )
+    getOptionsArgument(i).hasPropertyWrite(name, result)
   }
+
+  pragma[noinline]
+  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
   final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
