@@ -42,6 +42,7 @@
   - [ncp](https://www.npmjs.com/package/ncp)
   - [node-dir](https://www.npmjs.com/package/node-dir)
   - [path-exists](https://www.npmjs.com/package/path-exists)
+  - [pg](https://www.npmjs.com/package/pg)
   - [react](https://www.npmjs.com/package/react)
   - [recursive-readdir](https://www.npmjs.com/package/recursive-readdir)
   - [request](https://www.npmjs.com/package/request)
