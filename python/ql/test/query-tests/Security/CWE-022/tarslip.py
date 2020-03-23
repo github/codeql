@@ -62,7 +62,21 @@ for entry in tar:
 # OK Sanitized using not
 tar = tarfile.open(unsafe_filename_tar)
 for entry in tar:
-    # using `if not (os.path.isabs(entry.name) or ".." in entry.name):`
-    # would make the sanitizer work, but for the wrong reasons since out library is a bit broken.
+    if not (os.path.isabs(entry.name) or ".." in entry.name):
+        tar.extract(entry, "/tmp/unpack/")
+
+# The following two variants are included by purpose, since by default there is a
+# difference in handling `not x` and `not (x or False)` when overriding
+# Sanitizer.sanitizingEdge. We want to ensure we handle both consistently.
+
+# Not reported, although vulnerable to '..'
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
+    if not (os.path.isabs(entry.name) or False):
+        tar.extract(entry, "/tmp/unpack/")
+
+# Not reported, although vulnerable to '..'
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
     if not os.path.isabs(entry.name):
         tar.extract(entry, "/tmp/unpack/")
