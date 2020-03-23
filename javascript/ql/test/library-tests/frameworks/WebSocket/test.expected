@@ -30,3 +30,6 @@ taintStep
 | server.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:25:26:25:31 | e.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:30:42:30:51 | event.data |
+remoteFlow
+| server.js:7:38:7:44 | message |
+| sockjs.js:9:31:9:37 | message |
