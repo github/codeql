@@ -33,20 +33,10 @@ module OpenUrlRedirect {
   abstract class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
-   * A method on a `net/url.URL` that is considered safe to redirect to.
+   * A method on a `net/url.URL` that is considered unsafe to redirect to.
    */
-  class SafeUrlMethod extends TaintTracking::FunctionModel, Method {
-    SafeUrlMethod() {
-      this instanceof StringMethod
-      or
-      exists(string m | this.hasQualifiedName("net/url", "URL", m) |
-        m = "Hostname" or m = "Port" or m = "RequestURI"
-      )
-    }
-
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
+  class UnsafeUrlMethod extends URL::UrlGetter {
+    UnsafeUrlMethod() { this.getName() = "Query" }
   }
 
   /**

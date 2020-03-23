@@ -53,7 +53,7 @@ module OpenUrlRedirect {
   /**
    * A data-flow configuration for reasoning about safe URLs for unvalidated URL redirections.
    */
-  class SafeUrlConfiguration extends DataFlow::Configuration {
+  class SafeUrlConfiguration extends TaintTracking::Configuration {
     SafeUrlConfiguration() { this = "SafeUrlFlow" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -64,35 +64,27 @@ module OpenUrlRedirect {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-      TaintTracking::functionModelStep(any(SafeUrlMethod m), pred, succ)
-      or
-      TaintTracking::functionModelStep(any(Path::PathManipulatingFunction pmf), pred, succ)
-      or
-      TaintTracking::functionModelStep(any(StringRightTrimmer rt), pred, succ)
-      or
-      TaintTracking::referenceStep(pred, succ)
-      or
-      TaintTracking::stringConcatStep(pred, succ)
-      or
-      TaintTracking::tupleStep(pred, succ)
-      or
-      exists(DataFlow::FieldReadNode frn | succ = frn |
-        frn.getBase() = pred and
-        (frn.getFieldName() = "Host" or frn.getFieldName() = "Path")
-      )
-      or
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
 
-    override predicate isBarrierOut(DataFlow::Node node) {
+    override predicate isSanitizerOut(DataFlow::Node node) {
       // block propagation of this safe value when its host is overwritten
       exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(node.getASuccessor(), f, _)
       )
+      or
+      exists(DataFlow::FieldReadNode frn, string name |
+        (name = "RawQuery" or name = "Fragment" or name = "User") and
+        frn.getField().hasQualifiedName("net/url", "URL")
+      |
+        node = frn.getBase()
+      )
+      or
+      TaintTracking::functionModelStep(any(UnsafeUrlMethod um), node, _)
     }
   }
 }
