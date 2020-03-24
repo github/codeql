@@ -21,7 +21,7 @@ module UntrustedFlowSource {
   /**
    * A source of data that is controlled by an untrusted user.
    *
-   * Extend this class to model new APIs. If you want to refine existing API models. If you want to model new APIs,
+   * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `UntrustedFlowSource` instead.
    */
   abstract class Range extends DataFlow::Node { }
