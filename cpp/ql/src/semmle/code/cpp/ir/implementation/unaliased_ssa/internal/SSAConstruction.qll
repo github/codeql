@@ -73,14 +73,18 @@ private module Cached {
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
     or
+    // Chi instructions track virtual variables, and therefore a chi instruction is
+    // conflated if it's associated with the aliased virtual variable.
     exists(OldInstruction oldInstruction | instruction = Chi(oldInstruction) |
       Alias::getResultMemoryLocation(oldInstruction).getVirtualVariable() instanceof
         Alias::AliasedVirtualVariable
     )
     or
+    // Phi instructions track locations, and therefore a phi instruction is
+    // conflated if it's associated with a conflated location.
     exists(Alias::MemoryLocation location |
       instruction = Phi(_, location) and
-      location.getVirtualVariable() instanceof Alias::AliasedVirtualVariable
+      not exists(location.getAllocation())
     )
   }
 
