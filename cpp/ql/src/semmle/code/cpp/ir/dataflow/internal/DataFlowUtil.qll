@@ -63,6 +63,9 @@ class Node extends TIRDataFlowNode {
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
 
+  Expr asPartialDefinition() {
+    result = this.(PartialDefinitionNode).getInstruction().getUnconvertedResultExpression()
+  }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -213,6 +216,19 @@ abstract class PostUpdateNode extends InstructionNode {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+
+  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+
+class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+  FieldAddressInstruction field;
+
+  ExplicitFieldStoreQualifierNode() { field = instr.getDestinationAddress() }
+
+  override Node getPreUpdateNode() { result.asInstruction() = field.getObjectAddress() }
 }
 
 /**
@@ -225,24 +241,24 @@ abstract class PostUpdateNode extends InstructionNode {
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends InstructionNode {
+class DefinitionByReferenceNode extends PartialDefinitionNode {
   override WriteSideEffectInstruction instr;
+  CallInstruction call;
+
+  DefinitionByReferenceNode() { call = instr.getPrimaryInstruction() }
+
+  override Node getPreUpdateNode() {
+    result.asInstruction() = call.getPositionalArgument(instr.getIndex())
+    or
+    result.asInstruction() = call.getThisArgument() and
+    instr.getIndex() = -1
+  }
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
-    result =
-      instr
-          .getPrimaryInstruction()
-          .(CallInstruction)
-          .getPositionalArgument(instr.getIndex())
-          .getUnconvertedResultExpression()
+    result = call.getPositionalArgument(instr.getIndex()).getUnconvertedResultExpression()
     or
-    result =
-      instr
-          .getPrimaryInstruction()
-          .(CallInstruction)
-          .getThisArgument()
-          .getUnconvertedResultExpression() and
+    result = call.getThisArgument().getUnconvertedResultExpression() and
     instr.getIndex() = -1
   }
 
@@ -250,6 +266,24 @@ class DefinitionByReferenceNode extends InstructionNode {
   Parameter getParameter() {
     exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
   }
+
+  override string toString() { result = "ref arg " + getPreUpdateNode().toString() }
+}
+
+class PositionalArgumentWithoutWriteSideEffectNode extends PartialDefinitionNode {
+  override CallInstruction instr;
+  PositionalArgumentOperand op;
+
+  PositionalArgumentWithoutWriteSideEffectNode() {
+    instr.getAnOperand() = op and
+    not exists(WriteSideEffectInstruction write |
+      write.getIndex() = op.getIndex() and write.getPrimaryInstruction() = instr
+    )
+  }
+
+  override Node getPreUpdateNode() { result.asInstruction() = op.getDef() }
+
+  override string toString() { result = "no change to " + op.toString() }
 }
 
 /**
@@ -332,6 +366,13 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  or
+  exists(ChiInstruction chi, LoadInstruction load |
+    chi.getPartial() = nodeFrom.(PartialDefinitionNode).getInstruction() and
+    // TODO: This can probably be getSourceValue() after #3112 is merged
+    load.getSourceValueOperand().getAnyDef() = chi and
+    nodeTo.asInstruction() = load.getSourceAddress().(FieldAddressInstruction).getObjectAddress()
+  )
 }
 
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {

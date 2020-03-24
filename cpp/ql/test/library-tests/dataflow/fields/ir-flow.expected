@@ -1,27 +1,87 @@
 edges
+| A.cpp:126:5:126:5 | ref arg b [c] : void | A.cpp:131:8:131:8 | ref arg b [c] : void |
+| A.cpp:126:12:126:18 | new : void | A.cpp:126:5:126:5 | ref arg b [c] : void |
+| A.cpp:131:8:131:8 | ref arg b [c] : void | A.cpp:132:10:132:10 | b [c] : void |
+| A.cpp:132:10:132:10 | b [c] : void | A.cpp:132:13:132:13 | c |
+| A.cpp:132:10:132:10 | b [c] : void | A.cpp:132:13:132:13 | c : void |
+| A.cpp:132:13:132:13 | c : void | A.cpp:132:10:132:13 | (void *)... |
+| aliasing.cpp:9:3:9:22 | s [post update] : void | aliasing.cpp:9:3:9:22 | s [post update] [m1] : void |
+| aliasing.cpp:9:3:9:22 | s [post update] [m1] : void | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] : void |
+| aliasing.cpp:9:11:9:20 | call to user_input : void | aliasing.cpp:9:3:9:22 | s [post update] : void |
+| aliasing.cpp:13:3:13:21 | (reference dereference) [post update] : void | aliasing.cpp:13:3:13:21 | (reference dereference) [post update] [m1] : void |
+| aliasing.cpp:13:3:13:21 | (reference dereference) [post update] [m1] : void | aliasing.cpp:26:19:26:20 | ref arg (reference to) [m1] : void |
+| aliasing.cpp:13:10:13:19 | call to user_input : void | aliasing.cpp:13:3:13:21 | (reference dereference) [post update] : void |
+| aliasing.cpp:25:17:25:19 | ref arg & ... [m1] : void | aliasing.cpp:29:8:29:9 | s1 [m1] : void |
+| aliasing.cpp:26:19:26:20 | ref arg (reference to) [m1] : void | aliasing.cpp:30:8:30:9 | s2 [m1] : void |
+| aliasing.cpp:29:8:29:9 | s1 [m1] : void | aliasing.cpp:29:11:29:12 | m1 |
+| aliasing.cpp:30:8:30:9 | s2 [m1] : void | aliasing.cpp:30:11:30:12 | m1 |
+| aliasing.cpp:37:3:37:24 | (reference dereference) [post update] : void | aliasing.cpp:38:11:38:12 | m1 |
+| aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:37:3:37:24 | (reference dereference) [post update] : void |
 | aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:38:11:38:12 | m1 |
+| aliasing.cpp:42:3:42:22 | s2 [post update] : void | aliasing.cpp:43:13:43:14 | m1 |
+| aliasing.cpp:42:11:42:20 | call to user_input : void | aliasing.cpp:42:3:42:22 | s2 [post update] : void |
 | aliasing.cpp:42:11:42:20 | call to user_input : void | aliasing.cpp:43:13:43:14 | m1 |
+| aliasing.cpp:79:3:79:22 | s [post update] : void | aliasing.cpp:80:12:80:13 | m1 |
+| aliasing.cpp:79:11:79:20 | call to user_input : void | aliasing.cpp:79:3:79:22 | s [post update] : void |
 | aliasing.cpp:79:11:79:20 | call to user_input : void | aliasing.cpp:80:12:80:13 | m1 |
+| aliasing.cpp:86:3:86:21 | (reference dereference) [post update] : void | aliasing.cpp:87:12:87:13 | m1 |
+| aliasing.cpp:86:10:86:19 | call to user_input : void | aliasing.cpp:86:3:86:21 | (reference dereference) [post update] : void |
 | aliasing.cpp:86:10:86:19 | call to user_input : void | aliasing.cpp:87:12:87:13 | m1 |
+| aliasing.cpp:92:3:92:23 | s [post update] : void | aliasing.cpp:93:12:93:13 | m1 |
+| aliasing.cpp:92:12:92:21 | call to user_input : void | aliasing.cpp:92:3:92:23 | s [post update] : void |
 | aliasing.cpp:92:12:92:21 | call to user_input : void | aliasing.cpp:93:12:93:13 | m1 |
+| struct_init.c:20:20:20:29 | VariableAddress [post update] : void | struct_init.c:22:11:22:11 | a |
+| struct_init.c:20:20:20:29 | call to user_input : void | struct_init.c:20:20:20:29 | VariableAddress [post update] : void |
 | struct_init.c:20:20:20:29 | call to user_input : void | struct_init.c:22:11:22:11 | a |
+| struct_init.c:27:7:27:16 | FieldAddress [post update] : void | struct_init.c:31:23:31:23 | a |
+| struct_init.c:27:7:27:16 | call to user_input : void | struct_init.c:27:7:27:16 | FieldAddress [post update] : void |
 | struct_init.c:27:7:27:16 | call to user_input : void | struct_init.c:31:23:31:23 | a |
 nodes
+| A.cpp:126:5:126:5 | ref arg b [c] : void | semmle.label | ref arg b [c] : void |
+| A.cpp:126:12:126:18 | new : void | semmle.label | new : void |
+| A.cpp:131:8:131:8 | ref arg b [c] : void | semmle.label | ref arg b [c] : void |
+| A.cpp:132:10:132:10 | b [c] : void | semmle.label | b [c] : void |
+| A.cpp:132:10:132:13 | (void *)... | semmle.label | (void *)... |
+| A.cpp:132:13:132:13 | c | semmle.label | c |
+| A.cpp:132:13:132:13 | c : void | semmle.label | c : void |
+| aliasing.cpp:9:3:9:22 | s [post update] : void | semmle.label | s [post update] : void |
+| aliasing.cpp:9:3:9:22 | s [post update] [m1] : void | semmle.label | s [post update] [m1] : void |
+| aliasing.cpp:9:11:9:20 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:13:3:13:21 | (reference dereference) [post update] : void | semmle.label | (reference dereference) [post update] : void |
+| aliasing.cpp:13:3:13:21 | (reference dereference) [post update] [m1] : void | semmle.label | (reference dereference) [post update] [m1] : void |
+| aliasing.cpp:13:10:13:19 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:25:17:25:19 | ref arg & ... [m1] : void | semmle.label | ref arg & ... [m1] : void |
+| aliasing.cpp:26:19:26:20 | ref arg (reference to) [m1] : void | semmle.label | ref arg (reference to) [m1] : void |
+| aliasing.cpp:29:8:29:9 | s1 [m1] : void | semmle.label | s1 [m1] : void |
+| aliasing.cpp:29:11:29:12 | m1 | semmle.label | m1 |
+| aliasing.cpp:30:8:30:9 | s2 [m1] : void | semmle.label | s2 [m1] : void |
+| aliasing.cpp:30:11:30:12 | m1 | semmle.label | m1 |
+| aliasing.cpp:37:3:37:24 | (reference dereference) [post update] : void | semmle.label | (reference dereference) [post update] : void |
 | aliasing.cpp:37:13:37:22 | call to user_input : void | semmle.label | call to user_input : void |
 | aliasing.cpp:38:11:38:12 | m1 | semmle.label | m1 |
+| aliasing.cpp:42:3:42:22 | s2 [post update] : void | semmle.label | s2 [post update] : void |
 | aliasing.cpp:42:11:42:20 | call to user_input : void | semmle.label | call to user_input : void |
 | aliasing.cpp:43:13:43:14 | m1 | semmle.label | m1 |
+| aliasing.cpp:79:3:79:22 | s [post update] : void | semmle.label | s [post update] : void |
 | aliasing.cpp:79:11:79:20 | call to user_input : void | semmle.label | call to user_input : void |
 | aliasing.cpp:80:12:80:13 | m1 | semmle.label | m1 |
+| aliasing.cpp:86:3:86:21 | (reference dereference) [post update] : void | semmle.label | (reference dereference) [post update] : void |
 | aliasing.cpp:86:10:86:19 | call to user_input : void | semmle.label | call to user_input : void |
 | aliasing.cpp:87:12:87:13 | m1 | semmle.label | m1 |
+| aliasing.cpp:92:3:92:23 | s [post update] : void | semmle.label | s [post update] : void |
 | aliasing.cpp:92:12:92:21 | call to user_input : void | semmle.label | call to user_input : void |
 | aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
+| struct_init.c:20:20:20:29 | VariableAddress [post update] : void | semmle.label | VariableAddress [post update] : void |
 | struct_init.c:20:20:20:29 | call to user_input : void | semmle.label | call to user_input : void |
 | struct_init.c:22:11:22:11 | a | semmle.label | a |
+| struct_init.c:27:7:27:16 | FieldAddress [post update] : void | semmle.label | FieldAddress [post update] : void |
 | struct_init.c:27:7:27:16 | call to user_input : void | semmle.label | call to user_input : void |
 | struct_init.c:31:23:31:23 | a | semmle.label | a |
 #select
+| A.cpp:132:10:132:13 | (void *)... | A.cpp:126:12:126:18 | new : void | A.cpp:132:10:132:13 | (void *)... | (void *)... flows from $@ | A.cpp:126:12:126:18 | new : void | new : void |
+| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new : void | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new : void | new : void |
+| aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input : void | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input : void | call to user_input : void |
+| aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input : void | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input : void | call to user_input : void |
 | aliasing.cpp:38:11:38:12 | m1 | aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:38:11:38:12 | m1 | m1 flows from $@ | aliasing.cpp:37:13:37:22 | call to user_input : void | call to user_input : void |
 | aliasing.cpp:43:13:43:14 | m1 | aliasing.cpp:42:11:42:20 | call to user_input : void | aliasing.cpp:43:13:43:14 | m1 | m1 flows from $@ | aliasing.cpp:42:11:42:20 | call to user_input : void | call to user_input : void |
 | aliasing.cpp:80:12:80:13 | m1 | aliasing.cpp:79:11:79:20 | call to user_input : void | aliasing.cpp:80:12:80:13 | m1 | m1 flows from $@ | aliasing.cpp:79:11:79:20 | call to user_input : void | call to user_input : void |
