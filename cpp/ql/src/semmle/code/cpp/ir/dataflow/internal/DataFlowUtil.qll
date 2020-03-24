@@ -63,6 +63,7 @@ class Node extends TIRDataFlowNode {
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
 
+
   /**
    * DEPRECATED: See UninitializedNode.
    *

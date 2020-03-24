@@ -1,0 +1,31 @@
+edges
+| aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:38:11:38:12 | m1 |
+| aliasing.cpp:42:11:42:20 | call to user_input : void | aliasing.cpp:43:13:43:14 | m1 |
+| aliasing.cpp:79:11:79:20 | call to user_input : void | aliasing.cpp:80:12:80:13 | m1 |
+| aliasing.cpp:86:10:86:19 | call to user_input : void | aliasing.cpp:87:12:87:13 | m1 |
+| aliasing.cpp:92:12:92:21 | call to user_input : void | aliasing.cpp:93:12:93:13 | m1 |
+| struct_init.c:20:20:20:29 | call to user_input : void | struct_init.c:22:11:22:11 | a |
+| struct_init.c:27:7:27:16 | call to user_input : void | struct_init.c:31:23:31:23 | a |
+nodes
+| aliasing.cpp:37:13:37:22 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:38:11:38:12 | m1 | semmle.label | m1 |
+| aliasing.cpp:42:11:42:20 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:43:13:43:14 | m1 | semmle.label | m1 |
+| aliasing.cpp:79:11:79:20 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:80:12:80:13 | m1 | semmle.label | m1 |
+| aliasing.cpp:86:10:86:19 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:87:12:87:13 | m1 | semmle.label | m1 |
+| aliasing.cpp:92:12:92:21 | call to user_input : void | semmle.label | call to user_input : void |
+| aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
+| struct_init.c:20:20:20:29 | call to user_input : void | semmle.label | call to user_input : void |
+| struct_init.c:22:11:22:11 | a | semmle.label | a |
+| struct_init.c:27:7:27:16 | call to user_input : void | semmle.label | call to user_input : void |
+| struct_init.c:31:23:31:23 | a | semmle.label | a |
+#select
+| aliasing.cpp:38:11:38:12 | m1 | aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:38:11:38:12 | m1 | m1 flows from $@ | aliasing.cpp:37:13:37:22 | call to user_input : void | call to user_input : void |
+| aliasing.cpp:43:13:43:14 | m1 | aliasing.cpp:42:11:42:20 | call to user_input : void | aliasing.cpp:43:13:43:14 | m1 | m1 flows from $@ | aliasing.cpp:42:11:42:20 | call to user_input : void | call to user_input : void |
+| aliasing.cpp:80:12:80:13 | m1 | aliasing.cpp:79:11:79:20 | call to user_input : void | aliasing.cpp:80:12:80:13 | m1 | m1 flows from $@ | aliasing.cpp:79:11:79:20 | call to user_input : void | call to user_input : void |
+| aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input : void | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input : void | call to user_input : void |
+| aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input : void | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input : void | call to user_input : void |
+| struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input : void | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input : void | call to user_input : void |
+| struct_init.c:31:23:31:23 | a | struct_init.c:27:7:27:16 | call to user_input : void | struct_init.c:31:23:31:23 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input : void | call to user_input : void |
