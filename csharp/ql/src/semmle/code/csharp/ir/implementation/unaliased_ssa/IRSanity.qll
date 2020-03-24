@@ -280,8 +280,6 @@ module InstructionSanity {
   private predicate isOnAliasedDefinitionChain(Instruction instr) {
     instr instanceof AliasedDefinitionInstruction
     or
-    instr.getOpcode() instanceof Opcode::InitializeNonLocal
-    or
     isOnAliasedDefinitionChain(instr.(ChiInstruction).getTotal())
     or
     isOnAliasedDefinitionChain(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
@@ -291,6 +289,8 @@ module InstructionSanity {
     isOnAliasedDefinitionChain(instr)
     or
     instr instanceof UnmodeledDefinitionInstruction
+    or
+    instr.getOpcode() instanceof Opcode::InitializeNonLocal
   }
 
   query predicate notMarkedAsConflated(Instruction instr) {
