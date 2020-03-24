@@ -1277,3 +1277,60 @@ ssa.cpp:
 #  268|     v268_15(void)          = UnmodeledUse                       : mu*
 #  268|     v268_16(void)          = AliasedUse                         : ~m269_7
 #  268|     v268_17(void)          = ExitFunction                       : 
+
+#  275| void EscapedButNotConflated(bool, Point, int)
+#  275|   Block 0
+#  275|     v275_1(void)           = EnterFunction           : 
+#  275|     m275_2(unknown)        = AliasedDefinition       : 
+#  275|     m275_3(unknown)        = InitializeNonLocal      : 
+#  275|     m275_4(unknown)        = Chi                     : total:m275_2, partial:m275_3
+#  275|     mu275_5(unknown)       = UnmodeledDefinition     : 
+#  275|     r275_6(glval<bool>)    = VariableAddress[c]      : 
+#  275|     m275_7(bool)           = InitializeParameter[c]  : &:r275_6
+#  275|     r275_8(glval<Point>)   = VariableAddress[p]      : 
+#  275|     m275_9(Point)          = InitializeParameter[p]  : &:r275_8
+#  275|     r275_10(glval<int>)    = VariableAddress[x1]     : 
+#  275|     m275_11(int)           = InitializeParameter[x1] : &:r275_10
+#  276|     r276_1(glval<Point>)   = VariableAddress[a]      : 
+#  276|     m276_2(Point)          = Uninitialized[a]        : &:r276_1
+#  276|     r276_3(glval<int>)     = FieldAddress[x]         : r276_1
+#  276|     r276_4(int)            = Constant[0]             : 
+#  276|     m276_5(int)            = Store                   : &:r276_3, r276_4
+#  276|     m276_6(Point)          = Chi                     : total:m276_2, partial:m276_5
+#  276|     r276_7(glval<int>)     = FieldAddress[y]         : r276_1
+#  276|     r276_8(int)            = Constant[0]             : 
+#  276|     m276_9(int)            = Store                   : &:r276_7, r276_8
+#  276|     m276_10(Point)         = Chi                     : total:m276_6, partial:m276_9
+#  277|     r277_1(glval<Point>)   = VariableAddress[a]      : 
+#  277|     r277_2(Point *)        = CopyValue               : r277_1
+#  277|     r277_3(glval<Point *>) = VariableAddress[pp]     : 
+#  277|     m277_4(Point *)        = Store                   : &:r277_3, r277_2
+#  277|     m277_5(unknown)        = Chi                     : total:m275_4, partial:m277_4
+#  278|     r278_1(glval<bool>)    = VariableAddress[c]      : 
+#  278|     r278_2(bool)           = Load                    : &:r278_1, m275_7
+#  278|     v278_3(void)           = ConditionalBranch       : r278_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  279|   Block 1
+#  279|     r279_1(glval<int>)   = VariableAddress[x1] : 
+#  279|     r279_2(int)          = Load                : &:r279_1, m275_11
+#  279|     r279_3(glval<Point>) = VariableAddress[a]  : 
+#  279|     r279_4(glval<int>)   = FieldAddress[x]     : r279_3
+#  279|     m279_5(int)          = Store               : &:r279_4, r279_2
+#  279|     m279_6(Point)        = Chi                 : total:m276_10, partial:m279_5
+#-----|   Goto -> Block 2
+
+#  281|   Block 2
+#  281|     m281_1(int)          = Phi                : from 0:m276_5, from 1:m279_5
+#  281|     m281_2(Point)        = Phi                : from 0:m276_10, from 1:m279_6
+#  281|     r281_3(glval<int>)   = VariableAddress[x] : 
+#  281|     r281_4(glval<Point>) = VariableAddress[a] : 
+#  281|     r281_5(glval<int>)   = FieldAddress[x]    : r281_4
+#  281|     r281_6(int)          = Load               : &:r281_5, m281_1
+#  281|     m281_7(int)          = Store              : &:r281_3, r281_6
+#  282|     v282_1(void)         = NoOp               : 
+#  275|     v275_12(void)        = ReturnVoid         : 
+#  275|     v275_13(void)        = UnmodeledUse       : mu*
+#  275|     v275_14(void)        = AliasedUse         : ~m277_5
+#  275|     v275_15(void)        = ExitFunction       : 
