@@ -55,7 +55,7 @@ class Node extends TIRDataFlowNode {
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
@@ -143,26 +143,36 @@ class ExprNode extends InstructionNode {
   override string toString() { result = this.asConvertedExpr().toString() }
 }
 
-/**
- * The value of a parameter at function entry, viewed as a node in a data
- * flow graph.
- */
 class ParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
-
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+  predicate isParameterOf(Function f, int i) {
+    none()
+  }
+}
+
+/**
+ * The value of a parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+private class ExplicitParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
   Parameter getParameter() { result = instr.getParameter() }
 
   override string toString() { result = instr.getParameter().toString() }
 }
 
-private class ThisParameterNode extends InstructionNode {
+private class ThisParameterNode extends ParameterNode {
   override InitializeThisInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) {
+    i = -1 and instr.getEnclosingFunction() = f
+  }
 
   override string toString() { result = "this" }
 }
@@ -295,7 +305,7 @@ ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
