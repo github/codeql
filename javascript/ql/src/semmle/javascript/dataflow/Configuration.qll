@@ -268,7 +268,9 @@ abstract class Configuration extends string {
    *
    * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
    */
-  predicate isAdditionalLoadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
+  predicate isAdditionalLoadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
     none()
   }
 }
@@ -564,7 +566,9 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
    */
   cached
-  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) { 
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
     loadProp = storeProp and
     loadStoreStep(pred, succ, loadProp)
   }
@@ -930,7 +934,8 @@ private predicate isAdditionalStoreStep(
  * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
  */
 private predicate isAdditionalLoadStoreStep(
-  DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp, DataFlow::Configuration cfg
+  DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp,
+  DataFlow::Configuration cfg
 ) {
   any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   or
