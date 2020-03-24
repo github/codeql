@@ -1153,7 +1153,6 @@ private predicate flowStep(
     // Flow into higher-order call
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
-  isRelevant(pred, cfg) and
   not cfg.isBarrier(succ) and
   not isBarrierEdge(cfg, pred, succ) and
   not isLabeledBarrierEdge(cfg, pred, succ, summary.getEndLabel()) and
