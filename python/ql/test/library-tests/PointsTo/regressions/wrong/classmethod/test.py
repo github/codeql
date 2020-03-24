@@ -21,9 +21,15 @@ class Foo(object):
     def problem_through_class(cls):
         check(cls) # same as above
 
+    @classmethod
+    @some_decorator
+    def also_problem(cls):
+        check(cls) # same as above
+
 # We need to call the methods before our analysis works
 f1 = Foo()
 f1.no_problem()
 f1.problem_through_instance()
+f1.also_problem()
 
 Foo.problem_through_class()
