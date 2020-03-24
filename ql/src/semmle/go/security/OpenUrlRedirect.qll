@@ -41,9 +41,21 @@ module OpenUrlRedirect {
       or
       // taint steps that do not include flow through fields
       TaintTracking::localTaintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
+      or
+      // propagate to a URL when its host is assigned to
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      )
     }
 
-    override predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
+    override predicate isBarrierOut(DataFlow::Node node) {
+      // block propagation of this unsafe value when its host is overwritten
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(node.getASuccessor(), f, _)
+      )
+      or
+      hostnameSanitizingPrefixEdge(node, _)
+    }
 
     override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
       guard instanceof BarrierGuard
