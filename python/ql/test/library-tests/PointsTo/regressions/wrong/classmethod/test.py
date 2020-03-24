@@ -11,14 +11,14 @@ class Foo(object):
 
     @some_decorator
     @classmethod
-    def problem_through_instance(cls, new_arg):
+    def problem_through_instance(cls):
         # Problem is that our analysis says that 'cls' can point to EITHER the
         # Class Foo (correct) or an instance of Foo (wrong)
         check(cls)
 
     @some_decorator
     @classmethod
-    def problem_through_class(cls, new_arg):
+    def problem_through_class(cls):
         check(cls) # same as above
 
 # We need to call the methods before our analysis works
