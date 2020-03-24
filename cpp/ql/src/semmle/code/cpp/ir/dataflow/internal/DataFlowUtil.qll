@@ -151,9 +151,7 @@ class ParameterNode extends InstructionNode {
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) {
-    none()
-  }
+  predicate isParameterOf(Function f, int i) { none() }
 }
 
 /**
