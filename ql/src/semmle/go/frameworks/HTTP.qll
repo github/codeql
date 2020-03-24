@@ -15,12 +15,20 @@ private module StdlibHttp {
     }
   }
 
-  private class HeaderGetCall extends UntrustedFlowSource::Range, DataFlow::MethodCallNode {
-    HeaderGetCall() { this.getTarget().hasQualifiedName("net/http", "Header", "Get") }
+  private class HeaderGet extends TaintTracking::FunctionModel, Method {
+    HeaderGet() { this.hasQualifiedName("net/http", "Header", "Get") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
+    }
   }
 
-  private class HeaderValuesCall extends UntrustedFlowSource::Range, DataFlow::MethodCallNode {
-    HeaderValuesCall() { this.getTarget().hasQualifiedName("net/http", "Header", "Values") }
+  private class HeaderValues extends TaintTracking::FunctionModel, Method {
+    HeaderValues() { this.hasQualifiedName("net/http", "Header", "Values") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
+    }
   }
 
   private class StdlibResponseWriter extends HTTP::ResponseWriter::Range {
