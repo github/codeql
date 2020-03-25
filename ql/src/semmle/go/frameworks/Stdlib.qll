@@ -114,9 +114,7 @@ module IoUtil {
    * from its first argument to its first result.
    */
   private class ReadAll extends TaintTracking::FunctionModel {
-    ReadAll() {
-      hasQualifiedName("io/ioutil", "ReadAll")
-    }
+    ReadAll() { hasQualifiedName("io/ioutil", "ReadAll") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult(0)
@@ -201,7 +199,7 @@ module OS {
 /** Provides models of commonly used functions in the `path` package. */
 module Path {
   /** A path-manipulating function in the `path` package. */
-  private class PathManipulatingFunction extends TaintTracking::FunctionModel {
+  class PathManipulatingFunction extends TaintTracking::FunctionModel {
     PathManipulatingFunction() {
       exists(string fn | hasQualifiedName("path", fn) |
         fn = "Base" or

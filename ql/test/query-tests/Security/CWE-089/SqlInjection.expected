@@ -6,7 +6,7 @@ edges
 | issue48.go:42:24:42:30 | selection of URL : pointer type | issue48.go:42:17:42:50 | type conversion : slice type |
 | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression |
 | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf |
-| main.go:15:63:15:84 | call to Get : string | main.go:15:11:15:85 | call to Sprintf |
+| main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf |
 | main.go:27:17:30:2 | &... [pointer, Category] | main.go:33:3:33:13 | RequestData [pointer, Category] |
 | main.go:27:18:30:2 | composite literal [Category] : slice type | main.go:27:17:30:2 | &... [pointer, Category] |
 | main.go:29:13:29:19 | selection of URL : pointer type | main.go:29:13:29:39 | index expression : slice type |
@@ -56,7 +56,7 @@ nodes
 | main.go:14:11:14:84 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:14:63:14:67 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | main.go:15:11:15:85 | call to Sprintf | semmle.label | call to Sprintf |
-| main.go:15:63:15:84 | call to Get : string | semmle.label | call to Get : string |
+| main.go:15:63:15:70 | selection of Header : Header | semmle.label | selection of Header : Header |
 | main.go:27:17:30:2 | &... [pointer, Category] | semmle.label | &... [pointer, Category] |
 | main.go:27:18:30:2 | composite literal [Category] : slice type | semmle.label | composite literal [Category] : slice type |
 | main.go:29:13:29:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
@@ -99,7 +99,7 @@ nodes
 | issue48.go:46:11:46:12 | q5 | issue48.go:42:24:42:30 | selection of URL : pointer type | issue48.go:46:11:46:12 | q5 | This query depends on $@. | issue48.go:42:24:42:30 | selection of URL | a user-provided value |
 | main.go:10:11:10:28 | index expression | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression | This query depends on $@. | main.go:10:11:10:16 | selection of Form | a user-provided value |
 | main.go:14:11:14:84 | call to Sprintf | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf | This query depends on $@. | main.go:14:63:14:67 | selection of URL | a user-provided value |
-| main.go:15:11:15:85 | call to Sprintf | main.go:15:63:15:84 | call to Get : string | main.go:15:11:15:85 | call to Sprintf | This query depends on $@. | main.go:15:63:15:84 | call to Get | a user-provided value |
+| main.go:15:11:15:85 | call to Sprintf | main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf | This query depends on $@. | main.go:15:63:15:70 | selection of Header | a user-provided value |
 | main.go:34:11:34:11 | q | main.go:29:13:29:19 | selection of URL : pointer type | main.go:34:11:34:11 | q | This query depends on $@. | main.go:29:13:29:19 | selection of URL | a user-provided value |
 | main.go:43:11:43:11 | q | main.go:39:25:39:31 | selection of URL : pointer type | main.go:43:11:43:11 | q | This query depends on $@. | main.go:39:25:39:31 | selection of URL | a user-provided value |
 | main.go:52:11:52:11 | q | main.go:48:28:48:34 | selection of URL : pointer type | main.go:52:11:52:11 | q | This query depends on $@. | main.go:48:28:48:34 | selection of URL | a user-provided value |

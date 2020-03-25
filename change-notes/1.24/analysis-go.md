@@ -21,11 +21,12 @@ The CodeQL library for Go now contains a folder of simple "cookbook" queries tha
 
 ## Changes to existing queries
 
-| **Query**                                           | **Expected impact**          | **Change**                                                |
-|-----------------------------------------------------|------------------------------|-----------------------------------------------------------|
-| Database query built from user-controlled sources (`go/sql-injection`) | More results | The library models used by the query have been improved, allowing it to flag more potentially problematic cases. |
-| Identical operands (`go/redundant-operation`) | Fewer false positives | The query no longer flags cases where the operands have the same value but are syntactically distinct, since this is usually intentional. |
-| Incomplete regular expression for hostnames (`go/incomplete-hostname-regexp`) | More results | The query now flags unescaped dots before the TLD in a hostname regex. |
-| Reflected cross-site scripting (`go/reflected-xss`) | Fewer results | Untrusted input flowing into an HTTP header definition or into an `fmt.Fprintf` call with a constant prefix is no longer flagged, since it is in both cases often harmless. |
-| Useless assignment to field (`go/useless-assignment-to-field`) | Fewer false positives | The query now conservatively handles fields promoted through embedded pointer types. |
-| Bitwise exclusive-or used like exponentiation (`go/mistyped-exponentiation`) | Fewer false positives | The query now identifies when the value of an xor is assigned to a mask object, and excludes such results. |
+| **Query**                                                                     | **Expected impact**   | **Change**                                                                                                                                                                  |
+|-------------------------------------------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Database query built from user-controlled sources (`go/sql-injection`)        | More results          | The library models used by the query have been improved, allowing it to flag more potentially problematic cases.                                                            |
+| Identical operands (`go/redundant-operation`)                                 | Fewer false positives | The query no longer flags cases where the operands have the same value but are syntactically distinct, since this is usually intentional.                                   |
+| Incomplete regular expression for hostnames (`go/incomplete-hostname-regexp`) | More results          | The query now flags unescaped dots before the TLD in a hostname regex.                                                                                                      |
+| Reflected cross-site scripting (`go/reflected-xss`)                           | Fewer results         | Untrusted input flowing into an HTTP header definition or into an `fmt.Fprintf` call with a constant prefix is no longer flagged, since it is in both cases often harmless. |
+| Useless assignment to field (`go/useless-assignment-to-field`)                | Fewer false positives | The query now conservatively handles fields promoted through embedded pointer types.                                                                                        |
+| Bitwise exclusive-or used like exponentiation (`go/mistyped-exponentiation`)  | Fewer false positives | The query now identifies when the value of an xor is assigned to a mask object, and excludes such results.                                                                  |
+| Open URL redirect (`go/unvalidated-url-redirection`)                          | Fewer false positives | The query now identifies some sources that are not attacker-controlled, and excludes results with such sources.                                                             |
