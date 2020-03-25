@@ -6,13 +6,13 @@ import javascript
 import experimental.poi.PoI
 import DataFlow
 
-class RouteHandlerPoI extends PoI {
+class RouteHandlerPoI extends DefaultEnabledPoI {
   RouteHandlerPoI() { this = "RouteHandlerPoI" }
 
   override predicate is(Node l0) { l0 instanceof Express::RouteHandler }
 }
 
-class RouteHandlerAndSetupPoI extends PoI {
+class RouteHandlerAndSetupPoI extends DefaultEnabledPoI {
   RouteHandlerAndSetupPoI() { this = "RouteHandlerAndSetupPoI" }
 
   override predicate is(Node l0, Node l1, string t1) {
@@ -20,7 +20,7 @@ class RouteHandlerAndSetupPoI extends PoI {
   }
 }
 
-class RouteSetupAndRouterAndRouteHandlerPoI extends PoI {
+class RouteSetupAndRouterAndRouteHandlerPoI extends DefaultEnabledPoI {
   RouteSetupAndRouterAndRouteHandlerPoI() { this = "RouteSetupAndRouterAndRouteHandlerPoI" }
 
   override predicate is(Node l0, Node l1, string t1, Node l2, string t2) {

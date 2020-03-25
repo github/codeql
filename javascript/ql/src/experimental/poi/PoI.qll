@@ -3,7 +3,7 @@
  * in an unknown code base.
  *
  * To use this module, subclass the
- * `Poi::PoI` class, override *one* of its `is` predicates, and use
+ * `PoI` class, override *one* of its `is` predicates, and use
  * `alertQuery` as a `@kind problem` query .  This will present
  * the desired points of interest as alerts that are easily browsable
  * in a codeql IDE.  By itself, this is no different from an ordinary
@@ -12,7 +12,6 @@
  *
  * - points of interest can be added, removed and mixed seamlessly
  * - this module comes with a collection of standard points of interest (see `StandardPoIs`)
- * - this modules comes with groupings of related points of interest (see `StandardPoIConfigurations`)
  *
  * A global configuration for the points of interest (see
  * `PoIConfg`) can be used to easily manage multiple points of
@@ -37,12 +36,12 @@
  *   override predicate shown(DataFlow::Node n) { n.getFile().getBaseName() = "server-core.js" }
  * }
  *
- * class RouteHandlerPoI extends PoI {
+ * class RouteHandlerPoI extends DefaultEnabledPoI {
  *   RouteHandlerPoI() { this = "RouteHandlerPoI" }
  *   override predicate is(DataFlow::Node l0) { l0 instanceof Express::RouteHandler }
  * }
  *
- * class RouteSetupAndRouteHandlerPoI extends PoI {
+ * class RouteSetupAndRouteHandlerPoI extends DefaultEnabledPoI {
  *   RouteSetupAndRouteHandlerPoI() { this = "RouteSetupAndRouteHandlerPoI" }
  *
  *   override predicate is(DataFlow::Node l0, DataFlow::Node l1, string t1) {
@@ -61,12 +60,20 @@ private import semmle.javascript.RestrictedLocations
 
 /**
  * Provides often used points of interest.
+ *
+ * Note that these points of interest should not extend
+ * `DefaultEnabledPoI`, and that they can be enabled by default on
+ * demand like this:
+ *
+ * ```
+ * class MyPoI extends ServerRelatedPoI, DefaultEnabledPoI {}
+ * ```
  */
 private module StandardPoIs {
   /**
    * An unpromoted route setup candidate.
    */
-  class UnpromotedRouteSetupPoI extends StandardPoI {
+  class UnpromotedRouteSetupPoI extends PoI {
     UnpromotedRouteSetupPoI() { this = "UnpromotedRouteSetupPoI" }
 
     override predicate is(Node l0) {
@@ -77,7 +84,7 @@ private module StandardPoIs {
   /**
    * An unpromoted route handler candidate.
    */
-  class UnpromotedRouteHandlerPoI extends StandardPoI {
+  class UnpromotedRouteHandlerPoI extends PoI {
     UnpromotedRouteHandlerPoI() { this = "UnpromotedRouteHandlerPoI" }
 
     override predicate is(Node l0) {
@@ -88,7 +95,7 @@ private module StandardPoIs {
   /**
    * An unpromoted route handler candidate, with explnatory data flow information.
    */
-  class UnpromotedRouteHandlerWithFlowPoI extends StandardPoI {
+  class UnpromotedRouteHandlerWithFlowPoI extends PoI {
     UnpromotedRouteHandlerWithFlowPoI() { this = "UnpromotedRouteHandlerWithFlowPoI" }
 
     private DataFlow::SourceNode track(HTTP::RouteHandlerCandidate cand, DataFlow::TypeTracker t) {
@@ -109,7 +116,7 @@ private module StandardPoIs {
   /**
    * A callee that is unknown.
    */
-  class UnknownCalleePoI extends StandardPoI {
+  class UnknownCalleePoI extends PoI {
     UnknownCalleePoI() { this = "UnknownCalleePoI" }
 
     override predicate is(Node l0) {
@@ -120,7 +127,7 @@ private module StandardPoIs {
   /**
    * A source of remote flow.
    */
-  class RemoteFlowSourcePoI extends StandardPoI {
+  class RemoteFlowSourcePoI extends PoI {
     RemoteFlowSourcePoI() { this = "RemoteFlowSourcePoI" }
 
     override predicate is(Node l0) { l0 instanceof RemoteFlowSource }
@@ -129,7 +136,7 @@ private module StandardPoIs {
   /**
    * A "source" for any active configuration.
    */
-  class SourcePoI extends StandardPoI {
+  class SourcePoI extends PoI {
     SourcePoI() { this = "SourcePoI" }
 
     override predicate is(Node l0) {
@@ -140,7 +147,7 @@ private module StandardPoIs {
   /**
    * A "sink" for any active configuration.
    */
-  class SinkPoI extends StandardPoI {
+  class SinkPoI extends PoI {
     SinkPoI() { this = "SinkPoI" }
 
     override predicate is(Node l0) {
@@ -151,7 +158,7 @@ private module StandardPoIs {
   /**
    * A "barrier" for any active configuration.
    */
-  class BarrierPoI extends StandardPoI {
+  class BarrierPoI extends PoI {
     BarrierPoI() { this = "BarrierPoI" }
 
     override predicate is(Node l0) {
@@ -171,7 +178,7 @@ private module StandardPoIs {
     /**
      * A server-related points of interest.
      */
-    class ServerRelatedPoI extends StandardPoI {
+    class ServerRelatedPoI extends PoI {
       ServerRelatedPoI() {
         this instanceof UnpromotedRouteSetupPoI or
         this instanceof UnpromotedRouteHandlerPoI or
@@ -182,7 +189,7 @@ private module StandardPoIs {
     /**
      * A configuration-related points of interest.
      */
-    class DataFlowConfigurationPoI extends StandardPoI {
+    class DataFlowConfigurationPoI extends PoI {
       DataFlowConfigurationPoI() {
         this instanceof SourcePoI or
         this instanceof SinkPoI
@@ -196,15 +203,17 @@ private module StandardPoIs {
 import StandardPoIs
 
 /**
- * A tagging interface for the standard points of interest.
+ * A tagging interface for a custom point of interest that should be
+ * enabled in the absence of an explicit
+ * `PoIConfiguration::enabled/1`.
  */
-abstract private class StandardPoI extends PoI {
+abstract class DefaultEnabledPoI extends PoI {
   bindingset[this]
-  StandardPoI() { any() }
+  DefaultEnabledPoI() { any() }
 }
 
 private module PoIConfigDefaults {
-  predicate enabled(PoI poi) { not poi instanceof StandardPoI }
+  predicate enabled(PoI poi) { poi instanceof DefaultEnabledPoI }
 
   predicate shown(Node n) { not classify(n.getFile(), _) }
 }
