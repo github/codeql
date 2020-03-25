@@ -222,9 +222,14 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
     exists(Constructor c | c.getAReference() = this |
       c.getDeclaringType().getQualifiedName() = "java.security.MessageDigest"
     )
+    or
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType().getQualifiedName() = "java.security.MessageDigest" and
+      m.getName() = "getInstance"
+    )
   }
 
-  override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(Call).getArgument(0) }
 }
 
 class JavaSecuritySignature extends JavaSecurityAlgoSpec {
