@@ -11,7 +11,7 @@ private predicate isInterfaceCallReceiver(DataFlow::CallNode call, DataFlow::Nod
   m = call.getCalleeName()
 }
 
-/** Holds if `nd` may flow into the receiver value of `call`, which is an interface value. */
+/** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */
 private DataFlow::Node getInterfaceCallReceiverSource(DataFlow::CallNode call) {
   isInterfaceCallReceiver(call, result.getASuccessor*(), _)
 }
