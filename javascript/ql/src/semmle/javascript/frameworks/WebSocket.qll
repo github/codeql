@@ -27,13 +27,19 @@ private module LibraryNames {
   string websocket() { result = "WebSocket" }
 
   string ws() { result = "ws" }
+
+  class LibraryName extends string {
+    LibraryName() {
+      this = sockjs() or this = websocket() or this = ws()
+    }
+  }
 }
 
 /**
  * Holds if the websocket library named `client` can send a message to the library named `server`.
  * Both `client` and `server` are library names defined in `LibraryNames`.
  */
-private predicate areLibrariesCompatible(string client, string server) {
+private predicate areLibrariesCompatible(LibraryNames::LibraryName client, LibraryNames::LibraryName server) {
   // sockjs is a WebSocket emulating library, but not actually an implementation of WebSockets.
   client = LibraryNames::sockjs() and server = LibraryNames::sockjs()
   or
@@ -51,7 +57,7 @@ module ClientWebSocket {
    * A class that can be used to instantiate a WebSocket instance.
    */
   class SocketClass extends DataFlow::SourceNode {
-    string library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
+    LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
       this = DataFlow::globalVarRef("WebSocket") and library = websocket()
@@ -69,7 +75,7 @@ module ClientWebSocket {
     /**
      * Gets the WebSocket library name.
      */
-    string getLibrary() { result = library }
+    LibraryName getLibrary() { result = library }
   }
 
   /**
@@ -83,7 +89,7 @@ module ClientWebSocket {
     /**
      * Gets the WebSocket library name.
      */
-    string getLibrary() { result = socketClass.getLibrary() }
+    LibraryName getLibrary() { result = socketClass.getLibrary() }
   }
 
   /**
@@ -166,7 +172,7 @@ module ServerWebSocket {
   /**
    * Gets a server created by a library named `library`.
    */
-  DataFlow::SourceNode getAServer(string library) {
+  DataFlow::SourceNode getAServer(LibraryName library) {
     library = ws() and
     result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
     or
@@ -178,7 +184,7 @@ module ServerWebSocket {
    * A server WebSocket instance.
    */
   class ServerSocket extends EventEmitter::Range, DataFlow::SourceNode {
-    string library;
+    LibraryName library;
 
     ServerSocket() {
       exists(DataFlow::CallNode onCall |
@@ -192,7 +198,7 @@ module ServerWebSocket {
     /**
      * Gets the name of the library that created this server socket.
      */
-    string getLibrary() { result = library }
+    LibraryName getLibrary() { result = library }
   }
 
   /**
