@@ -135,8 +135,7 @@ public class Main {
 
     TypeScriptParser tsParser = extractorState.getTypeScriptParser();
     tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
-    boolean containsTypeScriptFiles = containsTypeScriptFiles();
-    if (containsTypeScriptFiles) {
+    if (containsTypeScriptFiles()) {
       tsParser.verifyInstallation(!ap.has(P_QUIET));
     }
     for (File projectFile : projectFiles) {
