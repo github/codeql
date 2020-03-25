@@ -29,8 +29,7 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
     }
 
     override predicate isSink(TaintTracking::Sink sink) {
-        sink instanceof OsCommandFirstArgument or
-        sink instanceof ShellCommand
+        sink instanceof CommandSink
     }
 
     override predicate isExtension(TaintTracking::Extension extension) {
