@@ -11,8 +11,7 @@
 
 import csharp
 import semmle.code.csharp.security.SensitiveActions
-import semmle.code.csharp.security.dataflow.XSS
-import semmle.code.csharp.security.dataflow.Email
+import semmle.code.csharp.security.dataflow.flowsinks.Remote
 import semmle.code.csharp.frameworks.system.data.Common
 import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
@@ -42,11 +41,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof XSS::Sink
-    or
-    sink instanceof Email::Sink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
 }
 
 from TaintTrackingConfiguration configuration, DataFlow::PathNode source, DataFlow::PathNode sink

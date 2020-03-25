@@ -12,6 +12,7 @@ module XSS {
   import semmle.code.csharp.frameworks.system.web.UI
   import semmle.code.csharp.security.Sanitizers
   import semmle.code.csharp.security.dataflow.flowsinks.Html
+  import semmle.code.csharp.security.dataflow.flowsinks.Remote
   import semmle.code.csharp.security.dataflow.flowsources.Remote
 
   /**
@@ -108,8 +109,11 @@ module XSS {
 
   /**
    * A data flow sink for cross-site scripting (XSS) vulnerabilities.
+   *
+   * Any XSS sink is also a remote flow sink, so this class contributes
+   * to the abstract class `RemoteFlowSink`.
    */
-  abstract class Sink extends DataFlow::ExprNode {
+  abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
     string explanation() { none() }
   }
 

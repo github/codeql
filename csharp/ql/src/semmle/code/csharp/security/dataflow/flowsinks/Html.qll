@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import Remote
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.frameworks.system.Web
@@ -18,7 +19,7 @@ private import semmle.code.asp.AspNet
  * A sink where the value of the expression may be rendered as HTML,
  * without implicit HTML encoding.
  */
-abstract class HtmlSink extends DataFlow::ExprNode { }
+abstract class HtmlSink extends DataFlow::ExprNode, RemoteFlowSink { }
 
 /**
  * An expression that is used as an argument to an HTML sink method on
@@ -101,7 +102,7 @@ class SystemWebSetterHtmlSink extends HtmlSink {
     exists(Property p, string name, ValueOrRefType declaringType |
       declaringType = p.getDeclaringType() and
       any(SystemWebUINamespace n).getAChildNamespace*() = declaringType.getNamespace() and
-      this.getExpr() = p.getSetter().getParameter(0).getAnAssignedArgument() and
+      this.getExpr() = p.getAnAssignedValue() and
       p.hasName(name)
     |
       name = "Caption" and

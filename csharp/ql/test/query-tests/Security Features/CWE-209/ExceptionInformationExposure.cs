@@ -38,9 +38,9 @@ public class StackTraceHandler : IHttpHandler
             log("Exception occurred", ex);
             ctx.Response.Write("Exception occurred");
 
-            textBox.Text = ex.InnerException.StackTrace; // BAD (false negative)
-            textBox.Text = ex.StackTrace; // BAD (false negative)
-            textBox.Text = ex.ToString(); // BAD (false negative)
+            textBox.Text = ex.InnerException.StackTrace; // BAD
+            textBox.Text = ex.StackTrace; // BAD
+            textBox.Text = ex.ToString(); // BAD
             textBox.Text = ex.Message; // GOOD
             return;
         }
