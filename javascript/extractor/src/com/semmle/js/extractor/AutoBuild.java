@@ -565,17 +565,40 @@ public class AutoBuild {
           extractTypeScript(
               defaultExtractor, filesToExtract, tsconfigFiles, dependencyInstallationResult);
 
+    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
+
     // extract remaining files
     for (Path f : filesToExtract) {
-      if (extractedFiles.add(f)) {
-        FileExtractor extractor = defaultExtractor;
-        if (!fileTypes.isEmpty()) {
-          String extension = FileUtil.extension(f);
-          if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
-        }
-        extract(extractor, f, null);
+      if (extractedFiles.contains(f))
+        continue;
+      if (hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)) {
+        continue;
+      }
+      extractedFiles.add(f);
+      FileExtractor extractor = defaultExtractor;
+      if (!fileTypes.isEmpty()) {
+        String extension = FileUtil.extension(f);
+        if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
+      }
+      extract(extractor, f, null);
+    }
+  }
+
+  /**
+   * Returns true if the given path is likely the output of compiling a TypeScript file
+   * which we have already extracted.
+   */
+  private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
+    String name = path.getFileName().toString();
+    if (!name.endsWith(".js"))
+      return false;
+    String stem = name.substring(0, name.length() - ".js".length());
+    for (String ext : FileType.TYPESCRIPT.getExtensions()) {
+      if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
+        return true;
       }
     }
+    return false;
   }
 
   /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
