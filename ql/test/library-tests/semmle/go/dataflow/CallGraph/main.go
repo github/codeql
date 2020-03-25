@@ -35,5 +35,23 @@ func test(x *s1, y s2, z s3, b mybool, i I) {
 }
 
 func test2(v interface{}) {
-	v.(interface{ m(int) }).m(0)       // callee: s3.m
+	v.(interface{ m(int) }).m(0) // callee: s3.m
+}
+
+func test3(v I) {
+	if v == nil {
+		v = s1{}
+		v.m() // callee: s1.m
+	}
+	v.m() // callee: s1.m callee: s2.m callee: mybool.m
+}
+
+func test4(b bool) {
+	var v I
+	if b {
+		v = s1{}
+	} else {
+		v = &s2{}
+	}
+	v.m() // callee: s1.m callee: s2.m
 }
