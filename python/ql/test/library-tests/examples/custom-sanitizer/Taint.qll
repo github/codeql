@@ -17,13 +17,10 @@ class MySimpleSanitizer extends Sanitizer {
      * The test `if is_safe(arg):` sanitizes `arg` on its `true` edge.
      *
      * Can't handle `if not is_safe(arg):` :\ that's why it's called MySimpleSanitizer
-     *
      */
     override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
         taint instanceof ExternalStringKind and
-        exists(CallNode call |
-            test.getTest() = call and test.getSense() = true
-        |
+        exists(CallNode call | test.getTest() = call and test.getSense() = true |
             call = Value::named("test.is_safe").getACall() and
             test.getInput().getAUse() = call.getAnArg()
         )
@@ -75,11 +72,7 @@ class TestConfig extends TaintTracking::Configuration {
         sanitizer instanceof MySanitizerHandlingNot
     }
 
-    override predicate isSource(TaintTracking::Source source) {
-        source instanceof SimpleSource
-    }
+    override predicate isSource(TaintTracking::Source source) { source instanceof SimpleSource }
 
-    override predicate isSink(TaintTracking::Sink sink) {
-        none()
-    }
+    override predicate isSink(TaintTracking::Sink sink) { none() }
 }
