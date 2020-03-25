@@ -9,7 +9,7 @@
  */
 
 import go
-import RequestForgery::RequestForgery
+import semmle.go.security.RequestForgery::RequestForgery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node request
