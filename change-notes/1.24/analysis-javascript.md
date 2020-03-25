@@ -47,6 +47,8 @@
   - [request](https://www.npmjs.com/package/request)
   - [rimraf](https://www.npmjs.com/package/rimraf)
   - [send](https://www.npmjs.com/package/send)
+  - [SockJS](https://www.npmjs.com/package/sockjs)
+  - [SockJS-client](https://www.npmjs.com/package/sockjs-client)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
   - [vinyl-fs](https://www.npmjs.com/package/vinyl-fs)
   - [write-file-atomic](https://www.npmjs.com/package/write-file-atomic)
