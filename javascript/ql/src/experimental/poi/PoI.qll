@@ -163,37 +163,37 @@ private module StandardPoIs {
       )
     }
   }
+
+  /**
+   * Provides groups of often used point of interest.
+   */
+  module StandardPoIGroups {
+    /**
+     * A server-related points of interest.
+     */
+    class ServerRelatedPoI extends StandardPoI {
+      ServerRelatedPoI() {
+        this instanceof UnpromotedRouteSetupPoI or
+        this instanceof UnpromotedRouteHandlerPoI or
+        this instanceof UnpromotedRouteHandlerWithFlowPoI
+      }
+    }
+
+    /**
+     * A configuration-related points of interest.
+     */
+    class DataFlowConfigurationPoI extends StandardPoI {
+      DataFlowConfigurationPoI() {
+        this instanceof SourcePoI or
+        this instanceof SinkPoI
+      }
+    }
+  }
+
+  import StandardPoIGroups
 }
 
 import StandardPoIs
-
-/**
- * Provides often used point of interest configurations.
- */
-private module StandardPoIConfigurations {
-  /**
-   * A configuration that enables some server related points of interest.
-   */
-  abstract class ServerPoIConfiguration extends PoIConfiguration {
-    override predicate enabled(PoI poi) {
-      poi instanceof UnpromotedRouteSetupPoI or
-      poi instanceof UnpromotedRouteHandlerPoI or
-      poi instanceof UnpromotedRouteHandlerWithFlowPoI
-    }
-  }
-
-  /**
-   * A configuration that enables some `DataFlow::Configuration` related points of interest.
-   */
-  abstract class DataFlowConfigurationPoIConfiguration extends PoIConfiguration {
-    override predicate enabled(PoI poi) {
-      poi instanceof SourcePoI or
-      poi instanceof SinkPoI
-    }
-  }
-}
-
-import StandardPoIConfigurations
 
 /**
  * A tagging interface for the standard points of interest.
@@ -213,7 +213,8 @@ private module PoIConfigDefaults {
  * A configuration for the points of interest to display.
  */
 abstract class PoIConfiguration extends string {
-  PoIConfiguration() { this = "PoIConfiguration" }
+  bindingset[this]
+  PoIConfiguration() { any() }
 
   /**
    * Holds if the points of interest from `poi` should be shown.
