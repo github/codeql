@@ -168,7 +168,7 @@ module PromiseTypeTracking {
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
   pragma[inline]
-  DataFlow::SourceNode promiseStep(DataFlow::SourceNode pred, StepSummary summary) {
+  DataFlow::Node promiseStep(DataFlow::Node pred, StepSummary summary) {
     exists(PromiseFlowStep step, string field | field = Promises::valueProp() |
       summary = LoadStep(field) and
       step.load(pred, result, field)
@@ -189,9 +189,8 @@ module PromiseTypeTracking {
   DataFlow::SourceNode promiseStep(
     DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2
   ) {
-    exists(StepSummary summary |
-      result = PromiseTypeTracking::promiseStep(pred, summary) and
-      t = t2.append(summary)
+    exists(DataFlow::Node mid, StepSummary summary | pred.flowsTo(mid) and t = t2.append(summary) |
+      result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
 
