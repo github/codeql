@@ -3,11 +3,9 @@
  */
 
 import javascript
-import experimental.PoI.PoI::PoI
+import experimental.poi.PoI
 import semmle.javascript.security.dataflow.TaintedPath
 
-class Config extends StandardPoIConfigurations::DataFlowConfigurationPoIConfiguration {
-  Config() { this = "Config" }
-}
+class Config extends DataFlowConfigurationPoIConfiguration { }
 
 query predicate problems = alertQuery/6;

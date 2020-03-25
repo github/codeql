@@ -3,7 +3,7 @@
  */
 
 import javascript
-import experimental.PoI.PoI::PoI
+import experimental.poi.PoI
 import DataFlow
 
 class RouteHandlerPoI extends PoI {

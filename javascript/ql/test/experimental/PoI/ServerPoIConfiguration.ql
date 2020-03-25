@@ -3,10 +3,8 @@
  */
 
 import javascript
-import experimental.PoI.PoI::PoI
+import experimental.poi.PoI
 
-class Config extends StandardPoIConfigurations::ServerPoIConfiguration {
-  Config() { this = "Config" }
-}
+class Config extends ServerPoIConfiguration { }
 
 query predicate problems = alertQuery/6;

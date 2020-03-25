@@ -1,1 +1,2 @@
+WARNING: Config extends only abstract classes but does not provide its own characteristic predicate (TestStandardPoIs.ql:8,7-13)
 | tst.js:6:1:6:16 | (req, res) => 42 | UnpromotedRouteHandlerPoI | tst.js:6:1:6:16 | (req, res) => 42 | irrelevant | tst.js:6:1:6:16 | (req, res) => 42 | irrelevant |
