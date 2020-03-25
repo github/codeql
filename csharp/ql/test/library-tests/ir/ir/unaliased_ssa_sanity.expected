@@ -16,6 +16,7 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
+invalidOverlap
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
