@@ -176,7 +176,7 @@ module PromiseTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = LevelStep() and
+      summary = LoadStoreStep(field) and
       step.loadStore(pred, result, field)
     )
   }
