@@ -636,7 +636,7 @@ public class AutoBuild {
     }
     return null;
   }
-  
+
   /**
    * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any TypeScript or JavaScript extension,
    * or <code>null</code> if no such file exists.
@@ -646,7 +646,7 @@ public class AutoBuild {
     if (resolved != null) return resolved;
     return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
   }
-  
+
   /**
    * Gets a child of a JSON object as a string, or <code>null</code>.
    */
@@ -681,7 +681,7 @@ public class AutoBuild {
     if (!verifyYarnInstallation()) {
       return DependencyInstallationResult.empty;
     }
-    
+
     final Path sourceRoot = Paths.get(".").toAbsolutePath();
     final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
 
@@ -769,7 +769,7 @@ public class AutoBuild {
     for (Path file : packageJsonFiles.keySet()) {
       Path relativePath = sourceRoot.relativize(file);
       Path virtualFile = virtualSourceRoot.resolve(relativePath);
-      
+
       try {
         Files.createDirectories(virtualFile.getParent());
         try (Writer writer = Files.newBufferedWriter(virtualFile)) {
@@ -817,7 +817,7 @@ public class AutoBuild {
    */
   private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
     Path packageDir = packageJsonFile.getParent();
-    
+
     // Try <package_dir>/index.ts.
     Path resolved = tryResolveWithExtensions(packageDir, "index", extensions);
     if (resolved != null) {
