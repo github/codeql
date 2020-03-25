@@ -99,6 +99,17 @@ abstract class Configuration extends string {
   predicate isSource(DataFlow::Node source) { none() }
 
   /**
+   * Gets the flow label to associate with sources added by the 1-argument `isSource` predicate.
+   *
+   * For taint-tracking configurations, this defaults to `taint` and for other data-flow configurations
+   * it defaults to `data`.
+   *
+   * Overriding this predicate is rarely needed, and overriding the 2-argument `isSource` predicate
+   * should be preferred when possible.
+   */
+  FlowLabel getDefaultSourceLabel() { result = FlowLabel::data() }
+
+  /**
    * Holds if `source` is a source of flow labeled with `lbl` that is relevant
    * for this configuration.
    */
@@ -256,9 +267,11 @@ abstract class Configuration extends string {
 /**
  * A label describing the kind of information tracked by a flow configuration.
  *
- * There are two standard labels "data" and "taint", the former describing values
- * that directly originate from a flow source, the latter values that are derived
- * from a flow source via one or more transformations (such as string operations).
+ * There are two standard labels "data" and "taint".
+ * - "data" only propagates along value-preserving data flow, such as assignments
+ *   and parameter-passing, and is the default flow source for a `DataFlow::Configuration`.
+ * - "taint" additionally permits flow through transformations such as string operations,
+ *   and is the default flow source for a `TaintTracking::Configuration`.
  */
 abstract class FlowLabel extends string {
   bindingset[this]
@@ -666,7 +679,7 @@ private predicate exploratoryFlowStep(
  */
 private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
-  lbl = FlowLabel::data()
+  lbl = cfg.getDefaultSourceLabel()
   or
   nd.(AdditionalSource).isSourceFor(cfg, lbl)
   or
@@ -945,15 +958,28 @@ private predicate reachableFromStoreBase(
         s2.getEndLabel())
   )
   or
-  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
-    reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
-    (
-      flowStep(mid, cfg, nd, newSummary)
-      or
-      isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
-      newSummary = PathSummary::level()
-    ) and
+  exists(PathSummary oldSummary, PathSummary newSummary |
+    reachableFromStoreBaseStep(prop, rhs, nd, cfg, oldSummary, newSummary) and
     summary = oldSummary.appendValuePreserving(newSummary)
+  )
+}
+
+/**
+ * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
+ * from the base of that write under configuration `cfg` (possibly through callees) along a
+ * path whose last step is summarized by `newSummary`, and the previous steps are summarized
+ * by `oldSummary`.
+ */
+pragma[noinline]
+private predicate reachableFromStoreBaseStep(
+  string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
+  PathSummary oldSummary, PathSummary newSummary
+) {
+  exists(DataFlow::Node mid | reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) |
+    flowStep(mid, cfg, nd, newSummary)
+    or
+    isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
+    newSummary = PathSummary::level()
   )
 }
 
@@ -968,10 +994,26 @@ pragma[noinline]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
-    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
-    loadStep(base, succ, prop, cfg, newSummary) and
+  exists(PathSummary oldSummary, PathSummary newSummary |
+    storeToLoad(pred, succ, cfg, oldSummary, newSummary) and
     summary = oldSummary.append(newSummary)
+  )
+}
+
+/**
+ * Holds if the value of `pred` is written to a property of some base object, and that base
+ * object may flow into the base of property read `succ` under configuration `cfg` along
+ * a path whose last step is summarized by `newSummary`, and the previous steps are summarized
+ * by `oldSummary`.
+ */
+pragma[noinline]
+private predicate storeToLoad(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary oldSummary,
+  PathSummary newSummary
+) {
+  exists(string prop, DataFlow::Node base |
+    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
+    loadStep(base, succ, prop, cfg, newSummary)
   )
 }
 

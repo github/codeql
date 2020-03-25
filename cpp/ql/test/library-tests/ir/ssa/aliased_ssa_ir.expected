@@ -459,7 +459,7 @@ ssa.cpp:
 #  112|     m112_12(Point)       = Chi                    : total:m112_7, partial:m112_11
 #  113|     r113_1(glval<Point>) = VariableAddress[b]     : 
 #  113|     r113_2(glval<Point>) = VariableAddress[a]     : 
-#  113|     r113_3(Point)        = Load                   : &:r113_2, ~m112_12
+#  113|     r113_3(Point)        = Load                   : &:r113_2, m112_12
 #  113|     m113_4(Point)        = Store                  : &:r113_1, r113_3
 #  114|     v114_1(void)         = NoOp                   : 
 #  111|     v111_10(void)        = ReturnVoid             : 

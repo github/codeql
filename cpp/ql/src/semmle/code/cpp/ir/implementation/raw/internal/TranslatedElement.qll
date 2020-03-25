@@ -83,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**

@@ -64,6 +64,13 @@ newtype TInstructionTag =
   InitializerElementAddressTag() or
   InitializerElementDefaultValueTag() or
   InitializerElementDefaultValueStoreTag() or
+  VarArgsStartEllipsisAddressTag() or
+  VarArgsStartTag() or
+  VarArgsVAListLoadTag() or
+  VarArgsArgAddressTag() or
+  VarArgsArgLoadTag() or
+  VarArgsMoveNextTag() or
+  VarArgsVAListStoreTag() or
   AsmTag() or
   AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) }
 
@@ -187,6 +194,20 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = InitializerElementDefaultValueTag() and result = "InitElemDefVal"
   or
   tag = InitializerElementDefaultValueStoreTag() and result = "InitElemDefValStore"
+  or
+  tag = VarArgsStartEllipsisAddressTag() and result = "VarArgsStartEllipsisAddr"
+  or
+  tag = VarArgsStartTag() and result = "VarArgsStart"
+  or
+  tag = VarArgsVAListLoadTag() and result = "VarArgsVAListLoad"
+  or
+  tag = VarArgsArgAddressTag() and result = "VarArgsArgAddr"
+  or
+  tag = VarArgsArgLoadTag() and result = "VaArgsArgLoad"
+  or
+  tag = VarArgsMoveNextTag() and result = "VarArgsMoveNext"
+  or
+  tag = VarArgsVAListStoreTag() and result = "VarArgsVAListStore"
   or
   tag = AsmTag() and result = "Asm"
   or

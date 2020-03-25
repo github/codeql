@@ -457,7 +457,7 @@ ssa.cpp:
 #  112|     m112_12(Point)       = Chi                    : total:m112_7, partial:m112_11
 #  113|     r113_1(glval<Point>) = VariableAddress[b]     : 
 #  113|     r113_2(glval<Point>) = VariableAddress[a]     : 
-#  113|     r113_3(Point)        = Load                   : &:r113_2, ~m112_12
+#  113|     r113_3(Point)        = Load                   : &:r113_2, m112_12
 #  113|     m113_4(Point)        = Store                  : &:r113_1, r113_3
 #  114|     v114_1(void)         = NoOp                   : 
 #  111|     v111_10(void)        = ReturnVoid             : 
@@ -490,7 +490,7 @@ ssa.cpp:
 #  117|     m117_12(Point)         = Chi                          : total:m117_7, partial:m117_11
 #  118|     r118_1(glval<Point>)   = VariableAddress[b]           : 
 #  118|     r118_2(glval<Point>)   = VariableAddress[a]           : 
-#  118|     r118_3(Point)          = Load                         : &:r118_2, ~m117_12
+#  118|     r118_3(Point)          = Load                         : &:r118_2, m117_12
 #  118|     m118_4(Point)          = Store                        : &:r118_1, r118_3
 #  119|     r119_1(glval<unknown>) = FunctionAddress[Escape]      : 
 #  119|     r119_2(glval<Point>)   = VariableAddress[a]           : 
@@ -941,7 +941,7 @@ ssa.cpp:
 #  209|     m209_12(int)           = Chi                                : total:m208_2, partial:m209_11
 #  210|     r210_1(glval<int>)     = VariableAddress[#return]           : 
 #  210|     r210_2(glval<int>)     = VariableAddress[y]                 : 
-#  210|     r210_3(int)            = Load                               : &:r210_2, ~m209_12
+#  210|     r210_3(int)            = Load                               : &:r210_2, m209_12
 #  210|     m210_4(int)            = Store                              : &:r210_1, r210_3
 #  207|     r207_8(glval<int>)     = VariableAddress[#return]           : 
 #  207|     v207_9(void)           = ReturnValue                        : &:r207_8, m210_4
@@ -1179,7 +1179,7 @@ ssa.cpp:
 #  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
 #  251|     r251_3(char *)         = Load                               : &:r251_2, m248_12
 #  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
-#  247|     v247_12(void)          = ReturnIndirection                  : &:r247_8, ~m249_6
+#  247|     v247_12(void)          = ReturnIndirection                  : &:r247_8, m249_6
 #  247|     r247_13(glval<char *>) = VariableAddress[#return]           : 
 #  247|     v247_14(void)          = ReturnValue                        : &:r247_13, m251_4
 #  247|     v247_15(void)          = UnmodeledUse                       : mu*
