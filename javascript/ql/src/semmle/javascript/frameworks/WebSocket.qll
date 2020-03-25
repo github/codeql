@@ -29,9 +29,7 @@ private module LibraryNames {
   string ws() { result = "ws" }
 
   class LibraryName extends string {
-    LibraryName() {
-      this = sockjs() or this = websocket() or this = ws()
-    }
+    LibraryName() { this = sockjs() or this = websocket() or this = ws() }
   }
 }
 
@@ -39,7 +37,9 @@ private module LibraryNames {
  * Holds if the websocket library named `client` can send a message to the library named `server`.
  * Both `client` and `server` are library names defined in `LibraryNames`.
  */
-private predicate areLibrariesCompatible(LibraryNames::LibraryName client, LibraryNames::LibraryName server) {
+private predicate areLibrariesCompatible(
+  LibraryNames::LibraryName client, LibraryNames::LibraryName server
+) {
   // sockjs is a WebSocket emulating library, but not actually an implementation of WebSockets.
   client = LibraryNames::sockjs() and server = LibraryNames::sockjs()
   or
