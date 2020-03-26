@@ -42,7 +42,7 @@ class Instruction extends Construction::TInstruction {
     result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
   }
 
-  predicate shouldGenerateDumpStrings() {
+  private predicate shouldGenerateDumpStrings() {
     exists(IRConfiguration::IRConfiguration config |
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     )
