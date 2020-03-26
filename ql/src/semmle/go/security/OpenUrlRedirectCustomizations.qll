@@ -40,28 +40,28 @@ module OpenUrlRedirect {
   }
 
   /**
-   * A function that trims the right hand side of a string, considered to preserve the safeness
-   * of taint flow from the full request URL.
-   */
-  class StringRightTrimmer extends Strings::Trimmer {
-    StringRightTrimmer() {
-      this.hasQualifiedName("strings", "TrimSuffix") or
-      this.hasQualifiedName("strings", "TrimRight") or
-      this.hasQualifiedName("strings", "TrimRightFunc")
-    }
-  }
-
-  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource {
     UntrustedFlowAsSource() {
-      // exclude request headers, as they are generally not attacker-controllable for open redirect
-      // exploits
-      not this
-          .(DataFlow::FieldReadNode)
-          .getField()
-          .hasQualifiedName("net/http", "Request", "Header")
+      // exclude some fields and methods of URLs that are generally not attacker-controllable for
+      // open redirect exploits
+      not exists(string fieldName |
+        this.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", fieldName)
+      |
+        fieldName = "Header" or fieldName = "Trailer"
+      ) and
+      not exists(string methName |
+        this
+            .(DataFlow::MethodCallNode)
+            .getTarget()
+            .hasQualifiedName("net/http", "Request", methName)
+      |
+        methName = "Cookie" or
+        methName = "Cookies" or
+        methName = "Referer" or
+        methName = "UserAgent"
+      )
     }
   }
 
