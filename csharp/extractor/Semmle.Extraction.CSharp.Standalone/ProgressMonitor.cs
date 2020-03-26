@@ -1,4 +1,5 @@
 ﻿using Semmle.Util.Logging;
+using System;
 
 namespace Semmle.BuildAnalyser
 {
@@ -9,19 +10,15 @@ namespace Semmle.BuildAnalyser
     {
         void FindingFiles(string dir);
         void UnresolvedReference(string id, string project);
-        void AnalysingProjectFiles(int count);
         void AnalysingSolution(string filename);
         void FailedProjectFile(string filename, string reason);
         void FailedNugetCommand(string exe, string args, string message);
         void NugetInstall(string package);
         void ResolvedReference(string filename);
-        void Summary(int existingSources, int usedSources, int missingSources, int references, int unresolvedReferences, int resolvedConflicts, int totalProjects, int failedProjects);
+        void Summary(int existingSources, int usedSources, int missingSources, int references, int unresolvedReferences, int resolvedConflicts, int totalProjects, int failedProjects, TimeSpan analysisTime);
         void Warning(string message);
         void ResolvedConflict(string asm1, string asm2);
         void MissingProject(string projectFile);
-        void Restored(string line);
-        void MissingPackage(string package, string version, ResolutionFailureReason reason);
-        void FoundPackage(string package, string version, string directory);
         void CommandFailed(string exe, string arguments, int exitCode);
         void MissingNuGet();
     }
@@ -52,11 +49,6 @@ namespace Semmle.BuildAnalyser
             logger.Log(Severity.Debug, "Unresolved {0} referenced by {1}", id, project);
         }
 
-        public void AnalysingProjectFiles(int count)
-        {
-            logger.Log(Severity.Info, "Analyzing project files...");
-        }
-
         public void AnalysingSolution(string filename)
         {
             logger.Log(Severity.Info, $"Analysing {filename}...");
@@ -85,7 +77,8 @@ namespace Semmle.BuildAnalyser
 
         public void Summary(int existingSources, int usedSources, int missingSources,
             int references, int unresolvedReferences,
-            int resolvedConflicts, int totalProjects, int failedProjects)
+            int resolvedConflicts, int totalProjects, int failedProjects,
+            TimeSpan analysisTime)
         {
             logger.Log(Severity.Info, "");
             logger.Log(Severity.Info, "Build analysis summary:");
@@ -97,23 +90,7 @@ namespace Semmle.BuildAnalyser
             logger.Log(Severity.Info, "{0, 6} resolved assembly conflicts", resolvedConflicts);
             logger.Log(Severity.Info, "{0, 6} projects", totalProjects);
             logger.Log(Severity.Info, "{0, 6} missing/failed projects", failedProjects);
-        }
-
-        public void Restored(string line)
-        {
-            logger.Log(Severity.Debug, $"  {line}");
-        }
-
-        private static string[] reasonText = { "success", "package was not found", "the version was not found", "the package does not appear to contain any libraries" };
-
-        public void MissingPackage(string package, string version, ResolutionFailureReason reason)
-        {
-            logger.Log(Severity.Info, $"  Couldn't find package {package} {version} because {reasonText[(int)reason]}");
-        }
-
-        public void FoundPackage(string package, string version, string directory)
-        {
-            logger.Log(Severity.Debug, $"  Found package {package} {version} in {directory}");
+            logger.Log(Severity.Info, "Build analysis completed in {0}", analysisTime);
         }
 
         public void Warning(string message)

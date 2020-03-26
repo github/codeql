@@ -50,14 +50,14 @@ namespace Semmle.Extraction
         /// Record a new error type.
         /// </summary>
         /// <param name="fqn">The display name of the type, qualified where possible.</param>
-        /// <param name="fromSource">The missing type was referenced from a source file.</param>
+        /// <param name="fromSource">If the missing type was referenced from a source file.</param>
         void MissingType(string fqn, bool fromSource);
 
         /// <summary>
         /// Record an unresolved `using namespace` directive.
         /// </summary>
         /// <param name="fqn">The full name of the namespace.</param>
-        /// <param name="fromSource">The missing namespace was referenced from a source file.</param>
+        /// <param name="fromSource">If the missing namespace was referenced from a source file.</param>
         void MissingNamespace(string fqn, bool fromSource);
 
         /// <summary>

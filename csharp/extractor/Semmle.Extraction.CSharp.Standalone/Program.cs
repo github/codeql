@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
-using System.IO;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-
-// using Microsoft.Build.Locator;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -87,11 +82,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 
     public class Program
     {
-        void LoadSolutionFile(string file)
-        {
-
-        }
-
         static int Main(string[] args)
         {
             var options = Options.Create(args);

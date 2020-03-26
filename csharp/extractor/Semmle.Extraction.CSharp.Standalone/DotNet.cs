@@ -22,7 +22,7 @@ namespace Semmle.BuildAnalyser
     /// <summary>
     /// Utility to temporarily rename a set of files.
     /// </summary>
-    class FileRenamer : IDisposable
+    sealed class FileRenamer : IDisposable
     {
         string[] files;
         const string suffix = ".codeqlhidden";

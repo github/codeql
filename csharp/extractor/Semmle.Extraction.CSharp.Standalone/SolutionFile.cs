@@ -11,7 +11,8 @@ namespace Semmle.BuildAnalyser
     class SolutionFile
     {
         readonly Microsoft.Build.Construction.SolutionFile solutionFile;
-        public string FullPath { get; }
+
+        private string FullPath { get; }
 
         /// <summary>
         /// Read the file.

@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Semmle.Util;
 using Semmle.Extraction.CSharp.Standalone;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
 
 namespace Semmle.BuildAnalyser
 {
@@ -47,18 +44,18 @@ namespace Semmle.BuildAnalyser
     /// </summary>
     class BuildAnalysis : IBuildAnalysis
     {
-        readonly AssemblyCache assemblyCache;
-        readonly NugetPackages nuget;
-        readonly IProgressMonitor progressMonitor;
-        HashSet<string> usedReferences = new HashSet<string>();
-        readonly HashSet<string> usedSources = new HashSet<string>();
-        readonly HashSet<string> missingSources = new HashSet<string>();
-        readonly Dictionary<string, string> unresolvedReferences = new Dictionary<string, string>();
-        readonly DirectoryInfo sourceDir;
-        int failedProjects, succeededProjects;
-        readonly string[] allSources;
-        int conflictedReferences = 0;
-        object mutex = new object();
+        private readonly AssemblyCache assemblyCache;
+        private readonly NugetPackages nuget;
+        private readonly IProgressMonitor progressMonitor;
+        private HashSet<string> usedReferences = new HashSet<string>();
+        private readonly HashSet<string> usedSources = new HashSet<string>();
+        private readonly HashSet<string> missingSources = new HashSet<string>();
+        private readonly Dictionary<string, string> unresolvedReferences = new Dictionary<string, string>();
+        private readonly DirectoryInfo sourceDir;
+        private int failedProjects, succeededProjects;
+        private readonly string[] allSources;
+        private int conflictedReferences = 0;
+        private readonly object mutex = new object();
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -80,7 +77,7 @@ namespace Semmle.BuildAnalyser
                 ToArray();
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
-            PackageDirectory = TemporaryDirectory.CreateTempDirectory(sourceDir.FullName, progressMonitor);
+            PackageDirectory = TemporaryDirectory.CreateTempDirectory(sourceDir.FullName);
 
             if (options.UseNuGet)
             {
@@ -102,6 +99,7 @@ namespace Semmle.BuildAnalyser
             }
             
             {
+                // These files can sometimes prevent `dotnet restore` from working correctly.
                 using var renamer1 = new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories));
                 using var renamer2 = new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories));
 
@@ -117,12 +115,6 @@ namespace Semmle.BuildAnalyser
 
                 usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
             }
-
-            if (!options.AnalyseCsProjFiles)
-            {
-                usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
-            }
-
 
             ResolveConflicts();
 
@@ -150,9 +142,8 @@ namespace Semmle.BuildAnalyser
                 UnresolvedReferences.Count(),
                 conflictedReferences,
                 succeededProjects + failedProjects,
-                failedProjects);
-
-            Console.WriteLine($"Build analysis completed in {DateTime.Now - startTime}");
+                failedProjects,
+                DateTime.Now - startTime);
         }
 
         /// <summary>
@@ -285,7 +276,7 @@ namespace Semmle.BuildAnalyser
 
             try
             {
-                var csProj = new CsProjFile(project);
+                IProjectFile csProj = new CsProjFile(project);
 
                 foreach (var @ref in csProj.References)
                 {
@@ -329,8 +320,16 @@ namespace Semmle.BuildAnalyser
         void Restore(string projectOrSolution)
         {
             int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
-            if (exit != 0)
-                progressMonitor.CommandFailed("dotnet", $"restore \"{projectOrSolution}\"", exit);
+            switch(exit)
+            {
+                case 0:
+                case 1:
+                    // No errors
+                    break;
+                default:
+                    progressMonitor.CommandFailed("dotnet", $"restore \"{projectOrSolution}\"", exit);
+                    break;
+            }
         }
 
         public void RestoreSolutions(IEnumerable<string> solutions)
