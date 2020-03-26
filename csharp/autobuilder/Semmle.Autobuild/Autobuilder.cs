@@ -21,6 +21,14 @@ namespace Semmle.Autobuild
     }
 
     /// <summary>
+    /// Exception indicating that environment variables are missing or invalid.
+    /// </summary>
+    class InvalidEnvironmentException : Exception
+    {
+        public InvalidEnvironmentException(string m) : base(m) { }
+    }
+
+    /// <summary>
     /// Main application logic, containing all data
     /// gathered from the project and filesystem.
     ///
@@ -69,7 +77,7 @@ namespace Semmle.Autobuild
         /// List of project/solution files to build.
         /// </summary>
         public IList<IProjectOrSolution> ProjectsOrSolutionsToBuild => projectsOrSolutionsToBuildLazy.Value;
-        readonly Lazy<IList<IProjectOrSolution>> projectsOrSolutionsToBuildLazy;
+        private readonly Lazy<IList<IProjectOrSolution>> projectsOrSolutionsToBuildLazy;
 
         /// <summary>
         /// Holds if a given path was found.
@@ -129,7 +137,7 @@ namespace Semmle.Autobuild
 
             projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
-                List<IProjectOrSolution> ret;
+                List<IProjectOrSolution>? ret;
                 if (options.Solution.Any())
                 {
                     ret = new List<IProjectOrSolution>();
@@ -143,7 +151,7 @@ namespace Semmle.Autobuild
                     return ret;
                 }
 
-                IEnumerable<IProjectOrSolution> FindFiles(string extension, Func<string, ProjectOrSolution> create)
+                IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
                 {
                     var matchingFiles = GetExtensions(extension).
                         Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
@@ -178,17 +186,38 @@ namespace Semmle.Autobuild
 
             CodeQLExtractorCSharpRoot = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_ROOT");
 
-            CodeQLJavaHome = Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME");
-
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
+
+            CodeQLJavaHome = Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME");
 
             SemmleJavaHome = Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME");
 
+            if(CodeQLJavaHome is null && SemmleJavaHome is null)
+                throw new InvalidEnvironmentException("The environment variables CODEQL_JAVA_HOME and SEMMLE_JAVA_HOME have not been set.");
+
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
-            if (CodeQLExtractorCSharpRoot == null && SemmleDist == null)
-                Log(Severity.Error, "The environment variables CODEQL_EXTRACTOR_CSHARP_ROOT and SEMMLE_DIST have not been set.");
+            if (CodeQLExtractorCSharpRoot is null && SemmleDist is null)
+                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_ROOT and SEMMLE_DIST have not been set.");
+
+            var trapDir = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ?? Actions.GetEnvironmentVariable("TRAP_FOLDER");
+
+            if (trapDir is null)
+                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_TRAP_DIR and TRAP_FOLDER have not been set.");
+
+            TrapDir = trapDir;
+
+            var sourceArchiveDir = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ?? Actions.GetEnvironmentVariable("SOURCE_ARCHIVE");
+
+            if(sourceArchiveDir is null)
+                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR and SOURCE_ARCHIVE have not been set.");
+
+            SourceArchiveDir = sourceArchiveDir;
         }
+
+        private string TrapDir { get; }
+
+        private string SourceArchiveDir { get; }
 
         readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
@@ -271,9 +300,9 @@ namespace Semmle.Autobuild
                     break;
                 case CSharpBuildStrategy.Auto:
                     var cleanTrapFolder =
-                        BuildScript.DeleteDirectory(Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ?? Actions.GetEnvironmentVariable("TRAP_FOLDER"));
+                        BuildScript.DeleteDirectory(TrapDir);
                     var cleanSourceArchive =
-                        BuildScript.DeleteDirectory(Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ?? Actions.GetEnvironmentVariable("SOURCE_ARCHIVE"));
+                        BuildScript.DeleteDirectory(SourceArchiveDir);
                     var tryCleanExtractorArgsLogs =
                         BuildScript.Create(actions =>
                         {
@@ -376,38 +405,43 @@ namespace Semmle.Autobuild
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_CSHARP_ROOT environment variable.
         /// </summary>
-        public string CodeQLExtractorCSharpRoot { get; private set; }
+        private string? CodeQLExtractorCSharpRoot { get; }
 
         /// <summary>
         /// Value of CODEQL_JAVA_HOME environment variable.
         /// </summary>
-        public string CodeQLJavaHome { get; private set; }
+        private string? CodeQLJavaHome { get; }
 
         /// <summary>
         /// Value of SEMMLE_DIST environment variable.
         /// </summary>
-        public string SemmleDist { get; private set; }
+        private string? SemmleDist { get; }
+
+        public string Distribution => CodeQLExtractorCSharpRoot ?? SemmleDist!;
+
+        public string JavaHome => CodeQLJavaHome ?? SemmleJavaHome!;
 
         /// <summary>
         /// Value of SEMMLE_JAVA_HOME environment variable.
         /// </summary>
-        public string SemmleJavaHome { get; private set; }
+        public string? SemmleJavaHome { get; private set; }
 
         /// <summary>
         /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
         /// </summary>
-        public string SemmlePlatformTools { get; private set; }
+        public string? SemmlePlatformTools { get; private set; }
 
         /// <summary>
         /// The absolute path of the odasa executable.
+        /// null if we are running in CodeQL.
         /// </summary>
-        public string Odasa => SemmleDist == null ? null : Actions.PathCombine(SemmleDist, "tools", "odasa");
+        public string? Odasa => SemmleDist is null ? null : Actions.PathCombine(SemmleDist, "tools", "odasa");
 
         /// <summary>
         /// Construct a command that executed the given <paramref name="cmd"/> wrapped in
         /// an <code>odasa --index</code>, unless indexing has been disabled, in which case
         /// <paramref name="cmd"/> is run directly.
         /// </summary>
-        internal CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Options.Indexing ? builder.IndexCommand(Odasa, cmd) : builder.RunCommand(cmd);
+        internal CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Options.Indexing && !(Odasa is null) ? builder.IndexCommand(Odasa, cmd) : builder.RunCommand(cmd);
     }
 }
