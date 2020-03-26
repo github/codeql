@@ -49,7 +49,5 @@ module DomBasedXss {
     }
   }
 
-  private string urlSuffixPseudoProperty() {
-    result = "$UrlSuffix$"
-  }
+  private string urlSuffixPseudoProperty() { result = "$UrlSuffix$" }
 }
