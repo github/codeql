@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds functions that use act in the role of an authorization server (e.g. @EnableAuthorizationServer) and default the default approval endpoint(forward:/oauth/confirm_access).
+Also checks the pom.xml for specific jar version. Versions 2.3 prior to 2.3.3 and 2.2 prior to 2.2.2 and 2.1 prior to 2.1.2 and 2.0 prior to 2.0.15 and older are affected from this vulnerability.
+If this version is from the vulnerable set, rule will display it.
+</p>
+
+</overview>
+<recommendation>
+<p>Custom approval page should be used for prevent this vulnerability.
+Latest jar version for "OAuth2 For Spring Security" library should be used.</p>
+
+</recommendation>
+<references>
+<li>
+  Detailed summary of CVE-2018-1260: <a href="https://chybeta.github.io/2018/05/12/RCE-with-spring-security-oauth2-%E5%88%86%E6%9E%90-%E3%80%90CVE-2018-1260%E3%80%91/">CVE-2018-1260 detailed description</a>
+</li>
+<li>
+  National Vulnerability Database: <a href="https://nvd.nist.gov/vuln/detail/CVE-2018-1260">CVE-2018-1260</a>
+</li>
+
+
+
+
+</references>
+</qhelp>
