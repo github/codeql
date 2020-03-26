@@ -24,7 +24,7 @@ namespace Semmle.BuildAnalyser
     /// </summary>
     sealed class FileRenamer : IDisposable
     {
-        string[] files;
+        readonly string[] files;
         const string suffix = ".codeqlhidden";
 
         public FileRenamer(IEnumerable<FileInfo> oldFiles)

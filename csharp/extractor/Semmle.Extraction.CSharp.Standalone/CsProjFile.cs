@@ -90,9 +90,6 @@ namespace Semmle.BuildAnalyser
 
             if(netCoreProjectFile)
             {
-                var frameworksNode = root.SelectNodes("/Project/PropertyGroup/TargetFrameworks").NodeList().Concat(
-                    root.SelectNodes("/Project/PropertyGroup/TargetFramework").NodeList()).Select(node => node.InnerText);
-
                 var relativeCsIncludes2 =
                     root.SelectNodes("/Project/ItemGroup/Compile/@Include", mgr).
                     NodeList().

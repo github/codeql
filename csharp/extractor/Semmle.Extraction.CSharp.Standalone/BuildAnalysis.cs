@@ -100,20 +100,20 @@ namespace Semmle.BuildAnalyser
             
             {
                 // These files can sometimes prevent `dotnet restore` from working correctly.
-                using var renamer1 = new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories));
-                using var renamer2 = new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories));
+                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
+                using (new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories)))
+                {
+                    var solutions = options.SolutionFile != null ?
+                            new[] { options.SolutionFile } :
+                            sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
 
-                var solutions = options.SolutionFile != null ? 
-                        new[] { options.SolutionFile } : 
-                        sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
+                    RestoreSolutions(solutions);
+                    dllDirNames.Add(PackageDirectory.DirInfo.FullName);
+                    assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
+                    AnalyseSolutions(solutions);
 
-
-                RestoreSolutions(solutions);
-                dllDirNames.Add(PackageDirectory.DirInfo.FullName);
-                assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
-                AnalyseSolutions(solutions);
-
-                usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
+                    usedReferences = new HashSet<string>(assemblyCache.AllAssemblies.Select(a => a.Filename));
+                }
             }
 
             ResolveConflicts();
@@ -254,7 +254,7 @@ namespace Semmle.BuildAnalyser
                 unresolvedReferences[id] = projectFile;
         }
 
-        TemporaryDirectory PackageDirectory;
+        readonly TemporaryDirectory PackageDirectory;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.

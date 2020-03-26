@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         static int Main(string[] args)
         {
             var options = Options.Create(args);
-            options.CIL = true;
+            // options.CIL = true;  // To do: Enable this
             var output = new ConsoleLogger(options.Verbosity);
             var a = new Analysis(output);
 

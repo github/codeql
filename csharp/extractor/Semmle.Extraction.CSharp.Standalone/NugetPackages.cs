@@ -114,16 +114,15 @@ namespace Semmle.BuildAnalyser
 
             try
             {
-                using (var p = Process.Start(pi))
-                {
-                    string output = p.StandardOutput.ReadToEnd();
-                    string error = p.StandardError.ReadToEnd();
+                using var p = Process.Start(pi);
 
-                    p.WaitForExit();
-                    if (p.ExitCode != 0)
-                    {
-                        pm.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
-                    }
+                string output = p.StandardOutput.ReadToEnd();
+                string error = p.StandardError.ReadToEnd();
+
+                p.WaitForExit();
+                if (p.ExitCode != 0)
+                {
+                    pm.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
                 }
             }
             catch (Exception ex)
@@ -136,6 +135,10 @@ namespace Semmle.BuildAnalyser
         readonly string nugetExe;
     }
 
+    /// <summary>
+    /// A temporary directory that is created within the system temp directory.
+    /// When this object is disposed, the directory is deleted.
+    /// </summary>
     sealed class TemporaryDirectory : IDisposable
     {
         public DirectoryInfo DirInfo { get; }
@@ -156,7 +159,7 @@ namespace Semmle.BuildAnalyser
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
 
-            var sha1 = new SHA1CryptoServiceProvider();
+            using var sha1 = new SHA1CryptoServiceProvider();
             var sha = sha1.ComputeHash(bytes);
             var sb = new StringBuilder();
             foreach (var b in sha.Take(8))
