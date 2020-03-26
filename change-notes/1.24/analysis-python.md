@@ -15,6 +15,7 @@ Support for Django version 2.x and 3.x
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Uncontrolled command line (`py/command-line-injection`) | More results | We now model the `fabric` and `invoke` pacakges for command execution. |
 
 ### Web framework support
 

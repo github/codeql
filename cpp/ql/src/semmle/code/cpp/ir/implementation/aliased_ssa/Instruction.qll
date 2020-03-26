@@ -15,6 +15,9 @@ private import Imports::OperandTag
  * `File` and line number. Used for assigning register names when printing IR.
  */
 private Instruction getAnInstructionAtLine(IRFunction irFunc, Language::File file, int line) {
+  exists(IRConfiguration::IRConfiguration config |
+    config.shouldEvaluateDebugStringsForFunction(irFunc.getFunction())
+  ) and
   exists(Language::Location location |
     irFunc = result.getEnclosingIRFunction() and
     location = result.getLocation() and
@@ -39,6 +42,12 @@ class Instruction extends Construction::TInstruction {
     result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
   }
 
+  private predicate shouldGenerateDumpStrings() {
+    exists(IRConfiguration::IRConfiguration config |
+      config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
+    )
+  }
+
   /**
    * Gets a string describing the operation of this instruction. This includes
    * the opcode and the immediate value, if any. For example:
@@ -46,6 +55,7 @@ class Instruction extends Construction::TInstruction {
    * VariableAddress[x]
    */
   final string getOperationString() {
+    shouldGenerateDumpStrings() and
     if exists(getImmediateString())
     then result = getOperationPrefix() + getOpcode().toString() + "[" + getImmediateString() + "]"
     else result = getOperationPrefix() + getOpcode().toString()
@@ -57,10 +67,12 @@ class Instruction extends Construction::TInstruction {
   string getImmediateString() { none() }
 
   private string getOperationPrefix() {
+    shouldGenerateDumpStrings() and
     if this instanceof SideEffectInstruction then result = "^" else result = ""
   }
 
   private string getResultPrefix() {
+    shouldGenerateDumpStrings() and
     if getResultIRType() instanceof IRVoidType
     then result = "v"
     else
@@ -74,6 +86,7 @@ class Instruction extends Construction::TInstruction {
    * used by debugging and printing code only.
    */
   int getDisplayIndexInBlock() {
+    shouldGenerateDumpStrings() and
     exists(IRBlock block |
       this = block.getInstruction(result)
       or
@@ -87,6 +100,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private int getLineRank() {
+    shouldGenerateDumpStrings() and
     this =
       rank[result](Instruction instr |
         instr =
@@ -105,6 +119,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1`
    */
   string getResultId() {
+    shouldGenerateDumpStrings() and
     result = getResultPrefix() + getAST().getLocation().getStartLine() + "_" + getLineRank()
   }
 
@@ -116,6 +131,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `r1_1(int*)`
    */
   final string getResultString() {
+    shouldGenerateDumpStrings() and
     result = getResultId() + "(" + getResultLanguageType().getDumpString() + ")"
   }
 
@@ -126,6 +142,7 @@ class Instruction extends Construction::TInstruction {
    * Example: `func:r3_4, this:r3_5`
    */
   string getOperandsString() {
+    shouldGenerateDumpStrings() and
     result =
       concat(Operand operand |
         operand = getAnOperand()

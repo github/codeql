@@ -52,16 +52,12 @@
 | test.cpp:56:13:56:16 | (int)... | test.cpp:56:13:56:16 | (int)... | AST only |
 | test.cpp:56:13:56:16 | (int)... | test.cpp:56:31:56:34 | (int)... | AST only |
 | test.cpp:56:13:56:16 | (int)... | test.cpp:59:9:59:12 | (int)... | AST only |
-| test.cpp:56:13:56:16 | * ... | test.cpp:56:31:56:34 | * ... | AST only |
-| test.cpp:56:13:56:16 | * ... | test.cpp:59:9:59:12 | * ... | AST only |
 | test.cpp:56:21:56:24 | (int)... | test.cpp:53:10:53:13 | (int)... | AST only |
 | test.cpp:56:21:56:24 | (int)... | test.cpp:56:21:56:24 | (int)... | AST only |
 | test.cpp:56:30:56:43 | (...) | test.cpp:56:30:56:43 | (...) | AST only |
 | test.cpp:56:31:56:34 | (int)... | test.cpp:56:13:56:16 | (int)... | AST only |
 | test.cpp:56:31:56:34 | (int)... | test.cpp:56:31:56:34 | (int)... | AST only |
 | test.cpp:56:31:56:34 | (int)... | test.cpp:59:9:59:12 | (int)... | AST only |
-| test.cpp:56:31:56:34 | * ... | test.cpp:56:13:56:16 | * ... | AST only |
-| test.cpp:56:31:56:34 | * ... | test.cpp:59:9:59:12 | * ... | AST only |
 | test.cpp:56:39:56:42 | (int)... | test.cpp:44:9:44:9 | 0 | AST only |
 | test.cpp:56:39:56:42 | (int)... | test.cpp:51:25:51:25 | 0 | AST only |
 | test.cpp:56:39:56:42 | (int)... | test.cpp:53:18:53:21 | (int)... | AST only |
@@ -72,8 +68,6 @@
 | test.cpp:59:9:59:12 | (int)... | test.cpp:56:13:56:16 | (int)... | AST only |
 | test.cpp:59:9:59:12 | (int)... | test.cpp:56:31:56:34 | (int)... | AST only |
 | test.cpp:59:9:59:12 | (int)... | test.cpp:59:9:59:12 | (int)... | AST only |
-| test.cpp:59:9:59:12 | * ... | test.cpp:56:13:56:16 | * ... | AST only |
-| test.cpp:59:9:59:12 | * ... | test.cpp:56:31:56:34 | * ... | AST only |
 | test.cpp:59:17:59:20 | (int)... | test.cpp:44:9:44:9 | 0 | AST only |
 | test.cpp:59:17:59:20 | (int)... | test.cpp:51:25:51:25 | 0 | AST only |
 | test.cpp:59:17:59:20 | (int)... | test.cpp:53:18:53:21 | (int)... | AST only |
@@ -125,9 +119,7 @@
 | test.cpp:128:7:128:7 | x | test.cpp:126:15:126:15 | x | AST only |
 | test.cpp:128:11:128:11 | n | test.cpp:129:15:129:15 | x | IR only |
 | test.cpp:129:15:129:15 | x | test.cpp:128:11:128:11 | n | IR only |
-| test.cpp:136:21:136:21 | x | test.cpp:137:21:137:21 | x | AST only |
 | test.cpp:136:21:136:21 | x | test.cpp:139:13:139:13 | x | AST only |
-| test.cpp:137:21:137:21 | x | test.cpp:136:21:136:21 | x | AST only |
 | test.cpp:137:21:137:21 | x | test.cpp:139:13:139:13 | x | AST only |
 | test.cpp:139:3:139:24 | ... = ... | test.cpp:139:3:139:24 | ... = ... | AST only |
 | test.cpp:139:13:139:13 | x | test.cpp:136:21:136:21 | x | AST only |
@@ -137,6 +129,4 @@
 | test.cpp:147:3:147:18 | ... = ... | test.cpp:147:3:147:18 | ... = ... | AST only |
 | test.cpp:147:7:147:7 | y | test.cpp:145:15:145:15 | y | AST only |
 | test.cpp:149:15:149:15 | x | test.cpp:144:15:144:15 | x | IR only |
-| test.cpp:153:21:153:21 | x | test.cpp:154:21:154:21 | x | AST only |
-| test.cpp:154:21:154:21 | x | test.cpp:153:21:153:21 | x | AST only |
 | test.cpp:156:3:156:17 | ... = ... | test.cpp:156:3:156:17 | ... = ... | AST only |

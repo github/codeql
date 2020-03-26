@@ -18,17 +18,17 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
   predicate shouldPrintFunction(Language::Function func) { any() }
 }
 
-private predicate shouldPrintFunction(Language::Function func) {
-  exists(PrintIRConfiguration config | config.shouldPrintFunction(func))
-}
-
 /**
- * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
+ * Override of `IRConfiguration` to only evaluate debug strings for the functions that are to be dumped.
  */
 private class FilteredIRConfiguration extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Language::Function func) {
+  override predicate shouldEvaluateDebugStringsForFunction(Language::Function func) {
     shouldPrintFunction(func)
   }
+}
+
+private predicate shouldPrintFunction(Language::Function func) {
+  exists(PrintIRConfiguration config | config.shouldPrintFunction(func))
 }
 
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
