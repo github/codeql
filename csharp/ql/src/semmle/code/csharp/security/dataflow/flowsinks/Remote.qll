@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import Email
+private import Email::Email
 private import ExternalLocationSink
 private import Html
 private import semmle.code.csharp.security.dataflow.XSS
