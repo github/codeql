@@ -55,7 +55,7 @@ class Node extends TIRDataFlowNode {
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(PositionalParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
@@ -157,18 +157,32 @@ int getArgumentPosOfSideEffect(int index) {
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
- * flow graph.
+ * flow graph. This type includes implicit parameters.
+ *
+ * To match a specific kind of parameter, consider using one of the subclasses
+ * `ExplicitParameterNode`, `InstanceParameterNode`, or
+ * `ParameterIndirectionNode`.
  */
-abstract class ParameterNode extends InstructionNode {
+class ParameterNode extends InstructionNode {
+  ParameterNode() {
+    // To avoid making this class abstract, we enumerate its values here
+    instr instanceof InitializeThisInstruction
+    or
+    instr instanceof InitializeParameterInstruction
+    or
+    instr instanceof InitializeIndirectionInstruction
+  }
+
   /**
    * Holds if this node is the parameter of `f` at the specified position. The
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  abstract predicate isParameterOf(Function f, int pos);
+  predicate isParameterOf(Function f, int pos) { none() } // overridden in subclasses
 }
 
-private class ThisParameterNode extends ParameterNode {
+/** An implicit `this` parameter. */
+class InstanceParameterNode extends ParameterNode {
   override InitializeThisInstruction instr;
 
   override predicate isParameterOf(Function f, int pos) {
@@ -179,7 +193,8 @@ private class ThisParameterNode extends ParameterNode {
   override string toString() { result = "this" }
 }
 
-class PositionalParameterNode extends ParameterNode {
+/** An explicit positional parameter, not including `this` or `...`. */
+class ExplicitParameterNode extends ParameterNode {
   override InitializeParameterInstruction instr;
 
   override predicate isParameterOf(Function f, int pos) {
@@ -192,7 +207,8 @@ class PositionalParameterNode extends ParameterNode {
   override string toString() { result = this.getParameter().toString() }
 }
 
-private class ParameterIndirectionNode extends ParameterNode {
+/** A virtual parameter to model the pointed-to object of a pointer parameter. */
+class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
   override predicate isParameterOf(Function f, int pos) {
@@ -336,7 +352,7 @@ ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-PositionalParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
