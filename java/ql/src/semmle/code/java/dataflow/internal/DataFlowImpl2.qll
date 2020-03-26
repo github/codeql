@@ -809,7 +809,7 @@ private class ReadStoreNodeExt extends CastingNodeExt, TReadStoreNode {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    arg.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    arg.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -833,7 +833,7 @@ private class ReadTaintNode extends NodeExt, TReadTaintNode {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    arg.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    arg.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -857,7 +857,7 @@ private class TaintStoreNode extends NodeExt, TTaintStoreNode {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    arg.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    arg.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
