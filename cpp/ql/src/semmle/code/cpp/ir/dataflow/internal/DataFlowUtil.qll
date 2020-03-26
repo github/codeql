@@ -218,7 +218,17 @@ abstract class PostUpdateNode extends InstructionNode {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+  final Instruction getInstructionOrChi() {
+    exists(ChiInstruction chi |
+      // TODO: This should be a non-conflated ChiInstruction once #3123 is merged
+      chi.getPartial() = getInstruction() and
+      result = chi
+    )
+    or
+    result = getInstruction()
+  }
+}
 
 class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
@@ -266,22 +276,6 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
   }
 
   override string toString() { result = "ref arg " + getPreUpdateNode().toString() }
-}
-
-class PositionalArgumentWithoutWriteSideEffectNode extends PartialDefinitionNode {
-  override CallInstruction instr;
-  PositionalArgumentOperand op;
-
-  PositionalArgumentWithoutWriteSideEffectNode() {
-    instr.getAnOperand() = op and
-    not exists(WriteSideEffectInstruction write |
-      write.getIndex() = op.getIndex() and write.getPrimaryInstruction() = instr
-    )
-  }
-
-  override Node getPreUpdateNode() { result.asInstruction() = op.getDef() }
-
-  override string toString() { result = "no change to " + op.toString() }
 }
 
 /**
@@ -365,10 +359,10 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
   or
-  exists(ChiInstruction chi, LoadInstruction load |
-    chi.getPartial() = nodeFrom.(PartialDefinitionNode).getInstruction() and
-    // TODO: This can probably be getSourceValue() after #3112 is merged
-    load.getSourceValueOperand().getAnyDef() = chi and
+  exists(LoadInstruction load |
+    // TODO: These can probably be getSourceValue() after #3112 is merged
+    load.getSourceValueOperand().getAnyDef() =
+      nodeFrom.(PartialDefinitionNode).getInstructionOrChi() and
     nodeTo.asInstruction() = load.getSourceAddress().(FieldAddressInstruction).getObjectAddress()
   )
 }
