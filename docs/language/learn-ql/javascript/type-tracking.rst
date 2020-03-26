@@ -1,8 +1,7 @@
 Using type tracking for API modeling
 ====================================
 
-You can track data through an API by creating a model 
-using the CodeQL type-tracking library for JavaScript.
+You can track data through an API by creating a model using the CodeQL type-tracking library for JavaScript.
 
 Overview
 --------

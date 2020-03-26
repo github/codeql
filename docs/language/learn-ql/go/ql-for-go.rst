@@ -1,10 +1,9 @@
 CodeQL for Go
 =============
 
-This page provides an overview of the CodeQL for Go documentation that is currently available.
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Go codebases.
 
--  `Basic Go query <https://lgtm.com/help/lgtm/console/ql-go-basic-example>`__ describes how to write and run queries using LGTM.
-
+-  `Basic Go query <https://lgtm.com/help/lgtm/console/ql-go-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
 
 Other resources
 ---------------

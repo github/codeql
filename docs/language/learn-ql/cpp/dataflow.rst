@@ -1,7 +1,7 @@
 Analyzing data flow in C and C++
 ================================
 
-You can use data-flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
+You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
 About data flow
 ---------------
