@@ -274,6 +274,36 @@ module InstructionSanity {
     funcText = Language::getIdentityString(func.getFunction())
   }
 
+  /**
+   * Holds if `instr` is on the chain of chi/phi instructions for all aliased
+   * memory.
+   */
+  private predicate isOnAliasedDefinitionChain(Instruction instr) {
+    instr instanceof AliasedDefinitionInstruction
+    or
+    isOnAliasedDefinitionChain(instr.(ChiInstruction).getTotal())
+    or
+    isOnAliasedDefinitionChain(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
+  }
+
+  private predicate shouldBeConflated(Instruction instr) {
+    isOnAliasedDefinitionChain(instr)
+    or
+    instr instanceof UnmodeledDefinitionInstruction
+    or
+    instr.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
+
+  query predicate notMarkedAsConflated(Instruction instr) {
+    shouldBeConflated(instr) and
+    not instr.isResultConflated()
+  }
+
+  query predicate wronglyMarkedAsConflated(Instruction instr) {
+    instr.isResultConflated() and
+    not shouldBeConflated(instr)
+  }
+
   query predicate invalidOverlap(
     MemoryOperand useOperand, string message, IRFunction func, string funcText
   ) {

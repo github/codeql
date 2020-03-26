@@ -339,6 +339,17 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
+   * Holds if this is an instruction with a memory result that represents a
+   * conflation of more than one memory allocation.
+   *
+   * This happens in practice when dereferencing a pointer that cannot be
+   * tracked back to a single local allocation. Such memory is instead modeled
+   * as originating on the `AliasedDefinitionInstruction` at the entry of the
+   * function.
+   */
+  final predicate isResultConflated() { Construction::hasConflatedMemoryResult(this) }
+
+  /**
    * Gets the successor of this instruction along the control flow edge
    * specified by `kind`.
    */
