@@ -1181,6 +1181,8 @@ Set literals can be of any type, but the types within a set literal have to be c
 
 The values of a set literal expression are all the values of all the contained element expressions.
 
+Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
+
 Disambiguation of expressions
 -----------------------------
 
