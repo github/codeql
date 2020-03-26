@@ -2,6 +2,7 @@
 | a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
+| callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
 | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
 | destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
@@ -44,6 +45,7 @@
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
 | tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
 | tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
+| tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
 | tst.js:2:17:2:22 | "src1" | tst.js:39:17:39:17 | x |
 | tst.js:2:17:2:22 | "src1" | tst.js:41:19:41:19 | x |
 | tst.js:2:17:2:22 | "src1" | tst.js:45:17:45:17 | x |

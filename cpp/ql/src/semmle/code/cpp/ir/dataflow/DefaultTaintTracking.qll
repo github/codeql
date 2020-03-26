@@ -60,7 +60,14 @@ private DataFlow::Node getNodeForSource(Expr source) {
   (
     result = DataFlow::exprNode(source)
     or
-    result = DataFlow::definitionByReferenceNode(source)
+    // Some of the sources in `isUserInput` are intended to match the value of
+    // an expression, while others (those modeled below) are intended to match
+    // the taint that propagates out of an argument, like the `char *` argument
+    // to `gets`. It's impossible here to tell which is which, but the "access
+    // to argv" source is definitely not intended to match an output argument,
+    // and it causes false positives if we let it.
+    result = DataFlow::definitionByReferenceNode(source) and
+    not argv(source.(VariableAccess).getTarget())
   )
 }
 
