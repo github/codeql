@@ -367,7 +367,7 @@ public class E
 
     static int Ex35(string s = "null") => s.Length; // GOOD
 
-    static int Ex44(object o)
+    static int Ex36(object o)
     {
         if (o is string)
         {
