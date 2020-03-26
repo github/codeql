@@ -1177,7 +1177,9 @@ Set literals denote a choice from a collection of values.
 
    setliteral ::= "[" expr ("," expr)* "]"
 
-Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion. 
+Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion.
+
+The values of a set literal expression are all the values of all the contained element expressions.
 
 Disambiguation of expressions
 -----------------------------
