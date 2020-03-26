@@ -214,8 +214,6 @@ abstract class PostUpdateNode extends InstructionNode {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
-
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
 abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
@@ -274,8 +272,6 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
   Parameter getParameter() {
     exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
   }
-
-  override string toString() { result = "ref arg " + getPreUpdateNode().toString() }
 }
 
 /**
