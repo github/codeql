@@ -58,6 +58,7 @@
 | refinements.js:44:3:48:3 | instance of function inner | refinements.js:44:3:48:3 | instance of function inner |
 | refinements.js:58:1:62:1 | instance of function f6 | refinements.js:58:1:62:1 | instance of function f6 |
 | ts2.ts:1:10:1:22 | instance of anonymous function | ts2.ts:1:10:1:22 | instance of anonymous function |
+| tsTest.ts:8:1:10:1 | instance of function setX | tsTest.ts:8:1:10:1 | instance of function setX |
 | tst2.js:3:2:5:1 | instance of anonymous function | tst2.js:3:2:5:1 | instance of anonymous function |
 | tst.js:1:1:39:1 | instance of function tst | tst.js:1:1:39:1 | instance of function tst |
 | tst.js:15:12:15:23 | instance of function xd | tst.js:15:12:15:23 | instance of function xd |
@@ -88,5 +89,4 @@
 | tst.js:144:1:149:1 | instance of function tst3 | tst.js:144:1:149:1 | instance of function tst3 |
 | tst.js:151:1:162:1 | instance of function tst4 | tst.js:151:1:162:1 | instance of function tst4 |
 | tst.js:164:1:172:1 | instance of function tst5 | tst.js:164:1:172:1 | instance of function tst5 |
-| tst.ts:8:1:10:1 | instance of function setX | tst.ts:8:1:10:1 | instance of function setX |
 | with.js:1:1:17:1 | instance of function f | with.js:1:1:17:1 | instance of function f |
