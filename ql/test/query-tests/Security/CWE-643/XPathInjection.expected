@@ -1,0 +1,10 @@
+edges
+| XPathInjection.go:13:14:13:19 | selection of Form : Values | XPathInjection.go:17:29:17:132 | ...+... |
+| XPathInjection.go:14:14:14:19 | selection of Form : Values | XPathInjection.go:17:29:17:132 | ...+... |
+nodes
+| XPathInjection.go:13:14:13:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:14:14:14:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:17:29:17:132 | ...+... | semmle.label | ...+... |
+#select
+| XPathInjection.go:17:29:17:132 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form : Values | XPathInjection.go:17:29:17:132 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:13:14:13:19 | selection of Form | A user-provided value |
+| XPathInjection.go:17:29:17:132 | ...+... | XPathInjection.go:14:14:14:19 | selection of Form : Values | XPathInjection.go:17:29:17:132 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:14:14:14:19 | selection of Form | A user-provided value |
