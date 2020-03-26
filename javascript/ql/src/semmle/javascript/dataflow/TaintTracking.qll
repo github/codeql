@@ -229,18 +229,16 @@ module TaintTracking {
    * promises.
    */
   private class HeapTaintStep extends AdditionalTaintStep {
-    HeapTaintStep() {
-      heapStep(_, this)
-    }
+    HeapTaintStep() { heapStep(_, this) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       heapStep(pred, succ) and succ = this
     }
   }
 
-  /** 
-   * Holds if there is taint propagation through the heap from `pred` to `succ`. 
-   */ 
+  /**
+   * Holds if there is taint propagation through the heap from `pred` to `succ`.
+   */
   private predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Expr e, Expr f | e = succ.asExpr() and f = pred.asExpr() |
       // arrays with tainted elements and objects with tainted property names are tainted
@@ -398,9 +396,9 @@ module TaintTracking {
     }
   }
 
-  /** 
-   * Holds if taint can propagate from `pred` to `succ` with a step related to string manipulation. 
-   */ 
+  /**
+   * Holds if taint can propagate from `pred` to `succ` with a step related to string manipulation.
+   */
   private predicate stringManipulationStep(DataFlow::Node pred, DataFlow::ValueNode succ) {
     // string operations that propagate taint
     exists(string name | name = succ.getAstNode().(MethodCallExpr).getMethodName() |
