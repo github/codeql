@@ -56,7 +56,6 @@ class Node extends TNode {
   string toString() { none() }
 
   /** Gets the location of this node. */
-  cached
   Location getLocation() { none() }
 
   /**
@@ -66,9 +65,11 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
+  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
@@ -112,9 +113,7 @@ class ExprNode extends Node {
     Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getType()
   }
 
-  override Location getLocation() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getLocation()
-  }
+  override Location getLocation() { result = this.getExpr().getLocation() }
 
   override string toString() {
     Stages::DataFlowStage::forceCachingInSameStage() and

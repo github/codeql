@@ -529,6 +529,35 @@ private module Cached {
       commonSubType(t, t2)
     )
   }
+
+  /**
+   * Holds if the field-like read `flr` is not completely determined by explicit
+   * SSA updates.
+   */
+  cached
+  predicate hasNonlocalValue(FieldLikeRead flr) {
+    flr = any(Ssa::ImplicitUntrackedDefinition udef).getARead()
+    or
+    exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
+      def.getARead() = flr and
+      idef = def.getAnUltimateDefinition()
+    |
+      idef instanceof Ssa::ImplicitEntryDefinition or
+      idef instanceof Ssa::ImplicitCallDefinition
+    )
+  }
+
+  cached
+  predicate outRefReturnNode(Ssa::ExplicitDefinition def, OutRefReturnKind kind) {
+    exists(Parameter p |
+      def.isLiveOutRefParameterDefinition(p) and
+      kind.getPosition() = p.getPosition()
+    |
+      p.isOut() and kind instanceof OutReturnKind
+      or
+      p.isRef() and kind instanceof RefReturnKind
+    )
+  }
 }
 
 import Cached
@@ -949,16 +978,7 @@ private module ReturnNodes {
   class OutRefReturnNode extends ReturnNode, SsaDefinitionNode {
     OutRefReturnKind kind;
 
-    OutRefReturnNode() {
-      exists(Parameter p |
-        this.getDefinition().(Ssa::ExplicitDefinition).isLiveOutRefParameterDefinition(p) and
-        kind.getPosition() = p.getPosition()
-      |
-        p.isOut() and kind instanceof OutReturnKind
-        or
-        p.isRef() and kind instanceof RefReturnKind
-      )
-    }
+    OutRefReturnNode() { outRefReturnNode(this.getDefinition(), kind) }
 
     override ReturnKind getKind() { result = kind }
   }
@@ -1268,22 +1288,6 @@ private class FieldLikeAccess extends AssignableAccess, QualifiableExpr {
 }
 
 private class FieldLikeRead extends FieldLikeAccess, AssignableRead { }
-
-/**
- * Holds if the field-like read `flr` is not completely determined by explicit
- * SSA updates.
- */
-private predicate hasNonlocalValue(FieldLikeRead flr) {
-  flr = any(Ssa::ImplicitUntrackedDefinition udef).getARead()
-  or
-  exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
-    def.getARead() = flr and
-    idef = def.getAnUltimateDefinition()
-  |
-    idef instanceof Ssa::ImplicitEntryDefinition or
-    idef instanceof Ssa::ImplicitCallDefinition
-  )
-}
 
 /** A write to a static field/property. */
 private class StaticFieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
