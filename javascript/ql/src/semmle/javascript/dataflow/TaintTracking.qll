@@ -230,42 +230,44 @@ module TaintTracking {
    */
   private class HeapTaintStep extends AdditionalTaintStep {
     HeapTaintStep() {
-      this = DataFlow::valueNode(_) or
-      this = DataFlow::parameterNode(_) or
-      this instanceof DataFlow::PropRead
+      heapStep(_, this)
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      exists(Expr e, Expr f | e = this.asExpr() and f = pred.asExpr() |
-        // arrays with tainted elements and objects with tainted property names are tainted
-        e.(ArrayExpr).getAnElement() = f
-        or
-        exists(Property prop | e.(ObjectExpr).getAProperty() = prop |
-          prop.isComputed() and f = prop.getNameExpr()
-        )
-        or
-        // awaiting a tainted expression gives a tainted result
-        e.(AwaitExpr).getOperand() = f
-        or
-        // spreading a tainted object into an object literal gives a tainted object
-        e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
-        or
-        // spreading a tainted value into an array literal gives a tainted array
-        e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
-      )
-      or
-      // reading from a tainted object yields a tainted result
-      this = succ and
-      succ.(DataFlow::PropRead).getBase() = pred
-      or
-      // iterating over a tainted iterator taints the loop variable
-      exists(ForOfStmt fos |
-        this = DataFlow::valueNode(fos.getIterationDomain()) and
-        pred = this and
-        succ = DataFlow::lvalueNode(fos.getLValue())
-      )
+      heapStep(pred, succ) and succ = this
     }
+  }
+
+  /** 
+   * Holds if there is taint propagation through the heap from `pred` to `succ`. 
+   */ 
+  private predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Expr e, Expr f | e = succ.asExpr() and f = pred.asExpr() |
+      // arrays with tainted elements and objects with tainted property names are tainted
+      e.(ArrayExpr).getAnElement() = f
+      or
+      exists(Property prop | e.(ObjectExpr).getAProperty() = prop |
+        prop.isComputed() and f = prop.getNameExpr()
+      )
+      or
+      // awaiting a tainted expression gives a tainted result
+      e.(AwaitExpr).getOperand() = f
+      or
+      // spreading a tainted object into an object literal gives a tainted object
+      e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
+      or
+      // spreading a tainted value into an array literal gives a tainted array
+      e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
+    )
+    or
+    // reading from a tainted object yields a tainted result
+    succ.(DataFlow::PropRead).getBase() = pred
+    or
+    // iterating over a tainted iterator taints the loop variable
+    exists(ForOfStmt fos |
+      pred = DataFlow::valueNode(fos.getIterationDomain()) and
+      succ = DataFlow::lvalueNode(fos.getLValue())
+    )
   }
 
   /**
@@ -388,84 +390,91 @@ module TaintTracking {
    * functions defined in the standard library.
    */
   private class StringManipulationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+    StringManipulationTaintStep() { stringManipulationStep(_, this) }
+
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
-      (
-        // string operations that propagate taint
-        exists(string name | name = astNode.(MethodCallExpr).getMethodName() |
-          pred.asExpr() = astNode.(MethodCallExpr).getReceiver() and
-          (
-            // sorted, interesting, properties of String.prototype
-            name = "anchor" or
-            name = "big" or
-            name = "blink" or
-            name = "bold" or
-            name = "concat" or
-            name = "fixed" or
-            name = "fontcolor" or
-            name = "fontsize" or
-            name = "italics" or
-            name = "link" or
-            name = "padEnd" or
-            name = "padStart" or
-            name = "repeat" or
-            name = "replace" or
-            name = "slice" or
-            name = "small" or
-            name = "split" or
-            name = "strike" or
-            name = "sub" or
-            name = "substr" or
-            name = "substring" or
-            name = "sup" or
-            name = "toLocaleLowerCase" or
-            name = "toLocaleUpperCase" or
-            name = "toLowerCase" or
-            name = "toUpperCase" or
-            name = "trim" or
-            name = "trimLeft" or
-            name = "trimRight" or
-            // sorted, interesting, properties of Object.prototype
-            name = "toString" or
-            name = "valueOf" or
-            // sorted, interesting, properties of Array.prototype
-            name = "join"
-          )
-          or
-          exists(int i | pred.asExpr() = astNode.(MethodCallExpr).getArgument(i) |
-            name = "concat"
-            or
-            name = "replace" and i = 1
-          )
-        )
-        or
-        // standard library constructors that propagate taint: `RegExp` and `String`
-        exists(DataFlow::InvokeNode invk, string gv | gv = "RegExp" or gv = "String" |
-          this = invk and
-          invk = DataFlow::globalVarRef(gv).getAnInvocation() and
-          pred = invk.getArgument(0)
-        )
-        or
-        // String.fromCharCode and String.fromCodePoint
-        exists(int i, MethodCallExpr mce |
-          mce = astNode and
-          pred.asExpr() = mce.getArgument(i) and
-          (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
-        )
-        or
-        // `(encode|decode)URI(Component)?` propagate taint
-        exists(DataFlow::CallNode c, string name |
-          this = c and
-          c = DataFlow::globalVarRef(name).getACall() and
-          pred = c.getArgument(0)
-        |
-          name = "encodeURI" or
-          name = "decodeURI" or
-          name = "encodeURIComponent" or
-          name = "decodeURIComponent"
-        )
-      )
+      stringManipulationStep(pred, succ)
     }
+  }
+
+  /** 
+   * Holds if taint can propagate from `pred` to `succ` with a step related to string manipulation. 
+   */ 
+  private predicate stringManipulationStep(DataFlow::Node pred, DataFlow::ValueNode succ) {
+    // string operations that propagate taint
+    exists(string name | name = succ.getAstNode().(MethodCallExpr).getMethodName() |
+      pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
+      (
+        // sorted, interesting, properties of String.prototype
+        name = "anchor" or
+        name = "big" or
+        name = "blink" or
+        name = "bold" or
+        name = "concat" or
+        name = "fixed" or
+        name = "fontcolor" or
+        name = "fontsize" or
+        name = "italics" or
+        name = "link" or
+        name = "padEnd" or
+        name = "padStart" or
+        name = "repeat" or
+        name = "replace" or
+        name = "slice" or
+        name = "small" or
+        name = "split" or
+        name = "strike" or
+        name = "sub" or
+        name = "substr" or
+        name = "substring" or
+        name = "sup" or
+        name = "toLocaleLowerCase" or
+        name = "toLocaleUpperCase" or
+        name = "toLowerCase" or
+        name = "toUpperCase" or
+        name = "trim" or
+        name = "trimLeft" or
+        name = "trimRight" or
+        // sorted, interesting, properties of Object.prototype
+        name = "toString" or
+        name = "valueOf" or
+        // sorted, interesting, properties of Array.prototype
+        name = "join"
+      )
+      or
+      exists(int i | pred.asExpr() = succ.getAstNode().(MethodCallExpr).getArgument(i) |
+        name = "concat"
+        or
+        name = "replace" and i = 1
+      )
+    )
+    or
+    // standard library constructors that propagate taint: `RegExp` and `String`
+    exists(DataFlow::InvokeNode invk, string gv | gv = "RegExp" or gv = "String" |
+      succ = invk and
+      invk = DataFlow::globalVarRef(gv).getAnInvocation() and
+      pred = invk.getArgument(0)
+    )
+    or
+    // String.fromCharCode and String.fromCodePoint
+    exists(int i, MethodCallExpr mce |
+      mce = succ.getAstNode() and
+      pred.asExpr() = mce.getArgument(i) and
+      (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
+    )
+    or
+    // `(encode|decode)URI(Component)?` propagate taint
+    exists(DataFlow::CallNode c, string name |
+      succ = c and
+      c = DataFlow::globalVarRef(name).getACall() and
+      pred = c.getArgument(0)
+    |
+      name = "encodeURI" or
+      name = "decodeURI" or
+      name = "encodeURIComponent" or
+      name = "decodeURIComponent"
+    )
   }
 
   /**
