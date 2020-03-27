@@ -1,18 +1,25 @@
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
-import org.springframework.stereotype.Component;
+<project xmlns="http://maven.apache.org/POM/4.0.0"   
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0   
+http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  
+  <modelVersion>4.0.0</modelVersion>  
+  
+  <groupId>com.test.</groupId>  
+  <artifactId>my-vulnerable-application</artifactId>  
+  <version>1.0</version>  
+  <packaging>jar</packaging>  
+  
+  <name>Spring Security OAuth</name>  
+  <url>http://maven.apache.org</url>  
 
-import javax.annotation.PostConstruct;
-
-@Component
-public class AuthorizationEndpointConfigurer {
-
-    @Autowired
-    private AuthorizationEndpoint authorizationEndpoint;
-
-    @PostConstruct
-    public void init() {
-      //BAD: if spring security oauth version is old, RCE attack can be used.
-      authorizationEndpoint.setUserApprovalPage("forward:/oauth/confirm_access");
-    }
-}
+  <dependencies>  
+    <dependency>  
+      <groupId>org.springframework.security.oauth</groupId>  
+      <artifactId>spring-security-oauth2</artifactId>  
+      <!--BAD: This version is affected from this vulnerability-->
+      <version>2.0.7.RELEASE</version>  
+      <scope>test</scope>  
+    </dependency>  
+  </dependencies>  
+</project>  
