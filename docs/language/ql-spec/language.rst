@@ -1141,7 +1141,7 @@ The values of the aggregation expression are given by applying the aggregation f
 
 -  If the aggregation id is ``strictconcat``, then the result is the same as for ``concat`` except in the case where there are no aggregation tuples in which case the aggregation has no value.
 
- -  If the aggregation id is ``unique``, then the result is the the value of the aggregation variable if there is precisely one such value. Otherwise, the aggregation has no value.
+ -  If the aggregation id is ``unique``, then the result is the value of the aggregation variable if there is precisely one such value. Otherwise, the aggregation has no value.
 
 Any
 ~~~
