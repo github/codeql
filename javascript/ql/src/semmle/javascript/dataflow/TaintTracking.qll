@@ -497,35 +497,30 @@ module TaintTracking {
    * A taint-propagating data flow edge from the first (and only) argument in a call to
    * `RegExp.prototype.exec` to its result.
    */
-  private class RegExpExecTaintStep extends AdditionalTaintStep {
-    DataFlow::MethodCallNode self;
-
-    RegExpExecTaintStep() {
-      this = self and
-      self.getReceiver().analyze().getAType() = TTRegExp() and
-      self.getMethodName() = "exec" and
-      self.getNumArgument() = 1
-    }
-
+  private class RegExpExecTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = self.getArgument(0) and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getReceiver().analyze().getAType() = TTRegExp() and
+        call.getMethodName() = "exec" and
+        call.getNumArgument() = 1 and
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 
   /**
    * A taint propagating data flow edge arising from calling `String.prototype.match()`.
    */
-  private class StringMatchTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
-    StringMatchTaintStep() {
-      this.getMethodName() = "match" and
-      this.getNumArgument() = 1 and
-      this.getArgument(0).analyze().getAType() = TTRegExp()
-    }
-
+  private class StringMatchTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this.getReceiver() and
-      succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "match" and
+        call.getNumArgument() = 1 and
+        call.getArgument(0).analyze().getAType() = TTRegExp() and
+        pred = call.getReceiver() and
+        succ = call
+      )
     }
   }
 
