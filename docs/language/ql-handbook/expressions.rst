@@ -286,7 +286,7 @@ The following aggregates are available in QL:
   then the aggregate evaluates to that value.
   Otherwise, the aggregate has no value.
 
-  For example, the following aggregation yields the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
+  For example, the following query returns the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
   For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values, so the
   value for ``y`` in the aggregate expression is not uniquely determined. ::
 
