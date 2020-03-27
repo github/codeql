@@ -609,32 +609,28 @@ pragma[inline]
 private predicate basicFlowStepNoBarrier(
   DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
 ) {
-  isLive() and
-  isRelevantForward(pred, cfg) and
-  (
-    // Local flow
-    exists(FlowLabel predlbl, FlowLabel succlbl |
-      localFlowStep(pred, succ, cfg, predlbl, succlbl) and
-      not cfg.isBarrierEdge(pred, succ) and
-      summary = MkPathSummary(false, false, predlbl, succlbl)
-    )
-    or
-    // Flow through properties of objects
-    propertyFlowStep(pred, succ) and
-    summary = PathSummary::level()
-    or
-    // Flow through global variables
-    globalFlowStep(pred, succ) and
-    summary = PathSummary::level()
-    or
-    // Flow into function
-    callStep(pred, succ) and
-    summary = PathSummary::call()
-    or
-    // Flow out of function
-    returnStep(pred, succ) and
-    summary = PathSummary::return()
+  // Local flow
+  exists(FlowLabel predlbl, FlowLabel succlbl |
+    localFlowStep(pred, succ, cfg, predlbl, succlbl) and
+    not cfg.isBarrierEdge(pred, succ) and
+    summary = MkPathSummary(false, false, predlbl, succlbl)
   )
+  or
+  // Flow through properties of objects
+  propertyFlowStep(pred, succ) and
+  summary = PathSummary::level()
+  or
+  // Flow through global variables
+  globalFlowStep(pred, succ) and
+  summary = PathSummary::level()
+  or
+  // Flow into function
+  callStep(pred, succ) and
+  summary = PathSummary::call()
+  or
+  // Flow out of function
+  returnStep(pred, succ) and
+  summary = PathSummary::return()
 }
 
 /**
@@ -647,6 +643,7 @@ private predicate basicFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
 ) {
   basicFlowStepNoBarrier(pred, succ, summary, cfg) and
+  isRelevant(pred, cfg) and
   not isLabeledBarrierEdge(cfg, pred, succ, summary.getStartLabel()) and
   not isBarrierEdge(cfg, pred, succ)
 }
@@ -661,17 +658,21 @@ private predicate basicFlowStep(
 private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
-  basicFlowStepNoBarrier(pred, succ, _, cfg) or
-  basicStoreStep(pred, succ, _) or
-  basicLoadStep(pred, succ, _) or
-  isAdditionalStoreStep(pred, succ, _, cfg) or
-  isAdditionalLoadStep(pred, succ, _, cfg) or
-  isAdditionalLoadStoreStep(pred, succ, _, cfg) or
-  // the following three disjuncts taken together over-approximate flow through
-  // higher-order calls
-  callback(pred, succ) or
-  succ = pred.(DataFlow::FunctionNode).getAParameter() or
-  exploratoryBoundInvokeStep(pred, succ)
+  isRelevantForward(pred, cfg) and
+  isLive() and
+  (
+    basicFlowStepNoBarrier(pred, succ, _, cfg) or
+    basicStoreStep(pred, succ, _) or
+    basicLoadStep(pred, succ, _) or
+    isAdditionalStoreStep(pred, succ, _, cfg) or
+    isAdditionalLoadStep(pred, succ, _, cfg) or
+    isAdditionalLoadStoreStep(pred, succ, _, cfg) or
+    // the following three disjuncts taken together over-approximate flow through
+    // higher-order calls
+    callback(pred, succ) or
+    succ = pred.(DataFlow::FunctionNode).getAParameter() or
+    exploratoryBoundInvokeStep(pred, succ)
+  )
 }
 
 /**
@@ -826,9 +827,11 @@ private predicate storeStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
+  isRelevant(pred, cfg) and
   basicStoreStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
+  isRelevant(pred, cfg) and
   isAdditionalStoreStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
@@ -925,9 +928,11 @@ private predicate loadStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
+  isRelevant(pred, cfg) and
   basicLoadStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
+  isRelevant(pred, cfg) and
   isAdditionalLoadStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
@@ -1148,7 +1153,6 @@ private predicate flowStep(
     // Flow into higher-order call
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
-  isRelevant(succ, cfg) and
   not cfg.isBarrier(succ) and
   not isBarrierEdge(cfg, pred, succ) and
   not isLabeledBarrierEdge(cfg, pred, succ, summary.getEndLabel()) and
@@ -1202,10 +1206,23 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
   not cfg.isLabeledBarrier(nd, summary.getEndLabel())
   or
   exists(DataFlow::Node mid, PathSummary stepSummary |
-    reachableFromSource(nd, cfg, summary) and
-    flowStep(nd, id(cfg), mid, stepSummary) and
+    onPathStep(nd, cfg, summary, stepSummary, mid) and
     onPath(mid, id(cfg), summary.append(stepSummary))
   )
+}
+
+/**
+ * Holds if `nd` can be reached from a source under `cfg`,
+ * and there is a flowStep from `nd` (with summary `summary`) to `mid` (with summary `stepSummary`).
+ *
+ * This predicate has been outlined from `onPath` to give the optimizer a hint about join-ordering.
+ */
+private predicate onPathStep(
+  DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary, PathSummary stepSummary,
+  DataFlow::Node mid
+) {
+  reachableFromSource(nd, cfg, summary) and
+  flowStep(nd, id(cfg), mid, stepSummary)
 }
 
 /**
