@@ -8,13 +8,12 @@ module ArrayTaintTracking {
   /**
    * A taint propagating data flow edge caused by the builtin array functions.
    */
-  private class ArrayFunctionTaintStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::CallNode call;
-
-    ArrayFunctionTaintStep() { this = call }
+  private class ArrayFunctionTaintStep extends TaintTracking::AdditionalTaintStep,
+    DataFlow::CallNode {
+    ArrayFunctionTaintStep() { arrayFunctionTaintStep(_, _, this) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      arrayFunctionTaintStep(pred, succ, call)
+      arrayFunctionTaintStep(pred, succ, this)
     }
   }
 
