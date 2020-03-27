@@ -10,7 +10,30 @@ private module StdlibHttp {
     DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName = "Body" or fieldName = "Form" or fieldName = "Header" or fieldName = "URL"
+        fieldName = "Body" or
+        fieldName = "GetBody" or
+        fieldName = "Form" or
+        fieldName = "PostForm" or
+        fieldName = "MultipartForm" or
+        fieldName = "Header" or
+        fieldName = "Trailer" or
+        fieldName = "URL"
+      )
+    }
+  }
+
+  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
+    DataFlow::MethodCallNode {
+    UserControlledRequestMethod() {
+      exists(string methName | this.getTarget().hasQualifiedName("net/http", "Request", methName) |
+        methName = "Cookie" or
+        methName = "Cookies" or
+        methName = "FormFile" or
+        methName = "FormValue" or
+        methName = "MultipartReader" or
+        methName = "PostFormValue" or
+        methName = "Referer" or
+        methName = "UserAgent"
       )
     }
   }

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"encoding/json"
+	"net/http"
 )
 
 func jsonTest(v interface{}) []interface{} {
@@ -20,4 +21,10 @@ func hexTest(encoded string) []interface{} {
 	// attacks, so until we have support for flow labels we do not track taint through this
 	reEncoded := hex.EncodeToString(decoded)
 	return [](interface{}){decoded, err, reEncoded}
+}
+
+func readTest(req *http.Request) string {
+	b := make([]byte, 8)
+	req.Body.Read(b)
+	return string(b)
 }
