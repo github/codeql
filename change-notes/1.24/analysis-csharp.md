@@ -21,6 +21,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | Potentially dangerous use of non-short-circuit logic (`cs/non-short-circuit`) | Fewer false positive results | Results have been removed when the expression contains an `out` parameter. |
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | More results | Results are reported from parameters with a default value of `null`. |
 | Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the value assigned is an (implicitly or explicitly) cast default-like value. For example, `var s = (string)null` and `string s = default`. |
+| XPath injection (`cs/xml/xpath-injection`) | More results | The query now recognizes calls to methods on `System.Xml.XPath.XPathNavigator` objects. |
 
 ## Removal of old queries
 

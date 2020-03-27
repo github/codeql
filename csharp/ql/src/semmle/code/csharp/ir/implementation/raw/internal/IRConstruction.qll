@@ -62,7 +62,21 @@ private module Cached {
   }
 
   cached
+  predicate hasDynamicInitializationFlag(Callable callable, Language::Variable var, CSharpType type) {
+    none()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
+
+  cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
 
   cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {

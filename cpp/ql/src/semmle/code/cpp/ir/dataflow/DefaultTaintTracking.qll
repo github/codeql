@@ -60,7 +60,14 @@ private DataFlow::Node getNodeForSource(Expr source) {
   (
     result = DataFlow::exprNode(source)
     or
-    result = DataFlow::definitionByReferenceNode(source)
+    // Some of the sources in `isUserInput` are intended to match the value of
+    // an expression, while others (those modeled below) are intended to match
+    // the taint that propagates out of an argument, like the `char *` argument
+    // to `gets`. It's impossible here to tell which is which, but the "access
+    // to argv" source is definitely not intended to match an output argument,
+    // and it causes false positives if we let it.
+    result = DataFlow::definitionByReferenceNode(source) and
+    not argv(source.(VariableAccess).getTarget())
   )
 }
 
@@ -76,6 +83,8 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
@@ -96,6 +105,8 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
@@ -119,6 +130,8 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
@@ -153,6 +166,11 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
   )
 }
 
+private predicate nodeIsBarrierIn(DataFlow::Node node) {
+  // don't use dataflow into taint sources, as this leads to duplicate results.
+  node = getNodeForSource(any(Expr e))
+}
+
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
   exists(CallInstruction call, int argIndex | call = i2 |
@@ -172,7 +190,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(UnaryInstruction).getUnary() = i1
   or
   i2.(ChiInstruction).getPartial() = i1 and
-  not isChiForAllAliasedMemory(i2)
+  not i2.isResultConflated()
   or
   exists(BinaryInstruction bin |
     bin = i2 and
@@ -265,19 +283,6 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
   )
 }
 
-/**
- * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
- * Taint shoud not pass through these instructions since they tend to mix up
- * unrelated objects.
- */
-private predicate isChiForAllAliasedMemory(Instruction instr) {
-  instr.(ChiInstruction).getTotal() instanceof AliasedDefinitionInstruction
-  or
-  isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
-  or
-  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInput())
-}
-
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {
   // Taint flow from parameter to return value
   exists(FunctionInput modelIn, FunctionOutput modelOut |
@@ -343,6 +348,7 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
     cfg.hasFlow(getNodeForSource(source), sink) and
@@ -350,6 +356,7 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
+cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
   globalVar = ""

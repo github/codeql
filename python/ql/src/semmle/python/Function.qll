@@ -1,7 +1,9 @@
 import python
 
-/** A function, independent of defaults and binding.
-    It is the syntactic entity that is compiled to a code object. */
+/** 
+ * A function, independent of defaults and binding.
+ * It is the syntactic entity that is compiled to a code object. 
+ */
 class Function extends Function_, Scope, AstNode {
 
     /** The expression defining this function */
@@ -10,7 +12,7 @@ class Function extends Function_, Scope, AstNode {
     }
 
     /** The scope in which this function occurs, will be a class for a method,
-     *  another function for nested functions, generator expressions or comprehensions, 
+     * another function for nested functions, generator expressions or comprehensions, 
      * or a module for a plain function. */
     override Scope getEnclosingScope() {
         result = this.getParent().(Expr).getScope()
@@ -33,8 +35,10 @@ class Function extends Function_, Scope, AstNode {
             name != "__init__")
     }
 
-    /** Whether this function is a generator function,
-        that is whether it contains a yield or yield-from expression */
+    /** 
+     * Whether this function is a generator function,
+     * that is whether it contains a yield or yield-from expression 
+     */
     predicate isGenerator() {
         exists(Yield y | y.getScope() = this)
         or
@@ -323,7 +327,7 @@ class Parameter extends Parameter_ {
 abstract class CallableExpr extends Expr {
 
     /** Gets the parameters of this callable.
-     *  This predicate is called getArgs(), rather than getParameters() for compatibility with Python's AST module. */
+     * This predicate is called getArgs(), rather than getParameters() for compatibility with Python's AST module. */
     abstract Arguments getArgs();
 
     /** Gets the function scope of this code expression. */

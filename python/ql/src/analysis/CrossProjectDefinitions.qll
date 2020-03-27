@@ -48,8 +48,7 @@ class Symbol extends TSymbol {
         )
     }
 
-    /** Finds the `AstNode` that this `Symbol` refers to.
-     */
+    /** Finds the `AstNode` that this `Symbol` refers to. */
     AstNode find() {
         this = TModule(result)
         or
@@ -91,8 +90,7 @@ class Symbol extends TSymbol {
         )
     }
 
-    /** Gets the `Symbol` that is the named member of this `Symbol`.
-     */
+    /** Gets the `Symbol` that is the named member of this `Symbol`. */
     Symbol getMember(string name) {
         result = TMember(this, name)
     }

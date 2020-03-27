@@ -21,40 +21,41 @@ predicate returnsVoid(Function f) {
 }
 
 predicate isStub(Function f) {
-    f.getBody().(BlockStmt).getNumChild() = 0 
-    or
-    f instanceof ExternalDecl
+  f.getBody().(BlockStmt).getNumChild() = 0
+  or
+  f instanceof ExternalDecl
 }
 
 /**
  * Holds if `e` is in a syntactic context where it likely is fine that the value of `e` comes from a call to a returnless function.
  */
 predicate benignContext(Expr e) {
-  inVoidContext(e) or 
-  
+  inVoidContext(e)
+  or
   // A return statement is often used to just end the function.
   e = any(Function f).getBody()
   or
   e = any(ReturnStmt r).getExpr()
-  or 
-  exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond)) 
-  or 
-  exists(LogicalBinaryExpr bin | bin.getAnOperand() = e and benignContext(bin)) 
+  or
+  exists(ConditionalExpr cond | cond.getABranch() = e and benignContext(cond))
+  or
+  exists(LogicalBinaryExpr bin | bin.getAnOperand() = e and benignContext(bin))
   or
   exists(Expr parent | parent.getUnderlyingValue() = e and benignContext(parent))
-  or 
+  or
   any(VoidExpr voidExpr).getOperand() = e
   or
   // weeds out calls inside HTML-attributes.
-  e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute or
+  e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute
+  or
   // and JSX-attributes.
-  e = any(JSXAttribute attr).getValue() or 
-  
-  exists(AwaitExpr await | await.getOperand() = e and benignContext(await)) 
+  e = any(JSXAttribute attr).getValue()
+  or
+  exists(AwaitExpr await | await.getOperand() = e and benignContext(await))
   or
   // Avoid double reporting with js/trivial-conditional
   isExplicitConditional(_, e)
-  or 
+  or
   // Avoid double reporting with js/comparison-between-incompatible-types
   any(Comparison binOp).getAnOperand() = e
   or
@@ -62,13 +63,18 @@ predicate benignContext(Expr e) {
   any(PropAccess ac).getBase() = e
   or
   // Avoid double-reporting with js/unused-local-variable
-  exists(VariableDeclarator v | v.getInit() = e and v.getBindingPattern().getVariable() instanceof UnusedLocal)
+  exists(VariableDeclarator v |
+    v.getInit() = e and v.getBindingPattern().getVariable() instanceof UnusedLocal
+  )
   or
   // Avoid double reporting with js/call-to-non-callable
   any(InvokeExpr invoke).getCallee() = e
   or
-  // arguments to Promise.resolve (and promise library variants) are benign. 
+  // arguments to Promise.resolve (and promise library variants) are benign.
   e = any(PromiseCreationCall promise).getValue().asExpr()
+  or
+  // arguments to other (unknown) promise creations.
+  e = any(DataFlow::CallNode call | call.getCalleeName() = "resolve").getAnArgument().asExpr()
 }
 
 predicate oneshotClosure(DataFlow::CallNode call) {
@@ -86,15 +92,13 @@ predicate alwaysThrows(Function f) {
 /**
  * Holds if the last statement in the function is flagged by the js/useless-expression query.
  */
-predicate lastStatementHasNoEffect(Function f) {
-  hasNoEffect(f.getExit().getAPredecessor())
-}
+predicate lastStatementHasNoEffect(Function f) { hasNoEffect(f.getExit().getAPredecessor()) }
 
 /**
  * Holds if `func` is a callee of `call`, and all possible callees of `call` never return a value.
  */
 predicate callToVoidFunction(DataFlow::CallNode call, Function func) {
-  not call.isIncomplete() and 
+  not call.isIncomplete() and
   func = call.getACallee() and
   forall(Function f | f = call.getACallee() |
     returnsVoid(f) and not isStub(f) and not alwaysThrows(f)
@@ -122,22 +126,20 @@ predicate hasNonVoidCallbackMethod(string name) {
 DataFlow::SourceNode array(DataFlow::TypeTracker t) {
   t.start() and result instanceof DataFlow::ArrayCreationNode
   or
-  exists (DataFlow::TypeTracker t2 |
-    result = array(t2).track(t2, t)
-  )
+  exists(DataFlow::TypeTracker t2 | result = array(t2).track(t2, t))
 }
 
 DataFlow::SourceNode array() { result = array(DataFlow::TypeTracker::end()) }
 
 /**
  * Holds if `call` is an Array or Lodash method accepting a callback `func`,
- * where the `call` expects a callback that returns an expression, 
- * but `func` does not return a value. 
+ * where the `call` expects a callback that returns an expression,
+ * but `func` does not return a value.
  */
 predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
   hasNonVoidCallbackMethod(call.getCalleeName()) and
-  exists(int index | 
-    index = min(int i | exists(call.getCallback(i))) and 
+  exists(int index |
+    index = min(int i | exists(call.getCallback(i))) and
     func = call.getCallback(index).getFunction()
   ) and
   returnsVoid(func) and
@@ -151,71 +153,20 @@ predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
 }
 
 predicate hasNonVoidReturnType(Function f) {
-  exists(TypeAnnotation type | type = f.getReturnTypeAnnotation() | 
-    not type.isVoid()
-  )
-}
-
-
-/**
- * Provides classes for working with various Deferred implementations. 
- * It is a heuristic. The heuristic assume that a class is a promise defintion 
- * if the class is called "Deferred" and the method `resolve` is called on an instance.
- *  
- * Removes some false positives in the js/use-of-returnless-function query.  
- */
-module Deferred {
-  /**
-   * An instance of a `Deferred` class. 
-   * For example the result from `new Deferred()` or `new $.Deferred()`.
-   */
-  class DeferredInstance extends DataFlow::NewNode {
-  	// Describes both `new Deferred()`, `new $.Deferred` and other variants. 
-    DeferredInstance() { this.getCalleeName() = "Deferred" }
-
-    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-      t.start() and
-      result = this
-      or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-    }
-    
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
-  }
-
-  /**
-   * A promise object created by a Deferred constructor
-   */
-  private class DeferredPromiseDefinition extends PromiseDefinition, DeferredInstance {
-    DeferredPromiseDefinition() {
-      // hardening of the "Deferred" heuristic: a method call to `resolve`. 
-      exists(ref().getAMethodCall("resolve"))
-    }
-
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
-  }
-
-  /**
-   * A resolved promise created by a `new Deferred().resolve()` call.
-   */
-  class ResolvedDeferredPromiseDefinition extends PromiseCreationCall {
-    ResolvedDeferredPromiseDefinition() {
-      this = any(DeferredPromiseDefinition def).ref().getAMethodCall("resolve")
-    }
-
-    override DataFlow::Node getValue() { result = getArgument(0) }
-  }
+  exists(TypeAnnotation type | type = f.getReturnTypeAnnotation() | not type.isVoid())
 }
 
 from DataFlow::CallNode call, Function func, string name, string msg
 where
   (
-    callToVoidFunction(call, func) and 
+    callToVoidFunction(call, func) and
     msg = "the $@ does not return anything, yet the return value is used." and
     name = func.describe()
     or
-    voidArrayCallback(call, func) and 
-    msg = "the $@ does not return anything, yet the return value from the call to " + call.getCalleeName() + " is used." and
+    voidArrayCallback(call, func) and
+    msg =
+      "the $@ does not return anything, yet the return value from the call to " +
+        call.getCalleeName() + " is used." and
     name = "callback function"
   ) and
   not benignContext(call.getEnclosingExpr()) and
@@ -224,5 +175,4 @@ where
   not oneshotClosure(call) and
   not hasNonVoidReturnType(func) and
   not call.getEnclosingExpr() instanceof SuperCall
-select
-  call, msg, func, name
+select call, msg, func, name

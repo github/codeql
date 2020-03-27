@@ -267,6 +267,9 @@ module Closure {
       result = this
     }
 
-    override DataFlow::Node getBoundReceiver() { result = getArgument(1) }
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getArgument(0) and
+      result = getArgument(1)
+    }
   }
 }

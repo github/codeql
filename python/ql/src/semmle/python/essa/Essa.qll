@@ -142,8 +142,8 @@ private cached newtype TEssaDefinition =
     }
 
 /** Definition of an extended-SSA (ESSA) variable.
- *  There is exactly one definition for each variable,
- *  and exactly one variable for each definition.
+ * There is exactly one definition for each variable,
+ * and exactly one variable for each definition.
  */
 abstract class EssaDefinition extends TEssaDefinition {
 
@@ -471,8 +471,7 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
 
 }
 
-/** A definition of an ESSA variable that takes another ESSA variable as an input.
- */
+/** A definition of an ESSA variable that takes another ESSA variable as an input. */
 class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
 
     override string toString() {
@@ -609,6 +608,7 @@ class MultiAssignmentDefinition extends EssaNodeDefinition {
         )
     }
 
+    /** Holds if `this` has (zero-based) index `index` in `lhs`. */
     predicate indexOf(int index, SequenceNode lhs) {
         SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index, lhs)
     }

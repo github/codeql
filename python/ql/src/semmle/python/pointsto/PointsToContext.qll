@@ -38,7 +38,7 @@ private int syntactic_call_count(Scope s) {
 
 private int incoming_call_cost(Scope s) {
     /* Syntactic call count will often be a considerable overestimate
-     *  of the actual number of calls, so we use the square root.
+     * of the actual number of calls, so we use the square root.
      * Cost = log(sqrt(call-count))
      */
     result = ((syntactic_call_count(s)+1).log(2)*0.5).floor()

@@ -8,146 +8,7 @@
 
 private import javascript
 private import internal.FlowSteps
-
-private class PropertyName extends string {
-  PropertyName() {
-    this = any(DataFlow::PropRef pr).getPropertyName()
-    or
-    AccessPath::isAssignedInUniqueFile(this)
-    or
-    exists(AccessPath::getAnAssignmentTo(_, this))
-  }
-}
-
-private class OptionalPropertyName extends string {
-  OptionalPropertyName() { this instanceof PropertyName or this = "" }
-}
-
-/**
- * A description of a step on an inter-procedural data flow path.
- */
-private newtype TStepSummary =
-  LevelStep() or
-  CallStep() or
-  ReturnStep() or
-  StoreStep(PropertyName prop) or
-  LoadStep(PropertyName prop)
-
-/**
- * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
- *
- * A description of a step on an inter-procedural data flow path.
- */
-class StepSummary extends TStepSummary {
-  /** Gets a textual representation of this step summary. */
-  string toString() {
-    this instanceof LevelStep and result = "level"
-    or
-    this instanceof CallStep and result = "call"
-    or
-    this instanceof ReturnStep and result = "return"
-    or
-    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
-    or
-    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
-  }
-}
-
-module StepSummary {
-  /**
-   * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
-   */
-  cached
-  predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
-  }
-
-  /**
-   * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
-   */
-  predicate smallstep(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
-    // Flow through properties of objects
-    propertyFlowStep(pred, succ) and
-    summary = LevelStep()
-    or
-    // Flow through global variables
-    globalFlowStep(pred, succ) and
-    summary = LevelStep()
-    or
-    // Flow into function
-    callStep(pred, succ) and
-    summary = CallStep()
-    or
-    // Flow out of function
-    returnStep(pred, succ) and
-    summary = ReturnStep()
-    or
-    // Flow through an instance field between members of the same class
-    DataFlow::localFieldStep(pred, succ) and
-    summary = LevelStep()
-    or
-    exists(string prop |
-      basicStoreStep(pred, succ, prop) and
-      summary = StoreStep(prop)
-      or
-      basicLoadStep(pred, succ, prop) and
-      summary = LoadStep(prop)
-    )
-    or
-    any(AdditionalTypeTrackingStep st).step(pred, succ) and
-    summary = LevelStep()
-    or
-    // Store to global access path
-    exists(string name |
-      pred = AccessPath::getAnAssignmentTo(name) and
-      AccessPath::isAssignedInUniqueFile(name) and
-      succ = DataFlow::globalAccessPathRootPseudoNode() and
-      summary = StoreStep(name)
-    )
-    or
-    // Load from global access path
-    exists(string name |
-      succ = AccessPath::getAReferenceTo(name) and
-      AccessPath::isAssignedInUniqueFile(name) and
-      pred = DataFlow::globalAccessPathRootPseudoNode() and
-      summary = LoadStep(name)
-    )
-    or
-    // Store to non-global access path
-    exists(string name |
-      pred = AccessPath::getAnAssignmentTo(succ, name) and
-      summary = StoreStep(name)
-    )
-    or
-    // Load from non-global access path
-    exists(string name |
-      succ = AccessPath::getAReferenceTo(pred, name) and
-      summary = LoadStep(name) and
-      name != ""
-    )
-    or
-    // Summarize calls with flow directly from a parameter to a return.
-    exists(DataFlow::ParameterNode param, DataFlow::FunctionNode fun |
-      (
-        param.flowsTo(fun.getAReturn()) and
-        summary = LevelStep()
-        or
-        exists(string prop |
-          param.getAPropertyRead(prop).flowsTo(fun.getAReturn()) and
-          summary = LoadStep(prop)
-        )
-      ) and
-      if param = fun.getAParameter() then (
-        // Step from argument to call site.
-        argumentPassing(succ, pred, fun.getFunction(), param)
-      ) else (
-        // Step from captured parameter to local call sites
-        pred = param and
-        succ = fun.getAnInvocation()
-      )
-    )
-  }
-}
+private import internal.StepSummary
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
@@ -214,6 +75,18 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking.
    */
   predicate start() { hasCall = false and prop = "" }
+
+  /**
+   * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`.
+   * The type tracking only ends after the property has been loaded.
+   */
+  predicate startInProp(PropertyName propName) { hasCall = false and prop = propName }
+
+  /**
+   * Holds if this is the starting point of type tracking, and the initial value is a promise.
+   * The type tracking only ends after the value has been extracted from the promise.
+   */
+  predicate startInPromise() { startInProp(Promises::valueProp()) }
 
   /**
    * Holds if this is the starting point of type tracking

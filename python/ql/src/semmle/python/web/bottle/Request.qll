@@ -71,7 +71,7 @@ class UntrustedFile extends TaintKind {
 /** Parameter to a bottle request handler function */
 class BottleRequestParameter extends HttpRequestTaintSource {
     BottleRequestParameter() {
-        exists(BottleRoute route | route.getNamedArgument() = this.(ControlFlowNode).getNode())
+        exists(BottleRoute route | route.getANamedArgument() = this.(ControlFlowNode).getNode())
     }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof UntrustedStringKind }

@@ -286,14 +286,14 @@ module DictKind {
 pragma[noinline]
 private predicate subscript_index(ControlFlowNode obj, SubscriptNode sub) {
     sub.isLoad() and
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     not sub.getNode().getIndex() instanceof Slice
 }
 
 pragma[noinline]
 private predicate subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
     sub.isLoad() and
-    sub.getValue() = obj and
+    sub.getObject() = obj and
     sub.getNode().getIndex() instanceof Slice
 }
 

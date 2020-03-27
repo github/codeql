@@ -262,3 +262,21 @@ char StringLiteralAliasing2(bool b) {
   const char* s = "Literal";
   return s[2];
 }
+
+void *malloc(int size);
+
+void *MallocAliasing(void *s, int size) {
+  void *buf = malloc(size);
+  memcpy(buf, s, size);
+  return buf;
+}
+
+Point *pp;
+void EscapedButNotConflated(bool c, Point p, int x1) {
+  Point a = {};
+  pp = &a; // `a` escapes here and therefore belongs to the aliased vvar
+  if (c) {
+    a.x = x1;
+  }
+  int x = a.x; // The phi node here is not conflated
+}
