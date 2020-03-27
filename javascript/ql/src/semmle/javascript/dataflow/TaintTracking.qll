@@ -480,17 +480,12 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from string formatting.
    */
-  private class StringFormattingTaintStep extends AdditionalTaintStep {
-    PrintfStyleCall call;
-
-    StringFormattingTaintStep() {
-      this = call and
-      call.returnsFormatted()
-    }
-
+  private class StringFormattingTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      (
+      exists(PrintfStyleCall call |
+        call.returnsFormatted() and
+        succ = call
+      |
         pred = call.getFormatString()
         or
         pred = call.getFormatArgument(_)
