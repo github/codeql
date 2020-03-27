@@ -317,11 +317,8 @@ module TaintTracking {
    * a map, not as a real object. In this case, it makes sense to consider the entire
    * map to be tainted as soon as one of its entries is.
    */
-  private class DictionaryTaintStep extends AdditionalTaintStep {
-    DictionaryTaintStep() { dictionaryTaintStep(_, this) }
-
+  private class DictionaryTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
       dictionaryTaintStep(pred, succ)
     }
   }
