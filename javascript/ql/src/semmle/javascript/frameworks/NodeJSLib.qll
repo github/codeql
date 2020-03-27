@@ -275,33 +275,30 @@ module NodeJSLib {
   /**
    * A call to a path-module method that preserves taint.
    */
-  private class PathFlowTarget extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-    DataFlow::Node tainted;
-
-    PathFlowTarget() {
-      exists(string methodName | this = NodeJSLib::Path::moduleMember(methodName).getACall() |
+  private class PathFlowStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call, string methodName |
+        call = NodeJSLib::Path::moduleMember(methodName).getACall() and
+        succ = call
+      |
         // getters
-        methodName = "basename" and tainted = getArgument(0)
+        methodName = "basename" and pred = call.getArgument(0)
         or
-        methodName = "dirname" and tainted = getArgument(0)
+        methodName = "dirname" and pred = call.getArgument(0)
         or
-        methodName = "extname" and tainted = getArgument(0)
+        methodName = "extname" and pred = call.getArgument(0)
         or
         // transformers
-        methodName = "join" and tainted = getAnArgument()
+        methodName = "join" and pred = call.getAnArgument()
         or
-        methodName = "normalize" and tainted = getArgument(0)
+        methodName = "normalize" and pred = call.getArgument(0)
         or
-        methodName = "relative" and tainted = getArgument([0 .. 1])
+        methodName = "relative" and pred = call.getArgument([0 .. 1])
         or
-        methodName = "resolve" and tainted = getAnArgument()
+        methodName = "resolve" and pred = call.getAnArgument()
         or
-        methodName = "toNamespacedPath" and tainted = getArgument(0)
+        methodName = "toNamespacedPath" and pred = call.getArgument(0)
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = tainted and succ = this
     }
   }
 
