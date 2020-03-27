@@ -107,7 +107,7 @@ For example, ``[2, 3, 5, 7, 11, 13, 17, 19, 23, 29]`` is a valid set literal exp
 Its values are the first ten prime numbers.
 
 The values of the contained expressions need to be of :ref:`compatible types <type-compatibility>` for a valid set literal expression.
-Specifically, at least one of the set elements has to be of a type that is a supertype of the types of all
+Furthermore, at least one of the set elements has to be of a type that is a supertype of the types of all
 the other contained expressions.
 
 Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
