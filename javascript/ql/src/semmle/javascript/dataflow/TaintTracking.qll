@@ -364,21 +364,15 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.props.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentPropsTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    DataFlow::Node source;
-
-    ReactComponentPropsTaintStep() {
+  private class ReactComponentPropsTaintStep extends SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, string name, DataFlow::PropRead prn |
         prn = c.getAPropRead(name) or
         prn = c.getAPreviousPropsSource().getAPropertyRead(name)
       |
-        source = c.getACandidatePropsValue(name) and
-        this = prn
+        pred = c.getACandidatePropsValue(name) and
+        succ = prn
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
     }
   }
 
