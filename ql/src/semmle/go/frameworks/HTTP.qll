@@ -195,4 +195,32 @@ private module StdlibHttp {
     /** Gets the URL of the request. */
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
   }
+
+  /** A call to the Client.Do function in the `net/http` package. */
+  private class ClientDo extends HTTP::ClientRequest::Range, DataFlow::MethodCallNode {
+    ClientDo() { this.getTarget().hasQualifiedName("net/http", "Client", "Do") }
+
+    override DataFlow::Node getUrl() {
+      exists(DataFlow::CallNode call, FunctionOutput outp |
+        call.getTarget().hasQualifiedName("net/http", "NewRequest") and
+        outp.isResult(0)
+      |
+        this.getArgument(0) = outp.getNode(call).getASuccessor*() and
+        result = call.getArgument(1)
+      )
+      or
+      exists(DataFlow::CallNode call, FunctionOutput outp |
+        call.getTarget().hasQualifiedName("net/http", "NewRequestWithContext") and
+        outp.isResult(0)
+      |
+        this.getArgument(0) = outp.getNode(call).getASuccessor*() and
+        result = call.getArgument(2)
+      )
+      or
+      exists(Write w, Field f |
+        f.hasQualifiedName("net/http", "Request", "URL") and
+        w.writesField(this.getArgument(0).getAPredecessor*(), f, result)
+      )
+    }
+  }
 }
