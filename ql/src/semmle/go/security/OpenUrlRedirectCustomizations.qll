@@ -46,19 +46,26 @@ module OpenUrlRedirect {
     UntrustedFlowAsSource() {
       // exclude some fields and methods of URLs that are generally not attacker-controllable for
       // open redirect exploits
-      not exists(string fieldName |
-        this.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", fieldName)
+      not exists(Field f, string fieldName |
+        f.hasQualifiedName("net/http", "Request", fieldName) and
+        this = f.getARead()
       |
-        fieldName = "Header" or fieldName = "Trailer"
+        fieldName = "Body" or
+        fieldName = "GetBody" or
+        fieldName = "PostForm" or
+        fieldName = "MultipartForm" or
+        fieldName = "Header" or
+        fieldName = "Trailer"
       ) and
-      not exists(string methName |
-        this
-            .(DataFlow::MethodCallNode)
-            .getTarget()
-            .hasQualifiedName("net/http", "Request", methName)
+      not exists(Method m, string methName |
+        m.hasQualifiedName("net/http", "Request", methName) and
+        this = m.getACall()
       |
         methName = "Cookie" or
         methName = "Cookies" or
+        methName = "FormValue" or
+        methName = "MultipartReader" or
+        methName = "PostFormValues" or
         methName = "Referer" or
         methName = "UserAgent"
       )
