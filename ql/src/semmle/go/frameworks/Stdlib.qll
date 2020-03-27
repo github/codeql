@@ -95,7 +95,7 @@ module Fmt {
   }
 }
 
-/** Provides models of commonly used functions in the `io/ioutil` package. */
+/** Provides models of commonly used functions in the `io` package. */
 module Io {
   private class ReaderRead extends TaintTracking::FunctionModel, Method {
     ReaderRead() {
