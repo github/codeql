@@ -295,8 +295,8 @@ Exercise 3: Write a class that represents flow sources from ``getenv``. (`Answer
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``gethostbyname``. (`Answer <#exercise-4>`__)
 
-What next?
-----------
+Further reading
+---------------
 
 -  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>` and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

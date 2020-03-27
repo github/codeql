@@ -464,8 +464,8 @@ Hint: array indices are properties with numeric names; you can use regular expre
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the ``tagName`` argument to the
 ``createElement`` function. (`Answer <#exercise-4>`__)
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

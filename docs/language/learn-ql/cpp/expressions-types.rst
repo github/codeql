@@ -129,8 +129,8 @@ We can find assignments inside the loop body using similar code with the predica
 
 Note that we replaced ``e.getEnclosingStmt()`` with ``e.getEnclosingStmt().getParentStmt*()``, to find an assignment expression that is deeply nested inside the loop body. The transitive closure modifier ``*`` here indicates that ``Stmt.getParentStmt()`` may be followed zero or more times, rather than just once, giving us the statement, its parent statement, its parent's parent statement etc.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Explore other ways of finding types and statements using examples from the C/C++ cookbook for `types <https://help.semmle.com/wiki/label/CBCPP/type>`__ and `statements <https://help.semmle.com/wiki/label/CBCPP/statement>`__.
 -  Take a look at the :doc:`Conversions and classes in C and C++ <conversions-classes>` and :doc:`Analyzing data flow in C and C++ <dataflow>` tutorials.

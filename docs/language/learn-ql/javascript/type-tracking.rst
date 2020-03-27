@@ -518,8 +518,8 @@ Type tracking is used in a few places in the standard libraries:
 - The `Firebase <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/Firebase.qll/module.Firebase$Firebase.html>`__ and
   `Socket.io <https://help.semmle.com/qldoc/javascript/semmle/javascript/frameworks/SocketIO.qll/module.SocketIO$SocketIO.html>`__ models use type tracking to track objects coming from their respective APIs.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

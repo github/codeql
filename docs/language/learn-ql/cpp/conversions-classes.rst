@@ -220,8 +220,8 @@ That completes the query.
 
 There is a similar built-in `query <https://lgtm.com/rules/2158670642/>`__ on LGTM.com that finds classes in a C/C++ project with virtual functions but no virtual destructor. You can take a look at the code for this query by clicking **Open in query console** at the top of that page.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Explore other ways of querying classes using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/class>`__.
 -  Take a look at the :doc:`Analyzing data flow in C and C++ <dataflow>` tutorial.

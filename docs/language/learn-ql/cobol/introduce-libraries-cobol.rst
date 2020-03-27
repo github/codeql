@@ -145,7 +145,7 @@ SQL
 Calls to the SQL system through ``EXEC SQL`` are represented by the class
 `SqlStmt <https://help.semmle.com/qldoc/cobol/semmle/cobol/Sql.qll/type.Sql$SqlStmt.html>`__ and its subclasses.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

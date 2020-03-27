@@ -1,7 +1,7 @@
 Metadata for CodeQL queries
 ===========================
 
-Metadata is used to tell users important information about CodeQL queries. You must include the correct query metadata in a query to be able to view query results in source code.
+Metadata tells users important information about CodeQL queries. You must include the correct query metadata in a query to be able to view query results in source code.
 
 About query metadata
 --------------------
