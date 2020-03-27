@@ -567,11 +567,12 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
-  private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
-    JsonStringifyTaintStep() { this instanceof JsonStringifyCall }
-
+  private class JsonStringifyTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and succ = this
+      exists(JsonStringifyCall call |
+        pred = call.getArgument(0) and
+        succ = call
+      )
     }
   }
 
