@@ -106,7 +106,7 @@ It consists of a comma-separated collection of expressions that are enclosed in 
 For example, ``[2, 3, 5, 7, 11, 13, 17, 19, 23, 29]`` is a valid set literal expression.
 Its values are the first ten prime numbers.
 
-The values of the contained expressions need to be of compatible types for a valid set literal expression.
+The values of the contained expressions need to be of :ref:`compatible types <type-compatibility>` for a valid set literal expression.
 Specifically, at least one of the set elements has to be of a type that is a supertype of the types of all
 the other contained expressions.
 
