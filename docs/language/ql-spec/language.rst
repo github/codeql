@@ -1168,6 +1168,21 @@ If both expressions are subtypes of ``int`` then the type of the range is ``int`
 
 The values of a range expression are those values which are ordered inclusively between a value of the first expression and a value of the second expression.
 
+Set Literals
+~~~~~~~~~~~~
+
+Set literals denote a choice from a collection of values.
+
+::
+
+   setliteral ::= "[" expr ("," expr)* "]"
+
+Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion.
+
+The values of a set literal expression are all the values of all the contained element expressions.
+
+Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
+
 Disambiguation of expressions
 -----------------------------
 
@@ -1934,6 +1949,7 @@ The complete grammar for QL is as follows:
            |   aggregation
            |   any
            |   range
+           |   setliteral
 
    eparen ::= "(" expr ")"
 
@@ -1973,6 +1989,8 @@ The complete grammar for QL is as follows:
                    |   primary "." predicateName (closure)? "(" (exprs)? ")"
                    
    range ::= "[" expr ".." expr "]"
+   
+   setliteral ::= "[" expr ("," expr)* "]"
 
    simpleId ::= lowerId | upperId
 
