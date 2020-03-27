@@ -660,9 +660,13 @@ module TaintTracking {
   /**
    * A taint step through an exception constructor, such as `x` to `new Error(x)`.
    */
-  class ErrorConstructorTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
-    ErrorConstructorTaintStep() {
-      exists(string name | this = DataFlow::globalVarRef(name).getAnInvocation() |
+  class ErrorConstructorTaintStep extends SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::NewNode invoke, string name |
+        invoke = DataFlow::globalVarRef(name).getAnInvocation() and
+        pred = invoke.getArgument(0) and
+        succ = invoke
+        |
         name = "Error" or
         name = "EvalError" or
         name = "RangeError" or
@@ -671,11 +675,6 @@ module TaintTracking {
         name = "TypeError" or
         name = "URIError"
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getArgument(0) and
-      succ = this
     }
   }
 
