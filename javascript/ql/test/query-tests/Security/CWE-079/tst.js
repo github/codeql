@@ -340,3 +340,12 @@ function URLPseudoProperties() {
   $('name').html(myUrl.get('name'));
 
 }
+
+
+function hash() {
+  function getUrl() {
+    return new URL(document.location);
+  }
+  $(getUrl().hash.substring(1)); // NOT OK
+
+}
