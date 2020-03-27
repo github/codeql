@@ -39,12 +39,6 @@ module XPathInjection {
     XPathExpressionStringAsSink() { this instanceof XPath::XPathExpressionString::Range }
   }
 
-  // TODO: This probably belongs somewhere, but I'm not sure where
-  /** The []byte type */
-  class ByteSliceType extends SliceType {
-    ByteSliceType() { this.getElementType() instanceof Uint8Type }
-  }
-
   //TODO add runes?
   /**
    * A call to `filepath.Rel`, considered as a sanitizer for path traversal.
