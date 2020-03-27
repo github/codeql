@@ -647,11 +647,13 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from sorting.
    */
-  private class SortTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
-    SortTaintStep() { getMethodName() = "sort" }
-
+  private class SortTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getReceiver() and succ = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "sort" and
+        pred = call.getReceiver() and
+        succ = call
+      )
     }
   }
 
