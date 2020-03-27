@@ -115,7 +115,6 @@ Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.2
 .. index:: super
 .. _super:
 
-
 Super expressions
 *****************
 
