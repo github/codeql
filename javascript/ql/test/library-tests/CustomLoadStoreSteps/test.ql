@@ -19,10 +19,14 @@ class Configuration extends TaintTracking::Configuration {
     ) and
     prop = "bar"
   }
-  
+
   // calling .copy("foo", "bar") actually moves a property from "foo" to "bar".
-  override predicate isAdditionalLoadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
-    exists(DataFlow::MethodCallNode call | call.getMethodName() = "copy" and call = succ and pred = call.getReceiver() | 
+  override predicate isAdditionalLoadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    exists(DataFlow::MethodCallNode call |
+      call.getMethodName() = "copy" and call = succ and pred = call.getReceiver()
+    |
       call.getArgument(0).mayHaveStringValue(loadProp) and
       call.getArgument(1).mayHaveStringValue(storeProp)
     )
