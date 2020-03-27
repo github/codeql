@@ -1168,7 +1168,7 @@ If both expressions are subtypes of ``int`` then the type of the range is ``int`
 
 The values of a range expression are those values which are ordered inclusively between a value of the first expression and a value of the second expression.
 
-Set Literals
+Set literals
 ~~~~~~~~~~~~
 
 Set literals denote a choice from a collection of values.
