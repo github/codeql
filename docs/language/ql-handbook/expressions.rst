@@ -279,6 +279,21 @@ The following aggregates are available in QL:
   evaluates to the empty set (instead of defaulting to ``0`` or the empty string).
   This is useful if you're only interested in results where the aggregation body is non-trivial.
 
+.. index: unique
+
+- ``unique``: The value of this aggregate depends on how many different values ``<expression>`` can have,
+  within the context of a fixed set of assignments to outside variables.
+  If the value is uniquely determined, then the aggregate gives that value. Otherwise, it has no value.
+
+  For example, the following aggregation yields the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
+  For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values and hence the
+  value for ``y`` in the aggregate expression is not uniquely determined. ::
+
+      from int x
+      where x in [-5 .. 5] and x != 0
+      select unique(int y | y = x and y = x.abs() | y)
+
+  The ``unique`` aggregate is supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
 Evaluation of aggregates
 ========================

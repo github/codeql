@@ -1960,7 +1960,8 @@ The complete grammar for QL is as follows:
 
    aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
-
+               |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
+ 
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
    aggorderbys ::= aggorderby ("," aggorderby)*
