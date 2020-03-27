@@ -540,14 +540,12 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from JSON parsing.
    */
-  private class JsonParserTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
-    JsonParserCall call;
-
-    JsonParserTaintStep() { this = call }
-
+  private class JsonParserTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = call.getInput() and
-      succ = call.getOutput()
+      exists(JsonParserCall call |
+        pred = call.getInput() and
+        succ = call.getOutput()
+      )
     }
   }
 
