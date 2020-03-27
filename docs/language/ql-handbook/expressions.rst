@@ -292,7 +292,7 @@ The following aggregates are available in QL:
 
       from int x
       where x in [-5 .. 5] and x != 0
-      select unique(int y | y = x and y = x.abs() | y)
+      select unique(int y | y = x or y = x.abs() | y)
 
   The ``unique`` aggregate is supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
