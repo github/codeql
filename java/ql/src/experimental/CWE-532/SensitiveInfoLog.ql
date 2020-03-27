@@ -48,7 +48,7 @@ class CredentialSource extends DataFlow::ExprNode {
 
 private string getACredentialRegex() {
   result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i).*(uid|uuid|puid|username|userid|url).*"
+  result = "(?i).*(username|url).*"
 }
 
 class SensitiveLoggingSink extends DataFlow::ExprNode {
