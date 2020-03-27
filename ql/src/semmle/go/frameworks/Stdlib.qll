@@ -96,6 +96,19 @@ module Fmt {
 }
 
 /** Provides models of commonly used functions in the `io/ioutil` package. */
+module Io {
+  private class ReaderRead extends TaintTracking::FunctionModel, Method {
+    ReaderRead() {
+      exists(Method im | im.hasQualifiedName("io", "Reader", "Read") | this.implements(im))
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isParameter(0)
+    }
+  }
+}
+
+/** Provides models of commonly used functions in the `io/ioutil` package. */
 module IoUtil {
   private class IoUtilFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     IoUtilFileSystemAccess() {
