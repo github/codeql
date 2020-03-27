@@ -279,7 +279,7 @@ The following aggregates are available in QL:
   evaluates to the empty set (instead of defaulting to ``0`` or the empty string).
   This is useful if you're only interested in results where the aggregation body is non-trivial.
 
-.. index: unique
+.. index:: unique
 
 - ``unique``: This aggregate depends on the values of ``<expression>`` over all possible assignments to
   the aggregation variables. If there is a unique value of ``<expression>`` over the aggregation variables,
