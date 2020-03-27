@@ -173,12 +173,10 @@ class IRUnsignedIntegerType extends IRNumericType, TIRUnsignedIntegerType {
  * A floating-point type.
  */
 class IRFloatingPointType extends IRNumericType, TIRFloatingPointType {
-  private final int base;
-  private final Language::TypeDomain domain;
+  final private int base;
+  final private Language::TypeDomain domain;
 
-  IRFloatingPointType() {
-    this = TIRFloatingPointType(_, base, domain)
-  }
+  IRFloatingPointType() { this = TIRFloatingPointType(_, base, domain) }
 
   final override string toString() {
     result = getDomainPrefix() + getBaseString() + byteSize.toString()

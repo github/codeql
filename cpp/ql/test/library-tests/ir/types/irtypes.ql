@@ -10,7 +10,7 @@ class IRTypesTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(IRUserVariable irVar |
       location = irVar.getLocation() and
-      element = irVar.toString() and 
+      element = irVar.toString() and
       tag = "irtype" and
       value = irVar.getIRType().toString()
     )
