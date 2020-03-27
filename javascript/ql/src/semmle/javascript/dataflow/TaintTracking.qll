@@ -392,11 +392,8 @@ module TaintTracking {
    * A taint propagating data flow edge arising from string manipulation
    * functions defined in the standard library.
    */
-  private class StringManipulationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    StringManipulationTaintStep() { stringManipulationStep(_, this) }
-
+  private class StringManipulationTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
       stringManipulationStep(pred, succ)
     }
   }
