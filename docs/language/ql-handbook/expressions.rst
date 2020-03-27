@@ -287,7 +287,7 @@ The following aggregates are available in QL:
   Otherwise, the aggregate has no value.
 
   For example, the following aggregation yields the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
-  For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values and hence the
+  For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values, so the
   value for ``y`` in the aggregate expression is not uniquely determined. ::
 
       from int x
