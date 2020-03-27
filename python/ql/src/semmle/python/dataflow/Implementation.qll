@@ -964,6 +964,7 @@ private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
         result = parent_kind.getMember()
         or
         // recursive case
+        depth > 1 and
         result = taint_at_depth(parent_kind.getMember(), depth-1)
     )
 }
