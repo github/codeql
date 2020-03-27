@@ -16,8 +16,8 @@ module XPath {
     abstract class Range extends DataFlow::Node { }
 
     /** An XPath expression string used in an API function of the https://github.com/antchfx/xpath package. */
-    private class AntchfxxpathXPathExpressionString extends Range {
-      AntchfxxpathXPathExpressionString() {
+    private class AntchfxXpathXPathExpressionString extends Range {
+      AntchfxXpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
           f.hasQualifiedName("github.com/antchfx/xpath", name) and
           this = f.getACall().getArgument(0)
@@ -36,8 +36,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/antchfx/htmlquery package. */
-    private class AntchfxhtmlqueryXPathExpressionString extends Range {
-      AntchfxhtmlqueryXPathExpressionString() {
+    private class AntchfxHtmlqueryXPathExpressionString extends Range {
+      AntchfxHtmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
           f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
           this = f.getACall().getArgument(1)
@@ -81,8 +81,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/antchfx/jsonquery package. */
-    private class AntchfxjsonqueryXPathExpressionString extends Range {
-      AntchfxjsonqueryXPathExpressionString() {
+    private class AntchfxJsonqueryXPathExpressionString extends Range {
+      AntchfxJsonqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
           f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
           this = f.getACall().getArgument(1)
@@ -101,8 +101,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/go-xmlpath/xmlpath package. */
-    private class GoxmlpathxmlpathXPathExpressionString extends Range {
-      GoxmlpathxmlpathXPathExpressionString() {
+    private class GoXmlpathXmlpathXPathExpressionString extends Range {
+      GoXmlpathXmlpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
           f.hasQualifiedName("github.com/go-xmlpath/xmlpath", name) and
           this = f.getACall().getArgument(0)
@@ -116,8 +116,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/ChrisTrenkamp/goxpath package. */
-    private class ChrisTrenkampgoxpathXPathExpressionString extends Range {
-      ChrisTrenkampgoxpathXPathExpressionString() {
+    private class ChrisTrenkampGoxpathXPathExpressionString extends Range {
+      ChrisTrenkampGoxpathXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
           f.hasQualifiedName("github.com/ChrisTrenkamp/goxpath", name) and
           this = f.getACall().getArgument(0)
@@ -131,8 +131,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/santhosh-tekuri/xpathparser package. */
-    private class AnthoshtekurixpathparserXPathExpressionString extends Range {
-      AnthoshtekurixpathparserXPathExpressionString() {
+    private class SanthoshTekuriXpathparserXPathExpressionString extends Range {
+      SanthoshTekuriXpathparserXPathExpressionString() {
         exists(Function f, string name | name.matches("Parse%") |
           f.hasQualifiedName("github.com/santhosh-tekuri/xpathparser", name) and
           this = f.getACall().getArgument(0)
@@ -146,8 +146,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/moovweb/gokogiri package. */
-    private class MoovwebgokogiriXPathExpressionString extends Range {
-      MoovwebgokogiriXPathExpressionString() {
+    private class MoovwebGokogiriXPathExpressionString extends Range {
+      MoovwebGokogiriXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
           f.hasQualifiedName("github.com/moovweb/gokogiri/xpath", name) and
           this = f.getACall().getArgument(0)
