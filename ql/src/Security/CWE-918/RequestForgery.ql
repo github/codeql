@@ -3,6 +3,7 @@
  * @description Sending network requests with user-controlled data allows for request forgery attacks.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id go/request-forgery
  * @tags security
  *       external/cwe/cwe-918
