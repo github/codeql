@@ -893,7 +893,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
   exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
     t2 = t.smallstep(result, succ)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    TaintTracking::sharedTaintStep(result, succ) and
     t = t2
   )
 }
