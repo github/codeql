@@ -38,16 +38,4 @@ module XPathInjection {
   class XPathExpressionStringAsSink extends Sink {
     XPathExpressionStringAsSink() { this instanceof XPath::XPathExpressionString::Range }
   }
-
-  //TODO add runes?
-  /**
-   * A call to `filepath.Rel`, considered as a sanitizer for path traversal.
-   */
-  /*class NonStringByteSanitizer extends Sanitizer {
-    NonStringByteSanitizer() {
-      exists(Type t | t = this.getType().getUnderlyingType() |
-        not t instanceof StringType or not t instanceof ByteSliceType
-      )
-    }
-  }*/
 }
