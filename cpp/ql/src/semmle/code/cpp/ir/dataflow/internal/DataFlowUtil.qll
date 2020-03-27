@@ -219,7 +219,7 @@ abstract class PostUpdateNode extends InstructionNode {
 abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
   final Instruction getInstructionOrChi() {
     exists(ChiInstruction chi |
-      // TODO: This should be a non-conflated ChiInstruction once #3123 is merged
+      not chi.isResultConflated() and
       chi.getPartial() = getInstruction() and
       result = chi
     )
@@ -356,7 +356,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
   or
   exists(LoadInstruction load |
-    // TODO: These can probably be getSourceValue() after #3112 is merged
     load.getSourceValueOperand().getAnyDef() =
       nodeFrom.(PartialDefinitionNode).getInstructionOrChi() and
     nodeTo.asInstruction() = load.getSourceAddress().(FieldAddressInstruction).getObjectAddress()

@@ -1,10 +1,4 @@
 edges
-| A.cpp:126:5:126:5 | IndirectMayWriteSideEffect [c] : void | A.cpp:131:8:131:8 | BufferMayWriteSideEffect [c] : void |
-| A.cpp:126:12:126:18 | new : void | A.cpp:126:5:126:5 | IndirectMayWriteSideEffect [c] : void |
-| A.cpp:131:8:131:8 | BufferMayWriteSideEffect [c] : void | A.cpp:132:10:132:10 | b [c] : void |
-| A.cpp:132:10:132:10 | b [c] : void | A.cpp:132:13:132:13 | c |
-| A.cpp:132:10:132:10 | b [c] : void | A.cpp:132:13:132:13 | c : void |
-| A.cpp:132:13:132:13 | c : void | A.cpp:132:10:132:13 | (void *)... |
 | aliasing.cpp:9:3:9:22 | Store : void | aliasing.cpp:9:3:9:22 | Store [m1] : void |
 | aliasing.cpp:9:3:9:22 | Store [m1] : void | aliasing.cpp:25:17:25:19 | BufferMayWriteSideEffect [m1] : void |
 | aliasing.cpp:9:11:9:20 | call to user_input : void | aliasing.cpp:9:3:9:22 | Store : void |
@@ -58,13 +52,6 @@ edges
 | struct_init.c:27:7:27:16 | call to user_input : void | struct_init.c:31:23:31:23 | a |
 | struct_init.c:31:14:31:21 | nestedAB [a] : void | struct_init.c:31:23:31:23 | a |
 nodes
-| A.cpp:126:5:126:5 | IndirectMayWriteSideEffect [c] : void | semmle.label | IndirectMayWriteSideEffect [c] : void |
-| A.cpp:126:12:126:18 | new : void | semmle.label | new : void |
-| A.cpp:131:8:131:8 | BufferMayWriteSideEffect [c] : void | semmle.label | BufferMayWriteSideEffect [c] : void |
-| A.cpp:132:10:132:10 | b [c] : void | semmle.label | b [c] : void |
-| A.cpp:132:10:132:13 | (void *)... | semmle.label | (void *)... |
-| A.cpp:132:13:132:13 | c | semmle.label | c |
-| A.cpp:132:13:132:13 | c : void | semmle.label | c : void |
 | aliasing.cpp:9:3:9:22 | Store : void | semmle.label | Store : void |
 | aliasing.cpp:9:3:9:22 | Store [m1] : void | semmle.label | Store [m1] : void |
 | aliasing.cpp:9:11:9:20 | call to user_input : void | semmle.label | call to user_input : void |
@@ -113,8 +100,6 @@ nodes
 | struct_init.c:31:14:31:21 | nestedAB [a] : void | semmle.label | nestedAB [a] : void |
 | struct_init.c:31:23:31:23 | a | semmle.label | a |
 #select
-| A.cpp:132:10:132:13 | (void *)... | A.cpp:126:12:126:18 | new : void | A.cpp:132:10:132:13 | (void *)... | (void *)... flows from $@ | A.cpp:126:12:126:18 | new : void | new : void |
-| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new : void | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new : void | new : void |
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input : void | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input : void | call to user_input : void |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input : void | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input : void | call to user_input : void |
 | aliasing.cpp:38:11:38:12 | m1 | aliasing.cpp:37:13:37:22 | call to user_input : void | aliasing.cpp:38:11:38:12 | m1 | m1 flows from $@ | aliasing.cpp:37:13:37:22 | call to user_input : void | call to user_input : void |
