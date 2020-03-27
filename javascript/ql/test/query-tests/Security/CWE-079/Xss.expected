@@ -529,6 +529,7 @@ edges
 | tst.js:73:3:73:19 | document.location | tst.js:73:3:73:26 | documen ... .search |
 | tst.js:73:3:73:19 | document.location | tst.js:73:3:73:26 | documen ... .search |
 | tst.js:73:3:73:26 | documen ... .search | tst.js:73:1:73:27 | [,docum ... search] |
+| tst.js:73:3:73:26 | documen ... .search | tst.js:73:46:73:46 | x |
 | tst.js:73:46:73:46 | x | tst.js:76:20:76:20 | x |
 | tst.js:73:46:73:46 | x | tst.js:76:20:76:20 | x |
 | tst.js:80:49:80:65 | document.location | tst.js:80:49:80:72 | documen ... .search |

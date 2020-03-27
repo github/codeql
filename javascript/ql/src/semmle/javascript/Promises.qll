@@ -167,6 +167,7 @@ module PromiseTypeTracking {
    * Gets the result from a single step through a promise, from `pred` to `result` summarized by `summary`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
+  pragma[inline]
   DataFlow::SourceNode promiseStep(DataFlow::SourceNode pred, StepSummary summary) {
     exists(PromiseFlowStep step, string field | field = Promises::valueProp() |
       summary = LoadStep(field) and

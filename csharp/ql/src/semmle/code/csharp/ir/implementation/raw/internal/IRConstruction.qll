@@ -70,6 +70,15 @@ private module Cached {
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
+
+  cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
