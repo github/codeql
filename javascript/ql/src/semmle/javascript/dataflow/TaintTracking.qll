@@ -254,11 +254,9 @@ module TaintTracking {
    * A taint propagating data flow edge through object or array elements and
    * promises.
    */
-  private class HeapTaintStep extends AdditionalTaintStep {
-    HeapTaintStep() { heapStep(_, this) }
-
+  private class HeapTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      heapStep(pred, succ) and succ = this
+      heapStep(pred, succ)
     }
   }
 
