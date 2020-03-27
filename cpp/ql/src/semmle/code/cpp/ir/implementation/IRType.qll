@@ -12,7 +12,9 @@ private newtype TIRType =
   TIRBooleanType(int byteSize) { Language::hasBooleanType(byteSize) } or
   TIRSignedIntegerType(int byteSize) { Language::hasSignedIntegerType(byteSize) } or
   TIRUnsignedIntegerType(int byteSize) { Language::hasUnsignedIntegerType(byteSize) } or
-  TIRFloatingPointType(int byteSize) { Language::hasFloatingPointType(byteSize) } or
+  TIRFloatingPointType(int byteSize, int base, Language::TypeDomain domain) {
+    Language::hasFloatingPointType(byteSize, base, domain)
+  } or
   TIRAddressType(int byteSize) { Language::hasAddressType(byteSize) } or
   TIRFunctionAddressType(int byteSize) { Language::hasFunctionAddressType(byteSize) } or
   TIROpaqueType(Language::OpaqueTypeTag tag, int byteSize) {
@@ -104,7 +106,7 @@ private class IRSizedType extends IRType {
     this = TIRBooleanType(byteSize) or
     this = TIRSignedIntegerType(byteSize) or
     this = TIRUnsignedIntegerType(byteSize) or
-    this = TIRFloatingPointType(byteSize) or
+    this = TIRFloatingPointType(byteSize, _, _) or
     this = TIRAddressType(byteSize) or
     this = TIRFunctionAddressType(byteSize) or
     this = TIROpaqueType(_, byteSize)
@@ -133,7 +135,7 @@ class IRNumericType extends IRSizedType {
   IRNumericType() {
     this = TIRSignedIntegerType(byteSize) or
     this = TIRUnsignedIntegerType(byteSize) or
-    this = TIRFloatingPointType(byteSize)
+    this = TIRFloatingPointType(byteSize, _, _)
   }
 }
 
@@ -171,14 +173,45 @@ class IRUnsignedIntegerType extends IRNumericType, TIRUnsignedIntegerType {
  * A floating-point type.
  */
 class IRFloatingPointType extends IRNumericType, TIRFloatingPointType {
-  final override string toString() { result = "float" + byteSize.toString() }
+  private final int base;
+  private final Language::TypeDomain domain;
+
+  IRFloatingPointType() {
+    this = TIRFloatingPointType(_, base, domain)
+  }
+
+  final override string toString() {
+    result = getDomainPrefix() + getBaseString() + byteSize.toString()
+  }
 
   final override Language::LanguageType getCanonicalLanguageType() {
-    result = Language::getCanonicalFloatingPointType(byteSize)
+    result = Language::getCanonicalFloatingPointType(byteSize, base, domain)
   }
 
   pragma[noinline]
   final override int getByteSize() { result = byteSize }
+
+  /** Gets the numeric base of the type. Can be either 2 (binary) or 10 (decimal). */
+  final int getBase() { result = base }
+
+  /**
+   * Gets the type domain of the type. Can be `RealDomain`, `ComplexDomain`, or `ImaginaryDomain`.
+   */
+  final Language::TypeDomain getDomain() { result = domain }
+
+  private string getBaseString() {
+    base = 2 and result = "float"
+    or
+    base = 10 and result = "decimal"
+  }
+
+  private string getDomainPrefix() {
+    domain instanceof Language::RealDomain and result = ""
+    or
+    domain instanceof Language::ComplexDomain and result = "c"
+    or
+    domain instanceof Language::ImaginaryDomain and result = "i"
+  }
 }
 
 /**

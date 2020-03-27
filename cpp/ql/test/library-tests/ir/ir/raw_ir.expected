@@ -124,6 +124,39 @@ clang.cpp:
 #    5|     v5_8(void)         = AliasedUse                 : ~mu5_4
 #    5|     v5_9(void)         = ExitFunction               : 
 
+complex.c:
+#    1| void complex_math()
+#    1|   Block 0
+#    1|     v1_1(void)                  = EnterFunction        : 
+#    1|     mu1_2(unknown)              = AliasedDefinition    : 
+#    1|     mu1_3(unknown)              = InitializeNonLocal   : 
+#    1|     mu1_4(unknown)              = UnmodeledDefinition  : 
+#    2|     r2_1(glval<_Complex float>) = VariableAddress[cf]  : 
+#    2|     r2_2(double)                = Constant[2.0]        : 
+#    2|     r2_3(_Complex double)       = Convert              : r2_2
+#    2|     r2_4(_Complex float)        = Constant[(0.0,1.0i)] : 
+#    2|     r2_5(_Complex double)       = Convert              : r2_4
+#    2|     r2_6(_Complex double)       = Add                  : r2_3, r2_5
+#    2|     r2_7(_Complex float)        = Convert              : r2_6
+#    2|     mu2_8(_Complex float)       = Store                : &:r2_1, r2_7
+#    3|     r3_1(glval<_Complex float>) = VariableAddress[cf2] : 
+#    3|     r3_2(glval<_Complex float>) = VariableAddress[cf]  : 
+#    3|     r3_3(_Complex float)        = Load                 : &:r3_2, ~mu1_4
+#    3|     r3_4(glval<_Complex float>) = VariableAddress[cf]  : 
+#    3|     r3_5(_Complex float)        = Load                 : &:r3_4, ~mu1_4
+#    3|     r3_6(_Complex float)        = Mul                  : r3_3, r3_5
+#    3|     mu3_7(_Complex float)       = Store                : &:r3_1, r3_6
+#    4|     r4_1(glval<double>)         = VariableAddress[d]   : 
+#    4|     r4_2(glval<_Complex float>) = VariableAddress[cf2] : 
+#    4|     r4_3(_Complex float)        = Load                 : &:r4_2, ~mu1_4
+#    4|     r4_4(double)                = Convert              : r4_3
+#    4|     mu4_5(double)               = Store                : &:r4_1, r4_4
+#    5|     v5_1(void)                  = NoOp                 : 
+#    1|     v1_5(void)                  = ReturnVoid           : 
+#    1|     v1_6(void)                  = UnmodeledUse         : mu*
+#    1|     v1_7(void)                  = AliasedUse           : ~mu1_4
+#    1|     v1_8(void)                  = ExitFunction         : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0

@@ -234,6 +234,62 @@ clang.cpp:
 #    6|         0: [VariableAccess] globalInt
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
+complex.c:
+#    1| [TopLevelFunction] void complex_math()
+#    1|   params: 
+#    1|   body: [Block] { ... }
+#    2|     0: [DeclStmt] declaration
+#    2|       0: [VariableDeclarationEntry] definition of cf
+#    2|           Type = [ArithmeticType] _Complex float
+#    2|         init: [Initializer] initializer for cf
+#    2|           expr: [CStyleCast] (_Complex float)...
+#    2|               Conversion = [FloatingPointConversion] floating point conversion
+#    2|               Type = [ArithmeticType] _Complex float
+#    2|               ValueCategory = prvalue
+#    2|             expr: [AddExpr] ... + ...
+#    2|                 Type = [ArithmeticType] _Complex double
+#    2|                 ValueCategory = prvalue
+#    2|               0: [CStyleCast] (_Complex double)...
+#    2|                   Conversion = [FloatingPointConversion] floating point conversion
+#    2|                   Type = [ArithmeticType] _Complex double
+#    2|                   ValueCategory = prvalue
+#    2|                 expr: [Literal] 2.0
+#    2|                     Type = [DoubleType] double
+#    2|                     Value = [Literal] 2.0
+#    2|                     ValueCategory = prvalue
+#    2|               1: [CStyleCast] (_Complex double)...
+#    2|                   Conversion = [FloatingPointConversion] floating point conversion
+#    2|                   Type = [ArithmeticType] _Complex double
+#    2|                   ValueCategory = prvalue
+#    2|                 expr: [Literal] (0.0,1.0i)
+#    2|                     Type = [ArithmeticType] _Complex float
+#    2|                     Value = [Literal] (0.0,1.0i)
+#    2|                     ValueCategory = prvalue
+#    3|     1: [DeclStmt] declaration
+#    3|       0: [VariableDeclarationEntry] definition of cf2
+#    3|           Type = [ArithmeticType] _Complex float
+#    3|         init: [Initializer] initializer for cf2
+#    3|           expr: [MulExpr] ... * ...
+#    3|               Type = [ArithmeticType] _Complex float
+#    3|               ValueCategory = prvalue
+#    3|             0: [VariableAccess] cf
+#    3|                 Type = [ArithmeticType] _Complex float
+#    3|                 ValueCategory = prvalue(load)
+#    3|             1: [VariableAccess] cf
+#    3|                 Type = [ArithmeticType] _Complex float
+#    3|                 ValueCategory = prvalue(load)
+#    4|     2: [DeclStmt] declaration
+#    4|       0: [VariableDeclarationEntry] definition of d
+#    4|           Type = [DoubleType] double
+#    4|         init: [Initializer] initializer for d
+#    4|           expr: [CStyleCast] (double)...
+#    4|               Conversion = [FloatingPointConversion] floating point conversion
+#    4|               Type = [DoubleType] double
+#    4|               ValueCategory = prvalue
+#    4|             expr: [VariableAccess] cf2
+#    4|                 Type = [ArithmeticType] _Complex float
+#    4|                 ValueCategory = prvalue(load)
+#    5|     3: [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   params: 
