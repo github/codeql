@@ -47,11 +47,6 @@ module XPath {
           f.hasQualifiedName("github.com/antchfx/htmlquery", name) and
           this = f.getACall().getArgument(1)
         )
-        or
-        exists(Function f |
-          f.hasQualifiedName("github.com/antchfx/htmlquery", "getQuery") and
-          this = f.getACall().getArgument(0)
-        )
       }
     }
 
@@ -72,11 +67,6 @@ module XPath {
           f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
           this = f.getACall().getArgument(0)
         )
-        or
-        exists(Function f |
-          f.hasQualifiedName("github.com/antchfx/xmlquery", "getQuery") and
-          this = f.getACall().getArgument(0)
-        )
       }
     }
 
@@ -91,11 +81,6 @@ module XPath {
         exists(Function f, string name | name.matches("Query%") |
           f.hasQualifiedName("github.com/antchfx/jsonquery", name) and
           this = f.getACall().getArgument(1)
-        )
-        or
-        exists(Function f |
-          f.hasQualifiedName("github.com/antchfx/jsonquery", "getQuery") and
-          this = f.getACall().getArgument(0)
         )
       }
     }
