@@ -282,7 +282,7 @@ The following aggregates are available in QL:
 .. index: unique
 
 - ``unique``: This aggregate depends on the values of ``<expression>`` over all possible assignments to
-  the aggregation variables. If there is a unique value of the ``expression`` over the aggregation variables,
+  the aggregation variables. If there is a unique value of ``<expression>`` over the aggregation variables,
   then the aggregate evaluates to that value.
   Otherwise, the aggregate has no value.
 
