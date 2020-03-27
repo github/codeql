@@ -766,25 +766,30 @@ module TaintTracking {
     }
 
     /**
-     * Holds if there is a step `pred -> succ` from the input of a RegExp match to
-     * a static property of `RegExp`.
+     * A step `pred -> succ` from the input of a RegExp match to a static property of `RegExp`.
      */
-    private predicate staticRegExpCaptureStep(DataFlow::Node pred, DataFlow::Node succ) {
-      getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
-      or
-      exists(StringReplaceCall replace |
-        getANodeReachingCaptureRef(succ) = replace.getReplacementCallback().getFunction().getEntry() and
-        pred = replace.getReceiver()
-      )
-    }
-
-    private class StaticRegExpCaptureStep extends AdditionalTaintStep {
-      StaticRegExpCaptureStep() { staticRegExpCaptureStep(this, _) }
-
+    private class StaticRegExpCaptureStep extends SharedTaintStep {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-        pred = this and
-        staticRegExpCaptureStep(this, succ)
+        getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
+        or
+        exists(StringReplaceCall replace |
+          getANodeReachingCaptureRef(succ) = replace.getReplacementCallback().getFunction().getEntry() and
+          pred = replace.getReceiver()
+        )
       }
+    }
+  }
+
+  /**
+   * A taint step through the Node.JS function `util.inspect(..)`.
+   */
+  class UtilInspectTaintStep extends SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::moduleImport("util").getAMemberCall("inspect") and
+        call.getAnArgument() = pred and
+        succ = call
+      )
     }
   }
 
