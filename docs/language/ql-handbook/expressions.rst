@@ -281,9 +281,10 @@ The following aggregates are available in QL:
 
 .. index: unique
 
-- ``unique``: The value of this aggregate depends on how many different values ``<expression>`` can have,
-  within the context of a fixed set of assignments to outside variables.
-  If the value is uniquely determined, then the aggregate gives that value. Otherwise, it has no value.
+- ``unique``: This aggregate depends on the values of ``<expression>`` over all possible assignments to
+  the aggregation variables. If there is a unique value of the ``expression`` over the aggregation variables,
+  then the aggregate evaluates to that value.
+  Otherwise, the aggregate has no value.
 
   For example, the following aggregation yields the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
   For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values and hence the
