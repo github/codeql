@@ -8,6 +8,8 @@ import (
 	"github.com/ChrisTrenkamp/goxpath/tree"
 )
 
+func main() {}
+
 func processRequest(r *http.Request, doc tree.Node) {
 	r.ParseForm()
 	username := r.Form.Get("username")
