@@ -1058,6 +1058,7 @@ An aggregation can be written in one of two forms:
 
    aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
+               |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
 
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
@@ -1098,7 +1099,7 @@ The typing environment for ordering directives is obtained by taking the typing 
 
 The number and types of the aggregation expressions are restricted as follows:
 
--  A ``max``, ``min`` or ``rank`` aggregation must have a single expression.
+-  A ``max``, ``min``, ``rank`` or ``unique`` aggregation must have a single expression.
 -  The type of the expression in a ``max``, ``min`` or ``rank`` aggregation without an ordering directive expression must be an orderable type.
 -  A ``count`` or ``strictcount`` aggregation must not have an expression.
 -  A ``sum``, ``strictsum`` or ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
@@ -1139,6 +1140,8 @@ The values of the aggregation expression are given by applying the aggregation f
 -  If the aggregation id is ``concat``, then there is one value for each value of the second aggregation variable, given by the concatenation of the value of the first aggregation variable of each tuple with the value of the second aggregation variable used as a separator, ordered by the sort variables. If there are multiple aggregation tuples with the same sort variables then the first distinguished value is used to break ties. If there are no tuples in the set, then the single value of the aggregation is the empty string.
 
 -  If the aggregation id is ``strictconcat``, then the result is the same as for ``concat`` except in the case where there are no aggregation tuples in which case the aggregation has no value.
+
+ -  If the aggregation id is ``unique``, then the result is the the value of the aggregation variable if there is precisely one such value. Otherwise, the aggregation has no value.
 
 Any
 ~~~
