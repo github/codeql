@@ -16,11 +16,9 @@ class URLConstructor extends ClassInstanceExpr {
 
   Expr stringArg() {
     // Query only in URL's that were constructed by calling the single parameter string constructor.
-    if
-      this.getConstructor().getNumberOfParameters() = 1 and
-      this.getConstructor().getParameter(0).getType().getName() = "String"
-    then result = this.getArgument(0)
-    else none()
+    this.getConstructor().getNumberOfParameters() = 1 and
+    this.getConstructor().getParameter(0).getType() instanceof TypeString
+    and result = this.getArgument(0)
   }
 }
 
