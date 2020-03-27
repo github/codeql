@@ -81,14 +81,20 @@ private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement par
  */
 class ExprOrStmtParent extends Element, @exprorstmt_parent {
   final override ControlFlowElement getChild(int i) {
-    result = this.getChildExpr(i) or
-    result = this.getChildStmt(i)
+    result =
+      unique(ControlFlowElement res |
+        res = this.getChildExpr(i) or
+        res = this.getChildStmt(i)
+      )
   }
 
   /** Gets the `i`th child expression of this element (zero-based). */
   final Expr getChildExpr(int i) {
-    expr_parent_adjusted(result, i, this) or
-    result = getTopLevelChild(this, i)
+    result =
+      unique(Expr res |
+        expr_parent_adjusted(res, i, this) or
+        res = getTopLevelChild(this, i)
+      )
   }
 
   /** Gets a child expression of this element, if any. */
@@ -96,8 +102,11 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
 
   /** Gets the `i`th child statement of this element (zero-based). */
   final Stmt getChildStmt(int i) {
-    stmt_parent(result, i, this) or
-    result = getTopLevelChild(this, i)
+    result =
+      unique(Stmt res |
+        stmt_parent(res, i, this) or
+        res = getTopLevelChild(this, i)
+      )
   }
 
   /** Gets a child statement of this element, if any. */
