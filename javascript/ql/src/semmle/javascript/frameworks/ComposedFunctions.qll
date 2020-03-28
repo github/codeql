@@ -28,21 +28,16 @@ private class ComposedFunction extends DataFlow::CallNode {
 /**
  * A taint step for a composed function.
  */
-private class ComposedFunctionTaintStep extends TaintTracking::AdditionalTaintStep {
-  ComposedFunction composed;
-  DataFlow::CallNode call;
-
-  ComposedFunctionTaintStep() {
-    call = composed.getACall() and
-    this = call
-  }
-
+private class ComposedFunctionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(int fnIndex, DataFlow::FunctionNode fn | fn = composed.getFunction(fnIndex) |
+    exists(int fnIndex, DataFlow::FunctionNode fn, ComposedFunction composed, DataFlow::CallNode call |
+      fn = composed.getFunction(fnIndex) and
+      call = composed.getACall()
+    |
       // flow out of the composed call
       fnIndex = composed.getNumArgument() - 1 and
       pred = fn.getAReturn() and
-      succ = this
+      succ = call
       or
       if fnIndex = 0
       then
