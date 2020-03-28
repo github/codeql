@@ -633,7 +633,7 @@ module TaintedPath {
     srclabel instanceof Label::PosixPath and
     dstlabel instanceof Label::PosixPath and
     (
-      any(UriLibraryStep step).step(src, dst)
+      TaintTracking::uriStep(src, dst)
       or
       exists(DataFlow::CallNode decode |
         decode.getCalleeName() = "decodeURIComponent" or decode.getCalleeName() = "decodeURI"

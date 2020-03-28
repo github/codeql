@@ -216,13 +216,23 @@ module TaintTracking {
    * Note: For performance reasons, all subclasses of this class should be part
    * of the standard library. Override `Configuration::isAdditionalTaintStep`
    * for analysis-specific taint steps.
+   *
+   * This class has multiple kinds of `step` predicates; these all have the same
+   * effect on taint-tracking configurations. However, the categorization of steps
+   * allows some data-flow configurations to opt in to specific kinds of taint steps.
    */
   class SharedTaintStep extends Unit {
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.
      */
-    abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+    predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge, in the URI category.
+     */
+    predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
   }
 
   /**
@@ -232,6 +242,12 @@ module TaintTracking {
     any(SharedTaintStep step).step(pred, succ)
     or
     any(AdditionalTaintStep step).step(pred, succ)
+    or
+    uriStep(pred, succ)
+  }
+
+  predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).uriStep(pred, succ)
   }
 
   /**
