@@ -426,22 +426,17 @@ module Vue {
    * of `inst = new Vue({ ..., data: { prop: source } })`, if the
    * `div` element is part of the template for `inst`.
    */
-  class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
-    VHtmlAttribute attr;
-
-    VHtmlSourceWrite() {
-      exists(Vue::Instance instance, string expr |
+  class VHtmlSourceWrite extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Vue::Instance instance, string expr, VHtmlAttribute attr |
         attr.getAttr().getRoot() =
           instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
-        this = instance.getAPropertyValue(expr)
+        pred = instance.getAPropertyValue(expr) and
+        succ = attr
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and succ = attr
     }
   }
 
