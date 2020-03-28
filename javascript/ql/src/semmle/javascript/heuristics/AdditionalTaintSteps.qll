@@ -1,5 +1,5 @@
 /**
- * Provides classes that heuristically increase the extent of `TaintTracking::AdditionalTaintStep`.
+ * Provides classes that heuristically increase the extent of `TaintTracking::SharedTaintStep`.
  *
  * Note: This module should not be a permanent part of the standard library imports.
  */
