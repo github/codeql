@@ -333,15 +333,24 @@ module TaintTracking {
   }
 
   /**
+   * DEPRECATED. Use the predicate `TaintTracking::persistentStorageStep` instead.
+   *
    * A taint propagating data flow edge through persistent storage.
    */
-  class PersistentStorageTaintStep extends SharedTaintStep {
+  deprecated class PersistentStorageTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(PersistentReadAccess read |
-        pred = read.getAWrite().getValue() and
-        succ = read
-      )
+      persistentStorageStep(pred, succ)
     }
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
+   */
+  predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(PersistentReadAccess read |
+      pred = read.getAWrite().getValue() and
+      succ = read
+    )
   }
 
   predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
