@@ -245,45 +245,7 @@ module DomBasedXss {
   /**
    * A Vue `v-html` attribute, viewed as an XSS sink.
    */
-  class VHtmlSink extends DomBasedXss::Sink {
-    HTML::Attribute attr;
-
-    VHtmlSink() {
-      this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html"
-    }
-
-    /**
-     * Gets the HTML attribute of this sink.
-     */
-    HTML::Attribute getAttr() { result = attr }
-  }
-
-  /**
-   * A taint propagating data flow edge through a string interpolation of a
-   * Vue instance property to a `v-html` attribute.
-   *
-   * As an example, `<div v-html="prop"/>` reads the `prop` property
-   * of `inst = new Vue({ ..., data: { prop: source } })`, if the
-   * `div` element is part of the template for `inst`.
-   */
-  class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
-    VHtmlSink attr;
-
-    VHtmlSourceWrite() {
-      exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() =
-          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
-        expr = attr.getAttr().getValue() and
-        // only support for simple identifier expressions
-        expr.regexpMatch("(?i)[a-z0-9_]+") and
-        this = instance.getAPropertyValue(expr)
-      )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = this and succ = attr
-    }
-  }
+  class VHtmlSink extends Vue::VHtmlAttribute, DomBasedXss::Sink {}
 
   /**
    * A property read from a safe property is considered a sanitizer.
