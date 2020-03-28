@@ -518,13 +518,9 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
 /**
  * An additional taint step that involves promises.
  */
-private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-  DataFlow::Node source;
-
-  PromiseTaintStep() { promiseTaintStep(source, this) }
-
+private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = source and succ = this
+    promiseTaintStep(pred, succ)
   }
 }
 
