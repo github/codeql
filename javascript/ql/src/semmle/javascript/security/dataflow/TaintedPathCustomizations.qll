@@ -645,7 +645,7 @@ module TaintedPath {
     or
     promiseTaintStep(src, dst) and srclabel = dstlabel
     or
-    any(TaintTracking::PersistentStorageTaintStep st).step(src, dst) and srclabel = dstlabel
+    TaintTracking::persistentStorageStep(src, dst) and srclabel = dstlabel
     or
     exists(DataFlow::PropRead read | read = dst |
       src = read.getBase() and
