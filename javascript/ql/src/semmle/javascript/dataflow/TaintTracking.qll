@@ -233,6 +233,15 @@ module TaintTracking {
      * data flow edge, in the URI category.
      */
     predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge, in the heuristic category.
+     *
+     * Note that this set of steps will be empty unless libraries from
+     * `semmle.javascript.heuristics` are explicitly imported.
+     */
+    predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
   }
 
   /**
@@ -242,6 +251,8 @@ module TaintTracking {
     any(SharedTaintStep step).step(pred, succ)
     or
     any(AdditionalTaintStep step).step(pred, succ)
+    or
+    any(SharedTaintStep step).heuristicStep(pred, succ)
     or
     uriStep(pred, succ)
   }
