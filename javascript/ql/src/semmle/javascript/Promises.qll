@@ -612,14 +612,12 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node pred;
-
-    ClosurePromiseTaintStep() {
+  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
         call = Closure::moduleImport("goog.Promise." + name).getACall() and
-        this = call and
+        succ = call and
         pred = call.getAnArgument()
       |
         name = "all" or
@@ -631,11 +629,9 @@ private module ClosurePromise {
       // promise created through goog.promise.withResolver()
       exists(DataFlow::CallNode resolver |
         resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
-        this = resolver.getAPropertyRead("promise") and
+        succ = resolver.getAPropertyRead("promise") and
         pred = resolver.getAMethodCall("resolve").getArgument(0)
       )
     }
-
-    override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
   }
 }
