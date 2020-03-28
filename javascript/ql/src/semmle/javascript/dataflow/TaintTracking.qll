@@ -15,6 +15,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.Unit
 private import semmle.javascript.dataflow.InferredTypes
 
 /**
@@ -138,7 +139,7 @@ module TaintTracking {
 
     final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       isAdditionalTaintStep(pred, succ) or
-      any(AdditionalTaintStep dts).step(pred, succ)
+      sharedTaintStep(pred, succ)
     }
 
     final override predicate isAdditionalFlowStep(
@@ -210,17 +211,42 @@ module TaintTracking {
    * A taint-propagating data flow edge that should be added to all taint tracking
    * configurations in addition to standard data flow edges.
    *
+   * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
+   *
    * Note: For performance reasons, all subclasses of this class should be part
    * of the standard library. Override `Configuration::isAdditionalTaintStep`
    * for analysis-specific taint steps.
    */
-  cached
+  class SharedTaintStep extends Unit {
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge.
+     */
+    abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  }
+
+  /**
+   * Holds if `pred -> succ` is an edge used by all taint-tracking configurations.
+   */
+  cached predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).step(pred, succ)
+    or
+    any(AdditionalTaintStep step).step(pred, succ)
+  }
+
+  /**
+   * A taint-propagating data flow edge that should be added to all taint tracking
+   * configurations in addition to standard data flow edges.
+   *
+   * Note: For performance reasons, all subclasses of this class should be part
+   * of the standard library. Override `Configuration::isAdditionalTaintStep`
+   * for analysis-specific taint steps.
+   */
   abstract class AdditionalTaintStep extends DataFlow::Node {
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.
      */
-    cached
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
   }
 
@@ -272,14 +298,12 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge through persistent storage.
    */
-  class PersistentStorageTaintStep extends AdditionalTaintStep {
-    PersistentReadAccess read;
-
-    PersistentStorageTaintStep() { this = read }
-
+  class PersistentStorageTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = read.getAWrite().getValue() and
-      succ = read
+      exists(PersistentReadAccess read |
+        pred = read.getAWrite().getValue() and
+        succ = read
+      )
     }
   }
 
@@ -320,10 +344,8 @@ module TaintTracking {
    * taint to flow from `v` to any read of `c2.state.p`, where `c2`
    * also is an instance of `C`.
    */
-  private class ReactComponentStateTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    DataFlow::Node source;
-
-    ReactComponentStateTaintStep() {
+  private class ReactComponentStateTaintStep extends SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
         (
           c.getACandidateStateSource().flowsTo(pwn.getBase()) or
@@ -335,13 +357,9 @@ module TaintTracking {
         )
       |
         prn.getPropertyName() = pwn.getPropertyName() and
-        this = prn and
-        source = pwn.getRhs()
+        succ = prn and
+        pred = pwn.getRhs()
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
     }
   }
 
