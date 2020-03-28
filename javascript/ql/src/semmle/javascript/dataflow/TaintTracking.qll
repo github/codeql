@@ -972,6 +972,6 @@ module TaintTracking {
    */
   predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     DataFlow::localFlowStep(pred, succ) or
-    any(AdditionalTaintStep s).step(pred, succ)
+    sharedTaintStep(pred, succ)
   }
 }
