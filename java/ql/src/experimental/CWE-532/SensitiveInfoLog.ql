@@ -16,7 +16,7 @@ import PathGraph
 class LoggerType extends RefType {
     LoggerType() {
         this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
-        this.hasQualifiedName("org.slf4j", "Logger")  //SLF4j
+        this.hasQualifiedName("org.slf4j", "Logger")  //SLF4j and Gradle Logging
     }
 }
 
