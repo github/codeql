@@ -11,7 +11,7 @@ import os
 import sys
 import json
 import re
-from os import path
+path = os.path
 
 file_groups = {}
 
@@ -118,7 +118,7 @@ def sync_identical_files(emit_error):
         master_file_picker = lambda files: None
     elif len(sys.argv) == 2:
         if sys.argv[1] == "--latest":
-            master_file_picker = lambda files: choose_latest_file(files)
+            master_file_picker = choose_latest_file
         elif os.path.isfile(sys.argv[1]):
             master_file_picker = lambda files: choose_master_file(sys.argv[1], files)
         else:
