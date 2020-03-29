@@ -10,8 +10,11 @@ class LanguageType = CppType;
 class OpaqueTypeTag = Cpp::Type;
 
 class TypeDomain = Cpp::TypeDomain;
+
 class RealDomain = Cpp::RealDomain;
+
 class ComplexDomain = Cpp::ComplexDomain;
+
 class ImaginaryDomain = Cpp::ImaginaryDomain;
 
 class Function = Cpp::Function;
