@@ -368,8 +368,10 @@ class ParameterNode extends SsaNode {
 class ReceiverNode extends ParameterNode {
   override ReceiverVariable parm;
 
+  /** Gets the receiver variable this node initializes. */
   ReceiverVariable asReceiverVariable() { result = parm }
 
+  /** Holds if this node initializes the receiver variable of `m`. */
   predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
 }
 
