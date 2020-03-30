@@ -201,22 +201,21 @@ private module StdlibHttp {
     ClientDo() { this.getTarget().hasQualifiedName("net/http", "Client", "Do") }
 
     override DataFlow::Node getUrl() {
-      exists(DataFlow::CallNode call, FunctionOutput outp |
-        call.getTarget().hasQualifiedName("net/http", "NewRequest") and
-        outp.isResult(0)
-      |
-        this.getArgument(0) = outp.getNode(call).getASuccessor*() and
+      // A URL passed to `NewRequest`, whose result is passed to this `Do` call
+      exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("net/http", "NewRequest") |
+        this.getArgument(0) = call.getResult(0).getASuccessor*() and
         result = call.getArgument(1)
       )
       or
-      exists(DataFlow::CallNode call, FunctionOutput outp |
-        call.getTarget().hasQualifiedName("net/http", "NewRequestWithContext") and
-        outp.isResult(0)
+      // A URL passed to `NewRequestWithContext`, whose result is passed to this `Do` call
+      exists(DataFlow::CallNode call |
+        call.getTarget().hasQualifiedName("net/http", "NewRequestWithContext")
       |
-        this.getArgument(0) = outp.getNode(call).getASuccessor*() and
+        this.getArgument(0) = call.getResult(0).getASuccessor*() and
         result = call.getArgument(2)
       )
       or
+      // A URL assigned to a request that is passed to this `Do` call
       exists(Write w, Field f |
         f.hasQualifiedName("net/http", "Request", "URL") and
         w.writesField(this.getArgument(0).getAPredecessor*(), f, result)

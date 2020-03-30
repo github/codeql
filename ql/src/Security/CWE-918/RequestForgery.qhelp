@@ -19,8 +19,8 @@ requests to other servers, potentially resulting in a DDOS attack.
 <recommendation>
 <p>
 To guard against request forgery, it is advisable to avoid putting user input directly into a
-network request. If a flexible network request mechanism is required, it is recommended tomaintain a
-list of authorized request targets and choose from that list based on the user input provided.
+network request. If a flexible network request mechanism is required, it is recommended to maintain
+a list of authorized request targets and choose from that list based on the user input provided.
 </p>
 </recommendation>
 
