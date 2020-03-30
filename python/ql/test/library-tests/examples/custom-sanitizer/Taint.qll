@@ -35,32 +35,32 @@ class MySanitizerHandlingNot extends Sanitizer {
         taint instanceof ExternalStringKind and
         clears_taint_on_true(test.getTest(), test.getSense(), test)
     }
+}
 
-    /**
-     * Helper predicate that recurses into any nesting of `not`
-     *
-     * To reduce the number of tuples this predicate holds for, we include the `PyEdgeRefinement` and
-     * ensure that `test` is a part of this `PyEdgeRefinement` (instead of just taking the
-     * `edge_refinement.getInput().getAUse()` part as a part of the predicate). Without including
-     * `PyEdgeRefinement` as an argument *any* `CallNode c` to `test.is_safe` would be a result of
-     * this predicate, since the tuple where `test = c` and `sense = true` would hold.
-     */
-    private predicate clears_taint_on_true(
-        ControlFlowNode test, boolean sense, PyEdgeRefinement edge_refinement
-    ) {
-        edge_refinement.getTest().getNode().(Expr).getASubExpression*() = test.getNode() and
-        (
-            test = Value::named("test.is_safe").getACall() and
-            edge_refinement.getInput().getAUse() = test.(CallNode).getAnArg() and
-            sense = true
-            or
-            test.(UnaryExprNode).getNode().getOp() instanceof Not and
-            exists(ControlFlowNode nested_test |
-                nested_test = test.(UnaryExprNode).getOperand() and
-                clears_taint_on_true(nested_test, sense.booleanNot(), edge_refinement)
-            )
+/**
+    * Helper predicate that recurses into any nesting of `not`
+    *
+    * To reduce the number of tuples this predicate holds for, we include the `PyEdgeRefinement` and
+    * ensure that `test` is a part of this `PyEdgeRefinement` (instead of just taking the
+    * `edge_refinement.getInput().getAUse()` part as a part of the predicate). Without including
+    * `PyEdgeRefinement` as an argument *any* `CallNode c` to `test.is_safe` would be a result of
+    * this predicate, since the tuple where `test = c` and `sense = true` would hold.
+    */
+private predicate clears_taint_on_true(
+    ControlFlowNode test, boolean sense, PyEdgeRefinement edge_refinement
+) {
+    edge_refinement.getTest().getNode().(Expr).getASubExpression*() = test.getNode() and
+    (
+        test = Value::named("test.is_safe").getACall() and
+        edge_refinement.getInput().getAUse() = test.(CallNode).getAnArg() and
+        sense = true
+        or
+        test.(UnaryExprNode).getNode().getOp() instanceof Not and
+        exists(ControlFlowNode nested_test |
+            nested_test = test.(UnaryExprNode).getOperand() and
+            clears_taint_on_true(nested_test, sense.booleanNot(), edge_refinement)
         )
-    }
+    )
 }
 
 class TestConfig extends TaintTracking::Configuration {
