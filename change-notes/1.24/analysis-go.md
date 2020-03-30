@@ -5,6 +5,7 @@
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
 * Analysis of flow through fields has been improved.
 * More sources of untrusted input as well as vulnerable sinks are modelled, which may lead to more results from the security queries.
+* Go 1.14 library changes have been modeled.
 
 ## New queries
 
