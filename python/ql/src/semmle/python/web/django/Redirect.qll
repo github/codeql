@@ -17,9 +17,6 @@ class DjangoRedirect extends HttpRedirectTaintSink {
     override string toString() { result = "django.redirect" }
 
     DjangoRedirect() {
-        exists(CallNode call |
-            redirect().getACall() = call and
-            this = call.getAnArg()
-        )
+        this = redirect().getACall().getAnArg()
     }
 }

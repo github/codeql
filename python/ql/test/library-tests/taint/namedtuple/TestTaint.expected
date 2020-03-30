@@ -1,7 +1,7 @@
 | test.py:13 | test_basic | a | externally controlled string |
 | test.py:13 | test_basic | b | externally controlled string |
 | test.py:13 | test_basic | c | externally controlled string |
-| test.py:13 | test_basic | d | NO TAINT |
+| test.py:13 | test_basic | d | externally controlled string |
 | test.py:13 | test_basic | urlsplit_res | [externally controlled string] |
 | test.py:19 | test_sanitizer | Attribute | externally controlled string |
 | test.py:22 | test_sanitizer | Attribute | NO TAINT |

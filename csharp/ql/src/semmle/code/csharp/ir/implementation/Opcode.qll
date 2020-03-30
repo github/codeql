@@ -70,7 +70,7 @@ private newtype TOpcode =
   TVarArgsStart() or
   TVarArgsEnd() or
   TVarArg() or
-  TVarArgCopy() or
+  TNextVarArg() or
   TCallSideEffect() or
   TCallReadSideEffect() or
   TIndirectReadSideEffect() or
@@ -629,20 +629,20 @@ module Opcode {
     final override string toString() { result = "BuiltIn" }
   }
 
-  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart {
+  class VarArgsStart extends UnaryOpcode, TVarArgsStart {
     final override string toString() { result = "VarArgsStart" }
   }
 
-  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd {
+  class VarArgsEnd extends UnaryOpcode, TVarArgsEnd {
     final override string toString() { result = "VarArgsEnd" }
   }
 
-  class VarArg extends BuiltInOperationOpcode, TVarArg {
+  class VarArg extends UnaryOpcode, TVarArg {
     final override string toString() { result = "VarArg" }
   }
 
-  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy {
-    final override string toString() { result = "VarArgCopy" }
+  class NextVarArg extends UnaryOpcode, TNextVarArg {
+    final override string toString() { result = "NextVarArg" }
   }
 
   class CallSideEffect extends WriteSideEffectOpcode, EscapedWriteOpcode, MayWriteOpcode,

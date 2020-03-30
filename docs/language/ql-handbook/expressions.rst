@@ -95,6 +95,23 @@ In a valid range, the start and end expression are integers, floats, or dates. I
 is a date, then both must be dates. If one of them is an integer and the other a float, then
 both are treated as floats.
 
+.. index:: setliteral
+.. _setliteral:
+
+Set literal expressions
+***********************
+
+A set literal expression allows the explicit listing of a choice between several values.
+It consists of a comma-separated collection of expressions that are enclosed in brackets (``[`` and ``]``).
+For example, ``[2, 3, 5, 7, 11, 13, 17, 19, 23, 29]`` is a valid set literal expression.
+Its values are the first ten prime numbers.
+
+The values of the contained expressions need to be of :ref:`compatible types <type-compatibility>` for a valid set literal expression.
+Furthermore, at least one of the set elements has to be of a type that is a supertype of the types of all
+the other contained expressions.
+
+Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
+
 .. index:: super
 .. _super:
 
