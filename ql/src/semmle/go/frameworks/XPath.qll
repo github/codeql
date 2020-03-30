@@ -130,21 +130,21 @@ module XPath {
       }
     }
 
-    /** An XPath expression string used in an API function of the https://github.com/moovweb/gokogiri package. */
-    private class MoovwebGokogiriXPathExpressionString extends Range {
-      MoovwebGokogiriXPathExpressionString() {
+    /** An XPath expression string used in an API function of the https://github.com/jbowtie/gokogiri package. */
+    private class JbowtieGokogiriXPathExpressionString extends Range {
+      JbowtieGokogiriXPathExpressionString() {
         exists(Function f, string name | name.matches("Compile%") |
-          f.hasQualifiedName("github.com/moovweb/gokogiri/xpath", name) and
+          f.hasQualifiedName("github.com/jbowtie/gokogiri/xpath", name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("Search%") |
-          f.hasQualifiedName("github.com/moovweb/gokogiri/xml.Node", name) and
+          f.hasQualifiedName("github.com/jbowtie/gokogiri/xml.Node", name) and
           this = f.getACall().getArgument(0)
         )
         or
         exists(Function f, string name | name.matches("EvalXPath%") |
-          f.hasQualifiedName("github.com/moovweb/gokogiri/xml.Node", name) and
+          f.hasQualifiedName("github.com/jbowtie/gokogiri/xml.Node", name) and
           this = f.getACall().getArgument(0)
         )
       }
