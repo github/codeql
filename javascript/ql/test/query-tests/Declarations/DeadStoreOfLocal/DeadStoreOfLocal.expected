@@ -10,3 +10,4 @@
 | tst.js:51:6:51:11 | x = 23 | The initial value of x is unused, since it is always overwritten. |
 | tst.js:132:7:132:13 | {x} = o | The initial value of x is unused, since it is always overwritten. |
 | tst.js:162:6:162:14 | [x] = [0] | The initial value of x is unused, since it is always overwritten. |
+| tst.js:172:7:172:17 | nSign = foo | This definition of nSign is useless, since its value is never read. |
