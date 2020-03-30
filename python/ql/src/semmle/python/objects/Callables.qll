@@ -215,6 +215,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
             cls = ObjectInternal::builtin("bool") and obj = ObjectInternal::bool(_)
         ) and
         origin = CfgOrigin::unknown()
+        or
+        this.returnTypeUnknown() and
+        obj = ObjectInternal::unknown() and
+        origin = CfgOrigin::unknown()
     }
 
     override ControlFlowNode getOrigin() {
@@ -231,26 +235,15 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     Builtin getReturnType() {
         exists(Builtin func |
-            func = this.getBuiltin() |
-            /* Enumerate the types of a few builtin functions, that the CPython analysis misses. */
-            func = Builtin::builtin("hex") and result = Builtin::special("str")
-            or
-            func = Builtin::builtin("oct") and result = Builtin::special("str")
-            or
-            func = Builtin::builtin("intern") and result = Builtin::special("str")
-            or
-            func = Builtin::builtin("__import__") and result = Builtin::special("ModuleType")
-            or
-            /* Fix a few minor inaccuracies in the CPython analysis */ 
-            ext_rettype(func, result) and not (
-                func = Builtin::builtin("__import__")
-                or
-                func = Builtin::builtin("compile") and result = Builtin::special("NoneType")
-                or
-                func = Builtin::builtin("sum")
-                or
-                func = Builtin::builtin("filter")
-            )
+            func = this.getBuiltin() and
+            result = getBuiltinFunctionReturnType(func)
+        )
+    }
+
+    private predicate returnTypeUnknown() {
+        exists(Builtin func |
+            func = this.getBuiltin() and
+            not exists(getBuiltinFunctionReturnType(func))
         )
     }
 
@@ -293,7 +286,30 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
 }
 
+private Builtin getBuiltinFunctionReturnType(Builtin func) {
+    /* Enumerate the types of a few builtin functions, that the CPython analysis misses. */
+    func = Builtin::builtin("hex") and result = Builtin::special("str")
+    or
+    func = Builtin::builtin("oct") and result = Builtin::special("str")
+    or
+    func = Builtin::builtin("intern") and result = Builtin::special("str")
+    or
+    func = Builtin::builtin("__import__") and result = Builtin::special("ModuleType")
+    or
+    /* Fix a few minor inaccuracies in the CPython analysis */
+    ext_rettype(func, result) and not (
+        func = Builtin::builtin("__import__")
+        or
+        func = Builtin::builtin("compile") and result = Builtin::special("NoneType")
+        or
+        func = Builtin::builtin("sum")
+        or
+        func = Builtin::builtin("filter")
+    )
+}
+
 /** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`. */
+
 class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethodObject {
 
     override Builtin getBuiltin() {
@@ -328,12 +344,24 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
             cls = ObjectInternal::builtin("bool") and obj = ObjectInternal::bool(_)
         ) and
         origin = CfgOrigin::unknown()
+        or
+        this.returnTypeUnknown() and
+        obj = ObjectInternal::unknown() and
+        origin = CfgOrigin::unknown()
     }
 
     Builtin getReturnType() {
+        /* If we have a record of the return type in our stubs, use that. */
         exists(Builtin func |
             func = this.getBuiltin() |
             ext_rettype(func, result)
+        )
+    }
+
+    private predicate returnTypeUnknown() {
+        exists(Builtin func |
+            func = this.getBuiltin() |
+            not ext_rettype(func, _)
         )
     }
 

@@ -157,11 +157,11 @@ class InvokeNode extends DataFlow::SourceNode {
    * `name` is set to `result`.
    */
   DataFlow::ValueNode getOptionArgument(int i, string name) {
-    exists(ObjectLiteralNode obj |
-      obj.flowsTo(getArgument(i)) and
-      obj.hasPropertyWrite(name, result)
-    )
+    getOptionsArgument(i).hasPropertyWrite(name, result)
   }
+
+  pragma[noinline]
+  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
   final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
@@ -587,8 +587,8 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
 }
 
 /**
- * A data flow node corresponding to the creation or a new array, either through an array literal
- * or an invocation of the `Array` constructor.
+ * A data flow node corresponding to the creation or a new array, either through an array literal,
+ * an invocation of the `Array` constructor, or the `Array.from` method.
  *
  *
  * Examples:

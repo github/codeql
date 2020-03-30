@@ -36,7 +36,7 @@ class BottleRoute extends ControlFlowNode {
 
     Function getFunction() { bottle_route(this, _, result) }
 
-    Parameter getNamedArgument() {
+    Parameter getANamedArgument() {
         exists(string name, Function func |
             func = this.getFunction() and
             func.getArgByName(name) = result and

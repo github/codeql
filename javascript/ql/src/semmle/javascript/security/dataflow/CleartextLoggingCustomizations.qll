@@ -23,7 +23,7 @@ module CleartextLogging {
    * A data flow sink for clear-text logging of sensitive information.
    */
   abstract class Sink extends DataFlow::Node {
-    DataFlow::FlowLabel getLabel() { result.isDataOrTaint() }
+    DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
@@ -127,7 +127,7 @@ module CleartextLogging {
 
     override string describe() { result = "an access to " + name }
 
-    override DataFlow::FlowLabel getLabel() { result.isData() }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** An access to a variable or property that might contain a password. */
@@ -153,7 +153,7 @@ module CleartextLogging {
 
     override string describe() { result = "an access to " + name }
 
-    override DataFlow::FlowLabel getLabel() { result.isData() }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** A call that might return a password. */
@@ -167,7 +167,7 @@ module CleartextLogging {
 
     override string describe() { result = "a call to " + name }
 
-    override DataFlow::FlowLabel getLabel() { result.isData() }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** An access to the sensitive object `process.env`. */
@@ -177,7 +177,7 @@ module CleartextLogging {
     override string describe() { result = "process environment" }
 
     override DataFlow::FlowLabel getLabel() {
-      result.isData() or
+      result.isTaint() or
       result instanceof PartiallySensitiveMap
     }
   }

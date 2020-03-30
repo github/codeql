@@ -1,0 +1,286 @@
+uniqueEnclosingCallable
+| enum.c:2:6:2:6 | 1 | Node should have one enclosing callable but has 0. |
+| enum.c:2:6:2:10 | ... + ... | Node should have one enclosing callable but has 0. |
+| enum.c:2:10:2:10 | 1 | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:17 | 1 | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:11:21:11:21 | 2 | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:24 | 0 | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:210:28:210:28 | 1 | Node should have one enclosing callable but has 0. |
+uniqueTypeBound
+| bad_asts.cpp:19:10:19:10 | constructor init of field x [post-this] | Node should have one type bound but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field x [pre-this] | Node should have one type bound but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field y [post-this] | Node should have one type bound but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field y [pre-this] | Node should have one type bound but has 0. |
+| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type bound but has 0. |
+| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [post-this] | Node should have one type bound but has 0. |
+| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [pre-this] | Node should have one type bound but has 0. |
+| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [post-this] | Node should have one type bound but has 0. |
+| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [pre-this] | Node should have one type bound but has 0. |
+uniqueTypeRepr
+| bad_asts.cpp:19:10:19:10 | constructor init of field x [post-this] | Node should have one type representation but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field x [pre-this] | Node should have one type representation but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field y [post-this] | Node should have one type representation but has 0. |
+| bad_asts.cpp:19:10:19:10 | constructor init of field y [pre-this] | Node should have one type representation but has 0. |
+| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type representation but has 0. |
+| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [post-this] | Node should have one type representation but has 0. |
+| ir.cpp:784:15:784:15 | constructor init of field middlevb2_s [pre-this] | Node should have one type representation but has 0. |
+| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [post-this] | Node should have one type representation but has 0. |
+| static_init_templates.cpp:240:7:240:7 | constructor init of field mcc [pre-this] | Node should have one type representation but has 0. |
+uniqueNodeLocation
+| break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
+| break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
+| cpp11.cpp:82:17:82:55 | call to Val | Node should have one location but has 2. |
+| cpp11.cpp:82:17:82:55 | call to Val | Node should have one location but has 2. |
+| duff.c:2:12:2:12 | i | Node should have one location but has 4. |
+| duff.c:2:12:2:12 | x | Node should have one location but has 4. |
+| file://:0:0:0:0 | call to PolymorphicBase | Node should have one location but has 2. |
+| file://:0:0:0:0 | call to PolymorphicDerived | Node should have one location but has 2. |
+| file://:0:0:0:0 | call to Val | Node should have one location but has 2. |
+| file://:0:0:0:0 | call to Val | Node should have one location but has 2. |
+| file://:0:0:0:0 | call to exn1 | Node should have one location but has 2. |
+| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
+| ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
+| ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
+| ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
+| ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
+| ir.cpp:850:19:850:19 | call to PolymorphicBase | Node should have one location but has 2. |
+| ir.cpp:851:22:851:22 | call to PolymorphicDerived | Node should have one location but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
+| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
+| switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
+| switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
+| try_catch.cpp:13:5:13:16 | call to exn1 | Node should have one location but has 2. |
+missingLocation
+| Nodes without location: 2 |
+uniqueNodeToString
+| break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
+| break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
+| duff.c:2:12:2:12 | i | Node should have one toString but has 2. |
+| duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
+| switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
+| switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+storeIsPostUpdate
+argHasPostUpdate
+| CPP-309.cpp:7:5:7:20 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| CPP-309.cpp:7:9:7:9 | 2 | ArgumentNode is missing PostUpdateNode. |
+| CPP-309.cpp:7:12:7:12 | 3 | ArgumentNode is missing PostUpdateNode. |
+| CPP-309.cpp:11:13:11:13 | 1 | ArgumentNode is missing PostUpdateNode. |
+| VacuousDestructorCall.cpp:10:18:10:18 | i | ArgumentNode is missing PostUpdateNode. |
+| abortingfunctions.cpp:45:13:45:13 | 0 | ArgumentNode is missing PostUpdateNode. |
+| abortingfunctions.cpp:45:16:45:16 | 0 | ArgumentNode is missing PostUpdateNode. |
+| allocators.cpp:16:14:16:36 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| allocators.cpp:16:18:16:19 | 11 | ArgumentNode is missing PostUpdateNode. |
+| allocators.cpp:16:22:16:23 | 22 | ArgumentNode is missing PostUpdateNode. |
+| allocators.cpp:16:30:16:31 | 33 | ArgumentNode is missing PostUpdateNode. |
+| allocators.cpp:16:34:16:35 | 44 | ArgumentNode is missing PostUpdateNode. |
+| bad_asts.cpp:16:25:16:25 | 1 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:8:32:8:32 | 0 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:8:35:8:37 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:8:40:8:40 | y | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:10:20:10:26 | ... != ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:20:33:20:35 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:21:33:21:35 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:21:38:21:38 | y | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:22:34:22:36 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:22:39:22:39 | y | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:28:31:28:38 | ... == ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:34:34:34:34 | x | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:39:25:39:27 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:39:30:39:30 | y | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:39:33:39:33 | 1 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:43:26:43:28 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:43:37:43:37 | y | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:45:33:45:41 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:47:24:47:30 | Hello | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:47:33:47:35 | 101 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:47:38:47:38 | 5 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:51:41:51:43 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:51:46:51:46 | 0 | ArgumentNode is missing PostUpdateNode. |
+| builtin.c:54:41:54:41 | 0 | ArgumentNode is missing PostUpdateNode. |
+| builtin.cpp:14:40:14:44 | ... - ... | ArgumentNode is missing PostUpdateNode. |
+| builtin.cpp:15:31:15:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:16:20:16:20 | x | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:26:24:26:24 | x | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:41:23:41:23 | x | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:48:23:48:24 | - ... | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:48:35:48:36 | - ... | ArgumentNode is missing PostUpdateNode. |
+| condition_decls.cpp:48:53:48:53 | x | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:9:30:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:12:30:12 | 1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:18:30:22 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:21:30:21 | 2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:9:33:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:12:33:12 | 3 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:18:33:22 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:21:33:21 | 3 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:9:39:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:12:39:12 | 1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:18:39:22 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:21:39:21 | 2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:9:42:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:12:42:12 | 3 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:18:42:22 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:21:42:21 | 3 | ArgumentNode is missing PostUpdateNode. |
+| constructorinitializer.cpp:8:6:8:10 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| constructorinitializer.cpp:8:13:8:17 | ... - ... | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:28:21:28:21 | (__end) | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:77:5:77:17 | unaryFunction | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:77:19:77:21 | arg | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:77:19:77:21 | arg | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:77:19:77:21 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:11:82:14 | arg2 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:11:82:14 | arg2 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:11:82:14 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:17:82:55 | [...](...){...} | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:17:82:55 | [...](...){...} | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:30:82:52 | arg1 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:45:82:48 | arg1 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:45:82:48 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:51:82:51 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:51:82:51 | x | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:82:51:82:51 | x | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:88:12:88:22 | doSomething | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:88:25:88:30 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:88:29:88:29 | 1 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:88:33:88:38 | call to Val | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:88:37:88:37 | 2 | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:15:5:15:45 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:15:38:15:41 | args | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:15:38:15:41 | args | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:15:38:15:41 | p#2 | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:19:13:19:13 | 1 | ArgumentNode is missing PostUpdateNode. |
+| cpp17.cpp:19:16:19:16 | 2 | ArgumentNode is missing PostUpdateNode. |
+| destructors.cpp:52:14:52:16 | ref | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:377:16:377:16 | x | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:377:19:377:19 | y | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:381:32:381:32 | x | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:381:35:381:35 | y | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:552:16:552:16 | 5 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:585:20:585:26 | %d %s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:585:29:585:29 | 1 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:585:32:585:39 | string | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:617:15:617:21 | hello | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:619:24:619:29 | test | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:623:5:623:5 | r | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:624:5:624:5 | p | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:625:5:625:5 | s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:653:38:653:38 | 0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:654:40:654:40 | 1 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:655:32:655:32 | 2 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:662:13:662:18 | test | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:700:7:700:7 | 5 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:709:14:709:14 | x | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:709:17:709:17 | y | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:721:41:721:47 | 0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:721:50:721:52 | 111 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:731:32:731:46 | String object | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:736:18:736:18 | s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:745:8:745:8 | base_s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:754:8:754:8 | * ... | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:754:8:754:8 | middle_s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:763:8:763:8 | * ... | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:763:8:763:8 | derived_s | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:808:7:808:7 | m | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:809:7:809:13 | call to Base | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:809:13:809:13 | m | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:810:7:810:26 | call to Base | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:810:25:810:25 | m | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:816:16:816:16 | b | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:817:28:817:28 | b | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:822:7:822:7 | d | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:823:7:823:13 | call to Base | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:823:13:823:13 | d | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:824:7:824:26 | call to Base | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:824:25:824:25 | d | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:830:17:830:17 | b | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:831:29:831:29 | b | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:868:10:868:11 |  | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:942:3:942:15 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:942:7:942:10 | 1.0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:945:3:945:27 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:945:7:945:10 | 1.0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:945:20:945:26 | hello | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:947:3:947:25 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:947:7:947:10 | 1.0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:947:25:947:25 | 128 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:953:3:953:18 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:953:7:953:10 | 1.0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:956:3:956:27 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:956:7:956:10 | 1.0 | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:956:28:956:28 | 128 | ArgumentNode is missing PostUpdateNode. |
+| membercallexpr_args.cpp:10:10:10:14 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| membercallexpr_args.cpp:10:17:10:21 | ... - ... | ArgumentNode is missing PostUpdateNode. |
+| misc.c:83:14:83:14 | i | ArgumentNode is missing PostUpdateNode. |
+| misc.c:83:17:83:17 | j | ArgumentNode is missing PostUpdateNode. |
+| misc.c:84:16:84:16 | i | ArgumentNode is missing PostUpdateNode. |
+| misc.c:84:19:84:19 | j | ArgumentNode is missing PostUpdateNode. |
+| misc.c:147:16:147:16 | i | ArgumentNode is missing PostUpdateNode. |
+| misc.c:147:19:147:19 | j | ArgumentNode is missing PostUpdateNode. |
+| misc.c:228:31:228:40 | global_int | ArgumentNode is missing PostUpdateNode. |
+| misc.c:229:32:229:41 | global_int | ArgumentNode is missing PostUpdateNode. |
+| misc.c:230:27:230:36 | global_int | ArgumentNode is missing PostUpdateNode. |
+| misc.c:231:29:231:38 | global_int | ArgumentNode is missing PostUpdateNode. |
+| ms_assume.cpp:13:21:13:35 | Hello, world! | ArgumentNode is missing PostUpdateNode. |
+| ms_assume.cpp:14:21:14:21 | 0 | ArgumentNode is missing PostUpdateNode. |
+| ms_assume.cpp:28:26:28:28 | 256 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:11:12:11:14 | 101 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:14:16:14:18 | 102 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:18:16:18:18 | 103 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:21:16:21:18 | 104 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:24:12:24:14 | 105 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:28:12:28:14 | 101 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:31:16:31:18 | 106 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:35:16:35:18 | 107 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:38:16:38:18 | 108 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:41:12:41:14 | 109 | ArgumentNode is missing PostUpdateNode. |
+| ms_try_mix.cpp:48:10:48:12 | 201 | ArgumentNode is missing PostUpdateNode. |
+| newexpr.cpp:8:8:8:12 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| newexpr.cpp:8:15:8:19 | ... - ... | ArgumentNode is missing PostUpdateNode. |
+| no_dynamic_init.cpp:5:12:5:35 | Goodbye cruel world.\n | ArgumentNode is missing PostUpdateNode. |
+| ops.cpp:19:15:19:22 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ops.cpp:20:18:20:30 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ops.cpp:21:18:21:34 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| ops.cpp:26:31:26:53 | <error expr> | ArgumentNode is missing PostUpdateNode. |
+| parameterinitializer.cpp:8:12:8:21 | Got %d\n | ArgumentNode is missing PostUpdateNode. |
+| parameterinitializer.cpp:8:24:8:24 | i | ArgumentNode is missing PostUpdateNode. |
+| parameterinitializer.cpp:19:7:19:7 | 3 | ArgumentNode is missing PostUpdateNode. |
+| parameterinitializer.cpp:21:7:21:7 | 4 | ArgumentNode is missing PostUpdateNode. |
+| pointer_to_member.cpp:23:46:23:50 | 0 | ArgumentNode is missing PostUpdateNode. |
+| pointer_to_member.cpp:24:42:24:45 | 1 | ArgumentNode is missing PostUpdateNode. |
+| staticlocals.cpp:27:27:27:29 | two | ArgumentNode is missing PostUpdateNode. |
+| staticlocals.cpp:28:27:28:27 | 2 | ArgumentNode is missing PostUpdateNode. |
+| staticmembercallexpr_args.cpp:10:9:10:13 | ... + ... | ArgumentNode is missing PostUpdateNode. |
+| staticmembercallexpr_args.cpp:10:16:10:20 | ... - ... | ArgumentNode is missing PostUpdateNode. |
+| stmt_expr.cpp:13:18:13:18 | 1 | ArgumentNode is missing PostUpdateNode. |
+| stmt_expr.cpp:30:20:30:20 | 3 | ArgumentNode is missing PostUpdateNode. |
+| vla.c:5:27:5:33 | access to array | ArgumentNode is missing PostUpdateNode. |

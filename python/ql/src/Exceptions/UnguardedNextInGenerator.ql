@@ -12,12 +12,12 @@
 
 import python
 
-FunctionObject iter() {
-    result = Object::builtin("iter")
+FunctionValue iter() {
+    result = Value::named("iter")
 }
 
-BuiltinFunctionObject next() {
-    result = Object::builtin("next")
+BuiltinFunctionValue next() {
+    result = Value::named("next")
 }
 
 predicate call_to_iter(CallNode call, EssaVariable sequence) {
@@ -26,6 +26,10 @@ predicate call_to_iter(CallNode call, EssaVariable sequence) {
 
 predicate call_to_next(CallNode call, ControlFlowNode iter) {
     iter = next().getArgumentForCall(call, 0)
+}
+
+predicate call_to_next_has_default(CallNode call) {
+    exists(call.getArg(1)) or exists(call.getArgByName("default"))
 }
 
 predicate guarded_not_empty_sequence(EssaVariable sequence) {
@@ -43,12 +47,13 @@ predicate iter_not_exhausted(EssaVariable iterator) {
 predicate stop_iteration_handled(CallNode call) {
     exists(Try t |
         t.containsInScope(call.getNode()) and
-        t.getAHandler().getType().refersTo(theStopIterationType())
+        t.getAHandler().getType().pointsTo(ClassValue::stopIteration())
     )
 }
 
 from CallNode call
 where call_to_next(call, _) and
+not call_to_next_has_default(call) and
 not exists(EssaVariable iterator |
     call_to_next(call, iterator.getAUse()) and
     iter_not_exhausted(iterator)
@@ -58,4 +63,3 @@ not exists(Comp comp | comp.contains(call.getNode())) and
 not stop_iteration_handled(call)
 
 select call, "Call to next() in a generator"
-
