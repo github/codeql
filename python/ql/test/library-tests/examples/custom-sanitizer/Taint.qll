@@ -38,14 +38,14 @@ class MySanitizerHandlingNot extends Sanitizer {
 }
 
 /**
-    * Helper predicate that recurses into any nesting of `not`
-    *
-    * To reduce the number of tuples this predicate holds for, we include the `PyEdgeRefinement` and
-    * ensure that `test` is a part of this `PyEdgeRefinement` (instead of just taking the
-    * `edge_refinement.getInput().getAUse()` part as a part of the predicate). Without including
-    * `PyEdgeRefinement` as an argument *any* `CallNode c` to `test.is_safe` would be a result of
-    * this predicate, since the tuple where `test = c` and `sense = true` would hold.
-    */
+ * Helper predicate that recurses into any nesting of `not`
+ *
+ * To reduce the number of tuples this predicate holds for, we include the `PyEdgeRefinement` and
+ * ensure that `test` is a part of this `PyEdgeRefinement` (instead of just taking the
+ * `edge_refinement.getInput().getAUse()` part as a part of the predicate). Without including
+ * `PyEdgeRefinement` as an argument *any* `CallNode c` to `test.is_safe` would be a result of
+ * this predicate, since the tuple where `test = c` and `sense = true` would hold.
+ */
 private predicate clears_taint_on_true(
     ControlFlowNode test, boolean sense, PyEdgeRefinement edge_refinement
 ) {
