@@ -275,7 +275,7 @@ module Firebase {
       result.hasUnderlyingType("firebase", "database.DataSnapshot")
     )
     or
-    promiseTaintStep(snapshot(t), result)
+    TaintTracking::promiseStep(snapshot(t), result)
     or
     exists(DataFlow::TypeTracker t2 | result = snapshot(t2).track(t2, t))
   }

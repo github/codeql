@@ -469,58 +469,53 @@ private module PromiseFlow {
 }
 
 /**
- * Holds if taint propagates from `pred` to `succ` through promises.
+ * DEPRECATED. Use `TaintTracking::promiseStep` instead.
  */
-predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // from `x` to `new Promise((res, rej) => res(x))`
-  pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
-  or
-  // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue() and
-  not succ instanceof PromiseAllCreation
-  or
-  // from `arr` to `Promise.all(arr)`
-  pred = succ.(PromiseAllCreation).getArrayNode()
-  or
-  exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
-    // from `p` to `x` in `p.then(x => ...)`
-    pred = thn.getReceiver() and
-    succ = thn.getCallback(0).getParameter(0)
-    or
-    // from `v` to `p.then(x => return v)`
-    pred = thn.getCallback([0 .. 1]).getAReturn() and
-    succ = thn
-  )
-  or
-  exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
-    // from `p` to `p.catch(..)`
-    pred = catch.getReceiver() and
-    succ = catch
-    or
-    // from `v` to `p.catch(x => return v)`
-    pred = catch.getCallback(0).getAReturn() and
-    succ = catch
-  )
-  or
-  // from `p` to `p.finally(..)`
-  exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
-    pred = finally.getReceiver() and
-    succ = finally
-  )
-  or
-  // from `x` to `await x`
-  exists(AwaitExpr await |
-    pred.getEnclosingExpr() = await.getOperand() and
-    succ.getEnclosingExpr() = await
-  )
-}
+deprecated predicate promiseTaintStep = TaintTracking::promiseStep/2;
 
-/**
- * An additional taint step that involves promises.
- */
 private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    promiseTaintStep(pred, succ)
+  override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // from `x` to `new Promise((res, rej) => res(x))`
+    pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
+    or
+    // from `x` to `Promise.resolve(x)`
+    pred = succ.(PromiseCreationCall).getValue() and
+    not succ instanceof PromiseAllCreation
+    or
+    // from `arr` to `Promise.all(arr)`
+    pred = succ.(PromiseAllCreation).getArrayNode()
+    or
+    exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
+      // from `p` to `x` in `p.then(x => ...)`
+      pred = thn.getReceiver() and
+      succ = thn.getCallback(0).getParameter(0)
+      or
+      // from `v` to `p.then(x => return v)`
+      pred = thn.getCallback([0 .. 1]).getAReturn() and
+      succ = thn
+    )
+    or
+    exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
+      // from `p` to `p.catch(..)`
+      pred = catch.getReceiver() and
+      succ = catch
+      or
+      // from `v` to `p.catch(x => return v)`
+      pred = catch.getCallback(0).getAReturn() and
+      succ = catch
+    )
+    or
+    // from `p` to `p.finally(..)`
+    exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
+      pred = finally.getReceiver() and
+      succ = finally
+    )
+    or
+    // from `x` to `await x`
+    exists(AwaitExpr await |
+      pred.getEnclosingExpr() = await.getOperand() and
+      succ.getEnclosingExpr() = await
+    )
   }
 }
 

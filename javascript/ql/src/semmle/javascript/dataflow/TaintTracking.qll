@@ -287,6 +287,15 @@ module TaintTracking {
      * data flow edge through data deserialization, such as `JSON.parse`.
      */
     predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through a promise.
+     *
+     * These steps consider a promise object to tainted if it can resolve to
+     * a tainted value.
+     */
+    predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
   }
 
   /**
@@ -378,6 +387,18 @@ module TaintTracking {
   }
 
   /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through data deserialization, such as `JSON.parse`.
+   *
+   * These steps consider a promise object to tainted if it can resolve to
+   * a tainted value.
+   */
+  cached
+  predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).promiseStep(pred, succ)
+  }
+
+  /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
    */
   pragma[inline]
@@ -408,7 +429,8 @@ module TaintTracking {
     stringConcatenationStep(pred, succ) or
     stringManipulationStep(pred, succ) or
     serializeStep(pred, succ) or
-    deserializeStep(pred, succ)
+    deserializeStep(pred, succ) or
+    promiseStep(pred, succ)
   }
 
   /**
