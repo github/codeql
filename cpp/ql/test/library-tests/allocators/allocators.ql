@@ -1,6 +1,6 @@
 import default
 
-query predicate newExprs(NewExpr expr, string type, string sig, int size, int alignment, string form) {
+query predicate newExprs(NewExpr expr, string type, string sig, int size, int alignment, string form, string placement) {
   exists(Function allocator, Type allocatedType |
     expr.getAllocator() = allocator and
     sig = allocator.getFullSignature() and
@@ -8,13 +8,14 @@ query predicate newExprs(NewExpr expr, string type, string sig, int size, int al
     type = allocatedType.toString() and
     size = allocatedType.getSize() and
     alignment = allocatedType.getAlignment() and
-    if expr.hasAlignedAllocation() then form = "aligned" else form = ""
+    if expr.hasAlignedAllocation() then form = "aligned" else form = "" and
+    if exists(expr.getPlacementPointer()) then placement = expr.getPlacementPointer().toString() else placement = ""
   )
 }
 
 query predicate newArrayExprs(
   NewArrayExpr expr, string t1, string t2, string sig, int size, int alignment, string form,
-  string extents
+  string extents, string placement
 ) {
   exists(Function allocator, Type arrayType, Type elementType |
     expr.getAllocator() = allocator and
@@ -26,7 +27,8 @@ query predicate newArrayExprs(
     size = elementType.getSize() and
     alignment = elementType.getAlignment() and
     (if expr.hasAlignedAllocation() then form = "aligned" else form = "") and
-    extents = concat(Expr e | e = expr.getExtent() | e.toString(), ", ")
+    extents = concat(Expr e | e = expr.getExtent() | e.toString(), ", ") and
+    if exists(expr.getPlacementPointer()) then placement = expr.getPlacementPointer().toString() else placement = ""
   )
 }
 
