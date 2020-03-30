@@ -103,3 +103,39 @@ query predicate deleteArrayExprs(
     )
   )
 }
+
+string describeAllocationFunction(AllocationFunction f) {
+	result = "getSizeArg = " + f.getSizeArg().toString()
+	or
+	result = "getSizeMult = " + f.getSizeMult().toString()
+	or
+	result = "getReallocPtrArg = " + f.getReallocPtrArg().toString()
+	or
+	(
+		f.requiresDealloc() and
+		result = "requiresDealloc"
+	)
+}
+
+query predicate allocationFunctions(AllocationFunction f, string descr) {
+	descr = concat(describeAllocationFunction(f), ", ")
+}
+
+string describeAllocationExpr(AllocationExpr e) {
+	result = "getSizeExpr = " + e.getSizeExpr().toString()
+	or
+	result = "getSizeMult = " + e.getSizeMult().toString()
+	or
+	result = "getSizeBytes = " + e.getSizeBytes().toString()
+	or
+	result = "getReallocPtr = " + e.getReallocPtr().toString()
+	or
+	(
+		e.requiresDealloc() and
+		result = "requiresDealloc"
+	)
+}
+
+query predicate allocationExprs(AllocationExpr e, string descr) {
+	descr = concat(describeAllocationExpr(e), ", ")
+}
