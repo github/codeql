@@ -963,11 +963,12 @@ private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
         or
         // recursive case
         depth > 1 and
-        result = taint_at_depth(parent_kind.getMember(), depth-1)
+        result = taint_at_depth(parent_kind.getMember(), depth - 1)
     )
 }
 
-/** Helper predicate for taintedMultiAssignment
+/**
+ * Helper predicate for taintedMultiAssignment
  *
  * Returns the `depth` the elements that are assigned to `left_defn` with iterable unpacking has,
  * compared to `left_parent`. Special care is taken for `StarredNode` that is assigned a sequence of items.
@@ -982,9 +983,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
     exists(Assign a | a.getATarget().getASubExpression*().getAFlowNode() = left_parent) and
     left_parent.getAnElement() = left_defn and
     // Handle `a, *b = some_iterable`
-    if left_defn instanceof StarredNode
-    then result = 0
-    else result = 1
+    if left_defn instanceof StarredNode then result = 0 else result = 1
     or
     result = 1 + iterable_unpacking_descent(left_parent.getAnElement(), left_defn)
 }
