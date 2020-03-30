@@ -162,7 +162,26 @@ abstract class NullOrUndefinedConversion extends ImplicitConversion {
 class PlusConversion extends NullOrUndefinedConversion {
   PlusConversion() { parent instanceof AddExpr or parent instanceof AssignAddExpr }
 
-  override string getConversionTarget() { result = "number or string" }
+  override string getConversionTarget() {
+    result = getDefiniteCousinType()
+    or
+    not exists(getDefiniteCousinType()) and
+    result = "number or string"
+  }
+
+  /**
+   * Gets the cousin of this implicit conversion.
+   * E.g. if this is `a` in the expression `a + b`, then the cousin is `b`.
+   */
+  private Expr getCousin() { result = parent.getAChild() and not result = this.getEnclosingExpr() }
+
+  /**
+   * Gets the unique type of the cousin expression, if that type is `string` or `number`.
+   */
+  private string getDefiniteCousinType() {
+    result = unique(InferredType t | t = getCousin().flow().analyze().getAType()).getTypeofTag() and
+    result = ["string", "number"]
+  }
 }
 
 /**
