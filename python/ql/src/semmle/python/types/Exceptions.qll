@@ -1,6 +1,6 @@
 /**
  * Analysis of exception raising and handling.
- * 
+ *
  * In order to make this useful we make a number of assumptions. These are:
  * 1. Typing errors (TypeError, NameError, AttributeError) are assumed to occur only if:
  *    a) Explicitly raised, e.g. <code>raise TypeError()</code>
@@ -15,7 +15,6 @@ import python
 
 /** Subset of ControlFlowNodes which might raise an exception */
 class RaisingNode extends ControlFlowNode {
-
     RaisingNode() {
         exists(this.getAnExceptionalSuccessor())
         or
@@ -24,63 +23,58 @@ class RaisingNode extends ControlFlowNode {
 
     /** Gets the CFG node for the exception, if and only if this RaisingNode is an explicit raise */
     ControlFlowNode getExceptionNode() {
-        exists(Raise r | 
-            r = this.getNode() and result.getNode() = r.getRaised() and
+        exists(Raise r |
+            r = this.getNode() and
+            result.getNode() = r.getRaised() and
             result.getBasicBlock().dominates(this.getBasicBlock())
         )
     }
 
-    private predicate quits() {
-        this.(CallNode).getFunction().refersTo(Object::quitter(_))
-    }
+    private predicate quits() { this.(CallNode).getFunction().refersTo(Object::quitter(_)) }
 
-    /** Gets the type of an exception that may be raised
-     * at this control flow node */
+    /**
+     * Gets the type of an exception that may be raised
+     * at this control flow node
+     */
     ClassObject getARaisedType() {
         result = this.localRaisedType()
         or
-        exists(FunctionObject func |
-              this = func.getACall() |
-              result = func.getARaisedType()
-        )
+        exists(FunctionObject func | this = func.getACall() | result = func.getARaisedType())
         or
         result = systemExitRaise()
     }
 
     pragma[noinline]
-    private ClassObject systemExitRaise() {
-        this.quits() and result = Object::builtin("SystemExit")
-    }
+    private ClassObject systemExitRaise() { this.quits() and result = Object::builtin("SystemExit") }
 
-    pragma [noinline, nomagic]
+    pragma[noinline, nomagic]
     private ClassObject localRaisedType() {
-        result.isSubclassOf(theBaseExceptionType()) 
-        and
+        result.isSubclassOf(theBaseExceptionType()) and
         (
-          exists(ControlFlowNode ex |
-            ex = this.getExceptionNode() and
-            (ex.refersTo(result) or ex.refersTo(_, result, _))
-          )
-          or
-          this.getNode() instanceof ImportExpr and result = Object::builtin("ImportError")
-          or
-          this.getNode() instanceof Print and result = theIOErrorType()
-          or
-          exists(ExceptFlowNode except |
-              except = this.getAnExceptionalSuccessor() and
-              except.handles(result) and
-              result = this.innateException()
-          )
-          or
-          not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor())
-          and
-          sequence_or_mapping(this) and result = theLookupErrorType()
-          or
-          this.read_write_call() and result = theIOErrorType()
+            exists(ControlFlowNode ex |
+                ex = this.getExceptionNode() and
+                (ex.refersTo(result) or ex.refersTo(_, result, _))
+            )
+            or
+            this.getNode() instanceof ImportExpr and result = Object::builtin("ImportError")
+            or
+            this.getNode() instanceof Print and result = theIOErrorType()
+            or
+            exists(ExceptFlowNode except |
+                except = this.getAnExceptionalSuccessor() and
+                except.handles(result) and
+                result = this.innateException()
+            )
+            or
+            not exists(ExceptFlowNode except | except = this.getAnExceptionalSuccessor()) and
+            sequence_or_mapping(this) and
+            result = theLookupErrorType()
+            or
+            this.read_write_call() and result = theIOErrorType()
         )
     }
 
-    pragma [noinline]
+    pragma[noinline]
     ClassObject innateException() {
         this.getNode() instanceof Attribute and result = theAttributeErrorType()
         or
@@ -91,30 +85,29 @@ class RaisingNode extends ControlFlowNode {
         this.getNode() instanceof Subscript and result = theKeyErrorType()
     }
 
-    /** Whether this control flow node raises an exception, 
-     * but the type of the exception it raises cannot be inferred. */
+    /**
+     * Whether this control flow node raises an exception,
+     * but the type of the exception it raises cannot be inferred.
+     */
     predicate raisesUnknownType() {
         /* read/write calls are assumed to raise IOError (OSError for Py3) */
-        not this.read_write_call()
-        and
+        not this.read_write_call() and
         (
-          /* Call to an unknown object */
-          this.getNode() instanceof Call and not exists(FunctionObject func | this = func.getACall())
-          and not exists(ClassObject known | this.(CallNode).getFunction().refersTo(known))
-          or
-          this.getNode() instanceof Exec
-          or
-          /* Call to a function raising an unknown type */
-          exists(FunctionObject func |
-              this = func.getACall() |
-              func.raisesUnknownType()
-          )
+            /* Call to an unknown object */
+            this.getNode() instanceof Call and
+            not exists(FunctionObject func | this = func.getACall()) and
+            not exists(ClassObject known | this.(CallNode).getFunction().refersTo(known))
+            or
+            this.getNode() instanceof Exec
+            or
+            /* Call to a function raising an unknown type */
+            exists(FunctionObject func | this = func.getACall() | func.raisesUnknownType())
         )
     }
 
     private predicate read_write_call() {
         exists(string mname | mname = this.(CallNode).getFunction().(AttrNode).getName() |
-            mname = "read" or mname = "write" 
+            mname = "read" or mname = "write"
         )
     }
 
@@ -143,23 +136,26 @@ class RaisingNode extends ControlFlowNode {
         raised.isLegalExceptionType() and
         raised = this.getARaisedType() and
         succ = this.getAnExceptionalSuccessor() and
-        ( 
+        (
             /* An 'except' that handles raised and there is no more previous handler */
-            ((ExceptFlowNode)succ).handles(raised) and 
-            not exists(ExceptFlowNode other, StmtList s, int i, int j | 
-                not other = succ and other.handles(raised) and
-                s.getItem(i) = succ.getNode() and s.getItem(j) = other.getNode()
-                |
+            succ.(ExceptFlowNode).handles(raised) and
+            not exists(ExceptFlowNode other, StmtList s, int i, int j |
+                not other = succ and
+                other.handles(raised) and
+                s.getItem(i) = succ.getNode() and
+                s.getItem(j) = other.getNode()
+            |
                 j < i
             )
             or
             /* Any successor that is not an 'except', provided that 'raised' is not handled by a different successor. */
-            (not ((ExceptFlowNode)this.getAnExceptionalSuccessor()).handles(raised) and
-             not succ instanceof ExceptFlowNode)
+            not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles(raised) and
+            not succ instanceof ExceptFlowNode
         )
     }
 
-    /** Whether this exceptional exit is viable. That is, is it
+    /**
+     * Whether this exceptional exit is viable. That is, is it
      * plausible that the scope `s` can be exited with exception `raised`
      * at this point.
      */
@@ -167,46 +163,48 @@ class RaisingNode extends ControlFlowNode {
         raised.isLegalExceptionType() and
         raised = this.getARaisedType() and
         this.isExceptionalExit(s) and
-        not ((ExceptFlowNode)this.getAnExceptionalSuccessor()).handles(raised)
+        not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles(raised)
     }
-
 }
 
 /** Is this a sequence or mapping subscript x[i]? */
-private predicate sequence_or_mapping(RaisingNode r) {
-    r.getNode() instanceof Subscript
-}
+private predicate sequence_or_mapping(RaisingNode r) { r.getNode() instanceof Subscript }
 
 private predicate current_exception(ClassObject ex, BasicBlock b) {
     exists(RaisingNode r |
         r.viableExceptionEdge(b.getNode(0), ex) and not b.getNode(0) instanceof ExceptFlowNode
     )
     or
-    exists(BasicBlock prev | 
+    exists(BasicBlock prev |
         current_exception(ex, prev) and
         exists(ControlFlowNode pred, ControlFlowNode succ |
-            pred = prev.getLastNode() and succ = b.getNode(0) |
-            pred.getASuccessor() = succ and 
-            (/* Normal control flow */
-             not pred.getAnExceptionalSuccessor() = succ or 
-             /* Re-raise the current exception, propagating to the successor */
-             pred instanceof ReraisingNode)
+            pred = prev.getLastNode() and succ = b.getNode(0)
+        |
+            pred.getASuccessor() = succ and
+            (
+                /* Normal control flow */
+                not pred.getAnExceptionalSuccessor() = succ
+                or
+                /* Re-raise the current exception, propagating to the successor */
+                pred instanceof ReraisingNode
+            )
         )
     )
 }
 
 private predicate unknown_current_exception(BasicBlock b) {
     exists(RaisingNode r |
-        r.raisesUnknownType() and 
+        r.raisesUnknownType() and
         r.getAnExceptionalSuccessor() = b.getNode(0) and
         not b.getNode(0) instanceof ExceptFlowNode
     )
     or
-    exists(BasicBlock prev | 
+    exists(BasicBlock prev |
         unknown_current_exception(prev) and
         exists(ControlFlowNode pred, ControlFlowNode succ |
-            pred = prev.getLastNode() and succ = b.getNode(0) |
-            pred.getASuccessor() = succ and 
+            pred = prev.getLastNode() and succ = b.getNode(0)
+        |
+            pred.getASuccessor() = succ and
             (not pred.getAnExceptionalSuccessor() = succ or pred instanceof ReraisingNode)
         )
     )
@@ -214,9 +212,10 @@ private predicate unknown_current_exception(BasicBlock b) {
 
 /** INTERNAL -- Use FunctionObject.getARaisedType() instead */
 predicate scope_raises(ClassObject ex, Scope s) {
-    exists(BasicBlock b | 
+    exists(BasicBlock b |
         current_exception(ex, b) and
-        b.getLastNode().isExceptionalExit(s) |
+        b.getLastNode().isExceptionalExit(s)
+    |
         b.getLastNode() instanceof ReraisingNode
     )
     or
@@ -225,9 +224,10 @@ predicate scope_raises(ClassObject ex, Scope s) {
 
 /** INTERNAL -- Use FunctionObject.raisesUnknownType() instead */
 predicate scope_raises_unknown(Scope s) {
-    exists(BasicBlock b | 
-        b.getLastNode() instanceof ReraisingNode
-        and b.getLastNode().isExceptionalExit(s) |
+    exists(BasicBlock b |
+        b.getLastNode() instanceof ReraisingNode and
+        b.getLastNode().isExceptionalExit(s)
+    |
         unknown_current_exception(b)
     )
     or
@@ -237,95 +237,88 @@ predicate scope_raises_unknown(Scope s) {
     )
 }
 
-
 /** ControlFlowNode for an 'except' statement. */
 class ExceptFlowNode extends ControlFlowNode {
-
-    ExceptFlowNode() {
-        this.getNode() instanceof ExceptStmt
-    }
+    ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
 
     ControlFlowNode getType() {
         exists(ExceptStmt ex |
             this.getBasicBlock().dominates(result.getBasicBlock()) and
-            ex = this.getNode() and result = ex.getType().getAFlowNode()
+            ex = this.getNode() and
+            result = ex.getType().getAFlowNode()
         )
     }
 
     ControlFlowNode getName() {
         exists(ExceptStmt ex |
             this.getBasicBlock().dominates(result.getBasicBlock()) and
-            ex = this.getNode() and result = ex.getName().getAFlowNode()
+            ex = this.getNode() and
+            result = ex.getName().getAFlowNode()
         )
     }
 
     private predicate handledObject_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.getType().refersTo(obj, cls, origin)
         or
-        exists(Object tup |
-            this.handledObject_objectapi(tup, theTupleType(), _) |
+        exists(Object tup | this.handledObject_objectapi(tup, theTupleType(), _) |
             element_from_tuple_objectapi(tup).refersTo(obj, cls, origin)
         )
     }
-    
+
     private predicate handledObject(Value val, ClassValue cls, ControlFlowNode origin) {
         val.getClass() = cls and
         (
             this.getType().pointsTo(val, origin)
             or
-            exists(TupleValue tup |
-                this.handledObject(tup, ClassValue::tuple(), _) |
+            exists(TupleValue tup | this.handledObject(tup, ClassValue::tuple(), _) |
                 val = tup.getItem(_) and origin = val.getOrigin()
             )
         )
     }
 
     /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
-    pragma [noinline]
+    pragma[noinline]
     predicate handledException_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.handledObject_objectapi(obj, cls, origin) and not cls = theTupleType()
         or
-        not exists(this.getNode().(ExceptStmt).getType()) and obj = theBaseExceptionType() and cls = theTypeType() and
+        not exists(this.getNode().(ExceptStmt).getType()) and
+        obj = theBaseExceptionType() and
+        cls = theTypeType() and
         origin = this
     }
-    
+
     /** Gets the inferred type(s) that are handled by this node, splitting tuples if possible. */
-    pragma [noinline]
+    pragma[noinline]
     predicate handledException(Value val, ClassValue cls, ControlFlowNode origin) {
         this.handledObject(val, cls, origin) and not cls = ClassValue::tuple()
         or
-        not exists(this.getNode().(ExceptStmt).getType()) and val = ClassValue::baseException() and cls = ClassValue::type() and
+        not exists(this.getNode().(ExceptStmt).getType()) and
+        val = ClassValue::baseException() and
+        cls = ClassValue::type() and
         origin = this
     }
-    
-    
 
     /** Whether this `except` handles `cls` */
     predicate handles(ClassObject cls) {
-        exists(ClassObject handled |
-            this.handledException_objectapi(handled, _, _) |
+        exists(ClassObject handled | this.handledException_objectapi(handled, _, _) |
             cls.getAnImproperSuperType() = handled
         )
     }
-
 }
 
 private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
-    exists(Tuple t |
-        t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode()
-    )
+    exists(Tuple t | t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode())
 }
 
-/** A Reraising node is the node at the end of a finally block (on the exceptional branch)
+/**
+ * A Reraising node is the node at the end of a finally block (on the exceptional branch)
  * that reraises the current exception.
  */
 class ReraisingNode extends RaisingNode {
-
     ReraisingNode() {
         not this.getNode() instanceof Raise and
         in_finally(this) and
-        forall(ControlFlowNode succ |
-            succ = this.getASuccessor() |
+        forall(ControlFlowNode succ | succ = this.getASuccessor() |
             succ = this.getAnExceptionalSuccessor()
         )
     }
@@ -337,17 +330,12 @@ class ReraisingNode extends RaisingNode {
             b.getNode(_) = this
         )
     }
-
 }
 
 private predicate in_finally(ControlFlowNode n) {
-    exists(Stmt f | 
-        exists(Try t | f = t.getAFinalstmt()) |
-        f = n.getNode() 
+    exists(Stmt f | exists(Try t | f = t.getAFinalstmt()) |
+        f = n.getNode()
         or
         f.containsInScope(n.getNode())
     )
 }
-
-
-

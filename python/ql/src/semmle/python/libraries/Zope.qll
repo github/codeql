@@ -1,12 +1,10 @@
 /** Utilities for handling the zope libraries */
 
 import python
-
 private import semmle.python.pointsto.PointsTo
 
 /** A method that to a sub-class of `zope.interface.Interface` */
 deprecated class ZopeInterfaceMethod extends PyFunctionObject {
-
     /** Holds if this method belongs to a class that sub-classes `zope.interface.Interface` */
     ZopeInterfaceMethod() {
         exists(Object interface, ClassObject owner |
@@ -16,22 +14,17 @@ deprecated class ZopeInterfaceMethod extends PyFunctionObject {
         )
     }
 
-    override int minParameters() {
-        result = super.minParameters() + 1
-    }
+    override int minParameters() { result = super.minParameters() + 1 }
 
     override int maxParameters() {
-        if exists(this.getFunction().getVararg()) then
-            result = super.maxParameters()
-        else
-            result = super.maxParameters() + 1
+        if exists(this.getFunction().getVararg())
+        then result = super.maxParameters()
+        else result = super.maxParameters() + 1
     }
-
 }
 
 /** A method that belongs to a sub-class of `zope.interface.Interface` */
 class ZopeInterfaceMethodValue extends PythonFunctionValue {
-
     /** Holds if this method belongs to a class that sub-classes `zope.interface.Interface` */
     ZopeInterfaceMethodValue() {
         exists(Value interface, ClassValue owner |
@@ -44,15 +37,11 @@ class ZopeInterfaceMethodValue extends PythonFunctionValue {
         )
     }
 
-    override int minParameters() {
-        result = super.minParameters() + 1
-    }
+    override int minParameters() { result = super.minParameters() + 1 }
 
     override int maxParameters() {
-        if exists(this.getScope().getVararg()) then
-            result = super.maxParameters()
-        else
-            result = super.maxParameters() + 1
+        if exists(this.getScope().getVararg())
+        then result = super.maxParameters()
+        else result = super.maxParameters() + 1
     }
-
 }
