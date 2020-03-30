@@ -44,7 +44,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyNa
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
-  string prop;
+  OptionalPropertyName prop;
 
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
@@ -52,6 +52,8 @@ class TypeTracker extends TTypeTracker {
   cached
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
+    or
+    step = LoadStoreStep(prop) and result = this
     or
     step = CallStep() and result = MkTypeTracker(true, prop)
     or
@@ -210,6 +212,8 @@ class TypeBackTracker extends TTypeBackTracker {
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
   TypeBackTracker prepend(StepSummary step) {
     step = LevelStep() and result = this
+    or
+    step = LoadStoreStep(prop) and result = this
     or
     step = CallStep() and hasReturn = false and result = this
     or
