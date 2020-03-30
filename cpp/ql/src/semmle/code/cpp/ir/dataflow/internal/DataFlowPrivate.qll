@@ -210,4 +210,8 @@ int accessPathLimit() { result = 5 }
  *
  * This predicate is only used for consistency checks.
  */
-predicate isImmutableOrUnobservable(Node n) { none() }
+predicate isImmutableOrUnobservable(Node n) {
+  // The rules for whether an IR argument gets a post-update node are too
+  // complex to model here.
+  any()
+}
