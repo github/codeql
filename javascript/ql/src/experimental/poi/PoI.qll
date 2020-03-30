@@ -36,12 +36,12 @@
  *   override predicate shown(DataFlow::Node n) { n.getFile().getBaseName() = "server-core.js" }
  * }
  *
- * class RouteHandlerPoI extends DefaultEnabledPoI {
+ * class RouteHandlerPoI extends ActivePoI {
  *   RouteHandlerPoI() { this = "RouteHandlerPoI" }
  *   override predicate is(DataFlow::Node l0) { l0 instanceof Express::RouteHandler }
  * }
  *
- * class RouteSetupAndRouteHandlerPoI extends DefaultEnabledPoI {
+ * class RouteSetupAndRouteHandlerPoI extends ActivePoI {
  *   RouteSetupAndRouteHandlerPoI() { this = "RouteSetupAndRouteHandlerPoI" }
  *
  *   override predicate is(DataFlow::Node l0, DataFlow::Node l1, string t1) {
@@ -62,11 +62,11 @@ private import semmle.javascript.RestrictedLocations
  * Provides often used points of interest.
  *
  * Note that these points of interest should not extend
- * `DefaultEnabledPoI`, and that they can be enabled by default on
+ * `ActivePoI`, and that they can be enabled on
  * demand like this:
  *
  * ```
- * class MyPoI extends ServerRelatedPoI, DefaultEnabledPoI {}
+ * class MyPoI extends ServerRelatedPoI, ActivePoI {}
  * ```
  */
 private module StandardPoIs {
@@ -172,11 +172,11 @@ private module StandardPoIs {
   }
 
   /**
-   * Provides groups of often used point of interest.
+   * Provides groups of often used points of interest.
    */
   module StandardPoIGroups {
     /**
-     * A server-related points of interest.
+     * A server-related point of interest.
      */
     class ServerRelatedPoI extends PoI {
       ServerRelatedPoI() {
@@ -187,7 +187,7 @@ private module StandardPoIs {
     }
 
     /**
-     * A configuration-related points of interest.
+     * A configuration-related point of interest.
      */
     class DataFlowConfigurationPoI extends PoI {
       DataFlowConfigurationPoI() {
@@ -207,13 +207,13 @@ import StandardPoIs
  * enabled in the absence of an explicit
  * `PoIConfiguration::enabled/1`.
  */
-abstract class DefaultEnabledPoI extends PoI {
+abstract class ActivePoI extends PoI {
   bindingset[this]
-  DefaultEnabledPoI() { any() }
+  ActivePoI() { any() }
 }
 
 private module PoIConfigDefaults {
-  predicate enabled(PoI poi) { poi instanceof DefaultEnabledPoI }
+  predicate enabled(PoI poi) { poi instanceof ActivePoI }
 
   predicate shown(Node n) { not classify(n.getFile(), _) }
 }
