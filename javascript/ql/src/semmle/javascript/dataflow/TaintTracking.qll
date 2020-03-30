@@ -230,35 +230,185 @@ module TaintTracking {
 
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-     * data flow edge, in the URI category.
+     * data flow edge through URI manipulation.
+     *
+     * Does not include string operations that aren't specific to URIs, such
+     * as concatenation and substring operations.
      */
     predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-     * data flow edge, in the heuristic category.
+     * data flow edge contributed by the heuristics library.
      *
-     * Note that this set of steps will be empty unless libraries from
-     * `semmle.javascript.heuristics` are explicitly imported.
+     * Such steps are provided by the `semmle.javascript.heuristics` libraries
+     * and will default to be being empty if those libraries are not imported.
      */
     predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through persistent storage.
+     */
+    predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through the heap.
+     */
+    predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through the `state` or `props` or a React component.
+     */
+    predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through string concatenation.
+     */
+    predicate stringConcatenationStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through string manipulation (other than concatenation).
+     */
+    predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through data serialization, such as `JSON.stringify`.
+     */
+    predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through data deserialization, such as `JSON.parse`.
+     */
+    predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge, which doesn't fit into a more specific category.
+   */
+  cached
+  private predicate genericStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).step(pred, succ)
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge, contribued by the heuristics library.
+   */
+  cached
+  private predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).heuristicStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through a URI library function.
+   */
+  cached
+  predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).uriStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
+   */
+  cached
+  predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).persistentStorageStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through the heap.
+   */
+  cached
+  predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).heapStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through the
+   * properties of a view compenent, such as the `state` or `props` of a React component.
+   */
+  cached
+  predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).viewComponentStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through string
+   * concatenation.
+   */
+  cached
+  predicate stringConcatenationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).stringConcatenationStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through string manipulation
+   * (other than concatenation).
+   */
+  cached
+  predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).stringManipulationStep(pred, succ)
+  }
+
+  /**
+   *  Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through data serialization, such as `JSON.stringify`.
+   */
+  cached
+  predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).serializeStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through data deserialization, such as `JSON.parse`.
+   */
+  cached
+  predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).deserializeStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
+   */
+  pragma[inline]
+  predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
+    stringConcatenationStep(pred, succ) or
+    stringManipulationStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is an edge contributed by an `AdditionalTaintStep` instance.
+   */
+  cached
+  private predicate legacyAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(AdditionalTaintStep step).step(pred, succ)
   }
 
   /**
    * Holds if `pred -> succ` is an edge used by all taint-tracking configurations.
    */
-  cached predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(SharedTaintStep step).step(pred, succ)
-    or
-    any(AdditionalTaintStep step).step(pred, succ)
-    or
-    any(SharedTaintStep step).heuristicStep(pred, succ)
-    or
-    uriStep(pred, succ)
-  }
-
-  predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(SharedTaintStep step).uriStep(pred, succ)
+  predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    legacyAdditionalTaintStep(pred, succ) or
+    genericStep(pred, succ) or
+    heuristicStep(pred, succ) or
+    uriStep(pred, succ) or
+    persistentStorageStep(pred, succ) or
+    heapStep(pred, succ) or
+    viewComponentStep(pred, succ) or
+    stringConcatenationStep(pred, succ) or
+    stringManipulationStep(pred, succ) or
+    serializeStep(pred, succ) or
+    deserializeStep(pred, succ)
   }
 
   /**
@@ -282,40 +432,35 @@ module TaintTracking {
    * promises.
    */
   private class HeapTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { heapStep(pred, succ) }
-  }
-
-  /**
-   * Holds if there is taint propagation through the heap from `pred` to `succ`.
-   */
-  private predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Expr e, Expr f | e = succ.asExpr() and f = pred.asExpr() |
-      exists(Property prop | e.(ObjectExpr).getAProperty() = prop |
-        prop.isComputed() and f = prop.getNameExpr()
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Expr e, Expr f | e = succ.asExpr() and f = pred.asExpr() |
+        exists(Property prop | e.(ObjectExpr).getAProperty() = prop |
+          prop.isComputed() and f = prop.getNameExpr()
+        )
+        or
+        // awaiting a tainted expression gives a tainted result
+        e.(AwaitExpr).getOperand() = f
+        or
+        // spreading a tainted object into an object literal gives a tainted object
+        e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
+        or
+        // spreading a tainted value into an array literal gives a tainted array
+        e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
       )
       or
-      // awaiting a tainted expression gives a tainted result
-      e.(AwaitExpr).getOperand() = f
+      // arrays with tainted elements and objects with tainted property names are tainted
+      succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and
+      not any(PromiseAllCreation call).getArrayNode() = succ
       or
-      // spreading a tainted object into an object literal gives a tainted object
-      e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
+      // reading from a tainted object yields a tainted result
+      succ.(DataFlow::PropRead).getBase() = pred
       or
-      // spreading a tainted value into an array literal gives a tainted array
-      e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
-    )
-    or
-    // arrays with tainted elements and objects with tainted property names are tainted
-    succ.(DataFlow::ArrayCreationNode).getAnElement() = pred and
-    not any(PromiseAllCreation call).getArrayNode() = succ
-    or
-    // reading from a tainted object yields a tainted result
-    succ.(DataFlow::PropRead).getBase() = pred
-    or
-    // iterating over a tainted iterator taints the loop variable
-    exists(ForOfStmt fos |
-      pred = DataFlow::valueNode(fos.getIterationDomain()) and
-      succ = DataFlow::lvalueNode(fos.getLValue())
-    )
+      // iterating over a tainted iterator taints the loop variable
+      exists(ForOfStmt fos |
+        pred = DataFlow::valueNode(fos.getIterationDomain()) and
+        succ = DataFlow::lvalueNode(fos.getLValue())
+      )
+    }
   }
 
   /**
@@ -324,19 +469,12 @@ module TaintTracking {
    * A taint propagating data flow edge through persistent storage.
    */
   deprecated class PersistentStorageTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      persistentStorageStep(pred, succ)
+    override predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(PersistentReadAccess read |
+        pred = read.getAWrite().getValue() and
+        succ = read
+      )
     }
-  }
-
-  /**
-   * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
-   */
-  predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(PersistentReadAccess read |
-      pred = read.getAWrite().getValue() and
-      succ = read
-    )
   }
 
   predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
@@ -352,19 +490,15 @@ module TaintTracking {
    * map to be tainted as soon as one of its entries is.
    */
   private class DictionaryTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      dictionaryTaintStep(pred, succ)
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(AssignExpr assgn, IndexExpr idx, DataFlow::ObjectLiteralNode obj |
+        assgn.getTarget() = idx and
+        obj.flowsToExpr(idx.getBase()) and
+        not exists(idx.getPropertyName()) and
+        pred = DataFlow::valueNode(assgn.getRhs()) and
+        succ = obj
+      )
     }
-  }
-
-  /** Holds if there is a step `pred -> succ` used by `DictionaryTaintStep`. */
-  private predicate dictionaryTaintStep(DataFlow::Node pred, DataFlow::ObjectLiteralNode succ) {
-    exists(AssignExpr assgn, IndexExpr idx |
-      assgn.getTarget() = idx and
-      succ.flowsToExpr(idx.getBase()) and
-      not exists(idx.getPropertyName()) and
-      pred = DataFlow::valueNode(assgn.getRhs())
-    )
   }
 
   /**
@@ -374,7 +508,7 @@ module TaintTracking {
    * also is an instance of `C`.
    */
   private class ReactComponentStateTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
         (
           c.getACandidateStateSource().flowsTo(pwn.getBase()) or
@@ -399,7 +533,7 @@ module TaintTracking {
    * also is an instance of `C`.
    */
   private class ReactComponentPropsTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(ReactComponent c, string name, DataFlow::PropRead prn |
         prn = c.getAPropRead(name) or
         prn = c.getAPreviousPropsSource().getAPropertyRead(name)
@@ -417,7 +551,7 @@ module TaintTracking {
    * we consider any `+` operation to propagate taint.
    */
   class StringConcatenationTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate stringConcatenationStep(DataFlow::Node pred, DataFlow::Node succ) {
       StringConcatenation::taintStep(pred, succ)
     }
   }
@@ -427,95 +561,90 @@ module TaintTracking {
    * functions defined in the standard library.
    */
   private class StringManipulationTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      stringManipulationStep(pred, succ)
-    }
-  }
-
-  /**
-   * Holds if taint can propagate from `pred` to `succ` with a step related to string manipulation.
-   */
-  private predicate stringManipulationStep(DataFlow::Node pred, DataFlow::ValueNode succ) {
-    // string operations that propagate taint
-    exists(string name | name = succ.getAstNode().(MethodCallExpr).getMethodName() |
-      pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
-      (
-        // sorted, interesting, properties of String.prototype
-        name = "anchor" or
-        name = "big" or
-        name = "blink" or
-        name = "bold" or
-        name = "concat" or
-        name = "fixed" or
-        name = "fontcolor" or
-        name = "fontsize" or
-        name = "italics" or
-        name = "link" or
-        name = "padEnd" or
-        name = "padStart" or
-        name = "repeat" or
-        name = "replace" or
-        name = "slice" or
-        name = "small" or
-        name = "split" or
-        name = "strike" or
-        name = "sub" or
-        name = "substr" or
-        name = "substring" or
-        name = "sup" or
-        name = "toLocaleLowerCase" or
-        name = "toLocaleUpperCase" or
-        name = "toLowerCase" or
-        name = "toUpperCase" or
-        name = "trim" or
-        name = "trimLeft" or
-        name = "trimRight" or
-        // sorted, interesting, properties of Object.prototype
-        name = "toString" or
-        name = "valueOf" or
-        // sorted, interesting, properties of Array.prototype
-        name = "join"
-      )
-      or
-      exists(int i | pred.asExpr() = succ.getAstNode().(MethodCallExpr).getArgument(i) |
-        name = "concat"
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node target) {
+      exists(DataFlow::ValueNode succ | target = succ |
+        // string operations that propagate taint
+        exists(string name | name = succ.getAstNode().(MethodCallExpr).getMethodName() |
+          pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
+          (
+            // sorted, interesting, properties of String.prototype
+            name = "anchor" or
+            name = "big" or
+            name = "blink" or
+            name = "bold" or
+            name = "concat" or
+            name = "fixed" or
+            name = "fontcolor" or
+            name = "fontsize" or
+            name = "italics" or
+            name = "link" or
+            name = "padEnd" or
+            name = "padStart" or
+            name = "repeat" or
+            name = "replace" or
+            name = "slice" or
+            name = "small" or
+            name = "split" or
+            name = "strike" or
+            name = "sub" or
+            name = "substr" or
+            name = "substring" or
+            name = "sup" or
+            name = "toLocaleLowerCase" or
+            name = "toLocaleUpperCase" or
+            name = "toLowerCase" or
+            name = "toUpperCase" or
+            name = "trim" or
+            name = "trimLeft" or
+            name = "trimRight" or
+            // sorted, interesting, properties of Object.prototype
+            name = "toString" or
+            name = "valueOf" or
+            // sorted, interesting, properties of Array.prototype
+            name = "join"
+          )
+          or
+          exists(int i | pred.asExpr() = succ.getAstNode().(MethodCallExpr).getArgument(i) |
+            name = "concat"
+            or
+            name = "replace" and i = 1
+          )
+        )
         or
-        name = "replace" and i = 1
+        // standard library constructors that propagate taint: `RegExp` and `String`
+        exists(DataFlow::InvokeNode invk, string gv | gv = "RegExp" or gv = "String" |
+          succ = invk and
+          invk = DataFlow::globalVarRef(gv).getAnInvocation() and
+          pred = invk.getArgument(0)
+        )
+        or
+        // String.fromCharCode and String.fromCodePoint
+        exists(int i, MethodCallExpr mce |
+          mce = succ.getAstNode() and
+          pred.asExpr() = mce.getArgument(i) and
+          (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
+        )
+        or
+        // `(encode|decode)URI(Component)?` propagate taint
+        exists(DataFlow::CallNode c, string name |
+          succ = c and
+          c = DataFlow::globalVarRef(name).getACall() and
+          pred = c.getArgument(0)
+        |
+          name = "encodeURI" or
+          name = "decodeURI" or
+          name = "encodeURIComponent" or
+          name = "decodeURIComponent"
+        )
       )
-    )
-    or
-    // standard library constructors that propagate taint: `RegExp` and `String`
-    exists(DataFlow::InvokeNode invk, string gv | gv = "RegExp" or gv = "String" |
-      succ = invk and
-      invk = DataFlow::globalVarRef(gv).getAnInvocation() and
-      pred = invk.getArgument(0)
-    )
-    or
-    // String.fromCharCode and String.fromCodePoint
-    exists(int i, MethodCallExpr mce |
-      mce = succ.getAstNode() and
-      pred.asExpr() = mce.getArgument(i) and
-      (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
-    )
-    or
-    // `(encode|decode)URI(Component)?` propagate taint
-    exists(DataFlow::CallNode c, string name |
-      succ = c and
-      c = DataFlow::globalVarRef(name).getACall() and
-      pred = c.getArgument(0)
-    |
-      name = "encodeURI" or
-      name = "decodeURI" or
-      name = "encodeURIComponent" or
-      name = "decodeURIComponent"
-    )
+    }
   }
 
   /**
    * A taint propagating data flow edge arising from string formatting.
    */
   private class StringFormattingTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(PrintfStyleCall call |
         call.returnsFormatted() and
         succ = call
@@ -538,7 +667,7 @@ module TaintTracking {
    * `RegExp.prototype.exec` to its result.
    */
   private class RegExpExecTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
         call = execMethodCall() and
         call.getNumArgument() = 1 and
@@ -558,7 +687,7 @@ module TaintTracking {
    * A taint propagating data flow edge arising from calling `String.prototype.match()`.
    */
   private class StringMatchTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
         call = matchMethodCall() and
         call.getNumArgument() = 1 and
@@ -572,7 +701,7 @@ module TaintTracking {
    * A taint propagating data flow edge arising from JSON unparsing.
    */
   private class JsonStringifyTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call |
         call = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") and
         pred = call.getArgument(0) and
@@ -585,7 +714,7 @@ module TaintTracking {
    * A taint propagating data flow edge arising from JSON parsing.
    */
   private class JsonParserTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(JsonParserCall call |
         pred = call.getInput() and
         succ = call.getOutput()
@@ -692,7 +821,7 @@ module TaintTracking {
    * A taint propagating data flow edge arising from sorting.
    */
   private class SortTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = "sort" and
         pred = call.getReceiver() and
@@ -705,12 +834,12 @@ module TaintTracking {
    * A taint step through an exception constructor, such as `x` to `new Error(x)`.
    */
   class ErrorConstructorTaintStep extends SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::NewNode invoke, string name |
         invoke = DataFlow::globalVarRef(name).getAnInvocation() and
         pred = invoke.getArgument(0) and
         succ = invoke
-        |
+      |
         name = "Error" or
         name = "EvalError" or
         name = "RangeError" or
