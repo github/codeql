@@ -13,6 +13,4 @@
 import python
 
 from ModuleMetrics m
-select m, m.getEfferentCoupling() as n
-order by n desc
-
+select m, m.getEfferentCoupling() as n order by n desc
