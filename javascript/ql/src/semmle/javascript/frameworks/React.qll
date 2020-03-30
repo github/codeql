@@ -553,3 +553,46 @@ private class ReactJSXElement extends JSXElement {
    */
   ReactComponent getComponent() { result = component }
 }
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.state.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.state.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class StateTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
+      (
+        c.getACandidateStateSource().flowsTo(pwn.getBase()) or
+        c.getADirectStateAccess().flowsTo(pwn.getBase())
+      ) and
+      (
+        c.getAPreviousStateSource().flowsTo(prn.getBase()) or
+        c.getADirectStateAccess().flowsTo(prn.getBase())
+      )
+    |
+      prn.getPropertyName() = pwn.getPropertyName() and
+      succ = prn and
+      pred = pwn.getRhs()
+    )
+  }
+}
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.props.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.props.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class PropsTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, string name, DataFlow::PropRead prn |
+      prn = c.getAPropRead(name) or
+      prn = c.getAPreviousPropsSource().getAPropertyRead(name)
+    |
+      pred = c.getACandidatePropsValue(name) and
+      succ = prn
+    )
+  }
+}
