@@ -460,9 +460,6 @@ module TaintTracking {
           prop.isComputed() and f = prop.getNameExpr()
         )
         or
-        // awaiting a tainted expression gives a tainted result
-        e.(AwaitExpr).getOperand() = f
-        or
         // spreading a tainted object into an object literal gives a tainted object
         e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
         or
