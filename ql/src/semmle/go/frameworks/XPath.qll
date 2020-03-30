@@ -51,8 +51,8 @@ module XPath {
     }
 
     /** An XPath expression string used in an API function of the https://github.com/antchfx/xmlquery package. */
-    private class AntchfxxmlqueryXPathExpressionString extends Range {
-      AntchfxxmlqueryXPathExpressionString() {
+    private class AntchfxXmlqueryXPathExpressionString extends Range {
+      AntchfxXmlqueryXPathExpressionString() {
         exists(Function f, string name | name.matches("Find%") |
           f.hasQualifiedName("github.com/antchfx/xmlquery", name) and
           this = f.getACall().getArgument(1)
