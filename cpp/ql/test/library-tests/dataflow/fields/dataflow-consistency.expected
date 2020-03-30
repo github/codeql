@@ -41,94 +41,18 @@ postIsInSameCallable
 reverseRead
 storeIsPostUpdate
 argHasPostUpdate
-| A.cpp:40:15:40:21 | 0 | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:56:13:56:15 | call to get | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:57:17:57:23 | new | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:57:28:57:30 | call to get | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:64:21:64:28 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:73:25:73:32 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:126:12:126:18 | new | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:151:21:151:21 | call to r | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:160:32:160:59 | new | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:160:43:160:49 | 0 | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:160:52:160:58 | 0 | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:161:29:161:35 | 0 | ArgumentNode is missing PostUpdateNode. |
-| A.cpp:162:29:162:35 | 0 | ArgumentNode is missing PostUpdateNode. |
-| B.cpp:7:28:7:34 | 0 | ArgumentNode is missing PostUpdateNode. |
-| B.cpp:16:28:16:34 | 0 | ArgumentNode is missing PostUpdateNode. |
-| C.cpp:29:10:29:11 | s1 | ArgumentNode is missing PostUpdateNode. |
-| C.cpp:30:10:30:11 | s2 | ArgumentNode is missing PostUpdateNode. |
-| C.cpp:31:10:31:11 | s3 | ArgumentNode is missing PostUpdateNode. |
-| C.cpp:32:10:32:11 | s4 | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:22:25:22:31 | call to getElem | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:29:24:29:40 | new | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:29:33:29:39 | 0 | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:36:24:36:40 | new | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:36:33:36:39 | 0 | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:43:24:43:40 | new | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:43:33:43:39 | 0 | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:50:24:50:40 | new | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:50:33:50:39 | 0 | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:57:25:57:41 | new | ArgumentNode is missing PostUpdateNode. |
-| D.cpp:57:34:57:40 | 0 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:27:14:27:15 | s3 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:29:11:29:12 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:30:11:30:12 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:31:11:31:12 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:38:11:38:12 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:43:13:43:14 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:50:11:50:12 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:55:14:55:15 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:62:14:62:15 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:73:12:73:13 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:80:12:80:13 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:87:12:87:13 | m1 | ArgumentNode is missing PostUpdateNode. |
-| aliasing.cpp:93:12:93:13 | m1 | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:40:12:40:15 | this | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:44:26:44:29 | this | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:50:17:50:26 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:51:8:51:8 | s | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:51:10:51:20 | call to getDirectly | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:56:19:56:28 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:57:8:57:8 | s | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:57:10:57:22 | call to getIndirectly | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:62:25:62:34 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:63:8:63:8 | s | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:63:10:63:28 | call to getThroughNonMember | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:68:21:68:30 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:69:8:69:20 | call to nonMemberGetA | ArgumentNode is missing PostUpdateNode. |
-| by_reference.cpp:69:22:69:23 | & ... | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:22:13:22:13 | 0 | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:22:16:22:16 | 0 | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:44:12:44:12 | call to a | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:45:12:45:12 | call to b | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:55:13:55:22 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:56:13:56:22 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:57:13:57:22 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| complex.cpp:58:13:58:22 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:28:12:28:12 | call to a | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:29:12:29:12 | call to b | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:34:11:34:20 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:34:25:34:25 | 0 | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:35:11:35:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:35:14:35:23 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:36:11:36:20 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:36:25:36:34 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:37:11:37:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| constructors.cpp:37:14:37:14 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:28:12:28:12 | call to a | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:29:12:29:12 | call to b | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:34:11:34:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:34:14:34:14 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:35:11:35:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:35:14:35:14 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:36:11:36:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:36:14:36:14 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:37:11:37:11 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:37:14:37:14 | 0 | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:39:12:39:21 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:40:12:40:21 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:41:12:41:21 | call to user_input | ArgumentNode is missing PostUpdateNode. |
-| simple.cpp:42:12:42:21 | call to user_input | ArgumentNode is missing PostUpdateNode. |
