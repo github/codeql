@@ -19,7 +19,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Functions in Python <functions>`: You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
 
--  :doc:`Expressions and statements in Python <statements-expressions>`: You can use syntactic classes from the CodeQL library to explore how Python expressions and statements are used in a code base.
+-  :doc:`Expressions and statements in Python <statements-expressions>`: You can use syntactic classes from the CodeQL library to explore how Python expressions and statements are used in a codebase.
 
 -  :doc:`Analyzing control flow in Python <control-flow>`: You can write CodeQL queries to explore the control-flow graph of a Python program, for example, to discover unreachable code or mutually exclusive blocks of code.
 
