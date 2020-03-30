@@ -33,33 +33,31 @@ class MySanitizerHandlingNot extends Sanitizer {
     /** The test `if is_safe(arg):` sanitizes `arg` on its `true` edge. */
     override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
         taint instanceof ExternalStringKind and
-        clears_taint_on_true(_, test.getTest(), test.getSense(), test)
+        clears_taint_on_true(test.getTest(), test.getSense(), test)
     }
 
     /**
      * Helper predicate that recurses into any nesting of `not`
      *
      * To reduce the number of tuples this predicate holds for, we include the `PyEdgeRefinement` and
-     * ensure that `test` is a part of this `PyEdgeRefinement`. Without including `PyEdgeRefinement` as an argument
-     * *any* `CallNode c` to `test.is_safe` would be a result of this predicate, since (c, c, true) would hold.
+     * ensure that `test` is a part of this `PyEdgeRefinement` (instead of just taking the
+     * `edge_refinement.getInput().getAUse()` part as a part of the predicate). Without including
+     * `PyEdgeRefinement` as an argument *any* `CallNode c` to `test.is_safe` would be a result of
+     * this predicate, since the tuple where `test = c` and `sense = true` would hold.
      */
     private predicate clears_taint_on_true(
-        CallNode final_test, ControlFlowNode test, boolean sense, PyEdgeRefinement edge_refinement
+        ControlFlowNode test, boolean sense, PyEdgeRefinement edge_refinement
     ) {
+        edge_refinement.getTest().getNode().(Expr).getASubExpression*() = test.getNode() and
         (
-            edge_refinement.getTest().getNode().(Expr).getASubExpression*() = test.getNode() and
-            test.getNode().(Expr).getASubExpression*() = final_test.getNode()
-        ) and
-        (
-            final_test = test and
-            final_test = Value::named("test.is_safe").getACall() and
-            edge_refinement.getInput().getAUse() = final_test.getAnArg() and
+            test = Value::named("test.is_safe").getACall() and
+            edge_refinement.getInput().getAUse() = test.(CallNode).getAnArg() and
             sense = true
             or
             test.(UnaryExprNode).getNode().getOp() instanceof Not and
             exists(ControlFlowNode nested_test |
                 nested_test = test.(UnaryExprNode).getOperand() and
-                clears_taint_on_true(final_test, nested_test, sense.booleanNot(), edge_refinement)
+                clears_taint_on_true(nested_test, sense.booleanNot(), edge_refinement)
             )
         )
     }
