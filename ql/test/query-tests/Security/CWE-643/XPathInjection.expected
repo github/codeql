@@ -1,10 +1,122 @@
 edges
-| XPathInjection.go:15:14:15:19 | selection of Form : Values | XPathInjection.go:19:29:19:132 | ...+... |
-| XPathInjection.go:16:14:16:19 | selection of Form : Values | XPathInjection.go:19:29:19:132 | ...+... |
+| XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:24:23:24:85 | ...+... |
+| XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:27:24:27:86 | ...+... |
+| XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:30:24:30:82 | ...+... |
+| XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:38:26:38:84 | ...+... |
+| XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:41:29:41:87 | ...+... |
+| XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:44:33:44:91 | ...+... |
+| XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:47:30:47:88 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:55:25:55:83 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:58:28:58:86 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:61:25:61:83 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:64:34:64:92 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:67:32:67:90 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:70:29:70:87 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:73:23:73:85 | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:76:19:76:81 | ...+... |
+| XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:84:26:84:84 | ...+... |
+| XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:87:29:87:87 | ...+... |
+| XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:90:33:90:91 | ...+... |
+| XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:93:30:93:88 | ...+... |
+| XPathInjection.go:98:14:98:19 | selection of Form : Values | XPathInjection.go:101:25:101:87 | ...+... |
+| XPathInjection.go:98:14:98:19 | selection of Form : Values | XPathInjection.go:104:26:104:88 | ...+... |
+| XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:113:23:113:126 | ...+... |
+| XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:116:24:116:127 | ...+... |
+| XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:119:27:119:122 | ...+... |
+| XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:113:23:113:126 | ...+... |
+| XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:116:24:116:127 | ...+... |
+| XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:119:27:119:122 | ...+... |
+| XPathInjection.go:127:14:127:19 | selection of Form : Values | XPathInjection.go:130:27:130:89 | ...+... |
+| XPathInjection.go:127:14:127:19 | selection of Form : Values | XPathInjection.go:133:28:133:90 | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:142:33:142:136 | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:145:18:145:121 | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:151:31:151:126 | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:160:21:160:116 | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:169:27:169:122 | ...+... |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:142:33:142:136 | ...+... |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:145:18:145:121 | ...+... |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:151:31:151:126 | ...+... |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:160:21:160:116 | ...+... |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:169:27:169:122 | ...+... |
 nodes
-| XPathInjection.go:15:14:15:19 | selection of Form : Values | semmle.label | selection of Form : Values |
-| XPathInjection.go:16:14:16:19 | selection of Form : Values | semmle.label | selection of Form : Values |
-| XPathInjection.go:19:29:19:132 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:21:14:21:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:24:23:24:85 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:27:24:27:86 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:30:24:30:82 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:35:14:35:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:38:26:38:84 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:41:29:41:87 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:44:33:44:91 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:47:30:47:88 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:52:14:52:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:55:25:55:83 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:58:28:58:86 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:61:25:61:83 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:64:34:64:92 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:67:32:67:90 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:70:29:70:87 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:73:23:73:85 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:76:19:76:81 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:81:14:81:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:84:26:84:84 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:87:29:87:87 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:90:33:90:91 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:93:30:93:88 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:98:14:98:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:101:25:101:87 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:104:26:104:88 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:109:14:109:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:110:14:110:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:113:23:113:126 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:116:24:116:127 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:119:27:119:122 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:127:14:127:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:130:27:130:89 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:133:28:133:90 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:138:14:138:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:139:14:139:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| XPathInjection.go:142:33:142:136 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:145:18:145:121 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:151:31:151:126 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:160:21:160:116 | ...+... | semmle.label | ...+... |
+| XPathInjection.go:169:27:169:122 | ...+... | semmle.label | ...+... |
 #select
-| XPathInjection.go:19:29:19:132 | ...+... | XPathInjection.go:15:14:15:19 | selection of Form : Values | XPathInjection.go:19:29:19:132 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:15:14:15:19 | selection of Form | A user-provided value |
-| XPathInjection.go:19:29:19:132 | ...+... | XPathInjection.go:16:14:16:19 | selection of Form : Values | XPathInjection.go:19:29:19:132 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:16:14:16:19 | selection of Form | A user-provided value |
+| XPathInjection.go:24:23:24:85 | ...+... | XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:24:23:24:85 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:21:14:21:19 | selection of Form | A user-provided value |
+| XPathInjection.go:27:24:27:86 | ...+... | XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:27:24:27:86 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:21:14:21:19 | selection of Form | A user-provided value |
+| XPathInjection.go:30:24:30:82 | ...+... | XPathInjection.go:21:14:21:19 | selection of Form : Values | XPathInjection.go:30:24:30:82 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:21:14:21:19 | selection of Form | A user-provided value |
+| XPathInjection.go:38:26:38:84 | ...+... | XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:38:26:38:84 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:35:14:35:19 | selection of Form | A user-provided value |
+| XPathInjection.go:41:29:41:87 | ...+... | XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:41:29:41:87 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:35:14:35:19 | selection of Form | A user-provided value |
+| XPathInjection.go:44:33:44:91 | ...+... | XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:44:33:44:91 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:35:14:35:19 | selection of Form | A user-provided value |
+| XPathInjection.go:47:30:47:88 | ...+... | XPathInjection.go:35:14:35:19 | selection of Form : Values | XPathInjection.go:47:30:47:88 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:35:14:35:19 | selection of Form | A user-provided value |
+| XPathInjection.go:55:25:55:83 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:55:25:55:83 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:58:28:58:86 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:58:28:58:86 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:61:25:61:83 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:61:25:61:83 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:64:34:64:92 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:64:34:64:92 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:67:32:67:90 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:67:32:67:90 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:70:29:70:87 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:70:29:70:87 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:73:23:73:85 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:73:23:73:85 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:76:19:76:81 | ...+... | XPathInjection.go:52:14:52:19 | selection of Form : Values | XPathInjection.go:76:19:76:81 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:52:14:52:19 | selection of Form | A user-provided value |
+| XPathInjection.go:84:26:84:84 | ...+... | XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:84:26:84:84 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:81:14:81:19 | selection of Form | A user-provided value |
+| XPathInjection.go:87:29:87:87 | ...+... | XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:87:29:87:87 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:81:14:81:19 | selection of Form | A user-provided value |
+| XPathInjection.go:90:33:90:91 | ...+... | XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:90:33:90:91 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:81:14:81:19 | selection of Form | A user-provided value |
+| XPathInjection.go:93:30:93:88 | ...+... | XPathInjection.go:81:14:81:19 | selection of Form : Values | XPathInjection.go:93:30:93:88 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:81:14:81:19 | selection of Form | A user-provided value |
+| XPathInjection.go:101:25:101:87 | ...+... | XPathInjection.go:98:14:98:19 | selection of Form : Values | XPathInjection.go:101:25:101:87 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:98:14:98:19 | selection of Form | A user-provided value |
+| XPathInjection.go:104:26:104:88 | ...+... | XPathInjection.go:98:14:98:19 | selection of Form : Values | XPathInjection.go:104:26:104:88 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:98:14:98:19 | selection of Form | A user-provided value |
+| XPathInjection.go:113:23:113:126 | ...+... | XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:113:23:113:126 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:109:14:109:19 | selection of Form | A user-provided value |
+| XPathInjection.go:113:23:113:126 | ...+... | XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:113:23:113:126 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:110:14:110:19 | selection of Form | A user-provided value |
+| XPathInjection.go:116:24:116:127 | ...+... | XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:116:24:116:127 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:109:14:109:19 | selection of Form | A user-provided value |
+| XPathInjection.go:116:24:116:127 | ...+... | XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:116:24:116:127 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:110:14:110:19 | selection of Form | A user-provided value |
+| XPathInjection.go:119:27:119:122 | ...+... | XPathInjection.go:109:14:109:19 | selection of Form : Values | XPathInjection.go:119:27:119:122 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:109:14:109:19 | selection of Form | A user-provided value |
+| XPathInjection.go:119:27:119:122 | ...+... | XPathInjection.go:110:14:110:19 | selection of Form : Values | XPathInjection.go:119:27:119:122 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:110:14:110:19 | selection of Form | A user-provided value |
+| XPathInjection.go:130:27:130:89 | ...+... | XPathInjection.go:127:14:127:19 | selection of Form : Values | XPathInjection.go:130:27:130:89 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:127:14:127:19 | selection of Form | A user-provided value |
+| XPathInjection.go:133:28:133:90 | ...+... | XPathInjection.go:127:14:127:19 | selection of Form : Values | XPathInjection.go:133:28:133:90 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:127:14:127:19 | selection of Form | A user-provided value |
+| XPathInjection.go:142:33:142:136 | ...+... | XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:142:33:142:136 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:138:14:138:19 | selection of Form | A user-provided value |
+| XPathInjection.go:142:33:142:136 | ...+... | XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:142:33:142:136 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:139:14:139:19 | selection of Form | A user-provided value |
+| XPathInjection.go:145:18:145:121 | ...+... | XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:145:18:145:121 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:138:14:138:19 | selection of Form | A user-provided value |
+| XPathInjection.go:145:18:145:121 | ...+... | XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:145:18:145:121 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:139:14:139:19 | selection of Form | A user-provided value |
+| XPathInjection.go:151:31:151:126 | ...+... | XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:151:31:151:126 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:138:14:138:19 | selection of Form | A user-provided value |
+| XPathInjection.go:151:31:151:126 | ...+... | XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:151:31:151:126 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:139:14:139:19 | selection of Form | A user-provided value |
+| XPathInjection.go:160:21:160:116 | ...+... | XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:160:21:160:116 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:138:14:138:19 | selection of Form | A user-provided value |
+| XPathInjection.go:160:21:160:116 | ...+... | XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:160:21:160:116 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:139:14:139:19 | selection of Form | A user-provided value |
+| XPathInjection.go:169:27:169:122 | ...+... | XPathInjection.go:138:14:138:19 | selection of Form : Values | XPathInjection.go:169:27:169:122 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:138:14:138:19 | selection of Form | A user-provided value |
+| XPathInjection.go:169:27:169:122 | ...+... | XPathInjection.go:139:14:139:19 | selection of Form : Values | XPathInjection.go:169:27:169:122 | ...+... | $@ flows here and is used in an XPath expression. | XPathInjection.go:139:14:139:19 | selection of Form | A user-provided value |

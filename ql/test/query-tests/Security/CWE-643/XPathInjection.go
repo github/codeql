@@ -1,32 +1,176 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/ChrisTrenkamp/goxpath"
-	"github.com/ChrisTrenkamp/goxpath/tree"
+	"github.com/antchfx/htmlquery"
+	"github.com/antchfx/jsonquery"
+	"github.com/antchfx/xmlquery"
+	"github.com/antchfx/xpath"
+	"github.com/go-xmlpath/xmlpath"
+	gokogiriXml "github.com/jbowtie/gokogiri/xml"
+	gokogiriXpath "github.com/jbowtie/gokogiri/xpath"
+	"github.com/santhosh-tekuri/xpathparser"
 )
 
 func main() {}
 
-func processRequest(r *http.Request, doc tree.Node) {
+func testAntchfxXpath(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = xpath.Compile("//users/user[login/text()='" + username + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xpath.MustCompile("//users/user[login/text()='" + username + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xpath.Select(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+}
+
+func testAntchfxHtmlquery(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_ = htmlquery.Find(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = htmlquery.FindOne(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = htmlquery.QueryAll(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = htmlquery.Query(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+}
+
+func testAntchfxXmlquery(r *http.Request, n *xmlquery.Node) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xmlquery.Find(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xmlquery.FindOne(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	xmlquery.FindEach(nil, "//users/user[login/text()='"+username+"']/home_dir/text()", nil)
+
+	// BAD: User input used directly in an XPath expression
+	xmlquery.FindEachWithBreak(nil, "//users/user[login/text()='"+username+"']/home_dir/text()", nil)
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = xmlquery.QueryAll(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = xmlquery.Query(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = n.SelectElements("//users/user[login/text()='" + username + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = n.SelectAttr("//users/user[login/text()='" + username + "']/home_dir/text()")
+}
+
+func testAntchfxJsonquery(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_ = jsonquery.Find(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = jsonquery.FindOne(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = jsonquery.QueryAll(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = jsonquery.Query(nil, "//users/user[login/text()='"+username+"']/home_dir/text()")
+}
+
+func testGoXmlpathXmlpath(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = xmlpath.Compile("//users/user[login/text()='" + username + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xmlpath.MustCompile("//users/user[login/text()='" + username + "']/home_dir/text()")
+}
+
+func testChrisTrenkampGoxpath(r *http.Request) {
 	r.ParseForm()
 	username := r.Form.Get("username")
 	password := r.Form.Get("password")
 
 	// BAD: User input used directly in an XPath expression
-	xPath := goxpath.MustParse("//users/user[login/text()='" + username + "' and password/text() = '" + password + "']/home_dir/text()")
-	unsafeRes, _ := xPath.ExecBool(doc)
-	fmt.Println(unsafeRes)
+	_, _ = goxpath.Parse("//users/user[login/text()='" + username + "' and password/text() = '" + password + "']/home_dir/text()")
 
-	// GOOD: Value of parameters is defined here instead of directly in the query
-	opt := func(o *goxpath.Opts) {
-		o.Vars["username"] = tree.String(username)
-		o.Vars["password"] = tree.String(password)
-	}
+	// BAD: User input used directly in an XPath expression
+	_ = goxpath.MustParse("//users/user[login/text()='" + username + "' and password/text() = '" + password + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = goxpath.ParseExec("//users/user[login/text()='"+username+"' and password/text() = '"+password+"']/home_dir/text()", nil)
+
 	// GOOD: Uses parameters to avoid including user input directly in XPath expression
-	xPath = goxpath.MustParse("//users/user[login/text()=$username and password/text() = $password]/home_dir/text()")
-	safeRes, _ := xPath.ExecBool(doc, opt)
-	fmt.Println(safeRes)
+	_ = goxpath.MustParse("//users/user[login/text()=$username and password/text() = $password]/home_dir/text()")
+}
+
+func testSanthoshTekuriXpathparser(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = xpathparser.Parse("//users/user[login/text()='" + username + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_ = xpathparser.MustParse("//users/user[login/text()='" + username + "']/home_dir/text()")
+}
+
+func testJbowtieGokogiri(r *http.Request, n gokogiriXml.Node) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+	password := r.Form.Get("password")
+
+	// BAD: User input used directly in an XPath expression
+	xpath := gokogiriXpath.Compile("//users/user[login/text()='" + username + "' and password/text() = '" + password + "']/home_dir/text()")
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = n.Search("//users/user[login/text()='" + username + "' and password/text() = '" + password + "']/home_dir/text()")
+
+	// OK: This is not flagged, since the creation of `xpath` is already flagged.
+	_, _ = n.Search(xpath)
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = n.SearchWithVariables("//users/user[login/text()='"+username+"' and password/text() = '"+password+"']/home_dir/text()", nil)
+
+	// GOOD: Uses parameters to avoid including user input directly in XPath expression
+	_, _ = n.SearchWithVariables("//users/user[login/text()=$username and password/text() = $password]/home_dir/text()", nil)
+
+	// OK: This is not flagged, since the creation of `xpath` is already flagged.
+	_, _ = n.SearchWithVariables(xpath, nil)
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = n.EvalXPath("//users/user[login/text()='"+username+"' and password/text() = '"+password+"']/home_dir/text()", nil)
+
+	// GOOD: Uses parameters to avoid including user input directly in XPath expression
+	_, _ = n.EvalXPath("//users/user[login/text()=$username and password/text() = $password]/home_dir/text()", nil)
+
+	// OK: This is not flagged, since the creation of `xpath` is already flagged.
+	_, _ = n.EvalXPath(xpath, nil)
+
+	// BAD: User input used directly in an XPath expression
+	_ = n.EvalXPathAsBoolean("//users/user[login/text()='"+username+"' and password/text() = '"+password+"']/home_dir/text()", nil)
+
+	// GOOD: Uses parameters to avoid including user input directly in XPath expression
+	_ = n.EvalXPathAsBoolean("//users/user[login/text()=$username and password/text() = $password]/home_dir/text()", nil)
+
+	// OK: This is not flagged, since the creation of `xpath` is already flagged.
+	_ = n.EvalXPathAsBoolean(xpath, nil)
 }
