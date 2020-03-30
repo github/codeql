@@ -260,6 +260,14 @@ module TaintTracking {
 
     /**
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge through arrays.
+     *
+     * These steps considers an array to be tainted if it contains tainted elements.
+     */
+    predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /**
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge through the `state` or `props` or a React component.
      */
     predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
@@ -339,6 +347,14 @@ module TaintTracking {
   cached
   predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
     any(SharedTaintStep step).heapStep(pred, succ)
+  }
+
+  /**
+   * Holds if `pred -> succ` is a taint propagating data flow edge through an array.
+   */
+  cached
+  predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(SharedTaintStep step).arrayStep(pred, succ)
   }
 
   /**
@@ -425,6 +441,7 @@ module TaintTracking {
     uriStep(pred, succ) or
     persistentStorageStep(pred, succ) or
     heapStep(pred, succ) or
+    arrayStep(pred, succ) or
     viewComponentStep(pred, succ) or
     stringConcatenationStep(pred, succ) or
     stringManipulationStep(pred, succ) or
@@ -496,7 +513,7 @@ module TaintTracking {
     }
   }
 
-  predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
+  deprecated predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
 
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
