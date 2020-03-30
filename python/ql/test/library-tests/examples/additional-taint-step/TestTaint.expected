@@ -1,0 +1,4 @@
+| test.py:15 | basic | s | externally controlled string | ok |
+| test.py:24 | additional_flow_step1 | x | MyTestTaintKind | ok |
+| test.py:32 | my_vuln_func | arg | externally controlled string | ok |
+| test.py:42 | Foo.vuln_func | arg | externally controlled string | ok |
