@@ -1,12 +1,7 @@
 Detecting a potential buffer overflow
 =====================================
 
-You can use CodeQL to detect potential buffer overflows by checking for allocations equal to ``strlen`` in C and C++.
-
-Overview
---------
-
-This topic describes how a C/C++ query for detecting a potential buffer overflow was developed. For a full overview of the topics available for learning to write queries for C/C++ code, see :doc:`CodeQL for C/C++ <ql-for-cpp>`.
+You can use CodeQL to detect potential buffer overflows by checking for allocations equal to ``strlen`` in C and C++. This topic describes how a C/C++ query for detecting a potential buffer overflow was developed.
 
 Problem—detecting memory allocation that omits space for a null termination character
 -------------------------------------------------------------------------------------
@@ -226,8 +221,8 @@ The completed query will now identify cases where the result of ``strlen`` is st
    where malloc.getAllocatedSize() instanceof StrlenCall
    select malloc, "This allocation does not include space to null-terminate the string."
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.

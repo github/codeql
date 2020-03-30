@@ -146,8 +146,8 @@ Finally we can simplify the query by using the transitive closure operator. In t
 
 ➤ `See this in the query console <https://lgtm.com/query/1505896968215/>`__
 
-What next?
-----------
+Further reading
+---------------
 
 -  Take a look at another example: :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.

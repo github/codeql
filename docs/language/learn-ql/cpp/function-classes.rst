@@ -89,8 +89,8 @@ Note that we could have used ``Declaration.getName()``, but ``Declaration.getQua
 
 The LGTM version of this query is considerably more complicated, but if you look carefully you will find that its structure is the same. See `Non-constant format string <https://lgtm.com/rules/2152810612/>`__ and click **Open in query console** at the top of the page.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Explore other ways of finding functions using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/function>`__.
 -  Take a look at some other tutorials: :doc:`Expressions, types and statements in C and C++ <introduce-libraries-cpp>`, :doc:`Conversions and classes in C and C++ <conversions-classes>`, and :doc:`Analyzing data flow in C and C++ <dataflow>`.

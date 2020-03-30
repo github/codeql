@@ -253,8 +253,8 @@ Exercise 3: Write a class that represents flow sources from ``java.lang.System.g
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
 
-What next?
-----------
+Further reading
+---------------
 
 -  Try the worked examples in these articles: :doc:`Navigating the call graph <call-graph>` and :doc:`Working with source locations <source-locations>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
