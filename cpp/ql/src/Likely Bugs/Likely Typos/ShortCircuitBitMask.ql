@@ -40,7 +40,8 @@ where
   l = v.log2().floor() and
   if v = 2.pow(l)
   then
-    msg = "Operand to short-circuiting operator looks like a flag (" + v + " = 2 ^ " + l +
+    msg =
+      "Operand to short-circuiting operator looks like a flag (" + v + " = 2 ^ " + l +
         "), may be typo for bitwise operator."
   else
     exists(string kind |
@@ -49,7 +50,8 @@ where
         or
         e instanceof OctalLiteral and kind = "an octal literal"
       ) and
-      msg = "Operand to short-circuiting operator is " + kind +
+      msg =
+        "Operand to short-circuiting operator is " + kind +
           ", and therefore likely a flag; a bitwise operator may be intended."
     )
 select e, msg

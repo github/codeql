@@ -113,7 +113,7 @@ public class JSExtractor {
       new JSDocExtractor(textualExtractor).extract(lexicalExtractor.getComments());
       lexicalExtractor.purge();
 
-      scriptExtractor.extract(ast, platform, sourceType, toplevelKind);
+      parserRes.getErrors().addAll(scriptExtractor.extract(ast, platform, sourceType, toplevelKind));
       new CFGExtractor(scriptExtractor).extract(ast);
     } else {
       lexicalExtractor =

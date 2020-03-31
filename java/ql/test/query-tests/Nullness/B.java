@@ -120,7 +120,7 @@ public class B {
   }
 
   private Object mkMaybe() {
-    if (maybe) throw new Exception();
+    if (maybe) throw new RuntimeException();
     return new Object();
   }
 
@@ -267,7 +267,7 @@ public class B {
     }
     if(msg != null) {
       msg += "foobar";
-      throw new Exception(msg);
+      throw new RuntimeException(msg);
     }
     obj.hashCode(); // OK
   }
@@ -286,7 +286,7 @@ public class B {
 
     int[] b = maybe ? null : new int[iters];
     if (iters > 0 && (b == null || b.length < iters)) {
-      throw new Exception();
+      throw new RuntimeException();
     }
     for (int i = 0; i < iters; ++i) {
       b[i] = 0; // NPE - false positive
@@ -324,4 +324,51 @@ public class B {
     if (x != null) y.hashCode(); // OK
     if (y != null) x.hashCode(); // OK
   }
+
+  public void corrConds3(Object y) {
+    Object x = null;
+    if(y instanceof String) {
+      x = new Object();
+    }
+    if(y instanceof String) {
+      x.hashCode(); // OK
+    }
+  }
+
+  public void corrConds4(Object y) {
+    Object x = null;
+    if(!(y instanceof String)) {
+      x = new Object();
+    }
+    if(!(y instanceof String)) {
+      x.hashCode(); // OK
+    }
+  }
+
+  public void corrConds5(Object y, Object z) {
+    Object x = null;
+    if(y == z) {
+      x = new Object();
+    }
+    if(y == z) {
+      x.hashCode(); // OK
+    }
+
+    Object x2 = null;
+    if(y != z) {
+      x2 = new Object();
+    }
+    if(y != z) {
+      x2.hashCode(); // OK
+    }
+
+    Object x3 = null;
+    if(y != z) {
+      x3 = new Object();
+    }
+    if(!(y == z)) {
+      x3.hashCode(); // OK
+    }
+  }
+
 }

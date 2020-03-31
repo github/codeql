@@ -1,6 +1,4 @@
-
 import python
-
 import semmle.python.security.SensitiveData
 
 from SensitiveData::Source src

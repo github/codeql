@@ -125,7 +125,7 @@ class ASTNode extends @ast_node, Locatable {
    * Holds if this is part of an ambient declaration or type annotation in a TypeScript file.
    *
    * A declaration is ambient if it occurs under a `declare` modifier or is
-   * an interface declaration, type alias, or type annotation.
+   * an interface declaration, type alias, type annotation, or type-only import/export declaration.
    *
    * The TypeScript compiler emits no code for ambient declarations, but they
    * can affect name resolution and type checking at compile-time.
@@ -150,7 +150,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is minified. */
   predicate isMinified() {
     // file name contains 'min' (not as part of a longer word)
-    getFile().getBaseName().regexpMatch(".*[^-.]*[-.]min([-.].*)?\\.\\w+")
+    getFile().getBaseName().regexpMatch(".*[^-._]*[-._]min([-._].*)?\\.\\w+")
     or
     exists(int numstmt | numstmt = strictcount(Stmt s | s.getTopLevel() = this) |
       // there are more than two statements per line on average

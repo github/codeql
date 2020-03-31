@@ -8,8 +8,6 @@
 | class D | class X | builtin-class object |
 | class Meta | builtin-class type | builtin-class object |
 | class Meta | class Meta | builtin-class type |
-| class N | builtin-class object | class O |
-| class N | class N | builtin-class object |
 | class NewStyle | class NewStyle | builtin-class object |
 | class NewStyleDerived | class NewStyle | builtin-class object |
 | class NewStyleDerived | class NewStyleDerived | class NewStyle |

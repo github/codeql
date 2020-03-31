@@ -8,6 +8,7 @@
  * @id cpp/leap-year/unchecked-return-value-for-time-conversion-function
  * @precision medium
  * @tags leap-year
+ *       correctness
  */
 
 import cpp

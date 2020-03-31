@@ -3,7 +3,7 @@ import semmle.code.cpp.dataflow.DataFlow
 
 module BoostorgAsio {
   /**
-   * Represents boost::asio::ssl::context enum
+   * Represents the `boost::asio::ssl::context` enum.
    */
   class SslContextMethod extends Enum {
     SslContextMethod() {
@@ -12,7 +12,7 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value for a banned protocol
+     * Gets an enumeration constant for a banned protocol.
      */
     EnumConstant getABannedProtocolConstant() {
       result = this.getAnEnumConstant() and
@@ -56,14 +56,15 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value for a approved protocols, but that are hard-coded (i.e. no protocol negotiation)
+     * Gets an enumeration constant for an approved protocol, that is hard-coded
+     * (no protocol negotiation).
      */
     EnumConstant getAnApprovedButHardcodedProtocolConstant() {
       result = this.getATls12ProtocolConstant()
     }
 
     /**
-     * returns the value for a TLS v1.2 protocol
+     * Gets an enumeration constant for a TLS v1.2 protocol.
      */
     EnumConstant getATls12ProtocolConstant() {
       result = this.getAnEnumConstant() and
@@ -80,7 +81,7 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value for a TLS v1.3 protocol
+     * Gets an enumeration constant for a TLS v1.3 protocol.
      */
     EnumConstant getATls13ProtocolConstant() {
       result = this.getAnEnumConstant() and
@@ -97,7 +98,7 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value of a generic TLS or SSL/TLS protocol
+     * Gets an enumeration constant for a generic TLS or SSL/TLS protocol.
      */
     EnumConstant getAGenericTlsProtocolConstant() {
       result = this.getAnEnumConstant() and
@@ -116,7 +117,7 @@ module BoostorgAsio {
     }
 
     /**
-     * returns the value of a generic SSL/TLS protocol
+     * Gets an enumeration constant for a generic SSL/TLS protocol.
      */
     EnumConstant getASslv23ProtocolConstant() {
       result = this.getAnEnumConstant() and
@@ -135,7 +136,9 @@ module BoostorgAsio {
   }
 
   /**
-   * NOTE: ignore - Modern versions of OpenSSL do not support SSL v2 anymore, so this option is for backwards compatibility only
+   * Gets the value for the no_sslv2 constant, right shifted by 16 bits.
+   *
+   * Note that modern versions of OpelSSL do not support SSL v2, so this option is for backwards compatibility only.
    */
   int getShiftedSslOptionsNoSsl2() {
     // SSL_OP_NO_SSLv2 was removed from modern OpenSSL versions
@@ -143,7 +146,7 @@ module BoostorgAsio {
   }
 
   /**
-   * RightShift(16) value for no_sslv3 constant
+   * Gets the value for the no_sslv3 constant, right shifted by 16 bits.
    */
   int getShiftedSslOptionsNoSsl3() {
     // SSL_OP_NO_SSLv3 == 0x02000000U
@@ -151,7 +154,7 @@ module BoostorgAsio {
   }
 
   /**
-   * RightShift(16) value for no_tlsv1 constant
+   * Gets the value for the no_tlsv1 constant, right shifted by 16 bits.
    */
   int getShiftedSslOptionsNoTls1() {
     // SSL_OP_NO_TLSv1 == 0x04000000U
@@ -159,7 +162,7 @@ module BoostorgAsio {
   }
 
   /**
-   * RightShift(16) value for no_tlsv1_1 constant
+   * Gets the value for the no_tlsv1_1 constant, right shifted by 16 bits.
    */
   int getShiftedSslOptionsNoTls1_1() {
     // SSL_OP_NO_TLSv1_1 == 0x10000000U
@@ -167,7 +170,7 @@ module BoostorgAsio {
   }
 
   /**
-   * RightShift(16) value for no_tlsv1_2 constant
+   * Gets the value for the no_tlsv1_2 constant, right shifted by 16 bits.
    */
   int getShiftedSslOptionsNoTls1_2() {
     // SSL_OP_NO_TLSv1_2 == 0x08000000U
@@ -175,7 +178,7 @@ module BoostorgAsio {
   }
 
   /**
-   * RightShift(16) value for no_tlsv1_3 constant
+   * Gets the value for the no_tlsv1_3 constant, right shifted by 16 bits.
    */
   int getShiftedSslOptionsNoTls1_3() {
     // SSL_OP_NO_TLSv1_2 == 0x20000000U
@@ -183,7 +186,7 @@ module BoostorgAsio {
   }
 
   /**
-   * Represents boost::asio::ssl::context class
+   * Represents the `boost::asio::ssl::context` class.
    */
   class SslContextClass extends Class {
     SslContextClass() { this.getQualifiedName() = "boost::asio::ssl::context" }
@@ -196,7 +199,7 @@ module BoostorgAsio {
   }
 
   /**
-   * Represents boost::asio::ssl::context::set_options member function
+   * Represents `boost::asio::ssl::context::set_options` member function.
    */
   class SslSetOptionsFunction extends Function {
     SslSetOptionsFunction() {
@@ -205,7 +208,7 @@ module BoostorgAsio {
   }
 
   /**
-   * holds if the expression represents a banned protocol
+   * Holds if the expression represents a banned protocol.
    */
   predicate isExprBannedBoostProtocol(Expr e) {
     exists(Literal va | va = e |
@@ -244,7 +247,7 @@ module BoostorgAsio {
   }
 
   /**
-   * holds if the expression represents a TLS v1.2 protocol
+   * Holds if the expression represents a TLS v1.2 protocol.
    */
   predicate isExprTls12BoostProtocol(Expr e) {
     exists(Literal va | va = e |
@@ -269,7 +272,7 @@ module BoostorgAsio {
   }
 
   /**
-   * holds if the expression represents a protocol that requires Crypto Board approval
+   * Holds if the expression represents a protocol that requires Crypto Board approval.
    */
   predicate isExprTls13BoostProtocol(Expr e) {
     exists(Literal va | va = e |
@@ -294,7 +297,7 @@ module BoostorgAsio {
   }
 
   /**
-   * holds if the expression represents a generic TLS or SSL/TLS protocol
+   * Holds if the expression represents a generic TLS or SSL/TLS protocol.
    */
   predicate isExprTlsBoostProtocol(Expr e) {
     exists(Literal va | va = e |
@@ -325,7 +328,7 @@ module BoostorgAsio {
   }
 
   /**
-   * holds if the expression represents a generic SSl/TLS protocol
+   * Holds if the expression represents a generic SSl/TLS protocol.
    */
   predicate isExprSslV23BoostProtocol(Expr e) {
     exists(Literal va | va = e |
@@ -351,7 +354,8 @@ module BoostorgAsio {
 
   //////////////////////// Dataflow /////////////////////
   /**
-   * Abstract - Protocol value Flows to the first argument of the context constructor
+   * Abstract class for flows of protocol values to the first argument of a context
+   * constructor.
    */
   abstract class SslContextCallAbstractConfig extends DataFlow::Configuration {
     bindingset[this]
@@ -366,7 +370,7 @@ module BoostorgAsio {
   }
 
   /**
-   * any Protocol value Flows to the first argument of the context constructor
+   * Any protocol value that flows to the first argument of a context constructor.
    */
   class SslContextCallConfig extends SslContextCallAbstractConfig {
     SslContextCallConfig() { this = "SslContextCallConfig" }
@@ -380,7 +384,7 @@ module BoostorgAsio {
   }
 
   /**
-   * a banned protocol value Flows to the first argument of the context constructor
+   * A banned protocol value that flows to the first argument of a context constructor.
    */
   class SslContextCallBannedProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallBannedProtocolConfig() { this = "SslContextCallBannedProtocolConfig" }
@@ -395,7 +399,7 @@ module BoostorgAsio {
   }
 
   /**
-   * a TLS 1.2 protocol value Flows to the first argument of the context constructor
+   * A TLS 1.2 protocol value that flows to the first argument of a context constructor.
    */
   class SslContextCallTls12ProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTls12ProtocolConfig() { this = "SslContextCallTls12ProtocolConfig" }
@@ -410,7 +414,7 @@ module BoostorgAsio {
   }
 
   /**
-   * a TLS 1.3 protocol value Flows to the first argument of the context constructor
+   * A TLS 1.3 protocol value that flows to the first argument of a context constructor.
    */
   class SslContextCallTls13ProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTls13ProtocolConfig() { this = "SslContextCallTls12ProtocolConfig" }
@@ -425,7 +429,7 @@ module BoostorgAsio {
   }
 
   /**
-   * a generic TLS protocol value Flows to the first argument of the context constructor
+   * A generic TLS protocol value that flows to the first argument of a context constructor.
    */
   class SslContextCallTlsProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTlsProtocolConfig() { this = "SslContextCallTlsProtocolConfig" }
@@ -440,7 +444,7 @@ module BoostorgAsio {
   }
 
   /**
-   * a context constructor call flows to a call calling SetOptions()
+   * A context constructor call that flows to a call to `SetOptions()`.
    */
   class SslContextFlowsToSetOptionConfig extends DataFlow::Configuration {
     SslContextFlowsToSetOptionConfig() { this = "SslContextFlowsToSetOptionConfig" }
@@ -464,7 +468,7 @@ module BoostorgAsio {
   }
 
   /**
-   * an option value flows to the 1st parameter of SetOptions()
+   * An option value that flows to the first parameter of a call to `SetOptions()`.
    */
   class SslOptionConfig extends DataFlow::Configuration {
     SslOptionConfig() { this = "SslOptionConfig" }

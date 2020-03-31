@@ -34,8 +34,9 @@ predicate isMissingParameter(AngularJS::InjectableFunction f, string msg, ASTNod
         then dependenciesAreString = "dependency is"
         else dependenciesAreString = "dependencies are"
       ) and
-      msg = "This function has " + paramCount + " " + parametersString + ", but " + injectionCount +
-          " " + dependenciesAreString + " injected into it."
+      msg =
+        "This function has " + paramCount + " " + parametersString + ", but " + injectionCount + " "
+          + dependenciesAreString + " injected into it."
     )
   )
 }

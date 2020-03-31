@@ -113,5 +113,3 @@ interface InterfaceFields {
   z?: number;
   readonly w?: number;
 }
-
-// semmle-extractor-options: --extract-program-text

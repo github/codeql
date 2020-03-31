@@ -59,3 +59,8 @@
 | test.cpp:183:10:183:10 | Load: i | test.cpp:175:23:175:23 | InitializeParameter: x | -1 | true | CompareLT: ... < ... | test.cpp:182:9:182:13 | test.cpp:182:9:182:13 |
 | test.cpp:185:10:185:10 | Load: i | test.cpp:175:23:175:23 | InitializeParameter: x | 0 | true | CompareLT: ... < ... | test.cpp:176:7:176:11 | test.cpp:176:7:176:11 |
 | test.cpp:187:10:187:10 | Store: i | test.cpp:175:23:175:23 | InitializeParameter: x | 0 | false | CompareLT: ... < ... | test.cpp:182:9:182:13 | test.cpp:182:9:182:13 |
+| test.cpp:194:8:194:8 | Load: l | test.cpp:191:16:191:16 | InitializeParameter: i | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
+| test.cpp:194:8:194:8 | Load: l | test.cpp:191:16:191:16 | InitializeParameter: i | 0 | true | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
+| test.cpp:200:10:200:10 | Load: i | test.cpp:198:25:198:25 | InitializeParameter: l | -1 | true | CompareLT: ... < ... | test.cpp:199:7:199:11 | test.cpp:199:7:199:11 |
+| test.cpp:203:11:203:11 | Load: i | test.cpp:198:25:198:25 | InitializeParameter: l | -3 | true | CompareLT: ... < ... | test.cpp:202:7:202:15 | test.cpp:202:7:202:15 |
+| test.cpp:209:10:209:10 | Load: x | test.cpp:207:24:207:24 | InitializeParameter: y | -3 | true | CompareLT: ... < ... | test.cpp:208:7:208:15 | test.cpp:208:7:208:15 |

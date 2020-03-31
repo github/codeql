@@ -1,0 +1,33 @@
+new RegExp('\0 hello . \0 world \0');
+new RegExp('\00 hello . \00 world \00');
+new RegExp('\000 hello . \000 world \000');
+new RegExp('\12 hello . \12 world \12');
+new RegExp('\333 hello . \333 world \333');
+new RegExp('\444 hello . \444 world \444');
+new RegExp('\555 hello . \555 world \555');
+new RegExp('\666 hello . \666 world \666');
+new RegExp('\777 hello . \777 world \777');
+new RegExp('\787 hello . \787 world \787');
+new RegExp('\087 hello . \087 world \087');
+new RegExp('\3331 hello . \3331 world \3331');
+new RegExp('\4441 hello . \4441 world \4441');
+new RegExp('\5551 hello . \5551 world \5551');
+new RegExp('\6661 hello . \6661 world \6661');
+new RegExp('\7771 hello . \7771 world \7771');
+new RegExp('\7871 hello . \7871 world \7871');
+new RegExp('\0871 hello . \0871 world \0871');
+new RegExp('\8 hello . \8 world \8');
+new RegExp('\81 hello . \81 world \81');
+new RegExp('\811 hello . \811 world \811');
+
+new RegExp('\u{a0} hello . \u{a0} world \u{a0}');
+new RegExp('\u{0a0} hello . \u{0a0} world \u{0a0}');
+new RegExp('\u{00a0} hello . \u{00a0} world \u{00a0}');
+new RegExp('\u{000a0} hello . \u{000a0} world \u{000a0}');
+new RegExp('\u{0000a0} hello . \u{0000a0} world \u{0000a0}');
+new RegExp('\u{00000a0} hello . \u{00000a0} world \u{00000a0}');
+
+new RegExp('\u{1a0} hello . \u{1a0} world \u{1a0}');
+new RegExp('\u{10a0} hello . \u{10a0} world \u{10a0}');
+new RegExp('\u{100a0} hello . \u{100a0} world \u{100a0}');
+new RegExp('\u{1000a0} hello . \u{1000a0} world \u{1000a0}');

@@ -1,3 +1,5 @@
+| module-exports.js:4:28:4:31 | this | module-exports.js:4:15:4:34 | function() { this; } |
+| module-exports.js:5:35:5:38 | this | module-exports.js:5:22:5:41 | function() { this; } |
 | tst.js:4:9:4:12 | this | tst.js:3:7:5:5 | () {\\n   ... ;\\n    } |
 | tst.js:8:15:8:18 | this | tst.js:7:7:9:5 | () {\\n   ... ;\\n    } |
 | tst.js:17:13:17:16 | this | tst.js:16:10:18:9 | functio ...       } |

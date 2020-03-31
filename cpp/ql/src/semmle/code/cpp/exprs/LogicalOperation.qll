@@ -3,23 +3,26 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary logical operation.
  */
-abstract class UnaryLogicalOperation extends UnaryOperation { }
+class UnaryLogicalOperation extends UnaryOperation, @un_log_op_expr { }
 
 /**
  * A C/C++ logical not expression.
+ * ```
+ * c = !a;
+ * ```
  */
 class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
 
   override string getCanonicalQLClass() { result = "NotExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
  * A C/C++ binary logical operation.
  */
-abstract class BinaryLogicalOperation extends BinaryOperation {
+class BinaryLogicalOperation extends BinaryOperation, @bin_log_op_expr {
   /**
    * Holds if the truth of this binary logical expression having value `wholeIsTrue`
    * implies that the truth of the child expression `part` has truth value `partIsTrue`.
@@ -35,7 +38,10 @@ abstract class BinaryLogicalOperation extends BinaryOperation {
 }
 
 /**
- * A C/C++ logical and expression.
+ * A C/C++ logical AND expression.
+ * ```
+ * if (a && b) { }
+ * ```
  */
 class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
@@ -53,7 +59,10 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
 }
 
 /**
- * A C/C++ logical or expression.
+ * A C/C++ logical OR expression.
+ * ```
+ * if (a || b) { }
+ * ```
  */
 class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
@@ -72,6 +81,9 @@ class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
 
 /**
  * A C/C++ conditional ternary expression.
+ * ```
+ * a = (b > c ? d : e);
+ * ```
  */
 class ConditionalExpr extends Operation, @conditionalexpr {
   /** Gets the condition of this conditional expression. */

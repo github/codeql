@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.List;
 import static org.junit.Assert.*;
+import static org.hamcrest.core.IsNull.*;
+import static org.hamcrest.MatcherAssert.*;
 
 public class A {
   public void notTest() {
@@ -294,6 +296,12 @@ public class A {
   public void testForLoopCondition(Iterable iter) {
     Iterator it = null;
     for (it = iter.iterator(); !!it.hasNext(); ) {}
+  }
+
+  public void assertThatTest() {
+    Object assertThat_ok1 = maybe() ? null : new Object();
+    assertThat(assertThat_ok1, notNullValue());
+    assertThat_ok1.toString();
   }
 
   private boolean m;

@@ -5,5 +5,3 @@ var props = {
 module.exports = {
   ...props
 };
-
-// semmle-extractor-options: --experimental

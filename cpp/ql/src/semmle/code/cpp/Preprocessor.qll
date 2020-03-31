@@ -83,7 +83,8 @@ abstract class PreprocessorBranchDirective extends PreprocessorDirective {
    * #ifdef or #ifndef.
    */
   private int getIndexInBranch(PreprocessorBranch branch) {
-    this = rank[result](PreprocessorBranchDirective other |
+    this =
+      rank[result](PreprocessorBranchDirective other |
         other.getIf() = branch
       |
         other order by other.getLocation().getStartLine()
@@ -214,7 +215,9 @@ class PreprocessorUndef extends PreprocessorDirective, @ppd_undef {
  * A C/C++ preprocessor `#pragma` directive.
  */
 class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
-  override string toString() { result = "#pragma " + this.getHead() }
+  override string toString() {
+    if exists(this.getHead()) then result = "#pragma " + this.getHead() else result = "#pragma"
+  }
 }
 
 /**

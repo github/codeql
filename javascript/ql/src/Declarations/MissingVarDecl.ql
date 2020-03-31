@@ -57,7 +57,8 @@ GlobalVarAccess getAccessIn(GlobalVariable v, Function f) {
  * Gets the (lexically) first access to variable `v` in function `f`.
  */
 GlobalVarAccess getFirstAccessIn(GlobalVariable v, Function f) {
-  result = min(getAccessIn(v, f) as gva
+  result =
+    min(getAccessIn(v, f) as gva
       order by
         gva.getLocation().getStartLine(), gva.getLocation().getStartColumn()
     )

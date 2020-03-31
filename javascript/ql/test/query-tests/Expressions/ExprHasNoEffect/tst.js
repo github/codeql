@@ -72,4 +72,6 @@ function g() {
 
 	Object.defineProperty(o, "nonTrivialGetter2", unknownGetterDef());
 	o.nonTrivialGetter2; // OK
+	
+	(o: empty); // OK.
 };

@@ -52,3 +52,19 @@ var server = http.createServer(function(req, res) {
 
     request(`${base}${tainted}`); // OK - assumed safe
 })
+
+var CDP = require("chrome-remote-interface");
+var server = http.createServer(async function(req, res) {
+    var tainted = url.parse(req.url, true).query.url;
+
+    var client = await CDP(options);
+	client.Page.navigate({url: tainted}); // NOT OK.
+	
+	CDP(options).catch((ignored) => {}).then((client) => {
+		client.Page.navigate({url: tainted}); // NOT OK.	
+	})
+	
+	CDP(options, (client) => {
+		client.Page.navigate({url: tainted}); // NOT OK.	
+	});
+})

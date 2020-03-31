@@ -1,9 +1,8 @@
 # Query file metadata and alert message style guide
 
-
 ## Introduction
 
-This document outlines the structure of Semmle query files. You should adopt this structure when contributing custom queries to this repository, in order to ensure that new queries are consistent with the standard Semmle queries.
+This document outlines the structure of CodeQL query files. You should adopt this structure when contributing custom queries to this repository, in order to ensure that new queries are consistent with the standard CodeQL queries.
 
 ## Query files (.ql extension)
 
@@ -11,13 +10,13 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 
 *   Metadata area–displayed at the top of the file, contains the metadata that defines how results for the query are interpreted and gives a brief description of the purpose of the query.
 *   Query definition–defined using QL. The query includes a select statement, which defines the content and format of the results. For further information about writing QL, see the following topics:
-    *   [Learning QL](https://help.semmle.com/QL/learn-ql/index.html)
+    *   [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
     *   [QL language handbook](https://help.semmle.com/QL/ql-handbook/index.html)
     *   [QL language specification](https://help.semmle.com/QL/ql-spec/language.html)
-    *   [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
+    *   [CodeQL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
 
 
-For examples of query files for the languages supported by Semmle, visit the following links: 
+For examples of query files for the languages supported by CodeQL, visit the following links: 
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
@@ -68,11 +67,11 @@ You must define an `@description` property for your query. This property defines
 
 ### Query ID `@id`
 
-You must specify an `@id` property for your query. It must be unique in the Semmle namespace and should follow the standard Semmle convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash. The following language codes are supported:
+You must specify an `@id` property for your query. It must be unique and should follow the standard CodeQL convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash. The following language codes are supported:
 
 *   C and C++: `cpp`
 *   C#: `cs`
-*   COBOL: `cobol`
+*   Go: `go`
 *   Java: `java`
 *   JavaScript and TypeScript: `js`
 *   Python: `py`
@@ -106,7 +105,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 *   alerts (`@kind problem`)
 *   alerts containing path information (`@kind path-problem`)
 
-Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
+Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested, prior to deployment to LGTM. The following information is for reference:
 
 
 
@@ -114,7 +113,7 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
     *   `low `
     *   `medium `
     *   `high `
-    *   `very high`
+    *   `very-high`
 *   `@problem.severity`–defines the level of severity of the alert: 
     *   `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
     *   `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
@@ -178,4 +177,4 @@ For examples of select clauses and alert messages, see the query source files at
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
-For further information on query writing, see  [Writing QL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning QL, see [Learning QL](https://help.semmle.com/QL/learn-ql/index.html).
+For further information on query writing, see  [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning CodeQL, see [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html).

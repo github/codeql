@@ -1,6 +1,6 @@
 /**
  * @kind path-problem
- * 
+ *
  * An example configuration.
  * See ExampleConfiguration.expected for the results of running this query.
  */
@@ -9,23 +9,16 @@ import python
 import semmle.python.dataflow.Configuration
 
 /* First of all we set up some TaintKinds */
-
 class Engineer extends TaintKind {
-
     Engineer() { this = "Wally" or this = "Dilbert" }
-
 }
 
 class Wally extends Engineer {
-
     Wally() { this = "Wally" }
-
 }
 
 /** Then the configuration */
-
 class DilbertConfig extends TaintTracking::Configuration {
-
     DilbertConfig() { this = "Dilbert config" }
 
     override predicate isSource(DataFlow::Node node, TaintKind kind) {
@@ -46,10 +39,7 @@ class DilbertConfig extends TaintTracking::Configuration {
         /* Even the conscientious stop work if the building is on fire */
         function_param("fire", node)
     }
-
 }
-
-
 
 /** Helper predicate looking for `funcname(..., arg, ...)` */
 private predicate function_param(string funcname, DataFlow::Node arg) {

@@ -1,5 +1,4 @@
 import python
 
-from PythonPropertyObject p 
-
+from PythonPropertyObject p
 select p.toString()

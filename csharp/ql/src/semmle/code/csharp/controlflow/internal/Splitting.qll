@@ -255,7 +255,8 @@ module InitializerSplitting {
    */
   predicate constructorInitializeOrder(Constructor c, InitializedInstanceMember m, int i) {
     constructorInitializes(c, m) and
-    m = rank[i + 1](InitializedInstanceMember m0 |
+    m =
+      rank[i + 1](InitializedInstanceMember m0 |
         constructorInitializes(c, m0)
       |
         m0
@@ -377,7 +378,8 @@ module InitializerSplitting {
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesTo(pred) and
       succ = succ(pred, c) and
-      succ = any(InitializedInstanceMember m | constructorInitializes(this.getConstructor(), m))
+      succ =
+        any(InitializedInstanceMember m | constructorInitializes(this.getConstructor(), m))
             .getAnInitializerDescendant()
     }
   }
@@ -651,7 +653,8 @@ module FinallySplitting {
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesToPredecessor(pred) and
       succ = succ(pred, c) and
-      succ = any(FinallyControlFlowElement fcfe |
+      succ =
+        any(FinallyControlFlowElement fcfe |
           if fcfe.isEntryNode()
           then
             // entering a nested `finally` block
@@ -767,11 +770,13 @@ module ExceptionHandlerSplitting {
       (
         pred instanceof SpecificCatchClause
         implies
-        pred = any(SpecificCatchClause scc |
+        pred =
+          any(SpecificCatchClause scc |
             if c instanceof MatchingCompletion
             then
               exists(TMatch match | this.appliesToCatchClause(scc, match) |
-                c = any(MatchingCompletion mc |
+                c =
+                  any(MatchingCompletion mc |
                     if mc.isMatch() then match != TNever() else match != TAlways()
                   )
               )
@@ -998,7 +1003,8 @@ module BooleanSplitting {
   private int getListOrder(BooleanSplitSubKind kind) {
     exists(Callable c, int r | c = kind.getEnclosingCallable() |
       result = r + ExceptionHandlerSplitting::getNextListOrder() - 1 and
-      kind = rank[r](BooleanSplitSubKind kind0 |
+      kind =
+        rank[r](BooleanSplitSubKind kind0 |
           kind0.getEnclosingCallable() = c and
           kind0.startsSplit(_)
         |
@@ -1011,9 +1017,8 @@ module BooleanSplitting {
   }
 
   int getNextListOrder() {
-    result = max(int i |
-        i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder()
-      )
+    result =
+      max(int i | i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder())
   }
 
   private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
@@ -1064,9 +1069,8 @@ module BooleanSplitting {
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
           c.getInnerCompletion() instanceof BooleanCompletion
           implies
-          c.getInnerCompletion().(BooleanCompletion).getValue() = this
-                .getBranch()
-                .booleanXor(inverted)
+          c.getInnerCompletion().(BooleanCompletion).getValue() =
+            this.getBranch().booleanXor(inverted)
         )
       )
     }
@@ -1193,7 +1197,8 @@ module LoopUnrollingSplitting {
   private int getListOrder(UnrollableLoopStmt loop) {
     exists(Callable c, int r | c = loop.getEnclosingCallable() |
       result = r + BooleanSplitting::getNextListOrder() - 1 and
-      loop = rank[r](UnrollableLoopStmt loop0 |
+      loop =
+        rank[r](UnrollableLoopStmt loop0 |
           loop0.getEnclosingCallable() = c
         |
           loop0 order by loop0.getLocation().getStartLine(), loop0.getLocation().getStartColumn()

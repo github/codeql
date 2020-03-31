@@ -10,5 +10,3 @@ async () => {
         // ... error checks 
     }
 }
-
-// semmle-extractor-options: --experimental

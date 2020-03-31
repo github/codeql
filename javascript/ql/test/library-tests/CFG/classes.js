@@ -37,5 +37,3 @@ t = class extends A { f() {} }
 t = class extends A { x = 5; f() {} }
 t = class extends A { static x = 5; f() {} }
 t = class extends A { static x = 5; f() {} constructor() {} }
-
-// semmle-extractor-options: --experimental

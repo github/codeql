@@ -1,0 +1,2 @@
+| tst.js:3:1:3:19 | arr.concat([1,2,3]) | Result from call to concat ignored. |
+| tst.js:5:1:5:15 | arr.concat(arr) | Result from call to concat ignored. |

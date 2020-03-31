@@ -77,10 +77,8 @@ class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSourc
   DataFlow::ExprNode {
   AspNetUnvalidatedQueryStringRemoteFlowSource() {
     this.getExpr() = any(SystemWebUnvalidatedRequestValues c).getAProperty().getGetter().getACall() or
-    this.getExpr() = any(SystemWebUnvalidatedRequestValuesBase c)
-          .getAProperty()
-          .getGetter()
-          .getACall()
+    this.getExpr() =
+      any(SystemWebUnvalidatedRequestValuesBase c).getAProperty().getGetter().getACall()
   }
 
   override string getSourceType() { result = "ASP.NET unvalidated request data" }

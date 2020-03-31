@@ -130,7 +130,7 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(Declar
   d.isPublic()
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate getACompatibleInterfaceAccessorAux(
   DeclarationWithAccessors d, ValueOrRefType t, string name
 ) {
@@ -236,63 +236,13 @@ private Type getArgumentOrReturnType(Method m, int i) {
 }
 
 /**
- * INTERNAL: Do not use.
- *
  * Provides an implementation of Global Value Numbering for types
  * (see https://en.wikipedia.org/wiki/Global_value_numbering), where
  * types are considered equal modulo identity conversions and method
  * type parameters (at the same index).
  */
-module Gvn {
-  private newtype TCompoundTypeKind =
-    TPointerTypeKind() or
-    TNullableTypeKind() or
-    TArrayTypeKind(int dim, int rnk) {
-      exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
-    } or
-    TConstructedType(UnboundGenericType ugt)
-
-  /** A type kind for a compound type. */
-  class CompoundTypeKind extends TCompoundTypeKind {
-    int getNumberOfTypeParameters() {
-      this = TPointerTypeKind() and result = 1
-      or
-      this = TNullableTypeKind() and result = 1
-      or
-      this = TArrayTypeKind(_, _) and result = 1
-      or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
-        result = ugt.getNumberOfTypeParameters()
-      )
-    }
-
-    string toString() {
-      this = TPointerTypeKind() and result = "*"
-      or
-      this = TNullableTypeKind() and result = "?"
-      or
-      exists(int dim, int rnk | this = TArrayTypeKind(dim, rnk) |
-        result = "[" + dim + ", " + rnk + "]"
-      )
-      or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
-        result = ugt.getNameWithoutBrackets()
-      )
-    }
-
-    Location getLocation() { result instanceof EmptyLocation }
-  }
-
-  /** Gets the type kind for type `t`, if any. */
-  CompoundTypeKind getTypeKind(Type t) {
-    result = TPointerTypeKind() and t instanceof PointerType
-    or
-    result = TNullableTypeKind() and t instanceof NullableType
-    or
-    t = any(ArrayType at | result = TArrayTypeKind(at.getDimension(), at.getRank()))
-    or
-    result = TConstructedType(t.(ConstructedType).getUnboundGeneric())
-  }
+private module Gvn {
+  private import semmle.code.csharp.Unification::Gvn as Unification
 
   private class MethodTypeParameter extends TypeParameter {
     MethodTypeParameter() { this = any(UnboundGenericMethod ugm).getATypeParameter() }
@@ -301,90 +251,104 @@ module Gvn {
   private class LeafType extends Type {
     LeafType() {
       not exists(this.getAChild()) and
-      not this instanceof MethodTypeParameter
+      not this instanceof MethodTypeParameter and
+      not this instanceof DynamicType
     }
   }
 
-  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
-
   private newtype TGvnType =
-    TLeafGvnType(int i) { id(_, i) } or
+    TLeafGvnType(LeafType t) or
     TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
-    TConstructedGvnType(TConstructedGvnType0 t)
+    TConstructedGvnType(ConstructedGvnTypeList l)
 
-  private newtype TConstructedGvnType0 =
-    TConstructedGvnTypeNil(CompoundTypeKind k) or
-    TConstructedGvnTypeCons(TGvnType head, TConstructedGvnType0 tail) {
-      gvnConstructedCons(_, _, head, tail)
+  private newtype TConstructedGvnTypeList =
+    TConstructedGvnTypeNil(Unification::CompoundTypeKind k) or
+    TConstructedGvnTypeCons(GvnType head, ConstructedGvnTypeList tail) {
+      gvnConstructedCons(_, _, _, head, tail)
     }
 
-  private TConstructedGvnType0 gvnConstructed(Type t, int i) {
-    result = TConstructedGvnTypeNil(getTypeKind(t)) and i = -1
+  private ConstructedGvnTypeList gvnConstructed(Type t, Unification::CompoundTypeKind k, int i) {
+    result = TConstructedGvnTypeNil(k) and
+    i = -1 and
+    k = Unification::getTypeKind(t)
     or
-    exists(TGvnType head, TConstructedGvnType0 tail | gvnConstructedCons(t, i, head, tail) |
+    exists(GvnType head, ConstructedGvnTypeList tail | gvnConstructedCons(t, k, i, head, tail) |
       result = TConstructedGvnTypeCons(head, tail)
     )
   }
 
   pragma[noinline]
-  private TGvnType gvnTypeChild(Type t, int i) { result = getGlobalValueNumber(t.getChild(i)) }
+  private GvnType gvnTypeChild(Type t, int i) { result = getGlobalValueNumber(t.getChild(i)) }
 
   pragma[noinline]
-  private predicate gvnConstructedCons(Type t, int i, TGvnType head, TConstructedGvnType0 tail) {
-    tail = gvnConstructed(t, i - 1) and
+  private predicate gvnConstructedCons(
+    Type t, Unification::CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
+  ) {
+    tail = gvnConstructed(t, k, i - 1) and
     head = gvnTypeChild(t, i)
   }
 
   /** Gets the global value number for a given type. */
+  pragma[nomagic]
   GvnType getGlobalValueNumber(Type t) {
-    result = TLeafGvnType(any(int i | id(t, i)))
+    result = TLeafGvnType(t)
+    or
+    t instanceof DynamicType and
+    result = TLeafGvnType(any(ObjectType ot))
     or
     result = TMethodTypeParameterGvnType(t.(MethodTypeParameter).getIndex())
     or
-    result = TConstructedGvnType(gvnConstructed(t, getTypeKind(t).getNumberOfTypeParameters() - 1))
+    exists(ConstructedGvnTypeList l, Unification::CompoundTypeKind k, int i |
+      l = gvnConstructed(t, k, i) and
+      i = k.getNumberOfTypeParameters() - 1 and
+      result = TConstructedGvnType(l)
+    )
   }
 
   /** A global value number for a type. */
   class GvnType extends TGvnType {
     string toString() {
-      exists(int i | this = TLeafGvnType(i) | result = i.toString())
+      exists(LeafType t | this = TLeafGvnType(t) | result = t.toString())
       or
       exists(int i | this = TMethodTypeParameterGvnType(i) | result = "M!" + i)
       or
-      exists(GvnConstructedType t | this = TConstructedGvnType(t) | result = t.toString())
+      exists(ConstructedGvnTypeList l | this = TConstructedGvnType(l) | result = l.toString())
     }
 
     Location getLocation() { result instanceof EmptyLocation }
   }
 
-  /** A global value number for a constructed type. */
-  class GvnConstructedType extends TConstructedGvnType0 {
-    private CompoundTypeKind getKind() {
-      this = TConstructedGvnTypeNil(result)
+  private class ConstructedGvnTypeList extends TConstructedGvnTypeList {
+    private int length() {
+      this = TConstructedGvnTypeNil(_) and result = -1
       or
-      exists(GvnConstructedType tail | this = TConstructedGvnTypeCons(_, tail) |
-        result = tail.getKind()
+      exists(ConstructedGvnTypeList tail | this = TConstructedGvnTypeCons(_, tail) |
+        result = tail.length() + 1
       )
     }
 
     private GvnType getArg(int i) {
-      this = TConstructedGvnTypeCons(result, TConstructedGvnTypeNil(_)) and
-      i = 0
-      or
-      exists(GvnConstructedType tail | this = TConstructedGvnTypeCons(result, tail) |
-        exists(tail.getArg(i - 1))
+      exists(GvnType head, ConstructedGvnTypeList tail |
+        this = TConstructedGvnTypeCons(head, tail)
+      |
+        result = head and
+        i = this.length()
+        or
+        result = tail.getArg(i)
       )
     }
 
     language[monotonicAggregates]
     string toString() {
-      exists(CompoundTypeKind k | k = this.getKind() |
-        result = k + "<" +
-            concat(int i |
-              i in [0 .. k.getNumberOfTypeParameters() - 1]
-            |
-              this.getArg(i).toString(), ", "
-            ) + ">"
+      exists(Unification::CompoundTypeKind k, string args |
+        this = gvnConstructed(_, k, _) and
+        args =
+          concat(int i |
+            i in [0 .. k.getNumberOfTypeParameters() - 1]
+          |
+            this.getArg(i).toString(), "," order by i
+          ) and
+        result = k.toString(args)
       )
     }
 

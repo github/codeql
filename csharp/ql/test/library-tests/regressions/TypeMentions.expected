@@ -82,3 +82,12 @@
 | Program.cs:169:5:169:10 | String |
 | Program.cs:174:5:174:8 | Void |
 | Program.cs:176:17:176:19 | IDisposable |
+| Program.cs:185:5:185:17 | (Int32,Object) |
+| Program.cs:185:6:185:8 | Int32 |
+| Program.cs:185:11:185:16 | Object |
+| Program.cs:185:21:185:26 | Object |
+| Program.cs:185:32:185:37 | Object |
+| Program.cs:187:9:187:24 | (Object,Object) |
+| Program.cs:187:9:187:25 | Nullable<(Object,Object)> |
+| Program.cs:187:10:187:15 | Object |
+| Program.cs:187:18:187:23 | Object |

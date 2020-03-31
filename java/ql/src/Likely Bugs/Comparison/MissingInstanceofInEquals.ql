@@ -45,7 +45,7 @@ class ReferenceEquals extends EqualsMethod {
     exists(Block b, ReturnStmt ret, EQExpr eq |
       this.getBody() = b and
       b.getStmt(0) = ret and
-      ret.getResult().getProperExpr() = eq and
+      ret.getResult() = eq and
       eq.getAnOperand() = this.getAParameter().getAnAccess() and
       (eq.getAnOperand() instanceof ThisAccess or eq.getAnOperand() instanceof FieldAccess)
     )

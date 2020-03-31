@@ -1,4 +1,4 @@
-abc // semmle-extractor-options: --extract-program-text
+abc
 defghi
 jkl
 mno 

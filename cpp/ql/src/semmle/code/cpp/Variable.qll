@@ -28,6 +28,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
+  override string getCanonicalQLClass() { result = "Variable" }
+
   /** Gets the initializer of this variable, if any. */
   Initializer getInitializer() { result.getDeclaration() = this }
 
@@ -156,15 +158,6 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this variable from a
-   * variable template. When called on a variable template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int index) {
-    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this is a compiler-generated variable. For example, a
    * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
@@ -275,7 +268,8 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
     then result = super.toString()
     else
       exists(string idx |
-        idx = ((getIndex() + 1).toString() + "th")
+        idx =
+          ((getIndex() + 1).toString() + "th")
               .replaceAll("1th", "1st")
               .replaceAll("2th", "2nd")
               .replaceAll("3th", "3rd")
@@ -316,8 +310,8 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  * }
  * ```
  *
- * Local variables can be static; use the `isStatic` member predicate to
- * detect those.
+ * See also `StackVariable`, which is the class of local-scope variables
+ * without statics and thread-locals.
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
@@ -325,12 +319,21 @@ class LocalScopeVariable extends Variable, @localscopevariable {
 }
 
 /**
- * DEPRECATED: use `LocalScopeVariable` instead.
+ * A C/C++ variable with _automatic storage duration_. In other words, a
+ * function parameter or a local variable that is not static or thread-local.
+ * For example, the variables `a` and `b` in the following code.
+ * ```
+ * void myFunction(int a) {
+ *   int b;
+ *   static int c;
+ * }
+ * ```
  */
-deprecated class StackVariable extends Variable {
-  StackVariable() { this instanceof LocalScopeVariable }
-
-  Function getFunction() { result = this.(LocalScopeVariable).getFunction() }
+class StackVariable extends LocalScopeVariable {
+  StackVariable() {
+    not this.isStatic() and
+    not this.isThreadLocal()
+  }
 }
 
 /**
@@ -350,6 +353,8 @@ deprecated class StackVariable extends Variable {
  * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
+  override string getCanonicalQLClass() { result = "LocalVariable" }
+
   override string getName() { localvariables(underlyingElement(this), _, result) }
 
   override Type getType() { localvariables(underlyingElement(this), unresolveElement(result), _) }
@@ -360,6 +365,59 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
   }
 }
+
+/**
+ * A variable whose contents always have static storage duration. This can be a
+ * global variable, a namespace variable, a static local variable, or a static
+ * member variable.
+ */
+class StaticStorageDurationVariable extends Variable {
+  StaticStorageDurationVariable() {
+    this instanceof GlobalOrNamespaceVariable
+    or
+    this.(LocalVariable).isStatic()
+    or
+    this.(MemberVariable).isStatic()
+  }
+
+  /**
+   * Holds if the initializer for this variable is evaluated at runtime.
+   */
+  predicate hasDynamicInitialization() {
+    runtimeExprInStaticInitializer(this.getInitializer().getExpr())
+  }
+}
+
+/**
+ * Holds if `e` is an expression in a static initializer that must be evaluated
+ * at run time. This predicate computes "is non-const" instead of "is const"
+ * since computing "is const" for an aggregate literal with many children would
+ * either involve recursion through `forall` on those children or an iteration
+ * through the rank numbers of the children, both of which can be slow.
+ */
+private predicate runtimeExprInStaticInitializer(Expr e) {
+  inStaticInitializer(e) and
+  if e instanceof AggregateLiteral // in sync with the cast in `inStaticInitializer`
+  then runtimeExprInStaticInitializer(e.getAChild())
+  else not e.getFullyConverted().isConstant()
+}
+
+/**
+ * Holds if `e` is the initializer of a `StaticStorageDurationVariable`, either
+ * directly or below some top-level `AggregateLiteral`s.
+ */
+private predicate inStaticInitializer(Expr e) {
+  exists(StaticStorageDurationVariable var | e = var.getInitializer().getExpr())
+  or
+  // The cast to `AggregateLiteral` ensures we only compute what'll later be
+  // needed by `runtimeExprInStaticInitializer`.
+  inStaticInitializer(e.getParent().(AggregateLiteral))
+}
+
+/**
+ * A C++ local variable declared as `static`.
+ */
+class StaticLocalVariable extends LocalVariable, StaticStorageDurationVariable { }
 
 /**
  * A C/C++ variable which has global scope or namespace scope. For example the
@@ -395,6 +453,8 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
   NamespaceVariable() {
     exists(Namespace n | namespacembrs(unresolveElement(n), underlyingElement(this)))
   }
+
+  override string getCanonicalQLClass() { result = "NamespaceVariable" }
 }
 
 /**
@@ -414,6 +474,8 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
  */
 class GlobalVariable extends GlobalOrNamespaceVariable {
   GlobalVariable() { not this instanceof NamespaceVariable }
+
+  override string getCanonicalQLClass() { result = "GlobalVariable" }
 }
 
 /**
@@ -432,6 +494,8 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
  */
 class MemberVariable extends Variable, @membervariable {
   MemberVariable() { this.isMember() }
+
+  override string getCanonicalQLClass() { result = "MemberVariable" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -505,7 +569,7 @@ class TemplateVariable extends Variable {
  * `myTemplateFunction<T>`:
  * ```
  * void myFunction() {
- *   T a;
+ *   float a;
  * }
  *
  * template<type T>
@@ -518,9 +582,6 @@ class TemplateVariable extends Variable {
  * myTemplateFunction<int>();
  * ```
  */
-class SemanticStackVariable extends LocalScopeVariable {
-  SemanticStackVariable() {
-    not this.isStatic() and
-    not this.isFromUninstantiatedTemplate(_)
-  }
+class SemanticStackVariable extends StackVariable {
+  SemanticStackVariable() { not this.isFromUninstantiatedTemplate(_) }
 }

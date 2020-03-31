@@ -1,7 +1,5 @@
 private import cpp
 
-Function viableImpl(Call call) { result = viableCallable(call) }
-
 /**
  * Gets a function that might be called by `call`.
  */

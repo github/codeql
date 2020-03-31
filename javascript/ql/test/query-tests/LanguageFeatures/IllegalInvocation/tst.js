@@ -60,5 +60,3 @@ function invoke(fn) {
 }
 invoke(C);
 invoke(function() {});
-
-//semmle-extractor-options: --experimental

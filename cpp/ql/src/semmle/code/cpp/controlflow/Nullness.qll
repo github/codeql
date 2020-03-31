@@ -264,9 +264,9 @@ predicate callMayReturnNull(Call call) {
  * Holds if `f` may, directly or indirectly, return a null literal.
  */
 predicate mayReturnNull(Function f) {
-  f.hasGlobalName("malloc")
+  f.hasGlobalOrStdName("malloc")
   or
-  f.hasGlobalName("calloc")
+  f.hasGlobalOrStdName("calloc")
   or
   //  f.hasGlobalName("strchr")
   //  or

@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CIL
             else
             {
                 e.Label = cx.GetNewLabel();
-                cx.DefineLabel(e, cx.TrapWriter.Writer);
+                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
                 ids.Add(e, e.Label);
                 cx.PopulateLater(() =>
                 {
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CIL
             {
                 e = new PrimitiveType(this, code);
                 e.Label = cx.GetNewLabel();
-                cx.DefineLabel(e, cx.TrapWriter.Writer);
+                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
                 primitiveTypes[(int)code] = e;
             }
 

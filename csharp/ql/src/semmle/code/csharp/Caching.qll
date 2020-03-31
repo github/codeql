@@ -50,7 +50,7 @@ module Stages {
   cached
   module DataFlowStage {
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon::Public
+    private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
     private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 
     cached
@@ -75,6 +75,25 @@ module Stages {
       exists(any(OutNode n).getCall(_))
       or
       exists(CallContext cc)
+      or
+      forceCachingInSameStageRev()
+    }
+  }
+
+  cached
+  module UnificationStage {
+    private import semmle.code.csharp.Unification
+
+    cached
+    predicate forceCachingInSameStage() { any() }
+
+    cached
+    private predicate forceCachingInSameStageRev() {
+      exists(Gvn::CompoundTypeKind k)
+      or
+      exists(any(Gvn::GvnType t).toString())
+      or
+      exists(Unification::UnconstrainedTypeParameter utp)
       or
       forceCachingInSameStageRev()
     }

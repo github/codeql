@@ -1,0 +1,12 @@
+| bar.ts:1:10:1:10 | A | any |
+| bar.ts:1:10:1:10 | A | any |
+| bar.ts:1:19:1:29 | "@blah/foo" | any |
+| bar.ts:3:5:3:5 | x | any |
+| node_modules/@blah/foo/index.d.ts:1:8:1:15 | FooArray | typeof FooArray in library-tests/TypeScript/RegressionTests/ImportSelf/node_modules/@blah/foo/index.d.ts |
+| node_modules/@blah/foo/index.d.ts:1:20:1:20 | A | any |
+| node_modules/@blah/foo/index.d.ts:1:20:1:20 | A | any |
+| node_modules/@blah/foo/index.d.ts:1:29:1:39 | '@blah/foo' | any |
+| node_modules/@blah/foo/index.d.ts:3:11:3:18 | FooArray | typeof FooArray in library-tests/TypeScript/RegressionTests/ImportSelf/node_modules/@blah/foo/index.d.ts |
+| node_modules/@blah/foo/index.d.ts:4:12:4:15 | blah | () => void |
+| node_modules/@blah/foo/index.d.ts:8:10:8:10 | A | any |
+| node_modules/@blah/foo/index.d.ts:8:10:8:10 | A | any |

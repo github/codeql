@@ -132,7 +132,8 @@ private predicate hasArgumentPosition(SourceDeclarationCallable callable, int po
   exists(int arity |
     if callable.getAParameter().isParams()
     then
-      arity = max(Call call |
+      arity =
+        max(Call call |
           call.getTarget().getSourceDeclaration() = callable
         |
           call.getNumberOfArguments()
@@ -269,8 +270,8 @@ private CallableFlowSinkDelegateArg getDelegateFlowSinkArg(
 /** The flow sink in a call to a library callable: parameter of a delegate argument. */
 class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDelegateArg {
   override string toString() {
-    result = "parameter " + getDelegateParameterIndex() + " of argument " +
-        getDelegateIndex().toString()
+    result =
+      "parameter " + getDelegateParameterIndex() + " of argument " + getDelegateIndex().toString()
   }
 
   override Expr getSink(Call c) {

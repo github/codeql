@@ -400,7 +400,8 @@ class JoinBlock extends BasicBlock {
    */
   cached
   JoinBlockPredecessor getJoinBlockPredecessor(int i) {
-    result = rank[i + 1](JoinBlockPredecessor jbp |
+    result =
+      rank[i + 1](JoinBlockPredecessor jbp |
         jbp = this.getAPredecessor()
       |
         jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)

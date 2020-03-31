@@ -1,4 +1,3 @@
-
 import external.Thrift
 
 from ThriftElement t

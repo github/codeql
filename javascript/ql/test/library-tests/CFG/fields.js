@@ -16,5 +16,3 @@ class B extends A {
   }
   z;
 }
-
-// semmle-extractor-options: --experimental

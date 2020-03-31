@@ -1,4 +1,4 @@
-if (true) // semmle-extractor-options: --extract-program-text
+if (true)
     ;
 if (b)
     ;

@@ -1,3 +1,13 @@
+/**
+ * Provides an implementation of global (interprocedural) taint tracking.
+ * This file re-exports the local (intraprocedural) taint-tracking analysis
+ * from `TaintTrackingParameter::Public` and adds a global analysis, mainly
+ * exposed through the `Configuration` class. For some languages, this file
+ * exists in several identical copies, allowing queries to use multiple
+ * `Configuration` classes that depend on each other without introducing
+ * mutual recursion among those configurations.
+ */
+
 import TaintTrackingParameter::Public
 private import TaintTrackingParameter::Private
 

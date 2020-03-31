@@ -14,7 +14,7 @@ was not intended to be loaded, and executing arbitrary code.
 <p>
 Avoid loading assemblies based on user provided input. If this is not possible, ensure that the path
 is validated before being used with <code>Assembly</code>. For example, compare the provided input
-against a whitelist of known safe assemblies, or confirm that path is restricted to a single
+against a whitelist of known safe assemblies, or confirm that the path is restricted to a single
 directory which only contains safe assemblies.
 </p>
 </recommendation>
@@ -30,8 +30,8 @@ is only loaded if the user input matches one of those options.</p>
 </example>
 
 <references>
-  <li>
-    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.assembly?view=netframework-4.8">System.Reflection.Assembly</a> (Microsoft documentation).
+  <li>Microsoft: 
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.assembly?view=netframework-4.8">System.Reflection.Assembly</a>.
   </li>
 </references>
 </qhelp>

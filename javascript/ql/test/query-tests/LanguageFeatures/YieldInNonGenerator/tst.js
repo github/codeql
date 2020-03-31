@@ -4,6 +4,3 @@ function idMaker(){
         // NOT OK
         yield index++;
 }
-
-//semmle-extractor-options: --experimental
-

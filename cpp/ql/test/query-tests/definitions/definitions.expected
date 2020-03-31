@@ -42,7 +42,7 @@
 | class.cpp:91:27:91:29 | num | class.cpp:87:17:87:19 | num | V |
 | class.cpp:100:24:100:34 | type mention | class.cpp:94:18:94:28 | string_type | T |
 | class.cpp:105:1:105:15 | type mention | class.cpp:97:7:97:21 | StringContainer | T |
-| class.cpp:106:9:106:23 | type mention | class.cpp:100:2:100:16 | StringContainer | M |
+| class.cpp:106:9:106:23 | type mention | class.cpp:97:7:97:21 | StringContainer | T |
 | class.cpp:106:25:106:27 | STR(x) | class.cpp:95:1:95:18 | #define STR(x) L ## x | X |
 | class.cpp:117:2:117:29 | type mention | class.cpp:109:7:109:34 | myClassWithConstructorParams | T |
 | class.cpp:117:37:117:37 | a | class.cpp:115:27:115:27 | a | V |

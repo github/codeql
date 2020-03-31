@@ -231,3 +231,143 @@ app.get('/replace', (req, res) => {
     fs.readFileSync(path); // OK
   }
 });
+
+app.get('/resolve-path', (req, res) => {
+  let path = pathModule.resolve(req.query.path);
+
+  fs.readFileSync(path); // NOT OK
+
+  var self = something();
+	
+  if (path.substring(0, self.dir.length) === self.dir)
+    fs.readFileSync(path); // OK
+  else
+    fs.readFileSync(path); // NOT OK - wrong polarity
+
+  if (path.slice(0, self.dir.length) === self.dir)
+    fs.readFileSync(path); // OK
+  else
+    fs.readFileSync(path); // NOT OK - wrong polarity
+});
+
+app.get('/relative-startswith', (req, res) => {
+  let path = pathModule.resolve(req.query.path);
+
+  fs.readFileSync(path); // NOT OK
+
+  var self = something();
+	
+  var relative = pathModule.relative(self.webroot, path);
+  if(relative.startsWith(".." + pathModule.sep) || relative == "..") {
+    fs.readFileSync(path); // NOT OK! 
+  } else {
+    fs.readFileSync(path); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('..' + pathModule.sep) === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK!
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (relativePath.indexOf('../') === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (pathModule.normalize(relativePath).indexOf('../') === 0) {
+    fs.readFileSync(newpath); // NOT OK!
+  } else {
+    fs.readFileSync(newpath); // OK! 
+  }
+
+  let newpath = pathModule.normalize(path);
+  var relativePath = pathModule.relative(pathModule.normalize(workspaceDir), newpath);
+  if (pathModule.normalize(relativePath).indexOf('../')) {
+    fs.readFileSync(newpath); // OK!
+  } else {
+    fs.readFileSync(newpath); // NOT OK! 
+  }
+});
+
+var isPathInside = require("is-path-inside"),
+    pathIsInside = require("path-is-inside");
+app.get('/pseudo-normalizations', (req, res) => {
+	let path = req.query.path;
+	fs.readFileSync(path); // NOT OK
+	if (isPathInside(path, SAFE)) {
+		fs.readFileSync(path); // OK
+		return;
+	} else {
+		fs.readFileSync(path); // NOT OK
+
+	}
+	if (pathIsInside(path, SAFE)) {
+		fs.readFileSync(path); // NOT OK - can be of the form 'safe/directory/../../../etc/passwd'
+		return;
+	} else {
+		fs.readFileSync(path); // NOT OK
+
+	}
+
+	let normalizedPath = pathModule.join(SAFE, path);
+	if (pathIsInside(normalizedPath, SAFE)) {
+		fs.readFileSync(normalizedPath); // OK
+		return;
+	} else {
+		fs.readFileSync(normalizedPath); // NOT OK
+	}
+
+	if (pathIsInside(normalizedPath, SAFE)) {
+		fs.readFileSync(normalizedPath); // OK
+		return;
+	} else {
+		fs.readFileSync(normalizedPath); // NOT OK
+
+	}
+
+});
+
+app.get('/yet-another-prefix', (req, res) => {
+	let path = pathModule.resolve(req.query.path);
+
+	fs.readFileSync(path); // NOT OK
+
+	var abs = pathModule.resolve(path); 
+
+	if (abs.indexOf(root) !== 0) {
+		fs.readFileSync(path); // NOT OK
+		return;
+    }
+	fs.readFileSync(path); // OK
+});
+
+var rootPath = process.cwd();
+app.get('/yet-another-prefix2', (req, res) => {
+  let path = req.query.path;
+
+  fs.readFileSync(path); // NOT OK
+
+  var requestPath = pathModule.join(rootPath, path);
+
+  var targetPath;
+  if (!allowPath(requestPath, rootPath)) {
+    targetPath = rootPath;
+    fs.readFileSync(requestPath); // NOT OK
+  } else {
+    targetPath = requestPath;
+    fs.readFileSync(requestPath); // OK
+  }
+  fs.readFileSync(targetPath); // OK
+
+  function allowPath(requestPath, rootPath) {
+    return requestPath.indexOf(rootPath) === 0;
+  }
+});

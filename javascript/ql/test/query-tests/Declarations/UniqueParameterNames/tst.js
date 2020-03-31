@@ -2,7 +2,7 @@ function f(
 x,
 x, // NOT OK
 \u0078 // NOT OK
-) {}
+) { return; }
 
 this.addPropertyListener(prop.name, function(_, _, _, a) {
   proxy.delegate = a.dao;
@@ -13,4 +13,9 @@ function f(x, y, x) {
   'use strict';
 }
 
-// semmle-extractor-options: --tolerate-parse-errors
+function f(
+x,
+x // OK: empty function
+) { }
+
+(a, a) => a + a; // OK: for strict mode functions, duplicate parameter names are a syntax error

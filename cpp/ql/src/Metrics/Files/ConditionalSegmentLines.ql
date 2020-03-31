@@ -85,7 +85,8 @@ private predicate closeWithDepth(int depth, File f, PreprocessorDirective close,
 predicate length(PreprocessorDirective open, int length) {
   exists(int depth, File f, int start, int end |
     openWithDepth(depth, f, open, start) and
-    end = min(PreprocessorDirective endif, int closeLine |
+    end =
+      min(PreprocessorDirective endif, int closeLine |
         closeWithDepth(depth, f, endif, closeLine) and
         closeLine > start
       |

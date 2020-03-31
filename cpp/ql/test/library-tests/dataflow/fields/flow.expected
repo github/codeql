@@ -78,15 +78,15 @@ edges
 | B.cpp:19:14:19:17 | box1 [elem2] | B.cpp:19:20:19:24 | elem2 |
 | C.cpp:18:12:18:18 | call to C [s1] | C.cpp:19:5:19:5 | c [s1] |
 | C.cpp:18:12:18:18 | call to C [s3] | C.cpp:19:5:19:5 | c [s3] |
-| C.cpp:19:5:19:5 | c [s1] | C.cpp:27:8:27:11 | `this` parameter in func [s1] |
-| C.cpp:19:5:19:5 | c [s3] | C.cpp:27:8:27:11 | `this` parameter in func [s3] |
+| C.cpp:19:5:19:5 | c [s1] | C.cpp:27:8:27:11 | this [s1] |
+| C.cpp:19:5:19:5 | c [s3] | C.cpp:27:8:27:11 | this [s3] |
 | C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
 | C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | constructor init of field s1 [post-this] [s1] |
 | C.cpp:24:5:24:8 | this [post update] [s3] | C.cpp:18:12:18:18 | call to C [s3] |
 | C.cpp:24:5:24:25 | ... = ... | C.cpp:24:5:24:8 | this [post update] [s3] |
 | C.cpp:24:16:24:25 | new | C.cpp:24:5:24:25 | ... = ... |
-| C.cpp:27:8:27:11 | `this` parameter in func [s1] | C.cpp:29:10:29:11 | this [s1] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s3] | C.cpp:31:10:31:11 | this [s3] |
+| C.cpp:27:8:27:11 | this [s1] | C.cpp:29:10:29:11 | this [s1] |
+| C.cpp:27:8:27:11 | this [s3] | C.cpp:31:10:31:11 | this [s3] |
 | C.cpp:29:10:29:11 | this [s1] | C.cpp:29:10:29:11 | s1 |
 | C.cpp:31:10:31:11 | this [s3] | C.cpp:31:10:31:11 | s3 |
 | D.cpp:21:30:21:31 | b2 [box, elem] | D.cpp:22:10:22:11 | b2 [box, elem] |
@@ -117,11 +117,22 @@ edges
 | D.cpp:58:5:58:12 | this [post update] [boxfield, box, ... (3)] | D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] |
 | D.cpp:58:5:58:27 | ... = ... | D.cpp:58:15:58:17 | box [post update] [elem] |
 | D.cpp:58:15:58:17 | box [post update] [elem] | D.cpp:58:5:58:12 | boxfield [post update] [box, elem] |
-| D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | D.cpp:63:8:63:10 | `this` parameter in f5b [boxfield, box, ... (3)] |
-| D.cpp:63:8:63:10 | `this` parameter in f5b [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] |
+| D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] |
+| D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] |
 | D.cpp:64:10:64:17 | boxfield [box, elem] | D.cpp:64:20:64:22 | box [elem] |
 | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] | D.cpp:64:10:64:17 | boxfield [box, elem] |
 | D.cpp:64:20:64:22 | box [elem] | D.cpp:64:25:64:28 | elem |
+| E.cpp:19:27:19:27 | p [data, buffer] | E.cpp:21:10:21:10 | p [data, buffer] |
+| E.cpp:21:10:21:10 | p [data, buffer] | E.cpp:21:13:21:16 | data [buffer] |
+| E.cpp:21:13:21:16 | data [buffer] | E.cpp:21:18:21:23 | buffer |
+| E.cpp:28:21:28:23 | ref arg raw | E.cpp:31:10:31:12 | raw |
+| E.cpp:29:21:29:21 | b [post update] [buffer] | E.cpp:32:10:32:10 | b [buffer] |
+| E.cpp:29:24:29:29 | ref arg buffer | E.cpp:29:21:29:21 | b [post update] [buffer] |
+| E.cpp:30:21:30:21 | p [post update] [data, buffer] | E.cpp:33:18:33:19 | & ... [data, buffer] |
+| E.cpp:30:23:30:26 | data [post update] [buffer] | E.cpp:30:21:30:21 | p [post update] [data, buffer] |
+| E.cpp:30:28:30:33 | ref arg buffer | E.cpp:30:23:30:26 | data [post update] [buffer] |
+| E.cpp:32:10:32:10 | b [buffer] | E.cpp:32:13:32:18 | buffer |
+| E.cpp:33:18:33:19 | & ... [data, buffer] | E.cpp:19:27:19:27 | p [data, buffer] |
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1] |
 | aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:3:9:3 | s [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
@@ -337,8 +348,8 @@ nodes
 | C.cpp:24:5:24:8 | this [post update] [s3] | semmle.label | this [post update] [s3] |
 | C.cpp:24:5:24:25 | ... = ... | semmle.label | ... = ... |
 | C.cpp:24:16:24:25 | new | semmle.label | new |
-| C.cpp:27:8:27:11 | `this` parameter in func [s1] | semmle.label | `this` parameter in func [s1] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s3] | semmle.label | `this` parameter in func [s3] |
+| C.cpp:27:8:27:11 | this [s1] | semmle.label | this [s1] |
+| C.cpp:27:8:27:11 | this [s3] | semmle.label | this [s3] |
 | C.cpp:29:10:29:11 | s1 | semmle.label | s1 |
 | C.cpp:29:10:29:11 | this [s1] | semmle.label | this [s1] |
 | C.cpp:31:10:31:11 | s3 | semmle.label | s3 |
@@ -373,11 +384,25 @@ nodes
 | D.cpp:58:5:58:27 | ... = ... | semmle.label | ... = ... |
 | D.cpp:58:15:58:17 | box [post update] [elem] | semmle.label | box [post update] [elem] |
 | D.cpp:59:5:59:7 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
-| D.cpp:63:8:63:10 | `this` parameter in f5b [boxfield, box, ... (3)] | semmle.label | `this` parameter in f5b [boxfield, box, ... (3)] |
+| D.cpp:63:8:63:10 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
 | D.cpp:64:10:64:17 | boxfield [box, elem] | semmle.label | boxfield [box, elem] |
 | D.cpp:64:10:64:17 | this [boxfield, box, ... (3)] | semmle.label | this [boxfield, box, ... (3)] |
 | D.cpp:64:20:64:22 | box [elem] | semmle.label | box [elem] |
 | D.cpp:64:25:64:28 | elem | semmle.label | elem |
+| E.cpp:19:27:19:27 | p [data, buffer] | semmle.label | p [data, buffer] |
+| E.cpp:21:10:21:10 | p [data, buffer] | semmle.label | p [data, buffer] |
+| E.cpp:21:13:21:16 | data [buffer] | semmle.label | data [buffer] |
+| E.cpp:21:18:21:23 | buffer | semmle.label | buffer |
+| E.cpp:28:21:28:23 | ref arg raw | semmle.label | ref arg raw |
+| E.cpp:29:21:29:21 | b [post update] [buffer] | semmle.label | b [post update] [buffer] |
+| E.cpp:29:24:29:29 | ref arg buffer | semmle.label | ref arg buffer |
+| E.cpp:30:21:30:21 | p [post update] [data, buffer] | semmle.label | p [post update] [data, buffer] |
+| E.cpp:30:23:30:26 | data [post update] [buffer] | semmle.label | data [post update] [buffer] |
+| E.cpp:30:28:30:33 | ref arg buffer | semmle.label | ref arg buffer |
+| E.cpp:31:10:31:12 | raw | semmle.label | raw |
+| E.cpp:32:10:32:10 | b [buffer] | semmle.label | b [buffer] |
+| E.cpp:32:13:32:18 | buffer | semmle.label | buffer |
+| E.cpp:33:18:33:19 | & ... [data, buffer] | semmle.label | & ... [data, buffer] |
 | aliasing.cpp:9:3:9:3 | s [post update] [m1] | semmle.label | s [post update] [m1] |
 | aliasing.cpp:9:3:9:22 | ... = ... | semmle.label | ... = ... |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
@@ -532,6 +557,9 @@ nodes
 | D.cpp:22:25:22:31 | call to getElem | D.cpp:42:15:42:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:42:15:42:24 | new | new |
 | D.cpp:22:25:22:31 | call to getElem | D.cpp:49:15:49:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:49:15:49:24 | new | new |
 | D.cpp:64:25:64:28 | elem | D.cpp:56:15:56:24 | new | D.cpp:64:25:64:28 | elem | elem flows from $@ | D.cpp:56:15:56:24 | new | new |
+| E.cpp:21:18:21:23 | buffer | E.cpp:30:28:30:33 | ref arg buffer | E.cpp:21:18:21:23 | buffer | buffer flows from $@ | E.cpp:30:28:30:33 | ref arg buffer | ref arg buffer |
+| E.cpp:31:10:31:12 | raw | E.cpp:28:21:28:23 | ref arg raw | E.cpp:31:10:31:12 | raw | raw flows from $@ | E.cpp:28:21:28:23 | ref arg raw | ref arg raw |
+| E.cpp:32:13:32:18 | buffer | E.cpp:29:24:29:29 | ref arg buffer | E.cpp:32:13:32:18 | buffer | buffer flows from $@ | E.cpp:29:24:29:29 | ref arg buffer | ref arg buffer |
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input | call to user_input |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input | call to user_input |
 | aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input | call to user_input |

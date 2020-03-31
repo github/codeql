@@ -26,7 +26,8 @@ module HardcodedSymmetricEncryptionKey {
 
   private class ByteArrayLiteralSource extends Source {
     ByteArrayLiteralSource() {
-      this.asExpr() = any(ArrayCreation ac |
+      this.asExpr() =
+        any(ArrayCreation ac |
           ac.getArrayType() instanceof ByteArrayType and
           ac.hasInitializer()
         )

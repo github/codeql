@@ -2,18 +2,23 @@ import semmle.code.cpp.exprs.Expr
 
 /**
  * A C/C++ comparison operation, that is, either an equality operation or a relational operation.
+ *
+ * This is a QL base class for all comparisons.
  */
-abstract class ComparisonOperation extends BinaryOperation { }
+class ComparisonOperation extends BinaryOperation, @cmp_op_expr { }
 
 /**
  * A C/C++ equality operation, that is, either "==" or "!=".
  */
-abstract class EqualityOperation extends ComparisonOperation {
+class EqualityOperation extends ComparisonOperation, @eq_op_expr {
   override int getPrecedence() { result = 9 }
 }
 
 /**
  * A C/C++ equal expression.
+ * ```
+ * bool c = (a == b);
+ * ```
  */
 class EQExpr extends EqualityOperation, @eqexpr {
   override string getCanonicalQLClass() { result = "EQExpr" }
@@ -23,6 +28,9 @@ class EQExpr extends EqualityOperation, @eqexpr {
 
 /**
  * A C/C++ not equal expression.
+ * ```
+ * bool c = (a != b);
+ * ```
  */
 class NEExpr extends EqualityOperation, @neexpr {
   override string getCanonicalQLClass() { result = "NEExpr" }
@@ -33,7 +41,7 @@ class NEExpr extends EqualityOperation, @neexpr {
 /**
  * A C/C++ relational operation, that is, one of `<=`, `<`, `>`, or `>=`.
  */
-abstract class RelationalOperation extends ComparisonOperation {
+class RelationalOperation extends ComparisonOperation, @rel_op_expr {
   override int getPrecedence() { result = 10 }
 
   /**
@@ -65,6 +73,9 @@ abstract class RelationalOperation extends ComparisonOperation {
 
 /**
  * A C/C++ greater than expression.
+ * ```
+ * bool c = (a > b);
+ * ```
  */
 class GTExpr extends RelationalOperation, @gtexpr {
   override string getCanonicalQLClass() { result = "GTExpr" }
@@ -77,7 +88,10 @@ class GTExpr extends RelationalOperation, @gtexpr {
 }
 
 /**
- * A C/C++ lesser than expression.
+ * A C/C++ less than expression.
+ * ```
+ * bool c = (a < b);
+ * ```
  */
 class LTExpr extends RelationalOperation, @ltexpr {
   override string getCanonicalQLClass() { result = "LTExpr" }
@@ -91,6 +105,9 @@ class LTExpr extends RelationalOperation, @ltexpr {
 
 /**
  * A C/C++ greater than or equal expression.
+ * ```
+ * bool c = (a >= b);
+ * ```
  */
 class GEExpr extends RelationalOperation, @geexpr {
   override string getCanonicalQLClass() { result = "GEExpr" }
@@ -103,7 +120,10 @@ class GEExpr extends RelationalOperation, @geexpr {
 }
 
 /**
- * A C/C++ lesser than or equal expression.
+ * A C/C++ less than or equal expression.
+ * ```
+ * bool c = (a <= b);
+ * ```
  */
 class LEExpr extends RelationalOperation, @leexpr {
   override string getCanonicalQLClass() { result = "LEExpr" }

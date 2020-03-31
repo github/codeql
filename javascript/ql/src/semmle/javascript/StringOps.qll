@@ -57,6 +57,40 @@ module StringOps {
     }
 
     /**
+     * A call to a utility function (`callee`) that performs a StartsWith check (`inner`).
+     */
+    private class IndirectStartsWith extends Range, DataFlow::CallNode {
+      StartsWith inner;
+      Function callee;
+
+      IndirectStartsWith() {
+        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+        this.getACallee() = callee and
+        count(this.getACallee()) = 1 and
+        count(callee.getAReturnedExpr()) = 1 and
+        not this.isImprecise() and
+        inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+        inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      }
+
+      override DataFlow::Node getBaseString() {
+        exists(int arg |
+          inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override DataFlow::Node getSubstring() {
+        exists(int arg |
+          inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
+    }
+
+    /**
      * An expression of form `A.startsWith(B)`.
      */
     private class StartsWith_Native extends Range, DataFlow::MethodCallNode {
@@ -165,10 +199,16 @@ module StringOps {
 
       StartsWith_Substring() {
         astNode.hasOperands(call.asExpr(), substring.asExpr()) and
-        (call.getMethodName() = "substring" or call.getMethodName() = "substr") and
+        (
+          call.getMethodName() = "substring" or
+          call.getMethodName() = "substr" or
+          call.getMethodName() = "slice"
+        ) and
         call.getNumArgument() = 2 and
         (
-          substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
+          AccessPath::getAnAliasedSourceNode(substring)
+              .getAPropertyRead("length")
+              .flowsTo(call.getArgument(1))
           or
           substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
         )
@@ -185,162 +225,15 @@ module StringOps {
   /**
    * A expression that is equivalent to `A.includes(B)` or `!A.includes(B)`.
    *
-   * Note that this also includes calls to the array method named `includes`.
+   * Note that this class is equivalent to `InclusionTest`, which also matches
+   * inclusion tests on array objects.
    */
-  class Includes extends DataFlow::Node {
-    Includes::Range range;
-
-    Includes() { this = range }
-
+  class Includes extends InclusionTest {
     /** Gets the `A` in `A.includes(B)`. */
-    DataFlow::Node getBaseString() { result = range.getBaseString() }
+    DataFlow::Node getBaseString() { result = getContainerNode() }
 
     /** Gets the `B` in `A.includes(B)`. */
-    DataFlow::Node getSubstring() { result = range.getSubstring() }
-
-    /**
-     * Gets the polarity of the check.
-     *
-     * If the polarity is `false` the check returns `true` if the string does not contain
-     * the given substring.
-     */
-    boolean getPolarity() { result = range.getPolarity() }
-  }
-
-  module Includes {
-    /**
-     * A expression that is equivalent to `A.includes(B)` or `!A.includes(B)`.
-     *
-     * Note that this also includes calls to the array method named `includes`.
-     */
-    abstract class Range extends DataFlow::Node {
-      /** Gets the `A` in `A.includes(B)`. */
-      abstract DataFlow::Node getBaseString();
-
-      /** Gets the `B` in `A.includes(B)`. */
-      abstract DataFlow::Node getSubstring();
-
-      /**
-       * Gets the polarity of the check.
-       *
-       * If the polarity is `false` the check returns `true` if the string does not contain
-       * the given substring.
-       */
-      boolean getPolarity() { result = true }
-    }
-
-    /**
-     * A call to a method named `includes`, assumed to refer to `String.prototype.includes`.
-     */
-    private class Includes_Native extends Range, DataFlow::MethodCallNode {
-      Includes_Native() {
-        getMethodName() = "includes" and
-        getNumArgument() = 1
-      }
-
-      override DataFlow::Node getBaseString() { result = getReceiver() }
-
-      override DataFlow::Node getSubstring() { result = getArgument(0) }
-    }
-
-    /**
-     * A call to `_.includes` or similar, assumed to operate on strings.
-     */
-    private class Includes_Library extends Range, DataFlow::CallNode {
-      Includes_Library() {
-        exists(string name |
-          this = LodashUnderscore::member(name).getACall() and
-          (name = "includes" or name = "include" or name = "contains")
-          or
-          this = Closure::moduleImport("goog.string." + name).getACall() and
-          (name = "contains" or name = "caseInsensitiveContains")
-        )
-      }
-
-      override DataFlow::Node getBaseString() { result = getArgument(0) }
-
-      override DataFlow::Node getSubstring() { result = getArgument(1) }
-    }
-
-    /**
-     * A check of form `A.indexOf(B) !== -1` or similar.
-     */
-    private class Includes_IndexOfEquals extends Range, DataFlow::ValueNode {
-      MethodCallExpr indexOf;
-      override EqualityTest astNode;
-
-      Includes_IndexOfEquals() {
-        exists(Expr index | astNode.hasOperands(indexOf, index) |
-          // one operand is of the form `whitelist.indexOf(x)`
-          indexOf.getMethodName() = "indexOf" and
-          // and the other one is -1
-          index.getIntValue() = -1
-        )
-      }
-
-      override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
-
-      override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
-
-      override boolean getPolarity() { result = astNode.getPolarity().booleanNot() }
-    }
-
-    /**
-     * A check of form `A.indexOf(B) >= 0` or similar.
-     */
-    private class Includes_IndexOfRelational extends Range, DataFlow::ValueNode {
-      MethodCallExpr indexOf;
-      override RelationalComparison astNode;
-      boolean polarity;
-
-      Includes_IndexOfRelational() {
-        exists(Expr lesser, Expr greater |
-          astNode.getLesserOperand() = lesser and
-          astNode.getGreaterOperand() = greater and
-          indexOf.getMethodName() = "indexOf" and
-          indexOf.getNumArgument() = 1
-        |
-          polarity = true and
-          greater = indexOf and
-          (
-            lesser.getIntValue() = 0 and astNode.isInclusive()
-            or
-            lesser.getIntValue() = -1 and not astNode.isInclusive()
-          )
-          or
-          polarity = false and
-          lesser = indexOf and
-          (
-            greater.getIntValue() = -1 and astNode.isInclusive()
-            or
-            greater.getIntValue() = 0 and not astNode.isInclusive()
-          )
-        )
-      }
-
-      override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
-
-      override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
-
-      override boolean getPolarity() { result = polarity }
-    }
-
-    /**
-     * An expression of form `~A.indexOf(B)` which, when coerced to a boolean, is equivalent to `A.includes(B)`.
-     */
-    private class Includes_IndexOfBitwise extends Range, DataFlow::ValueNode {
-      MethodCallExpr indexOf;
-      override BitNotExpr astNode;
-
-      Includes_IndexOfBitwise() {
-        astNode.getOperand() = indexOf and
-        indexOf.getMethodName() = "indexOf"
-      }
-
-      override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
-
-      override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
-    }
+    DataFlow::Node getSubstring() { result = getContainedNode() }
   }
 
   /**
@@ -392,6 +285,40 @@ module StringOps {
        * with the given substring.
        */
       boolean getPolarity() { result = true }
+    }
+
+    /**
+     * A call to a utility function (`callee`) that performs an EndsWith check (`inner`).
+     */
+    private class IndirectEndsWith extends Range, DataFlow::CallNode {
+      EndsWith inner;
+      Function callee;
+
+      IndirectEndsWith() {
+        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+        this.getACallee() = callee and
+        count(this.getACallee()) = 1 and
+        count(callee.getAReturnedExpr()) = 1 and
+        not this.isImprecise() and
+        inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+        inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      }
+
+      override DataFlow::Node getBaseString() {
+        exists(int arg |
+          inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override DataFlow::Node getSubstring() {
+        exists(int arg |
+          inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
     }
 
     /**
@@ -649,7 +576,8 @@ module StringOps {
       result = getStringValue()
       or
       not exists(getStringValue()) and
-      result = strictconcat(StringLiteralLike leaf |
+      result =
+        strictconcat(StringLiteralLike leaf |
           leaf = getALeaf().asExpr()
         |
           leaf.getStringValue() order by leaf.getFirstToken().getIndex()

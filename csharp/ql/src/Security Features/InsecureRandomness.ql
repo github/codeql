@@ -55,7 +55,8 @@ module Random {
   /** A source of cryptographically insecure random numbers. */
   class RandomSource extends Source {
     RandomSource() {
-      this.getExpr() = any(MethodCall mc |
+      this.getExpr() =
+        any(MethodCall mc |
           mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
         )
     }

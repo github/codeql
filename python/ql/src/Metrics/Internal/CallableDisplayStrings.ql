@@ -4,6 +4,7 @@
  * @id py/function-display-strings
  * @metricType callable
  */
+
 import python
 
 from Function f

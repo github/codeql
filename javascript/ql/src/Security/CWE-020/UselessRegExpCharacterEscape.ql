@@ -105,13 +105,9 @@ class RegExpPatternMistake extends TRegExpPatternMistake {
  */
 class IdentityEscapeInStringMistake extends RegExpPatternMistake, TIdentityEscapeInStringMistake {
   RegExpPatternSource src;
-
   string char;
-
   string mistake;
-
   int index;
-
   ASTNode rawStringNode;
 
   IdentityEscapeInStringMistake() {
@@ -130,19 +126,19 @@ class IdentityEscapeInStringMistake extends RegExpPatternMistake, TIdentityEscap
 }
 
 /**
-  * A backspace as '\b' in a regular expression string, indicating
-  * programmer intent to use the word-boundary assertion '\b'.
-  */
+ * A backspace as '\b' in a regular expression string, indicating
+ * programmer intent to use the word-boundary assertion '\b'.
+ */
 class BackspaceInStringMistake extends RegExpPatternMistake, TBackspaceInStringMistake {
   RegExpPatternSource src;
-
   int index;
-
   ASTNode rawStringNode;
 
   BackspaceInStringMistake() { this = TBackspaceInStringMistake(src, rawStringNode, index) }
 
-  override string getMessage() { result = "'\\b' is a backspace, and not a word-boundary assertion" }
+  override string getMessage() {
+    result = "'\\b' is a backspace, and not a word-boundary assertion"
+  }
 
   override int getIndex() { result = index }
 

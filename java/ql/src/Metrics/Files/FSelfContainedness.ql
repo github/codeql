@@ -14,12 +14,14 @@ import java
 
 from CompilationUnit f, float selfContaindness, int efferentSourceCoupling, int efferentCoupling
 where
-  efferentSourceCoupling = count(CompilationUnit g |
+  efferentSourceCoupling =
+    count(CompilationUnit g |
       exists(RefType c | c.fromSource() and c.getCompilationUnit() = g |
         exists(RefType d | d.fromSource() and d.getCompilationUnit() = f | depends(d, c))
       )
     ) and
-  efferentCoupling = count(CompilationUnit g |
+  efferentCoupling =
+    count(CompilationUnit g |
       exists(RefType c | c.getCompilationUnit() = g |
         exists(RefType d | d.fromSource() and d.getCompilationUnit() = f | depends(d, c))
       )

@@ -20,10 +20,9 @@ class ReturnPointsToExpr extends PointsToExpr {
   ReturnStmt getReturnStmt() { result.getExpr() = this }
 }
 
-from ReturnPointsToExpr ret, LocalVariable dest
+from ReturnPointsToExpr ret, StackVariable dest
 where
   ret.pointsTo() = dest and
-  ret.getReturnStmt().getParentStmt().getEnclosingFunction() = dest.getFunction() and
-  not dest.isStatic()
+  ret.getReturnStmt().getParentStmt().getEnclosingFunction() = dest.getFunction()
 select ret.getReturnStmt(),
   "AV Rule 111: A function shall not return a pointer or reference to a non-static local object."

@@ -10,4 +10,5 @@ app.use(passport.authorize({ session: true }))
 app.use(csrf({ cookie:true }))
 
 app.post('/changeEmail', function (req, res) {
+    let newEmail = req.cookies["newEmail"];
 })

@@ -82,7 +82,7 @@ FunctionCall stat(Expr path, Expr buf) {
 predicate referenceTo(Expr source, Expr use) {
   source = use
   or
-  exists(SsaDefinition def, LocalScopeVariable v |
+  exists(SsaDefinition def, StackVariable v |
     def.getAnUltimateDefiningValue(v) = source and def.getAUse(v) = use
   )
 }
@@ -109,9 +109,7 @@ where
     )
   ) and
   // checkUse and opUse refer to the same SSA variable
-  exists(SsaDefinition def, LocalScopeVariable v |
-    def.getAUse(v) = checkUse and def.getAUse(v) = opUse
-  ) and
+  exists(SsaDefinition def, StackVariable v | def.getAUse(v) = checkUse and def.getAUse(v) = opUse) and
   // opUse looks like an operation on a filename
   fc = filenameOperation(opUse) and
   // the return value of check is used (possibly with one step of

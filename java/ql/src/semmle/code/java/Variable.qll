@@ -16,9 +16,7 @@ class Variable extends @variable, Annotatable, Element, Modifiable {
   Expr getAnAssignedValue() {
     exists(LocalVariableDeclExpr e | e.getVariable() = this and result = e.getInit())
     or
-    exists(AssignExpr e |
-      e.getDest().getProperExpr() = this.getAnAccess() and result = e.getSource()
-    )
+    exists(AssignExpr e | e.getDest() = this.getAnAccess() and result = e.getSource())
   }
 
   /** Gets the initializer expression of this variable. */

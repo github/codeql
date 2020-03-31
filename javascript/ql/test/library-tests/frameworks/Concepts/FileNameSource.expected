@@ -1,3 +1,11 @@
+| file-access.js:22:39:22:43 | files |
+| file-access.js:70:47:70:51 | files |
+| file-access.js:73:37:73:42 | files2 |
+| file-access.js:79:23:79:26 | path |
+| file-access.js:83:30:83:37 | filename |
+| file-access.js:84:2:86:3 | walk.sy ... h);\\n\\t}) |
+| file-access.js:87:14:87:29 | walk.sync('../') |
+| file-access.js:88:15:88:37 | await w ... ('../') |
 | tst-file-names.js:7:1:7:10 | walkSync() |
 | tst-file-names.js:9:35:9:44 | stats.name |
 | tst-file-names.js:11:1:11:12 | glob.sync(_) |
@@ -10,3 +18,13 @@
 | tst-file-names.js:25:18:25:22 | files |
 | tst-file-names.js:27:24:27:28 | files |
 | tst-file-names.js:29:27:29:30 | file |
+| tst-file-names.js:32:34:32:38 | files |
+| tst-file-names.js:34:15:34:29 | await globby(_) |
+| tst-file-names.js:36:16:36:38 | await f ... sync(_) |
+| tst-file-names.js:38:16:38:57 | await f ...  => {}) |
+| tst-file-names.js:42:17:42:39 | globule ... /*.js') |
+| tst-file-names.js:43:15:43:50 | globule ... o.js"]) |
+| tst-file-names.js:45:12:45:42 | globule ... /*.js") |
+| tst-file-names.js:46:12:46:51 | globule ... .js"]}) |
+| tst-file-names.js:47:12:47:52 | globule ... b.js"]) |
+| tst-file-names.js:51:15:51:23 | await foo |

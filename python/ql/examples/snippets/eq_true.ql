@@ -6,7 +6,7 @@
  *       test
  *       boolean
  */
- 
+
 import python
 
 from Compare eq

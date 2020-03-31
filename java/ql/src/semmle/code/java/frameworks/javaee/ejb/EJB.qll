@@ -21,11 +21,8 @@ class SessionEJB extends EJB {
     this.getAnAnnotation().getType().hasName("Stateful") or
     // XML deployment descriptor.
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getAnEjbClassElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
 
@@ -160,11 +157,8 @@ class MessageDrivenBean extends EJB {
     or
     // XML deployment descriptor.
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getAMessageDrivenElement()
-            .getAnEjbClassElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getAMessageDrivenElement().getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
 }
@@ -179,11 +173,8 @@ class EntityEJB extends EJB {
     or
     // XML deployment descriptor.
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getAnEntityElement()
-            .getAnEjbClassElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getAnEntityElement().getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
 }
@@ -253,11 +244,8 @@ abstract class BusinessInterface extends Interface {
 class XmlSpecifiedBusinessInterface extends BusinessInterface {
   XmlSpecifiedBusinessInterface() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getABusinessElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getABusinessElement().getACharactersSet().getCharacters()
     )
   }
 
@@ -271,21 +259,15 @@ class XmlSpecifiedBusinessInterface extends BusinessInterface {
 
   override predicate isLocal() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getABusinessLocalElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getABusinessLocalElement().getACharactersSet().getCharacters()
     )
   }
 
   override predicate isRemote() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getABusinessRemoteElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getABusinessRemoteElement().getACharactersSet().getCharacters()
     )
   }
 }
@@ -411,11 +393,8 @@ class ExtendedRemoteInterface extends LegacyEjbRemoteInterface, RemoteEJBInterfa
 class XmlSpecifiedRemoteInterface extends LegacyEjbRemoteInterface {
   XmlSpecifiedRemoteInterface() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getARemoteElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getARemoteElement().getACharactersSet().getCharacters()
     )
   }
 
@@ -451,11 +430,8 @@ class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
 class XmlSpecifiedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
   XmlSpecifiedRemoteHomeInterface() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getARemoteHomeElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getARemoteHomeElement().getACharactersSet().getCharacters()
     )
   }
 
@@ -479,11 +455,8 @@ class ExtendedLocalInterface extends LegacyEjbLocalInterface, LocalEJBInterface 
 class XmlSpecifiedLocalInterface extends LegacyEjbLocalInterface {
   XmlSpecifiedLocalInterface() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getALocalElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getALocalElement().getACharactersSet().getCharacters()
     )
   }
 
@@ -520,11 +493,8 @@ class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
 class XmlSpecifiedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
   XmlSpecifiedLocalHomeInterface() {
     exists(EjbJarXMLFile f |
-      this.getQualifiedName() = f
-            .getASessionElement()
-            .getALocalHomeElement()
-            .getACharactersSet()
-            .getCharacters()
+      this.getQualifiedName() =
+        f.getASessionElement().getALocalHomeElement().getACharactersSet().getCharacters()
     )
   }
 

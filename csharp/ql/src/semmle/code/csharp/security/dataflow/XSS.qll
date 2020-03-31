@@ -32,7 +32,8 @@ module XSS {
       sourceNode = source.asDataFlowNode() and
       sinkNode = sink.asDataFlowNode() and
       c.hasFlowPath(sourceNode, sinkNode) and
-      message = "is written to HTML or JavaScript" +
+      message =
+        "is written to HTML or JavaScript" +
           any(string explanation |
             if exists(sinkNode.getNode().(Sink).explanation())
             then explanation = ": " + sinkNode.getNode().(Sink).explanation() + "."
@@ -235,10 +236,8 @@ module XSS {
    */
   private class SetAttributeSink extends Sink, HtmlSink {
     SetAttributeSink() {
-      this.getExpr() = any(SystemWindowsFormsHtmlElement c)
-            .getSetAttributeMethod()
-            .getACall()
-            .getArgument(1)
+      this.getExpr() =
+        any(SystemWindowsFormsHtmlElement c).getSetAttributeMethod().getACall().getArgument(1)
     }
   }
 
@@ -458,7 +457,8 @@ module XSS {
     AspxCodeSink() { this.getExpr() = aspWrittenValue(inline) }
 
     override string explanation() {
-      result = "member is [[\"accessed inline\"|\"" + makeUrl(inline.getLocation()) +
+      result =
+        "member is [[\"accessed inline\"|\"" + makeUrl(inline.getLocation()) +
           "\"]] in an ASPX page"
     }
   }
@@ -467,8 +467,8 @@ module XSS {
   private class HttpListenerResponseSink extends Sink {
     HttpListenerResponseSink() {
       exists(PropertyAccess responseOutputStream |
-        responseOutputStream.getProperty() = any(SystemNetHttpListenerResponseClass h)
-              .getOutputStreamProperty()
+        responseOutputStream.getProperty() =
+          any(SystemNetHttpListenerResponseClass h).getOutputStreamProperty()
       |
         DataFlow::localFlow(DataFlow::exprNode(responseOutputStream), this)
       )
@@ -497,9 +497,8 @@ module XSS {
   private class ToHtmlString extends Sink, HtmlSink {
     ToHtmlString() {
       exists(Method toHtmlString |
-        toHtmlString = any(SystemWebIHtmlString i)
-              .getToHtmlStringMethod()
-              .getAnUltimateImplementor() and
+        toHtmlString =
+          any(SystemWebIHtmlString i).getToHtmlStringMethod().getAnUltimateImplementor() and
         toHtmlString.canReturn(this.getExpr())
       )
     }
@@ -524,7 +523,8 @@ module XSS {
    */
   private class StringContent extends Sink {
     StringContent() {
-      this.getExpr() = any(ObjectCreation oc |
+      this.getExpr() =
+        any(ObjectCreation oc |
           oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")
         ).getArgumentForName("content")
     }
@@ -562,10 +562,8 @@ module XSS {
    */
   class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreSink {
     MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
-      this.getExpr() = any(MicrosoftAspNetCoreMvcHtmlHelperClass h)
-            .getRawMethod()
-            .getACall()
-            .getAnArgument()
+      this.getExpr() =
+        any(MicrosoftAspNetCoreMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
     }
 
     override string explanation() {
@@ -579,7 +577,8 @@ module XSS {
    */
   class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreSink {
     MicrosoftAspNetRazorPageWriteLiteralSink() {
-      this.getExpr() = any(MicrosoftAspNetCoreMvcRazorPageBase h)
+      this.getExpr() =
+        any(MicrosoftAspNetCoreMvcRazorPageBase h)
             .getWriteLiteralMethod()
             .getACall()
             .getAnArgument()

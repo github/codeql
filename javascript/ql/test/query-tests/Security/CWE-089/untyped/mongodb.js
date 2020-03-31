@@ -54,3 +54,33 @@ app.post('/documents/find', (req, res) => {
       doc.find(query);
     });
 });
+
+app.post('/documents/find', (req, res) => {
+	const query = {};
+	query.title = req.query.title;
+	MongoClient.connect('mongodb://localhost:27017/test', (err, client) => {
+		let doc = client.db("MASTER").collection('doc');
+
+		// NOT OK: query is tainted by user-provided object value
+		doc.find(query);
+	});
+});
+
+app.post("/logs/count-by-tag", (req, res) => {
+  let tag = req.query.tag;
+
+  MongoClient.connect(process.env.DB_URL, {}, (err, client) => {
+    client
+      .db(process.env.DB_NAME)
+      .collection("logs")
+      // NOT OK: query is tainted by user-provided object value
+      .count({ tags: tag });
+  });
+
+  let importedDbo = require("./dbo.js");
+  importedDbo
+    .db()
+    .collection("logs")
+    // NOT OK: query is tainted by user-provided object value
+    .count({ tags: tag });
+});

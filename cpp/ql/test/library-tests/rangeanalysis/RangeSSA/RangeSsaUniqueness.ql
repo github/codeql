@@ -12,7 +12,7 @@ import semmle.code.cpp.rangeanalysis.RangeSSA
  *  Should always be zero *regardless* of the input
  */
 
-select count(RangeSsaDefinition d1, RangeSsaDefinition d2, Expr u, LocalScopeVariable v |
+select count(RangeSsaDefinition d1, RangeSsaDefinition d2, Expr u, StackVariable v |
     d1.getAUse(v) = u and
     d2.getAUse(v) = u and
     not d1 = d2

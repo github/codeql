@@ -82,7 +82,8 @@ class MulLossOfPrecision extends LossOfPrecision, MulExpr {
   MulLossOfPrecision() { not small(this) }
 
   override string getMessage() {
-    result = "Possible overflow: result of integer multiplication cast to " +
+    result =
+      "Possible overflow: result of integer multiplication cast to " +
         convertedType.toStringWithTypes() + "."
   }
 }

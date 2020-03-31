@@ -52,3 +52,13 @@ g(*t)
 F().m(*t)
 F.m(*t)
 
+# Calls to built-in methods
+
+# Methods with a known return type.
+a = int.bit_length
+b = int.bit_length(5)
+
+# Methods without a known return type.
+c = dict.get
+d = dict.get({"foo":5}, 5)
+check(a,b,c,d)

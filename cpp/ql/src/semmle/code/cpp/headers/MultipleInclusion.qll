@@ -159,7 +159,8 @@ predicate ifndefDirective(PreprocessorDirective ppd, string macro) {
   or
   ppd instanceof PreprocessorIf and
   exists(string head | head = ppd.getHead() |
-    macro = head
+    macro =
+      head
           .replaceAll("(", " ")
           .replaceAll(")", "")
           .replaceAll("\t", " ")

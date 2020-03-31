@@ -11,7 +11,7 @@
  *       external/cwe/cwe-088
  */
 
-import semmle.code.java.Expr
+import java
 import semmle.code.java.security.ExternalProcess
 import ExecCommon
 

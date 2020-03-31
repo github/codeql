@@ -338,7 +338,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * calls made by callables in this type, excluding member accesses.
    */
   int getResponse() {
-    result = sum(Callable c |
+    result =
+      sum(Callable c |
         c.getDeclaringType() = this
       |
         count(Call call |
@@ -691,7 +692,8 @@ class RefType extends ValueOrRefType, @ref_type {
    */
   float getSpecialisationIndex() {
     this.getNumberOfCallables() != 0 and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+    result =
+      (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfCallables().(float)
   }
 
@@ -821,26 +823,26 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   /** Gets the element type of this array, for example `int` in `int[]`. */
   override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
 
-  /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
-  final AnnotatedType getAnnotatedElementType() { result.appliesTo(this) }
-
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
     getDimension() = that.getDimension() and
     getRank() = that.getRank()
   }
 
-  private string getRankString(int i) {
-    i in [0 .. getRank() - 1] and
-    if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
+  /**
+   * INTERNAL: Do not use.
+   * Gets a string representing the array suffix, for example `[,,,]`.
+   */
+  string getArraySuffix() {
+    result = "[" + concat(int i | i in [0 .. this.getRank() - 2] | ",") + "]"
   }
 
-  private string getDimensionString(AnnotatedType elementType) {
-    exists(AnnotatedType et, string res |
-      et = getAnnotatedElementType() and
-      res = "[" + getRankString(0) + "]" and
-      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
-      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
+  private string getDimensionString(Type elementType) {
+    exists(Type et, string res |
+      et = this.getElementType() and
+      res = getArraySuffix() and
+      if et instanceof ArrayType
+      then result = res + et.(ArrayType).getDimensionString(elementType)
       else (
         result = res and elementType = et
       )
@@ -848,7 +850,7 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   override string toStringWithTypes() {
-    exists(AnnotatedType elementType |
+    exists(Type elementType |
       result = elementType.toString() + this.getDimensionString(elementType)
     )
   }
@@ -905,7 +907,7 @@ class UnknownType extends Type, @unknown_type { }
  */
 class TupleType extends ValueType, @tuple_type {
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, result) }
+  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.
@@ -932,7 +934,8 @@ class TupleType extends ValueType, @tuple_type {
 
   language[monotonicAggregates]
   override string toStringWithTypes() {
-    result = "(" +
+    result =
+      "(" +
         concat(int i |
           exists(getElement(i))
         |
@@ -941,6 +944,8 @@ class TupleType extends ValueType, @tuple_type {
   }
 
   override string getLabel() { result = getUnderlyingType().getLabel() }
+
+  override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
 }
 
 /**

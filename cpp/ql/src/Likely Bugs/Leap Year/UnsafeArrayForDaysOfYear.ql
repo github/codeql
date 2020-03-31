@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id cpp/leap-year/unsafe-array-for-days-of-the-year
- * @precision medium
+ * @precision low
  * @tags security
  *       leap-year
  */

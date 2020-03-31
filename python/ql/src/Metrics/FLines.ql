@@ -7,9 +7,9 @@
  * @metricType file
  * @metricAggregate avg sum max
  */
+
 import python
 
 from Module m, int n
 where n = m.getMetrics().getNumberOfLines()
-select m, n
-order by n desc
+select m, n order by n desc

@@ -13,6 +13,12 @@
 | sources.js:3:2:5:1 | functio ... x+19;\\n} |
 | sources.js:3:11:3:11 | x |
 | sources.js:7:1:7:3 | /x/ |
+| sources.js:9:1:9:0 | this |
+| sources.js:9:1:12:1 | functio ... ey; }\\n} |
+| sources.js:9:14:9:18 | array |
+| sources.js:10:12:10:14 | key |
+| sources.js:11:12:11:18 | { key } |
+| sources.js:11:14:11:16 | key |
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
@@ -60,6 +66,7 @@
 | tst.js:72:9:72:9 | p |
 | tst.js:72:9:72:11 | p() |
 | tst.js:75:9:75:21 | import('foo') |
+| tst.js:80:10:80:10 | v |
 | tst.js:83:11:83:28 | [ for (v of o) v ] |
 | tst.js:85:11:85:28 | ( for (v of o) v ) |
 | tst.js:87:1:96:2 | (functi ... r: 0\\n}) |

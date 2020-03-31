@@ -1,9 +1,5 @@
-QL training and variant analysis examples
-=========================================
-
-.. container:: semmle-logo
-
-   Semmle :sup:`TM`
+CodeQL training and variant analysis examples
+=============================================
 
 .. toctree::
    :glob:

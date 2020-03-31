@@ -152,7 +152,8 @@ private class TemplateFieldNgSourceProvider extends NgSourceProvider {
 
   TemplateFieldNgSourceProvider() {
     this = directive.getMember("template").asExpr() and
-    source = this
+    source =
+      this
           .(ConstantString)
           .getStringValue()
           .regexpFind(getInterpolatedExpressionPattern(), _, offset)
@@ -211,11 +212,8 @@ abstract class NgToken extends TNgToken {
    */
   private int getIndex() {
     exists(NgSource src, int start | this.at(src, start) |
-      start = rank[result + 1](NgToken someToken, int someStart |
-          someToken.at(src, someStart)
-        |
-          someStart
-        )
+      start =
+        rank[result + 1](NgToken someToken, int someStart | someToken.at(src, someStart) | someStart)
     )
   }
 
@@ -278,7 +276,8 @@ private module Lexer {
     NgOpTokenType() { this = "NgOpTokenType" }
 
     override string getPattern() {
-      result = concat(string op |
+      result =
+        concat(string op |
           op = "===" or
           op = "!==" or
           op = "==" or
@@ -383,7 +382,8 @@ abstract class NgAstNode extends TNode {
    */
   language[monotonicAggregates]
   string ppChildren() {
-    result = concat(NgAstNode child, int idx |
+    result =
+      concat(NgAstNode child, int idx |
         child = getChild(idx) and
         not child instanceof Empty
       |

@@ -11,5 +11,3 @@ class C extends Q {
     this.arg = this.arg; // NOT OK
   }
 }
-
-// semmle-extractor-options: --experimental

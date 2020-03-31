@@ -2,4 +2,4 @@
 var f = function() {};
 var f = function(x) {};
 
-//semmle-extractor-options: --externs
+/** @externs */

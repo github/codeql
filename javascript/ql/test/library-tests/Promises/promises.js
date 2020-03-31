@@ -74,3 +74,10 @@
     resolver.resolve(source);
     resolver.promise.then(val => { var sink = val });
 })();
+
+(function(source) {
+    var promise = Promise.resolve(source);
+    promise.then(function (val) {
+        var sink = val;
+    });
+})();

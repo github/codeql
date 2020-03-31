@@ -113,5 +113,3 @@ x ?? y;                           // flow through short-circuiting operator
 });
 
 Array.call()  // flow from implicit call to `Array` to `Array.call`
-
-// semmle-extractor-options: --experimental

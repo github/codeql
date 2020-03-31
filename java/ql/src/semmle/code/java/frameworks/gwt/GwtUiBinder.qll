@@ -58,7 +58,8 @@ class GwtUiHandler extends Method {
    * Gets the name of the field for which this handler is registered.
    */
   string getFieldName() {
-    result = getAnAnnotation()
+    result =
+      getAnAnnotation()
           .(GwtUiHandlerAnnotation)
           .getValue("value")
           .(CompileTimeConstantExpr)

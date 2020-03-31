@@ -119,9 +119,11 @@ module HTTP {
   }
 
   /**
+   * DEPRECATED: Use `http` or `https` directly as appropriate.
+   *
    * Gets the string `http` or `https`.
    */
-  string httpOrHttps() { result = "http" or result = "https" }
+  deprecated string httpOrHttps() { result = "http" or result = "https" }
 
   /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
@@ -269,7 +271,7 @@ module HTTP {
      */
     abstract class StandardRouteHandler extends RouteHandler {
       override HeaderDefinition getAResponseHeader(string name) {
-        result.(StandardHeaderDefinition).getRouteHandler() = this and
+        result.getRouteHandler() = this and
         result.getAHeaderName() = name
       }
 

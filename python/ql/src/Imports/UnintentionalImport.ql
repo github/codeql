@@ -13,20 +13,20 @@
 
 import python
 
-predicate import_star(ImportStar imp, ModuleObject exporter) {
+predicate import_star(ImportStar imp, ModuleValue exporter) {
     exporter.importedAs(imp.getImportedModuleName())
 }
 
-predicate all_defined(ModuleObject exporter) {
-    exporter.isC()
+predicate all_defined(ModuleValue exporter) {
+    exporter.isBuiltin()
     or
-    exporter.getModule().(ImportTimeScope).definesName("__all__")
+    exporter.getScope().(ImportTimeScope).definesName("__all__")
     or
-    exporter.getModule().getInitModule().(ImportTimeScope).definesName("__all__")
+    exporter.getScope().getInitModule().(ImportTimeScope).definesName("__all__")
 }
 
-
-from ImportStar imp, ModuleObject exporter
+from ImportStar imp, ModuleValue exporter
 where import_star(imp, exporter) and not all_defined(exporter)
-select imp, "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
-       exporter, exporter.getName()
+select imp,
+    "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
+    exporter, exporter.getName()

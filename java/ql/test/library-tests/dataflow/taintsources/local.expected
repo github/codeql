@@ -1,0 +1,10 @@
+| A.java:17:27:17:39 | args | A.java:17:27:17:39 | args |
+| A.java:17:27:17:39 | args | A.java:18:18:18:21 | args |
+| A.java:17:27:17:39 | args | A.java:19:16:19:19 | args |
+| A.java:17:27:17:39 | args | A.java:19:16:19:22 | ...[...] |
+| A.java:23:5:23:25 | getenv(...) | A.java:23:5:23:25 | getenv(...) |
+| A.java:34:5:34:40 | getProperty(...) | A.java:34:5:34:40 | getProperty(...) |
+| A.java:35:5:35:30 | getProperty(...) | A.java:35:5:35:30 | getProperty(...) |
+| A.java:38:9:38:23 | getString(...) | A.java:38:9:38:23 | getString(...) |
+| A.java:45:5:45:13 | System.in | A.java:45:5:45:13 | System.in |
+| A.java:46:5:46:31 | new FileInputStream(...) | A.java:46:5:46:31 | new FileInputStream(...) |

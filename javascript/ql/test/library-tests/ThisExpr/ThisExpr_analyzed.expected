@@ -1,3 +1,16 @@
+| module-exports.js:3:1:3:4 | this | file://:0:0:0:0 | indefinite value (call) |
+| module-exports.js:3:1:3:4 | this | module-exports.js:1:1:8:0 | exports object of module module-exports |
+| module-exports.js:4:28:4:31 | this | file://:0:0:0:0 | indefinite value (call) |
+| module-exports.js:4:28:4:31 | this | module-exports.js:1:1:8:0 | exports object of module module-exports |
+| module-exports.js:4:28:4:31 | this | module-exports.js:4:15:4:34 | instance of anonymous function |
+| module-exports.js:5:35:5:38 | this | file://:0:0:0:0 | indefinite value (call) |
+| module-exports.js:5:35:5:38 | this | file://:0:0:0:0 | indefinite value (heap) |
+| module-exports.js:5:35:5:38 | this | module-exports.js:1:1:8:0 | exports object of module module-exports |
+| module-exports.js:5:35:5:38 | this | module-exports.js:5:22:5:41 | instance of anonymous function |
+| module-exports.js:6:21:6:24 | this | file://:0:0:0:0 | indefinite value (call) |
+| module-exports.js:6:21:6:24 | this | module-exports.js:1:1:8:0 | exports object of module module-exports |
+| module-exports.js:7:28:7:31 | this | file://:0:0:0:0 | indefinite value (call) |
+| module-exports.js:7:28:7:31 | this | module-exports.js:1:1:8:0 | exports object of module module-exports |
 | tst.js:4:9:4:12 | this | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:4:9:4:12 | this | tst.js:1:1:11:1 | instance of class C_normal |
 | tst.js:8:15:8:18 | this | file://:0:0:0:0 | indefinite value (call) |

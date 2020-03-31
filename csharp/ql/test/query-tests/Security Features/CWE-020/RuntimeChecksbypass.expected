@@ -1,0 +1,4 @@
+| RuntimeChecksBypass.cs:20:13:20:22 | $"..." | This write to $@ may be circumventing a $@. | RuntimeChecksBypass.cs:7:19:7:19 | f | f | RuntimeChecksBypass.cs:11:9:14:9 | if (...) ... | check |
+| RuntimeChecksBypass.cs:124:15:124:34 | call to method GetInt32 | This write to $@ may be circumventing a $@. | RuntimeChecksBypass.cs:112:16:112:18 | Age | Age | RuntimeChecksBypass.cs:116:9:117:53 | if (...) ... | check |
+| RuntimeChecksBypass.cs:168:15:168:17 | access to local variable age | This write to $@ may be circumventing a $@. | RuntimeChecksBypass.cs:153:16:153:18 | Age | Age | RuntimeChecksBypass.cs:157:9:158:53 | if (...) ... | check |
+| RuntimeChecksBypassBad.cs:19:15:19:34 | call to method GetInt32 | This write to $@ may be circumventing a $@. | RuntimeChecksBypassBad.cs:7:16:7:18 | Age | Age | RuntimeChecksBypassBad.cs:11:9:12:53 | if (...) ... | check |

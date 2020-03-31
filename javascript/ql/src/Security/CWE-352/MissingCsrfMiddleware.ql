@@ -12,6 +12,48 @@
 
 import javascript
 
+/** Gets a property name of `req` which refers to data usually derived from cookie data. */
+string cookieProperty() { result = "session" or result = "cookies" or result = "user" }
+
+/** Gets a data flow node that flows to the base of an access to `cookies`, `session`, or `user`. */
+private DataFlow::SourceNode nodeLeadingToCookieAccess(DataFlow::TypeBackTracker t) {
+  t.start() and
+  exists(DataFlow::PropRead value |
+    value = result.getAPropertyRead(cookieProperty()).getAPropertyRead() and
+    // Ignore accesses to values that are part of a CSRF or captcha check
+    not value.getPropertyName().regexpMatch("(?i).*(csrf|xsrf|captcha).*") and
+    // Ignore calls like `req.session.save()`
+    not value = any(DataFlow::InvokeNode call).getCalleeNode()
+  )
+  or
+  exists(DataFlow::TypeBackTracker t2 | result = nodeLeadingToCookieAccess(t2).backtrack(t2, t))
+}
+
+/** Gets a data flow node that flows to the base of an access to `cookies`, `session`, or `user`. */
+DataFlow::SourceNode nodeLeadingToCookieAccess() {
+  result = nodeLeadingToCookieAccess(DataFlow::TypeBackTracker::end())
+}
+
+/**
+ * Holds if `handler` uses cookies.
+ */
+predicate isRouteHandlerUsingCookies(Express::RouteHandler handler) {
+  DataFlow::parameterNode(handler.getRequestParameter()) = nodeLeadingToCookieAccess()
+}
+
+/** Gets a data flow node referring to a route handler that uses cookies. */
+private DataFlow::SourceNode getARouteUsingCookies(DataFlow::TypeTracker t) {
+  t.start() and
+  isRouteHandlerUsingCookies(result)
+  or
+  exists(DataFlow::TypeTracker t2 | result = getARouteUsingCookies(t2).track(t2, t))
+}
+
+/** Gets a data flow node referring to a route handler that uses cookies. */
+DataFlow::SourceNode getARouteUsingCookies() {
+  result = getARouteUsingCookies(DataFlow::TypeTracker::end())
+}
+
 /**
  * Checks if `expr` is preceded by the cookie middleware `cookie`.
  *
@@ -63,11 +105,20 @@ from
 where
   router = setup.getRouter() and
   handler = setup.getARouteHandlerExpr() and
+  // Require that the handler uses cookies and has cookie middleware.
+  //
+  // In practice, handlers that use cookies always have the cookie middleware or
+  // the handler wouldn't work. However, if we can't find the cookie middleware, it
+  // indicates that our middleware model is too incomplete, so in that case we
+  // don't trust it to detect the presence of CSRF middleware either.
+  getARouteUsingCookies().flowsToExpr(handler) and
   hasCookieMiddleware(handler, cookie) and
+  // Only flag the cookie parser registered first.
+  not hasCookieMiddleware(cookie, _) and
   not hasCsrfMiddleware(handler) and
   // Only warn for the last handler in a chain.
   handler.isLastHandler() and
-  // Only warn for dangerous for handlers, such as for POST and PUT.
+  // Only warn for dangerous handlers, such as for POST and PUT.
   not setup.getRequestMethod().isSafe()
 select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.",
   handler, "here"

@@ -458,8 +458,8 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
       result = this.getInstruction(InitializerVariableAddressTag())
       or
       operandTag instanceof LoadOperandTag and
-      result = getTranslatedFunction(stmt.getEnclosingCallable())
-            .getUnmodeledDefinitionInstruction()
+      result =
+        getTranslatedFunction(stmt.getEnclosingCallable()).getUnmodeledDefinitionInstruction()
     )
   }
 
@@ -834,6 +834,11 @@ class TranslatedSwitchStmt extends TranslatedStmt {
       kind = this.getCaseEdge(caseStmt) and
       result = getTranslatedStmt(caseStmt).getFirstInstruction()
     )
+    or
+    not exists(stmt.getDefaultCase()) and
+    tag = SwitchBranchTag() and
+    kind instanceof DefaultEdge and
+    result = getParent().getChildSuccessor(this)
   }
 
   private EdgeKind getCaseEdge(CaseStmt caseStmt) {

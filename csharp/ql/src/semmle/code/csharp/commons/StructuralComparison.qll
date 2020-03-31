@@ -85,7 +85,8 @@ abstract class StructuralComparisonConfiguration extends string {
 
   private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk, int i) {
     (candidateInternal(cfe, _) or candidateInternal(_, cfe)) and
-    i = rank[rnk](int j |
+    i =
+      rank[rnk](int j |
         exists(ControlFlowElement child | child = cfe.getChild(j) |
           not (j = -1 and cfe.(MemberAccess).targetIsThisInstance())
         )
@@ -210,7 +211,8 @@ module Internal {
 
     private ControlFlowElement getRankedChild(ControlFlowElement cfe, int rnk, int i) {
       (candidateInternal(cfe, _) or candidateInternal(_, cfe)) and
-      i = rank[rnk](int j |
+      i =
+        rank[rnk](int j |
           exists(ControlFlowElement child | child = cfe.getChild(j) |
             not (j = -1 and cfe.(MemberAccess).targetIsThisInstance())
           )

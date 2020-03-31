@@ -59,3 +59,15 @@ RegExp("\b");
 RegExp(`\b`);
 RegExp(`\k\\k\d\\d`)
 RegExp(`\k\\k${foo}\d\\d`)
+
+// effective escapes
+RegExp("\]")
+RegExp("\\]")
+RegExp("\\\]"); // effectively escaped after all
+RegExp("x\\\]"); // effectively escaped after all
+RegExp("\\\\]")
+RegExp("\\\\\]")
+RegExp("\\\\\\]")
+RegExp("\\\\\\\]") // effectively escaped after all
+RegExp("\\\\\\\\]")
+RegExp("\\\\\\\\\]")

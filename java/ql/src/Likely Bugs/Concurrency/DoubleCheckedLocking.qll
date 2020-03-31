@@ -13,8 +13,6 @@ private Expr getAFieldRead(Field f) {
     v.getDefiningExpr().(VariableAssign).getSource() = getAFieldRead(f)
   )
   or
-  result.(ParExpr).getExpr() = getAFieldRead(f)
-  or
   result.(AssignExpr).getSource() = getAFieldRead(f)
 }
 

@@ -245,6 +245,24 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       ctx.(ConditionalExpr).inNullSensitiveContext()
     )
   }
+
+  /**
+   * Gets the data-flow node where exceptions thrown by this expression will
+   * propagate if this expression causes an exception to be thrown.
+   */
+  DataFlow::Node getExceptionTarget() {
+    if exists(this.getEnclosingStmt().getEnclosingTryCatchStmt())
+    then
+      result =
+        DataFlow::parameterNode(this
+              .getEnclosingStmt()
+              .getEnclosingTryCatchStmt()
+              .getACatchClause()
+              .getAParameter())
+    else
+      result =
+        any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
+  }
 }
 
 /**
@@ -409,6 +427,14 @@ class BigIntLiteral extends @bigintliteral, Literal {
  */
 class StringLiteral extends @stringliteral, Literal {
   override string getStringValue() { result = getValue() }
+
+  /**
+   * Gets the value of this string literal parsed as a regular expression, if possible.
+   *
+   * All string literals have an associated regular expression tree, provided they can
+   * be parsed without syntax errors.
+   */
+  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**
@@ -431,16 +457,16 @@ class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
   string getFlags() { result = getValue().regexpCapture(".*/(\\w*)$", 1) }
 
   /** Holds if this regular expression has an `m` flag. */
-  predicate isMultiline() { getFlags().matches("%m%") }
+  predicate isMultiline() { RegExp::isMultiline(getFlags()) }
 
   /** Holds if this regular expression has a `g` flag. */
-  predicate isGlobal() { getFlags().matches("%g%") }
+  predicate isGlobal() { RegExp::isGlobal(getFlags()) }
 
   /** Holds if this regular expression has an `i` flag. */
-  predicate isIgnoreCase() { getFlags().matches("%i%") }
+  predicate isIgnoreCase() { RegExp::isIgnoreCase(getFlags()) }
 
   /** Holds if this regular expression has an `s` flag. */
-  predicate isDotAll() { getFlags().matches("%s%") }
+  predicate isDotAll() { RegExp::isDotAll(getFlags()) }
 }
 
 /**

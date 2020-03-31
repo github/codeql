@@ -34,22 +34,24 @@ where
   ) and
   if accessType = 1
   then
-    message = "This '" + ba.getName() + "' operation accesses " +
-        plural(accessSize, " byte", " bytes") + " but the $@ is only " +
-        plural(bufferSize, " byte", " bytes") + "."
+    message =
+      "This '" + ba.getName() + "' operation accesses " + plural(accessSize, " byte", " bytes") +
+        " but the $@ is only " + plural(bufferSize, " byte", " bytes") + "."
   else
     if accessType = 2
     then
-      message = "This '" + ba.getName() + "' operation may access " +
-          plural(accessSize, " byte", " bytes") + " but the $@ is only " +
-          plural(bufferSize, " byte", " bytes") + "."
+      message =
+        "This '" + ba.getName() + "' operation may access " + plural(accessSize, " byte", " bytes") +
+          " but the $@ is only " + plural(bufferSize, " byte", " bytes") + "."
     else (
       if accessSize > 0
       then
-        message = "This array indexing operation accesses byte offset " + (accessSize - 1) +
+        message =
+          "This array indexing operation accesses byte offset " + (accessSize - 1) +
             " but the $@ is only " + plural(bufferSize, " byte", " bytes") + "."
       else
-        message = "This array indexing operation accesses a negative index " +
+        message =
+          "This array indexing operation accesses a negative index " +
             ((accessSize / ba.getActualType().getSize()) - 1) + " on the $@."
     )
 select ba, message, bufferAlloc, bufferDesc

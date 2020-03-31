@@ -29,7 +29,7 @@ class RightShiftOp extends Expr {
 
   Variable getShiftedVariable() {
     getLhs() = result.getAnAccess() or
-    getLhs().getProperExpr().(AndBitwiseExpr).getAnOperand() = result.getAnAccess()
+    getLhs().(AndBitwiseExpr).getAnOperand() = result.getAnAccess()
   }
 }
 

@@ -8,7 +8,7 @@ import semmle.code.cpp.security.FunctionWithWrappers
  */
 class SystemFunction extends FunctionWithWrappers {
   SystemFunction() {
-    hasGlobalName("system") or
+    hasGlobalOrStdName("system") or
     hasGlobalName("popen") or
     // Windows variants
     hasGlobalName("_popen") or
@@ -99,6 +99,8 @@ class ArrayExecFunctionCall extends FunctionCall {
     getTarget().hasGlobalName("execv") or
     getTarget().hasGlobalName("execvp") or
     getTarget().hasGlobalName("execvpe") or
+    getTarget().hasGlobalName("execve") or
+    getTarget().hasGlobalName("fexecve") or
     // Windows variants
     getTarget().hasGlobalName("_execv") or
     getTarget().hasGlobalName("_execve") or

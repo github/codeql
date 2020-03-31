@@ -4,6 +4,7 @@
  * @id py/function-source-links
  * @metricType callable
  */
+
 import python
 
 from Function f

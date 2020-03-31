@@ -3,12 +3,8 @@ private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 
 /* For backwards compatibility -- Use `TaintTrackingContext` instead. */
-deprecated
-class CallContext extends TaintTrackingContext {
-
-    TaintTrackingContext getCallee(CallNode call) {
-        result.getCaller(call) = this
-    }
+deprecated class CallContext extends TaintTrackingContext {
+    TaintTrackingContext getCallee(CallNode call) { result.getCaller(call) = this }
 
     predicate appliesToScope(Scope s) {
         exists(PythonFunctionObjectInternal func, TaintKind param, AttributePath path, int n |
@@ -21,41 +17,23 @@ class CallContext extends TaintTrackingContext {
         or
         this.isTop()
     }
-
 }
 
 /* Backwards compatibility with config-less taint-tracking */
 private class LegacyConfiguration extends TaintTracking::Configuration {
-
     LegacyConfiguration() {
         /* A name that won't be accidentally chosen by users */
         this = "Semmle: Internal legacy configuration"
     }
 
-    override predicate isSource(TaintSource src) {
-        isValid() and
-        src = src
-    }
+    override predicate isSource(TaintSource src) { src = src }
 
-    override predicate isSink(TaintSink sink) {
-        isValid() and
-        sink = sink
-    }
+    override predicate isSink(TaintSink sink) { sink = sink }
 
-    override predicate isSanitizer(Sanitizer sanitizer) {
-        isValid() and
-        sanitizer = sanitizer
-    }
-
-    private predicate isValid() {
-        not exists(TaintTracking::Configuration config | config != this)
-    }
+    override predicate isSanitizer(Sanitizer sanitizer) { sanitizer = sanitizer }
 
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
-        exists(DataFlowExtension::DataFlowNode legacyExtension |
-            src.asCfgNode() = legacyExtension
-            |
+        exists(DataFlowExtension::DataFlowNode legacyExtension | src.asCfgNode() = legacyExtension |
             dest.asCfgNode() = legacyExtension.getASuccessorNode()
             or
             dest.asVariable() = legacyExtension.getASuccessorVariable()
@@ -66,17 +44,15 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
         )
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
-        isValid() and
-        exists(DataFlowExtension::DataFlowNode legacyExtension |
-            src.asCfgNode() = legacyExtension
-            |
+    override predicate isAdditionalFlowStep(
+        DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind
+    ) {
+        exists(DataFlowExtension::DataFlowNode legacyExtension | src.asCfgNode() = legacyExtension |
             dest.asCfgNode() = legacyExtension.getASuccessorNode(srckind, destkind)
         )
     }
 
     override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
         (
             exists(DataFlowExtension::DataFlowVariable legacyExtension |
                 src.asVariable() = legacyExtension and
@@ -89,6 +65,4 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
             )
         )
     }
-
 }
-

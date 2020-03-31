@@ -1,0 +1,8 @@
+| ../../../query-tests/Security/lib/bottle.py:64:11:64:24 | LocalRequest() | bottle.request |
+| test.py:3:35:3:41 | ImportMember | bottle.request |
+| test.py:8:11:8:14 | name | externally controlled string |
+| test.py:12:9:12:12 | name | externally controlled string |
+| test.py:18:12:18:18 | request | bottle.request |
+| test.py:27:12:27:16 | where | externally controlled string |
+| test.py:32:14:32:20 | request | bottle.request |
+| test.py:36:34:36:40 | request | bottle.request |

@@ -13,19 +13,36 @@ predicate guardedAbs(Operation e, Expr use) {
   )
 }
 
+/** This is `BasicBlock.getNode`, restricted to `Stmt` for performance. */
+pragma[noinline]
+private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
+
+pragma[inline]
+private predicate stmtDominates(Stmt dominator, Stmt dominated) {
+  // In same block
+  exists(BasicBlock block, int dominatorIndex, int dominatedIndex |
+    dominatorIndex = getStmtIndexInBlock(block, dominator) and
+    dominatedIndex = getStmtIndexInBlock(block, dominated) and
+    dominatedIndex >= dominatorIndex
+  )
+  or
+  // In (possibly) different blocks
+  bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
+}
+
 /** is the size of this use guarded to be less than something? */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getThen(), e.getEnclosingStmt())
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
   )
   or
   exists(Loop c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getStmt(), e.getEnclosingStmt())
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
   )
   or
   exists(ConditionalExpr c, RelationalOperation guard |
@@ -43,13 +60,13 @@ predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getThen(), e.getEnclosingStmt())
+    stmtDominates(c.getThen(), e.getEnclosingStmt())
   )
   or
   exists(Loop c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
-    iDominates*(c.getStmt(), e.getEnclosingStmt())
+    stmtDominates(c.getStmt(), e.getEnclosingStmt())
   )
   or
   exists(ConditionalExpr c, RelationalOperation guard |

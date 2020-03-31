@@ -117,3 +117,67 @@ class TestCaseSourceAttribute extends Attribute {
     result.getName() = this.getFieldName()
   }
 }
+
+/** The `NUnit.Framework.Assert` class. */
+class NUnitAssertClass extends Class {
+  NUnitAssertClass() { this.hasQualifiedName("NUnit.Framework.Assert") }
+
+  /** Gets a `Null(object, ...)` method. */
+  Method getANullMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("Null")
+  }
+
+  /** Gets an `IsNull(object, ...)` method. */
+  Method getAnIsNullMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNull")
+  }
+
+  /** Gets a `NotNull(object, ...)` method. */
+  Method getANotNullMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("NotNull")
+  }
+
+  /** Gets an `IsNotNull(object, ...)` method. */
+  Method getAnIsNotNullMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNotNull")
+  }
+
+  /** Gets a `True(bool, ...)` method. */
+  Method getATrueMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("True")
+  }
+
+  /** Gets an `IsTrue(bool, ...)` method. */
+  Method getAnIsTrueMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsTrue")
+  }
+
+  /** Gets a `False(bool, ...)` method. */
+  Method getAFalseMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("False")
+  }
+
+  /** Gets an `IsFalse(bool, ...)` method. */
+  Method getAnIsFalseMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsFalse")
+  }
+
+  /** Gets a `That(...)` method. */
+  Method getAThatMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("That")
+  }
+}
+
+/** The `NUnit.Framework.AssertionException` class. */
+class AssertionExceptionClass extends Class {
+  AssertionExceptionClass() { this.hasQualifiedName("NUnit.Framework.AssertionException") }
+}

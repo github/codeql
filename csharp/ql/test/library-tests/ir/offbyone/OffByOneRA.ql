@@ -22,10 +22,8 @@ predicate boundedArrayAccess(ElementAccess aa, int k) {
       k = delta and
       b.getInstruction().getAST() = pa and
       pa.getProperty().getName() = "Length" and
-      pa.(QualifiableExpr).getQualifier().(VariableAccess).getTarget() = aa
-            .getQualifier()
-            .(VariableAccess)
-            .getTarget()
+      pa.(QualifiableExpr).getQualifier().(VariableAccess).getTarget() =
+        aa.getQualifier().(VariableAccess).getTarget()
     )
     or
     b instanceof ZeroBound and
@@ -46,6 +44,7 @@ where
   bestArrayAccessBound(aa, k) and
   k >= 0 and
   (if k = 0 then add = "" else add = " + " + k) and
-  msg = "This array access might be out of bounds, as the index might be equal to the array length" +
+  msg =
+    "This array access might be out of bounds, as the index might be equal to the array length" +
       add
 select aa.getEnclosingCallable(), aa, msg

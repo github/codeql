@@ -32,10 +32,12 @@ predicate setWorldWritable(FunctionCall fc, int mode) {
 from Expr fc, int mode, string message
 where
   worldWritableCreation(fc, mode) and
-  message = "A file may be created here with mode " + octalFileMode(mode) +
+  message =
+    "A file may be created here with mode " + octalFileMode(mode) +
       ", which would make it world-writable."
   or
   setWorldWritable(fc, mode) and
-  message = "This sets a file's permissions to " + octalFileMode(mode) +
+  message =
+    "This sets a file's permissions to " + octalFileMode(mode) +
       ", which would make it world-writable."
 select fc, message

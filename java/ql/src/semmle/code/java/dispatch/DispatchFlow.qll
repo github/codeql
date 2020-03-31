@@ -192,8 +192,6 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     n2.asExpr().(MethodAccess).getMethod() = getValue
   )
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()

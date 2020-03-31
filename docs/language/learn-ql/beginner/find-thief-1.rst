@@ -1,7 +1,7 @@
 Find the thief: Introduction
 ============================
 
-There is a small village hidden away in the mountains. The village is divided into four parts - north, south, east, and west - and in the center stands a dark and mysterious castle... Inside the castle, locked away in the highest tower, lies the king's valuable golden crown. One night, a terrible crime is committed. A thief breaks into the tower and steals the crown!
+There is a small village hidden away in the mountains. The village is divided into four parts—north, south, east, and west—and in the center stands a dark and mysterious castle... Inside the castle, locked away in the highest tower, lies the king's valuable golden crown. One night, a terrible crime is committed. A thief breaks into the tower and steals the crown!
 
 You know that the thief must live in the village, since nobody else knew about the crown. After some expert detective work, you obtain a list of all the people in the village and some of their personal details.
 

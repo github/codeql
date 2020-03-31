@@ -53,4 +53,4 @@ function Error() {}
  */
 function SyntaxError() {}
 
-//semmle-extractor-options: --externs
+/** @externs */

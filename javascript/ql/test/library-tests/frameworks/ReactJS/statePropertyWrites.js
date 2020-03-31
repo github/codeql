@@ -43,5 +43,3 @@ React.createClass({
     };
   }
 });
-
-//semmle-extractor-options: --experimental

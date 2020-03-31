@@ -93,8 +93,6 @@ class ConstantExpr extends Expr {
       // A binary expression where both sides are constant
       this.(BinaryExpr).getLeftOperand() instanceof ConstantExpr and
       this.(BinaryExpr).getRightOperand() instanceof ConstantExpr
-      or
-      this.(ParExpr).getExpr() instanceof ConstantExpr
     )
   }
 
@@ -107,8 +105,6 @@ class ConstantExpr extends Expr {
     result = this.(Call).getCallee().(ConstantMethod).getConstantValue().getBooleanValue()
     or
     result = this.(FieldRead).getField().(ConstantField).getConstantValue().getBooleanValue()
-    or
-    result = this.(ParExpr).getExpr().(ConstantExpr).getBooleanValue()
     or
     // Handle binary expressions that have integer operands and a boolean result.
     exists(BinaryExpr b, int left, int right |

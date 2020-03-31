@@ -6,13 +6,12 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @precision medium
- * @precision very-high
  * @id py/tests-in-files
  */
+
 import python
 import semmle.python.filters.Tests
 
 from Module m, int n
 where n = strictcount(Test test | test.getEnclosingModule() = m)
-select m.getFile(), n
-order by n desc
+select m.getFile(), n order by n desc

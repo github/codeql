@@ -6,7 +6,6 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 cached
 private newtype TNode =
@@ -182,7 +181,7 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 
   override Type getType() { result = f.getDeclaringType() }
 
-  override string toString() { result = "`this` parameter in " + f.getName() }
+  override string toString() { result = "this" }
 
   override Location getLocation() { result = f.getLocation() }
 
@@ -598,7 +597,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
-  toExpr = any(Call call |
+  toExpr =
+    any(Call call |
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
         f.hasDataFlow(inModel, outModel) and
@@ -688,9 +688,9 @@ class BarrierGuard extends GuardCondition {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(GVN value, boolean branch |
-      result.getExpr() = value.getAnExpr() and
-      this.checks(value.getAnExpr(), branch) and
+    exists(SsaDefinition def, Variable v, boolean branch |
+      result.getExpr() = def.getAUse(v) and
+      this.checks(def.getAUse(v), branch) and
       this.controls(result.getExpr().getBasicBlock(), branch)
     )
   }

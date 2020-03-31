@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import UnsafeDeserialization
+import semmle.code.java.security.UnsafeDeserialization
 import DataFlow::PathGraph
 
 class UnsafeDeserializationConfig extends TaintTracking::Configuration {

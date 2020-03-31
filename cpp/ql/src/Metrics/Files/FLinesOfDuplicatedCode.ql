@@ -17,7 +17,8 @@ import external.CodeDuplication
 
 from File f, int n
 where
-  n = count(int line |
+  n =
+    count(int line |
       exists(DuplicateBlock d | d.sourceFile() = f |
         line in [d.sourceStartLine() .. d.sourceEndLine()]
       ) and

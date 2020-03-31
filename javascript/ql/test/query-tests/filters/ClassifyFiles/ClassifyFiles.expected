@@ -6,6 +6,7 @@
 | ai.1.2.3-build0123.js:0:0:0:0 | ai.1.2.3-build0123.js | library |
 | bundle-directive.js:0:0:0:0 | bundle-directive.js | generated |
 | data.js:0:0:0:0 | data.js | generated |
+| doxygen-generated.html:0:0:0:0 | doxygen-generated.html | generated |
 | etherpad.html:0:0:0:0 | etherpad.html | generated |
 | exported-data.js:0:0:0:0 | exported-data.js | generated |
 | htmltidy.html:0:0:0:0 | htmltidy.html | generated |
@@ -38,8 +39,11 @@
 | textmate.html:0:0:0:0 | textmate.html | generated |
 | tmpl2.html:0:0:0:0 | tmpl2.html | template |
 | tmpl.html:0:0:0:0 | tmpl.html | template |
+| tst-min.js:0:0:0:0 | tst-min.js | generated |
 | tst.browserify.js:0:0:0:0 | tst.browserify.js | generated |
 | tst.dart.js:0:0:0:0 | tst.dart.js | generated |
+| tst.min.js:0:0:0:0 | tst.min.js | generated |
+| tst_min.js:0:0:0:0 | tst_min.js | generated |
 | twitter-text.js:0:0:0:0 | twitter-text.js | library |
 | twitter_text.js:0:0:0:0 | twitter_text.js | library |
 | unannotated-externs-1.js:0:0:0:0 | unannotated-externs-1.js | externs |

@@ -84,7 +84,6 @@ private predicate confusinglyOverloaded(Method m, Method n) {
 
 private predicate wrappedAccess(Expr e, MethodAccess ma) {
   e = ma or
-  wrappedAccess(e.(ParExpr).getExpr(), ma) or
   wrappedAccess(e.(CastExpr).getExpr(), ma)
 }
 

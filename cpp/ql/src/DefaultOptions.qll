@@ -59,7 +59,7 @@ class Options extends string {
   predicate exits(Function f) {
     f.getAnAttribute().hasName("noreturn")
     or
-    exists(string name | f.hasGlobalName(name) |
+    exists(string name | f.hasGlobalOrStdName(name) |
       name = "exit" or
       name = "_exit" or
       name = "abort" or
@@ -91,7 +91,7 @@ class Options extends string {
    * By default holds only for `fgets`.
    */
   predicate alwaysCheckReturnValue(Function f) {
-    f.hasGlobalName("fgets") or
+    f.hasGlobalOrStdName("fgets") or
     CustomOptions::alwaysCheckReturnValue(f) // old Options.qll
   }
 

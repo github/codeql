@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <p>Using boost::asio library but specifying a deprecated hardcoded protocol.</p>
+</overview>
+
+<recommendation>
+<p>Only use modern protocols such as TLS 1.2 or TLS 1.3.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the <code>sslv2</code> protocol is specified.  This protocol is out of date and its use is not recommended.</p>
+<sample src="UseOfDeprecatedHardcodedProtocolBad.cpp"/>
+<p>In the corrected example, the <code>tlsv13</code> protocol is used instead.</p>
+<sample src="UseOfDeprecatedHardcodedProtocolGood.cpp"/>
+</example>
+
+<references>
+  <li>
+    <a href="https://www.boost.org/doc/libs/1_71_0/doc/html/boost_asio.html">Boost.Asio documentation</a>.
+  </li>
+</references>
+</qhelp>

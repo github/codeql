@@ -17,12 +17,12 @@ import cpp
 class Allocation extends FunctionCall {
   Allocation() {
     exists(string name |
-      this.getTarget().hasGlobalName(name) and
+      this.getTarget().hasGlobalOrStdName(name) and
       (name = "malloc" or name = "calloc" or name = "realloc")
     )
   }
 
-  private string getName() { this.getTarget().hasGlobalName(result) }
+  private string getName() { this.getTarget().hasGlobalOrStdName(result) }
 
   int getSize() {
     this.getName() = "malloc" and

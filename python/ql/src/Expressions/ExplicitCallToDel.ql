@@ -13,21 +13,20 @@
 import python
 
 class DelCall extends Call {
-  DelCall() {
-    ((Attribute)this.getFunc()).getName() = "__del__"
-  }
-  
-  predicate isSuperCall() {
-    exists(Function f | f = this.getScope() and f.getName() = "__del__" |
-      // We pass in `self` as the first argument...
-      f.getArg(0).asName().getVariable() = ((Name)this.getArg(0)).getVariable() or
-      // ... or the call is of the form `super(Type, self).__del__()`, or the equivalent
-      // Python 3: `super().__del__()`.
-      exists(Call superCall | superCall = ((Attribute)this.getFunc()).getObject() |
-        ((Name)superCall.getFunc()).getId() = "super"
-      )
-    )
-  }
+    DelCall() { this.getFunc().(Attribute).getName() = "__del__" }
+
+    predicate isSuperCall() {
+        exists(Function f | f = this.getScope() and f.getName() = "__del__" |
+            // We pass in `self` as the first argument...
+            f.getArg(0).asName().getVariable() = this.getArg(0).(Name).getVariable()
+            or
+            // ... or the call is of the form `super(Type, self).__del__()`, or the equivalent
+            // Python 3: `super().__del__()`.
+            exists(Call superCall | superCall = this.getFunc().(Attribute).getObject() |
+                superCall.getFunc().(Name).getId() = "super"
+            )
+        )
+    }
 }
 
 from DelCall del

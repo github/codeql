@@ -1,4 +1,4 @@
-try { // semmle-extractor-options: --extract-program-text
+try {
     throw "!";
 } catch(x) { ; }
 try {} finally { ; }

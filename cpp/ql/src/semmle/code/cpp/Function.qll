@@ -45,7 +45,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       (
         if exists(getATemplateArgument())
         then
-          templateArgs = "<" +
+          templateArgs =
+            "<" +
               concat(int i |
                 exists(getTemplateArgument(i))
               |
@@ -53,7 +54,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
               ) + ">"
         else templateArgs = ""
       ) and
-      args = "(" +
+      args =
+        "(" +
           concat(int i |
             exists(getParameter(i))
           |
@@ -131,11 +133,24 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   Type getUnspecifiedType() { result = getType().getUnspecifiedType() }
 
-  /** Gets the nth parameter of this function. */
+  /**
+   * Gets the nth parameter of this function. There is no result for the
+   * implicit `this` parameter, and there is no `...` varargs pseudo-parameter.
+   */
   Parameter getParameter(int n) { params(unresolveElement(result), underlyingElement(this), n, _) }
 
-  /** Gets a parameter of this function. */
+  /**
+   * Gets a parameter of this function. There is no result for the implicit
+   * `this` parameter, and there is no `...` varargs pseudo-parameter.
+   */
   Parameter getAParameter() { params(unresolveElement(result), underlyingElement(this), _, _) }
+
+  /**
+   * Gets an access of this function.
+   *
+   * To get calls to this function, use `getACallToThisFunction` instead.
+   */
+  FunctionAccess getAnAccess() { result.getTarget() = this }
 
   /**
    * Gets the number of parameters of this function, _not_ including any
@@ -172,6 +187,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
     result = getParameter(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
   }
 
+  /** Gets a call to this function. */
   FunctionCall getACallToThisFunction() { result.getTarget() = this }
 
   /**
@@ -344,15 +360,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this function from a
-   * function template. When called on a function template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int index) {
-    function_template_argument(underlyingElement(this), index, unresolveElement(result))
-  }
-
-  /**
    * Holds if this function is defined in several files. This is illegal in
    * C (though possible in some C++ compilers), and likely indicates that
    * several functions that are not linked together have been compiled. An
@@ -434,7 +441,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       // ... and likewise for destructors.
       this.(Destructor).getADestruction().mayBeGloballyImpure()
     else
-      not exists(string name | this.hasGlobalName(name) |
+      not exists(string name | this.hasGlobalOrStdName(name) |
         // Unless it's a function that we know is side-effect-free, it may
         // have side-effects.
         name = "strcmp" or
@@ -609,8 +616,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
     result = getParameterDeclarationEntry(index).getTypedName()
     or
     index < getNumberOfParameters() - 1 and
-    result = getParameterDeclarationEntry(index).getTypedName() + ", " +
-        getParameterStringFrom(index + 1)
+    result =
+      getParameterDeclarationEntry(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
   }
 
   /**

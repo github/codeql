@@ -1,4 +1,3 @@
-
 import python
 import external.Thrift
 

@@ -11,7 +11,7 @@ import GenericTypeExpr
 import IntersectionTypeExpr
 import FunctionTypeReturns
 import InterfaceTypeExpr
-import IsTypeExpr
+import PredicateTypeExpr
 import ThisParameterTypes
 import ChildIndex
 import TypeArguments

@@ -78,14 +78,14 @@ class Test
         xmlDoc.Load(xmlReader);
 
         // GOOD: Passed to a library. This is only detected in CIL.
-        Console.SetOut(new StreamWriter("output.txt"));
+        DisposalTests.Class1.Dispose(new StreamWriter("output.txt"));
 
         // GOOD: Disposed automatically.
         using var c2 = new Timer(TimerProc);
 
         // GOOD: ownership taken via ??
         StringReader source = null;
-        using(XmlReader.Create(source ?? new StringReader("xml"), null))
+        using (XmlReader.Create(source ?? new StringReader("xml"), null))
             ;
 
         return null;

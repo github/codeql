@@ -6,7 +6,8 @@
  * `FormattingFunction` to match the flow within that function.
  */
 
-import semmle.code.cpp.Function
+import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.Taint
 
 private Type stripTopLevelSpecifiersOnly(Type t) {
   result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
@@ -39,7 +40,7 @@ private Type getAFormatterWideTypeOrDefault() {
 /**
  * A standard library function that uses a `printf`-like formatting string.
  */
-abstract class FormattingFunction extends Function {
+abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -63,7 +64,8 @@ abstract class FormattingFunction extends Function {
    * Gets the character type used in the format string for this function.
    */
   Type getFormatCharType() {
-    result = stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
+    result =
+      stripTopLevelSpecifiersOnly(stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex())
               .getType()
               .getUnderlyingType()).(PointerType).getBaseType())
   }
@@ -133,4 +135,33 @@ abstract class FormattingFunction extends Function {
    * Gets the position of the buffer size argument, if any.
    */
   int getSizeParameterIndex() { none() }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) {
+    bufParam = getFormatParameterIndex()
+  }
+
+  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
+    bufParam = getOutputParameterIndex() and
+    countParam = getSizeParameterIndex()
+  }
+
+  override predicate hasArrayWithUnknownSize(int bufParam) {
+    bufParam = getOutputParameterIndex() and
+    not exists(getSizeParameterIndex())
+  }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = getFormatParameterIndex() }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex() }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists(int arg |
+      (
+        arg = getFormatParameterIndex() or
+        arg >= getFirstFormatArgumentIndex()
+      ) and
+      input.isParameterDeref(arg) and
+      output.isParameterDeref(getOutputParameterIndex())
+    )
+  }
 }

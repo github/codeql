@@ -53,11 +53,8 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
 
   /** Gets a string representing the disassembly of this implementation. */
   string getDisassembly() {
-    result = concat(Instruction i |
-        i = this.getAnInstruction()
-      |
-        i.toString(), ", " order by i.getIndex()
-      )
+    result =
+      concat(Instruction i | i = this.getAnInstruction() | i.toString(), ", " order by i.getIndex())
   }
 }
 

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+  The Java <code>SimpleDateFormat</code> class provides many placeholders so that you can define
+  precisely the date format required. However, this also makes it easy to define a pattern that
+  doesn't behave exactly as you intended. The most common mistake is to use the <code>Y</code>
+  placeholder (which represents the ISO 8601 week year), rather than <code>y</code> (which
+  represents the actual year). In this case, the date reported will appear correct until the end
+  of the year, when the "week year" may differ from the actual year.
+</p>
+</overview>
+
+<recommendation>
+<p>
+  Ensure the format pattern's use of <code>Y</code> is correct, and if not replace it with <code>y</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+  The following example uses the date format <code>YYYY-MM-dd</code>.
+  On the 30th of December 2019, this code will output "2020-12-30", rather than the intended "2019-12-30".
+</p>
+<sample src="SuspiciousDateFormat.java" />
+<p>
+  The correct pattern in this case would be <code>yyyy-MM-dd</code> instead of <code>YYYY-MM-dd</code>.
+</p>
+</example>
+
+<references>
+<li>
+  Java Platform, Standard Edition 7, API Specification:
+  <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>.
+</li>
+</references>
+
+</qhelp>

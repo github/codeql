@@ -231,7 +231,8 @@ class Class extends UserType {
     this = base and result = fieldInBase
     or
     exists(ClassDerivation cd | cd.getBaseClass() = base |
-      result = this
+      result =
+        this
             .accessOfBaseMemberMulti(cd.getDerivedClass(),
               fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
     )
@@ -257,8 +258,8 @@ class Class extends UserType {
    * includes the case of `base` = `this`.
    */
   AccessSpecifier accessOfBaseMember(Declaration member) {
-    result = this
-          .accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
+    result =
+      this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
   }
 
   /**
@@ -606,15 +607,6 @@ class Class extends UserType {
   }
 
   /**
-   * Gets the `i`th template argument used to instantiate this class from a
-   * class template. When called on a class template, this will return the
-   * `i`th template parameter.
-   */
-  override Type getTemplateArgument(int i) {
-    class_template_argument(underlyingElement(this), i, unresolveElement(result))
-  }
-
-  /**
    * Holds if this class/struct is polymorphic (has a virtual function, or
    * inherits one).
    */
@@ -623,7 +615,7 @@ class Class extends UserType {
   }
 
   override predicate involvesTemplateParameter() {
-    getATemplateArgument().involvesTemplateParameter()
+    getATemplateArgument().(Type).involvesTemplateParameter()
   }
 
   /** Holds if this class, struct or union was declared 'final'. */
@@ -971,9 +963,8 @@ abstract class ClassTemplateSpecialization extends Class {
     result.getNamespace() = getNamespace() and
     // It is distinguished by the fact that each of its template arguments
     // is a distinct template parameter.
-    count(TemplateParameter tp | tp = result.getATemplateArgument()) = count(int i |
-        exists(result.getTemplateArgument(i))
-      )
+    count(TemplateParameter tp | tp = result.getATemplateArgument()) =
+      count(int i | exists(result.getTemplateArgument(i)))
   }
 
   override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
@@ -1040,9 +1031,8 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
      */
 
     exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
-    count(TemplateParameter tp | tp = getATemplateArgument()) != count(int i |
-        exists(getTemplateArgument(i))
-      )
+    count(TemplateParameter tp | tp = getATemplateArgument()) !=
+      count(int i | exists(getTemplateArgument(i)))
   }
 
   override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }

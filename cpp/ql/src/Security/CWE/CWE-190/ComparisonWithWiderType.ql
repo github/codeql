@@ -44,7 +44,7 @@ Element friendlyLoc(Expr e) {
   not e instanceof Access and not e instanceof Call and result = e
 }
 
-from Loop l, RelationalOperation rel, Expr small, Expr large
+from Loop l, RelationalOperation rel, VariableAccess small, Expr large
 where
   small = rel.getLesserOperand() and
   large = rel.getGreaterOperand() and
@@ -56,11 +56,14 @@ where
   // very noisy on codebases that started as 32-bit
   small.getExplicitlyConverted().getType().getSize() < 4 and
   // Ignore cases where integer promotion has occurred on /, -, or >> expressions.
-  not getComparisonSize(large.(DivExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
-  not getComparisonSize(large.(SubExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
-  not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
+  not getComparisonSize(large.(DivExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
+  not getComparisonSize(large.(SubExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
+  not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <=
+    getComparisonSize(small) and
   // ignore loop-invariant smaller variables
-  loopVariant(small.getAChild*(), l)
+  loopVariant(small, l)
 select rel,
   "Comparison between $@ of type " + small.getType().getName() + " and $@ of wider type " +
     large.getType().getName() + ".", friendlyLoc(small), small.toString(), friendlyLoc(large),

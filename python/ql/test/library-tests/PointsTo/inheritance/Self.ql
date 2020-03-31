@@ -1,4 +1,3 @@
-
 import python
 
 from NameNode n, Object value, ClassObject cls

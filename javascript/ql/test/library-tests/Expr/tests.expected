@@ -682,29 +682,29 @@ test_getTopLevel
 | functions.js:7:4:7:4 | x | functions.js:1:1:10:7 | <toplevel> |
 | functions.js:7:7:7:16 | in_f_again | functions.js:1:1:10:7 | <toplevel> |
 | functions.js:10:1:10:6 | global | functions.js:1:1:10:7 | <toplevel> |
-| legacyletexpr.js:1:1:1:7 | console | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:1:1:11 | console.log | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:1:1:39 | console ...  x + y) | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:9:1:11 | log | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:18:1:18 | x | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:22:1:23 | 23 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:26:1:26 | y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:30:1:31 | 19 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:34:1:34 | x | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:34:1:38 | x + y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:38:1:38 | y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:5 | array | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:9 | array.map | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:7:1:9 | map | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:11:1:25 | function(x) x+1 | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:20:1:20 | x | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:23:1:23 | x | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:1:3:42 | <toplevel> |
+| legacyletexpr.js:1:1:1:7 | console | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:1:1:11 | console.log | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:1:1:39 | console ...  x + y) | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:9:1:11 | log | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:18:1:18 | x | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:22:1:23 | 23 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:26:1:26 | y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:30:1:31 | 19 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:34:1:34 | x | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:34:1:38 | x + y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:38:1:38 | y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:5 | array | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:9 | array.map | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:7:1:9 | map | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:11:1:25 | function(x) x+1 | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:20:1:20 | x | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:23:1:23 | x | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:1:2:0 | <toplevel> |
 | nullSensitiveContexts.js:7:1:7:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
 | nullSensitiveContexts.js:7:1:7:8 | foo[bar] | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
 | nullSensitiveContexts.js:7:5:7:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
@@ -1922,25 +1922,25 @@ test_getContainer
 | functions.js:7:4:7:4 | x | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:7:7:7:16 | in_f_again | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
 | functions.js:10:1:10:6 | global | functions.js:1:1:10:7 | <toplevel> |
-| legacyletexpr.js:1:1:1:7 | console | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:1:1:11 | console.log | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:1:1:39 | console ...  x + y) | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:9:1:11 | log | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:18:1:18 | x | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:22:1:23 | 23 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:26:1:26 | y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:30:1:31 | 19 | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:34:1:34 | x | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:34:1:38 | x + y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| legacyletexpr.js:1:38:1:38 | y | legacyletexpr.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:5 | array | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:9 | array.map | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:7:1:9 | map | mozextensions.js:1:1:3:42 | <toplevel> |
-| mozextensions.js:1:11:1:25 | function(x) x+1 | mozextensions.js:1:1:3:42 | <toplevel> |
+| legacyletexpr.js:1:1:1:7 | console | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:1:1:11 | console.log | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:1:1:39 | console ...  x + y) | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:9:1:11 | log | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:18:1:18 | x | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:22:1:23 | 23 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:26:1:26 | y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:30:1:31 | 19 | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:34:1:34 | x | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:34:1:38 | x + y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| legacyletexpr.js:1:38:1:38 | y | legacyletexpr.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:5 | array | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:9 | array.map | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:7:1:9 | map | mozextensions.js:1:1:2:0 | <toplevel> |
+| mozextensions.js:1:11:1:25 | function(x) x+1 | mozextensions.js:1:1:2:0 | <toplevel> |
 | mozextensions.js:1:20:1:20 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
 | mozextensions.js:1:23:1:23 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
 | mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:11:1:25 | function(x) x+1 |

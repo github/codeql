@@ -81,7 +81,8 @@ class LockStmtBlock extends LockedBlock {
  */
 class LockingCall extends MethodCall {
   LockingCall() {
-    this.getTarget() = any(Method m |
+    this.getTarget() =
+      any(Method m |
         m.getDeclaringType().hasQualifiedName("System.Threading", "Monitor") and
         m.getName().matches("%Enter%")
       ) or

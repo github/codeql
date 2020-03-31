@@ -23,48 +23,40 @@ Expr leftChild(Expr e) {
 }
 
 predicate isInConcat(Expr e) {
-    exists(ParExpr par | isInConcat(par) and par.getExpression() = e)
-    or 
-    exists(AddExpr a | a.getAnOperand() = e)
+  exists(ParExpr par | isInConcat(par) and par.getExpression() = e)
+  or
+  exists(AddExpr a | a.getAnOperand() = e)
 }
 
 class ConcatenationLiteral extends Expr {
   ConcatenationLiteral() {
     (
-      this instanceof TemplateLiteral 
+      this instanceof TemplateLiteral
       or
       this instanceof Literal
-    )
-    and isInConcat(this)
+    ) and
+    isInConcat(this)
   }
 }
 
 Expr getConcatChild(Expr e) {
-    result = rightChild(e) or 
-    result = leftChild(e)
+  result = rightChild(e) or
+  result = leftChild(e)
 }
 
-Expr getConcatParent(Expr e) {
-    e = getConcatChild(result)
-}
+Expr getConcatParent(Expr e) { e = getConcatChild(result) }
 
 predicate isWordLike(ConcatenationLiteral lit) {
-    lit.getStringValue().regexpMatch("(?i).*[a-z]{3,}.*")
+  lit.getStringValue().regexpMatch("(?i).*[a-z]{3,}.*")
 }
 
 class ConcatRoot extends AddExpr {
-    ConcatRoot() {
-        not isInConcat(this)
-    }
+  ConcatRoot() { not isInConcat(this) }
 }
 
-ConcatRoot getAddRoot(AddExpr e) {
-    result = getConcatParent*(e)
-}
+ConcatRoot getAddRoot(AddExpr e) { result = getConcatParent*(e) }
 
-predicate hasWordLikeFragment(AddExpr e) {
-    isWordLike(getConcatChild*(getAddRoot(e)))
-}
+predicate hasWordLikeFragment(AddExpr e) { isWordLike(getConcatChild*(getAddRoot(e))) }
 
 from AddExpr e, ConcatenationLiteral l, ConcatenationLiteral r, string word
 where
@@ -79,7 +71,6 @@ where
   word = l.getStringValue().regexpCapture(".* (([-A-Za-z/'\\.:,]*[a-zA-Z]|[0-9]+)[\\.:,!?']*)", 1) and
   r.getStringValue().regexpMatch("[a-zA-Z].*") and
   not word.regexpMatch(".*[,\\.:].*[a-zA-Z].*[^a-zA-Z]") and
-  
   // There must be a constant-string in the concatenation that looks like a word.
   hasWordLikeFragment(e)
 select l, "This string appears to be missing a space after '" + word + "'."

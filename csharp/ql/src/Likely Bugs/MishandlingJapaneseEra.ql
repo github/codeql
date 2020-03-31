@@ -66,10 +66,12 @@ predicate isDateFromJapaneseCalendarCreation(ObjectCreation cr) {
 from Expr expr, string message
 where
   isDateFromJapaneseCalendarToDateTime(expr) and
-  message = "'DateTime' created from Japanese calendar with explicit or current era and hard-coded year."
+  message =
+    "'DateTime' created from Japanese calendar with explicit or current era and hard-coded year."
   or
   isDateFromJapaneseCalendarCreation(expr) and
-  message = "'DateTime' constructed from Japanese calendar with explicit or current era and hard-coded year."
+  message =
+    "'DateTime' constructed from Japanese calendar with explicit or current era and hard-coded year."
   or
   isExactEraStartDateCreation(expr) and
   message = "Hard-coded the beginning of the Japanese Heisei era."

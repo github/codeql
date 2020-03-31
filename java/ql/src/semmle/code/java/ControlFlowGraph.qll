@@ -289,8 +289,6 @@ private module ControlFlowGraphImpl {
       logexpr.(UnaryExpr).getExpr() = b and inBooleanContext(logexpr)
     )
     or
-    exists(ParExpr parexpr | parexpr.getExpr() = b and inBooleanContext(parexpr))
-    or
     exists(ConditionalExpr condexpr |
       condexpr.getCondition() = b
       or
@@ -574,8 +572,6 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(PostOrderNode).firstChild())
     or
-    result = first(n.(ParExpr).getExpr())
-    or
     result = first(n.(SynchronizedStmt).getExpr())
     or
     result = n and
@@ -707,9 +703,6 @@ private module ControlFlowGraphImpl {
       last(condexpr.getFalseExpr(), last, completion) or
       last(condexpr.getTrueExpr(), last, completion)
     )
-    or
-    // Parentheses are skipped in the CFG.
-    last(n.(ParExpr).getExpr(), last, completion)
     or
     // The last node of a node executed in post-order is the node itself.
     n.(PostOrderNode).mayCompleteNormally() and last = n and completion = NormalCompletion()

@@ -21,3 +21,7 @@ class RootController(TGController):
     @expose()
     def not_validated(self, a=None, b=None, *args):
         return 'Values: %s, %s, %s' % (a, b, args)
+
+    @expose("<template_path>")
+    def with_template(self):
+        return {'template_var': 'foo'}

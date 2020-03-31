@@ -14,7 +14,8 @@ import csharp
 from Callable c, int n
 where
   c.isSourceDeclaration() and
-  n = count(Stmt s |
+  n =
+    count(Stmt s |
       s.getEnclosingCallable() = c and
       s != c.getAChild() // we do not count the top-level block
     )

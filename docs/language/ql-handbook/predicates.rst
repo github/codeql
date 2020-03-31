@@ -271,8 +271,22 @@ Multiple binding sets specified this way are independent of each other. The abov
   - If ``y`` is bound, then ``x`` and ``y`` are bound.
 
 That is, ``bindingset[x] bindingset[y]``, which states that at least one of ``x`` or ``y`` must 
-be bound, is different from ``bindingset[x,y]``, which states that both ``x`` and ``y`` must be 
+be bound, is different from ``bindingset[x, y]``, which states that both ``x`` and ``y`` must be 
 bound.
+
+The latter can be useful when you want to declare a :ref:`predicate with result <predicates-with-result>` that takes multiple input arguments.
+For example, the following predicate takes a string ``str`` and truncates it to a maximum length of ``len`` characters::
+
+    bindingset[str, len]
+    string truncate(string str, int len) {
+      if str.length() > len
+      then result = str.prefix(len)
+      else result = str
+    }
+
+You can then use this in a :ref:`select clause <select-clauses>`, for example::
+
+    select truncate("hello world", 5)
 
 .. _database-predicates:
 
@@ -283,7 +297,7 @@ Each database that you query contains tables expressing relations between values
 ("database predicates") are treated in the same way as other predicates in QL.
 
 For example, if a database contains a table for persons, you can write 
-``persons(x, firstName, _, age)`` to constrain ``x``, ``firstName`` and ``age`` to be the 
+``persons(x, firstName, _, age)`` to constrain ``x``, ``firstName``, and ``age`` to be the 
 first, second, and fourth columns of rows in that table.
 
 The only difference is that you can't define database predicates in QL. They are defined by the

@@ -30,7 +30,8 @@ predicate canonicalName1(Declaration d, string canonical) {
 }
 
 predicate canonicalName2(Declaration d, string canonical) {
-  canonical = d
+  canonical =
+    d
         .getName()
         .replaceAll("_", "")
         .replaceAll("0", "O")

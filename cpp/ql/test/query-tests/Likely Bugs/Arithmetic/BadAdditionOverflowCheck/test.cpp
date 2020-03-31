@@ -1,11 +1,11 @@
 // Test for BadAdditionOverflowCheck.
 bool checkOverflow1(unsigned short a, unsigned short b) {
-  return (a + b < a);  // BAD: a + b is automatically promoted to int.
+  return (a + b < a);  // BAD: comparison always false (due to promotion).
 }
 
 // Test for BadAdditionOverflowCheck.
 bool checkOverflow2(unsigned short a, unsigned short b) {
-  return ((unsigned short)(a + b) < a);  // GOOD: explicit cast
+  return ((unsigned short)(a + b) < a);  // GOOD
 }
 
 // Test for PointlessSelfComparison.

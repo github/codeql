@@ -38,7 +38,7 @@ Jinja2: <a href="http://jinja.pocoo.org/docs/2.10/api/">API</a>.
 Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
 </li>
 <li>
-OWASP: <a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">XSS (Cross Site Scripting) Prevention Cheat Sheet</a>.
+OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS (Cross Site Scripting) Prevention Cheat Sheet</a>.
 </li>
 </references>
 </qhelp>

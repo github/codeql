@@ -109,8 +109,6 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   or
   n2.asExpr() = n1.asSsa().getAUse()
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
   not n2.asExpr().getType() instanceof PrimitiveType
   or
@@ -151,7 +149,8 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 }
 
 private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 = rank[r](TypeFlowNode n |
+  n1 =
+    rank[r](TypeFlowNode n |
       joinStep(n, n2)
     |
       n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
@@ -365,13 +364,45 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
   typeFlowJoin(lastRank(n), n, t)
 }
 
+pragma[nomagic]
+predicate erasedTypeBound(RefType t) {
+  exists(RefType t0 | typeFlow(_, t0) and t = t0.getErasure())
+}
+
+pragma[nomagic]
+predicate typeBound(RefType t) { typeFlow(_, t) }
+
+/**
+ * Holds if we have a bound for `n` that is better than `t`, taking only erased
+ * types into account.
+ */
+pragma[nomagic]
+private predicate irrelevantErasedBound(TypeFlowNode n, RefType t) {
+  exists(RefType bound |
+    typeFlow(n, bound)
+    or
+    n.getType() = bound and typeFlow(n, _)
+  |
+    t = bound.getErasure().(RefType).getASourceSupertype+() and
+    erasedTypeBound(t)
+  )
+}
+
 /**
  * Holds if we have a bound for `n` that is better than `t`.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate irrelevantBound(TypeFlowNode n, RefType t) {
-  exists(RefType bound | typeFlow(n, bound) or n.getType() = bound |
-    t = bound.getErasure().(RefType).getASourceSupertype+()
+  exists(RefType bound |
+    typeFlow(n, bound) and
+    t = bound.getASupertype+() and
+    typeBound(t) and
+    typeFlow(n, t) and
+    not t.getASupertype*() = bound
+    or
+    n.getType() = bound and
+    typeFlow(n, t) and
+    t = bound.getASupertype*()
   )
 }
 
@@ -381,7 +412,8 @@ private predicate irrelevantBound(TypeFlowNode n, RefType t) {
  */
 private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   typeFlow(n, t) and
-  not irrelevantBound(n, t.getErasure())
+  not irrelevantErasedBound(n, t.getErasure()) and
+  not irrelevantBound(n, t)
 }
 
 cached

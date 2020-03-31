@@ -56,27 +56,29 @@ class Redundant(object):
     def __init__(self, args):
         args = args # violation
 
-#Non redundant assignment
-len = len
+if sys.version_info < (3,):
+    bytes = str
+else:
+    bytes = bytes # Should not be flagged
 
 #Pointless else clauses
 for x in range(10):
     func(x)
 else:
     do_something()
-    
+
 while x < 10:
     func(x)
 else:
     do_something()
-    
+
 #OK else clauses:
 for x in range(10):
     if func(x):
         break
 else:
     do_something()
-    
+
 while x < 10:
     if func(x):
         break
@@ -95,24 +97,24 @@ else:
 
 #Not a redundant assignment if a property.
 class WithProp(object):
-    
+
     @property
     def x(self):
         return self._x
-    
+
     @prop.setter
     def set_x(self, x):
         side_effect(x)
         self._x = x
-    
+
     def meth(self):
         self.x = self.x
-        
+
 def maybe_property(x):
     x.y = x.y
-    
+
 class WithoutProp(object):
-    
+
     def meth(self):
         self.x = self.x
 
@@ -143,8 +145,12 @@ for e in EnumDerived:
 
 class SideEffectingAttr(object):
 
+    def __init__(self):
+        self.foo = 'foo'
+
     def __setattr__(self, name, val):
         print("hello!")
+        super().__setattr__(name, val)
 
 s = SideEffectingAttr()
 s.foo = s.foo

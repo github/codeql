@@ -160,7 +160,7 @@ into the :ref:`namespace <namespaces>` of the current module.
 Import statements
 =================
 
-Import statements are used for importing modules and are of the form::
+Import statements are used for importing modules. They are of the form::
 
     import <module_expression1> as <name>
     import <module_expression2>
@@ -175,3 +175,6 @@ for example ``import javascript as js``.
 
 The ``<module_expression>`` itself can be a module name, a selection, or a qualified
 reference. See :ref:`name-resolution` for more details.
+
+For information about how import statements are looked up, see `Module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`__
+in the QL language specification. 

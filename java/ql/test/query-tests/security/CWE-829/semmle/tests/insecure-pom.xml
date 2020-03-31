@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Duplicated in java/ql/src/Security/CWE/CWE-829/insecure-pom.xml -->
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.semmle</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>Security Testing</name>
+    <description>An example of insecure download and upload of dependencies</description>
+
+    <distributionManagement>
+        <repository>
+            <id>insecure-releases</id>
+            <name>Insecure Repository Releases</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://insecure-repository.example</url>
+        </repository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Insecure Repository Snapshots</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://insecure-repository.example</url>
+        </snapshotRepository>
+        <snapshotRepository>
+            <id>insecure-snapshots</id>
+            <name>Insecure Repository Snapshots</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://localhost.example</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>insecure</id>
+            <name>Insecure Repository</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://insecure-repository.example</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>insecure-plugins</id>
+            <name>Insecure Repository Releases</name>
+            <!-- BAD! Use HTTPS -->
+            <url>http://insecure-repository.example</url>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

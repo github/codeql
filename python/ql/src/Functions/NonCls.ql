@@ -40,9 +40,11 @@ where
     (
         if exists(f.getArgName(0))
         then
-            message = "Class methods or methods of a type deriving from type should have 'cls', rather than '"
-                    + f.getArgName(0) + "', as their first parameter."
+            message =
+                "Class methods or methods of a type deriving from type should have 'cls', rather than '" +
+                    f.getArgName(0) + "', as their first parameter."
         else
-            message = "Class methods or methods of a type deriving from type should have 'cls' as their first parameter."
+            message =
+                "Class methods or methods of a type deriving from type should have 'cls' as their first parameter."
     )
 select f, message

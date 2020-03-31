@@ -120,3 +120,13 @@ parseFloat("123", 10);
 	throwerWithParam(42, 87); // NOT OK
 	throwerIndirect(42); // OK, but still flagged due to complexity
 });
+
+function sum2() {
+	var result = 0;
+	for (var i=0,n=sum2.arguments.length; i<n; ++i)
+		result += sum2.arguments[i];
+	return result;
+}
+
+// OK
+sum2(1, 2, 3);

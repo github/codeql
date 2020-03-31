@@ -10,17 +10,17 @@
  * @tags testability
  * @id py/similar-lines-in-files
  */
+
 import python
 import external.CodeDuplication
- 
+
 from File f, int n
-
-where n = count(int line |
-    exists(SimilarBlock d | d.sourceFile() = f |
-        line in [d.sourceStartLine()..d.sourceEndLine()] and
-        not whitelistedLineForDuplication(f, line)
-    )
-)
-
-select f, n
-order by n desc
+where
+    n =
+        count(int line |
+            exists(SimilarBlock d | d.sourceFile() = f |
+                line in [d.sourceStartLine() .. d.sourceEndLine()] and
+                not whitelistedLineForDuplication(f, line)
+            )
+        )
+select f, n order by n desc

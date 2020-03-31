@@ -7,6 +7,6 @@
 import cpp
 import semmle.code.cpp.controlflow.SSA
 
-from SsaDefinition def, LocalScopeVariable var, Expr use
+from SsaDefinition def, StackVariable var, Expr use
 where def.getAUse(var) = use
 select def, def.toString(var), use

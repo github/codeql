@@ -4,7 +4,7 @@ class Test {
         {
             String latlonCoords = args[1];
             Runtime rt = Runtime.getRuntime();
-            Process exec = rt.exec("cmd.exe /C latlon2utm.exe -" + latlonCoords);
+            Process exec = rt.exec("cmd.exe /C latlon2utm.exe " + latlonCoords);
         }
 
         // GOOD: use an array of arguments instead of executing a string

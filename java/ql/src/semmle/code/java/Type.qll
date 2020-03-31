@@ -524,7 +524,8 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
   override string getTypeDescriptor() {
-    result = "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
+    result =
+      "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
         this.getSourceDeclaration().nestedName() + ";"
   }
 

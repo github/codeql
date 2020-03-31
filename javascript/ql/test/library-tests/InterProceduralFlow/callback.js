@@ -28,4 +28,4 @@ let source3 = "source3";
 call2(source3, store);
 call2(source3, confounder);
 
-// semmle-extractor-options: --source-type module
+export default 0;

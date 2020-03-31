@@ -47,6 +47,7 @@ pragma[inline]
  */
 class ElementBase extends @element {
   /** Gets a textual representation of this element. */
+  cached
   string toString() { none() }
 
   /**

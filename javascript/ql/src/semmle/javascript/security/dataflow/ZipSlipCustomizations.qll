@@ -70,7 +70,7 @@ module ZipSlip {
     // the expression `entry.path`.
     UnzipEntrySource() {
       exists(DataFlow::CallNode cn |
-        cn = parsedArchive().getAMemberCall("on") and
+        cn = parsedArchive().getAMemberCall(EventEmitter::on()) and
         cn.getArgument(0).mayHaveStringValue("entry") and
         this = cn.getCallback(1).getParameter(0).getAPropertyRead(getAFilenameProperty())
       )

@@ -31,5 +31,3 @@ new h2(23, 42,);
 x => x;
 
 function f4(x = 42,) {}
-
-// semmle-extractor-options: --experimental

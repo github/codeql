@@ -10,12 +10,25 @@ import cpp
 /**
  * An alert suppression comment.
  */
-class SuppressionComment extends CppStyleComment {
+class SuppressionComment extends Comment {
   string annotation;
   string text;
 
   SuppressionComment() {
-    text = getContents().suffix(2) and
+    (
+      this instanceof CppStyleComment and
+      // strip the beginning slashes
+      text = getContents().suffix(2)
+      or
+      this instanceof CStyleComment and
+      // strip both the beginning /* and the end */ the comment
+      exists(string text0 |
+        text0 = getContents().suffix(2) and
+        text = text0.prefix(text0.length() - 2)
+      ) and
+      // The /* */ comment must be a single-line comment
+      not text.matches("%\n%")
+    ) and
     (
       // match `lgtm[...]` anywhere in the comment
       annotation = text.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)

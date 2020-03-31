@@ -3,7 +3,7 @@
  * @description A function that uses more functions and variables from another file than functions and variables from its own file. This function might be better placed in the other file, to avoid exposing internals of the file it depends on.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision medium
  * @id cpp/feature-envy
  * @tags maintainability
  *       modularity
@@ -25,7 +25,8 @@ predicate functionUsesFunction(Function source, Function f, File target) {
 }
 
 predicate dependencyCount(Function source, File target, int res) {
-  res = strictcount(Declaration d |
+  res =
+    strictcount(Declaration d |
       functionUsesVariable(source, d, target) or
       functionUsesFunction(source, d, target)
     )

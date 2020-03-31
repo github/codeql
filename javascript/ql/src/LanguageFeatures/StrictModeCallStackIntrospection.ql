@@ -32,5 +32,6 @@ where
   acc.accesses(baseNode.asExpr(), prop) and
   acc.getContainer().isStrict() and
   illegalPropAccess(baseNode.getAValue(), base, prop) and
-  forex(AbstractValue av | av = baseNode.getAValue() | illegalPropAccess(av, _, prop))
+  forex(AbstractValue av | av = baseNode.getAValue() | illegalPropAccess(av, _, prop)) and
+  not acc = any(ExprStmt stmt).getExpr() // reported by js/useless-expression
 select acc, "Strict mode code cannot use " + base + "." + prop + "."

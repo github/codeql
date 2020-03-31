@@ -24,7 +24,7 @@
 | x | defaultargs.js:3:3:3:25 | functio ... = x) {} |
 | x | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
 | x | for.js:1:2:5:1 | functio ...    x;\\n} |
-| x | legacyletstmt.js:1:1:9:42 | <toplevel> |
+| x | legacyletstmt.js:1:1:8:0 | <toplevel> |
 | x | let.js:1:1:22:0 | <toplevel> |
 | x | let.js:1:1:22:0 | <toplevel> |
 | x | let.js:1:1:22:0 | <toplevel> |
@@ -36,7 +36,7 @@
 | x | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
 | y | defaultargs.js:3:3:3:25 | functio ... = x) {} |
 | y | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
-| y | legacyletstmt.js:1:1:9:42 | <toplevel> |
+| y | legacyletstmt.js:1:1:8:0 | <toplevel> |
 | y | let.js:1:1:22:0 | <toplevel> |
 | y | let.js:14:1:21:1 | functio ...     }\\n} |
 | y | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |

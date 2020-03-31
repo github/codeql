@@ -138,3 +138,15 @@ let unknownType: unknown;
 
 let taggedTemplateLiteralTypeArg1 = someTag<number>`Hello`;
 let taggedTemplateLiteralTypeArg2 = someTag<number, string>`Hello`;
+
+function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+      throw new AssertionError(msg)
+  }
+}
+
+function assertIsString(val: any): asserts val is string {
+  if (typeof val !== "string") {
+      throw new AssertionError("Not a string!");
+  }
+}

@@ -1,4 +1,3 @@
-
 import python
 import semmle.python.objects.ObjectAPI
 

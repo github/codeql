@@ -8,6 +8,7 @@
 | tst.c:8:1:8:18 | // lgtm: blah blah |  lgtm: blah blah | lgtm | tst.c:8:1:8:18 | // lgtm: blah blah |
 | tst.c:9:1:9:32 | // lgtm blah blah #falsepositive |  lgtm blah blah #falsepositive | lgtm | tst.c:9:1:9:32 | // lgtm blah blah #falsepositive |
 | tst.c:10:1:10:39 | //lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | tst.c:10:1:10:39 | //lgtm  [js/invocation-of-non-function] |
+| tst.c:11:1:11:10 | /* lgtm */ |  lgtm  | lgtm | tst.c:11:1:11:10 | /* lgtm */ |
 | tst.c:12:1:12:9 | // lgtm[] |  lgtm[] | lgtm[] | tst.c:12:1:12:9 | // lgtm[] |
 | tst.c:14:1:14:6 | //lgtm | lgtm | lgtm | tst.c:14:1:14:6 | //lgtm |
 | tst.c:15:1:15:7 | //\tlgtm | \tlgtm | lgtm | tst.c:15:1:15:7 | //\tlgtm |
@@ -22,6 +23,10 @@
 | tst.c:27:1:27:70 | // lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] |  lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] | lgtm[js/invocation-of-non-function] | tst.c:27:1:27:70 | // lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] |
 | tst.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm | tst.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |
 | tst.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm[js/debugger-statement] | tst.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |
+| tst.c:29:1:29:12 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tst.c:29:1:29:12 | /* lgtm[] */ |
+| tst.c:30:1:30:41 | /* lgtm[js/invocation-of-non-function] */ |  lgtm[js/invocation-of-non-function]  | lgtm[js/invocation-of-non-function] | tst.c:30:1:30:41 | /* lgtm[js/invocation-of-non-function] */ |
+| tst.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tst.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |
+| tst.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |
 | tstWindows.c:1:12:1:18 | // lgtm |  lgtm | lgtm | tstWindows.c:1:1:1:18 | // lgtm |
 | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |  lgtm[js/debugger-statement] | lgtm[js/debugger-statement] | tstWindows.c:2:1:2:30 | // lgtm[js/debugger-statement] |
 | tstWindows.c:3:1:3:61 | // lgtm[js/debugger-statement, js/invocation-of-non-function] |  lgtm[js/debugger-statement, js/invocation-of-non-function] | lgtm[js/debugger-statement, js/invocation-of-non-function] | tstWindows.c:3:1:3:61 | // lgtm[js/debugger-statement, js/invocation-of-non-function] |
@@ -32,6 +37,7 @@
 | tstWindows.c:8:1:8:18 | // lgtm: blah blah |  lgtm: blah blah | lgtm | tstWindows.c:8:1:8:18 | // lgtm: blah blah |
 | tstWindows.c:9:1:9:32 | // lgtm blah blah #falsepositive |  lgtm blah blah #falsepositive | lgtm | tstWindows.c:9:1:9:32 | // lgtm blah blah #falsepositive |
 | tstWindows.c:10:1:10:39 | //lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | lgtm  [js/invocation-of-non-function] | tstWindows.c:10:1:10:39 | //lgtm  [js/invocation-of-non-function] |
+| tstWindows.c:11:1:11:10 | /* lgtm */ |  lgtm  | lgtm | tstWindows.c:11:1:11:10 | /* lgtm */ |
 | tstWindows.c:12:1:12:9 | // lgtm[] |  lgtm[] | lgtm[] | tstWindows.c:12:1:12:9 | // lgtm[] |
 | tstWindows.c:14:1:14:6 | //lgtm | lgtm | lgtm | tstWindows.c:14:1:14:6 | //lgtm |
 | tstWindows.c:15:1:15:7 | //\tlgtm | \tlgtm | lgtm | tstWindows.c:15:1:15:7 | //\tlgtm |
@@ -46,3 +52,7 @@
 | tstWindows.c:27:1:27:70 | // lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] |  lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] | lgtm[js/invocation-of-non-function] | tstWindows.c:27:1:27:70 | // lgtm[js/debugger-statement] and lgtm[js/invocation-of-non-function] |
 | tstWindows.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm | tstWindows.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |
 | tstWindows.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |  lgtm[js/debugger-statement]; lgtm | lgtm[js/debugger-statement] | tstWindows.c:28:1:28:36 | // lgtm[js/debugger-statement]; lgtm |
+| tstWindows.c:29:1:29:12 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tstWindows.c:29:1:29:12 | /* lgtm[] */ |
+| tstWindows.c:30:1:30:41 | /* lgtm[js/invocation-of-non-function] */ |  lgtm[js/invocation-of-non-function]  | lgtm[js/invocation-of-non-function] | tstWindows.c:30:1:30:41 | /* lgtm[js/invocation-of-non-function] */ |
+| tstWindows.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |  lgtm[@tag:nullness,js/invocation-of-non-function]  | lgtm[@tag:nullness,js/invocation-of-non-function] | tstWindows.c:36:1:36:55 | /* lgtm[@tag:nullness,js/invocation-of-non-function] */ |
+| tstWindows.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.c:37:1:37:25 | /* lgtm[@tag:nullness] */ |

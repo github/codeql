@@ -129,6 +129,14 @@ abstract class PathString extends string {
   string getDirName() { result = this.regexpCapture(pathRegex(), 1) }
 
   /**
+   * Gets the extension of the folder or file this path refers to, that is, the suffix of the base name
+   * starting at the last dot character, if there is one.
+   *
+   * Has no result if the base name does not contain a dot.
+   */
+  string getExtension() { result = this.regexpCapture(pathRegex(), 4) }
+
+  /**
    * Gets the absolute path that the sub-path consisting of the first `n`
    * components of this path refers to when resolved relative to the
    * given `root` folder.
@@ -204,6 +212,17 @@ abstract class PathExpr extends PathExprBase {
 
   /** Gets the base name of the folder or file this path refers to. */
   string getBaseName() { result = getValue().(PathString).getBaseName() }
+
+  /** Gets the stem, that is, base name without extension, of the folder or file this path refers to. */
+  string getStem() { result = getValue().(PathString).getStem() }
+
+  /**
+   * Gets the extension of the folder or file this path refers to, that is, the suffix of the base name
+   * starting at the last dot character, if there is one.
+   *
+   * Has no result if the base name does not contain a dot.
+   */
+  string getExtension() { result = getValue().(PathString).getExtension() }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to

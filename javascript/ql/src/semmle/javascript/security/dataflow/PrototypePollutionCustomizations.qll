@@ -74,7 +74,7 @@ module PrototypePollution {
   private class RemoteFlowAsSource extends Source {
     RemoteFlowAsSource() { this instanceof RemoteFlowSource }
 
-    override DataFlow::FlowLabel getAFlowLabel() { result.isData() }
+    override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
   }
 
   /**

@@ -31,7 +31,8 @@ VarRef refInContainer(Variable var, RefKind kind, StmtContainer sc) {
  * declaration of `var` (if `kind` is `Decl()`) in `sc`.
  */
 VarRef firstRefInContainer(Variable var, RefKind kind, StmtContainer sc) {
-  result = min(refInContainer(var, kind, sc) as ref
+  result =
+    min(refInContainer(var, kind, sc) as ref
       order by
         ref.getLocation().getStartLine(), ref.getLocation().getStartColumn()
     )
@@ -52,7 +53,8 @@ VarRef refInTopLevel(Variable var, RefKind kind, TopLevel tl) {
  * declaration of `var` (if `kind` is `Decl()`) in `tl`.
  */
 VarRef firstRefInTopLevel(Variable var, RefKind kind, TopLevel tl) {
-  result = min(refInTopLevel(var, kind, tl) as ref
+  result =
+    min(refInTopLevel(var, kind, tl) as ref
       order by
         ref.getLocation().getStartLine(), ref.getLocation().getStartColumn()
     )

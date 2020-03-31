@@ -26,7 +26,5 @@ where
         value = test.(NameConstant).toString()
     ) and
     /* Exclude asserts appearing at the end of a chain of `elif`s */
-    not exists(If i | 
-        i.getElif().getAnOrelse() = a
-    )
+    not exists(If i | i.getElif().getAnOrelse() = a)
 select a, "Assert of literal constant " + value + "."

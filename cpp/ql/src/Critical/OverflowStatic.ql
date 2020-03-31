@@ -51,7 +51,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
     loop.limit() >= bufaccess.bufferSize() and
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
-    msg = "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
+    msg =
+      "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
         bufaccess.bufferSize().toString() + " elements."
   )
@@ -60,19 +61,19 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
 predicate bufferAndSizeFunction(Function f, int buf, int size) {
   f.hasGlobalName("read") and buf = 1 and size = 2
   or
-  f.hasGlobalName("fgets") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("fgets") and buf = 0 and size = 1
   or
-  f.hasGlobalName("strncpy") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("strncpy") and buf = 0 and size = 2
   or
-  f.hasGlobalName("strncat") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("strncat") and buf = 0 and size = 2
   or
-  f.hasGlobalName("memcpy") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("memcpy") and buf = 0 and size = 2
   or
-  f.hasGlobalName("memmove") and buf = 0 and size = 2
+  f.hasGlobalOrStdName("memmove") and buf = 0 and size = 2
   or
-  f.hasGlobalName("snprintf") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("snprintf") and buf = 0 and size = 1
   or
-  f.hasGlobalName("vsnprintf") and buf = 0 and size = 1
+  f.hasGlobalOrStdName("vsnprintf") and buf = 0 and size = 1
 }
 
 class CallWithBufferSize extends FunctionCall {
@@ -106,8 +107,9 @@ predicate wrongBufferSize(Expr error, string msg) {
     statedSize = min(call.statedSizeValue()) and
     statedSize > bufsize and
     error = call.statedSizeExpr() and
-    msg = "Potential buffer-overflow: '" + buf.getName() + "' has size " + bufsize.toString() +
-        " not " + statedSize + "."
+    msg =
+      "Potential buffer-overflow: '" + buf.getName() + "' has size " + bufsize.toString() + " not " +
+        statedSize + "."
   )
 }
 
@@ -121,8 +123,9 @@ predicate outOfBounds(BufferAccess bufaccess, string msg) {
       or
       access = size and not exists(AddressOfExpr addof | bufaccess = addof.getOperand())
     ) and
-    msg = "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf +
-        "[" + access.toString() + "]' is accessed here."
+    msg =
+      "Potential buffer-overflow: '" + buf + "' has size " + size.toString() + " but '" + buf + "[" +
+        access.toString() + "]' is accessed here."
   )
 }
 

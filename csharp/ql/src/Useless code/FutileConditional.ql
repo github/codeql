@@ -14,7 +14,8 @@ import csharp
 predicate emptyStmt(Stmt s) {
   s instanceof EmptyStmt
   or
-  s = any(BlockStmt bs |
+  s =
+    any(BlockStmt bs |
       bs.getNumberOfStmts() = 0
       or
       bs.getNumberOfStmts() = 1 and

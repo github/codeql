@@ -10,8 +10,14 @@ import cpp
 class PackedTimeType extends Type {
   PackedTimeType() {
     this.getName() = "_FILETIME" or
-    this.getName().matches("_FILETIME %")
+    this.(DerivedType).getBaseType*().getName() = "_FILETIME"
   }
+}
+
+private predicate timeType(string typeName) {
+  typeName = "_SYSTEMTIME" or
+  typeName = "SYSTEMTIME" or
+  typeName = "tm"
 }
 
 /**
@@ -20,12 +26,8 @@ class PackedTimeType extends Type {
  */
 class UnpackedTimeType extends Type {
   UnpackedTimeType() {
-    this.getName() = "_SYSTEMTIME" or
-    this.getName() = "SYSTEMTIME" or
-    this.getName() = "tm" or
-    this.getName().matches("_SYSTEMTIME %") or
-    this.getName().matches("SYSTEMTIME %") or
-    this.getName().matches("tm %")
+    timeType(this.getName()) or
+    timeType(this.(DerivedType).getBaseType*().getName())
   }
 }
 

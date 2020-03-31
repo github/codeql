@@ -50,7 +50,7 @@ namespace EFCoreTests
             Sink(taintSource);  // Tainted
             Sink(new RawSqlString(taintSource));  // Tainted
             Sink((RawSqlString)taintSource);  // Tainted
-            Sink((RawSqlString)(FormattableString)$"{taintSource}");  // Not tainted
+            Sink((RawSqlString)(FormattableString)$"{taintSource}");  // Tainted, but not reported because conversion operator is in a stub .cs file
 
             // Tainted via database, even though technically there were no reads or writes to the database in this particular case.
             var p1 = new Person { Name = taintSource };

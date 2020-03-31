@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
   PureStrFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "atof" or
         name = "atoi" or
@@ -30,12 +30,25 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
         name = "strtol" or
         name = "strtoll" or
         name = "strtoq" or
-        name = "strtoul"
+        name = "strtoul" or
+        name = "wcslen"
+      )
+      or
+      hasGlobalName(name) and
+      (
+        name = "_mbslen" or
+        name = "_mbslen_l" or
+        name = "_mbstrlen" or
+        name = "_mbstrlen_l"
       )
     )
   }
 
   override predicate hasArrayInput(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) {
     getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
 
@@ -67,15 +80,20 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
 
   override predicate parameterIsAlwaysReturned(int i) { none() }
 
-  override predicate hasOnlySpecificReadSideEffects() { none() }
+  override predicate hasOnlySpecificReadSideEffects() { any() }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
+  }
 }
 
 class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() {
     exists(string name |
-      hasGlobalName(name) and
+      hasGlobalOrStdName(name) and
       (
         name = "abs" or
         name = "labs"

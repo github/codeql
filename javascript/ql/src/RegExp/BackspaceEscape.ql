@@ -14,5 +14,7 @@
 import javascript
 
 from RegExpCharEscape rece
-where rece.toString() = "\\b"
+where
+  rece.toString() = "\\b" and
+  rece.isPartOfRegExpLiteral()
 select rece, "Backspace escape in regular expression."

@@ -481,13 +481,13 @@ class GetterMethod extends Method {
 
 /**
  * A finalizer method, with name `finalize`,
- * return type `void` and modifier `protected`.
+ * return type `void` and no parameters.
  */
 class FinalizeMethod extends Method {
   FinalizeMethod() {
     this.hasName("finalize") and
     this.getReturnType().hasName("void") and
-    this.isProtected()
+    this.hasNoParameters()
   }
 }
 

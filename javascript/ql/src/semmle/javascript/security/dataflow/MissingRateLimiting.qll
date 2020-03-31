@@ -150,9 +150,8 @@ class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
   RouteHandlerLimitedByExpressLimiter() {
     exists(DataFlow::ModuleImportNode expressLimiter |
       expressLimiter.getPath() = "express-limiter" and
-      expressLimiter.getACall().getArgument(0).getALocalSource().asExpr() = this
-            .getSetup()
-            .getRouter()
+      expressLimiter.getACall().getArgument(0).getALocalSource().asExpr() =
+        this.getSetup().getRouter()
     )
   }
 }

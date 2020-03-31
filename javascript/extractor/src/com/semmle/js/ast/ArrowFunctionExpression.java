@@ -2,6 +2,7 @@ package com.semmle.js.ast;
 
 import com.semmle.ts.ast.ITypeExpression;
 import com.semmle.ts.ast.TypeParameter;
+import com.semmle.util.data.IntList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +22,8 @@ public class ArrowFunctionExpression extends AFunctionExpression {
         Collections.emptyList(),
         Collections.emptyList(),
         null,
-        null);
+        null,
+        AFunction.noOptionalParams);
   }
 
   public ArrowFunctionExpression(
@@ -32,7 +34,8 @@ public class ArrowFunctionExpression extends AFunctionExpression {
       Boolean async,
       List<TypeParameter> typeParameters,
       List<ITypeExpression> parameterTypes,
-      ITypeExpression returnType) {
+      ITypeExpression returnType,
+      IntList optionalParameterIndices) {
     super(
         "ArrowFunctionExpression",
         loc,
@@ -45,7 +48,8 @@ public class ArrowFunctionExpression extends AFunctionExpression {
         parameterTypes,
         Collections.emptyList(),
         returnType,
-        null);
+        null,
+        optionalParameterIndices);
   }
 
   @Override

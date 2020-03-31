@@ -343,7 +343,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
   }
 
   override string toStringWithTypes() {
-    result = getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">(" +
+    result =
+      getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">(" +
         parameterTypesToString() + ")"
   }
 }
@@ -370,21 +371,22 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
-  language[monotonicAggregates]
-  private string annotatedTypeArgumentsToString() {
-    result = concat(int i |
-        exists(this.getAnnotatedTypeArgument(i))
-      |
-        this.getAnnotatedTypeArgument(i).toString(), ", " order by i
-      )
-  }
-
   override string toStringWithTypes() {
-    result = getUnboundGeneric().getNameWithoutBrackets() + "<" +
-        this.annotatedTypeArgumentsToString() + ">"
+    result =
+      getUnboundGeneric().getNameWithoutBrackets() + "<" + this.getTypeArgumentsString() + ">"
   }
 
   final override Type getChild(int n) { result = getTypeArgument(n) }
+
+  language[monotonicAggregates]
+  private string getTypeArgumentsString() {
+    result =
+      concat(int i |
+        exists(this.getTypeArgument(i))
+      |
+        this.getTypeArgument(i).toString(), ", " order by i
+      )
+  }
 }
 
 /**
@@ -500,8 +502,8 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
   }
 
   override string toStringWithTypes() {
-    result = getName() + "<" + this.typeParametersToString() + ">" + "(" + parameterTypesToString() +
-        ")"
+    result =
+      getName() + "<" + this.typeParametersToString() + ">" + "(" + parameterTypesToString() + ")"
   }
 }
 
@@ -531,8 +533,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
   override UnboundGenericMethod getUnboundGeneric() { constructed_generic(this, result) }
 
   override string toStringWithTypes() {
-    result = getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() +
-        ")"
+    result =
+      getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() + ")"
   }
 
   override UnboundGenericMethod getSourceDeclaration() {

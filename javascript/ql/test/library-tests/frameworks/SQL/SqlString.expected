@@ -12,6 +12,7 @@
 | postgres1.js:37:21:37:24 | text |
 | postgres2.js:30:16:30:41 | 'SELECT ... number' |
 | postgres3.js:15:16:15:40 | 'SELECT ... s name' |
+| postgres5.js:8:21:8:25 | query |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | spanner2.js:5:26:5:35 | "SQL code" |

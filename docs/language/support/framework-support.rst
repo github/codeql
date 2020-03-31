@@ -1,7 +1,7 @@
 Frameworks and libraries
 ########################
 
-The QL libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
+The libraries and queries in version |version| have been explicitly checked against the libraries and frameworks listed below.
 
 .. pull-quote::
 
@@ -20,13 +20,6 @@ C# built-in support
      :header-rows: 1
      :class: fullWidthTable
      :widths: auto
-
-COBOL built-in support
-===================================
-
-* Embedded SQL
-* Embedded CICS
-
 
 Java built-in support
 ==================================

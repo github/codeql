@@ -1,0 +1,1 @@
+| test.py:20:23:20:25 | tornado.HttpRequestHandler.redirect | externally controlled string |

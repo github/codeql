@@ -46,7 +46,8 @@ module XPathInjection {
   /** The `xpath` argument to an `XPathExpression.Compile(..)` call. */
   class XPathExpressionCompileSink extends Sink {
     XPathExpressionCompileSink() {
-      this.getExpr() = any(SystemXmlXPath::XPathExpression xpathExpr)
+      this.getExpr() =
+        any(SystemXmlXPath::XPathExpression xpathExpr)
             .getAMethod("Compile")
             .getACall()
             .getArgumentForName("xpath")
@@ -56,10 +57,25 @@ module XPathInjection {
   /** The `xpath` argument to an `XmlNode.Select*Node*(..)` call. */
   class XmlNodeSink extends Sink {
     XmlNodeSink() {
-      this.getExpr() = any(SystemXmlXmlNodeClass xmlNode)
+      this.getExpr() =
+        any(SystemXmlXmlNodeClass xmlNode)
             .getASelectNodeMethod()
             .getACall()
             .getArgumentForName("xpath")
+    }
+  }
+
+  /** The `xpath` argument to an `XPathNavigator` call. */
+  class XmlNavigatorSink extends Sink {
+    XmlNavigatorSink() {
+      exists(SystemXmlXPath::XPathNavigator xmlNav, Method m |
+        this.getExpr() = m.getACall().getArgumentForName("xpath")
+      |
+        m = xmlNav.getASelectMethod() or
+        m = xmlNav.getCompileMethod() or
+        m = xmlNav.getAnEvaluateMethod() or
+        m = xmlNav.getAMatchesMethod()
+      )
     }
   }
 

@@ -5,7 +5,8 @@ import semmle.code.cpp.ir.internal.IntegerConstant
 
 from IRFunction irFunc, int value
 where
-  value = getValue(getConstantValue(irFunc
+  value =
+    getValue(getConstantValue(irFunc
             .getReturnInstruction()
             .(ReturnValueInstruction)
             .getReturnValue()))

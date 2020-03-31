@@ -3,6 +3,7 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
@@ -14,6 +15,10 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

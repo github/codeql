@@ -35,7 +35,7 @@ class FalconRequest extends TaintKind {
     }
 }
 
-class FalconRequestParameter extends TaintSource {
+class FalconRequestParameter extends HttpRequestTaintSource {
     FalconRequestParameter() {
         exists(FalconHandlerFunction f | f.getRequest() = this.(ControlFlowNode).getNode())
     }

@@ -16,6 +16,5 @@ import python
 import Expressions.RedundantComparison
 
 from RedundantComparison comparison
-where 
-    comparison.maybeMissingSelf()
+where comparison.maybeMissingSelf()
 select comparison, "Comparison of identical values; may be missing 'self'."

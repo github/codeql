@@ -183,11 +183,8 @@ class Folder extends Container, @folder {
    * HTML files will not be found by this method.
    */
   File getJavaScriptFile(string stem) {
-    result = min(int p, string ext |
-        p = getFileExtensionPriority(ext)
-      |
-        getFile(stem, ext) order by p
-      )
+    result =
+      min(int p, string ext | p = getFileExtensionPriority(ext) | getFile(stem, ext) order by p)
   }
 
   /** Gets a subfolder contained in this folder. */
@@ -198,8 +195,13 @@ class Folder extends Container, @folder {
 }
 
 /** A file. */
-class File extends Container, @file, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
+class File extends Container, @file {
+  /**
+   * Gets the location of this file.
+   *
+   * Note that files have special locations starting and ending at line zero, column zero.
+   */
+  Location getLocation() { hasLocation(this, result) }
 
   override string getAbsolutePath() { files(this, result, _, _, _) }
 

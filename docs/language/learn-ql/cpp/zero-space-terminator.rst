@@ -87,6 +87,10 @@ Now we can write a query using these classes:
 
 Note that there is no need to check whether anything is added to the ``strlen`` expression, as it would be in the corrected C code ``malloc(strlen(string) + 1)``. This is because the corrected code would in fact be an ``AddExpr`` containing a ``StrlenCall``, not an instance of ``StrlenCall`` itself. A side-effect of this approach is that we omit certain unlikely patterns such as ``malloc(strlen(string) + 0``). In practice we can always come back and extend our query to cover this pattern if it is a concern.
 
+.. pull-quote::
+
+   Tip
+
    For some projects, this query may not return any results. Possibly the project you are querying does not have any problems of this kind, but it is also important to make sure the query itself is working properly. One solution is to set up a test project with examples of correct and incorrect code to run the query against (the C code at the very top of this page makes a good starting point). Another approach is to test each part of the query individually to make sure everything is working.
 
 When you have defined the basic query then you can refine the query to include further coding patterns or to exclude false positives:

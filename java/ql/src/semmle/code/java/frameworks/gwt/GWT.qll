@@ -61,19 +61,29 @@ class ClientSideGwtCompilationUnit extends GwtCompilationUnit {
   }
 }
 
-/** Auxiliary predicate: `jsni` is a JSNI comment associated with method `m`. */
-private predicate jsniComment(Javadoc jsni, Method m) {
+private predicate jsni(Javadoc jsni, File file, int startline) {
   // The comment must start with `-{` ...
   jsni.getChild(0).getText().matches("-{%") and
   // ... and it must end with `}-`.
   jsni.getChild(jsni.getNumChild() - 1).getText().matches("%}-") and
-  // The associated callable must be marked as `native` ...
+  file = jsni.getFile() and
+  startline = jsni.getLocation().getStartLine()
+}
+
+private predicate nativeMethodLines(Method m, File file, int line) {
   m.isNative() and
-  // ... and the comment has to be contained in `m`.
-  jsni.getFile() = m.getFile() and
-  jsni.getLocation().getStartLine() in [m.getLocation().getStartLine() .. m
-          .getLocation()
-          .getEndLine()]
+  file = m.getFile() and
+  line in [m.getLocation().getStartLine() .. m.getLocation().getEndLine()]
+}
+
+/** Auxiliary predicate: `jsni` is a JSNI comment associated with method `m`. */
+private predicate jsniComment(Javadoc jsni, Method m) {
+  exists(File file, int line |
+    jsni(jsni, file, line) and
+    // The associated callable must be marked as `native`
+    // and the comment has to be contained in `m`.
+    nativeMethodLines(m, file, line)
+  )
 }
 
 /**

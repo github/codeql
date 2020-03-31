@@ -26,6 +26,8 @@
 | queries.cs:27:11:27:42 | call to method Join | 2 | queries.cs:27:21:27:25 | access to local variable list1 |
 | queries.cs:27:11:27:42 | call to method Join | 3 | queries.cs:27:30:27:33 | access to local variable next |
 | queries.cs:27:11:27:42 | call to method Join | 4 | queries.cs:27:42:27:42 | access to local variable c |
+| queries.cs:28:11:28:18 | call to method  | 0 | queries.cs:27:11:27:42 | call to method Join |
+| queries.cs:28:11:28:18 | call to method  | 1 | queries.cs:28:18:28:18 | 1 |
 | queries.cs:32:11:32:21 | call to method SelectMany | 0 | queries.cs:31:11:31:25 | IList<Int32> a = ... |
 | queries.cs:32:11:32:21 | call to method SelectMany | 1 | queries.cs:32:11:32:21 | IList<Int32> b = ... |
 | queries.cs:32:11:32:21 | call to method SelectMany | 2 | queries.cs:32:21:32:21 | access to local variable a |
@@ -49,3 +51,5 @@
 | queries.cs:55:11:55:49 | call to method GroupJoin | 3 | queries.cs:55:30:55:30 | access to local variable a |
 | queries.cs:55:11:55:49 | call to method GroupJoin | 4 | queries.cs:55:39:55:42 | access to indexer |
 | queries.cs:55:11:55:49 | call to method GroupJoin | 5 | queries.cs:55:11:55:49 | IList<IList<Int32>> d = ... |
+| queries.cs:56:11:56:22 | call to method  | 0 | queries.cs:55:11:55:49 | call to method GroupJoin |
+| queries.cs:56:11:56:22 | call to method  | 1 | queries.cs:56:18:56:22 | (..., ...) |

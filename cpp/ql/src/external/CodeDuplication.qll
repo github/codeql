@@ -73,7 +73,8 @@ FunctionDeclarationEntry sourceMethod() {
 }
 
 int numberOfSourceMethods(Class c) {
-  result = count(FunctionDeclarationEntry m |
+  result =
+    count(FunctionDeclarationEntry m |
       m = sourceMethod() and
       m.getFunction().getDeclaringType() = c
     )
@@ -126,7 +127,8 @@ predicate similarLines(File f, int line) {
 }
 
 private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(SimilarBlock b, int toSum |
+  lines =
+    strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -137,7 +139,8 @@ private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, Fil
 private predicate similarLinesCoveredFiles(File f, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             similarLinesPerEquivalenceClass(equivClass, num, f) and
             similarLinesPerEquivalenceClass(equivClass, num, otherFile) and
@@ -153,7 +156,8 @@ predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     similarLinesCoveredFiles(f, otherFile) and
     exists(int notCovered |
-      notCovered = count(int j |
+      notCovered =
+        count(int j |
           j in [1 .. numLines] and
           not similarLines(f, j)
         ) and
@@ -169,7 +173,8 @@ predicate duplicateLines(File f, int line) {
 }
 
 private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
-  lines = strictsum(DuplicateBlock b, int toSum |
+  lines =
+    strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
       toSum = b.sourceLines()
     |
@@ -180,7 +185,8 @@ private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, F
 predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getMetrics().getNumberOfLines() |
     exists(int coveredApprox |
-      coveredApprox = strictsum(int num |
+      coveredApprox =
+        strictsum(int num |
           exists(int equivClass |
             duplicateLinesPerEquivalenceClass(equivClass, num, f) and
             duplicateLinesPerEquivalenceClass(equivClass, num, otherFile) and
@@ -190,7 +196,8 @@ predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
       (coveredApprox * 100) / numLines > 75
     ) and
     exists(int notCovered |
-      notCovered = count(int j |
+      notCovered =
+        count(int j |
           j in [1 .. numLines] and
           not duplicateLines(f, j)
         ) and
@@ -219,7 +226,8 @@ predicate duplicateFiles(File f, File other, int percent) {
 }
 
 predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int total) {
-  numDup = strictcount(FunctionDeclarationEntry m1 |
+  numDup =
+    strictcount(FunctionDeclarationEntry m1 |
       exists(FunctionDeclarationEntry m2 |
         duplicateMethod(m1, m2) and
         m1 = sourceMethod() and

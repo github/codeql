@@ -16,7 +16,8 @@ from ValueOrRefType t, int n
 where
   t.isSourceDeclaration() and
   t.isPublic() and
-  n = count(Method m | m.getDeclaringType() = t and m.isPublic()) +
+  n =
+    count(Method m | m.getDeclaringType() = t and m.isPublic()) +
       count(Operator o | o.getDeclaringType() = t and o.isPublic()) +
       count(Property p | p.getDeclaringType() = t and p.isPublic()) +
       count(Indexer i | i.getDeclaringType() = t and i.isPublic()) +

@@ -12,7 +12,7 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.LocalScopeVariableReachability
+import semmle.code.cpp.controlflow.StackVariableReachability
 
 /**
  * Auxiliary predicate: Types that don't require initialization
@@ -40,23 +40,17 @@ DeclStmt declWithNoInit(LocalVariable v) {
   result.getADeclaration() = v and
   not exists(v.getInitializer()) and
   /* The type of the variable is not stack-allocated. */
-  not allocatedType(v.getType()) and
-  /* The variable is not static (otherwise it is zeroed). */
-  not v.isStatic() and
-  /* The variable is not extern (otherwise it is zeroed). */
-  not v.hasSpecifier("extern")
+  not allocatedType(v.getType())
 }
 
-class UninitialisedLocalReachability extends LocalScopeVariableReachability {
+class UninitialisedLocalReachability extends StackVariableReachability {
   UninitialisedLocalReachability() { this = "UninitialisedLocal" }
 
-  override predicate isSource(ControlFlowNode node, LocalScopeVariable v) {
-    node = declWithNoInit(v)
-  }
+  override predicate isSource(ControlFlowNode node, StackVariable v) { node = declWithNoInit(v) }
 
-  override predicate isSink(ControlFlowNode node, LocalScopeVariable v) { useOfVarActual(v, node) }
+  override predicate isSink(ControlFlowNode node, StackVariable v) { useOfVarActual(v, node) }
 
-  override predicate isBarrier(ControlFlowNode node, LocalScopeVariable v) {
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
     // only report the _first_ possibly uninitialized use
     useOfVarActual(v, node) or
     definitionBarrier(v, node)

@@ -98,3 +98,58 @@ void g(int *i_p, int cond) {
   if (y = 1) { // GOOD: y might not be initialized so it is probably intentional.
   }
 }
+
+template<typename>
+void h() {
+  int x;
+  if(x = 0) { // GOOD: x is not initialized so this is probably intentional
+  }
+
+  int y = 0;
+  if((y = 1)) { // GOOD
+  }
+
+  int z = 0;
+  if(z = 1) { // BAD
+  }
+}
+
+void f() {
+  h<int>();
+}
+
+void f2() {
+  const char* sz = "abc";
+
+  if(sz = "def") { // GOOD: a == comparison with a string literal is probably not the intent here
+  }
+}
+
+void f3(int x, int y) {
+  if(x == 1 && (y = 2)) { // GOOD: the programmer seems to be okay with unparenthesized
+                          // comparison operands, so the parenthesis was used to mark this
+                          // as an assignment
+  }
+
+  if((x == 1) && (y = 2)) { // BAD
+  }
+
+  long z = x;
+  if(((z == 42) || (y = 2)) && (x == 1)) { // BAD
+  }
+
+  if((y = 2) && (x == z || x == 1)) { // GOOD
+  }
+
+  if(((x == 42) || x == 1) && (y = 2)) { // BAD
+  }
+
+  if(x == 10 || (x == 42 && x == 1) && (y = 2)) { // GOOD
+  }
+
+  if(x == 10 || ((x == 42) && (y = 2)) && (z == 1)) { // BAD
+  }
+
+  if((x == 10) || ((z == z) && (x == 1)) && (y = 2)) { // BAD
+  }
+}

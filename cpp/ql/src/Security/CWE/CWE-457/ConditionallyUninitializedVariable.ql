@@ -1,8 +1,8 @@
 /**
  * @name Conditionally uninitialized variable
- * @description When an initialization function is used to initialize a local variable, but the
- *              returned status code is not checked, the variable may be left in an uninitialized
- *              state, and reading the variable may result in undefined behaviour.
+ * @description An initialization function is used to initialize a local variable, but the
+ *              returned status code is not checked. The variable may be left in an uninitialized
+ *              state, and reading the variable may result in undefined behavior.
  * @kind problem
  * @problem.severity warning
  * @opaque-id SM02313

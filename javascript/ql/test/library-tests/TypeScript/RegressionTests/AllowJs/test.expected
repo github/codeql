@@ -1,0 +1,5 @@
+| main.ts:1:8:1:8 | f | (x: string) => string |
+| main.ts:1:20:1:26 | "./tst" | any |
+| main.ts:2:1:2:1 | f | (x: string) => string |
+| main.ts:2:1:2:10 | f("world") | string |
+| main.ts:2:3:2:9 | "world" | "world" |

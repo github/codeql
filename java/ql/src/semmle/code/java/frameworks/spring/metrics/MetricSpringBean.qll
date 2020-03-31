@@ -41,14 +41,16 @@ class MetricSpringBean extends SpringBean {
   int getEfferentCoupling() { result = count(SpringBean other | springDepends(this, other, _)) }
 
   int getLocalAfferentCoupling() {
-    result = count(SpringBean other |
+    result =
+      count(SpringBean other |
         springDepends(other, this, _) and
         this.getSpringBeanFile() = other.getSpringBeanFile()
       )
   }
 
   int getLocalEfferentCoupling() {
-    result = count(SpringBean other |
+    result =
+      count(SpringBean other |
         springDepends(this, other, _) and
         this.getSpringBeanFile() = other.getSpringBeanFile()
       )

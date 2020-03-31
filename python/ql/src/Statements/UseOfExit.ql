@@ -12,5 +12,7 @@
 import python
 
 from CallNode call, string name
-where call.getFunction().refersTo(Object::quitter(name))
-select call, "The '" + name + "' site.Quitter object may not exist if the 'site' module is not loaded or is modified."
+where call.getFunction().pointsTo(Value::siteQuitter(name))
+select call,
+    "The '" + name +
+        "' site.Quitter object may not exist if the 'site' module is not loaded or is modified."

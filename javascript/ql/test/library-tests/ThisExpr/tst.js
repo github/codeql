@@ -146,4 +146,3 @@ class C_lodash {
     }
 
 }
-//semmle-extractor-options: --experimental

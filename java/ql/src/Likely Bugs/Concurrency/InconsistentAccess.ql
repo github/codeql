@@ -53,9 +53,8 @@ class MyField extends Field {
   }
 
   int getNumSynchedAccesses() {
-    result = count(Expr synched |
-        synched = this.getAnAccess() and withinLocalSynchronization(synched)
-      )
+    result =
+      count(Expr synched | synched = this.getAnAccess() and withinLocalSynchronization(synched))
   }
 
   int getNumAccesses() { result = count(this.getAnAccess()) }

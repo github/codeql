@@ -1,3 +1,5 @@
+| assignment.py:5 | SOURCE | simple.test |
+| assignment.py:13 | SOURCE | simple.test |
 | carrier.py:17 | SOURCE | simple.test |
 | carrier.py:21 | TAINT_CARRIER_SOURCE | explicit.carrier |
 | carrier.py:25 | SOURCE | simple.test |
@@ -45,3 +47,6 @@
 | test.py:195 | SOURCE | simple.test |
 | test.py:202 | ITERABLE_SOURCE | iterable.simple |
 | test.py:208 | SOURCE | simple.test |
+| test.py:217 | SOURCE | simple.test |
+| test.py:223 | SOURCE | simple.test |
+| test.py:229 | SOURCE | simple.test |

@@ -32,7 +32,6 @@ nodes
 | A2.java:15:15:15:28 | new Integer(...) : Number | semmle.label | new Integer(...) : Number |
 | A2.java:27:27:27:34 | o : Number | semmle.label | o : Number |
 | A2.java:29:9:29:9 | o | semmle.label | o |
-| A2.java:37:10:37:10 | o | semmle.label | o |
 | A.java:14:29:14:36 | o : Number | semmle.label | o : Number |
 | A.java:16:9:16:9 | o | semmle.label | o |
 | A.java:20:30:20:37 | o : Number | semmle.label | o : Number |

@@ -41,7 +41,8 @@ class MetricNamespace extends Namespace {
   float getAbstractness() {
     exists(int i, int j |
       i = count(Class c | c.getNamespace() = this) and
-      j = count(Class c |
+      j =
+        count(Class c |
           c.getNamespace() = this and
           c.isAbstract()
         ) and

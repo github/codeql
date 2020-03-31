@@ -16,3 +16,5 @@ import SyntheticConstructors
 import ConstructorDefinitions
 import ClassNodeConstructor
 import ClassNodeInstanceMethod
+import PrivateField
+import ClassFlow

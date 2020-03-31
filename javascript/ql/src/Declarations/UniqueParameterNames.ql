@@ -36,6 +36,9 @@ where
   i < j and
   j = max(int k | parmBinds(f, k, _, name) | k) and
   not isDummy(p) and
+  // ignore functions without bodies or empty bodies
+  f.hasBody() and
+  exists(f.getABodyStmt()) and
   // duplicate parameters in strict mode functions are flagged by the 'Syntax error' rule
   not f.isStrict()
 select p, "This parameter has the same name as $@ of the same function.", q, "another parameter"

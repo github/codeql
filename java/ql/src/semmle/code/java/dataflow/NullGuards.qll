@@ -11,7 +11,6 @@ private import IntegerGuards
 /** Gets an expression that is always `null`. */
 Expr alwaysNullExpr() {
   result instanceof NullLiteral or
-  result.(ParExpr).getExpr() = alwaysNullExpr() or
   result.(CastExpr).getExpr() = alwaysNullExpr()
 }
 
@@ -22,6 +21,21 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
     eqtest.hasOperands(e, c.getAnAccess()) and
     polarity = eqtest.polarity()
   )
+}
+
+/** Gets an instanceof expression of `v` with type `type` */
+InstanceOfExpr instanceofExpr(SsaVariable v, Type type) {
+  result.getTypeName().getType() = type and
+  result.getExpr() = v.getAUse()
+}
+
+/**
+ * Gets an expression of the form `v1 == v2` or `v1 != v2`.
+ * The predicate is symmetric in `v1` and `v2`.
+ */
+EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
+  result.hasOperands(v1.getAUse(), v2.getAUse()) and
+  isEqualExpr = result.polarity()
 }
 
 /** Gets an expression that is provably not `null`. */
@@ -44,8 +58,6 @@ Expr clearlyNotNullExpr(Expr reason) {
     f.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
     reason = result
   )
-  or
-  result.(ParExpr).getExpr() = clearlyNotNullExpr(reason)
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
   or
@@ -85,6 +97,12 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
   exists(SsaVariable captured |
     v.(SsaImplicitInit).captures(captured) and
     clearlyNotNull(captured, reason)
+  )
+  or
+  exists(Field f |
+    v.getSourceVariable().getVariable() = f and
+    f.isFinal() and
+    f.getInitializer() = clearlyNotNullExpr(reason)
   )
 }
 

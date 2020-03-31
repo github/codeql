@@ -84,9 +84,9 @@ where
   or
   conditionalWithBool(e, pattern, rewrite)
   or
-  e.(LogNotExpr).getExpr().getProperExpr().(ComparisonOrEquality).negate(pattern, rewrite)
+  e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
   or
-  e.(LogNotExpr).getExpr().getProperExpr() instanceof LogNotExpr and
+  e.(LogNotExpr).getExpr() instanceof LogNotExpr and
   pattern = "!!A" and
   rewrite = "A"
 select e, "Expressions of the form \"" + pattern + "\" can be simplified to \"" + rewrite + "\"."

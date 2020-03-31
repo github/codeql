@@ -53,7 +53,30 @@ private module Cached {
   }
 
   cached
+  predicate hasStringLiteral(
+    Callable callable, Language::AST ast, CSharpType type, StringLiteral literal
+  ) {
+    literal = ast and
+    literal.getEnclosingCallable() = callable and
+    getTypeForPRValue(literal.getType()) = type
+  }
+
+  cached
+  predicate hasDynamicInitializationFlag(Callable callable, Language::Variable var, CSharpType type) {
+    none()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
+
+  cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
 
   cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
@@ -73,7 +96,8 @@ private module Cached {
 
   cached
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionOperand(getInstructionTag(instruction), tag)
   }
 
@@ -82,8 +106,32 @@ private module Cached {
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
     overlap instanceof MustTotallyOverlap and
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionOperand(getInstructionTag(instruction), tag)
+  }
+
+  /** Gets a non-phi instruction that defines an operand of `instr`. */
+  private Instruction getNonPhiOperandDef(Instruction instr) {
+    result = getRegisterOperandDefinition(instr, _)
+    or
+    result = getMemoryOperandDefinition(instr, _, _)
+  }
+
+  /**
+   * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+   * through a phi instruction and therefore should be impossible.
+   *
+   * If such cycles are present, either due to a programming error in the IR
+   * generation or due to a malformed database, it can cause infinite loops in
+   * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
+   * better to remove these operands than to leave cycles in the operand graph.
+   */
+  pragma[noopt]
+  cached
+  predicate isInCycle(Instruction instr) {
+    instr instanceof Instruction and
+    getNonPhiOperandDef+(instr) = instr
   }
 
   cached
@@ -93,7 +141,8 @@ private module Cached {
     if instruction instanceof LoadInstruction
     then result = instruction.(LoadInstruction).getResultLanguageType()
     else
-      result = getInstructionTranslatedElement(instruction)
+      result =
+        getInstructionTranslatedElement(instruction)
             .getInstructionOperandType(getInstructionTag(instruction), tag)
   }
 
@@ -109,7 +158,8 @@ private module Cached {
 
   cached
   Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionSuccessor(getInstructionTag(instruction), kind)
   }
 
@@ -232,8 +282,14 @@ private module Cached {
 
   cached
   IRVariable getInstructionVariable(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionVariable(getInstructionTag(instruction))
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
   }
 
   cached
@@ -246,7 +302,8 @@ private module Cached {
 
   cached
   ArrayAccess getInstructionArrayAccess(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionArrayAccess(getInstructionTag(instruction))
   }
 
@@ -255,25 +312,22 @@ private module Cached {
 
   cached
   Callable getInstructionFunction(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))
   }
 
   cached
   string getInstructionConstantValue(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionConstantValue(getInstructionTag(instruction))
   }
 
   cached
-  StringLiteral getInstructionStringLiteral(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
-          .getInstructionStringLiteral(getInstructionTag(instruction))
-  }
-
-  cached
   CSharpType getInstructionExceptionType(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction)
+    result =
+      getInstructionTranslatedElement(instruction)
           .getInstructionExceptionType(getInstructionTag(instruction))
   }
 
@@ -333,7 +387,8 @@ private module CachedForDebugging {
 
   cached
   string getInstructionUniqueId(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction).getId() + ":" +
+    result =
+      getInstructionTranslatedElement(instruction).getId() + ":" +
         getInstructionTagId(getInstructionTag(instruction))
   }
 }

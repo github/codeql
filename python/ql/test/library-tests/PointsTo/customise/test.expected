@@ -1,4 +1,4 @@
-WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (test.ql:8,27-51)
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (test.ql:9,27-51)
 | 9 | ControlFlowNode for has_type_int | Function has_type_int | builtin-class function |
 | 9 | ControlFlowNode for has_type_int() | has_type_int() | builtin-class int |
 | 9 | ControlFlowNode for x | has_type_int() | builtin-class int |

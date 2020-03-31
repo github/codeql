@@ -19,6 +19,8 @@ import semmle.code.cpp.exprs.Access
 class Field extends MemberVariable {
   Field() { fieldoffsets(underlyingElement(this), _, _) }
 
+  override string getCanonicalQLClass() { result = "Field" }
+
   /**
    * Gets the offset of this field in bytes from the start of its declaring
    * type (on the machine where facts were extracted).
@@ -66,9 +68,8 @@ class Field extends MemberVariable {
   final int getInitializationOrder() {
     exists(Class cls, int memberIndex |
       this = cls.getCanonicalMember(memberIndex) and
-      memberIndex = rank[result + 1](int index |
-          cls.getCanonicalMember(index).(Field).isInitializable()
-        )
+      memberIndex =
+        rank[result + 1](int index | cls.getCanonicalMember(index).(Field).isInitializable())
     )
   }
 }
@@ -84,6 +85,8 @@ class Field extends MemberVariable {
  */
 class BitField extends Field {
   BitField() { bitfield(underlyingElement(this), _, _) }
+
+  override string getCanonicalQLClass() { result = "BitField" }
 
   /**
    * Gets the size of this bitfield in bits (on the machine where facts

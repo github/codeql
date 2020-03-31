@@ -3,7 +3,7 @@
  * @description Two files share too much information about each other (accessing many operations or variables in both directions). It would be better to invert some of the dependencies to reduce the coupling between the two files.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision medium
  * @id cpp/file-intimacy
  * @tags maintainability
  *       modularity

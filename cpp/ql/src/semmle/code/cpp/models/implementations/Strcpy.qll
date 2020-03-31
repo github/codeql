@@ -47,20 +47,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    (
-      // These always copy the full value of the input buffer to the output
-      // buffer
-      this.hasName("strcpy") or
-      this.hasName("_mbscpy") or
-      this.hasName("wcscpy")
-    ) and
-    (
-      input.isParameterDeref(1) and
-      output.isParameterDeref(0)
-      or
-      input.isParameterDeref(1) and
-      output.isReturnValueDeref()
-    )
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0)
+    or
+    input.isParameterDeref(1) and
+    output.isReturnValueDeref()
     or
     input.isParameter(0) and
     output.isReturnValue()
@@ -77,10 +68,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       this.hasName("wcsncpy") or
       this.hasName("_wcsncpy_l")
     ) and
-    (
-      input.isParameter(2) or
-      input.isParameterDeref(1)
-    ) and
+    input.isParameter(2) and
     (
       output.isParameterDeref(0) or
       output.isReturnValueDeref()

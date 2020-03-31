@@ -16,7 +16,7 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.security.TaintTracking
 
 predicate hasUpperBound(VariableAccess offsetExpr) {
-  exists(BasicBlock controlled, LocalScopeVariable offsetVar, SsaDefinition def |
+  exists(BasicBlock controlled, StackVariable offsetVar, SsaDefinition def |
     controlled.contains(offsetExpr) and
     linearBoundControls(controlled, def, offsetVar) and
     offsetExpr = def.getAUse(offsetVar)
@@ -24,7 +24,7 @@ predicate hasUpperBound(VariableAccess offsetExpr) {
 }
 
 pragma[noinline]
-predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, LocalScopeVariable offsetVar) {
+predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, StackVariable offsetVar) {
   exists(GuardCondition guard, boolean branch |
     guard.controls(controlled, branch) and
     cmpWithLinearBound(guard, def.getAUse(offsetVar), Lesser(), branch)

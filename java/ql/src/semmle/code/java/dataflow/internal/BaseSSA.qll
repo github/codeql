@@ -188,7 +188,8 @@ private module SsaImpl {
      * basic blocks.
      */
     private predicate defUseRank(BaseSsaSourceVariable v, BasicBlock b, int rankix, int i) {
-      i = rank[rankix](int j |
+      i =
+        rank[rankix](int j |
           any(TrackedSsaDef def).definesAt(v, b, j) or variableUseOrCapture(v, b, j)
         )
     }

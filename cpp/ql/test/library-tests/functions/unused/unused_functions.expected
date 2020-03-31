@@ -1,4 +1,0 @@
-| unused_functions.c:16:13:16:27 | unused_function | Static function unused_function is unreachable | unused_functions.c:16:13:16:27 | unused_function | unused_function |
-| unused_functions.c:20:13:20:28 | unused_function2 | Static function unused_function2 is unreachable ($@ must be removed at the same time) | unused_functions.c:24:13:24:28 | unused_function3 | unused_function3 |
-| unused_functions.c:24:13:24:28 | unused_function3 | Static function unused_function3 is unreachable | unused_functions.c:24:13:24:28 | unused_function3 | unused_function3 |
-| unused_functions.c:63:13:63:14 | h4 | Static function h4 is unreachable | unused_functions.c:63:13:63:14 | h4 | h4 |

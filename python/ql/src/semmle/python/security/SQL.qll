@@ -1,4 +1,4 @@
 import python
 import semmle.python.security.TaintTracking
 
-abstract class SqlInjectionSink extends TaintSink {}
+abstract class SqlInjectionSink extends TaintSink { }

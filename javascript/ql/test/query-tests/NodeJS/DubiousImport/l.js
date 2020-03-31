@@ -3,5 +3,3 @@ class C {
 }
 
 module.exports = C;
-
-// semmle-extractor-options: --abort-on-parse-errors

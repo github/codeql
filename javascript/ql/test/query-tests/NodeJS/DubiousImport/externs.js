@@ -615,4 +615,4 @@ Array.some = function(arr, callback, opt_context) {};
  */
 Array.isArray = function(arr) {};
 
-//semmle-extractor-options: --externs
+/** @externs */

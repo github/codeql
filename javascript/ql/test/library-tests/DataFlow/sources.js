@@ -5,3 +5,8 @@ new (x => x);
 })(23);
 
 /x/;
+
+function foo(array) {
+  for (let key of array) { key; }
+  for (let { key } of array) { key; }
+}

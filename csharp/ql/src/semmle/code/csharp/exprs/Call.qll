@@ -295,7 +295,7 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
 
   override Method getQualifiedDeclaration() { result = getTarget() }
 
-  override string toString() { result = "call to method " + this.getTarget().getName() }
+  override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
 
   override Expr getRawArgument(int i) {
     if exists(getQualifier())

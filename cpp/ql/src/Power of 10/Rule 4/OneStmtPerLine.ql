@@ -39,7 +39,8 @@ where
   numStmt(f, line) = cnt and
   cnt > 1 and
   o.onLine(f, line) and
-  o.getLocation().getStartColumn() = min(OneLineStmt other, int toMin |
+  o.getLocation().getStartColumn() =
+    min(OneLineStmt other, int toMin |
       other.onLine(f, line) and toMin = other.getLocation().getStartColumn()
     |
       toMin

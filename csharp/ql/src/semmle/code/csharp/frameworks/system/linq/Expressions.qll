@@ -35,7 +35,8 @@ module SystemLinqExpressions {
     DelegateExtType() {
       this = dt
       or
-      this = any(csharp::ConstructedClass cc |
+      this =
+        any(csharp::ConstructedClass cc |
           cc.getUnboundGeneric() instanceof ExpressionDelegate and
           dt = cc.getTypeArgument(0)
         )

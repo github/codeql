@@ -13,5 +13,4 @@ import python
 
 from Module m, int n
 where n = count(Function f | f.getEnclosingModule() = m and f.getName() != "lambda")
-select m, n
-order by n desc
+select m, n order by n desc

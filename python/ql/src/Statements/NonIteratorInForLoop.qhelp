@@ -17,7 +17,7 @@ for addressing the defect. </p>
 </recommendation>
 <example>
 <p>
-In this example, the loop may attempt to iterate over <code>None</code>, which is not an iterator.
+In this example, the loop may attempt to iterate over <code>None</code>, which is not an iterable.
 It is likely that the programmer forgot to test for <code>None</code> before the loop.
 </p>
 <sample src="NonIteratorInForLoop.py" />

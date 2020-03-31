@@ -23,9 +23,8 @@ abstract class JSLintDirective extends SlashStarComment {
    * and with end-of-line characters replaced by spaces.
    */
   string getContent() {
-    result = getText()
-          .regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ")
-          .regexpCapture("\\s*\\w+ (.*)", 1)
+    result =
+      getText().regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ").regexpCapture("\\s*\\w+ (.*)", 1)
   }
 
   /**

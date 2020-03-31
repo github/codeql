@@ -1,26 +1,20 @@
 import python
 
-
 /**
  * A control-flow node that defines a variable
  */
 class Definition extends NameNode, DefinitionNode {
-
     /**
      * The variable defined by this control-flow node.
      */
-    Variable getVariable() {
-        this.defines(result)
-    }
+    Variable getVariable() { this.defines(result) }
 
     /**
      * The SSA variable corresponding to the current definition. Since SSA variables
      * are only generated for definitions with at least one use, not all definitions
      * will have an SSA variable.
      */
-    SsaVariable getSsaVariable() {
-        result.getDefinition() = this
-    }
+    SsaVariable getSsaVariable() { result.getDefinition() = this }
 
     /**
      * The index of this definition in its basic block.
@@ -42,9 +36,7 @@ class Definition extends NameNode, DefinitionNode {
     }
 
     /** Is this definition the first in its basic block for its variable? */
-    predicate isFirst() {
-        this.rankInBB(_, _) = 1
-    }
+    predicate isFirst() { this.rankInBB(_, _) = 1 }
 
     /** Is this definition the last in its basic block for its variable? */
     predicate isLast() {
@@ -66,8 +58,10 @@ class Definition extends NameNode, DefinitionNode {
         this.getVariable().getScope() = this.getScope() and
         // A call to locals() or vars() in the variable scope counts as a use
         not exists(Function f, Call c, string locals_or_vars |
-            c.getScope() = f and this.getScope() = f and
-            c.getFunc().(Name).getId() = locals_or_vars |
+            c.getScope() = f and
+            this.getScope() = f and
+            c.getFunc().(Name).getId() = locals_or_vars
+        |
             locals_or_vars = "locals" or locals_or_vars = "vars"
         )
     }
@@ -96,19 +90,14 @@ class Definition extends NameNode, DefinitionNode {
      * We also ignore anything named "_", "empty", "unused" or "dummy"
      */
     predicate isRelevant() {
-        exists(AstNode p |
-            p = this.getNode().getParentNode() |
+        exists(AstNode p | p = this.getNode().getParentNode() |
             p instanceof Assign or p instanceof AugAssign or p instanceof Tuple
-        )
-        and
-        not name_acceptable_for_unused_variable(this.getVariable())
-        and
+        ) and
+        not name_acceptable_for_unused_variable(this.getVariable()) and
         /* Decorated classes and functions are used */
-        not exists(this.getNode().getParentNode().(FunctionDef).getDefinedFunction().getADecorator())
-        and
+        not exists(this.getNode().getParentNode().(FunctionDef).getDefinedFunction().getADecorator()) and
         not exists(this.getNode().getParentNode().(ClassDef).getDefinedClass().getADecorator())
     }
-
 }
 
 /**
@@ -116,35 +105,30 @@ class Definition extends NameNode, DefinitionNode {
  * definition of variable `v`. The relation is not transitive by default, so any
  * observed transitivity will be caused by loops in the control-flow graph.
  */
-private
-predicate reaches_without_redef(Variable v, BasicBlock a, BasicBlock b) {
+private predicate reaches_without_redef(Variable v, BasicBlock a, BasicBlock b) {
     exists(Definition def | a.getASuccessor() = b |
         def.getBasicBlock() = a and def.getVariable() = v and maybe_redefined(v)
-    ) or
+    )
+    or
     exists(BasicBlock mid | reaches_without_redef(v, a, mid) |
-        not exists(NameNode cfn | cfn.defines(v) |
-            cfn.getBasicBlock() = mid
-        ) and
+        not exists(NameNode cfn | cfn.defines(v) | cfn.getBasicBlock() = mid) and
         mid.getASuccessor() = b
     )
 }
 
-private predicate maybe_redefined(Variable v) {
-    strictcount(Definition d | d.defines(v)) > 1
-}
+private predicate maybe_redefined(Variable v) { strictcount(Definition d | d.defines(v)) > 1 }
 
 predicate name_acceptable_for_unused_variable(Variable var) {
-    exists(string name |
-        var.getId() = name |
-        name.regexpMatch("_+") or name = "empty" or
-        name.matches("%unused%") or name = "dummy" or
+    exists(string name | var.getId() = name |
+        name.regexpMatch("_+") or
+        name = "empty" or
+        name.matches("%unused%") or
+        name = "dummy" or
         name.regexpMatch("__.*")
     )
 }
 
-
 class ListComprehensionDeclaration extends ListComp {
-
     Name getALeakedVariableUse() {
         major_version() = 2 and
         this.getIterationVariable(_).getId() = result.getId() and
@@ -153,8 +137,5 @@ class ListComprehensionDeclaration extends ListComp {
         result.isUse()
     }
 
-    Name getDefinition() {
-        result = this.getIterationVariable(0).getAStore()
-    }
-
+    Name getDefinition() { result = this.getIterationVariable(0).getAStore() }
 }

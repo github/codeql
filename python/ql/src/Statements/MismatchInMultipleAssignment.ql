@@ -14,18 +14,19 @@
 
 import python
 
-private  int len(ExprList el) {
-	result = count(el.getAnItem())
-}
+private int len(ExprList el) { result = count(el.getAnItem()) }
 
 predicate mismatched(Assign a, int lcount, int rcount, Location loc, string sequenceType) {
     exists(ExprList l, ExprList r |
-        (a.getATarget().(Tuple).getElts() = l or
-         a.getATarget().(List).getElts() = l)
-        and
-        ((a.getValue().(Tuple).getElts() = r and sequenceType = "tuple") or
-         (a.getValue().(List).getElts() = r and sequenceType = "list"))
-        and
+        (
+            a.getATarget().(Tuple).getElts() = l or
+            a.getATarget().(List).getElts() = l
+        ) and
+        (
+            a.getValue().(Tuple).getElts() = r and sequenceType = "tuple"
+            or
+            a.getValue().(List).getElts() = r and sequenceType = "list"
+        ) and
         loc = a.getValue().getLocation() and
         lcount = len(l) and
         rcount = len(r) and
@@ -35,19 +36,19 @@ predicate mismatched(Assign a, int lcount, int rcount, Location loc, string sequ
 }
 
 predicate mismatched_tuple_rhs(Assign a, int lcount, int rcount, Location loc) {
-    exists(ExprList l, TupleObject r, AstNode origin |
-        (a.getATarget().(Tuple).getElts() = l or
-         a.getATarget().(List).getElts() = l)
-        and
-        a.getValue().refersTo(r, origin) and
+    exists(ExprList l, TupleValue r, AstNode origin |
+        (
+            a.getATarget().(Tuple).getElts() = l or
+            a.getATarget().(List).getElts() = l
+        ) and
+        a.getValue().pointsTo(r, origin) and
         loc = origin.getLocation() and
         lcount = len(l) and
-        rcount = r.getLength() and
+        rcount = r.length() and
         lcount != rcount and
         not exists(Starred s | l.getAnItem() = s)
     )
 }
-
 
 from Assign a, int lcount, int rcount, Location loc, string sequenceType
 where
@@ -55,4 +56,6 @@ where
     or
     mismatched_tuple_rhs(a, lcount, rcount, loc) and
     sequenceType = "tuple"
-select a, "Left hand side of assignment contains " + lcount + " variables, but right hand side is a $@ of length " + rcount + "." , loc, sequenceType
+select a,
+    "Left hand side of assignment contains " + lcount +
+        " variables, but right hand side is a $@ of length " + rcount + ".", loc, sequenceType

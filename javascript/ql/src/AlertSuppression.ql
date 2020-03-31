@@ -16,9 +16,11 @@ class SuppressionComment extends Locatable {
 
   SuppressionComment() {
     (
-      text = this.(LineComment).getText() or
+      text = this.(Comment).getText() or
       text = this.(HTML::CommentNode).getText()
     ) and
+    // suppression comments must be single-line
+    not text.matches("%\n%") and
     (
       // match `lgtm[...]` anywhere in the comment
       annotation = text.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)

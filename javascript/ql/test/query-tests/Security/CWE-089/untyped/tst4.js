@@ -7,5 +7,3 @@ angular.module('myApp', ['ngRoute'])
 .controller('FindPost', function($routeParams) {
   db.get('SELECT * FROM Post WHERE id = "' + $routeParams.id + '"');
 });
-
-// semmle-extractor-options: --platform node

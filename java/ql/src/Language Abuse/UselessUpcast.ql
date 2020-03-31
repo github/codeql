@@ -15,7 +15,7 @@ import java
 predicate usefulUpcast(CastExpr e) {
   // Upcasts that may be performed to affect resolution of methods or constructors.
   exists(Call c, int i, Callable target |
-    c.getArgument(i).getProperExpr() = e and
+    c.getArgument(i) = e and
     target = c.getCallee() and
     // An upcast to the type of the corresponding parameter.
     e.getType() = target.getParameterType(i)
@@ -31,14 +31,12 @@ predicate usefulUpcast(CastExpr e) {
   )
   or
   // Upcasts of a varargs argument.
-  exists(Call c, int iArg, int iParam | c.getArgument(iArg).getProperExpr() = e |
+  exists(Call c, int iArg, int iParam | c.getArgument(iArg) = e |
     c.getCallee().getParameter(iParam).isVarargs() and iArg >= iParam
   )
   or
   // Upcasts that are performed on an operand of a ternary expression.
-  exists(ConditionalExpr ce |
-    e = ce.getTrueExpr().getProperExpr() or e = ce.getFalseExpr().getProperExpr()
-  )
+  exists(ConditionalExpr ce | e = ce.getTrueExpr() or e = ce.getFalseExpr())
   or
   // Upcasts to raw types.
   e.getType() instanceof RawType
@@ -46,12 +44,12 @@ predicate usefulUpcast(CastExpr e) {
   e.getType().(Array).getElementType() instanceof RawType
   or
   // Upcasts that are performed to affect field, private method, or static method resolution.
-  exists(FieldAccess fa | e = fa.getQualifier().getProperExpr() |
+  exists(FieldAccess fa | e = fa.getQualifier() |
     not e.getExpr().getType().(RefType).inherits(fa.getField())
   )
   or
   exists(MethodAccess ma, Method m |
-    e = ma.getQualifier().getProperExpr() and
+    e = ma.getQualifier() and
     m = ma.getMethod() and
     (m.isStatic() or m.isPrivate())
   |

@@ -1,14 +1,13 @@
 import python
-
 import semmle.python.security.TaintTracking
 import semmle.python.web.Http
 import semmle.python.security.strings.Basic
 import Twisted
 import Request
 
-class TwistedResponse extends TaintSink {
+class TwistedResponse extends HttpResponseTaintSink {
     TwistedResponse() {
-        exists(PyFunctionObject func, string name |
+        exists(PythonFunctionValue func, string name |
             isKnownRequestHandlerMethodName(name) and
             name = func.getName() and
             func = getTwistedRequestHandlerMethod(name) and
@@ -16,13 +15,9 @@ class TwistedResponse extends TaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-      kind instanceof ExternalStringKind
-    }
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() {
-        result = "Twisted response"
-    }
+    override string toString() { result = "Twisted response" }
 }
 
 /**
@@ -30,7 +25,7 @@ class TwistedResponse extends TaintSink {
  * object, which affects the properties of the subsequent response sent to this
  * request.
  */
- class TwistedRequestSetter extends HttpResponseTaintSink {
+class TwistedRequestSetter extends HttpResponseTaintSink {
     TwistedRequestSetter() {
         exists(CallNode call, ControlFlowNode node, string name |
             (
@@ -44,11 +39,7 @@ class TwistedResponse extends TaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalStringKind
-    }
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() {
-        result = "Twisted request setter"
-    }
+    override string toString() { result = "Twisted request setter" }
 }

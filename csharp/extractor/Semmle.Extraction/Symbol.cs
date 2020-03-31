@@ -53,7 +53,7 @@ namespace Semmle.Extraction
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
-        public void WriteQuotedId(TextWriter trapFile)
+        public virtual void WriteQuotedId(TextWriter trapFile)
         {
             trapFile.Write("@\"");
             WriteId(trapFile);

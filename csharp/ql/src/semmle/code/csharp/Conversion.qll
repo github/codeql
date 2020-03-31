@@ -15,6 +15,61 @@ import Type
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
+cached
+private module Cached {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if there exists an implicit conversion from `fromType` to `toType`.
+   *
+   * 6.1: Implicit type conversions.
+   *
+   * The following conversions are included:
+   *
+   * - Identity conversions
+   * - Implicit numeric conversions
+   * - Implicit nullable conversions
+   * - Implicit reference conversions
+   * - Boxing conversions
+   */
+  cached
+  predicate implicitConversionRestricted(Type fromType, Type toType) {
+    convIdentity(fromType, toType)
+    or
+    convNumeric(fromType, toType)
+    or
+    convNullableType(fromType, toType)
+    or
+    convRefTypeNonNull(fromType, toType)
+    or
+    convBoxing(fromType, toType)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if there is a constant expression conversion from `fromType` to `toType`.
+   *
+   * 6.1.9: Implicit constant expression conversions.
+   */
+  cached
+  predicate convConstantExpr(SignedIntegralConstantExpr e, SimpleType toType) {
+    convConstantIntExpr(e, toType)
+    or
+    convConstantLongExpr(e) and toType instanceof ULongType
+  }
+}
+
+import Cached
+
+private predicate implicitConversionNonNull(Type fromType, Type toType) {
+  implicitConversionRestricted(fromType, toType)
+  or
+  convConversionOperator(fromType, toType)
+  or
+  fromType instanceof DynamicType // 6.1.8
+}
+
 /**
  * INTERNAL: Do not use.
  *
@@ -31,27 +86,11 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  * - Boxing conversions
  * - User-defined implicit conversions
  */
-cached
+pragma[nomagic]
 predicate implicitConversion(Type fromType, Type toType) {
   implicitConversionNonNull(fromType, toType)
   or
   defaultNullConversion(fromType, toType)
-}
-
-private predicate implicitConversionNonNull(Type fromType, Type toType) {
-  convIdentity(fromType, toType)
-  or
-  convNumeric(fromType, toType)
-  or
-  convNullableType(fromType, toType)
-  or
-  convRefTypeNonNull(fromType, toType)
-  or
-  convBoxing(fromType, toType)
-  or
-  convConversionOperator(fromType, toType)
-  or
-  fromType instanceof DynamicType // 6.1.8
 }
 
 /**
@@ -166,7 +205,8 @@ private module Identity {
    * parameter at index `i` in unbound generic type `ugt`.
    */
   private int getTypeArgumentCount(UnboundGenericType ugt, int i) {
-    result = strictcount(Type arg |
+    result =
+      strictcount(Type arg |
         exists(IdentityConvertibleGenericType ct | ct.getUnboundGeneric() = ugt |
           arg = ct.getTypeArgument(i)
         )
@@ -477,7 +517,7 @@ predicate convNullableType(ValueOrRefType fromType, NullableType toType) {
 // This is a deliberate, small Cartesian product, so we have manually lifted it to force the
 // evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
-private predicate defaultNullConversion(Type fromType, Type toType) {
+predicate defaultNullConversion(Type fromType, Type toType) {
   fromType instanceof NullType and convNullType(toType)
 }
 
@@ -610,19 +650,6 @@ private predicate convBoxingValueType(ValueType fromType, Type toType) {
   toType instanceof SystemValueTypeClass
   or
   toType = fromType.getABaseInterface+()
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * Holds if there is a constant expression conversion from `fromType` to `toType`.
- *
- * 6.1.9: Implicit constant expression conversions.
- */
-predicate convConstantExpr(SignedIntegralConstantExpr e, SimpleType toType) {
-  convConstantIntExpr(e, toType)
-  or
-  convConstantLongExpr(e) and toType instanceof ULongType
 }
 
 private class SignedIntegralConstantExpr extends Expr {
@@ -787,7 +814,8 @@ private module Variance {
    * parameter at index `i` in unbound generic type `ugt`.
    */
   private int getTypeArgumentCount(UnboundGenericType ugt, int i) {
-    result = strictcount(Type arg |
+    result =
+      strictcount(Type arg |
         exists(VarianceConvertibleGenericType gt | gt.getUnboundGeneric() = ugt |
           arg = gt.getTypeArgument(i)
         )

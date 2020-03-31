@@ -36,10 +36,10 @@ which ensures the content is appropriately escaped.</p>
 
 <references>
   <li>
-    <a href="http://projects.webappsec.org/w/page/13247004/XML%20Injection">XML Injection</a> (The Web Application Security Consortium).
+    Web Application Security Consortium: <a href="http://projects.webappsec.org/w/page/13247004/XML%20Injection">XML Injection</a>.
   </li>
   <li>
-    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlwriter.writeraw?view=netframework-4.8">WriteRaw</a> (Microsoft documentation).
+    Microsoft Docs: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlwriter.writeraw?view=netframework-4.8">WriteRaw</a>.
   </li>
 </references>
 </qhelp>

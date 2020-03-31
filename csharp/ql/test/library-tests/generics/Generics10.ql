@@ -12,7 +12,6 @@ where
   e.getSourceDeclaration().getDeclaringType() = e.getDeclaringType().getSourceDeclaration() and
   e.getType().(ConstructedDelegateType).getTypeArgument(0) instanceof StringType and
   e.getAddEventAccessor().getSourceDeclaration() = e.getSourceDeclaration().getAddEventAccessor() and
-  e.getRemoveEventAccessor().getSourceDeclaration() = e
-        .getSourceDeclaration()
-        .getRemoveEventAccessor()
+  e.getRemoveEventAccessor().getSourceDeclaration() =
+    e.getSourceDeclaration().getRemoveEventAccessor()
 select bString, e

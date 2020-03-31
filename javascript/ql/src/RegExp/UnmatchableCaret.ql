@@ -17,6 +17,7 @@ import javascript
 
 from RegExpCaret caret, RegExpTerm t
 where
+  caret.isPartOfRegExpLiteral() and
   t = caret.getPredecessor+() and
   not t.isNullable() and
   // conservative handling of multi-line regular expressions

@@ -39,7 +39,8 @@ class MaybeNullExpr extends Expr {
     or
     this.(Cast).getExpr() instanceof MaybeNullExpr
     or
-    this = any(ConditionalExpr ce |
+    this =
+      any(ConditionalExpr ce |
         ce.getThen() instanceof MaybeNullExpr
         or
         ce.getElse() instanceof MaybeNullExpr
@@ -58,7 +59,8 @@ class AlwaysNullExpr extends Expr {
     or
     exists(AlwaysNullExpr e1, AlwaysNullExpr e2 | G::Internal::nullValueImpliedBinary(e1, e2, this))
     or
-    this = any(Ssa::Definition def |
+    this =
+      any(Ssa::Definition def |
         forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
       ).getARead()
     or
@@ -84,7 +86,8 @@ class NonNullExpr extends Expr {
     or
     this instanceof G::NullGuardedExpr
     or
-    this = any(Ssa::Definition def |
+    this =
+      any(Ssa::Definition def |
         forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
       ).getARead()
     or
@@ -104,7 +107,8 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
   exists(AssignableDefinition ad | ad = def.getADefinition() |
     ad instanceof AssignableDefinitions::PatternDefinition
     or
-    ad = any(AssignableDefinitions::LocalVariableDefinition d |
+    ad =
+      any(AssignableDefinitions::LocalVariableDefinition d |
         d.getExpr() = any(SpecificCatchClause scc).getVariableDeclExpr()
         or
         d.getExpr() = any(ForeachStmt fs).getAVariableDeclExpr()
@@ -176,7 +180,17 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
     pdef = def.getADefinition()
   |
     p = pdef.getParameter().getSourceDeclaration() and
-    p.getAnAssignedArgument() = arg and
+    arg = p.getAnAssignedArgument() and
+    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
+  )
+}
+
+private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullExpr arg) {
+  exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
+    pdef = def.getADefinition()
+  |
+    p = pdef.getParameter().getSourceDeclaration() and
+    arg = p.getDefaultValue() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
 }
@@ -203,6 +217,8 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     then msg = "because of $@ null argument"
     else msg = "because of $@ potential null argument"
   )
+  or
+  isNullDefaultArgument(def, reason) and msg = "because the parameter has a null default value"
   or
   // If the source of a variable is `null` then the variable may be `null`
   exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
@@ -456,7 +472,8 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
     Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
-    not mid = any(Dereference d |
+    not mid =
+      any(Dereference d |
         if always = true
         then d.isAlwaysNull(def.getSourceVariable())
         else d.isMaybeNull(def, _, _, _, _)
@@ -530,7 +547,8 @@ class Dereference extends G::DereferenceableExpr {
     this = v.getAnAccess() and
     // Exclude fields, properties, and captured variables, as they may not have an
     // accurate SSA representation
-    v.getAssignable() = any(LocalScopeVariable lsv |
+    v.getAssignable() =
+      any(LocalScopeVariable lsv |
         strictcount(Callable c |
           c = any(AssignableDefinition ad | ad.getTarget() = lsv).getEnclosingCallable()
         ) = 1

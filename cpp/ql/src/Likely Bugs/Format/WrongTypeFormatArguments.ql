@@ -130,11 +130,8 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
     or
     // allow a pointer to any integral type of the same size
     // (this permits signedness changes)
-    expected.(PointerType).getBaseType().(IntegralType).getSize() = actual
-          .(PointerType)
-          .getBaseType()
-          .(IntegralType)
-          .getSize()
+    expected.(PointerType).getBaseType().(IntegralType).getSize() =
+      actual.(PointerType).getBaseType().(IntegralType).getSize()
     or
     expected = actual
   )

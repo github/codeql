@@ -18,7 +18,8 @@ import javascript
  * Indexing is 1-based.
  */
 predicate constantInCharacterClass(RegExpCharacterClass recc, int i, RegExpConstant cc, string val) {
-  cc = rank[i](RegExpConstant cc2, int j |
+  cc =
+    rank[i](RegExpConstant cc2, int j |
       cc2 = recc.getChild(j) and cc2.isCharacter() and cc2.getValue() = val
     |
       cc2 order by j
@@ -29,6 +30,7 @@ from RegExpCharacterClass recc, RegExpConstant first, RegExpConstant repeat, int
 where
   constantInCharacterClass(recc, 1, first, val) and
   constantInCharacterClass(recc, rnk, repeat, val) and
-  rnk > 1
+  rnk > 1 and
+  recc.isPartOfRegExpLiteral()
 select first, "Character '" + first + "' is repeated $@ in the same character class.", repeat,
   "here"

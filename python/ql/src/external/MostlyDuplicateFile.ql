@@ -13,6 +13,7 @@
  * @precision high
  * @id py/mostly-duplicate-file
  */
+
 import python
 import CodeDuplication
 

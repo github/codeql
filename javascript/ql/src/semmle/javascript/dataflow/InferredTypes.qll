@@ -134,6 +134,7 @@ class NonPrimitiveType extends InferredType {
  * Gets a pretty-printed list of all type tags in alphabetical order.
  */
 string ppAllTypeTags() {
-  result = "boolean, class, date, function, null, number, object, regular expression," +
+  result =
+    "boolean, class, date, function, null, number, object, regular expression," +
       "string or undefined"
 }

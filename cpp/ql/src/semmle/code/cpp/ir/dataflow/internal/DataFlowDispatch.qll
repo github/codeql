@@ -1,7 +1,7 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
-
-Function viableImpl(CallInstruction call) { result = viableCallable(call) }
+private import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
 /**
  * Gets a function that might be called by `call`.
@@ -20,6 +20,168 @@ Function viableCallable(CallInstruction call) {
     functionSignatureWithBody(qualifiedName, nparams, result) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
   )
+  or
+  // Virtual dispatch
+  result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+}
+
+/**
+ * Provides virtual dispatch support compatible with the original
+ * implementation of `semmle.code.cpp.security.TaintTracking`.
+ */
+private module VirtualDispatch {
+  /** A call that may dispatch differently depending on the qualifier value. */
+  abstract class DataSensitiveCall extends DataFlowCall {
+    /**
+     * Gets the node whose value determines the target of this call. This node
+     * could be the qualifier of a virtual dispatch or the function-pointer
+     * expression in a call to a function pointer. What they have in common is
+     * that we need to find out which data flows there, and then it's up to the
+     * `resolve` predicate to stitch that information together and resolve the
+     * call.
+     */
+    abstract DataFlow::Node getDispatchValue();
+
+    /** Gets a candidate target for this call. */
+    cached
+    abstract Function resolve();
+
+    /**
+     * Whether `src` can flow to this call.
+     *
+     * Searches backwards from `getDispatchValue()` to `src`. The `allowFromArg`
+     * parameter is true when the search is allowed to continue backwards into
+     * a parameter; non-recursive callers should pass `_` for `allowFromArg`.
+     */
+    predicate flowsFrom(DataFlow::Node src, boolean allowFromArg) {
+      src = this.getDispatchValue() and allowFromArg = true
+      or
+      exists(DataFlow::Node other, boolean allowOtherFromArg |
+        this.flowsFrom(other, allowOtherFromArg)
+      |
+        // Call argument
+        exists(DataFlowCall call, int i |
+          other.(DataFlow::ParameterNode).isParameterOf(call.getStaticCallTarget(), i) and
+          src.(ArgumentNode).argumentOf(call, i)
+        ) and
+        allowOtherFromArg = true and
+        allowFromArg = true
+        or
+        // Call return
+        exists(DataFlowCall call, ReturnKind returnKind |
+          other = getAnOutNode(call, returnKind) and
+          src.(ReturnNode).getKind() = returnKind and
+          call.getStaticCallTarget() = src.getEnclosingCallable()
+        ) and
+        allowFromArg = false
+        or
+        // Local flow
+        DataFlow::localFlowStep(src, other) and
+        allowFromArg = allowOtherFromArg
+      )
+      or
+      // Flow through global variable
+      exists(StoreInstruction store |
+        store = src.asInstruction() and
+        (
+          exists(Variable var |
+            var = store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() and
+            this.flowsFromGlobal(var)
+          )
+          or
+          exists(Variable var, FieldAccess a |
+            var =
+              store
+                  .getDestinationAddress()
+                  .(FieldAddressInstruction)
+                  .getObjectAddress()
+                  .(VariableAddressInstruction)
+                  .getASTVariable() and
+            this.flowsFromGlobalUnionField(var, a)
+          )
+        ) and
+        allowFromArg = true
+      )
+    }
+
+    private predicate flowsFromGlobal(GlobalOrNamespaceVariable var) {
+      exists(LoadInstruction load |
+        this.flowsFrom(DataFlow::instructionNode(load), _) and
+        load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+      )
+    }
+
+    private predicate flowsFromGlobalUnionField(Variable var, FieldAccess a) {
+      a.getTarget().getDeclaringType() instanceof Union and
+      exists(LoadInstruction load |
+        this.flowsFrom(DataFlow::instructionNode(load), _) and
+        load
+            .getSourceAddress()
+            .(FieldAddressInstruction)
+            .getObjectAddress()
+            .(VariableAddressInstruction)
+            .getASTVariable() = var
+      )
+    }
+  }
+
+  /** Call through a function pointer. */
+  private class DataSensitiveExprCall extends DataSensitiveCall {
+    DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
+
+    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getCallTarget() }
+
+    override Function resolve() {
+      exists(FunctionInstruction fi |
+        this.flowsFrom(DataFlow::instructionNode(fi), _) and
+        result = fi.getFunctionSymbol()
+      ) and
+      (
+        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        or
+        result.isVarargs()
+      )
+    }
+  }
+
+  /** Call to a virtual function. */
+  private class DataSensitiveOverriddenFunctionCall extends DataSensitiveCall {
+    DataSensitiveOverriddenFunctionCall() {
+      exists(this.getStaticCallTarget().(VirtualFunction).getAnOverridingFunction())
+    }
+
+    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getThisArgument() }
+
+    override MemberFunction resolve() {
+      exists(Class overridingClass |
+        this.overrideMayAffectCall(overridingClass, result) and
+        this.hasFlowFromCastFrom(overridingClass)
+      )
+    }
+
+    /**
+     * Holds if `this` is a virtual function call whose static target is
+     * overridden by `overridingFunction` in `overridingClass`.
+     */
+    pragma[noinline]
+    private predicate overrideMayAffectCall(Class overridingClass, MemberFunction overridingFunction) {
+      overridingFunction.getAnOverriddenFunction+() = this.getStaticCallTarget().(VirtualFunction) and
+      overridingFunction.getDeclaringType() = overridingClass
+    }
+
+    /**
+     * Holds if the qualifier of `this` has flow from an upcast from
+     * `derivedClass`.
+     */
+    pragma[noinline]
+    private predicate hasFlowFromCastFrom(Class derivedClass) {
+      exists(ConvertToBaseInstruction toBase |
+        this.flowsFrom(DataFlow::instructionNode(toBase), _) and
+        derivedClass = toBase.getDerivedClass()
+      )
+    }
+  }
 }
 
 /**

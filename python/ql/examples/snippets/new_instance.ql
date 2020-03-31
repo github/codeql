@@ -6,7 +6,7 @@
  *       constructor
  *       new
  */
- 
+
 import python
 
 from Call new, ClassValue cls

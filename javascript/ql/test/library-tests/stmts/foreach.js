@@ -6,5 +6,3 @@ for each (var item in obj) {
 }
 
 console.log(sum); // logs "26", which is 5+13+8
-
-//semmle-extractor-options: --experimental --extract-program-text

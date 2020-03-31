@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 public static class Forwarders
@@ -37,6 +38,18 @@ class Assertions
         Forwarders.MyAssert2(false);
         Forwarders.MyAssert2(true);
     }
+
+    void CodeContracts(string s)
+    {
+        Contract.Requires(s != null);
+        Contract.Requires(s != null, "s must be non-null");
+        Contract.Requires<Exception>(s != null);
+        Contract.Requires<Exception>(s != null, "s must be non-null");
+        Contract.Assert(s != null);
+        Contract.Assert(s != null, "s is non-null");
+        Contract.Assume(s != null);
+        Contract.Assume(s != null, "s is non-null");
+    }
 }
 
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs /r:System.Diagnostics.Contracts.dll

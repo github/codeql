@@ -100,7 +100,8 @@ module EncodingConfigurations {
       or
       // consider quote-replacing calls as additional sources for
       // SQL expressions (e.g., `s.Replace("\"", "\"\"")`)
-      source.asExpr() = any(MethodCall mc |
+      source.asExpr() =
+        any(MethodCall mc |
           mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
           mc.getArgument(0).getValue().regexpMatch("\"|'|`")
         )

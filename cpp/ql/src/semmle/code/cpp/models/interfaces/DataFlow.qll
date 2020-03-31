@@ -12,8 +12,8 @@ import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
 
 /**
- * A library function for which a value is copied from a parameter or qualifier
- * to an output buffer, return value, or qualifier.
+ * A library function for which a value is or may be copied from a parameter
+ * or qualifier to an output buffer, return value, or qualifier.
  *
  * Note that this does not include partial copying of values or partial writes
  * to destinations; that is covered by `TaintModel.qll`.

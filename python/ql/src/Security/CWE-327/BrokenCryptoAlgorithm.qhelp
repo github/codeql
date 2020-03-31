@@ -49,7 +49,7 @@
           <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
           <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
           <li>OWASP: <a
-          href="https://www.owasp.org/index.php/Cryptographic_Storage_Cheat_Sheet#Rule_-_Use_strong_approved_cryptographic_algorithms">Rule
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule
           - Use strong approved cryptographic algorithms</a>.
           </li>
      </references>

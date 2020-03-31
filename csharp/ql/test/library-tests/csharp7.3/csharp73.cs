@@ -11,6 +11,7 @@ class StackAllocs
         var arr3 = new char[] { 'x' };
         var arr4 = stackalloc char[10];
         var arr5 = new char[10];
+        var arr6 = stackalloc[] { 1, 2, 3 };
     }
 }
 

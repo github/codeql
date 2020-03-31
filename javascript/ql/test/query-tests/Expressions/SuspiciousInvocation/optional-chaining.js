@@ -7,4 +7,3 @@
     b();
     b?.();
 });
-// semmle-extractor-options: --experimental

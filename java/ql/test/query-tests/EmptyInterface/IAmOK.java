@@ -1,1 +1,0 @@
-public interface IAmOK extends IAmBad, IAmBadToo {}

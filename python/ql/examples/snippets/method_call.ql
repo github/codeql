@@ -5,11 +5,11 @@
  * @tags call
  *       method
  */
- 
+
 import python
 
 from AstNode call, PythonFunctionValue method
-where 
+where
     method.getQualifiedName() = "MyClass.methodName" and
     method.getACall().getNode() = call
 select call

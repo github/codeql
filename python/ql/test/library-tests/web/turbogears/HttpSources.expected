@@ -1,0 +1,3 @@
+| test.py:18:43:18:43 | b | externally controlled string |
+| test.py:22:29:22:29 | a | externally controlled string |
+| test.py:22:37:22:37 | b | externally controlled string |

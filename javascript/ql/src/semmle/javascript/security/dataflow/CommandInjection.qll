@@ -35,5 +35,4 @@ module CommandInjection {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
-
 }

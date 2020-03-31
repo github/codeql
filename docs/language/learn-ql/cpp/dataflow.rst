@@ -45,7 +45,7 @@ or using the predicates ``exprNode`` and ``parameterNode``:
     */
    ParameterNode parameterNode(Parameter p) { ... }
 
-The predicate ``localFlowStep(Node nodeFrom, Node, nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
+The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
 For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
 
@@ -243,6 +243,49 @@ The following data flow configuration tracks data flow from environment variable
    where config.hasFlow(DataFlow::exprNode(getenv), DataFlow::exprNode(fopen))
    select fopen, "This 'fopen' uses data from $@.",
      getenv, "call to 'getenv'"
+
+The following taint-tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds-checked, and defines ``isSanitizer`` to prevent taint from propagating through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
+
+.. code-block:: ql
+
+  import cpp
+  import semmle.code.cpp.controlflow.Guards
+  import semmle.code.cpp.dataflow.TaintTracking
+
+  class NetworkToBufferSizeConfiguration extends TaintTracking::Configuration {
+    NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
+
+    override predicate isSource(DataFlow::Node node) {
+      node.asExpr().(FunctionCall).getTarget().hasGlobalName("ntohl")
+    }
+
+    override predicate isSink(DataFlow::Node node) {
+      exists(ArrayExpr ae | node.asExpr() = ae.getArrayOffset())
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Loop loop, LoopCounter lc |
+        loop = lc.getALoop() and
+        loop.getControllingExpr().(RelationalOperation).getGreaterOperand() = pred.asExpr() |
+        succ.asExpr() = lc.getVariableAccessInLoop(loop)
+      )
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
+      exists(GuardCondition gc, Variable v |
+        gc.getAChild*() = v.getAnAccess() and
+        node.asExpr() = v.getAnAccess() and
+        gc.controls(node.asExpr().getBasicBlock(), _)
+      )
+    }
+  }
+
+  from DataFlow::Node ntohl, DataFlow::Node offset, NetworkToBufferSizeConfiguration conf
+  where conf.hasFlow(ntohl, offset)
+  select offset, "This array offset may be influenced by $@.", ntohl,
+    "converted data from the network"
+
+
 
 Exercises
 ~~~~~~~~~

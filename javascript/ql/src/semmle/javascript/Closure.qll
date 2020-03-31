@@ -230,7 +230,7 @@ module Closure {
    * Gets the closure namespace path addressed by the given data flow node, if any.
    */
   string getClosureNamespaceFromSourceNode(DataFlow::SourceNode node) {
-    result = GlobalAccessPath::getAccessPath(node) and
+    node = AccessPath::getAReferenceOrAssignmentTo(result) and
     hasClosureNamespacePrefix(result)
   }
 
@@ -238,7 +238,7 @@ module Closure {
    * Gets the closure namespace path written to by the given property write, if any.
    */
   string getWrittenClosureNamespace(DataFlow::PropWrite node) {
-    result = GlobalAccessPath::fromRhs(node.getRhs()) and
+    node.getRhs() = AccessPath::getAnAssignmentTo(result) and
     hasClosureNamespacePrefix(result)
   }
 
@@ -267,6 +267,9 @@ module Closure {
       result = this
     }
 
-    override DataFlow::Node getBoundReceiver() { result = getArgument(1) }
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getArgument(0) and
+      result = getArgument(1)
+    }
   }
 }

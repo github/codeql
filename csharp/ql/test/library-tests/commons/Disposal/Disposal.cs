@@ -21,6 +21,6 @@ class Disposal : IDisposable
         field1 = p1;
         if(p2 is IDisposable d)
             d.Dispose();
-        Console.SetOut(fs);
+        DisposalTests.Class1.Dispose(fs);
     }
 }

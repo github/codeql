@@ -7,7 +7,6 @@
 
 import python
 
-
 from ControlFlowNode defn, SsaVariable v, AugAssign a, BinaryExpr b
-where v.getDefinition() = defn and a.getOperation() = b and b.contains((Expr)defn.getNode())
+where v.getDefinition() = defn and a.getOperation() = b and b.contains(defn.getNode().(Expr))
 select defn.toString(), defn.getNode().getLocation().getStartLine()

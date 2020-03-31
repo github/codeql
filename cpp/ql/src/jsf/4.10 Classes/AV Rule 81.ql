@@ -62,8 +62,8 @@ class ReferenceCopyAssignmentOperator extends MemberFunction {
   /** A call to delete on a member variable */
   DeleteExpr getADeleteExpr() {
     result.getEnclosingFunction() = this and
-    result.getExpr().(VariableAccess).getTarget().(MemberVariable).getDeclaringType() = this
-          .getDeclaringType()
+    result.getExpr().(VariableAccess).getTarget().(MemberVariable).getDeclaringType() =
+      this.getDeclaringType()
   }
 }
 

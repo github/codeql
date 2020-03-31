@@ -35,6 +35,15 @@ private string getParameterTypeString(Type parameterType) {
   else result = parameterType.(DumpType).getTypeIdentityString()
 }
 
+private string getTemplateArgumentString(Declaration d, int i) {
+  if exists(d.getTemplateArgumentKind(i))
+  then
+    result =
+      d.getTemplateArgumentKind(i).(DumpType).getTypeIdentityString() + " " +
+        d.getTemplateArgument(i)
+  else result = d.getTemplateArgument(i).(DumpType).getTypeIdentityString()
+}
+
 /**
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
@@ -52,11 +61,12 @@ abstract private class DumpDeclaration extends Declaration {
   final string getTemplateArgumentsString() {
     if exists(this.getATemplateArgument())
     then
-      result = "<" +
+      result =
+        "<" +
           strictconcat(int i |
             exists(this.getTemplateArgument(i))
           |
-            this.getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
+            getTemplateArgumentString(this, i), ", " order by i
           ) + ">"
     else result = ""
   }
@@ -79,7 +89,8 @@ private class DumpType extends Type {
     // and `getDeclaratorSuffixBeforeQualifiers()`. To create the type identity
     // for a `SpecifiedType`, insert the qualifiers after
     // `getDeclaratorSuffixBeforeQualifiers()`.
-    result = getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() +
+    result =
+      getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() +
         getDeclaratorSuffix()
   }
 
@@ -211,7 +222,8 @@ private class ArrayDumpType extends DerivedDumpType, ArrayType {
   override string getDeclaratorSuffixBeforeQualifiers() {
     if exists(getArraySize())
     then
-      result = "[" + getArraySize().toString() + "]" +
+      result =
+        "[" + getArraySize().toString() + "]" +
           getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
     else result = "[]" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
@@ -255,7 +267,8 @@ private class RoutineDumpType extends DumpType, RoutineType {
 
   language[monotonicAggregates]
   override string getDeclaratorSuffixBeforeQualifiers() {
-    result = "(" +
+    result =
+      "(" +
         concat(int i |
           exists(getParameterType(i))
         |
@@ -264,7 +277,8 @@ private class RoutineDumpType extends DumpType, RoutineType {
   }
 
   override string getDeclaratorSuffix() {
-    result = getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+    result =
+      getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
         getReturnType().(DumpType).getDeclaratorSuffix()
   }
 }
@@ -320,7 +334,8 @@ private class DumpVariable extends DumpDeclaration, Variable {
     exists(DumpType type |
       (this instanceof MemberVariable or this instanceof GlobalOrNamespaceVariable) and
       type = this.getType() and
-      result = type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) +
+      result =
+        type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) +
           this.getName() + this.getTemplateArgumentsString() +
           type.getDeclaratorSuffixBeforeQualifiers() + type.getDeclaratorSuffix()
     )
@@ -329,14 +344,16 @@ private class DumpVariable extends DumpDeclaration, Variable {
 
 private class DumpFunction extends DumpDeclaration, Function {
   override string getIdentityString() {
-    result = getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() +
-        " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() +
+    result =
+      getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() + " " +
+        getScopePrefix(this) + getName() + getTemplateArgumentsString() +
         getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
   }
 
   language[monotonicAggregates]
   private string getDeclaratorSuffixBeforeQualifiers() {
-    result = "(" +
+    result =
+      "(" +
         concat(int i |
           exists(getParameter(i).getType())
         |
@@ -357,7 +374,8 @@ private class DumpFunction extends DumpDeclaration, Function {
   }
 
   private string getDeclaratorSuffix() {
-    result = getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+    result =
+      getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
         getType().(DumpType).getDeclaratorSuffix()
   }
 }

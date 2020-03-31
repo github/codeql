@@ -1,32 +1,22 @@
-
-
 import python
 
-/** A Tag in Pyxl (which gets converted to a call in Python).
- * 
+/**
+ * A Tag in Pyxl (which gets converted to a call in Python).
  */
 class PyxlTag extends Call {
+    PyxlTag() { pyxl_tag(this, _) }
 
-    PyxlTag() {
-        pyxl_tag(this, _)
-    }
-
-    string getPyxlTagName() {
-        pyxl_tag(this, result) 
-    }
+    string getPyxlTagName() { pyxl_tag(this, result) }
 
     /** Gets the pyxl or Python node that is enclosed by this one in the pyxl source */
-    Expr getEnclosedNode() {
-        none() 
-    }
+    Expr getEnclosedNode() { none() }
 
     /** Gets the Python code (if any) that is contained in this pyxl node */
     Expr getEnclosedPythonCode() {
         result = this.getEnclosedNode() and not result instanceof PyxlTag
         or
-        result = ((PyxlTag)this.getEnclosedNode()).getEnclosedPythonCode()
+        result = this.getEnclosedNode().(PyxlTag).getEnclosedPythonCode()
     }
-
 }
 
 private predicate pyxl_tag(Call c, string name) {
@@ -39,53 +29,33 @@ private predicate pyxl_tag(Call c, string name) {
 }
 
 class PyxlHtmlTag extends PyxlTag {
+    PyxlHtmlTag() { this.getPyxlTagName().prefix(2) = "x_" }
 
-    PyxlHtmlTag() {
-        this.getPyxlTagName().prefix(2) = "x_"
-    }
-
-    string getTagName() {
-        result = this.getPyxlTagName().suffix(2) 
-    }
+    string getTagName() { result = this.getPyxlTagName().suffix(2) }
 
     /** Html tags get transformed into a call. This node is the callee function and the enclosed node is an argument. */
     override Expr getEnclosedNode() {
-        exists(Call c | 
+        exists(Call c |
             c.getFunc() = this and
             result = c.getAnArg()
         )
     }
-
 }
 
 class PyxlIfTag extends PyxlTag {
+    PyxlIfTag() { this.getPyxlTagName() = "_push_condition" }
 
-    PyxlIfTag() {
-        this.getPyxlTagName() = "_push_condition"
-    }
-
-    override Expr getEnclosedNode() {
-        result = this.getAnArg()
-    }
+    override Expr getEnclosedNode() { result = this.getAnArg() }
 }
 
 class PyxlEndIfTag extends PyxlTag {
+    PyxlEndIfTag() { this.getPyxlTagName() = "_leave_if" }
 
-    PyxlEndIfTag() {
-        this.getPyxlTagName() = "_leave_if"
-    }
-
-    override Expr getEnclosedNode() {
-        result = this.getAnArg()
-    }
-
+    override Expr getEnclosedNode() { result = this.getAnArg() }
 }
 
-class PyxlRawHtml extends PyxlTag{
-
-    PyxlRawHtml() {
-        this.getPyxlTagName() = "rawhtml"
-    }
+class PyxlRawHtml extends PyxlTag {
+    PyxlRawHtml() { this.getPyxlTagName() = "rawhtml" }
 
     /** The text for this raw html, if it is simple text. */
     string getText() {
@@ -95,13 +65,7 @@ class PyxlRawHtml extends PyxlTag{
         )
     }
 
-    Expr getValue() {
-        result = this.getArg(0)
-    }
+    Expr getValue() { result = this.getArg(0) }
 
-    override Expr getEnclosedNode() {
-        result = this.getAnArg()
-    }
-
+    override Expr getEnclosedNode() { result = this.getAnArg() }
 }
-

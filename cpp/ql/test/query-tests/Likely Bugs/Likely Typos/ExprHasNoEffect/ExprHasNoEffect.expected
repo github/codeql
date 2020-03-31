@@ -25,8 +25,6 @@
 | test.c:25:5:25:16 | ... ? ... : ... | This expression has no effect. | test.c:25:5:25:16 | ... ? ... : ... |  |
 | test.c:26:15:26:16 | 32 | This expression has no effect. | test.c:26:15:26:16 | 32 |  |
 | test.c:27:9:27:10 | 33 | This expression has no effect. | test.c:27:9:27:10 | 33 |  |
-| test.cpp:24:3:24:3 | call to operator++ | This expression has no effect (because $@ has no external side effects). | test.cpp:9:14:9:23 | operator++ | operator++ |
-| test.cpp:25:3:25:3 | call to operator++ | This expression has no effect (because $@ has no external side effects). | test.cpp:9:14:9:23 | operator++ | operator++ |
 | test.cpp:62:5:62:5 | call to operator= | This expression has no effect (because $@ has no external side effects). | test.cpp:47:14:47:22 | operator= | operator= |
 | test.cpp:65:5:65:5 | call to operator= | This expression has no effect (because $@ has no external side effects). | test.cpp:55:7:55:7 | operator= | operator= |
 | volatile.c:9:5:9:5 | c | This expression has no effect. | volatile.c:9:5:9:5 | c |  |

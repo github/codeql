@@ -1,5 +1,10 @@
+/**
+ * @kind path-problem
+ */
+
 import csharp
-import semmle.code.csharp.dataflow.DataFlow::DataFlow
+import DataFlow
+import DataFlow::PathGraph
 
 class FlowConfig extends Configuration {
   FlowConfig() { this = "FlowConfig" }
@@ -11,6 +16,6 @@ class FlowConfig extends Configuration {
   }
 }
 
-from FlowConfig config, Node source, Node sink
-where config.hasFlow(source, sink)
-select source, sink
+from DataFlow::PathNode source, DataFlow::PathNode sink, FlowConfig config
+where config.hasFlowPath(source, sink)
+select source, sink, sink, "$@", sink, sink.toString()

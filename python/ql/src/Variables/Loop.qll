@@ -1,17 +1,19 @@
 import python
 
-
 private predicate empty_sequence(Expr e) {
-    exists(SsaVariable var | var.getAUse().getNode() = e | empty_sequence(var.getDefinition().getNode())) or
-    e instanceof List and not exists(e.(List).getAnElt()) or
-    e instanceof Tuple and not exists(e.(Tuple).getAnElt()) or
+    exists(SsaVariable var | var.getAUse().getNode() = e |
+        empty_sequence(var.getDefinition().getNode())
+    )
+    or
+    e instanceof List and not exists(e.(List).getAnElt())
+    or
+    e instanceof Tuple and not exists(e.(Tuple).getAnElt())
+    or
     e.(StrConst).getText().length() = 0
 }
 
 /* This has the potential for refinement, but we err on the side of fewer false positives for now. */
-private predicate probably_non_empty_sequence(Expr e) {
-    not empty_sequence(e)
-}
+private predicate probably_non_empty_sequence(Expr e) { not empty_sequence(e) }
 
 /** A loop which probably defines v */
 private Stmt loop_probably_defines(Variable v) {
@@ -24,8 +26,7 @@ private Stmt loop_probably_defines(Variable v) {
 
 /** Holds if the variable used by `use` is probably defined in a loop */
 predicate probably_defined_in_loop(Name use) {
-    exists(Stmt loop |
-        loop = loop_probably_defines(use.getVariable()) |
+    exists(Stmt loop | loop = loop_probably_defines(use.getVariable()) |
         loop.getAFlowNode().strictlyReaches(use.getAFlowNode())
     )
 }

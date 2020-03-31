@@ -26,3 +26,13 @@ class TestWindows {} // lgtm
 // LGTM[java/confusing-method-name]
 //lgtm[java/confusing-method-name] and lgtm[java/non-short-circuit-evaluation]
 //lgtm[java/confusing-method-name]; lgtm
+/* lgtm[] */
+/* lgtm[java/confusing-method-name] */
+/* lgtm
+*/
+/* lgtm
+
+*/
+/* lgtm[@tag:nullness,java/confusing-method-name] */
+/* lgtm[@tag:nullness] */
+/** lgtm[] */

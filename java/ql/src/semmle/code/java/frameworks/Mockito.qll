@@ -288,7 +288,8 @@ class MockitoSpiedField extends MockitoAnnotatedField {
 }
 
 private int mockableParameterCount(Constructor constructor) {
-  result = count(Parameter p |
+  result =
+    count(Parameter p |
       p = constructor.getAParameter() and p.getType() instanceof MockitoMockableType
     )
 }

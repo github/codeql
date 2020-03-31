@@ -33,7 +33,7 @@ the query cannot be changed by a malicious user.</p>
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php?title=LDAP_Injection_Prevention_Cheat_Sheet">LDAP Injection Prevention Cheat Sheet</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
 <li>OWASP: <a href="https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java">Preventing LDAP Injection in Java</a>.</li>
 <li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapFilterEncode">LdapFilterEncode</a>.</li>
 <li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapDistinguishedNameEncode">LdapDistinguishedNameEncode</a>.</li>

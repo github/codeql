@@ -1,6 +1,6 @@
 /**
- * @name Do not use hard-coded encryption keys.
- * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hardcoded value.
+ * @name Hard-coded encryption key
+ * @description The .Key property or rgbKey parameter of a SymmetricAlgorithm should never be a hard-coded value.
  * @kind problem
  * @id cs/hardcoded-key
  * @problem.severity error
@@ -19,7 +19,8 @@ import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlow::Encryptio
  */
 class ByteArrayLiteralSource extends KeySource {
   ByteArrayLiteralSource() {
-    this.asExpr() = any(ArrayCreation ac |
+    this.asExpr() =
+      any(ArrayCreation ac |
         ac.getArrayType().getElementType() instanceof ByteType and
         ac.hasInitializer()
       )

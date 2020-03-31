@@ -90,7 +90,8 @@ Element getCollectionAssignmentTarget(Expr e) {
   e = result.(ArrayCreation).getInitializer().getAnElement()
   or
   // Collection initializer
-  e = result
+  e =
+    result
         .(ObjectCreation)
         .getInitializer()
         .(CollectionInitializer)

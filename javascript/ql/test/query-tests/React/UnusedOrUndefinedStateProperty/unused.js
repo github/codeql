@@ -72,5 +72,3 @@ class C6 extends React.Component {
     }
 
 }
-
-//semmle-extractor-options: --experimental

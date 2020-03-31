@@ -13,7 +13,7 @@
 | copy_from_prototype.cpp:13:7:13:7 | c | c<int>::c(const c<int> &) -> void | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
 | copy_from_prototype.cpp:13:7:13:7 | operator= | c<int>::operator=(c<int> &&) -> c<int> & | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
 | copy_from_prototype.cpp:13:7:13:7 | operator= | c<int>::operator=(const c<int> &) -> c<int> & | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
-| copy_from_prototype.cpp:14:26:14:26 | c | c<T>::c<(unnamed)>() -> void | copy_from_prototype.cpp:13:7:13:7 | c<T> | Unknown literal |
+| copy_from_prototype.cpp:14:26:14:26 | c | c<T>::c<(unnamed)>() -> void | copy_from_prototype.cpp:13:7:13:7 | c<T> | X |
 | copy_from_prototype.cpp:14:26:14:26 | c | c<int>::c<(unnamed)>() -> void | copy_from_prototype.cpp:13:7:13:7 | c<int> | <no expr> |
 | copy_from_prototype.cpp:17:7:17:7 | d | d::d() -> void | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |
 | copy_from_prototype.cpp:17:7:17:7 | d | d::d(const d &) -> void | copy_from_prototype.cpp:17:7:17:7 | d | <no expr> |

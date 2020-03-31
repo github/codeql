@@ -14,7 +14,12 @@ class SuppressionComment extends Javadoc {
   string annotation;
 
   SuppressionComment() {
-    isEolComment(this) and
+    // suppression comments must be single-line
+    (
+      isEolComment(this)
+      or
+      isNormalComment(this) and exists(int line | hasLocationInfo(_, line, _, line, _))
+    ) and
     exists(string text | text = getChild(0).getText() |
       // match `lgtm[...]` anywhere in the comment
       annotation = text.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)

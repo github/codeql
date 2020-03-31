@@ -39,7 +39,8 @@ class AnalysedString extends Expr {
   int getMaxLength() {
     // take the longest AnalysedString it's value could 'flow' from; however if even one doesn't
     // return a value (this essentially means 'infinity') we can't return a value either.
-    result = max(AnalysedString expr, int toMax |
+    result =
+      max(AnalysedString expr, int toMax |
         canValueFlow*(expr, this) and toMax = expr.(StringLiteral).getOriginalLength()
       |
         toMax
@@ -53,8 +54,8 @@ class AnalysedString extends Expr {
  */
 class StrlenCall extends FunctionCall {
   StrlenCall() {
-    this.getTarget().hasGlobalName("strlen") or
-    this.getTarget().hasGlobalName("wcslen") or
+    this.getTarget().hasGlobalOrStdName("strlen") or
+    this.getTarget().hasGlobalOrStdName("wcslen") or
     this.getTarget().hasGlobalName("_mbslen") or
     this.getTarget().hasGlobalName("_mbslen_l") or
     this.getTarget().hasGlobalName("_mbstrlen") or

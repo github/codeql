@@ -476,8 +476,6 @@ private Sign exprSign(Expr e) {
   (
     unknownSign(e)
     or
-    result = exprSign(e.(ParExpr).getExpr())
-    or
     exists(SsaVariable v | v.getAUse() = e |
       result = ssaSign(v, any(SsaReadPositionBlock bb | bb.getBlock() = e.getBasicBlock()))
       or

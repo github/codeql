@@ -59,13 +59,15 @@ where
   (
     exists(BinaryLogicalOperation blop | blop.getAnOperand() = e1 |
       e1.getType().(TypedefType).hasName("HRESULT") and
-      msg = "Usage of a type " + e1.getType().toString() +
+      msg =
+        "Usage of a type " + e1.getType().toString() +
           " as an argument of a binary logical operation"
     )
     or
     exists(UnaryLogicalOperation ulop | ulop.getAnOperand() = e1 |
       e1.getType().(TypedefType).hasName("HRESULT") and
-      msg = "Usage of a type " + e1.getType().toString() +
+      msg =
+        "Usage of a type " + e1.getType().toString() +
           " as an argument of a unary logical operation"
     ) and
     not isHresultBooleanConverted(e1)

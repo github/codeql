@@ -28,4 +28,9 @@ module StoredXss {
   class FileNameSourceAsSource extends Source {
     FileNameSourceAsSource() { this instanceof FileNameSource }
   }
+
+  /** User-controlled torrent information, considered as a flow source for stored XSS. */
+  class UserControlledTorrentInfoAsSource extends Source {
+    UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
+  }
 }

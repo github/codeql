@@ -9,6 +9,8 @@ newtype TIRVariable =
     Construction::functionHasIR(callable) and
     var.getCallable() = callable
   } or
-  TIRTempVariable(Callable callable, Language::AST ast, TempVariableTag tag, Type type) {
+  TIRTempVariable(
+    Callable callable, Language::AST ast, TempVariableTag tag, Language::LanguageType type
+  ) {
     Construction::hasTempVariable(callable, ast, tag, type)
   }

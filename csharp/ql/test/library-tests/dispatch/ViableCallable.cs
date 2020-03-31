@@ -428,17 +428,37 @@ public class C15
 abstract class C16<T1, T2>
 {
     public virtual T2 M1(T1 x) => throw null;
-    protected virtual T M2<T>(Func<T> x) => x();
+    public virtual T M2<T>(Func<T> x) => x();
 }
 
 class C17 : C16<string, int>
 {
-    void M(int i)
+    void M1(int i)
     {
         // Viable callables: C16<string, int>.M1()
         this.M1("");
 
         // Viable callables: C16<string, int>.M2<int>()
         this.M2(() => i);
+    }
+
+    public override T M2<T>(Func<T> x) => x();
+
+    void M3<T>(T t, string s) where T : C17
+    {
+        // Viable callable: C17.M2()
+        t.M2(() => s);
+    }
+
+    void M4<T>(C16<T, int> c) where T : struct
+    {
+        // Viable callable: C16.M2() [also reports C17.M2(); false positive]
+        c.M2(() => default(T));
+    }
+
+    void M5<T>(C16<T, int> c) where T : class
+    {
+        // Viable callables: {C16,C17}.M1()
+        c.M2(() => default(T));
     }
 }

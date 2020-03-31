@@ -51,3 +51,7 @@ struct address {
   char* town;
   static char* country;
 };
+
+void hasExtern() {
+  extern int externInFunction;
+}

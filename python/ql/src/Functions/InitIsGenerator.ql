@@ -13,6 +13,7 @@
 import python
 
 from Function f
-where f.isInitMethod() and
-(exists(Yield y | y.getScope() = f) or exists(YieldFrom y| y.getScope() = f))
+where
+    f.isInitMethod() and
+    (exists(Yield y | y.getScope() = f) or exists(YieldFrom y | y.getScope() = f))
 select f, "__init__ method is a generator."

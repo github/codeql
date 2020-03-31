@@ -1,4 +1,3 @@
-
 import python
 
 from ClassObject cls

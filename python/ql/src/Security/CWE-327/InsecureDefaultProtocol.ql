@@ -12,13 +12,9 @@
 
 import python
 
-FunctionObject ssl_wrap_socket() {
-    result = ModuleObject::named("ssl").attr("wrap_socket")
-}
+FunctionValue ssl_wrap_socket() { result = Value::named("ssl.wrap_socket") }
 
-ClassObject ssl_Context_class() {
-    result = ModuleObject::named("ssl").attr("SSLContext")
-}
+ClassValue ssl_Context_class() { result = Value::named("ssl.SSLContext") }
 
 CallNode unsafe_call(string method_name) {
     result = ssl_wrap_socket().getACall() and
@@ -32,10 +28,7 @@ CallNode unsafe_call(string method_name) {
 }
 
 from CallNode call, string method_name
-where 
-    call = unsafe_call(method_name)
-select call, "Call to " + method_name + " does not specify a protocol, which may result in an insecure default being used."
-
-
-
-
+where call = unsafe_call(method_name)
+select call,
+    "Call to " + method_name +
+        " does not specify a protocol, which may result in an insecure default being used."

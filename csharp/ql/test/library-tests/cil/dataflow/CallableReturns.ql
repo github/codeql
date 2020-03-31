@@ -6,7 +6,8 @@ predicate relevantMethod(CIL::Method m) {
   or
   m.getName() = "get_Item"
   or
-  m.getDeclaringType().getName() = "ThrowHelper"
+  m.getDeclaringType().getName() = "ThrowHelper" and
+  not m.getParameter(_).getType().getName() = "ExceptionResource"
   or
   m.getLocation().(CIL::Assembly).getName().matches("DataFlow%")
 }

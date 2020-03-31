@@ -16,12 +16,19 @@ import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
+predicate isRandCall(FunctionCall fc) { fc.getTarget().getName() = "rand" }
+
+predicate isRandCallOrParent(Expr e) {
+  isRandCall(e) or
+  isRandCallOrParent(e.getAChild())
+}
+
 predicate isRandValue(Expr e) {
-  e.(FunctionCall).getTarget().getName() = "rand"
+  isRandCall(e)
   or
   exists(MacroInvocation mi |
     e = mi.getExpr() and
-    e.getAChild*().(FunctionCall).getTarget().getName() = "rand"
+    isRandCallOrParent(e)
   )
 }
 

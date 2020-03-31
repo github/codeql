@@ -1,5 +1,3 @@
-
-
 import python
 
 from ExceptFlowNode n, ClassObject cls

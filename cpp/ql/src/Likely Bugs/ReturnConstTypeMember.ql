@@ -17,7 +17,9 @@ where
   hasSuperfluousConstReturn(f) and
   if f.hasSpecifier("const") or f.isStatic()
   then
-    message = "The 'const' modifier has no effect on return types. The 'const' modifying the return type can be removed."
+    message =
+      "The 'const' modifier has no effect on return types. The 'const' modifying the return type can be removed."
   else
-    message = "The 'const' modifier has no effect on return types. For a const function, the 'const' should go after the parameter list."
+    message =
+      "The 'const' modifier has no effect on return types. For a const function, the 'const' should go after the parameter list."
 select f, message

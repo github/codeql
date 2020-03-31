@@ -35,8 +35,8 @@ float exprBound(Expr e) {
 /** A multiplication that does not overflow. */
 predicate small(MulExpr e) {
   exists(NumType t, float lhs, float rhs, float res | t = e.getType() |
-    lhs = exprBound(e.getLeftOperand().getProperExpr()) and
-    rhs = exprBound(e.getRightOperand().getProperExpr()) and
+    lhs = exprBound(e.getLeftOperand()) and
+    rhs = exprBound(e.getRightOperand()) and
     lhs * rhs = res and
     res <= t.getOrdPrimitiveType().getMaxValue()
   )
@@ -47,7 +47,7 @@ predicate small(MulExpr e) {
  */
 Expr getRestrictedParent(Expr e) {
   result = e.getParent() and
-  (result instanceof ArithExpr or result instanceof ConditionalExpr or result instanceof ParExpr)
+  (result instanceof ArithExpr or result instanceof ConditionalExpr)
 }
 
 from ConversionSite c, MulExpr e, NumType sourceType, NumType destType

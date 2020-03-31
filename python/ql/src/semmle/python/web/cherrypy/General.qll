@@ -22,23 +22,23 @@ class CherryPyRoute extends CallNode {
         this.getFunction().(AttrNode).getObject("mount").pointsTo(Value::named("cherrypy.tree"))
     }
 
-    ClassObject getAppClass() {
-        this.getArg(0).refersTo(_, result, _)
+    ClassValue getAppClass() {
+        this.getArg(0).pointsTo().getClass() = result
         or
-        this.getArgByName("root").refersTo(_, result, _)
+        this.getArgByName("root").pointsTo().getClass() = result
     }
 
     string getPath() {
-        exists(StringObject path | result = path.getText() |
-            this.getArg(1).refersTo(path)
+        exists(Value path | path = Value::forString(result) |
+            this.getArg(1).pointsTo(path)
             or
-            this.getArgByName("script_name").refersTo(path)
+            this.getArgByName("script_name").pointsTo(path)
         )
     }
 
-    Object getConfig() {
-        this.getArg(2).refersTo(_, result, _)
+    ClassValue getConfig() {
+        this.getArg(2).pointsTo().getClass() = result
         or
-        this.getArgByName("config").refersTo(_, result, _)
+        this.getArgByName("config").pointsTo().getClass() = result
     }
 }

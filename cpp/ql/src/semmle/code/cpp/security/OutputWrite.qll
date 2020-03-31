@@ -63,8 +63,8 @@ private predicate outputWrite(Expr write, Expr source) {
     or
     // puts, putchar
     (
-      f.hasGlobalName("puts") or
-      f.hasGlobalName("putchar")
+      f.hasGlobalOrStdName("puts") or
+      f.hasGlobalOrStdName("putchar")
     ) and
     arg = 0
     or

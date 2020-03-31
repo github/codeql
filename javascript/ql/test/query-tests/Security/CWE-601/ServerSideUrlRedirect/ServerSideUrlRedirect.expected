@@ -54,6 +54,8 @@ nodes
 | koa.js:8:18:8:20 | url |
 | koa.js:14:16:14:18 | url |
 | koa.js:14:16:14:18 | url |
+| koa.js:20:16:20:18 | url |
+| koa.js:20:16:20:18 | url |
 | node.js:6:7:6:52 | target |
 | node.js:6:16:6:39 | url.par ... , true) |
 | node.js:6:16:6:45 | url.par ... ).query |
@@ -131,6 +133,8 @@ edges
 | koa.js:6:6:6:27 | url | koa.js:8:18:8:20 | url |
 | koa.js:6:6:6:27 | url | koa.js:14:16:14:18 | url |
 | koa.js:6:6:6:27 | url | koa.js:14:16:14:18 | url |
+| koa.js:6:6:6:27 | url | koa.js:20:16:20:18 | url |
+| koa.js:6:6:6:27 | url | koa.js:20:16:20:18 | url |
 | koa.js:6:12:6:27 | ctx.query.target | koa.js:6:6:6:27 | url |
 | koa.js:6:12:6:27 | ctx.query.target | koa.js:6:6:6:27 | url |
 | koa.js:8:18:8:20 | url | koa.js:8:15:8:26 | `${url}${x}` |
@@ -180,6 +184,7 @@ edges
 | koa.js:7:15:7:17 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:7:15:7:17 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:8:15:8:26 | `${url}${x}` | koa.js:6:12:6:27 | ctx.query.target | koa.js:8:15:8:26 | `${url}${x}` | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:14:16:14:18 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:14:16:14:18 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
+| koa.js:20:16:20:18 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:20:16:20:18 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | node.js:7:34:7:39 | target | node.js:6:26:6:32 | req.url | node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
 | node.js:15:34:15:45 | '/' + target | node.js:11:26:11:32 | req.url | node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
 | node.js:32:34:32:55 | target  ... =" + me | node.js:29:26:29:32 | req.url | node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |

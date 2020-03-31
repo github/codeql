@@ -118,16 +118,16 @@ class SystemXmlXmlNamedNodeMapClass extends Class {
 /** An enum constant in `System.Xml.ValidationType`. */
 class SystemXmlValidationType extends EnumConstant {
   SystemXmlValidationType() {
-    this.getDeclaringEnum() = any(Enum e |
-        e = any(SystemXmlNamespace n).getAnEnum() and e.hasName("ValidationType")
-      )
+    this.getDeclaringEnum() =
+      any(Enum e | e = any(SystemXmlNamespace n).getAnEnum() and e.hasName("ValidationType"))
   }
 }
 
 /** An enum constant in `System.Xml.Schema.XmlSchemaValidationFlags`. */
 class SystemXmlSchemaXmlSchemaValidationFlags extends EnumConstant {
   SystemXmlSchemaXmlSchemaValidationFlags() {
-    this.getDeclaringEnum() = any(Enum e |
+    this.getDeclaringEnum() =
+      any(Enum e |
         e = any(SystemXmlSchemaNamespace s).getAnEnum() and e.hasName("XmlSchemaValidationFlags")
       )
   }
@@ -141,14 +141,14 @@ class XmlReaderSettingsCreation extends ObjectCreation {
 
   /** Gets a value set on the `ValidationType` property, if any. */
   SystemXmlValidationType getValidationType() {
-    result.getAnAccess() = this
-          .getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationTypeProperty())
+    result.getAnAccess() =
+      this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationTypeProperty())
   }
 
   /** Gets a flag set on the `ValidationFlags` property, if any. */
   SystemXmlSchemaXmlSchemaValidationFlags getAValidationFlag() {
-    result.getAnAccess() = this
-          .getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationFlagsProperty())
+    result.getAnAccess() =
+      this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationFlagsProperty())
   }
 
   /** Gets a value set for the given property in this local context. */

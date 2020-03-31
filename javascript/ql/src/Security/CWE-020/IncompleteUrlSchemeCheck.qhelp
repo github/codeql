@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+URLs starting with <code>javascript:</code> can be used to encode JavaScript code to be executed
+when the URL is visited. While this is a powerful mechanism for creating feature-rich and responsive
+web applications, it is also a potential security risk: if the URL comes from an untrusted source,
+it might contain harmful JavaScript code. For this reason, many frameworks and libraries first check
+the URL scheme of any untrusted URL, and reject URLs with the <code>javascript:</code> scheme.
+</p>
+<p>
+However, the <code>data:</code> and <code>vbscript:</code> schemes can be used to represent
+executable code in a very similar way, so any validation logic that checks against
+<code>javascript:</code>, but not against <code>data:</code> and <code>vbscript:</code>, is likely to
+be insufficient.
+</p>
+</overview>
+<recommendation>
+<p>
+Add checks covering both <code>data:</code> and <code>vbscript:</code>.
+</p>
+</recommendation>
+<example>
+<p>
+The following function validates a (presumably untrusted) URL <code>url</code>. If it starts with
+<code>javascript:</code> (case-insensitive and potentially preceded by whitespace), the harmless
+placeholder URL <code>about:blank</code> is returned to prevent code injection; otherwise
+<code>url</code> itself is returned.
+</p>
+<sample src="examples/IncompleteUrlSchemeCheck.js"/>
+<p>
+While this check provides partial projection, it should be extended to cover <code>data:</code>
+and <code>vbscript:</code> as well:
+</p>
+<sample src="examples/IncompleteUrlSchemeCheckGood.js"/>
+</example>
+<references>
+<li>WHATWG: <a href="https://wiki.whatwg.org/wiki/URL_schemes">URL schemes</a>.</li>
+</references>
+</qhelp>

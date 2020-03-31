@@ -18,6 +18,8 @@ Specifically, consider the following code snippet:
 
 If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``int``), then this loop will never terminate: ``i`` will start at zero, being incremented all the way up to 2\ :sup:`31`\ - 1, which is still smaller than ``l``. When it is incremented once more, an arithmetic overflow occurs, and ``i`` becomes -2\ :sup:`31`\, which also is smaller than ``l``! Eventually, ``i`` will reach zero again, and the cycle repeats.
 
+.. pull-quote::   
+
    More about overflow
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.

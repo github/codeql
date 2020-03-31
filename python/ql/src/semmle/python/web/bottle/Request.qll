@@ -21,7 +21,7 @@ class BottleRequestKind extends TaintKind {
     }
 }
 
-private class RequestSource extends TaintSource {
+private class RequestSource extends HttpRequestTaintSource {
     RequestSource() { this.(ControlFlowNode).pointsTo(theBottleRequestObject()) }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof BottleRequestKind }
@@ -69,9 +69,9 @@ class UntrustedFile extends TaintKind {
 //  Move UntrustedFile to shared location
 //
 /** Parameter to a bottle request handler function */
-class BottleRequestParameter extends TaintSource {
+class BottleRequestParameter extends HttpRequestTaintSource {
     BottleRequestParameter() {
-        exists(BottleRoute route | route.getNamedArgument() = this.(ControlFlowNode).getNode())
+        exists(BottleRoute route | route.getANamedArgument() = this.(ControlFlowNode).getNode())
     }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof UntrustedStringKind }

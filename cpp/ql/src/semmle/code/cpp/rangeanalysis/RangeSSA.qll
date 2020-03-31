@@ -31,7 +31,7 @@ library class RangeSSA extends SSAHelper {
   /**
    * Add a phi node on the out-edge of a guard.
    */
-  override predicate custom_phi_node(LocalScopeVariable v, BasicBlock b) {
+  override predicate custom_phi_node(StackVariable v, BasicBlock b) {
     guard_defn(v.getAnAccess(), _, b, _)
   }
 }
@@ -67,19 +67,19 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   RangeSsaDefinition() { exists(RangeSSA x | x.ssa_defn(_, this, _, _)) }
 
   /**
-   * Gets a variable corresponding to a SSA LocalScopeVariable defined by
+   * Gets a variable corresponding to a SSA StackVariable defined by
    * this definition.
    */
-  LocalScopeVariable getAVariable() { exists(RangeSSA x | x.ssa_defn(result, this, _, _)) }
+  StackVariable getAVariable() { exists(RangeSSA x | x.ssa_defn(result, this, _, _)) }
 
   /**
    * A string representation of the SSA variable represented by the pair
    * `(this, v)`.
    */
-  string toString(LocalScopeVariable v) { exists(RangeSSA x | result = x.toString(this, v)) }
+  string toString(StackVariable v) { exists(RangeSSA x | result = x.toString(this, v)) }
 
   /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
-  VariableAccess getAUse(LocalScopeVariable v) { exists(RangeSSA x | result = x.getAUse(this, v)) }
+  VariableAccess getAUse(StackVariable v) { exists(RangeSSA x | result = x.getAUse(this, v)) }
 
   /** Gets the control flow node for this definition. */
   ControlFlowNode getDefinition() { result = this }
@@ -87,9 +87,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
   /** Whether this definition is a phi node for variable `v`. */
-  predicate isPhiNode(LocalScopeVariable v) {
-    exists(RangeSSA x | x.phi_node(v, this.(BasicBlock)))
-  }
+  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this.(BasicBlock))) }
 
   /**
    * If this definition is a phi node corresponding to a guard,
@@ -104,7 +102,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   /** Whether this definition is from a parameter */
   predicate definedByParameter(Parameter p) { this = p.getFunction().getEntryPoint() }
 
-  RangeSsaDefinition getAPhiInput(LocalScopeVariable v) {
+  RangeSsaDefinition getAPhiInput(StackVariable v) {
     this.isPhiNode(v) and
     exists(BasicBlock pred |
       pred = this.(BasicBlock).getAPredecessor() and
@@ -137,7 +135,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   }
 
   /** Gets the expression assigned to this SsaDefinition. */
-  Expr getDefiningValue(LocalScopeVariable v) {
+  Expr getDefiningValue(StackVariable v) {
     exists(ControlFlowNode def | def = this.getDefinition() |
       def = v.getInitializer().getExpr() and def = result
       or
@@ -155,7 +153,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
     )
   }
 
-  predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
+  predicate reachesEndOfBB(StackVariable v, BasicBlock b) {
     exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
   }
 }

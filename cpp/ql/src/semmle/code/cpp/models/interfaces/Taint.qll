@@ -16,7 +16,9 @@ import semmle.code.cpp.models.Models
  * from a parameter or qualifier to an output buffer, return value, or qualifier.
  *
  * Note that this does not include direct copying of values; that is covered by
- * DataFlowModel.qll
+ * DataFlowModel.qll. If a value is sometimes copied in full, and sometimes
+ * altered (for example copying a string with `strncpy`), this is also considered
+ * data flow.
  */
 abstract class TaintFunction extends Function {
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);

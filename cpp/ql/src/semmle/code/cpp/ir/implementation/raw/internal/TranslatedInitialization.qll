@@ -31,6 +31,102 @@ abstract class InitializationContext extends TranslatedElement {
 }
 
 /**
+ * Base class for any element that initializes a stack variable. Examples include local variable
+ * declarations, `return` statements, and `throw` expressions.
+ */
+abstract class TranslatedVariableInitialization extends TranslatedElement, InitializationContext {
+  final override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+
+  final override Instruction getFirstInstruction() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = InitializerVariableAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getTypeForGLValue(getTargetType())
+    or
+    hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Uninitialized and
+    resultType = getTypeForPRValue(getTargetType())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      tag = InitializerVariableAddressTag() and
+      kind instanceof GotoEdge and
+      if hasUninitializedInstruction()
+      then result = getInstruction(InitializerStoreTag())
+      else result = getInitialization().getFirstInstruction()
+    )
+    or
+    hasUninitializedInstruction() and
+    kind instanceof GotoEdge and
+    tag = InitializerStoreTag() and
+    (
+      result = getInitialization().getFirstInstruction()
+      or
+      not exists(getInitialization()) and result = getInitializationSuccessor()
+    )
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and result = getInitializationSuccessor()
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    (
+      tag = InitializerVariableAddressTag()
+      or
+      hasUninitializedInstruction() and tag = InitializerStoreTag()
+    ) and
+    result = getIRVariable()
+  }
+
+  final override Instruction getTargetAddress() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  /**
+   * Get the initialization for the variable.
+   */
+  abstract TranslatedInitialization getInitialization();
+
+  /**
+   * Get the `IRVariable` to be initialized. This may be an `IRTempVariable`.
+   */
+  abstract IRVariable getIRVariable();
+
+  /**
+   * Gets the `Instruction` to be executed immediately after the initialization.
+   */
+  abstract Instruction getInitializationSuccessor();
+
+  /**
+   * Holds if this initialization requires an `Uninitialized` instruction to be emitted before
+   * evaluating the initializer.
+   */
+  final predicate hasUninitializedInstruction() {
+    (
+      not exists(getInitialization()) or
+      getInitialization() instanceof TranslatedListInitialization or
+      getInitialization() instanceof TranslatedConstructorInitialization or
+      getInitialization().(TranslatedStringLiteralInitialization).zeroInitRange(_, _)
+    ) and
+    // Variables with static or thread-local storage duration are zero-initialized at program startup.
+    getIRVariable() instanceof IRAutomaticVariable
+  }
+}
+
+/**
  * Represents the IR translation of any initialization, whether from an
  * initializer list or from a direct initializer.
  */
@@ -116,7 +212,8 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
 
   override TranslatedElement getChild(int id) {
     // The children are in initialization order
-    result = rank[id + 1](TranslatedElementInitialization init |
+    result =
+      rank[id + 1](TranslatedElementInitialization init |
         init.getInitList() = expr
       |
         init order by init.getElementIndex()
@@ -340,7 +437,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
    * Holds if the `elementCount` array elements starting at `startIndex` must be
    * zero initialized.
    */
-  private predicate zeroInitRange(int startIndex, int elementCount) {
+  predicate zeroInitRange(int startIndex, int elementCount) {
     exists(int targetCount |
       startIndex = expr.getUnspecifiedType().(ArrayType).getArraySize() and
       targetCount = getContext().getTargetType().getUnspecifiedType().(ArrayType).getArraySize() and
@@ -752,7 +849,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::ConvertToBase and
+    opcode instanceof Opcode::ConvertToNonVirtualBase and
     resultType = getTypeForGLValue(call.getTarget().getDeclaringType())
   }
 

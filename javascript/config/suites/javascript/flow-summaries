@@ -1,2 +1,2 @@
-+ semmlecode-javascript-queries/Security/Summaries/ExtractSourceSummaries.ql
-+ semmlecode-javascript-queries/Security/Summaries/ExtractSinkSummaries.ql
++ semmlecode-javascript-queries/experimental/Summaries/ExtractSourceSummaries.ql
++ semmlecode-javascript-queries/experimental/Summaries/ExtractSinkSummaries.ql

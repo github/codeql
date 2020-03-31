@@ -12,7 +12,7 @@ import semmle.code.cpp.controlflow.SSA
  *  Should always be zero *regardless* of the input
  */
 
-select count(SsaDefinition d1, SsaDefinition d2, Expr u, LocalScopeVariable v |
+select count(SsaDefinition d1, SsaDefinition d2, Expr u, StackVariable v |
     d1.getAUse(v) = u and
     d2.getAUse(v) = u and
     not d1 = d2

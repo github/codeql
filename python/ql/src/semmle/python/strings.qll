@@ -9,23 +9,22 @@ predicate mapping_format(StrConst e) {
 }
 
 /*
-MAPPING_KEY = "(\\([^)]+\\))?"
-CONVERSION_FLAGS = "[#0\\- +]?"
-MINIMUM_FIELD_WIDTH = "(\\*|[0-9]*)"
-PRECISION = "(\\.(\\*|[0-9]*))?"
-LENGTH_MODIFIER = "[hlL]?"
-TYPE = "[bdiouxXeEfFgGcrs%]"
-*/
+ * MAPPING_KEY = "(\\([^)]+\\))?"
+ * CONVERSION_FLAGS = "[#0\\- +]?"
+ * MINIMUM_FIELD_WIDTH = "(\\*|[0-9]*)"
+ * PRECISION = "(\\.(\\*|[0-9]*))?"
+ * LENGTH_MODIFIER = "[hlL]?"
+ * TYPE = "[bdiouxXeEfFgGcrs%]"
+ */
 
-private
-string conversion_specifier_string(StrConst e, int number, int position) {
+private string conversion_specifier_string(StrConst e, int number, int position) {
     exists(string s, string REGEX | s = e.getText() |
         REGEX = "%(\\([^)]*\\))?[#0\\- +]*(\\*|[0-9]*)(\\.(\\*|[0-9]*))?(h|H|l|L)?[badiouxXeEfFgGcrs%]" and
-        result = s.regexpFind(REGEX, number, position))
+        result = s.regexpFind(REGEX, number, position)
+    )
 }
 
-private
-string conversion_specifier(StrConst e, int number) {
+private string conversion_specifier(StrConst e, int number) {
     result = conversion_specifier_string(e, number, _) and result != "%%"
 }
 
@@ -39,22 +38,17 @@ int illegal_conversion_specifier(StrConst e) {
 
 /** Gets the number of format items in a format string */
 int format_items(StrConst e) {
-    result = count(int i | | conversion_specifier(e, i)) +
-        // a conversion specifier uses an extra item for each *
-        count(int i, int j | conversion_specifier(e, i).charAt(j) = "*")
+    result =
+        count(int i | | conversion_specifier(e, i)) +
+            // a conversion specifier uses an extra item for each *
+            count(int i, int j | conversion_specifier(e, i).charAt(j) = "*")
 }
 
 private string str(Expr e) {
-    result = ((Num)e).getN()
+    result = e.(Num).getN()
     or
-    result = "'" + ((StrConst)e).getText() + "'"
+    result = "'" + e.(StrConst).getText() + "'"
 }
 
 /** Gets a string representation of an expression more suited for embedding in message strings than .toString() */
-string repr(Expr e) {
-   if exists(str(e)) then
-       result = str(e)
-   else
-       result = e.toString()
-}
-
+string repr(Expr e) { if exists(str(e)) then result = str(e) else result = e.toString() }

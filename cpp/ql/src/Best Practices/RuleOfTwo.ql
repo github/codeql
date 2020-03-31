@@ -28,13 +28,15 @@ import cpp
 // design question and carries has no safety risk.
 predicate generatedCopyAssignment(CopyConstructor cc, string msg) {
   cc.getDeclaringType().hasImplicitCopyAssignmentOperator() and
-  msg = "No matching copy assignment operator in class " + cc.getDeclaringType().getName() +
+  msg =
+    "No matching copy assignment operator in class " + cc.getDeclaringType().getName() +
       ". It is good practice to match a copy constructor with a " + "copy assignment operator."
 }
 
 predicate generatedCopyConstructor(CopyAssignmentOperator ca, string msg) {
   ca.getDeclaringType().hasImplicitCopyConstructor() and
-  msg = "No matching copy constructor in class " + ca.getDeclaringType().getName() +
+  msg =
+    "No matching copy constructor in class " + ca.getDeclaringType().getName() +
       ". It is good practice to match a copy assignment operator with a " + "copy constructor."
 }
 

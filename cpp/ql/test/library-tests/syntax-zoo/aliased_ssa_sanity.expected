@@ -1,36 +1,58 @@
 missingOperand
+| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
+| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
+| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
+| cpp11.cpp:77:19:77:21 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:76:8:76:8 | IR: apply | void lambda::apply<(void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)>(lambda::Val, (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)) |
+| cpp11.cpp:82:11:82:14 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:81:8:81:8 | IR: apply2 | void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val) |
+| cpp11.cpp:82:45:82:48 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:82:51:82:51 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:88:25:88:30 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
+| cpp11.cpp:88:33:88:38 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
+| destructors.cpp:51:36:51:38 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | IR: f | int cond_destruct::f(int) |
+| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
-| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | allocators.cpp:14:5:14:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | no_dynamic_init.cpp:9:5:9:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | parameterinitializer.cpp:18:5:18:8 | IR: main | int main() |
-| parameterinitializer.cpp:27:3:27:6 | BufferReadSideEffect: my_c | Instruction 'BufferReadSideEffect' is missing an expected operand with tag 'SideEffect' in function '$@'. | stream_it.cpp:16:5:16:8 | IR: main | int main() |
-| try_catch.cpp:13:5:13:16 | ThrowValue: throw ... | Instruction 'ThrowValue' is missing an expected operand with tag 'Load' in function '$@'. | try_catch.cpp:11:6:11:17 | IR: bypass_catch | void bypass_catch() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
 missingOperandType
+duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
-| misc.c:219:47:219:48 | InitializeParameter: sp |
+| misc.c:219:47:219:48 | InitializeIndirection: sp |
 | ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C |
 | ms_try_mix.cpp:48:10:48:13 | Chi: call to C |
-| pointer_to_member.cpp:36:11:36:30 | FieldAddress: {...} |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
 | vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
 ambiguousSuccessors
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | array_delete.cpp:5:6:5:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
@@ -336,7 +358,7 @@ ambiguousSuccessors
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
@@ -386,7 +408,7 @@ ambiguousSuccessors
 | nonmembercallexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
 | nonmembercallexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | revsubscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
@@ -438,7 +460,7 @@ ambiguousSuccessors
 | staticmembercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | staticmembercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
@@ -545,6 +567,10 @@ lostReachability
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

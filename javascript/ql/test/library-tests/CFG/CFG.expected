@@ -546,7 +546,7 @@
 | classes | 39 | static x = 5; | 39 | t = cla ... () {} } |
 | classes | 39 | t | 39 | A |
 | classes | 39 | t = cla ... () {} } | 39 | t |
-| classes | 39 | t = cla ... () {} } | 42 | exit node of <toplevel> |
+| classes | 39 | t = cla ... () {} } | 40 | exit node of <toplevel> |
 | classes | 39 | x | 39 | 5 |
 | classes | 39 | {} | 39 | exit node of () {} |
 | decorated_parameter | 1 | C | 2 | foo |
@@ -625,7 +625,7 @@
 | fields | 8 | {} | 8 | exit node of () {} |
 | fields | 11 | A | 12 | constructor |
 | fields | 11 | B | 11 | A |
-| fields | 11 | class B ... \\n  z;\\n} | 21 | exit node of <toplevel> |
+| fields | 11 | class B ... \\n  z;\\n} | 19 | exit node of <toplevel> |
 | fields | 12 | constru ... er;\\n  } | 11 | class B ... \\n  z;\\n} |
 | fields | 12 | constructor | 12 | function in constru ... er;\\n  } |
 | fields | 12 | entry node of () {\\n   ... er;\\n  } | 12 | {\\n    b ... er;\\n  } |
@@ -680,7 +680,7 @@
 | globals | 19 | h | 20 | {\\n} |
 | globals | 20 | {\\n} | 21 | exit node of function\\n h()\\n{\\n} |
 | mixedMembers | 1 | Mixed | 3 | constructor |
-| mixedMembers | 1 | class M ... z) {}\\n} | 7 | exit node of <toplevel> |
+| mixedMembers | 1 | class M ... z) {}\\n} | 6 | exit node of <toplevel> |
 | mixedMembers | 1 | entry node of <toplevel> | 1 | Mixed |
 | mixedMembers | 2 | 3 | 2 | x = 3 |
 | mixedMembers | 2 | x | 2 | 3 |
@@ -746,7 +746,7 @@
 | staticFields | 2 | C | 2 | new C() |
 | staticFields | 2 | instance | 2 | C |
 | staticFields | 2 | new C() | 2 | static  ... ew C(); |
-| staticFields | 2 | static  ... ew C(); | 7 | exit node of <toplevel> |
+| staticFields | 2 | static  ... ew C(); | 4 | exit node of <toplevel> |
 | staticFieldsTS | 1 | C | 1 | constructor |
 | staticFieldsTS | 1 | class C ...  C();\\n} | 2 | instance |
 | staticFieldsTS | 1 | constructor | 1 | function in constructor() {} |

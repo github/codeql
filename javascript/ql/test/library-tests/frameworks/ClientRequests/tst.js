@@ -74,8 +74,8 @@ import {ClientRequest, net} from 'electron';
     $.ajax(url, {data: data});
     $.ajax({url: url, tdata: data});
 
-    $.getJSON(url, {data: data});
-    $.getJSON({url: url, tdata: data});
+    $.getJSON(url, {data: data}); // the entire "{data: data}" object is the data. 
+    $.getJSON({url: url, tdata: data}); // not how to use getJSON.
 
     var xhr = new XMLHttpRequest();
     xhr.open(_, url);
@@ -163,3 +163,49 @@ import {ClientRequest, net} from 'electron';
         xhr.getResponseHeaders();
     });
 })
+
+(function() {
+	let base = request;
+	let variant1 = base.defaults({});
+	let variant2 = variant1.defaults({});
+	base(url);
+	variant1(url);
+	variant2(url);
+});
+
+(function() {
+    $.get( "ajax/test.html", function( data ) {});
+    
+	$.getJSON( "ajax/test.json", "MyData", function( data ) {});
+	
+	$.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {});
+	
+	$.post( "ajax/test.html", "PostData", function( data ) { });
+	
+	$( "#result" ).load( "ajax/test.html", function(result) {});
+
+	$.ajax({
+		type: "POST",
+		url: "http://example.org",
+  		data: "AjaxData",
+  		success: (ajaxData) => {},
+  		dataType: "json"
+	});
+	
+	$.get( "ajax/test.json", function( data ) {}, "json");
+	
+	$.ajax({url: "ajax/blob", dataType: "blob"})
+      .done(function( data ) {});
+
+	$.get("example.php").done(function(response) {})
+	
+    $.ajax({
+    url: "example.php",
+    type: 'POST',
+    dataType: "json",
+    error: function (err) {
+        console.log(err.responseText)
+    }});
+
+	$.get("example.php").fail(function(xhr) {console.log(xhr.responseText)});
+});

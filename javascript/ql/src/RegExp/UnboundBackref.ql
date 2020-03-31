@@ -16,6 +16,7 @@ import javascript
 
 from RegExpBackRef rebr, string ref
 where
+  rebr.isPartOfRegExpLiteral() and
   not exists(rebr.getGroup()) and
   (
     ref = rebr.getNumber().toString()

@@ -22,8 +22,8 @@ predicate containsArray(Type t) {
   or
   containsArray(t.getUnderlyingType()) and
   not exists(TypedefType allowed | allowed = t |
-    allowed.hasGlobalName("jmp_buf") or
-    allowed.hasGlobalName("va_list")
+    allowed.hasGlobalOrStdName("jmp_buf") or
+    allowed.hasGlobalOrStdName("va_list")
   )
 }
 

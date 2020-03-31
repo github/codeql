@@ -90,3 +90,24 @@ def func(x: 'Optional[only_used_in_parameter_annotation]'):
 import only_used_in_annotated_assignment
 
 var : 'Optional[only_used_in_annotated_assignment]' = 5
+
+import used_in_return_type
+
+def look_at_my_return_type() -> 'Optional[used_in_return_type]':
+    pass
+
+# Uses inside strings appearing as subexpressions of an annotation:
+
+import subexpression_parameter_annotation
+
+def bar(x: Optional['subexpression_parameter_annotation']):
+    pass
+
+import subexpression_assignment_annotation
+
+var3 : Optional['subexpression_assignment_annotation'] = None
+
+import subexpression_return_type
+
+def baz() -> Optional['subexpression_return_type']:
+    pass

@@ -5,16 +5,13 @@
  * @kind path-problem
  * @id cs/unsafe-deserialization-untrusted-input
  * @problem.severity error
+ * @precision high
  * @tags security
  *       external/cwe/cwe-502
  */
 
-/*
- * consider: @precision high
- */
-
 import csharp
-import UnsafeDeserialization::UnsafeDeserialization
+import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 import DataFlow::PathGraph
 
 from TaintTrackingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

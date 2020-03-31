@@ -79,3 +79,33 @@ predicate functionContainsPreprocCode(Function f) {
     pbdStartLine >= fBlockStartLine
   )
 }
+
+/**
+ * Holds if `e` is completely or partially from a macro definition, as opposed
+ * to being passed in as an argument.
+ *
+ * In the following example, the call to `f` is from a macro definition,
+ * while `y`, `+`, `1`, and `;` are not. This assumes that no identifier apart
+ * from `M` refers to a macro.
+ * ```
+ * #define M(x) f(x)
+ * ...
+ *   M(y + 1);
+ * ```
+ */
+predicate isFromMacroDefinition(Element e) {
+  exists(MacroInvocation mi, Location eLocation, Location miLocation |
+    mi.getAnExpandedElement() = e and
+    eLocation = e.getLocation() and
+    miLocation = mi.getLocation() and
+    // If the location of `e` coincides with the macro invocation, then `e` did
+    // not come from a macro argument. The inequalities here could also be
+    // equalities, but that confuses the join orderer into joining on the source
+    // locations too early.
+    // There are cases where the start location of a non-argument element comes
+    // right after the invocation's open parenthesis, so it appears to be more
+    // robust to match on the end location instead.
+    eLocation.getEndLine() >= miLocation.getEndLine() and
+    eLocation.getEndColumn() >= miLocation.getEndColumn()
+  )
+}

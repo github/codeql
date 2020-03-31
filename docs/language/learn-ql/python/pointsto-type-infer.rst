@@ -37,7 +37,8 @@ The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flo
    predicate pointsTo(Context context, Value object, ControlFlowNode origin)
 
 ``object`` is an object that the control flow node refers to, and ``origin`` is where the object comes from, which is useful for displaying meaningful results.
- The third form includes the ``context`` in which the control flow node refers to the ``object``. This form can usually be ignored.
+
+The third form includes the ``context`` in which the control flow node refers to the ``object``. This form can usually be ignored.
 
 .. pull-quote::
 
@@ -62,7 +63,7 @@ We want to find ``except`` blocks in a ``try`` statement that are in the wrong o
 
 First we can write a query to find ordered pairs of ``except`` blocks for a ``try`` statement.
 
-**Ordered except blocks in same ``try`` statement**
+**Ordered except blocks in same** ``try`` **statement**
 
 .. code-block:: ql
 
@@ -81,7 +82,7 @@ Here ``ex1`` and ``ex2`` are both ``except`` handlers in the ``try`` statement `
 
 The results of this query need to be filtered to return only results where ``ex1`` is more general than ``ex2``. We can use the fact that an ``except`` block is more general than another block if the class it handles is a superclass of the other.
 
-**More general ``except`` block**
+**More general** ``except`` **block**
 
 .. code-block:: ql
 
@@ -102,7 +103,7 @@ ensures that ``cls1`` is a ``ClassValue`` that the ``except`` block would handle
 
 Combining the parts of the query we get this:
 
-**More general ``except`` block precedes more specific**
+**More general** ``except`` **block precedes more specific**
 
 .. code-block:: ql
 

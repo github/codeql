@@ -37,7 +37,7 @@ which is then subsequently accessed to fetch properties of the device. However, 
 check the return value from the function call to <code>initDeviceConfig</code>. If the
 device number passed to the <code>notify</code> function was invalid, the
 <code>initDeviceConfig</code> function will leave the <code>config</code> variable uninitialized,
-which would result in the <code>notify</code> function accessing uninitialized memory.</p>
+which will result in the <code>notify</code> function accessing uninitialized memory.</p>
 
 <sample src="ConditionallyUninitializedVariableBad.c" />
 

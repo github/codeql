@@ -1,0 +1,8 @@
+| assignment.py:6 | swap_taint | a | simple.test |
+| assignment.py:6 | swap_taint | b | NO TAINT |
+| assignment.py:8 | swap_taint | a | NO TAINT |
+| assignment.py:8 | swap_taint | b | simple.test |
+| assignment.py:14 | nested_assignment | s1 | NO TAINT |
+| assignment.py:14 | nested_assignment | s2 | NO TAINT |
+| assignment.py:14 | nested_assignment | t1 | simple.test |
+| assignment.py:14 | nested_assignment | t2 | simple.test |

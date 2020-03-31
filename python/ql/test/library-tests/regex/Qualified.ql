@@ -1,5 +1,3 @@
-
-
 import python
 import semmle.python.regex
 

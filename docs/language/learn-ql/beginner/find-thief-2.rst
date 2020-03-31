@@ -82,7 +82,7 @@ Notice that we have only temporarily introduced the variable ``c`` and we didn't
 
    Note
 
-   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential `quantifier <https://help.semmle.com/QL/ql-handbook/formulas.html#quantified-formulas>`__ in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not(exists(vars | formula 1 | not formula 2))``.
+   If you are familiar with logic, you may notice that ``exists`` in QL corresponds to the existential `quantifier <https://help.semmle.com/QL/ql-handbook/formulas.html#quantified-formulas>`__ in logic. QL also has a universal quantifier ``forall(vars | formula 1 | formula 2)`` which is logically equivalent to ``not exists(vars | formula 1 | not formula 2)``.
 
 The real investigation
 ----------------------
@@ -124,8 +124,8 @@ Hints
 
    from Person t
    where <condition 1> and
-      not <condition 2> and
-      ...
+     not <condition 2> and
+     ...
    select t
 
 Once you have finished, you will have a list of possible suspects. One of those people must be the thief!

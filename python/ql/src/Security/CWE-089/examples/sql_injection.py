@@ -1,21 +1,19 @@
-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.db import connection
 
 
-def save_name(request):
+def show_user(request, username):
+    with connection.cursor() as cursor:
+        # BAD -- Using string formatting
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % username)
+        user = cursor.fetchone()
 
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        curs = connection.cursor()
-        #BAD -- Using string formatting
-        curs.execute(
-            "insert into names_file ('name') values ('%s')" % name)
-        #GOOD -- Using parameters
-        curs.execute(
-            "insert into names_file ('name') values ('%s')", name)
+        # GOOD -- Using parameters
+        cursor.execute("SELECT * FROM users WHERE username = %s", username)
+        user = cursor.fetchone()
 
+        # BAD -- Manually quoting placeholder (%s)
+        cursor.execute("SELECT * FROM users WHERE username = '%s'", username)
+        user = cursor.fetchone()
 
-urlpatterns = patterns(url(r'^save_name/$',
-                           upload, name='save_name'))
-
+urlpatterns = [url(r'^users/(?P<username>[^/]+)$', show_user)]

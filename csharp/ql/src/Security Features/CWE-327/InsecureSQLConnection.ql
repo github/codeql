@@ -1,15 +1,12 @@
 /**
  * @name Insecure SQL connection
- * @description TODO.
+ * @description Using an SQL Server connection without enforcing encryption is a security vulnerability.
  * @kind path-problem
  * @id cs/insecure-sql-connection
  * @problem.severity error
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-327
- */
-
-/*
- * consider: @precision high
  */
 
 import csharp
