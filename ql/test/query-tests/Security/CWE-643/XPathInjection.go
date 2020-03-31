@@ -73,7 +73,7 @@ func testAntchfxXmlquery(r *http.Request, n *xmlquery.Node) {
 	_ = n.SelectElements("//users/user[login/text()='" + username + "']/home_dir/text()")
 
 	// BAD: User input used directly in an XPath expression
-	_ = n.SelectAttr("//users/user[login/text()='" + username + "']/home_dir/text()")
+	_ = n.SelectElement("//users/user[login/text()='" + username + "']/home_dir/text()")
 }
 
 func testAntchfxJsonquery(r *http.Request) {
