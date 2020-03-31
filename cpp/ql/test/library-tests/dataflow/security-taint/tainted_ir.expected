@@ -57,3 +57,9 @@
 | test.cpp:100:17:100:22 | buffer | test.cpp:93:18:93:18 | s |  |
 | test.cpp:100:17:100:22 | buffer | test.cpp:100:17:100:22 | array to pointer conversion |  |
 | test.cpp:100:17:100:22 | buffer | test.cpp:100:17:100:22 | buffer |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:11:36:11:37 | s2 |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:17:106:24 | userName |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:28:106:33 | call to getenv |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:28:106:46 | (const char *)... |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:2:109:7 | call to strcpy |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:15:109:22 | userName |  |
