@@ -262,6 +262,17 @@ abstract class Configuration extends string {
   predicate isAdditionalLoadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     none()
   }
+
+  /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
+   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
+   */
+  predicate isAdditionalLoadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
 }
 
 /**
@@ -548,6 +559,19 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    */
   cached
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * EXPERIMENTAL. This API may change in the future.
+   *
+   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
+   */
+  cached
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    loadProp = storeProp and
+    loadStoreStep(pred, succ, loadProp)
+  }
 }
 
 /**
@@ -666,7 +690,7 @@ private predicate exploratoryFlowStep(
     basicLoadStep(pred, succ, _) or
     isAdditionalStoreStep(pred, succ, _, cfg) or
     isAdditionalLoadStep(pred, succ, _, cfg) or
-    isAdditionalLoadStoreStep(pred, succ, _, cfg) or
+    isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
     // the following three disjuncts taken together over-approximate flow through
     // higher-order calls
     callback(pred, succ) or
@@ -910,14 +934,22 @@ private predicate isAdditionalStoreStep(
 }
 
 /**
- * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
+ * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
  */
 private predicate isAdditionalLoadStoreStep(
-  DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
+  DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp,
+  DataFlow::Configuration cfg
 ) {
-  any(AdditionalFlowStep s).loadStoreStep(pred, succ, prop)
+  any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   or
-  cfg.isAdditionalLoadStoreStep(pred, succ, prop)
+  cfg.isAdditionalLoadStoreStep(pred, succ, loadProp, storeProp)
+  or
+  loadProp = storeProp and
+  (
+    any(AdditionalFlowStep s).loadStoreStep(pred, succ, loadProp)
+    or
+    cfg.isAdditionalLoadStoreStep(pred, succ, loadProp)
+  )
 }
 
 /**
@@ -963,7 +995,7 @@ private predicate reachableFromStoreBase(
         s2.getEndLabel())
   )
   or
-  exists(PathSummary oldSummary, PathSummary newSummary |
+  exists(PathSummary newSummary, PathSummary oldSummary |
     reachableFromStoreBaseStep(prop, rhs, nd, cfg, oldSummary, newSummary) and
     summary = oldSummary.appendValuePreserving(newSummary)
   )
@@ -980,11 +1012,15 @@ private predicate reachableFromStoreBaseStep(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary oldSummary, PathSummary newSummary
 ) {
-  exists(DataFlow::Node mid | reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) |
+  exists(DataFlow::Node mid |
+    reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
     flowStep(mid, cfg, nd, newSummary)
     or
-    isAdditionalLoadStoreStep(mid, nd, prop, cfg) and
-    newSummary = PathSummary::level()
+    exists(string midProp |
+      reachableFromStoreBase(midProp, rhs, mid, cfg, oldSummary) and
+      isAdditionalLoadStoreStep(mid, nd, midProp, prop, cfg) and
+      newSummary = PathSummary::level()
+    )
   )
 }
 
