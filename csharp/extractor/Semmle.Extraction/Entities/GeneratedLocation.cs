@@ -26,15 +26,15 @@ namespace Semmle.Extraction.Entities
 
         public override int GetHashCode() => 98732567;
 
-        public override bool Equals(object obj) => obj != null && obj.GetType() == typeof(GeneratedLocation);
+        public override bool Equals(object? obj) => obj != null && obj.GetType() == typeof(GeneratedLocation);
 
-        public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, null);
+        public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateNullableEntity(cx, null);
 
-        class GeneratedLocationFactory : ICachedEntityFactory<string, GeneratedLocation>
+        class GeneratedLocationFactory : ICachedEntityFactory<string?, GeneratedLocation>
         {
             public static GeneratedLocationFactory Instance = new GeneratedLocationFactory();
 
-            public GeneratedLocation Create(Context cx, string init) => new GeneratedLocation(cx);
+            public GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
         }
     }
 }
