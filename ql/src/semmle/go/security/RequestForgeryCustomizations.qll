@@ -51,6 +51,10 @@ module RequestForgery {
     override string getKind() { result = "URL" }
   }
 
+  /**
+   * A value that is the result of prepending a string that prevents any value from controlling the
+   * host of a URL.
+   */
   private class HostnameSanitizer extends SanitizerEdge {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
   }
