@@ -19,6 +19,18 @@
 | sources.js:10:12:10:14 | key |
 | sources.js:11:12:11:18 | { key } |
 | sources.js:11:14:11:16 | key |
+| tst2.ts:1:1:1:0 | this |
+| tst2.ts:3:3:3:8 | setX() |
+| tst2.ts:7:1:7:0 | this |
+| tst2.ts:7:1:9:1 | functio ... = 23;\\n} |
+| tst2.ts:8:3:8:5 | A.x |
+| tst2.ts:11:11:11:13 | A.x |
+| tst2.ts:13:1:13:40 | class S ... ing> {} |
+| tst2.ts:13:26:13:29 | List |
+| tst2.ts:13:39:13:38 | (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | super(...args) |
+| tst2.ts:13:39:13:38 | this |
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
@@ -105,15 +117,3 @@
 | tst.js:115:1:115:10 | Array.call |
 | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:1:115:12 | reflective call |
-| tst.ts:1:1:1:0 | this |
-| tst.ts:3:3:3:8 | setX() |
-| tst.ts:7:1:7:0 | this |
-| tst.ts:7:1:9:1 | functio ... = 23;\\n} |
-| tst.ts:8:3:8:5 | A.x |
-| tst.ts:11:11:11:13 | A.x |
-| tst.ts:13:1:13:40 | class S ... ing> {} |
-| tst.ts:13:26:13:29 | List |
-| tst.ts:13:39:13:38 | (...arg ... rgs); } |
-| tst.ts:13:39:13:38 | args |
-| tst.ts:13:39:13:38 | super(...args) |
-| tst.ts:13:39:13:38 | this |
