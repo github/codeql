@@ -1,7 +1,9 @@
 import default
 import semmle.code.cpp.models.implementations.Allocation
 
-query predicate newExprs(NewExpr expr, string type, string sig, int size, int alignment, string form, string placement) {
+query predicate newExprs(
+  NewExpr expr, string type, string sig, int size, int alignment, string form, string placement
+) {
   exists(Function allocator, Type allocatedType |
     expr.getAllocator() = allocator and
     sig = allocator.getFullSignature() and
@@ -9,8 +11,10 @@ query predicate newExprs(NewExpr expr, string type, string sig, int size, int al
     type = allocatedType.toString() and
     size = allocatedType.getSize() and
     alignment = allocatedType.getAlignment() and
-    if expr.hasAlignedAllocation() then form = "aligned" else form = "" and
-    if exists(expr.getPlacementPointer()) then placement = expr.getPlacementPointer().toString() else placement = ""
+    (if expr.hasAlignedAllocation() then form = "aligned" else form = "") and
+    if exists(expr.getPlacementPointer())
+    then placement = expr.getPlacementPointer().toString()
+    else placement = ""
   )
 }
 
@@ -29,7 +33,9 @@ query predicate newArrayExprs(
     alignment = elementType.getAlignment() and
     (if expr.hasAlignedAllocation() then form = "aligned" else form = "") and
     extents = concat(Expr e | e = expr.getExtent() | e.toString(), ", ") and
-    if exists(expr.getPlacementPointer()) then placement = expr.getPlacementPointer().toString() else placement = ""
+    if exists(expr.getPlacementPointer())
+    then placement = expr.getPlacementPointer().toString()
+    else placement = ""
   )
 }
 
@@ -106,55 +112,52 @@ query predicate deleteArrayExprs(
 }
 
 string describeAllocationFunction(AllocationFunction f) {
-	result = "getSizeArg = " + f.getSizeArg().toString()
-	or
-	result = "getSizeMult = " + f.getSizeMult().toString()
-	or
-	result = "getReallocPtrArg = " + f.getReallocPtrArg().toString()
-	or
-	(
-		f.requiresDealloc() and
-		result = "requiresDealloc"
-	)
-	or
-	result = "getPlacementArgument = " + f.(OperatorNewAllocationFunction).getPlacementArgument().toString()
+  result = "getSizeArg = " + f.getSizeArg().toString()
+  or
+  result = "getSizeMult = " + f.getSizeMult().toString()
+  or
+  result = "getReallocPtrArg = " + f.getReallocPtrArg().toString()
+  or
+  f.requiresDealloc() and
+  result = "requiresDealloc"
+  or
+  result =
+    "getPlacementArgument = " + f.(OperatorNewAllocationFunction).getPlacementArgument().toString()
 }
 
 query predicate allocationFunctions(AllocationFunction f, string descr) {
-	descr = concat(describeAllocationFunction(f), ", ")
+  descr = concat(describeAllocationFunction(f), ", ")
 }
 
 string describeAllocationExpr(AllocationExpr e) {
-	result = "getSizeExpr = " + e.getSizeExpr().toString()
-	or
-	result = "getSizeMult = " + e.getSizeMult().toString()
-	or
-	result = "getSizeBytes = " + e.getSizeBytes().toString()
-	or
-	result = "getReallocPtr = " + e.getReallocPtr().toString()
-	or
-	(
-		e.requiresDealloc() and
-		result = "requiresDealloc"
-	)
+  result = "getSizeExpr = " + e.getSizeExpr().toString()
+  or
+  result = "getSizeMult = " + e.getSizeMult().toString()
+  or
+  result = "getSizeBytes = " + e.getSizeBytes().toString()
+  or
+  result = "getReallocPtr = " + e.getReallocPtr().toString()
+  or
+  e.requiresDealloc() and
+  result = "requiresDealloc"
 }
 
 query predicate allocationExprs(AllocationExpr e, string descr) {
-	descr = concat(describeAllocationExpr(e), ", ")
+  descr = concat(describeAllocationExpr(e), ", ")
 }
 
 string describeDeallocationFunction(DeallocationFunction f) {
-	result = "getFreedArg = " + f.getFreedArg().toString()
+  result = "getFreedArg = " + f.getFreedArg().toString()
 }
 
 query predicate deallocationFunctions(DeallocationFunction f, string descr) {
-	descr = concat(describeDeallocationFunction(f), ", ")
+  descr = concat(describeDeallocationFunction(f), ", ")
 }
 
 string describeDeallocationExpr(DeallocationExpr e) {
-	result = "getFreedExpr = " + e.getFreedExpr().toString()
+  result = "getFreedExpr = " + e.getFreedExpr().toString()
 }
 
 query predicate deallocationExprs(DeallocationExpr e, string descr) {
-	descr = concat(describeDeallocationExpr(e), ", ")
+  descr = concat(describeDeallocationExpr(e), ", ")
 }
