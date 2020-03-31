@@ -96,10 +96,55 @@ module ArrayTaintTracking {
  * Classes and predicates for modelling data-flow for arrays.
  */
 private module ArrayDataFlow {
+  private import DataFlow::PseudoProperties
+
   /**
-   * Gets a pseudo-field representing an element inside an array.
+   * A step modelling the creation of an Array using the `Array.from(x)` method.
+   * The step copies the elements of the argument (set, array, or iterator elements) into the resulting array.
    */
-  private string arrayElement() { result = "$arrayElement$" }
+  private class ArrayFrom extends DataFlow::AdditionalFlowStep, DataFlow::CallNode {
+    ArrayFrom() { this = DataFlow::globalVarRef("Array").getAMemberCall("from") }
+
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+    ) {
+      pred = this.getArgument(0) and
+      succ = this and
+      fromProp = arrayLikeElement() and
+      toProp = arrayElement()
+    }
+  }
+
+  /**
+   * A step modelling an array copy where the spread operator is used.
+   * The result is essentially array concatenation.
+   *
+   * Such a step can occur both with the `push` and `unshift` methods, or when creating a new array.
+   */
+  private class ArrayCopySpread extends DataFlow::AdditionalFlowStep {
+    DataFlow::Node spreadArgument; // the spread argument containing the elements to be copied.
+    DataFlow::Node base; // the object where the elements should be copied to.
+
+    ArrayCopySpread() {
+      exists(DataFlow::MethodCallNode mcn | mcn = this |
+        mcn.getMethodName() = ["push", "unshift"] and
+        spreadArgument = mcn.getASpreadArgument() and
+        base = mcn.getReceiver().getALocalSource()
+      )
+      or
+      spreadArgument = this.(DataFlow::ArrayCreationNode).getASpreadArgument() and
+      base = this
+    }
+
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+    ) {
+      pred = spreadArgument and
+      succ = base and
+      fromProp = arrayLikeElement() and
+      toProp = arrayElement()
+    }
+  }
 
   /**
    * A step for storing an element on an array using `arr.push(e)` or `arr.unshift(e)`.
@@ -112,7 +157,7 @@ private module ArrayDataFlow {
 
     override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
       prop = arrayElement() and
-      (element = this.getAnArgument() or element = this.getASpreadArgument()) and
+      element = this.getAnArgument() and
       obj = this.getReceiver().getALocalSource()
     }
   }
@@ -258,6 +303,22 @@ private module ArrayDataFlow {
       prop = arrayElement() and
       pred = this.getReceiver() and
       succ = this
+    }
+  }
+
+  /**
+   * A step for modelling `for of` iteration on arrays.
+   */
+  private class ForOfStep extends DataFlow::AdditionalFlowStep, DataFlow::ValueNode {
+    ForOfStmt forOf;
+    DataFlow::Node element;
+
+    ForOfStep() { this.asExpr() = forOf.getIterationDomain() }
+
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
+      obj = this and
+      e = DataFlow::lvalueNode(forOf.getLValue()) and
+      prop = arrayElement()
     }
   }
 }

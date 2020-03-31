@@ -575,6 +575,22 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
 }
 
 /**
+ * A collection of pseudo-properties that are used in multiple files.
+ * For use with load/store steps in `DataFlow::AdditionalFlowStep` and TypeTracking.
+ */
+module PseudoProperties {
+  /**
+   * Gets a pseudo-field representing an elements inside an `Array`.
+   */
+  string arrayElement() { result = "$arrayElement$" }
+
+  /**
+   * Gets a pseudo-property representing elements inside some array-like object. 
+   */
+  string arrayLikeElement() { result = arrayElement() }
+}
+
+/**
  * A data flow node that should be considered a source for some specific configuration,
  * in addition to any other sources that configuration may recognize.
  */
