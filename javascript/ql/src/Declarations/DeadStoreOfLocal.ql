@@ -65,7 +65,7 @@ where
     // the term "definition" when the alert location is a variable declaration.
     if
       dead instanceof VariableDeclarator and
-      not exists(SsaImplicitInit init | init.getVariable().getSourceVariable() = v) // the variable is dead at the hoisted implicit initialization. 
+      not exists(SsaImplicitInit init | init.getVariable().getSourceVariable() = v) // the variable is dead at the hoisted implicit initialization.
     then msg = "The initial value of " + v.getName() + " is unused, since it is always overwritten."
     else msg = "The value assigned to " + v.getName() + " here is unused."
   )
