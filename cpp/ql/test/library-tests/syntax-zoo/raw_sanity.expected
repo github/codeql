@@ -49,6 +49,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] |
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |

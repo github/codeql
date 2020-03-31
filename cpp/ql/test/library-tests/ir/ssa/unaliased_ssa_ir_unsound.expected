@@ -1074,8 +1074,9 @@ ssa.cpp:
 #  248|     r248_7(unsigned long)  = Mul                                : r248_5, r248_6
 #  248|     r248_8(void *)         = Call                               : func:r248_2, 0:r248_7
 #  248|     mu248_9(unknown)       = ^CallSideEffect                    : ~mu247_4
-#  248|     r248_10(char *)        = Convert                            : r248_8
-#  248|     m248_11(char *)        = Store                              : &:r248_1, r248_10
+#  248|     mu248_10(unknown)      = ^InitializeDynamicAllocation       : &:r248_8
+#  248|     r248_11(char *)        = Convert                            : r248_8
+#  248|     m248_12(char *)        = Store                              : &:r248_1, r248_11
 #  249|     r249_1(char)           = Constant[97]                       : 
 #  249|     r249_2(glval<char *>)  = VariableAddress[src]               : 
 #  249|     r249_3(char *)         = Load                               : &:r249_2, m247_6
@@ -1083,7 +1084,7 @@ ssa.cpp:
 #  249|     mu249_5(char)          = Store                              : &:r249_4, r249_1
 #  250|     r250_1(glval<unknown>) = FunctionAddress[memcpy]            : 
 #  250|     r250_2(glval<char *>)  = VariableAddress[dst]               : 
-#  250|     r250_3(char *)         = Load                               : &:r250_2, m248_11
+#  250|     r250_3(char *)         = Load                               : &:r250_2, m248_12
 #  250|     r250_4(void *)         = Convert                            : r250_3
 #  250|     r250_5(glval<char *>)  = VariableAddress[src]               : 
 #  250|     r250_6(char *)         = Load                               : &:r250_5, m247_6
@@ -1095,7 +1096,7 @@ ssa.cpp:
 #  250|     mu250_12(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
 #  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
 #  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
-#  251|     r251_3(char *)         = Load                               : &:r251_2, m248_11
+#  251|     r251_3(char *)         = Load                               : &:r251_2, m248_12
 #  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
 #  247|     v247_11(void)          = ReturnIndirection                  : &:r247_7, ~mu247_4
 #  247|     r247_12(glval<char *>) = VariableAddress[#return]           : 
