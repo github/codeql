@@ -354,9 +354,25 @@ function mergePlainObjectsOnly(target, source) {
             if (isNonArrayObject(source[key]) && key in target) {
                 target[key] = mergePlainObjectsOnly(target[key], source[key], options);
             } else {
-                target[key] = source[key]; // OK
+                target[key] = source[key]; // OK - but flagged anyway due to imprecise barrier for captured variable
             }
         });
+    }
+    return target;
+}
+
+function mergePlainObjectsOnlyNoClosure(target, source) {
+    if (isNonArrayObject(target) && isNonArrayObject(source)) {
+        for (let key of Object.keys(source)) {
+            if (key === '__proto__') {
+                return;
+            }
+            if (isNonArrayObject(source[key]) && key in target) {
+                target[key] = mergePlainObjectsOnlyNoClosure(target[key], source[key], options);
+            } else {
+                target[key] = source[key]; // OK
+            }
+        }
     }
     return target;
 }

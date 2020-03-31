@@ -50,7 +50,7 @@ namespace Semmle.Autobuild
 
                         var build = GetBuildScript(builder, dotNetPath, environment, compatibleClr, projectOrSolution.FullPath);
 
-                        ret &= clean & BuildScript.Try(restore) & build;
+                        ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & build;
                     }
                     return ret;
                 });

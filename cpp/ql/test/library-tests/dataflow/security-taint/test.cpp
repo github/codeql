@@ -89,3 +89,13 @@ void mallocBuffer() {
 		isAdmin = true;
 	}
 }
+
+char *gets(char *s);
+
+void test_gets()
+{
+	char buffer[1024];
+	char *pointer;
+
+	pointer = gets(buffer);
+}

@@ -45,6 +45,10 @@
 | a_simple.py:49 | Local Variable g | AssignmentDefinition |
 | a_simple.py:49 | Local Variable h | AssignmentDefinition |
 | a_simple.py:49 | Local Variable i | AssignmentDefinition |
+| a_simple.py:53 | Local Variable l | MultiAssignmentDefinition |
+| a_simple.py:53 | Local Variable m | MultiAssignmentDefinition |
+| a_simple.py:56 | Local Variable s | MultiAssignmentDefinition |
+| a_simple.py:56 | Local Variable u | MultiAssignmentDefinition |
 | b_condition.py:0 | Global Variable __name__ | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable __package__ | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable double_attr_check | ScopeEntryDefinition |

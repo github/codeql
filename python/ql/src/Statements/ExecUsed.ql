@@ -19,7 +19,7 @@ string message() {
 }
 
 predicate exec_function_call(Call c) {
-    exists(GlobalVariable exec | exec = ((Name)c.getFunc()).getVariable() and exec.getId() = "exec")
+    exists(GlobalVariable exec | exec = c.getFunc().(Name).getVariable() and exec.getId() = "exec")
 }
 
 from AstNode exec

@@ -50,6 +50,14 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Only translate the initializer of a static local if it uses run-time data.
+  // Otherwise the initializer does not run in function scope.
+  exists(Initializer init, StaticStorageDurationVariable var |
+    init = var.getInitializer() and
+    not var.hasDynamicInitialization() and
+    expr = init.getExpr().getFullyConverted()
+  )
+  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -75,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**
@@ -248,6 +260,26 @@ predicate hasTranslatedLoad(Expr expr) {
   not ignoreLoad(expr)
 }
 
+/**
+ * Holds if the specified `DeclarationEntry` needs an IR translation. An IR translation is only
+ * necessary for automatic local variables, or for static local variables with dynamic
+ * initialization.
+ */
+private predicate translateDeclarationEntry(DeclarationEntry entry) {
+  exists(DeclStmt declStmt, LocalVariable var |
+    translateStmt(declStmt) and
+    declStmt.getADeclarationEntry() = entry and
+    // Only declarations of local variables need to be translated to IR.
+    var = entry.getDeclaration() and
+    (
+      not var.isStatic()
+      or
+      // Ignore static variables unless they have a dynamic initializer.
+      var.(StaticLocalVariable).hasDynamicInitialization()
+    )
+  )
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -374,6 +406,7 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
   // The read side effects in a function's return block
   TTranslatedReadEffect(Parameter param) {
@@ -385,13 +418,12 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(DeclarationEntry entry) {
-    exists(DeclStmt declStmt |
-      translateStmt(declStmt) and
-      declStmt.getADeclarationEntry() = entry and
-      // Only declarations of local variables need to be translated to IR.
-      entry.getDeclaration() instanceof LocalVariable
-    )
+  TTranslatedDeclarationEntry(DeclarationEntry entry) { translateDeclarationEntry(entry) } or
+  // The dynamic initialization of a static local variable. This is a separate object from the
+  // declaration entry.
+  TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
+    translateDeclarationEntry(entry) and
+    entry.getDeclaration() instanceof StaticLocalVariable
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
   // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.

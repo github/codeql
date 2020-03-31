@@ -133,10 +133,16 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   Type getUnspecifiedType() { result = getType().getUnspecifiedType() }
 
-  /** Gets the nth parameter of this function. */
+  /**
+   * Gets the nth parameter of this function. There is no result for the
+   * implicit `this` parameter, and there is no `...` varargs pseudo-parameter.
+   */
   Parameter getParameter(int n) { params(unresolveElement(result), underlyingElement(this), n, _) }
 
-  /** Gets a parameter of this function. */
+  /**
+   * Gets a parameter of this function. There is no result for the implicit
+   * `this` parameter, and there is no `...` varargs pseudo-parameter.
+   */
   Parameter getAParameter() { params(unresolveElement(result), underlyingElement(this), _, _) }
 
   /**

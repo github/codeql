@@ -15,3 +15,5 @@ query ServerWebSocket::ReceiveNode serverReceive() { any() }
 query predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::AdditionalFlowStep s).step(pred, succ)
 }
+
+query RemoteFlowSource remoteFlow() { any() }

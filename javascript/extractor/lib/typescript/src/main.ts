@@ -69,8 +69,11 @@ interface PrepareFilesCommand {
     command: "prepare-files";
     filenames: string[];
 }
+interface GetMetadataCommand {
+    command: "get-metadata";
+}
 type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
-    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand;
+    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
 class State {
@@ -86,10 +89,12 @@ class State {
 }
 let state = new State();
 
+const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
+
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
  *
- * If cycles are found, additional properties should be added to `isBlacklistedProperty`.
+ * If cycles are found, the whitelist in `astProperties` is too permissive.
  */
 // tslint:disable-next-line:no-unused-variable
 function checkCycle(root: any) {
@@ -102,7 +107,8 @@ function checkCycle(root: any) {
         obj.$cycle_visiting = true;
         for (let k in obj) {
             if (!obj.hasOwnProperty(k)) continue;
-            if (isBlacklistedProperty(k)) continue;
+            // Ignore numeric and whitelisted properties.
+            if (+k !== +k && !astPropertySet.has(k)) continue;
             if (k === "$cycle_visiting") continue;
             let cycle = visit(obj[k]);
             if (cycle) {
@@ -120,30 +126,133 @@ function checkCycle(root: any) {
     }
 }
 
-/**
- * A property that should not be serialized as part of the AST, because they
- * lead to cycles or are just not needed.
- *
- * Because of restrictions on `JSON.stringify`, these properties may also not
- * be used as part of a command response.
- */
-function isBlacklistedProperty(k: string) {
-    return k === "parent" || k === "pos" || k === "end"
-        || k === "symbol" || k === "localSymbol"
-        || k === "flowNode" || k === "returnFlowNode" || k === "endFlowNode" || k === "fallthroughFlowNode"
-        || k === "nextContainer" || k === "locals"
-        || k === "bindDiagnostics" || k === "bindSuggestionDiagnostics";
-}
+/** Property names to extract from the TypeScript AST. */
+const astProperties: string[] = [
+    "$declarationKind",
+    "$declaredSignature",
+    "$end",
+    "$lineStarts",
+    "$overloadIndex",
+    "$pos",
+    "$resolvedSignature",
+    "$symbol",
+    "$tokens",
+    "$type",
+    "argument",
+    "argumentExpression",
+    "arguments",
+    "assertsModifier",
+    "asteriskToken",
+    "attributes",
+    "block",
+    "body",
+    "caseBlock",
+    "catchClause",
+    "checkType",
+    "children",
+    "clauses",
+    "closingElement",
+    "closingFragment",
+    "condition",
+    "constraint",
+    "constructor",
+    "declarationList",
+    "declarations",
+    "decorators",
+    "default",
+    "delete",
+    "dotDotDotToken",
+    "elements",
+    "elementType",
+    "elementTypes",
+    "elseStatement",
+    "escapedText",
+    "exclamationToken",
+    "exportClause",
+    "expression",
+    "exprName",
+    "extendsType",
+    "falseType",
+    "finallyBlock",
+    "flags",
+    "head",
+    "heritageClauses",
+    "importClause",
+    "incrementor",
+    "indexType",
+    "init",
+    "initializer",
+    "isExportEquals",
+    "isTypeOf",
+    "isTypeOnly",
+    "keywordToken",
+    "kind",
+    "label",
+    "left",
+    "literal",
+    "members",
+    "messageText",
+    "modifiers",
+    "moduleReference",
+    "moduleSpecifier",
+    "name",
+    "namedBindings",
+    "objectType",
+    "openingElement",
+    "openingFragment",
+    "operand",
+    "operator",
+    "operatorToken",
+    "parameterName",
+    "parameters",
+    "parseDiagnostics",
+    "properties",
+    "propertyName",
+    "qualifier",
+    "questionDotToken",
+    "questionToken",
+    "right",
+    "selfClosing",
+    "statement",
+    "statements",
+    "tag",
+    "tagName",
+    "template",
+    "templateSpans",
+    "text",
+    "thenStatement",
+    "token",
+    "tokenPos",
+    "trueType",
+    "tryBlock",
+    "type",
+    "typeArguments",
+    "typeName",
+    "typeParameter",
+    "typeParameters",
+    "types",
+    "variableDeclaration",
+    "whenFalse",
+    "whenTrue",
+];
+
+/** Property names used in a parse command response, in addition to the AST itself. */
+const astMetaProperties: string[] = [
+    "ast",
+    "type",
+];
+
+/** Property names to extract in an AST response. */
+const astPropertySet = new Set([...astProperties, ...astMetaProperties]);
 
 /**
- * Converts (part of) an AST to a JSON string, ignoring parent pointers.
+ * Converts (part of) an AST to a JSON string, ignoring properties we're not interested in.
  */
 function stringifyAST(obj: any) {
     return JSON.stringify(obj, (k, v) => {
-        if (isBlacklistedProperty(k)) {
-            return undefined;
-        }
-        return v;
+        // Filter out properties that aren't numeric, empty, or whitelisted.
+        // Note `k` is the empty string for the root object, which is also covered by +k === +k.
+        return (+k === +k || astPropertySet.has(k)) ? v : undefined;
     });
 }
 
@@ -153,14 +262,13 @@ function extractFile(filename: string): string {
     return stringifyAST({
         type: "ast",
         ast,
-        nodeFlags: ts.NodeFlags,
-        syntaxKinds: ts.SyntaxKind
     });
 }
 
 function prepareNextFile() {
     if (state.pendingResponse != null) return;
     if (state.pendingFileIndex < state.pendingFiles.length) {
+        checkMemoryUsage();
         let nextFilename = state.pendingFiles[state.pendingFileIndex];
         state.pendingResponse = extractFile(nextFilename);
     }
@@ -314,8 +422,10 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     let program = project.program;
     let typeChecker = program.getTypeChecker();
 
-    let diagnostics = program.getSemanticDiagnostics()
-        .filter(d => d.category === ts.DiagnosticCategory.Error);
+    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", Boolean, false);
+    let diagnostics = shouldReportDiagnostics
+        ? program.getSemanticDiagnostics().filter(d => d.category === ts.DiagnosticCategory.Error)
+        : [];
     if (diagnostics.length > 0) {
         console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
     }
@@ -519,6 +629,14 @@ function handlePrepareFilesCommand(command: PrepareFilesCommand) {
     });
 }
 
+function handleGetMetadataCommand(command: GetMetadataCommand) {
+    console.log(JSON.stringify({
+        type: "metadata",
+        syntaxKinds: ts.SyntaxKind,
+        nodeFlags: ts.NodeFlags,
+    }));
+}
+
 function reset() {
     state = new State();
     state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
@@ -529,26 +647,40 @@ function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaul
     return value != null ? parse(value) : defaultValue;
 }
 
+/**
+ * Whether the memory usage was last observed to be above the threshold for restarting the TypeScript compiler.
+ *
+ * This is to prevent repeatedly restarting the compiler if the GC does not immediately bring us below the
+ * threshold again.
+ */
+let hasReloadedSinceExceedingThreshold = false;
+
+/**
+ * If memory usage has moved above a the threshold, reboot the TypeScript compiler instance.
+ *
+ * Make sure to call this only when stdout has been flushed.
+ */
+function checkMemoryUsage() {
+    let bytesUsed = process.memoryUsage().heapUsed;
+    let megabytesUsed = bytesUsed / 1000000;
+    if (!hasReloadedSinceExceedingThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
+        console.warn('Restarting TypeScript compiler due to memory usage');
+        state.project.reload();
+        hasReloadedSinceExceedingThreshold = true;
+    }
+    else if (hasReloadedSinceExceedingThreshold && megabytesUsed < reloadMemoryThresholdMb) {
+        hasReloadedSinceExceedingThreshold = false;
+    }
+}
+
 function runReadLineInterface() {
     reset();
-    let reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
-    let isAboveReloadThreshold = false;
     let rl = readline.createInterface({ input: process.stdin, output: process.stdout });
     rl.on("line", (line: string) => {
         let req: Command = JSON.parse(line);
         switch (req.command) {
         case "parse":
             handleParseCommand(req);
-            // If memory usage has moved above the threshold, reboot the TypeScript compiler instance.
-            let bytesUsed = process.memoryUsage().heapUsed;
-            let megabytesUsed = bytesUsed / 1000000;
-            if (!isAboveReloadThreshold && megabytesUsed > reloadMemoryThresholdMb && state.project != null) {
-                console.warn('Restarting TypeScript compiler due to memory usage');
-                state.project.reload();
-                isAboveReloadThreshold = true;
-            } else if (isAboveReloadThreshold && megabytesUsed < reloadMemoryThresholdMb) {
-                isAboveReloadThreshold = false;
-            }
             break;
         case "open-project":
             handleOpenProjectCommand(req);
@@ -564,6 +696,9 @@ function runReadLineInterface() {
             break;
         case "reset":
             handleResetCommand(req);
+            break;
+        case "get-metadata":
+            handleGetMetadataCommand(req);
             break;
         case "quit":
             rl.close();
