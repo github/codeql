@@ -580,14 +580,49 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
  */
 module PseudoProperties {
   /**
+   * Gets a pseudo-property representing elements inside a `Set`
+   */
+  string setElement() { result = "$setElement$" }
+
+  /**
+   * Gets a pseudo-property representing elements inside a JavaScript iterator.
+   */
+  string iteratorElement() { result = "$iteratorElement$" }
+
+  /**
    * Gets a pseudo-field representing an elements inside an `Array`.
    */
   string arrayElement() { result = "$arrayElement$" }
 
   /**
-   * Gets a pseudo-property representing elements inside some array-like object. 
+   * Gets a pseudo-property representing elements inside some array-like object. (Set, Array, or Iterator).
    */
-  string arrayLikeElement() { result = arrayElement() }
+  string arrayLikeElement() { result = [setElement(), iteratorElement(), arrayElement()] }
+
+  /**
+   * Gets a pseudo-property representing the values of a Map, where the key is unknown.
+   */
+  string mapValueUnknownKey() { result = "$UnknownMapValue$" }
+
+  /**
+   * Gets a pseudo property for a Map value where the key is `key`.
+   * The string value of the `key` is encoded in the result, and there is only a result if the string value of `key` is known.
+   */
+  pragma[inline]
+  string mapValueKnownKey(DataFlow::Node key) {
+    exists(string s | key.mayHaveStringValue(s) | result = "$mapValue|" + s + "$")
+  }
+
+  /**
+   * Gets a psuedo property for a map value where the key is `key`.
+   */
+  pragma[inline]
+  string mapValue(DataFlow::Node key) {
+    result = mapValueKnownKey(key)
+    or
+    not exists(mapValueKnownKey(key)) and
+    result = mapValueUnknownKey()
+  }
 }
 
 /**
