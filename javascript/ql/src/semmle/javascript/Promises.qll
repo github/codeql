@@ -176,7 +176,7 @@ module PromiseTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = LoadStoreStep(field) and
+      summary = LoadStoreStep(field, field) and
       step.loadStore(pred, result, field)
     )
   }
@@ -245,6 +245,12 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 
   final override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.loadStore(pred, succ, prop)
+  }
+
+  final override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    none()
   }
 }
 

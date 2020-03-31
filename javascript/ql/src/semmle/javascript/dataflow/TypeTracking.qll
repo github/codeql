@@ -53,7 +53,9 @@ class TypeTracker extends TTypeTracker {
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or
-    step = LoadStoreStep(prop) and result = this
+    exists(string toProp | step = LoadStoreStep(prop, toProp) |
+      result = MkTypeTracker(hasCall, toProp)
+    )
     or
     step = CallStep() and result = MkTypeTracker(true, prop)
     or
@@ -213,7 +215,9 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker prepend(StepSummary step) {
     step = LevelStep() and result = this
     or
-    step = LoadStoreStep(prop) and result = this
+    exists(string fromProp | step = LoadStoreStep(fromProp, prop) |
+      result = MkTypeBackTracker(hasReturn, fromProp)
+    )
     or
     step = CallStep() and hasReturn = false and result = this
     or
