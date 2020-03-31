@@ -1,4 +1,5 @@
 import default
+import semmle.code.cpp.models.implementations.Allocation
 
 query predicate newExprs(NewExpr expr, string type, string sig, int size, int alignment, string form, string placement) {
   exists(Function allocator, Type allocatedType |
@@ -115,6 +116,8 @@ string describeAllocationFunction(AllocationFunction f) {
 		f.requiresDealloc() and
 		result = "requiresDealloc"
 	)
+	or
+	result = "getPlacementArgument = " + f.(OperatorNewAllocationFunction).getPlacementArgument().toString()
 }
 
 query predicate allocationFunctions(AllocationFunction f, string descr) {
