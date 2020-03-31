@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Private.Xml.dll /r:System.Xml.XPath.dll /r:System.Data.Common.dll
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Private.Xml.dll /r:System.Xml.XPath.dll /r:System.Data.Common.dll /r:System.Runtime.Extensions.dll
 
 using System;
 using System.Web;
@@ -12,14 +12,49 @@ public class XPathInjectionHandler : IHttpHandler
         string userName = ctx.Request.QueryString["userName"];
         string password = ctx.Request.QueryString["password"];
 
+        var s = "//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()";
+
         // BAD: User input used directly in an XPath expression
-        XPathExpression.Compile("//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()");
+        XPathExpression.Compile(s);
         XmlNode xmlNode = null;
         // BAD: User input used directly in an XPath expression to SelectNodes
-        xmlNode.SelectNodes("//users/user[login/text()='" + userName + "' and password/text() = '" + password + "']/home_dir/text()");
+        xmlNode.SelectNodes(s);
 
         // GOOD: Uses parameters to avoid including user input directly in XPath expression
-        XPathExpression.Compile("//users/user[login/text()=$username]/home_dir/text()");
+        var expr = XPathExpression.Compile("//users/user[login/text()=$username]/home_dir/text()");
+
+        var doc = new XPathDocument("");
+        var nav = doc.CreateNavigator();
+
+        // BAD
+        nav.Select(s);
+
+        // GOOD
+        nav.Select(expr);
+
+        // BAD
+        nav.SelectSingleNode(s);
+
+        // GOOD
+        nav.SelectSingleNode(expr);
+
+        // BAD
+        nav.Compile(s);
+
+        // GOOD
+        nav.Compile("//users/user[login/text()=$username]/home_dir/text()");
+
+        // BAD
+        nav.Evaluate(s);
+
+        // Good
+        nav.Evaluate(expr);
+
+        // BAD
+        nav.Matches(s);
+
+        // GOOD
+        nav.Matches(expr);
     }
 
     public bool IsReusable

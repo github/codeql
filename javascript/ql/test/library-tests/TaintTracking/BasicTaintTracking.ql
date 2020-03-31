@@ -33,6 +33,10 @@ class BasicConfig extends TaintTracking::Configuration {
     node instanceof UntaintableNode
   }
 
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.(DataFlow::InvokeNode).getCalleeName().matches("sanitizer_%")
+  }
+
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
     node instanceof BasicSanitizerGuard
   }

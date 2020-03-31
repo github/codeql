@@ -16,7 +16,7 @@ class NotExpr extends UnaryLogicalOperation, @notexpr {
 
   override string getCanonicalQLClass() { result = "NotExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**

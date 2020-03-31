@@ -5,6 +5,7 @@ import IRTypeSanity // module is in IRType.qll
 module InstructionSanity {
   private import internal.InstructionImports as Imports
   private import Imports::OperandTag
+  private import Imports::Overlap
   private import internal.IRInternal
 
   /**
@@ -271,5 +272,49 @@ module InstructionSanity {
       "SwitchInstruction " + switchInstr.toString() + " without a DefaultEdge in function '$@'." and
     func = switchInstr.getEnclosingIRFunction() and
     funcText = Language::getIdentityString(func.getFunction())
+  }
+
+  /**
+   * Holds if `instr` is on the chain of chi/phi instructions for all aliased
+   * memory.
+   */
+  private predicate isOnAliasedDefinitionChain(Instruction instr) {
+    instr instanceof AliasedDefinitionInstruction
+    or
+    isOnAliasedDefinitionChain(instr.(ChiInstruction).getTotal())
+    or
+    isOnAliasedDefinitionChain(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
+  }
+
+  private predicate shouldBeConflated(Instruction instr) {
+    isOnAliasedDefinitionChain(instr)
+    or
+    instr instanceof UnmodeledDefinitionInstruction
+    or
+    instr.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
+
+  query predicate notMarkedAsConflated(Instruction instr) {
+    shouldBeConflated(instr) and
+    not instr.isResultConflated()
+  }
+
+  query predicate wronglyMarkedAsConflated(Instruction instr) {
+    instr.isResultConflated() and
+    not shouldBeConflated(instr)
+  }
+
+  query predicate invalidOverlap(
+    MemoryOperand useOperand, string message, IRFunction func, string funcText
+  ) {
+    exists(Overlap overlap |
+      overlap = useOperand.getDefinitionOverlap() and
+      overlap instanceof MayPartiallyOverlap and
+      message =
+        "MemoryOperand '" + useOperand.toString() + "' has a `getDefinitionOverlap()` of '" +
+          overlap.toString() + "'." and
+      func = useOperand.getEnclosingIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction())
+    )
   }
 }

@@ -61,7 +61,7 @@ These topics are discussed in detail in the `QL language handbook <https://help.
 References
 ----------
 
-Academic references available from the `Semmle website <https://semmle.com/publications>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
+Academic references available from the `Semmle website <https://help.semmle.com/publications.html>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
 
 -  `Database theory: Query languages <http://www.lsv.ens-cachan.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
 -  `Logic Programming and Databases book - Amazon page <http://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__

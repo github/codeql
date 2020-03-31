@@ -1231,6 +1231,11 @@
 | E.cs:362:18:362:29 | (...) ... | null | E.cs:362:26:362:29 | null | null |
 | E.cs:363:13:363:13 | access to local variable x | non-null | E.cs:361:17:361:32 | ... ?? ... | non-null |
 | E.cs:363:13:363:13 | access to local variable x | null | E.cs:361:17:361:32 | ... ?? ... | null |
+| E.cs:372:13:372:23 | ... is ... | true | E.cs:372:13:372:13 | access to parameter o | non-null |
+| E.cs:375:20:375:20 | access to local variable s | empty | E.cs:374:21:374:31 | ... as ... | empty |
+| E.cs:375:20:375:20 | access to local variable s | non-empty | E.cs:374:21:374:31 | ... as ... | non-empty |
+| E.cs:375:20:375:20 | access to local variable s | non-null | E.cs:374:21:374:31 | ... as ... | non-null |
+| E.cs:375:20:375:20 | access to local variable s | null | E.cs:374:21:374:31 | ... as ... | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |

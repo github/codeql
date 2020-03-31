@@ -60,7 +60,8 @@ predicate deprecated_module(string name, string instead, int major, int minor) {
 
 string deprecation_message(string mod) {
     exists(int major, int minor | deprecated_module(mod, _, major, minor) |
-        result = "The " + mod + " module was deprecated in version " + major.toString() + "." +
+        result =
+            "The " + mod + " module was deprecated in version " + major.toString() + "." +
                 minor.toString() + "."
     )
 }
@@ -77,8 +78,7 @@ from ImportExpr imp, string name, string instead
 where
     name = imp.getName() and
     deprecated_module(name, instead, _, _) and
-    not exists(Try try, ExceptStmt except | except = try.getAHandler()
-    |
+    not exists(Try try, ExceptStmt except | except = try.getAHandler() |
         except.getType().pointsTo(ClassValue::importError()) and
         except.containsInScope(imp)
     )
