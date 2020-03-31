@@ -754,15 +754,20 @@ private int getContainerDepthFromInputNode(DataFlow::Node nd) {
 
 /**
  * Holds if `nd` is an assignment to a captured variable declared
- * in the function `scope`.
+ * in the given `scope`.
  */
 cached
 private predicate capturedVariableScope(DataFlow::Node nd, DataFlow::Node scope) {
-  exists(SsaExplicitDefinition ssa, LocalVariable v |
+  exists(SsaExplicitDefinition ssa, LocalVariable v, StmtContainer container |
     nd = DataFlow::ssaDefinitionNode(ssa) and
     v = ssa.getSourceVariable() and
     v.isCaptured() and
-    scope = DataFlow::valueNode(v.getADeclaration().getContainer().getFunctionBoundary())
+    container = v.getADeclaration().getContainer().getFunctionBoundary()
+  |
+    scope = DataFlow::valueNode(container)
+    or
+    container instanceof TopLevel and
+    scope = DataFlow::globalAccessPathRootPseudoNode()
   )
 }
 
