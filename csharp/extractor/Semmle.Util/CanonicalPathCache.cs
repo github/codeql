@@ -127,8 +127,8 @@ namespace Semmle.Util
 
             if (parent != null)
             {
-                string? name = Path.GetFileName(path);
-                string? parentPath = cache.GetCanonicalPath(parent.FullName);
+                var name = Path.GetFileName(path);
+                var parentPath = cache.GetCanonicalPath(parent.FullName);
                 try
                 {
                     string[] entries = Directory.GetFileSystemEntries(parentPath, name);

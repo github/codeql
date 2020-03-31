@@ -107,13 +107,8 @@ namespace Semmle.Autobuild
 
         static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
 
-        public static string? AsStringWithExpandedEnvVarsMaybeNull(this string? value, IBuildActions actions)
-        {
-            if (string.IsNullOrEmpty(value))
-                return value;
-
-            return value.AsStringWithExpandedEnvVars(actions);
-        }
+        public static string? AsStringWithExpandedEnvVarsMaybeNull(this string? value, IBuildActions actions) =>
+            value?.AsStringWithExpandedEnvVars(actions);
 
         public static string AsStringWithExpandedEnvVars(this string value, IBuildActions actions)
         {

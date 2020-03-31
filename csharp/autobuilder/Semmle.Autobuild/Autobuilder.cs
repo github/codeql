@@ -185,34 +185,28 @@ namespace Semmle.Autobuild
             });
 
             CodeQLExtractorCSharpRoot = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_ROOT");
-
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
-
-            CodeQLJavaHome = Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME");
-
-            SemmleJavaHome = Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME");
-
-            if(CodeQLJavaHome is null && SemmleJavaHome is null)
-                throw new InvalidEnvironmentException("The environment variables CODEQL_JAVA_HOME and SEMMLE_JAVA_HOME have not been set.");
-
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
-            if (CodeQLExtractorCSharpRoot is null && SemmleDist is null)
-                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_ROOT and SEMMLE_DIST have not been set.");
+            JavaHome = 
+                Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME") ??
+                Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME") ?? 
+                throw new InvalidEnvironmentException("The environment variable CODEQL_JAVA_HOME or SEMMLE_JAVA_HOME has not been set.");
 
-            var trapDir = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ?? Actions.GetEnvironmentVariable("TRAP_FOLDER");
+            Distribution =
+                CodeQLExtractorCSharpRoot ??
+                SemmleDist ??
+                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_ROOT or SEMMLE_DIST has not been set.");
 
-            if (trapDir is null)
-                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_TRAP_DIR and TRAP_FOLDER have not been set.");
+            TrapDir =
+                Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ??
+                Actions.GetEnvironmentVariable("TRAP_FOLDER") ??
+                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_TRAP_DIR or TRAP_FOLDER has not been set.");
 
-            TrapDir = trapDir;
-
-            var sourceArchiveDir = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ?? Actions.GetEnvironmentVariable("SOURCE_ARCHIVE");
-
-            if(sourceArchiveDir is null)
-                throw new InvalidEnvironmentException("The environment variables CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR and SOURCE_ARCHIVE have not been set.");
-
-            SourceArchiveDir = sourceArchiveDir;
+            SourceArchiveDir =
+                Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ??
+                Actions.GetEnvironmentVariable("SOURCE_ARCHIVE") ??
+                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR or SOURCE_ARCHIVE has not been set.");
         }
 
         private string TrapDir { get; }
@@ -408,28 +402,18 @@ namespace Semmle.Autobuild
         private string? CodeQLExtractorCSharpRoot { get; }
 
         /// <summary>
-        /// Value of CODEQL_JAVA_HOME environment variable.
-        /// </summary>
-        private string? CodeQLJavaHome { get; }
-
-        /// <summary>
         /// Value of SEMMLE_DIST environment variable.
         /// </summary>
         private string? SemmleDist { get; }
 
-        public string Distribution => CodeQLExtractorCSharpRoot ?? SemmleDist!;
+        public string Distribution { get; }
 
-        public string JavaHome => CodeQLJavaHome ?? SemmleJavaHome!;
-
-        /// <summary>
-        /// Value of SEMMLE_JAVA_HOME environment variable.
-        /// </summary>
-        public string? SemmleJavaHome { get; private set; }
+        public string JavaHome { get; }
 
         /// <summary>
         /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
         /// </summary>
-        public string? SemmlePlatformTools { get; private set; }
+        public string? SemmlePlatformTools { get; }
 
         /// <summary>
         /// The absolute path of the odasa executable.
