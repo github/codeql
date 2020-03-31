@@ -26,8 +26,8 @@ abstract class TypeTrackingPseudoProperty extends string {
   TypeTrackingPseudoProperty() { any() }
 
   /**
-   * Gets a property name that `this` can be copied to in a `LoadStoreStep(this, result)`. 
-   */ 
+   * Gets a property name that `this` can be copied to in a `LoadStoreStep(this, result)`.
+   */
   string getLoadStoreToProp() { none() }
 }
 
@@ -41,10 +41,9 @@ newtype TStepSummary =
   StoreStep(PropertyName prop) or
   LoadStep(PropertyName prop) or
   LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
-    fromProp = toProp or
-    exists(TypeTrackingPseudoProperty prop | 
-      fromProp = prop and toProp = prop.getLoadStoreToProp()  
-    )
+    fromProp = toProp
+    or
+    exists(TypeTrackingPseudoProperty prop | fromProp = prop and toProp = prop.getLoadStoreToProp())
   }
 
 /**
