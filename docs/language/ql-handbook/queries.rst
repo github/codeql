@@ -4,7 +4,7 @@
 Queries
 #######
 
-Queries are the output of a QL program. they evaluate to sets of results.
+Queries are the output of a QL program. They evaluate to sets of results.
 
 There are two kinds of queries. For a given :ref:`query module <query-modules>`, the queries in that module are:
   - The :ref:`select clause <select-clauses>`, if any, defined in that module.
