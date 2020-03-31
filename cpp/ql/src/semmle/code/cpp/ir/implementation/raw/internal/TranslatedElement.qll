@@ -442,11 +442,13 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedSideEffects(Call expr) {
+  TTranslatedCallSideEffects(Call expr) {
     exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
-    expr instanceof ConstructorCall or
-    expr.getTarget() instanceof AllocationFunction
-  } or // A precise side effect of an argument to a `Call`
+    expr instanceof ConstructorCall
+  } or
+  // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
+  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()
