@@ -30,8 +30,8 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
 }
 
 /**
- * Holds if there exists another definition of the variable `v` that dominates `dead`. 
- */ 
+ * Holds if there exists another definition of the variable `v` that dominates `dead`.
+ */
 predicate hasDominatingDef(VarDef dead, PurelyLocalVariable v) {
   exists(VarDef otherDef | not otherDef = dead and otherDef.getAVariable() = v |
     dead.getBasicBlock().getASuccessor+() = otherDef.getBasicBlock()
