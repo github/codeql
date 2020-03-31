@@ -29,23 +29,6 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   not exists(SsaExplicitDefinition ssa | ssa.defines(vd, v))
 }
 
-/**
- * Holds if there exists another definition of the variable `v` that dominates `dead`.
- */
-predicate hasDominatingDef(VarDef dead, PurelyLocalVariable v) {
-  exists(VarDef otherDef | not otherDef = dead and otherDef.getAVariable() = v |
-    dead.getBasicBlock().getASuccessor+() = otherDef.getBasicBlock()
-    or
-    exists(ReachableBasicBlock bb, int i, int j |
-      bb = otherDef.getBasicBlock() and bb = dead.getBasicBlock()
-    |
-      bb.defAt(i, v, dead) and
-      bb.defAt(j, v, otherDef) and
-      j > i
-    )
-  )
-}
-
 from VarDef dead, PurelyLocalVariable v, string msg
 where
   deadStoreOfLocal(dead, v) and
@@ -80,8 +63,10 @@ where
   (
     // To avoid confusion about the meaning of "definition" and "declaration" we avoid
     // the term "definition" when the alert location is a variable declaration.
-    if dead instanceof VariableDeclarator and hasDominatingDef(dead, v)
+    if
+      dead instanceof VariableDeclarator and
+      not exists(SsaImplicitInit init | init.getVariable().getSourceVariable() = v) // the variable is dead at the hoisted implicit initialization. 
     then msg = "The initial value of " + v.getName() + " is unused, since it is always overwritten."
-    else msg = "This definition of " + v.getName() + " is useless, since its value is never read."
+    else msg = "The value assigned to " + v.getName() + " here is unused."
   )
 select dead, msg
