@@ -3,6 +3,8 @@
 Name resolution
 ###############
 
+The QL compiler resolves names to program elements.
+
 As in other programming languages, there is a distinction between the names used in QL code, 
 and the underlying QL entities they refer to.
 
