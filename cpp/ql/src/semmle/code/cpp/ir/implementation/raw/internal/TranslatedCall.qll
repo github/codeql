@@ -397,6 +397,15 @@ class TranslatedNewAllocationSideEffects extends TranslatedAllocationSideEffects
   }
 }
 
+class TranslatedNewArrayAllocationSideEffects extends TranslatedAllocationSideEffects {
+  override NewArrayAllocationExpr expr;
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
+  }
+}
+
 class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSideEffects {
   Call expr;
 
