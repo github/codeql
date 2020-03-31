@@ -87,7 +87,7 @@ class StandardDeallocationFunction extends DeallocationFunction {
 class OperatorDeleteDeallocationFunction extends DeallocationFunction {
   OperatorDeleteDeallocationFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
+      hasGlobalName(name) and
       (
         // operator delete(pointer, ...)
         name = "operator delete" or

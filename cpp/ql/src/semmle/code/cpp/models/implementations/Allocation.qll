@@ -223,7 +223,7 @@ class SizelessAllocationFunction extends AllocationFunction {
 class OperatorNewAllocationFunction extends AllocationFunction {
   OperatorNewAllocationFunction() {
     exists(string name |
-      hasGlobalOrStdName(name) and
+      hasGlobalName(name) and
       (
         // operator new(bytes, ...)
         name = "operator new" or
