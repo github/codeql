@@ -287,30 +287,30 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
    * `k` is not a constant and `o` refers to some object literal; in this case, we consider
-   * taint to flow from `v` to any variable that refers to the object literal.
+   * taint to flow from `v` to that object literal.
    *
    * The rationale for this heuristic is that if properties of `o` are accessed by
    * computed (that is, non-constant) names, then `o` is most likely being treated as
    * a map, not as a real object. In this case, it makes sense to consider the entire
    * map to be tainted as soon as one of its entries is.
    */
-  private class DictionaryTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
-    override VarAccess astNode;
-    DataFlow::Node source;
-
-    DictionaryTaintStep() {
-      exists(AssignExpr assgn, IndexExpr idx, AbstractObjectLiteral obj |
-        assgn.getTarget() = idx and
-        idx.getBase().analyze().getAValue() = obj and
-        not exists(idx.getPropertyName()) and
-        astNode.analyze().getAValue() = obj and
-        source = DataFlow::valueNode(assgn.getRhs())
-      )
-    }
+  private class DictionaryTaintStep extends AdditionalTaintStep {
+    DictionaryTaintStep() { dictionaryTaintStep(_, this) }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = source and succ = this
+      succ = this and
+      dictionaryTaintStep(pred, succ)
     }
+  }
+
+  /** Holds if there is a step `pred -> succ` used by `DictionaryTaintStep`. */
+  private predicate dictionaryTaintStep(DataFlow::Node pred, DataFlow::ObjectLiteralNode succ) {
+    exists(AssignExpr assgn, IndexExpr idx |
+      assgn.getTarget() = idx and
+      succ.flowsToExpr(idx.getBase()) and
+      not exists(idx.getPropertyName()) and
+      pred = DataFlow::valueNode(assgn.getRhs())
+    )
   }
 
   /**
