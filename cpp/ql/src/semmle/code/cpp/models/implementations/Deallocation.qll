@@ -80,6 +80,27 @@ class StandardDeallocationFunction extends DeallocationFunction {
 }
 
 /**
+ * An `operator delete` or `operator delete[]` function that may be associated
+ * with a `delete` or `delete[]` expression.  Note that `delete` and `delete[]`
+ * are not function calls, but these functions may also be called directly.
+ */
+class OperatorDeleteDeallocationFunction extends DeallocationFunction {
+  OperatorDeleteDeallocationFunction() {
+    exists(string name |
+      hasGlobalOrStdName(name) and
+      (
+        // operator delete(pointer, ...)
+        name = "operator delete" or
+        // operator delete[](pointer, ...)
+        name = "operator delete[]"
+      )
+    )
+  }
+
+  override int getFreedArg() { result = 0 }
+}
+
+/**
  * An deallocation expression that is a function call, such as call to `free`.
  */
 class CallDeallocationExpr extends DeallocationExpr, FunctionCall {

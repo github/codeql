@@ -85,6 +85,15 @@ allocationExprs
 | allocators.cpp:144:13:144:31 | new[] | getSizeExpr = x, getSizeMult = 900, requiresDealloc |
 | allocators.cpp:149:8:149:19 | call to operator new | getSizeBytes = 4, getSizeExpr = sizeof(int), getSizeMult = 1, requiresDealloc |
 deallocationFunctions
+| allocators.cpp:11:6:11:20 | operator delete | getFreedArg = 0 |
+| allocators.cpp:12:6:12:22 | operator delete[] | getFreedArg = 0 |
+| allocators.cpp:13:6:13:20 | operator delete | getFreedArg = 0 |
+| allocators.cpp:14:6:14:22 | operator delete[] | getFreedArg = 0 |
+| file://:0:0:0:0 | operator delete | getFreedArg = 0 |
+| file://:0:0:0:0 | operator delete | getFreedArg = 0 |
+| file://:0:0:0:0 | operator delete | getFreedArg = 0 |
+| file://:0:0:0:0 | operator delete[] | getFreedArg = 0 |
+| file://:0:0:0:0 | operator delete[] | getFreedArg = 0 |
 deallocationExprs
 | allocators.cpp:59:3:59:35 | delete | getFreedExpr = 0 |
 | allocators.cpp:60:3:60:38 | delete | getFreedExpr = 0 |
@@ -98,3 +107,4 @@ deallocationExprs
 | allocators.cpp:81:3:81:45 | delete[] | getFreedExpr = 0 |
 | allocators.cpp:82:3:82:49 | delete[] | getFreedExpr = 0 |
 | allocators.cpp:83:3:83:23 | delete[] | getFreedExpr = call to GetPointer |
+| allocators.cpp:150:2:150:16 | call to operator delete | getFreedExpr = ptr |
