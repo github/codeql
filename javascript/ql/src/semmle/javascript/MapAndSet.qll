@@ -1,3 +1,9 @@
+/**
+ * Provides predicates and classes for working with the standard library implementations of
+ * [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) and
+ * [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+ */
+
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
 private import DataFlow::PseudoProperties
@@ -83,7 +89,7 @@ module MapsAndSetsTypeTracking {
     exists(MapOrSetFlowStep step, string field |
       summary = LoadStep(field) and
       step.load(pred, result, field) and
-      (not step.canLoadKnownKey() or not field = mapValueUnknownKey()) // for a step that could load a known key, we prune the steps where the key is unknown. 
+      (not step.canLoadKnownKey() or not field = mapValueUnknownKey()) // for a step that could load a known key, we prune the steps where the key is unknown.
       or
       summary = StoreStep(field) and
       step.store(pred, result, field)
@@ -118,7 +124,7 @@ module MapsAndSetsTypeTracking {
       any(MapOrSetFlowStep step).store(_, _, this)
     }
 
-    override string getLoadStoreToProp() { 
+    override string getLoadStoreToProp() {
       exists(MapOrSetFlowStep step | step.loadStore(_, _, this, result))
     }
   }
@@ -163,9 +169,9 @@ private module MapAndSetDataFlow {
    * A step for a `for of` statement on a Map, Set, or Iterator.
    * For Sets and iterators the l-value are the elements of the set/iterator.
    * For Maps the l-value is a tuple containing a key and a value.
-   * 
-   * This is partially duplicated behavior with the `for of` step for Arrays (in Arrays.qll). 
-   * This duplication is required for the type-tracking steps defined in `MapsAndSetsTypeTracking`. 
+   *
+   * This is partially duplicated behavior with the `for of` step for Arrays (in Arrays.qll).
+   * This duplication is required for the type-tracking steps defined in `MapsAndSetsTypeTracking`.
    */
   private class ForOfStep extends MapOrSetFlowStep, DataFlow::ValueNode {
     ForOfStmt forOf;
@@ -223,9 +229,9 @@ private module MapAndSetDataFlow {
 
   /**
    * A call to the `set` method on a Map.
-   * 
-   * If the key of the call to `set` has a known string value, 
-   * then the value will be saved into a pseudo-property corresponding to the known string value. 
+   *
+   * If the key of the call to `set` has a known string value,
+   * then the value will be saved into a pseudo-property corresponding to the known string value.
    * The value will additionally be saved into a pseudo-property corresponding to values with unknown keys.
    */
   private class MapSet extends MapOrSetFlowStep, DataFlow::MethodCallNode {
@@ -239,9 +245,9 @@ private module MapAndSetDataFlow {
     }
   }
 
-  /** 
+  /**
    * A step for a call to `values` on a Map or a Set.
-   */ 
+   */
   private class MapAndSetValues extends MapOrSetFlowStep, DataFlow::MethodCallNode {
     MapAndSetValues() { this.getMethodName() = "values" }
 
@@ -250,14 +256,14 @@ private module MapAndSetDataFlow {
     ) {
       pred = this.getReceiver() and
       succ = this and
-      fromProp = [mapValueUnknownKey(),setElement()] and
+      fromProp = [mapValueUnknownKey(), setElement()] and
       toProp = iteratorElement()
     }
   }
 
-  /** 
+  /**
    * A step for a call to `keys` on a Set.
-   */ 
+   */
   private class SetKeys extends MapOrSetFlowStep, DataFlow::MethodCallNode {
     SetKeys() { this.getMethodName() = "keys" }
 
