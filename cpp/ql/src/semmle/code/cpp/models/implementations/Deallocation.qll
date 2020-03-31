@@ -81,7 +81,7 @@ class StandardDeallocationFunction extends DeallocationFunction {
 
 /**
  * An `operator delete` or `operator delete[]` function that may be associated
- * with a `delete` or `delete[]` expression.  Note that `delete` and `delete[]`
+ * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
  * are not function calls, but these functions may also be called directly.
  */
 class OperatorDeleteDeallocationFunction extends DeallocationFunction {

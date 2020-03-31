@@ -216,8 +216,8 @@ class SizelessAllocationFunction extends AllocationFunction {
 }
 
 /**
- * An `operator new` or `operator new[]` function that may be associated with a `new` or
- * `new[]` expression.  Note that `new` and `new[]` are not function calls, but these
+ * An `operator new` or `operator new[]` function that may be associated with `new` or
+ * `new[]` expressions.  Note that `new` and `new[]` are not function calls, but these
  * functions may also be called directly.
  */
 class OperatorNewAllocationFunction extends AllocationFunction {
