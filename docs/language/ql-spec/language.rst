@@ -1,12 +1,12 @@
 QL language specification
 =========================
 
+This is a formal specification for the QL language. It provides a comprehensive reference for terminology, syntax, and other technical details about QL.
+
 Introduction
 ------------
 
-This document specifies the QL language. It provides a comprehensive reference for terminology, syntax, and other technical details about QL.
-
-QL is a query language for Semmle databases. The data is relational: named relations hold sets of tuples. The query language is a dialect of Datalog, using stratified semantics, and it includes object-oriented classes.
+QL is a query language for CodeQL databases. The data is relational: named relations hold sets of tuples. The query language is a dialect of Datalog, using stratified semantics, and it includes object-oriented classes.
 
 Notation
 --------

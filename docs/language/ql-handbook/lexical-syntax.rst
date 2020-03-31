@@ -3,10 +3,10 @@
 Lexical syntax
 ##############
 
+The QL syntax includes different kinds of keywords, identifiers, and comments.
+
 For an overview of the lexical syntax, see `Lexical syntax 
-<https://help.semmle.com/QL/ql-spec/language.html#lexical-syntax>`_
-in the QL language specification. In particular, you can find the list of QL keywords, the
-different kinds of identifiers, and a description of comments.
+<https://help.semmle.com/QL/ql-spec/language.html#lexical-syntax>`_ in the QL language specification.
 
 .. index:: comment, QLDoc
 .. _comments:
