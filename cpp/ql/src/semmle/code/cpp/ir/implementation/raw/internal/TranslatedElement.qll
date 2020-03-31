@@ -83,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**
@@ -402,6 +406,7 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
   // The read side effects in a function's return block
   TTranslatedReadEffect(Parameter param) {

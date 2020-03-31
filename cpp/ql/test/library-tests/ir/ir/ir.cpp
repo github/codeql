@@ -885,15 +885,24 @@ void FuncPtrConversions(int(*pfn)(int), void* p) {
   pfn = (int(*)(int))p;
 }
 
+void VAListUsage(int x, __builtin_va_list args) {
+  __builtin_va_list args2;
+  __builtin_va_copy(args2, args);
+  double d = __builtin_va_arg(args, double);
+  float f = __builtin_va_arg(args, int);
+  __builtin_va_end(args2);
+}
+
 void VarArgUsage(int x, ...) {
   __builtin_va_list args;
 
   __builtin_va_start(args, x);
   __builtin_va_list args2;
-  __builtin_va_start(args2, args);
+  __builtin_va_copy(args2, args);
   double d = __builtin_va_arg(args, double);
-  float f = __builtin_va_arg(args, float);
+  float f = __builtin_va_arg(args, int);
   __builtin_va_end(args);
+  VAListUsage(x, args2);
   __builtin_va_end(args2);
 }
 
@@ -1232,6 +1241,18 @@ void staticLocalWithConstructor(const char* dynamic) {
     static String a;
     static String b("static");
     static String c(dynamic);
+}
+
+// --- strings ---
+
+char *strcpy(char *destination, const char *source);
+char *strcat(char *destination, const char *source);
+
+void test_strings(char *s1, char *s2) {
+	char buffer[1024] = {0};
+
+	strcpy(buffer, s1);
+	strcat(buffer, s2);
 }
 
 // semmle-extractor-options: -std=c++17 --clang

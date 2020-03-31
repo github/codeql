@@ -271,6 +271,16 @@ void *MallocAliasing(void *s, int size) {
   return buf;
 }
 
+Point *pp;
+void EscapedButNotConflated(bool c, Point p, int x1) {
+  Point a = {};
+  pp = &a; // `a` escapes here and therefore belongs to the aliased vvar
+  if (c) {
+    a.x = x1;
+  }
+  int x = a.x; // The phi node here is not conflated
+}
+
 void unknownFunction(int argc, char **argv);
 
 int main(int argc, char **argv) {

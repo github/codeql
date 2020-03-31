@@ -60,7 +60,14 @@ private DataFlow::Node getNodeForSource(Expr source) {
   (
     result = DataFlow::exprNode(source)
     or
-    result = DataFlow::definitionByReferenceNode(source)
+    // Some of the sources in `isUserInput` are intended to match the value of
+    // an expression, while others (those modeled below) are intended to match
+    // the taint that propagates out of an argument, like the `char *` argument
+    // to `gets`. It's impossible here to tell which is which, but the "access
+    // to argv" source is definitely not intended to match an output argument,
+    // and it causes false positives if we let it.
+    result = DataFlow::definitionByReferenceNode(source) and
+    not argv(source.(VariableAccess).getTarget())
   )
 }
 
@@ -185,7 +192,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(UnaryInstruction).getUnary() = i1
   or
   i2.(ChiInstruction).getPartial() = i1 and
-  not isChiForAllAliasedMemory(i2)
+  not i2.isResultConflated()
   or
   exists(BinaryInstruction bin |
     bin = i2 and
@@ -276,19 +283,6 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
     (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
     modelOut.isParameterDeref(parameterOut)
   )
-}
-
-/**
- * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
- * Taint should not pass through these instructions since they tend to mix up
- * unrelated objects.
- */
-private predicate isChiForAllAliasedMemory(Instruction instr) {
-  instr.(ChiInstruction).getTotal() instanceof AliasedDefinitionInstruction
-  or
-  isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
-  or
-  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
 }
 
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {

@@ -19,9 +19,7 @@ ClassValue ssl_Context_class() { result = the_ssl_module().attr("SSLContext") }
 
 private ModuleValue the_pyOpenSSL_module() { result = Value::named("pyOpenSSL.SSL") }
 
-ClassValue the_pyOpenSSL_Context_class() {
-    result = Value::named("pyOpenSSL.SSL.Context")
-}
+ClassValue the_pyOpenSSL_Context_class() { result = Value::named("pyOpenSSL.SSL.Context") }
 
 string insecure_version_name() {
     // For `pyOpenSSL.SSL`

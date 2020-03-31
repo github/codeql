@@ -20,7 +20,8 @@ predicate has_string_type(Value v) {
 }
 
 from
-    For loop, ControlFlowNode iter, Value str, Value seq, ControlFlowNode seq_origin, ControlFlowNode str_origin
+    For loop, ControlFlowNode iter, Value str, Value seq, ControlFlowNode seq_origin,
+    ControlFlowNode str_origin
 where
     loop.getIter().getAFlowNode() = iter and
     iter.pointsTo(str, str_origin) and
@@ -28,5 +29,6 @@ where
     has_string_type(str) and
     seq.getClass().isIterable() and
     not has_string_type(seq)
-select loop, "Iteration over $@, of class " + seq.getClass().getName() + ", may also iterate over $@.",
+select loop,
+    "Iteration over $@, of class " + seq.getClass().getName() + ", may also iterate over $@.",
     seq_origin, "sequence", str_origin, "string"

@@ -34,7 +34,8 @@ newtype TStepSummary =
   CallStep() or
   ReturnStep() or
   StoreStep(PropertyName prop) or
-  LoadStep(PropertyName prop)
+  LoadStep(PropertyName prop) or
+  LoadStoreStep(PropertyName prop)
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -53,6 +54,8 @@ class StepSummary extends TStepSummary {
     exists(string prop | this = StoreStep(prop) | result = "store " + prop)
     or
     exists(string prop | this = LoadStep(prop) | result = "load " + prop)
+    or
+    exists(string prop | this = LoadStoreStep(prop) | result = "in " + prop)
   }
 }
 

@@ -4,10 +4,10 @@
 	const ws = new WebSocket('ws://example.org');
 
 	ws.on('open', function open() {
-  		ws.send('Hi from client!');
+		ws.send('Hi from client!');
 	});
 
 	ws.on('message', function incoming(data) {
-  		console.log(data);
+		console.log(data);
 	});
 })();

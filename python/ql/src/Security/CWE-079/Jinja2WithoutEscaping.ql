@@ -12,7 +12,8 @@
 
 import python
 
-/* Jinja 2 Docs:
+/*
+ * Jinja 2 Docs:
  * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Environment
  * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Template
  *
@@ -24,15 +25,12 @@ import python
  */
 
 ClassValue jinja2EnvironmentOrTemplate() {
-
     result = Value::named("jinja2.Environment")
     or
     result = Value::named("jinja2.Template")
 }
 
-ControlFlowNode getAutoEscapeParameter(CallNode call) {
-    result = call.getArgByName("autoescape")
-}
+ControlFlowNode getAutoEscapeParameter(CallNode call) { result = call.getArgByName("autoescape") }
 
 from CallNode call
 where

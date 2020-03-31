@@ -1,4 +1,4 @@
-WARNING: Predicate points_to has been deprecated and may be removed in future (PointsToWithType.ql:7,7-26)
+WARNING: Predicate points_to has been deprecated and may be removed in future (PointsToWithType.ql:6,7-26)
 | a_simple.py:2 | ControlFlowNode for FloatLiteral | float 1.0 | builtin-class float | 2 |
 | a_simple.py:2 | ControlFlowNode for f1 | float 1.0 | builtin-class float | 2 |
 | a_simple.py:3 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 3 |
@@ -798,6 +798,25 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:53 | ControlFlowNode for Attribute() | 'b' | builtin-class str | 53 |
 | l_calls.py:53 | ControlFlowNode for F | class F | builtin-class type | 47 |
 | l_calls.py:53 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 |
+| l_calls.py:58 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:58 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:58 | ControlFlowNode for int | builtin-class int | builtin-class type | 58 |
+| l_calls.py:59 | ControlFlowNode for Attribute | Builtin-method bit_length | builtin-class method_descriptor | 59 |
+| l_calls.py:59 | ControlFlowNode for Attribute() | Attribute() | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for b | Attribute() | builtin-class int | 59 |
+| l_calls.py:59 | ControlFlowNode for int | builtin-class int | builtin-class type | 59 |
+| l_calls.py:62 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 62 |
+| l_calls.py:62 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
+| l_calls.py:62 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 62 |
+| l_calls.py:63 | ControlFlowNode for Attribute | Builtin-method get | builtin-class method_descriptor | 63 |
+| l_calls.py:63 | ControlFlowNode for Dict | Dict | builtin-class dict | 63 |
+| l_calls.py:63 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 63 |
+| l_calls.py:63 | ControlFlowNode for Str | 'foo' | builtin-class str | 63 |
+| l_calls.py:63 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 63 |
+| l_calls.py:64 | ControlFlowNode for a | Builtin-method bit_length | builtin-class method_descriptor | 58 |
+| l_calls.py:64 | ControlFlowNode for b | Attribute() | builtin-class int | 59 |
+| l_calls.py:64 | ControlFlowNode for c | Builtin-method get | builtin-class method_descriptor | 62 |
 | s_scopes.py:4 | ControlFlowNode for True | bool True | builtin-class bool | 4 |
 | s_scopes.py:4 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
 | s_scopes.py:7 | ControlFlowNode for C2 | class C2 | builtin-class type | 7 |

@@ -167,7 +167,8 @@ module PromiseTypeTracking {
    * Gets the result from a single step through a promise, from `pred` to `result` summarized by `summary`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
-  DataFlow::SourceNode promiseStep(DataFlow::SourceNode pred, StepSummary summary) {
+  pragma[inline]
+  DataFlow::Node promiseStep(DataFlow::Node pred, StepSummary summary) {
     exists(PromiseFlowStep step, string field | field = Promises::valueProp() |
       summary = LoadStep(field) and
       step.load(pred, result, field)
@@ -175,7 +176,7 @@ module PromiseTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = LevelStep() and
+      summary = LoadStoreStep(field) and
       step.loadStore(pred, result, field)
     )
   }
@@ -184,12 +185,12 @@ module PromiseTypeTracking {
    * Gets the result from a single step through a promise, from `pred` with tracker `t2` to `result` with tracker `t`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
+  pragma[inline]
   DataFlow::SourceNode promiseStep(
     DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2
   ) {
-    exists(StepSummary summary |
-      result = PromiseTypeTracking::promiseStep(pred, summary) and
-      t = t2.append(summary)
+    exists(DataFlow::Node mid, StepSummary summary | pred.flowsTo(mid) and t = t2.append(summary) |
+      result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
 

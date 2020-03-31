@@ -1,3 +1,4 @@
+| tst2.ts:24:21:24:25 | p: 42 | Unused property p. |
 | tst.js:4:9:4:19 | unused1: 42 | Unused property unused1. |
 | tst.js:19:5:19:15 | unused9: 42 | Unused property unused9. |
 | tst.js:26:13:26:24 | unused11: 42 | Unused property unused11. |
@@ -6,4 +7,3 @@
 | tst.js:52:3:52:14 | unused14: 42 | Unused property unused14. |
 | tst.js:54:2:54:20 | captured14.unused14 | Unused property unused14. |
 | tst.js:55:2:55:20 | captured14.unused14 | Unused property unused14. |
-| tst.ts:24:21:24:25 | p: 42 | Unused property p. |

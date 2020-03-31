@@ -1,5 +1,5 @@
 | electron.js:39:1:39:19 | foo(bw).webContents |
 | electron.js:40:1:40:19 | foo(bv).webContents |
 | electron.js:65:18:65:32 | win.webContents |
-| electron.ts:4:3:4:16 | bw.webContents |
-| electron.ts:5:3:5:16 | bv.webContents |
+| electronTs.ts:4:3:4:16 | bw.webContents |
+| electronTs.ts:5:3:5:16 | bv.webContents |

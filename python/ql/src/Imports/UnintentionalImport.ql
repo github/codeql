@@ -25,8 +25,8 @@ predicate all_defined(ModuleValue exporter) {
     exporter.getScope().getInitModule().(ImportTimeScope).definesName("__all__")
 }
 
-
 from ImportStar imp, ModuleValue exporter
 where import_star(imp, exporter) and not all_defined(exporter)
-select imp, "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
-       exporter, exporter.getName()
+select imp,
+    "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
+    exporter, exporter.getName()
