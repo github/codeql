@@ -139,3 +139,19 @@ string describeAllocationExpr(AllocationExpr e) {
 query predicate allocationExprs(AllocationExpr e, string descr) {
 	descr = concat(describeAllocationExpr(e), ", ")
 }
+
+string describeDeallocationFunction(DeallocationFunction f) {
+	result = "getFreedArg = " + f.getFreedArg().toString()
+}
+
+query predicate deallocationFunctions(DeallocationFunction f, string descr) {
+	descr = concat(describeDeallocationFunction(f), ", ")
+}
+
+string describeDeallocationExpr(DeallocationExpr e) {
+	result = "getFreedExpr = " + e.getFreedExpr().toString()
+}
+
+query predicate deallocationExprs(DeallocationExpr e, string descr) {
+	descr = concat(describeDeallocationExpr(e), ", ")
+}

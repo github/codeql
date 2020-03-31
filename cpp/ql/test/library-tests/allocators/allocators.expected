@@ -71,3 +71,17 @@ allocationExprs
 | allocators.cpp:142:13:142:27 | new[] | getSizeExpr = x, getSizeMult = 10, requiresDealloc |
 | allocators.cpp:143:13:143:28 | new[] | getSizeBytes = 400, requiresDealloc |
 | allocators.cpp:144:13:144:31 | new[] | getSizeExpr = x, getSizeMult = 900, requiresDealloc |
+deallocationFunctions
+deallocationExprs
+| allocators.cpp:59:3:59:35 | delete | getFreedExpr = 0 |
+| allocators.cpp:60:3:60:38 | delete | getFreedExpr = 0 |
+| allocators.cpp:61:3:61:44 | delete | getFreedExpr = 0 |
+| allocators.cpp:62:3:62:43 | delete | getFreedExpr = 0 |
+| allocators.cpp:63:3:63:47 | delete | getFreedExpr = 0 |
+| allocators.cpp:64:3:64:44 | delete | getFreedExpr = 0 |
+| allocators.cpp:78:3:78:37 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:79:3:79:40 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:80:3:80:46 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:81:3:81:45 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:82:3:82:49 | delete[] | getFreedExpr = 0 |
+| allocators.cpp:83:3:83:23 | delete[] | getFreedExpr = call to GetPointer |
