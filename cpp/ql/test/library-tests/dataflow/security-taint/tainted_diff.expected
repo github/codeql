@@ -14,12 +14,6 @@
 | test.cpp:100:12:100:15 | call to gets | test.cpp:100:2:100:8 | pointer | AST only |
 | test.cpp:100:17:100:22 | buffer | test.cpp:97:7:97:12 | buffer | AST only |
 | test.cpp:100:17:100:22 | buffer | test.cpp:100:17:100:22 | array to pointer conversion | IR only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:8:24:8:25 | s1 | AST only |
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:108:8:108:11 | copy | AST only |
 | test.cpp:106:28:106:33 | call to getenv | test.cpp:109:9:109:12 | copy | AST only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:6:111:27 | ! ... | AST only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:7:111:12 | call to strcmp | AST only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:7:111:27 | (bool)... | AST only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:14:111:17 | (const char *)... | AST only |
-| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:14:111:17 | copy | AST only |
