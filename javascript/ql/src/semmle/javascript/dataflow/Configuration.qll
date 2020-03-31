@@ -699,7 +699,7 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLab
 /**
  * Holds if there is an exploratory flow step `pred -> succ` in `cfg`.
  *
- * These disregard flow labels and store/load matching, but do not step
+ * These steps disregard flow labels and store/load matching, but do not step
  * in and out of functions.
  */
 predicate basicExploratoryFlowStep(
@@ -772,46 +772,48 @@ private predicate capturedVariableScope(DataFlow::Node nd, DataFlow::Node scope)
 }
 
 /**
- * Holds if `nd` may be reachable from a source under `cfg`, and `param` is the most
- * recently used parameter.
+ * Holds if `nd` may be reachable from a source under `cfg`, and `context` is
+ * - the most recently used parameter/receiver, or
+ * - the scope of a captured variable that has been used, or
+ * - `globalAccessPathRootPseudoNode`, representing an unrestricted context.
  *
  * No store/load matching is done and flow labels are ignored (effectively merged into a single label).
  */
 private predicate isRelevantForward(
-  DataFlow::Node nd, DataFlow::Configuration cfg, DataFlow::Node param
+  DataFlow::Node nd, DataFlow::Configuration cfg, DataFlow::Node context
 ) {
-  isSource(nd, cfg, _) and param = DataFlow::globalAccessPathRootPseudoNode()
+  isSource(nd, cfg, _) and context = DataFlow::globalAccessPathRootPseudoNode()
   or
   exists(DataFlow::Node mid |
-    isRelevantForward(mid, cfg, param) and
+    isRelevantForward(mid, cfg, context) and
     basicExploratoryFlowStep(mid, nd, cfg)
   )
   or
-  // Step into a function parameter, while setting the `param` to that parameter.
+  // Step into a function parameter, while setting the `context` to that parameter.
   exists(DataFlow::Node arg |
     isRelevantForward(arg, cfg, _) and
     (argumentPassing(_, arg, _, nd) or exploratoryBoundInvokeStep(arg, nd)) and
-    param = nd
+    context = nd
   )
   or
   // Step through a return if the originating parameter is within the shared environment
   // of caller and callee (or if no calls have been seen).
   exists(DataFlow::Node ret, Function f |
-    isRelevantForward(ret, cfg, param) and
+    isRelevantForward(ret, cfg, context) and
     returnStep(ret, nd, _, f) and
-    getContainerDepthFromInputNode(param) < f.getContainerDepth()
+    getContainerDepthFromInputNode(context) < f.getContainerDepth()
   )
   or
   // Step through a summarized function.
   exists(DataFlow::Node mid |
-    isRelevantForward(mid, cfg, param) and
+    isRelevantForward(mid, cfg, context) and
     exploratoryFlowThroughFunction(mid, nd, cfg)
   )
   or
-  // When reaching a captured variable, switch `param` to the scope declaring that variable.
+  // When reaching a captured variable, switch `context` to the scope declaring that variable.
   // This means we we can freely step out to any caller that has the captured variable in scope.
   isRelevantForward(nd, cfg, _) and
-  capturedVariableScope(nd, param)
+  capturedVariableScope(nd, context)
 }
 
 /**
