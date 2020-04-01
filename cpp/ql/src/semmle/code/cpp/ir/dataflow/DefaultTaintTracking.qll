@@ -348,6 +348,16 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+/**
+ * Holds if `tainted` may contain taint from `source`.
+ *
+ * A tainted expression is either directly user input, or is
+ * computed from user input in a way that users can probably
+ * control the exact output of the computation.
+ *
+ * This doesn't include data flow through global variables.
+ * If you need that you must call `taintedIncludingGlobalVars`.
+ */
 cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
@@ -356,6 +366,21 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
+/**
+ * Holds if `tainted` may contain taint from `source`, where the taint passed
+ * through a global variable named `globalVar`.
+ *
+ * A tainted expression is either directly user input, or is
+ * computed from user input in a way that users can probably
+ * control the exact output of the computation.
+ *
+ * This version gives the same results as tainted but also includes
+ * data flow through global variables.
+ *
+ * The parameter `globalVar` is the qualified name of the last global variable
+ * used to move the value from source to tainted. If the taint did not pass
+ * through a global variable, then `globalVar = ""`.
+ */
 cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
@@ -373,8 +398,19 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
   )
 }
 
+/**
+ * Gets the global variable whose qualified name is `id`. Use this predicate
+ * together with `taintedIncludingGlobalVars`.
+ */
 GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
 
+/**
+ * Resolve potential target function(s) for `call`.
+ *
+ * If `call` is a call through a function pointer (`ExprCall`) or
+ * targets a virtual method, simple data flow analysis is performed
+ * in order to identify target(s).
+ */
 Function resolveCall(Call call) {
   exists(CallInstruction callInstruction |
     callInstruction.getAST() = call and
