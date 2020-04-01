@@ -19,15 +19,19 @@ class ConstantZero extends Expr {
  * Holds if `candidate` is an expression such that if it's unsigned then we
  * want an alert at `ge`.
  */
-private predicate lookForUnsignedAt(GEExpr ge, Expr candidate) {
-  // Base case: `candidate >= 0`
-  ge.getRightOperand() instanceof ConstantZero and
-  candidate = ge.getLeftOperand().getFullyConverted() and
-  // left operand was a signed or unsigned IntegralType before conversions
+private predicate lookForUnsignedAt(RelationalOperation ge, Expr candidate) {
+  // Base case: `candidate >= 0` (or `0 <= candidate`)
+  (
+    ge instanceof GEExpr or
+    ge instanceof LEExpr
+  ) and
+  ge.getLesserOperand() instanceof ConstantZero and
+  candidate = ge.getGreaterOperand().getFullyConverted() and
+  // left/greater operand was a signed or unsigned IntegralType before conversions
   // (not a pointer, checking a pointer >= 0 is an entirely different mistake)
   // (not an enum, as the fully converted type of an enum is compiler dependent
   //  so checking an enum >= 0 is always reasonable)
-  ge.getLeftOperand().getUnderlyingType() instanceof IntegralType
+  ge.getGreaterOperand().getUnderlyingType() instanceof IntegralType
   or
   // Recursive case: `...(largerType)candidate >= 0`
   exists(Conversion conversion |
@@ -37,7 +41,7 @@ private predicate lookForUnsignedAt(GEExpr ge, Expr candidate) {
   )
 }
 
-class UnsignedGEZero extends GEExpr {
+class UnsignedGEZero extends ComparisonOperation {
   UnsignedGEZero() {
     exists(Expr ue |
       lookForUnsignedAt(this, ue) and

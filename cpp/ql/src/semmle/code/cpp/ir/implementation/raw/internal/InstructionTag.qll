@@ -8,6 +8,11 @@ newtype TInstructionTag =
   InitializerStoreTag() or
   InitializerIndirectAddressTag() or
   InitializerIndirectStoreTag() or
+  DynamicInitializationFlagAddressTag() or
+  DynamicInitializationFlagLoadTag() or
+  DynamicInitializationConditionalBranchTag() or
+  DynamicInitializationFlagConstantTag() or
+  DynamicInitializationFlagStoreTag() or
   ZeroPadStringConstantTag() or
   ZeroPadStringElementIndexTag() or
   ZeroPadStringElementAddressTag() or
@@ -59,6 +64,13 @@ newtype TInstructionTag =
   InitializerElementAddressTag() or
   InitializerElementDefaultValueTag() or
   InitializerElementDefaultValueStoreTag() or
+  VarArgsStartEllipsisAddressTag() or
+  VarArgsStartTag() or
+  VarArgsVAListLoadTag() or
+  VarArgsArgAddressTag() or
+  VarArgsArgLoadTag() or
+  VarArgsMoveNextTag() or
+  VarArgsVAListStoreTag() or
   AsmTag() or
   AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) }
 
@@ -183,7 +195,31 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = InitializerElementDefaultValueStoreTag() and result = "InitElemDefValStore"
   or
+  tag = VarArgsStartEllipsisAddressTag() and result = "VarArgsStartEllipsisAddr"
+  or
+  tag = VarArgsStartTag() and result = "VarArgsStart"
+  or
+  tag = VarArgsVAListLoadTag() and result = "VarArgsVAListLoad"
+  or
+  tag = VarArgsArgAddressTag() and result = "VarArgsArgAddr"
+  or
+  tag = VarArgsArgLoadTag() and result = "VaArgsArgLoad"
+  or
+  tag = VarArgsMoveNextTag() and result = "VarArgsMoveNext"
+  or
+  tag = VarArgsVAListStoreTag() and result = "VarArgsVAListStore"
+  or
   tag = AsmTag() and result = "Asm"
   or
   exists(int index | tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")")
+  or
+  tag = DynamicInitializationFlagAddressTag() and result = "DynInitFlagAddr"
+  or
+  tag = DynamicInitializationFlagLoadTag() and result = "DynInitFlagLoad"
+  or
+  tag = DynamicInitializationConditionalBranchTag() and result = "DynInitCondBranch"
+  or
+  tag = DynamicInitializationFlagConstantTag() and result = "DynInitFlagConst"
+  or
+  tag = DynamicInitializationFlagStoreTag() and result = "DynInitFlagStore"
 }

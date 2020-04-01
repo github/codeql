@@ -21,7 +21,8 @@ private string commonTopLevelDomainRegex() { result = "com|org|edu|gov|uk|net|io
  */
 bindingset[pattern]
 predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
-    hostPart = pattern
+    hostPart =
+        pattern
                 .regexpCapture("(?i).*" +
                         // an unescaped single `.`
                         "(?<!\\\\)[.]" +

@@ -441,10 +441,9 @@ private Node getControlOrderChildSparse(Node n, int i) {
  * thus should not have control flow computed.
  */
 private predicate skipInitializer(Initializer init) {
-  exists(LocalVariable local |
+  exists(StaticLocalVariable local |
     init = local.getInitializer() and
-    local.isStatic() and
-    not runtimeExprInStaticInitializer(init.getExpr())
+    not local.hasDynamicInitialization()
   )
 }
 

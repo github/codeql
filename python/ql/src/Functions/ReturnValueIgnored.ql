@@ -28,7 +28,9 @@ predicate meaningful_return_value(Expr val) {
 
 /* Value is used before returning, and thus its value is not lost if ignored */
 predicate used_value(Expr val) {
-    exists(LocalVariable var, Expr other | var.getAnAccess() = val and other = var.getAnAccess() and not other = val)
+    exists(LocalVariable var, Expr other |
+        var.getAnAccess() = val and other = var.getAnAccess() and not other = val
+    )
 }
 
 predicate returns_meaningful_value(FunctionValue f) { 

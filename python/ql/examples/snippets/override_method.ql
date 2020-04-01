@@ -5,7 +5,7 @@
  * @tags method
  *       override
  */
- 
+
 import python
 
 from FunctionObject override, FunctionObject base

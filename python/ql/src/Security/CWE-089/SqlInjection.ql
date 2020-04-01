@@ -30,10 +30,12 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
 }
 
-/* Additional configuration to support tracking of DB objects. Connections, cursors, etc.
+/*
+ * Additional configuration to support tracking of DB objects. Connections, cursors, etc.
  * Without this configuration (or the LegacyConfiguration), the pattern of
  * `any(MyTaintKind k).taints(control_flow_node)` used in DbConnectionExecuteArgument would not work.
  */
+
 class DbConfiguration extends TaintTracking::Configuration {
     DbConfiguration() { this = "DB configuration" }
 

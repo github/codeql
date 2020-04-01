@@ -1,4 +1,3 @@
-
 import python
 
 predicate of_interest(ControlFlowNode n, int line) {
@@ -6,7 +5,7 @@ predicate of_interest(ControlFlowNode n, int line) {
         line = l.getStartLine() and
         f = l.getFile() and
         f.getName().matches("%test.py%") and
-        exists(Comment c | 
+        exists(Comment c |
             c.getLocation().getStartLine() < line and
             c.getLocation().getFile() = f
         )
