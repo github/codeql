@@ -74,7 +74,7 @@ abstract class Call extends Expr, NameQualifiableElement {
    */
   abstract Function getTarget();
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 
   override string toString() { none() }
 

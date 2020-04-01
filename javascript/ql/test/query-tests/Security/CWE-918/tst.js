@@ -60,6 +60,10 @@ var server = http.createServer(async function(req, res) {
     var client = await CDP(options);
 	client.Page.navigate({url: tainted}); // NOT OK.
 	
+	CDP(options).catch((ignored) => {}).then((client) => {
+		client.Page.navigate({url: tainted}); // NOT OK.	
+	})
+	
 	CDP(options, (client) => {
 		client.Page.navigate({url: tainted}); // NOT OK.	
 	});
