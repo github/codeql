@@ -37,3 +37,16 @@ async function foo() {
 
   var files2 = await fastGlob.async(_).catch((wat) => {});
 }
+
+var globule = require('globule');
+var filepaths = globule.find('**/*.js');
+var matches = globule.match('**/*.js', ["foo.js"])
+var bool = globule.isMatch('**/*.js', ["foo.js"])
+var map1 = globule.findMapping("foo/*.js")
+var map2 = globule.mapping({src: ["a.js", "b.js"]})
+var map3 = globule.mapping(["foo/a.js", "foo/b.js"])
+
+async function bar() {
+  var foo = globby(_);
+  var files = await foo;
+}

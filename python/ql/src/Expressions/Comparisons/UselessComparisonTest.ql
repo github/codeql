@@ -15,16 +15,19 @@
 import python
 import semmle.python.Comparisons
 
-/* Holds if the comparison `comp` is of the complex form `a op b op c` and not of
+/*
+ * Holds if the comparison `comp` is of the complex form `a op b op c` and not of
  * the simple form `a op b`.
  */
+
 private predicate is_complex(Expr comp) {
     exists(comp.(Compare).getOp(1))
     or
     is_complex(comp.(UnaryExpr).getOperand())
 }
 
-/** A test is useless if for every block that it controls there is another test that is at least as
+/**
+ * A test is useless if for every block that it controls there is another test that is at least as
  * strict and also controls that block.
  */
 private predicate useless_test(Comparison comp, ComparisonControlBlock controls, boolean isTrue) {
@@ -34,17 +37,15 @@ private predicate useless_test(Comparison comp, ComparisonControlBlock controls,
 }
 
 private predicate useless_test_ast(AstNode comp, AstNode previous, boolean isTrue) {
-    forex(Comparison compnode, ConditionBlock block| 
+    forex(Comparison compnode, ConditionBlock block |
         compnode.getNode() = comp and
         block.getLastNode().getNode() = previous
-        |
+    |
         useless_test(compnode, block, isTrue)
     )
 }
 
 from Expr test, Expr other, boolean isTrue
-where 
-useless_test_ast(test, other, isTrue) and not useless_test_ast(test.getAChildNode+(), other, _)
-
-
+where
+    useless_test_ast(test, other, isTrue) and not useless_test_ast(test.getAChildNode+(), other, _)
 select test, "Test is always " + isTrue + ", because of $@", other, "this condition"

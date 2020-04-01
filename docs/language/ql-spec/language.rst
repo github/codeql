@@ -1058,6 +1058,7 @@ An aggregation can be written in one of two forms:
 
    aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
+               |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
 
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
@@ -1098,7 +1099,7 @@ The typing environment for ordering directives is obtained by taking the typing 
 
 The number and types of the aggregation expressions are restricted as follows:
 
--  A ``max``, ``min`` or ``rank`` aggregation must have a single expression.
+-  A ``max``, ``min``, ``rank`` or ``unique`` aggregation must have a single expression.
 -  The type of the expression in a ``max``, ``min`` or ``rank`` aggregation without an ordering directive expression must be an orderable type.
 -  A ``count`` or ``strictcount`` aggregation must not have an expression.
 -  A ``sum``, ``strictsum`` or ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
@@ -1140,6 +1141,8 @@ The values of the aggregation expression are given by applying the aggregation f
 
 -  If the aggregation id is ``strictconcat``, then the result is the same as for ``concat`` except in the case where there are no aggregation tuples in which case the aggregation has no value.
 
+ -  If the aggregation id is ``unique``, then the result is the value of the aggregation variable if there is precisely one such value. Otherwise, the aggregation has no value.
+
 Any
 ~~~
 
@@ -1167,6 +1170,21 @@ Both expressions must be subtypes of ``int``, ``float``, or ``date``. If either 
 If both expressions are subtypes of ``int`` then the type of the range is ``int``. If both expressions are subtypes of ``date`` then the type of the range is ``date``. Otherwise the type of the range is ``float``.
 
 The values of a range expression are those values which are ordered inclusively between a value of the first expression and a value of the second expression.
+
+Set literals
+~~~~~~~~~~~~
+
+Set literals denote a choice from a collection of values.
+
+::
+
+   setliteral ::= "[" expr ("," expr)* "]"
+
+Set literals can be of any type, but the types within a set literal have to be consistent according to the following criterion: At least one of the set elements has to be of a type that is a supertype of all the set element types. This supertype is the type of the set literal. For example, ``float`` is a supertype of ``float`` and ``int``, therefore ``x = [4, 5.6]`` is valid. On the other hand, ``y = [5, "test"]`` does not adhere to the criterion.
+
+The values of a set literal expression are all the values of all the contained element expressions.
+
+Set literals are supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
 Disambiguation of expressions
 -----------------------------
@@ -1934,6 +1952,7 @@ The complete grammar for QL is as follows:
            |   aggregation
            |   any
            |   range
+           |   setliteral
 
    eparen ::= "(" expr ")"
 
@@ -1960,7 +1979,8 @@ The complete grammar for QL is as follows:
 
    aggregation ::= aggid ("[" expr "]")? "(" (var_decls)? ("|" (formula)? ("|" as_exprs ("order" "by" aggorderbys)?)?)? ")"
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
-
+               |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
+ 
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
    aggorderbys ::= aggorderby ("," aggorderby)*
@@ -1973,6 +1993,8 @@ The complete grammar for QL is as follows:
                    |   primary "." predicateName (closure)? "(" (exprs)? ")"
                    
    range ::= "[" expr ".." expr "]"
+   
+   setliteral ::= "[" expr ("," expr)* "]"
 
    simpleId ::= lowerId | upperId
 

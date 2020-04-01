@@ -1,3 +1,4 @@
+"""test of views for Django 1.x"""
 from django.conf.urls import patterns, url
 from django.http.response import HttpResponse
 from django.views.generic import View
@@ -15,16 +16,22 @@ def post_params_xss(request):
     return HttpResponse(request.POST.get("untrusted"))
 
 
+def http_resp_write(request):
+    rsp = HttpResponse()
+    rsp.write(request.GET.get("untrusted"))
+    return rsp
+
+
 class Foo(object):
     # Note: since Foo is used as the super type in a class view, it will be able to handle requests.
 
-    # TODO: Currently we don't flag `untrusted` as a DjangoRequestParameter
+
     def post(self, request, untrusted):
         return HttpResponse('Foo post: {}'.format(untrusted))
 
 
 class ClassView(View, Foo):
-    # TODO: Currently we don't flag `untrusted` as a DjangoRequestParameter
+
     def get(self, request, untrusted):
         return HttpResponse('ClassView get: {}'.format(untrusted))
 
@@ -42,6 +49,7 @@ urlpatterns = [
     url(r'^url_match/(?P<foo>[^/]+)/(?P<bar>[^/]+)$', url_match_xss),
     url(r'^get_params$', get_params_xss),
     url(r'^post_params$', post_params_xss),
+    url(r'^http_resp_write$', http_resp_write),
     url(r'^class_view/(?P<untrusted>.+)$', ClassView.as_view()),
 
     # one pattern to support `articles/page-<n>` and ensuring that articles/ goes to page-1
@@ -51,22 +59,21 @@ urlpatterns = [
     url(r'^([^/]+)/(?:foo|bar)/([^/]+)$', xxs_positional_arg, name='xxs_positional_arg'),
 ]
 
-
+################################################################################
 # Using patterns() for routing
 
 def show_user(request, username):
-    pass
+    return HttpResponse('show_user {}'.format(username))
 
 
 urlpatterns = patterns(url(r'^users/(?P<username>[^/]+)$', show_user))
 
-
+################################################################################
 # Show we understand the keyword arguments to django.conf.urls.url
 
-def we_understand_url_kwargs(request):
-    pass
-
+def kw_args(request):
+    return HttpResponse('kw_args')
 
 urlpatterns = [
-    url(view=we_understand_url_kwargs, regex=r'^specifying-as-kwargs-is-not-a-problem$')
+    url(view=kw_args, regex=r'^kw_args$')
 ]

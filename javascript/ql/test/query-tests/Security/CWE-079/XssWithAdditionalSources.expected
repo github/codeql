@@ -333,6 +333,14 @@ nodes
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
+| tst.js:330:18:330:34 | document.location |
+| tst.js:330:18:330:34 | document.location |
+| tst.js:336:18:336:35 | params.get('name') |
+| tst.js:336:18:336:35 | params.get('name') |
+| tst.js:347:20:347:36 | document.location |
+| tst.js:347:20:347:36 | document.location |
+| tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -525,6 +533,7 @@ edges
 | tst.js:73:3:73:19 | document.location | tst.js:73:3:73:26 | documen ... .search |
 | tst.js:73:3:73:19 | document.location | tst.js:73:3:73:26 | documen ... .search |
 | tst.js:73:3:73:26 | documen ... .search | tst.js:73:1:73:27 | [,docum ... search] |
+| tst.js:73:3:73:26 | documen ... .search | tst.js:73:46:73:46 | x |
 | tst.js:73:46:73:46 | x | tst.js:76:20:76:20 | x |
 | tst.js:73:46:73:46 | x | tst.js:76:20:76:20 | x |
 | tst.js:80:49:80:65 | document.location | tst.js:80:49:80:72 | documen ... .search |
@@ -646,6 +655,14 @@ edges
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

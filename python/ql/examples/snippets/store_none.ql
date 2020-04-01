@@ -8,11 +8,11 @@
  *       collection
  *       add
  */
- 
+
 import python
 
 from SubscriptNode store
-where 
+where
     store.isStore() and
     store.getIndex().pointsTo(Value::named("None"))
 select store
