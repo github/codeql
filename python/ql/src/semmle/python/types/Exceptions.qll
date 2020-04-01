@@ -118,6 +118,7 @@ class RaisingNode extends ControlFlowNode {
     )
   }
 
+  /** Holds if this is an innate exception (AttributeError, NameError, IndexError, or KeyError). */
   pragma[noinline]
   ClassObject innateException_objectapi() {
     this.getNode() instanceof Attribute and result = theAttributeErrorType()
@@ -129,6 +130,7 @@ class RaisingNode extends ControlFlowNode {
     this.getNode() instanceof Subscript and result = theKeyErrorType()
   }
 
+  /** Holds if this is an innate exception (AttributeError, NameError, IndexError, or KeyError). */
   pragma[noinline]
   ClassValue innateException() {
     this.getNode() instanceof Attribute and result = ClassValue::attributeError()
