@@ -289,7 +289,7 @@ func main() {
 
 		if !buildSucceeded {
 			if hasVendor {
-				log.Printf("Skipping depedency installation because a Go vendor directory was found.")
+				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {
 				// automatically determine command to install dependencies
 				if depMode == Dep {
@@ -388,13 +388,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to determine current directory: %s\n", err.Error())
 	}
-	log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
 
 	var cmd *exec.Cmd
 	// check for `vendor/modules.txt` and not just `vendor` in order to distinguish non-go vendor dirs
 	if depMode == GoGetWithModules && hasVendor {
+		log.Printf("Running extractor command '%s -mod=vendor ./...' from directory '%s'.\n", extractor, cwd)
 		cmd = exec.Command(extractor, "-mod=vendor", "./...")
 	} else {
+		log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
 		cmd = exec.Command(extractor, "./...")
 	}
 	cmd.Stdout = os.Stdout
