@@ -32,7 +32,7 @@ To determine ancestor types (including immediate super types, and also *their* s
    where B.hasName("B")
    select B.getASupertype+()
 
-➤ `See this in the query console <https://lgtm.com/query/674620010/>`__. If this query were run on the example snippet above, the query would return ``A``, ``I``, and ``java.lang.Object``.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/674620010/>`__. If this query were run on the example snippet above, the query would return ``A``, ``I``, and ``java.lang.Object``.
 
 .. pull-quote::
 
@@ -78,7 +78,7 @@ This recipe is not too difficult to translate into a query:
        target.getElementType().(RefType).getASupertype+() = source.getElementType()
    select ce, "Potentially problematic array downcast."
 
-➤ `See this in the query console <https://lgtm.com/query/666680038/>`__. Many projects return results for this query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666680038/>`__. Many projects return results for this query.
 
 Note that by casting ``target.getElementType()`` to a ``RefType``, we eliminate all cases where the element type is a primitive type, that is, ``target`` is an array of primitive type: the problem we are looking for cannot arise in that case. Unlike in Java, a cast in QL never fails: if an expression cannot be cast to the desired type, it is simply excluded from the query results, which is exactly what we want.
 
@@ -141,7 +141,7 @@ Using these new classes we can extend our query to exclude calls to ``toArray`` 
        not ce.getExpr().(CollectionToArrayCall).getActualReturnType() = target
    select ce, "Potentially problematic array downcast."
 
-➤ `See this in the query console <https://lgtm.com/query/668700471/>`__. Notice that fewer results are found by this improved query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668700471/>`__. Notice that fewer results are found by this improved query.
 
 Example: Finding mismatched contains checks
 -------------------------------------------
@@ -267,7 +267,7 @@ Now we are ready to write a first version of our query:
        not haveCommonDescendant(collEltType, argType)
    select juccc, "Element type " + collEltType + " is incompatible with argument type " + argType
 
-➤ `See this in the query console <https://lgtm.com/query/1505750556420/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505750556420/>`__.
 
 Improvements
 ~~~~~~~~~~~~
@@ -294,7 +294,7 @@ Adding these three improvements, our final query becomes:
        not argType.hasName("<nulltype>")
    select juccc, "Element type " + collEltType + " is incompatible with argument type " + argType
 
-➤ `See the full query in the query console <https://lgtm.com/query/1505753056300/>`__.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1505753056300/>`__.
 
 Further reading
 ---------------

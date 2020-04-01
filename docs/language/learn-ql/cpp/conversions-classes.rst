@@ -163,7 +163,7 @@ Our starting point for the query is pairs of a base class and a derived class, c
    where derived.getABaseClass+() = base
    select base, derived, "The second class is derived from the first."
 
-➤ `See this in the query console <https://lgtm.com/query/1505902347211/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505902347211/>`__
 
 Note that the transitive closure symbol ``+`` indicates that ``Class.getABaseClass()`` may be followed one or more times, rather than only accepting a direct base class.
 
@@ -175,7 +175,7 @@ A lot of the results are uninteresting template parameters. You can remove those
      and not exists(base.getATemplateArgument())
      and not exists(derived.getATemplateArgument())
 
-➤ `See this in the query console <https://lgtm.com/query/1505907047251/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505907047251/>`__
 
 Finding derived classes with destructors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -194,7 +194,7 @@ Now we can extend the query to find derived classes with destructors, using the 
      and d2 = derived.getDestructor()
    select base, derived, "The second class is derived from the first, and both have a destructor."
 
-➤ `See this in the query console <https://lgtm.com/query/1505901767389/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505901767389/>`__
 
 Notice that getting the destructor implicitly asserts that one exists. As a result, this version of the query returns fewer results than before.
 
@@ -214,7 +214,7 @@ Our last change is to use ``Function.isVirtual()`` to find cases where the base 
      and not d1.isVirtual()
    select d1, "This destructor should probably be virtual."
 
-➤ `See this in the query console <https://lgtm.com/query/1505908156827/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505908156827/>`__
 
 That completes the query.
 
@@ -227,4 +227,4 @@ Further reading
 -  Take a look at the :doc:`Analyzing data flow in C and C++ <dataflow>` tutorial.
 -  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>`, and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

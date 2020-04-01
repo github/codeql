@@ -1124,4 +1124,4 @@ Further reading
 
 -  Visit :doc:`Analyzing data flow in C# <dataflow>` to learn more about writing queries using the standard data flow and taint tracking libraries.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

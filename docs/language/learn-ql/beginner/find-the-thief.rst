@@ -46,7 +46,7 @@ You start asking some creative questions and making notes of the answers so you 
 
 There is too much information to search through by hand, so you decide to use your newly acquired QL skills to help you with your investigation...
 
-#. Open the `query console <https://lgtm.com/query>`__ to get started.
+#. Open the `query console on LGTM.com <https://lgtm.com/query>`__ to get started.
 #. Select a language and a demo project. For this tutorial, any language and project will do.
 #. Delete the default code ``import <language> select "hello world"``.
 
@@ -205,7 +205,7 @@ Hints
 
 Once you have finished, you will have a list of possible suspects. One of those people must be the thief!
 
-➤ `See the answer in the query console <https://lgtm.com/query/1505743955992/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1505743955992/>`__
 
 .. pull-quote::
 
@@ -287,7 +287,7 @@ You can now translate the remaining questions into QL:
 
 Have you found the thief?
 
-➤ `See the answer in the query console <https://lgtm.com/query/1505744186085/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1505744186085/>`__
 
 What next?
 ----------

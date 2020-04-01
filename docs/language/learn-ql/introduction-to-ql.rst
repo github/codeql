@@ -16,7 +16,7 @@ Basic syntax
 
 The basic syntax of QL will look familiar to anyone who has used SQL, but it is used somewhat differently.
 
-A query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
+A query is defined by a **select** clause, which specifies what the result of the query should be. You can try out the examples and exercises in this topic directly in LGTM. Open the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query, you need to select a language and project to query (for these logic examples, any language and project will do).
 
 Once you have selected a language, the query console is populated with the query:
 
@@ -97,7 +97,7 @@ The exercises above all show queries with exactly one result, but in fact many q
          x*x + y*y = z*z
    select x, y, z
 
-➤ `See this in the query console <https://lgtm.com/query/2100790036/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2100790036/>`__
 
 To simplify the query, we can introduce a class ``SmallInt`` representing the integers between 1 and 10. We can also define a predicate ``square()`` on integers in that class. Defining classes and predicates in this way makes it easy to reuse code without having to repeat it every time.
 
@@ -112,7 +112,7 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
    where x.square() + y.square() = z.square()
    select x, y, z
 
-➤ `See this in the query console <https://lgtm.com/query/2101340747/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2101340747/>`__
 
 Now that you've seen some general examples, let's use the CodeQL libraries to analyze projects.
 In particular, LGTM generates a database representing the code and then CodeQL is used to query this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
@@ -132,7 +132,7 @@ Python
    where count(f.getAnArg()) > 7
    select f
 
-➤ `See this in the query console <https://lgtm.com/query/2096810474/>`__. The ``from`` clause defines a variable ``f`` representing a function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2096810474/>`__. The ``from`` clause defines a variable ``f`` representing a function. The ``where`` part limits the functions ``f`` to those with more than 7 arguments. Finally, the ``select`` clause lists these functions.
 
 JavaScript
 ~~~~~~~~~~
@@ -145,7 +145,7 @@ JavaScript
    where c.getText().regexpMatch("(?si).*\\bTODO\\b.*")
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/2101530483/>`__. The ``from`` clause defines a variable ``c`` representing a comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2101530483/>`__. The ``from`` clause defines a variable ``c`` representing a comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
 
 Java
 ~~~~
@@ -158,7 +158,7 @@ Java
    where not exists(p.getAnAccess())
    select p
 
-➤ `See this in the query console <https://lgtm.com/query/2098670762/>`__. The ``from`` clause defines a variable ``p`` representing a parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2098670762/>`__. The ``from`` clause defines a variable ``p`` representing a parameter. The ``where`` clause finds unused parameters by limiting the parameters ``p`` to those which are not accessed. Finally, the ``select`` clause lists these parameters.
 
 Learning CodeQL
 ---------------

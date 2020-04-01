@@ -47,7 +47,7 @@ All scopes are basically a list of statements, although ``Scope`` classes have a
    where f.getScope() instanceof Function
    select f
 
-➤ `See this in the query console <https://lgtm.com/query/665620040/>`__. Many projects have nested functions.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665620040/>`__. Many projects have nested functions.
 
 Statement
 ^^^^^^^^^
@@ -89,7 +89,7 @@ As an example, to find expressions of the form ``a+2`` where the left is a simpl
    where bin.getLeft() instanceof Name and bin.getRight() instanceof Num
    select bin
 
-➤ `See this in the query console <https://lgtm.com/query/669950026/>`__. Many projects include examples of this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669950026/>`__. Many projects include examples of this pattern.
 
 Variable
 ^^^^^^^^
@@ -120,7 +120,7 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
    from Try t
    select t.getFinalbody()
 
-➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
 2. Finding ``except`` blocks that do nothing
 ''''''''''''''''''''''''''''''''''''''''''''
@@ -151,7 +151,7 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
    where forall(Stmt s | s = ex.getAStmt() | s instanceof Pass)
    select ex
 
-➤ `See this in the query console <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
 
 Summary
 ^^^^^^^
@@ -272,7 +272,7 @@ Using this predicate we can select the longest ``BasicBlock`` by selecting the `
    where bb_length(b) = max(bb_length(_))
    select b
 
-➤ `See this in the query console <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
 
 .. pull-quote::
 
@@ -309,7 +309,7 @@ For example, which ``ClassValue``\ s are iterable can be determined using the qu
    where cls.hasAttribute("__iter__")
    select cls
 
-➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <http://docs.python.org/library/stdtypes.html>`__ in the Python documentation.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <http://docs.python.org/library/stdtypes.html>`__ in the Python documentation.
 
 Summary
 ^^^^^^^
