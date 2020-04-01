@@ -13,3 +13,6 @@
 | 25 | 1 | ControlFlowNode for z | Function C.n |
 | 33 | 0 | ControlFlowNode for IntegerLiteral | Function D.foo |
 | 34 | 0 | ControlFlowNode for IntegerLiteral | Function D.foo |
+| 37 | 0 | ControlFlowNode for l | builtin method append |
+| 37 | 1 | ControlFlowNode for IntegerLiteral | builtin method append |
+| 38 | 0 | ControlFlowNode for l | Builtin-function len |
