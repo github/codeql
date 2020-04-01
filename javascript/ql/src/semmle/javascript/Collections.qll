@@ -9,6 +9,22 @@ private import semmle.javascript.dataflow.internal.StepSummary
 private import DataFlow::PseudoProperties
 
 /**
+ * A pseudo-property used in a data-flow/type-tracking step for collections.
+ *
+ * By extending `TypeTrackingPseudoProperty` the class enables the use of the collection related pseudo-properties in type-tracking predicates.
+ */
+private class PseudoProperty extends TypeTrackingPseudoProperty {
+  PseudoProperty() {
+    this = [arrayLikeElement(), "1"] or // the "1" is required for the `ForOfStep`.
+    this = any(CollectionDataFlow::MapSet step).getAPseudoProperty()
+  }
+
+  override PseudoProperty getLoadStoreToProp() {
+    exists(CollectionFlowStep step | step.loadStore(_, _, this, result))
+  }
+}
+
+/**
  * An `AdditionalFlowStep` used to model a data-flow step related to standard library collections.
  *
  * The `loadStep`/`storeStep`/`loadStoreStep` methods are overloaded such that the new predicates
@@ -27,7 +43,7 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
    */
-  predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate load(DataFlow::Node pred, DataFlow::Node succ, PseudoProperty prop) { none() }
 
   final override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.load(pred, succ, prop)
@@ -36,7 +52,7 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate store(DataFlow::Node pred, DataFlow::Node succ, PseudoProperty prop) { none() }
 
   final override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.store(pred, succ, prop)
@@ -45,7 +61,7 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
    */
-  predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, PseudoProperty prop) { none() }
 
   final override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.loadStore(pred, succ, prop, prop)
@@ -54,7 +70,9 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
    */
-  predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp) {
+  predicate loadStore(
+    DataFlow::Node pred, DataFlow::Node succ, PseudoProperty loadProp, PseudoProperty storeProp
+  ) {
     none()
   }
 
@@ -79,7 +97,7 @@ module CollectionsTypeTracking {
    */
   pragma[inline]
   DataFlow::SourceNode collectionStep(DataFlow::Node pred, StepSummary summary) {
-    exists(CollectionFlowStep step, string field |
+    exists(CollectionFlowStep step, PseudoProperty field |
       summary = LoadStep(field) and
       step.load(pred, result, field) and
       not (
@@ -93,7 +111,7 @@ module CollectionsTypeTracking {
       summary = CopyStep(field) and
       step.loadStore(pred, result, field)
       or
-      exists(string toField | summary = LoadStoreStep(field, toField) |
+      exists(PseudoProperty toField | summary = LoadStoreStep(field, toField) |
         step.loadStore(pred, result, field, toField)
       )
     )
@@ -110,20 +128,6 @@ module CollectionsTypeTracking {
       result = collectionStep(mid, summary)
     )
   }
-
-  /**
-   * A class enabling the use of the collection related pseudo-properties in type-tracking predicates.
-   */
-  private class MapRelatedPseudoFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
-    MapRelatedPseudoFieldAsTypeTrackingProperty() {
-      this = [setElement(), iteratorElement()] or
-      any(CollectionFlowStep step).store(_, _, this)
-    }
-
-    override string getLoadStoreToProp() {
-      exists(CollectionFlowStep step | step.loadStore(_, _, this, result))
-    }
-  }
 }
 
 /**
@@ -136,7 +140,7 @@ private module CollectionDataFlow {
   private class SetAdd extends CollectionFlowStep, DataFlow::MethodCallNode {
     SetAdd() { this.getMethodName() = "add" }
 
-    override predicate store(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
       obj = this.getReceiver().getALocalSource() and
       element = this.getArgument(0) and
       prop = setElement()
@@ -150,7 +154,7 @@ private module CollectionDataFlow {
     SetConstructor() { this = DataFlow::globalVarRef("Set").getAnInstantiation() }
 
     override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
     ) {
       pred = this.getArgument(0) and
       succ = this and
@@ -176,14 +180,14 @@ private module CollectionDataFlow {
       element = DataFlow::lvalueNode(forOf.getLValue())
     }
 
-    override predicate load(DataFlow::Node obj, DataFlow::Node e, string prop) {
+    override predicate load(DataFlow::Node obj, DataFlow::Node e, PseudoProperty prop) {
       obj = this and
       e = element and
       prop = arrayLikeElement()
     }
 
     override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
     ) {
       pred = this and
       succ = element and
@@ -198,7 +202,7 @@ private module CollectionDataFlow {
   private class SetMapForEach extends CollectionFlowStep, DataFlow::MethodCallNode {
     SetMapForEach() { this.getMethodName() = "forEach" }
 
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, string prop) {
+    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
       obj = this.getReceiver() and
       element = this.getCallback(0).getParameter(0) and
       prop = [setElement(), mapValueUnknownKey()]
@@ -207,12 +211,12 @@ private module CollectionDataFlow {
 
   /**
    * A call to the `get` method on a Map.
-   * If the key of the call to `get` has a known string value, then only the value corresponding to that key will be retrieved.
+   * If the key of the call to `get` has a known string value, then only the value corresponding to that key will be retrieved. (The known string value is encoded as part of the pseudo-property)
    */
   private class MapGet extends CollectionFlowStep, DataFlow::MethodCallNode {
     MapGet() { this.getMethodName() = "get" }
 
-    override predicate load(DataFlow::Node obj, DataFlow::Node element, string prop) {
+    override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
       obj = this.getReceiver() and
       element = this and
       prop = mapValue(this.getArgument(0))
@@ -228,15 +232,23 @@ private module CollectionDataFlow {
    * then the value will be saved into a pseudo-property corresponding to the known string value.
    * The value will additionally be saved into a pseudo-property corresponding to values with unknown keys.
    */
-  private class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
+  class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
     MapSet() { this.getMethodName() = "set" }
 
-    override predicate store(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
       obj = this.getReceiver().getALocalSource() and
       element = this.getArgument(1) and
-      // Makes sure that both known and unknown gets will work.
-      prop = [mapValue(this.getArgument(0)), mapValueUnknownKey()]
+      prop = getAPseudoProperty()
     }
+
+    /**
+     * Gets a pseudo-property used to store an element in a map.
+     * The pseudo-property represents both values where the key is a known string value (which is encoded in the pseudo-property),
+     * and values where the key is unknown.
+     *
+     * The return-type is `string` as this predicate is used to define which pseudo-properties exist.
+     */
+    string getAPseudoProperty() { result = [mapValue(this.getArgument(0)), mapValueUnknownKey()] }
   }
 
   /**
@@ -246,7 +258,7 @@ private module CollectionDataFlow {
     MapAndSetValues() { this.getMethodName() = "values" }
 
     override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
     ) {
       pred = this.getReceiver() and
       succ = this and
@@ -262,7 +274,7 @@ private module CollectionDataFlow {
     SetKeys() { this.getMethodName() = "keys" }
 
     override predicate loadStore(
-      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+      DataFlow::Node pred, DataFlow::Node succ, PseudoProperty fromProp, PseudoProperty toProp
     ) {
       pred = this.getReceiver() and
       succ = this and
