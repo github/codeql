@@ -255,3 +255,7 @@ predicate overridden_call(FunctionValue func, FunctionValue overriding, Call cal
     overriding.getACall().getNode() = call
 }
 
+/** Holds if `func` will raise a `NotImplemented` error. */
+predicate isAbstract(FunctionValue func) {
+    func.getARaisedType() = ClassValue::notImplementedError()
+}
