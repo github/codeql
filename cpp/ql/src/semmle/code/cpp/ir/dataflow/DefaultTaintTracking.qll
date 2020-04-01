@@ -2,6 +2,7 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.DataFlow2
+private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 private import semmle.code.cpp.models.interfaces.Taint
@@ -171,6 +172,7 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
   node = getNodeForSource(any(Expr e))
 }
 
+cached
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
   exists(CallInstruction call, int argIndex | call = i2 |
@@ -380,4 +382,136 @@ Function resolveCall(Call call) {
     callInstruction.getAST() = call and
     result = Dispatch::viableCallable(callInstruction)
   )
+}
+
+/**
+ * Provides definitions for augmenting source/sink pairs with data-flow paths
+ * between them. From a `@kind path-problem` query, import this module in the
+ * global scope, extend `TaintTrackingConfiguration`, and use `taintedWithPath`
+ * in place of `tainted`.
+ *
+ * Importing this module will also import the query predicates that contain the
+ * taint paths.
+ */
+module TaintedWithPath {
+  /**
+   * A taint-tracking configuration that matches sources and sinks in the same
+   * way as the `tainted` predicate.
+   */
+  class TaintTrackingConfiguration extends int {
+    TaintTrackingConfiguration() { this = 1 }
+
+    /** Override this to specify which elements are sinks in this configuration. */
+    abstract predicate isSink(Element e);
+  }
+
+  private class AdjustedConfiguration extends DataFlow3::Configuration {
+    AdjustedConfiguration() { this = "AdjustedConfiguration" }
+
+    override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+      instructionTaintStep(n1.asInstruction(), n2.asInstruction())
+    }
+
+    override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+    override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  }
+
+  /*
+   * A sink `Element` may map to multiple `DataFlowX::PathNode`s via (the
+   * inverse of) `adjustedSink`. For example, an `Expr` maps to all its
+   * conversions, and a `Variable` maps to all loads and stores from it. Because
+   * the path node is part of the tuple that constitutes the alert, this leads
+   * to duplicate alerts.
+   *
+   * To avoid showing duplicates, we edit the graph to replace the final node
+   * coming from the data-flow library with a node that matches exactly the
+   * `Element` sink that's requested.
+   *
+   * The same should ideally be done with the source, but we haven't seen a
+   * need for it yet.
+   */
+
+  private newtype TPathNode =
+    TWrapPathNode(DataFlow3::PathNode n) or
+    TFinalPathNode(Element e) { exists(TaintTrackingConfiguration cfg | cfg.isSink(e)) }
+
+  /** An opaque type used for the nodes of a data-flow path. */
+  class PathNode extends TPathNode {
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      none()
+    }
+  }
+
+  private class WrapPathNode extends PathNode, TPathNode {
+    DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
+
+    override string toString() { result = this.inner().toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.inner().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  private class FinalPathNode extends PathNode, TFinalPathNode {
+    Element inner() { this = TFinalPathNode(result) }
+
+    override string toString() { result = this.inner().toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this
+          .inner()
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+  query predicate edges(PathNode a, PathNode b) {
+    DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
+    or
+    // To avoid showing trivial-looking steps, we replace the last node instead
+    // of adding an edge out of it.
+    exists(WrapPathNode replaced |
+      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), replaced.inner()) and
+      b.(FinalPathNode).inner() = adjustedSink(replaced.inner().getNode())
+    )
+  }
+
+  /** Holds if `n` is a node in the graph of data flow path explanations. */
+  query predicate nodes(PathNode n, string key, string val) {
+    key = "semmle.label" and val = n.toString()
+  }
+
+  predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
+    exists(AdjustedConfiguration cfg, DataFlow3::PathNode sinkInner, DataFlow::Node sink |
+      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(source) and
+      sinkInner.getNode() = sink and
+      cfg.hasFlowPath(sourceNode.(WrapPathNode).inner(), sinkInner) and
+      tainted = adjustedSink(sinkInner.getNode()) and
+      tainted = sinkNode.(FinalPathNode).inner()
+    )
+  }
 }

@@ -1,0 +1,10 @@
+edges
+nodes
+| globalVars.c:27:9:27:12 | copy | semmle.label | copy |
+| globalVars.c:30:15:30:18 | copy | semmle.label | copy |
+| globalVars.c:33:9:33:12 | %s | semmle.label | %s |
+| globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
+| globalVars.c:41:15:41:19 | copy2 | semmle.label | copy2 |
+| globalVars.c:44:9:44:12 | %s | semmle.label | %s |
+| globalVars.c:50:9:50:13 | copy2 | semmle.label | copy2 |
+#select
