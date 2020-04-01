@@ -514,6 +514,12 @@ abstract class FunctionValue extends CallableValue {
     predicate isOverriddenMethod() {
         exists(Value f | f.overrides(this))
     }
+
+    /** Gets a class that this function may return */
+    ClassValue getAnInferredReturnType() {
+        //result = this.(BuiltinCallable).getAReturnType()
+        result = this.getScope().getAReturnValueFlowNode().pointsTo().getClass()
+    }
 }
 
 /** Class representing Python functions */
