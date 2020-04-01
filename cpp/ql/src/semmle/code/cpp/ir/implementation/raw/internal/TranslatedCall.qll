@@ -7,7 +7,6 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
-private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * The IR translation of a call to a function. The call may be from an actual
@@ -346,7 +345,7 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
   override predicate hasQualifier() { any() }
 }
 
-abstract class TranslatedAllocationSideEffects extends TranslatedSideEffects,
+class TranslatedAllocationSideEffects extends TranslatedSideEffects,
   TTranslatedAllocationSideEffects {
   AllocationExpr expr;
 
@@ -377,32 +376,12 @@ abstract class TranslatedAllocationSideEffects extends TranslatedSideEffects,
     operandTag = addressOperand() and
     result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
   }
-}
-
-class TranslatedCallAllocationSideEffects extends TranslatedAllocationSideEffects {
-  override CallAllocationExpr expr;
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getTranslatedExpr(expr).getInstruction(CallTag())
-  }
-}
-
-class TranslatedNewAllocationSideEffects extends TranslatedAllocationSideEffects {
-  override NewAllocationExpr expr;
-
-  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-    tag = OnlyInstructionTag() and
-    result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
-  }
-}
-
-class TranslatedNewArrayAllocationSideEffects extends TranslatedAllocationSideEffects {
-  override NewArrayAllocationExpr expr;
-
-  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-    tag = OnlyInstructionTag() and
-    result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
+    if expr instanceof NewOrNewArrayExpr
+    then result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
+    else result = getTranslatedExpr(expr).getInstruction(CallTag())
   }
 }
 
