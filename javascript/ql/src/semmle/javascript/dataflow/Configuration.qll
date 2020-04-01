@@ -576,36 +576,39 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
 
 /**
  * A collection of pseudo-properties that are used in multiple files.
+ * 
+ * A pseudo-property represents the location where some value is stored in an object. 
+ * 
  * For use with load/store steps in `DataFlow::AdditionalFlowStep` and TypeTracking.
  */
 module PseudoProperties {
   /**
-   * Gets a pseudo-property representing elements inside a `Set`
+   * Gets a pseudo-property for the location of elements in a `Set`
    */
   string setElement() { result = "$setElement$" }
 
   /**
-   * Gets a pseudo-property representing elements inside a JavaScript iterator.
+   * Gets a pseudo-property for the location of elements in a JavaScript iterator.
    */
   string iteratorElement() { result = "$iteratorElement$" }
 
   /**
-   * Gets a pseudo-field representing an elements inside an `Array`.
+   * Gets a pseudo-property for the location of elements in an `Array`.
    */
   string arrayElement() { result = "$arrayElement$" }
 
   /**
-   * Gets a pseudo-property representing elements inside some array-like object. (Set, Array, or Iterator).
+   * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
    */
   string arrayLikeElement() { result = [setElement(), iteratorElement(), arrayElement()] }
 
   /**
-   * Gets a pseudo-property representing the values of a Map, where the key is unknown.
+   * Gets a pseudo-property for the location of map values, where the key is unknown.
    */
   string mapValueUnknownKey() { result = "$UnknownMapValue$" }
 
   /**
-   * Gets a pseudo property for a Map value where the key is `key`.
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
    * The string value of the `key` is encoded in the result, and there is only a result if the string value of `key` is known.
    */
   pragma[inline]
@@ -614,7 +617,7 @@ module PseudoProperties {
   }
 
   /**
-   * Gets a psuedo property for a map value where the key is `key`.
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
    */
   pragma[inline]
   string mapValue(DataFlow::Node key) {
