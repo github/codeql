@@ -71,22 +71,22 @@ edges
 | test.py:75:33:75:36 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
 | test.py:75:39:75:42 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
 | test.py:75:39:75:42 | externally controlled string | test.py:75:11:75:43 | externally controlled string |
-| test.py:112:12:112:18 | django.request.HttpRequest | test.py:114:11:114:17 | django.request.HttpRequest |
-| test.py:112:12:112:18 | django.request.HttpRequest | test.py:114:11:114:17 | django.request.HttpRequest |
-| test.py:114:11:114:17 | django.request.HttpRequest | test.py:114:11:114:21 | django.http.request.QueryDict |
-| test.py:114:11:114:17 | django.request.HttpRequest | test.py:114:11:114:21 | django.http.request.QueryDict |
-| test.py:114:11:114:21 | django.http.request.QueryDict | test.py:114:11:114:28 | externally controlled string |
-| test.py:114:11:114:21 | django.http.request.QueryDict | test.py:114:11:114:28 | externally controlled string |
-| test.py:114:11:114:28 | externally controlled string | test.py:119:22:119:24 | externally controlled string |
-| test.py:114:11:114:28 | externally controlled string | test.py:119:22:119:24 | externally controlled string |
-| test.py:159:12:159:18 | django.request.HttpRequest | test.py:160:11:160:17 | django.request.HttpRequest |
-| test.py:159:12:159:18 | django.request.HttpRequest | test.py:160:11:160:17 | django.request.HttpRequest |
-| test.py:160:11:160:17 | django.request.HttpRequest | test.py:160:11:160:21 | django.http.request.QueryDict |
-| test.py:160:11:160:17 | django.request.HttpRequest | test.py:160:11:160:21 | django.http.request.QueryDict |
-| test.py:160:11:160:21 | django.http.request.QueryDict | test.py:160:11:160:28 | externally controlled string |
-| test.py:160:11:160:21 | django.http.request.QueryDict | test.py:160:11:160:28 | externally controlled string |
-| test.py:160:11:160:28 | externally controlled string | test.py:169:18:169:20 | externally controlled string |
-| test.py:160:11:160:28 | externally controlled string | test.py:169:18:169:20 | externally controlled string |
+| test.py:110:12:110:18 | django.request.HttpRequest | test.py:112:11:112:17 | django.request.HttpRequest |
+| test.py:110:12:110:18 | django.request.HttpRequest | test.py:112:11:112:17 | django.request.HttpRequest |
+| test.py:112:11:112:17 | django.request.HttpRequest | test.py:112:11:112:21 | django.http.request.QueryDict |
+| test.py:112:11:112:17 | django.request.HttpRequest | test.py:112:11:112:21 | django.http.request.QueryDict |
+| test.py:112:11:112:21 | django.http.request.QueryDict | test.py:112:11:112:28 | externally controlled string |
+| test.py:112:11:112:21 | django.http.request.QueryDict | test.py:112:11:112:28 | externally controlled string |
+| test.py:112:11:112:28 | externally controlled string | test.py:117:22:117:24 | externally controlled string |
+| test.py:112:11:112:28 | externally controlled string | test.py:117:22:117:24 | externally controlled string |
+| test.py:157:12:157:18 | django.request.HttpRequest | test.py:158:11:158:17 | django.request.HttpRequest |
+| test.py:157:12:157:18 | django.request.HttpRequest | test.py:158:11:158:17 | django.request.HttpRequest |
+| test.py:158:11:158:17 | django.request.HttpRequest | test.py:158:11:158:21 | django.http.request.QueryDict |
+| test.py:158:11:158:17 | django.request.HttpRequest | test.py:158:11:158:21 | django.http.request.QueryDict |
+| test.py:158:11:158:21 | django.http.request.QueryDict | test.py:158:11:158:28 | externally controlled string |
+| test.py:158:11:158:21 | django.http.request.QueryDict | test.py:158:11:158:28 | externally controlled string |
+| test.py:158:11:158:28 | externally controlled string | test.py:167:18:167:20 | externally controlled string |
+| test.py:158:11:158:28 | externally controlled string | test.py:167:18:167:20 | externally controlled string |
 #select
 | test.py:22:22:22:24 | url | test.py:20:12:20:18 | django.request.HttpRequest | test.py:22:22:22:24 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:20:12:20:18 | request | a user-provided value |
 | test.py:29:27:29:30 | host | test.py:26:12:26:18 | django.request.HttpRequest | test.py:29:27:29:30 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:26:12:26:18 | request | a user-provided value |
@@ -95,5 +95,5 @@ edges
 | test.py:39:25:39:28 | path | test.py:35:12:35:18 | django.request.HttpRequest | test.py:39:25:39:28 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:35:12:35:18 | request | a user-provided value |
 | test.py:62:24:62:26 | url | test.py:53:20:53:26 | django.request.HttpRequest | test.py:62:24:62:26 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:53:20:53:26 | request | a user-provided value |
 | test.py:76:24:76:26 | url | test.py:66:20:66:26 | django.request.HttpRequest | test.py:76:24:76:26 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:66:20:66:26 | request | a user-provided value |
-| test.py:119:22:119:24 | url | test.py:112:12:112:18 | django.request.HttpRequest | test.py:119:22:119:24 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:112:12:112:18 | request | a user-provided value |
-| test.py:169:18:169:20 | url | test.py:159:12:159:18 | django.request.HttpRequest | test.py:169:18:169:20 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:159:12:159:18 | request | a user-provided value |
+| test.py:117:22:117:24 | url | test.py:110:12:110:18 | django.request.HttpRequest | test.py:117:22:117:24 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:110:12:110:18 | request | a user-provided value |
+| test.py:167:18:167:20 | url | test.py:157:12:157:18 | django.request.HttpRequest | test.py:167:18:167:20 | externally controlled string | Server-side request forgery vulnerability due to $@. | test.py:157:12:157:18 | request | a user-provided value |

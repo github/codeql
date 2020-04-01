@@ -8,10 +8,10 @@
 | test.py:76:24:76:26 | url | test.py:66:1:66:28 | Function bad_sanitizer2 | externally controlled string |
 | test.py:94:27:94:30 | host | test.py:80:1:80:28 | Function bad_sanitizer3 | externally controlled string |
 | test.py:95:25:95:28 | path | test.py:80:1:80:28 | Function bad_sanitizer3 | externally controlled string |
-| test.py:108:24:108:26 | url | test.py:99:1:99:28 | Function bad_sanitizer4 | externally controlled string |
-| test.py:119:22:119:24 | url | test.py:112:1:112:20 | Function safe_1 | externally controlled string |
-| test.py:135:27:135:30 | host | test.py:123:1:123:20 | Function safe_2 | externally controlled string |
-| test.py:136:25:136:28 | path | test.py:123:1:123:20 | Function safe_2 | externally controlled string |
-| test.py:154:27:154:30 | host | test.py:140:1:140:20 | Function safe_3 | externally controlled string |
-| test.py:155:25:155:28 | path | test.py:140:1:140:20 | Function safe_3 | externally controlled string |
-| test.py:169:18:169:20 | url | test.py:159:1:159:20 | Function safe_4 | externally controlled string |
+| test.py:106:24:106:26 | url | test.py:99:1:99:28 | Function bad_sanitizer4 | externally controlled string |
+| test.py:117:22:117:24 | url | test.py:110:1:110:20 | Function safe_1 | externally controlled string |
+| test.py:133:27:133:30 | host | test.py:121:1:121:20 | Function safe_2 | externally controlled string |
+| test.py:134:25:134:28 | path | test.py:121:1:121:20 | Function safe_2 | externally controlled string |
+| test.py:152:27:152:30 | host | test.py:138:1:138:20 | Function safe_3 | externally controlled string |
+| test.py:153:25:153:28 | path | test.py:138:1:138:20 | Function safe_3 | externally controlled string |
+| test.py:167:18:167:20 | url | test.py:157:1:157:20 | Function safe_4 | externally controlled string |

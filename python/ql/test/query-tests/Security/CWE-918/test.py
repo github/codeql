@@ -100,9 +100,7 @@ def bad_sanitizer4(request):
     url = request.GET["url"]
 
     # this check is vulnerable, for example "http://example.com.evil.com"
-    if not url.startswith("http://example.com") and not url.startswith(
-        "https://example.com"
-    ):
+    if not (url.startswith("http://example.com") or url.startswith("https://example.com")):
         return HttpResponse("not ok")
 
     rsp = requests.get(url)  # vuln TODO: FN
