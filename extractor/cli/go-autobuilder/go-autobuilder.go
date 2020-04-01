@@ -28,10 +28,10 @@ source files into a folder corresponding to the package's import path before ins
 dependencies.
 
 This behavior can be further customized using environment variables: setting LGTM_INDEX_NEED_GOPATH
-to 'false' disables the GOPATH set-up, LGTM_INDEX_BUILD_COMMAND can be set to a newline-separated
-list of commands to run in order to install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to
-override the package import path, which is otherwise inferred from the SEMMLE_REPO_URL environment
-variable.
+to 'false' disables the GOPATH set-up, CODEQL_EXTRACTOR_GO_BUILD_COMMAND (or alternatively
+LGTM_INDEX_BUILD_COMMAND), can be set to a newline-separated list of commands to run in order to
+install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path,
+which is otherwise inferred from the SEMMLE_REPO_URL environment variable.
 `,
 		os.Args[0])
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
@@ -276,7 +276,10 @@ func main() {
 	}
 
 	// check whether an explicit dependency installation command was provided
-	inst := os.Getenv("LGTM_INDEX_BUILD_COMMAND")
+	inst := os.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND")
+	if inst == "" {
+		inst = os.Getenv("LGTM_INDEX_BUILD_COMMAND")
+	}
 	var install *exec.Cmd
 	if inst == "" {
 		// if there is a build file, run the corresponding build tool
