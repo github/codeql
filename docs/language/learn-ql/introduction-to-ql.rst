@@ -165,4 +165,4 @@ Learning CodeQL
 
 -  To find out more about how to write your own queries, try working through the :doc:`QL tutorials <beginner/ql-tutorials>`.
 -  For an overview of the other available resources, see :doc:`Learning CodeQL <../index>`.
--  For a more technical description of the underlying language, see :doc:`About QL <about-ql>`.
+-  For a more technical description of the underlying language, see the `QL language reference <https://help.semmle.com/QL/ql-handbook>`__
