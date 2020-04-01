@@ -423,7 +423,7 @@ class   ClassValue extends Value {
           * '__next__' method exists to define a class as an iterator.
           */
          major_version() = 2 and this.hasAttribute("next") and 
-         exists(ClassObject other, FunctionObject iter | 
+         exists(ClassValue other, FunctionValue iter | 
             other.declaredAttribute("__iter__") = iter |
             iter.getAnInferredReturnType() = this
          )
