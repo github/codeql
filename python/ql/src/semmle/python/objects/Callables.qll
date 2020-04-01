@@ -49,13 +49,6 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     /* Callables aren't iterable */
     override ObjectInternal getIterNext() { none() }
-
-    /** Gets a class that this function may return */
-    ClassValue getAnInferredReturnType() {
-        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
-        or
-        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
-    }
 }
 
 /** Class representing Python functions */

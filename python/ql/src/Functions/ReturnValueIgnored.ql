@@ -50,7 +50,7 @@ predicate returns_meaningful_value(FunctionValue f) {
          */
 
         f.isBuiltin() and
-        f.(CallableObjectInternal).getAnInferredReturnType() != ClassValue::nonetype() and
+        f.getAnInferredReturnType() != ClassValue::nonetype() and
         not f.getName() = "__import__"
     )
 }
