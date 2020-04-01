@@ -1,13 +1,11 @@
-
 import python
 import semmle.python.types.Descriptors
 
-int lineof(Object o) {
-    result = o.getOrigin().getLocation().getStartLine()
-}
-
-from PropertyObject p, FunctionObject getter, FunctionObject setter
+from PropertyValue p, string method_name, FunctionValue method
 where
-getter = p.getGetter() and setter = p.getSetter()
-select lineof(p), p.toString(), lineof(getter), getter.toString(), lineof(setter), setter.toString()
-
+    method_name = "getter" and method = p.getGetter()
+    or
+    method_name = "setter" and method = p.getSetter()
+    or
+    method_name = "deleter" and method = p.getDeleter()
+select method, method_name, p

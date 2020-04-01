@@ -23,7 +23,9 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [Electron](https://electronjs.org/)
+  - [fstream](https://www.npmjs.com/package/fstream)
   - [Handlebars](https://www.npmjs.com/package/handlebars)
+  - [jsonfile](https://www.npmjs.com/package/jsonfile)
   - [Koa](https://www.npmjs.com/package/koa)
   - [Node.js](https://nodejs.org/)
   - [Socket.IO](https://socket.io/)
@@ -32,11 +34,20 @@
   - [for-in](https://www.npmjs.com/package/for-in)
   - [for-own](https://www.npmjs.com/package/for-own)
   - [http2](https://nodejs.org/api/http2.html)
+  - [jQuery](https://jquery.com/)
   - [lazy-cache](https://www.npmjs.com/package/lazy-cache)
+  - [mongodb](https://www.npmjs.com/package/mongodb)
+  - [ncp](https://www.npmjs.com/package/ncp)
+  - [node-dir](https://www.npmjs.com/package/node-dir)
+  - [path-exists](https://www.npmjs.com/package/path-exists)
   - [react](https://www.npmjs.com/package/react)
+  - [recursive-readdir](https://www.npmjs.com/package/recursive-readdir)
   - [request](https://www.npmjs.com/package/request)
+  - [rimraf](https://www.npmjs.com/package/rimraf)
   - [send](https://www.npmjs.com/package/send)
   - [typeahead.js](https://www.npmjs.com/package/typeahead.js)
+  - [vinyl-fs](https://www.npmjs.com/package/vinyl-fs)
+  - [write-file-atomic](https://www.npmjs.com/package/write-file-atomic)
   - [ws](https://github.com/websockets/ws)
 
 ## New queries
@@ -67,6 +78,8 @@
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional ways of constructing arguments to `cmd.exe` and `/bin/sh`. |
 | Syntax error (`js/syntax-error`) | Lower severity | This results of this query are now displayed with lower severity. |
 | Use of password hash with insufficient computational effort (`js/insufficient-password-hash`) | Fewer false positive results | This query now recognizes additional cases that do not require secure hashing. |
+| Useless regular-expression character escape (`js/useless-regexp-character-escape`) | Fewer false positive results | This query now distinguishes escapes in strings and regular expression literals. |
+| Identical operands (`js/redundant-operation`) | Fewer results | This query now recognizes cases where the operands change a value using ++/-- expressions. |
 
 ## Changes to libraries
 

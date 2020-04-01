@@ -46,6 +46,19 @@ private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
 }
 
 /**
+ * Flow analysis for `this` expressions in node modules.
+ *
+ * These expressions are assumed to refer to the `module.exports` object.
+ */
+private class AnalyzedThisAsModuleExports extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
+  NodeModule m;
+
+  AnalyzedThisAsModuleExports() { m = getBindingContainer() }
+
+  override AbstractValue getALocalValue() { result = TAbstractExportsObject(m) }
+}
+
+/**
  * Flow analysis for `this` expressions inside a function that is instantiated.
  *
  * These expressions are assumed to refer to an instance of that function. Since

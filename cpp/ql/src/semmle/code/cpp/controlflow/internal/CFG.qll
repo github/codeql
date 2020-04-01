@@ -443,8 +443,7 @@ private Node getControlOrderChildSparse(Node n, int i) {
 private predicate skipInitializer(Initializer init) {
   exists(LocalVariable local |
     init = local.getInitializer() and
-    local.isStatic() and
-    not runtimeExprInStaticInitializer(init.getExpr())
+    local.(StaticStorageDurationVariable).hasConstantInitialization()
   )
 }
 

@@ -12,6 +12,7 @@ import semmle.code.cpp.dataflow.DataFlow
  */
 predicate allocExpr(Expr alloc, string kind) {
   isAllocationExpr(alloc) and
+  not alloc.isFromUninstantiatedTemplate(_) and
   (
     alloc instanceof FunctionCall and
     kind = "malloc"
