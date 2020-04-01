@@ -52,7 +52,7 @@ predicate file_not_closed_at_scope_exit(ControlFlowNode open) {
 
 predicate file_not_closed_at_exception_exit(ControlFlowNode open, ControlFlowNode exit) {
     exists(EssaVariable v |
-        exit.(RaisingNode).viableExceptionalExit(_, _) and
+        exit.(RaisingNode).viableExceptionalExit_objectapi(_, _) and
         not closes_arg(exit, v.getSourceVariable()) and
         not close_method_call(exit, v.getAUse().(NameNode)) and
         var_is_open(v, open) and

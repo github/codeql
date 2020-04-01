@@ -171,7 +171,7 @@ class RaisingNode extends ControlFlowNode {
    */
   predicate unlikelySuccessor(ControlFlowNode succ) {
     succ = this.getAnExceptionalSuccessor() and
-    not this.viableExceptionEdge(succ, _) and
+    not this.viableExceptionEdge_objectapi(succ, _) and
     not this.raisesUnknownType()
     or
     exists(FunctionObject func |
