@@ -144,11 +144,11 @@ Finally we can simplify the query by using the transitive closure operator. In t
        and exists(c.getBlock())
    select c, "Constructor does not initialize fields $@.", f, f.getName()
 
-➤ `See this in the query console <https://lgtm.com/query/1505896968215/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505896968215/>`__
 
 Further reading
 ---------------
 
 -  Take a look at another example: :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

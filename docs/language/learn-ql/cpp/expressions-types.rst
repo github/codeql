@@ -21,7 +21,7 @@ In the following example we find instances of ``AssignExpr`` which assign the co
    where e.getRValue().getValue().toInt() = 0
    select e, "Assigning the value 0 to something."
 
-➤ `See this in the query console <https://lgtm.com/query/1505908086530/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505908086530/>`__
 
 The ``where`` clause in this example gets the expression on the right side of the assignment, ``getRValue()``, and compares it with zero. Notice that there are no checks to make sure that the right side of the assignment is an integer or that it has a value (that is, it is compile-time constant, rather than a variable). For expressions where either of these assumptions is wrong, the associated predicate simply does not return anything and the ``where`` clause will not produce a result. You could think of it as if there is an implicit ``exists(e.getRValue().getValue().toInt())`` at the beginning of this line.
 
@@ -47,7 +47,7 @@ We can make the query more specific by defining a condition for the left side of
      and e.getLValue().getType().getUnspecifiedType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer."
 
-➤ `See this in the query console <https://lgtm.com/query/1505906986578/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505906986578/>`__
 
 This checks that the left side of the assignment has a type that is some kind of integer. Note the call to ``Type.getUnspecifiedType()``. This resolves ``typedef`` types to their underlying types so that the query finds assignments like this one:
 
@@ -107,7 +107,7 @@ Unfortunately this would not quite work, because the loop initialization is actu
      and e.getLValue().getType().getUnspecifiedType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer, inside a for loop initialization."
 
-➤ `See this in the query console <https://lgtm.com/query/1505909016965/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505909016965/>`__
 
 Finding assignments of 0 within the loop body
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,7 +125,7 @@ We can find assignments inside the loop body using similar code with the predica
      and e.getLValue().getType().getUnderlyingType() instanceof IntegralType
    select e, "Assigning the value 0 to an integer, inside a for loop body."
 
-➤ `See this in the query console <https://lgtm.com/query/1505901437190/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505901437190/>`__
 
 Note that we replaced ``e.getEnclosingStmt()`` with ``e.getEnclosingStmt().getParentStmt*()``, to find an assignment expression that is deeply nested inside the loop body. The transitive closure modifier ``*`` here indicates that ``Stmt.getParentStmt()`` may be followed zero or more times, rather than just once, giving us the statement, its parent statement, its parent's parent statement etc.
 
@@ -135,4 +135,4 @@ Further reading
 -  Explore other ways of finding types and statements using examples from the C/C++ cookbook for `types <https://help.semmle.com/wiki/label/CBCPP/type>`__ and `statements <https://help.semmle.com/wiki/label/CBCPP/statement>`__.
 -  Take a look at the :doc:`Conversions and classes in C and C++ <conversions-classes>` and :doc:`Analyzing data flow in C and C++ <dataflow>` tutorials.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

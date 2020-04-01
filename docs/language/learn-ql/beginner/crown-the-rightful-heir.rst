@@ -127,7 +127,7 @@ Here is one way to define ``relativeOf()``:
 
 Don't forget to use the predicate ``isDeceased()`` to find relatives that are still alive.
 
-➤ `See the answer in the query console <https://lgtm.com/query/6710025057257064639/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/6710025057257064639/>`__
 
 Select the true heir
 --------------------
@@ -140,7 +140,7 @@ To decide who should inherit the king's fortune, the villagers carefully read th
 
 As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-the-thief>` and :doc:`Catch the fire starter <catch-the-fire-starter>` tutorials).
 
-➤ `See the answer in the query console <https://lgtm.com/query/1820692755164273290/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1820692755164273290/>`__
 
 Experimental explorations
 -------------------------

@@ -121,7 +121,7 @@ Select expressions that cast a value to a type parameter:
    where assertion.getTypeAnnotation() = param.getLocalTypeName().getAnAccess()
    select assertion, "Cast to type parameter."
 
-➤ `See this in the query console <https://lgtm.com/query/1505979606441/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505979606441/>`__.
 
 Classes and interfaces
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -407,7 +407,7 @@ It is best to use `TypeName <https://help.semmle.com/qldoc/javascript/semmle/jav
      and not access.hasTypeArguments()
    select access, "Type arguments are omitted"
 
-➤ `See this in the query console <https://lgtm.com/query/1505985316500/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505985316500/>`__.
 
 Find imported names that are used as both a type and a value:
 
@@ -420,7 +420,7 @@ Find imported names that are used as both a type and a value:
      and exists (VarAccess access | access.getVariable().getADeclaration() = spec.getLocal())
    select spec, "Used as both variable and type"
 
-➤ `See this in the query console <https://lgtm.com/query/1505975787348/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505975787348/>`__.
 
 Namespace names
 ~~~~~~~~~~~~~~~
@@ -451,4 +451,4 @@ Further reading
 
 -  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`CodeQL libraries for JavaScript <introduce-libraries-js>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

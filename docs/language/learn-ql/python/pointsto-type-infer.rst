@@ -74,7 +74,7 @@ First we can write a query to find ordered pairs of ``except`` blocks for a ``tr
    )
    select t, ex1, ex2
 
-➤ `See this in the query console <https://lgtm.com/query/672320024/>`__. Many projects contain ordered ``except`` blocks in a ``try`` statement.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672320024/>`__. Many projects contain ordered ``except`` blocks in a ``try`` statement.
 
 Here ``ex1`` and ``ex2`` are both ``except`` handlers in the ``try`` statement ``t``. By using the indices ``i`` and ``j`` we can also ensure that ``ex1`` precedes ``ex2``.
 
@@ -121,7 +121,7 @@ Combining the parts of the query we get this:
    )
    select t, ex1, ex2
 
-➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard "Unreachable 'except' block" query. For more information, see `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__ on LGTM.com.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard "Unreachable 'except' block" query. For more information, see `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__ on LGTM.com.
 
 .. pull-quote::
 
@@ -156,7 +156,7 @@ Then we need to determine if the object ``iter`` is iterable. We can test ``Clas
       not exists(cls.lookup("__iter__"))
     select loop, cls
     
-➤ `See this in the query console <https://lgtm.com/query/5636475906111506420/>`__. Many projects use a non-iterable as a loop iterator.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5636475906111506420/>`__. Many projects use a non-iterable as a loop iterator.
 
 Many of the results shown will have ``cls`` as ``NoneType``. It is more informative to show where these ``None`` values may come from. To do this we use the final field of ``pointsTo``, as follows:
 
@@ -172,7 +172,7 @@ Many of the results shown will have ``cls`` as ``NoneType``. It is more informat
      not cls.hasAttribute("__iter__")
    select loop, cls, origin
 
-➤ `See this in the query console <https://lgtm.com/query/3795352249440053606/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3795352249440053606/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
 
 Finding calls using call-graph analysis
 ----------------------------------------------------
@@ -193,7 +193,7 @@ The original query looked this:
    where call.getFunc() = name and name.getId() = "eval"
    select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. Some of the demo projects on LGTM.com have calls that match this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6718356557331218618/>`__. Some of the demo projects on LGTM.com have calls that match this pattern.
 
 There are two problems with this query:
 
@@ -221,7 +221,7 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
          call = eval.getACall()
    select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
 
 Further reading
 ---------------

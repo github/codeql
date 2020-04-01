@@ -103,7 +103,7 @@ Now try applying ``isAllowedIn(string region)`` to a person ``p``. If ``p`` is n
 
 You know that the fire starters live in the south *and* that they must have been able to travel to the north. Write a query to find the possible suspects. You could also extend the ``select`` clause to list the age of the suspects. That way you can clearly see that all the children have been excluded from the list.
 
-➤ `See the answer in the query console <https://lgtm.com/query/2551838470440192723/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/2551838470440192723/>`__
 
 You can now continue to gather more clues and find out which of your suspects started the fire...
 
@@ -140,7 +140,7 @@ The predicate ``isBald`` is defined to take a ``Person``, so it can also take a 
 
 You can now write a query to select the bald southerners who are allowed into the north.
 
-➤ `See the answer in the query console <https://lgtm.com/query/2572701606358725253/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/2572701606358725253/>`__
 
 You have found the two fire starters! They are arrested and the villagers are once again impressed with your work.
 

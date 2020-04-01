@@ -258,7 +258,7 @@ Further reading
 
 -  Try the worked examples in these articles: :doc:`Navigating the call graph <call-graph>` and :doc:`Working with source locations <source-locations>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
 
 Answers
 -------
