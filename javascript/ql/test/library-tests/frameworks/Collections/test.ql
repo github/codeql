@@ -1,5 +1,4 @@
 import javascript
-private import semmle.javascript.dataflow.internal.StepSummary
 
 class Config extends DataFlow::Configuration {
   Config() { this = "Config" }
