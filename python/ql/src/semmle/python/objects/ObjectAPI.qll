@@ -581,13 +581,6 @@ abstract class FunctionValue extends CallableValue {
             exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) | not origin instanceof Lambda)
         )
     }
-
-    /** Gets a class that this function may return */
-    ClassValue getAnInferredReturnType() {
-        result = this.(BuiltinFunctionValue).getAReturnType()
-        or
-        result = this.(BuiltinMethodValue).getAReturnType()
-    }
 }
 
 /** Class representing Python functions */
@@ -627,29 +620,6 @@ class BuiltinFunctionValue extends FunctionValue {
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
-
-    ClassValue getAReturnType() {
-        /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
-        */
-        this = TBuiltinFunctionObject(Builtin::builtin("hex")) and result = ClassValue::str()
-        or
-        this = TBuiltinFunctionObject(Builtin::builtin("oct")) and result = ClassValue::str()
-        or
-        this = TBuiltinFunctionObject(Builtin::builtin("intern")) and result = ClassValue::str()
-        or
-        /* Fix a few minor inaccuracies in the CPython analysis */ 
-        exists(Builtin mthd, Builtin cls | this = TBuiltinFunctionObject(mthd) and result = TBuiltinClassObject(cls)
-        | ext_rettype(mthd, cls)) and
-        not (
-            this = TBuiltinFunctionObject(Builtin::builtin("__import__")) and result = ClassValue::nonetype()
-            or
-            this = TBuiltinFunctionObject(Builtin::builtin("compile")) and result = ClassValue::nonetype()
-            or
-            this = TBuiltinFunctionObject(Builtin::builtin("sum"))
-            or
-            this = TBuiltinFunctionObject(Builtin::builtin("filter"))
-        )
-    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -667,15 +637,6 @@ class BuiltinMethodValue extends FunctionValue {
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
-
-    ClassValue getAReturnType() {
-        exists(Builtin mthd, Builtin cls |
-            this = TBuiltinMethodObject(mthd) and
-            result = TBuiltinClassObject(cls)
-        |
-            ext_rettype(mthd, cls)
-        )
-    }
 }
 
 /**

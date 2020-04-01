@@ -15,6 +15,7 @@
  */
 
 import python
+import semmle.python.objects.Callables
 
 predicate meaningful_return_value(Expr val) {
     val instanceof Name
@@ -44,7 +45,7 @@ predicate returns_meaningful_value(FunctionValue f) {
       or
       /* Is f a builtin function that returns something other than None?
        * Ignore __import__ as it is often called purely for side effects */
-      f.isBuiltin() and f.getAnInferredReturnType() != ClassValue::nonetype() and not f.getName() = "__import__"
+      f.isBuiltin() and f.(CallableObjectInternal).getAnInferredReturnType() != ClassValue::nonetype() and not f.getName() = "__import__"
     )
 }
 
