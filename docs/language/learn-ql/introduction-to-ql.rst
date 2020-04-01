@@ -115,7 +115,7 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2101340747/>`__
 
 Now that you've seen some general examples, let's use the CodeQL libraries to analyze projects.
-In particular, LGTM generates a database representing the code and then CodeQL is used to query this database. See `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ for more details on how the database is built.
+In particular, LGTM generates a database representing the code and then CodeQL is used to query this database. For more information, ee `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ on LGTM.com.
 
 .. XX: Perhaps a link to the "CodeQL libraries for X"?
 

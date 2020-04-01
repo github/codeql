@@ -55,7 +55,7 @@ Query metadata is used to identify your custom queries when they are added to th
 - If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__. 
 - If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__.
 - If you are analyzing a database using the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, your query metadata must contain ``@kind``.
-- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.and `Using the extension <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__ in the CodeQL for VS Code help.
+- If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and `Using the extension <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__ in the CodeQL for VS Code help.
 
 .. pull-quote:: 
 
