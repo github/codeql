@@ -501,6 +501,9 @@ abstract class FunctionValue extends CallableValue {
 
     abstract string getQualifiedName();
 
+    /** Gets a longer, more descriptive version of toString() */
+    abstract string descriptiveString();
+
     /** Gets the minimum number of parameters that can be correctly passed to this function */
     abstract int minParameters();
 
@@ -548,6 +551,15 @@ class PythonFunctionValue extends FunctionValue {
         this instanceof PythonFunctionObjectInternal
     }
 
+    override string descriptiveString() {
+        if this.getScope().isMethod()
+        then
+        exists(Class cls | this.getScope().getScope() = cls |
+            result = "method " + this.getQualifiedName()
+        )
+        else result = "function " + this.getQualifiedName()
+    }
+
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
     }
@@ -591,6 +603,8 @@ class BuiltinFunctionValue extends FunctionValue {
         result = this.(BuiltinFunctionObjectInternal).getName()
     }
 
+    override string descriptiveString() { result = "builtin-function " + this.getName() }
+
     override int minParameters() {
         none()
     }
@@ -619,6 +633,8 @@ class BuiltinMethodValue extends FunctionValue {
             result = cls.getName() + "." + this.getName()
         )
     }
+
+    override string descriptiveString() { result = "builtin-method " + this.getQualifiedName() }
 
     override int minParameters() {
         none()
