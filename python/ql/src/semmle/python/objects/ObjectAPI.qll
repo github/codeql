@@ -917,6 +917,11 @@ module ClassValue {
     ClassValue lookupError() {
         result = TBuiltinClassObject(Builtin::builtin("LookupError"))
     }
+
+    /** Get the `ClassValue` for the `IndexError` class. */
+    ClassValue indexError() {
+        result = TBuiltinClassObject(Builtin::builtin("IndexError"))
+    }
     
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() {
@@ -941,6 +946,11 @@ module ClassValue {
     /** Get the `ClassValue` for the `UnicodeDecodeError` class. */
     ClassValue unicodeDecodeError() {
         result = TBuiltinClassObject(Builtin::builtin("UnicodeDecodeError"))
+    }
+
+    /** Get the `ClassValue` for the `SystemExit` class. */
+    ClassValue systemExit() {
+        result = TBuiltinClassObject(Builtin::builtin("SystemExit"))
     }
 
 }
