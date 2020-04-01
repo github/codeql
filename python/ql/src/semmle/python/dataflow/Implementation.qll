@@ -57,8 +57,8 @@ private newtype TAttributePath =
      * It might make sense to add another level, attribute of attribute.
      * But some experimentation would be needed.
      */
-    TAttribute(string name) { exists(Attribute a | a.getName() = name) }
 
+    TAttribute(string name) { exists(Attribute a | a.getName() = name) }
 
 /**
  * The attribute of the tracked value holding the taint.
@@ -445,9 +445,8 @@ class TaintTrackingImplementation extends string {
             context = TNoParam() and
             src = TTaintTrackingNode_(retval, TNoParam(), path, kind, this) and
             node.asCfgNode() = call and
-            retval.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope())
-                        .getValue()
-                        .getAFlowNode()
+            retval.asCfgNode() =
+                any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
         ) and
         edgeLabel = "return"
     }
@@ -469,9 +468,8 @@ class TaintTrackingImplementation extends string {
             this.callContexts(call, src, pyfunc, context, callee) and
             retnode = TTaintTrackingNode_(retval, callee, path, kind, this) and
             node.asCfgNode() = call and
-            retval.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope())
-                        .getValue()
-                        .getAFlowNode()
+            retval.asCfgNode() =
+                any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
         ) and
         edgeLabel = "call"
     }
@@ -712,28 +710,14 @@ private class EssaTaintTracking extends string {
         TaintTrackingNode src, MultiAssignmentDefinition defn, TaintTrackingContext context,
         AttributePath path, TaintKind kind
     ) {
-        exists(DataFlow::Node srcnode, TaintKind srckind, Assign assign |
+        exists(DataFlow::Node srcnode, TaintKind srckind, Assign assign, int depth |
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
             path.noAttribute()
         |
             assign.getValue().getAFlowNode() = srcnode.asCfgNode() and
-            kind = iterable_unpacking_descent(assign.getATarget().getAFlowNode(), defn.getDefiningNode(),
-                    srckind)
+            depth = iterable_unpacking_descent(assign.getATarget().getAFlowNode(), defn.getDefiningNode()) and
+            kind = taint_at_depth(srckind, depth)
         )
-    }
-
-    /** `((x,y), ...) = value` with any nesting on LHS */
-    private TaintKind iterable_unpacking_descent(
-        SequenceNode left_parent, ControlFlowNode left_defn, CollectionKind parent_kind
-    ) {
-        left_parent.getAnElement() = left_defn and
-        // Handle `a, *b = some_iterable`
-        if left_defn instanceof StarredNode
-        then result = parent_kind
-        else result = parent_kind.getMember()
-        or
-        result = iterable_unpacking_descent(left_parent.getAnElement(), left_defn,
-                parent_kind.getMember())
     }
 
     pragma[noinline]
@@ -963,6 +947,45 @@ private predicate with_flow(With with, ControlFlowNode contextManager, ControlFl
 pragma[noinline]
 private predicate piNodeTestAndUse(PyEdgeRefinement defn, ControlFlowNode test, ControlFlowNode use) {
     test = defn.getTest() and use = defn.getInput().getASourceUse() and test.getAChild*() = use
+}
+
+/** Helper predicate for taintedMultiAssignment */
+private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
+    depth >= 0 and
+    (
+        // base-case #0
+        depth = 0 and
+        result = parent_kind
+        or
+        // base-case #1
+        depth = 1 and
+        result = parent_kind.getMember()
+        or
+        // recursive case
+        depth > 1 and
+        result = taint_at_depth(parent_kind.getMember(), depth - 1)
+    )
+}
+
+/**
+ * Helper predicate for taintedMultiAssignment
+ *
+ * Returns the `depth` the elements that are assigned to `left_defn` with iterable unpacking has,
+ * compared to `left_parent`. Special care is taken for `StarredNode` that is assigned a sequence of items.
+ *
+ * For example, `((x, *y), ...) = value` with any nesting on LHS
+ * - with `left_defn` = `x`, `left_parent` = `(x, *y)`, result = 1
+ * - with `left_defn` = `x`, `left_parent` = `((x, *y), ...)`, result = 2
+ * - with `left_defn` = `*y`, `left_parent` = `(x, *y)`, result = 0
+ * - with `left_defn` = `*y`, `left_parent` = `((x, *y), ...)`, result = 1
+ */
+int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_defn) {
+    exists(Assign a | a.getATarget().getASubExpression*().getAFlowNode() = left_parent) and
+    left_parent.getAnElement() = left_defn and
+    // Handle `a, *b = some_iterable`
+    if left_defn instanceof StarredNode then result = 0 else result = 1
+    or
+    result = 1 + iterable_unpacking_descent(left_parent.getAnElement(), left_defn)
 }
 
 module Implementation {

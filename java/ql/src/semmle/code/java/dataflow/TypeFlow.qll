@@ -364,13 +364,45 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
   typeFlowJoin(lastRank(n), n, t)
 }
 
+pragma[nomagic]
+predicate erasedTypeBound(RefType t) {
+  exists(RefType t0 | typeFlow(_, t0) and t = t0.getErasure())
+}
+
+pragma[nomagic]
+predicate typeBound(RefType t) { typeFlow(_, t) }
+
+/**
+ * Holds if we have a bound for `n` that is better than `t`, taking only erased
+ * types into account.
+ */
+pragma[nomagic]
+private predicate irrelevantErasedBound(TypeFlowNode n, RefType t) {
+  exists(RefType bound |
+    typeFlow(n, bound)
+    or
+    n.getType() = bound and typeFlow(n, _)
+  |
+    t = bound.getErasure().(RefType).getASourceSupertype+() and
+    erasedTypeBound(t)
+  )
+}
+
 /**
  * Holds if we have a bound for `n` that is better than `t`.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate irrelevantBound(TypeFlowNode n, RefType t) {
-  exists(RefType bound | typeFlow(n, bound) or n.getType() = bound |
-    t = bound.getErasure().(RefType).getASourceSupertype+()
+  exists(RefType bound |
+    typeFlow(n, bound) and
+    t = bound.getASupertype+() and
+    typeBound(t) and
+    typeFlow(n, t) and
+    not t.getASupertype*() = bound
+    or
+    n.getType() = bound and
+    typeFlow(n, t) and
+    t = bound.getASupertype*()
   )
 }
 
@@ -380,7 +412,8 @@ private predicate irrelevantBound(TypeFlowNode n, RefType t) {
  */
 private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   typeFlow(n, t) and
-  not irrelevantBound(n, t.getErasure())
+  not irrelevantErasedBound(n, t.getErasure()) and
+  not irrelevantBound(n, t)
 }
 
 cached

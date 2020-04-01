@@ -4,4 +4,6 @@
 
 import python
 
- select count(Comprehension c | count(c.toString()) != 1 or count(c.getLocation()) != 1 or not exists(c.getAFlowNode()))
+select count(Comprehension c |
+        count(c.toString()) != 1 or count(c.getLocation()) != 1 or not exists(c.getAFlowNode())
+    )

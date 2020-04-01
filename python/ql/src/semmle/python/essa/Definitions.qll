@@ -1,6 +1,7 @@
 import python
 
-/* Classification of variables. These should be non-overlapping and complete.
+/*
+ * Classification of variables. These should be non-overlapping and complete.
  *
  * Function local variables - Non escaping variables in a function, except 'self'
  * Self variables - The 'self' variable for a method.
@@ -11,31 +12,24 @@ import python
  * Escaping globals -- Global variables that have definitions and at least one of those definitions is in another scope.
  */
 
- /** A source language variable, to be converted into a set of SSA variables. */
+/** A source language variable, to be converted into a set of SSA variables. */
 abstract class SsaSourceVariable extends @py_variable {
-
     SsaSourceVariable() {
         /* Exclude `True`, `False` and `None` */
         not this.(Variable).getALoad() instanceof NameConstant
     }
 
     /** Gets the name of this variable */
-    string getName() {
-        variable(this, _, result)
-    }
+    string getName() { variable(this, _, result) }
 
-    Scope getScope() {
-        variable(this, result, _)
-    }
+    Scope getScope() { variable(this, result, _) }
 
     /** Gets an implicit use of this variable */
     abstract ControlFlowNode getAnImplicitUse();
 
     abstract ControlFlowNode getScopeEntryDefinition();
 
-    string toString() {
-        result = "SsaSourceVariable " + this.getName()
-    }
+    string toString() { result = "SsaSourceVariable " + this.getName() }
 
     /** Gets a use of this variable, either explicit or implicit. */
     ControlFlowNode getAUse() {
@@ -43,14 +37,18 @@ abstract class SsaSourceVariable extends @py_variable {
         or
         result = this.getAnImplicitUse()
         or
-        /* `import *` is a definition of *all* variables, so must be a use as well, for pass-through
+        /*
+         * `import *` is a definition of *all* variables, so must be a use as well, for pass-through
          * once we have established that a variable is not redefined.
          */
+
         SsaSource::import_star_refinement(this, result, _)
         or
-        /* Add a use at the end of scope for all variables to keep them live 
+        /*
+         * Add a use at the end of scope for all variables to keep them live
          * This is necessary for taint-tracking.
          */
+
         result = this.getScope().getANormalExit()
     }
 
@@ -73,15 +71,18 @@ abstract class SsaSourceVariable extends @py_variable {
         SsaSource::with_definition(this, def)
     }
 
-    /** Holds if `def` defines an ESSA variable for this variable in such a way
+    /**
+     * Holds if `def` defines an ESSA variable for this variable in such a way
      * that the new variable is a refinement in some way of the variable used at `use`.
      */
     predicate hasRefinement(ControlFlowNode use, ControlFlowNode def) {
-        this.hasDefiningNode(_) and /* Can't have a refinement unless there is a definition */
+        this.hasDefiningNode(_) and
+        /* Can't have a refinement unless there is a definition */
         refinement(this, use, def)
     }
 
-    /** Holds if the edge `pred`->`succ` defines an ESSA variable for this variable in such a way
+    /**
+     * Holds if the edge `pred`->`succ` defines an ESSA variable for this variable in such a way
      * that the new variable is a refinement in some way of the variable used at `use`.
      */
     predicate hasRefinementEdge(ControlFlowNode use, BasicBlock pred, BasicBlock succ) {
@@ -100,7 +101,6 @@ abstract class SsaSourceVariable extends @py_variable {
     }
 
     abstract CallNode redefinedAtCallSite();
-
 }
 
 private predicate refinement(SsaSourceVariable v, ControlFlowNode use, ControlFlowNode def) {
@@ -119,9 +119,7 @@ private predicate refinement(SsaSourceVariable v, ControlFlowNode use, ControlFl
     def = v.redefinedAtCallSite() and def = use
 }
 
-
 class FunctionLocalVariable extends SsaSourceVariable {
-
     FunctionLocalVariable() {
         this.(LocalVariable).getScope() instanceof Function and
         not this instanceof NonLocalVariable
@@ -132,8 +130,7 @@ class FunctionLocalVariable extends SsaSourceVariable {
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
-        exists(Scope s |
-            s.getEntryNode() = result |
+        exists(Scope s | s.getEntryNode() = result |
             s = this.(LocalVariable).getScope() and
             not this.(LocalVariable).isParameter()
             or
@@ -143,11 +140,9 @@ class FunctionLocalVariable extends SsaSourceVariable {
     }
 
     override CallNode redefinedAtCallSite() { none() }
-
 }
 
 class NonLocalVariable extends SsaSourceVariable {
-
     NonLocalVariable() {
         exists(Function f |
             this.(LocalVariable).getScope() = f and
@@ -169,37 +164,27 @@ class NonLocalVariable extends SsaSourceVariable {
         this.(LocalVariable).getScope().getEntryNode() = result
     }
 
-    pragma [noinline]
-    Scope scope_as_local_variable() {
-        result = this.(LocalVariable).getScope()
-    }
+    pragma[noinline]
+    Scope scope_as_local_variable() { result = this.(LocalVariable).getScope() }
 
     override CallNode redefinedAtCallSite() {
         result.getScope().getScope*() = this.scope_as_local_variable()
     }
-
 }
 
 class ClassLocalVariable extends SsaSourceVariable {
+    ClassLocalVariable() { this.(LocalVariable).getScope() instanceof Class }
 
-    ClassLocalVariable() {
-        this.(LocalVariable).getScope() instanceof Class
-    }
-
-    override ControlFlowNode getAnImplicitUse() {
-        none()
-    }
+    override ControlFlowNode getAnImplicitUse() { none() }
 
     override ControlFlowNode getScopeEntryDefinition() {
         result = this.(LocalVariable).getScope().getEntryNode()
     }
 
     override CallNode redefinedAtCallSite() { none() }
-
 }
 
 class BuiltinVariable extends SsaSourceVariable {
-
     BuiltinVariable() {
         this instanceof GlobalVariable and
         not exists(this.(Variable).getAStore()) and
@@ -208,20 +193,14 @@ class BuiltinVariable extends SsaSourceVariable {
         not exists(ImportStar is | is.getScope() = this.(Variable).getScope())
     }
 
-    override ControlFlowNode getAnImplicitUse() {
-        none()
-    }
+    override ControlFlowNode getAnImplicitUse() { none() }
 
-    override ControlFlowNode getScopeEntryDefinition() {
-        none()
-    }
+    override ControlFlowNode getScopeEntryDefinition() { none() }
 
     override CallNode redefinedAtCallSite() { none() }
-
 }
 
 class ModuleVariable extends SsaSourceVariable {
-
     ModuleVariable() {
         this instanceof GlobalVariable and
         (
@@ -235,10 +214,8 @@ class ModuleVariable extends SsaSourceVariable {
         )
     }
 
-    pragma [noinline]
-    CallNode global_variable_callnode() {
-        result.getScope() = this.(GlobalVariable).getScope()
-    }
+    pragma[noinline]
+    CallNode global_variable_callnode() { result.getScope() = this.(GlobalVariable).getScope() }
 
     pragma[noinline]
     ImportMemberNode global_variable_import() {
@@ -251,8 +228,7 @@ class ModuleVariable extends SsaSourceVariable {
         or
         result = global_variable_import()
         or
-        exists(ImportTimeScope scope |
-            scope.entryEdge(result, _) |
+        exists(ImportTimeScope scope | scope.entryEdge(result, _) |
             this = scope.getOuterVariable(_) or
             this.(Variable).getAUse().getScope() = scope
         )
@@ -264,14 +240,14 @@ class ModuleVariable extends SsaSourceVariable {
         )
         or
         exists(ImportTimeScope s |
-            result = s.getANormalExit() and this.(Variable).getScope() = s and
+            result = s.getANormalExit() and
+            this.(Variable).getScope() = s and
             implicit_definition(this)
         )
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
-        exists(Scope s |
-            s.getEntryNode() = result |
+        exists(Scope s | s.getEntryNode() = result |
             /* Module entry point */
             this.(GlobalVariable).getScope() = s
             or
@@ -282,31 +258,28 @@ class ModuleVariable extends SsaSourceVariable {
             this.(GlobalVariable).getAUse().getScope() = s
         )
         or
-        exists(ImportTimeScope scope |
-            scope.entryEdge(_, result) |
+        exists(ImportTimeScope scope | scope.entryEdge(_, result) |
             this = scope.getOuterVariable(_) or
             this.(Variable).getAUse().getScope() = scope
         )
     }
 
     override CallNode redefinedAtCallSite() { none() }
-
 }
 
 class NonEscapingGlobalVariable extends ModuleVariable {
-
     NonEscapingGlobalVariable() {
         this instanceof GlobalVariable and
         exists(this.(Variable).getAStore()) and
         not variable_or_attribute_defined_out_of_scope(this)
     }
-
 }
 
 class EscapingGlobalVariable extends ModuleVariable {
-
     EscapingGlobalVariable() {
-        this instanceof GlobalVariable and exists(this.(Variable).getAStore()) and variable_or_attribute_defined_out_of_scope(this)
+        this instanceof GlobalVariable and
+        exists(this.(Variable).getAStore()) and
+        variable_or_attribute_defined_out_of_scope(this)
     }
 
     override ControlFlowNode getAnImplicitUse() {
@@ -328,36 +301,25 @@ class EscapingGlobalVariable extends ModuleVariable {
         result = this.innerScope().getEntryNode()
     }
 
-    pragma [noinline]
-    Scope scope_as_global_variable() {
-        result = this.(GlobalVariable).getScope()
-    }
+    pragma[noinline]
+    Scope scope_as_global_variable() { result = this.(GlobalVariable).getScope() }
 
     override CallNode redefinedAtCallSite() {
         result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
-
 }
 
 class EscapingAssignmentGlobalVariable extends EscapingGlobalVariable {
-
     EscapingAssignmentGlobalVariable() {
         exists(NameNode n | n.defines(this) and not n.getScope() = this.getScope())
     }
-
 }
 
-
 class SpecialSsaSourceVariable extends SsaSourceVariable {
-
-    SpecialSsaSourceVariable() {
-        variable(this, _, "*") or variable(this, _, "$")
-    }
+    SpecialSsaSourceVariable() { variable(this, _, "*") or variable(this, _, "$") }
 
     override ControlFlowNode getAnImplicitUse() {
-        exists(ImportTimeScope s |
-            result = s.getANormalExit() and this.getScope() = s
-        )
+        exists(ImportTimeScope s | result = s.getANormalExit() and this.getScope() = s)
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
@@ -365,31 +327,31 @@ class SpecialSsaSourceVariable extends SsaSourceVariable {
         this.getScope().getEntryNode() = result
     }
 
-    pragma [noinline]
-    Scope scope_as_global_variable() {
-        result = this.(GlobalVariable).getScope()
-    }
+    pragma[noinline]
+    Scope scope_as_global_variable() { result = this.(GlobalVariable).getScope() }
 
     override CallNode redefinedAtCallSite() {
         result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
-
 }
 
 /** Holds if this variable is implicitly defined */
 private predicate implicit_definition(Variable v) {
-    v.getId() = "*" or v.getId() = "$"
-    or
+    v.getId() = "*" or
+    v.getId() = "$" or
     exists(ImportStar is | is.getScope() = v.getScope())
 }
 
 private predicate variable_or_attribute_defined_out_of_scope(Variable v) {
     exists(NameNode n | n.defines(v) and not n.getScope() = v.getScope())
     or
-    exists(AttrNode a | a.isStore() and a.getObject() = v.getAUse() and not a.getScope() = v.getScope())
+    exists(AttrNode a |
+        a.isStore() and a.getObject() = v.getAUse() and not a.getScope() = v.getScope()
+    )
 }
 
 private predicate class_with_global_metaclass(Class cls, GlobalVariable metaclass) {
-    metaclass.getId() = "__metaclass__" and major_version() = 2 and
+    metaclass.getId() = "__metaclass__" and
+    major_version() = 2 and
     cls.getEnclosingModule() = metaclass.getScope()
 }

@@ -1,5 +1,4 @@
 import python
-
 import semmle.python.security.Exceptions
 import semmle.python.web.HttpResponse
 

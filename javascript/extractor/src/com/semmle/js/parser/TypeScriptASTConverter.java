@@ -2,9 +2,7 @@ package com.semmle.js.parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -163,10 +161,7 @@ import com.semmle.util.data.IntList;
  */
 public class TypeScriptASTConverter {
   private String source;
-  private final JsonObject nodeFlags;
-  private final JsonObject syntaxKinds;
-  private final Map<Integer, String> nodeFlagMap = new LinkedHashMap<>();
-  private final Map<Integer, String> syntaxKindMap = new LinkedHashMap<>();
+  private final TypeScriptParserMetadata metadata;
   private int[] lineStarts;
 
   private int syntaxKindExtends;
@@ -180,22 +175,9 @@ public class TypeScriptASTConverter {
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
-  TypeScriptASTConverter(JsonObject nodeFlags, JsonObject syntaxKinds) {
-    this.nodeFlags = nodeFlags;
-    this.syntaxKinds = syntaxKinds;
-    makeEnumIdMap(nodeFlags, nodeFlagMap);
-    makeEnumIdMap(syntaxKinds, syntaxKindMap);
-    this.syntaxKindExtends = getSyntaxKind("ExtendsKeyword");
-  }
-
-  /** Builds a mapping from ID to name given a TypeScript enum object. */
-  private void makeEnumIdMap(JsonObject enumObject, Map<Integer, String> idToName) {
-    for (Map.Entry<String, JsonElement> entry : enumObject.entrySet()) {
-      JsonPrimitive prim = entry.getValue().getAsJsonPrimitive();
-      if (prim.isNumber() && !idToName.containsKey(prim.getAsInt())) {
-        idToName.put(prim.getAsInt(), entry.getKey());
-      }
-    }
+  TypeScriptASTConverter(TypeScriptParserMetadata metadata) {
+    this.metadata = metadata;
+    this.syntaxKindExtends = metadata.getSyntaxKindId("ExtendsKeyword");
   }
 
   /**
@@ -1617,7 +1599,7 @@ public class TypeScriptASTConverter {
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
     String keywordKind =
-        syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+        metadata.getSyntaxKindName(node.getAsJsonPrimitive("keywordToken").getAsInt());
     String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
         new Position(
@@ -1995,7 +1977,7 @@ public class TypeScriptASTConverter {
 
   private String getOperator(JsonObject node) throws ParseError {
     int operatorId = node.get("operator").getAsInt();
-    switch (syntaxKindMap.get(operatorId)) {
+    switch (metadata.getSyntaxKindName(operatorId)) {
       case "PlusPlusToken":
         return "++";
       case "MinusMinusToken":
@@ -2219,7 +2201,7 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTypeOperator(JsonObject node, SourceLocation loc) throws ParseError {
-    String operator = syntaxKinds.get("" + node.get("operator").getAsInt()).getAsString();
+    String operator = metadata.getSyntaxKindName(node.get("operator").getAsInt());
     if (operator.equals("KeyOfKeyword")) {
       return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Keyof, convertChildAsType(node, "type"));
     }
@@ -2537,27 +2519,12 @@ public class TypeScriptASTConverter {
    * <tt>ts.NodeFlags</tt> in enum.
    */
   private boolean hasFlag(JsonObject node, String flagName) {
-    JsonElement flagDescriptor = this.nodeFlags.get(flagName);
-    if (flagDescriptor == null) {
-      throw new RuntimeException(
-          "Incompatible version of TypeScript installed. Missing node flag " + flagName);
-    }
-    int flagId = flagDescriptor.getAsInt();
+    int flagId = metadata.getNodeFlagId(flagName);
     JsonElement flags = node.get("flags");
     if (flags instanceof JsonPrimitive) {
       return (flags.getAsInt() & flagId) != 0;
     }
     return false;
-  }
-
-  /** Gets the numeric value of the syntax kind enum with the given name. */
-  private int getSyntaxKind(String syntaxKind) {
-    JsonElement descriptor = this.syntaxKinds.get(syntaxKind);
-    if (descriptor == null) {
-      throw new RuntimeException(
-          "Incompatible version of TypeScript installed. Missing syntax kind " + syntaxKind);
-    }
-    return descriptor.getAsInt();
   }
 
   /** Check whether a node has a child with a given name. */
@@ -2581,7 +2548,7 @@ public class TypeScriptASTConverter {
     if (node instanceof JsonObject) {
       JsonElement kind = ((JsonObject) node).get("kind");
       if (kind instanceof JsonPrimitive && ((JsonPrimitive) kind).isNumber())
-        return syntaxKindMap.get(kind.getAsInt());
+        return metadata.getSyntaxKindName(kind.getAsInt());
     }
     return null;
   }

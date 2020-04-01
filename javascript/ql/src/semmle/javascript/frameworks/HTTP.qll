@@ -271,7 +271,7 @@ module HTTP {
      */
     abstract class StandardRouteHandler extends RouteHandler {
       override HeaderDefinition getAResponseHeader(string name) {
-        result.(StandardHeaderDefinition).getRouteHandler() = this and
+        result.getRouteHandler() = this and
         result.getAHeaderName() = name
       }
 

@@ -364,6 +364,11 @@ CppPRValueType getIntType() {
 CppPRValueType getBoolType() { exists(BoolType type | result.hasType(type, false)) }
 
 /**
+ * Gets the `CppType` that represents a glvalue of type `bool`.
+ */
+CppType getBoolGLValueType() { exists(BoolType type | result.hasType(type, true)) }
+
+/**
  * Gets the `CppType` that represents a glvalue of function type.
  */
 CppFunctionGLValueType getFunctionGLValueType() { any() }

@@ -41,7 +41,5 @@ class TestConfig extends TaintTracking::Configuration {
         source instanceof DictSource
     }
 
-    override predicate isSink(TaintTracking::Sink sink) {
-        none()
-    }
+    override predicate isSink(TaintTracking::Sink sink) { none() }
 }

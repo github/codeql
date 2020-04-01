@@ -325,3 +325,27 @@ function test2() {
   // OK
   $('myId').html(target.length)
 }
+
+function getTaintedUrl() {
+  return new URL(document.location);
+}
+
+function URLPseudoProperties() {
+  // NOT OK
+  let params = getTaintedUrl().searchParams;
+  $('name').html(params.get('name'));
+
+  // OK (.get is not defined on a URL)
+  let myUrl = getTaintedUrl();
+  $('name').html(myUrl.get('name'));
+
+}
+
+
+function hash() {
+  function getUrl() {
+    return new URL(document.location);
+  }
+  $(getUrl().hash.substring(1)); // NOT OK
+
+}
