@@ -2020,7 +2020,12 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
   override BuiltInOperation expr;
 
   TranslatedBuiltInOperation() {
-    not expr instanceof BuiltInOperationBuiltInAddressOf // Handled specially
+    // The following expressions are handled specially.
+    not expr instanceof BuiltInOperationBuiltInAddressOf and
+    not expr instanceof BuiltInVarArgsStart and
+    not expr instanceof BuiltInVarArg and
+    not expr instanceof BuiltInVarArgsEnd and
+    not expr instanceof BuiltInVarArgCopy
   }
 
   final override Instruction getResult() { result = getInstruction(OnlyInstructionTag()) }
@@ -2075,39 +2080,318 @@ class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
 }
 
 /**
- * The IR translation of a `BuiltInVarArgsStart` expression.
+ * Holds if the expression `expr` is one of the `va_list` operands to a `va_*` macro.
  */
-class TranslatedVarArgsStart extends TranslatedBuiltInOperation {
-  override BuiltInVarArgsStart expr;
-
-  final override Opcode getOpcode() { result instanceof Opcode::VarArgsStart }
+private predicate isVAListExpr(Expr expr) {
+  exists(VarArgsExpr parent, Expr originalExpr |
+    (
+      originalExpr = parent.(BuiltInVarArgsStart).getVAList()
+      or
+      originalExpr = parent.(BuiltInVarArgsEnd).getVAList()
+      or
+      originalExpr = parent.(BuiltInVarArg).getVAList()
+      or
+      originalExpr = parent.(BuiltInVarArgCopy).getSourceVAList()
+      or
+      originalExpr = parent.(BuiltInVarArgCopy).getDestinationVAList()
+    ) and
+    expr = originalExpr.getFullyConverted()
+  )
 }
 
 /**
- * The IR translation of a `BuiltInVarArgsEnd` expression.
+ * Gets the type of the `va_list` being accessed by `expr`, where `expr` is a `va_list` operand of a
+ * `va_*` macro.
+ *
+ * In the Unix ABI, `va_list` is declared as `typedef struct __va_list_tag va_list[1];`. When used
+ * as the type of a local variable, this gets an implicit array-to-pointer conversion, so that the
+ * actual argument to the `va_*` macro is a prvalue of type `__va_list_tag*`. When used as the type
+ * of a function parameter, the parameter's type decays to `__va_list_tag*`, so that the argument
+ * to the `va_*` macro is still a prvalue of type `__va_list_tag*`, with no implicit conversion
+ * necessary. In either case, we treat `__va_list_tag` as the representative type of the `va_list`.
+ *
+ * In the Windows ABI, `va_list` is declared as a pointer type (usually `char*`). Whether used as
+ * the type of a local variable or of a parameter, this means that the argument to the `va_*` macro
+ * is always an _lvalue_ of type `char*`. We treat `char*` as the representative type of the
+ * `va_list`.
  */
-class TranslatedVarArgsEnd extends TranslatedBuiltInOperation {
-  override BuiltInVarArgsEnd expr;
+private Type getVAListType(Expr expr) {
+  isVAListExpr(expr) and
+  if expr.isPRValueCategory()
+  then
+    // In the Unix ABI, this will be a prvalue of type `__va_list_tag*`. We want the `__va_list_tag`
+    // type.
+    result = expr.getType().getUnderlyingType().(PointerType).getBaseType()
+  else
+    // In the Windows ABI, this will be an lvalue of some pointer type. We want that pointer type.
+    result = expr.getType()
+}
 
-  final override Opcode getOpcode() { result instanceof Opcode::VarArgsEnd }
+/**
+ * The IR translation of a `BuiltInVarArgsStart` expression.
+ */
+class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
+  override BuiltInVarArgsStart expr;
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = VarArgsStartEllipsisAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getEllipsisVariableGLValueType()
+    or
+    tag = VarArgsStartTag() and
+    opcode instanceof Opcode::VarArgsStart and
+    resultType = getTypeForPRValue(getVAListType(expr.getVAList().getFullyConverted()))
+    or
+    tag = VarArgsVAListStoreTag() and
+    opcode instanceof Opcode::Store and
+    resultType = getTypeForPRValue(getVAListType(expr.getVAList().getFullyConverted()))
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = getInstruction(VarArgsStartEllipsisAddressTag())
+  }
+
+  final override Instruction getResult() { none() }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = getVAList() }
+
+  private TranslatedExpr getVAList() {
+    result = getTranslatedExpr(expr.getVAList().getFullyConverted())
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = VarArgsStartEllipsisAddressTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(VarArgsStartTag())
+    or
+    tag = VarArgsStartTag() and
+    kind instanceof GotoEdge and
+    result = getVAList().getFirstInstruction()
+    or
+    tag = VarArgsVAListStoreTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getVAList() and
+    result = getInstruction(VarArgsVAListStoreTag())
+  }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = VarArgsStartEllipsisAddressTag() and
+    result = getEnclosingFunction().getEllipsisVariable()
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = VarArgsStartTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getInstruction(VarArgsStartEllipsisAddressTag())
+    or
+    tag = VarArgsVAListStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and result = getVAList().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and result = getInstruction(VarArgsStartTag())
+    )
+  }
 }
 
 /**
  * The IR translation of a `BuiltInVarArg` expression.
  */
-class TranslatedVarArg extends TranslatedBuiltInOperation {
+class TranslatedVarArg extends TranslatedNonConstantExpr {
   override BuiltInVarArg expr;
 
-  final override Opcode getOpcode() { result instanceof Opcode::VarArg }
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = VarArgsVAListLoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(getVAListType(expr.getVAList().getFullyConverted()))
+    or
+    tag = VarArgsArgAddressTag() and
+    opcode instanceof Opcode::VarArg and
+    resultType = getResultType()
+    or
+    tag = VarArgsMoveNextTag() and
+    opcode instanceof Opcode::NextVarArg and
+    resultType = getTypeForPRValue(getVAListType(expr.getVAList().getFullyConverted()))
+    or
+    tag = VarArgsVAListStoreTag() and
+    opcode instanceof Opcode::Store and
+    resultType = getTypeForPRValue(getVAListType(expr.getVAList().getFullyConverted()))
+  }
+
+  final override Instruction getFirstInstruction() { result = getVAList().getFirstInstruction() }
+
+  final override Instruction getResult() { result = getInstruction(VarArgsArgAddressTag()) }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = getVAList() }
+
+  private TranslatedExpr getVAList() {
+    result = getTranslatedExpr(expr.getVAList().getFullyConverted())
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = VarArgsVAListLoadTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(VarArgsArgAddressTag())
+    or
+    tag = VarArgsArgAddressTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(VarArgsMoveNextTag())
+    or
+    tag = VarArgsMoveNextTag() and
+    kind instanceof GotoEdge and
+    result = getInstruction(VarArgsVAListStoreTag())
+    or
+    tag = VarArgsVAListStoreTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getVAList() and
+    result = getInstruction(VarArgsVAListLoadTag())
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = VarArgsVAListLoadTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getVAList().getResult()
+      or
+      operandTag instanceof LoadOperandTag and
+      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+    )
+    or
+    tag = VarArgsArgAddressTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getInstruction(VarArgsVAListLoadTag())
+    or
+    tag = VarArgsMoveNextTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getInstruction(VarArgsVAListLoadTag())
+    or
+    tag = VarArgsVAListStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and result = getVAList().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and result = getInstruction(VarArgsMoveNextTag())
+    )
+  }
+}
+
+/**
+ * The IR translation of a `BuiltInVarArgsEnd` expression.
+ */
+class TranslatedVarArgsEnd extends TranslatedNonConstantExpr {
+  override BuiltInVarArgsEnd expr;
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::VarArgsEnd and
+    resultType = getVoidType()
+  }
+
+  final override Instruction getFirstInstruction() { result = getVAList().getFirstInstruction() }
+
+  final override Instruction getResult() { none() }
+
+  final override TranslatedElement getChild(int id) { id = 0 and result = getVAList() }
+
+  private TranslatedExpr getVAList() {
+    result = getTranslatedExpr(expr.getVAList().getFullyConverted())
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getVAList() and
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getVAList().getResult()
+  }
 }
 
 /**
  * The IR translation of a `BuiltInVarArgCopy` expression.
  */
-class TranslatedVarArgCopy extends TranslatedBuiltInOperation {
+class TranslatedVarArgCopy extends TranslatedNonConstantExpr {
   override BuiltInVarArgCopy expr;
 
-  final override Opcode getOpcode() { result instanceof Opcode::VarArgCopy }
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = VarArgsVAListLoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(getVAListType(expr.getSourceVAList().getFullyConverted()))
+    or
+    tag = VarArgsVAListStoreTag() and
+    opcode instanceof Opcode::Store and
+    resultType = getTypeForPRValue(getVAListType(expr.getDestinationVAList().getFullyConverted()))
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = getSourceVAList().getFirstInstruction()
+  }
+
+  final override Instruction getResult() { result = getInstruction(VarArgsVAListStoreTag()) }
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = getDestinationVAList()
+    or
+    id = 1 and result = getSourceVAList()
+  }
+
+  private TranslatedExpr getDestinationVAList() {
+    result = getTranslatedExpr(expr.getDestinationVAList().getFullyConverted())
+  }
+
+  private TranslatedExpr getSourceVAList() {
+    result = getTranslatedExpr(expr.getSourceVAList().getFullyConverted())
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = VarArgsVAListLoadTag() and
+    kind instanceof GotoEdge and
+    result = getDestinationVAList().getFirstInstruction()
+    or
+    tag = VarArgsVAListStoreTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getSourceVAList() and
+    result = getInstruction(VarArgsVAListLoadTag())
+    or
+    child = getDestinationVAList() and
+    result = getInstruction(VarArgsVAListStoreTag())
+  }
+
+  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = VarArgsVAListLoadTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = getSourceVAList().getResult()
+      or
+      operandTag instanceof LoadOperandTag and
+      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+    )
+    or
+    tag = VarArgsVAListStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and result = getDestinationVAList().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and result = getInstruction(VarArgsVAListLoadTag())
+    )
+  }
 }
 
 /**

@@ -66,6 +66,29 @@ private module Cached {
   }
 
   cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+    or
+    // Chi instructions track virtual variables, and therefore a chi instruction is
+    // conflated if it's associated with the aliased virtual variable.
+    exists(OldInstruction oldInstruction | instruction = Chi(oldInstruction) |
+      Alias::getResultMemoryLocation(oldInstruction).getVirtualVariable() instanceof
+        Alias::AliasedVirtualVariable
+    )
+    or
+    // Phi instructions track locations, and therefore a phi instruction is
+    // conflated if it's associated with a conflated location.
+    exists(Alias::MemoryLocation location |
+      instruction = Phi(_, location) and
+      not exists(location.getAllocation())
+    )
+  }
+
+  cached
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
     exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
       oldInstruction = getOldInstruction(instruction) and
@@ -84,14 +107,15 @@ private module Cached {
     oldOperand instanceof OldIR::NonPhiMemoryOperand and
     exists(
       OldBlock useBlock, int useRank, Alias::MemoryLocation useLocation,
-      Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset
+      Alias::MemoryLocation defLocation, OldBlock defBlock, int defRank, int defOffset,
+      Alias::MemoryLocation actualDefLocation
     |
       useLocation = Alias::getOperandMemoryLocation(oldOperand) and
       hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
       definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
       hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
-      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, _) and
-      overlap = Alias::getOverlap(defLocation, useLocation)
+      instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, actualDefLocation) and
+      overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
   }
 

@@ -12,6 +12,20 @@
 | sources.js:10:12:10:14 | key | sources.js:10:28:10:30 | key |
 | sources.js:11:12:11:18 | key | sources.js:11:32:11:34 | key |
 | sources.js:11:14:11:16 | key | sources.js:11:12:11:18 | key |
+| tst2.ts:1:1:1:1 | A | tst2.ts:1:18:1:18 | A |
+| tst2.ts:1:1:1:1 | A | tst2.ts:7:1:7:0 | A |
+| tst2.ts:1:8:5:1 | A | tst2.ts:7:1:7:0 | A |
+| tst2.ts:1:8:5:1 | A | tst2.ts:11:11:11:11 | A |
+| tst2.ts:1:8:5:1 | namespa ... lysed\\n} | tst2.ts:1:8:5:1 | A |
+| tst2.ts:2:14:2:19 | x | tst2.ts:4:3:4:3 | x |
+| tst2.ts:2:18:2:19 | 42 | tst2.ts:2:14:2:19 | x |
+| tst2.ts:7:1:7:0 | A | tst2.ts:8:3:8:3 | A |
+| tst2.ts:7:1:9:1 | functio ... = 23;\\n} | tst2.ts:7:10:7:13 | setX |
+| tst2.ts:7:10:7:13 | setX | tst2.ts:3:3:3:6 | setX |
+| tst2.ts:8:9:8:10 | 23 | tst2.ts:8:3:8:10 | A.x = 23 |
+| tst2.ts:11:11:11:13 | A.x | tst2.ts:11:11:11:23 | A.x as number |
+| tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
+| tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst.js:1:1:1:1 | x | tst.js:28:2:28:1 | x |
 | tst.js:1:1:1:1 | x | tst.js:32:1:32:0 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -147,17 +161,3 @@
 | tst.js:111:29:111:31 | o2c | tst.js:111:6:111:38 | v2c |
 | tst.js:111:36:111:38 | o2d | tst.js:111:6:111:32 | [v2a, v ...  = o2c] |
 | tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | Array.call() |
-| tst.ts:1:1:1:1 | A | tst.ts:1:18:1:18 | A |
-| tst.ts:1:1:1:1 | A | tst.ts:7:1:7:0 | A |
-| tst.ts:1:8:5:1 | A | tst.ts:7:1:7:0 | A |
-| tst.ts:1:8:5:1 | A | tst.ts:11:11:11:11 | A |
-| tst.ts:1:8:5:1 | namespa ... lysed\\n} | tst.ts:1:8:5:1 | A |
-| tst.ts:2:14:2:19 | x | tst.ts:4:3:4:3 | x |
-| tst.ts:2:18:2:19 | 42 | tst.ts:2:14:2:19 | x |
-| tst.ts:7:1:7:0 | A | tst.ts:8:3:8:3 | A |
-| tst.ts:7:1:9:1 | functio ... = 23;\\n} | tst.ts:7:10:7:13 | setX |
-| tst.ts:7:10:7:13 | setX | tst.ts:3:3:3:6 | setX |
-| tst.ts:8:9:8:10 | 23 | tst.ts:8:3:8:10 | A.x = 23 |
-| tst.ts:11:11:11:13 | A.x | tst.ts:11:11:11:23 | A.x as number |
-| tst.ts:13:26:13:29 | List | tst.ts:13:26:13:37 | List<string> |
-| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |

@@ -16,6 +16,9 @@
 import python
 
 from FunctionObject method
-where exists(ClassObject c | c.declaredAttribute("__del__") = method and
-method.getFunction().getMetrics().getCyclomaticComplexity() > 3)
+where
+    exists(ClassObject c |
+        c.declaredAttribute("__del__") = method and
+        method.getFunction().getMetrics().getCyclomaticComplexity() > 3
+    )
 select method, "Overly complex '__del__' method."

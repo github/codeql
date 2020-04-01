@@ -13,21 +13,18 @@
 
 import python
 
-predicate
-empty_except(ExceptStmt ex) {
+predicate empty_except(ExceptStmt ex) {
     not exists(Stmt s | s = ex.getAStmt() and not s instanceof Pass)
 }
 
-predicate no_else(ExceptStmt ex) {
-    not exists(ex.getTry().getOrelse())
-}
+predicate no_else(ExceptStmt ex) { not exists(ex.getTry().getOrelse()) }
 
 predicate no_comment(ExceptStmt ex) {
-   not exists(Comment c |
-      c.getLocation().getFile() = ex.getLocation().getFile() and
-      c.getLocation().getStartLine() >= ex.getLocation().getStartLine() and
-      c.getLocation().getEndLine() <= ex.getBody().getLastItem().getLocation().getEndLine()
-   )
+    not exists(Comment c |
+        c.getLocation().getFile() = ex.getLocation().getFile() and
+        c.getLocation().getStartLine() >= ex.getLocation().getStartLine() and
+        c.getLocation().getEndLine() <= ex.getBody().getLastItem().getLocation().getEndLine()
+    )
 }
 
 predicate non_local_control_flow(ExceptStmt ex) {
@@ -38,7 +35,8 @@ predicate try_has_normal_exit(Try try) {
     exists(ControlFlowNode pred, ControlFlowNode succ |
         /* Exists a non-exception predecessor, successor pair */
         pred.getASuccessor() = succ and
-        not pred.getAnExceptionalSuccessor() = succ |
+        not pred.getAnExceptionalSuccessor() = succ
+    |
         /* Successor is either a normal flow node or a fall-through exit */
         not exists(Scope s | s.getReturnNode() = succ) and
         /* Predecessor is in try body and successor is not */
@@ -50,8 +48,7 @@ predicate try_has_normal_exit(Try try) {
 predicate attribute_access(Stmt s) {
     s.(ExprStmt).getValue() instanceof Attribute
     or
-    exists(string name |
-        s.(ExprStmt).getValue().(Call).getFunc().(Name).getId() = name |
+    exists(string name | s.(ExprStmt).getValue().(Call).getFunc().(Name).getId() = name |
         name = "getattr" or name = "setattr" or name = "delattr"
     )
     or
@@ -65,8 +62,7 @@ predicate subscript(Stmt s) {
 }
 
 predicate encode_decode(Call ex, ClassValue type) {
-    exists(string name |
-        ex.getFunc().(Attribute).getName() = name |
+    exists(string name | ex.getFunc().(Attribute).getName() = name |
         name = "encode" and type = ClassValue::unicodeEncodeError()
         or
         name = "decode" and type = ClassValue::unicodeDecodeError()
@@ -80,8 +76,7 @@ predicate small_handler(ExceptStmt ex, Stmt s, ClassValue type) {
 }
 
 predicate focussed_handler(ExceptStmt ex) {
-    exists(Stmt s, ClassValue type |
-        small_handler(ex, s, type) |
+    exists(Stmt s, ClassValue type | small_handler(ex, s, type) |
         subscript(s) and type.getASuperType() = ClassValue::lookupError()
         or
         attribute_access(s) and type = ClassValue::attributeError()
@@ -92,12 +87,15 @@ predicate focussed_handler(ExceptStmt ex) {
     )
 }
 
-Try try_return() {
-   not exists(result.getStmt(1)) and result.getStmt(0) instanceof Return
-}
+Try try_return() { not exists(result.getStmt(1)) and result.getStmt(0) instanceof Return }
 
 from ExceptStmt ex
-where empty_except(ex) and no_else(ex) and no_comment(ex) and not non_local_control_flow(ex)
-  and not ex.getTry() = try_return() and try_has_normal_exit(ex.getTry()) and
-  not focussed_handler(ex)
+where
+    empty_except(ex) and
+    no_else(ex) and
+    no_comment(ex) and
+    not non_local_control_flow(ex) and
+    not ex.getTry() = try_return() and
+    try_has_normal_exit(ex.getTry()) and
+    not focussed_handler(ex)
 select ex, "'except' clause does nothing but pass and there is no explanatory comment."
