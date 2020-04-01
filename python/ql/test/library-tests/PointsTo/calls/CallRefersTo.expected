@@ -1,5 +1,10 @@
 | 19 | ControlFlowNode for f() | Function f |
 | 21 | ControlFlowNode for f() | Function f |
+| 22 | ControlFlowNode for C() | class C |
+| 23 | ControlFlowNode for Attribute() | Attribute |
+| 24 | ControlFlowNode for Attribute() | Attribute |
 | 25 | ControlFlowNode for Attribute() | Function n |
+| 29 | ControlFlowNode for staticmethod() | builtin-class staticmethod |
 | 33 | ControlFlowNode for Attribute() | Function foo |
 | 34 | ControlFlowNode for Attribute() | Function foo |
+| 34 | ControlFlowNode for D() | class D |
