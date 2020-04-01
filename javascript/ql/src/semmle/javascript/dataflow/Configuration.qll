@@ -576,26 +576,32 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
 
 /**
  * A collection of pseudo-properties that are used in multiple files.
- * 
- * A pseudo-property represents the location where some value is stored in an object. 
- * 
+ *
+ * A pseudo-property represents the location where some value is stored in an object.
+ *
  * For use with load/store steps in `DataFlow::AdditionalFlowStep` and TypeTracking.
  */
 module PseudoProperties {
+  bindingset[s]
+  private string pseudoProperty(string s) { result = "$" + s + "$" }
+
+  bindingset[s, v]
+  private string pseudoProperty(string s, string v) { result = "$" + s + "|" + v + "$" }
+
   /**
    * Gets a pseudo-property for the location of elements in a `Set`
    */
-  string setElement() { result = "$setElement$" }
+  string setElement() { result = pseudoProperty("setElement") }
 
   /**
    * Gets a pseudo-property for the location of elements in a JavaScript iterator.
    */
-  string iteratorElement() { result = "$iteratorElement$" }
+  string iteratorElement() { result = pseudoProperty("iteratorElement") }
 
   /**
    * Gets a pseudo-property for the location of elements in an `Array`.
    */
-  string arrayElement() { result = "$arrayElement$" }
+  string arrayElement() { result = pseudoProperty("arrayElement") }
 
   /**
    * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
@@ -605,7 +611,7 @@ module PseudoProperties {
   /**
    * Gets a pseudo-property for the location of map values, where the key is unknown.
    */
-  string mapValueUnknownKey() { result = "$UnknownMapValue$" }
+  string mapValueUnknownKey() { result = pseudoProperty("unknownMapValue") }
 
   /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.
@@ -613,7 +619,7 @@ module PseudoProperties {
    */
   pragma[inline]
   string mapValueKnownKey(DataFlow::Node key) {
-    exists(string s | key.mayHaveStringValue(s) | result = "$mapValue|" + s + "$")
+    result = pseudoProperty("mapValue", any(string s | key.mayHaveStringValue(s)))
   }
 
   /**
