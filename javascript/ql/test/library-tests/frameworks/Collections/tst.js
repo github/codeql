@@ -12,7 +12,7 @@
   })
 
   var map = new Map();
-  map.set("key", source); map.set(unknownKey(), source);
+  map.set("key", source);
   map.forEach(v => {
     sink(v);
   });
@@ -52,5 +52,19 @@
 
   sink(map.get("key")); // NOT OK.
   sink(map.get("nonExistingKey")); // OK. 
-  sink(map.get(unknownKey())); // NOT OK (for data-flow). OK for type-tracking.
+
+  // unknown write, known read
+  var map2 = new map();
+  map2.set(unknown(), source); 
+  sink(map2.get("foo")); // NOT OK (for data-flow). OK for type-tracking.
+
+  // unknown write, unknown read
+  var map3 = new map();
+  map3.set(unknown(), source); 
+  sink(map3.get(unknown())); // NOT OK (for data-flow). OK for type-tracking.
+
+  // known write, unknown read
+  var map4 = new map();
+  map4.set("foo", source); 
+  sink(map3.get(unknown())); // NOT OK (for data-flow). OK for type-tracking.
 })();

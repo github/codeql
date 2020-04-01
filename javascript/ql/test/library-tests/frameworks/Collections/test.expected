@@ -11,7 +11,9 @@ dataFlow
 | tst.js:2:16:2:23 | source() | tst.js:46:7:46:7 | e |
 | tst.js:2:16:2:23 | source() | tst.js:50:10:50:10 | e |
 | tst.js:2:16:2:23 | source() | tst.js:53:8:53:21 | map.get("key") |
-| tst.js:2:16:2:23 | source() | tst.js:55:8:55:28 | map.get ... nKey()) |
+| tst.js:2:16:2:23 | source() | tst.js:59:8:59:22 | map2.get("foo") |
+| tst.js:2:16:2:23 | source() | tst.js:64:8:64:26 | map3.get(unknown()) |
+| tst.js:2:16:2:23 | source() | tst.js:69:8:69:26 | map3.get(unknown()) |
 typeTracking
 | tst.js:2:16:2:23 | source() | tst.js:2:16:2:23 | source() |
 | tst.js:2:16:2:23 | source() | tst.js:6:14:6:14 | e |

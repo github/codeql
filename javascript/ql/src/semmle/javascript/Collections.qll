@@ -81,11 +81,6 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   ) {
     this.loadStore(pred, succ, loadProp, storeProp)
   }
-
-  /**
-   * Holds if this step on a collection can load a value with a known key.
-   */
-  predicate canLoadValueWithKnownKey() { none() }
 }
 
 /**
@@ -100,10 +95,7 @@ module CollectionsTypeTracking {
     exists(CollectionFlowStep step, PseudoProperty field |
       summary = LoadStep(field) and
       step.load(pred, result, field) and
-      not (
-        step.canLoadValueWithKnownKey() and // for a step that could load a known key,
-        field = mapValueUnknownKey() // don't load values with an unknown key.
-      )
+      not field = mapValueUnknownKey() // prune unknown reads in type-tracking
       or
       summary = StoreStep(field) and
       step.store(pred, result, field)
@@ -191,7 +183,7 @@ private module CollectionDataFlow {
     ) {
       pred = this and
       succ = element and
-      fromProp = mapValueUnknownKey() and
+      fromProp = mapValueAll() and
       toProp = "1"
     }
   }
@@ -205,7 +197,7 @@ private module CollectionDataFlow {
     override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
       obj = this.getReceiver() and
       element = this.getCallback(0).getParameter(0) and
-      prop = [setElement(), mapValueUnknownKey()]
+      prop = [setElement(), mapValueAll()]
     }
   }
 
@@ -219,10 +211,9 @@ private module CollectionDataFlow {
     override predicate load(DataFlow::Node obj, DataFlow::Node element, PseudoProperty prop) {
       obj = this.getReceiver() and
       element = this and
-      prop = mapValue(this.getArgument(0))
+      // reading the join of known and unknown values
+      (prop = mapValue(this.getArgument(0)) or prop = mapValueUnknownKey())
     }
-
-    override predicate canLoadValueWithKnownKey() { any() }
   }
 
   /**
@@ -230,7 +221,8 @@ private module CollectionDataFlow {
    *
    * If the key of the call to `set` has a known string value,
    * then the value will be saved into a pseudo-property corresponding to the known string value.
-   * The value will additionally be saved into a pseudo-property corresponding to values with unknown keys.
+   * Otherwise the value will be saved into a pseudo-property corresponding to values with unknown keys.
+   * The value will additionally be saved into a pseudo-property corresponding to all values.
    */
   class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
     MapSet() { this.getMethodName() = "set" }
@@ -246,9 +238,11 @@ private module CollectionDataFlow {
      * The pseudo-property represents both values where the key is a known string value (which is encoded in the pseudo-property),
      * and values where the key is unknown.
      *
+     * Additionally, all elements are stored into the pseudo-property `mapValueAll()`.
+     *
      * The return-type is `string` as this predicate is used to define which pseudo-properties exist.
      */
-    string getAPseudoProperty() { result = [mapValue(this.getArgument(0)), mapValueUnknownKey()] }
+    string getAPseudoProperty() { result = [mapValue(this.getArgument(0)), mapValueAll()] }
   }
 
   /**
@@ -262,7 +256,7 @@ private module CollectionDataFlow {
     ) {
       pred = this.getReceiver() and
       succ = this and
-      fromProp = [mapValueUnknownKey(), setElement()] and
+      fromProp = [mapValueAll(), setElement()] and
       toProp = iteratorElement()
     }
   }
