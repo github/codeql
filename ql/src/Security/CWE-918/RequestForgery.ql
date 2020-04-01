@@ -11,11 +11,12 @@
 
 import go
 import semmle.go.security.RequestForgery::RequestForgery
+import semmle.go.security.SafeUrlFlow
 import DataFlow::PathGraph
 
 from
-  Configuration cfg, SafeUrlConfiguration scfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-  DataFlow::Node request
+  Configuration cfg, SafeUrlFlow::Configuration scfg, DataFlow::PathNode source,
+  DataFlow::PathNode sink, DataFlow::Node request
 where
   cfg.hasFlowPath(source, sink) and
   request = sink.getNode().(Sink).getARequest() and

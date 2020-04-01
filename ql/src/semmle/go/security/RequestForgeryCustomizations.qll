@@ -3,7 +3,8 @@
  */
 
 import go
-import semmle.go.security.UrlConcatenation
+import UrlConcatenation
+import SafeUrlFlowCustomizations
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {
@@ -39,7 +40,7 @@ module RequestForgery {
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }
 
   /**
-   * The URL of a URL request, viewed as a sink for request forgery.
+   * The URL of an HTTP request, viewed as a sink for request forgery.
    */
   private class ClientRequestUrlAsSink extends Sink {
     HTTP::ClientRequest request;
@@ -57,5 +58,25 @@ module RequestForgery {
    */
   private class HostnameSanitizer extends SanitizerEdge {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
+  }
+}
+
+/** A sink for request forgery, considered as a sink for safe URL flow. */
+private class SafeUrlSink extends SafeUrlFlow::Sink {
+  SafeUrlSink() { this instanceof RequestForgery::Sink }
+}
+
+/**
+ * A read of a field considered unsafe for request forgery, considered as a sanitizer for a safe
+ * URL.
+ */
+private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
+  UnsafeFieldReadSanitizer() {
+    exists(DataFlow::FieldReadNode frn, string name |
+      (name = "RawQuery" or name = "Fragment" or name = "User") and
+      frn.getField().hasQualifiedName("net/url", "URL")
+    |
+      this = frn.getBase()
+    )
   }
 }
