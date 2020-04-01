@@ -63,9 +63,9 @@ module XPath {
           this = f.getACall().getArgument(1)
         )
         or
-        exists(Function f, string name | name.matches("Select%") |
-          f.hasQualifiedName("github.com/antchfx/xmlquery.Node", name) and
-          this = f.getACall().getArgument(0)
+        exists(Method m, string name | name.matches("Select%") |
+          m.hasQualifiedName("github.com/antchfx/xmlquery", "Node", name) and
+          this = m.getACall().getArgument(0)
         )
       }
     }
@@ -138,14 +138,14 @@ module XPath {
           this = f.getACall().getArgument(0)
         )
         or
-        exists(Function f, string name | name.matches("Search%") |
-          f.hasQualifiedName("github.com/jbowtie/gokogiri/xml.Node", name) and
-          this = f.getACall().getArgument(0)
+        exists(Method m, string name | name.matches("Search%") |
+          m.hasQualifiedName("github.com/jbowtie/gokogiri/xml", "Node", name) and
+          this = m.getACall().getArgument(0)
         )
         or
-        exists(Function f, string name | name.matches("EvalXPath%") |
-          f.hasQualifiedName("github.com/jbowtie/gokogiri/xml.Node", name) and
-          this = f.getACall().getArgument(0)
+        exists(Method m, string name | name.matches("EvalXPath%") |
+          m.hasQualifiedName("github.com/jbowtie/gokogiri/xml", "Node", name) and
+          this = m.getACall().getArgument(0)
         )
       }
     }
