@@ -3,6 +3,10 @@ QL language specification
 
 This is a formal specification for the QL language. It provides a comprehensive reference for terminology, syntax, and other technical details about QL.
 
+.. This ``highlight`` directive prevents code blocks in this file being highlighted as QL (the default language for this Sphinx project). 
+
+.. highlight:: none
+
 Introduction
 ------------
 
