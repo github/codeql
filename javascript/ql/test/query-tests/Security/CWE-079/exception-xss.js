@@ -184,3 +184,33 @@ app.get('/user/:id', function (req, res) {
 		$('myId').html(res); // NOT OK!
 	});
 });
+
+app.get('/user/:id', function (req, res) {
+	try {
+		res.send(req.params.id);
+	} catch(err) {
+		res.send(err); // OK (the above `res.send()` is already reported by js/xss)
+	}
+});
+
+var fs = require("fs");
+
+(function () {
+	var foo = document.location.search;
+
+	try {
+		// A series of functions does not throw tainted exceptions.
+		Object.assign(foo, foo)
+		_.pick(foo, foo);
+		[foo, foo].join(join);
+		$.val(foo);
+		JSON.parse(foo); 
+		/bla/.test(foo);
+		console.log(foo);
+		log.info(foo);
+		localStorage.setItem(foo);
+	} catch (e) {
+		$('myId').html(e); // OK
+	}
+	
+})();

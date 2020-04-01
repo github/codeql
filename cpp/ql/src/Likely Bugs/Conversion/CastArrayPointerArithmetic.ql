@@ -52,10 +52,7 @@ predicate introducesNewField(Class derived, Class base) {
 from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg
 where
   cfg.hasFlowPath(source, sink) and
-  source.getNode().asExpr().getFullyConverted().getUnspecifiedType() = sink
-        .getNode()
-        .asExpr()
-        .getFullyConverted()
-        .getUnspecifiedType()
+  source.getNode().asExpr().getFullyConverted().getUnspecifiedType() =
+    sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
 select sink, source, sink,
   "Pointer arithmetic here may be done with the wrong type because of the cast $@.", source, "here"

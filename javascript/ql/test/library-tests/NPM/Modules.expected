@@ -1,6 +1,7 @@
 | b | src/node_modules/b/lib/index.js:1:1:2:0 | <toplevel> |
-| b | src/node_modules/b/lib/index.ts:1:1:2:0 | <toplevel> |
+| b | src/node_modules/b/lib/util.ts:1:1:2:0 | <toplevel> |
 | c | src/node_modules/c/src/index.js:1:1:2:0 | <toplevel> |
+| d | src/node_modules/d/main.js:1:1:2:0 | <toplevel> |
 | test-package | src/index.js:1:1:4:0 | <toplevel> |
 | test-package | src/lib/tst2.js:1:1:1:14 | <toplevel> |
 | test-package | src/lib/tst.js:1:1:4:0 | <toplevel> |

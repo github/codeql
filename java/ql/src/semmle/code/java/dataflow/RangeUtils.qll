@@ -26,8 +26,6 @@ private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
 }
 
 private predicate nonNullDefStep(Expr e1, Expr e2) {
-  e2.(ParExpr).getExpr() = e1
-  or
   exists(ConditionalExpr cond | cond = e2 |
     cond.getTrueExpr() = e1 and cond.getFalseExpr() instanceof NullLiteral
     or
@@ -103,8 +101,6 @@ class ConstantIntegerExpr extends Expr {
  */
 Expr ssaRead(SsaVariable v, int delta) {
   result = v.getAUse() and delta = 0
-  or
-  result.(ParExpr).getExpr() = ssaRead(v, delta)
   or
   exists(int d1, ConstantIntegerExpr c |
     result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
@@ -264,8 +260,6 @@ predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
  * Holds if `e1 + delta` equals `e2`.
  */
 predicate valueFlowStep(Expr e2, Expr e1, int delta) {
-  e2.(ParExpr).getExpr() = e1 and delta = 0
-  or
   e2.(AssignExpr).getSource() = e1 and delta = 0
   or
   e2.(PlusExpr).getExpr() = e1 and delta = 0

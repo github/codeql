@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A function is called without a prior function declaration or definition.
+When this happens, the compiler generates an implicit declaration of the function,
+specifying an integer return type and no parameters.
+If the implicit declaration does not match the true signature of the function, the
+function may behave unpredictably.</p>
+
+<p>This may indicate a misspelled function name, or that the required header containing
+the function declaration has not been included.</p>
+
+</overview>
+<recommendation>
+<p>Provide an explicit declaration of the function before invoking it.</p>
+
+</recommendation>
+<example><sample src="ImplicitFunctionDeclaration.c" />
+
+</example>
+
+<references>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL31-C.+Declare+identifiers+before+using+them">DCL31-C. Declare identifiers before using them</a></li>
+</references>
+</qhelp>

@@ -25,7 +25,8 @@ predicate inRange(Commit first, Commit second) {
 }
 
 int recommitsForFile(File f) {
-  result = count(Commit recommit |
+  result =
+    count(Commit recommit |
       f = recommit.getAnAffectedFile() and
       exists(Commit prev | inRange(prev, recommit))
     )

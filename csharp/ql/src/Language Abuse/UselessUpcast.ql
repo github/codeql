@@ -53,7 +53,8 @@ predicate hasStaticCallable(ValueOrRefType t, StaticCallable c, string name) {
 
 /** Gets the minimum number of arguments required to call `c`. */
 int getMinimumArguments(Callable c) {
-  result = count(Parameter p |
+  result =
+    count(Parameter p |
       p = c.getAParameter() and
       not p.hasDefaultValue()
     )
@@ -182,7 +183,8 @@ class ExplicitUpcast extends ExplicitCast {
     or
     this = any(OperatorCall oc).getAnArgument()
     or
-    this = any(Operation o |
+    this =
+      any(Operation o |
         not o instanceof Assignment and
         not o instanceof UnaryBitwiseOperation and
         not o instanceof SizeofExpr and

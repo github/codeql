@@ -83,7 +83,8 @@ abstract class PreprocessorBranchDirective extends PreprocessorDirective {
    * #ifdef or #ifndef.
    */
   private int getIndexInBranch(PreprocessorBranch branch) {
-    this = rank[result](PreprocessorBranchDirective other |
+    this =
+      rank[result](PreprocessorBranchDirective other |
         other.getIf() = branch
       |
         other order by other.getLocation().getStartLine()

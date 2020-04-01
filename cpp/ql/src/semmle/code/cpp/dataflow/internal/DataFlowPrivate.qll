@@ -132,16 +132,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-/**
- * Holds if `call` passes an implicit or explicit qualifier, i.e., a
- * `this` parameter.
- */
-predicate callHasQualifier(Call call) {
-  call.hasQualifier()
-  or
-  call.getTarget() instanceof Destructor
-}
-
 private newtype TContent =
   TFieldContent(Field f) or
   TCollectionContent() or
@@ -282,8 +272,6 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = Type;
 
-class DataFlowLocation = Location;
-
 /** A function call relevant for data flow. */
 class DataFlowCall extends Expr {
   DataFlowCall() { this instanceof Call }
@@ -303,3 +291,29 @@ class DataFlowCall extends Expr {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) {
+  // Is the null pointer (or something that's not really a pointer)
+  exists(n.asExpr().getValue())
+  or
+  // Isn't a pointer or is a pointer to const
+  forall(DerivedType dt | dt = n.asExpr().getActualType() |
+    dt.getBaseType().isConst()
+    or
+    dt.getBaseType() instanceof RoutineType
+  )
+  or
+  // Isn't something we can track
+  n.asExpr() instanceof Call
+  // The above list of cases isn't exhaustive, but it narrows down the
+  // consistency alerts enough that most of them are interesting.
+}

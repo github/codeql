@@ -80,14 +80,6 @@ predicate functionArgumentMustBeNullTerminated(Function f, int i) {
   f.(ArrayFunction).hasArrayInput(i)
   or
   f instanceof StrcatFunction and i = 0
-  or
-  f.hasName("strlen") and i = 0
-  or
-  f.hasName("strcmp") and i in [0 .. 1]
-  or
-  f.hasName("strchr") and i = 0
-  or
-  f.hasName("strstr") and i in [0 .. 1]
 }
 
 /**

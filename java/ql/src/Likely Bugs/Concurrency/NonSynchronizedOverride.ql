@@ -27,8 +27,6 @@ predicate delegatingSuperCall(Expr e, Method target) {
   )
   or
   delegatingSuperCall(e.(CastExpr).getExpr(), target)
-  or
-  delegatingSuperCall(e.(ParExpr).getExpr(), target)
 }
 
 /**

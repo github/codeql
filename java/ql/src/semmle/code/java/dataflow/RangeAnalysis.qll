@@ -131,7 +131,7 @@ private predicate boundCondition(
   or
   exists(SubExpr sub, ConstantIntegerExpr c, int d |
     // (v - d) - e < c
-    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = sub and
     comp.getGreaterOperand() = c and
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
@@ -139,7 +139,7 @@ private predicate boundCondition(
     delta = d + c.getIntValue()
     or
     // (v - d) - e > c
-    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = sub and
     comp.getLesserOperand() = c and
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
@@ -147,7 +147,7 @@ private predicate boundCondition(
     delta = d + c.getIntValue()
     or
     // e - (v - d) < c
-    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = sub and
     comp.getGreaterOperand() = c and
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and
@@ -155,7 +155,7 @@ private predicate boundCondition(
     delta = d - c.getIntValue()
     or
     // e - (v - d) > c
-    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = sub and
     comp.getLesserOperand() = c and
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and

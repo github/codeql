@@ -243,7 +243,8 @@ class Require extends CallExpr, Import {
   private File load(int priority) {
     exists(int r | getEnclosingModule().searchRoot(getImportedPath(), _, r) |
       result = loadAsFile(this, r, priority - prioritiesPerCandidate() * r) or
-      result = loadAsDirectory(this, r,
+      result =
+        loadAsDirectory(this, r,
           priority - (prioritiesPerCandidate() * r + numberOfExtensions() + 1))
     )
   }

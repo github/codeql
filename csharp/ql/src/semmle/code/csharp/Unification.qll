@@ -154,7 +154,8 @@ module Gvn {
     string toString() {
       exists(CompoundTypeKind k, string args |
         k = this.getKind() and
-        args = concat(int i |
+        args =
+          concat(int i |
             i in [0 .. k.getNumberOfTypeParameters() - 1]
           |
             this.getArg(i).toString(), "," order by i

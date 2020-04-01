@@ -733,7 +733,7 @@ indexers.cs:
 #    8|     mu8_3(<unknown>)       = UnmodeledDefinition        : 
 #    8|     r8_4(glval<MyClass>)   = InitializeThis             : 
 #    6|     r6_1(glval<Int32>)     = VariableAddress[index]     : 
-#    6|     mu6_3(Int32)           = InitializeParameter[index] : &:r6_1
+#    6|     mu6_2(Int32)           = InitializeParameter[index] : &:r6_1
 #   10|     r10_1(glval<String>)   = VariableAddress[#return]   : 
 #   10|     r10_2(MyClass)         = CopyValue                  : r8_4
 #   10|     r10_3(glval<String[]>) = FieldAddress[address]      : r10_2
@@ -756,7 +756,7 @@ indexers.cs:
 #   12|     mu12_3(<unknown>)      = UnmodeledDefinition        : 
 #   12|     r12_4(glval<MyClass>)  = InitializeThis             : 
 #    6|     r6_1(glval<Int32>)     = VariableAddress[index]     : 
-#    6|     mu6_3(Int32)           = InitializeParameter[index] : &:r6_1
+#    6|     mu6_2(Int32)           = InitializeParameter[index] : &:r6_1
 #   12|     r12_5(glval<String>)   = VariableAddress[value]     : 
 #   12|     mu12_6(String)         = InitializeParameter[value] : &:r12_5
 #   14|     r14_1(glval<String>)   = VariableAddress[value]     : 

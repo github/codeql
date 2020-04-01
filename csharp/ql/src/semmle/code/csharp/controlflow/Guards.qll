@@ -180,7 +180,8 @@ module AbstractValues {
     }
 
     override MatchValue getDualValue() {
-      result = any(MatchValue mv |
+      result =
+        any(MatchValue mv |
           mv.getCase() = this.getCase() and
           if this.isMatch() then not mv.isMatch() else mv.isMatch()
         )
@@ -310,7 +311,8 @@ class DereferenceableExpr extends Expr {
         isNull = false
       )
       or
-      result = any(PatternMatch pm |
+      result =
+        any(PatternMatch pm |
           pm.getExpr() = this and
           if pm.getPattern() instanceof NullLiteral
           then
@@ -328,7 +330,8 @@ class DereferenceableExpr extends Expr {
         )
       or
       this.hasNullableType() and
-      result = any(PropertyAccess pa |
+      result =
+        any(PropertyAccess pa |
           pa.getQualifier() = this and
           pa.getTarget().hasName("HasValue") and
           if branch = true then isNull = false else isNull = true
@@ -371,7 +374,8 @@ class DereferenceableExpr extends Expr {
       v.isMatch() and
       isNull = false
       or
-      case.getPattern() = any(ConstantPatternExpr cpe |
+      case.getPattern() =
+        any(ConstantPatternExpr cpe |
           if cpe instanceof NullLiteral
           then
             // `case null`
@@ -443,25 +447,28 @@ class CollectionExpr extends Expr {
    */
   private Expr getASizeExpr(boolean lowerBound) {
     lowerBound = false and
-    result = any(PropertyRead pr |
+    result =
+      any(PropertyRead pr |
         this = pr.getQualifier() and
         pr.getTarget() = any(SystemArrayClass x).getLengthProperty()
       )
     or
     lowerBound = false and
-    result = any(PropertyRead pr |
+    result =
+      any(PropertyRead pr |
         this = pr.getQualifier() and
         pr
             .getTarget()
             .overridesOrImplementsOrEquals(any(Property p |
-                p.getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface x)
-                      .getCountProperty()
+                p.getSourceDeclaration() =
+                  any(SystemCollectionsGenericICollectionInterface x).getCountProperty()
               ))
       )
     or
-    result = any(MethodCall mc |
-        mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
-              .getACountMethod() and
+    result =
+      any(MethodCall mc |
+        mc.getTarget().getSourceDeclaration() =
+          any(SystemLinq::SystemLinqEnumerableClass x).getACountMethod() and
         this = mc.getArgument(0) and
         if mc.getNumberOfArguments() = 1 then lowerBound = false else lowerBound = true
       )
@@ -469,7 +476,8 @@ class CollectionExpr extends Expr {
 
   private Expr getABooleanEmptinessCheck(BooleanValue v, boolean isEmpty) {
     exists(boolean branch | branch = v.getValue() |
-      result = any(ComparisonTest ct |
+      result =
+        any(ComparisonTest ct |
           exists(boolean lowerBound |
             ct.getAnArgument() = this.getASizeExpr(lowerBound) and
             if isEmpty = true then lowerBound = false else any()
@@ -510,9 +518,10 @@ class CollectionExpr extends Expr {
           )
         ).getExpr()
       or
-      result = any(MethodCall mc |
-          mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
-                .getAnAnyMethod() and
+      result =
+        any(MethodCall mc |
+          mc.getTarget().getSourceDeclaration() =
+            any(SystemLinq::SystemLinqEnumerableClass x).getAnAnyMethod() and
           this = mc.getArgument(0) and
           branch = isEmpty.booleanNot() and
           if branch = false then mc.getNumberOfArguments() = 1 else any()
@@ -884,7 +893,8 @@ module Internal {
    * and `e = x`.
    */
   Expr getNullEquivParent(Expr e) {
-    result = any(QualifiableExpr qe |
+    result =
+      any(QualifiableExpr qe |
         qe.isConditional() and
         (
           e = qe.getQualifier()
@@ -916,7 +926,8 @@ module Internal {
    * Gets a child expression of `e` which is `null` only if `e` is `null`.
    */
   Expr getANullImplyingChild(Expr e) {
-    e = any(QualifiableExpr qe |
+    e =
+      any(QualifiableExpr qe |
         qe.isConditional() and
         result = qe.getQualifier()
       )
@@ -991,7 +1002,8 @@ module Internal {
   }
 
   private Expr stripConditionalExpr(Expr e) {
-    e = any(ConditionalExpr ce |
+    e =
+      any(ConditionalExpr ce |
         result = stripConditionalExpr(ce.getThen())
         or
         result = stripConditionalExpr(ce.getElse())
@@ -1156,7 +1168,8 @@ module Internal {
       //   v = guard ? e : x;
       exists(ConditionalExpr c | c = def.getDefinition().getSource() |
         guard = c.getCondition() and
-        vGuard = any(BooleanValue bv |
+        vGuard =
+          any(BooleanValue bv |
             bv.getValue() = true and
             e = c.getThen()
             or
@@ -1230,7 +1243,8 @@ module Internal {
           ck.isInequality() and branch = false
         )
         or
-        result = any(IsExpr ie |
+        result =
+          any(IsExpr ie |
             ie.getExpr() = e1 and
             e2 = ie.getPattern().(ConstantPatternExpr) and
             branch = true
@@ -1312,9 +1326,8 @@ module Internal {
         // or
         //   if (de == null); vGuard = TBooleanValue(true); vDef = TNullValue(false)
         exists(NullValue nv |
-          guard = ar
-                .(DereferenceableExpr)
-                .getANullCheck(vGuard, any(boolean b | nv = TNullValue(b)))
+          guard =
+            ar.(DereferenceableExpr).getANullCheck(vGuard, any(boolean b | nv = TNullValue(b)))
         |
           vDef = nv.getDualValue()
         )
@@ -1471,7 +1484,8 @@ module Internal {
        */
       cached
       predicate preImpliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
-        g1 = any(BinaryOperation bo |
+        g1 =
+          any(BinaryOperation bo |
             (
               bo instanceof BitwiseAndExpr or
               bo instanceof LogicalAndExpr
@@ -1481,7 +1495,8 @@ module Internal {
             v2 = v1
           )
         or
-        g1 = any(BinaryOperation bo |
+        g1 =
+          any(BinaryOperation bo |
             (
               bo instanceof BitwiseOrExpr or
               bo instanceof LogicalOrExpr
@@ -1536,7 +1551,8 @@ module Internal {
         )
         or
         isGuard(g1, v1) and
-        v1 = any(MatchValue mv |
+        v1 =
+          any(MatchValue mv |
             mv.isMatch() and
             g2 = g1 and
             v2.getAnExpr() = mv.getCase().getPattern().(ConstantPatternExpr) and
@@ -1549,9 +1565,8 @@ module Internal {
         )
         or
         exists(boolean isEmpty | g1 = g2.(CollectionExpr).getAnEmptinessCheck(v1, isEmpty) |
-          v2 = any(EmptyCollectionValue ecv |
-              if ecv.isEmpty() then isEmpty = true else isEmpty = false
-            ) and
+          v2 =
+            any(EmptyCollectionValue ecv | if ecv.isEmpty() then isEmpty = true else isEmpty = false) and
           g1 != g2
         )
         or
@@ -1618,7 +1633,8 @@ module Internal {
           nullValueImplied(e1) and nullValueImplied(e2) and nullValueImpliedBinary(e1, e2, e)
         )
         or
-        e = any(PreSsa::Definition def |
+        e =
+          any(PreSsa::Definition def |
             forex(PreSsa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
           ).getARead()
       }
@@ -1629,7 +1645,8 @@ module Internal {
         or
         exists(Expr e1 | nonNullValueImplied(e1) and nonNullValueImpliedUnary(e1, e))
         or
-        e = any(PreSsa::Definition def |
+        e =
+          any(PreSsa::Definition def |
             forex(PreSsa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
           ).getARead()
       }
@@ -1660,8 +1677,8 @@ module Internal {
         exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface c
-            ).getClearMethod() and
+          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+            any(SystemCollectionsGenericICollectionInterface c).getClearMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
       }
@@ -1685,8 +1702,8 @@ module Internal {
         )
         or
         exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface c
-            ).getAddMethod() and
+          mc.getTarget().getAnUltimateImplementee().getSourceDeclaration() =
+            any(SystemCollectionsGenericICollectionInterface c).getAddMethod() and
           adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
         )
       }
@@ -1706,7 +1723,8 @@ module Internal {
     override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
       exists(BasicBlock bb, Declaration d |
         candidateAux(x, d, bb) and
-        y = any(AccessOrCallExpr e |
+        y =
+          any(AccessOrCallExpr e |
             e.getAControlFlowNode().getBasicBlock() = bb and
             e.getTarget() = d
           )

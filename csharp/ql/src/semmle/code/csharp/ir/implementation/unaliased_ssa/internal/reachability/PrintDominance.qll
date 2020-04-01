@@ -12,7 +12,8 @@ private class DominancePropertyProvider extends IRPropertyProvider {
     )
     or
     key = "DominanceFrontier" and
-    result = strictconcat(IRBlock frontierBlock |
+    result =
+      strictconcat(IRBlock frontierBlock |
         frontierBlock = getDominanceFrontier(block)
       |
         frontierBlock.getDisplayIndex().toString(), ", " order by frontierBlock.getDisplayIndex()

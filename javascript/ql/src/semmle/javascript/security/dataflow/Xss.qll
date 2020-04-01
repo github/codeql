@@ -106,7 +106,7 @@ module DomBasedXss {
    * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
    * HTML by a jQuery method.
    */
-  private predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
+  predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
     any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
     prefix = htmlString
     or
@@ -243,10 +243,8 @@ module DomBasedXss {
 
     VHtmlSourceWrite() {
       exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() = instance
-              .getTemplateElement()
-              .(Vue::Template::HtmlElement)
-              .getElement() and
+        attr.getAttr().getRoot() =
+          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
@@ -256,6 +254,24 @@ module DomBasedXss {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = this and succ = attr
+    }
+  }
+
+  /**
+   * A property read from a safe property is considered a sanitizer.
+   */
+  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
+    SafePropertyReadSanitizer() {
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
     }
   }
 
@@ -289,18 +305,72 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  private class HttpResponseSink extends Sink, DataFlow::ValueNode {
+  class HttpResponseSink extends Sink, DataFlow::ValueNode {
     override HTTP::ResponseSendArgument astNode;
 
-    HttpResponseSink() { not nonHtmlContentType(astNode.getRouteHandler()) }
+    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
+  }
+
+  /**
+   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   */
+  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
+    exists(HTTP::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = nonHtmlContentTypeHeader(h)
+    |
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
+    )
   }
 
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  private predicate nonHtmlContentType(HTTP::RouteHandler h) {
-    exists(HTTP::HeaderDefinition hd | hd = h.getAResponseHeader("content-type") |
-      not exists(string tp | hd.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
+   * Holds if a header set in `header` is likely to affect a response sent at `sender`.
+   */
+  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+    sender.getRouteHandler() = header.getRouteHandler() and
+    (
+      // `sender` is affected by a dominating `header`.
+      header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      or
+      // There is no dominating header, and `header` is non-local.
+      not isLocalHeaderDefinition(header) and
+      not exists(HTTP::HeaderDefinition dominatingHeader |
+        dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      )
+    )
+  }
+
+  /**
+   * Holds if the HeaderDefinition `header` seems to be local.
+   * A HeaderDefinition is local if it dominates exactly one `ResponseSendArgument`.
+   *
+   * Recognizes variants of:
+   * ```
+   * response.writeHead(500, ...);
+   * response.end('Some error');
+   * return;
+   * ```
+   */
+  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+    exists(ReachableBasicBlock headerBlock |
+      headerBlock = header.getBasicBlock().(ReachableBasicBlock)
+    |
+      1 =
+        strictcount(HTTP::ResponseSendArgument sender |
+          sender.getRouteHandler() = header.getRouteHandler() and
+          header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+        ) and
+      // doesn't dominate something that looks like a callback.
+      not exists(Expr e | e instanceof Function | headerBlock.dominates(e.getBasicBlock()))
     )
   }
 

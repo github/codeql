@@ -61,7 +61,8 @@ predicate hasPragmaDifferentFile(File f) {
  * us to skip past any preprocessor logic or similar code before the first comment.
  */
 private int fileFirstComment(File f) {
-  result = min(int line |
+  result =
+    min(int line |
       exists(Comment c |
         c.getFile() = f and
         c.getLocation().getStartLine() = line and
@@ -77,7 +78,8 @@ private int fileFirstComment(File f) {
 private int fileHeaderLimit(File f) {
   exists(int fc |
     fc = fileFirstComment(f) and
-    result = min(int line |
+    result =
+      min(int line |
         exists(DeclarationEntry de, Location l |
           l = de.getLocation() and
           l.getFile() = f and

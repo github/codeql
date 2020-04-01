@@ -63,13 +63,14 @@ private newtype TOpcode =
   TUnmodeledDefinition() or
   TUnmodeledUse() or
   TAliasedDefinition() or
+  TInitializeNonLocal() or
   TAliasedUse() or
   TPhi() or
   TBuiltIn() or
   TVarArgsStart() or
   TVarArgsEnd() or
   TVarArg() or
-  TVarArgCopy() or
+  TNextVarArg() or
   TCallSideEffect() or
   TCallReadSideEffect() or
   TIndirectReadSideEffect() or
@@ -81,6 +82,7 @@ private newtype TOpcode =
   TSizedBufferReadSideEffect() or
   TSizedBufferMustWriteSideEffect() or
   TSizedBufferMayWriteSideEffect() or
+  TInitializeDynamicAllocation() or
   TChi() or
   TInlineAsm() or
   TUnreached() or
@@ -212,32 +214,60 @@ abstract class IndirectReadOpcode extends IndirectMemoryAccessOpcode {
 }
 
 /**
- * An opcode that accesses a memory buffer of unknown size.
+ * An opcode that accesses a memory buffer.
  */
 abstract class BufferAccessOpcode extends Opcode {
   final override predicate hasAddressOperand() { any() }
 }
 
 /**
+ * An opcode that accesses a memory buffer of unknown size.
+ */
+abstract class UnsizedBufferAccessOpcode extends BufferAccessOpcode { }
+
+/**
  * An opcode that writes to a memory buffer of unknown size.
  */
-abstract class BufferWriteOpcode extends BufferAccessOpcode {
+abstract class UnsizedBufferWriteOpcode extends UnsizedBufferAccessOpcode {
   final override MemoryAccessKind getWriteMemoryAccess() { result instanceof BufferMemoryAccess }
 }
 
 /**
  * An opcode that reads from a memory buffer of unknown size.
  */
-abstract class BufferReadOpcode extends BufferAccessOpcode {
+abstract class UnsizedBufferReadOpcode extends UnsizedBufferAccessOpcode {
   final override MemoryAccessKind getReadMemoryAccess() { result instanceof BufferMemoryAccess }
+}
+
+/**
+ * An opcode that access an entire memory allocation.
+ */
+abstract class EntireAllocationAccessOpcode extends Opcode {
+  final override predicate hasAddressOperand() { any() }
+}
+
+/**
+ * An opcode that write to an entire memory allocation.
+ */
+abstract class EntireAllocationWriteOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
+}
+
+/**
+ * An opcode that reads from an entire memory allocation.
+ */
+abstract class EntireAllocationReadOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
 }
 
 /**
  * An opcode that accesses a memory buffer whose size is determined by a `BufferSizeOperand`.
  */
-abstract class SizedBufferAccessOpcode extends Opcode {
-  final override predicate hasAddressOperand() { any() }
-
+abstract class SizedBufferAccessOpcode extends BufferAccessOpcode {
   final override predicate hasBufferSizeOperand() { any() }
 }
 
@@ -325,7 +355,7 @@ module Opcode {
     final override string toString() { result = "InitializeParameter" }
   }
 
-  class InitializeIndirection extends IndirectWriteOpcode, TInitializeIndirection {
+  class InitializeIndirection extends EntireAllocationWriteOpcode, TInitializeIndirection {
     final override string toString() { result = "InitializeIndirection" }
   }
 
@@ -349,7 +379,7 @@ module Opcode {
     final override string toString() { result = "ReturnVoid" }
   }
 
-  class ReturnIndirection extends IndirectReadOpcode, TReturnIndirection {
+  class ReturnIndirection extends EntireAllocationReadOpcode, TReturnIndirection {
     final override string toString() { result = "ReturnIndirection" }
 
     final override predicate hasOperandInternal(OperandTag tag) {
@@ -571,6 +601,14 @@ module Opcode {
     final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
   }
 
+  class InitializeNonLocal extends Opcode, TInitializeNonLocal {
+    final override string toString() { result = "InitializeNonLocal" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() {
+      result instanceof NonLocalMemoryAccess
+    }
+  }
+
   class AliasedUse extends Opcode, TAliasedUse {
     final override string toString() { result = "AliasedUse" }
 
@@ -591,20 +629,20 @@ module Opcode {
     final override string toString() { result = "BuiltIn" }
   }
 
-  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart {
+  class VarArgsStart extends UnaryOpcode, TVarArgsStart {
     final override string toString() { result = "VarArgsStart" }
   }
 
-  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd {
+  class VarArgsEnd extends UnaryOpcode, TVarArgsEnd {
     final override string toString() { result = "VarArgsEnd" }
   }
 
-  class VarArg extends BuiltInOperationOpcode, TVarArg {
+  class VarArg extends UnaryOpcode, TVarArg {
     final override string toString() { result = "VarArg" }
   }
 
-  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy {
-    final override string toString() { result = "VarArgCopy" }
+  class NextVarArg extends UnaryOpcode, TNextVarArg {
+    final override string toString() { result = "NextVarArg" }
   }
 
   class CallSideEffect extends WriteSideEffectOpcode, EscapedWriteOpcode, MayWriteOpcode,
@@ -632,17 +670,18 @@ module Opcode {
     final override string toString() { result = "IndirectMayWriteSideEffect" }
   }
 
-  class BufferReadSideEffect extends ReadSideEffectOpcode, BufferReadOpcode, TBufferReadSideEffect {
+  class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode,
+    TBufferReadSideEffect {
     final override string toString() { result = "BufferReadSideEffect" }
   }
 
-  class BufferMustWriteSideEffect extends WriteSideEffectOpcode, BufferWriteOpcode,
+  class BufferMustWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
     TBufferMustWriteSideEffect {
     final override string toString() { result = "BufferMustWriteSideEffect" }
   }
 
-  class BufferMayWriteSideEffect extends WriteSideEffectOpcode, BufferWriteOpcode, MayWriteOpcode,
-    TBufferMayWriteSideEffect {
+  class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
+    MayWriteOpcode, TBufferMayWriteSideEffect {
     final override string toString() { result = "BufferMayWriteSideEffect" }
   }
 
@@ -659,6 +698,11 @@ module Opcode {
   class SizedBufferMayWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
     MayWriteOpcode, TSizedBufferMayWriteSideEffect {
     final override string toString() { result = "SizedBufferMayWriteSideEffect" }
+  }
+
+  class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode,
+    TInitializeDynamicAllocation {
+    final override string toString() { result = "InitializeDynamicAllocation" }
   }
 
   class Chi extends Opcode, TChi {

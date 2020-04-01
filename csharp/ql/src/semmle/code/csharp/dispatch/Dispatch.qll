@@ -381,7 +381,8 @@ private module Internal {
         or
         this = any(DispatchReflectionOrDynamicCall c).getArgument(_)
         or
-        this = any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod())
+        this =
+          any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod())
               .getQualifier()
         or
         this = any(DispatchCallImpl c).getQualifier()
@@ -738,7 +739,8 @@ private module Internal {
     override Callable getAStaticTarget() {
       result = getACallableWithMatchingName() and
       exists(int minArgs |
-        minArgs = count(Parameter p |
+        minArgs =
+          count(Parameter p |
             p = result.getAParameter() and
             not p.hasDefaultValue() and
             not p.isParams()
@@ -1090,8 +1092,8 @@ private module Internal {
     override string getName() { this = TDispatchDynamicEventAccess(_, _, result) }
 
     override Expr getQualifier() {
-      result = any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _))
-            .getQualifier()
+      result =
+        any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _)).getQualifier()
     }
 
     override Expr getArgument(int i) { i = 0 and result = getCall().getRValue() }

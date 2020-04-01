@@ -466,6 +466,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
         }
 
+        internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)
+        {
+            trapFile.WriteTuple("stackalloc_array_creation", array);
+        }
+
         internal static void stmt_location(this TextWriter trapFile, Statement stmt, Location location)
         {
             trapFile.WriteTuple("stmt_location", stmt, location);

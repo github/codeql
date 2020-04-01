@@ -15,8 +15,8 @@ bindingset[mode]
 string octalFileMode(int mode) {
   if mode >= 0 and mode <= 4095
   then
-    /* octal 07777 */ result = "0" + octalDigitOpt(mode, 3) + octalDigit(mode, 2) +
-        octalDigit(mode, 1) + octalDigit(mode, 0)
+    /* octal 07777 */ result =
+      "0" + octalDigitOpt(mode, 3) + octalDigit(mode, 2) + octalDigit(mode, 1) + octalDigit(mode, 0)
   else result = "[non-standard mode: decimal " + mode + "]"
 }
 
@@ -128,12 +128,8 @@ class OpenatCreationExpr extends FileCreationExpr {
 }
 
 private int fopenMode() {
-  result = s_irusr()
-        .bitOr(s_irgrp())
-        .bitOr(s_iroth())
-        .bitOr(s_iwusr())
-        .bitOr(s_iwgrp())
-        .bitOr(s_iwoth())
+  result =
+    s_irusr().bitOr(s_irgrp()).bitOr(s_iroth()).bitOr(s_iwusr()).bitOr(s_iwgrp()).bitOr(s_iwoth())
 }
 
 class FopenCreationExpr extends FileCreationExpr {

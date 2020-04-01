@@ -1,6 +1,7 @@
 private newtype TMemoryAccessKind =
   TIndirectMemoryAccess() or
   TBufferMemoryAccess() or
+  TEntireAllocationMemoryAccess() or
   TEscapedMemoryAccess() or
   TNonLocalMemoryAccess() or
   TPhiMemoryAccess() or
@@ -39,6 +40,16 @@ class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
  */
 class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
   override string toString() { result = "buffer" }
+
+  final override predicate usesAddressOperand() { any() }
+}
+
+/**
+ * The operand or results accesses all memory in the contiguous allocation that contains the address
+ * specified by the `AddressOperand` on the same instruction.
+ */
+class EntireAllocationMemoryAccess extends MemoryAccessKind, TEntireAllocationMemoryAccess {
+  override string toString() { result = "alloc" }
 
   final override predicate usesAddressOperand() { any() }
 }

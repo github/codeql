@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
+    Prototype pollution is a type of vulnerability in which an attacker is able to modify <code>Object.prototype</code>.
+    Since most objects inherit from the compromised <code>Object.prototype</code>, the attacker can use this
+    to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
+  </p>
+
+  <p>
+    One way to cause prototype pollution is through use of an unsafe <em>merge</em> or <em>extend</em> function
+    to recursively copy properties from one object to another, or through the use of a <em>deep assignment</em>
+    function to assign to an unverified chain of property names.
+    Such a function has the potential to modify any object reachable from the destination object, and
+    the built-in <code>Object.prototype</code> is usually reachable through the special properties
+    <code>__proto__</code> and <code>constructor.prototype</code>.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    The most effective place to guard against this is in the function that performs
+    the recursive copy or deep assignment.
+  </p>
+
+  <p>
+    Only merge or assign a property recursively when it is an own property of the <em>destination</em> object.
+    Alternatively, blacklist the property names <code>__proto__</code> and <code>constructor</code>
+    from being merged or assigned to.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    This function recursively copies properties from <code>src</code> to <code>dst</code>:
+  </p>
+
+  <sample src="examples/PrototypePollutionUtility.js"/>
+
+  <p>
+    However, if <code>src</code> is the object <code>{"__proto__": {"isAdmin": true}}</code>,
+    it will inject the property <code>isAdmin: true</code> in <code>Object.prototype</code>.
+  </p>
+
+  <p>
+    The issue can be fixed by ensuring that only own properties of the destination object
+    are merged recursively:
+  </p>
+
+  <sample src="examples/PrototypePollutionUtility_fixed.js"/>
+
+  <p>
+    Alternatively, blacklist the <code>__proto__</code> and <code>constructor</code> properties:
+  </p>
+
+  <sample src="examples/PrototypePollutionUtility_fixed2.js"/>
+</example>
+
+<references>
+  <li>Prototype pollution attacks:
+    <a href="https://hackerone.com/reports/380873">lodash</a>,
+    <a href="https://hackerone.com/reports/454365">jQuery</a>,
+    <a href="https://hackerone.com/reports/381185">extend</a>,
+    <a href="https://hackerone.com/reports/430291">just-extend</a>,
+    <a href="https://hackerone.com/reports/381194">merge.recursive</a>.
+  </li>
+</references>
+</qhelp>

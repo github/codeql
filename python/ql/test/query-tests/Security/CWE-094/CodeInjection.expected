@@ -10,4 +10,4 @@ edges
 | code_injection.py:7:34:7:43 | externally controlled string | code_injection.py:7:14:7:44 | externally controlled string |
 | code_injection.py:7:34:7:43 | externally controlled string | code_injection.py:7:14:7:44 | externally controlled string |
 #select
-| code_injection.py:7:14:7:44 | Attribute() | code_injection.py:4:20:4:26 | django.request.HttpRequest | code_injection.py:7:14:7:44 | externally controlled string | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | request | User-provided value |
+| code_injection.py:7:14:7:44 | Attribute() | code_injection.py:4:20:4:26 | django.request.HttpRequest | code_injection.py:7:14:7:44 | externally controlled string | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | request | A user-provided value |

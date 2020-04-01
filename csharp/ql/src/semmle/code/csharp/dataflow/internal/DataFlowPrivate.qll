@@ -3,7 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPublic
 private import DataFlowDispatch
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import ControlFlowReachability
 private import DelegateDataFlow
 private import semmle.code.csharp.Caching
@@ -96,7 +96,8 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
-        e2 = any(ConditionalExpr ce |
+        e2 =
+          any(ConditionalExpr ce |
             e1 = ce.getThen() or
             e1 = ce.getElse()
           ) and
@@ -112,7 +113,8 @@ module LocalFlow {
         isSuccessor = true
         or
         // An `=` expression, where the result of the expression is used
-        e2 = any(AssignExpr ae |
+        e2 =
+          any(AssignExpr ae |
             ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
             e1 = ae.getRValue()
           ) and
@@ -167,7 +169,8 @@ module LocalFlow {
     UncertainExplicitSsaDefinition() {
       this instanceof Ssa::ExplicitDefinition
       or
-      this = any(Ssa::ImplicitQualifierDefinition qdef |
+      this =
+        any(Ssa::ImplicitQualifierDefinition qdef |
           qdef.getQualifierDefinition() instanceof UncertainExplicitSsaDefinition
         )
     }
@@ -279,7 +282,8 @@ private class Argument extends Expr {
   private int arg;
 
   Argument() {
-    call = any(DispatchCall dc |
+    call =
+      any(DispatchCall dc |
         this = dc.getArgument(arg)
         or
         this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
@@ -376,7 +380,9 @@ private module Cached {
         a = cfn.getElement() and
         t = a.stripCasts().getType()
       |
-        t instanceof RefType or
+        t instanceof RefType and
+        not t instanceof NullType
+        or
         t = any(TypeParameter tp | not tp.isValueType())
       )
       or
@@ -468,11 +474,8 @@ private module Cached {
   predicate readStepImpl(Node node1, Content c, Node node2) {
     exists(ReadStepConfiguration x |
       x.hasNodePath(node1, node2) and
-      c.(FieldLikeContent).getField() = node2
-            .asExpr()
-            .(FieldLikeRead)
-            .getTarget()
-            .getSourceDeclaration()
+      c.(FieldLikeContent).getField() =
+        node2.asExpr().(FieldLikeRead).getTarget().getSourceDeclaration()
     )
   }
 
@@ -553,15 +556,10 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
 
 private module ParameterNodes {
   /**
-   * Holds if SSA definition node `node` is an entry definition for parameter `p`.
+   * Holds if definition node `node` is an entry definition for parameter `p`.
    */
-  predicate explicitParameterNode(SsaDefinitionNode node, Parameter p) {
-    exists(Ssa::ExplicitDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef |
-      node = TSsaDefinitionNode(def)
-    |
-      pdef = def.getADefinition() and
-      p = pdef.getParameter()
-    )
+  predicate explicitParameterNode(AssignableDefinitionNode node, Parameter p) {
+    p = node.getDefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter()
   }
 
   /**
@@ -671,7 +669,8 @@ private module ParameterNodes {
     // the order is irrelevant
     int getParameterPosition(SsaCapturedEntryDefinition def) {
       exists(Callable c | c = def.getCallable() |
-        def = rank[-result - 1](SsaCapturedEntryDefinition def0 |
+        def =
+          rank[-result - 1](SsaCapturedEntryDefinition def0 |
             def0.getCallable() = c
           |
             def0 order by getId(def0.getSourceVariable().getAssignable())
@@ -1115,10 +1114,8 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
-      kind.(ImplicitCapturedReturnKind).getVariable() = this
-            .getDefinition()
-            .getSourceVariable()
-            .getAssignable()
+      kind.(ImplicitCapturedReturnKind).getVariable() =
+        this.getDefinition().getSourceVariable().getAssignable()
     }
   }
 
@@ -1126,13 +1123,14 @@ private module OutNodes {
    * A data flow node that reads a value returned by a callable using an
    * `out` or `ref` parameter.
    */
-  class ParamOutNode extends OutNode, SsaDefinitionNode {
+  class ParamOutNode extends OutNode, AssignableDefinitionNode {
     private AssignableDefinitions::OutRefDefinition outRefDef;
+    private ControlFlow::Node cfn;
 
-    ParamOutNode() { outRefDef = this.getDefinition().(Ssa::ExplicitDefinition).getADefinition() }
+    ParamOutNode() { outRefDef = this.getDefinitionAtNode(cfn) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result = csharpCall(_, this.getDefinition().getControlFlowNode()) and
+      result = csharpCall(_, cfn) and
       exists(Parameter p |
         p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
         outRefDef.getTargetAccess() = result.getExpr().(Call).getArgumentForParameter(p)
@@ -1253,7 +1251,8 @@ predicate flowOutOfDelegateLibraryCall(
 private class FieldLike extends Assignable, Modifiable {
   FieldLike() {
     this instanceof Field or
-    this = any(Property p |
+    this =
+      any(Property p |
         not p.isOverridableOrImplementable() and
         (
           p.isAutoImplemented()
@@ -1457,10 +1456,8 @@ class CastNode extends Node {
   CastNode() {
     this.asExpr() instanceof Cast
     or
-    exists(Ssa::ExplicitDefinition def |
-      def = this.(SsaDefinitionNode).getDefinition() and
-      def.getADefinition() instanceof AssignableDefinitions::PatternDefinition
-    )
+    this.(AssignableDefinitionNode).getDefinition() instanceof
+      AssignableDefinitions::PatternDefinition
     or
     readStep(_, _, this)
     or
@@ -1471,8 +1468,6 @@ class CastNode extends Node {
 class DataFlowExpr = DotNet::Expr;
 
 class DataFlowType = Gvn::GvnType;
-
-class DataFlowLocation = Location;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
@@ -1502,3 +1497,14 @@ private predicate viableConstantBooleanParamArg(
     b = arg.getBooleanValue()
   )
 }
+
+int accessPathLimit() { result = 3 }
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) { none() }

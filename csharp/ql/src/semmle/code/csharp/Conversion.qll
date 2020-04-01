@@ -205,7 +205,8 @@ private module Identity {
    * parameter at index `i` in unbound generic type `ugt`.
    */
   private int getTypeArgumentCount(UnboundGenericType ugt, int i) {
-    result = strictcount(Type arg |
+    result =
+      strictcount(Type arg |
         exists(IdentityConvertibleGenericType ct | ct.getUnboundGeneric() = ugt |
           arg = ct.getTypeArgument(i)
         )
@@ -813,7 +814,8 @@ private module Variance {
    * parameter at index `i` in unbound generic type `ugt`.
    */
   private int getTypeArgumentCount(UnboundGenericType ugt, int i) {
-    result = strictcount(Type arg |
+    result =
+      strictcount(Type arg |
         exists(VarianceConvertibleGenericType gt | gt.getUnboundGeneric() = ugt |
           arg = gt.getTypeArgument(i)
         )

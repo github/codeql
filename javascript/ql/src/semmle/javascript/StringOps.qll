@@ -57,6 +57,40 @@ module StringOps {
     }
 
     /**
+     * A call to a utility function (`callee`) that performs a StartsWith check (`inner`).
+     */
+    private class IndirectStartsWith extends Range, DataFlow::CallNode {
+      StartsWith inner;
+      Function callee;
+
+      IndirectStartsWith() {
+        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+        this.getACallee() = callee and
+        count(this.getACallee()) = 1 and
+        count(callee.getAReturnedExpr()) = 1 and
+        not this.isImprecise() and
+        inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+        inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      }
+
+      override DataFlow::Node getBaseString() {
+        exists(int arg |
+          inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override DataFlow::Node getSubstring() {
+        exists(int arg |
+          inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
+    }
+
+    /**
      * An expression of form `A.startsWith(B)`.
      */
     private class StartsWith_Native extends Range, DataFlow::MethodCallNode {
@@ -165,10 +199,16 @@ module StringOps {
 
       StartsWith_Substring() {
         astNode.hasOperands(call.asExpr(), substring.asExpr()) and
-        (call.getMethodName() = "substring" or call.getMethodName() = "substr") and
+        (
+          call.getMethodName() = "substring" or
+          call.getMethodName() = "substr" or
+          call.getMethodName() = "slice"
+        ) and
         call.getNumArgument() = 2 and
         (
-          substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
+          AccessPath::getAnAliasedSourceNode(substring)
+              .getAPropertyRead("length")
+              .flowsTo(call.getArgument(1))
           or
           substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
         )
@@ -245,6 +285,40 @@ module StringOps {
        * with the given substring.
        */
       boolean getPolarity() { result = true }
+    }
+
+    /**
+     * A call to a utility function (`callee`) that performs an EndsWith check (`inner`).
+     */
+    private class IndirectEndsWith extends Range, DataFlow::CallNode {
+      EndsWith inner;
+      Function callee;
+
+      IndirectEndsWith() {
+        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+        this.getACallee() = callee and
+        count(this.getACallee()) = 1 and
+        count(callee.getAReturnedExpr()) = 1 and
+        not this.isImprecise() and
+        inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+        inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      }
+
+      override DataFlow::Node getBaseString() {
+        exists(int arg |
+          inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override DataFlow::Node getSubstring() {
+        exists(int arg |
+          inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+          result = this.getArgument(arg)
+        )
+      }
+
+      override boolean getPolarity() { result = inner.getPolarity() }
     }
 
     /**
@@ -502,7 +576,8 @@ module StringOps {
       result = getStringValue()
       or
       not exists(getStringValue()) and
-      result = strictconcat(StringLiteralLike leaf |
+      result =
+        strictconcat(StringLiteralLike leaf |
           leaf = getALeaf().asExpr()
         |
           leaf.getStringValue() order by leaf.getFirstToken().getIndex()

@@ -282,15 +282,16 @@ where
   (
     exists(Function releaseFunction, int releaseLine |
       badRelease(r, acquire, releaseFunction, releaseLine) and
-      message = "Resource " + r.getName() + " is acquired by class " +
-          r.getDeclaringType().getName() +
+      message =
+        "Resource " + r.getName() + " is acquired by class " + r.getDeclaringType().getName() +
           " but not released in the destructor. It is released from " + releaseFunction.getName() +
           " on line " + releaseLine +
           ", so this function may need to be called from the destructor."
     )
     or
     not badRelease(r, _, _, _) and
-    message = "Resource " + r.getName() + " is acquired by class " + r.getDeclaringType().getName() +
+    message =
+      "Resource " + r.getName() + " is acquired by class " + r.getDeclaringType().getName() +
         " but not released anywhere in this class."
   ) and
   not automaticallyReleased(acquire) and

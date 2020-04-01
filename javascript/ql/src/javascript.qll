@@ -5,6 +5,7 @@
 import Customizations
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
+import semmle.javascript.Arrays
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
 import semmle.javascript.Base64
@@ -73,10 +74,12 @@ import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
+import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.Handlebars
+import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
@@ -95,6 +98,7 @@ import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
+import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
 import semmle.javascript.linters.ESLint

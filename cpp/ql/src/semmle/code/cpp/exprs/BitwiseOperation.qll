@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary bitwise operation.
  */
-abstract class UnaryBitwiseOperation extends UnaryOperation { }
+class UnaryBitwiseOperation extends UnaryOperation, @un_bitwise_op_expr { }
 
 /**
  * A C/C++ complement expression.
@@ -14,7 +14,7 @@ abstract class UnaryBitwiseOperation extends UnaryOperation { }
 class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
   override string getOperator() { result = "~" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override string getCanonicalQLClass() { result = "ComplementExpr" }
 }
@@ -22,7 +22,7 @@ class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
 /**
  * A C/C++ binary bitwise operation.
  */
-abstract class BinaryBitwiseOperation extends BinaryOperation { }
+class BinaryBitwiseOperation extends BinaryOperation, @bin_bitwise_op_expr { }
 
 /**
  * A C/C++ left shift expression.
@@ -33,7 +33,7 @@ abstract class BinaryBitwiseOperation extends BinaryOperation { }
 class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
   override string getOperator() { result = "<<" }
 
-  override int getPrecedence() { result = 11 }
+  override int getPrecedence() { result = 12 }
 
   override string getCanonicalQLClass() { result = "LShiftExpr" }
 }
@@ -47,7 +47,7 @@ class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
 class RShiftExpr extends BinaryBitwiseOperation, @rshiftexpr {
   override string getOperator() { result = ">>" }
 
-  override int getPrecedence() { result = 11 }
+  override int getPrecedence() { result = 12 }
 
   override string getCanonicalQLClass() { result = "RShiftExpr" }
 }

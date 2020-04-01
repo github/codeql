@@ -1,3 +1,4 @@
 import javascript
 
-from Expr e select e, e.getType()
+from Expr e
+select e, e.getType()

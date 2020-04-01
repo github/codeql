@@ -13,14 +13,16 @@ import Tornado
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
-class TornadoRedirect extends HttpRedirectTaintSink {
-    override string toString() { result = "tornado.redirect" }
+class TornadoHttpRequestHandlerRedirect extends HttpRedirectTaintSink {
+    override string toString() { result = "tornado.HttpRequestHandler.redirect" }
 
-    TornadoRedirect() {
+    TornadoHttpRequestHandlerRedirect() {
         exists(CallNode call, ControlFlowNode node |
             node = call.getFunction().(AttrNode).getObject("redirect") and
             isTornadoRequestHandlerInstance(node) and
-            this = call.getAnArg()
+            this = call.getArg(0)
         )
     }
+
+    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }

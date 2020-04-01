@@ -753,13 +753,15 @@ module FlowVar_internal {
     ControlFlowNode node, Variable v, VariableAccess va, Expr assignedExpr
   ) {
     // Together, the two following cases cover `Assignment`
-    node = any(AssignExpr ae |
+    node =
+      any(AssignExpr ae |
         va = ae.getLValue() and
         v = va.getTarget() and
         assignedExpr = ae.getRValue()
       )
     or
-    node = any(AssignOperation ao |
+    node =
+      any(AssignOperation ao |
         va = ao.getLValue() and
         v = va.getTarget() and
         // Here and in the `PrefixCrementOperation` case, we say that the assigned
@@ -771,7 +773,8 @@ module FlowVar_internal {
     or
     // This case does not add further data flow paths, except if a
     // `PrefixCrementOperation` is itself a source
-    node = any(CrementOperation op |
+    node =
+      any(CrementOperation op |
         va = op.getOperand() and
         v = va.getTarget() and
         assignedExpr = op

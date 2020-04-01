@@ -59,7 +59,8 @@ Expr getMulOperand(MulExpr me) { result = me.getAnOperand() }
  * ```
  */
 int getEffectiveMulOperands(MulExpr me) {
-  result = count(Expr op |
+  result =
+    count(Expr op |
       op = getMulOperand*(me) and
       not op instanceof MulExpr and
       not likelySmall(op)
@@ -109,24 +110,28 @@ class MulAnalyzableExpr extends AnalyzableExpr, MulExpr {
 
 class AddAnalyzableExpr extends AnalyzableExpr, AddExpr {
   override float maxValue() {
-    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() +
+    result =
+      this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() +
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
   }
 
   override float minValue() {
-    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() +
+    result =
+      this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() +
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
   }
 }
 
 class SubAnalyzableExpr extends AnalyzableExpr, SubExpr {
   override float maxValue() {
-    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() -
+    result =
+      this.getLeftOperand().getFullyConverted().(AnalyzableExpr).maxValue() -
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).minValue()
   }
 
   override float minValue() {
-    result = this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() -
+    result =
+      this.getLeftOperand().getFullyConverted().(AnalyzableExpr).minValue() -
         this.getRightOperand().getFullyConverted().(AnalyzableExpr).maxValue()
   }
 }

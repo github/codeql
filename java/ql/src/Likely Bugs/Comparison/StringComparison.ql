@@ -24,9 +24,6 @@ class StringValue extends Expr {
       this.(MethodAccess).getMethod() = intern
     )
     or
-    // Parenthesized expressions.
-    this.(ParExpr).getExpr().(StringValue).isInterned()
-    or
     // Ternary conditional operator.
     this.(ConditionalExpr).getTrueExpr().(StringValue).isInterned() and
     this.(ConditionalExpr).getFalseExpr().(StringValue).isInterned()
@@ -52,7 +49,7 @@ predicate variableValuesInterned(Variable v) {
   not v instanceof Parameter and
   // If the string is modified with `+=`, then the new string is not interned
   // even if the components are.
-  not exists(AssignOp append | append.getDest().getProperExpr() = v.getAnAccess())
+  not exists(AssignOp append | append.getDest() = v.getAnAccess())
 }
 
 from EqualityTest e, StringValue lhs, StringValue rhs

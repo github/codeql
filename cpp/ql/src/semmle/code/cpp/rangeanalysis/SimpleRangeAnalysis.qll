@@ -91,13 +91,40 @@ private float wideningUpperBounds(ArithmeticType t) {
   result = 1.0 / 0.0 // +Inf
 }
 
+/**
+ * Gets the value of the expression `e`, if it is a constant.
+ * This predicate also handles the case of constant variables initialized in different
+ * compilation units, which doesn't necessarily have a getValue() result from the extractor.
+ */
+private string getValue(Expr e) {
+  if exists(e.getValue())
+  then result = e.getValue()
+  else
+    /*
+     * It should be safe to propagate the initialization value to a variable if:
+     * The type of v is const, and
+     * The type of v is not volatile, and
+     * Either:
+     *   v is a local/global variable, or
+     *   v is a static member variable
+     */
+
+    exists(VariableAccess access, StaticStorageDurationVariable v |
+      not v.getUnderlyingType().isVolatile() and
+      v.getUnderlyingType().isConst() and
+      e = access and
+      v = access.getTarget() and
+      result = getValue(v.getAnAssignedValue())
+    )
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
   // `exprMinVal` to check this.
   exists(exprMinVal(e)) and
   (
-    exists(e.getValue().toFloat()) or
+    exists(getValue(e).toFloat()) or
     e instanceof UnaryPlusExpr or
     e instanceof UnaryMinusExpr or
     e instanceof MinExpr or
@@ -365,8 +392,8 @@ private float getTruncatedLowerBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getLowerBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by getLowerBoundsImpl might
       // overflow, so we replace invalid bounds with exprMinVal.
@@ -418,8 +445,8 @@ private float getTruncatedUpperBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getUpperBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
@@ -994,7 +1021,8 @@ private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
       // The new lower bound is from a recursive source, so we round
       // down to one of a limited set of values to prevent the
       // recursion from exploding.
-      result = max(float widenLB |
+      result =
+        max(float widenLB |
           widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
           not widenLB > truncatedLB
         |
@@ -1023,7 +1051,8 @@ private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
       // The new upper bound is from a recursive source, so we round
       // up to one of a fixed set of values to prevent the recursion
       // from exploding.
-      result = min(float widenUB |
+      result =
+        min(float widenUB |
           widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
           not widenUB < truncatedUB
         |

@@ -23,7 +23,8 @@ class MacroFunctionCall extends MacroInvocation {
 }
 
 int logicalLength(FunctionDeclarationEntry f) {
-  result = count(Stmt s |
+  result =
+    count(Stmt s |
         s.getEnclosingFunction() = f.getFunction() and
         s.getFile() = f.getFile() and
         not s instanceof Block and

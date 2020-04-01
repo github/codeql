@@ -443,6 +443,20 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
+   * Gets the unique non-`Conversion` expression `e` for which
+   * `this = e.getConversion*()`.
+   *
+   * For example, if called on the expression `(int)(char)x`, this predicate
+   * gets the expression `x`.
+   */
+  Expr getUnconverted() {
+    not this instanceof Conversion and
+    result = this
+    or
+    result = this.(Conversion).getExpr().getUnconverted()
+  }
+
+  /**
    * Gets the type of this expression, after any implicit conversions and explicit casts, and after resolving typedefs.
    *
    * As an example, consider the AST fragment `(i64)(void*)0` in the context of `typedef long long i64;`. The fragment
@@ -461,11 +475,11 @@ class Expr extends StmtParent, @expr {
 /**
  * A C/C++ operation.
  *
- * This is the QL abstract root class for all operations.
+ * This is the QL root class for all operations.
  */
-abstract class Operation extends Expr {
+class Operation extends Expr, @op_expr {
   /** Gets the operator of this operation. */
-  abstract string getOperator();
+  string getOperator() { none() }
 
   /** Gets an operand of this operation. */
   Expr getAnOperand() { result = this.getAChild() }
@@ -474,7 +488,7 @@ abstract class Operation extends Expr {
 /**
  * A C/C++ unary operation.
  */
-abstract class UnaryOperation extends Operation {
+class UnaryOperation extends Operation, @un_op_expr {
   /** Gets the operand of this unary operation. */
   Expr getOperand() { this.hasChild(result, 0) }
 
@@ -488,7 +502,7 @@ abstract class UnaryOperation extends Operation {
 /**
  * A C/C++ binary operation.
  */
-abstract class BinaryOperation extends Operation {
+class BinaryOperation extends Operation, @bin_op_expr {
   /** Gets the left operand of this binary operation. */
   Expr getLeftOperand() { this.hasChild(result, 0) }
 
@@ -628,7 +642,7 @@ class AddressOfExpr extends UnaryOperation, @address_of {
 
   override string getOperator() { result = "&" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() { this.getOperand().mayBeImpure() }
 
@@ -650,7 +664,7 @@ class ReferenceToExpr extends Conversion, @reference_to {
 
   override string getCanonicalQLClass() { result = "ReferenceToExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -673,7 +687,7 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
 
   override string getOperator() { result = "*" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() {
     this.getChild(0).mayBeImpure() or
@@ -707,7 +721,7 @@ class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
  * A C++ `new` or `new[]` expression.
  */
 class NewOrNewArrayExpr extends Expr, @any_new_expr {
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the `operator new` or `operator new[]` that allocates storage.
@@ -884,18 +898,14 @@ class DeleteExpr extends Expr, @delete_expr {
 
   override string getCanonicalQLClass() { result = "DeleteExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the compile-time type of the object being deleted.
    */
   Type getDeletedObjectType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**
@@ -962,18 +972,14 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
 
   override string getCanonicalQLClass() { result = "DeleteArrayExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the element type of the array being deleted.
    */
   Type getDeletedElementType() {
-    result = getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
+    result =
+      getExpr().getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType()
   }
 
   /**
@@ -1209,4 +1215,19 @@ private predicate constantTemplateLiteral(Expr e) {
   not exists(e.getValue())
   or
   constantTemplateLiteral(e.(Cast).getExpr())
+}
+
+/**
+ * A C++ three-way comparison operation, also known as the _spaceship
+ * operation_.  This is specific to C++20 and later.
+ * ```
+ * auto c = (a <=> b);
+ * ```
+ */
+class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
+  override string getCanonicalQLClass() { result = "SpaceshipExpr" }
+
+  override int getPrecedence() { result = 11 }
+
+  override string getOperator() { result = "<=>" }
 }

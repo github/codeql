@@ -320,7 +320,8 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
   Call getCall() { result = expr }
 
   override TranslatedElement getChild(int i) {
-    result = rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
+    result =
+      rank[i + 1](TranslatedSideEffect tse, int isWrite, int index |
         (
           tse.getCall() = getCall() and
           tse.getArgumentIndex() = index and
@@ -340,16 +341,32 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     )
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) { none() }
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
+    expr.getTarget() instanceof AllocationFunction and
+    opcode instanceof Opcode::InitializeDynamicAllocation and
+    tag = OnlyInstructionTag() and
+    type = getUnknownType()
+  }
 
-  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    if expr.getTarget() instanceof AllocationFunction
+    then result = getInstruction(OnlyInstructionTag())
+    else result = getChild(0).getFirstInstruction()
+  }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind = gotoEdge() and
+    expr.getTarget() instanceof AllocationFunction and
+    if exists(getChild(0))
+    then result = getChild(0).getFirstInstruction()
+    else result = getParent().getChildSuccessor(this)
+  }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
-
-  override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    none()
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
   }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
@@ -479,13 +496,14 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     or
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
-    result = getTranslatedExpr(call
+    result =
+      getTranslatedExpr(call
             .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
             .getFullyConverted()).getResult()
   }
 
   override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
-    if hasSpecificReadSideEffect(any(Opcode::BufferReadSideEffect op))
+    if hasSpecificReadSideEffect(any(BufferAccessOpcode op))
     then
       result = getUnknownType() and
       tag instanceof OnlyInstructionTag and

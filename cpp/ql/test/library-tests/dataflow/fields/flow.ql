@@ -29,9 +29,9 @@ class Conf extends Configuration {
   }
 
   override predicate isAdditionalFlowStep(Node a, Node b) {
-    b.asPartialDefinition() = any(Call c |
-        c.getTarget().hasName("insert") and c.getAnArgument() = a.asExpr()
-      ).getQualifier()
+    b.asPartialDefinition() =
+      any(Call c | c.getTarget().hasName("insert") and c.getAnArgument() = a.asExpr())
+          .getQualifier()
     or
     b.asExpr().(AddressOfExpr).getOperand() = a.asExpr()
   }

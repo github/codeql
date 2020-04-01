@@ -1,6 +1,7 @@
 /**
  * Contains classes for recognizing array and string inclusion tests.
  */
+
 private import javascript
 
 /**
@@ -55,6 +56,40 @@ module InclusionTest {
      * the given element.
      */
     boolean getPolarity() { result = true }
+  }
+
+  /**
+   * A call to a utility function (`callee`) that performs an InclusionTest (`inner`).
+   */
+  private class IndirectInclusionTest extends Range, DataFlow::CallNode {
+    InclusionTest inner;
+    Function callee;
+
+    IndirectInclusionTest() {
+      inner.getEnclosingExpr() = callee.getAReturnedExpr() and
+      this.getACallee() = callee and
+      count(this.getACallee()) = 1 and
+      count(callee.getAReturnedExpr()) = 1 and
+      not this.isImprecise() and
+      inner.getContainerNode().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
+      inner.getContainedNode().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+    }
+
+    override DataFlow::Node getContainerNode() {
+      exists(int arg |
+        inner.getContainerNode().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+        result = this.getArgument(arg)
+      )
+    }
+
+    override DataFlow::Node getContainedNode() {
+      exists(int arg |
+        inner.getContainedNode().getALocalSource().getEnclosingExpr() = callee.getParameter(arg) and
+        result = this.getArgument(arg)
+      )
+    }
+
+    override boolean getPolarity() { result = inner.getPolarity() }
   }
 
   /**

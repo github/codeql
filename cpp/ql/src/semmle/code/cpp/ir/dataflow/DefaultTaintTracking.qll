@@ -4,6 +4,8 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.DataFlow2
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -19,85 +21,117 @@ private predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
-private predicate userInputInstruction(Instruction instr) {
-  exists(CallInstruction ci, WriteSideEffectInstruction wsei |
-    userInputArgument(ci.getConvertedResultExpression(), wsei.getIndex()) and
-    instr = wsei and
-    wsei.getPrimaryInstruction() = ci
+/**
+ * Functions that we should only allow taint to flow through (to the return
+ * value) if all but the source argument are 'predictable'.  This is done to
+ * emulate the old security library's implementation rather than due to any
+ * strong belief that this is the right approach.
+ *
+ * Note that the list itself is not very principled; it consists of all the
+ * functions listed in the old security library's [default] `isPureFunction`
+ * that have more than one argument, but are not in the old taint tracking
+ * library's `returnArgument` predicate.  In addition, `strlen` is included
+ * because it's also a special case in flow to return values.
+ */
+predicate predictableOnlyFlow(string name) {
+  name = "strcasestr" or
+  name = "strchnul" or
+  name = "strchr" or
+  name = "strchrnul" or
+  name = "strcmp" or
+  name = "strcspn" or
+  name = "strlen" or // special case
+  name = "strncmp" or
+  name = "strndup" or
+  name = "strnlen" or
+  name = "strrchr" or
+  name = "strspn" or
+  name = "strstr" or
+  name = "strtod" or
+  name = "strtof" or
+  name = "strtol" or
+  name = "strtoll" or
+  name = "strtoq" or
+  name = "strtoul"
+}
+
+private DataFlow::Node getNodeForSource(Expr source) {
+  isUserInput(source, _) and
+  (
+    result = DataFlow::exprNode(source)
+    or
+    // Some of the sources in `isUserInput` are intended to match the value of
+    // an expression, while others (those modeled below) are intended to match
+    // the taint that propagates out of an argument, like the `char *` argument
+    // to `gets`. It's impossible here to tell which is which, but the "access
+    // to argv" source is definitely not intended to match an output argument,
+    // and it causes false positives if we let it.
+    result = DataFlow::definitionByReferenceNode(source) and
+    not argv(source.(VariableAccess).getTarget())
   )
-  or
-  userInputReturned(instr.getConvertedResultExpression())
-  or
-  instr.getConvertedResultExpression() instanceof EnvironmentRead
-  or
-  instr
-      .(LoadInstruction)
-      .getSourceAddress()
-      .(VariableAddressInstruction)
-      .getASTVariable()
-      .hasName("argv") and
-  instr.getEnclosingFunction().hasGlobalName("main")
 }
 
 private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) {
-    userInputInstruction(source.asInstruction())
-  }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   ToGlobalVarTaintTrackingCfg() { this = "GlobalVarTaintTrackingCfg" }
 
-  override predicate isSource(DataFlow::Node source) { isUserInput(source.asExpr(), _) }
+  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(GlobalOrNamespaceVariable gv | writesVariable(sink.asInstruction(), gv))
+    sink.asVariable() instanceof GlobalOrNamespaceVariable
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
     or
-    exists(StoreInstruction i1, LoadInstruction i2, GlobalOrNamespaceVariable gv |
-      writesVariable(i1, gv) and
-      readsVariable(i2, gv) and
-      i1 = n1.asInstruction() and
-      i2 = n2.asInstruction()
-    )
+    writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
+    or
+    readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(
-      ToGlobalVarTaintTrackingCfg other, DataFlow::Node prevSink, GlobalOrNamespaceVariable gv
-    |
-      other.hasFlowTo(prevSink) and
-      writesVariable(prevSink.asInstruction(), gv) and
-      readsVariable(source.asInstruction(), gv)
-    )
+    // This set of sources should be reasonably small, which is good for
+    // performance since the set of sinks is very large.
+    exists(ToGlobalVarTaintTrackingCfg otherCfg | otherCfg.hasFlowTo(source))
   }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
+  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
   override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     instructionTaintStep(n1.asInstruction(), n2.asInstruction())
+    or
+    // Additional step for flow out of variables. There is no flow _into_
+    // variables in this configuration, so this step only serves to take flow
+    // out of a variable that's a source.
+    readsVariable(n2.asInstruction(), n1.asVariable())
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
@@ -132,21 +166,31 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
   )
 }
 
+private predicate nodeIsBarrierIn(DataFlow::Node node) {
+  // don't use dataflow into taint sources, as this leads to duplicate results.
+  node = getNodeForSource(any(Expr e))
+}
+
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
-  i2 = any(CallInstruction call |
-      isPureFunction(call.getStaticCallTarget().getName()) and
-      call.getAnArgument() = i1 and
-      forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and
-      // flow through `strlen` tends to cause dubious results, if the length is
-      // bounded.
-      not call.getStaticCallTarget().getName() = "strlen"
-    )
+  exists(CallInstruction call, int argIndex | call = i2 |
+    isPureFunction(call.getStaticCallTarget().getName()) and
+    i1 = getACallArgumentOrIndirection(call, argIndex) and
+    forall(Instruction arg | arg = call.getAnArgument() |
+      arg = getACallArgumentOrIndirection(call, argIndex) or predictableInstruction(arg)
+    ) and
+    // flow through `strlen` tends to cause dubious results, if the length is
+    // bounded.
+    not call.getStaticCallTarget().getName() = "strlen"
+  )
   or
   // Flow through pointer dereference
   i2.(LoadInstruction).getSourceAddress() = i1
   or
   i2.(UnaryInstruction).getUnary() = i1
+  or
+  i2.(ChiInstruction).getPartial() = i1 and
+  not i2.isResultConflated()
   or
   exists(BinaryInstruction bin |
     bin = i2 and
@@ -157,18 +201,114 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // This is part of the translation of `a[i]`, where we want taint to flow
   // from `a`.
   i2.(PointerAddInstruction).getLeft() = i1
-  // TODO: robust Chi handling
-  //
-  // TODO: Flow from argument to return of known functions: Port missing parts
-  // of `returnArgument` to the `interfaces.Taint` and `interfaces.DataFlow`
-  // libraries.
-  //
-  // TODO: Flow from input argument to output argument of known functions: Port
-  // missing parts of `copyValueBetweenArguments` to the `interfaces.Taint` and
-  // `interfaces.DataFlow` libraries and implement call side-effect nodes. This
-  // will help with the test for `ExecTainted.ql`. The test for
-  // `TaintedPath.ql` is more tricky because the output arg is a pointer
-  // addition expression.
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  exists(IRFunction f, Parameter parameter |
+    i1 = getInitializeParameter(f, parameter) and
+    i2 = getInitializeIndirection(f, parameter)
+  )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getAnOperand().(SideEffectOperand).getAnyDef() = i1 and
+    read.getArgumentDef() = i2
+  )
+  or
+  // Flow from argument to return value
+  i2 =
+    any(CallInstruction call |
+      exists(int indexIn |
+        modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
+        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        not predictableOnlyFlow(call.getStaticCallTarget().getName())
+      )
+    )
+  or
+  // Flow from input argument to output argument
+  // TODO: This won't work in practice as long as all aliased memory is tracked
+  // together in a single virtual variable.
+  // TODO: Will this work on the test for `TaintedPath.ql`, where the output arg
+  // is a pointer addition expression?
+  i2 =
+    any(WriteSideEffectInstruction outNode |
+      exists(CallInstruction call, int indexIn, int indexOut |
+        modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
+        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        outNode.getIndex() = indexOut and
+        outNode.getPrimaryInstruction() = call
+      )
+    )
+}
+
+pragma[noinline]
+private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+pragma[noinline]
+private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+/**
+ * Get an instruction that goes into argument `argumentIndex` of `call`. This
+ * can be either directly or through one pointer indirection.
+ */
+private Instruction getACallArgumentOrIndirection(CallInstruction call, int argumentIndex) {
+  result = call.getPositionalArgument(argumentIndex)
+  or
+  exists(ReadSideEffectInstruction readSE |
+    // TODO: why are read side effect operands imprecise?
+    result = readSE.getSideEffectOperand().getAnyDef() and
+    readSE.getPrimaryInstruction() = call and
+    readSE.getIndex() = argumentIndex
+  )
+}
+
+private predicate modelTaintToParameter(Function f, int parameterIn, int parameterOut) {
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    (
+      f.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      or
+      f.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+    ) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    modelOut.isParameterDeref(parameterOut)
+  )
+}
+
+private predicate modelTaintToReturnValue(Function f, int parameterIn) {
+  // Taint flow from parameter to return value
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(TaintFunction).hasTaintFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    (modelOut.isReturnValue() or modelOut.isReturnValueDeref())
+  )
+  or
+  // Data flow (not taint flow) to where the return value points. For the time
+  // being we will conflate pointers and objects in taint tracking.
+  exists(FunctionInput modelIn, FunctionOutput modelOut |
+    f.(DataFlowFunction).hasDataFlow(modelIn, modelOut) and
+    (modelIn.isParameter(parameterIn) or modelIn.isParameterDeref(parameterIn)) and
+    modelOut.isReturnValueDeref()
+  )
+  or
+  // Taint flow from one argument to another and data flow from an argument to a
+  // return value. This happens in functions like `strcat` and `memcpy`. We
+  // could model this flow in two separate steps, but that would add reverse
+  // flow from the write side-effect to the call instruction, which may not be
+  // desirable.
+  exists(int parameterMid, InParameter modelMid, OutReturnValue returnOut |
+    modelTaintToParameter(f, parameterIn, parameterMid) and
+    modelMid.isParameter(parameterMid) and
+    f.(DataFlowFunction).hasDataFlow(modelMid, returnOut)
+  )
 }
 
 private Element adjustedSink(DataFlow::Node sink) {
@@ -201,56 +341,33 @@ private Element adjustedSink(DataFlow::Node sink) {
   // short-circuiting condition and thus might get skipped.
   result.(NotExpr).getOperand() = sink.asExpr()
   or
-  // For compatibility, send flow from argument read side effects to their
-  // corresponding argument expression
-  exists(IndirectReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
+  // Taint postfix and prefix crement operations when their operand is tainted.
+  result.(CrementOperation).getAnOperand() = sink.asExpr()
   or
-  exists(BufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
-  or
-  exists(SizedBufferReadSideEffectInstruction read |
-    read.getAnOperand().(SideEffectOperand).getAnyDef() = sink.asInstruction() and
-    read.getArgumentDef().getUnconvertedResultExpression() = result
-  )
+  // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
+  result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
-    cfg.hasFlow(DataFlow::exprNode(source), sink)
-    or
-    cfg.hasFlow(DataFlow::definitionByReferenceNode(source), sink)
-  |
+    cfg.hasFlow(getNodeForSource(source), sink) and
     tainted = adjustedSink(sink)
   )
 }
 
+cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
   globalVar = ""
   or
   exists(
-    ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg, DataFlow::Node store,
-    GlobalOrNamespaceVariable global, DataFlow::Node load, DataFlow::Node sink
+    ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg,
+    DataFlow::VariableNode variableNode, GlobalOrNamespaceVariable global, DataFlow::Node sink
   |
-    toCfg.hasFlow(DataFlow::exprNode(source), store) and
-    store
-        .asInstruction()
-        .(StoreInstruction)
-        .getDestinationAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable() = global and
-    load
-        .asInstruction()
-        .(LoadInstruction)
-        .getSourceAddress()
-        .(VariableAddressInstruction)
-        .getASTVariable() = global and
-    fromCfg.hasFlow(load, sink) and
+    global = variableNode.getVariable() and
+    toCfg.hasFlow(getNodeForSource(source), variableNode) and
+    fromCfg.hasFlow(variableNode, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
   )

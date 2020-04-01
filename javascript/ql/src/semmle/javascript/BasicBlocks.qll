@@ -235,7 +235,8 @@ class BasicBlock extends @cfg_node, Locatable {
    */
   private int nextDefOrUseAfter(PurelyLocalVariable v, int i, VarDef d) {
     defAt(i, v, d) and
-    result = min(int j |
+    result =
+      min(int j |
         (defAt(j, v, _) or useAt(j, v, _) or j = length()) and
         j > i
       )

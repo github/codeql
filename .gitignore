@@ -1,6 +1,7 @@
 # editor and OS artifacts
 *~
 .DS_STORE
+*.swp
 
 # query compilation caches
 .cache
@@ -12,6 +13,9 @@
 # Visual studio temporaries, except a file used by QL4VS
 .vs/*
 !.vs/VSWorkspaceSettings.json
+
+# Byte-compiled python files
+*.pyc
 
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/

@@ -1,8 +1,0 @@
-| test.py:4 | request | twisted.request.http.Request |
-| test.py:9 | request | twisted.request.http.Request |
-| test.py:16 | request | twisted.request.http.Request |
-| test.py:24 | request | twisted.request.http.Request |
-| test.py:28 | myrequest | twisted.request.http.Request |
-| test.py:31 | postrequest | twisted.request.http.Request |
-| test.py:39 | request | twisted.request.http.Request |
-| test.py:43 | request | twisted.request.http.Request |

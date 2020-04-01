@@ -64,8 +64,8 @@ where
   forall(Expr e | e = v.getAnAssignedValue() | e.getType() = v.getPrimitiveType()) and
   (
     not v.getDeclExpr().getParent() instanceof EnhancedForStmt or
-    v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() = v
-          .getPrimitiveType()
+    v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() =
+      v.getPrimitiveType()
   ) and
   notDeliberatelyBoxed(v) and
   not affectsOverload(v)

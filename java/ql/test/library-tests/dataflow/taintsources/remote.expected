@@ -1,0 +1,11 @@
+| A.java:28:9:28:32 | getParameter(...) | A.java:28:9:28:32 | getParameter(...) |
+| A.java:29:9:29:29 | getHeader(...) | A.java:29:9:29:29 | getHeader(...) |
+| A.java:30:9:30:28 | getQueryString(...) | A.java:30:9:30:28 | getQueryString(...) |
+| A.java:31:9:31:38 | getValue(...) | A.java:31:9:31:38 | getValue(...) |
+| A.java:41:5:41:53 | getInputStream(...) | A.java:41:5:41:53 | getInputStream(...) |
+| A.java:42:5:42:45 | getInputStream(...) | A.java:42:5:42:45 | getInputStream(...) |
+| A.java:43:5:43:47 | getHostName(...) | A.java:43:5:43:47 | getHostName(...) |
+| RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:4:30:4:40 | path |
+| RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:5:20:5:31 | ... + ... |
+| RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:5:28:5:31 | path |
+| RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:6:29:6:35 | command |

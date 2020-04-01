@@ -30,7 +30,8 @@ where
     // Non-volatile double-checked locking is ok when the object is immutable and
     // there is only a single non-synchronized field read.
     immutableFieldType(f.getType()) and
-    1 = strictcount(FieldAccess fa |
+    1 =
+      strictcount(FieldAccess fa |
         fa.getField() = f and
         fa.getEnclosingCallable() = sync.getEnclosingCallable() and
         not fa.getEnclosingStmt().getEnclosingStmt*() = sync.getBlock()

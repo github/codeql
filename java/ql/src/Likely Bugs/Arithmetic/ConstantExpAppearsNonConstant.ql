@@ -11,18 +11,11 @@
 
 import java
 
-int integralTypeWidth(IntegralType t) {
-  if t.hasName("long") or t.hasName("Long") then result = 64 else result = 32
-}
-
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
 
 predicate isConstantExp(Expr e) {
   // A literal is constant.
   e instanceof Literal
-  or
-  // A parenthesized expression is constant if its proper expression is.
-  isConstantExp(e.(ParExpr).getProperExpr())
   or
   e instanceof TypeAccess
   or
@@ -37,33 +30,22 @@ predicate isConstantExp(Expr e) {
   )
   or
   // A cast expression is constant if its expression is.
-  exists(CastExpr c | c = e | isConstantExp(c.getExpr().getProperExpr()))
+  exists(CastExpr c | c = e | isConstantExp(c.getExpr()))
   or
   // Multiplication by 0 is constant.
-  exists(MulExpr m | m = e | eval(m.getAnOperand().getProperExpr()) = 0)
+  exists(MulExpr m | m = e | eval(m.getAnOperand()) = 0)
   or
   // Integer remainder by 1 is constant.
   exists(RemExpr r | r = e |
     r.getLeftOperand().getType() instanceof IntegralType and
-    eval(r.getRightOperand().getProperExpr()) = 1
+    eval(r.getRightOperand()) = 1
   )
   or
-  // Left shift by 64 (longs) or 32 (all other integer types) is constant.
-  exists(LShiftExpr s | s = e |
-    exists(IntegralType t | t = s.getLeftOperand().getType() |
-      eval(s.getRightOperand().getProperExpr()) = integralTypeWidth(t)
-    )
-  )
+  exists(AndBitwiseExpr a | a = e | eval(a.getAnOperand()) = 0)
   or
-  exists(AndBitwiseExpr a | a = e | eval(a.getAnOperand().getProperExpr()) = 0)
+  exists(AndLogicalExpr a | a = e | a.getAnOperand().(BooleanLiteral).getBooleanValue() = false)
   or
-  exists(AndLogicalExpr a | a = e |
-    a.getAnOperand().getProperExpr().(BooleanLiteral).getBooleanValue() = false
-  )
-  or
-  exists(OrLogicalExpr o | o = e |
-    o.getAnOperand().getProperExpr().(BooleanLiteral).getBooleanValue() = true
-  )
+  exists(OrLogicalExpr o | o = e | o.getAnOperand().(BooleanLiteral).getBooleanValue() = true)
 }
 
 from Expr e

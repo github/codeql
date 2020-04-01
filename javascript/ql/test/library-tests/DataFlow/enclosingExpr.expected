@@ -35,6 +35,36 @@
 | sources.js:11:14:11:16 | key | sources.js:11:14:11:16 | key |
 | sources.js:11:23:11:27 | array | sources.js:11:23:11:27 | array |
 | sources.js:11:32:11:34 | key | sources.js:11:32:11:34 | key |
+| tst2.ts:1:18:1:18 | A | tst2.ts:1:18:1:18 | A |
+| tst2.ts:2:14:2:14 | x | tst2.ts:2:14:2:14 | x |
+| tst2.ts:2:14:2:19 | x = 42 | tst2.ts:2:14:2:19 | x = 42 |
+| tst2.ts:2:18:2:19 | 42 | tst2.ts:2:18:2:19 | 42 |
+| tst2.ts:3:3:3:6 | setX | tst2.ts:3:3:3:6 | setX |
+| tst2.ts:3:3:3:8 | setX() | tst2.ts:3:3:3:8 | setX() |
+| tst2.ts:4:3:4:3 | x | tst2.ts:4:3:4:3 | x |
+| tst2.ts:7:10:7:13 | setX | tst2.ts:7:10:7:13 | setX |
+| tst2.ts:8:3:8:3 | A | tst2.ts:8:3:8:3 | A |
+| tst2.ts:8:3:8:5 | A.x | tst2.ts:8:3:8:5 | A.x |
+| tst2.ts:8:3:8:10 | A.x = 23 | tst2.ts:8:3:8:10 | A.x = 23 |
+| tst2.ts:8:5:8:5 | x | tst2.ts:8:5:8:5 | x |
+| tst2.ts:8:9:8:10 | 23 | tst2.ts:8:9:8:10 | 23 |
+| tst2.ts:11:5:11:7 | nd2 | tst2.ts:11:5:11:7 | nd2 |
+| tst2.ts:11:5:11:23 | nd2 = A.x as number | tst2.ts:11:5:11:23 | nd2 = A.x as number |
+| tst2.ts:11:11:11:11 | A | tst2.ts:11:11:11:11 | A |
+| tst2.ts:11:11:11:13 | A.x | tst2.ts:11:11:11:13 | A.x |
+| tst2.ts:11:11:11:23 | A.x as number | tst2.ts:11:11:11:23 | A.x as number |
+| tst2.ts:11:13:11:13 | x | tst2.ts:11:13:11:13 | x |
+| tst2.ts:13:7:13:16 | StringList | tst2.ts:13:7:13:16 | StringList |
+| tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:29 | List |
+| tst2.ts:13:26:13:37 | List<string> | tst2.ts:13:26:13:37 | List<string> |
+| tst2.ts:13:39:13:38 | (...arg ... rgs); } | tst2.ts:13:39:13:38 | (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | ...args | tst2.ts:13:39:13:38 | ...args |
+| tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | constructor | tst2.ts:13:39:13:38 | constructor |
+| tst2.ts:13:39:13:38 | super | tst2.ts:13:39:13:38 | super |
+| tst2.ts:13:39:13:38 | super(...args) | tst2.ts:13:39:13:38 | super(...args) |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -289,33 +319,3 @@
 | tst.js:115:1:115:12 | Array.call() | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | Array.call() |
 | tst.js:115:7:115:10 | call | tst.js:115:7:115:10 | call |
-| tst.ts:1:18:1:18 | A | tst.ts:1:18:1:18 | A |
-| tst.ts:2:14:2:14 | x | tst.ts:2:14:2:14 | x |
-| tst.ts:2:14:2:19 | x = 42 | tst.ts:2:14:2:19 | x = 42 |
-| tst.ts:2:18:2:19 | 42 | tst.ts:2:18:2:19 | 42 |
-| tst.ts:3:3:3:6 | setX | tst.ts:3:3:3:6 | setX |
-| tst.ts:3:3:3:8 | setX() | tst.ts:3:3:3:8 | setX() |
-| tst.ts:4:3:4:3 | x | tst.ts:4:3:4:3 | x |
-| tst.ts:7:10:7:13 | setX | tst.ts:7:10:7:13 | setX |
-| tst.ts:8:3:8:3 | A | tst.ts:8:3:8:3 | A |
-| tst.ts:8:3:8:5 | A.x | tst.ts:8:3:8:5 | A.x |
-| tst.ts:8:3:8:10 | A.x = 23 | tst.ts:8:3:8:10 | A.x = 23 |
-| tst.ts:8:5:8:5 | x | tst.ts:8:5:8:5 | x |
-| tst.ts:8:9:8:10 | 23 | tst.ts:8:9:8:10 | 23 |
-| tst.ts:11:5:11:7 | nd2 | tst.ts:11:5:11:7 | nd2 |
-| tst.ts:11:5:11:23 | nd2 = A.x as number | tst.ts:11:5:11:23 | nd2 = A.x as number |
-| tst.ts:11:11:11:11 | A | tst.ts:11:11:11:11 | A |
-| tst.ts:11:11:11:13 | A.x | tst.ts:11:11:11:13 | A.x |
-| tst.ts:11:11:11:23 | A.x as number | tst.ts:11:11:11:23 | A.x as number |
-| tst.ts:11:13:11:13 | x | tst.ts:11:13:11:13 | x |
-| tst.ts:13:7:13:16 | StringList | tst.ts:13:7:13:16 | StringList |
-| tst.ts:13:26:13:29 | List | tst.ts:13:26:13:29 | List |
-| tst.ts:13:26:13:37 | List<string> | tst.ts:13:26:13:37 | List<string> |
-| tst.ts:13:39:13:38 | (...arg ... rgs); } | tst.ts:13:39:13:38 | (...arg ... rgs); } |
-| tst.ts:13:39:13:38 | ...args | tst.ts:13:39:13:38 | ...args |
-| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |
-| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |
-| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |
-| tst.ts:13:39:13:38 | constructor | tst.ts:13:39:13:38 | constructor |
-| tst.ts:13:39:13:38 | super | tst.ts:13:39:13:38 | super |
-| tst.ts:13:39:13:38 | super(...args) | tst.ts:13:39:13:38 | super(...args) |

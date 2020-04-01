@@ -14,6 +14,7 @@
 + semmlecode-javascript-queries/Security/CWE-079/ReflectedXss.ql: /Security/CWE/CWE-079
 + semmlecode-javascript-queries/Security/CWE-079/StoredXss.ql: /Security/CWE/CWE-079
 + semmlecode-javascript-queries/Security/CWE-079/Xss.ql: /Security/CWE/CWE-079
++ semmlecode-javascript-queries/Security/CWE-079/UnsafeJQueryPlugin.ql: /Security/CWE/CWE-079
 + semmlecode-javascript-queries/Security/CWE-089/SqlInjection.ql: /Security/CWE/CWE-089
 + semmlecode-javascript-queries/Security/CWE-094/CodeInjection.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-094/UnsafeDynamicMethodAccess.ql: /Security/CWE/CWE-094
@@ -31,6 +32,7 @@
 + semmlecode-javascript-queries/Security/CWE-352/MissingCsrfMiddleware.ql: /Security/CWE/CWE-352
 + semmlecode-javascript-queries/Security/CWE-400/RemotePropertyInjection.ql: /Security/CWE/CWE-400
 + semmlecode-javascript-queries/Security/CWE-400/PrototypePollution.ql: /Security/CWE/CWE-400
++ semmlecode-javascript-queries/Security/CWE-400/PrototypePollutionUtility.ql: /Security/CWE/CWE-400
 + semmlecode-javascript-queries/Security/CWE-502/UnsafeDeserialization.ql: /Security/CWE/CWE-502
 + semmlecode-javascript-queries/Security/CWE-506/HardcodedDataInterpretedAsCode.ql: /Security/CWE/CWE-506
 + semmlecode-javascript-queries/Security/CWE-601/ClientSideUrlRedirect.ql: /Security/CWE/CWE-601

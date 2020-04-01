@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary logical operation.
  */
-abstract class UnaryLogicalOperation extends UnaryOperation { }
+class UnaryLogicalOperation extends UnaryOperation, @un_log_op_expr { }
 
 /**
  * A C/C++ logical not expression.
@@ -16,13 +16,13 @@ class NotExpr extends UnaryLogicalOperation, @notexpr {
 
   override string getCanonicalQLClass() { result = "NotExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
  * A C/C++ binary logical operation.
  */
-abstract class BinaryLogicalOperation extends BinaryOperation {
+class BinaryLogicalOperation extends BinaryOperation, @bin_log_op_expr {
   /**
    * Holds if the truth of this binary logical expression having value `wholeIsTrue`
    * implies that the truth of the child expression `part` has truth value `partIsTrue`.

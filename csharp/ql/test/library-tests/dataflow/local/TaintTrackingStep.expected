@@ -93,7 +93,6 @@
 | LocalDataFlow.cs:92:21:92:28 | access to local variable nonSink0 | LocalDataFlow.cs:92:9:92:29 | SSA def(nonSink0) |
 | LocalDataFlow.cs:96:13:96:35 | [b (line 49): false] SSA def(sink7) | LocalDataFlow.cs:97:15:97:19 | [b (line 49): false] access to local variable sink7 |
 | LocalDataFlow.cs:96:13:96:35 | [b (line 49): true] SSA def(sink7) | LocalDataFlow.cs:97:15:97:19 | [b (line 49): true] access to local variable sink7 |
-| LocalDataFlow.cs:96:21:96:21 | access to parameter b | LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... |
 | LocalDataFlow.cs:96:21:96:21 | access to parameter b | LocalDataFlow.cs:100:20:100:20 | [b (line 49): false] access to parameter b |
 | LocalDataFlow.cs:96:21:96:21 | access to parameter b | LocalDataFlow.cs:100:20:100:20 | [b (line 49): true] access to parameter b |
 | LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... | LocalDataFlow.cs:96:13:96:35 | [b (line 49): false] SSA def(sink7) |
@@ -104,8 +103,6 @@
 | LocalDataFlow.cs:97:15:97:19 | [b (line 49): true] access to local variable sink7 | LocalDataFlow.cs:100:9:100:36 | SSA phi(sink7) |
 | LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) | LocalDataFlow.cs:101:15:101:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:100:9:100:36 | SSA phi(sink7) | LocalDataFlow.cs:104:29:104:33 | access to local variable sink7 |
-| LocalDataFlow.cs:100:20:100:20 | [b (line 49): false] access to parameter b | LocalDataFlow.cs:100:20:100:36 | [b (line 49): false] ... ? ... : ... |
-| LocalDataFlow.cs:100:20:100:20 | [b (line 49): true] access to parameter b | LocalDataFlow.cs:100:20:100:36 | [b (line 49): true] ... ? ... : ... |
 | LocalDataFlow.cs:100:20:100:36 | [b (line 49): false] ... ? ... : ... | LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) |
 | LocalDataFlow.cs:100:20:100:36 | [b (line 49): true] ... ? ... : ... | LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) |
 | LocalDataFlow.cs:100:24:100:28 | "abc" | LocalDataFlow.cs:100:20:100:36 | [b (line 49): true] ... ? ... : ... |
@@ -1112,9 +1109,7 @@
 | Splitting.cs:38:15:38:15 | [b (line 32): true] access to local variable x | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x |
 | Splitting.cs:38:15:38:15 | [post] [b (line 32): false] access to local variable x | Splitting.cs:40:23:40:23 | [b (line 32): false] access to local variable x |
 | Splitting.cs:38:15:38:15 | [post] [b (line 32): true] access to local variable x | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x |
-| Splitting.cs:39:15:39:15 | [b (line 32): false] access to parameter b | Splitting.cs:39:15:39:25 | [b (line 32): false] ... ? ... : ... |
 | Splitting.cs:39:15:39:15 | [b (line 32): false] access to parameter b | Splitting.cs:42:13:42:13 | [b (line 32): false] access to parameter b |
-| Splitting.cs:39:15:39:15 | [b (line 32): true] access to parameter b | Splitting.cs:39:15:39:25 | [b (line 32): true] ... ? ... : ... |
 | Splitting.cs:39:15:39:15 | [b (line 32): true] access to parameter b | Splitting.cs:42:13:42:13 | [b (line 32): true] access to parameter b |
 | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x | Splitting.cs:39:15:39:25 | [b (line 32): true] ... ? ... : ... |
 | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x | Splitting.cs:40:23:40:23 | [b (line 32): true] access to local variable x |
