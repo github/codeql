@@ -11,16 +11,15 @@
  * @id py/multiple-imports-on-line
  */
 
-/* Look for imports of the form:
-import modA, modB
-(Imports should be one per line according PEP 8)
-*/
+/*
+ * Look for imports of the form:
+ * import modA, modB
+ * (Imports should be one per line according PEP 8)
+ */
 
 import python
 
-predicate multiple_import(Import imp) {
-    count(imp.getAName()) > 1 and not imp.isFromImport()
-}
+predicate multiple_import(Import imp) { count(imp.getAName()) > 1 and not imp.isFromImport() }
 
 from Import i
 where multiple_import(i)

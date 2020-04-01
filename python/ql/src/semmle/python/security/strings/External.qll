@@ -206,7 +206,6 @@ class ExternalFileObject extends TaintKind {
  */
 class UrlsplitUrlparseTempSanitizer extends Sanitizer {
     // TODO: remove this once we have better support for named tuples
-
     UrlsplitUrlparseTempSanitizer() { this = "UrlsplitUrlparseTempSanitizer" }
 
     override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
@@ -238,9 +237,7 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
 
     /** holds for `== "KNOWN_VALUE"` on `true` edge, and `!= "KNOWN_VALUE"` on `false` edge */
     private predicate test_equality_with_const(CompareNode cmp, ControlFlowNode tainted, boolean sense) {
-        exists(ControlFlowNode const, Cmpop op |
-            const.getNode() instanceof StrConst
-        |
+        exists(ControlFlowNode const, Cmpop op | const.getNode() instanceof StrConst |
             (
                 cmp.operands(const, op, tainted)
                 or
@@ -257,7 +254,9 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
     /** holds for `in ["KNOWN_VALUE", ...]` on `true` edge, and `not in ["KNOWN_VALUE", ...]` on `false` edge */
     private predicate test_in_const_seq(CompareNode cmp, ControlFlowNode tainted, boolean sense) {
         exists(SequenceNode const_seq, Cmpop op |
-            forall(ControlFlowNode elem | elem = const_seq.getAnElement() | elem.getNode() instanceof StrConst)
+            forall(ControlFlowNode elem | elem = const_seq.getAnElement() |
+                elem.getNode() instanceof StrConst
+            )
         |
             cmp.operands(tainted, op, const_seq) and
             (

@@ -14,6 +14,9 @@
 .vs/*
 !.vs/VSWorkspaceSettings.json
 
+# Byte-compiled python files
+*.pyc
+
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 .vscode/settings.json
