@@ -7,9 +7,9 @@
 | 23 | 0 | ControlFlowNode for c | Function f |
 | 23 | 1 | ControlFlowNode for w | Function f |
 | 23 | 2 | ControlFlowNode for z | Function f |
-| 24 | 0 | ControlFlowNode for c | Function n |
-| 24 | 1 | ControlFlowNode for x | Function n |
-| 25 | 0 | ControlFlowNode for y | Function n |
-| 25 | 1 | ControlFlowNode for z | Function n |
-| 33 | 0 | ControlFlowNode for IntegerLiteral | Function foo |
-| 34 | 0 | ControlFlowNode for IntegerLiteral | Function foo |
+| 24 | 0 | ControlFlowNode for c | Function C.n |
+| 24 | 1 | ControlFlowNode for x | Function C.n |
+| 25 | 0 | ControlFlowNode for y | Function C.n |
+| 25 | 1 | ControlFlowNode for z | Function C.n |
+| 33 | 0 | ControlFlowNode for IntegerLiteral | Function D.foo |
+| 34 | 0 | ControlFlowNode for IntegerLiteral | Function D.foo |
