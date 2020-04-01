@@ -1,8 +1,7 @@
 /**
- * @name Calling openStream on URLs created from remote source can lead to file disclosure
- * @description If openStream is called on a java.net.URL, that was created from a remote source
- *              an attacker can try to pass absolute URLs starting with file:// or jar:// to access
- *              local resources in addition to remote ones.
+ * @name openStream called on URLs created from remote source
+ * @description Calling openStream on URLs created from remote source
+ * can lead to local file disclosure.
  * @kind path-problem
  */
 
