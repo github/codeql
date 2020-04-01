@@ -3,11 +3,6 @@ About the QL language
 
 QL is the powerful query language that underlies CodeQL, which is used to analyze code.
 
-For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as :doc:`Predicates <predicates>` and :doc:`Types <types>`.
-The explanations and examples help you understand how the language works, and how to write more advanced QL code.
-
-For formal specifications of the QL language and QLDoc comments, see the :doc:`QL language specification <language>` and :doc:`QLDoc comment specification <qldoc>`.
-
 About query languages and databases
 -----------------------------------
 
@@ -43,6 +38,11 @@ When you write this process in QL, it closely resembles the above structure. Not
    int getNumberOfDescendants(Person p) {
      result = count(getADescendant(p))
    }
+
+For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as :doc:`Expressions <expressions>` and :doc:`Recursion <recursion>`.
+The explanations and examples help you understand how the language works, and how to write more advanced QL code.
+
+For formal specifications of the QL language and QLDoc comments, see the :doc:`QL language specification <language>` and :doc:`QLDoc comment specification <qldoc>`.
 
 QL and object orientation
 -------------------------
