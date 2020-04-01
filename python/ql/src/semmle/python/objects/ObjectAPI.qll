@@ -536,6 +536,9 @@ abstract class FunctionValue extends CallableValue {
             )
         )
     }
+
+    /** Gets a class that may be raised by this function */
+    abstract ClassValue getARaisedType();
 }
 
 /** Class representing Python functions */
@@ -571,6 +574,10 @@ class PythonFunctionValue extends FunctionValue {
         result = this.getScope().getAReturnValueFlowNode()
     }
 
+    override ClassValue getARaisedType() {
+        scope_raises(result, this.getScope())
+    }
+
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
@@ -589,6 +596,11 @@ class BuiltinFunctionValue extends FunctionValue {
     }
 
     override int maxParameters() {
+        none()
+    }
+
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
         none()
     }
 }
@@ -613,6 +625,11 @@ class BuiltinMethodValue extends FunctionValue {
     }
 
     override int maxParameters() {
+        none()
+    }
+
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
         none()
     }
 
