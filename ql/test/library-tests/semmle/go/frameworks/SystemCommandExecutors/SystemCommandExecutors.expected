@@ -1,0 +1,55 @@
+| SystemCommandExecutors.go:26:3:26:36 | call to StartProcess | SystemCommandExecutors.go:26:19:26:24 | source |
+| SystemCommandExecutors.go:30:3:30:47 | call to StartProcess | SystemCommandExecutors.go:30:19:30:23 | shell |
+| SystemCommandExecutors.go:30:3:30:47 | call to StartProcess | SystemCommandExecutors.go:30:26:30:41 | composite literal |
+| SystemCommandExecutors.go:30:3:30:47 | call to StartProcess | SystemCommandExecutors.go:30:44:30:46 | nil |
+| SystemCommandExecutors.go:33:3:33:64 | call to StartProcess | SystemCommandExecutors.go:33:19:33:23 | shell |
+| SystemCommandExecutors.go:33:3:33:64 | call to StartProcess | SystemCommandExecutors.go:33:26:33:58 | call to append |
+| SystemCommandExecutors.go:33:3:33:64 | call to StartProcess | SystemCommandExecutors.go:33:61:33:63 | nil |
+| SystemCommandExecutors.go:36:3:36:61 | call to StartProcess | SystemCommandExecutors.go:36:19:36:23 | shell |
+| SystemCommandExecutors.go:36:3:36:61 | call to StartProcess | SystemCommandExecutors.go:36:26:36:55 | call to append |
+| SystemCommandExecutors.go:36:3:36:61 | call to StartProcess | SystemCommandExecutors.go:36:58:36:60 | nil |
+| SystemCommandExecutors.go:44:3:44:57 | call to StartProcess | SystemCommandExecutors.go:44:19:44:33 | assumedNonShell |
+| SystemCommandExecutors.go:47:3:47:74 | call to StartProcess | SystemCommandExecutors.go:47:19:47:33 | assumedNonShell |
+| SystemCommandExecutors.go:50:3:50:82 | call to StartProcess | SystemCommandExecutors.go:50:19:50:33 | assumedNonShell |
+| SystemCommandExecutors.go:56:3:56:31 | call to Command | SystemCommandExecutors.go:56:16:56:21 | source |
+| SystemCommandExecutors.go:59:3:59:41 | call to Command | SystemCommandExecutors.go:59:16:59:20 | shell |
+| SystemCommandExecutors.go:59:3:59:41 | call to Command | SystemCommandExecutors.go:59:23:59:26 | "a0" |
+| SystemCommandExecutors.go:59:3:59:41 | call to Command | SystemCommandExecutors.go:59:29:59:32 | "a1" |
+| SystemCommandExecutors.go:59:3:59:41 | call to Command | SystemCommandExecutors.go:59:35:59:40 | source |
+| SystemCommandExecutors.go:62:3:62:56 | call to Command | SystemCommandExecutors.go:62:16:62:20 | shell |
+| SystemCommandExecutors.go:62:3:62:56 | call to Command | SystemCommandExecutors.go:62:23:62:52 | call to append |
+| SystemCommandExecutors.go:65:3:65:114 | call to Command | SystemCommandExecutors.go:65:16:65:19 | "sh" |
+| SystemCommandExecutors.go:65:3:65:114 | call to Command | SystemCommandExecutors.go:65:22:65:25 | "-c" |
+| SystemCommandExecutors.go:65:3:65:114 | call to Command | SystemCommandExecutors.go:65:28:65:113 | ...+... |
+| SystemCommandExecutors.go:66:3:66:42 | call to Command | SystemCommandExecutors.go:66:16:66:21 | "sudo" |
+| SystemCommandExecutors.go:66:3:66:42 | call to Command | SystemCommandExecutors.go:66:24:66:27 | "sh" |
+| SystemCommandExecutors.go:66:3:66:42 | call to Command | SystemCommandExecutors.go:66:30:66:33 | "-c" |
+| SystemCommandExecutors.go:66:3:66:42 | call to Command | SystemCommandExecutors.go:66:36:66:41 | source |
+| SystemCommandExecutors.go:69:3:69:68 | call to Command | SystemCommandExecutors.go:69:16:69:21 | "ruby" |
+| SystemCommandExecutors.go:69:3:69:68 | call to Command | SystemCommandExecutors.go:69:24:69:27 | "-e" |
+| SystemCommandExecutors.go:69:3:69:68 | call to Command | SystemCommandExecutors.go:69:30:69:67 | call to Sprintf |
+| SystemCommandExecutors.go:70:3:70:80 | call to Command | SystemCommandExecutors.go:70:16:70:21 | "perl" |
+| SystemCommandExecutors.go:70:3:70:80 | call to Command | SystemCommandExecutors.go:70:24:70:27 | "-e" |
+| SystemCommandExecutors.go:70:3:70:80 | call to Command | SystemCommandExecutors.go:70:30:70:79 | call to Sprintf |
+| SystemCommandExecutors.go:71:3:71:86 | call to Command | SystemCommandExecutors.go:71:16:71:26 | "python2.7" |
+| SystemCommandExecutors.go:71:3:71:86 | call to Command | SystemCommandExecutors.go:71:29:71:32 | "-c" |
+| SystemCommandExecutors.go:71:3:71:86 | call to Command | SystemCommandExecutors.go:71:35:71:85 | call to Sprintf |
+| SystemCommandExecutors.go:72:3:72:87 | call to Command | SystemCommandExecutors.go:72:16:72:27 | "python3.6m" |
+| SystemCommandExecutors.go:72:3:72:87 | call to Command | SystemCommandExecutors.go:72:30:72:33 | "-c" |
+| SystemCommandExecutors.go:72:3:72:87 | call to Command | SystemCommandExecutors.go:72:36:72:86 | call to Sprintf |
+| SystemCommandExecutors.go:74:3:74:56 | call to Command | SystemCommandExecutors.go:74:16:74:33 | "python3.7-config" |
+| SystemCommandExecutors.go:75:3:75:44 | call to Command | SystemCommandExecutors.go:75:16:75:28 | "python3-pbr" |
+| SystemCommandExecutors.go:78:3:78:56 | call to Command | SystemCommandExecutors.go:78:16:78:20 | "ssh" |
+| SystemCommandExecutors.go:78:3:78:56 | call to Command | SystemCommandExecutors.go:78:23:78:26 | "-t" |
+| SystemCommandExecutors.go:78:3:78:56 | call to Command | SystemCommandExecutors.go:78:29:78:39 | "user@host" |
+| SystemCommandExecutors.go:78:3:78:56 | call to Command | SystemCommandExecutors.go:78:42:78:55 | ...+... |
+| SystemCommandExecutors.go:83:3:83:32 | call to CombinedOutput | SystemCommandExecutors.go:83:26:83:31 | source |
+| SystemCommandExecutors.go:84:3:84:24 | call to Output | SystemCommandExecutors.go:84:18:84:23 | source |
+| SystemCommandExecutors.go:85:3:85:21 | call to Run | SystemCommandExecutors.go:85:15:85:20 | source |
+| SystemCommandExecutors.go:86:3:86:23 | call to Start | SystemCommandExecutors.go:86:17:86:22 | source |
+| SystemCommandExecutors.go:90:3:90:86 | call to Command | SystemCommandExecutors.go:90:14:90:18 | shell |
+| SystemCommandExecutors.go:90:3:90:86 | call to Command | SystemCommandExecutors.go:90:21:90:82 | call to toInterfaceArray |
+| SystemCommandExecutors.go:91:3:91:104 | call to Call | SystemCommandExecutors.go:91:32:91:36 | shell |
+| SystemCommandExecutors.go:91:3:91:104 | call to Call | SystemCommandExecutors.go:91:39:91:100 | call to toInterfaceArray |
+| SystemCommandExecutors.go:92:3:92:107 | call to Command | SystemCommandExecutors.go:92:35:92:39 | shell |
+| SystemCommandExecutors.go:92:3:92:107 | call to Command | SystemCommandExecutors.go:92:42:92:103 | call to toInterfaceArray |
