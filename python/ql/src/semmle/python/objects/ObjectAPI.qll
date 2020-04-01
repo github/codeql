@@ -640,6 +640,28 @@ class BuiltinMethodValue extends FunctionValue {
 }
 
 /**
+ * Class representing bound-methods, such as `o.func`, where `o` is an instance
+ * of a class that has a callable attribute `func`.
+ *
+ * This is currently NOT a CallableValue, see explanation in https://github.com/Semmle/ql/pull/3182
+ */
+class BoundMethodValue extends Value {
+    BoundMethodValue() { this instanceof BoundMethodObjectInternal }
+
+    /**
+     * Gets the callable that will be used when `this` called.
+     * The actual callable for `func` in `o.func`.
+     */
+    CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
+
+    /**
+     * Gets the value that will be used for the 'self' parameter when `this` is called.
+     * The value for `o` in `o.func`.
+     */
+    Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
+}
+
+/**
  * A class representing sequence objects with a length and tracked items.
  */
 class SequenceValue extends Value {
