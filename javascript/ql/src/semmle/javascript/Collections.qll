@@ -87,10 +87,10 @@ module CollectionsTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
+      summary = CopyStep(field) and
+      step.loadStore(pred, result, field)
+      or
       exists(string toField | summary = LoadStoreStep(field, toField) |
-        field = toField and
-        step.loadStore(pred, result, field)
-        or
         step.loadStore(pred, result, field, toField)
       )
     )

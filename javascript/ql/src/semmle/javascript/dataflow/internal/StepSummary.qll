@@ -40,9 +40,8 @@ newtype TStepSummary =
   ReturnStep() or
   StoreStep(PropertyName prop) or
   LoadStep(PropertyName prop) or
+  CopyStep(PropertyName prop) or
   LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
-    fromProp = toProp
-    or
     exists(TypeTrackingPseudoProperty prop | fromProp = prop and toProp = prop.getLoadStoreToProp())
   }
 
@@ -63,6 +62,8 @@ class StepSummary extends TStepSummary {
     exists(string prop | this = StoreStep(prop) | result = "store " + prop)
     or
     exists(string prop | this = LoadStep(prop) | result = "load " + prop)
+    or
+    exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
     or
     exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
       result = "copy " + fromProp + " to " + toProp

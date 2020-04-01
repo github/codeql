@@ -57,6 +57,8 @@ class TypeTracker extends TTypeTracker {
       result = MkTypeTracker(hasCall, toProp)
     )
     or
+    step = CopyStep(prop) and result = this
+    or
     step = CallStep() and result = MkTypeTracker(true, prop)
     or
     step = ReturnStep() and hasCall = false and result = this
@@ -218,6 +220,8 @@ class TypeBackTracker extends TTypeBackTracker {
     exists(string fromProp | step = LoadStoreStep(fromProp, prop) |
       result = MkTypeBackTracker(hasReturn, fromProp)
     )
+    or
+    step = CopyStep(prop) and result = this
     or
     step = CallStep() and hasReturn = false and result = this
     or
