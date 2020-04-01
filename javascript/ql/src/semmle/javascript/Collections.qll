@@ -15,7 +15,7 @@ private import DataFlow::PseudoProperties
  * `load`/`store`/`loadStore` can be used in the `CollectionsTypeTracking` module.
  * (Thereby avoiding naming conflicts with a "cousin" `AdditionalFlowStep` implementation.)
  */
-private abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
+abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   final override predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   final override predicate step(
@@ -82,7 +82,10 @@ module CollectionsTypeTracking {
     exists(CollectionFlowStep step, string field |
       summary = LoadStep(field) and
       step.load(pred, result, field) and
-      (not step.canLoadValueWithKnownKey() or not field = mapValueUnknownKey()) // for a step that could load a known key, we prune the steps where the key is unknown.
+      not (
+        step.canLoadValueWithKnownKey() and // for a step that could load a known key,
+        field = mapValueUnknownKey() // don't load values with an unknown key.
+      )
       or
       summary = StoreStep(field) and
       step.store(pred, result, field)
