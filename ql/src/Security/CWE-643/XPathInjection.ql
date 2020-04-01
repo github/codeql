@@ -4,6 +4,7 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @precision high
  * @id go/xml/xpath-injection
  * @tags security
  *       external/cwe/cwe-643
