@@ -257,5 +257,5 @@ predicate overridden_call(FunctionValue func, FunctionValue overriding, Call cal
 
 /** Holds if `func` raises a `NotImplemented` error. */
 predicate isAbstract(FunctionValue func) {
-  func.getARaisedType() = ClassValue::notImplementedError()
+    func.getARaisedType() = ClassValue::notImplementedError()
 }
