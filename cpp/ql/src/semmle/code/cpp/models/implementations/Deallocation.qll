@@ -90,7 +90,8 @@ class OperatorDeleteDeallocationFunction extends DeallocationFunction {
       hasGlobalName(name) and
       (
         // operator delete(pointer, ...)
-        name = "operator delete" or
+        name = "operator delete"
+        or
         // operator delete[](pointer, ...)
         name = "operator delete[]"
       )

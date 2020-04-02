@@ -226,7 +226,8 @@ class OperatorNewAllocationFunction extends AllocationFunction {
       hasGlobalName(name) and
       (
         // operator new(bytes, ...)
-        name = "operator new" or
+        name = "operator new"
+        or
         // operator new[](bytes, ...)
         name = "operator new[]"
       )
@@ -260,8 +261,7 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     not (
       exists(target.getReallocPtrArg()) and
       getArgument(target.getSizeArg()).getValue().toInt() = 0
-    )
-    and
+    ) and
     // these are modelled directly (and more accurately), avoid duplication
     not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
