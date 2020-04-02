@@ -55,6 +55,9 @@ private predicate concatenationHasHostnameSanitizingSubstring(StringOps::Concate
   exists(StringOps::ConcatenationLeaf lf | lf = cat.getALeaf() |
     lf.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
     or
+    lf.getStringValue() = "/" and
+    exists(lf.getPreviousLeaf())
+    or
     hasHostnameSanitizingSubstring(lf.asNode())
   )
 }
