@@ -1,4 +1,5 @@
 import javascript
+private import semmle.javascript.dataflow.internal.StepSummary
 
 class Configuration extends DataFlow::Configuration {
   Configuration() { this = "PromiseDataFlowFlowTestingConfig" }
@@ -31,4 +32,8 @@ query predicate flow(DataFlow::Node source, DataFlow::Node sink) {
 query predicate exclusiveTaintFlow(DataFlow::Node source, DataFlow::Node sink) {
   not any(Configuration c).hasFlow(source, sink) and
   any(TaintConfig c).hasFlow(source, sink)
+}
+
+query predicate typetrack(DataFlow::SourceNode succ, DataFlow::SourceNode pred, StepSummary summary) {
+  succ = PromiseTypeTracking::promiseStep(pred, summary)
 }

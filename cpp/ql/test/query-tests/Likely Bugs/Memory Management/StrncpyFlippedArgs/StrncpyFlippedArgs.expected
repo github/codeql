@@ -13,5 +13,6 @@
 | test.cpp:47:2:47:9 | call to strcpy_s | Potentially unsafe call to strcpy_s; second argument should be size of destination. |
 | test.cpp:60:3:60:9 | call to strncpy | Potentially unsafe call to strncpy; third argument should be size of destination. |
 | test.cpp:63:3:63:9 | call to strncpy | Potentially unsafe call to strncpy; third argument should be size of destination. |
+| test.cpp:68:2:68:8 | call to strncpy | Potentially unsafe call to strncpy; third argument should be size of destination. |
 | test.cpp:79:3:79:9 | call to strncpy | Potentially unsafe call to strncpy; third argument should be size of destination. |
 | test.cpp:82:3:82:9 | call to strncpy | Potentially unsafe call to strncpy; third argument should be size of destination. |

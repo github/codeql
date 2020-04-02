@@ -9,11 +9,11 @@
  *       subtype
  *       supertype
  */
- 
+
 import python
 
 from ClassObject sub, ClassObject base
-where 
+where
     base.getName() = "MyClass" and
     sub.getABaseType() = base
 select sub

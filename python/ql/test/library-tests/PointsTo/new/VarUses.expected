@@ -47,10 +47,14 @@
 | a_simple.py:38 | g | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | h | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | i | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | l | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | m | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | p | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | q | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | r | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | s | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | t | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | u | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | w | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | x | Exit node for Function multi_assign_and_packing |
 | a_simple.py:38 | y | Exit node for Function multi_assign_and_packing |
@@ -72,6 +76,11 @@
 | a_simple.py:50 | g | ControlFlowNode for g |
 | a_simple.py:51 | h | ControlFlowNode for h |
 | a_simple.py:52 | i | ControlFlowNode for i |
+| a_simple.py:54 | l | ControlFlowNode for l |
+| a_simple.py:55 | m | ControlFlowNode for m |
+| a_simple.py:56 | a | ControlFlowNode for a |
+| a_simple.py:57 | s | ControlFlowNode for s |
+| a_simple.py:58 | u | ControlFlowNode for u |
 | b_condition.py:0 | Exception | Exit node for Module code.b_condition |
 | b_condition.py:0 | TypeError | Exit node for Module code.b_condition |
 | b_condition.py:0 | __name__ | Exit node for Module code.b_condition |

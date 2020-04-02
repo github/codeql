@@ -137,21 +137,21 @@ edges
 | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) : String | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String |
 | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 : String | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
-| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 : String |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 |
-| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> |
-| GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> |
-| GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T |
-| GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : IEnumerable<String> |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] |
+| GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> |
+| GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T |
+| GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] | GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 |
-| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | GlobalDataFlow.cs:90:75:90:88 | call to method First : String |
-| GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String |
+| GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 |
-| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> |
-| GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... : String |
+| GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] |
+| GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... : String |
 | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... : String | GlobalDataFlow.cs:87:15:87:20 | access to local variable sink16 |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | GlobalDataFlow.cs:88:43:88:61 | [output] (...) => ... : String |
 | GlobalDataFlow.cs:88:43:88:61 | [output] (...) => ... : String | GlobalDataFlow.cs:88:64:88:69 | [output] (...) => ... : String |
@@ -199,7 +199,7 @@ edges
 | GlobalDataFlow.cs:255:26:255:35 | sinkParam5 : String | GlobalDataFlow.cs:257:15:257:24 | access to parameter sinkParam5 |
 | GlobalDataFlow.cs:260:26:260:35 | sinkParam6 : String | GlobalDataFlow.cs:262:15:262:24 | access to parameter sinkParam6 |
 | GlobalDataFlow.cs:265:26:265:35 | sinkParam7 : String | GlobalDataFlow.cs:267:15:267:24 | access to parameter sinkParam7 |
-| GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : IEnumerable<String> | GlobalDataFlow.cs:294:15:294:24 | access to parameter sinkParam8 |
+| GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : String[] | GlobalDataFlow.cs:294:15:294:24 | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:298:32:298:41 | sinkParam9 : String | GlobalDataFlow.cs:300:15:300:24 | access to parameter sinkParam9 |
 | GlobalDataFlow.cs:304:32:304:42 | sinkParam11 : IQueryable<String> | GlobalDataFlow.cs:306:15:306:25 | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:318:16:318:29 | "taint source" : String | GlobalDataFlow.cs:153:21:153:25 | call to method Out : String |
@@ -316,8 +316,6 @@ nodes
 | GlobalDataFlow.cs:56:37:56:37 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:56:46:56:46 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:57:35:57:52 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
-| GlobalDataFlow.cs:60:38:60:50 | access to parameter nonSinkParam0 | semmle.label | access to parameter nonSinkParam0 |
-| GlobalDataFlow.cs:61:61:61:73 | access to parameter nonSinkParam0 | semmle.label | access to parameter nonSinkParam0 |
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
 | GlobalDataFlow.cs:70:21:70:46 | call to method Return : String | semmle.label | call to method Return : String |
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 : String | semmle.label | access to property SinkProperty0 : String |
@@ -333,15 +331,15 @@ nodes
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) : String | semmle.label | SSA def(sink3) : String |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 | semmle.label | access to local variable sink3 |
 | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven : IEnumerable<T> | semmle.label | call to method SelectEven : IEnumerable<T> |
-| GlobalDataFlow.cs:80:23:80:65 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:80:23:80:65 | (...) ... : String[] | semmle.label | (...) ... : String[] |
 | GlobalDataFlow.cs:81:15:81:20 | access to local variable sink13 | semmle.label | access to local variable sink13 |
-| GlobalDataFlow.cs:82:23:82:74 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:82:23:82:74 | (...) ... : String[] | semmle.label | (...) ... : String[] |
 | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> : T | semmle.label | [output] delegate creation of type Func<String,String> : T |
 | GlobalDataFlow.cs:83:15:83:20 | access to local variable sink14 | semmle.label | access to local variable sink14 |
-| GlobalDataFlow.cs:84:23:84:74 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:84:23:84:74 | (...) ... : String[] | semmle.label | (...) ... : String[] |
 | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... : String | semmle.label | [output] (...) => ... : String |
 | GlobalDataFlow.cs:85:15:85:20 | access to local variable sink15 | semmle.label | access to local variable sink15 |
-| GlobalDataFlow.cs:86:70:86:121 | (...) ... : IEnumerable<String> | semmle.label | (...) ... : IEnumerable<String> |
+| GlobalDataFlow.cs:86:70:86:121 | (...) ... : String[] | semmle.label | (...) ... : String[] |
 | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... : String | semmle.label | [output] (...) => ... : String |
 | GlobalDataFlow.cs:87:15:87:20 | access to local variable sink16 | semmle.label | access to local variable sink16 |
 | GlobalDataFlow.cs:88:22:88:27 | access to local variable sink14 : IEnumerable<String> | semmle.label | access to local variable sink14 : IEnumerable<String> |
@@ -406,7 +404,7 @@ nodes
 | GlobalDataFlow.cs:262:15:262:24 | access to parameter sinkParam6 | semmle.label | access to parameter sinkParam6 |
 | GlobalDataFlow.cs:265:26:265:35 | sinkParam7 : String | semmle.label | sinkParam7 : String |
 | GlobalDataFlow.cs:267:15:267:24 | access to parameter sinkParam7 | semmle.label | access to parameter sinkParam7 |
-| GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : IEnumerable<String> | semmle.label | sinkParam8 : IEnumerable<String> |
+| GlobalDataFlow.cs:292:31:292:40 | sinkParam8 : String[] | semmle.label | sinkParam8 : String[] |
 | GlobalDataFlow.cs:294:15:294:24 | access to parameter sinkParam8 | semmle.label | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:298:32:298:41 | sinkParam9 : String | semmle.label | sinkParam9 : String |
 | GlobalDataFlow.cs:300:15:300:24 | access to parameter sinkParam9 | semmle.label | access to parameter sinkParam9 |

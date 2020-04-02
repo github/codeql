@@ -885,15 +885,24 @@ void FuncPtrConversions(int(*pfn)(int), void* p) {
   pfn = (int(*)(int))p;
 }
 
+void VAListUsage(int x, __builtin_va_list args) {
+  __builtin_va_list args2;
+  __builtin_va_copy(args2, args);
+  double d = __builtin_va_arg(args, double);
+  float f = __builtin_va_arg(args, int);
+  __builtin_va_end(args2);
+}
+
 void VarArgUsage(int x, ...) {
   __builtin_va_list args;
 
   __builtin_va_start(args, x);
   __builtin_va_list args2;
-  __builtin_va_start(args2, args);
+  __builtin_va_copy(args2, args);
   double d = __builtin_va_arg(args, double);
-  float f = __builtin_va_arg(args, float);
+  float f = __builtin_va_arg(args, int);
   __builtin_va_end(args);
+  VAListUsage(x, args2);
   __builtin_va_end(args2);
 }
 
@@ -1168,6 +1177,82 @@ int ModeledCallTarget(int x) {
 
 String ReturnObjectImpl() {
   return String("foo");
+}
+
+void switch1Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+    }
+    int z = y;
+}
+
+void switch2Case_fallthrough(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        break;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case_default(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+            y = 2;
+            break;
+
+        case 2:
+            y = 3;
+            break;
+
+        default:
+            y = 4;
+    }
+    int z = y;
+}
+
+int staticLocalInit(int x) {
+    static int a = 0;  // Constant initialization
+    static int b = sizeof(x);  // Constant initialization
+    static int c = x;  // Dynamic initialization
+    static int d;  // Zero initialization
+
+    return a + b + c + d;
+}
+
+void staticLocalWithConstructor(const char* dynamic) {
+    static String a;
+    static String b("static");
+    static String c(dynamic);
+}
+
+// --- strings ---
+
+char *strcpy(char *destination, const char *source);
+char *strcat(char *destination, const char *source);
+
+void test_strings(char *s1, char *s2) {
+	char buffer[1024] = {0};
+
+	strcpy(buffer, s1);
+	strcat(buffer, s2);
 }
 
 // semmle-extractor-options: -std=c++17 --clang

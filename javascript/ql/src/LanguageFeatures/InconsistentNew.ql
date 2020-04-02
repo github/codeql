@@ -35,7 +35,8 @@ predicate guardsAgainstMissingNew(Function f) {
  * `true` if `cs` is a `new` expression, and to `false` otherwise.
  */
 Function getALikelyCallee(DataFlow::InvokeNode cs, boolean isNew) {
-  result = min(Function callee, int imprecision |
+  result =
+    min(Function callee, int imprecision |
       callee = cs.getACallee(imprecision)
     |
       callee order by imprecision
@@ -84,7 +85,8 @@ predicate whitelistedCall(DataFlow::CallNode call) {
  * and start column.
  */
 DataFlow::InvokeNode getFirstInvocation(Function f, boolean isNew) {
-  result = min(DataFlow::InvokeNode invk, string path, int line, int col |
+  result =
+    min(DataFlow::InvokeNode invk, string path, int line, int col |
       f = getALikelyCallee(invk, isNew) and invk.hasLocationInfo(path, line, col, _, _)
     |
       invk order by path, line, col

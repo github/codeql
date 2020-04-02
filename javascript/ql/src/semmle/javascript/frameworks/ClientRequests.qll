@@ -111,28 +111,36 @@ module ClientRequest {
   private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
   /**
+   * Gets a model of an instance of the `request` library, or one of
+   * its wrappers, `promise` is true if the instance uses promises
+   * rather than callbacks.
+   */
+  private DataFlow::SourceNode getRequestLibrary(boolean promise) {
+    exists(string moduleName | result = DataFlow::moduleImport(moduleName) |
+      promise = false and
+      moduleName = "request"
+      or
+      promise = true and
+      (
+        moduleName = "request-promise" or
+        moduleName = "request-promise-any" or
+        moduleName = "request-promise-native"
+      )
+    )
+    or
+    result = getRequestLibrary(promise).getAMethodCall("defaults")
+  }
+
+  /**
    * A model of a URL request made using the `request` library.
    */
   class RequestUrlRequest extends ClientRequest::Range, DataFlow::CallNode {
     boolean promise;
 
     RequestUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          promise = false and
-          moduleName = "request"
-          or
-          promise = true and
-          (
-            moduleName = "request-promise" or
-            moduleName = "request-promise-any" or
-            moduleName = "request-promise-native"
-          )
-        ) and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName())
-        )
+      exists(DataFlow::SourceNode callee | this = callee.getACall() |
+        callee = getRequestLibrary(promise) or
+        callee = getRequestLibrary(promise).getAPropertyRead(httpMethodName())
       )
     }
 
@@ -553,41 +561,23 @@ module ClientRequest {
   /**
    * Gets a reference to an instance of `chrome-remote-interface`.
    *
-   * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise. 
-   * 
-   * The `isPromise` parameter reflects whether the reference is a promise containing 
-   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`. 
+   * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise.
+   *
+   * The `isPromise` parameter reflects whether the reference is a promise containing
+   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`.
    */
-  private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t, boolean isPromise) {
-    t.start() and
+  private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t) {
     exists(DataFlow::CallNode call |
       call = DataFlow::moduleImport("chrome-remote-interface").getAnInvocation()
     |
-      result = call and isPromise = true
+      // the client is inside in a promise.
+      t.startInPromise() and result = call
       or
-      result = call.getCallback([0 .. 1]).getParameter(0) and isPromise = false
+      // the client is accessed directly using a callback.
+      t.start() and result = call.getCallback([0 .. 1]).getParameter(0)
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2, isPromise).track(t2, t))
-    or
-    // Simple promise tracking.
-    exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred |
-      pred = chromeRemoteInterface(t2, true) and
-      isPromise = false and
-      (
-        t2 = t and
-        exists(AwaitExpr await | DataFlow::valueNode(await.getOperand()).getALocalSource() = pred |
-          result.getEnclosingExpr() = await
-        )
-        or
-        t2 = t and
-        exists(DataFlow::MethodCallNode thenCall |
-          thenCall.getMethodName() = "then" and pred = thenCall.getReceiver().getALocalSource()
-        |
-          result = thenCall.getCallback(0).getParameter(0)
-        )
-      )
-    )
+    exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2).track(t2, t))
   }
 
   /**
@@ -598,7 +588,7 @@ module ClientRequest {
 
     ChromeRemoteInterfaceRequest() {
       exists(DataFlow::SourceNode instance |
-        instance = chromeRemoteInterface(DataFlow::TypeTracker::end(), false)
+        instance = chromeRemoteInterface(DataFlow::TypeTracker::end())
       |
         optionsArg = 0 and
         this = instance.getAPropertyRead("Page").getAMemberCall("navigate")

@@ -1,4 +1,4 @@
-WARNING: Predicate getNode has been deprecated and may be removed in future (TestNode.ql:8,43-50)
+WARNING: Predicate getNode has been deprecated and may be removed in future (TestNode.ql:7,43-50)
 | test.py:10:11:10:47 | test.py:10 | MyException() | exception.kind |
 | test.py:15:25:15:25 | test.py:15 | e | exception.kind |
 | test.py:16:13:16:34 | test.py:16 | Attribute() | exception.info |

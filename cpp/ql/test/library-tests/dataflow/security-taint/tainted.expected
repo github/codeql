@@ -52,3 +52,39 @@
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:15:75:18 | call to atoi |  |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:25 | call to getenv |  |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:45 | (const char *)... |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:8:24:8:25 | s1 |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:11:20:11:21 | s1 |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:11:36:11:37 | s2 |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:83:17:83:24 | userName |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:33 | call to getenv |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:46 | (const char *)... |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:85:8:85:11 | copy |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:86:2:86:7 | call to strcpy |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:86:9:86:12 | copy |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:86:15:86:22 | userName |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:6:88:27 | ! ... |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:7:88:12 | call to strcmp |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:7:88:27 | (bool)... |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:14:88:17 | (const char *)... |  |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:88:14:88:17 | copy |  |
+| test.cpp:100:12:100:15 | call to gets | test.cpp:98:8:98:14 | pointer |  |
+| test.cpp:100:12:100:15 | call to gets | test.cpp:100:2:100:8 | pointer |  |
+| test.cpp:100:12:100:15 | call to gets | test.cpp:100:12:100:15 | call to gets |  |
+| test.cpp:100:17:100:22 | buffer | test.cpp:93:18:93:18 | s |  |
+| test.cpp:100:17:100:22 | buffer | test.cpp:97:7:97:12 | buffer |  |
+| test.cpp:100:17:100:22 | buffer | test.cpp:100:17:100:22 | buffer |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:8:24:8:25 | s1 |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:11:20:11:21 | s1 |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:11:36:11:37 | s2 |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:17:106:24 | userName |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:28:106:33 | call to getenv |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:106:28:106:46 | (const char *)... |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:108:8:108:11 | copy |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:2:109:7 | call to strcpy |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:9:109:12 | copy |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:15:109:22 | userName |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:6:111:27 | ! ... |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:7:111:12 | call to strcmp |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:7:111:27 | (bool)... |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:14:111:17 | (const char *)... |  |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:111:14:111:17 | copy |  |

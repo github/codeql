@@ -16,10 +16,5 @@ private import semmle.python.web.Http
 class DjangoRedirect extends HttpRedirectTaintSink {
     override string toString() { result = "django.redirect" }
 
-    DjangoRedirect() {
-        exists(CallNode call |
-            redirect().getACall() = call and
-            this = call.getAnArg()
-        )
-    }
+    DjangoRedirect() { this = redirect().getACall().getAnArg() }
 }

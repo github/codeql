@@ -1,6 +1,6 @@
 private import java
 private import DataFlowUtil
-private import DataFlowImplCommon::Public
+private import DataFlowImplCommon
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
@@ -113,14 +113,15 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
  */
 predicate jumpStep(Node node1, Node node2) {
   staticFieldStep(node1, node2) or
-  variableCaptureStep(node1, node2)
+  variableCaptureStep(node1, node2) or
+  variableCaptureStep(node1.(PostUpdateNode).getPreUpdateNode(), node2)
 }
 
 /**
  * Holds if `fa` is an access to an instance field that occurs as the
  * destination of an assignment of the value `src`.
  */
-predicate instanceFieldAssign(Expr src, FieldAccess fa) {
+private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   exists(AssignExpr a |
     a.getSource() = src and
     a.getDest() = fa and
@@ -323,4 +324,17 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which controls `n` with the opposite value of `arg`
     guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
   )
+}
+
+int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) {
+  n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
 }

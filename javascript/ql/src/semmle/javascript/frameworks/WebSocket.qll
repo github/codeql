@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) and [ws](https://github.com/websockets/ws).
+ * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket), [ws](https://github.com/websockets/ws), and [SockJS](http://sockjs.org).
  *
  * The model is based on the EventEmitter model, and there is therefore a
  * data-flow step from where a WebSocket event is sent to where the message
@@ -19,25 +19,63 @@ import javascript
 private string channelName() { result = "message" }
 
 /**
+ * The names of the libraries modelled in this file.
+ */
+private module LibraryNames {
+  string sockjs() { result = "SockJS" }
+
+  string websocket() { result = "WebSocket" }
+
+  string ws() { result = "ws" }
+
+  class LibraryName extends string {
+    LibraryName() { this = sockjs() or this = websocket() or this = ws() }
+  }
+}
+
+/**
+ * Holds if the websocket library named `client` can send a message to the library named `server`.
+ * Both `client` and `server` are library names defined in `LibraryNames`.
+ */
+private predicate areLibrariesCompatible(
+  LibraryNames::LibraryName client, LibraryNames::LibraryName server
+) {
+  // sockjs is a WebSocket emulating library, but not actually an implementation of WebSockets.
+  client = LibraryNames::sockjs() and server = LibraryNames::sockjs()
+  or
+  server = LibraryNames::ws() and
+  (client = LibraryNames::ws() or client = LibraryNames::websocket())
+}
+
+/**
  * Provides classes that model WebSockets clients.
  */
 module ClientWebSocket {
+  private import LibraryNames
+
   /**
    * A class that can be used to instantiate a WebSocket instance.
    */
   class SocketClass extends DataFlow::SourceNode {
-    boolean isNode;
+    LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
-      this = DataFlow::globalVarRef("WebSocket") and isNode = false
+      this = DataFlow::globalVarRef("WebSocket") and library = websocket()
       or
-      this = DataFlow::moduleImport("ws") and isNode = true
+      this = DataFlow::moduleImport("ws") and library = ws()
+      or
+      // the sockjs-client library:https://www.npmjs.com/package/sockjs-client
+      library = sockjs() and
+      (
+        this = DataFlow::moduleImport("sockjs-client") or
+        this = DataFlow::globalVarRef("SockJS")
+      )
     }
 
     /**
-     * Holds if this class is an import of the "ws" module.
+     * Gets the WebSocket library name.
      */
-    predicate isNode() { isNode = true }
+    LibraryName getLibrary() { result = library }
   }
 
   /**
@@ -49,11 +87,9 @@ module ClientWebSocket {
     ClientSocket() { this = socketClass.getAnInstantiation() }
 
     /**
-     * Holds if this ClientSocket is created from the "ws" module.
-     *
-     * The predicate is used to differentiate where the behavior of the "ws" module differs from the native WebSocket in browsers.
+     * Gets the WebSocket library name.
      */
-    predicate isNode() { socketClass.isNode() }
+    LibraryName getLibrary() { result = socketClass.getLibrary() }
   }
 
   /**
@@ -68,7 +104,10 @@ module ClientWebSocket {
 
     override DataFlow::Node getSentItem(int i) { i = 0 and result = this.getArgument(0) }
 
-    override ServerWebSocket::ReceiveNode getAReceiver() { any() }
+    override ServerWebSocket::ReceiveNode getAReceiver() {
+      areLibrariesCompatible(emitter.getLibrary(),
+        result.getEmitter().(ServerWebSocket::ServerSocket).getLibrary())
+    }
   }
 
   /**
@@ -83,7 +122,9 @@ module ClientWebSocket {
   /**
    * Gets a handler, that is registered using method `methodName` and receives messages sent to `emitter`.
    */
-  private DataFlow::FunctionNode getAMessageHandler(ClientWebSocket::ClientSocket emitter, string methodName) {
+  private DataFlow::FunctionNode getAMessageHandler(
+    ClientWebSocket::ClientSocket emitter, string methodName
+  ) {
     exists(DataFlow::CallNode call |
       call = emitter.getAMemberCall(methodName) and
       call.getArgument(0).mayHaveStringValue("message") and
@@ -93,8 +134,8 @@ module ClientWebSocket {
 
   /**
    * A handler that receives a message using the WebSocket API.
-   * The WebSocket API is used both by the WebSocket library in browsers, and the same API is also implemented as part of the "ws" library. 
-   * This class therefore models both the WebSocket library, and a subset of the "ws" library. 
+   * The WebSocket API is used both by the WebSocket library in browsers, and the same API is also implemented as part of the "ws" library.
+   * This class therefore models both the WebSocket library, and a subset of the "ws" library.
    */
   private class WebSocketReceiveNode extends ClientWebSocket::ReceiveNode {
     WebSocketReceiveNode() {
@@ -109,18 +150,16 @@ module ClientWebSocket {
   }
 
   /**
-   * A handler that receives a message using the API from the "ws" library. 
-   * The "ws" library additionally implements the WebSocket API, which is modeled in the `WebSocketReceiveNode` class. 
+   * A handler that receives a message using the API from the "ws" library.
+   * The "ws" library additionally implements the WebSocket API, which is modeled in the `WebSocketReceiveNode` class.
    */
   private class WSReceiveNode extends ClientWebSocket::ReceiveNode {
-    WSReceiveNode () {
-      emitter.isNode() and
+    WSReceiveNode() {
+      emitter.getLibrary() = ws() and
       this = getAMessageHandler(emitter, EventEmitter::on())
     }
 
-    override DataFlow::Node getReceivedItem(int i) {
-      i = 0 and result = this.getParameter(0)
-    }
+    override DataFlow::Node getReceivedItem(int i) { i = 0 and result = this.getParameter(0) }
   }
 }
 
@@ -128,20 +167,38 @@ module ClientWebSocket {
  * Provides classes that model WebSocket servers.
  */
 module ServerWebSocket {
+  private import LibraryNames
+
+  /**
+   * Gets a server created by a library named `library`.
+   */
+  DataFlow::SourceNode getAServer(LibraryName library) {
+    library = ws() and
+    result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
+    or
+    library = sockjs() and
+    result = DataFlow::moduleImport("sockjs").getAMemberCall("createServer")
+  }
+
   /**
    * A server WebSocket instance.
    */
   class ServerSocket extends EventEmitter::Range, DataFlow::SourceNode {
+    LibraryName library;
+
     ServerSocket() {
       exists(DataFlow::CallNode onCall |
-        onCall = DataFlow::moduleImport("ws")
-              .getAConstructorInvocation("Server")
-              .getAMemberCall(EventEmitter::on()) and
+        onCall = getAServer(library).getAMemberCall(EventEmitter::on()) and
         onCall.getArgument(0).mayHaveStringValue("connection")
       |
         this = onCall.getCallback(1).getParameter(0)
       )
     }
+
+    /**
+     * Gets the name of the library that created this server socket.
+     */
+    LibraryName getLibrary() { result = library }
   }
 
   /**
@@ -150,7 +207,13 @@ module ServerWebSocket {
   class SendNode extends EventDispatch::Range, DataFlow::CallNode {
     override ServerSocket emitter;
 
-    SendNode() { this = emitter.getAMemberCall("send") }
+    SendNode() {
+      emitter.getLibrary() = ws() and
+      this = emitter.getAMemberCall("send")
+      or
+      emitter.getLibrary() = sockjs() and
+      this = emitter.getAMemberCall("write")
+    }
 
     override string getChannel() { result = channelName() }
 
@@ -159,7 +222,10 @@ module ServerWebSocket {
       result = getArgument(0)
     }
 
-    override ClientWebSocket::ReceiveNode getAReceiver() { any() }
+    override ClientWebSocket::ReceiveNode getAReceiver() {
+      areLibrariesCompatible(result.getEmitter().(ClientWebSocket::ClientSocket).getLibrary(),
+        emitter.getLibrary())
+    }
   }
 
   /**
@@ -169,8 +235,14 @@ module ServerWebSocket {
     override ServerSocket emitter;
 
     ReceiveNode() {
-      this = emitter.getAMemberCall(EventEmitter::on()) and
-      this.getArgument(0).mayHaveStringValue("message")
+      exists(string eventName |
+        emitter.getLibrary() = ws() and eventName = "message"
+        or
+        emitter.getLibrary() = sockjs() and eventName = "data"
+      |
+        this = emitter.getAMemberCall(EventEmitter::on()) and
+        this.getArgument(0).mayHaveStringValue(eventName)
+      )
     }
 
     override string getChannel() { result = channelName() }

@@ -2,6 +2,7 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
+private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * A C/C++ expression.
@@ -443,6 +444,20 @@ class Expr extends StmtParent, @expr {
   }
 
   /**
+   * Gets the unique non-`Conversion` expression `e` for which
+   * `this = e.getConversion*()`.
+   *
+   * For example, if called on the expression `(int)(char)x`, this predicate
+   * gets the expression `x`.
+   */
+  Expr getUnconverted() {
+    not this instanceof Conversion and
+    result = this
+    or
+    result = this.(Conversion).getExpr().getUnconverted()
+  }
+
+  /**
    * Gets the type of this expression, after any implicit conversions and explicit casts, and after resolving typedefs.
    *
    * As an example, consider the AST fragment `(i64)(void*)0` in the context of `typedef long long i64;`. The fragment
@@ -628,7 +643,7 @@ class AddressOfExpr extends UnaryOperation, @address_of {
 
   override string getOperator() { result = "&" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() { this.getOperand().mayBeImpure() }
 
@@ -650,7 +665,7 @@ class ReferenceToExpr extends Conversion, @reference_to {
 
   override string getCanonicalQLClass() { result = "ReferenceToExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -673,7 +688,7 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
 
   override string getOperator() { result = "*" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override predicate mayBeImpure() {
     this.getChild(0).mayBeImpure() or
@@ -707,7 +722,7 @@ class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
  * A C++ `new` or `new[]` expression.
  */
 class NewOrNewArrayExpr extends Expr, @any_new_expr {
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the `operator new` or `operator new[]` that allocates storage.
@@ -790,8 +805,10 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * call the constructor of `T` but will not allocate memory.
    */
   Expr getPlacementPointer() {
-    isStandardPlacementNewAllocator(this.getAllocator()) and
-    result = this.getAllocatorCall().getArgument(1)
+    result =
+      this
+          .getAllocatorCall()
+          .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
 }
 
@@ -884,7 +901,7 @@ class DeleteExpr extends Expr, @delete_expr {
 
   override string getCanonicalQLClass() { result = "DeleteExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the compile-time type of the object being deleted.
@@ -958,7 +975,7 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
 
   override string getCanonicalQLClass() { result = "DeleteArrayExpr" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the element type of the array being deleted.
@@ -1180,12 +1197,6 @@ private predicate convparents(Expr child, int idx, Element parent) {
   )
 }
 
-private predicate isStandardPlacementNewAllocator(Function operatorNew) {
-  operatorNew.getName().matches("operator new%") and
-  operatorNew.getNumberOfParameters() = 2 and
-  operatorNew.getParameter(1).getType() instanceof VoidPointerType
-}
-
 // Pulled out for performance. See QL-796.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
 
@@ -1201,4 +1212,19 @@ private predicate constantTemplateLiteral(Expr e) {
   not exists(e.getValue())
   or
   constantTemplateLiteral(e.(Cast).getExpr())
+}
+
+/**
+ * A C++ three-way comparison operation, also known as the _spaceship
+ * operation_.  This is specific to C++20 and later.
+ * ```
+ * auto c = (a <=> b);
+ * ```
+ */
+class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
+  override string getCanonicalQLClass() { result = "SpaceshipExpr" }
+
+  override int getPrecedence() { result = 11 }
+
+  override string getOperator() { result = "<=>" }
 }

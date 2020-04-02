@@ -5,6 +5,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 ## General improvements
 
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+* A `Customizations.qll` file has been added to allow customizations of the standard library that apply to all queries.
 
 ## New queries
 
@@ -26,10 +27,10 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 ## Changes to libraries
 
-* The data-flow library has been improved when flow through methods needs to be
-  combined with both taint tracking and flow through fields allowing more flow
-  to be tracked. This affects and improves most security queries, which may
-  report additional results.
+* The data-flow library has been improved, which affects and improves most security queries. The improvements are:
+  - Track flow through methods that combine taint tracking with flow through fields.
+  - Track flow through clone-like methods, that is, methods that read contents of a field from a
+    parameter and stores the value in the field of a returned object.
 * Identification of test classes has been improved. Previously, one of the
   match conditions would classify any class with a name containing the string
   "Test" as a test class, but now this matching has been replaced with one that

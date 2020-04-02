@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If an XPath expression is built using string concatenation, and the components of the concatenation
+include user input, a user is likely to be able to create a malicious XPath expression.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an XPath expression, pre-compile the query and use variable
+references to include the user input.
+</p>
+<p>
+XPath injection can also be prevented by using XQuery.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first, second, and third example, the code accepts a name and password specified by the user, and uses this
+unvalidated and unsanitized value in an XPath expression. This is vulnerable to the user providing
+special characters or string sequences that change the meaning of the XPath expression to search
+for different values.
+</p>
+
+<p>
+In the fourth example, the code utilizes setXPathVariableResolver which prevents XPath Injection.
+</p>
+<p>
+The fifth example is a dom4j XPath injection example.
+</p>
+<sample src="XPathInjection.java" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://www.owasp.org/index.php?title=Testing_for_XPath_Injection_(OTG-INPVAL-010)">Testing for XPath Injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/XPATH_Injection">XPath Injection</a>.</li>
+</references>
+</qhelp>

@@ -829,27 +829,25 @@ ssa.cpp:
 #  199|     r199_7(char *)         = Load                        : &:r199_6, m198_10
 #  199|     r199_8(char *)         = Convert                     : r199_7
 #  199|     r199_9(int)            = Call                        : func:r199_2, 0:r199_5, 1:r199_8
-#  199|     v199_10(void)          = ^CallReadSideEffect         : ~mu198_4
-#  199|     v199_11(void)          = ^BufferReadSideEffect[0]    : &:r199_5, ~mu198_4
-#  199|     v199_12(void)          = ^BufferReadSideEffect[1]    : &:r199_8, ~mu198_4
-#  199|     m199_13(int)           = Store                       : &:r199_1, r199_9
+#  199|     v199_10(void)          = ^BufferReadSideEffect[0]    : &:r199_5, ~mu198_4
+#  199|     v199_11(void)          = ^BufferReadSideEffect[1]    : &:r199_8, ~mu198_4
+#  199|     m199_12(int)           = Store                       : &:r199_1, r199_9
 #  200|     r200_1(glval<unknown>) = FunctionAddress[strlen]     : 
 #  200|     r200_2(glval<char *>)  = VariableAddress[str1]       : 
 #  200|     r200_3(char *)         = Load                        : &:r200_2, m198_6
 #  200|     r200_4(char *)         = Convert                     : r200_3
 #  200|     r200_5(int)            = Call                        : func:r200_1, 0:r200_4
-#  200|     v200_6(void)           = ^CallReadSideEffect         : ~mu198_4
-#  200|     v200_7(void)           = ^BufferReadSideEffect[0]    : &:r200_4, ~mu198_4
-#  200|     r200_8(glval<int>)     = VariableAddress[ret]        : 
-#  200|     r200_9(int)            = Load                        : &:r200_8, m199_13
-#  200|     r200_10(int)           = Add                         : r200_9, r200_5
-#  200|     m200_11(int)           = Store                       : &:r200_8, r200_10
+#  200|     v200_6(void)           = ^BufferReadSideEffect[0]    : &:r200_4, ~mu198_4
+#  200|     r200_7(glval<int>)     = VariableAddress[ret]        : 
+#  200|     r200_8(int)            = Load                        : &:r200_7, m199_12
+#  200|     r200_9(int)            = Add                         : r200_8, r200_5
+#  200|     m200_10(int)           = Store                       : &:r200_7, r200_9
 #  201|     r201_1(glval<unknown>) = FunctionAddress[abs]        : 
 #  201|     r201_2(glval<int>)     = VariableAddress[x]          : 
 #  201|     r201_3(int)            = Load                        : &:r201_2, m198_14
 #  201|     r201_4(int)            = Call                        : func:r201_1, 0:r201_3
 #  201|     r201_5(glval<int>)     = VariableAddress[ret]        : 
-#  201|     r201_6(int)            = Load                        : &:r201_5, m200_11
+#  201|     r201_6(int)            = Load                        : &:r201_5, m200_10
 #  201|     r201_7(int)            = Add                         : r201_6, r201_4
 #  201|     m201_8(int)            = Store                       : &:r201_5, r201_7
 #  202|     r202_1(glval<int>)     = VariableAddress[#return]    : 
@@ -1076,8 +1074,9 @@ ssa.cpp:
 #  248|     r248_7(unsigned long)  = Mul                                : r248_5, r248_6
 #  248|     r248_8(void *)         = Call                               : func:r248_2, 0:r248_7
 #  248|     mu248_9(unknown)       = ^CallSideEffect                    : ~mu247_4
-#  248|     r248_10(char *)        = Convert                            : r248_8
-#  248|     m248_11(char *)        = Store                              : &:r248_1, r248_10
+#  248|     mu248_10(unknown)      = ^InitializeDynamicAllocation       : &:r248_8
+#  248|     r248_11(char *)        = Convert                            : r248_8
+#  248|     m248_12(char *)        = Store                              : &:r248_1, r248_11
 #  249|     r249_1(char)           = Constant[97]                       : 
 #  249|     r249_2(glval<char *>)  = VariableAddress[src]               : 
 #  249|     r249_3(char *)         = Load                               : &:r249_2, m247_6
@@ -1085,7 +1084,7 @@ ssa.cpp:
 #  249|     mu249_5(char)          = Store                              : &:r249_4, r249_1
 #  250|     r250_1(glval<unknown>) = FunctionAddress[memcpy]            : 
 #  250|     r250_2(glval<char *>)  = VariableAddress[dst]               : 
-#  250|     r250_3(char *)         = Load                               : &:r250_2, m248_11
+#  250|     r250_3(char *)         = Load                               : &:r250_2, m248_12
 #  250|     r250_4(void *)         = Convert                            : r250_3
 #  250|     r250_5(glval<char *>)  = VariableAddress[src]               : 
 #  250|     r250_6(char *)         = Load                               : &:r250_5, m247_6
@@ -1097,7 +1096,7 @@ ssa.cpp:
 #  250|     mu250_12(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r250_4, r250_9
 #  251|     r251_1(glval<char *>)  = VariableAddress[#return]           : 
 #  251|     r251_2(glval<char *>)  = VariableAddress[dst]               : 
-#  251|     r251_3(char *)         = Load                               : &:r251_2, m248_11
+#  251|     r251_3(char *)         = Load                               : &:r251_2, m248_12
 #  251|     m251_4(char *)         = Store                              : &:r251_1, r251_3
 #  247|     v247_11(void)          = ReturnIndirection                  : &:r247_7, ~mu247_4
 #  247|     r247_12(glval<char *>) = VariableAddress[#return]           : 
@@ -1149,3 +1148,214 @@ ssa.cpp:
 #  254|     v254_9(void)           = UnmodeledUse              : mu*
 #  254|     v254_10(void)          = AliasedUse                : ~mu254_4
 #  254|     v254_11(void)          = ExitFunction              : 
+
+#  268| void* MallocAliasing(void*, int)
+#  268|   Block 0
+#  268|     v268_1(void)           = EnterFunction                      : 
+#  268|     mu268_2(unknown)       = AliasedDefinition                  : 
+#  268|     mu268_3(unknown)       = InitializeNonLocal                 : 
+#  268|     mu268_4(unknown)       = UnmodeledDefinition                : 
+#  268|     r268_5(glval<void *>)  = VariableAddress[s]                 : 
+#  268|     m268_6(void *)         = InitializeParameter[s]             : &:r268_5
+#  268|     r268_7(void *)         = Load                               : &:r268_5, m268_6
+#  268|     mu268_8(unknown)       = InitializeIndirection[s]           : &:r268_7
+#  268|     r268_9(glval<int>)     = VariableAddress[size]              : 
+#  268|     m268_10(int)           = InitializeParameter[size]          : &:r268_9
+#  269|     r269_1(glval<void *>)  = VariableAddress[buf]               : 
+#  269|     r269_2(glval<unknown>) = FunctionAddress[malloc]            : 
+#  269|     r269_3(glval<int>)     = VariableAddress[size]              : 
+#  269|     r269_4(int)            = Load                               : &:r269_3, m268_10
+#  269|     r269_5(void *)         = Call                               : func:r269_2, 0:r269_4
+#  269|     mu269_6(unknown)       = ^CallSideEffect                    : ~mu268_4
+#  269|     mu269_7(unknown)       = ^InitializeDynamicAllocation       : &:r269_5
+#  269|     m269_8(void *)         = Store                              : &:r269_1, r269_5
+#  270|     r270_1(glval<unknown>) = FunctionAddress[memcpy]            : 
+#  270|     r270_2(glval<void *>)  = VariableAddress[buf]               : 
+#  270|     r270_3(void *)         = Load                               : &:r270_2, m269_8
+#  270|     r270_4(glval<void *>)  = VariableAddress[s]                 : 
+#  270|     r270_5(void *)         = Load                               : &:r270_4, m268_6
+#  270|     r270_6(glval<int>)     = VariableAddress[size]              : 
+#  270|     r270_7(int)            = Load                               : &:r270_6, m268_10
+#  270|     r270_8(void *)         = Call                               : func:r270_1, 0:r270_3, 1:r270_5, 2:r270_7
+#  270|     v270_9(void)           = ^SizedBufferReadSideEffect[1]      : &:r270_5, r270_7, ~mu268_4
+#  270|     mu270_10(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r270_3, r270_7
+#  271|     r271_1(glval<void *>)  = VariableAddress[#return]           : 
+#  271|     r271_2(glval<void *>)  = VariableAddress[buf]               : 
+#  271|     r271_3(void *)         = Load                               : &:r271_2, m269_8
+#  271|     m271_4(void *)         = Store                              : &:r271_1, r271_3
+#  268|     v268_11(void)          = ReturnIndirection                  : &:r268_7, ~mu268_4
+#  268|     r268_12(glval<void *>) = VariableAddress[#return]           : 
+#  268|     v268_13(void)          = ReturnValue                        : &:r268_12, m271_4
+#  268|     v268_14(void)          = UnmodeledUse                       : mu*
+#  268|     v268_15(void)          = AliasedUse                         : ~mu268_4
+#  268|     v268_16(void)          = ExitFunction                       : 
+
+#  275| void EscapedButNotConflated(bool, Point, int)
+#  275|   Block 0
+#  275|     v275_1(void)           = EnterFunction           : 
+#  275|     mu275_2(unknown)       = AliasedDefinition       : 
+#  275|     mu275_3(unknown)       = InitializeNonLocal      : 
+#  275|     mu275_4(unknown)       = UnmodeledDefinition     : 
+#  275|     r275_5(glval<bool>)    = VariableAddress[c]      : 
+#  275|     m275_6(bool)           = InitializeParameter[c]  : &:r275_5
+#  275|     r275_7(glval<Point>)   = VariableAddress[p]      : 
+#  275|     m275_8(Point)          = InitializeParameter[p]  : &:r275_7
+#  275|     r275_9(glval<int>)     = VariableAddress[x1]     : 
+#  275|     m275_10(int)           = InitializeParameter[x1] : &:r275_9
+#  276|     r276_1(glval<Point>)   = VariableAddress[a]      : 
+#  276|     mu276_2(Point)         = Uninitialized[a]        : &:r276_1
+#  276|     r276_3(glval<int>)     = FieldAddress[x]         : r276_1
+#  276|     r276_4(int)            = Constant[0]             : 
+#  276|     mu276_5(int)           = Store                   : &:r276_3, r276_4
+#  276|     r276_6(glval<int>)     = FieldAddress[y]         : r276_1
+#  276|     r276_7(int)            = Constant[0]             : 
+#  276|     mu276_8(int)           = Store                   : &:r276_6, r276_7
+#  277|     r277_1(glval<Point>)   = VariableAddress[a]      : 
+#  277|     r277_2(Point *)        = CopyValue               : r277_1
+#  277|     r277_3(glval<Point *>) = VariableAddress[pp]     : 
+#  277|     mu277_4(Point *)       = Store                   : &:r277_3, r277_2
+#  278|     r278_1(glval<bool>)    = VariableAddress[c]      : 
+#  278|     r278_2(bool)           = Load                    : &:r278_1, m275_6
+#  278|     v278_3(void)           = ConditionalBranch       : r278_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  279|   Block 1
+#  279|     r279_1(glval<int>)   = VariableAddress[x1] : 
+#  279|     r279_2(int)          = Load                : &:r279_1, m275_10
+#  279|     r279_3(glval<Point>) = VariableAddress[a]  : 
+#  279|     r279_4(glval<int>)   = FieldAddress[x]     : r279_3
+#  279|     mu279_5(int)         = Store               : &:r279_4, r279_2
+#-----|   Goto -> Block 2
+
+#  281|   Block 2
+#  281|     r281_1(glval<int>)   = VariableAddress[x] : 
+#  281|     r281_2(glval<Point>) = VariableAddress[a] : 
+#  281|     r281_3(glval<int>)   = FieldAddress[x]    : r281_2
+#  281|     r281_4(int)          = Load               : &:r281_3, ~mu275_4
+#  281|     m281_5(int)          = Store              : &:r281_1, r281_4
+#  282|     v282_1(void)         = NoOp               : 
+#  275|     v275_11(void)        = ReturnVoid         : 
+#  275|     v275_12(void)        = UnmodeledUse       : mu*
+#  275|     v275_13(void)        = AliasedUse         : ~mu275_4
+#  275|     v275_14(void)        = ExitFunction       : 
+
+#  286| void A::A(int)
+#  286|   Block 0
+#  286|     v286_1(void)       = EnterFunction          : 
+#  286|     mu286_2(unknown)   = AliasedDefinition      : 
+#  286|     mu286_3(unknown)   = InitializeNonLocal     : 
+#  286|     mu286_4(unknown)   = UnmodeledDefinition    : 
+#  286|     r286_5(glval<A>)   = InitializeThis         : 
+#  286|     r286_6(glval<int>) = VariableAddress[x]     : 
+#  286|     m286_7(int)        = InitializeParameter[x] : &:r286_6
+#  286|     v286_8(void)       = NoOp                   : 
+#  286|     v286_9(void)       = ReturnVoid             : 
+#  286|     v286_10(void)      = UnmodeledUse           : mu*
+#  286|     v286_11(void)      = AliasedUse             : ~mu286_4
+#  286|     v286_12(void)      = ExitFunction           : 
+
+#  287| void A::A(A*)
+#  287|   Block 0
+#  287|     v287_1(void)       = EnterFunction              : 
+#  287|     mu287_2(unknown)   = AliasedDefinition          : 
+#  287|     mu287_3(unknown)   = InitializeNonLocal         : 
+#  287|     mu287_4(unknown)   = UnmodeledDefinition        : 
+#  287|     r287_5(glval<A>)   = InitializeThis             : 
+#  287|     r287_6(glval<A *>) = VariableAddress[p#0]       : 
+#  287|     m287_7(A *)        = InitializeParameter[p#0]   : &:r287_6
+#  287|     r287_8(A *)        = Load                       : &:r287_6, m287_7
+#  287|     mu287_9(unknown)   = InitializeIndirection[p#0] : &:r287_8
+#  287|     v287_10(void)      = NoOp                       : 
+#  287|     v287_11(void)      = ReturnIndirection          : &:r287_8, ~mu287_4
+#  287|     v287_12(void)      = ReturnVoid                 : 
+#  287|     v287_13(void)      = UnmodeledUse               : mu*
+#  287|     v287_14(void)      = AliasedUse                 : ~mu287_4
+#  287|     v287_15(void)      = ExitFunction               : 
+
+#  288| void A::A()
+#  288|   Block 0
+#  288|     v288_1(void)     = EnterFunction       : 
+#  288|     mu288_2(unknown) = AliasedDefinition   : 
+#  288|     mu288_3(unknown) = InitializeNonLocal  : 
+#  288|     mu288_4(unknown) = UnmodeledDefinition : 
+#  288|     r288_5(glval<A>) = InitializeThis      : 
+#  288|     v288_6(void)     = NoOp                : 
+#  288|     v288_7(void)     = ReturnVoid          : 
+#  288|     v288_8(void)     = UnmodeledUse        : mu*
+#  288|     v288_9(void)     = AliasedUse          : ~mu288_4
+#  288|     v288_10(void)    = ExitFunction        : 
+
+#  291| Point* NewAliasing(int)
+#  291|   Block 0
+#  291|     v291_1(void)            = EnterFunction                   : 
+#  291|     mu291_2(unknown)        = AliasedDefinition               : 
+#  291|     mu291_3(unknown)        = InitializeNonLocal              : 
+#  291|     mu291_4(unknown)        = UnmodeledDefinition             : 
+#  291|     r291_5(glval<int>)      = VariableAddress[x]              : 
+#  291|     m291_6(int)             = InitializeParameter[x]          : &:r291_5
+#  292|     r292_1(glval<Point *>)  = VariableAddress[p]              : 
+#  292|     r292_2(glval<unknown>)  = FunctionAddress[operator new]   : 
+#  292|     r292_3(unsigned long)   = Constant[8]                     : 
+#  292|     r292_4(void *)          = Call                            : func:r292_2, 0:r292_3
+#  292|     mu292_5(unknown)        = ^CallSideEffect                 : ~mu291_4
+#  292|     mu292_6(unknown)        = ^InitializeDynamicAllocation    : &:r292_4
+#  292|     r292_7(Point *)         = Convert                         : r292_4
+#  292|     m292_8(Point *)         = Store                           : &:r292_1, r292_7
+#  293|     r293_1(glval<Point *>)  = VariableAddress[q]              : 
+#  293|     r293_2(glval<unknown>)  = FunctionAddress[operator new]   : 
+#  293|     r293_3(unsigned long)   = Constant[8]                     : 
+#  293|     r293_4(void *)          = Call                            : func:r293_2, 0:r293_3
+#  293|     mu293_5(unknown)        = ^CallSideEffect                 : ~mu291_4
+#  293|     mu293_6(unknown)        = ^InitializeDynamicAllocation    : &:r293_4
+#  293|     r293_7(Point *)         = Convert                         : r293_4
+#  293|     m293_8(Point *)         = Store                           : &:r293_1, r293_7
+#  294|     r294_1(glval<int>)      = VariableAddress[j]              : 
+#  294|     r294_2(glval<unknown>)  = FunctionAddress[operator new]   : 
+#  294|     r294_3(unsigned long)   = Constant[4]                     : 
+#  294|     r294_4(void *)          = Call                            : func:r294_2, 0:r294_3
+#  294|     mu294_5(unknown)        = ^CallSideEffect                 : ~mu291_4
+#  294|     mu294_6(unknown)        = ^InitializeDynamicAllocation    : &:r294_4
+#  294|     r294_7(A *)             = Convert                         : r294_4
+#  294|     r294_8(glval<unknown>)  = FunctionAddress[A]              : 
+#  294|     r294_9(glval<unknown>)  = FunctionAddress[operator new]   : 
+#  294|     r294_10(unsigned long)  = Constant[4]                     : 
+#  294|     r294_11(void *)         = Call                            : func:r294_9, 0:r294_10
+#  294|     mu294_12(unknown)       = ^CallSideEffect                 : ~mu291_4
+#  294|     mu294_13(unknown)       = ^InitializeDynamicAllocation    : &:r294_11
+#  294|     r294_14(A *)            = Convert                         : r294_11
+#  294|     r294_15(glval<unknown>) = FunctionAddress[A]              : 
+#  294|     r294_16(glval<int>)     = VariableAddress[x]              : 
+#  294|     r294_17(int)            = Load                            : &:r294_16, m291_6
+#  294|     v294_18(void)           = Call                            : func:r294_15, this:r294_14, 0:r294_17
+#  294|     mu294_19(unknown)       = ^CallSideEffect                 : ~mu291_4
+#  294|     mu294_20(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_14
+#  294|     v294_21(void)           = Call                            : func:r294_8, this:r294_7, 0:r294_14
+#  294|     mu294_22(unknown)       = ^CallSideEffect                 : ~mu291_4
+#  294|     mu294_23(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_7
+#  294|     v294_24(void)           = ^BufferReadSideEffect[0]        : &:r294_14, ~mu291_4
+#  294|     mu294_25(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r294_14
+#  294|     r294_26(glval<int>)     = FieldAddress[i]                 : r294_7
+#  294|     r294_27(int)            = Load                            : &:r294_26, ~mu291_4
+#  294|     m294_28(int)            = Store                           : &:r294_1, r294_27
+#  295|     r295_1(glval<A *>)      = VariableAddress[a]              : 
+#  295|     r295_2(glval<unknown>)  = FunctionAddress[operator new]   : 
+#  295|     r295_3(unsigned long)   = Constant[4]                     : 
+#  295|     r295_4(void *)          = Call                            : func:r295_2, 0:r295_3
+#  295|     mu295_5(unknown)        = ^CallSideEffect                 : ~mu291_4
+#  295|     mu295_6(unknown)        = ^InitializeDynamicAllocation    : &:r295_4
+#  295|     r295_7(A *)             = Convert                         : r295_4
+#  295|     r295_8(glval<unknown>)  = FunctionAddress[A]              : 
+#  295|     v295_9(void)            = Call                            : func:r295_8, this:r295_7
+#  295|     mu295_10(unknown)       = ^CallSideEffect                 : ~mu291_4
+#  295|     mu295_11(A)             = ^IndirectMayWriteSideEffect[-1] : &:r295_7
+#  295|     m295_12(A *)            = Store                           : &:r295_1, r295_7
+#  296|     r296_1(glval<Point *>)  = VariableAddress[#return]        : 
+#  296|     r296_2(glval<Point *>)  = VariableAddress[p]              : 
+#  296|     r296_3(Point *)         = Load                            : &:r296_2, m292_8
+#  296|     m296_4(Point *)         = Store                           : &:r296_1, r296_3
+#  291|     r291_7(glval<Point *>)  = VariableAddress[#return]        : 
+#  291|     v291_8(void)            = ReturnValue                     : &:r291_7, m296_4
+#  291|     v291_9(void)            = UnmodeledUse                    : mu*
+#  291|     v291_10(void)           = AliasedUse                      : ~mu291_4
+#  291|     v291_11(void)           = ExitFunction                    : 
