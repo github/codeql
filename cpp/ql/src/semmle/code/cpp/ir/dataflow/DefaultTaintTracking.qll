@@ -440,13 +440,23 @@ module TaintedWithPath {
    * coming from the data-flow library with a node that matches exactly the
    * `Element` sink that's requested.
    *
-   * The same should ideally be done with the source, but we haven't seen a
-   * need for it yet.
+   * The same is done for sources.
    */
 
   private newtype TPathNode =
     TWrapPathNode(DataFlow3::PathNode n) or
-    TFinalPathNode(Element e) { exists(TaintTrackingConfiguration cfg | cfg.isSink(e)) }
+    // There's a single newtype constructor for both sources and sinks since
+    // that makes it easiest to deal with the case where source = sink.
+    TEndpointPathNode(Element e) {
+      exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
+        cfg.hasFlow(sourceNode, sinkNode)
+      |
+        sourceNode = getNodeForSource(e)
+        or
+        e = adjustedSink(sinkNode) and
+        exists(TaintTrackingConfiguration ttCfg | ttCfg.isSink(e))
+      )
+    }
 
   /** An opaque type used for the nodes of a data-flow path. */
   class PathNode extends TPathNode {
@@ -479,8 +489,8 @@ module TaintedWithPath {
     }
   }
 
-  private class FinalPathNode extends PathNode, TFinalPathNode {
-    Element inner() { this = TFinalPathNode(result) }
+  private class EndpointPathNode extends PathNode, TEndpointPathNode {
+    Expr inner() { this = TEndpointPathNode(result) }
 
     override string toString() { result = this.inner().toString() }
 
@@ -494,15 +504,39 @@ module TaintedWithPath {
     }
   }
 
+  /** A PathNode whose `Element` is a source. It may also be a sink. */
+  private class InitialPathNode extends EndpointPathNode {
+    InitialPathNode() { exists(getNodeForSource(this.inner())) }
+  }
+
+  /** A PathNode whose `Element` is a sink. It may also be a source. */
+  private class FinalPathNode extends EndpointPathNode {
+    FinalPathNode() { exists(TaintTrackingConfiguration cfg | cfg.isSink(this.inner())) }
+  }
+
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode a, PathNode b) {
     DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
     or
-    // To avoid showing trivial-looking steps, we replace the last node instead
+    // To avoid showing trivial-looking steps, we _replace_ the last node instead
     // of adding an edge out of it.
-    exists(WrapPathNode replaced |
-      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), replaced.inner()) and
-      b.(FinalPathNode).inner() = adjustedSink(replaced.inner().getNode())
+    exists(WrapPathNode sinkNode |
+      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
+      b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+    or
+    // Same for the first node
+    exists(WrapPathNode sourceNode |
+      DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner())
+    )
+    or
+    // Finally, handle the case where the path goes directly from a source to a
+    // sink, meaning that they both need to be translated.
+    exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
+      DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
+      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner()) and
+      b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
   }
 
@@ -522,10 +556,11 @@ module TaintedWithPath {
    * the computation.
    */
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
-    exists(AdjustedConfiguration cfg, DataFlow3::PathNode sinkInner |
-      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(source) and
-      cfg.hasFlowPath(sourceNode.(WrapPathNode).inner(), sinkInner) and
-      tainted = adjustedSink(sinkInner.getNode()) and
+    exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
+      source = sourceNode.(InitialPathNode).inner() and
+      flowSource = getNodeForSource(source) and
+      cfg.hasFlow(flowSource, flowSink) and
+      tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
     )
   }
