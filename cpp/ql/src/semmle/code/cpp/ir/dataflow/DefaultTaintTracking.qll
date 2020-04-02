@@ -394,15 +394,21 @@ Function resolveCall(Call call) {
  * taint paths.
  */
 module TaintedWithPath {
+  private newtype TSingleton = MkSingleton()
+
   /**
    * A taint-tracking configuration that matches sources and sinks in the same
    * way as the `tainted` predicate.
+   *
+   * Override `isSink` and `taintThroughGlobals` as needed, but do not provide
+   * a characteristic predicate.
    */
-  class TaintTrackingConfiguration extends int {
-    TaintTrackingConfiguration() { this = 1 }
-
+  class TaintTrackingConfiguration extends TSingleton {
     /** Override this to specify which elements are sinks in this configuration. */
     abstract predicate isSink(Element e);
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = "TaintTrackingConfiguration" }
   }
 
   private class AdjustedConfiguration extends DataFlow3::Configuration {
