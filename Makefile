@@ -93,7 +93,7 @@ build/stats/src.stamp:
 ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
 	rm -rf build/stats/database
 	codeql database create -l go -s build/stats/src -j4 --search-path . build/stats/database
-	odasa collectStats --dbscheme $< --db build/stats/database/db-go --outputFile $@
+	codeql dataset measure -o $@ build/stats/database/db-go
 
 test: all build/testdb/check-upgrade-path
 	codeql test run ql/test --search-path .
