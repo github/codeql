@@ -2,6 +2,7 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
+private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * A C/C++ expression.
@@ -804,8 +805,10 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * call the constructor of `T` but will not allocate memory.
    */
   Expr getPlacementPointer() {
-    isStandardPlacementNewAllocator(this.getAllocator()) and
-    result = this.getAllocatorCall().getArgument(1)
+    result =
+      this
+          .getAllocatorCall()
+          .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
 }
 
@@ -1192,12 +1195,6 @@ private predicate convparents(Expr child, int idx, Element parent) {
     exprparents(unresolveElement(astChild), idx, unresolveElement(parent)) and
     child = astChild.getFullyConverted()
   )
-}
-
-private predicate isStandardPlacementNewAllocator(Function operatorNew) {
-  operatorNew.getName().matches("operator new%") and
-  operatorNew.getNumberOfParameters() = 2 and
-  operatorNew.getParameter(1).getType() instanceof VoidPointerType
 }
 
 // Pulled out for performance. See QL-796.
