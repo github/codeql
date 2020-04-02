@@ -60,8 +60,7 @@ class AmdModuleDefinition extends CallExpr {
     result instanceof DataFlow::ValueNode
   }
 
-  private
-  DataFlow::Node getFactoryNodeInternal() {
+  private DataFlow::Node getFactoryNodeInternal() {
     result = DataFlow::valueNode(getLastArgument()) or
     result = getFactoryNodeInternal().getAPredecessor()
   }

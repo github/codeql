@@ -10,8 +10,7 @@ module LazyCache {
    *
    * A lazy-cache object, usually created through an expression of form `require('lazy-cache')(require)`.
    */
-  deprecated
-  class LazyCacheObject extends DataFlow::SourceNode {
+  deprecated class LazyCacheObject extends DataFlow::SourceNode {
     LazyCacheObject() {
       // Use `require` directly instead of `moduleImport` to avoid recursion.
       // For the same reason, avoid `Import.getImportedPath`.
@@ -55,9 +54,7 @@ module LazyCache {
 
     override PathExpr getImportedPath() { result = getArgument(0) }
 
-    private LazyCacheVariable getVariable() {
-      result = cache
-    }
+    private LazyCacheVariable getVariable() { result = cache }
 
     pragma[noopt]
     override DataFlow::Node getImportedModuleNode() {
