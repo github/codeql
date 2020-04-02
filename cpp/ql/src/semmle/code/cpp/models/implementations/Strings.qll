@@ -8,8 +8,8 @@ class StringConstructor extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any constructor argument to return value
-    input.isInParameter(_) and
-    output.isOutReturnValue()
+    input.isParameter(_) and
+    output.isReturnValue()
   }
 }
 
@@ -21,7 +21,7 @@ class StringCStr extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
-    input.isInQualifier() and
-    output.isOutReturnValue()
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
