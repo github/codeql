@@ -103,7 +103,9 @@ private class ShellLike extends DataFlow::Node {
 
 private string getASudoCommand() {
   result = "sudo" or
+  result = "sudo_root" or
   result = "su" or
+  result = "sudoedit" or
   result = "doas" or
   result = "access" or
   result = "vsys" or
@@ -116,7 +118,26 @@ private string getASudoCommand() {
   result = "su1" or
   result = "op" or
   result = "sudowin" or
-  result = "sudown"
+  result = "sudown" or
+  result = "chroot" or
+  result = "fakeroot" or
+  result = "fakeroot-sysv" or
+  result = "fakeroot-tcp" or
+  result = "fstab-decode" or
+  result = "jrunscript" or
+  result = "nohup" or
+  result = "parallel" or
+  result = "find" or
+  result = "pkexec" or
+  result = "sg" or
+  result = "sem" or
+  result = "runcon" or
+  result = "runuser" or
+  result = "stdbuf" or
+  result = "system" or
+  result = "timeout" or
+  result = "xargs" or
+  result = "time"
 }
 
 /**
@@ -134,6 +155,7 @@ private predicate isSudoOrSimilar(DataFlow::Node node) {
 private string getAShellCommand() {
   result = "bash" or
   result = "sh" or
+  result = "sh.distrib" or
   result = "rbash" or
   result = "dash" or
   result = "zsh" or
@@ -192,7 +214,9 @@ private predicate isProgrammingLanguageCli(DataFlow::Node node) {
   )
 }
 
-private string getASshCommand() { result = "ssh" or result = "putty.exe" or result = "kitty.exe" }
+private string getASshCommand() {
+  result = "ssh" or result = "ssh-argv0" or result = "putty.exe" or result = "kitty.exe"
+}
 
 /**
  * A data-flow node whose string value might refer to an SSH client or similar, whose arguments can be
