@@ -293,5 +293,5 @@ What next?
 ----------
 
 -  Help the villagers track down another criminal in the :doc:`next tutorial <catch-the-fire-starter>`.
--  Find out more about the concepts you discovered in this tutorial in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+-  Find out more about the concepts you discovered in this tutorial in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Explore the libraries that help you get data about code in :doc:`Learning CodeQL <../../index>`.

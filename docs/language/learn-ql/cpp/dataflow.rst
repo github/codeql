@@ -299,7 +299,7 @@ Further reading
 ---------------
 
 -  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>` and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
 
 Answers

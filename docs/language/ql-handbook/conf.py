@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# QL language handbook build configuration file, created by
+# QL language reference build configuration file, created by
 # sphinx-quickstart on Wed Feb 28 12:01:34 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -17,9 +17,10 @@
 
 ################################################################################
 #
-# Modified 22052019.
-
-# The configuration values below are specific to the QL handbook
+# Modified 02042020 to rename "handbook" to "reference". 
+# This Sphinx project now contains both the handbook articles and the specifications.
+# 
+# The configuration values below are specific to the QL language reference project.
 # To amend html_theme_options, update version/release number, or add more sphinx extensions,
 # refer to code/documentation/ql-documentation/global-sphinx-files/global-conf.py
 

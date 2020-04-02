@@ -134,5 +134,5 @@ Further reading
 
 -  Explore other ways of finding types and statements using examples from the C/C++ cookbook for `types <https://help.semmle.com/wiki/label/CBCPP/type>`__ and `statements <https://help.semmle.com/wiki/label/CBCPP/statement>`__.
 -  Take a look at the :doc:`Conversions and classes in C and C++ <conversions-classes>` and :doc:`Analyzing data flow in C and C++ <dataflow>` tutorials.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

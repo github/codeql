@@ -450,5 +450,5 @@ Further reading
 ---------------
 
 -  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`CodeQL libraries for JavaScript <introduce-libraries-js>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
