@@ -13,7 +13,7 @@ local resources in addition to remote ones.</p>
 <recommendation>
 <p>When you construct a URL using <code>java.net.URL</code> from a remote source,
 don't call <code>openStream</code> on it. Instead, use an HTTP Client to fetch the URL and access its content.
-You should also validate the URL to check that it uses the correct protocol and host combination.</p></p>
+You should also validate the URL to check that it uses the correct protocol and host combination.</p>
 </recommendation>
 
 <example>
