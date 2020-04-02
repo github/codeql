@@ -407,6 +407,12 @@ module TaintedWithPath {
     /** Override this to specify which elements are sinks in this configuration. */
     abstract predicate isSink(Element e);
 
+    /**
+     * Override this predicate to `any()` to allow taint to flow through global
+     * variables.
+     */
+    predicate taintThroughGlobals() { none() }
+
     /** Gets a textual representation of this element. */
     string toString() { result = "TaintTrackingConfiguration" }
   }
@@ -422,6 +428,12 @@ module TaintedWithPath {
 
     override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
       instructionTaintStep(n1.asInstruction(), n2.asInstruction())
+      or
+      exists(TaintTrackingConfiguration cfg | cfg.taintThroughGlobals() |
+        writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
+        or
+        readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
+      )
     }
 
     override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
@@ -562,6 +574,28 @@ module TaintedWithPath {
       cfg.hasFlow(flowSource, flowSink) and
       tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
+    )
+  }
+
+  private predicate isGlobalVariablePathNode(WrapPathNode n) {
+    n.inner().getNode().asVariable() instanceof GlobalOrNamespaceVariable
+  }
+
+  private predicate edgesWithoutGlobals(PathNode a, PathNode b) {
+    edges(a, b) and
+    not isGlobalVariablePathNode(a) and
+    not isGlobalVariablePathNode(b)
+  }
+
+  /**
+   * Holds if `tainted` can be reached from a taint source without passing
+   * through a global variable.
+   */
+  predicate taintedWithoutGlobals(Element tainted) {
+    exists(PathNode sourceNode, FinalPathNode sinkNode |
+      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(_) and
+      edgesWithoutGlobals+(sourceNode, sinkNode) and
+      tainted = sinkNode.inner()
     )
   }
 }
