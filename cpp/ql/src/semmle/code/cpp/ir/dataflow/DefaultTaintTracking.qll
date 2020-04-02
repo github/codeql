@@ -511,10 +511,19 @@ module TaintedWithPath {
     key = "semmle.label" and val = n.toString()
   }
 
+  /**
+   * Holds if `tainted` may contain taint from `source`, where `sourceNode` and
+   * `sinkNode` are the corresponding `PathNode`s that can be used in a query
+   * to provide path explanations. Extend `TaintTrackingConfiguration` to use
+   * this predicate.
+   *
+   * A tainted expression is either directly user input, or is computed from
+   * user input in a way that users can probably control the exact output of
+   * the computation.
+   */
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
-    exists(AdjustedConfiguration cfg, DataFlow3::PathNode sinkInner, DataFlow::Node sink |
+    exists(AdjustedConfiguration cfg, DataFlow3::PathNode sinkInner |
       sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(source) and
-      sinkInner.getNode() = sink and
       cfg.hasFlowPath(sourceNode.(WrapPathNode).inner(), sinkInner) and
       tainted = adjustedSink(sinkInner.getNode()) and
       tainted = sinkNode.(FinalPathNode).inner()
