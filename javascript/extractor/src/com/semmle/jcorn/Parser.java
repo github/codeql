@@ -146,6 +146,11 @@ public class Parser {
   protected int yieldPos, awaitPos;
 
   /**
+   * Set to true by {@link ESNextParser#readInt} if the parsed integer contains an underscore.
+   */
+  protected boolean seenUnderscoreNumericSeparator = false;
+
+  /**
    * For readability purposes, we pass this instead of false as the argument to the
    * hasDeclareKeyword parameter (which only exists in TypeScript).
    */
@@ -654,7 +659,7 @@ public class Parser {
       case 58:
         ++this.pos;
         return this.finishToken(TokenType.colon);
-      case 35: 
+      case 35:
         ++this.pos;
         return this.finishToken(TokenType.pound);
       case 63:
@@ -847,6 +852,10 @@ public class Parser {
     }
 
     String str = inputSubstring(start, this.pos);
+    if (seenUnderscoreNumericSeparator) {
+      str = str.replace("_", "");
+      seenUnderscoreNumericSeparator = false;
+    }
     Number val = null;
     if (isFloat) val = parseFloat(str);
     else if (!octal || str.length() == 1) val = parseInt(str, 10);
