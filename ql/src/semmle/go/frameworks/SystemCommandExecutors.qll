@@ -137,7 +137,11 @@ private string getASudoCommand() {
   result = "system" or
   result = "timeout" or
   result = "xargs" or
-  result = "time"
+  result = "time" or
+  result = "awk" or
+  result = "gawk" or
+  result = "mawk" or
+  result = "nawk"
 }
 
 /**
