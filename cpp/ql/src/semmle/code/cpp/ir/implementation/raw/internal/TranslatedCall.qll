@@ -343,6 +343,11 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
     expr.getTarget() instanceof AllocationFunction and
+    not exists(NewOrNewArrayExpr newExpr |
+      // we synthesize allocator calls for `new` and `new[]`, so don't add instructions to
+      // the existing allocator call when it exists.
+      newExpr.getAllocatorCall() = expr
+    ) and
     opcode instanceof Opcode::InitializeDynamicAllocation and
     tag = OnlyInstructionTag() and
     type = getUnknownType()
@@ -358,6 +363,11 @@ class TranslatedSideEffects extends TranslatedElement, TTranslatedSideEffects {
     tag = OnlyInstructionTag() and
     kind = gotoEdge() and
     expr.getTarget() instanceof AllocationFunction and
+    not exists(NewOrNewArrayExpr newExpr |
+      // we synthesize allocator calls for `new` and `new[]`, so don't add instructions to
+      // the existing allocator call when it exists.
+      newExpr.getAllocatorCall() = expr
+    ) and
     if exists(getChild(0))
     then result = getChild(0).getFirstInstruction()
     else result = getParent().getChildSuccessor(this)

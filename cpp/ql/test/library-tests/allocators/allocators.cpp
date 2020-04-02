@@ -143,3 +143,9 @@ void multidimensionalNew(int x, int y) {
   auto p2 = new char[20][20];
   auto p3 = new char[x][30][30];
 }
+
+void directOperatorCall() {
+	void *ptr;
+	ptr = operator new(sizeof(int));
+	operator delete(ptr);
+}
