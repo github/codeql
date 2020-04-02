@@ -63,6 +63,14 @@ class Node extends TIRDataFlowNode {
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
 
+  /**
+   * Gets the expression that is partially defined by this node, if any.
+   *
+   * Partial definitions are created for field stores (`x.y = taint();` is a partial
+   * definition of `x`), and for calls that may change the value of an object (so
+   * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
+   * a partial definition of `&x`).
+   */
   Expr asPartialDefinition() {
     result = this.(PartialDefinitionNode).getInstruction().getUnconvertedResultExpression()
   }
@@ -100,6 +108,9 @@ class Node extends TIRDataFlowNode {
   string toString() { none() } // overridden by subclasses
 }
 
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
 class InstructionNode extends Node, TInstructionNode {
   Instruction instr;
 
@@ -146,12 +157,16 @@ class ExprNode extends InstructionNode {
   override string toString() { result = this.asConvertedExpr().toString() }
 }
 
+/**
+ * A node representing a `Parameter`. This includes both explicit parameters such
+ * as `x` in `f(x)` and implicit parameters such as `this` in `x.f()`
+ */
 class ParameterNode extends InstructionNode {
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) { none() }
+  predicate isParameterOf(Function f, int i) { none() } // overriden by subclasses
 }
 
 /**
@@ -163,6 +178,7 @@ private class ExplicitParameterNode extends ParameterNode {
 
   override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
+  /** Gets the parameter corresponding to this node. */
   Parameter getParameter() { result = instr.getParameter() }
 
   override string toString() { result = instr.getParameter().toString() }
@@ -216,7 +232,25 @@ abstract class PostUpdateNode extends InstructionNode {
   abstract Node getPreUpdateNode();
 }
 
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+/**
+ * The base class for nodes that perform "partial definitions".
+ *
+ * In contrast to a normal "definition", which provides a new value for
+ * something, a partial definition is an expression that may affect a
+ * value, but does not necessarily replace it entirely. For example:
+ * ```
+ * x.y = 1; // a partial definition of the object `x`.
+ * x.y.z = 1; // a partial definition of the object `x.y`.
+ * x.setY(1); // a partial definition of the object `x`.
+ * setY(&x); // a partial definition of the object `x`.
+ * ```
+ */
+abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+  /**
+   * Gets the instruction that partially defines the object. This includes
+   * both the instruction that partially defines the object, and the chi
+   * instruction that links up the partial definition to the object.
+   */
   final Instruction getInstructionOrChi() {
     exists(ChiInstruction chi |
       not chi.isResultConflated() and
@@ -228,7 +262,7 @@ abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructio
   }
 }
 
-class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
   FieldAddressInstruction field;
 
@@ -310,6 +344,10 @@ class VariableNode extends Node, TVariableNode {
  */
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as `argument` of a call.
+ */
 DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
