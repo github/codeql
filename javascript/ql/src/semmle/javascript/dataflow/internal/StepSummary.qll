@@ -66,7 +66,7 @@ class StepSummary extends TStepSummary {
     exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
     or
     exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
-      result = "copy " + fromProp + " to " + toProp
+      result = "load " + fromProp + " and store to " + toProp
     )
   }
 }

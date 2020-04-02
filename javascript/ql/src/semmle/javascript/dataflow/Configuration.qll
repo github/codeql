@@ -611,7 +611,7 @@ module PseudoProperties {
   /**
    * Gets a pseudo-property for the location of map values, where the key is unknown.
    */
-  string mapValueUnknownKey() { result = pseudoProperty("unknownMapValue") }
+  string mapValueUnknownKey() { result = pseudoProperty("mapValueUnknownKey") }
 
   /**
    * Gets a pseudo-property for the location of all the values in a map.

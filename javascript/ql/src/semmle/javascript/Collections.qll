@@ -84,7 +84,7 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
 }
 
 /**
- * A collection of predicates and clases for type-tracking collections.
+ * Provides predicates and clases for type-tracking collections.
  */
 module CollectionsTypeTracking {
   /**
@@ -220,9 +220,9 @@ private module CollectionDataFlow {
    * A call to the `set` method on a Map.
    *
    * If the key of the call to `set` has a known string value,
-   * then the value will be saved into a pseudo-property corresponding to the known string value.
-   * Otherwise the value will be saved into a pseudo-property corresponding to values with unknown keys.
-   * The value will additionally be saved into a pseudo-property corresponding to all values.
+   * then the value will be stored into a pseudo-property corresponding to the known string value.
+   * Otherwise the value will be stored into a pseudo-property corresponding to values with unknown keys.
+   * The value will additionally be stored into a pseudo-property corresponding to all values.
    */
   class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
     MapSet() { this.getMethodName() = "set" }
