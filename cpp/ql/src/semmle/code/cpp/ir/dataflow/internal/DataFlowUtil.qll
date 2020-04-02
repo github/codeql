@@ -297,7 +297,7 @@ ExprNode exprNode(Expr e) { result.getExpr() = e }
  * Gets the `Node` corresponding to `e`, if any. Here, `e` may be a
  * `Conversion`.
  */
-ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
+ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
