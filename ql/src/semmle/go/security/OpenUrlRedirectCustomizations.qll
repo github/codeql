@@ -162,13 +162,13 @@ module OpenUrlRedirect {
   }
 }
 
-/** A sink for request forgery, considered as a sink for safe URL flow. */
+/** A sink for an open redirect, considered as a sink for safe URL flow. */
 private class SafeUrlSink extends SafeUrlFlow::Sink {
   SafeUrlSink() { this instanceof OpenUrlRedirect::Sink }
 }
 
 /**
- * A read of a field considered unsafe for request forgery, considered as a sanitizer for a safe
+ * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe
  * URL.
  */
 private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
