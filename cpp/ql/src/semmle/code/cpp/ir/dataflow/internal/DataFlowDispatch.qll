@@ -70,8 +70,7 @@ private module VirtualDispatch {
         // Call return
         exists(DataFlowCall call, ReturnKind returnKind |
           other = getAnOutNode(call, returnKind) and
-          src.(ReturnNode).getKind() = returnKind and
-          call.getStaticCallTarget() = src.getEnclosingCallable()
+          returnNodeWithKindAndEnclosingCallable(src, returnKind, call.getStaticCallTarget())
         ) and
         allowFromArg = false
         or
@@ -123,6 +122,16 @@ private module VirtualDispatch {
             .getASTVariable() = var
       )
     }
+  }
+
+  /**
+   * A ReturnNode with its ReturnKind and its enclosing callable.
+   * 
+   * Used to fix a join ordering issue in flowsFrom.
+   */
+  private predicate returnNodeWithKindAndEnclosingCallable(ReturnNode node, ReturnKind kind, DataFlowCallable callable) {
+    node.getKind() = kind and
+    node.getEnclosingCallable() = callable
   }
 
   /** Call through a function pointer. */
