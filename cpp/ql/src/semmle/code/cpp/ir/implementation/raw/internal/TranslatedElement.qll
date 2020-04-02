@@ -443,6 +443,12 @@ newtype TTranslatedElement =
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
   TTranslatedCallSideEffects(Call expr) {
+    // Exclude allocations such as `malloc` (which happen to also be function calls).
+    // Both `TranslatedCallSideEffects` and `TranslatedAllocationSideEffects` generate
+    // the same side effects for its children as they both extend the `TranslatedSideEffects`
+    // class.
+    // Note: We can separate allocation side effects and call side effects into two
+    // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
     not expr instanceof AllocationExpr and
     (
       exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
