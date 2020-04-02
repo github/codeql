@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     Searches for source/references and creates separate extractions.
     /// </summary>
-    class Analysis
+    class Analysis : IDisposable
     {
         readonly ILogger logger;
 
@@ -71,12 +71,9 @@ namespace Semmle.Extraction.CSharp.Standalone
             projectExtraction.Sources.AddRange(options.SolutionFile == null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
         }
 
-        /// <summary>
-        /// Delete any Nuget assemblies.
-        /// </summary>
-        public void Cleanup()
+        public void Dispose()
         {
-            buildAnalysis.Cleanup();
+            buildAnalysis.Dispose();
         }
     };
 
@@ -87,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
             var output = new ConsoleLogger(options.Verbosity);
-            var a = new Analysis(output);
+            using var a = new Analysis(output);
 
             if (options.Help)
             {
@@ -123,7 +120,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                 output.Log(Severity.Info, $"Extraction completed in {DateTime.Now-start}");
             }
 
-            a.Cleanup();
             return 0;
         }
 

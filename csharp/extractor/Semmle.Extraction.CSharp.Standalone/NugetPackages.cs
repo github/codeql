@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Semmle.Util;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Semmle.BuildAnalyser
 {
@@ -134,53 +133,4 @@ namespace Semmle.BuildAnalyser
 
         readonly string nugetExe;
     }
-
-    /// <summary>
-    /// A temporary directory that is created within the system temp directory.
-    /// When this object is disposed, the directory is deleted.
-    /// </summary>
-    sealed class TemporaryDirectory : IDisposable
-    {
-        public DirectoryInfo DirInfo { get; }
-
-        public TemporaryDirectory(string name)
-        {
-            DirInfo = new DirectoryInfo(name);
-            DirInfo.Create();
-        }
-
-        /// <summary>
-        /// Computes a unique temp directory for the packages associated
-        /// with this source tree. Use a SHA1 of the directory name.
-        /// </summary>
-        /// <param name="srcDir"></param>
-        /// <returns>The full path of the temp directory.</returns>
-        public static string ComputeTempDirectory(string srcDir)
-        {
-            var bytes = Encoding.Unicode.GetBytes(srcDir);
-
-            using var sha1 = new SHA1CryptoServiceProvider();
-            var sha = sha1.ComputeHash(bytes);
-            var sb = new StringBuilder();
-            foreach (var b in sha.Take(8))
-                sb.AppendFormat("{0:x2}", b);
-
-            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
-        }
-
-        public static TemporaryDirectory CreateTempDirectory(string source) => new TemporaryDirectory(ComputeTempDirectory(source));
-
-        public void Cleanup()
-        {
-            DirInfo.Delete(true);
-        }
-
-        public void Dispose()
-        {
-            Cleanup();
-        }
-
-        public override string ToString() => DirInfo.FullName.ToString();
-    }
-
 }

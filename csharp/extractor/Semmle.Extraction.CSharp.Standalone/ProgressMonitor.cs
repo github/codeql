@@ -51,7 +51,7 @@ namespace Semmle.BuildAnalyser
 
         public void AnalysingSolution(string filename)
         {
-            logger.Log(Severity.Info, $"Analysing {filename}...");
+            logger.Log(Severity.Info, $"Analyzing {filename}...");
         }
 
         public void FailedProjectFile(string filename, string reason)

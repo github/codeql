@@ -13,36 +13,9 @@ namespace Semmle.BuildAnalyser
     {
         public static int RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
         {
-            using var proc = Process.Start("dotnet", $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\"");
+            using var proc = Process.Start("dotnet", $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true");
             proc.WaitForExit();
             return proc.ExitCode;
-        }
-    }
-
-    /// <summary>
-    /// Utility to temporarily rename a set of files.
-    /// </summary>
-    sealed class FileRenamer : IDisposable
-    {
-        readonly string[] files;
-        const string suffix = ".codeqlhidden";
-
-        public FileRenamer(IEnumerable<FileInfo> oldFiles)
-        {
-            files = oldFiles.Select(f => f.FullName).ToArray();
-
-            foreach(var file in files)
-            {
-                File.Move(file, file + suffix);
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (var file in files)
-            {
-                File.Move(file + suffix, file);
-            }
         }
     }
 }
