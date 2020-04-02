@@ -1,5 +1,5 @@
 @Configuration(proxyBeanMethods = false)
-public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
+public class SpringBootActuators extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
