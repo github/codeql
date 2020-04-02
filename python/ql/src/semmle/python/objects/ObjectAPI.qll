@@ -415,7 +415,7 @@ class ClassValue extends Value {
      * ```
      * `this.lookup("f")` is equivalent to `C.__dict__['f']`, which is the class-method
      *  whereas
-     * `this.attr("f") is equivalent to `C.f`, which is a bound-method.
+     * `this.attr("f")` is equivalent to `C.f`, which is a bound-method.
      */
     Value lookup(string name) { this.(ClassObjectInternal).lookup(name, result, _) }
 
