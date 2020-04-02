@@ -38,5 +38,4 @@ CodeQL is based on a powerful query language called QL. The following topics hel
 Further reading
 ***************
 
-- `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__: A description of important concepts in QL.
-- `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__: A formal specification of QL.
+- `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__: A description of important concepts in QL and a formal specification of the QL language.

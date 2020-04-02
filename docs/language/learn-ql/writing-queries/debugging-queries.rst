@@ -11,7 +11,7 @@ Before reading the tips below, it is worth reiterating a few important points ab
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
 - The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For further information about query languages and databases, see `About the QL language <https://help.semmle.com/QL/learn-ql/about-ql.html>`__.
-- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__. 
 
 Performance tips
 ----------------
@@ -151,4 +151,4 @@ Now the structure we want is clearer. We've separated out the easy part into its
 Further information
 -------------------
 
-- Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+- Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.

@@ -467,7 +467,7 @@ Exercise 4: Using the answers from 2 and 3, write a query which finds all global
 Further reading
 ---------------
 
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
 -  Learn about writing more precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`
 

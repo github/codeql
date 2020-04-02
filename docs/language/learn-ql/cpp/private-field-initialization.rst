@@ -102,7 +102,7 @@ You may also wish to consider methods called by constructors that assign to the 
      int m_value;
    };
 
-This case can be excluded by creating a recursive predicate. The recursive predicate is given a function and a field, then checks whether the function assigns to the field. The predicate runs itself on all the functions called by the function that it has been given. By passing the constructor to this predicate, we can check for assignments of a field in all functions called by the constructor, and then do the same for all functions called by those functions all the way down the tree of function calls. For more information, see `Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__ in the QL language handbook.
+This case can be excluded by creating a recursive predicate. The recursive predicate is given a function and a field, then checks whether the function assigns to the field. The predicate runs itself on all the functions called by the function that it has been given. By passing the constructor to this predicate, we can check for assignments of a field in all functions called by the constructor, and then do the same for all functions called by those functions all the way down the tree of function calls. For more information, see `Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__ in the QL language reference.
 
 .. code-block:: ql
 
@@ -126,7 +126,7 @@ This case can be excluded by creating a recursive predicate. The recursive predi
 Refinement 4—simplifying the query
 ----------------------------------
 
-Finally we can simplify the query by using the transitive closure operator. In this final version of the query, ``c.calls*(fun)`` resolves to the set of all functions that are ``c`` itself, are called by ``c``, are called by a function that is called by ``c``, and so on. This eliminates the need to make a new predicate all together. For more information, see `Transitive closures <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ in the QL language handbook.
+Finally we can simplify the query by using the transitive closure operator. In this final version of the query, ``c.calls*(fun)`` resolves to the set of all functions that are ``c`` itself, are called by ``c``, are called by a function that is called by ``c``, and so on. This eliminates the need to make a new predicate all together. For more information, see `Transitive closures <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ in the QL language reference.
 
 .. code-block:: ql
 
@@ -150,5 +150,5 @@ Further reading
 ---------------
 
 -  Take a look at another example: :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
