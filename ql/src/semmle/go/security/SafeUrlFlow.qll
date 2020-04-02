@@ -3,8 +3,8 @@
  * safe flow from URLs.
  *
  * Note, for performance reasons: only import this file if
- * `OpenUrlRedirect::Configuration` is needed, otherwise
- * `OpenUrlRedirectCustomizations` should be imported instead.
+ * `SafeUrlFlow::Configuration` is needed, otherwise
+ * `SafeUrlFlowCustomizations` should be imported instead.
  */
 
 import go
@@ -13,7 +13,7 @@ module SafeUrlFlow {
   import SafeUrlFlowCustomizations::SafeUrlFlow
 
   /**
-   * A data-flow configuration for reasoning about safe URLs.
+   * A taint-tracking configuration for reasoning about safe URLs.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SafeUrlFlow" }
