@@ -20,3 +20,5 @@
 | taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
 | taint.cpp:429:7:429:7 | b | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
+| taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
