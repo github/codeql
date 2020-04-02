@@ -18,14 +18,15 @@ import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 
-class TaintedPathConfiguration extends TaintTrackingConfiguration {
+class Configuration extends TaintTrackingConfiguration {
   override predicate isSink(Element tainted) {
     exists(PrintfLikeFunction printf | printf.outermostWrapperFunctionCall(tainted, _))
   }
 }
 
-from PrintfLikeFunction printf, Expr arg, PathNode sourceNode,
-  PathNode sinkNode, string printfFunction, Expr userValue, string cause
+from
+  PrintfLikeFunction printf, Expr arg, PathNode sourceNode, PathNode sinkNode,
+  string printfFunction, Expr userValue, string cause
 where
   printf.outermostWrapperFunctionCall(arg, printfFunction) and
   taintedWithPath(userValue, arg, sourceNode, sinkNode) and
