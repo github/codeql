@@ -6432,6 +6432,57 @@ ir.cpp:
 # 1241|     mu1241_6(bool)         = Store                           : &:r1241_1, r1241_5
 #-----|   Goto -> Block 1
 
+# 1251| void test_strings(char*, char*)
+# 1251|   Block 0
+# 1251|     v1251_1(void)              = EnterFunction                : 
+# 1251|     mu1251_2(unknown)          = AliasedDefinition            : 
+# 1251|     mu1251_3(unknown)          = InitializeNonLocal           : 
+# 1251|     mu1251_4(unknown)          = UnmodeledDefinition          : 
+# 1251|     r1251_5(glval<char *>)     = VariableAddress[s1]          : 
+# 1251|     mu1251_6(char *)           = InitializeParameter[s1]      : &:r1251_5
+# 1251|     r1251_7(char *)            = Load                         : &:r1251_5, ~mu1251_6
+# 1251|     mu1251_8(unknown)          = InitializeIndirection[s1]    : &:r1251_7
+# 1251|     r1251_9(glval<char *>)     = VariableAddress[s2]          : 
+# 1251|     mu1251_10(char *)          = InitializeParameter[s2]      : &:r1251_9
+# 1251|     r1251_11(char *)           = Load                         : &:r1251_9, ~mu1251_10
+# 1251|     mu1251_12(unknown)         = InitializeIndirection[s2]    : &:r1251_11
+# 1252|     r1252_1(glval<char[1024]>) = VariableAddress[buffer]      : 
+# 1252|     mu1252_2(char[1024])       = Uninitialized[buffer]        : &:r1252_1
+# 1252|     r1252_3(int)               = Constant[0]                  : 
+# 1252|     r1252_4(glval<char>)       = PointerAdd[1]                : r1252_1, r1252_3
+# 1252|     r1252_5(char)              = Constant[0]                  : 
+# 1252|     mu1252_6(char)             = Store                        : &:r1252_4, r1252_5
+# 1252|     r1252_7(int)               = Constant[1]                  : 
+# 1252|     r1252_8(glval<char>)       = PointerAdd[1]                : r1252_1, r1252_7
+# 1252|     r1252_9(unknown[1023])     = Constant[0]                  : 
+# 1252|     mu1252_10(unknown[1023])   = Store                        : &:r1252_8, r1252_9
+# 1254|     r1254_1(glval<unknown>)    = FunctionAddress[strcpy]      : 
+# 1254|     r1254_2(glval<char[1024]>) = VariableAddress[buffer]      : 
+# 1254|     r1254_3(char *)            = Convert                      : r1254_2
+# 1254|     r1254_4(glval<char *>)     = VariableAddress[s1]          : 
+# 1254|     r1254_5(char *)            = Load                         : &:r1254_4, ~mu1251_4
+# 1254|     r1254_6(char *)            = Convert                      : r1254_5
+# 1254|     r1254_7(char *)            = Call                         : func:r1254_1, 0:r1254_3, 1:r1254_6
+# 1254|     v1254_8(void)              = ^BufferReadSideEffect[1]     : &:r1254_6, ~mu1251_4
+# 1254|     mu1254_9(unknown)          = ^BufferMayWriteSideEffect[0] : &:r1254_3
+# 1255|     r1255_1(glval<unknown>)    = FunctionAddress[strcat]      : 
+# 1255|     r1255_2(glval<char[1024]>) = VariableAddress[buffer]      : 
+# 1255|     r1255_3(char *)            = Convert                      : r1255_2
+# 1255|     r1255_4(glval<char *>)     = VariableAddress[s2]          : 
+# 1255|     r1255_5(char *)            = Load                         : &:r1255_4, ~mu1251_4
+# 1255|     r1255_6(char *)            = Convert                      : r1255_5
+# 1255|     r1255_7(char *)            = Call                         : func:r1255_1, 0:r1255_3, 1:r1255_6
+# 1255|     v1255_8(void)              = ^BufferReadSideEffect[0]     : &:r1255_3, ~mu1251_4
+# 1255|     v1255_9(void)              = ^BufferReadSideEffect[1]     : &:r1255_6, ~mu1251_4
+# 1255|     mu1255_10(unknown)         = ^BufferMayWriteSideEffect[0] : &:r1255_3
+# 1256|     v1256_1(void)              = NoOp                         : 
+# 1251|     v1251_13(void)             = ReturnIndirection            : &:r1251_7, ~mu1251_4
+# 1251|     v1251_14(void)             = ReturnIndirection            : &:r1251_11, ~mu1251_4
+# 1251|     v1251_15(void)             = ReturnVoid                   : 
+# 1251|     v1251_16(void)             = UnmodeledUse                 : mu*
+# 1251|     v1251_17(void)             = AliasedUse                   : ~mu1251_4
+# 1251|     v1251_18(void)             = ExitFunction                 : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
