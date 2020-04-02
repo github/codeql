@@ -1,3 +1,4 @@
+| tsTest.ts:4:12:4:19 | cache[x] | Missing await. This value is always a promise. |
 | tst.js:8:9:8:13 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:10:9:10:13 | thing | Missing await. The value 'thing' is always a promise. |
 | tst.js:12:15:12:19 | thing | Missing await. The value 'thing' is always a promise. |
