@@ -26,6 +26,7 @@ import semmle.go.dataflow.SSA
 import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.SQL
+import semmle.go.frameworks.XPath
 import semmle.go.frameworks.Stdlib
 import semmle.go.security.FlowSources
 import semmle.go.Util

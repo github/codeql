@@ -19,6 +19,7 @@ The CodeQL library for Go now contains a folder of simple "cookbook" queries tha
 | Incomplete URL scheme check (`go/incomplete-url-scheme-check`) | correctness, security, external/cwe/cwe-020 | Highlights checks for `javascript` URLs that do not take `data` or `vbscript` URLs into account. Results are shown on LGTM by default. |
 | Potentially unsafe quoting (`go/unsafe-quoting`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-089, external/cwe/cwe-094 | Highlights code that constructs a quoted string literal containing data that may itself contain quotes. Results are shown on LGTM by default. |
 | Size computation for allocation may overflow (`go/allocation-size-overflow`) | correctness, security, external/cwe/cwe-190 | Highlights code that computes the size of an allocation based on the size of a potentially large object. Results are shown on LGTM by default. |
+| XPath injection (`go/xml/xpath-injection`) | security, external/cwe/cwe-643 | Highlights code that uses remote input in an XPath expression. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 

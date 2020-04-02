@@ -328,6 +328,11 @@ class SliceType extends @slicetype, CompositeType {
   override string toString() { result = "slice type" }
 }
 
+/** A byte slice type */
+class ByteSliceType extends SliceType {
+  ByteSliceType() { this.getElementType() instanceof Uint8Type }
+}
+
 /** A struct type. */
 class StructType extends @structtype, CompositeType {
   /**
