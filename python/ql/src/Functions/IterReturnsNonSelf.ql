@@ -12,9 +12,7 @@
 
 import python
 
-Function iter_method(ClassValue t) {
-		result = ((FunctionValue)t.lookup("__iter__")).getScope()
-}
+Function iter_method(ClassValue t) { result = t.lookup("__iter__").(FunctionValue).getScope() }
 
 predicate is_self(Name value, Function f) { value.getVariable() = f.getArg(0).(Name).getVariable() }
 

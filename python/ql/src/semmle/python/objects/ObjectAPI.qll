@@ -432,24 +432,27 @@ class ClassValue extends Value {
 
     /** Holds if this class is an iterator. */
     predicate isIterator() {
-        this.hasAttribute("__iter__") and 
-        (major_version() = 3 and this.hasAttribute("__next__")
-         or   
-         /* Because 'next' is a common method name we need to check that an __iter__
-          * method actually returns this class. This is not needed for Py3 as the
-          * '__next__' method exists to define a class as an iterator.
-          */
-         major_version() = 2 and this.hasAttribute("next") and 
-         exists(ClassValue other, FunctionValue iter | 
-            other.declaredAttribute("__iter__") = iter |
-            iter.getAnInferredReturnType() = this
-         )
+        this.hasAttribute("__iter__") and
+        (
+            major_version() = 3 and this.hasAttribute("__next__")
+            or
+            /*
+             * Because 'next' is a common method name we need to check that an __iter__
+             * method actually returns this class. This is not needed for Py3 as the
+             * '__next__' method exists to define a class as an iterator.
+             */
+
+            major_version() = 2 and
+            this.hasAttribute("next") and
+            exists(ClassValue other, FunctionValue iter | other.declaredAttribute("__iter__") = iter |
+                iter.getAnInferredReturnType() = this
+            )
         )
         or
         /* This will be redundant when we have C class information */
         this = ClassValue::generator()
     }
-    
+
     /** Holds if this class is a container(). That is, does it have a __getitem__ method. */
     predicate isContainer() { exists(this.lookup("__getitem__")) }
 
