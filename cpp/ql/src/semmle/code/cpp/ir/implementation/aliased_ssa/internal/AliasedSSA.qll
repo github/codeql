@@ -26,7 +26,7 @@ private predicate hasResultMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if type.getByteSize() > 0
+    if exists(type.getByteSize())
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -43,7 +43,7 @@ private predicate hasOperandMemoryAccess(
     type = languageType.getIRType() and
     isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if type.getByteSize() > 0
+    if exists(type.getByteSize())
     then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
     else endBitOffset = Ints::unknown()
   )
@@ -68,8 +68,12 @@ private newtype TMemoryLocation =
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TEntireAllocationMemoryLocation(IndirectParameterAllocation var, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
+  TEntireAllocationMemoryLocation(Allocation var, boolean isMayAccess) {
+    (
+      var instanceof IndirectParameterAllocation or
+      var instanceof DynamicAllocation
+    ) and
+    (isMayAccess = false or isMayAccess = true)
   } or
   TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
     isMayAccess = false or isMayAccess = true
@@ -350,6 +354,7 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   final override predicate isMayAccess() { isMayAccess = true }
 }
 
+/** A virtual variable that groups all escaped memory within a function. */
 class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
   AliasedVirtualVariable() { not isMayAccess() }
 }
@@ -425,10 +430,18 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       use instanceof EntireAllocationMemoryLocation and
       result instanceof MustExactlyOverlap
       or
-      // EntireAllocationMemoryLocation totally overlaps any location within the same virtual
-      // variable.
       not use instanceof EntireAllocationMemoryLocation and
-      result instanceof MustTotallyOverlap
+      if def.getAllocation() = use.getAllocation()
+      then
+        // EntireAllocationMemoryLocation totally overlaps any location within
+        // the same allocation.
+        result instanceof MustTotallyOverlap
+      else (
+        // There is no overlap with a location that's known to belong to a
+        // different allocation, but all other locations may partially overlap.
+        not exists(use.getAllocation()) and
+        result instanceof MayPartiallyOverlap
+      )
     )
     or
     exists(VariableMemoryLocation defVariableLocation |

@@ -105,3 +105,24 @@ void processFile()
 		fclose(f);
 	}
 }
+
+char *getenv(const char *name);
+
+#define MAX_SIZE 500
+
+int bounded(int x, int limit) {
+  int result = x;
+  if (x <= 0)
+    result = 1;
+  else if (x > limit)
+    result = limit;
+  return result;
+}
+
+void open_file_bounded () {
+	int size = size = atoi(getenv("USER"));
+	int bounded_size = bounded(size, MAX_SIZE);
+	
+	int* a = (int*)malloc(bounded_size); // GOOD
+	int* b = (int*)malloc(size); // BAD
+}

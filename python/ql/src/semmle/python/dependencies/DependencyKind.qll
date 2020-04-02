@@ -3,7 +3,6 @@ import semmle.python.dependencies.Dependencies
 /**
  * A library describing an abstract mechanism for representing dependency categories.
  */
-
 /*
  * A DependencyCategory is a unique string key used by Architect to identify different categories
  * of dependencies that might be viewed independently.
@@ -12,20 +11,17 @@ import semmle.python.dependencies.Dependencies
  * accepted by Architect.
  * </p>
  */
-abstract class DependencyKind extends string {
 
+abstract class DependencyKind extends string {
     bindingset[this]
-    DependencyKind() {
-        this = this
-    }
+    DependencyKind() { this = this }
 
     /* Tech inventory interface */
     /**
-   * Identify dependencies associated with this category.
-   * <p>
-   * The source element is the source of the dependency.
-   * </p>
-   */
+     * Identify dependencies associated with this category.
+     * <p>
+     * The source element is the source of the dependency.
+     * </p>
+     */
     abstract predicate isADependency(AstNode source, Object target);
-
 }

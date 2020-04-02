@@ -384,6 +384,8 @@ class PositionalArgumentOperand extends ArgumentOperand {
 
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
+
+  override string toString() { result = "SideEffect" }
 }
 
 /**

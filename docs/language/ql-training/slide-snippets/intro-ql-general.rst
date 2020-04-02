@@ -81,8 +81,6 @@ Find all instances!
 
 - All were fixed with a mid-flight patch.
 
-- For more detail on the collaboration between Semmle and NASA, see our case study: `Semmle at NASA: Landing Curiosity safely on Mars <https://semmle.com/case-studies/semmle-nasa-landing-curiosity-safely-mars>`__.
-
 .. note::
 
   The JPL team ran the query across the full Curiosity control software–it identified the original problem, and more than 30 other variants, of which three were in the critical Entry, Descent, and Landing module. 
@@ -107,7 +105,7 @@ Analysis overview
 
   Once the extraction finishes, all this information is collected into a single `CodeQL database <https://help.semmle.com/QL/learn-ql/database.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the CodeQL database so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
 
-  Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard CodeQL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a CodeQL database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
+  Queries are written in QL and usually depend on one or more of the `standard CodeQL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a CodeQL database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 
   Query results can be interpreted and presented in a variety of ways, including displaying them in an `IDE extension <https://lgtm.com/help/lgtm/running-queries-ide>`__ such as CodeQL for Visual Studio Code, or in a web dashboard as on `LGTM <https://lgtm.com/help/lgtm/about-lgtm>`__.
 

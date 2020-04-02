@@ -13,5 +13,4 @@ import python
 
 from Module m, int n
 where n = count(Class c | c.getEnclosingModule() = m)
-select m, n
-order by n desc
+select m, n order by n desc

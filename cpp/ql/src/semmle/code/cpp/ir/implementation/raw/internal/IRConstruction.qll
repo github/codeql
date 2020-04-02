@@ -52,7 +52,23 @@ private module Cached {
   }
 
   cached
+  predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
+    var.getFunction() = func and
+    var.hasDynamicInitialization() and
+    type = getBoolType()
+  }
+
+  cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
+
+  cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof UnmodeledDefinitionInstruction
+    or
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
+  }
 
   cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
@@ -68,14 +84,7 @@ private module Cached {
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    exists(Expr converted |
-      result = converted.(Conversion).getExpr+()
-      or
-      result = converted
-    |
-      not result instanceof Conversion and
-      converted = getInstructionConvertedResultExpression(instruction)
-    )
+    result = getInstructionConvertedResultExpression(instruction).getUnconverted()
   }
 
   cached

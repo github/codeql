@@ -15,4 +15,5 @@ where
             taint_string = tainted.getTaintKind().toString()
         )
     )
-select arg.getLocation().toString(), call.getScope().(Function).getName(), arg.toString(), taint_string
+select arg.getLocation().toString(), call.getScope().(Function).getName(), arg.toString(),
+    taint_string

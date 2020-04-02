@@ -6,7 +6,7 @@
  *       builtin
  *       object
  */
- 
+
 import python
 
 from Expr e, string name

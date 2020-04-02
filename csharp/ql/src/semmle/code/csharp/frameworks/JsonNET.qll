@@ -50,7 +50,7 @@ module JsonNET {
     ) {
       // ToString methods
       c = getAToStringMethod() and
-      preservesValue = true and
+      preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or

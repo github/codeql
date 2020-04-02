@@ -243,7 +243,7 @@ private module Cached {
      * - Types are checked using the `compatibleTypes()` relation.
      */
     cached
-    module Final {
+    private module Final {
       /**
        * Holds if `p` can flow to `node` in the same callable using only
        * value-preserving steps, not taking call contexts into account.

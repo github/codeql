@@ -115,10 +115,14 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
    * evaluating the initializer.
    */
   final predicate hasUninitializedInstruction() {
-    not exists(getInitialization()) or
-    getInitialization() instanceof TranslatedListInitialization or
-    getInitialization() instanceof TranslatedConstructorInitialization or
-    getInitialization().(TranslatedStringLiteralInitialization).zeroInitRange(_, _)
+    (
+      not exists(getInitialization()) or
+      getInitialization() instanceof TranslatedListInitialization or
+      getInitialization() instanceof TranslatedConstructorInitialization or
+      getInitialization().(TranslatedStringLiteralInitialization).zeroInitRange(_, _)
+    ) and
+    // Variables with static or thread-local storage duration are zero-initialized at program startup.
+    getIRVariable() instanceof IRAutomaticVariable
   }
 }
 

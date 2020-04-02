@@ -1,6 +1,5 @@
 import python
 import semmle.python.security.TaintTracking
-
 import python
 import semmle.python.security.SensitiveData
 import semmle.python.security.Crypto

@@ -13,7 +13,9 @@ query predicate test_ExprSignature(Expr expr, string type) {
   type = getASignatureOrElseType(expr.getType())
 }
 
-query predicate test_TypeReferenceSig(TypeReference type, SignatureKind kind, int n, CallSignatureType sig) {
+query predicate test_TypeReferenceSig(
+  TypeReference type, SignatureKind kind, int n, CallSignatureType sig
+) {
   sig = type.getSignature(kind, n)
 }
 
@@ -21,9 +23,7 @@ query predicate test_FunctionCallSig(Function f, CallSignatureType sig) {
   sig = f.getCallSignature()
 }
 
-query Type test_getRestParameterType(CallSignatureType sig) {
-  result = sig.getRestParameterType()
-}
+query Type test_getRestParameterType(CallSignatureType sig) { result = sig.getRestParameterType() }
 
 query Type test_getRestParameterArray(CallSignatureType sig) {
   result = sig.getRestParameterArrayType()

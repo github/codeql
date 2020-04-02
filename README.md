@@ -1,6 +1,6 @@
 # CodeQL
 
-This open source repository contains the standard CodeQL libraries and queries that power [LGTM](https://lgtm.com), and the other products that [Semmle](https://semmle.com) makes available to its customers worldwide.
+This open source repository contains the standard CodeQL libraries and queries that power [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com) makes available to its customers worldwide.
 
 ## How do I learn CodeQL and run queries?
 
@@ -13,4 +13,4 @@ We welcome contributions to our standard library and standard checks. Do you hav
 
 ## License
 
-The code in this repository is licensed under [Apache License 2.0](LICENSE) by [Semmle](https://semmle.com).
+The code in this repository is licensed under [Apache License 2.0](LICENSE) by [GitHub](https://github.com).

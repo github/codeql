@@ -4,6 +4,7 @@
  * @id py/class-source-links
  * @metricType reftype
  */
+
 import python
 
 from Class c

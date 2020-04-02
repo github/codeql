@@ -11,7 +11,10 @@ import semmle.code.java.dataflow.InstanceAccess
 
 cached
 private newtype TNode =
-  TExprNode(Expr e) or
+  TExprNode(Expr e) {
+    not e.getType() instanceof VoidType and
+    not e.getParent*() instanceof Annotation
+  } or
   TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
   TImplicitVarargsArray(Call c) {
     c.getCallee().isVarargs() and
