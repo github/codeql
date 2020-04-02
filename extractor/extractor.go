@@ -20,6 +20,7 @@ import (
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/trap"
+	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/tools/go/packages"
 )
 
@@ -89,7 +90,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// available since Go 1.5, but is subject to change
 
 	var maxgoroutines int
-	if maxgoroutines, err = strconv.Atoi(os.Getenv("SEMMLE_MAX_GOROUTINES")); err != nil {
+	if maxgoroutines, err = strconv.Atoi(util.Getenv(
+		"CODEQL_EXTRACTOR_GO_MAX_GOROUTINES",
+		"SEMMLE_MAX_GOROUTINES",
+	)); err != nil {
 		maxgoroutines = 32
 	} else {
 		log.Printf("Max goroutines set to %d", maxgoroutines)

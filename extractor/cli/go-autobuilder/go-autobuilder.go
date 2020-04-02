@@ -11,6 +11,8 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 func usage() {
@@ -32,6 +34,11 @@ to 'false' disables the GOPATH set-up, CODEQL_EXTRACTOR_GO_BUILD_COMMAND (or alt
 LGTM_INDEX_BUILD_COMMAND), can be set to a newline-separated list of commands to run in order to
 install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path,
 which is otherwise inferred from the SEMMLE_REPO_URL environment variable.
+
+In resource-constrained environments, the environment variable CODEQL_EXTRACTOR_GO_MAX_GOROUTINES
+(or its legacy alias SEMMLE_MAX_GOROUTINES) can be used to limit the number of parallel goroutines
+started by the extractor, which reduces CPU and memory requirements. The default value for this
+variable is 32.
 `,
 		os.Args[0])
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
@@ -276,10 +283,7 @@ func main() {
 	}
 
 	// check whether an explicit dependency installation command was provided
-	inst := os.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND")
-	if inst == "" {
-		inst = os.Getenv("LGTM_INDEX_BUILD_COMMAND")
-	}
+	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
 	var install *exec.Cmd
 	if inst == "" {
 		// if there is a build file, run the corresponding build tool
