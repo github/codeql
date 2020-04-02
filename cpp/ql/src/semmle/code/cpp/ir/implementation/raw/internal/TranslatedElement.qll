@@ -443,8 +443,11 @@ newtype TTranslatedElement =
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
   TTranslatedCallSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
-    expr instanceof ConstructorCall
+    not expr instanceof AllocationExpr and
+    (
+      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+      expr instanceof ConstructorCall
+    )
   } or
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
   TTranslatedAllocationSideEffects(AllocationExpr expr) or
