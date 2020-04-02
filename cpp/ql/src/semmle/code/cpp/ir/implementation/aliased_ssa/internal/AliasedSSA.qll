@@ -354,6 +354,7 @@ class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
   final override predicate isMayAccess() { isMayAccess = true }
 }
 
+/** A virtual variable that groups all escaped memory within a function. */
 class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
   AliasedVirtualVariable() { not isMayAccess() }
 }
@@ -429,10 +430,18 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       use instanceof EntireAllocationMemoryLocation and
       result instanceof MustExactlyOverlap
       or
-      // EntireAllocationMemoryLocation totally overlaps any location within the same virtual
-      // variable.
       not use instanceof EntireAllocationMemoryLocation and
-      result instanceof MustTotallyOverlap
+      if def.getAllocation() = use.getAllocation()
+      then
+        // EntireAllocationMemoryLocation totally overlaps any location within
+        // the same allocation.
+        result instanceof MustTotallyOverlap
+      else (
+        // There is no overlap with a location that's known to belong to a
+        // different allocation, but all other locations may partially overlap.
+        not exists(use.getAllocation()) and
+        result instanceof MayPartiallyOverlap
+      )
     )
     or
     exists(VariableMemoryLocation defVariableLocation |

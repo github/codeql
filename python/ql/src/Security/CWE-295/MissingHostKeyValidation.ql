@@ -24,10 +24,8 @@ private ClassValue unsafe_paramiko_policy(string name) {
 
 from CallNode call, ControlFlowNode arg, string name
 where
-    call = theParamikoSSHClientClass()
-                .lookup("set_missing_host_key_policy")
-                .(FunctionValue)
-                .getACall() and
+    call =
+        theParamikoSSHClientClass().lookup("set_missing_host_key_policy").(FunctionValue).getACall() and
     arg = call.getAnArg() and
     (
         arg.pointsTo(unsafe_paramiko_policy(name)) or

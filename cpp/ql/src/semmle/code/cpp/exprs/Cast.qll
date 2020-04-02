@@ -84,7 +84,7 @@ class CStyleCast extends Cast, @c_style_cast {
 
   override string getCanonicalQLClass() { result = "CStyleCast" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -103,7 +103,7 @@ class StaticCast extends Cast, @static_cast {
 
   override string getCanonicalQLClass() { result = "StaticCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 /**
@@ -121,7 +121,7 @@ class ConstCast extends Cast, @const_cast {
 
   override string getCanonicalQLClass() { result = "ConstCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 /**
@@ -139,7 +139,7 @@ class ReinterpretCast extends Cast, @reinterpret_cast {
 
   override string getCanonicalQLClass() { result = "ReinterpretCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 private predicate isArithmeticOrEnum(Type type) {
@@ -608,7 +608,7 @@ class PrvalueAdjustmentConversion extends Cast {
 class DynamicCast extends Cast, @dynamic_cast {
   override string toString() { result = "dynamic_cast<" + this.getType().getName() + ">..." }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 
   override string getCanonicalQLClass() { result = "DynamicCast" }
 
@@ -631,7 +631,7 @@ class UuidofOperator extends Expr, @uuidof {
     else result = "__uuidof(0)"
   }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /** Gets the contained type. */
   Type getTypeOperand() { uuidof_bind(underlyingElement(this), unresolveElement(result)) }
@@ -669,7 +669,7 @@ class TypeidOperator extends Expr, @type_id {
 
   override string toString() { result = "typeid ..." }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 
   override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
 
@@ -700,7 +700,7 @@ class SizeofPackOperator extends Expr, @sizeof_pack {
  * A C/C++ sizeof expression.
  */
 abstract class SizeofOperator extends Expr, @runtime_sizeof {
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -763,7 +763,7 @@ class SizeofTypeOperator extends SizeofOperator {
  * A C++11 `alignof` expression.
  */
 abstract class AlignofOperator extends Expr, @runtime_alignof {
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**

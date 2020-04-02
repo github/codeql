@@ -61,6 +61,11 @@ class MemoryLocation extends TMemoryLocation {
 
 class VirtualVariable extends MemoryLocation { }
 
+/** A virtual variable that groups all escaped memory within a function. */
+class AliasedVirtualVariable extends VirtualVariable {
+  AliasedVirtualVariable() { none() }
+}
+
 Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   def = use and result instanceof MustExactlyOverlap
   or

@@ -1,15 +1,40 @@
 edges
-| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:136 | ... + ... |
-| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:132 | ... + ... |
-| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:136 | ... + ... |
-| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:132 | ... + ... |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:18:33:18:33 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:21:29:21:29 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:30:20:30:20 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:36:30:36:30 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:42:21:42:21 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:48:22:48:22 | access to local variable s |
+| XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:54:21:54:21 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:18:33:18:33 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:21:29:21:29 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:30:20:30:20 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:36:30:36:30 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:42:21:42:21 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:48:22:48:22 | access to local variable s |
+| XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:54:21:54:21 | access to local variable s |
 nodes
 | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| XPathInjection.cs:16:33:16:136 | ... + ... | semmle.label | ... + ... |
-| XPathInjection.cs:19:29:19:132 | ... + ... | semmle.label | ... + ... |
+| XPathInjection.cs:18:33:18:33 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:21:29:21:29 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:30:20:30:20 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:36:30:36:30 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:42:21:42:21 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:48:22:48:22 | access to local variable s | semmle.label | access to local variable s |
+| XPathInjection.cs:54:21:54:21 | access to local variable s | semmle.label | access to local variable s |
 #select
-| XPathInjection.cs:16:33:16:136 | ... + ... | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:136 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
-| XPathInjection.cs:16:33:16:136 | ... + ... | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:136 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
-| XPathInjection.cs:19:29:19:132 | ... + ... | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:132 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
-| XPathInjection.cs:19:29:19:132 | ... + ... | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:132 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:18:33:18:33 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:18:33:18:33 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:18:33:18:33 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:18:33:18:33 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:21:29:21:29 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:21:29:21:29 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:21:29:21:29 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:21:29:21:29 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:30:20:30:20 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:30:20:30:20 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:30:20:30:20 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:30:20:30:20 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:36:30:36:30 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:36:30:36:30 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:36:30:36:30 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:36:30:36:30 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:42:21:42:21 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:42:21:42:21 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:42:21:42:21 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:42:21:42:21 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:48:22:48:22 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:48:22:48:22 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:48:22:48:22 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:48:22:48:22 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:54:21:54:21 | access to local variable s | XPathInjection.cs:12:27:12:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:54:21:54:21 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
+| XPathInjection.cs:54:21:54:21 | access to local variable s | XPathInjection.cs:13:27:13:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:54:21:54:21 | access to local variable s | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |

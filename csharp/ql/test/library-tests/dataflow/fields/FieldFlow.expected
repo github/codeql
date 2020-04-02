@@ -39,11 +39,7 @@ edges
 | A.cs:105:23:105:23 | access to local variable b : B | A.cs:105:17:105:29 | object creation of type D [b] : B |
 | A.cs:106:14:106:14 | access to local variable d [b] : B | A.cs:106:14:106:16 | access to field b |
 | A.cs:107:14:107:14 | access to local variable d [b, c] | A.cs:107:14:107:16 | access to field b [c] : C |
-| A.cs:107:14:107:14 | access to local variable d [b, c] | A.cs:107:14:107:16 | access to field b [c] : C1 |
-| A.cs:107:14:107:14 | access to local variable d [b, c] | A.cs:107:14:107:16 | access to field b [c] : C2 |
 | A.cs:107:14:107:16 | access to field b [c] : C | A.cs:107:14:107:18 | access to field c |
-| A.cs:107:14:107:16 | access to field b [c] : C1 | A.cs:107:14:107:18 | access to field c |
-| A.cs:107:14:107:16 | access to field b [c] : C2 | A.cs:107:14:107:18 | access to field c |
 | A.cs:108:14:108:14 | access to local variable b [c] : C | A.cs:108:14:108:16 | access to field c |
 | A.cs:113:17:113:23 | object creation of type B : B | A.cs:114:29:114:29 | access to local variable b : B |
 | A.cs:114:18:114:54 | object creation of type MyList [head] : B | A.cs:115:35:115:36 | access to local variable l1 [head] : B |
@@ -254,8 +250,6 @@ nodes
 | A.cs:106:14:106:16 | access to field b | semmle.label | access to field b |
 | A.cs:107:14:107:14 | access to local variable d [b, c] | semmle.label | access to local variable d [b, c] |
 | A.cs:107:14:107:16 | access to field b [c] : C | semmle.label | access to field b [c] : C |
-| A.cs:107:14:107:16 | access to field b [c] : C1 | semmle.label | access to field b [c] : C1 |
-| A.cs:107:14:107:16 | access to field b [c] : C2 | semmle.label | access to field b [c] : C2 |
 | A.cs:107:14:107:18 | access to field c | semmle.label | access to field c |
 | A.cs:108:14:108:14 | access to local variable b [c] : C | semmle.label | access to local variable b [c] : C |
 | A.cs:108:14:108:16 | access to field c | semmle.label | access to field c |

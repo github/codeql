@@ -150,6 +150,9 @@ public class TypeScriptParser {
   /** If non-zero, we use this instead of relying on the corresponding environment variable. */
   private int typescriptRam = 0;
 
+  /** Metadata requested immediately after starting the TypeScript parser. */
+  private TypeScriptParserMetadata metadata;
+
   /** Sets the amount of RAM to allocate to the TypeScript compiler.s */
   public void setTypescriptRam(int megabytes) {
     this.typescriptRam = megabytes;
@@ -297,6 +300,7 @@ public class TypeScriptParser {
       InputStream is = parserWrapperProcess.getInputStream();
       InputStreamReader isr = new InputStreamReader(is, "UTF-8");
       fromParserWrapper = new BufferedReader(isr);
+      this.loadMetadata();
     } catch (IOException e) {
       throw new CatastrophicError(
           "Could not start TypeScript parser wrapper " + "(command: ." + parserWrapperCommand + ")",
@@ -386,6 +390,17 @@ public class TypeScriptParser {
   }
 
   /**
+   * Requests metadata from the TypeScript process. See {@link TypeScriptParserMetadata}.
+   */
+  private void loadMetadata() {
+    JsonObject request = new JsonObject();
+    request.add("command", new JsonPrimitive("get-metadata"));
+    JsonObject response = talkToParserWrapper(request);
+    checkResponseType(response, "metadata");
+    this.metadata = new TypeScriptParserMetadata(response);
+  }
+
+  /**
    * Returns the AST for a given source file.
    *
    * <p>Type information will be available if the file is part of a currently open project, although
@@ -402,11 +417,9 @@ public class TypeScriptParser {
     metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     try {
       checkResponseType(response, "ast");
-      JsonObject nodeFlags = response.get("nodeFlags").getAsJsonObject();
-      JsonObject syntaxKinds = response.get("syntaxKinds").getAsJsonObject();
       JsonObject ast = response.get("ast").getAsJsonObject();
       metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
-      Result converted = new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      Result converted = new TypeScriptASTConverter(metadata).convertAST(ast, source);
       metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
       return converted;
     } catch (IllegalStateException e) {

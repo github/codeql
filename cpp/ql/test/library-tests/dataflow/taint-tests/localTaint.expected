@@ -512,3 +512,20 @@
 | taint.cpp:444:7:444:7 | d [post update] | taint.cpp:447:7:447:7 | d |  |
 | taint.cpp:445:2:445:2 | d [post update] | taint.cpp:446:7:446:7 | d |  |
 | taint.cpp:445:2:445:2 | d [post update] | taint.cpp:447:7:447:7 | d |  |
+| taint.cpp:452:16:452:16 | a | taint.cpp:454:10:454:10 | a |  |
+| taint.cpp:452:24:452:24 | b | taint.cpp:455:6:455:6 | b |  |
+| taint.cpp:454:10:454:10 | a | taint.cpp:456:6:456:6 | c |  |
+| taint.cpp:455:6:455:6 | b | taint.cpp:452:16:452:16 | a |  |
+| taint.cpp:455:6:455:6 | b | taint.cpp:455:2:455:6 | ... = ... |  |
+| taint.cpp:456:6:456:6 | c | taint.cpp:452:24:452:24 | b |  |
+| taint.cpp:456:6:456:6 | c | taint.cpp:456:2:456:6 | ... = ... |  |
+| taint.cpp:462:6:462:11 | call to source | taint.cpp:462:2:462:13 | ... = ... |  |
+| taint.cpp:462:6:462:11 | call to source | taint.cpp:465:7:465:7 | x |  |
+| taint.cpp:462:6:462:11 | call to source | taint.cpp:468:7:468:7 | x |  |
+| taint.cpp:462:6:462:11 | call to source | taint.cpp:470:7:470:7 | x |  |
+| taint.cpp:463:6:463:6 | 0 | taint.cpp:463:2:463:6 | ... = ... |  |
+| taint.cpp:463:6:463:6 | 0 | taint.cpp:466:7:466:7 | y |  |
+| taint.cpp:463:6:463:6 | 0 | taint.cpp:468:10:468:10 | y |  |
+| taint.cpp:463:6:463:6 | 0 | taint.cpp:471:7:471:7 | y |  |
+| taint.cpp:468:7:468:7 | ref arg x | taint.cpp:470:7:470:7 | x |  |
+| taint.cpp:468:10:468:10 | ref arg y | taint.cpp:471:7:471:7 | y |  |

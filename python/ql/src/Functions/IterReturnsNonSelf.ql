@@ -16,18 +16,17 @@ Function iter_method(ClassValue t) {
 		result = ((FunctionValue)t.lookup("__iter__")).getScope()
 }
 
-predicate is_self(Name value, Function f) {
-	 value.getVariable() = ((Name)f.getArg(0)).getVariable()
-}
+predicate is_self(Name value, Function f) { value.getVariable() = f.getArg(0).(Name).getVariable() }
 
 predicate returns_non_self(Function f) {
-		exists(f.getFallthroughNode())
-		or
-		exists(Return r | r.getScope() = f and not is_self(r.getValue(), f))
-		or
-		exists(Return r | r.getScope() = f and not exists(r.getValue()))
+    exists(f.getFallthroughNode())
+    or
+    exists(Return r | r.getScope() = f and not is_self(r.getValue(), f))
+    or
+    exists(Return r | r.getScope() = f and not exists(r.getValue()))
 }
 
 from ClassValue t, Function iter
 where t.isIterator() and iter = iter_method(t) and returns_non_self(iter)
-select t, "Class " + t.getName() + " is an iterator but its $@ method does not return 'self'.", iter, iter.getName()
+select t, "Class " + t.getName() + " is an iterator but its $@ method does not return 'self'.",
+    iter, iter.getName()

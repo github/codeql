@@ -16,6 +16,8 @@ class IRConfiguration extends TIRConfiguration {
    * Holds if IR should be created for function `func`. By default, holds for all functions.
    */
   predicate shouldCreateIRForFunction(Language::Function func) { any() }
+
+  predicate shouldEvaluateDebugStringsForFunction(Language::Function func) { any() }
 }
 
 private newtype TIREscapeAnalysisConfiguration = MkIREscapeAnalysisConfiguration()

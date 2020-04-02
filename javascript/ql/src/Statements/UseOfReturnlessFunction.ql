@@ -72,6 +72,9 @@ predicate benignContext(Expr e) {
   or
   // arguments to Promise.resolve (and promise library variants) are benign.
   e = any(PromiseCreationCall promise).getValue().asExpr()
+  or
+  // arguments to other (unknown) promise creations.
+  e = any(DataFlow::CallNode call | call.getCalleeName() = "resolve").getAnArgument().asExpr()
 }
 
 predicate oneshotClosure(DataFlow::CallNode call) {
@@ -151,56 +154,6 @@ predicate voidArrayCallback(DataFlow::CallNode call, Function func) {
 
 predicate hasNonVoidReturnType(Function f) {
   exists(TypeAnnotation type | type = f.getReturnTypeAnnotation() | not type.isVoid())
-}
-
-/**
- * Provides classes for working with various Deferred implementations.
- * It is a heuristic. The heuristic assume that a class is a promise defintion
- * if the class is called "Deferred" and the method `resolve` is called on an instance.
- *
- * Removes some false positives in the js/use-of-returnless-function query.
- */
-module Deferred {
-  /**
-   * An instance of a `Deferred` class.
-   * For example the result from `new Deferred()` or `new $.Deferred()`.
-   */
-  class DeferredInstance extends DataFlow::NewNode {
-    // Describes both `new Deferred()`, `new $.Deferred` and other variants.
-    DeferredInstance() { this.getCalleeName() = "Deferred" }
-
-    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-      t.start() and
-      result = this
-      or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-    }
-
-    DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
-  }
-
-  /**
-   * A promise object created by a Deferred constructor
-   */
-  private class DeferredPromiseDefinition extends PromiseDefinition, DeferredInstance {
-    DeferredPromiseDefinition() {
-      // hardening of the "Deferred" heuristic: a method call to `resolve`.
-      exists(ref().getAMethodCall("resolve"))
-    }
-
-    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
-  }
-
-  /**
-   * A resolved promise created by a `new Deferred().resolve()` call.
-   */
-  class ResolvedDeferredPromiseDefinition extends PromiseCreationCall {
-    ResolvedDeferredPromiseDefinition() {
-      this = any(DeferredPromiseDefinition def).ref().getAMethodCall("resolve")
-    }
-
-    override DataFlow::Node getValue() { result = getArgument(0) }
-  }
 }
 
 from DataFlow::CallNode call, Function func, string name, string msg

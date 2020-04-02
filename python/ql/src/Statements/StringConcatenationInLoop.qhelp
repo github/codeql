@@ -3,13 +3,13 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>If you concatenate strings in a loop then the time taken by the loop is quadratic in the number 
+<p>If you concatenate strings in a loop then the time taken by the loop is quadratic in the number
 of iterations.</p>
 
 </overview>
 <recommendation>
 
-<p>Initialize an empty list before the start of the list.
+<p>Initialize an empty list before the start of the loop.
 During the loop append the substrings to the list.
 At the end of the loop, convert the list to a string by using <code>''.join(list)</code>.</p>
 
