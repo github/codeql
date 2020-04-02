@@ -57,7 +57,10 @@ namespace Semmle.Autobuild
                 var command = new CommandBuilder(builder.Actions);
 
                 if (vsTools != null)
+                {
                     command.CallBatFile(vsTools.Path);
+                    command.CallSet();
+                }
 
                 builder.MaybeIndex(command, MsBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);

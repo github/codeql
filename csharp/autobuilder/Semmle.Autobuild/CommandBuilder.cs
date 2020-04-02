@@ -59,6 +59,13 @@ namespace Semmle.Autobuild
             return this;
         }
 
+        public CommandBuilder CallSet()
+        {
+            NextCommand();
+            arguments.Append(" set Platform=&& set");
+            return this;
+        }
+
         /// <summary>
         /// Perform odasa index on a given command or BAT file.
         /// </summary>
