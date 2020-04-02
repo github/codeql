@@ -154,7 +154,8 @@ private string getAShellCommand() {
   result = "shpp" or
   result = "xiki" or
   result = "xonsh" or
-  result = "yash"
+  result = "yash" or
+  result = "env"
 }
 
 /**
