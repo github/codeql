@@ -1,15 +1,14 @@
-import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * The `std::basic_string` constructor(s).
  */
-class StringConstructor extends DataFlowFunction {
+class StringConstructor extends TaintFunction {
   StringConstructor() {
     this.hasQualifiedName("std", "basic_string", "basic_string")
   }
 
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from any constructor argument to return value
     input.isInParameter(_) and
     output.isOutReturnValue()
@@ -19,12 +18,12 @@ class StringConstructor extends DataFlowFunction {
 /**
  * The standard function `std::string.c_str`.
  */
-class StringCStr extends DataFlowFunction {
+class StringCStr extends TaintFunction {
   StringCStr() {
     this.hasQualifiedName("std", "basic_string", "c_str")
   }
 
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isInQualifier() and
     output.isOutReturnValue()
