@@ -15,17 +15,18 @@
  */
 
 import python
+import semmle.python.objects.Callables
 
 predicate meaningful_return_value(Expr val) {
     val instanceof Name
     or
     val instanceof BooleanLiteral
     or
-    exists(FunctionObject callee |
+    exists(FunctionValue callee |
         val = callee.getACall().getNode() and returns_meaningful_value(callee)
     )
     or
-    not exists(FunctionObject callee | val = callee.getACall().getNode()) and not val instanceof Name
+    not exists(FunctionValue callee | val = callee.getACall().getNode()) and not val instanceof Name
 }
 
 /* Value is used before returning, and thus its value is not lost if ignored */
@@ -35,10 +36,10 @@ predicate used_value(Expr val) {
     )
 }
 
-predicate returns_meaningful_value(FunctionObject f) {
-    not exists(f.getFunction().getFallthroughNode()) and
+predicate returns_meaningful_value(FunctionValue f) {
+    not exists(f.getScope().getFallthroughNode()) and
     (
-        exists(Return ret, Expr val | ret.getScope() = f.getFunction() and val = ret.getValue() |
+        exists(Return ret, Expr val | ret.getScope() = f.getScope() and val = ret.getValue() |
             meaningful_return_value(val) and
             not used_value(val)
         )
@@ -48,7 +49,9 @@ predicate returns_meaningful_value(FunctionObject f) {
          * Ignore __import__ as it is often called purely for side effects
          */
 
-        f.isC() and f.getAnInferredReturnType() != theNoneType() and not f.getName() = "__import__"
+        f.isBuiltin() and
+        f.getAnInferredReturnType() != ClassValue::nonetype() and
+        not f.getName() = "__import__"
     )
 }
 
@@ -61,7 +64,7 @@ predicate wrapped_in_try_except(ExprStmt call) {
     )
 }
 
-from ExprStmt call, FunctionObject callee, float percentage_used, int total
+from ExprStmt call, FunctionValue callee, float percentage_used, int total
 where
     call.getValue() = callee.getACall().getNode() and
     returns_meaningful_value(callee) and

@@ -581,6 +581,13 @@ abstract class FunctionValue extends CallableValue {
             exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) | not origin instanceof Lambda)
         )
     }
+
+    /** Gets a class that this function may return */
+    ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
+        or
+        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
+    }
 }
 
 /** Class representing Python functions */

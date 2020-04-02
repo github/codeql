@@ -99,3 +99,16 @@ void test_gets()
 
 	pointer = gets(buffer);
 }
+
+const char *alias_global_new;
+
+void newBuffer() {
+    const char *userName = getenv("USER_NAME");
+	char *alias = new char[4096];
+	char *copy = new char[4096];
+	strcpy(copy, userName);
+	alias_global_new = alias; // to force a Chi node on all aliased memory
+	if (!strcmp(copy, "admin")) { // copy should be tainted
+		isAdmin = true;
+	}
+}
