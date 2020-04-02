@@ -57,7 +57,14 @@ namespace Semmle.Autobuild
                 var command = new CommandBuilder(builder.Actions);
 
                 if (vsTools != null)
+                {
                     command.CallBatFile(vsTools.Path);
+                    // `vcvarsall.bat` sets a default Platform environment variable,
+                    // which may not be compatible with the supported platforms of the
+                    // given project/solution. Unsetting it means that the default platform
+                    // of the project/solution is used instead.
+                    command.RunCommand("set Platform=&& type NUL", quoteExe: false);
+                }
 
                 builder.MaybeIndex(command, MsBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
