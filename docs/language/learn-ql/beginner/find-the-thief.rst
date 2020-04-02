@@ -289,8 +289,8 @@ Have you found the thief?
 
 ➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1505744186085/>`__
 
-What next?
-----------
+Further reading
+---------------
 
 -  Help the villagers track down another criminal in the :doc:`next tutorial <catch-the-fire-starter>`.
 -  Find out more about the concepts you discovered in this tutorial in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.

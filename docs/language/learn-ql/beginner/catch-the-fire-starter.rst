@@ -144,8 +144,8 @@ You can now write a query to select the bald southerners who are allowed into th
 
 You have found the two fire starters! They are arrested and the villagers are once again impressed with your work.
 
-What next?
-----------
+Further reading
+---------------
 
 -  Find out who will be the new ruler of the village in the :doc:`next tutorial <crown-the-rightful-heir>`.
 -  Learn more about predicates and classes in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.

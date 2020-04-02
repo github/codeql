@@ -158,8 +158,8 @@ You could also try writing more of your own QL queries to find interesting facts
 -  Do all villagers live in the same region of the village as their parents?
 -  Find out whether there are any time travelers in the village! (Hint: Look for "impossible" family relations.)
 
-What next?
-----------
+Further reading
+---------------
 
 -  Learn more about recursion in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Put your QL skills to the test and solve the :doc:`River crossing puzzle <cross-the-river>`.
