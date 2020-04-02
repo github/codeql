@@ -1,7 +1,7 @@
 Introduction to QL 
 ==================
 
-Work through some simple exercises to learn about the basics of QL and CodeQL.
+Work through some simple exercises and examples to learn about the basics of QL and CodeQL.
 
 Basic syntax
 ------------
@@ -11,6 +11,9 @@ The basic syntax of QL will look familiar to anyone who has used SQL, but it is 
 QL is a logic programming language, so it is built up of logical formulas. QL uses common logical connectives (such as ``and``, ``or``, and ``not``), quantifiers (such as ``forall`` and ``exists``), and other important logical concepts such as predicates.
 
 QL also supports recursion and aggregates. This allows you to write complex recursive queries using simple QL syntax and directly use aggregates such as ``count``, ``sum``, and ``average``.
+
+Running a query
+---------------
 
 You can try out the following examples and exercises using `CodeQL for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__, or you can run them in the `query console on LGTM.com <https://lgtm.com/query>`__. Before you can run a query on LGTM.com, you need to select a language and project to query (for these logic examples, any language and project will do).
 
@@ -45,7 +48,7 @@ Note that ``int`` specifies that the **type** of ``x`` and ``y`` is 'integer'. T
 Simple exercises
 ----------------
 
-You can try to write simple queries using the some of the basic functions that are available for the ``int``, ``date``, ``float``, ``boolean`` and ``string`` types. To apply a function, append it to the argument. For example, ``1.toString()`` converts the value ``1`` to a string. Notice that as you start typing a function, a pop-up is displayed making it easy to select the function that you want. Also note that you can apply multiple functions in succession. For example, ``100.log().sqrt()`` first takes the natural logarithm of 100 and then computes the square root of the result.
+You can write simple queries using the some of the basic functions that are available for the ``int``, ``date``, ``float``, ``boolean`` and ``string`` types. To apply a function, append it to the argument. For example, ``1.toString()`` converts the value ``1`` to a string. Notice that as you start typing a function, a pop-up is displayed making it easy to select the function that you want. Also note that you can apply multiple functions in succession. For example, ``100.log().sqrt()`` first takes the natural logarithm of 100 and then computes the square root of the result.
 
 Exercise 1
 ~~~~~~~~~~
@@ -113,7 +116,8 @@ To simplify the query, we can introduce a class ``SmallInt`` representing the in
 Example CodeQL queries
 ----------------------
 
-The previous examples used the primitive types built in to QL. Although we chose a project to query, they did not use the project-specific database. The following example queries *do* use these databases and give you an idea of how CodeQL is used to analyze projects.
+The previous examples used the primitive types built in to QL. Although we chose a project to query, we didn't use the information in that project's database.
+The following example queries *do* use these databases and give you an idea of how to use CodeQL to analyze projects.
 
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
