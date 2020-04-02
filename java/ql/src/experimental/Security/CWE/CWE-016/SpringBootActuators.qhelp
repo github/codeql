@@ -32,5 +32,8 @@ the actuator endpoints.</p>
 Spring Boot documentation:
 <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html">Actuators</a>.
 </li>
+<li>
+<a href="https://www.veracode.com/blog/research/exploiting-spring-boot-actuators">Exploiting Spring Boot Actuators</a>
+</li>
 </references>
 </qhelp>

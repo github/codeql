@@ -1,7 +1,7 @@
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-public class ActuatorSecurityConfig {
+public class SpringBootActuators {
   protected void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests(requests -> requests.anyRequest().permitAll());
   }
