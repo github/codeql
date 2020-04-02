@@ -415,7 +415,7 @@ class ClassValue extends Value {
      * ```
      * `this.lookup("f")` is equivalent to `C.__dict__['f']`, which is the class-method
      *  whereas
-     * `this.attr("f") is equivalent to `C.f`, which is a bound-method.
+     * `this.attr("f")` is equivalent to `C.f`, which is a bound-method.
      */
     Value lookup(string name) { this.(ClassObjectInternal).lookup(name, result, _) }
 
@@ -587,6 +587,13 @@ abstract class FunctionValue extends CallableValue {
 
     /** Gets a class that may be raised by this function */
     abstract ClassValue getARaisedType();
+
+    /** Gets a class that this function may return */
+    ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
+        or
+        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
+    }
 }
 
 /** Class representing Python functions */
