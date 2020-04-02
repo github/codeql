@@ -18,14 +18,10 @@ class DangerousScheme extends string {
   DangerousScheme() { this = "data:" or this = "javascript:" or this = "vbscript:" }
 
   /** Gets the name of this scheme without the `:`. */
-  string getWithoutColon() {
-    this = result + ":"
-  }
+  string getWithoutColon() { this = result + ":" }
 
   /** Gets the name of this scheme, with or without the `:`. */
-  string getWithOrWithoutColon() {
-    result = this or result = getWithoutColon()
-  }
+  string getWithOrWithoutColon() { result = this or result = getWithoutColon() }
 }
 
 /** Returns a node that refers to the scheme of `url`. */
