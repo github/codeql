@@ -565,17 +565,40 @@ public class AutoBuild {
           extractTypeScript(
               defaultExtractor, filesToExtract, tsconfigFiles, dependencyInstallationResult);
 
+    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
+
     // extract remaining files
     for (Path f : filesToExtract) {
-      if (extractedFiles.add(f)) {
-        FileExtractor extractor = defaultExtractor;
-        if (!fileTypes.isEmpty()) {
-          String extension = FileUtil.extension(f);
-          if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
-        }
-        extract(extractor, f, null);
+      if (extractedFiles.contains(f))
+        continue;
+      if (hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)) {
+        continue;
+      }
+      extractedFiles.add(f);
+      FileExtractor extractor = defaultExtractor;
+      if (!fileTypes.isEmpty()) {
+        String extension = FileUtil.extension(f);
+        if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
+      }
+      extract(extractor, f, null);
+    }
+  }
+
+  /**
+   * Returns true if the given path is likely the output of compiling a TypeScript file
+   * which we have already extracted.
+   */
+  private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
+    String name = path.getFileName().toString();
+    if (!name.endsWith(".js"))
+      return false;
+    String stem = name.substring(0, name.length() - ".js".length());
+    for (String ext : FileType.TYPESCRIPT.getExtensions()) {
+      if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
+        return true;
       }
     }
+    return false;
   }
 
   /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
@@ -613,7 +636,7 @@ public class AutoBuild {
     }
     return null;
   }
-  
+
   /**
    * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any TypeScript or JavaScript extension,
    * or <code>null</code> if no such file exists.
@@ -623,7 +646,7 @@ public class AutoBuild {
     if (resolved != null) return resolved;
     return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
   }
-  
+
   /**
    * Gets a child of a JSON object as a string, or <code>null</code>.
    */
@@ -658,7 +681,7 @@ public class AutoBuild {
     if (!verifyYarnInstallation()) {
       return DependencyInstallationResult.empty;
     }
-    
+
     final Path sourceRoot = Paths.get(".").toAbsolutePath();
     final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
 
@@ -746,7 +769,7 @@ public class AutoBuild {
     for (Path file : packageJsonFiles.keySet()) {
       Path relativePath = sourceRoot.relativize(file);
       Path virtualFile = virtualSourceRoot.resolve(relativePath);
-      
+
       try {
         Files.createDirectories(virtualFile.getParent());
         try (Writer writer = Files.newBufferedWriter(virtualFile)) {
@@ -794,7 +817,7 @@ public class AutoBuild {
    */
   private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
     Path packageDir = packageJsonFile.getParent();
-    
+
     // Try <package_dir>/index.ts.
     Path resolved = tryResolveWithExtensions(packageDir, "index", extensions);
     if (resolved != null) {

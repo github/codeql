@@ -26,6 +26,9 @@
 | Taint [externally controlled string] | test.py:29 | test.py:29:9:29:25 | Subscript |  |  -->  | Taint [externally controlled string] | test.py:32 | test.py:32:16:32:16 | c |  |
 | Taint [externally controlled string] | test.py:30 | test.py:30:9:30:20 | tainted_list |  |  -->  | Taint [externally controlled string] | test.py:30 | test.py:30:9:30:27 | Attribute() |  |
 | Taint [externally controlled string] | test.py:30 | test.py:30:9:30:27 | Attribute() |  |  -->  | Taint [externally controlled string] | test.py:32 | test.py:32:19:32:19 | d |  |
+| Taint [externally controlled string] | test.py:31 | test.py:31:15:31:26 | tainted_list |  |  -->  | Taint externally controlled string | test.py:32 | test.py:32:22:32:22 | e |  |
+| Taint [externally controlled string] | test.py:31 | test.py:31:15:31:26 | tainted_list |  |  -->  | Taint externally controlled string | test.py:32 | test.py:32:25:32:25 | f |  |
+| Taint [externally controlled string] | test.py:31 | test.py:31:15:31:26 | tainted_list |  |  -->  | Taint externally controlled string | test.py:32 | test.py:32:28:32:28 | g |  |
 | Taint [externally controlled string] | test.py:33 | test.py:33:14:33:25 | tainted_list |  |  -->  | Taint externally controlled string | test.py:33 | test.py:33:5:33:26 | For |  |
 | Taint [externally controlled string] | test.py:35 | test.py:35:14:35:35 | reversed() |  |  -->  | Taint externally controlled string | test.py:35 | test.py:35:5:35:36 | For |  |
 | Taint [externally controlled string] | test.py:35 | test.py:35:23:35:34 | tainted_list |  |  -->  | Taint [externally controlled string] | test.py:35 | test.py:35:14:35:35 | reversed() |  |

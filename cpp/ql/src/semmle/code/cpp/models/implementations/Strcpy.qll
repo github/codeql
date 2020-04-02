@@ -1,11 +1,12 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
-class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
+class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction {
   StrcpyFunction() {
     this.hasName("strcpy") or
     this.hasName("_mbscpy") or
@@ -73,5 +74,24 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       output.isParameterDeref(0) or
       output.isReturnValueDeref()
     )
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = 0 and
+    buffer = true and
+    mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 1 and
+    buffer = true
+  }
+
+  override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
+    hasArrayWithVariableSize(i, result)
   }
 }

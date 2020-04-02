@@ -4,7 +4,6 @@ import semmle.python.pointsto.PointsTo
 import semmle.python.objects.ObjectInternal
 
 /* This test should return _no_ results. */
-
 predicate relevant_node(ControlFlowNode n) {
     exists(CallNode c |
         c.getFunction().(NameNode).getId() = "check" and
@@ -14,8 +13,8 @@ predicate relevant_node(ControlFlowNode n) {
     exists(Comment c, string filepath, int bl |
         n.getNode().getScope().getLocation().hasLocationInfo(filepath, bl, _, _, _) and
         c.getLocation().hasLocationInfo(filepath, bl, _, _, _) and
-        c.getText().matches("%check")
-        and not n.(NameNode).isStore()
+        c.getText().matches("%check") and
+        not n.(NameNode).isStore()
     )
 }
 

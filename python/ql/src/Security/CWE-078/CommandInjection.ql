@@ -28,9 +28,7 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
         source instanceof HttpRequestTaintSource
     }
 
-    override predicate isSink(TaintTracking::Sink sink) {
-        sink instanceof CommandSink
-    }
+    override predicate isSink(TaintTracking::Sink sink) { sink instanceof CommandSink }
 
     override predicate isExtension(TaintTracking::Extension extension) {
         extension instanceof FirstElementFlow

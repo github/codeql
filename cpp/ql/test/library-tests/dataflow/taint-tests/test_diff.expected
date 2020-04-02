@@ -42,3 +42,4 @@
 | taint.cpp:439:10:439:18 | taint.cpp:437:15:437:20 | AST only |
 | taint.cpp:446:7:446:7 | taint.cpp:445:14:445:28 | AST only |
 | taint.cpp:447:9:447:17 | taint.cpp:445:14:445:28 | AST only |
+| taint.cpp:471:7:471:7 | taint.cpp:462:6:462:11 | AST only |
