@@ -133,7 +133,7 @@ private module CollectionDataFlow {
     SetAdd() { this.getMethodName() = "add" }
 
     override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
-      obj = this.getReceiver().getALocalSource() and
+      this = obj.(DataFlow::SourceNode).getAMethodCall() and
       element = this.getArgument(0) and
       prop = setElement()
     }
@@ -228,7 +228,7 @@ private module CollectionDataFlow {
     MapSet() { this.getMethodName() = "set" }
 
     override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
-      obj = this.getReceiver().getALocalSource() and
+      this = obj.(DataFlow::SourceNode).getAMethodCall() and
       element = this.getArgument(1) and
       prop = getAPseudoProperty()
     }
