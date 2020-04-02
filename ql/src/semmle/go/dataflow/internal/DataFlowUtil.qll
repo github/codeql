@@ -711,7 +711,7 @@ class MethodReadNode extends ReadNode {
 }
 
 /**
- * An IR instruction performing a relational comparison using `<`, `<=`, `>` or `>=`.
+ * A data-flow node performing a relational comparison using `<`, `<=`, `>` or `>=`.
  */
 class RelationalComparisonNode extends BinaryOperationNode, ExprNode {
   override RelationalComparisonExpr expr;
@@ -731,7 +731,7 @@ class RelationalComparisonNode extends BinaryOperationNode, ExprNode {
 }
 
 /**
- * An IR instruction performing an equality test using `==` or `!=`.
+ * A data-flow node performing an equality test using `==` or `!=`.
  */
 class EqualityTestNode extends BinaryOperationNode, ExprNode {
   override EqualityTestExpr expr;
@@ -740,6 +740,25 @@ class EqualityTestNode extends BinaryOperationNode, ExprNode {
   predicate eq(boolean outcome, Node lhs, Node rhs) {
     outcome = expr.getPolarity() and
     expr.hasOperands(lhs.asExpr(), rhs.asExpr())
+  }
+}
+
+/**
+ * A data-flow node performing a type cast using either a type conversion
+ * or an assertion.
+ */
+class TypeCastNode extends ExprNode {
+  TypeCastNode() {
+    expr instanceof TypeAssertExpr
+    or
+    expr instanceof ConversionExpr
+  }
+
+  /** Gets the operand of the type cast. */
+  DataFlow::Node getOperand() {
+    result.asExpr() = expr.(TypeAssertExpr).getExpr()
+    or
+    result.asExpr() = expr.(ConversionExpr).getOperand()
   }
 }
 
