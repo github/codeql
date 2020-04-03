@@ -39,11 +39,11 @@ namespace Semmle.Autobuild
         {
             RootDirectory = actions.GetCurrentDirectory();
             VsToolsVersion = actions.GetEnvironmentVariable(prefix + "VSTOOLS_VERSION");
-            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS").AsStringWithExpandedEnvVarsMaybeNull(actions);
+            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             MsBuildPlatform = actions.GetEnvironmentVariable(prefix + "MSBUILD_PLATFORM");
             MsBuildConfiguration = actions.GetEnvironmentVariable(prefix + "MSBUILD_CONFIGURATION");
             MsBuildTarget = actions.GetEnvironmentVariable(prefix + "MSBUILD_TARGET");
-            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS").AsStringWithExpandedEnvVarsMaybeNull(actions);
+            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
             BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
             Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, new string[0]);
@@ -106,9 +106,6 @@ namespace Semmle.Autobuild
         }
 
         static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
-
-        public static string? AsStringWithExpandedEnvVarsMaybeNull(this string? value, IBuildActions actions) =>
-            value?.AsStringWithExpandedEnvVars(actions);
 
         public static string AsStringWithExpandedEnvVars(this string value, IBuildActions actions)
         {
