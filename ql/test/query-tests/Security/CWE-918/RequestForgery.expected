@@ -1,0 +1,38 @@
+edges
+| RequestForgery.go:8:12:8:34 | call to FormValue : string | RequestForgery.go:11:24:11:65 | ...+... |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:14:11:14:17 | tainted |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:18:12:18:18 | tainted |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:21:34:21:40 | tainted |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:24:66:24:72 | tainted |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:27:11:27:29 | ...+... |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:29:11:29:40 | ...+... |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:36:2:36:2 | implicit dereference : URL |
+| tst.go:10:13:10:35 | call to FormValue : string | tst.go:37:11:37:20 | call to String |
+| tst.go:35:2:35:2 | definition of u [pointer] : URL | tst.go:36:2:36:2 | u [pointer] : URL |
+| tst.go:36:2:36:2 | implicit dereference : URL | tst.go:35:2:35:2 | definition of u [pointer] : URL |
+| tst.go:36:2:36:2 | implicit dereference : URL | tst.go:36:2:36:2 | implicit dereference : URL |
+| tst.go:36:2:36:2 | implicit dereference : URL | tst.go:37:11:37:20 | call to String |
+| tst.go:36:2:36:2 | u [pointer] : URL | tst.go:36:2:36:2 | implicit dereference : URL |
+nodes
+| RequestForgery.go:8:12:8:34 | call to FormValue : string | semmle.label | call to FormValue : string |
+| RequestForgery.go:11:24:11:65 | ...+... | semmle.label | ...+... |
+| tst.go:10:13:10:35 | call to FormValue : string | semmle.label | call to FormValue : string |
+| tst.go:14:11:14:17 | tainted | semmle.label | tainted |
+| tst.go:18:12:18:18 | tainted | semmle.label | tainted |
+| tst.go:21:34:21:40 | tainted | semmle.label | tainted |
+| tst.go:24:66:24:72 | tainted | semmle.label | tainted |
+| tst.go:27:11:27:29 | ...+... | semmle.label | ...+... |
+| tst.go:29:11:29:40 | ...+... | semmle.label | ...+... |
+| tst.go:35:2:35:2 | definition of u [pointer] : URL | semmle.label | definition of u [pointer] : URL |
+| tst.go:36:2:36:2 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| tst.go:36:2:36:2 | u [pointer] : URL | semmle.label | u [pointer] : URL |
+| tst.go:37:11:37:20 | call to String | semmle.label | call to String |
+#select
+| RequestForgery.go:11:15:11:66 | call to Get | RequestForgery.go:8:12:8:34 | call to FormValue : string | RequestForgery.go:11:24:11:65 | ...+... | The $@ of this request depends on $@. | RequestForgery.go:11:24:11:65 | ...+... | URL | RequestForgery.go:8:12:8:34 | call to FormValue : string | a user-provided value |
+| tst.go:14:2:14:18 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:14:11:14:17 | tainted | The $@ of this request depends on $@. | tst.go:14:11:14:17 | tainted | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:18:2:18:38 | call to Post | tst.go:10:13:10:35 | call to FormValue : string | tst.go:18:12:18:18 | tainted | The $@ of this request depends on $@. | tst.go:18:12:18:18 | tainted | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:22:2:22:14 | call to Do | tst.go:10:13:10:35 | call to FormValue : string | tst.go:21:34:21:40 | tainted | The $@ of this request depends on $@. | tst.go:21:34:21:40 | tainted | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:25:2:25:14 | call to Do | tst.go:10:13:10:35 | call to FormValue : string | tst.go:24:66:24:72 | tainted | The $@ of this request depends on $@. | tst.go:24:66:24:72 | tainted | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:27:2:27:30 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:27:11:27:29 | ...+... | The $@ of this request depends on $@. | tst.go:27:11:27:29 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:29:2:29:41 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:29:11:29:40 | ...+... | The $@ of this request depends on $@. | tst.go:29:11:29:40 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| tst.go:37:2:37:21 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:37:11:37:20 | call to String | The $@ of this request depends on $@. | tst.go:37:11:37:20 | call to String | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |

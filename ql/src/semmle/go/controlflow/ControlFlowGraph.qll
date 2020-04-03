@@ -129,7 +129,10 @@ module ControlFlow {
     /** Holds if this node sets the value of field `f` on `base` to `rhs`. */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
       exists(IR::FieldTarget trg | trg = self.getLhs() |
-        trg.getBase() = base.asInstruction() and
+        (
+          trg.getBase() = base.asInstruction() or
+          trg.getBase() = MkImplicitDeref(base.asExpr())
+        ) and
         trg.getField() = f and
         self.getRhs() = rhs.asInstruction()
       )

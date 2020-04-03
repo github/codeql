@@ -18,6 +18,13 @@ module RequestForgery {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      // propagate to a URL when its host is assigned to
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      )
+    }
+
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer

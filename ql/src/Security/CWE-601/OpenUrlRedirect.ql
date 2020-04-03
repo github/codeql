@@ -12,10 +12,12 @@
 
 import go
 import semmle.go.security.OpenUrlRedirect::OpenUrlRedirect
+import semmle.go.security.SafeUrlFlow
 import DataFlow::PathGraph
 
 from
-  Configuration cfg, SafeUrlConfiguration scfg, DataFlow::PathNode source, DataFlow::PathNode sink
+  Configuration cfg, SafeUrlFlow::Configuration scfg, DataFlow::PathNode source,
+  DataFlow::PathNode sink
 where
   cfg.hasFlowPath(source, sink) and
   // this excludes flow from safe parts of request URLs, for example the full URL when the

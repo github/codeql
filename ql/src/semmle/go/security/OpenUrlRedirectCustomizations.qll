@@ -6,6 +6,7 @@
 
 import go
 import UrlConcatenation
+import SafeUrlFlowCustomizations
 
 /**
  * Provides extension points for customizing the taint-tracking configuration for reasoning about
@@ -31,13 +32,6 @@ module OpenUrlRedirect {
    * A barrier guard for unvalidated URL redirect vulnerabilities.
    */
   abstract class BarrierGuard extends DataFlow::BarrierGuard { }
-
-  /**
-   * A method on a `net/url.URL` that is considered unsafe to redirect to.
-   */
-  class UnsafeUrlMethod extends URL::UrlGetter {
-    UnsafeUrlMethod() { this.getName() = "Query" }
-  }
 
   /**
    * A source of third-party user input, considered as a flow source for URL redirects.
@@ -165,5 +159,25 @@ module OpenUrlRedirect {
       e = matchfn.getValue().getNode(call).asExpr() and
       (branch = false or branch = true)
     }
+  }
+}
+
+/** A sink for an open redirect, considered as a sink for safe URL flow. */
+private class SafeUrlSink extends SafeUrlFlow::Sink {
+  SafeUrlSink() { this instanceof OpenUrlRedirect::Sink }
+}
+
+/**
+ * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe
+ * URL.
+ */
+private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
+  UnsafeFieldReadSanitizer() {
+    exists(DataFlow::FieldReadNode frn, string name |
+      (name = "User" or name = "RawQuery" or name = "Fragment" or name = "User") and
+      frn.getField().hasQualifiedName("net/url", "URL")
+    |
+      this = frn.getBase()
+    )
   }
 }

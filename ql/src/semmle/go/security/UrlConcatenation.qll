@@ -55,6 +55,11 @@ private predicate concatenationHasHostnameSanitizingSubstring(StringOps::Concate
   exists(StringOps::ConcatenationLeaf lf | lf = cat.getALeaf() |
     lf.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
     or
+    // this deals with cases such as `Sprintf("%s/%s", hostname, taint)`, which should be safe as
+    // long as `hostname` is not user-controlled
+    lf.getStringValue() = "/" and
+    exists(lf.getPreviousLeaf())
+    or
     hasHostnameSanitizingSubstring(lf.asNode())
   )
 }
