@@ -255,6 +255,9 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() {
+        // We have to get the builtin _outside_ of the negation, as this would
+        // otherwise result in a negative recursion. Thus, something like 
+        // `not exists(this.getBuiltin().getItem(_))` would not work.
         exists(Builtin builtin |
             builtin = this.getBuiltin() and
             not exists(builtin.getItem(_))
