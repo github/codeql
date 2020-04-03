@@ -18,7 +18,6 @@ CodeQL is based on a powerful query language called QL. The following topics hel
 .. toctree::
    :maxdepth: 1
 
-   introduction-to-ql
    beginner/ql-tutorials
    writing-queries/writing-queries
    cpp/ql-for-cpp
