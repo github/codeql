@@ -400,7 +400,14 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
 
 /**
  * Gets the global variable whose qualified name is `id`. Use this predicate
- * together with `taintedIncludingGlobalVars`.
+ * together with `taintedIncludingGlobalVars`. Example:
+ *
+ * ```
+ * exists(string varName |
+ *   taintedIncludingGlobalVars(source, tainted, varName) and
+ *   var = globalVarFromId(varName)
+ * )
+ * ```
  */
 GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
 
