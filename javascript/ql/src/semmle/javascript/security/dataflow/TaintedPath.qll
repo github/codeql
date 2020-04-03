@@ -209,9 +209,15 @@ module TaintedPath {
       // foo.replace(/(\.\.\/)*/, "") and similar
       exists(DotDotSlashPrefixRemovingReplace call |
         src = call.getInput() and
-        dst = call.getOutput() and
-        (srclabel.isNonNormalized() or dstlabel.isAbsolute()) and // if src is normalized, then dst must be absolute (if dst is relative, then dst is sanitized)
-        dstlabel.toAbsolute() = srclabel.toAbsolute() // preserves normalization status
+        dst = call.getOutput()
+      |
+        // the 4 possible combinations of normalized + relative for `srclabel`, and the possible values for `dstlabel` in each case.
+        srclabel.isNonNormalized() and srclabel.isRelative() // raw + relative -> any()
+        or
+        srclabel.isNormalized() and srclabel.isAbsolute() and srclabel = dstlabel // normalized + absolute -> normalized + absolute
+        or
+        srclabel.isNonNormalized() and srclabel.isAbsolute() and dstlabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
+        // normalized + relative -> none()
       )
       or
       // path.join()
