@@ -210,7 +210,7 @@ module TaintedPath {
       exists(DotDotSlashPrefixRemovingReplace call |
         src = call.getInput() and
         dst = call.getOutput() and
-        dstlabel.isAbsolute() and // result can be absolute
+        (srclabel.isNonNormalized() or dstlabel.isAbsolute()) and // if src is normalized, then dst must be absolute (if dst is relative, then dst is sanitized)
         dstlabel.toAbsolute() = srclabel.toAbsolute() // preserves normalization status
       )
       or
