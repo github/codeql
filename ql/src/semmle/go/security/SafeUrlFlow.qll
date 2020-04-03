@@ -9,6 +9,10 @@
 
 import go
 
+/**
+ * Provides a taint-tracking configuration for reasoning about
+ * safe flow from URLs.
+ */
 module SafeUrlFlow {
   import SafeUrlFlowCustomizations::SafeUrlFlow
 
