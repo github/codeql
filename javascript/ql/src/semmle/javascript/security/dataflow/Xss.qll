@@ -413,3 +413,9 @@ module StoredXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 }
+
+/** Provides classes and predicates for the XSS through DOM query. */
+module XssThroughDom {
+  /** A data flow source for XSS through DOM vulnerabilities. */
+  abstract class Source extends Shared::Source { }
+}
