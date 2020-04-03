@@ -172,6 +172,7 @@ class WebPageWriteLiteralToSink extends HtmlSink {
   }
 }
 
+/** An ASP.NET Core HTML sink. */
 abstract class AspNetCoreHtmlSink extends HtmlSink { }
 
 /**

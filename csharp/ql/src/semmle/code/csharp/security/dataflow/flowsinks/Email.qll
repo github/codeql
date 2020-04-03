@@ -4,6 +4,7 @@ import csharp
 private import Remote
 private import semmle.code.csharp.frameworks.system.net.Mail
 
+/** Provides sinks for emails. */
 module Email {
   /** A data flow sink for sending email. */
   abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink { }
