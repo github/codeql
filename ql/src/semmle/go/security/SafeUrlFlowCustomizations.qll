@@ -5,6 +5,10 @@
 
 import go
 
+/**
+ * Provides extension points for customizing the taint-tracking configuration for reasoning about
+ * safe URL flow.
+ */
 module SafeUrlFlow {
   /** A sink for safe URL flow. */
   abstract class Sink extends DataFlow::Node { }

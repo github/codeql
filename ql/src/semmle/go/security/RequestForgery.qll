@@ -1,10 +1,18 @@
 /**
  * Provides a taint-tracking configuration for reasoning about request forgery
  * (SSRF) vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `RequestForgery::Configuration` is needed, otherwise
+ * `RequestForgeryCustomizations` should be imported instead.
  */
 
 import go
 
+/**
+ * Provides a taint-tracking configuration for reasoning about request forgery
+ * (SSRF) vulnerabilities.
+ */
 module RequestForgery {
   import RequestForgeryCustomizations::RequestForgery
 
