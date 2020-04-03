@@ -32,7 +32,7 @@ abstract class Dependency extends Locatable {
    * An import of this dependency.
    */
   ImportSpec getAnImport() {
-    result.getPath() = this.getDepPath() and
+    result.getPath().regexpMatch("\\Q" + this.getDepPath() + "\\E(/.*)?") and
     this.relevantForFile(result.getFile())
   }
 }
