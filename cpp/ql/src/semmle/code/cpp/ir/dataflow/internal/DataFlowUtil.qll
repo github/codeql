@@ -239,6 +239,14 @@ class DefinitionByReferenceNode extends InstructionNode {
   Parameter getParameter() {
     exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
   }
+
+  override string toString() {
+    // This string should be unique enough to be helpful but common enough to
+    // avoid storing too many different strings.
+    result =
+      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().getName() +
+        " output argument"
+  }
 }
 
 /**
