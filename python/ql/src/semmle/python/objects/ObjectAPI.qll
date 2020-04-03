@@ -637,6 +637,9 @@ class PythonFunctionValue extends FunctionValue {
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
     override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
         result = this.getAReturnedNode().pointsTo().getClass()
     }
 }
@@ -652,6 +655,9 @@ class BuiltinFunctionValue extends FunctionValue {
     override int maxParameters() { none() }
 
     override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
         result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
     }
 }
