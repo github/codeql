@@ -606,11 +606,7 @@ abstract class FunctionValue extends CallableValue {
     }
 
     /** Gets a class that this function may return */
-    ClassValue getAnInferredReturnType() {
-        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
-        or
-        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
-    }
+    abstract ClassValue getAnInferredReturnType();
 }
 
 /** Class representing Python functions */
@@ -639,6 +635,10 @@ class PythonFunctionValue extends FunctionValue {
 
     /** Gets a control flow node corresponding to a return statement in this function */
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
+
+    override ClassValue getAnInferredReturnType() {
+        result = this.getAReturnedNode().pointsTo().getClass()
+    }
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
@@ -650,6 +650,10 @@ class BuiltinFunctionValue extends FunctionValue {
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
+
+    override ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
+    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -667,6 +671,10 @@ class BuiltinMethodValue extends FunctionValue {
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
+
+    override ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
+    }
 }
 
 /**
