@@ -86,16 +86,12 @@ class PermitAllCall extends MethodAccess {
 
   /** Holds if `permitAll` is called on request(s) mapped to actuator endpoint(s). */
   predicate permitsSpringBootActuators() {
-    exists(
-      RequestMatcherCall requestMatcherCall, RequestMatchersCall requestMatchersCall,
-      RegistryRequestMatchersCall registryRequestMatchersCall,
-      AuthorizeRequestsCall authorizeRequestsCall, AnyRequestCall anyRequestCall
-    |
+    exists(AuthorizeRequestsCall authorizeRequestsCall |
       // .requestMatcher(EndpointRequest).authorizeRequests([...]).[...]
-      authorizeRequestsCall.getQualifier() = requestMatcherCall
+      authorizeRequestsCall.getQualifier() instanceof RequestMatcherCall
       or
       // .requestMatchers(matcher -> EndpointRequest).authorizeRequests([...]).[...]
-      authorizeRequestsCall.getQualifier() = requestMatchersCall
+      authorizeRequestsCall.getQualifier() instanceof RequestMatchersCall
       or
       // http.authorizeRequests([...]).[...]
       authorizeRequestsCall.getQualifier() instanceof VarAccess
@@ -104,20 +100,22 @@ class PermitAllCall extends MethodAccess {
       // [...].authorizeRequests(r -> r.requestMatchers(EndpointRequest).permitAll())
       authorizeRequestsCall.getArgument(0).(LambdaExpr).getExprBody() = this and
       (
-        this.getQualifier() = anyRequestCall or
-        this.getQualifier() = registryRequestMatchersCall
+        this.getQualifier() instanceof AnyRequestCall or
+        this.getQualifier() instanceof RegistryRequestMatchersCall
       )
       or
       // [...].authorizeRequests().requestMatchers(EndpointRequest).permitAll() or
       // [...].authorizeRequests().anyRequest().permitAll()
       authorizeRequestsCall.getNumArgument() = 0 and
-      (
+      exists(RegistryRequestMatchersCall registryRequestMatchersCall |
         registryRequestMatchersCall.getQualifier() = authorizeRequestsCall and
         this.getQualifier() = registryRequestMatchersCall
       )
       or
-      anyRequestCall.getQualifier() = authorizeRequestsCall and
-      this.getQualifier() = anyRequestCall
+      exists(AnyRequestCall anyRequestCall |
+        anyRequestCall.getQualifier() = authorizeRequestsCall and
+        this.getQualifier() = anyRequestCall
+      )
     )
   }
 }
