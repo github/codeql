@@ -44,5 +44,6 @@ The following changes in version 1.24 affect C# analysis in all applications.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.
 * `stackalloc` array creations are now represented by the QL class `Stackalloc`. Previously they were represented by the class `ArrayCreation`.
+* A new class `RemoteFlowSink` has been added to model sinks where data might be exposed to external users. Examples include web page output, e-mails, and cookies.
 
 ## Changes to autobuilder
