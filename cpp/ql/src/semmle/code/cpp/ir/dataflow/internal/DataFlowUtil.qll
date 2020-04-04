@@ -246,6 +246,9 @@ class DefinitionByReferenceNode extends InstructionNode {
     result =
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().getName() +
         " output argument"
+    or
+    not exists(instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget()) and
+    result = "output argument"
   }
 }
 
