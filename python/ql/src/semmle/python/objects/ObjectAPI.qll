@@ -614,9 +614,9 @@ class PythonFunctionValue extends FunctionValue {
     override string descriptiveString() {
         if this.getScope().isMethod()
         then
-        exists(Class cls | this.getScope().getScope() = cls |
-            result = "method " + this.getQualifiedName()
-        )
+            exists(Class cls | this.getScope().getScope() = cls |
+                result = "method " + this.getQualifiedName()
+            )
         else result = "function " + this.getQualifiedName()
     }
 
@@ -641,14 +641,9 @@ class PythonFunctionValue extends FunctionValue {
     }
 
     /** Gets a control flow node corresponding to a return statement in this function */
-    ControlFlowNode getAReturnedNode() {
-        result = this.getScope().getAReturnValueFlowNode()
-    }
+    ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
-    override ClassValue getARaisedType() {
-        scope_raises(result, this.getScope())
-    }
-
+    override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
@@ -661,9 +656,7 @@ class BuiltinFunctionValue extends FunctionValue {
 
     override int minParameters() { none() }
 
-    override int maxParameters() {
-        none()
-    }
+    override int maxParameters() { none() }
 
     override ClassValue getARaisedType() {
         /* Information is unavailable for C code in general */
@@ -685,19 +678,14 @@ class BuiltinMethodValue extends FunctionValue {
 
     override string descriptiveString() { result = "builtin-method " + this.getQualifiedName() }
 
-    override int minParameters() {
-        none()
-    }
+    override int minParameters() { none() }
 
-    override int maxParameters() {
-        none()
-    }
+    override int maxParameters() { none() }
 
     override ClassValue getARaisedType() {
         /* Information is unavailable for C code in general */
         none()
     }
-
 }
 
 /**
@@ -923,10 +911,8 @@ module ClassValue {
     ClassValue lookupError() { result = TBuiltinClassObject(Builtin::builtin("LookupError")) }
 
     /** Get the `ClassValue` for the `IndexError` class. */
-    ClassValue indexError() {
-        result = TBuiltinClassObject(Builtin::builtin("IndexError"))
-    }
-    
+    ClassValue indexError() { result = TBuiltinClassObject(Builtin::builtin("IndexError")) }
+
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() { result = TBuiltinClassObject(Builtin::builtin("IOError")) }
 
@@ -949,8 +935,5 @@ module ClassValue {
     }
 
     /** Get the `ClassValue` for the `SystemExit` class. */
-    ClassValue systemExit() {
-        result = TBuiltinClassObject(Builtin::builtin("SystemExit"))
-    }
-
+    ClassValue systemExit() { result = TBuiltinClassObject(Builtin::builtin("SystemExit")) }
 }
