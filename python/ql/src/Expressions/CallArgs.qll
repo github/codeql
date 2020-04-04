@@ -154,17 +154,21 @@ predicate too_few_args(Call call, Value callable, int limit) {
     not exists(call.getKwargs()) and
     arg_count(call) < limit and
     exists(FunctionValue func | func = get_function_or_initializer(callable) |
-      call = func.getAFunctionCall().getNode() and limit = func.minParameters() and
-      /* The combination of misuse of `mox.Mox().StubOutWithMock()`
-       * and a bug in mox's implementation of methods results in having to
-       * pass 1 too few arguments to the mocked function.
-       */
-      not (useOfMoxInModule(call.getEnclosingModule()) and func.isNormalMethod())
-      or
-      call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
-      or
-      callable instanceof ClassValue and
-      call.getAFlowNode() = get_a_call(callable) and limit = func.minParameters() - 1
+        call = func.getAFunctionCall().getNode() and
+        limit = func.minParameters() and
+        /*
+         * The combination of misuse of `mox.Mox().StubOutWithMock()`
+         * and a bug in mox's implementation of methods results in having to
+         * pass 1 too few arguments to the mocked function.
+         */
+
+        not (useOfMoxInModule(call.getEnclosingModule()) and func.isNormalMethod())
+        or
+        call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
+        or
+        callable instanceof ClassValue and
+        call.getAFlowNode() = get_a_call(callable) and
+        limit = func.minParameters() - 1
     )
 }
 
@@ -192,14 +196,15 @@ predicate too_many_args_objectapi(Call call, Object callable, int limit) {
 predicate too_many_args(Call call, Value callable, int limit) {
     // Exclude cases where an incorrect name is used as that is covered by 'Wrong name for an argument in a call'
     not illegally_named_parameter(call, callable, _) and
-    exists(FunctionValue func | 
-      func = get_function_or_initializer(callable) and
-      not func.getScope().hasVarArg() and limit >= 0 
-      |
+    exists(FunctionValue func |
+        func = get_function_or_initializer(callable) and
+        not func.getScope().hasVarArg() and
+        limit >= 0
+    |
         call = func.getAFunctionCall().getNode() and limit = func.maxParameters()
-      or
+        or
         call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
-      or
+        or
         callable instanceof ClassValue and
         call.getAFlowNode() = get_a_call(callable) and
         limit = func.maxParameters() - 1
