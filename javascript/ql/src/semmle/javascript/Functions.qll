@@ -117,7 +117,14 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   ArgumentsVariable getArgumentsVariable() { result.getFunction() = this }
 
   /** Holds if the body of this function refers to the function's `arguments` variable. */
-  predicate usesArgumentsObject() { exists(getArgumentsVariable().getAnAccess()) }
+  predicate usesArgumentsObject() {
+    exists(getArgumentsVariable().getAnAccess())
+    or
+    exists(PropAccess read |
+      read.getBase() = getVariable().getAnAccess() and
+      read.getPropertyName() = "arguments"
+    )
+  }
 
   /**
    * Holds if this function declares a parameter or local variable named `arguments`.

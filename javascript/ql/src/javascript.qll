@@ -5,6 +5,7 @@
 import Customizations
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
+import semmle.javascript.Arrays
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
 import semmle.javascript.Base64

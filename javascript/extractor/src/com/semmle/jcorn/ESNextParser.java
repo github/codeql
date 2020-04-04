@@ -482,6 +482,7 @@ public class ESNextParser extends JSXParser {
 
       if (code == '_') {
         if (underscoreAllowed) {
+          seenUnderscoreNumericSeparator = true;
           // no adjacent underscores
           underscoreAllowed = false;
           ++this.pos;

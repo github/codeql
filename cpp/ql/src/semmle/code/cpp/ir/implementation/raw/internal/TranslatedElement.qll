@@ -54,7 +54,7 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // Otherwise the initializer does not run in function scope.
   exists(Initializer init, StaticStorageDurationVariable var |
     init = var.getInitializer() and
-    var.hasConstantInitialization() and
+    not var.hasDynamicInitialization() and
     expr = init.getExpr().getFullyConverted()
   )
   or
@@ -83,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**
@@ -256,6 +260,26 @@ predicate hasTranslatedLoad(Expr expr) {
   not ignoreLoad(expr)
 }
 
+/**
+ * Holds if the specified `DeclarationEntry` needs an IR translation. An IR translation is only
+ * necessary for automatic local variables, or for static local variables with dynamic
+ * initialization.
+ */
+private predicate translateDeclarationEntry(DeclarationEntry entry) {
+  exists(DeclStmt declStmt, LocalVariable var |
+    translateStmt(declStmt) and
+    declStmt.getADeclarationEntry() = entry and
+    // Only declarations of local variables need to be translated to IR.
+    var = entry.getDeclaration() and
+    (
+      not var.isStatic()
+      or
+      // Ignore static variables unless they have a dynamic initializer.
+      var.(StaticLocalVariable).hasDynamicInitialization()
+    )
+  )
+}
+
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -382,6 +406,7 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
   // The read side effects in a function's return block
   TTranslatedReadEffect(Parameter param) {
@@ -393,13 +418,12 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(DeclarationEntry entry) {
-    exists(DeclStmt declStmt |
-      translateStmt(declStmt) and
-      declStmt.getADeclarationEntry() = entry and
-      // Only declarations of local variables need to be translated to IR.
-      entry.getDeclaration() instanceof LocalVariable
-    )
+  TTranslatedDeclarationEntry(DeclarationEntry entry) { translateDeclarationEntry(entry) } or
+  // The dynamic initialization of a static local variable. This is a separate object from the
+  // declaration entry.
+  TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
+    translateDeclarationEntry(entry) and
+    entry.getDeclaration() instanceof StaticLocalVariable
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
   // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.
@@ -418,11 +442,22 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
-    expr instanceof ConstructorCall or
-    expr.getTarget() instanceof AllocationFunction
-  } or // A precise side effect of an argument to a `Call`
+  TTranslatedCallSideEffects(Call expr) {
+    // Exclude allocations such as `malloc` (which happen to also be function calls).
+    // Both `TranslatedCallSideEffects` and `TranslatedAllocationSideEffects` generate
+    // the same side effects for its children as they both extend the `TranslatedSideEffects`
+    // class.
+    // Note: We can separate allocation side effects and call side effects into two
+    // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
+    not expr instanceof AllocationExpr and
+    (
+      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+      expr instanceof ConstructorCall
+    )
+  } or
+  // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
+  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()

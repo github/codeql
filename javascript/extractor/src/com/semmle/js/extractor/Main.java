@@ -1,5 +1,13 @@
 package com.semmle.js.extractor;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import com.semmle.js.extractor.ExtractorConfig.HTMLHandling;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -23,13 +31,6 @@ import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.ArgsParser;
 import com.semmle.util.process.ArgsParser.FileMode;
 import com.semmle.util.trap.TrapWriter;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /** The main entry point of the JavaScript extractor. */
 public class Main {
@@ -37,7 +38,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2020-02-14";
+  public static final String EXTRACTOR_VERSION = "2020-04-01";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -190,8 +191,27 @@ public class Main {
 
     // Extract files that were not part of a project.
     for (File f : files) {
+      if (isFileDerivedFromTypeScriptFile(f))
+        continue;
       ensureFileIsExtracted(f, ap);
     }
+  }
+
+  /**
+   * Returns true if the given path is likely the output of compiling a TypeScript file
+   * which we have already extracted.
+   */
+  private boolean isFileDerivedFromTypeScriptFile(File path) {
+    String name = path.getName();
+    if (!name.endsWith(".js"))
+      return false;
+    String stem = name.substring(0, name.length() - ".js".length());
+    for (String ext : FileType.TYPESCRIPT.getExtensions()) {
+      if (new File(path.getParent(), stem + ext).exists()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void extractTypeTable(File fileHandle, TypeTable table) {

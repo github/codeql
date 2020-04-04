@@ -196,7 +196,7 @@ class FunctionCall extends Call, @funbindexpr {
    * constructor calls, this predicate instead gets the `Class` of the constructor
    * being called.
    */
-  private Type getTargetType() { result = Call.super.getType().stripType() }
+  Type getTargetType() { result = Call.super.getType().stripType() }
 
   /**
    * Gets the expected return type of the function called by this call.

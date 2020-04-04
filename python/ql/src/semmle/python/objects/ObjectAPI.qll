@@ -659,9 +659,7 @@ class BuiltinFunctionValue extends FunctionValue {
 
     override string descriptiveString() { result = "builtin-function " + this.getName() }
 
-    override int minParameters() {
-        none()
-    }
+    override int minParameters() { none() }
 
     override int maxParameters() {
         none()

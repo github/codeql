@@ -12,7 +12,6 @@
  */
 
 import python
-
 import Lexical.CommentedOutCode
 
 from CommentedOutCodeBlock c

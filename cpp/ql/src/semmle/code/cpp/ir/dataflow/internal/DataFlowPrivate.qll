@@ -202,3 +202,16 @@ class DataFlowCall extends CallInstruction {
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) {
+  // The rules for whether an IR argument gets a post-update node are too
+  // complex to model here.
+  any()
+}

@@ -48,7 +48,7 @@ MyValue g7(bool c)
 	if (c) return MyValue(7);
 	DONOTHING
 	DONOTHING
-	// BAD [the alert here is unfortunately placed]
+	// BAD
 }
 
 typedef void MYVOID;

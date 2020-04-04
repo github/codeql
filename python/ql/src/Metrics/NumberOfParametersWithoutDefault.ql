@@ -12,7 +12,5 @@
 
 import python
 
-
 from FunctionMetrics func
-select func, func.getNumberOfParametersWithoutDefault() as n
-order by n desc
+select func, func.getNumberOfParametersWithoutDefault() as n order by n desc
