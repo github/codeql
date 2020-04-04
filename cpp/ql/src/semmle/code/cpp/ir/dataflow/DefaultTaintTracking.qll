@@ -489,7 +489,7 @@ module TaintedWithPath {
     }
   }
 
-  private class WrapPathNode extends PathNode, TPathNode {
+  private class WrapPathNode extends PathNode, TWrapPathNode {
     DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
 
     override string toString() { result = this.inner().toString() }

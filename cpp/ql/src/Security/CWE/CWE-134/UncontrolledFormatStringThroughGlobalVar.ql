@@ -34,6 +34,6 @@ where
   not taintedWithoutGlobals(arg) and
   taintedWithPath(userValue, arg, sourceNode, sinkNode) and
   isUserInput(userValue, cause)
-select arg,
+select arg, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +
     printfFunction, userValue, cause
