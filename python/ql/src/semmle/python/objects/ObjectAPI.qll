@@ -594,6 +594,17 @@ abstract class FunctionValue extends CallableValue {
         or
         result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
     }
+
+    /** Gets a call-site from where this function is called as a function */
+    CallNode getAFunctionCall() { result.getFunction().pointsTo() = this }
+
+    /** Gets a call-site from where this function is called as a method */
+    CallNode getAMethodCall() {
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().pointsTo() = bm and
+            bm.getFunction() = this
+        )
+    }
 }
 
 /** Class representing Python functions */
