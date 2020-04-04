@@ -97,7 +97,7 @@ class RaisingNode extends ControlFlowNode {
         (
             exists(ControlFlowNode ex |
                 ex = this.getExceptionNode() and
-                (ex.pointsTo(result) or ex.pointsTo(_, result, _))
+                (ex.pointsTo(result) or ex.pointsTo().getClass() = result)
             )
             or
             this.getNode() instanceof ImportExpr and result = ClassValue::importError()
