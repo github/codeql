@@ -148,10 +148,10 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
-    node1.asInstruction() = fa.getObjectAddress() and
     fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
+    node1.asInstruction() = load and
+    load.getSourceAddress() = fa and
+    node2.asInstruction().getAnOperand().getAnyDef() = load
   )
 }
 

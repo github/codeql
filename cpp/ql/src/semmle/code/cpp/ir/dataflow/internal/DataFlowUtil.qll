@@ -245,30 +245,19 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
-  /**
-   * Gets the instruction that partially defines the object. This includes
-   * both the instruction that partially defines the object, and the chi
-   * instruction that links up the partial definition to the object.
-   */
-  final Instruction getInstructionOrChi() {
-    exists(ChiInstruction chi |
-      not chi.isResultConflated() and
-      chi.getPartial() = getInstruction() and
-      result = chi
-    )
-    or
-    result = getInstruction()
-  }
-}
+abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {}
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-  FieldAddressInstruction field;
+  override ChiInstruction instr;
 
-  ExplicitFieldStoreQualifierNode() { field = instr.getDestinationAddress() }
+  ExplicitFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store, FieldInstruction field |
+      instr.getPartial() = store and field = store.getDestinationAddress()
+    )
+  }
 
-  override Node getPreUpdateNode() { result.asInstruction() = field.getObjectAddress() }
+  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
 /**
@@ -282,29 +271,29 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  * `getVariableAccess()` equal to `x`.
  */
 class DefinitionByReferenceNode extends PartialDefinitionNode {
-  override WriteSideEffectInstruction instr;
+  override ChiInstruction instr;
+  WriteSideEffectInstruction write;
   CallInstruction call;
 
-  DefinitionByReferenceNode() { call = instr.getPrimaryInstruction() }
+  DefinitionByReferenceNode() {
+    instr.getPartial() = write and
+    call = write.getPrimaryInstruction() }
 
   override Node getPreUpdateNode() {
-    result.asInstruction() = call.getPositionalArgument(instr.getIndex())
-    or
-    result.asInstruction() = call.getThisArgument() and
-    instr.getIndex() = -1
+    result.asInstruction() = instr.getTotal()
   }
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
-    result = call.getPositionalArgument(instr.getIndex()).getUnconvertedResultExpression()
+    result = call.getPositionalArgument(write.getIndex()).getUnconvertedResultExpression()
     or
     result = call.getThisArgument().getUnconvertedResultExpression() and
-    instr.getIndex() = -1
+    write.getIndex() = -1
   }
 
   /** Gets the parameter through which this value is assigned. */
   Parameter getParameter() {
-    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
+    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(write.getIndex()))
   }
 }
 
@@ -393,10 +382,10 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
   or
-  exists(LoadInstruction load |
-    load.getSourceValueOperand().getAnyDef() =
-      nodeFrom.(PartialDefinitionNode).getInstructionOrChi() and
-    nodeTo.asInstruction() = load.getSourceAddress().(FieldAddressInstruction).getObjectAddress()
+  exists(LoadInstruction load, ChiInstruction chi |
+    nodeTo.asInstruction() = load and
+    nodeFrom.asInstruction() = chi and
+    load.getSourceValueOperand().getAnyDef() = chi
   )
 }
 
@@ -423,6 +412,12 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   //
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
+
+  // TODO: To capture flow from a partial definition of an object (i.e., a field write) to the object
+  // we add dataflow through partial chi operands, but only if the chi node is not the chi node for all
+  // aliased memory.
+  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom and not iFrom.isResultConflated()
+  or
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
   // Flow through modeled functions
