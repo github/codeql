@@ -2,8 +2,8 @@ import python
 import semmle.python.security.TaintTracking
 import Taint
 
-from Call call, Expr arg,
-    boolean expected_taint, boolean has_taint, string test_res,
+from
+    Call call, Expr arg, boolean expected_taint, boolean has_taint, string test_res,
     string taint_string
 where
     call.getLocation().getFile().getShortName() = "test.py" and
@@ -26,6 +26,6 @@ where
         has_taint = true
     ) and
     if expected_taint = has_taint then test_res = "ok" else test_res = "failure"
-    // if expected_taint = has_taint then test_res = "✓" else test_res = "✕"
+// if expected_taint = has_taint then test_res = "✓" else test_res = "✕"
 select arg.getLocation().toString(), call.getScope().(Function).getName(), arg.toString(),
     taint_string, test_res

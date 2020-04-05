@@ -8,6 +8,9 @@
 | format.cpp:96:8:96:13 | buffer | format.cpp:95:30:95:43 | call to source |
 | format.cpp:101:8:101:13 | buffer | format.cpp:100:31:100:45 | call to source |
 | format.cpp:106:8:106:14 | wbuffer | format.cpp:105:38:105:52 | call to source |
+| stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
+| stl.cpp:73:7:73:7 | c | stl.cpp:69:16:69:21 | call to source |
+| stl.cpp:75:9:75:13 | call to c_str | stl.cpp:69:16:69:21 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -58,3 +61,6 @@
 | taint.cpp:439:10:439:18 | call to getMember | taint.cpp:437:15:437:20 | call to source |
 | taint.cpp:446:7:446:7 | d | taint.cpp:445:14:445:28 | call to source |
 | taint.cpp:447:9:447:17 | call to getString | taint.cpp:445:14:445:28 | call to source |
+| taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:471:7:471:7 | y | taint.cpp:462:6:462:11 | call to source |
