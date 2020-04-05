@@ -615,7 +615,11 @@ class Class extends RefType, @class {
   }
 }
 
-/** A record declaration. */
+/**
+ * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
+ *
+ * A record declaration.
+ */
 class Record extends Class {
   Record() { isRecord(this) }
 }

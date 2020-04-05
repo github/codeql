@@ -1136,10 +1136,18 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
     else result.isNthChildOf(this, 0)
   }
 
-  /** Holds if this `instanceof` expression uses pattern matching. */
+  /**
+   * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
+   *
+   * Holds if this `instanceof` expression uses pattern matching.
+   */
   predicate isPattern() { exists(getLocalVariableDeclExpr()) }
 
-  /** Gets the local variable declaration of this `instanceof` expression if pattern matching is used. */
+  /**
+   * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
+   *
+   * Gets the local variable declaration of this `instanceof` expression if pattern matching is used.
+   */
   LocalVariableDeclExpr getLocalVariableDeclExpr() { result.isNthChildOf(this, 0) }
 
   /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
