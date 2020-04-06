@@ -63,26 +63,26 @@ class FlowConfig extends TaintTracking::Configuration, DataFlow::Configuration {
   }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
-    // If the conversion is inside an `if` block that compares the
-    // source as `source > 0`, then that sanitizes conversion of int64 to int32;
     exists(IfRelationalComparison san, NumericConversionExpr conv |
       conv = node.asExpr().(NumericConversionExpr) and
       san.getThen().getAChild*() = conv and
       (
+        // If the conversion is inside an `if` block that compares the source as
+        // `source > 0` or `source >= 0`, then that sanitizes conversion of int to int32;
         conv.getTypeName() = "int32" and
         san.getComparison().getLesserOperand().getNumericValue() = 0 and
         san.getComparison().getGreaterOperand().getGlobalValueNumber() =
           conv.getOperand().getGlobalValueNumber()
         or
-        comparisonGreaterOperandIsEqualOrLess("int8", san, conv, getMaxInt8())
+        comparisonGreaterOperandValueIsEqualOrLess("int8", san, conv, getMaxInt8())
         or
-        comparisonGreaterOperandIsEqualOrLess("int16", san, conv, getMaxInt16())
+        comparisonGreaterOperandValueIsEqualOrLess("int16", san, conv, getMaxInt16())
         or
-        comparisonGreaterOperandIsEqualOrLess("int32", san, conv, getMaxInt32())
+        comparisonGreaterOperandValueIsEqualOrLess("int32", san, conv, getMaxInt32())
         or
-        comparisonGreaterOperandIsEqualOrLess("uint8", san, conv, getMaxUint8())
+        comparisonGreaterOperandValueIsEqualOrLess("uint8", san, conv, getMaxUint8())
         or
-        comparisonGreaterOperandIsEqualOrLess("uint16", san, conv, getMaxUint16())
+        comparisonGreaterOperandValueIsEqualOrLess("uint16", san, conv, getMaxUint16())
       )
     )
   }
@@ -113,21 +113,24 @@ int getMaxUint16() {
   // = 1<<16 - 1
 }
 
-predicate comparisonGreaterOperandIsEqualOrLess(
+predicate comparisonGreaterOperandValueIsEqualOrLess(
   string typeName, IfRelationalComparison ifExpr, NumericConversionExpr conv, int value
 ) {
   conv.getTypeName() = typeName and
   (
     // exclude cases like: if parsed < math.MaxInt8 {return int8(parsed)}
-    ifExpr.getComparison().getGreaterOperand().getNumericValue() = value and
-    // and lesser is the conversion operand:
-    ifExpr.getComparison().getLesserOperand().getGlobalValueNumber() =
-      conv.getOperand().getGlobalValueNumber()
+    exists(RelationalComparisonExpr comp | comp = ifExpr.getComparison() |
+      // greater operand is equal to value:
+      comp.getGreaterOperand().getNumericValue() = value and
+      // and lesser is the conversion operand:
+      comp.getLesserOperand().getGlobalValueNumber() = conv.getOperand().getGlobalValueNumber()
+    )
     or
     // exclude cases like: if err == nil && parsed < math.MaxInt8 {return int8(parsed)}
     exists(RelationalComparisonExpr andExpr |
       andExpr = ifExpr.getLandExpr().getAnOperand().(RelationalComparisonExpr)
     |
+      // greater operand is equal to value:
       andExpr.getGreaterOperand().getNumericValue() = value and
       // and lesser is the conversion operand:
       andExpr.getLesserOperand().getGlobalValueNumber() = conv.getOperand().getGlobalValueNumber()
