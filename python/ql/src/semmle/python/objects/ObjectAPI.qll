@@ -655,7 +655,7 @@ class BoundMethodValue extends Value {
     CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
 
     /**
-     * Gets the value that will be used for the 'self' parameter when `this` is called.
+     * Gets the value that will be used for the `self` parameter when `this` is called.
      * The value for `o` in `o.func`.
      */
     Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
