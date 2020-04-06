@@ -430,6 +430,29 @@ class ClassValue extends Value {
         this.hasAttribute("__getitem__")
     }
 
+    /** Holds if this class is an iterator. */
+    predicate isIterator() {
+        this.hasAttribute("__iter__") and
+        (
+            major_version() = 3 and this.hasAttribute("__next__")
+            or
+            /*
+             * Because 'next' is a common method name we need to check that an __iter__
+             * method actually returns this class. This is not needed for Py3 as the
+             * '__next__' method exists to define a class as an iterator.
+             */
+
+            major_version() = 2 and
+            this.hasAttribute("next") and
+            exists(ClassValue other, FunctionValue iter | other.declaredAttribute("__iter__") = iter |
+                iter.getAnInferredReturnType() = this
+            )
+        )
+        or
+        /* This will be redundant when we have C class information */
+        this = ClassValue::generator()
+    }
+
     /** Holds if this class is a container(). That is, does it have a __getitem__ method. */
     predicate isContainer() { exists(this.lookup("__getitem__")) }
 
@@ -588,13 +611,6 @@ abstract class FunctionValue extends CallableValue {
     /** Gets a class that may be raised by this function */
     abstract ClassValue getARaisedType();
 
-    /** Gets a class that this function may return */
-    ClassValue getAnInferredReturnType() {
-        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
-        or
-        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
-    }
-
     /** Gets a call-site from where this function is called as a function */
     CallNode getAFunctionCall() { result.getFunction().pointsTo() = this }
 
@@ -605,6 +621,7 @@ abstract class FunctionValue extends CallableValue {
             bm.getFunction() = this
         )
     }
+    abstract ClassValue getAnInferredReturnType();
 }
 
 /** Class representing Python functions */
@@ -644,6 +661,13 @@ class PythonFunctionValue extends FunctionValue {
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
     override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
+    
+    override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
+        result = this.getAReturnedNode().pointsTo().getClass()
+    }
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
@@ -661,6 +685,13 @@ class BuiltinFunctionValue extends FunctionValue {
     override ClassValue getARaisedType() {
         /* Information is unavailable for C code in general */
         none()
+    }
+
+    override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
+        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
     }
 }
 
@@ -685,6 +716,10 @@ class BuiltinMethodValue extends FunctionValue {
     override ClassValue getARaisedType() {
         /* Information is unavailable for C code in general */
         none()
+    }
+    
+    override ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
     }
 }
 

@@ -12,9 +12,7 @@
 
 import python
 
-Function iter_method(ClassObject t) {
-    result = t.lookupAttribute("__iter__").(FunctionObject).getFunction()
-}
+Function iter_method(ClassValue t) { result = t.lookup("__iter__").(FunctionValue).getScope() }
 
 predicate is_self(Name value, Function f) { value.getVariable() = f.getArg(0).(Name).getVariable() }
 
@@ -26,7 +24,7 @@ predicate returns_non_self(Function f) {
     exists(Return r | r.getScope() = f and not exists(r.getValue()))
 }
 
-from ClassObject t, Function iter
+from ClassValue t, Function iter
 where t.isIterator() and iter = iter_method(t) and returns_non_self(iter)
 select t, "Class " + t.getName() + " is an iterator but its $@ method does not return 'self'.",
     iter, iter.getName()
