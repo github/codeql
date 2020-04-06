@@ -87,3 +87,21 @@ namespace std {
 void test_std_move() {
   sink(std::move(getenv("VAR")));
 }
+
+struct Point {
+  int x;
+  int y;
+
+  void callSink() {
+    sink(this->x); // tainted
+    sink(this->y); // not tainted [FALSE POSITIVE]
+  }
+};
+
+void test_conflated_fields() {
+  Point p;
+  p.x = getenv("VAR")[0];
+  sink(p.x); // tainted
+  sink(p.y); // not tainted
+  p.callSink();
+}
