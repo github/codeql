@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import Remote
 private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
 
@@ -45,7 +46,7 @@ class TraceMessageSink extends ExternalLocationSink {
 /**
  * An expression set as a value on a cookie instance.
  */
-class CookieStorageSink extends ExternalLocationSink {
+class CookieStorageSink extends ExternalLocationSink, RemoteFlowSink {
   CookieStorageSink() {
     exists(Expr e | e = this.getExpr() |
       e = any(SystemWebHttpCookie cookie).getAConstructor().getACall().getArgumentForName("value")
