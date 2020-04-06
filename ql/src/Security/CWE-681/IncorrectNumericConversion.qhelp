@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a numeric value string is parsed using <code>strconv.Atoi</code> into an int, and then that int
+is converted into another type of a lower bit size, the result can produce unexpected values.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If you need to parse numeric values with specific bit sizes, use the functions specific to each
+type (<code>strconv.ParseFloat</code>, <code>strconv.ParseInt</code>, <code>strconv.ParseUint</code>)
+that also allow to specify the wanted bit size.
+</p>
+<p>
+If this is not possible, then add upper (and lower) bound checks specific to each type and
+bit size (you can find the min and max value for each type in the `math` package).
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume that an input string is passed to <code>parseAllocate</code> function,
+parsed by <code>strconv.Atoi</code>, and then converted into an <code>int32</code> type:
+</p>
+<sample src="IncorrectNumericConversion.go"/>
+<p>
+The bounds are not checked, so this means that if the provided number is greater than max int32,
+the resulting value from the conversion will be different from the provided value.
+</p>
+<p>
+To avoid unexpected values, you should either use the other functions provided by the <code>strconv</code>
+package to parse the specific types and bit sizes; in this case, <code>strconv.ParseInt</code> as you
+can see in <code>parseAllocateGood2</code> function; or check bounds as in <code>parseAllocateGood1</code>
+function.
+</p>
+<sample src="IncorrectNumericConversionGood.go"/>
+</example>
+<references>
+<li>
+mitre.org: <a href="https://cwe.mitre.org/data/definitions/681.html">CWE-681: Incorrect Conversion between Numeric Types</a>.
+</li>
+</references>
+</qhelp>
