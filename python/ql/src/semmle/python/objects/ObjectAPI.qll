@@ -621,6 +621,8 @@ abstract class FunctionValue extends CallableValue {
             bm.getFunction() = this
         )
     }
+
+    /** Gets a class that this function may return */
     abstract ClassValue getAnInferredReturnType();
 }
 
