@@ -7,8 +7,6 @@
 import csharp
 
 /**
- * DEPRECATED.
- *
  * A parameter of a public callable, for example `p` in
  *
  * ```
@@ -17,7 +15,7 @@ import csharp
  * }
  * ```
  */
-deprecated class PublicCallableParameterFlowSource extends DataFlow::ParameterNode {
+class PublicCallableParameterFlowSource extends DataFlow::ParameterNode {
   PublicCallableParameterFlowSource() {
     exists(Callable c, Parameter p |
       p = this.getParameter() and
