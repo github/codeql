@@ -187,7 +187,15 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Flow through pointer dereference
   i2.(LoadInstruction).getSourceAddress() = i1
   or
-  i2.(UnaryInstruction).getUnary() = i1
+  // Unary instructions tend to preserve enough information in practice that we
+  // want taint to flow through.
+  // The exception is `FieldAddressInstruction`. Together with the rule for
+  // `LoadInstruction` above and for `ChiInstruction` below, flow through
+  // `FieldAddressInstruction` could cause flow into one field to come out an
+  // unrelated field. This would happen across function boundaries, where the IR
+  // would not be able to match loads to stores.
+  i2.(UnaryInstruction).getUnary() = i1 and
+  not i2 instanceof FieldAddressInstruction
   or
   i2.(ChiInstruction).getPartial() = i1 and
   not i2.isResultConflated()

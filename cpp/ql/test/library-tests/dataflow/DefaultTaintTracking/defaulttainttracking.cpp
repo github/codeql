@@ -93,8 +93,8 @@ struct Point {
   int y;
 
   void callSink() {
-    sink(this->x); // tainted
-    sink(this->y); // not tainted [FALSE POSITIVE]
+    sink(this->x); // tainted [NOT DETECTED]
+    sink(this->y); // not tainted
   }
 };
 

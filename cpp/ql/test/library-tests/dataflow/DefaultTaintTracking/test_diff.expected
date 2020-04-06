@@ -17,9 +17,7 @@
 | defaulttainttracking.cpp:88:18:88:23 | call to getenv | test_diff.cpp:1:11:1:20 | p#0 | IR only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:10:11:10:13 | p#0 | IR only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:96:10:96:13 | this | IR only |
-| defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:96:16:96:16 | x | IR only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:97:10:97:13 | this | IR only |
-| defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:97:16:97:16 | y | IR only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:103:5:103:5 | x | AST only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:104:10:104:10 | x | IR only |
 | defaulttainttracking.cpp:103:9:103:14 | call to getenv | defaulttainttracking.cpp:106:3:106:3 | p | IR only |
