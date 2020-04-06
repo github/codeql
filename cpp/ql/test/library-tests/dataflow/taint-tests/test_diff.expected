@@ -8,6 +8,8 @@
 | format.cpp:96:8:96:13 | format.cpp:95:30:95:43 | AST only |
 | format.cpp:101:8:101:13 | format.cpp:100:31:100:45 | AST only |
 | format.cpp:106:8:106:14 | format.cpp:105:38:105:52 | AST only |
+| stl.cpp:73:7:73:7 | stl.cpp:69:16:69:21 | AST only |
+| stl.cpp:75:9:75:13 | stl.cpp:69:16:69:21 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
@@ -40,3 +42,4 @@
 | taint.cpp:439:10:439:18 | taint.cpp:437:15:437:20 | AST only |
 | taint.cpp:446:7:446:7 | taint.cpp:445:14:445:28 | AST only |
 | taint.cpp:447:9:447:17 | taint.cpp:445:14:445:28 | AST only |
+| taint.cpp:471:7:471:7 | taint.cpp:462:6:462:11 | AST only |

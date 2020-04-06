@@ -11,7 +11,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.frameworks.system.Xml
 
 /**

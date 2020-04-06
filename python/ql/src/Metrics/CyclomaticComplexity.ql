@@ -11,9 +11,9 @@
  *       complexity
  *       maintainability
  */
+
 import python
 
 from Function func, int complexity
 where complexity = func.getMetrics().getCyclomaticComplexity()
-select func, complexity
-order by complexity desc
+select func, complexity order by complexity desc

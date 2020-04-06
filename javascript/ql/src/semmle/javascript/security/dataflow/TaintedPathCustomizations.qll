@@ -225,7 +225,8 @@ module TaintedPath {
         term.getAMatchedString() = "/" or
         term.getAMatchedString() = "." or
         term.getAMatchedString() = ".."
-      )
+      ) and
+      not this instanceof DotDotSlashPrefixRemovingReplace
     }
 
     /**
@@ -237,6 +238,57 @@ module TaintedPath {
      * Gets the normalized path.
      */
     DataFlow::Node getOutput() { result = output }
+  }
+
+  /**
+   * A call that removes all instances of "../" in the prefix of the string.
+   */
+  class DotDotSlashPrefixRemovingReplace extends DataFlow::CallNode {
+    DataFlow::Node input;
+    DataFlow::Node output;
+
+    DotDotSlashPrefixRemovingReplace() {
+      this.getCalleeName() = "replace" and
+      input = getReceiver() and
+      output = this and
+      exists(RegExpLiteral literal, RegExpTerm term |
+        getArgument(0).getALocalSource().asExpr() = literal and
+        (term instanceof RegExpStar or term instanceof RegExpPlus) and
+        term.getChild(0) = getADotDotSlashMatcher()
+      |
+        literal.getRoot() = term
+        or
+        exists(RegExpSequence seq | seq.getNumChild() = 2 and literal.getRoot() = seq |
+          seq.getChild(0) instanceof RegExpCaret and
+          seq.getChild(1) = term
+        )
+      )
+    }
+
+    /**
+     * Gets the input path to be sanitized.
+     */
+    DataFlow::Node getInput() { result = input }
+
+    /**
+     * Gets the path where prefix "../" has been removed.
+     */
+    DataFlow::Node getOutput() { result = output }
+  }
+
+  /**
+   * Gets a RegExpTerm that matches a variation of "../".
+   */
+  private RegExpTerm getADotDotSlashMatcher() {
+    result.getAMatchedString() = "../"
+    or
+    exists(RegExpSequence seq | seq = result |
+      seq.getChild(0).getConstantValue() = "." and
+      seq.getChild(1).getConstantValue() = "." and
+      seq.getAChild().getAMatchedString() = "/"
+    )
+    or
+    exists(RegExpGroup group | result = group | group.getChild(0) = getADotDotSlashMatcher())
   }
 
   /**

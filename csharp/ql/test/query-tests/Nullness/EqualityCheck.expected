@@ -220,6 +220,20 @@
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:18:355:21 | null | E.cs:355:13:355:13 | access to local variable x |
 | E.cs:362:13:362:29 | ... != ... | false | E.cs:362:13:362:13 | access to local variable x | E.cs:362:18:362:29 | (...) ... |
 | E.cs:362:13:362:29 | ... != ... | false | E.cs:362:18:362:29 | (...) ... | E.cs:362:13:362:13 | access to local variable x |
+| E.cs:382:14:382:23 | ... == ... | true | E.cs:382:14:382:15 | access to parameter e1 | E.cs:382:20:382:23 | null |
+| E.cs:382:14:382:23 | ... == ... | true | E.cs:382:20:382:23 | null | E.cs:382:14:382:15 | access to parameter e1 |
+| E.cs:382:28:382:37 | ... != ... | false | E.cs:382:28:382:29 | access to parameter e2 | E.cs:382:34:382:37 | null |
+| E.cs:382:28:382:37 | ... != ... | false | E.cs:382:34:382:37 | null | E.cs:382:28:382:29 | access to parameter e2 |
+| E.cs:382:44:382:53 | ... != ... | false | E.cs:382:44:382:45 | access to parameter e1 | E.cs:382:50:382:53 | null |
+| E.cs:382:44:382:53 | ... != ... | false | E.cs:382:50:382:53 | null | E.cs:382:44:382:45 | access to parameter e1 |
+| E.cs:382:58:382:67 | ... == ... | true | E.cs:382:58:382:59 | access to parameter e2 | E.cs:382:64:382:67 | null |
+| E.cs:382:58:382:67 | ... == ... | true | E.cs:382:64:382:67 | null | E.cs:382:58:382:59 | access to parameter e2 |
+| E.cs:384:13:384:22 | ... == ... | true | E.cs:384:13:384:14 | access to parameter e1 | E.cs:384:19:384:22 | null |
+| E.cs:384:13:384:22 | ... == ... | true | E.cs:384:19:384:22 | null | E.cs:384:13:384:14 | access to parameter e1 |
+| E.cs:384:27:384:36 | ... == ... | true | E.cs:384:27:384:28 | access to parameter e2 | E.cs:384:33:384:36 | null |
+| E.cs:384:27:384:36 | ... == ... | true | E.cs:384:33:384:36 | null | E.cs:384:27:384:28 | access to parameter e2 |
+| E.cs:386:16:386:33 | ... == ... | true | E.cs:386:16:386:22 | access to property Long | E.cs:386:27:386:33 | access to property Long |
+| E.cs:386:16:386:33 | ... == ... | true | E.cs:386:27:386:33 | access to property Long | E.cs:386:16:386:22 | access to property Long |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:13:59:13 | access to parameter o | Forwarding.cs:59:18:59:21 | null |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:18:59:21 | null | Forwarding.cs:59:13:59:13 | access to parameter o |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:32:78:32 | access to parameter o | Forwarding.cs:78:35:78:38 | null |

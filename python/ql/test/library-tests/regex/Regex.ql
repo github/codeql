@@ -1,10 +1,8 @@
-
-
 import python
 import semmle.python.regex
 
 predicate part(Regex r, int start, int end, string kind) {
-    r.alternation(start, end) and kind = "choice" 
+    r.alternation(start, end) and kind = "choice"
     or
     r.normalCharacter(start, end) and kind = "char"
     or

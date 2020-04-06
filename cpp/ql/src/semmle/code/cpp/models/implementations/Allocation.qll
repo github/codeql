@@ -216,6 +216,40 @@ class SizelessAllocationFunction extends AllocationFunction {
 }
 
 /**
+ * An `operator new` or `operator new[]` function that may be associated with `new` or
+ * `new[]` expressions.  Note that `new` and `new[]` are not function calls, but these
+ * functions may also be called directly.
+ */
+class OperatorNewAllocationFunction extends AllocationFunction {
+  OperatorNewAllocationFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      (
+        // operator new(bytes, ...)
+        name = "operator new"
+        or
+        // operator new[](bytes, ...)
+        name = "operator new[]"
+      )
+    )
+  }
+
+  override int getSizeArg() { result = 0 }
+
+  override predicate requiresDealloc() { not exists(getPlacementArgument()) }
+
+  /**
+   * Gets the position of the placement pointer if this is a placement
+   * `operator new` function.
+   */
+  int getPlacementArgument() {
+    getNumberOfParameters() = 2 and
+    getParameter(1).getType() instanceof VoidPointerType and
+    result = 1
+  }
+}
+
+/**
  * An allocation expression that is a function call, such as call to `malloc`.
  */
 class CallAllocationExpr extends AllocationExpr, FunctionCall {
@@ -227,7 +261,9 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     not (
       exists(target.getReallocPtrArg()) and
       getArgument(target.getSizeArg()).getValue().toInt() = 0
-    )
+    ) and
+    // these are modelled directly (and more accurately), avoid duplication
+    not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
 
   override Expr getSizeExpr() { result = getArgument(target.getSizeArg()) }

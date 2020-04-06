@@ -2,10 +2,13 @@
 
 using System;
 using System.Web;
+using System.Web.UI.WebControls;
 
 public class StackTraceHandler : IHttpHandler
 {
     bool b;
+    TextBox textBox;
+
     public void ProcessRequest(HttpContext ctx)
     {
         try
@@ -34,6 +37,11 @@ public class StackTraceHandler : IHttpHandler
             // GOOD: log the stack trace, and send back a non-revealing response
             log("Exception occurred", ex);
             ctx.Response.Write("Exception occurred");
+
+            textBox.Text = ex.InnerException.StackTrace; // BAD
+            textBox.Text = ex.StackTrace; // BAD
+            textBox.Text = ex.ToString(); // BAD
+            textBox.Text = ex.Message; // GOOD
             return;
         }
 

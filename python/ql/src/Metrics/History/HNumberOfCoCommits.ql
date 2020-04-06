@@ -7,14 +7,17 @@
  * @metricType file
  * @metricAggregate avg min max
  */
+
 import python
 import external.VCS
 
-int committedFiles(Commit commit) {
-	result = count(commit.getAnAffectedFile())
-}
+int committedFiles(Commit commit) { result = count(commit.getAnAffectedFile()) }
 
 from Module m
 where exists(m.getMetrics().getNumberOfLinesOfCode())
-select m, avg(Commit commit, int toAvg | (commit.getAnAffectedFile() = m.getFile()) and (toAvg = committedFiles(commit)-1) | toAvg)
-
+select m,
+    avg(Commit commit, int toAvg |
+        commit.getAnAffectedFile() = m.getFile() and toAvg = committedFiles(commit) - 1
+    |
+        toAvg
+    )
