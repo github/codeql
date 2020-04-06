@@ -257,7 +257,27 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
     )
   }
 
+  // There might be multiple `ChiInstructions` that has a particular instruction as
+  // the total operand - so this definition give consistency errors in
+  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
+  // this consistency failure has.
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+}
+
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+  FieldAddressInstruction field;
+
+  ExplicitSingleFieldStoreQualifierNode() {
+    field = instr.getDestinationAddress() and
+    not exists(ChiInstruction chi | chi.getPartial() = instr)
+  }
+
+  // Since there is no Chi instruction with a total operand for us to use we let the pre update node
+  // be the address of the object containing the field.
+  // Note that, unlike in the case where a struct has multiple fields (and thus has a `Chi`
+  // instruction), the pre update node will be an instruction with a register result.
+  override Node getPreUpdateNode() { result.asInstruction() = field.getObjectAddress() }
 }
 
 /**
@@ -281,6 +301,8 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
     call = write.getPrimaryInstruction()
   }
 
+  // See the comment on ExplicitFieldStoreQualifierNode::getPreUpdateNode for comments on why
+  // this causes failures in DataFlowImplConsistency::Consistency.
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 
   /** Gets the argument corresponding to this node. */
