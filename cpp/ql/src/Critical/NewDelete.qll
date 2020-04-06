@@ -16,9 +16,19 @@ predicate allocExpr(Expr alloc, string kind) {
   isAllocationExpr(alloc) and
   not alloc.isFromUninstantiatedTemplate(_) and
   (
-    alloc instanceof FunctionCall and
-    not alloc.(FunctionCall).getTarget() instanceof OperatorNewAllocationFunction and
-    kind = "malloc"
+    exists(Function target |
+      alloc.(FunctionCall).getTarget() = target and
+      (
+        target.getName() = "operator new" and
+        kind = "new"
+        or
+        target.getName() = "operator new[]" and
+        kind = "new[]"
+        or
+        not target instanceof OperatorNewAllocationFunction and
+        kind = "malloc"
+      )
+    )
     or
     alloc instanceof NewExpr and
     kind = "new" and
@@ -113,9 +123,20 @@ predicate allocReaches(Expr e, Expr alloc, string kind) {
  * describing the type of that free or delete.
  */
 predicate freeExpr(Expr free, Expr freed, string kind) {
-  freeCall(free, freed) and
-  not free.(FunctionCall).getTarget() instanceof OperatorDeleteDeallocationFunction and
-  kind = "free"
+  exists(Function target |
+    freeCall(free, freed) and
+    free.(FunctionCall).getTarget() = target and
+    (
+      target.getName() = "operator delete" and
+      kind = "delete"
+      or
+      target.getName() = "operator delete[]" and
+      kind = "delete[]"
+      or
+      not target instanceof OperatorDeleteDeallocationFunction and
+      kind = "free"
+    )
+  )
   or
   free.(DeleteExpr).getExpr() = freed and
   kind = "delete"

@@ -52,9 +52,9 @@ void test_operator_new()
 
 	delete ptr_opnew; // GOOD
 	::operator delete(ptr_opnew); // GOOD
-	free(ptr_opnew); // BAD [NOT DETECTED]
+	free(ptr_opnew); // BAD
 
 	delete ptr_malloc; // BAD
-	::operator delete(ptr_malloc); // BAD [NOT DETECTED]
+	::operator delete(ptr_malloc); // BAD
 	free(ptr_malloc); // GOOD
 }
