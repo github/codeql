@@ -56,11 +56,11 @@ $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
 .PHONY: extractor-common extractor extractor-full
-extractor-common: codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme \
+extractor-common: codeql-extractor.yml LICENSE ql/src/go.dbscheme \
 	tools/tokenizer.jar $(CODEQL_TOOLS)
 	rm -rf $(EXTRACTOR_PACK_OUT)
 	mkdir -p $(EXTRACTOR_PACK_OUT)
-	cp codeql-extractor.yml COPYRIGHT LICENSE ql/src/go.dbscheme ql/src/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
+	cp codeql-extractor.yml LICENSE ql/src/go.dbscheme ql/src/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
 
