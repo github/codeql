@@ -15,10 +15,10 @@ class IntParser extends Function {
   IntParser() { this.hasQualifiedName("strconv", "Atoi") }
 }
 
-class OverflowingConversionExpr extends ConversionExpr {
+class NumericConversionExpr extends ConversionExpr {
   string conversionTypeName;
 
-  OverflowingConversionExpr() {
+  NumericConversionExpr() {
     exists(ConversionExpr conv |
       conversionTypeName = conv.getTypeExpr().getType().getUnderlyingType*().getName() and
       (
@@ -59,14 +59,14 @@ class FlowConfig extends TaintTracking::Configuration, DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(OverflowingConversionExpr conv | sink.asExpr() = conv)
+    exists(NumericConversionExpr conv | sink.asExpr() = conv)
   }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // If the conversion is inside an `if` block that compares the
     // source as `source > 0`, then that sanitizes conversion of int64 to int32;
-    exists(IfRelationalComparison san, OverflowingConversionExpr conv |
-      conv = node.asExpr().(OverflowingConversionExpr) and
+    exists(IfRelationalComparison san, NumericConversionExpr conv |
+      conv = node.asExpr().(NumericConversionExpr) and
       san.getThen().getAChild*() = conv and
       (
         conv.getTypeName() = "int32" and
@@ -114,7 +114,7 @@ int getMaxUint16() {
 }
 
 predicate comparisonGreaterOperandIsEqualOrLess(
-  string typeName, IfRelationalComparison ifExpr, OverflowingConversionExpr conv, int value
+  string typeName, IfRelationalComparison ifExpr, NumericConversionExpr conv, int value
 ) {
   conv.getTypeName() = typeName and
   (
