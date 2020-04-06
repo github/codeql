@@ -245,7 +245,7 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {}
+abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
@@ -276,12 +276,12 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
   CallInstruction call;
 
   DefinitionByReferenceNode() {
+    not instr.isResultConflated() and
     instr.getPartial() = write and
-    call = write.getPrimaryInstruction() }
-
-  override Node getPreUpdateNode() {
-    result.asInstruction() = instr.getTotal()
+    call = write.getPrimaryInstruction()
   }
+
+  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
@@ -292,9 +292,7 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
   }
 
   /** Gets the parameter through which this value is assigned. */
-  Parameter getParameter() {
-    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(write.getIndex()))
-  }
+  Parameter getParameter() { result = call.getStaticCallTarget().getParameter(write.getIndex()) }
 }
 
 /**
@@ -383,6 +381,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
   or
   exists(LoadInstruction load, ChiInstruction chi |
+    not chi.isResultConflated() and
     nodeTo.asInstruction() = load and
     nodeFrom.asInstruction() = chi and
     load.getSourceValueOperand().getAnyDef() = chi
@@ -412,11 +411,10 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   //
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
-
   // TODO: To capture flow from a partial definition of an object (i.e., a field write) to the object
   // we add dataflow through partial chi operands, but only if the chi node is not the chi node for all
   // aliased memory.
-  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom and not iFrom.isResultConflated()
+  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom and not iTo.isResultConflated()
   or
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
