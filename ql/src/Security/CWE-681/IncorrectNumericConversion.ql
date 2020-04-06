@@ -118,13 +118,13 @@ predicate comparisonGreaterOperandIsEqualOrLess(
 ) {
   conv.getTypeName() = typeName and
   (
-    // exclude cases like: if parsed < math.MaxInt8 { int8(parsed)}
+    // exclude cases like: if parsed < math.MaxInt8 {return int8(parsed)}
     ifExpr.getComparison().getGreaterOperand().getNumericValue() = value and
     // and lesser is the conversion operand:
     ifExpr.getComparison().getLesserOperand().getGlobalValueNumber() =
       conv.getOperand().getGlobalValueNumber()
     or
-    // exclude cases like: if err == nil && parsed < math.MaxInt8 { int8(parsed)}
+    // exclude cases like: if err == nil && parsed < math.MaxInt8 {return int8(parsed)}
     exists(RelationalComparisonExpr andExpr |
       andExpr = ifExpr.getLandExpr().getAnOperand().(RelationalComparisonExpr)
     |
