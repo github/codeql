@@ -14,13 +14,8 @@ import semmle.code.cpp.models.implementations.Deallocation
  */
 predicate allocExpr(Expr alloc, string kind) {
   (
-    alloc.(FunctionCall) instanceof AllocationExpr
-    or
-    alloc = any(NewOrNewArrayExpr new | not exists(new.getPlacementPointer()))
-  ) and
-  (
     exists(Function target |
-      alloc.(FunctionCall).getTarget() = target and
+      alloc.(AllocationExpr).(FunctionCall).getTarget() = target and
       (
         target.getName() = "operator new" and
         kind = "new"
