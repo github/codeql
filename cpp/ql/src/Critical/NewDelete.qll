@@ -18,10 +18,16 @@ predicate allocExpr(Expr alloc, string kind) {
       alloc.(AllocationExpr).(FunctionCall).getTarget() = target and
       (
         target.getName() = "operator new" and
-        kind = "new"
+        kind = "new" and
+        // exclude placement new and custom overloads as they
+        // may not conform to assumptions
+        not target.getNumberOfParameters() > 1
         or
         target.getName() = "operator new[]" and
-        kind = "new[]"
+        kind = "new[]" and
+        // exclude placement new and custom overloads as they
+        // may not conform to assumptions
+        not target.getNumberOfParameters() > 1
         or
         not target instanceof OperatorNewAllocationFunction and
         kind = "malloc"
