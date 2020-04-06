@@ -13,8 +13,11 @@ import semmle.code.cpp.models.implementations.Deallocation
  * a string describing the type of the allocation.
  */
 predicate allocExpr(Expr alloc, string kind) {
-  isAllocationExpr(alloc) and
-  not alloc.isFromUninstantiatedTemplate(_) and
+  (
+    alloc.(FunctionCall) instanceof AllocationExpr
+    or
+    alloc = any(NewOrNewArrayExpr new | not exists(new.getPlacementPointer()))
+  ) and
   (
     exists(Function target |
       alloc.(FunctionCall).getTarget() = target and
@@ -41,7 +44,8 @@ predicate allocExpr(Expr alloc, string kind) {
     // exclude placement new and custom overloads as they
     // may not conform to assumptions
     not alloc.(NewArrayExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
-  )
+  ) and
+  not alloc.isFromUninstantiatedTemplate(_)
 }
 
 /**
@@ -124,7 +128,7 @@ predicate allocReaches(Expr e, Expr alloc, string kind) {
  */
 predicate freeExpr(Expr free, Expr freed, string kind) {
   exists(Function target |
-    freeCall(free, freed) and
+    freed = free.(DeallocationExpr).getFreedExpr() and
     free.(FunctionCall).getTarget() = target and
     (
       target.getName() = "operator delete" and
