@@ -5,6 +5,8 @@
 import cpp
 import semmle.code.cpp.controlflow.SSA
 import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.models.implementations.Allocation
+import semmle.code.cpp.models.implementations.Deallocation
 
 /**
  * Holds if `alloc` is a use of `malloc` or `new`.  `kind` is
@@ -15,6 +17,7 @@ predicate allocExpr(Expr alloc, string kind) {
   not alloc.isFromUninstantiatedTemplate(_) and
   (
     alloc instanceof FunctionCall and
+    not alloc.(FunctionCall).getTarget() instanceof OperatorNewAllocationFunction and
     kind = "malloc"
     or
     alloc instanceof NewExpr and
@@ -111,6 +114,7 @@ predicate allocReaches(Expr e, Expr alloc, string kind) {
  */
 predicate freeExpr(Expr free, Expr freed, string kind) {
   freeCall(free, freed) and
+  not free.(FunctionCall).getTarget() instanceof OperatorDeleteDeallocationFunction and
   kind = "free"
   or
   free.(DeleteExpr).getExpr() = freed and

@@ -47,10 +47,10 @@ void test_operator_new()
 	void *ptr_malloc = malloc(sizeof(int));
 
 	delete ptr_new; // GOOD
-	::operator delete(ptr_new); // GOOD [FALSE POSITIVE]
+	::operator delete(ptr_new); // GOOD
 	free(ptr_new); // BAD
 
-	delete ptr_opnew; // GOOD [FALSE POSITIVE]
+	delete ptr_opnew; // GOOD
 	::operator delete(ptr_opnew); // GOOD
 	free(ptr_opnew); // BAD [NOT DETECTED]
 
