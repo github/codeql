@@ -1,3 +1,3 @@
-| Class MyTest |
-| Function test_1 |
-| Function test_2 |
+| test.py:4:1:4:23 | Class MyTest |
+| test.py:6:5:6:21 | Function test_1 |
+| test.py:9:5:9:21 | Function test_2 |
