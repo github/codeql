@@ -3,3 +3,4 @@ version: 0.0.0
 libraryPathDependencies:
   - codeql-go
   - codeql-go-examples
+extractor: go
