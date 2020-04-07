@@ -1,0 +1,4 @@
+- description: Standard Code Scanning queries for JavaScript
+- qlpack: codeql-javascript
+- apply: code-scanning-selectors.yml
+  from: codeql-suite-helpers

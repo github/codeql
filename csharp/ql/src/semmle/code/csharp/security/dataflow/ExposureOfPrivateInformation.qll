@@ -5,8 +5,8 @@
 import csharp
 
 module ExposureOfPrivateInformation {
-  import semmle.code.csharp.dataflow.flowsources.Remote
-  import semmle.code.csharp.security.sinks.ExternalLocationSink
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
   import semmle.code.csharp.security.PrivateData
 
   /**
