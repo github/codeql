@@ -333,7 +333,7 @@ GlobalOrNamespaceVariable globalVarFromId(string id) {
  * upper bounds checks if we don't consider where it occurs, for example:
  * ```
  *   if (x < 10) { sink(x); }
- * 
+ *
  *   if (10 > y) { sink(y); }
  *
  *   if (z > 10) { z = 10; }
