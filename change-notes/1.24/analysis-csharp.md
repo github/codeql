@@ -21,6 +21,9 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | Potentially dangerous use of non-short-circuit logic (`cs/non-short-circuit`) | Fewer false positive results | Results have been removed when the expression contains an `out` parameter. |
 | Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | More results | Results are reported from parameters with a default value of `null`. |
 | Useless assignment to local variable (`cs/useless-assignment-to-local`) | Fewer false positive results | Results have been removed when the value assigned is an (implicitly or explicitly) cast default-like value. For example, `var s = (string)null` and `string s = default`. |
+| XPath injection (`cs/xml/xpath-injection`) | More results | The query now recognizes calls to methods on `System.Xml.XPath.XPathNavigator` objects. |
+| Information exposure through transmitted data (`cs/sensitive-data-transmission`) | More results | The query now recognizes writes to cookies and writes to ASP.NET (`Inner`)`Text` properties as additional sinks. |
+| Information exposure through an exception (`cs/information-exposure-through-exception`) | More results | The query now recognizes writes to cookies, writes to ASP.NET (`Inner`)`Text` properties, and email contents as additional sinks. |
 
 ## Removal of old queries
 
@@ -41,5 +44,6 @@ The following changes in version 1.24 affect C# analysis in all applications.
 * [Code contracts](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts) are now recognized, and are treated like any other assertion methods.
 * Expression nullability flow state is given by the predicates `Expr.hasNotNullFlowState()` and `Expr.hasMaybeNullFlowState()`.
 * `stackalloc` array creations are now represented by the QL class `Stackalloc`. Previously they were represented by the class `ArrayCreation`.
+* A new class `RemoteFlowSink` has been added to model sinks where data might be exposed to external users. Examples include web page output, e-mails, and cookies.
 
 ## Changes to autobuilder

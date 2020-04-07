@@ -37,18 +37,17 @@ predicate maybe_defined_in_outer_scope(Name n) {
     exists(SsaVariable v | v.getAUse().getNode() = n | v.maybeUndefined())
 }
 
-/* Protection against FPs in projects that offer compatibility between Python 2 and 3,
+/*
+ * Protection against FPs in projects that offer compatibility between Python 2 and 3,
  * since many of them make assignments such as
  *
  * if PY2:
  *     bytes = str
  * else:
  *     bytes = bytes
- *
  */
-predicate isBuiltin(string name) {
-    exists(Value v | v = Value::named(name) and v.isBuiltin())
-}
+
+predicate isBuiltin(string name) { exists(Value v | v = Value::named(name) and v.isBuiltin()) }
 
 predicate same_name(Name n1, Name n2) {
     corresponding(n1, n2) and

@@ -49,6 +49,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] |
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
@@ -57,6 +58,7 @@ instructionWithoutSuccessor
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
+| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
@@ -107,7 +109,7 @@ instructionWithoutSuccessor
 | vla.c:14:92:14:94 | Store: (char *)... |
 ambiguousSuccessors
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | array_delete.cpp:5:6:5:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
@@ -413,7 +415,7 @@ ambiguousSuccessors
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
@@ -463,7 +465,7 @@ ambiguousSuccessors
 | nonmembercallexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
 | nonmembercallexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | revsubscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
@@ -515,7 +517,7 @@ ambiguousSuccessors
 | staticmembercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | staticmembercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
+| stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
 | stream_it.cpp:16:5:16:8 | UnmodeledDefinition: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
@@ -631,6 +633,9 @@ useNotDominatedByDefinition
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

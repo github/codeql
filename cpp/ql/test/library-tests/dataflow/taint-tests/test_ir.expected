@@ -1,3 +1,5 @@
+| stl.cpp:71:7:71:7 | (const char *)... | stl.cpp:67:12:67:17 | call to source |
+| stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -20,3 +22,5 @@
 | taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
 | taint.cpp:429:7:429:7 | b | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
+| taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |

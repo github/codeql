@@ -5,7 +5,7 @@
 import csharp
 
 module XPathInjection {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.xml.XPath
   import semmle.code.csharp.frameworks.system.Xml
   import semmle.code.csharp.security.Sanitizers
@@ -62,6 +62,20 @@ module XPathInjection {
             .getASelectNodeMethod()
             .getACall()
             .getArgumentForName("xpath")
+    }
+  }
+
+  /** The `xpath` argument to an `XPathNavigator` call. */
+  class XmlNavigatorSink extends Sink {
+    XmlNavigatorSink() {
+      exists(SystemXmlXPath::XPathNavigator xmlNav, Method m |
+        this.getExpr() = m.getACall().getArgumentForName("xpath")
+      |
+        m = xmlNav.getASelectMethod() or
+        m = xmlNav.getCompileMethod() or
+        m = xmlNav.getAnEvaluateMethod() or
+        m = xmlNav.getAMatchesMethod()
+      )
     }
   }
 

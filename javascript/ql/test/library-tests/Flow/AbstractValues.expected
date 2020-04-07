@@ -272,6 +272,10 @@
 | ts.ts:1:16:1:25 | class A |
 | ts.ts:1:16:1:25 | instance of class A |
 | ts.ts:1:24:1:23 | default constructor of class A |
+| tsTest.ts:1:1:13:0 | exports object of module tsTest |
+| tsTest.ts:1:1:13:0 | module object of module tsTest |
+| tsTest.ts:8:1:10:1 | function setX |
+| tsTest.ts:8:1:10:1 | instance of function setX |
 | tst2.js:3:2:5:1 | anonymous function |
 | tst2.js:3:2:5:1 | instance of anonymous function |
 | tst.js:1:1:39:1 | arguments object of function tst |
@@ -341,9 +345,5 @@
 | tst.js:174:1:183:1 | function awaitFlow |
 | tst.mjs:1:1:4:0 | exports object of module tst |
 | tst.mjs:1:1:4:0 | module object of module tst |
-| tst.ts:1:1:13:0 | exports object of module tst |
-| tst.ts:1:1:13:0 | module object of module tst |
-| tst.ts:8:1:10:1 | function setX |
-| tst.ts:8:1:10:1 | instance of function setX |
 | with.js:1:1:17:1 | function f |
 | with.js:1:1:17:1 | instance of function f |

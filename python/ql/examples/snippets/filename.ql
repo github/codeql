@@ -4,7 +4,7 @@
  * @description Finds files called `spam.py`
  * @tags file
  */
- 
+
 import python
 
 from File f

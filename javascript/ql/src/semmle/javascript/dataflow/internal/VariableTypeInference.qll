@@ -697,14 +697,14 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
   }
 
   override predicate mayReceiveArgument(Parameter p) {
-    exists(DataFlow::InvokeNode invk, int argIdx |
-      invk = getAnInvocation() and
-      p = getParameter(argIdx)
-    |
-      exists(invk.getArgument(argIdx))
-      or
-      invk.asExpr().(InvokeExpr).isSpreadArgument([0 .. argIdx])
+    exists(int argIdx |
+      p = getParameter(argIdx) and
+      getAnInvocation().getNumArgument() > argIdx
     )
+    or
+    // All parameters may receive an argument if invoked with a spread argument
+    p = getAParameter() and
+    getAnInvocation().asExpr().(InvokeExpr).isSpreadArgument(_)
   }
 }
 

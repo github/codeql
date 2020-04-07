@@ -89,15 +89,12 @@ nodes
 | passwords.js:123:31:123:38 | password |
 | passwords.js:123:31:123:48 | password.valueOf() |
 | passwords.js:127:9:132:5 | config |
-| passwords.js:127:9:132:5 | config |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |
 | passwords.js:130:12:130:19 | password |
 | passwords.js:130:12:130:19 | password |
 | passwords.js:131:12:131:24 | getPassword() |
 | passwords.js:131:12:131:24 | getPassword() |
-| passwords.js:135:17:135:22 | config |
 | passwords.js:135:17:135:22 | config |
 | passwords.js:135:17:135:22 | config |
 | passwords.js:136:17:136:24 | config.x |
@@ -226,9 +223,6 @@ edges
 | passwords.js:123:31:123:48 | password.valueOf() | passwords.js:123:17:123:48 | name +  ... lueOf() |
 | passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
 | passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
-| passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
-| passwords.js:127:9:132:5 | config | passwords.js:135:17:135:22 | config |
-| passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:127:18:132:5 | {\\n      ... )\\n    } | passwords.js:127:9:132:5 | config |
 | passwords.js:130:12:130:19 | password | passwords.js:127:18:132:5 | {\\n      ... )\\n    } |

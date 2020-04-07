@@ -2,6 +2,7 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.DataFlow2
+private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 private import semmle.code.cpp.models.interfaces.Taint
@@ -60,7 +61,14 @@ private DataFlow::Node getNodeForSource(Expr source) {
   (
     result = DataFlow::exprNode(source)
     or
-    result = DataFlow::definitionByReferenceNode(source)
+    // Some of the sources in `isUserInput` are intended to match the value of
+    // an expression, while others (those modeled below) are intended to match
+    // the taint that propagates out of an argument, like the `char *` argument
+    // to `gets`. It's impossible here to tell which is which, but the "access
+    // to argv" source is definitely not intended to match an output argument,
+    // and it causes false positives if we let it.
+    result = DataFlow::definitionByReferenceNode(source) and
+    not argv(source.(VariableAccess).getTarget())
   )
 }
 
@@ -76,6 +84,8 @@ private class DefaultTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
@@ -96,6 +106,8 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
@@ -119,6 +131,8 @@ private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+  override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
@@ -163,6 +177,12 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
   )
 }
 
+private predicate nodeIsBarrierIn(DataFlow::Node node) {
+  // don't use dataflow into taint sources, as this leads to duplicate results.
+  node = getNodeForSource(any(Expr e))
+}
+
+cached
 private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Expressions computed from tainted data are also tainted
   exists(CallInstruction call, int argIndex | call = i2 |
@@ -182,7 +202,7 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(UnaryInstruction).getUnary() = i1
   or
   i2.(ChiInstruction).getPartial() = i1 and
-  not isChiForAllAliasedMemory(i2)
+  not i2.isResultConflated()
   or
   exists(BinaryInstruction bin |
     bin = i2 and
@@ -275,19 +295,6 @@ private predicate modelTaintToParameter(Function f, int parameterIn, int paramet
   )
 }
 
-/**
- * Holds if `chi` is on the chain of chi-instructions for all aliased memory.
- * Taint should not pass through these instructions since they tend to mix up
- * unrelated objects.
- */
-private predicate isChiForAllAliasedMemory(Instruction instr) {
-  instr.(ChiInstruction).getTotal() instanceof AliasedDefinitionInstruction
-  or
-  isChiForAllAliasedMemory(instr.(ChiInstruction).getTotal())
-  or
-  isChiForAllAliasedMemory(instr.(PhiInstruction).getAnInputOperand().getAnyDef())
-}
-
 private predicate modelTaintToReturnValue(Function f, int parameterIn) {
   // Taint flow from parameter to return value
   exists(FunctionInput modelIn, FunctionOutput modelOut |
@@ -353,6 +360,16 @@ private Element adjustedSink(DataFlow::Node sink) {
   result.(AssignOperation).getAnOperand() = sink.asExpr()
 }
 
+/**
+ * Holds if `tainted` may contain taint from `source`.
+ *
+ * A tainted expression is either directly user input, or is
+ * computed from user input in a way that users can probably
+ * control the exact output of the computation.
+ *
+ * This doesn't include data flow through global variables.
+ * If you need that you must call `taintedIncludingGlobalVars`.
+ */
 cached
 predicate tainted(Expr source, Element tainted) {
   exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
@@ -361,6 +378,21 @@ predicate tainted(Expr source, Element tainted) {
   )
 }
 
+/**
+ * Holds if `tainted` may contain taint from `source`, where the taint passed
+ * through a global variable named `globalVar`.
+ *
+ * A tainted expression is either directly user input, or is
+ * computed from user input in a way that users can probably
+ * control the exact output of the computation.
+ *
+ * This version gives the same results as tainted but also includes
+ * data flow through global variables.
+ *
+ * The parameter `globalVar` is the qualified name of the last global variable
+ * used to move the value from source to tainted. If the taint did not pass
+ * through a global variable, then `globalVar = ""`.
+ */
 cached
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {
   tainted(source, tainted) and
@@ -378,11 +410,245 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
   )
 }
 
+/**
+ * Gets the global variable whose qualified name is `id`. Use this predicate
+ * together with `taintedIncludingGlobalVars`. Example:
+ *
+ * ```
+ * exists(string varName |
+ *   taintedIncludingGlobalVars(source, tainted, varName) and
+ *   var = globalVarFromId(varName)
+ * )
+ * ```
+ */
 GlobalOrNamespaceVariable globalVarFromId(string id) { id = result.getQualifiedName() }
 
+/**
+ * Resolve potential target function(s) for `call`.
+ *
+ * If `call` is a call through a function pointer (`ExprCall`) or
+ * targets a virtual method, simple data flow analysis is performed
+ * in order to identify target(s).
+ */
 Function resolveCall(Call call) {
   exists(CallInstruction callInstruction |
     callInstruction.getAST() = call and
     result = Dispatch::viableCallable(callInstruction)
   )
+}
+
+/**
+ * Provides definitions for augmenting source/sink pairs with data-flow paths
+ * between them. From a `@kind path-problem` query, import this module in the
+ * global scope, extend `TaintTrackingConfiguration`, and use `taintedWithPath`
+ * in place of `tainted`.
+ *
+ * Importing this module will also import the query predicates that contain the
+ * taint paths.
+ */
+module TaintedWithPath {
+  private newtype TSingleton = MkSingleton()
+
+  /**
+   * A taint-tracking configuration that matches sources and sinks in the same
+   * way as the `tainted` predicate.
+   *
+   * Override `isSink` and `taintThroughGlobals` as needed, but do not provide
+   * a characteristic predicate.
+   */
+  class TaintTrackingConfiguration extends TSingleton {
+    /** Override this to specify which elements are sinks in this configuration. */
+    abstract predicate isSink(Element e);
+
+    /**
+     * Override this predicate to `any()` to allow taint to flow through global
+     * variables.
+     */
+    predicate taintThroughGlobals() { none() }
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = "TaintTrackingConfiguration" }
+  }
+
+  private class AdjustedConfiguration extends DataFlow3::Configuration {
+    AdjustedConfiguration() { this = "AdjustedConfiguration" }
+
+    override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+      instructionTaintStep(n1.asInstruction(), n2.asInstruction())
+      or
+      exists(TaintTrackingConfiguration cfg | cfg.taintThroughGlobals() |
+        writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
+        or
+        readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
+      )
+    }
+
+    override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+
+    override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  }
+
+  /*
+   * A sink `Element` may map to multiple `DataFlowX::PathNode`s via (the
+   * inverse of) `adjustedSink`. For example, an `Expr` maps to all its
+   * conversions, and a `Variable` maps to all loads and stores from it. Because
+   * the path node is part of the tuple that constitutes the alert, this leads
+   * to duplicate alerts.
+   *
+   * To avoid showing duplicates, we edit the graph to replace the final node
+   * coming from the data-flow library with a node that matches exactly the
+   * `Element` sink that's requested.
+   *
+   * The same is done for sources.
+   */
+
+  private newtype TPathNode =
+    TWrapPathNode(DataFlow3::PathNode n) or
+    // There's a single newtype constructor for both sources and sinks since
+    // that makes it easiest to deal with the case where source = sink.
+    TEndpointPathNode(Element e) {
+      exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
+        cfg.hasFlow(sourceNode, sinkNode)
+      |
+        sourceNode = getNodeForSource(e)
+        or
+        e = adjustedSink(sinkNode) and
+        exists(TaintTrackingConfiguration ttCfg | ttCfg.isSink(e))
+      )
+    }
+
+  /** An opaque type used for the nodes of a data-flow path. */
+  class PathNode extends TPathNode {
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      none()
+    }
+  }
+
+  private class WrapPathNode extends PathNode, TWrapPathNode {
+    DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
+
+    override string toString() { result = this.inner().toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.inner().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  private class EndpointPathNode extends PathNode, TEndpointPathNode {
+    Expr inner() { this = TEndpointPathNode(result) }
+
+    override string toString() { result = this.inner().toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this
+          .inner()
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /** A PathNode whose `Element` is a source. It may also be a sink. */
+  private class InitialPathNode extends EndpointPathNode {
+    InitialPathNode() { exists(getNodeForSource(this.inner())) }
+  }
+
+  /** A PathNode whose `Element` is a sink. It may also be a source. */
+  private class FinalPathNode extends EndpointPathNode {
+    FinalPathNode() { exists(TaintTrackingConfiguration cfg | cfg.isSink(this.inner())) }
+  }
+
+  /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+  query predicate edges(PathNode a, PathNode b) {
+    DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
+    or
+    // To avoid showing trivial-looking steps, we _replace_ the last node instead
+    // of adding an edge out of it.
+    exists(WrapPathNode sinkNode |
+      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
+      b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+    or
+    // Same for the first node
+    exists(WrapPathNode sourceNode |
+      DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
+      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner())
+    )
+    or
+    // Finally, handle the case where the path goes directly from a source to a
+    // sink, meaning that they both need to be translated.
+    exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
+      DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
+      sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner()) and
+      b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
+    )
+  }
+
+  /** Holds if `n` is a node in the graph of data flow path explanations. */
+  query predicate nodes(PathNode n, string key, string val) {
+    key = "semmle.label" and val = n.toString()
+  }
+
+  /**
+   * Holds if `tainted` may contain taint from `source`, where `sourceNode` and
+   * `sinkNode` are the corresponding `PathNode`s that can be used in a query
+   * to provide path explanations. Extend `TaintTrackingConfiguration` to use
+   * this predicate.
+   *
+   * A tainted expression is either directly user input, or is computed from
+   * user input in a way that users can probably control the exact output of
+   * the computation.
+   */
+  predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
+    exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
+      source = sourceNode.(InitialPathNode).inner() and
+      flowSource = getNodeForSource(source) and
+      cfg.hasFlow(flowSource, flowSink) and
+      tainted = adjustedSink(flowSink) and
+      tainted = sinkNode.(FinalPathNode).inner()
+    )
+  }
+
+  private predicate isGlobalVariablePathNode(WrapPathNode n) {
+    n.inner().getNode().asVariable() instanceof GlobalOrNamespaceVariable
+  }
+
+  private predicate edgesWithoutGlobals(PathNode a, PathNode b) {
+    edges(a, b) and
+    not isGlobalVariablePathNode(a) and
+    not isGlobalVariablePathNode(b)
+  }
+
+  /**
+   * Holds if `tainted` can be reached from a taint source without passing
+   * through a global variable.
+   */
+  predicate taintedWithoutGlobals(Element tainted) {
+    exists(PathNode sourceNode, FinalPathNode sinkNode |
+      sourceNode.(WrapPathNode).inner().getNode() = getNodeForSource(_) and
+      edgesWithoutGlobals+(sourceNode, sinkNode) and
+      tainted = sinkNode.inner()
+    )
+  }
 }

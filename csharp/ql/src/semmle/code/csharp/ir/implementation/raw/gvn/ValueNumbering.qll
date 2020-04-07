@@ -2,21 +2,6 @@ private import internal.ValueNumberingInternal
 private import internal.ValueNumberingImports
 
 /**
- * Provides additional information about value numbering in IR dumps.
- */
-class ValueNumberPropertyProvider extends IRPropertyProvider {
-  override string getInstructionProperty(Instruction instr, string key) {
-    exists(ValueNumber vn |
-      vn = valueNumber(instr) and
-      key = "valnum" and
-      if strictcount(vn.getAnInstruction()) > 1
-      then result = vn.getDebugString()
-      else result = "unique"
-    )
-  }
-}
-
-/**
  * The value number assigned to a particular set of instructions that produce equivalent results.
  */
 class ValueNumber extends TValueNumber {

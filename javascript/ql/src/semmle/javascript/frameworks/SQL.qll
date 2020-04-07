@@ -132,15 +132,22 @@ private module Postgres {
     result = DataFlow::moduleImport("pg-pool").getAnInstantiation()
   }
 
+  private DataFlow::SourceNode clientOrPool(DataFlow::TypeTracker t) {
+    t.start() and
+    (result = client() or result = newPool())
+    or
+    exists(DataFlow::TypeTracker t2 | result = clientOrPool(t2).track(t2, t))
+  }
+
+  private DataFlow::SourceNode clientOrPool() {
+    result = clientOrPool(DataFlow::TypeTracker::end())
+  }
+
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
-    QueryCall() {
-      exists(DataFlow::SourceNode recv | recv = client() or recv = newPool() |
-        this = recv.getAMethodCall("query")
-      )
-    }
+    QueryCall() { this = clientOrPool().getAMethodCall("query") }
 
     override DataFlow::Node getAQueryArgument() {
       result = DataFlow::valueNode(astNode.getArgument(0))
