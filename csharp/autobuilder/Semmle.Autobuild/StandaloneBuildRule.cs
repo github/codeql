@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Semmle.Autobuild
+﻿namespace Semmle.Autobuild
 {
     /// <summary>
     /// Build using standalone extraction.
@@ -9,8 +7,11 @@ namespace Semmle.Autobuild
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
-            BuildScript GetCommand(string solution)
+            BuildScript GetCommand(string? solution)
             {
+                if (builder.SemmlePlatformTools is null)
+                    return BuildScript.Failure;
+
                 var standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
                 var cmd = new CommandBuilder(builder.Actions);
                 cmd.RunCommand(standalone);

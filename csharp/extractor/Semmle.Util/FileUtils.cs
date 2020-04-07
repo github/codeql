@@ -62,7 +62,7 @@ namespace Semmle.Util
         ///
         /// Returns <code>null</code> of no path can be found.
         /// </summary>
-        public static string FindProgramOnPath(string prog)
+        public static string? FindProgramOnPath(string prog)
         {
             var paths = Environment.GetEnvironmentVariable("PATH")?.Split(Path.PathSeparator);
             string[] exes;
