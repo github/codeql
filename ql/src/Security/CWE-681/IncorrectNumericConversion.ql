@@ -268,10 +268,22 @@ predicate comparisonGreaterOperandValueIsEqual(
   )
 }
 
+string getParserQualifiedNameFromResultType(string resultTypeName) {
+  resultTypeName = "int" and result = "strconv.Atoi"
+  or
+  resultTypeName = "int64" and result = "strconv.ParseInt"
+  or
+  resultTypeName = "uint64" and result = "strconv.ParseUint"
+  or
+  resultTypeName = "float64" and result = "strconv.ParseFloat"
+}
+
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where
   exists(Lte64FlowConfig cfg | cfg.hasFlowPath(source, sink)) or
   exists(Lte32FlowConfig cfg | cfg.hasFlowPath(source, sink)) or
   exists(Lte16FlowConfig cfg | cfg.hasFlowPath(source, sink))
 select source, source, sink,
-  "Incorrect type conversion of int from strconv.Atoi result to another numeric type"
+  "Incorrect type conversion of " + source.getNode().getType() + " from " +
+    getParserQualifiedNameFromResultType(source.getNode().getType().toString()) + " result to " +
+    sink.getNode().asExpr().(Lte32BitNumericConversionExpr).getTypeName()
