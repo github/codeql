@@ -12,6 +12,7 @@ The following changes in version 1.24 affect C# analysis in all applications.
 | Page request validation is disabled (`cs/web/request-validation-disabled`) | security, frameworks/asp.net, external/cwe/cwe-016 | Finds where ASP.NET page request validation has been disabled, which could make the application less secure. |
 | Serialization check bypass (`cs/serialization-check-bypass`) | security, external/cwe/cwe-20 | Finds where data is not validated in a deserialization method. |
 | XML injection (`cs/xml-injection`) | security, external/cwe/cwe-091 | Finds user-controlled data that is used to write directly to an XML document. |
+| Possibly incorrect variable (`cs/possibly-incorrect-variable`) | correctness, external/cwe/cwe-697 | Finds anomalous variable uses in adjacent expressions. |
 
 ## Changes to existing queries
 
