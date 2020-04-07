@@ -30,3 +30,22 @@ func parseAllocateGood2(desired string) int32 {
 	}
 	return int32(parsed)
 }
+
+func parseAllocateGood3(wanted string) int32 {
+	parsed, err := strconv.ParseInt(wanted, 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return int32(parsed)
+}
+func parseAllocateGood4(wanted string) int32 {
+	parsed, err := strconv.ParseInt(wanted, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	// GOOD: check for lower and uppper bounds
+	if parsed > 0 && parsed <= math.MaxInt32 {
+		return int32(parsed)
+	}
+	return DefaultAllocate
+}

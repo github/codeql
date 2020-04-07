@@ -5,16 +5,25 @@
 
 <overview>
 <p>
-If a numeric value string is parsed using <code>strconv.Atoi</code> into an int, and then that int
+If a numeric value string is parsed using <code>strconv.Atoi</code> into an int, and subsequently that int
 is converted into another type of a lower bit size, the result can produce unexpected values.
+</p>
+<p>
+This also applie to the results of <code>strconv.ParseFloat</code>, <code>strconv.ParseInt</code>,
+and <code>strconv.ParseUint</code> when the specified bit size is higher than the bit size of the
+type that number is converted to. 
 </p>
 </overview>
 
 <recommendation>
 <p>
-If you need to parse numeric values with specific bit sizes, use the functions specific to each
-type (<code>strconv.ParseFloat</code>, <code>strconv.ParseInt</code>, <code>strconv.ParseUint</code>)
-that also allow to specify the wanted bit size.
+If you need to parse numeric values with specific bit sizes, avoid <code>strconv.Atoi</code>, and, instead, 
+use the functions specific to each type (<code>strconv.ParseFloat</code>, <code>strconv.ParseInt</code>,
+<code>strconv.ParseUint</code>) that also allow to specify the wanted bit size.
+</p>
+<p>
+When using those functions, be careful to not convert the result to another type with a lower bit size than
+the bit size you specified when parsing the number.
 </p>
 <p>
 If this is not possible, then add upper (and lower) bound checks specific to each type and
@@ -24,13 +33,13 @@ bit size (you can find the min and max value for each type in the `math` package
 
 <example>
 <p>
-In the following example, assume that an input string is passed to <code>parseAllocate</code> function,
+In the first example, assume that an input string is passed to <code>parseAllocateBad1</code> function,
 parsed by <code>strconv.Atoi</code>, and then converted into an <code>int32</code> type:
 </p>
 <sample src="IncorrectNumericConversion.go"/>
 <p>
 The bounds are not checked, so this means that if the provided number is greater than max int32,
-the resulting value from the conversion will be different from the provided value.
+the resulting value from the conversion will be different from the actual provided value.
 </p>
 <p>
 To avoid unexpected values, you should either use the other functions provided by the <code>strconv</code>
@@ -40,6 +49,24 @@ function.
 </p>
 <sample src="IncorrectNumericConversionGood.go"/>
 </example>
+
+<example>
+<p>
+In the second example, assume that an input string is passed to <code>parseAllocateBad2</code> function,
+parsed by <code>strconv.ParseInt</code> with a bit size set to 64, and then converted into an <code>int32</code> type:
+</p>
+<sample src="IncorrectNumericConversion.go"/>
+<p>
+If the provided number is greater than max int32, the resulting value from the conversion will be
+different from the actual provided value.
+</p>
+<p>
+To avoid unexpected values, you should specify the correct bit size as in <code>parseAllocateGood3</code>;
+or check bounds before making the conversion as in <code>parseAllocateGood4</code>.
+</p>
+<sample src="IncorrectNumericConversionGood.go"/>
+</example>
+
 <references>
 <li>
 mitre.org: <a href="https://cwe.mitre.org/data/definitions/681.html">CWE-681: Incorrect Conversion between Numeric Types</a>.
