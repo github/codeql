@@ -1,7 +1,7 @@
 /**
  * @name Incorrect Conversion between Numeric Types
- * @description Converting the result of strconv.Atoi (which is of type `int`) to
- *                numeric types of lower bit size can produce unexpected values.
+ * @description Converting the result of strconv.Atoi (and other parsers from strconv package)
+ *              to numeric types of lower bit size can produce unexpected values.
  * @kind path-problem
  * @id go/incorrect-numeric-conversion
  * @tags security
@@ -27,6 +27,10 @@ class ParseUint extends Function {
   ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
 }
 
+/**
+ * A type conversion expression towards a numeric type that has
+ * a bit size equal to or lower than 32 bits.
+ */
 class Lte32BitNumericConversionExpr extends ConversionExpr {
   string conversionTypeName;
 
@@ -35,13 +39,11 @@ class Lte32BitNumericConversionExpr extends ConversionExpr {
       conversionTypeName = conv.getTypeExpr().getType().getUnderlyingType*().getName() and
       (
         // anything lower than int64:
-        conversionTypeName = "int8" or
-        conversionTypeName = "int16" or
-        conversionTypeName = "int32" or
+        conversionTypeName = ["int8", "int16", "int32"]
+        or
         // anything lower than uint64:
-        conversionTypeName = "uint8" or
-        conversionTypeName = "uint16" or
-        conversionTypeName = "uint32" or
+        conversionTypeName = ["uint8", "uint16", "uint32"]
+        or
         // anything lower than float64:
         conversionTypeName = "float32"
       )
@@ -53,20 +55,27 @@ class Lte32BitNumericConversionExpr extends ConversionExpr {
   string getTypeName() { result = conversionTypeName }
 }
 
+/**
+ * A type conversion expression towards a numeric type that has
+ * a bit size equal to or lower than 16 bits.
+ */
 class Lte16BitNumericConversionExpr extends Lte32BitNumericConversionExpr {
   Lte16BitNumericConversionExpr() {
     conversionTypeName = this.getTypeName() and
     (
       // anything lower than int32:
-      conversionTypeName = "int8" or
-      conversionTypeName = "int16" or
+      conversionTypeName = ["int8", "int16"]
+      or
       // anything lower than uint32:
-      conversionTypeName = "uint8" or
-      conversionTypeName = "uint16"
+      conversionTypeName = ["uint8", "uint16"]
     )
   }
 }
 
+/**
+ * A type conversion expression towards a numeric type that has
+ * a bit size equal to 8 bits.
+ */
 class Lte8BitNumericConversionExpr extends Lte16BitNumericConversionExpr {
   Lte8BitNumericConversionExpr() {
     conversionTypeName = this.getTypeName() and
@@ -80,6 +89,10 @@ class Lte8BitNumericConversionExpr extends Lte16BitNumericConversionExpr {
   }
 }
 
+/**
+ * An `if` statement with the condition being either a relational comparison,
+ * or one or more `&&`.
+ */
 class IfRelationalComparison extends IfStmt {
   IfRelationalComparison() {
     this.getCond() instanceof RelationalComparisonExpr or this.getCond() instanceof LandExpr
@@ -90,6 +103,9 @@ class IfRelationalComparison extends IfStmt {
   LandExpr getLandExpr() { result = this.getCond().(LandExpr) }
 }
 
+/**
+ * Flow of result of parsing a 64 bit number, to conversion to lower bit numbers.
+ */
 class Lte64FlowConfig extends TaintTracking::Configuration, DataFlow::Configuration {
   Lte64FlowConfig() { this = "Lte64FlowConfig" }
 
@@ -97,7 +113,7 @@ class Lte64FlowConfig extends TaintTracking::Configuration, DataFlow::Configurat
     exists(Atoi atoi | source = atoi.getACall().getResult(0))
     or
     exists(ParseFloat parseFloat, DataFlow::CallNode call |
-      call = parseFloat.getACall() and call.getArgument(1).getIntValue() = [64]
+      call = parseFloat.getACall() and call.getArgument(1).getIntValue() = 64
     |
       source = call.getResult(0)
     )
@@ -122,24 +138,27 @@ class Lte64FlowConfig extends TaintTracking::Configuration, DataFlow::Configurat
   override predicate isSanitizerIn(DataFlow::Node node) { isSanitizedInsideAnIfBoundCheck(node) }
 }
 
+/**
+ * Flow of result of parsing a 32 bit number, to conversion to lower bit numbers.
+ */
 class Lte32FlowConfig extends TaintTracking::Configuration, DataFlow::Configuration {
   Lte32FlowConfig() { this = "Lte32FlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     exists(ParseFloat parseFloat, DataFlow::CallNode call |
-      call = parseFloat.getACall() and call.getArgument(1).getIntValue() = [32]
+      call = parseFloat.getACall() and call.getArgument(1).getIntValue() = 32
     |
       source = call.getResult(0)
     )
     or
     exists(ParseInt parseInt, DataFlow::CallNode call |
-      call = parseInt.getACall() and call.getArgument(2).getIntValue() = [32]
+      call = parseInt.getACall() and call.getArgument(2).getIntValue() = 32
     |
       source = call.getResult(0)
     )
     or
     exists(ParseUint parseUint, DataFlow::CallNode call |
-      call = parseUint.getACall() and call.getArgument(2).getIntValue() = [32]
+      call = parseUint.getACall() and call.getArgument(2).getIntValue() = 32
     |
       source = call.getResult(0)
     )
@@ -152,18 +171,21 @@ class Lte32FlowConfig extends TaintTracking::Configuration, DataFlow::Configurat
   override predicate isSanitizerIn(DataFlow::Node node) { isSanitizedInsideAnIfBoundCheck(node) }
 }
 
+/**
+ * Flow of result of parsing a 16 bit number, to conversion to lower bit numbers.
+ */
 class Lte16FlowConfig extends TaintTracking::Configuration, DataFlow::Configuration {
   Lte16FlowConfig() { this = "Lte16FlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
     exists(ParseInt parseInt, DataFlow::CallNode call |
-      call = parseInt.getACall() and call.getArgument(2).getIntValue() = [16]
+      call = parseInt.getACall() and call.getArgument(2).getIntValue() = 16
     |
       source = call.getResult(0)
     )
     or
     exists(ParseUint parseUint, DataFlow::CallNode call |
-      call = parseUint.getACall() and call.getArgument(2).getIntValue() = [16]
+      call = parseUint.getACall() and call.getArgument(2).getIntValue() = 16
     |
       source = call.getResult(0)
     )
@@ -176,57 +198,52 @@ class Lte16FlowConfig extends TaintTracking::Configuration, DataFlow::Configurat
   override predicate isSanitizerIn(DataFlow::Node node) { isSanitizedInsideAnIfBoundCheck(node) }
 }
 
+/**
+ * Check if the node is a numeric conversion inside an `if` body, where
+ * the `if` condition contains an upper bound check on the conversion operand.
+ */
 predicate isSanitizedInsideAnIfBoundCheck(DataFlow::Node node) {
-  exists(IfRelationalComparison san, Lte32BitNumericConversionExpr conv |
+  exists(IfRelationalComparison comp, Lte32BitNumericConversionExpr conv |
+    // NOTE: using Lte32BitNumericConversionExpr because it also catches
+    // any lower bit conversions.
     conv = node.asExpr().(Lte32BitNumericConversionExpr) and
-    san.getThen().getAChild*() = conv and
+    comp.getThen().getAChild*() = conv and
     (
       // If the conversion is inside an `if` block that compares the source as
       // `source > 0` or `source >= 0`, then that sanitizes conversion of int to int32;
       conv.getTypeName() = "int32" and
-      san.getComparison().getLesserOperand().getNumericValue() = 0 and
-      san.getComparison().getGreaterOperand().getGlobalValueNumber() =
+      comp.getComparison().getLesserOperand().getNumericValue() = 0 and
+      comp.getComparison().getGreaterOperand().getGlobalValueNumber() =
         conv.getOperand().getGlobalValueNumber()
       or
-      comparisonGreaterOperandValueIsEqualOrLess("int8", san, conv, getMaxInt8())
+      comparisonGreaterOperandValueIsEqual("int8", comp, conv, getMaxInt8())
       or
-      comparisonGreaterOperandValueIsEqualOrLess("int16", san, conv, getMaxInt16())
+      comparisonGreaterOperandValueIsEqual("int16", comp, conv, getMaxInt16())
       or
-      comparisonGreaterOperandValueIsEqualOrLess("int32", san, conv, getMaxInt32())
+      comparisonGreaterOperandValueIsEqual("int32", comp, conv, getMaxInt32())
       or
-      comparisonGreaterOperandValueIsEqualOrLess("uint8", san, conv, getMaxUint8())
+      comparisonGreaterOperandValueIsEqual("uint8", comp, conv, getMaxUint8())
       or
-      comparisonGreaterOperandValueIsEqualOrLess("uint16", san, conv, getMaxUint16())
+      comparisonGreaterOperandValueIsEqual("uint16", comp, conv, getMaxUint16())
     )
   )
 }
 
-int getMaxInt8() {
-  result = 2.pow(7) - 1
-  //   = 1<<7 - 1
-}
+int getMaxInt8() { result = 2.pow(7) - 1 }
 
-int getMaxInt16() {
-  result = 2.pow(15) - 1
-  //  = 1<<15 - 1
-}
+int getMaxInt16() { result = 2.pow(15) - 1 }
 
-int getMaxInt32() {
-  result = 2.pow(31) - 1
-  //  = 1<<31 - 1
-}
+int getMaxInt32() { result = 2.pow(31) - 1 }
 
-int getMaxUint8() {
-  result = 2.pow(8) - 1
-  //  = 1<<8 - 1
-}
+int getMaxUint8() { result = 2.pow(8) - 1 }
 
-int getMaxUint16() {
-  result = 2.pow(16) - 1
-  // = 1<<16 - 1
-}
+int getMaxUint16() { result = 2.pow(16) - 1 }
 
-predicate comparisonGreaterOperandValueIsEqualOrLess(
+/**
+ * The `if` relational comparison (which can also be inside a `LandExpr`) stating that
+ * the greater operand is equal to `value`, and the lesses operand is the conversion operand.
+ */
+predicate comparisonGreaterOperandValueIsEqual(
   string typeName, IfRelationalComparison ifExpr, Lte32BitNumericConversionExpr conv, int value
 ) {
   conv.getTypeName() = typeName and
