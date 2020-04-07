@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Autobuild
@@ -23,6 +24,8 @@ namespace Semmle.Autobuild
     public abstract class ProjectOrSolution : IProjectOrSolution
     {
         public string FullPath { get; private set; }
+
+        public string DirectoryName => Path.GetDirectoryName(FullPath) ?? "";
 
         protected ProjectOrSolution(Autobuilder builder, string path)
         {

@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// <summary>
     ///     Searches for source/references and creates separate extractions.
     /// </summary>
-    class Analysis
+    class Analysis : IDisposable
     {
         readonly ILogger logger;
 
@@ -71,12 +71,9 @@ namespace Semmle.Extraction.CSharp.Standalone
             projectExtraction.Sources.AddRange(options.SolutionFile == null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
         }
 
-        /// <summary>
-        /// Delete any Nuget assemblies.
-        /// </summary>
-        public void Cleanup()
+        public void Dispose()
         {
-            buildAnalysis.Cleanup();
+            buildAnalysis.Dispose();
         }
     };
 
@@ -85,8 +82,9 @@ namespace Semmle.Extraction.CSharp.Standalone
         static int Main(string[] args)
         {
             var options = Options.Create(args);
+            // options.CIL = true;  // To do: Enable this
             var output = new ConsoleLogger(options.Verbosity);
-            var a = new Analysis(output);
+            using var a = new Analysis(output);
 
             if (options.Help)
             {
@@ -96,6 +94,8 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             if (options.Errors)
                 return 1;
+
+            var start = DateTime.Now;
 
             output.Log(Severity.Info, "Running C# standalone extractor");
             a.AnalyseProjects(options);
@@ -117,10 +117,9 @@ namespace Semmle.Extraction.CSharp.Standalone
                     new ExtractionProgress(output),
                     new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath()),
                     options);
-                output.Log(Severity.Info, "Extraction complete");
+                output.Log(Severity.Info, $"Extraction completed in {DateTime.Now-start}");
             }
 
-            a.Cleanup();
             return 0;
         }
 
@@ -151,7 +150,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             public void MissingSummary(int missingTypes, int missingNamespaces)
             {
-                logger.Log(Severity.Info, "Failed to resolve {0} types and {1} namespaces", missingTypes, missingNamespaces);
+                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
             }
         }
     }

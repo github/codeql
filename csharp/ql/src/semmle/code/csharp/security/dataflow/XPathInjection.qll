@@ -5,7 +5,7 @@
 import csharp
 
 module XPathInjection {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.xml.XPath
   import semmle.code.csharp.frameworks.system.Xml
   import semmle.code.csharp.security.Sanitizers

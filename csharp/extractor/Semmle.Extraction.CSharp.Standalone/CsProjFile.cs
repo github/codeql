@@ -10,12 +10,18 @@ namespace Semmle.BuildAnalyser
     /// </summary>
     class CsProjFile
     {
+        private string Filename { get; }
+
+        private string Directory => Path.GetDirectoryName(Filename);
+
         /// <summary>
         /// Reads the .csproj file.
         /// </summary>
         /// <param name="filename">The .csproj file.</param>
         public CsProjFile(FileInfo filename)
         {
+            Filename = filename.FullName;
+
             try
             {
                 // This can fail if the .csproj is invalid or has
@@ -39,7 +45,7 @@ namespace Semmle.BuildAnalyser
         /// and there seems to be no way to make it succeed. Fails on Linux.
         /// </summary>
         /// <param name="filename">The file to read.</param>
-        public void ReadMsBuildProject(FileInfo filename)
+        private void ReadMsBuildProject(FileInfo filename)
         {
             var msbuildProject = new Microsoft.Build.Execution.ProjectInstance(filename.FullName);
 
@@ -62,7 +68,7 @@ namespace Semmle.BuildAnalyser
         /// fallback if ReadMsBuildProject() fails.
         /// </summary>
         /// <param name="filename">The .csproj file.</param>
-        public void ReadProjectFileAsXml(FileInfo filename)
+        private void ReadProjectFileAsXml(FileInfo filename)
         {
             var projFile = new XmlDocument();
             var mgr = new XmlNamespaceManager(projFile.NameTable);
@@ -71,22 +77,48 @@ namespace Semmle.BuildAnalyser
             var projDir = filename.Directory;
             var root = projFile.DocumentElement;
 
-            references =
-                root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr).
-                NodeList().
-                Select(node => node.Value).
-                ToArray();
+            // Figure out if it's dotnet core
 
-            var relativeCsIncludes =
-                root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Compile/@Include", mgr).
-                NodeList().
-                Select(node => node.Value).
-                ToArray();
+            bool netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
 
-            csFiles = relativeCsIncludes.
-                Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
-                Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f))).
-                ToArray();
+            if (netCoreProjectFile)
+            {
+                var relativeCsIncludes =
+                    root.SelectNodes("/Project/ItemGroup/Compile/@Include", mgr).
+                    NodeList().
+                    Select(node => node.Value).
+                    ToArray();
+
+                var explicitCsFiles = relativeCsIncludes.
+                    Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
+                    Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f)));
+
+                var additionalCsFiles = System.IO.Directory.GetFiles(Directory, "*.cs", SearchOption.AllDirectories);
+
+                csFiles = explicitCsFiles.Concat(additionalCsFiles).ToArray();
+
+                references = new string[0];
+            }
+            else
+            {
+
+                references =
+                    root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Reference/@Include", mgr).
+                    NodeList().
+                    Select(node => node.Value).
+                    ToArray();
+
+                var relativeCsIncludes =
+                    root.SelectNodes("/msbuild:Project/msbuild:ItemGroup/msbuild:Compile/@Include", mgr).
+                    NodeList().
+                    Select(node => node.Value).
+                    ToArray();
+
+                csFiles = relativeCsIncludes.
+                    Select(cs => Path.DirectorySeparatorChar == '/' ? cs.Replace("\\", "/") : cs).
+                    Select(f => Path.GetFullPath(Path.Combine(projDir.FullName, f))).
+                    ToArray();
+            }
         }
 
         string[] references;
