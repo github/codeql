@@ -4,7 +4,7 @@
  * for usage information.
  */
 
- import semmle.code.cpp.models.interfaces.Allocation
+import semmle.code.cpp.models.interfaces.Allocation
 
 /**
  * An allocation function (such as `malloc`) that has an argument for the size
