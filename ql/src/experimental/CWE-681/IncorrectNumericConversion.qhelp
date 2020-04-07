@@ -71,5 +71,8 @@ or check bounds before making the conversion as in <code>parseAllocateGood4</cod
 <li>
 mitre.org: <a href="https://cwe.mitre.org/data/definitions/681.html">CWE-681: Incorrect Conversion between Numeric Types</a>.
 </li>
+<li>
+mitre.org: <a href="https://cwe.mitre.org/data/definitions/190.html">CWE-190: Integer Overflow or Wraparound</a>.
+</li>
 </references>
 </qhelp>
