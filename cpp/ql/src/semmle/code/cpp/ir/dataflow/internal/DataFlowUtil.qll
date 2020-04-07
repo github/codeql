@@ -360,6 +360,11 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
+  // Flow from write side effects to partial operands of non-conflated chi instructions
+  // does not seem to cause issues with field conflation.
+  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
+  not iTo.isResultConflated()
+  or
   // Flow through modeled functions
   modelFlow(iFrom, iTo)
 }
