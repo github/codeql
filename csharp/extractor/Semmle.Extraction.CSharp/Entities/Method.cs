@@ -134,7 +134,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            AddParametersToId(m.Context, trapFile, m.symbol, m.symbol);
+            AddParametersToId(m.Context, trapFile, m.symbol);
             switch (m.symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
@@ -204,7 +204,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.BuildTypeId(cx, trapFile, false, symbolBeingDefined, (cx0, tb0, type0, g) => AddSignatureTypeToId(cx, tb0, method, type0, g));
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method, ISymbol symbolBeingDefined)
+        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
             int index = 0;
@@ -212,13 +212,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, symbolBeingDefined);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, method);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type, symbolBeingDefined);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type, method);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
