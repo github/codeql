@@ -125,6 +125,83 @@ func badParseUint() {
 	}
 }
 
+func goodParseFloat() {
+	{
+		parsed, err := strconv.ParseFloat("1.32", 32)
+		if err != nil {
+			panic(err)
+		}
+		_ = int32(parsed)
+	}
+	{
+		parsed, err := strconv.ParseFloat("1.32", 64)
+		if err != nil {
+			panic(err)
+		}
+		_ = int64(parsed)
+	}
+}
+func goodParseInt() {
+	{
+		parsed, err := strconv.ParseInt("3456", 10, 16)
+		if err != nil {
+			panic(err)
+		}
+		_ = int16(parsed)
+	}
+	{
+		parsed, err := strconv.ParseInt("3456", 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		_ = int32(parsed)
+	}
+	{
+		parsed, err := strconv.ParseInt("3456", 10, 64)
+		if err != nil {
+			panic(err)
+		}
+		_ = int64(parsed)
+	}
+	{
+		parsed, err := strconv.ParseInt("3456", 10, 0)
+		if err != nil {
+			panic(err)
+		}
+		_ = int64(parsed)
+	}
+}
+func goodParseUint() {
+	{
+		parsed, err := strconv.ParseUint("3456", 10, 16)
+		if err != nil {
+			panic(err)
+		}
+		_ = int16(parsed)
+	}
+	{
+		parsed, err := strconv.ParseUint("3456", 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		_ = int32(parsed)
+	}
+	{
+		parsed, err := strconv.ParseUint("3456", 10, 64)
+		if err != nil {
+			panic(err)
+		}
+		_ = int64(parsed)
+	}
+	{
+		parsed, err := strconv.ParseUint("3456", 10, 0)
+		if err != nil {
+			panic(err)
+		}
+		_ = int64(parsed)
+	}
+}
+
 // these should be caught:
 func upperBoundIsNOTChecked(input string) {
 	{
