@@ -131,12 +131,10 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa |
-    exists(StoreInstruction store |
-      node1.asInstruction() = store and
-      store.getDestinationAddress() = fa
-    ) and
-    node2.getPreUpdateNode().asInstruction() = fa.getObjectAddress() and
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    node1.asInstruction() = store and
+    store.getDestinationAddress() = fa and
+    node2.asInstruction().(ChiInstruction).getPartial() = store and
     f.(FieldContent).getField() = fa.getField()
   )
 }

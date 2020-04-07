@@ -264,22 +264,6 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-  FieldAddressInstruction field;
-
-  ExplicitSingleFieldStoreQualifierNode() {
-    field = instr.getDestinationAddress() and
-    not exists(ChiInstruction chi | chi.getPartial() = instr)
-  }
-
-  // Since there is no Chi instruction with a total operand for us to use we let the pre update node
-  // be the address of the object containing the field.
-  // Note that, unlike in the case where a struct has multiple fields (and thus has a `Chi`
-  // instruction), the pre update node will be an instruction with a register result.
-  override Node getPreUpdateNode() { result.asInstruction() = field.getObjectAddress() }
-}
-
 /**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
@@ -290,31 +274,31 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  WriteSideEffectInstruction write;
-  CallInstruction call;
-
-  DefinitionByReferenceNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = write and
-    call = write.getPrimaryInstruction()
-  }
-
-  // See the comment on ExplicitFieldStoreQualifierNode::getPreUpdateNode for comments on why
-  // this causes failures in DataFlowImplConsistency::Consistency.
-  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+class DefinitionByReferenceNode extends InstructionNode {
+  override WriteSideEffectInstruction instr;
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() {
-    result = call.getPositionalArgument(write.getIndex()).getUnconvertedResultExpression()
+    result =
+      instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getPositionalArgument(instr.getIndex())
+          .getUnconvertedResultExpression()
     or
-    result = call.getThisArgument().getUnconvertedResultExpression() and
-    write.getIndex() = -1
+    result =
+      instr
+          .getPrimaryInstruction()
+          .(CallInstruction)
+          .getThisArgument()
+          .getUnconvertedResultExpression() and
+    instr.getIndex() = -1
   }
 
   /** Gets the parameter through which this value is assigned. */
-  Parameter getParameter() { result = call.getStaticCallTarget().getParameter(write.getIndex()) }
+  Parameter getParameter() {
+    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
+  }
 }
 
 /**
