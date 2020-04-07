@@ -1555,4 +1555,10 @@ module IR {
   EvalImplicitMaxSliceBoundInstruction implicitMaxSliceBoundInstruction(SliceExpr e) {
     result = MkImplicitMaxSliceBound(e)
   }
+
+  /**
+   * Gets the implicit dereference instruction for `e`, where `e` is a pointer used as the base
+   * in a field/method access, element access, or slice expression.
+   */
+  EvalImplicitDerefInstruction implicitDerefInstruction(Expr e) { result = MkImplicitDeref(e) }
 }

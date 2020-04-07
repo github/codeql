@@ -517,20 +517,45 @@ class ReadNode extends InstructionNode {
   predicate readsSsaVariable(SsaVariable v) { insn = v.getAUse() }
 
   /**
-   * Holds if this data-flow node reads the value of field `f` on the value of `base`.
+   * Holds if this data-flow node reads the value of field `f` on the value of `base` or its
+   * implicit dereference.
+   *
+   * For example, for the field read `x.width`, `base` is either the data-flow node corresponding
+   * to `x` or (if `x` is a pointer) the data-flow node corresponding to the implicit dereference
+   * `*x`, and `f` is the field referenced by `width`.
    */
-  predicate readsField(Node base, Field f) { insn.readsField(base.asInstruction(), f) }
+  predicate readsField(Node base, Field f) {
+    insn.readsField(base.asInstruction(), f)
+    or
+    insn.readsField(IR::implicitDerefInstruction(base.asExpr()), f)
+  }
 
   /**
-   * Holds if this data-flow node looks up method `m` on the value of `receiver`.
+   * Holds if this data-flow node looks up method `m` on the value of `receiver` or its implicit
+   * dereference.
+   *
+   * For example, for the method read `x.area`, `base` is either the data-flow node corresponding
+   * to `x` or (if `x` is a pointer) the data-flow node corresponding to the implicit dereference
+   * `*x`, and `m` is the method referenced by `area`.
    */
-  predicate readsMethod(Node receiver, Method m) { insn.readsMethod(receiver.asInstruction(), m) }
+  predicate readsMethod(Node receiver, Method m) {
+    insn.readsMethod(receiver.asInstruction(), m)
+    or
+    insn.readsMethod(IR::implicitDerefInstruction(receiver.asExpr()), m)
+  }
 
   /**
-   * Holds if this data-flow node reads the value of element `index` on the value of `base`.
+   * Holds if this data-flow node reads the value of element `index` on the value of `base` or its
+   * implicit dereference.
+   *
+   * For example, for the element read `xs[i]`, `base` is either the data-flow node corresponding
+   * to `xs` or (if `xs` is a pointer) the data-flow node corresponding to the implicit dereference
+   * `*xs`, and `index` is the data-flow node corresponding to `i`.
    */
   predicate readsElement(Node base, Node index) {
     insn.readsElement(base.asInstruction(), index.asInstruction())
+    or
+    insn.readsElement(IR::implicitDerefInstruction(base.asExpr()), index.asInstruction())
   }
 }
 
@@ -547,7 +572,7 @@ class ElementReadNode extends ReadNode {
   Node getIndex() { result = instructionNode(insn.getIndex()) }
 
   /** Holds if this data-flow node reads element `index` of `base`. */
-  predicate reads(Node base, Node index) { getBase() = base and getIndex() = index }
+  predicate reads(Node base, Node index) { readsElement(base, index) }
 }
 
 /**

@@ -298,7 +298,8 @@ class GVN extends GVNBase {
   private DataFlow::Node exampleNode() {
     // Pick the expression with the minimum source location. This is
     // just an arbitrary way to pick an expression with this `GVN`.
-    result = min(DataFlow::Node e, string f, int l, int c, string k |
+    result =
+      min(DataFlow::Node e, string f, int l, int c, string k |
         e = getANode() and e.hasLocationInfo(f, l, c, _, _) and k = e.getNodeKind()
       |
         e order by f, l, c, k
@@ -348,8 +349,10 @@ private predicate analyzableConst(DataFlow::Node e) {
 }
 
 private predicate analyzableMethodAccess(Read access, DataFlow::Node receiver, Method m) {
-  access.readsMethod(receiver, m) and
-  not access.isConst()
+  exists(IR::ReadInstruction r | r = access.asInstruction() |
+    r.readsMethod(receiver.asInstruction(), m) and
+    not r.isConst()
+  )
 }
 
 private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Method m) {
@@ -360,9 +363,11 @@ private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Method m)
 }
 
 private predicate analyzableFieldRead(Read fread, DataFlow::Node base, Field f) {
-  fread.readsField(base, f) and
-  strictcount(mostRecentSideEffect(fread.asInstruction())) = 1 and
-  not fread.isConst()
+  exists(IR::ReadInstruction r | r = fread.asInstruction() |
+    r.readsField(base.asInstruction(), f) and
+    strictcount(mostRecentSideEffect(r)) = 1 and
+    not r.isConst()
+  )
 }
 
 private predicate mkFieldRead(

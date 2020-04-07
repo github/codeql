@@ -126,7 +126,15 @@ module ControlFlow {
       self.getRhs() = rhs.asInstruction()
     }
 
-    /** Holds if this node sets the value of field `f` on `base` to `rhs`. */
+    /**
+     * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
+     * `rhs`.
+     *
+     * For example, for the assignment `x.width = newWidth`, `base` is either the data-flow node
+     * corresponding to `x` or (if `x` is a pointer) the data-flow node corresponding to the
+     * implicit dereference `*x`, `f` is the field referenced by `width`, and `rhs` is the data-flow
+     * node corresponding to `newWidth`.
+     */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
       exists(IR::FieldTarget trg | trg = self.getLhs() |
         (
@@ -138,10 +146,21 @@ module ControlFlow {
       )
     }
 
-    /** Holds if this node sets the value of element `idx` on `base` to `rhs`. */
+    /**
+     * Holds if this node sets the value of element `idx` on `base` (or its implicit dereference)
+     * to `rhs`.
+     *
+     * For example, for the assignment `xs[i] = v`, `base` is either the data-flow node
+     * corresponding to `xs` or (if `xs` is a pointer) the data-flow node corresponding to the
+     * implicit dereference `*xs`, `index` is the data-flow node corresponding to `i`, and `rhs`
+     * is the data-flow node corresponding to `base`.
+     */
     predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
       exists(IR::ElementTarget trg | trg = self.getLhs() |
-        trg.getBase() = base.asInstruction() and
+        (
+          trg.getBase() = base.asInstruction() or
+          trg.getBase() = MkImplicitDeref(base.asExpr())
+        ) and
         trg.getIndex() = index.asInstruction() and
         self.getRhs() = rhs.asInstruction()
       )
