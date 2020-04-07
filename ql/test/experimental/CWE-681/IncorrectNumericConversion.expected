@@ -1,0 +1,83 @@
+edges
+| IncorrectNumericConversion.go:26:2:26:28 | ... := ...[0] : int | IncorrectNumericConversion.go:35:41:35:50 | type conversion |
+| IncorrectNumericConversion.go:53:3:53:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:57:7:57:19 | type conversion |
+| IncorrectNumericConversion.go:60:3:60:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:64:7:64:19 | type conversion |
+| IncorrectNumericConversion.go:69:3:69:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:73:7:73:18 | type conversion |
+| IncorrectNumericConversion.go:76:3:76:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:80:7:80:19 | type conversion |
+| IncorrectNumericConversion.go:83:3:83:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:87:7:87:19 | type conversion |
+| IncorrectNumericConversion.go:90:3:90:48 | ... := ...[0] : int64 | IncorrectNumericConversion.go:94:7:94:19 | type conversion |
+| IncorrectNumericConversion.go:99:3:99:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:103:7:103:18 | type conversion |
+| IncorrectNumericConversion.go:106:3:106:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:110:7:110:19 | type conversion |
+| IncorrectNumericConversion.go:113:3:113:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:117:7:117:19 | type conversion |
+| IncorrectNumericConversion.go:120:3:120:49 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:124:7:124:19 | type conversion |
+| IncorrectNumericConversion.go:131:3:131:36 | ... := ...[0] : int | IncorrectNumericConversion.go:135:7:135:18 | type conversion |
+| IncorrectNumericConversion.go:138:3:138:36 | ... := ...[0] : int | IncorrectNumericConversion.go:142:7:142:19 | type conversion |
+| IncorrectNumericConversion.go:145:3:145:36 | ... := ...[0] : int | IncorrectNumericConversion.go:149:7:149:19 | type conversion |
+| IncorrectNumericConversion.go:152:3:152:36 | ... := ...[0] : int | IncorrectNumericConversion.go:156:7:156:19 | type conversion |
+| IncorrectNumericConversion.go:159:3:159:36 | ... := ...[0] : int | IncorrectNumericConversion.go:163:7:163:20 | type conversion |
+| IncorrectNumericConversion.go:166:3:166:36 | ... := ...[0] : int | IncorrectNumericConversion.go:170:7:170:20 | type conversion |
+| IncorrectNumericConversion.go:173:3:173:36 | ... := ...[0] : int | IncorrectNumericConversion.go:177:7:177:21 | type conversion |
+| IncorrectNumericConversion.go:180:3:180:36 | ... := ...[0] : int | IncorrectNumericConversion.go:185:7:185:18 | type conversion |
+| IncorrectNumericConversion.go:189:3:189:36 | ... := ...[0] : int | IncorrectNumericConversion.go:193:7:193:23 | type conversion |
+nodes
+| IncorrectNumericConversion.go:26:2:26:28 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:35:41:35:50 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:53:3:53:47 | ... := ...[0] : float64 | semmle.label | ... := ...[0] : float64 |
+| IncorrectNumericConversion.go:57:7:57:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:60:3:60:47 | ... := ...[0] : float64 | semmle.label | ... := ...[0] : float64 |
+| IncorrectNumericConversion.go:64:7:64:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:69:3:69:49 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectNumericConversion.go:73:7:73:18 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:76:3:76:49 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectNumericConversion.go:80:7:80:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:83:3:83:49 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectNumericConversion.go:87:7:87:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:90:3:90:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectNumericConversion.go:94:7:94:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:99:3:99:50 | ... := ...[0] : uint64 | semmle.label | ... := ...[0] : uint64 |
+| IncorrectNumericConversion.go:103:7:103:18 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:106:3:106:50 | ... := ...[0] : uint64 | semmle.label | ... := ...[0] : uint64 |
+| IncorrectNumericConversion.go:110:7:110:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:113:3:113:50 | ... := ...[0] : uint64 | semmle.label | ... := ...[0] : uint64 |
+| IncorrectNumericConversion.go:117:7:117:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:120:3:120:49 | ... := ...[0] : uint64 | semmle.label | ... := ...[0] : uint64 |
+| IncorrectNumericConversion.go:124:7:124:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:131:3:131:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:135:7:135:18 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:138:3:138:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:142:7:142:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:145:3:145:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:149:7:149:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:152:3:152:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:156:7:156:19 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:159:3:159:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:163:7:163:20 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:166:3:166:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:170:7:170:20 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:173:3:173:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:177:7:177:21 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:180:3:180:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:185:7:185:18 | type conversion | semmle.label | type conversion |
+| IncorrectNumericConversion.go:189:3:189:36 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
+| IncorrectNumericConversion.go:193:7:193:23 | type conversion | semmle.label | type conversion |
+#select
+| IncorrectNumericConversion.go:26:2:26:28 | ... := ...[0] : int | IncorrectNumericConversion.go:26:2:26:28 | ... := ...[0] : int | IncorrectNumericConversion.go:35:41:35:50 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:53:3:53:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:53:3:53:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:57:7:57:19 | type conversion | Incorrect type conversion of float64 from strconv.ParseFloat result to a lower bit size type int16 |
+| IncorrectNumericConversion.go:60:3:60:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:60:3:60:47 | ... := ...[0] : float64 | IncorrectNumericConversion.go:64:7:64:19 | type conversion | Incorrect type conversion of float64 from strconv.ParseFloat result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:69:3:69:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:69:3:69:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:73:7:73:18 | type conversion | Incorrect type conversion of int64 from strconv.ParseInt result to a lower bit size type int8 |
+| IncorrectNumericConversion.go:76:3:76:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:76:3:76:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:80:7:80:19 | type conversion | Incorrect type conversion of int64 from strconv.ParseInt result to a lower bit size type int16 |
+| IncorrectNumericConversion.go:83:3:83:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:83:3:83:49 | ... := ...[0] : int64 | IncorrectNumericConversion.go:87:7:87:19 | type conversion | Incorrect type conversion of int64 from strconv.ParseInt result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:90:3:90:48 | ... := ...[0] : int64 | IncorrectNumericConversion.go:90:3:90:48 | ... := ...[0] : int64 | IncorrectNumericConversion.go:94:7:94:19 | type conversion | Incorrect type conversion of int64 from strconv.ParseInt result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:99:3:99:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:99:3:99:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:103:7:103:18 | type conversion | Incorrect type conversion of uint64 from strconv.ParseUint result to a lower bit size type int8 |
+| IncorrectNumericConversion.go:106:3:106:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:106:3:106:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:110:7:110:19 | type conversion | Incorrect type conversion of uint64 from strconv.ParseUint result to a lower bit size type int16 |
+| IncorrectNumericConversion.go:113:3:113:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:113:3:113:50 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:117:7:117:19 | type conversion | Incorrect type conversion of uint64 from strconv.ParseUint result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:120:3:120:49 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:120:3:120:49 | ... := ...[0] : uint64 | IncorrectNumericConversion.go:124:7:124:19 | type conversion | Incorrect type conversion of uint64 from strconv.ParseUint result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:131:3:131:36 | ... := ...[0] : int | IncorrectNumericConversion.go:131:3:131:36 | ... := ...[0] : int | IncorrectNumericConversion.go:135:7:135:18 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type int8 |
+| IncorrectNumericConversion.go:138:3:138:36 | ... := ...[0] : int | IncorrectNumericConversion.go:138:3:138:36 | ... := ...[0] : int | IncorrectNumericConversion.go:142:7:142:19 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type int16 |
+| IncorrectNumericConversion.go:145:3:145:36 | ... := ...[0] : int | IncorrectNumericConversion.go:145:3:145:36 | ... := ...[0] : int | IncorrectNumericConversion.go:149:7:149:19 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type int32 |
+| IncorrectNumericConversion.go:152:3:152:36 | ... := ...[0] : int | IncorrectNumericConversion.go:152:3:152:36 | ... := ...[0] : int | IncorrectNumericConversion.go:156:7:156:19 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type uint8 |
+| IncorrectNumericConversion.go:159:3:159:36 | ... := ...[0] : int | IncorrectNumericConversion.go:159:3:159:36 | ... := ...[0] : int | IncorrectNumericConversion.go:163:7:163:20 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type uint16 |
+| IncorrectNumericConversion.go:166:3:166:36 | ... := ...[0] : int | IncorrectNumericConversion.go:166:3:166:36 | ... := ...[0] : int | IncorrectNumericConversion.go:170:7:170:20 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type uint32 |
+| IncorrectNumericConversion.go:173:3:173:36 | ... := ...[0] : int | IncorrectNumericConversion.go:173:3:173:36 | ... := ...[0] : int | IncorrectNumericConversion.go:177:7:177:21 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type float32 |
+| IncorrectNumericConversion.go:180:3:180:36 | ... := ...[0] : int | IncorrectNumericConversion.go:180:3:180:36 | ... := ...[0] : int | IncorrectNumericConversion.go:185:7:185:18 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type uint8 |
+| IncorrectNumericConversion.go:189:3:189:36 | ... := ...[0] : int | IncorrectNumericConversion.go:189:3:189:36 | ... := ...[0] : int | IncorrectNumericConversion.go:193:7:193:23 | type conversion | Incorrect type conversion of int from strconv.Atoi result to a lower bit size type int16 |
