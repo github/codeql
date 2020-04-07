@@ -285,5 +285,5 @@ where
   exists(Lte16FlowConfig cfg | cfg.hasFlowPath(source, sink))
 select source, source, sink,
   "Incorrect type conversion of " + source.getNode().getType() + " from " +
-    getParserQualifiedNameFromResultType(source.getNode().getType().toString()) + " result to " +
+    getParserQualifiedNameFromResultType(source.getNode().getType().toString()) + " result to a lower bit size type " +
     sink.getNode().asExpr().(Lte32BitNumericConversionExpr).getTypeName()
