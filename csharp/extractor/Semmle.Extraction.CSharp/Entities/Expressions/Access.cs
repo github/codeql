@@ -45,7 +45,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
             : base(info.SetKind(AccessKind(info.Context, symbol)))
         {
-            cx.TrapWriter.Writer.expr_access(this, target);
+            if (!(target is null))
+            {
+                cx.TrapWriter.Writer.expr_access(this, target);
+            }
 
             if (implicitThis && !symbol.IsStatic)
             {

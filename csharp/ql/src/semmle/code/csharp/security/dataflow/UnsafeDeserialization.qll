@@ -6,7 +6,7 @@
 import csharp
 
 module UnsafeDeserialization {
-  private import semmle.code.csharp.dataflow.flowsources.Remote
+  private import semmle.code.csharp.security.dataflow.flowsources.Remote
   private import semmle.code.csharp.serialization.Deserializers
 
   /**

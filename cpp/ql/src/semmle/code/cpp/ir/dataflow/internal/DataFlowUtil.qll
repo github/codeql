@@ -299,6 +299,17 @@ class DefinitionByReferenceNode extends InstructionNode {
   Parameter getParameter() {
     exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
   }
+
+  override string toString() {
+    // This string should be unique enough to be helpful but common enough to
+    // avoid storing too many different strings.
+    result =
+      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().getName() +
+        " output argument"
+    or
+    not exists(instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget()) and
+    result = "output argument"
+  }
 }
 
 /**
@@ -353,7 +364,7 @@ ExprNode exprNode(Expr e) { result.getExpr() = e }
  * Gets the `Node` corresponding to `e`, if any. Here, `e` may be a
  * `Conversion`.
  */
-ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
+ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
@@ -387,6 +398,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
+cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
   or

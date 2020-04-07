@@ -1649,6 +1649,11 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
 
   final override int getNumberOfArguments() {
     result = expr.getAllocatorCall().getNumberOfArguments()
+    or
+    // Make sure there's a result even when there is no allocator, as otherwise
+    // TranslatedCall::getChild() will not return the side effects for this call.
+    not exists(expr.getAllocatorCall()) and
+    result = 0
   }
 
   final override TranslatedExpr getArgument(int index) {

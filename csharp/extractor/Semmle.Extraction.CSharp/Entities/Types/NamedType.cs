@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (symbol.TypeKind == TypeKind.Error)
             {
-                Context.Extractor.MissingType(symbol.ToString());
+                Context.Extractor.MissingType(symbol.ToString(), Context.FromSource);
                 return;
             }
 
