@@ -4,7 +4,7 @@ import semmle.code.java.frameworks.SnakeYaml
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
-    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "ObjectInputStream") and
+    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "ObjectInput") and
     (this.hasName("readObject") or this.hasName("readUnshared"))
   }
 }
