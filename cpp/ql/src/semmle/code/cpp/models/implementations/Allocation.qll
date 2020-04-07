@@ -1,4 +1,10 @@
-import semmle.code.cpp.models.interfaces.Allocation
+/**
+ * Provides implementation classes modelling various methods of allocation
+ * (`malloc`, `new` etc). See `semmle.code.cpp.models.interfaces.Allocation`
+ * for usage information.
+ */
+
+ import semmle.code.cpp.models.interfaces.Allocation
 
 /**
  * An allocation function (such as `malloc`) that has an argument for the size

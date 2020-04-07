@@ -1,4 +1,10 @@
-import semmle.code.cpp.models.interfaces.Allocation
+/**
+ * Provides implementation classes  modelling various methods of deallocation
+ * (`free`, `delete` etc). See `semmle.code.cpp.models.interfaces.Deallocation`
+ * for usage information.
+ */
+
+ import semmle.code.cpp.models.interfaces.Allocation
 
 /**
  * A deallocation function such as `free`.
