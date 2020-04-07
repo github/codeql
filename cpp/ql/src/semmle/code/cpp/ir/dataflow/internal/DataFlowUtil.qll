@@ -385,13 +385,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
-  or
-  exists(LoadInstruction load, ChiInstruction chi |
-    not chi.isResultConflated() and
-    nodeTo.asInstruction() = load and
-    nodeFrom.asInstruction() = chi and
-    load.getSourceValueOperand().getAnyDef() = chi
-  )
 }
 
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
@@ -417,12 +410,12 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   //
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
-  // TODO: To capture flow from a partial definition of an object (i.e., a field write) to the object
-  // we add dataflow through partial chi operands, but only if the chi node is not the chi node for all
-  // aliased memory.
-  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom and not iTo.isResultConflated()
-  or
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  exists(ChiInstruction chi | iFrom = chi |
+    not chi.isResultConflated() and
+    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  )
   or
   // Flow through modeled functions
   modelFlow(iFrom, iTo)
