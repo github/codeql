@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (symbol.IsStatic) trapFile.Write("static");
             trapFile.WriteSubId(ContainingType);
-            AddParametersToId(Context, trapFile, symbol, symbol);
+            AddParametersToId(Context, trapFile, symbol);
             trapFile.Write(";constructor");
         }
 
