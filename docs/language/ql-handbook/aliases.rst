@@ -4,8 +4,9 @@
 Aliases
 #######
 
-An alias is an alternative name for an existing QL entity. Once you've defined an alias,
-you can use that new name to refer to the entity in the current module's :ref:`namespace <namespaces>`.
+An alias is an alternative name for an existing QL entity. 
+
+Once you've defined an alias, you can use that new name to refer to the entity in the current module's :ref:`namespace <namespaces>`.
 
 Defining an alias
 *****************

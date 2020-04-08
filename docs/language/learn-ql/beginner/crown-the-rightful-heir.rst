@@ -1,6 +1,11 @@
 Crown the rightful heir
 =======================
 
+This is a QL detective puzzle that shows you how to use recursion in QL to write more complex queries.
+
+King Basil's heir
+-----------------
+
 Phew! No more crimes in the village—you can finally leave the village and go home.
 
 But then... During your last night in the village, the old king—the great King Basil—dies in his sleep and there is chaos everywhere!
@@ -8,9 +13,6 @@ But then... During your last night in the village, the old king—the great King
 The king never married and he had no children, so nobody knows who should inherit the king's castle and fortune. Immediately, lots of villagers claim that they are somehow descended from the king's family and that they are the true heir. People argue and fight and the situation seems hopeless.
 
 Eventually you decide to stay in the village to resolve the argument and find the true heir to the throne.
-
-King Basil's heir
------------------
 
 You want to find out if anyone in the village is actually related to the king. This seems like a difficult task at first, but you start work confidently. You know the villagers quite well by now, and you have a list of all the parents in the village and their children.
 
@@ -125,7 +127,7 @@ Here is one way to define ``relativeOf()``:
 
 Don't forget to use the predicate ``isDeceased()`` to find relatives that are still alive.
 
-➤ `See the answer in the query console <https://lgtm.com/query/6710025057257064639/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/6710025057257064639/>`__
 
 Select the true heir
 --------------------
@@ -136,9 +138,9 @@ To decide who should inherit the king's fortune, the villagers carefully read th
 
 *"The heir to the throne is the closest living relative of the king. Any person with a criminal record will not be considered. If there are multiple candidates, the oldest person is the heir."*
 
-As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-thief-1>` and :doc:`Catch the fire starter <fire-1>` tutorials).
+As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the :doc:`Find the thief <find-the-thief>` and :doc:`Catch the fire starter <catch-the-fire-starter>` tutorials).
 
-➤ `See the answer in the query console <https://lgtm.com/query/1820692755164273290/>`__
+➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1820692755164273290/>`__
 
 Experimental explorations
 -------------------------
@@ -156,9 +158,9 @@ You could also try writing more of your own QL queries to find interesting facts
 -  Do all villagers live in the same region of the village as their parents?
 -  Find out whether there are any time travelers in the village! (Hint: Look for "impossible" family relations.)
 
-What next?
-----------
+Further reading
+---------------
 
--  Learn more about recursion in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Put your QL skills to the test and solve the :doc:`River crossing puzzle <../ql-etudes/river-crossing>`.
+-  Learn more about recursion in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+-  Put your QL skills to the test and solve the :doc:`River crossing puzzle <cross-the-river>`.
 -  Start using QL to analyze projects. See :doc:`Learning CodeQL <../../index>` for a summary of the available languages and resources.
