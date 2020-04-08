@@ -1,8 +1,67 @@
 | ../../../query-tests/Security/lib/bottle.py:64:11:64:24 | LocalRequest() | bottle.request |
-| test.py:3:35:3:41 | ImportMember | bottle.request |
-| test.py:8:11:8:14 | name | externally controlled string |
-| test.py:12:9:12:12 | name | externally controlled string |
-| test.py:18:12:18:18 | request | bottle.request |
-| test.py:27:12:27:16 | where | externally controlled string |
-| test.py:32:14:32:20 | request | bottle.request |
-| test.py:36:34:36:40 | request | bottle.request |
+| redirect.py:1:35:1:41 | ImportMember | bottle.request |
+| redirect.py:6:12:6:16 | where | externally controlled string |
+| routing.py:1:35:1:41 | ImportMember | bottle.request |
+| routing.py:8:11:8:14 | name | externally controlled string |
+| routing.py:9:44:9:50 | request | bottle.request |
+| routing.py:13:15:13:18 | name | externally controlled string |
+| routing.py:14:44:14:50 | request | bottle.request |
+| routing.py:18:12:18:14 | foo | externally controlled string |
+| routing.py:19:43:19:49 | request | bottle.request |
+| routing.py:23:17:23:19 | foo | externally controlled string |
+| routing.py:24:43:24:49 | request | bottle.request |
+| routing.py:28:22:28:27 | number | externally controlled string |
+| routing.py:28:30:28:32 | foo | externally controlled string |
+| routing.py:29:56:29:62 | request | bottle.request |
+| routing.py:33:56:33:62 | request | bottle.request |
+| routing.py:37:56:37:62 | request | bottle.request |
+| routing.py:42:44:42:50 | request | bottle.request |
+| routing.py:46:44:46:50 | request | bottle.request |
+| routing.py:52:45:52:51 | request | bottle.request |
+| routing.py:60:70:60:76 | request | bottle.request |
+| routing.py:67:13:67:18 | animal | externally controlled string |
+| routing.py:68:70:68:76 | request | bottle.request |
+| taint.py:1:35:1:41 | ImportMember | bottle.request |
+| taint.py:6:16:6:19 | name | externally controlled string |
+| taint.py:14:9:14:15 | request | bottle.request |
+| taint.py:15:9:15:15 | request | bottle.request |
+| taint.py:17:9:17:15 | request | bottle.request |
+| taint.py:18:9:18:15 | request | bottle.request |
+| taint.py:20:9:20:15 | request | bottle.request |
+| taint.py:22:9:22:15 | request | bottle.request |
+| taint.py:23:9:23:15 | request | bottle.request |
+| taint.py:25:9:25:15 | request | bottle.request |
+| taint.py:28:9:28:15 | request | bottle.request |
+| taint.py:30:9:30:15 | request | bottle.request |
+| taint.py:31:9:31:15 | request | bottle.request |
+| taint.py:33:9:33:15 | request | bottle.request |
+| taint.py:34:9:34:15 | request | bottle.request |
+| taint.py:36:9:36:15 | request | bottle.request |
+| taint.py:39:9:39:15 | request | bottle.request |
+| taint.py:40:9:40:15 | request | bottle.request |
+| taint.py:43:9:43:15 | request | bottle.request |
+| taint.py:44:9:44:15 | request | bottle.request |
+| taint.py:47:9:47:15 | request | bottle.request |
+| taint.py:48:9:48:15 | request | bottle.request |
+| taint.py:51:9:51:15 | request | bottle.request |
+| taint.py:52:9:52:15 | request | bottle.request |
+| taint.py:54:9:54:15 | request | bottle.request |
+| taint.py:55:9:55:15 | request | bottle.request |
+| taint.py:57:9:57:15 | request | bottle.request |
+| taint.py:59:9:59:15 | request | bottle.request |
+| taint.py:62:9:62:15 | request | bottle.request |
+| taint.py:64:9:64:15 | request | bottle.request |
+| taint.py:66:9:66:15 | request | bottle.request |
+| taint.py:68:9:68:15 | request | bottle.request |
+| taint.py:70:9:70:15 | request | bottle.request |
+| taint.py:72:9:72:15 | request | bottle.request |
+| taint.py:74:9:74:15 | request | bottle.request |
+| taint.py:76:9:76:15 | request | bottle.request |
+| taint.py:78:9:78:15 | request | bottle.request |
+| taint.py:79:9:79:15 | request | bottle.request |
+| taint.py:81:9:81:15 | request | bottle.request |
+| taint.py:82:9:82:15 | request | bottle.request |
+| taint.py:84:9:84:15 | request | bottle.request |
+| taint.py:86:9:86:15 | request | bottle.request |
+| xss_example.py:7:11:7:14 | name | externally controlled string |
+| xss_example.py:14:9:14:12 | name | externally controlled string |

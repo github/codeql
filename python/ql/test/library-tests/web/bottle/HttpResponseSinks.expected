@@ -1,4 +1,12 @@
-| test.py:9:12:9:26 | bottle handler function result | externally controlled string |
-| test.py:13:12:13:24 | bottle handler function result | externally controlled string |
-| test.py:19:12:19:33 | bottle handler function result | externally controlled string |
-| test.py:36:21:36:51 | Taint sink | externally controlled string |
+| routing.py:9:12:9:64 | bottle handler function result | externally controlled string |
+| routing.py:14:12:14:64 | bottle handler function result | externally controlled string |
+| routing.py:19:12:19:62 | bottle handler function result | externally controlled string |
+| routing.py:24:12:24:62 | bottle handler function result | externally controlled string |
+| routing.py:29:12:29:83 | bottle handler function result | externally controlled string |
+| routing.py:33:12:33:83 | bottle handler function result | externally controlled string |
+| routing.py:37:12:37:83 | bottle handler function result | externally controlled string |
+| routing.py:60:12:60:106 | bottle handler function result | externally controlled string |
+| routing.py:68:12:68:106 | bottle handler function result | externally controlled string |
+| xss_example.py:8:12:8:56 | bottle handler function result | externally controlled string |
+| xss_example.py:15:12:15:51 | bottle handler function result | externally controlled string |
+| xss_example.py:22:12:22:51 | bottle handler function result | externally controlled string |
