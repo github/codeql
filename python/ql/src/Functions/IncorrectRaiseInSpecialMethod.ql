@@ -95,8 +95,8 @@ private predicate cast_method(string name) {
     name = "__complex__"
 }
 
-predicate correct_raise(string name, ClassObject ex) {
-    ex.getAnImproperSuperType() = theTypeErrorType() and
+predicate correct_raise(string name, ClassValue ex) {
+    ex.getASuperType() = ClassValue::typeError() and
     (
         name = "__copy__" or
         name = "__deepcopy__" or
@@ -110,14 +110,14 @@ predicate correct_raise(string name, ClassObject ex) {
     preferred_raise(name, ex.getASuperType())
 }
 
-predicate preferred_raise(string name, ClassObject ex) {
-    attribute_method(name) and ex = theAttributeErrorType()
+predicate preferred_raise(string name, ClassValue ex) {
+    attribute_method(name) and ex = ClassValue::attributeError()
     or
-    indexing_method(name) and ex = Object::builtin("LookupError")
+    indexing_method(name) and ex = ClassValue::lookupError()
     or
-    ordering_method(name) and ex = theTypeErrorType()
+    ordering_method(name) and ex = ClassValue::typeError()
     or
-    arithmetic_method(name) and ex = Object::builtin("ArithmeticError")
+    arithmetic_method(name) and ex = ClassValue::arithmeticError()
 }
 
 predicate no_need_to_raise(string name, string message) {
@@ -126,21 +126,21 @@ predicate no_need_to_raise(string name, string message) {
     cast_method(name) and message = "there is no need to implement the method at all."
 }
 
-predicate is_abstract(FunctionObject func) {
-    func.getFunction().getADecorator().(Name).getId().matches("%abstract%")
+predicate is_abstract(FunctionValue func) {
+    func.getScope().getADecorator().(Name).getId().matches("%abstract%")
 }
 
-predicate always_raises(FunctionObject f, ClassObject ex) {
+predicate always_raises(FunctionValue f, ClassValue ex) {
     ex = f.getARaisedType() and
     strictcount(f.getARaisedType()) = 1 and
-    not exists(f.getFunction().getANormalExit()) and
+    not exists(f.getScope().getANormalExit()) and
     /* raising StopIteration is equivalent to a return in a generator */
-    not ex = theStopIterationType()
+    not ex = ClassValue::stopIteration()
 }
 
-from FunctionObject f, ClassObject cls, string message
+from FunctionValue f, ClassValue cls, string message
 where
-    f.getFunction().isSpecialMethod() and
+    f.getScope().isSpecialMethod() and
     not is_abstract(f) and
     always_raises(f, cls) and
     (
@@ -148,7 +148,7 @@ where
         or
         not correct_raise(f.getName(), cls) and
         not cls.getName() = "NotImplementedError" and
-        exists(ClassObject preferred | preferred_raise(f.getName(), preferred) |
+        exists(ClassValue preferred | preferred_raise(f.getName(), preferred) |
             message = "raise " + preferred.getName() + " instead"
         )
     )
