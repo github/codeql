@@ -18,7 +18,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  `Basic Java query <https://lgtm.com/help/lgtm/console/ql-java-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
 
--  :doc:`CodeQL library for Java <introduce-libraries-java>`: When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
+-  :doc:`CodeQL library for Java <introduce-libraries-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 
 -  :doc:`Analyzing data flow in Java <dataflow>`: You can use CodeQL to track the flow of data through a Java program to its use. 
 
@@ -34,7 +34,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Working with source locations <source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
--  :doc:`lasses for working with Java code <ast-class-reference>`: CodeQL has a large selection of classes for working with Java statements and expressions.
+-  :doc:`Classes for working with Java code <ast-class-reference>`: CodeQL has a large selection of classes for working with Java statements and expressions.
 
 
 Further reading
