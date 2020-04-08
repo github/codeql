@@ -9,16 +9,16 @@ func Q(query string, params ...interface{}) types.ValueAppender {
 	return orm.Q(query, params...)
 }
 
-type Stmt struct {}
+type Stmt struct{}
 
-type baseDB struct {}
+type baseDB struct{}
 
 func (db *baseDB) Prepare(q string) (*Stmt, error) {
 	return nil, nil
 }
 
-type Conn struct { *baseDB }
+type Conn struct{ *baseDB }
 
-type DB struct { *baseDB }
+type DB struct{ *baseDB }
 
-type Tx struct { *baseDB }
+type Tx struct{ *baseDB }
