@@ -16,7 +16,7 @@ Query help files must have the same base name as the query they describe and mus
 
 ### File structure and layout
 
-Query files are written using a custom XML format, and stored in a file with a `.qhelp` extension. The basic structure is as follows:
+Query help files are written using a custom XML format, and stored in a file with a `.qhelp` extension. The basic structure is as follows:
 
 ```
 <!DOCTYPE qhelp SYSTEM "qhelp.dtd">
@@ -107,7 +107,7 @@ For example:
 
 ### Referencing potential security weaknesses
 
-If your query checks code for a CWE weakness, you should use the `@tags` element in the query file to reference the associated CWEs, as explained [here](query-metadata-style-guide.md). When you use these tags, a link to the appropriate entry from the [MITRE.org](https://cwe.mitre.org/scoring/index.html) site will automatically appear as a reference in the query help file.
+If your query checks code for a CWE weakness, you should use the `@tags` element in the query file to reference the associated CWEs, as explained [here](query-metadata-style-guide.md). When you use these tags, a link to the appropriate entry from the [MITRE.org](https://cwe.mitre.org/scoring/index.html) site will automatically appear as a reference in the output HTML file.
 
 ## Query help example 
 
