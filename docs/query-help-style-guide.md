@@ -86,7 +86,7 @@ For example:
 
 >W. C. Wake, _Refactoring Workbook_, pp. 93 – 94, Addison-Wesley Professional, 2004.
 
-Note, & symbols need to be replaced by \&amp;. The symbol will be displayed correctly in the html files generated from the query help files.
+Note, & symbols need to be replaced by \&amp;. The symbol will be displayed correctly in the HTML files generated from the query help files.
 
 ### Academic papers
 
