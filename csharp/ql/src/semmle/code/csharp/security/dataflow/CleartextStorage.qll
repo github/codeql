@@ -5,10 +5,10 @@
 import csharp
 
 module CleartextStorage {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.security.SensitiveActions
-  import semmle.code.csharp.security.sinks.ExternalLocationSink
+  import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 
   /**
    * A data flow source for cleartext storage of sensitive information.

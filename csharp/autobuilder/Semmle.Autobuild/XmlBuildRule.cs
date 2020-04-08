@@ -7,7 +7,7 @@
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
-            if (!builder.Options.Indexing)
+            if (!builder.Options.Indexing || builder.Odasa is null)
                 return BuildScript.Success;
 
             var command = new CommandBuilder(builder.Actions).

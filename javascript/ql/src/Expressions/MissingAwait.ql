@@ -45,7 +45,8 @@ predicate isBadPromiseContext(Expr expr) {
   or
   exists(UnaryExpr e |
     expr = e.getOperand() and
-    not e instanceof VoidExpr
+    not e instanceof VoidExpr and
+    not e instanceof DeleteExpr
   )
   or
   expr = any(UpdateExpr e).getOperand()

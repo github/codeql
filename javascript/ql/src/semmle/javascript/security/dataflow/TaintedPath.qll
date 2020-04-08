@@ -206,6 +206,20 @@ module TaintedPath {
         dstlabel.isNormalized()
       )
       or
+      // foo.replace(/(\.\.\/)*/, "") and similar
+      exists(DotDotSlashPrefixRemovingReplace call |
+        src = call.getInput() and
+        dst = call.getOutput()
+      |
+        // the 4 possible combinations of normalized + relative for `srclabel`, and the possible values for `dstlabel` in each case.
+        srclabel.isNonNormalized() and srclabel.isRelative() // raw + relative -> any()
+        or
+        srclabel.isNormalized() and srclabel.isAbsolute() and srclabel = dstlabel // normalized + absolute -> normalized + absolute
+        or
+        srclabel.isNonNormalized() and srclabel.isAbsolute() and dstlabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
+        // normalized + relative -> none()
+      )
+      or
       // path.join()
       exists(DataFlow::CallNode join, int n |
         join = NodeJSLib::Path::moduleMember("join").getACall()

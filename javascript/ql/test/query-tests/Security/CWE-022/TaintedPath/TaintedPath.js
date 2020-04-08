@@ -191,4 +191,13 @@ var server = http.createServer(function(req, res) {
     res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
   	res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // OK
   }
+
+  // removing of "../" from prefix.
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.[\/\\])+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.\/)+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.\/)*/, ''))); // OK
+
+  res.write(fs.readFileSync("prefix" + path.replace(/^(\.\.[\/\\])+/, ''))); // NOT OK - not normalized
+  res.write(fs.readFileSync(pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // NOT OK (can be absolute)
 });
