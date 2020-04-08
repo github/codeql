@@ -1246,6 +1246,15 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets a data flow node representing the given captured variable.
+   */
+  Node capturedVariableNode(LocalVariable variable) {
+    result = TCapturedVariableNode(variable)
+  }
+
+  /**
    * Gets the data flow node corresponding to `nd`.
    *
    * This predicate is only defined for expressions, properties, and for statements that declare
