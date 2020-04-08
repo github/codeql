@@ -463,7 +463,9 @@ newtype TTranslatedElement =
       expr = call.getArgument(n).getFullyConverted()
       or
       expr = call.getQualifier().getFullyConverted() and
-      n = -1
+      n = -1 and
+      // Exclude calls to static member functions. They don't modify the qualifier
+      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
     ) and
     (
       call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
