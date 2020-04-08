@@ -126,10 +126,12 @@ private module VirtualDispatch {
 
   /**
    * A ReturnNode with its ReturnKind and its enclosing callable.
-   * 
+   *
    * Used to fix a join ordering issue in flowsFrom.
    */
-  private predicate returnNodeWithKindAndEnclosingCallable(ReturnNode node, ReturnKind kind, DataFlowCallable callable) {
+  private predicate returnNodeWithKindAndEnclosingCallable(
+    ReturnNode node, ReturnKind kind, DataFlowCallable callable
+  ) {
     node.getKind() = kind and
     node.getEnclosingCallable() = callable
   }
