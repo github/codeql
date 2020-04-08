@@ -26,7 +26,7 @@ Each query help file provides detailed information about the purpose and use of 
 Structure
 =========
 
-Query help files are written using an XML format called Qhelp (``.qhelp``). Query help files must have the same base name as the query they describe, and must be located in the same directory. The basic structure is as follows:
+Query help files are written using a custom XML format, and stored in a file with a ``.qhelp`` extension. Query help files must have the same base name as the query they describe, and must be located in the same directory. The basic structure is as follows:
 
 .. code-block:: xml
 
@@ -44,32 +44,32 @@ Section-level elements
 
 Section-level elements are used to group the information in the help file into sections. Many sections have a heading, either defined by a ``title`` attribute or a default value. The following section-level elements are optional child elements of the ``qhelp`` element.
 
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| Element            | Attributes                         | Children               | Purpose of section                                                                                                                            |
-+====================+====================================+========================+===============================================================================================================================================+
-| ``example``        | None                               | Any block element      | Demonstrate an example of code that violates the rule implemented by the query with guidance on how to fix it. Default heading.               |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``fragment``       | None                               | Any block element      | See :ref:`Qhelp inclusion <qhelp-inclusion>` below. No heading.                                                                               |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``hr``             | None                               | None                   | A horizontal rule. No heading.                                                                                                                |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``include``        | ``src`` The Qhelp file to include. | None                   | Include a Qhelp file at the location of this element. See :ref:`Qhelp inclusion <qhelp-inclusion>` below. No heading.                         |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``overview``       | None                               | Any block element      | Overview of the purpose of the query. Typically this is the first section in a query document. No heading.                                    |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``recommendation`` | None                               | Any block element      | Recommend how to address any alerts that this query identifies. Default heading.                                                              |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``references``     | None                               | ``li`` elements        | Reference list. Typically this is the last section in a query document. Default heading.                                                      |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``section``        | ``title`` Title of the section     | Any block element      | General-purpose section with a heading defined by the ``title`` attribute.                                                                    |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``semmleNotes``    | None                               | Any block element      | Semmle-specific notes about the query. This section is used only for queries that implement a rule defined by a third party. Default heading. |
-+--------------------+------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| Element            | Attributes                              | Children               | Purpose of section                                                                                                                            |
++====================+=========================================+========================+===============================================================================================================================================+
+| ``example``        | None                                    | Any block element      | Demonstrate an example of code that violates the rule implemented by the query with guidance on how to fix it. Default heading.               |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``fragment``       | None                                    | Any block element      | See :ref:`Query help inclusion <qhelp-inclusion>` below. No heading.                                                                          |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``hr``             | None                                    | None                   | A horizontal rule. No heading.                                                                                                                |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``include``        | ``src`` The query help file to include. | None                   | Include a query help file at the location of this element. See :ref:`Query help inclusion <qhelp-inclusion>` below. No heading.               |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``overview``       | None                                    | Any block element      | Overview of the purpose of the query. Typically this is the first section in a query document. No heading.                                    |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``recommendation`` | None                                    | Any block element      | Recommend how to address any alerts that this query identifies. Default heading.                                                              |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``references``     | None                                    | ``li`` elements        | Reference list. Typically this is the last section in a query document. Default heading.                                                      |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``section``        | ``title`` Title of the section          | Any block element      | General-purpose section with a heading defined by the ``title`` attribute.                                                                    |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| ``semmleNotes``    | None                                    | Any block element      | Semmle-specific notes about the query. This section is used only for queries that implement a rule defined by a third party. Default heading. |
++--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 Block elements
 ==============
 
-The following elements are optional child elements of the ``section``, ``example``, ``fragment``, ``recommendation``, ``overview`` and ``semmleNotes`` elements.
+The following elements are optional child elements of the ``section``, ``example``, ``fragment``, ``recommendation``, ``overview``, and ``semmleNotes`` elements.
 
 .. table::
    :widths: 7 20 10 25
@@ -84,7 +84,7 @@ The following elements are optional child elements of the ``section``, ``example
    |                | | ``height`` Optional, height of the image.              |                    |                                                                                                                                                                                                                                                                                                           |
    |                | | ``width`` Optional, the width of the image.            |                    |                                                                                                                                                                                                                                                                                                           |
    +----------------+----------------------------------------------------------+--------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ``include``    | ``src`` The Qhelp file to include.                       | None               | Include a Qhelp file at the location of this element. See :ref:`Qhelp inclusion <qhelp-inclusion>` below for more information.                                                                                                                                                                            |
+   | ``include``    | ``src`` The query help file to include.                  | None               | Include a query help file at the location of this element. See :ref:`Query help inclusion <qhelp-inclusion>` below for more information.                                                                                                                                                                  |
    +----------------+----------------------------------------------------------+--------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
    | ``ol``         | None                                                     | ``li``             | Display an ordered list. See List elements below.                                                                                                                                                                                                                                                         |
    +----------------+----------------------------------------------------------+--------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -105,12 +105,12 @@ The following elements are optional child elements of the ``section``, ``example
 List elements
 =============
 
-Qhelp files support two types of block elements for lists: ``ul`` and ``ol``. Both block elements support only one child elements of the type ``li``. Each ``li`` element contains either inline content or a block element.
+Query help files support two types of block elements for lists: ``ul`` and ``ol``. Both block elements support only one child elements of the type ``li``. Each ``li`` element contains either inline content or a block element.
 
 Table elements
 ==============
 
-The ``table`` block element is used to include a table in a Qhelp file. Each table includes a number of rows, each of which includes a number of cells. The data in the cells will be rendered as a grid.
+The ``table`` block element is used to include a table in a query help file. Each table includes a number of rows, each of which includes a number of cells. The data in the cells will be rendered as a grid.
 
 +-----------+------------+--------------------+-------------------------------------------+
 | Element   | Attributes | Children           | Purpose                                   |
@@ -159,12 +159,12 @@ Inline content is used to define the content for paragraphs, list items, table c
 
 .. _qhelp-inclusion:
 
-Qhelp inclusion
-===============
+Query help inclusion
+====================
 
-To enable the reuse of content between different help topics, shared content can be stored in one Qhelp file and then included in a number of other Qhelp files using the ``include`` element. The shared content can stored either in the same directory as the including files, or in ``SEMMLE_DIST/docs/include``.
+To reuse content between different help topics, you can store shared content in one query help file and then include it in a number of other query help files using the ``include`` element. The shared content can be stored either in the same directory as the including files, or in ``SEMMLE_DIST/docs/include``.
 
-The ``include`` element can be used as a section or block element, the content of the Qhelp file defined by the ``src`` attribute must contain elements that are appropriate to the location of the ``include`` element.
+The ``include`` element can be used as a section or block element. The content of the query help file defined by the ``src`` attribute must contain elements that are appropriate to the location of the ``include`` element.
 
 Section-level include elements
 ------------------------------
@@ -177,7 +177,7 @@ Section-level ``include`` elements can be located beneath the top-level ``qhelp`
        <include src="XSS.qhelp" />
    </qhelp>
 
-In this example, the `XSS.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full Qhelp file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
+In this example, the `XSS.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full query help file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
 
 Block-level include elements
 ----------------------------
