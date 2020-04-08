@@ -101,7 +101,8 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
 
   /** Gets the `i`th result variable of this function. */
   ResultVariable getResultVar(int i) {
-    result = rank[i + 1](ResultVariable res, int j, int k |
+    result =
+      rank[i + 1](ResultVariable res, int j, int k |
         res.getDeclaration() = getTypeExpr().getResultDecl(j).getNameExpr(k)
       |
         res order by j, k
@@ -109,39 +110,29 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   }
 
   /** Gets a result variable of this function. */
-  ResultVariable getAResultVar() {
-    result.getFunction() = this
-  }
+  ResultVariable getAResultVar() { result.getFunction() = this }
 
   /**
    * Gets the `i`th parameter of this function.
    *
    * The receiver variable, if any, is considered to be the -1st parameter.
    */
-  Parameter getParameter(int i) {
-    result.isParameterOf(this, i)
-  }
+  Parameter getParameter(int i) { result.isParameterOf(this, i) }
 
   /**
    * Gets a parameter of this function.
    */
-  Parameter getAParameter() {
-    result.getFunction() = this
-  }
+  Parameter getAParameter() { result.getFunction() = this }
 
   /**
    * Gets the number of parameters of this function.
    */
-  int getNumParameter() {
-    result = count(getAParameter())
-  }
+  int getNumParameter() { result = count(getAParameter()) }
 
   /**
    * Gets a call to this function.
    */
-  DataFlow::CallNode getACall() {
-    result.getACallee() = this
-  }
+  DataFlow::CallNode getACall() { result.getACallee() = this }
 }
 
 /**
@@ -526,9 +517,7 @@ class ResultVariableDecl extends @field, Documentable, ExprParent {
   /**
    * Gets an expression representing the name of a result variable declared in this declaration.
    */
-  Expr getANameExpr() {
-    result = getNameExpr(_)
-  }
+  Expr getANameExpr() { result = getNameExpr(_) }
 
   /**
    * Gets the function type expression to which this result variable declaration belongs.
@@ -549,7 +538,6 @@ class ResultVariableDecl extends @field, Documentable, ExprParent {
  */
 class InterfaceMemberSpec extends @field, Documentable, ExprParent {
   InterfaceTypeExpr ite;
-
   int idx;
 
   InterfaceMemberSpec() { fields(this, ite, idx) }

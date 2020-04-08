@@ -10,8 +10,7 @@ import go
  * or the receiver parameter.
  */
 private newtype TFunctionInput =
-  TInParameter(int i) { exists(SignatureType s | exists(s.getParameterType(i))) }
-  or
+  TInParameter(int i) { exists(SignatureType s | exists(s.getParameterType(i))) } or
   TInReceiver()
 
 /**
@@ -20,14 +19,10 @@ private newtype TFunctionInput =
  */
 class FunctionInput extends TFunctionInput {
   /** Holds if this represents the `i`th parameter of a function. */
-  predicate isParameter(int i) {
-    none()
-  }
+  predicate isParameter(int i) { none() }
 
   /** Holds if this represents the receiver of a function. */
-  predicate isReceiver() {
-    none()
-  }
+  predicate isReceiver() { none() }
 
   /** Gets the data-flow node corresponding to this input for the call `c`. */
   final DataFlow::Node getNode(DataFlow::CallNode c) { result = getEntryNode(c) }
@@ -46,32 +41,22 @@ class FunctionInput extends TFunctionInput {
 private class ParameterInput extends FunctionInput, TInParameter {
   int index;
 
-  ParameterInput() {
-    this = TInParameter(index)
-  }
+  ParameterInput() { this = TInParameter(index) }
 
-  override predicate isParameter(int i) {
-    i = index
-  }
+  override predicate isParameter(int i) { i = index }
 
-  override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
-    result = c.getArgument(index)
-  }
+  override DataFlow::Node getEntryNode(DataFlow::CallNode c) { result = c.getArgument(index) }
 
   override DataFlow::Node getExitNode(FuncDef f) {
     result = DataFlow::parameterNode(f.getParameter(index))
   }
 
-  override string toString() {
-    result = "parameter " + index
-  }
+  override string toString() { result = "parameter " + index }
 }
 
 /** The receiver of a function, viewed as a source of input. */
 private class ReceiverInput extends FunctionInput, TInReceiver {
-  override predicate isReceiver() {
-    any()
-  }
+  override predicate isReceiver() { any() }
 
   override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
     result = c.(DataFlow::MethodCallNode).getReceiver()
@@ -81,9 +66,7 @@ private class ReceiverInput extends FunctionInput, TInReceiver {
     result = DataFlow::receiverNode(f.(MethodDecl).getReceiver())
   }
 
-  override string toString() {
-    result = "receiver"
-  }
+  override string toString() { result = "receiver" }
 }
 
 /**
@@ -96,8 +79,7 @@ private newtype TFunctionOutput =
     or
     // one among several results
     exists(SignatureType s | exists(s.getResultType(index)))
-  }
-  or
+  } or
   TOutParameter(int index) {
     // the receiver parameter
     index = -1
@@ -112,24 +94,16 @@ private newtype TFunctionOutput =
  */
 class FunctionOutput extends TFunctionOutput {
   /** Holds if this represents the (single) result of a function. */
-  predicate isResult() {
-    none()
-  }
+  predicate isResult() { none() }
 
   /** Holds if this represents the `i`th result of a function. */
-  predicate isResult(int i) {
-    none()
-  }
+  predicate isResult(int i) { none() }
 
   /** Holds if this represents the receiver of a function. */
-  predicate isReceiver() {
-    none()
-  }
+  predicate isReceiver() { none() }
 
   /** Holds if this represents the `i`th parameter of a function. */
-  predicate isParameter(int i) {
-    none()
-  }
+  predicate isParameter(int i) { none() }
 
   /** Gets the data-flow node corresponding to this output for the call `c`. */
   final DataFlow::Node getNode(DataFlow::CallNode c) { result = getExitNode(c) }
@@ -148,17 +122,11 @@ class FunctionOutput extends TFunctionOutput {
 private class OutResult extends FunctionOutput, TOutResult {
   int index;
 
-  OutResult() {
-    this = TOutResult(index)
-  }
+  OutResult() { this = TOutResult(index) }
 
-  override predicate isResult() {
-    index = -1
-  }
+  override predicate isResult() { index = -1 }
 
-  override predicate isResult(int i) {
-    i = index and i >= 0
-  }
+  override predicate isResult(int i) { i = index and i >= 0 }
 
   override DataFlow::Node getEntryNode(FuncDef f) {
     // return expressions
@@ -200,17 +168,11 @@ private class OutResult extends FunctionOutput, TOutResult {
 private class OutParameter extends FunctionOutput, TOutParameter {
   int index;
 
-  OutParameter() {
-    this = TOutParameter(index)
-  }
+  OutParameter() { this = TOutParameter(index) }
 
-  override predicate isReceiver() {
-    index = -1
-  }
+  override predicate isReceiver() { index = -1 }
 
-  override predicate isParameter(int i) {
-    i = index and i >= 0
-  }
+  override predicate isParameter(int i) { i = index and i >= 0 }
 
   override DataFlow::Node getEntryNode(FuncDef f) {
     // there is no generic way of assigning to a parameter; operations that taint a parameter

@@ -38,7 +38,8 @@ predicate isInterestingSemiAnchoredRegexpString(string re, string msg) {
     ) and
     anchorPart = re.regexpCapture(regex, 1) and
     anchorPart.regexpMatch("(?i).*[a-z].*") and
-    msg = "Misleading operator precedence. The subexpression '" + anchorPart +
+    msg =
+      "Misleading operator precedence. The subexpression '" + anchorPart +
         "' is anchored, but the other parts of this regular expression are not."
   )
 }
@@ -53,7 +54,9 @@ predicate isInterestingUnanchoredRegexpString(string re, string msg) {
   re.regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + commonTLD() + "([/#?():]\\S*)?") and
   // without any anchors
   re.regexpMatch("[^$^]+") and
-  msg = "When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it."
+  msg =
+    "When this is used as a regular expression on a URL, it may match anywhere, and arbitrary " +
+      "hosts may come before or after it."
 }
 
 class Config extends DataFlow::Configuration {

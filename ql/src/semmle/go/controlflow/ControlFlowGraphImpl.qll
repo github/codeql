@@ -1287,7 +1287,7 @@ module CFG {
     private MkEntryNode getEntry() { result = MkEntryNode(this) }
 
     private Parameter getParameterRanked(int i) {
-      result = rank[i+1](Parameter p, int j | p = getParameter(j) | p order by j)
+      result = rank[i + 1](Parameter p, int j | p = getParameter(j) | p order by j)
     }
 
     private ControlFlow::Node getPrologueNode(int i) {

@@ -86,7 +86,8 @@ private predicate isInitialComment(Comment c, File f, int line, int col) {
 
 /** Gets the `i`th initial comment in `f` (0-based). */
 private Comment getInitialComment(File f, int i) {
-  result = rank[i + 1](Comment c, int line, int col |
+  result =
+    rank[i + 1](Comment c, int line, int col |
       isInitialComment(c, f, line, col)
     |
       c order by line, col

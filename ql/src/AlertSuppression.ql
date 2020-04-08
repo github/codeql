@@ -12,7 +12,6 @@ import go
  */
 class SuppressionComment extends Locatable {
   string text;
-
   string annotation;
 
   SuppressionComment() {

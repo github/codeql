@@ -76,15 +76,11 @@ module SQL {
 
     /** A string that might identify package `go-pg/pg` or a specific version of it. */
     bindingset[result]
-    private string gopg() {
-      result.regexpMatch("github.com/go-pg/pg(/v[^/]+)?")
-    }
+    private string gopg() { result.regexpMatch("github.com/go-pg/pg(/v[^/]+)?") }
 
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
     bindingset[result]
-    private string gopgorm() {
-      result.regexpMatch("github.com/go-pg/pg(/v[^/]+)?/orm")
-    }
+    private string gopgorm() { result.regexpMatch("github.com/go-pg/pg(/v[^/]+)?/orm") }
 
     /**
      * A string argument to an API of `go-pg/pg` that is directly interpreted as SQL without
@@ -120,9 +116,7 @@ module SQL {
           f.hasQualifiedName(gopgorm(), "Q") and
           arg = 0
           or
-          exists(string tp, string m |
-            f.(Method).hasQualifiedName(gopgorm(), tp, m)
-          |
+          exists(string tp, string m | f.(Method).hasQualifiedName(gopgorm(), tp, m) |
             tp = "Query" and
             (
               m = "ColumnExpr" or

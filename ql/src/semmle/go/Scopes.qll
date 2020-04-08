@@ -239,11 +239,12 @@ class Parameter extends DeclaredVariable {
     index = -1
     or
     exists(FuncTypeExpr tp | tp = f.getTypeExpr() |
-      this = rank[index + 1](DeclaredVariable parm, int j, int k |
-        parm.getDeclaration() = tp.getParameterDecl(j).getNameExpr(k)
-      |
-        parm order by j, k
-      )
+      this =
+        rank[index + 1](DeclaredVariable parm, int j, int k |
+          parm.getDeclaration() = tp.getParameterDecl(j).getNameExpr(k)
+        |
+          parm order by j, k
+        )
     )
   }
 
@@ -258,9 +259,7 @@ class Parameter extends DeclaredVariable {
   int getIndex() { result = index }
 
   /** Holds if this is the `i`th parameter of function `fd`. */
-  predicate isParameterOf(FuncDef fd, int i) {
-    fd = f and i = index
-  }
+  predicate isParameterOf(FuncDef fd, int i) { fd = f and i = index }
 }
 
 /** The receiver variable of a method. */
@@ -310,9 +309,7 @@ class Field extends Variable {
   StructType getDeclaringType() { result = declaringType }
 
   override Package getPackage() {
-    exists(Type tp | tp.getUnderlyingType() = declaringType |
-      result = tp.getPackage()
-    )
+    exists(Type tp | tp.getUnderlyingType() = declaringType | result = tp.getPackage())
   }
 
   /**
