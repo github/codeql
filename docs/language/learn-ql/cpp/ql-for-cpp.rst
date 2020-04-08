@@ -34,11 +34,11 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Detecting a potential buffer overflow <zero-space-terminator>`: You can use CodeQL to detect potential buffer overflows by checking for allocations equal to ``strlen`` in C and C++.
 
+-  :doc:`Using the guards library in C and C++ <guards>`: You can use the CodeQL guards library to identify conditional expressions that control the execution of other parts of a program in C and C++ codebases. 
+
 -  :doc:`Using range analysis for C and C++ <range-analysis>`: You can use range analysis to determine the upper or lower bounds on an expression, or whether an expression could potentially over or underflow.
 
 -  :doc:`Hash consing and value numbering <value-numbering-hash-cons>`: You can use specialized CodeQL libraries to recognize expressions that are syntactically identical or compute the same value at runtime in C and C++ codebases.
-
--  :doc:`Using the guards library in C and C++ <guards>`: You can use the CodeQL guards library to identify conditional expressions that control the execution of other parts of a program in C and C++ codebases. 
 
 Further reading
 ---------------
