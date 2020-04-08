@@ -62,6 +62,7 @@ module LazyCache {
       result = this.flow()
       or
       exists(LazyCacheVariable variable, Expr base, PropAccess access, string localName |
+        // To avoid recursion, this should not depend on `SourceNode`.
         variable = getVariable() and
         base = variable.getAnAccess() and
         access.getBase() = base and
