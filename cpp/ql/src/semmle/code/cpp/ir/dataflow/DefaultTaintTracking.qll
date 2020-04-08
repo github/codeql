@@ -199,8 +199,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Flow through pointer dereference
   i2.(LoadInstruction).getSourceAddress() = i1
   or
-  i2.(LoadInstruction).getSourceValueOperand().getAnyDef() = i1
-  or
   i2.(UnaryInstruction).getUnary() = i1
   or
   // Flow out of definition-by-reference
