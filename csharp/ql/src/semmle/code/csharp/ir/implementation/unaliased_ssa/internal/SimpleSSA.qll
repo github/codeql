@@ -17,7 +17,7 @@ private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRTy
  * variable if its address never escapes and all reads and writes of that variable access the entire
  * variable using the original type of the variable.
  */
-private predicate isVariableModeled(Allocation var) {
+predicate isVariableModeled(Allocation var) {
   not allocationEscapes(var) and
   forall(Instruction instr, AddressOperand addrOperand, IRType type |
     addrOperand = instr.getResultAddressOperand() and

@@ -557,6 +557,9 @@ private Overlap getVariableMemoryLocationOverlap(
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
+  // Ignore instructions that already have modeled results, because SSA construction can just reuse
+  // their def/use information.
+  not instr.isResultModeled() and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
@@ -588,6 +591,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  // Ignore operands that are already modeled, because SSA construction can just reuse their def/use
+  // information.
+  not operand.getAnyDef().isResultModeled() and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and

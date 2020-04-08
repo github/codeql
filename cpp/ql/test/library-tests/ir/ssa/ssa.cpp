@@ -295,3 +295,45 @@ Point *NewAliasing(int x) {
   A* a = new A;
   return p;
 }
+
+int DegeneratePhiAfterUnreachable() {
+  int a = 5;
+  int b = 5;
+  if (a == b) {
+    return 0;
+  }
+  else {
+    // Unreachable, so the `Phi` for the return variable would have only the other `return`
+    // expression as input.
+    return 1;
+  }
+}
+
+int TwoDegeneratePhisAfterUnreachable() {
+  int a = 5;
+  int b = 5;
+  int r;
+  if (a == b) {
+    if (a < 5) {
+      // Unreachable.
+      r = 0;  // r0
+    }
+    else {
+      // After unreachable code removal, this feeds a degenerate `Phi` which in turn feeds another
+      // degenerate `Phi`.
+      r = 1;  // r1
+    }
+    // r01 = Phi(r0, r1) <-- First degenerate `Phi` here.
+
+    // The below statement is just to keep the above `if`/`else` from going directly to the `return`
+    // statement.
+    int x = 7;
+  }
+  else {
+    // Unreachable
+    r = 2;  // r2
+  }
+  // r012 = Phi(r01, r2) <-- Second degenerate `Phi` here.
+
+  return r;
+}

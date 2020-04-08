@@ -1471,3 +1471,91 @@ ssa.cpp:
 #  291|     v291_10(void)           = UnmodeledUse                    : mu*
 #  291|     v291_11(void)           = AliasedUse                      : ~m295_12
 #  291|     v291_12(void)           = ExitFunction                    : 
+
+#  299| int DegeneratePhiAfterUnreachable()
+#  299|   Block 0
+#  299|     v299_1(void)       = EnterFunction       : 
+#  299|     m299_2(unknown)    = AliasedDefinition   : 
+#  299|     m299_3(unknown)    = InitializeNonLocal  : 
+#  299|     m299_4(unknown)    = Chi                 : total:m299_2, partial:m299_3
+#  299|     mu299_5(unknown)   = UnmodeledDefinition : 
+#  300|     r300_1(glval<int>) = VariableAddress[a]  : 
+#  300|     r300_2(int)        = Constant[5]         : 
+#  300|     m300_3(int)        = Store               : &:r300_1, r300_2
+#  301|     r301_1(glval<int>) = VariableAddress[b]  : 
+#  301|     r301_2(int)        = Constant[5]         : 
+#  301|     m301_3(int)        = Store               : &:r301_1, r301_2
+#  302|     r302_1(glval<int>) = VariableAddress[a]  : 
+#  302|     r302_2(int)        = Load                : &:r302_1, m300_3
+#  302|     r302_3(glval<int>) = VariableAddress[b]  : 
+#  302|     r302_4(int)        = Load                : &:r302_3, m301_3
+#  302|     r302_5(bool)       = CompareEQ           : r302_2, r302_4
+#  302|     v302_6(void)       = ConditionalBranch   : r302_5
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  303|   Block 1
+#  303|     r303_1(glval<int>) = VariableAddress[#return] : 
+#  303|     r303_2(int)        = Constant[0]              : 
+#  303|     m303_3(int)        = Store                    : &:r303_1, r303_2
+#  299|     r299_6(glval<int>) = VariableAddress[#return] : 
+#  299|     v299_7(void)       = ReturnValue              : &:r299_6, m303_3
+#  299|     v299_8(void)       = UnmodeledUse             : mu*
+#  299|     v299_9(void)       = AliasedUse               : m299_3
+#  299|     v299_10(void)      = ExitFunction             : 
+
+#  299|   Block 2
+#  299|     v299_11(void) = Unreached : 
+
+#  312| int TwoDegeneratePhisAfterUnreachable()
+#  312|   Block 0
+#  312|     v312_1(void)       = EnterFunction       : 
+#  312|     m312_2(unknown)    = AliasedDefinition   : 
+#  312|     m312_3(unknown)    = InitializeNonLocal  : 
+#  312|     m312_4(unknown)    = Chi                 : total:m312_2, partial:m312_3
+#  312|     mu312_5(unknown)   = UnmodeledDefinition : 
+#  313|     r313_1(glval<int>) = VariableAddress[a]  : 
+#  313|     r313_2(int)        = Constant[5]         : 
+#  313|     m313_3(int)        = Store               : &:r313_1, r313_2
+#  314|     r314_1(glval<int>) = VariableAddress[b]  : 
+#  314|     r314_2(int)        = Constant[5]         : 
+#  314|     m314_3(int)        = Store               : &:r314_1, r314_2
+#  315|     r315_1(glval<int>) = VariableAddress[r]  : 
+#  315|     m315_2(int)        = Uninitialized[r]    : &:r315_1
+#  316|     r316_1(glval<int>) = VariableAddress[a]  : 
+#  316|     r316_2(int)        = Load                : &:r316_1, m313_3
+#  316|     r316_3(glval<int>) = VariableAddress[b]  : 
+#  316|     r316_4(int)        = Load                : &:r316_3, m314_3
+#  316|     r316_5(bool)       = CompareEQ           : r316_2, r316_4
+#  316|     v316_6(void)       = ConditionalBranch   : r316_5
+#-----|   False -> Block 3
+#-----|   True -> Block 1
+
+#  317|   Block 1
+#  317|     r317_1(glval<int>) = VariableAddress[a] : 
+#  317|     r317_2(int)        = Load               : &:r317_1, m313_3
+#  317|     r317_3(int)        = Constant[5]        : 
+#  317|     r317_4(bool)       = CompareLT          : r317_2, r317_3
+#  317|     v317_5(void)       = ConditionalBranch  : r317_4
+#-----|   False -> Block 2
+#-----|   True -> Block 3
+
+#  324|   Block 2
+#  324|     r324_1(int)        = Constant[1]              : 
+#  324|     r324_2(glval<int>) = VariableAddress[r]       : 
+#  324|     m324_3(int)        = Store                    : &:r324_2, r324_1
+#  330|     r330_1(glval<int>) = VariableAddress[x]       : 
+#  330|     r330_2(int)        = Constant[7]              : 
+#  330|     m330_3(int)        = Store                    : &:r330_1, r330_2
+#  338|     r338_1(glval<int>) = VariableAddress[#return] : 
+#  338|     r338_2(glval<int>) = VariableAddress[r]       : 
+#  338|     r338_3(int)        = Load                     : &:r338_2, m324_3
+#  338|     m338_4(int)        = Store                    : &:r338_1, r338_3
+#  312|     r312_6(glval<int>) = VariableAddress[#return] : 
+#  312|     v312_7(void)       = ReturnValue              : &:r312_6, m338_4
+#  312|     v312_8(void)       = UnmodeledUse             : mu*
+#  312|     v312_9(void)       = AliasedUse               : m312_3
+#  312|     v312_10(void)      = ExitFunction             : 
+
+#  312|   Block 3
+#  312|     v312_11(void) = Unreached : 
