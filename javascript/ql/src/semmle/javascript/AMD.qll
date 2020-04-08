@@ -61,6 +61,7 @@ class AmdModuleDefinition extends CallExpr {
   }
 
   private DataFlow::Node getFactoryNodeInternal() {
+    // To avoid recursion, this should not depend on `SourceNode`.
     result = DataFlow::valueNode(getLastArgument()) or
     result = getFactoryNodeInternal().getAPredecessor()
   }
