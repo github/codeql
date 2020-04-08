@@ -1,10 +1,13 @@
-Locations and strings for QL entities
+Providing locations in CodeQL queries
 =====================================
 
 .. Not sure how much of this topic needs to change, and what the title should be
 
-Providing locations
--------------------
+CodeQL includes mechanisms for extracting the location of elements in a codebase. Use these mechanisms when writing custom CodeQL queries and libraries to help display information to users.
+
+
+About locations
+---------------
 
 When displaying information to the user, LGTM needs to be able to extract location information from the results of a query. In order to do this, all QL classes which can provide location information should do this by using one of the following mechanisms:
 

@@ -1,7 +1,10 @@
-River crossing puzzle
-#####################
+Cross the river
+===============
 
-The aim of this tutorial is to write a query that finds a solution to the following classical logic puzzle:
+Use common QL features to write a query that finds a solution to the "River crossing" logic puzzle.
+
+Introduction
+------------
 
 .. pull-quote::
 
@@ -248,15 +251,15 @@ Here are some more example queries that solve the river crossing puzzle:
   #. This query uses a modified ``path`` variable to describe the resulting path in
      more detail.
 
-     ➤ `See solution in the query console <https://lgtm.com/query/659603593702729237/>`__
+     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/659603593702729237/>`__
 
   #. This query models the man and the cargo items in a different way, using an 
      `abstract <https://help.semmle.com/QL/ql-handbook/annotations.html#abstract>`__
      class and predicate. It also displays the resulting path in a more visual way.
 
-     ➤ `See solution in the query console <https://lgtm.com/query/1025323464423811143/>`__
+     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/1025323464423811143/>`__
 
   #. This query introduces `algebraic datatypes <https://help.semmle.com/QL/ql-handbook/types.html#algebraic-datatypes>`__
      to model the situation, instead of defining everything as a subclass of ``string``.
 
-     ➤ `See solution in the query console <https://lgtm.com/query/7260748307619718263/>`__
+     ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/7260748307619718263/>`__

@@ -1,5 +1,7 @@
-Query help reference
-********************
+Query help files
+****************
+
+Query help files tell users the purpose of a query, and recommend how to solve the potential problem the query finds.
 
 This topic provides detailed information on the structure of query help files. 
 For more information about how to write useful query help in a style that is consistent with the standard CodeQL queries, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub.

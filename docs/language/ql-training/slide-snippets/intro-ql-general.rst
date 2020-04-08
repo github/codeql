@@ -124,7 +124,7 @@ QL is:
 
 .. note::
 
-  QL is the high-level, object-oriented logic language that underpins all CodeQL libraries and analyses. You can learn lots more about QL by visiting `Introduction to the QL language <https://help.semmle.com/QL/learn-ql/ql/introduction-to-ql.html>`__ and `About QL <https://help.semmle.com/QL/learn-ql/ql/about-ql.html>`__.
+  QL is the high-level, object-oriented logic language that underpins all CodeQL libraries and analyses. You can learn lots more about QL by visiting the `QL language reference <https://help.semmle.com/QL/ql-handbook>`__.
   The key features of QL are:
   
   - All common logic connectives are available, including quantifiers like ``exist``, which can also introduce new variables. 

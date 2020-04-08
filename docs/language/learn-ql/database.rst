@@ -1,7 +1,7 @@
 What's in a CodeQL database?
 ============================
 
-A CodeQL database contains a variety of data related to a particular code base at a particular point in time. For details of how the database is generated see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__.
+A CodeQL database contains a variety of data related to a particular code base at a particular point in time. For details of how the database is generated see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__ on LGTM.com.
 
 The database contains a full, hierarchical representation of the program defined by the code base. The database schema varies according to the language analyzed. The schema provides an interface between the initial lexical analysis during the extraction process, and the actual complex analysis using CodeQL. When the source code languages being analyzed change (such as Java 7 evolving into Java 8), this interface between the analysis phases can also change.
 
