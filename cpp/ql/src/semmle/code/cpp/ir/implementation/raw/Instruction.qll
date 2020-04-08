@@ -536,6 +536,10 @@ class ReturnIndirectionInstruction extends VariableInstruction {
 
   final Instruction getSourceAddress() { result = getSourceAddressOperand().getDef() }
 
+  /**
+   * Gets the parameter for which this instruction reads the final pointed-to value within the
+   * function.
+   */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
 }
 
