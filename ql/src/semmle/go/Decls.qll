@@ -130,6 +130,13 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   }
 
   /**
+   * Gets the number of parameters of this function.
+   */
+  int getNumParameter() {
+    result = count(getAParameter())
+  }
+
+  /**
    * Gets a call to this function.
    */
   DataFlow::CallNode getACall() {
