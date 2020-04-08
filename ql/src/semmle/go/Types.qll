@@ -430,7 +430,8 @@ class StructType extends @structtype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result = "struct { " +
+    result =
+      "struct { " +
         concat(int i, string name, Type tp |
           component_types(this, i, name, tp)
         |
@@ -488,7 +489,8 @@ class InterfaceType extends @interfacetype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result = "interface { " +
+    result =
+      "interface { " +
         concat(string name, Type tp |
           tp = getMethodType(name)
         |
@@ -506,8 +508,8 @@ class TupleType extends @tupletype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result = "(" + concat(int i, Type tp | tp = getComponentType(i) | tp.pp(), ", " order by i) +
-        ")"
+    result =
+      "(" + concat(int i, Type tp | tp = getComponentType(i) | tp.pp(), ", " order by i) + ")"
   }
 
   override string toString() { result = "tuple type" }
@@ -529,8 +531,9 @@ class SignatureType extends @signaturetype, CompositeType {
 
   language[monotonicAggregates]
   override string pp() {
-    result = "func(" + concat(int i, Type tp | tp = getParameterType(i) | tp.pp(), ", " order by i) +
-        ") " + concat(int i, Type tp | tp = getResultType(i) | tp.pp(), ", " order by i)
+    result =
+      "func(" + concat(int i, Type tp | tp = getParameterType(i) | tp.pp(), ", " order by i) + ") " +
+        concat(int i, Type tp | tp = getResultType(i) | tp.pp(), ", " order by i)
   }
 
   override string toString() { result = "signature type" }

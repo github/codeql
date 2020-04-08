@@ -9,7 +9,8 @@ string complexToString(float real, float imag) {
 string longString(Expr e) {
   if e instanceof BinaryExpr
   then
-    result = longString(e.(BinaryExpr).getLeftOperand()) + " " + e.(BinaryExpr).getOperator() + " " +
+    result =
+      longString(e.(BinaryExpr).getLeftOperand()) + " " + e.(BinaryExpr).getOperator() + " " +
         longString(e.(BinaryExpr).getRightOperand())
   else result = e.toString()
 }

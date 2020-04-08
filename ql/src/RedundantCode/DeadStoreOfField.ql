@@ -58,9 +58,9 @@ predicate escapes(DataFlow::Node nd) {
  * the embedded field has the pointer type `*T` or just type `T`.
  */
 Type getEmbeddedType(Type t, boolean isPtr) {
-  exists(Type embedded |
-    t.getUnderlyingType().(StructType).hasOwnField(_, _, embedded, true) |
-    if embedded instanceof PointerType then (
+  exists(Type embedded | t.getUnderlyingType().(StructType).hasOwnField(_, _, embedded, true) |
+    if embedded instanceof PointerType
+    then (
       result = embedded.(PointerType).getBaseType() and
       isPtr = true
     ) else (
@@ -71,9 +71,7 @@ Type getEmbeddedType(Type t, boolean isPtr) {
 }
 
 /** Gets an embedded type of `t`. */
-Type getEmbeddedType(Type t) {
-  result = getEmbeddedType(t, _)
-}
+Type getEmbeddedType(Type t) { result = getEmbeddedType(t, _) }
 
 /**
  * Gets a transitive embedded type of `t`, where at least one of the embeddings goes through a

@@ -26,9 +26,7 @@ predicate inVoidContext(Expr e) {
 /**
  * Holds if `ce` is a call to a stub function with an empty body.
  */
-predicate callToStubFunction(CallExpr ce) {
-  ce.getTarget().getBody().getNumStmt() = 0
-}
+predicate callToStubFunction(CallExpr ce) { ce.getTarget().getBody().getNumStmt() = 0 }
 
 from Expr e
 where
