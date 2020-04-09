@@ -3,10 +3,9 @@
 Formulas
 ########
 
-Formulas define logical relations between the :ref:`free variables <free-variables>` used in
-:ref:`expressions <expressions>`.
+Formulas define logical relations between the free variables used in expressions.
 
-Depending on the values assigned to those free variables, a formula can be true or false.
+Depending on the values assigned to those :ref:`free variables <free-variables>`, a formula can be true or false.
 When a formula is true, we often say that the formula *holds*.
 For example, the formula ``x = 4 + 5`` holds if the value ``9`` is assigned to ``x``, but it
 doesn't hold for other assignments to ``x``. 

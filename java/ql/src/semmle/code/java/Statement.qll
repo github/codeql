@@ -417,8 +417,6 @@ class SwitchCase extends Stmt, @case {
   SwitchStmt getSwitch() { result.getACase() = this }
 
   /**
-   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
-   *
    * Gets the switch expression to which this case belongs, if any.
    */
   SwitchExpr getSwitchExpr() { result.getACase() = this }
@@ -432,8 +430,6 @@ class SwitchCase extends Stmt, @case {
   }
 
   /**
-   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
-   *
    * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
    */
   predicate isRule() {
@@ -443,15 +439,11 @@ class SwitchCase extends Stmt, @case {
   }
 
   /**
-   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
-   *
    * Gets the expression on the right-hand side of the arrow, if any.
    */
   Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
 
   /**
-   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
-   *
    * Gets the statement on the right-hand side of the arrow, if any.
    */
   Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
@@ -465,8 +457,6 @@ class ConstCase extends SwitchCase {
   Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
   /**
-   * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
-   *
    * Gets the `case` constant at the specified index.
    */
   Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
@@ -624,8 +614,6 @@ class BreakStmt extends Stmt, @breakstmt {
 }
 
 /**
- * PREVIEW FEATURE in Java 13. Subject to removal in a future release.
- *
  * A `yield` statement.
  */
 class YieldStmt extends Stmt, @yieldstmt {

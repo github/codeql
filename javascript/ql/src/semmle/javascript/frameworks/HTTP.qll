@@ -467,10 +467,6 @@ module HTTP {
     abstract DataFlow::Node getASecretKey();
   }
 
-  private class CookieMiddlewareInstanceAsSourceNode extends DataFlow::SourceNode::Range {
-    CookieMiddlewareInstanceAsSourceNode() { this instanceof CookieMiddlewareInstance }
-  }
-
   /**
    * A key used for signed cookies, viewed as a `CryptographicKey`.
    */

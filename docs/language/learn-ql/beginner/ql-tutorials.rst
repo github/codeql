@@ -1,27 +1,19 @@
-QL detective tutorials
-======================
+QL tutorials
+============
+
+Solve puzzles to learn the basics of QL before you analyze code with CodeQL. The tutorials teach you how to write queries and introduce you to key logic concepts along the way.
 
 .. toctree::
-   :glob:
    :hidden:
 
-   ./*
+   ../introduction-to-ql
+   find-the-thief
+   catch-the-fire-starter
+   crown-the-rightful-heir
+   cross-the-river
 
-Welcome to the detective tutorials! These are aimed at complete beginners who would like to learn the basics of QL,
-before analyzing code with CodeQL.
-The tutorials teach you how to write queries and introduce you to key logic concepts along the way.
-
-We recommend you first read the :doc:`Introduction to QL <../introduction-to-ql>` page for a description of the language and
-some simple examples.
-
-Currently the following detective tutorials are available:
-
--  :doc:`Find the thief <find-thief-1>`—a three part mystery that introduces logical connectives, quantifiers, and aggregates
--  :doc:`Catch the fire starter <fire-1>`—an intriguing search that introduces predicates and classes
--  :doc:`Crown the rightful heir <heir>`—a detective puzzle that introduces recursion
-
-Further resources
------------------
-
--  For a summary of available learning resources, see :doc:`Learning CodeQL <../../index>`.
--  For an overview of the important concepts in QL, see the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+-  :doc:`Introduction to QL <../introduction-to-ql>`: Work through some simple exercises and examples to learn about the basics of QL and CodeQL.
+-  :doc:`Find the thief <find-the-thief>`: Take on the role of a detective to find the thief in this fictional village. You will learn how to use logical connectives, quantifiers, and aggregates in QL along the way.
+-  :doc:`Catch the fire starter <catch-the-fire-starter>`: Learn about QL predicates and classes to solve your second mystery as a QL detective.
+-  :doc:`Crown the rightful heir <crown-the-rightful-heir>`: This is a QL detective puzzle that shows you how to use recursion in QL to write more complex queries.
+-  :doc:`Cross the river <cross-the-river>`: Use common QL features to write a query that finds a solution to the "River crossing" logic puzzle.
