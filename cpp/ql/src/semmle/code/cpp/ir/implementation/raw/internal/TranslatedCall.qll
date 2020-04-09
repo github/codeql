@@ -331,6 +331,7 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   }
 
   override predicate hasQualifier() {
+    exists(getQualifier()) and
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
   }
 }
