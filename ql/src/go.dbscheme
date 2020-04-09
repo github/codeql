@@ -124,6 +124,10 @@ modexprs(unique int id: @modexpr, int kind: int ref, int parent: @modexprparent 
 #keyset[parent, idx]
 modtokens(string token: string ref, int parent: @modexpr ref, int idx: int ref);
 
+#keyset[package, idx]
+errors(unique int id: @error, int kind: int ref, string msg: string ref, string rawpos: string ref,
+       string file: string ref, int line: int ref, int col: int ref, int package: @package ref, int idx: int ref);
+
 @container = @file | @folder;
 
 @locatable = @node | @localscope;
@@ -417,4 +421,10 @@ case @modexpr.kind of
 | 2 = @modlineblock
 | 3 = @modlparen
 | 4 = @modrparen;
+
+case @error.kind of
+  0 = @unknownerror
+| 1 = @listerror
+| 2 = @parseerror
+| 3 = @typeerror;
 
