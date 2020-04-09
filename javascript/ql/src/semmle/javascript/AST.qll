@@ -23,6 +23,10 @@ import javascript
 class ASTNode extends @ast_node, Locatable {
   override Location getLocation() { hasLocation(this, result) }
 
+  override File getFile() {
+    result = getLocation().getFile() // Specialized for performance reasons
+  }
+
   /** Gets the first token belonging to this element. */
   Token getFirstToken() {
     exists(Location l1, Location l2 |
