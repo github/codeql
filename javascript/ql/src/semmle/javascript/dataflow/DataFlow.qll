@@ -165,11 +165,7 @@ module DataFlow {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
+      none()
     }
 
     /** Gets the file this data flow node comes from. */
