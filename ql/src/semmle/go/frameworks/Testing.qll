@@ -67,4 +67,19 @@ module TestFile {
   private class FileContainingTestCases extends Range {
     FileContainingTestCases() { this = any(TestCase tc).getFile() }
   }
+
+  /** A file that imports a well-known testing framework. */
+  private class FileImportingTestingFramework extends Range {
+    FileImportingTestingFramework() {
+      exists(string pkg, ImportSpec is |
+        is.getPath() = pkg and
+        is.getFile() = this
+      |
+        pkg = "net/http/httptest" or
+        pkg = "gen/thrifttest" or
+        pkg = "github.com/onsi/ginkgo" or
+        pkg = "github.com/onsi/gomega"
+      )
+    }
+  }
 }
