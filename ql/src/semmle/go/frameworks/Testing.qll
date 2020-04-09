@@ -27,15 +27,15 @@ module TestCase {
   /** A `go test` style test (including benchmarks and examples). */
   private class GoTestFunction extends Range, FuncDef {
     GoTestFunction() {
-      getName().regexpMatch("Test[^a-z].*") and
+      getName().regexpMatch("Test(?![a-z]).*") and
       getNumParameter() = 1 and
       getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "T")
       or
-      getName().regexpMatch("Benchmark[^a-z].*") and
+      getName().regexpMatch("Benchmark(?![a-z]).*") and
       getNumParameter() = 1 and
       getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "B")
       or
-      getName().regexpMatch("Example[^a-z].*") and
+      getName().regexpMatch("Example(?![a-z]).*") and
       getNumParameter() = 0
     }
   }
