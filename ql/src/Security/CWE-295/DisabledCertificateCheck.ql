@@ -115,5 +115,5 @@ where
     becomesPartOf*(base, init)
   ) and
   // exclude results in test code
-  exists(File fl | fl = w.getFile() | not fl = any(TestCase tc).getFile())
+  exists(File fl | fl = w.getFile() | not fl instanceof TestFile)
 select w, "InsecureSkipVerify should not be used in production code."
