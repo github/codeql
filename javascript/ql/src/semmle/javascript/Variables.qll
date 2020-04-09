@@ -322,7 +322,7 @@ class LocalVariable extends Variable {
    * Gets the location of a declaration of this variable.
    *
    * If the variable has multiple declarations, an arbitrary one is used.
-   * If it has no declaration, the location of its declaring scope is used.
+   * If it has no declaration, the entry point of its declaring container is used.
    */
   Location getLocation() {
     result =
@@ -333,7 +333,7 @@ class LocalVariable extends Variable {
       )
     or
     not exists(getADeclaration()) and
-    result = getDeclaringContainer().getLocation()
+    result = getDeclaringContainer().getEntry().getLocation()
   }
 }
 
