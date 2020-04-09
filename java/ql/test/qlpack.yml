@@ -1,3 +1,4 @@
 name: codeql-java-tests
 version: 0.0.0
 libraryPathDependencies: codeql-java
+extractor: java
