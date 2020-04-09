@@ -1230,9 +1230,7 @@ module DataFlow {
 
     CapturedVariableNode() { this = TCapturedVariableNode(variable) }
 
-    override BasicBlock getBasicBlock() {
-      result = variable.getDeclaringContainer().getStartBB()
-    }
+    override BasicBlock getBasicBlock() { result = variable.getDeclaringContainer().getStartBB() }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -1240,9 +1238,7 @@ module DataFlow {
       variable.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override string toString() {
-      result = variable.getName()
-    }
+    override string toString() { result = variable.getName() }
   }
 
   /**
@@ -1250,9 +1246,7 @@ module DataFlow {
    *
    * Gets a data flow node representing the given captured variable.
    */
-  Node capturedVariableNode(LocalVariable variable) {
-    result = TCapturedVariableNode(variable)
-  }
+  Node capturedVariableNode(LocalVariable variable) { result = TCapturedVariableNode(variable) }
 
   /**
    * Gets the data flow node corresponding to `nd`.

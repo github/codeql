@@ -325,7 +325,12 @@ class LocalVariable extends Variable {
    * If it has no declaration, the location of its declaring scope is used.
    */
   Location getLocation() {
-    result = min(Location loc | loc = getADeclaration().getLocation() | loc order by loc.getStartLine(), loc.getStartColumn() )
+    result =
+      min(Location loc |
+        loc = getADeclaration().getLocation()
+      |
+        loc order by loc.getStartLine(), loc.getStartColumn()
+      )
     or
     not exists(getADeclaration()) and
     result = getDeclaringContainer().getLocation()
