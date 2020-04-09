@@ -173,7 +173,7 @@ module DataFlow {
     }
 
     /** Gets the file this data flow node comes from. */
-    File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { none() } // overridden in subclasses
 
     /** Gets the start line of this data flow node. */
     int getStartLine() { hasLocationInfo(_, result, _, _, _) }
@@ -313,6 +313,8 @@ module DataFlow {
       astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override File getFile() { result = astNode.getFile() }
+
     override string toString() { result = astNode.toString() }
   }
 
@@ -336,6 +338,8 @@ module DataFlow {
     }
 
     override string toString() { result = ssa.getSourceVariable().getName() }
+
+    override File getFile() { result = ssa.getBasicBlock().getFile() }
 
     override ASTNode getAstNode() { none() }
   }
@@ -361,6 +365,8 @@ module DataFlow {
 
     override string toString() { result = prop.(ASTNode).toString() }
 
+    override File getFile() { result = prop.(ASTNode).getFile() }
+
     override ASTNode getAstNode() { result = prop }
   }
 
@@ -384,6 +390,8 @@ module DataFlow {
 
     override string toString() { result = "..." + rest.toString() }
 
+    override File getFile() { result = pattern.getFile() }
+
     override ASTNode getAstNode() { result = rest }
   }
 
@@ -405,6 +413,8 @@ module DataFlow {
     }
 
     override string toString() { result = pattern.toString() }
+
+    override File getFile() { result = pattern.getFile() }
 
     override ASTNode getAstNode() { result = pattern }
   }
@@ -428,6 +438,8 @@ module DataFlow {
     }
 
     override string toString() { result = elt.toString() }
+
+    override File getFile() { result = pattern.getFile() }
 
     override ASTNode getAstNode() { result = elt }
   }
@@ -456,6 +468,8 @@ module DataFlow {
 
     override string toString() { result = elt.toString() }
 
+    override File getFile() { result = arr.getFile() }
+
     override ASTNode getAstNode() { result = elt }
   }
 
@@ -478,6 +492,8 @@ module DataFlow {
     }
 
     override string toString() { result = "reflective call" }
+
+    override File getFile() { result = call.getFile() }
   }
 
   /**
@@ -497,6 +513,8 @@ module DataFlow {
     }
 
     override string toString() { result = imprt.toString() }
+
+    override File getFile() { result = imprt.getFile() }
   }
 
   /**
@@ -924,6 +942,8 @@ module DataFlow {
     ) {
       p.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    override File getFile() { result = p.getFile() }
   }
 
   /**
@@ -944,6 +964,8 @@ module DataFlow {
 
     /** Gets the attribute corresponding to this data flow node. */
     HTML::Attribute getAttribute() { result = attr }
+
+    override File getFile() { result = attr.getFile() }
   }
 
   /**
@@ -968,6 +990,8 @@ module DataFlow {
      * Gets the function corresponding to this exceptional return node.
      */
     Function getFunction() { result = function }
+
+    override File getFile() { result = function.getFile() }
   }
 
   /**
@@ -992,6 +1016,8 @@ module DataFlow {
      * Gets the invocation corresponding to this exceptional return node.
      */
     DataFlow::InvokeNode getInvocation() { result = invoke.flow() }
+
+    override File getFile() { result = invoke.getFile() }
   }
 
   /**
@@ -1218,6 +1244,10 @@ module DataFlow {
             .getLocation()
             .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       )
+    }
+
+    override File getFile() {
+      exists(StmtContainer container | this = TThisNode(container) | result = container.getFile())
     }
   }
 
