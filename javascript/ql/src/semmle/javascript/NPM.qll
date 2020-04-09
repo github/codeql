@@ -190,7 +190,7 @@ class BugTrackerInfo extends JSONValue {
   }
 
   /** Gets the bug tracker URL. */
-  string getURL() {
+  string getUrl() {
     result = this.(JSONObject).getPropStringValue("url") or
     result = this.(JSONString).getValue()
   }
