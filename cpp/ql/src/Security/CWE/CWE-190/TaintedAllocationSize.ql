@@ -16,11 +16,7 @@ import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 
 predicate taintedChild(Expr e, Expr tainted) {
-  (
-    isAllocationExpr(e)
-    or
-    any(MulExpr me | me.getAChild() instanceof SizeofOperator) = e
-  ) and
+  isAllocationExpr(e) and
   tainted = e.getAChild() and
   tainted.getUnspecifiedType() instanceof IntegralType
 }
