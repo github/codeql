@@ -40,3 +40,31 @@ module TestCase {
     }
   }
 }
+
+/**
+ * A file that contains test cases or is otherwise used for testing.
+ *
+ * Extend this class to refine existing models of testing frameworks. If you want to model new
+ * frameworks, extend `TestFile::Range` instead.
+ */
+class TestFile extends File {
+  TestFile::Range self;
+
+  TestFile() { this = self }
+}
+
+/** Provides classes for working with test files. */
+module TestFile {
+  /**
+   * A file that contains test cases or is otherwise used for testing.
+   *
+   * Extend this class to model new testing frameworks. If you want to refine existing models,
+   * extend `TestFile` instead.
+   */
+  abstract class Range extends File { }
+
+  /** A file containing at least one test case. */
+  private class FileContainingTestCases extends Range {
+    FileContainingTestCases() { this = any(TestCase tc).getFile() }
+  }
+}

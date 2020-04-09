@@ -21,7 +21,7 @@ string generatorCommentRegex() {
 
 predicate classify(File f, string category) {
   // tests
-  f = any(TestCase tc).getFile() and
+  f instanceof TestFile and
   category = "test"
   or
   // vendored code
