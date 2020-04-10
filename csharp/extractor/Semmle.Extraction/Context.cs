@@ -155,7 +155,7 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
                 using (var id = new StringWriter())
                 {
-                    entity.WriteId(id);
+                    entity.WriteQuotedId(id);
                     CheckEntityHasUniqueLabel(id.ToString(), entity);
                 }
 #endif
@@ -269,6 +269,8 @@ namespace Semmle.Extraction
             Scope = scope;
             TrapWriter = trapWriter;
         }
+
+        public bool FromSource => Scope.FromSource;
 
         public bool IsGlobalContext => Scope.IsGlobalScope;
 

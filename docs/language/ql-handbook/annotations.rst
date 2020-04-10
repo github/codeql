@@ -4,6 +4,7 @@ Annotations
 ###########
 
 An annotation is a string that you can place directly before the declaration of a QL entity or name.
+
 For example, to declare a module ``M`` as private, you could use::
 
     private module M {

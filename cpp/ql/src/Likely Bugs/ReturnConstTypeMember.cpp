@@ -8,6 +8,6 @@ struct S {
   
   // Whereas here it does make a semantic difference.
   auto getValCorrect() const -> int {
-    return val
+    return val;
   }
 };

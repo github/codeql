@@ -1369,18 +1369,18 @@ module DataFlow {
    */
   private predicate lvalueDefaultFlowStep(Node pred, Node succ) {
     exists(PropertyPattern pattern |
-      pred = valueNode(pattern.getDefault()) and
+      pred = TValueNode(pattern.getDefault()) and
       succ = lvalueNode(pattern.getValuePattern())
     )
     or
     exists(ArrayPattern array, int i |
-      pred = valueNode(array.getDefault(i)) and
+      pred = TValueNode(array.getDefault(i)) and
       succ = lvalueNode(array.getElement(i))
     )
     or
     exists(Parameter param |
-      pred = valueNode(param.getDefault()) and
-      succ = parameterNode(param)
+      pred = TValueNode(param.getDefault()) and
+      parameterNode(succ, param)
     )
   }
 

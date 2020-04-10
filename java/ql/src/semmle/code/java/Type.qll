@@ -615,6 +615,15 @@ class Class extends RefType, @class {
   }
 }
 
+/**
+ * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
+ *
+ * A record declaration.
+ */
+class Record extends Class {
+  Record() { isRecord(this) }
+}
+
 /** An intersection type. */
 class IntersectionType extends RefType, @class {
   IntersectionType() {

@@ -11,6 +11,9 @@
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:73:7:73:7 | c | stl.cpp:69:16:69:21 | call to source |
 | stl.cpp:75:9:75:13 | call to c_str | stl.cpp:69:16:69:21 | call to source |
+| stl.cpp:125:13:125:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
+| stl.cpp:129:13:129:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
+| stl.cpp:132:13:132:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

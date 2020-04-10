@@ -1,16 +1,14 @@
-About QL
-========
+About the QL language
+######################
 
-This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see :doc:`Introduction to QL <introduction-to-ql>` and :doc:`Learning CodeQL <../index>`.
-
-QL is a declarative, object-oriented query language that is optimized to enable efficient analysis of hierarchical data structures, in particular, databases representing software artifacts.
-
-The queries and metrics used in LGTM are implemented using CodeQL, which uses QL to analyze code. This ensures that they can be extended or revised easily to keep up with changes in definitions of best coding practice. We continually improve existing queries as we work towards the ultimate goal of 100% precision.
-
-You can write queries to identify security vulnerabilities, find coding errors and bugs, or find code that breaks your team's guidelines for best practice. You can also create customized versions of the default queries to accommodate a new framework.
+QL is the powerful query language that underlies CodeQL, which is used to analyze code.
 
 About query languages and databases
 -----------------------------------
+
+This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see `Learning CodeQL <https://help.semmle.com/QL/learn-ql/index.html>`__.
+
+QL is a declarative, object-oriented query language that is optimized to enable efficient analysis of hierarchical data structures, in particular, databases representing software artifacts.
 
 A database is an organized collection of data. The most commonly used database model is a relational model which stores data in tables and SQL (Structured Query Language) is the most commonly used query language for relational databases.
 
@@ -41,6 +39,11 @@ When you write this process in QL, it closely resembles the above structure. Not
      result = count(getADescendant(p))
    }
 
+For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as :doc:`Expressions <expressions>` and :doc:`Recursion <recursion>`.
+The explanations and examples help you understand how the language works, and how to write more advanced QL code.
+
+For formal specifications of the QL language and QLDoc comments, see the :doc:`QL language specification <language>` and :doc:`QLDoc comment specification <qldoc>`.
+
 QL and object orientation
 -------------------------
 
@@ -56,12 +59,10 @@ Here are a few prominent conceptual and functional differences between general p
 -  QL's set-based semantics makes it very natural to process collections of values without having to worry about efficiently storing, indexing and traversing them.
 -  In object oriented programming languages, instantiating a class involves creating an object by allocating physical memory to hold the state of that instance of the class. In QL, classes are just logical properties describing sets of already existing values.
 
-These topics are discussed in detail in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+Further reading
+---------------
 
-References
-----------
-
-Academic references available from the `Semmle website <https://help.semmle.com/publications.html>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
+`Academic references <https://help.semmle.com/publications.html>`__ also provide an overview of QL and its semantics. Other useful references on database query languages and Datalog:
 
 -  `Database theory: Query languages <http://www.lsv.ens-cachan.fr/~segoufin/Papers/Mypapers/DB-chapter.pdf>`__
 -  `Logic Programming and Databases book - Amazon page <http://www.amazon.co.uk/Programming-Databases-Surveys-Computer-Science/dp/3642839541>`__

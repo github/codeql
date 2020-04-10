@@ -4048,6 +4048,27 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] C &&
 #  628| [Destructor] void C::~C()
 #  628|   params: 
+#-----|   body: [Block] { ... }
+#-----|     0: [ReturnStmt] return ...
+#  628|   destructions: 
+#  628|     0: [DestructorFieldDestruction] destructor field destruction of m_f
+#  628|         Type = [Struct] String
+#  628|         ValueCategory = prvalue
+#  628|       0: [DestructorCall] call to ~String
+#  628|           Type = [VoidType] void
+#  628|           ValueCategory = prvalue
+#  628|         -1: [ImplicitThisFieldAccess] m_f
+#  628|             Type = [Struct] String
+#  628|             ValueCategory = lvalue
+#  628|     1: [DestructorFieldDestruction] destructor field destruction of m_b
+#  628|         Type = [Struct] String
+#  628|         ValueCategory = prvalue
+#  628|       0: [DestructorCall] call to ~String
+#  628|           Type = [VoidType] void
+#  628|           ValueCategory = prvalue
+#  628|         -1: [ImplicitThisFieldAccess] m_b
+#  628|             Type = [Struct] String
+#  628|             ValueCategory = lvalue
 #  630| [MemberFunction] int C::StaticMemberFunction(int)
 #  630|   params: 
 #  630|     0: [Parameter] x
@@ -8562,6 +8583,190 @@ ir.cpp:
 # 1260|               Type = [IntType] int
 # 1260|               ValueCategory = prvalue(load)
 # 1262|     1: [ReturnStmt] return ...
+# 1264| [CopyAssignmentOperator] A& A::operator=(A const&)
+# 1264|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const A &
+# 1264| [MoveAssignmentOperator] A& A::operator=(A&&)
+# 1264|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] A &&
+# 1267| [MemberFunction] void A::static_member(A*, int)
+# 1267|   params: 
+# 1267|     0: [Parameter] a
+# 1267|         Type = [PointerType] A *
+# 1267|     1: [Parameter] x
+# 1267|         Type = [IntType] int
+# 1267|   body: [Block] { ... }
+# 1268|     0: [ExprStmt] ExprStmt
+# 1268|       0: [AssignExpr] ... = ...
+# 1268|           Type = [IntType] int
+# 1268|           ValueCategory = lvalue
+# 1268|         0: [PointerFieldAccess] member
+# 1268|             Type = [IntType] int
+# 1268|             ValueCategory = lvalue
+# 1268|           -1: [VariableAccess] a
+# 1268|               Type = [PointerType] A *
+# 1268|               ValueCategory = prvalue(load)
+# 1268|         1: [VariableAccess] x
+# 1268|             Type = [IntType] int
+# 1268|             ValueCategory = prvalue(load)
+# 1269|     1: [ReturnStmt] return ...
+# 1271| [MemberFunction] void A::static_member_without_def()
+# 1271|   params: 
+# 1274| [TopLevelFunction] A* getAnInstanceOfA()
+# 1274|   params: 
+# 1276| [TopLevelFunction] void test_static_member_functions(int, A*)
+# 1276|   params: 
+# 1276|     0: [Parameter] int_arg
+# 1276|         Type = [IntType] int
+# 1276|     1: [Parameter] a_arg
+# 1276|         Type = [PointerType] A *
+# 1276|   body: [Block] { ... }
+# 1277|     0: [DeclStmt] declaration
+# 1277|       0: [VariableDeclarationEntry] definition of c
+# 1277|           Type = [Class] C
+# 1277|         init: [Initializer] initializer for c
+# 1277|           expr: [ConstructorCall] call to C
+# 1277|               Type = [VoidType] void
+# 1277|               ValueCategory = prvalue
+# 1278|     1: [ExprStmt] ExprStmt
+# 1278|       0: [FunctionCall] call to StaticMemberFunction
+# 1278|           Type = [IntType] int
+# 1278|           ValueCategory = prvalue
+# 1278|         -1: [VariableAccess] c
+# 1278|             Type = [Class] C
+# 1278|             ValueCategory = lvalue
+# 1278|         0: [Literal] 10
+# 1278|             Type = [IntType] int
+# 1278|             Value = [Literal] 10
+# 1278|             ValueCategory = prvalue
+# 1279|     2: [ExprStmt] ExprStmt
+# 1279|       0: [FunctionCall] call to StaticMemberFunction
+# 1279|           Type = [IntType] int
+# 1279|           ValueCategory = prvalue
+# 1279|         0: [Literal] 10
+# 1279|             Type = [IntType] int
+# 1279|             Value = [Literal] 10
+# 1279|             ValueCategory = prvalue
+# 1281|     3: [DeclStmt] declaration
+# 1281|       0: [VariableDeclarationEntry] definition of a
+# 1281|           Type = [Struct] A
+# 1282|     4: [ExprStmt] ExprStmt
+# 1282|       0: [FunctionCall] call to static_member
+# 1282|           Type = [VoidType] void
+# 1282|           ValueCategory = prvalue
+# 1282|         -1: [VariableAccess] a
+# 1282|             Type = [Struct] A
+# 1282|             ValueCategory = lvalue
+# 1282|         0: [AddressOfExpr] & ...
+# 1282|             Type = [PointerType] A *
+# 1282|             ValueCategory = prvalue
+# 1282|           0: [VariableAccess] a
+# 1282|               Type = [Struct] A
+# 1282|               ValueCategory = lvalue
+# 1282|         1: [VariableAccess] int_arg
+# 1282|             Type = [IntType] int
+# 1282|             ValueCategory = prvalue(load)
+# 1283|     5: [ExprStmt] ExprStmt
+# 1283|       0: [FunctionCall] call to static_member
+# 1283|           Type = [VoidType] void
+# 1283|           ValueCategory = prvalue
+# 1283|         0: [AddressOfExpr] & ...
+# 1283|             Type = [PointerType] A *
+# 1283|             ValueCategory = prvalue
+# 1283|           0: [VariableAccess] a
+# 1283|               Type = [Struct] A
+# 1283|               ValueCategory = lvalue
+# 1283|         1: [VariableAccess] int_arg
+# 1283|             Type = [IntType] int
+# 1283|             ValueCategory = prvalue(load)
+# 1285|     6: [ExprStmt] ExprStmt
+# 1285|       0: [FunctionCall] call to static_member
+# 1285|           Type = [VoidType] void
+# 1285|           ValueCategory = prvalue
+# 1285|         -1: [ParenthesisExpr] (...)
+# 1285|             Type = [PointerType] A *
+# 1285|             ValueCategory = prvalue
+# 1285|           expr: [AddressOfExpr] & ...
+# 1285|               Type = [PointerType] A *
+# 1285|               ValueCategory = prvalue
+# 1285|             0: [VariableAccess] a
+# 1285|                 Type = [Struct] A
+# 1285|                 ValueCategory = lvalue
+# 1285|         0: [VariableAccess] a_arg
+# 1285|             Type = [PointerType] A *
+# 1285|             ValueCategory = prvalue(load)
+# 1285|         1: [AddExpr] ... + ...
+# 1285|             Type = [IntType] int
+# 1285|             ValueCategory = prvalue
+# 1285|           0: [VariableAccess] int_arg
+# 1285|               Type = [IntType] int
+# 1285|               ValueCategory = prvalue(load)
+# 1285|           1: [Literal] 2
+# 1285|               Type = [IntType] int
+# 1285|               Value = [Literal] 2
+# 1285|               ValueCategory = prvalue
+# 1286|     7: [ExprStmt] ExprStmt
+# 1286|       0: [FunctionCall] call to static_member
+# 1286|           Type = [VoidType] void
+# 1286|           ValueCategory = prvalue
+# 1286|         -1: [ParenthesisExpr] (...)
+# 1286|             Type = [Struct] A
+# 1286|             ValueCategory = lvalue
+# 1286|           expr: [PointerDereferenceExpr] * ...
+# 1286|               Type = [Struct] A
+# 1286|               ValueCategory = lvalue
+# 1286|             0: [VariableAccess] a_arg
+# 1286|                 Type = [PointerType] A *
+# 1286|                 ValueCategory = prvalue(load)
+# 1286|         0: [AddressOfExpr] & ...
+# 1286|             Type = [PointerType] A *
+# 1286|             ValueCategory = prvalue
+# 1286|           0: [VariableAccess] a
+# 1286|               Type = [Struct] A
+# 1286|               ValueCategory = lvalue
+# 1286|         1: [Literal] 99
+# 1286|             Type = [IntType] int
+# 1286|             Value = [Literal] 99
+# 1286|             ValueCategory = prvalue
+# 1287|     8: [ExprStmt] ExprStmt
+# 1287|       0: [FunctionCall] call to static_member
+# 1287|           Type = [VoidType] void
+# 1287|           ValueCategory = prvalue
+# 1287|         -1: [VariableAccess] a_arg
+# 1287|             Type = [PointerType] A *
+# 1287|             ValueCategory = prvalue(load)
+# 1287|         0: [VariableAccess] a_arg
+# 1287|             Type = [PointerType] A *
+# 1287|             ValueCategory = prvalue(load)
+# 1287|         1: [UnaryMinusExpr] - ...
+# 1287|             Type = [IntType] int
+# 1287|             Value = [UnaryMinusExpr] -1
+# 1287|             ValueCategory = prvalue
+# 1287|           0: [Literal] 1
+# 1287|               Type = [IntType] int
+# 1287|               Value = [Literal] 1
+# 1287|               ValueCategory = prvalue
+# 1289|     9: [ExprStmt] ExprStmt
+# 1289|       0: [FunctionCall] call to static_member_without_def
+# 1289|           Type = [VoidType] void
+# 1289|           ValueCategory = prvalue
+# 1289|         -1: [VariableAccess] a
+# 1289|             Type = [Struct] A
+# 1289|             ValueCategory = lvalue
+# 1290|     10: [ExprStmt] ExprStmt
+# 1290|       0: [FunctionCall] call to static_member_without_def
+# 1290|           Type = [VoidType] void
+# 1290|           ValueCategory = prvalue
+# 1292|     11: [ExprStmt] ExprStmt
+# 1292|       0: [FunctionCall] call to static_member_without_def
+# 1292|           Type = [VoidType] void
+# 1292|           ValueCategory = prvalue
+# 1292|         -1: [FunctionCall] call to getAnInstanceOfA
+# 1292|             Type = [PointerType] A *
+# 1292|             ValueCategory = prvalue
+# 1293|     12: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
