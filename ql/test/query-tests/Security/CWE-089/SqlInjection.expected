@@ -1,9 +1,9 @@
 edges
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q |
-| issue48.go:22:25:22:32 | selection of Body : ReadCloser | issue48.go:27:11:27:12 | q3 |
-| issue48.go:32:26:32:33 | selection of Body : ReadCloser | issue48.go:37:11:37:12 | q4 |
-| issue48.go:42:17:42:50 | type conversion : slice type | issue48.go:46:11:46:12 | q5 |
-| issue48.go:42:24:42:30 | selection of URL : pointer type | issue48.go:42:17:42:50 | type conversion : slice type |
+| issue48.go:17:25:17:32 | selection of Body : ReadCloser | issue48.go:22:11:22:12 | q3 |
+| issue48.go:27:26:27:33 | selection of Body : ReadCloser | issue48.go:32:11:32:12 | q4 |
+| issue48.go:37:17:37:50 | type conversion : slice type | issue48.go:41:11:41:12 | q5 |
+| issue48.go:37:24:37:30 | selection of URL : pointer type | issue48.go:37:17:37:50 | type conversion : slice type |
 | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression |
 | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf |
@@ -44,13 +44,13 @@ edges
 nodes
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
-| issue48.go:22:25:22:32 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
-| issue48.go:27:11:27:12 | q3 | semmle.label | q3 |
-| issue48.go:32:26:32:33 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
-| issue48.go:37:11:37:12 | q4 | semmle.label | q4 |
-| issue48.go:42:17:42:50 | type conversion : slice type | semmle.label | type conversion : slice type |
-| issue48.go:42:24:42:30 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
-| issue48.go:46:11:46:12 | q5 | semmle.label | q5 |
+| issue48.go:17:25:17:32 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| issue48.go:22:11:22:12 | q3 | semmle.label | q3 |
+| issue48.go:27:26:27:33 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
+| issue48.go:32:11:32:12 | q4 | semmle.label | q4 |
+| issue48.go:37:17:37:50 | type conversion : slice type | semmle.label | type conversion : slice type |
+| issue48.go:37:24:37:30 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| issue48.go:41:11:41:12 | q5 | semmle.label | q5 |
 | main.go:10:11:10:16 | selection of Form : Values | semmle.label | selection of Form : Values |
 | main.go:10:11:10:28 | index expression | semmle.label | index expression |
 | main.go:14:11:14:84 | call to Sprintf | semmle.label | call to Sprintf |
@@ -94,9 +94,9 @@ nodes
 | main.go:61:11:61:11 | q | semmle.label | q |
 #select
 | SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q | This query depends on $@. | SqlInjection.go:11:3:11:9 | selection of URL | a user-provided value |
-| issue48.go:27:11:27:12 | q3 | issue48.go:22:25:22:32 | selection of Body : ReadCloser | issue48.go:27:11:27:12 | q3 | This query depends on $@. | issue48.go:22:25:22:32 | selection of Body | a user-provided value |
-| issue48.go:37:11:37:12 | q4 | issue48.go:32:26:32:33 | selection of Body : ReadCloser | issue48.go:37:11:37:12 | q4 | This query depends on $@. | issue48.go:32:26:32:33 | selection of Body | a user-provided value |
-| issue48.go:46:11:46:12 | q5 | issue48.go:42:24:42:30 | selection of URL : pointer type | issue48.go:46:11:46:12 | q5 | This query depends on $@. | issue48.go:42:24:42:30 | selection of URL | a user-provided value |
+| issue48.go:22:11:22:12 | q3 | issue48.go:17:25:17:32 | selection of Body : ReadCloser | issue48.go:22:11:22:12 | q3 | This query depends on $@. | issue48.go:17:25:17:32 | selection of Body | a user-provided value |
+| issue48.go:32:11:32:12 | q4 | issue48.go:27:26:27:33 | selection of Body : ReadCloser | issue48.go:32:11:32:12 | q4 | This query depends on $@. | issue48.go:27:26:27:33 | selection of Body | a user-provided value |
+| issue48.go:41:11:41:12 | q5 | issue48.go:37:24:37:30 | selection of URL : pointer type | issue48.go:41:11:41:12 | q5 | This query depends on $@. | issue48.go:37:24:37:30 | selection of URL | a user-provided value |
 | main.go:10:11:10:28 | index expression | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression | This query depends on $@. | main.go:10:11:10:16 | selection of Form | a user-provided value |
 | main.go:14:11:14:84 | call to Sprintf | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf | This query depends on $@. | main.go:14:63:14:67 | selection of URL | a user-provided value |
 | main.go:15:11:15:85 | call to Sprintf | main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf | This query depends on $@. | main.go:15:63:15:70 | selection of Header | a user-provided value |
