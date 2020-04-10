@@ -8545,6 +8545,23 @@ ir.cpp:
 # 1255|               Type = [CharPointerType] char *
 # 1255|               ValueCategory = prvalue(load)
 # 1256|     3: [ReturnStmt] return ...
+# 1258| [TopLevelFunction] int missingReturnValue(bool, int)
+# 1258|   params: 
+# 1258|     0: [Parameter] b
+# 1258|         Type = [BoolType] bool
+# 1258|     1: [Parameter] x
+# 1258|         Type = [IntType] int
+# 1258|   body: [Block] { ... }
+# 1259|     0: [IfStmt] if (...) ... 
+# 1259|       0: [VariableAccess] b
+# 1259|           Type = [BoolType] bool
+# 1259|           ValueCategory = prvalue(load)
+# 1259|       1: [Block] { ... }
+# 1260|         0: [ReturnStmt] return ...
+# 1260|           0: [VariableAccess] x
+# 1260|               Type = [IntType] int
+# 1260|               ValueCategory = prvalue(load)
+# 1262|     1: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

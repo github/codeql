@@ -131,8 +131,19 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
   }
 }
 
+/**
+ * The IR translation of a `return` statement that returns a value. This includes implicit return
+ * statements at the end of non-`void`-returning functions, even though such a statement does not
+ * have an explicit return value expression.
+ */
 class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariableInitialization {
-  TranslatedReturnValueStmt() { stmt.hasExpr() }
+  TranslatedReturnValueStmt() {
+    // Check the return type of the function, rather than just looking for a return value
+    // expression. This ensures we handle the case of an implicit return at the end of a non-`void`-
+    // returning function. In that case, an `Uninitialized` instruction will be inserted
+    // by the `TranslatedVariableInitialization` base class.
+    hasReturnValue(stmt.getEnclosingFunction())
+  }
 
   final override Instruction getInitializationSuccessor() {
     result = getEnclosingFunction().getReturnSuccessorInstruction()
@@ -147,8 +158,12 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   final override IRVariable getIRVariable() { result = getEnclosingFunction().getReturnVariable() }
 }
 
+/**
+ * The IR translation of a `return` statement that does not return a value. This includes implicit
+ * return statements at the end of `void`-returning functions.
+ */
 class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
-  TranslatedReturnVoidStmt() { not stmt.hasExpr() }
+  TranslatedReturnVoidStmt() { not hasReturnValue(stmt.getEnclosingFunction()) }
 
   override TranslatedElement getChild(int id) { none() }
 

@@ -53,6 +53,7 @@ instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
+| break_labels.c:13:12:13:17 | Load: result |
 | condition_decls.cpp:16:19:16:20 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:19:26:20 | IndirectMayWriteSideEffect: bi |
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt |
@@ -60,6 +61,7 @@ instructionWithoutSuccessor
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
 | cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new |
 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
+| enum.c:6:9:6:9 | Constant: (int)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
@@ -93,6 +95,7 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:48:10:48:13 | IndirectMayWriteSideEffect: call to C |
 | ms_try_mix.cpp:51:5:51:11 | ThrowValue: throw ... |
 | ms_try_mix.cpp:53:13:54:3 | NoOp: { ... } |
+| parameterinitializer.cpp:4:12:4:12 | Constant: 5 |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
 | stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) |
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 |
@@ -145,7 +148,7 @@ ambiguousSuccessors
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -167,7 +170,7 @@ ambiguousSuccessors
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -275,7 +278,7 @@ ambiguousSuccessors
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | duff.c:2:12:2:12 | InitializeParameter: i | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -297,7 +300,7 @@ ambiguousSuccessors
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | duff.c:2:12:2:12 | InitializeParameter: x | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -423,7 +426,7 @@ ambiguousSuccessors
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -445,7 +448,7 @@ ambiguousSuccessors
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -525,7 +528,7 @@ ambiguousSuccessors
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
@@ -547,7 +550,7 @@ ambiguousSuccessors
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | duff.c:3:9:3:9 | VariableAddress: definition of n |
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | dummyblock.c:2:9:2:9 | Constant: 1 |
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | VariableAddress: return ... |
+| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | enum.c:6:2:6:10 | NoOp: return ... |
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | exprstmt.c:2:5:2:5 | Constant: 1 |
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
 | switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 20 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
