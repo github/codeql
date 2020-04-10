@@ -6504,167 +6504,167 @@ ir.cpp:
 # 1251|     v1251_17(void)             = AliasedUse                   : ~mu1251_4
 # 1251|     v1251_18(void)             = ExitFunction                 : 
 
-# 1258| int missingReturnValue(bool, int)
-# 1258|   Block 0
-# 1258|     v1258_1(void)        = EnterFunction          : 
-# 1258|     mu1258_2(unknown)    = AliasedDefinition      : 
-# 1258|     mu1258_3(unknown)    = InitializeNonLocal     : 
-# 1258|     mu1258_4(unknown)    = UnmodeledDefinition    : 
-# 1258|     r1258_5(glval<bool>) = VariableAddress[b]     : 
-# 1258|     mu1258_6(bool)       = InitializeParameter[b] : &:r1258_5
-# 1258|     r1258_7(glval<int>)  = VariableAddress[x]     : 
-# 1258|     mu1258_8(int)        = InitializeParameter[x] : &:r1258_7
-# 1259|     r1259_1(glval<bool>) = VariableAddress[b]     : 
-# 1259|     r1259_2(bool)        = Load                   : &:r1259_1, ~mu1258_4
-# 1259|     v1259_3(void)        = ConditionalBranch      : r1259_2
+# 1261| void A::static_member(A*, int)
+# 1261|   Block 0
+# 1261|     v1261_1(void)       = EnterFunction            : 
+# 1261|     mu1261_2(unknown)   = AliasedDefinition        : 
+# 1261|     mu1261_3(unknown)   = InitializeNonLocal       : 
+# 1261|     mu1261_4(unknown)   = UnmodeledDefinition      : 
+# 1261|     r1261_5(glval<A *>) = VariableAddress[a]       : 
+# 1261|     mu1261_6(A *)       = InitializeParameter[a]   : &:r1261_5
+# 1261|     r1261_7(A *)        = Load                     : &:r1261_5, ~mu1261_6
+# 1261|     mu1261_8(unknown)   = InitializeIndirection[a] : &:r1261_7
+# 1261|     r1261_9(glval<int>) = VariableAddress[x]       : 
+# 1261|     mu1261_10(int)      = InitializeParameter[x]   : &:r1261_9
+# 1262|     r1262_1(glval<int>) = VariableAddress[x]       : 
+# 1262|     r1262_2(int)        = Load                     : &:r1262_1, ~mu1261_4
+# 1262|     r1262_3(glval<A *>) = VariableAddress[a]       : 
+# 1262|     r1262_4(A *)        = Load                     : &:r1262_3, ~mu1261_4
+# 1262|     r1262_5(glval<int>) = FieldAddress[member]     : r1262_4
+# 1262|     mu1262_6(int)       = Store                    : &:r1262_5, r1262_2
+# 1263|     v1263_1(void)       = NoOp                     : 
+# 1261|     v1261_11(void)      = ReturnIndirection        : &:r1261_7, ~mu1261_4
+# 1261|     v1261_12(void)      = ReturnVoid               : 
+# 1261|     v1261_13(void)      = UnmodeledUse             : mu*
+# 1261|     v1261_14(void)      = AliasedUse               : ~mu1261_4
+# 1261|     v1261_15(void)      = ExitFunction             : 
+
+# 1270| void test_static_member_functions(int, A*)
+# 1270|   Block 0
+# 1270|     v1270_1(void)           = EnterFunction                              : 
+# 1270|     mu1270_2(unknown)       = AliasedDefinition                          : 
+# 1270|     mu1270_3(unknown)       = InitializeNonLocal                         : 
+# 1270|     mu1270_4(unknown)       = UnmodeledDefinition                        : 
+# 1270|     r1270_5(glval<int>)     = VariableAddress[int_arg]                   : 
+# 1270|     mu1270_6(int)           = InitializeParameter[int_arg]               : &:r1270_5
+# 1270|     r1270_7(glval<A *>)     = VariableAddress[a_arg]                     : 
+# 1270|     mu1270_8(A *)           = InitializeParameter[a_arg]                 : &:r1270_7
+# 1270|     r1270_9(A *)            = Load                                       : &:r1270_7, ~mu1270_8
+# 1270|     mu1270_10(unknown)      = InitializeIndirection[a_arg]               : &:r1270_9
+# 1271|     r1271_1(glval<C>)       = VariableAddress[c]                         : 
+# 1271|     mu1271_2(C)             = Uninitialized[c]                           : &:r1271_1
+# 1271|     r1271_3(glval<unknown>) = FunctionAddress[C]                         : 
+# 1271|     v1271_4(void)           = Call                                       : func:r1271_3, this:r1271_1
+# 1271|     mu1271_5(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1271|     mu1271_6(C)             = ^IndirectMayWriteSideEffect[-1]            : &:r1271_1
+# 1272|     r1272_1(glval<C>)       = VariableAddress[c]                         : 
+# 1272|     r1272_2(glval<unknown>) = FunctionAddress[StaticMemberFunction]      : 
+# 1272|     r1272_3(int)            = Constant[10]                               : 
+# 1272|     r1272_4(int)            = Call                                       : func:r1272_2, 0:r1272_3
+# 1272|     mu1272_5(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1273|     r1273_1(glval<unknown>) = FunctionAddress[StaticMemberFunction]      : 
+# 1273|     r1273_2(int)            = Constant[10]                               : 
+# 1273|     r1273_3(int)            = Call                                       : func:r1273_1, 0:r1273_2
+# 1273|     mu1273_4(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1275|     r1275_1(glval<A>)       = VariableAddress[a]                         : 
+# 1275|     mu1275_2(A)             = Uninitialized[a]                           : &:r1275_1
+# 1276|     r1276_1(glval<A>)       = VariableAddress[a]                         : 
+# 1276|     r1276_2(glval<unknown>) = FunctionAddress[static_member]             : 
+# 1276|     r1276_3(glval<A>)       = VariableAddress[a]                         : 
+# 1276|     r1276_4(A *)            = CopyValue                                  : r1276_3
+# 1276|     r1276_5(glval<int>)     = VariableAddress[int_arg]                   : 
+# 1276|     r1276_6(int)            = Load                                       : &:r1276_5, ~mu1270_4
+# 1276|     v1276_7(void)           = Call                                       : func:r1276_2, 0:r1276_4, 1:r1276_6
+# 1276|     mu1276_8(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1276|     v1276_9(void)           = ^BufferReadSideEffect[0]                   : &:r1276_4, ~mu1270_4
+# 1276|     mu1276_10(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1276_4
+# 1277|     r1277_1(glval<unknown>) = FunctionAddress[static_member]             : 
+# 1277|     r1277_2(glval<A>)       = VariableAddress[a]                         : 
+# 1277|     r1277_3(A *)            = CopyValue                                  : r1277_2
+# 1277|     r1277_4(glval<int>)     = VariableAddress[int_arg]                   : 
+# 1277|     r1277_5(int)            = Load                                       : &:r1277_4, ~mu1270_4
+# 1277|     v1277_6(void)           = Call                                       : func:r1277_1, 0:r1277_3, 1:r1277_5
+# 1277|     mu1277_7(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1277|     v1277_8(void)           = ^BufferReadSideEffect[0]                   : &:r1277_3, ~mu1270_4
+# 1277|     mu1277_9(unknown)       = ^BufferMayWriteSideEffect[0]               : &:r1277_3
+# 1279|     r1279_1(glval<A>)       = VariableAddress[a]                         : 
+# 1279|     r1279_2(A *)            = CopyValue                                  : r1279_1
+# 1279|     r1279_3(glval<unknown>) = FunctionAddress[static_member]             : 
+# 1279|     r1279_4(glval<A *>)     = VariableAddress[a_arg]                     : 
+# 1279|     r1279_5(A *)            = Load                                       : &:r1279_4, ~mu1270_4
+# 1279|     r1279_6(glval<int>)     = VariableAddress[int_arg]                   : 
+# 1279|     r1279_7(int)            = Load                                       : &:r1279_6, ~mu1270_4
+# 1279|     r1279_8(int)            = Constant[2]                                : 
+# 1279|     r1279_9(int)            = Add                                        : r1279_7, r1279_8
+# 1279|     v1279_10(void)          = Call                                       : func:r1279_3, 0:r1279_5, 1:r1279_9
+# 1279|     mu1279_11(unknown)      = ^CallSideEffect                            : ~mu1270_4
+# 1279|     v1279_12(void)          = ^BufferReadSideEffect[0]                   : &:r1279_5, ~mu1270_4
+# 1279|     mu1279_13(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1279_5
+# 1280|     r1280_1(glval<A *>)     = VariableAddress[a_arg]                     : 
+# 1280|     r1280_2(A *)            = Load                                       : &:r1280_1, ~mu1270_4
+# 1280|     r1280_3(glval<A>)       = CopyValue                                  : r1280_2
+# 1280|     r1280_4(glval<unknown>) = FunctionAddress[static_member]             : 
+# 1280|     r1280_5(glval<A>)       = VariableAddress[a]                         : 
+# 1280|     r1280_6(A *)            = CopyValue                                  : r1280_5
+# 1280|     r1280_7(int)            = Constant[99]                               : 
+# 1280|     v1280_8(void)           = Call                                       : func:r1280_4, 0:r1280_6, 1:r1280_7
+# 1280|     mu1280_9(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1280|     v1280_10(void)          = ^BufferReadSideEffect[0]                   : &:r1280_6, ~mu1270_4
+# 1280|     mu1280_11(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1280_6
+# 1281|     r1281_1(glval<A *>)     = VariableAddress[a_arg]                     : 
+# 1281|     r1281_2(A *)            = Load                                       : &:r1281_1, ~mu1270_4
+# 1281|     r1281_3(glval<unknown>) = FunctionAddress[static_member]             : 
+# 1281|     r1281_4(glval<A *>)     = VariableAddress[a_arg]                     : 
+# 1281|     r1281_5(A *)            = Load                                       : &:r1281_4, ~mu1270_4
+# 1281|     r1281_6(int)            = Constant[-1]                               : 
+# 1281|     v1281_7(void)           = Call                                       : func:r1281_3, 0:r1281_5, 1:r1281_6
+# 1281|     mu1281_8(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1281|     v1281_9(void)           = ^BufferReadSideEffect[0]                   : &:r1281_5, ~mu1270_4
+# 1281|     mu1281_10(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1281_5
+# 1283|     r1283_1(glval<A>)       = VariableAddress[a]                         : 
+# 1283|     r1283_2(glval<unknown>) = FunctionAddress[static_member_without_def] : 
+# 1283|     v1283_3(void)           = Call                                       : func:r1283_2
+# 1283|     mu1283_4(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1284|     r1284_1(glval<unknown>) = FunctionAddress[static_member_without_def] : 
+# 1284|     v1284_2(void)           = Call                                       : func:r1284_1
+# 1284|     mu1284_3(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1286|     r1286_1(glval<unknown>) = FunctionAddress[getAnInstanceOfA]          : 
+# 1286|     r1286_2(A *)            = Call                                       : func:r1286_1
+# 1286|     mu1286_3(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1286|     r1286_4(glval<unknown>) = FunctionAddress[static_member_without_def] : 
+# 1286|     v1286_5(void)           = Call                                       : func:r1286_4
+# 1286|     mu1286_6(unknown)       = ^CallSideEffect                            : ~mu1270_4
+# 1287|     v1287_1(void)           = NoOp                                       : 
+# 1270|     v1270_11(void)          = ReturnIndirection                          : &:r1270_9, ~mu1270_4
+# 1270|     v1270_12(void)          = ReturnVoid                                 : 
+# 1270|     v1270_13(void)          = UnmodeledUse                               : mu*
+# 1270|     v1270_14(void)          = AliasedUse                                 : ~mu1270_4
+# 1270|     v1270_15(void)          = ExitFunction                               : 
+
+# 1289| int missingReturnValue(bool, int)
+# 1289|   Block 0
+# 1289|     v1289_1(void)        = EnterFunction          : 
+# 1289|     mu1289_2(unknown)    = AliasedDefinition      : 
+# 1289|     mu1289_3(unknown)    = InitializeNonLocal     : 
+# 1289|     mu1289_4(unknown)    = UnmodeledDefinition    : 
+# 1289|     r1289_5(glval<bool>) = VariableAddress[b]     : 
+# 1289|     mu1289_6(bool)       = InitializeParameter[b] : &:r1289_5
+# 1289|     r1289_7(glval<int>)  = VariableAddress[x]     : 
+# 1289|     mu1289_8(int)        = InitializeParameter[x] : &:r1289_7
+# 1290|     r1290_1(glval<bool>) = VariableAddress[b]     : 
+# 1290|     r1290_2(bool)        = Load                   : &:r1290_1, ~mu1289_4
+# 1290|     v1290_3(void)        = ConditionalBranch      : r1290_2
 #-----|   False -> Block 2
 #-----|   True -> Block 3
 
-# 1258|   Block 1
-# 1258|     r1258_9(glval<int>) = VariableAddress[#return] : 
-# 1258|     v1258_10(void)      = ReturnValue              : &:r1258_9, ~mu1258_4
-# 1258|     v1258_11(void)      = UnmodeledUse             : mu*
-# 1258|     v1258_12(void)      = AliasedUse               : ~mu1258_4
-# 1258|     v1258_13(void)      = ExitFunction             : 
+# 1289|   Block 1
+# 1289|     r1289_9(glval<int>) = VariableAddress[#return] : 
+# 1289|     v1289_10(void)      = ReturnValue              : &:r1289_9, ~mu1289_4
+# 1289|     v1289_11(void)      = UnmodeledUse             : mu*
+# 1289|     v1289_12(void)      = AliasedUse               : ~mu1289_4
+# 1289|     v1289_13(void)      = ExitFunction             : 
 
-# 1262|   Block 2
-# 1262|     r1262_1(glval<int>) = VariableAddress[#return] : 
-# 1262|     mu1262_2(int)       = Uninitialized[#return]   : &:r1262_1
+# 1293|   Block 2
+# 1293|     r1293_1(glval<int>) = VariableAddress[#return] : 
+# 1293|     mu1293_2(int)       = Uninitialized[#return]   : &:r1293_1
 #-----|   Goto -> Block 1
 
-# 1260|   Block 3
-# 1260|     r1260_1(glval<int>) = VariableAddress[#return] : 
-# 1260|     r1260_2(glval<int>) = VariableAddress[x]       : 
-# 1260|     r1260_3(int)        = Load                     : &:r1260_2, ~mu1258_4
-# 1260|     mu1260_4(int)       = Store                    : &:r1260_1, r1260_3
+# 1291|   Block 3
+# 1291|     r1291_1(glval<int>) = VariableAddress[#return] : 
+# 1291|     r1291_2(glval<int>) = VariableAddress[x]       : 
+# 1291|     r1291_3(int)        = Load                     : &:r1291_2, ~mu1289_4
+# 1291|     mu1291_4(int)       = Store                    : &:r1291_1, r1291_3
 #-----|   Goto -> Block 1
-
-# 1267| void A::static_member(A*, int)
-# 1267|   Block 0
-# 1267|     v1267_1(void)       = EnterFunction            : 
-# 1267|     mu1267_2(unknown)   = AliasedDefinition        : 
-# 1267|     mu1267_3(unknown)   = InitializeNonLocal       : 
-# 1267|     mu1267_4(unknown)   = UnmodeledDefinition      : 
-# 1267|     r1267_5(glval<A *>) = VariableAddress[a]       : 
-# 1267|     mu1267_6(A *)       = InitializeParameter[a]   : &:r1267_5
-# 1267|     r1267_7(A *)        = Load                     : &:r1267_5, ~mu1267_6
-# 1267|     mu1267_8(unknown)   = InitializeIndirection[a] : &:r1267_7
-# 1267|     r1267_9(glval<int>) = VariableAddress[x]       : 
-# 1267|     mu1267_10(int)      = InitializeParameter[x]   : &:r1267_9
-# 1268|     r1268_1(glval<int>) = VariableAddress[x]       : 
-# 1268|     r1268_2(int)        = Load                     : &:r1268_1, ~mu1267_4
-# 1268|     r1268_3(glval<A *>) = VariableAddress[a]       : 
-# 1268|     r1268_4(A *)        = Load                     : &:r1268_3, ~mu1267_4
-# 1268|     r1268_5(glval<int>) = FieldAddress[member]     : r1268_4
-# 1268|     mu1268_6(int)       = Store                    : &:r1268_5, r1268_2
-# 1269|     v1269_1(void)       = NoOp                     : 
-# 1267|     v1267_11(void)      = ReturnIndirection        : &:r1267_7, ~mu1267_4
-# 1267|     v1267_12(void)      = ReturnVoid               : 
-# 1267|     v1267_13(void)      = UnmodeledUse             : mu*
-# 1267|     v1267_14(void)      = AliasedUse               : ~mu1267_4
-# 1267|     v1267_15(void)      = ExitFunction             : 
-
-# 1276| void test_static_member_functions(int, A*)
-# 1276|   Block 0
-# 1276|     v1276_1(void)           = EnterFunction                              : 
-# 1276|     mu1276_2(unknown)       = AliasedDefinition                          : 
-# 1276|     mu1276_3(unknown)       = InitializeNonLocal                         : 
-# 1276|     mu1276_4(unknown)       = UnmodeledDefinition                        : 
-# 1276|     r1276_5(glval<int>)     = VariableAddress[int_arg]                   : 
-# 1276|     mu1276_6(int)           = InitializeParameter[int_arg]               : &:r1276_5
-# 1276|     r1276_7(glval<A *>)     = VariableAddress[a_arg]                     : 
-# 1276|     mu1276_8(A *)           = InitializeParameter[a_arg]                 : &:r1276_7
-# 1276|     r1276_9(A *)            = Load                                       : &:r1276_7, ~mu1276_8
-# 1276|     mu1276_10(unknown)      = InitializeIndirection[a_arg]               : &:r1276_9
-# 1277|     r1277_1(glval<C>)       = VariableAddress[c]                         : 
-# 1277|     mu1277_2(C)             = Uninitialized[c]                           : &:r1277_1
-# 1277|     r1277_3(glval<unknown>) = FunctionAddress[C]                         : 
-# 1277|     v1277_4(void)           = Call                                       : func:r1277_3, this:r1277_1
-# 1277|     mu1277_5(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1277|     mu1277_6(C)             = ^IndirectMayWriteSideEffect[-1]            : &:r1277_1
-# 1278|     r1278_1(glval<C>)       = VariableAddress[c]                         : 
-# 1278|     r1278_2(glval<unknown>) = FunctionAddress[StaticMemberFunction]      : 
-# 1278|     r1278_3(int)            = Constant[10]                               : 
-# 1278|     r1278_4(int)            = Call                                       : func:r1278_2, 0:r1278_3
-# 1278|     mu1278_5(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1279|     r1279_1(glval<unknown>) = FunctionAddress[StaticMemberFunction]      : 
-# 1279|     r1279_2(int)            = Constant[10]                               : 
-# 1279|     r1279_3(int)            = Call                                       : func:r1279_1, 0:r1279_2
-# 1279|     mu1279_4(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1281|     r1281_1(glval<A>)       = VariableAddress[a]                         : 
-# 1281|     mu1281_2(A)             = Uninitialized[a]                           : &:r1281_1
-# 1282|     r1282_1(glval<A>)       = VariableAddress[a]                         : 
-# 1282|     r1282_2(glval<unknown>) = FunctionAddress[static_member]             : 
-# 1282|     r1282_3(glval<A>)       = VariableAddress[a]                         : 
-# 1282|     r1282_4(A *)            = CopyValue                                  : r1282_3
-# 1282|     r1282_5(glval<int>)     = VariableAddress[int_arg]                   : 
-# 1282|     r1282_6(int)            = Load                                       : &:r1282_5, ~mu1276_4
-# 1282|     v1282_7(void)           = Call                                       : func:r1282_2, 0:r1282_4, 1:r1282_6
-# 1282|     mu1282_8(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1282|     v1282_9(void)           = ^BufferReadSideEffect[0]                   : &:r1282_4, ~mu1276_4
-# 1282|     mu1282_10(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1282_4
-# 1283|     r1283_1(glval<unknown>) = FunctionAddress[static_member]             : 
-# 1283|     r1283_2(glval<A>)       = VariableAddress[a]                         : 
-# 1283|     r1283_3(A *)            = CopyValue                                  : r1283_2
-# 1283|     r1283_4(glval<int>)     = VariableAddress[int_arg]                   : 
-# 1283|     r1283_5(int)            = Load                                       : &:r1283_4, ~mu1276_4
-# 1283|     v1283_6(void)           = Call                                       : func:r1283_1, 0:r1283_3, 1:r1283_5
-# 1283|     mu1283_7(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1283|     v1283_8(void)           = ^BufferReadSideEffect[0]                   : &:r1283_3, ~mu1276_4
-# 1283|     mu1283_9(unknown)       = ^BufferMayWriteSideEffect[0]               : &:r1283_3
-# 1285|     r1285_1(glval<A>)       = VariableAddress[a]                         : 
-# 1285|     r1285_2(A *)            = CopyValue                                  : r1285_1
-# 1285|     r1285_3(glval<unknown>) = FunctionAddress[static_member]             : 
-# 1285|     r1285_4(glval<A *>)     = VariableAddress[a_arg]                     : 
-# 1285|     r1285_5(A *)            = Load                                       : &:r1285_4, ~mu1276_4
-# 1285|     r1285_6(glval<int>)     = VariableAddress[int_arg]                   : 
-# 1285|     r1285_7(int)            = Load                                       : &:r1285_6, ~mu1276_4
-# 1285|     r1285_8(int)            = Constant[2]                                : 
-# 1285|     r1285_9(int)            = Add                                        : r1285_7, r1285_8
-# 1285|     v1285_10(void)          = Call                                       : func:r1285_3, 0:r1285_5, 1:r1285_9
-# 1285|     mu1285_11(unknown)      = ^CallSideEffect                            : ~mu1276_4
-# 1285|     v1285_12(void)          = ^BufferReadSideEffect[0]                   : &:r1285_5, ~mu1276_4
-# 1285|     mu1285_13(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1285_5
-# 1286|     r1286_1(glval<A *>)     = VariableAddress[a_arg]                     : 
-# 1286|     r1286_2(A *)            = Load                                       : &:r1286_1, ~mu1276_4
-# 1286|     r1286_3(glval<A>)       = CopyValue                                  : r1286_2
-# 1286|     r1286_4(glval<unknown>) = FunctionAddress[static_member]             : 
-# 1286|     r1286_5(glval<A>)       = VariableAddress[a]                         : 
-# 1286|     r1286_6(A *)            = CopyValue                                  : r1286_5
-# 1286|     r1286_7(int)            = Constant[99]                               : 
-# 1286|     v1286_8(void)           = Call                                       : func:r1286_4, 0:r1286_6, 1:r1286_7
-# 1286|     mu1286_9(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1286|     v1286_10(void)          = ^BufferReadSideEffect[0]                   : &:r1286_6, ~mu1276_4
-# 1286|     mu1286_11(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1286_6
-# 1287|     r1287_1(glval<A *>)     = VariableAddress[a_arg]                     : 
-# 1287|     r1287_2(A *)            = Load                                       : &:r1287_1, ~mu1276_4
-# 1287|     r1287_3(glval<unknown>) = FunctionAddress[static_member]             : 
-# 1287|     r1287_4(glval<A *>)     = VariableAddress[a_arg]                     : 
-# 1287|     r1287_5(A *)            = Load                                       : &:r1287_4, ~mu1276_4
-# 1287|     r1287_6(int)            = Constant[-1]                               : 
-# 1287|     v1287_7(void)           = Call                                       : func:r1287_3, 0:r1287_5, 1:r1287_6
-# 1287|     mu1287_8(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1287|     v1287_9(void)           = ^BufferReadSideEffect[0]                   : &:r1287_5, ~mu1276_4
-# 1287|     mu1287_10(unknown)      = ^BufferMayWriteSideEffect[0]               : &:r1287_5
-# 1289|     r1289_1(glval<A>)       = VariableAddress[a]                         : 
-# 1289|     r1289_2(glval<unknown>) = FunctionAddress[static_member_without_def] : 
-# 1289|     v1289_3(void)           = Call                                       : func:r1289_2
-# 1289|     mu1289_4(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1290|     r1290_1(glval<unknown>) = FunctionAddress[static_member_without_def] : 
-# 1290|     v1290_2(void)           = Call                                       : func:r1290_1
-# 1290|     mu1290_3(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1292|     r1292_1(glval<unknown>) = FunctionAddress[getAnInstanceOfA]          : 
-# 1292|     r1292_2(A *)            = Call                                       : func:r1292_1
-# 1292|     mu1292_3(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1292|     r1292_4(glval<unknown>) = FunctionAddress[static_member_without_def] : 
-# 1292|     v1292_5(void)           = Call                                       : func:r1292_4
-# 1292|     mu1292_6(unknown)       = ^CallSideEffect                            : ~mu1276_4
-# 1293|     v1293_1(void)           = NoOp                                       : 
-# 1276|     v1276_11(void)          = ReturnIndirection                          : &:r1276_9, ~mu1276_4
-# 1276|     v1276_12(void)          = ReturnVoid                                 : 
-# 1276|     v1276_13(void)          = UnmodeledUse                               : mu*
-# 1276|     v1276_14(void)          = AliasedUse                                 : ~mu1276_4
-# 1276|     v1276_15(void)          = ExitFunction                               : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

@@ -1255,12 +1255,6 @@ void test_strings(char *s1, char *s2) {
     strcat(buffer, s2);
 }
 
-int missingReturnValue(bool b, int x) {
-    if (b) {
-        return x;
-    }
-}
-
 struct A {
     int member;
 
@@ -1290,6 +1284,12 @@ void test_static_member_functions(int int_arg, A* a_arg) {
     A::static_member_without_def();
 
     getAnInstanceOfA()->static_member_without_def();
+}
+
+int missingReturnValue(bool b, int x) {
+    if (b) {
+        return x;
+    }
 }
 
 // semmle-extractor-options: -std=c++17 --clang
