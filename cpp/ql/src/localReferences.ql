@@ -4,6 +4,7 @@
  *              for jump-to-definition in the code viewer.
  * @kind definitions
  * @id cpp/jump-to-definition
+ * @tags local-references
  */
 
 import definitions
@@ -11,10 +12,8 @@ import definitions
 external string selectedSourceFile();
 
 cached File getEncodedFile(string name) {
-        result.getAbsolutePath().replaceAll(":", "_") = name
+  result.getAbsolutePath().replaceAll(":", "_") = name
 }
-
-
 
 from Top e, Top def, string kind
 where def = definitionOf(e, kind) and def.getFile() = getEncodedFile(selectedSourceFile())
