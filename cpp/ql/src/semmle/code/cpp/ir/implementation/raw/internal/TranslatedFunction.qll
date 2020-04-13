@@ -454,7 +454,7 @@ abstract class TranslatedParameter extends TranslatedElement {
       result = getInstruction(InitializerVariableAddressTag())
       or
       operandTag instanceof LoadOperandTag and
-      result = getInstruction(InitializerStoreTag())
+      result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
     )
     or
     tag = InitializerIndirectStoreTag() and
