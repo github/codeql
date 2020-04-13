@@ -6523,7 +6523,7 @@ ir.cpp:
 # 1262|     r1262_5(glval<int>) = FieldAddress[member]     : r1262_4
 # 1262|     mu1262_6(int)       = Store                    : &:r1262_5, r1262_2
 # 1263|     v1263_1(void)       = NoOp                     : 
-# 1261|     v1261_11(void)      = ReturnIndirection        : &:r1261_7, ~mu1261_4
+# 1261|     v1261_11(void)      = ReturnIndirection[a]     : &:r1261_7, ~mu1261_4
 # 1261|     v1261_12(void)      = ReturnVoid               : 
 # 1261|     v1261_13(void)      = UnmodeledUse             : mu*
 # 1261|     v1261_14(void)      = AliasedUse               : ~mu1261_4
@@ -6625,7 +6625,7 @@ ir.cpp:
 # 1286|     v1286_5(void)           = Call                                       : func:r1286_4
 # 1286|     mu1286_6(unknown)       = ^CallSideEffect                            : ~mu1270_4
 # 1287|     v1287_1(void)           = NoOp                                       : 
-# 1270|     v1270_11(void)          = ReturnIndirection                          : &:r1270_9, ~mu1270_4
+# 1270|     v1270_11(void)          = ReturnIndirection[a_arg]                   : &:r1270_9, ~mu1270_4
 # 1270|     v1270_12(void)          = ReturnVoid                                 : 
 # 1270|     v1270_13(void)          = UnmodeledUse                               : mu*
 # 1270|     v1270_14(void)          = AliasedUse                                 : ~mu1270_4
