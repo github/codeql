@@ -324,6 +324,16 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override predicate hasWriteSideEffect() {
     not expr.getTarget().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
   }
+
+  override Instruction getQualifierResult() {
+    hasQualifier() and
+    result = getQualifier().getResult()
+  }
+
+  override predicate hasQualifier() {
+    exists(getQualifier()) and
+    not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
+  }
 }
 
 /**
