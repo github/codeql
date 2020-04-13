@@ -162,6 +162,12 @@ class ExprNode extends InstructionNode {
  * as `x` in `f(x)` and implicit parameters such as `this` in `x.f()`
  */
 class ParameterNode extends InstructionNode {
+  ParameterNode() {
+    instr instanceof InitializeParameterInstruction
+    or
+    instr instanceof InitializeThisInstruction
+  }
+
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
