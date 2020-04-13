@@ -6631,6 +6631,36 @@ ir.cpp:
 # 1270|     v1270_14(void)          = AliasedUse                                 : ~mu1270_4
 # 1270|     v1270_15(void)          = ExitFunction                               : 
 
+# 1289| int missingReturnValue(bool, int)
+# 1289|   Block 0
+# 1289|     v1289_1(void)        = EnterFunction          : 
+# 1289|     mu1289_2(unknown)    = AliasedDefinition      : 
+# 1289|     mu1289_3(unknown)    = InitializeNonLocal     : 
+# 1289|     mu1289_4(unknown)    = UnmodeledDefinition    : 
+# 1289|     r1289_5(glval<bool>) = VariableAddress[b]     : 
+# 1289|     mu1289_6(bool)       = InitializeParameter[b] : &:r1289_5
+# 1289|     r1289_7(glval<int>)  = VariableAddress[x]     : 
+# 1289|     mu1289_8(int)        = InitializeParameter[x] : &:r1289_7
+# 1290|     r1290_1(glval<bool>) = VariableAddress[b]     : 
+# 1290|     r1290_2(bool)        = Load                   : &:r1290_1, ~mu1289_4
+# 1290|     v1290_3(void)        = ConditionalBranch      : r1290_2
+#-----|   False -> Block 1
+#-----|   True -> Block 2
+
+# 1293|   Block 1
+# 1293|     v1293_1(void) = Unreached : 
+
+# 1291|   Block 2
+# 1291|     r1291_1(glval<int>) = VariableAddress[#return] : 
+# 1291|     r1291_2(glval<int>) = VariableAddress[x]       : 
+# 1291|     r1291_3(int)        = Load                     : &:r1291_2, ~mu1289_4
+# 1291|     mu1291_4(int)       = Store                    : &:r1291_1, r1291_3
+# 1289|     r1289_9(glval<int>) = VariableAddress[#return] : 
+# 1289|     v1289_10(void)      = ReturnValue              : &:r1289_9, ~mu1289_4
+# 1289|     v1289_11(void)      = UnmodeledUse             : mu*
+# 1289|     v1289_12(void)      = AliasedUse               : ~mu1289_4
+# 1289|     v1289_13(void)      = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

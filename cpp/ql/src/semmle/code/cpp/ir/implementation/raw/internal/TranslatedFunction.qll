@@ -50,6 +50,11 @@ CppType getEllipsisVariablePRValueType() {
 CppType getEllipsisVariableGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
 
 /**
+ * Holds if the function returns a value, as opposed to returning `void`.
+ */
+predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instanceof VoidType }
+
+/**
  * Represents the IR translation of a function. This is the root elements for
  * all other elements associated with this function.
  */
@@ -312,7 +317,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   /**
    * Holds if the function has a non-`void` return type.
    */
-  final predicate hasReturnValue() { not func.getUnspecifiedType() instanceof VoidType }
+  final predicate hasReturnValue() { hasReturnValue(func) }
 
   /**
    * Gets the single `UnmodeledDefinition` instruction for this function.
