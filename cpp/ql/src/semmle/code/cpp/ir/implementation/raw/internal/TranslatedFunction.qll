@@ -52,10 +52,7 @@ CppType getEllipsisVariableGLValueType() { result = getTypeForGLValue(any(Unknow
 /**
  * Holds if the function returns a value, as opposed to returning `void`.
  */
-pragma[inline]
-predicate hasReturnValue(Function func) {
-  not func.getUnspecifiedType() instanceof VoidType
-}
+predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instanceof VoidType }
 
 /**
  * Represents the IR translation of a function. This is the root elements for
