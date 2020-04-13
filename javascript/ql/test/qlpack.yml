@@ -1,3 +1,4 @@
 name: codeql-javascript-tests
 version: 0.0.0
 libraryPathDependencies: codeql-javascript
+extractor: javascript
