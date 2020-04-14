@@ -76,3 +76,41 @@ void test11() {
 	short s;
 	for(s = 0; s < const256; ++s) {}
 }
+
+unsigned int get_a_uint();
+
+void test12() {
+	unsigned char c;
+	unsigned int x;
+
+	x = get_a_uint();
+	for (c = 0; c < x; c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < 0xFF; c++) {} // GOOD
+	x = get_a_uint();
+	for (c = 0; c < 0xFF00; c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < 0xFF0000; c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < 0xFF000000; c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x & 0xFF); c++) {} // GOOD [FALSE POSITIVE]
+	x = get_a_uint();
+	for (c = 0; c < (x & 0xFF00); c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x & 0xFF0000); c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x & 0xFF000000); c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x >> 8); c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x >> 16); c++) {} // BAD
+	x = get_a_uint();
+	for (c = 0; c < (x >> 24); c++) {} // GOOD (assuming 32-bit ints) [FALSE POSITIVE]
+	x = get_a_uint();
+	for (c = 0; c < ((x & 0xFF00) >> 8); c++) {} // GOOD [FALSE POSITIVE]
+	x = get_a_uint();
+	for (c = 0; c < ((x & 0xFF0000) >> 16); c++) {} // GOOD [FALSE POSITIVE]
+	x = get_a_uint();
+	for (c = 0; c < ((x & 0xFF000000) >> 24); c++) {} // GOOD [FALSE POSITIVE]
+}
