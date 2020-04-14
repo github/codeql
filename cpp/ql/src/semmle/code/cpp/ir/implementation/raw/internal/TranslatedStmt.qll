@@ -135,7 +135,7 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
  * The IR translation of a `return` statement that returns a value.
  */
 class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariableInitialization {
-  TranslatedReturnValueStmt() { stmt.hasExpr() }
+  TranslatedReturnValueStmt() { stmt.hasExpr() and hasReturnValue(stmt.getEnclosingFunction()) }
 
   final override Instruction getInitializationSuccessor() {
     result = getEnclosingFunction().getReturnSuccessorInstruction()
@@ -148,6 +148,41 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   }
 
   final override IRVariable getIRVariable() { result = getEnclosingFunction().getReturnVariable() }
+}
+
+/**
+ * The IR translation of a `return` statement that returns an expression of `void` type.
+ */
+class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
+  TranslatedReturnVoidExpressionStmt() {
+    stmt.hasExpr() and not hasReturnValue(stmt.getEnclosingFunction())
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and
+    result = getExpr()
+  }
+
+  override Instruction getFirstInstruction() { result = getExpr().getFirstInstruction() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::NoOp and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getEnclosingFunction().getReturnSuccessorInstruction() and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getExpr() and
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  private TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
 }
 
 /**

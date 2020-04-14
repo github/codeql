@@ -1292,4 +1292,8 @@ int missingReturnValue(bool b, int x) {
     }
 }
 
+void returnVoid(int x, int y) {
+    return IntegerOps(x, y);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

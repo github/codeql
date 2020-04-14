@@ -6661,6 +6661,29 @@ ir.cpp:
 # 1289|     v1289_12(void)      = AliasedUse               : ~mu1289_4
 # 1289|     v1289_13(void)      = ExitFunction             : 
 
+# 1295| void returnVoid(int, int)
+# 1295|   Block 0
+# 1295|     v1295_1(void)           = EnterFunction               : 
+# 1295|     mu1295_2(unknown)       = AliasedDefinition           : 
+# 1295|     mu1295_3(unknown)       = InitializeNonLocal          : 
+# 1295|     mu1295_4(unknown)       = UnmodeledDefinition         : 
+# 1295|     r1295_5(glval<int>)     = VariableAddress[x]          : 
+# 1295|     mu1295_6(int)           = InitializeParameter[x]      : &:r1295_5
+# 1295|     r1295_7(glval<int>)     = VariableAddress[y]          : 
+# 1295|     mu1295_8(int)           = InitializeParameter[y]      : &:r1295_7
+# 1296|     r1296_1(glval<unknown>) = FunctionAddress[IntegerOps] : 
+# 1296|     r1296_2(glval<int>)     = VariableAddress[x]          : 
+# 1296|     r1296_3(int)            = Load                        : &:r1296_2, ~mu1295_4
+# 1296|     r1296_4(glval<int>)     = VariableAddress[y]          : 
+# 1296|     r1296_5(int)            = Load                        : &:r1296_4, ~mu1295_4
+# 1296|     v1296_6(void)           = Call                        : func:r1296_1, 0:r1296_3, 1:r1296_5
+# 1296|     mu1296_7(unknown)       = ^CallSideEffect             : ~mu1295_4
+# 1296|     v1296_8(void)           = NoOp                        : 
+# 1295|     v1295_9(void)           = ReturnVoid                  : 
+# 1295|     v1295_10(void)          = UnmodeledUse                : mu*
+# 1295|     v1295_11(void)          = AliasedUse                  : ~mu1295_4
+# 1295|     v1295_12(void)          = ExitFunction                : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

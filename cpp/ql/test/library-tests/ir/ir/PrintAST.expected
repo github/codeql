@@ -8767,6 +8767,23 @@ ir.cpp:
 # 1291|               Type = [IntType] int
 # 1291|               ValueCategory = prvalue(load)
 # 1293|     1: [ReturnStmt] return ...
+# 1295| [TopLevelFunction] void returnVoid(int, int)
+# 1295|   params: 
+# 1295|     0: [Parameter] x
+# 1295|         Type = [IntType] int
+# 1295|     1: [Parameter] y
+# 1295|         Type = [IntType] int
+# 1295|   body: [Block] { ... }
+# 1296|     0: [ReturnStmt] return ...
+# 1296|       0: [FunctionCall] call to IntegerOps
+# 1296|           Type = [VoidType] void
+# 1296|           ValueCategory = prvalue
+# 1296|         0: [VariableAccess] x
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
+# 1296|         1: [VariableAccess] y
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
