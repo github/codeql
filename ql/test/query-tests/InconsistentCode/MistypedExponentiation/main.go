@@ -26,4 +26,6 @@ func main() {
 	// than the xor operator and so the query doesn't see a constant on the left
 	// hand side of ^.
 	fmt.Println(nonconst()*10 ^ 9)
+
+	fmt.Println(mask)
 }
