@@ -12,40 +12,4 @@ The libraries and queries in version |version| have been explicitly checked agai
 
 .. There is currently no built-in support for libraries or frameworks for C/C++.
 
-C# built-in support
-================================
-
-.. csv-table:: 
-     :file: csharp-frameworks.csv
-     :header-rows: 1
-     :class: fullWidthTable
-     :widths: auto
-
-Java built-in support
-==================================
-
-.. csv-table:: 
-     :file: java-frameworks.csv
-     :header-rows: 1
-     :class: fullWidthTable
-     :widths: auto
-
-
-JavaScript and TypeScript built-in support
-=======================================================
-
-.. csv-table:: 
-     :file: javascript-typescript-frameworks.csv
-     :header-rows: 1
-     :class: fullWidthTable
-     :widths: auto
-
-
-Python built-in support
-====================================
-
-.. csv-table:: 
-     :file: python-frameworks.csv
-     :header-rows: 1
-     :class: fullWidthTable
-     :widths: auto
+.. include:: reusables/frameworks.rst

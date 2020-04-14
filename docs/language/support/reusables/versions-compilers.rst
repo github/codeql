@@ -15,7 +15,7 @@
 
    .NET Core up to 3.0","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.14", "Go 1.11 or more recent", ``.go``
-   Java,"Java 6 to 13 [4]_","javac (OpenJDK and Oracle JDK),
+   Java,"Java 6 to 14 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
    JavaScript,ECMAScript 2019 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
@@ -27,7 +27,7 @@
     .. [1] Support for the clang-cl compiler is preliminary.
     .. [2] Support for the Arm Compiler (armcc) is preliminary.
     .. [3] In addition, support is included for the preview features of C# 8.0 and .NET Core 3.0.
-    .. [4] Builds that execute on Java 6 to 12 can be analyzed. The analysis understands Java 12 language features.
+    .. [4] Builds that execute on Java 6 to 14 can be analyzed. The analysis understands Java 14 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files. 
     .. [7] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.   
