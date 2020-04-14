@@ -1,5 +1,8 @@
 package main
 
+//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Entry Warning,WithFields,WithField
+//go:generate depstubber -vendor github.com/golang/glog "" Info
+
 import (
 	"github.com/golang/glog"
 	"github.com/sirupsen/logrus"

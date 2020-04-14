@@ -1,5 +1,9 @@
 package main
 
+//go:generate depstubber -vendor github.com/go-pg/pg Conn,DB,Tx Q
+//go:generate depstubber -vendor github.com/go-pg/pg/orm Query Q
+//go:generate depstubber -vendor github.com/go-pg/pg/v9 Conn,DB,Tx Q
+
 import (
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"

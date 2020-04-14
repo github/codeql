@@ -1,5 +1,7 @@
 package main
 
+//go:generate depstubber -vendor github.com/Masterminds/squirrel "" Select,Expr
+
 import (
 	"context"
 	"database/sql"
