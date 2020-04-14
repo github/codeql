@@ -63,7 +63,7 @@ Section-level elements are used to group the information in the help file into s
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``section``        | ``title`` Title of the section          | Any block element      | General-purpose section with a heading defined by the ``title`` attribute.                                                                    |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``semmleNotes``    | None                                    | Any block element      | Semmle-specific notes about the query. This section is used only for queries that implement a rule defined by a third party. Default heading. |
+| ``semmleNotes``    | None                                    | Any block element      | Implementation notes about the query. This section is used only for queries that implement a rule defined by a third party. Default heading.  |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 Block elements
