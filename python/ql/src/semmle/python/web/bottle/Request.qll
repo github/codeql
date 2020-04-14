@@ -53,7 +53,10 @@ class BottleRequestKind extends TaintKind {
 }
 
 private class RequestSource extends HttpRequestTaintSource {
-    RequestSource() { this.(ControlFlowNode).pointsTo(theBottleRequestObject()) }
+    RequestSource() {
+        this.(ControlFlowNode).pointsTo(theBottleRequestObject()) and
+        not any(Import i).contains(this.(ControlFlowNode).getNode())
+    }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof BottleRequestKind }
 }
