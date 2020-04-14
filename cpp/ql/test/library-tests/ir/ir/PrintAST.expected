@@ -8750,6 +8750,40 @@ ir.cpp:
 # 1286|             Type = [PointerType] A *
 # 1286|             ValueCategory = prvalue
 # 1287|     12: [ReturnStmt] return ...
+# 1289| [TopLevelFunction] int missingReturnValue(bool, int)
+# 1289|   params: 
+# 1289|     0: [Parameter] b
+# 1289|         Type = [BoolType] bool
+# 1289|     1: [Parameter] x
+# 1289|         Type = [IntType] int
+# 1289|   body: [Block] { ... }
+# 1290|     0: [IfStmt] if (...) ... 
+# 1290|       0: [VariableAccess] b
+# 1290|           Type = [BoolType] bool
+# 1290|           ValueCategory = prvalue(load)
+# 1290|       1: [Block] { ... }
+# 1291|         0: [ReturnStmt] return ...
+# 1291|           0: [VariableAccess] x
+# 1291|               Type = [IntType] int
+# 1291|               ValueCategory = prvalue(load)
+# 1293|     1: [ReturnStmt] return ...
+# 1295| [TopLevelFunction] void returnVoid(int, int)
+# 1295|   params: 
+# 1295|     0: [Parameter] x
+# 1295|         Type = [IntType] int
+# 1295|     1: [Parameter] y
+# 1295|         Type = [IntType] int
+# 1295|   body: [Block] { ... }
+# 1296|     0: [ReturnStmt] return ...
+# 1296|       0: [FunctionCall] call to IntegerOps
+# 1296|           Type = [VoidType] void
+# 1296|           ValueCategory = prvalue
+# 1296|         0: [VariableAccess] x
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
+# 1296|         1: [VariableAccess] y
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
