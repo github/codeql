@@ -385,6 +385,7 @@ func _() {
 		x = deadStore() // BAD
 		fallthrough
 	case b:
+		_ = x
 	}
 }
 
