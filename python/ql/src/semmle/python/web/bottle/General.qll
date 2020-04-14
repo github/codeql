@@ -68,5 +68,6 @@ private string bottle_rule_syntax_re() {
     // taken from https://github.com/bottlepy/bottle/blob/332215b2b1b3de5a321ba9f3497777fc93662893/bottle.py#L349-L352
     // note: I used https://regex101.com/ to find the group numbers on sample input, and verified manually.
     //       https://www.debuggex.com/ was very helpful in visualizing the regex
-    result = "(\\\\*)(?:(?::([a-zA-Z_][a-zA-Z_0-9]*)?()(?:#(.*?)#)?)|(?:<([a-zA-Z_][a-zA-Z_0-9]*)?(?::([a-zA-Z_]*)(?::((?:\\\\.|[^\\\\>])+)?)?)?>))"
+    result =
+        "(\\\\*)(?:(?::([a-zA-Z_][a-zA-Z_0-9]*)?()(?:#(.*?)#)?)|(?:<([a-zA-Z_][a-zA-Z_0-9]*)?(?::([a-zA-Z_]*)(?::((?:\\\\.|[^\\\\>])+)?)?)?>))"
 }

@@ -62,7 +62,6 @@ private class RequestSource extends HttpRequestTaintSource {
 }
 
 class BottleFormsDict extends DictKind {
-
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         /* Cannot use `getTaintOfAttribute(name)` as it wouldn't bind `name` */
         exists(string name |
