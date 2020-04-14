@@ -304,7 +304,7 @@ abstract class DeclarationEntry extends Locatable {
    * available), or the name declared by this entry otherwise.
    */
   string getCanonicalName() {
-    if getDeclaration().isDefined()
+    if getDeclaration().hasDefinition()
     then result = getDeclaration().getDefinition().getName()
     else result = getName()
   }
