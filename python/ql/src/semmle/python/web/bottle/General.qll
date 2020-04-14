@@ -27,10 +27,13 @@ predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func
 class BottleRoute extends ControlFlowNode {
     BottleRoute() { bottle_route(this, _, _) }
 
-    string getUrl() {
-        exists(StrConst url |
-            bottle_route(this, url.getAFlowNode(), _) and
-            result = url.getText()
+    /** DEPRECATED: Use `getRoute` instead */
+    deprecated string getUrl() { result = this.getRoute() }
+
+    string getRoute() {
+        exists(StrConst route |
+            bottle_route(this, route.getAFlowNode(), _) and
+            result = route.getText()
         )
     }
 
