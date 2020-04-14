@@ -10,14 +10,46 @@ class BottleRequestKind extends TaintKind {
     BottleRequestKind() { this = "bottle.request" }
 
     override TaintKind getTaintOfAttribute(string name) {
-        result instanceof BottleFormsDict and
-        (name = "cookies" or name = "query" or name = "form")
+        name in ["environ", "url_args", "headers"] and
+        result.(DictKind).getValue() instanceof UntrustedStringKind
         or
-        result instanceof UntrustedStringKind and
-        (name = "query_string" or name = "url_args")
+        name in ["path", "url", "fullpath", "query_string", "script_name", "content_type", "remote_addr"] and
+        result instanceof UntrustedStringKind
         or
+        name in ["cookies", "query", "forms", "params", "GET"] and
+        result instanceof BottleFormsDict
+        or
+        // TODO
+        // name = "files" and
+        // result instanceof FilesBottleFormsDict
+        // or
+        // name = "POST" and
+        // result instanceof FilesorUntrustedStringKindBottleFormsDict and
+        // or
+        name = "json" and
+        result instanceof ExternalJsonKind
+        or
+        // TODO: Not sure what TaintKind to use here
+        name = "body" and
+        none()
+        or
+        name = "urlparts" and
+        result.(ExternalUrlSplitResult).getItem() instanceof UntrustedStringKind
+        or
+        name in ["auth", "remote_route"] and
+        result.(SequenceKind).getItem() instanceof UntrustedStringKind
+        or
+        // TODO: should be updated to be a FormsDict
         result.(DictKind).getValue() instanceof FileUpload and
         name = "files"
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        name in ["get_header", "get_cookie"] and
+        result instanceof UntrustedStringKind
+        or
+        name = "copy" and
+        result instanceof BottleRequestKind
     }
 }
 
