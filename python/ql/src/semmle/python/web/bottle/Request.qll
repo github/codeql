@@ -17,15 +17,18 @@ class BottleRequestKind extends TaintKind {
         result instanceof UntrustedStringKind
         or
         name in ["cookies", "query", "forms", "params", "GET"] and
-        result instanceof BottleFormsDict
+        result.(BottleFormsDict).getValue() instanceof UntrustedStringKind
         or
-        // TODO
-        // name = "files" and
-        // result instanceof FilesBottleFormsDict
-        // or
-        // name = "POST" and
-        // result instanceof FilesorUntrustedStringKindBottleFormsDict and
-        // or
+        name = "files" and
+        result.(BottleFormsDict).getValue() instanceof FileUpload
+        or
+        name = "POST" and
+        (
+            result.(BottleFormsDict).getValue() instanceof UntrustedStringKind
+            or
+            result.(BottleFormsDict).getValue() instanceof FileUpload
+        )
+        or
         name = "json" and
         result instanceof ExternalJsonKind
         or
@@ -38,10 +41,6 @@ class BottleRequestKind extends TaintKind {
         or
         name in ["auth", "remote_route"] and
         result.(SequenceKind).getItem() instanceof UntrustedStringKind
-        or
-        // TODO: should be updated to be a FormsDict
-        result.(DictKind).getValue() instanceof FileUpload and
-        name = "files"
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -59,14 +58,13 @@ private class RequestSource extends HttpRequestTaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof BottleRequestKind }
 }
 
-class BottleFormsDict extends TaintKind {
-    BottleFormsDict() { this = "bottle.FormsDict" }
+class BottleFormsDict extends DictKind {
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         /* Cannot use `getTaintOfAttribute(name)` as it wouldn't bind `name` */
         exists(string name |
             fromnode = tonode.(AttrNode).getObject(name) and
-            result instanceof UntrustedStringKind
+            result = this.getValue()
         |
             name != "get" and name != "getunicode" and name != "getall"
         )
@@ -74,9 +72,9 @@ class BottleFormsDict extends TaintKind {
 
     override TaintKind getTaintOfMethodResult(string name) {
         (name = "get" or name = "getunicode") and
-        result instanceof UntrustedStringKind
+        result = this.getValue()
         or
-        name = "getall" and result.(SequenceKind).getItem() instanceof UntrustedStringKind
+        name = "getall" and result.(SequenceKind).getItem() = this.getValue()
     }
 }
 
