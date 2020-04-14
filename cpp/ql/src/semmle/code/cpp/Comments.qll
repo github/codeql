@@ -1,5 +1,3 @@
-
-
 import semmle.code.cpp.Location
 import semmle.code.cpp.Element
 
