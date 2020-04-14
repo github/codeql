@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"crypto/tls"
+	"net/http"
+	"testing"
+)
 
 func TestSomethingExciting(t *testing.T) {
 	transport := &http.Transport{
