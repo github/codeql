@@ -159,10 +159,9 @@ private module CollectionDataFlow {
    * A step for a `for of` statement on a Map, Set, or Iterator.
    * For Sets and iterators the l-value are the elements of the set/iterator.
    * For Maps the l-value is a tuple containing a key and a value.
-   *
-   * This is partially duplicated behavior with the `for of` step for Arrays (in Arrays.qll).
-   * This duplication is required for the type-tracking steps defined in `CollectionsTypeTracking`.
    */
+  // This is partially duplicated behavior with the `for of` step for Arrays (`ArrayDataFlow::ForOfStep`).
+  // This duplication is required for the type-tracking steps defined in `CollectionsTypeTracking`.
   private class ForOfStep extends CollectionFlowStep, DataFlow::ValueNode {
     ForOfStmt forOf;
     DataFlow::Node element;
