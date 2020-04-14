@@ -5,7 +5,7 @@ Overview
 --------
 
 This document presents an approach for running information flow analyses (such as the standard
-Semmle security queries) on an application that depends on one or more npm packages. Instead of
+security queries) on an application that depends on one or more npm packages. Instead of
 installing the npm packages during the snapshot build and analyzing them together with application
 code, we analyze each package in isolation and compute *flow summaries* that record information
 about any sources, sinks and flow steps contributed by the package's API. These flow summaries
@@ -41,7 +41,7 @@ If the value of ``p`` can be controlled by an untrusted user, this would allow t
 folders, which may not be desirable.
 
 By analyzing the application code base together with the source code for the ``mkdirp`` package,
-Semmle's default path injection analysis would be able to track taint through the call to ``mkdirp`` into its
+the default path injection analysis would be able to track taint through the call to ``mkdirp`` into its
 implementation, which ultimately uses built-in Node.js file system APIs to create the folder. Since
 the path injection analysis has built-in models of these APIs it would then be able to spot and flag this
 vulnerability.
