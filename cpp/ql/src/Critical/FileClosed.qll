@@ -17,7 +17,7 @@ class ClosedExpr extends PointsToExpr {
 }
 
 /**
- * Holds if `fc` is a call to function that opens a file which might be closed. For example:
+ * Holds if `fc` is a call to a function that opens a file that might be closed. For example:
  * ```
  * FILE* f = fopen("file.txt", "r");
  * ...
