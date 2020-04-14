@@ -2,15 +2,16 @@
 
 import cpp
 
-/** An assignment to a variable with the value `0`. For example:
-  * ```
-  * int x;
-  * x = 0;
-  * ```
-  * but not:
-  * ```
-  * int x = 0;
-  * ```
+/**
+ * An assignment to a variable with the value `0`. For example:
+ * ```
+ * int x;
+ * x = 0;
+ * ```
+ * but not:
+ * ```
+ * int x = 0;
+ * ```
  */
 class ZeroAssignment extends AssignExpr {
   ZeroAssignment() {
