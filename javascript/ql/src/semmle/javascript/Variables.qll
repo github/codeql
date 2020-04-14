@@ -321,8 +321,8 @@ class LocalVariable extends Variable {
   /**
    * Gets the location of a declaration of this variable.
    *
-   * If the variable has multiple declarations, an arbitrary one is used.
-   * If it has no declaration, the entry point of its declaring container is used.
+   * If the variable has one or more declarations, the location of the first declaration is used.
+   * If the variable has no declaration, the entry point of its declaring container is used.
    */
   Location getLocation() {
     result =
