@@ -43,7 +43,24 @@ class BottleRoute extends ControlFlowNode {
         exists(string name, Function func |
             func = this.getFunction() and
             func.getArgByName(name) = result and
-            this.getUrl().matches("%<" + name + ">%")
+            exists(string match |
+                // see https://bottlepy.org/docs/dev/tutorial.html#dynamic-routes
+                match = this.getRoute().regexpFind(bottle_rule_syntax_re(), _, _) and
+                (
+                    // for normal `<arg>` or `<arg:filter>`
+                    name = match.regexpCapture(bottle_rule_syntax_re(), 5)
+                    or
+                    // for deprecated `:arg`
+                    name = match.regexpCapture(bottle_rule_syntax_re(), 2)
+                )
+            )
         )
     }
+}
+
+private string bottle_rule_syntax_re() {
+    // taken from https://github.com/bottlepy/bottle/blob/332215b2b1b3de5a321ba9f3497777fc93662893/bottle.py#L349-L352
+    // note: I used https://regex101.com/ to find the group numbers on sample input, and verified manually.
+    //       https://www.debuggex.com/ was very helpful in visualizing the regex
+    result = "(\\\\*)(?:(?::([a-zA-Z_][a-zA-Z_0-9]*)?()(?:#(.*?)#)?)|(?:<([a-zA-Z_][a-zA-Z_0-9]*)?(?::([a-zA-Z_]*)(?::((?:\\\\.|[^\\\\>])+)?)?)?>))"
 }

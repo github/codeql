@@ -29,11 +29,11 @@ def wildcards_normal(number, foo):
     return "Handling {}: number={!r}, foo={!r}".format(request.method, number, foo)
 
 @route('/wildcards/with-filter/<number:int>/<foo:re:[a-z]+>')
-def wildcards_with_filter(number, foo):  # TODO: not recognized as HttpSource
+def wildcards_with_filter(number, foo):
     return "Handling {}: number={!r}, foo={!r}".format(request.method, number, foo)
 
 @route('/wildcards/deprecated/:number/:foo')
-def wildcards_deprecated(number, foo):  # TODO: not recognized as HttpSource
+def wildcards_deprecated(number, foo):
     return "Handling {}: number={!r}, foo={!r}".format(request.method, number, foo)
 
 
@@ -64,7 +64,7 @@ def we_like(animal, color="Unknown", times=None): # TODO: not recognized as Http
 @route('/we-love/<animal>') # TODO: not recognized as route
 @route('/we-love/<animal>/<color:re:[a-z]+>') # TODO: not recognized as route
 @route('/we-love/<animal>/<times:int>')
-def we_love(animal, color="Unknown", times=None): # TODO: color/times not recognized as HttpSource
+def we_love(animal, color="Unknown", times=None): # TODO: color not recognized as HttpSource
     return "Handling {}: animal={!r}, color={!r}, times={!r}".format(request.method, animal, color, times)
 
 

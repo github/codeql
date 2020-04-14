@@ -3,7 +3,7 @@ from bottle import Bottle, route, request, redirect, response # TODO: We're list
 app = Bottle()
 
 @app.route('/test_taint/<name>/<number:int>')
-def test_taint(name = "World!", number="0", foo="foo"):  # TODO: `number` not recognized as HttpSource
+def test_taint(name = "World!", number="0", foo="foo"):
     ensure_tainted(name, number)
     ensure_not_tainted(foo)
 

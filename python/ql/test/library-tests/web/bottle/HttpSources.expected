@@ -13,16 +13,22 @@
 | routing.py:28:22:28:27 | number | externally controlled string |
 | routing.py:28:30:28:32 | foo | externally controlled string |
 | routing.py:29:56:29:62 | request | bottle.request |
+| routing.py:32:27:32:32 | number | externally controlled string |
+| routing.py:32:35:32:37 | foo | externally controlled string |
 | routing.py:33:56:33:62 | request | bottle.request |
+| routing.py:36:26:36:31 | number | externally controlled string |
+| routing.py:36:34:36:36 | foo | externally controlled string |
 | routing.py:37:56:37:62 | request | bottle.request |
 | routing.py:42:44:42:50 | request | bottle.request |
 | routing.py:46:44:46:50 | request | bottle.request |
 | routing.py:52:45:52:51 | request | bottle.request |
 | routing.py:60:70:60:76 | request | bottle.request |
 | routing.py:67:13:67:18 | animal | externally controlled string |
+| routing.py:67:38:67:42 | times | externally controlled string |
 | routing.py:68:70:68:76 | request | bottle.request |
 | taint.py:1:35:1:41 | ImportMember | bottle.request |
 | taint.py:6:16:6:19 | name | externally controlled string |
+| taint.py:6:33:6:38 | number | externally controlled string |
 | taint.py:14:9:14:15 | request | bottle.request |
 | taint.py:15:9:15:15 | request | bottle.request |
 | taint.py:17:9:17:15 | request | bottle.request |
@@ -65,3 +71,4 @@
 | taint.py:86:9:86:15 | request | bottle.request |
 | xss_example.py:7:11:7:14 | name | externally controlled string |
 | xss_example.py:14:9:14:12 | name | externally controlled string |
+| xss_example.py:21:9:21:12 | name | externally controlled string |

@@ -1,5 +1,5 @@
 | taint.py:7 | test_taint | name | externally controlled string | ok |
-| taint.py:7 | test_taint | number | <NO TAINT> | failure |
+| taint.py:7 | test_taint | number | externally controlled string | ok |
 | taint.py:8 | test_taint | foo | <NO TAINT> | ok |
 | taint.py:14 | test_taint | Attribute | <NO TAINT> | failure |
 | taint.py:15 | test_taint | Attribute() | <NO TAINT> | failure |
