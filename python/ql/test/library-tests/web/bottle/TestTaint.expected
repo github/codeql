@@ -14,30 +14,30 @@
 | taint.py:31 | test_taint | Attribute() | externally controlled string | ok |
 | taint.py:33 | test_taint | Attribute | externally controlled string | ok |
 | taint.py:34 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:36 | test_taint | Attribute() | <NO TAINT> | failure |
-| taint.py:39 | test_taint | Attribute | bottle.FormsDict | ok |
-| taint.py:40 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:43 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:35 | test_taint | Attribute() | [externally controlled string] | ok |
+| taint.py:37 | test_taint | Attribute() | <NO TAINT> | failure |
+| taint.py:40 | test_taint | Attribute | bottle.FormsDict | ok |
+| taint.py:41 | test_taint | Attribute | externally controlled string | ok |
 | taint.py:44 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:47 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:45 | test_taint | Attribute | <NO TAINT> | failure |
 | taint.py:48 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:51 | test_taint | Attribute | {bottle.FileUpload} | ok |
-| taint.py:52 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:54 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:55 | test_taint | Subscript | <NO TAINT> | failure |
-| taint.py:57 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:59 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:62 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:64 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:66 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:68 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:70 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:72 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:74 | test_taint | Attribute() | <NO TAINT> | failure |
-| taint.py:76 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:78 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:79 | test_taint | Subscript | <NO TAINT> | failure |
-| taint.py:81 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:82 | test_taint | Subscript | <NO TAINT> | failure |
-| taint.py:84 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:86 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:49 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:52 | test_taint | Attribute | {bottle.FileUpload} | ok |
+| taint.py:53 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:55 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:56 | test_taint | Subscript | <NO TAINT> | failure |
+| taint.py:58 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:60 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:63 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:65 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:67 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:69 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:71 | test_taint | Attribute | externally controlled string | ok |
+| taint.py:73 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:75 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:77 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:78 | test_taint | Subscript | <NO TAINT> | failure |
+| taint.py:80 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:81 | test_taint | Subscript | <NO TAINT> | failure |
+| taint.py:83 | test_taint | Attribute | <NO TAINT> | failure |
+| taint.py:85 | test_taint | Attribute | <NO TAINT> | failure |

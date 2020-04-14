@@ -32,6 +32,7 @@ def test_taint(name = "World!", number="0", foo="foo"):
         # But also adds its own helpers
         request.cookies.cookie_name,
         request.cookies.getunicode('cookie_name'),
+        request.cookies.getall('cookie_name'),
 
         request.get_cookie('cookie_name'),
 
@@ -70,8 +71,6 @@ def test_taint(name = "World!", number="0", foo="foo"):
         request.query_string,
 
         request.script_name,
-
-        request.path_shift(),
 
         request.content_type,
 
