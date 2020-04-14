@@ -9,8 +9,14 @@ ModuleValue theBottleModule() { result = Module::named("bottle") }
 ClassValue theBottleClass() { result = theBottleModule().attr("Bottle") }
 
 /**
- * Holds if `route` is routed to `func`
- * by decorating `func` with `app.route(route)` or `route(route)`
+ * Holds if the CFN `route` (representing some string) is set up for routing to `func` through Bottle.
+ *
+ * This can be done in many ways, but usually by decorating `func` with the `@bottle.route` decorator
+ * (or decorating with `@bottle.get`, `@bottle.get`, etc.). These decorators can also be accessed from an
+ * instance of a Bottle application, for example by decorating with `@app.route(route)` or `@app.post(route)`.
+ * See:
+ * - https://bottlepy.org/docs/dev/api.html#routing
+ * - https://bottlepy.org/docs/dev/api.html#bottle.Bottle.route
  */
 predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func) {
     exists(CallNode decorator_call, string name |
