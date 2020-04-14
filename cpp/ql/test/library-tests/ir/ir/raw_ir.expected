@@ -69,7 +69,7 @@ bad_asts.cpp:
 #   26|     mu26_4(unknown)       = UnmodeledDefinition      : 
 #   26|     r26_5(glval<Point &>) = VariableAddress[a]       : 
 #   26|     mu26_6(Point &)       = InitializeParameter[a]   : &:r26_5
-#   26|     r26_7(Point &)        = Load                     : &:r26_5, ~mu26_6
+#   26|     r26_7(Point &)        = Load                     : &:r26_5, ~mu26_4
 #   26|     mu26_8(unknown)       = InitializeIndirection[a] : &:r26_7
 #   27|     r27_1(glval<Point>)   = VariableAddress[b]       : 
 #   27|     r27_2(glval<Point &>) = VariableAddress[a]       : 
@@ -769,7 +769,7 @@ ir.cpp:
 #  153|     mu153_4(unknown)     = UnmodeledDefinition      : 
 #  153|     r153_5(glval<int *>) = VariableAddress[p]       : 
 #  153|     mu153_6(int *)       = InitializeParameter[p]   : &:r153_5
-#  153|     r153_7(int *)        = Load                     : &:r153_5, ~mu153_6
+#  153|     r153_7(int *)        = Load                     : &:r153_5, ~mu153_4
 #  153|     mu153_8(unknown)     = InitializeIndirection[p] : &:r153_7
 #  153|     r153_9(glval<int>)   = VariableAddress[i]       : 
 #  153|     mu153_10(int)        = InitializeParameter[i]   : &:r153_9
@@ -850,7 +850,7 @@ ir.cpp:
 #  171|     mu171_4(unknown)       = UnmodeledDefinition      : 
 #  171|     r171_5(glval<int *>)   = VariableAddress[p]       : 
 #  171|     mu171_6(int *)         = InitializeParameter[p]   : &:r171_5
-#  171|     r171_7(int *)          = Load                     : &:r171_5, ~mu171_6
+#  171|     r171_7(int *)          = Load                     : &:r171_5, ~mu171_4
 #  171|     mu171_8(unknown)       = InitializeIndirection[p] : &:r171_7
 #  171|     r171_9(glval<int>)     = VariableAddress[i]       : 
 #  171|     mu171_10(int)          = InitializeParameter[i]   : &:r171_9
@@ -972,11 +972,11 @@ ir.cpp:
 #  193|     mu193_4(unknown)     = UnmodeledDefinition      : 
 #  193|     r193_5(glval<int *>) = VariableAddress[p]       : 
 #  193|     mu193_6(int *)       = InitializeParameter[p]   : &:r193_5
-#  193|     r193_7(int *)        = Load                     : &:r193_5, ~mu193_6
+#  193|     r193_7(int *)        = Load                     : &:r193_5, ~mu193_4
 #  193|     mu193_8(unknown)     = InitializeIndirection[p] : &:r193_7
 #  193|     r193_9(glval<int *>) = VariableAddress[q]       : 
 #  193|     mu193_10(int *)      = InitializeParameter[q]   : &:r193_9
-#  193|     r193_11(int *)       = Load                     : &:r193_9, ~mu193_10
+#  193|     r193_11(int *)       = Load                     : &:r193_9, ~mu193_4
 #  193|     mu193_12(unknown)    = InitializeIndirection[q] : &:r193_11
 #  194|     r194_1(glval<bool>)  = VariableAddress[b]       : 
 #  194|     mu194_2(bool)        = Uninitialized[b]         : &:r194_1
@@ -1038,7 +1038,7 @@ ir.cpp:
 #  204|     mu204_4(unknown)     = UnmodeledDefinition      : 
 #  204|     r204_5(glval<int *>) = VariableAddress[p]       : 
 #  204|     mu204_6(int *)       = InitializeParameter[p]   : &:r204_5
-#  204|     r204_7(int *)        = Load                     : &:r204_5, ~mu204_6
+#  204|     r204_7(int *)        = Load                     : &:r204_5, ~mu204_4
 #  204|     mu204_8(unknown)     = InitializeIndirection[p] : &:r204_7
 #  205|     r205_1(glval<int *>) = VariableAddress[q]       : 
 #  205|     mu205_2(int *)       = Uninitialized[q]         : &:r205_1
@@ -1672,7 +1672,7 @@ ir.cpp:
 #  341|     mu341_4(unknown)     = UnmodeledDefinition      : 
 #  341|     r341_5(glval<int *>) = VariableAddress[p]       : 
 #  341|     mu341_6(int *)       = InitializeParameter[p]   : &:r341_5
-#  341|     r341_7(int *)        = Load                     : &:r341_5, ~mu341_6
+#  341|     r341_7(int *)        = Load                     : &:r341_5, ~mu341_4
 #  341|     mu341_8(unknown)     = InitializeIndirection[p] : &:r341_7
 #  342|     r342_1(int)          = Constant[1]              : 
 #  342|     r342_2(glval<int *>) = VariableAddress[p]       : 
@@ -2951,11 +2951,11 @@ ir.cpp:
 #  622|     mu622_4(unknown)        = UnmodeledDefinition             : 
 #  622|     r622_5(glval<String &>) = VariableAddress[r]              : 
 #  622|     mu622_6(String &)       = InitializeParameter[r]          : &:r622_5
-#  622|     r622_7(String &)        = Load                            : &:r622_5, ~mu622_6
+#  622|     r622_7(String &)        = Load                            : &:r622_5, ~mu622_4
 #  622|     mu622_8(unknown)        = InitializeIndirection[r]        : &:r622_7
 #  622|     r622_9(glval<String *>) = VariableAddress[p]              : 
 #  622|     mu622_10(String *)      = InitializeParameter[p]          : &:r622_9
-#  622|     r622_11(String *)       = Load                            : &:r622_9, ~mu622_10
+#  622|     r622_11(String *)       = Load                            : &:r622_9, ~mu622_4
 #  622|     mu622_12(unknown)       = InitializeIndirection[p]        : &:r622_11
 #  622|     r622_13(glval<String>)  = VariableAddress[s]              : 
 #  622|     mu622_14(String)        = InitializeParameter[s]          : &:r622_13
@@ -3191,7 +3191,7 @@ ir.cpp:
 #  675|     mu675_4(unknown)     = UnmodeledDefinition      : 
 #  675|     r675_5(glval<int &>) = VariableAddress[r]       : 
 #  675|     mu675_6(int &)       = InitializeParameter[r]   : &:r675_5
-#  675|     r675_7(int &)        = Load                     : &:r675_5, ~mu675_6
+#  675|     r675_7(int &)        = Load                     : &:r675_5, ~mu675_4
 #  675|     mu675_8(unknown)     = InitializeIndirection[r] : &:r675_7
 #  676|     r676_1(glval<int>)   = VariableAddress[#return] : 
 #  676|     r676_2(glval<int &>) = VariableAddress[r]       : 
@@ -3384,7 +3384,7 @@ ir.cpp:
 #  715|     mu715_4(unknown)      = UnmodeledDefinition      : 
 #  715|     r715_5(glval<void *>) = VariableAddress[x]       : 
 #  715|     mu715_6(void *)       = InitializeParameter[x]   : &:r715_5
-#  715|     r715_7(void *)        = Load                     : &:r715_5, ~mu715_6
+#  715|     r715_7(void *)        = Load                     : &:r715_5, ~mu715_4
 #  715|     mu715_8(unknown)      = InitializeIndirection[x] : &:r715_7
 #  715|     r715_9(glval<char>)   = VariableAddress[y]       : 
 #  715|     mu715_10(char)        = InitializeParameter[y]   : &:r715_9
@@ -3508,7 +3508,7 @@ ir.cpp:
 #  735|   Block 10
 #  735|     r735_2(glval<char *>)  = VariableAddress[s]              : 
 #  735|     mu735_3(char *)        = InitializeParameter[s]          : &:r735_2
-#  735|     r735_4(char *)         = Load                            : &:r735_2, ~mu735_3
+#  735|     r735_4(char *)         = Load                            : &:r735_2, ~mu724_4
 #  735|     mu735_5(unknown)       = InitializeIndirection[s]        : &:r735_4
 #  736|     r736_1(glval<String>)  = VariableAddress[#throw736:5]    : 
 #  736|     mu736_2(String)        = Uninitialized[#throw736:5]      : &:r736_1
@@ -3531,7 +3531,7 @@ ir.cpp:
 #  738|   Block 12
 #  738|     r738_2(glval<String &>) = VariableAddress[e]       : 
 #  738|     mu738_3(String &)       = InitializeParameter[e]   : &:r738_2
-#  738|     r738_4(String &)        = Load                     : &:r738_2, ~mu738_3
+#  738|     r738_4(String &)        = Load                     : &:r738_2, ~mu724_4
 #  738|     mu738_5(unknown)        = InitializeIndirection[e] : &:r738_4
 #  738|     v738_6(void)            = NoOp                     : 
 #-----|   Goto -> Block 14
@@ -3555,7 +3555,7 @@ ir.cpp:
 #  745|     r745_5(glval<Base>)    = InitializeThis                  : 
 #-----|     r0_1(glval<Base &>)    = VariableAddress[p#0]            : 
 #-----|     mu0_2(Base &)          = InitializeParameter[p#0]        : &:r0_1
-#-----|     r0_3(Base &)           = Load                            : &:r0_1, ~mu0_2
+#-----|     r0_3(Base &)           = Load                            : &:r0_1, ~mu745_4
 #-----|     mu0_4(unknown)         = InitializeIndirection[p#0]      : &:r0_3
 #-----|     r0_5(Base *)           = CopyValue                       : r745_5
 #-----|     r0_6(glval<String>)    = FieldAddress[base_s]            : r0_5
@@ -3594,7 +3594,7 @@ ir.cpp:
 #  745|     r745_5(glval<Base>)    = InitializeThis                  : 
 #-----|     r0_1(glval<Base &>)    = VariableAddress[p#0]            : 
 #-----|     mu0_2(Base &)          = InitializeParameter[p#0]        : &:r0_1
-#-----|     r0_3(Base &)           = Load                            : &:r0_1, ~mu0_2
+#-----|     r0_3(Base &)           = Load                            : &:r0_1, ~mu745_4
 #-----|     mu0_4(unknown)         = InitializeIndirection[p#0]      : &:r0_3
 #  745|     r745_6(glval<String>)  = FieldAddress[base_s]            : r745_5
 #  745|     r745_7(glval<unknown>) = FunctionAddress[String]         : 
@@ -3652,7 +3652,7 @@ ir.cpp:
 #  754|     r754_5(glval<Middle>)    = InitializeThis                         : 
 #-----|     r0_1(glval<Middle &>)    = VariableAddress[p#0]                   : 
 #-----|     mu0_2(Middle &)          = InitializeParameter[p#0]               : &:r0_1
-#-----|     r0_3(Middle &)           = Load                                   : &:r0_1, ~mu0_2
+#-----|     r0_3(Middle &)           = Load                                   : &:r0_1, ~mu754_4
 #-----|     mu0_4(unknown)           = InitializeIndirection[p#0]             : &:r0_3
 #-----|     r0_5(Middle *)           = CopyValue                              : r754_5
 #-----|     r0_6(Base *)             = ConvertToNonVirtualBase[Middle : Base] : r0_5
@@ -3752,7 +3752,7 @@ ir.cpp:
 #  763|     r763_5(glval<Derived>)    = InitializeThis                            : 
 #-----|     r0_1(glval<Derived &>)    = VariableAddress[p#0]                      : 
 #-----|     mu0_2(Derived &)          = InitializeParameter[p#0]                  : &:r0_1
-#-----|     r0_3(Derived &)           = Load                                      : &:r0_1, ~mu0_2
+#-----|     r0_3(Derived &)           = Load                                      : &:r0_1, ~mu763_4
 #-----|     mu0_4(unknown)            = InitializeIndirection[p#0]                : &:r0_3
 #-----|     r0_5(Derived *)           = CopyValue                                 : r763_5
 #-----|     r0_6(Middle *)            = ConvertToNonVirtualBase[Derived : Middle] : r0_5
@@ -4483,7 +4483,7 @@ ir.cpp:
 #  883|     mu883_6(..(*)(..))       = InitializeParameter[pfn] : &:r883_5
 #  883|     r883_7(glval<void *>)    = VariableAddress[p]       : 
 #  883|     mu883_8(void *)          = InitializeParameter[p]   : &:r883_7
-#  883|     r883_9(void *)           = Load                     : &:r883_7, ~mu883_8
+#  883|     r883_9(void *)           = Load                     : &:r883_7, ~mu883_4
 #  883|     mu883_10(unknown)        = InitializeIndirection[p] : &:r883_9
 #  884|     r884_1(glval<..(*)(..)>) = VariableAddress[pfn]     : 
 #  884|     r884_2(..(*)(..))        = Load                     : &:r884_1, ~mu883_4
@@ -4512,7 +4512,7 @@ ir.cpp:
 #  888|     mu888_6(int)                    = InitializeParameter[x]      : &:r888_5
 #  888|     r888_7(glval<__va_list_tag *>)  = VariableAddress[args]       : 
 #  888|     mu888_8(__va_list_tag *)        = InitializeParameter[args]   : &:r888_7
-#  888|     r888_9(__va_list_tag *)         = Load                        : &:r888_7, ~mu888_8
+#  888|     r888_9(__va_list_tag *)         = Load                        : &:r888_7, ~mu888_4
 #  888|     mu888_10(unknown)               = InitializeIndirection[args] : &:r888_9
 #  889|     r889_1(glval<__va_list_tag[1]>) = VariableAddress[args2]      : 
 #  889|     mu889_2(__va_list_tag[1])       = Uninitialized[args2]        : &:r889_1
@@ -4561,7 +4561,7 @@ ir.cpp:
 #  896|     mu896_6(int)                    = InitializeParameter[x]           : &:r896_5
 #  896|     r896_7(glval<unknown>)          = VariableAddress[#ellipsis]       : 
 #  896|     mu896_8(unknown[11])            = InitializeParameter[#ellipsis]   : &:r896_7
-#  896|     r896_9(unknown[11])             = Load                             : &:r896_7, ~mu896_8
+#  896|     r896_9(unknown[11])             = Load                             : &:r896_7, ~mu896_4
 #  896|     mu896_10(unknown)               = InitializeIndirection[#ellipsis] : &:r896_9
 #  897|     r897_1(glval<__va_list_tag[1]>) = VariableAddress[args]            : 
 #  897|     mu897_2(__va_list_tag[1])       = Uninitialized[args]              : &:r897_1
@@ -5048,7 +5048,7 @@ ir.cpp:
 #  996|     mu996_4(unknown)         = UnmodeledDefinition      : 
 #  996|     r996_5(glval<int *>)     = VariableAddress[a]       : 
 #  996|     mu996_6(int *)           = InitializeParameter[a]   : &:r996_5
-#  996|     r996_7(int *)            = Load                     : &:r996_5, ~mu996_6
+#  996|     r996_7(int *)            = Load                     : &:r996_5, ~mu996_4
 #  996|     mu996_8(unknown)         = InitializeIndirection[a] : &:r996_7
 #  996|     r996_9(glval<..(*)(..)>) = VariableAddress[fn]      : 
 #  996|     mu996_10(..(*)(..))      = InitializeParameter[fn]  : &:r996_9
@@ -5222,7 +5222,7 @@ ir.cpp:
 # 1040|     mu1040_6(int)                             = InitializeParameter[x]                 : &:r1040_5
 # 1040|     r1040_7(glval<String &>)                  = VariableAddress[s]                     : 
 # 1040|     mu1040_8(String &)                        = InitializeParameter[s]                 : &:r1040_7
-# 1040|     r1040_9(String &)                         = Load                                   : &:r1040_7, ~mu1040_8
+# 1040|     r1040_9(String &)                         = Load                                   : &:r1040_7, ~mu1040_4
 # 1040|     mu1040_10(unknown)                        = InitializeIndirection[s]               : &:r1040_9
 # 1041|     r1041_1(glval<decltype([...](...){...})>) = VariableAddress[lambda_empty]          : 
 # 1041|     r1041_2(glval<decltype([...](...){...})>) = VariableAddress[#temp1041:23]          : 
@@ -5645,7 +5645,7 @@ ir.cpp:
 # 1077|     mu1077_4(unknown)             = UnmodeledDefinition             : 
 # 1077|     r1077_5(glval<vector<int> &>) = VariableAddress[v]              : 
 # 1077|     mu1077_6(vector<int> &)       = InitializeParameter[v]          : &:r1077_5
-# 1077|     r1077_7(vector<int> &)        = Load                            : &:r1077_5, ~mu1077_6
+# 1077|     r1077_7(vector<int> &)        = Load                            : &:r1077_5, ~mu1077_4
 # 1077|     mu1077_8(unknown)             = InitializeIndirection[v]        : &:r1077_7
 # 1078|     r1078_1(glval<vector<int> &>) = VariableAddress[(__range)]      : 
 # 1078|     r1078_2(glval<vector<int> &>) = VariableAddress[v]              : 
@@ -5838,13 +5838,13 @@ ir.cpp:
 # 1113|     mu1113_4(unknown)               = UnmodeledDefinition      : 
 # 1113|     r1113_5(glval<unsigned int &>)  = VariableAddress[a]       : 
 # 1113|     mu1113_6(unsigned int &)        = InitializeParameter[a]   : &:r1113_5
-# 1113|     r1113_7(unsigned int &)         = Load                     : &:r1113_5, ~mu1113_6
+# 1113|     r1113_7(unsigned int &)         = Load                     : &:r1113_5, ~mu1113_4
 # 1113|     mu1113_8(unknown)               = InitializeIndirection[a] : &:r1113_7
 # 1113|     r1113_9(glval<unsigned int>)    = VariableAddress[b]       : 
 # 1113|     mu1113_10(unsigned int)         = InitializeParameter[b]   : &:r1113_9
 # 1113|     r1113_11(glval<unsigned int &>) = VariableAddress[c]       : 
 # 1113|     mu1113_12(unsigned int &)       = InitializeParameter[c]   : &:r1113_11
-# 1113|     r1113_13(unsigned int &)        = Load                     : &:r1113_11, ~mu1113_12
+# 1113|     r1113_13(unsigned int &)        = Load                     : &:r1113_11, ~mu1113_4
 # 1113|     mu1113_14(unknown)              = InitializeIndirection[c] : &:r1113_13
 # 1113|     r1113_15(glval<unsigned int>)   = VariableAddress[d]       : 
 # 1113|     mu1113_16(unsigned int)         = InitializeParameter[d]   : &:r1113_15
@@ -6008,7 +6008,7 @@ ir.cpp:
 # 1153|   Block 10
 # 1153|     r1153_2(glval<char *>)  = VariableAddress[s]              : 
 # 1153|     mu1153_3(char *)        = InitializeParameter[s]          : &:r1153_2
-# 1153|     r1153_4(char *)         = Load                            : &:r1153_2, ~mu1153_3
+# 1153|     r1153_4(char *)         = Load                            : &:r1153_2, ~mu1142_4
 # 1153|     mu1153_5(unknown)       = InitializeIndirection[s]        : &:r1153_4
 # 1154|     r1154_1(glval<String>)  = VariableAddress[#throw1154:5]   : 
 # 1154|     mu1154_2(String)        = Uninitialized[#throw1154:5]     : &:r1154_1
@@ -6031,7 +6031,7 @@ ir.cpp:
 # 1156|   Block 12
 # 1156|     r1156_2(glval<String &>) = VariableAddress[e]       : 
 # 1156|     mu1156_3(String &)       = InitializeParameter[e]   : &:r1156_2
-# 1156|     r1156_4(String &)        = Load                     : &:r1156_2, ~mu1156_3
+# 1156|     r1156_4(String &)        = Load                     : &:r1156_2, ~mu1142_4
 # 1156|     mu1156_5(unknown)        = InitializeIndirection[e] : &:r1156_4
 # 1156|     v1156_6(void)            = NoOp                     : 
 #-----|   Goto -> Block 13
@@ -6385,7 +6385,7 @@ ir.cpp:
 # 1240|     mu1240_4(unknown)      = UnmodeledDefinition            : 
 # 1240|     r1240_5(glval<char *>) = VariableAddress[dynamic]       : 
 # 1240|     mu1240_6(char *)       = InitializeParameter[dynamic]   : &:r1240_5
-# 1240|     r1240_7(char *)        = Load                           : &:r1240_5, ~mu1240_6
+# 1240|     r1240_7(char *)        = Load                           : &:r1240_5, ~mu1240_4
 # 1240|     mu1240_8(unknown)      = InitializeIndirection[dynamic] : &:r1240_7
 # 1241|     r1241_1(glval<bool>)   = VariableAddress[a#init]        : 
 # 1241|     r1241_2(bool)          = Load                           : &:r1241_1, ~mu1240_4
@@ -6461,11 +6461,11 @@ ir.cpp:
 # 1251|     mu1251_4(unknown)          = UnmodeledDefinition          : 
 # 1251|     r1251_5(glval<char *>)     = VariableAddress[s1]          : 
 # 1251|     mu1251_6(char *)           = InitializeParameter[s1]      : &:r1251_5
-# 1251|     r1251_7(char *)            = Load                         : &:r1251_5, ~mu1251_6
+# 1251|     r1251_7(char *)            = Load                         : &:r1251_5, ~mu1251_4
 # 1251|     mu1251_8(unknown)          = InitializeIndirection[s1]    : &:r1251_7
 # 1251|     r1251_9(glval<char *>)     = VariableAddress[s2]          : 
 # 1251|     mu1251_10(char *)          = InitializeParameter[s2]      : &:r1251_9
-# 1251|     r1251_11(char *)           = Load                         : &:r1251_9, ~mu1251_10
+# 1251|     r1251_11(char *)           = Load                         : &:r1251_9, ~mu1251_4
 # 1251|     mu1251_12(unknown)         = InitializeIndirection[s2]    : &:r1251_11
 # 1252|     r1252_1(glval<char[1024]>) = VariableAddress[buffer]      : 
 # 1252|     mu1252_2(char[1024])       = Uninitialized[buffer]        : &:r1252_1
@@ -6512,7 +6512,7 @@ ir.cpp:
 # 1261|     mu1261_4(unknown)   = UnmodeledDefinition      : 
 # 1261|     r1261_5(glval<A *>) = VariableAddress[a]       : 
 # 1261|     mu1261_6(A *)       = InitializeParameter[a]   : &:r1261_5
-# 1261|     r1261_7(A *)        = Load                     : &:r1261_5, ~mu1261_6
+# 1261|     r1261_7(A *)        = Load                     : &:r1261_5, ~mu1261_4
 # 1261|     mu1261_8(unknown)   = InitializeIndirection[a] : &:r1261_7
 # 1261|     r1261_9(glval<int>) = VariableAddress[x]       : 
 # 1261|     mu1261_10(int)      = InitializeParameter[x]   : &:r1261_9
@@ -6539,7 +6539,7 @@ ir.cpp:
 # 1270|     mu1270_6(int)           = InitializeParameter[int_arg]               : &:r1270_5
 # 1270|     r1270_7(glval<A *>)     = VariableAddress[a_arg]                     : 
 # 1270|     mu1270_8(A *)           = InitializeParameter[a_arg]                 : &:r1270_7
-# 1270|     r1270_9(A *)            = Load                                       : &:r1270_7, ~mu1270_8
+# 1270|     r1270_9(A *)            = Load                                       : &:r1270_7, ~mu1270_4
 # 1270|     mu1270_10(unknown)      = InitializeIndirection[a_arg]               : &:r1270_9
 # 1271|     r1271_1(glval<C>)       = VariableAddress[c]                         : 
 # 1271|     mu1271_2(C)             = Uninitialized[c]                           : &:r1271_1
@@ -6686,7 +6686,7 @@ struct_init.cpp:
 #   16|     mu16_4(unknown)      = UnmodeledDefinition             : 
 #   16|     r16_5(glval<Info *>) = VariableAddress[info]           : 
 #   16|     mu16_6(Info *)       = InitializeParameter[info]       : &:r16_5
-#   16|     r16_7(Info *)        = Load                            : &:r16_5, ~mu16_6
+#   16|     r16_7(Info *)        = Load                            : &:r16_5, ~mu16_4
 #   16|     mu16_8(unknown)      = InitializeIndirection[info]     : &:r16_7
 #   17|     r17_1(glval<Info *>) = VariableAddress[info]           : 
 #   17|     r17_2(Info *)        = Load                            : &:r17_1, ~mu16_4
@@ -6766,7 +6766,7 @@ struct_init.cpp:
 #   36|     mu36_4(unknown)      = UnmodeledDefinition                : 
 #   36|     r36_5(glval<char *>) = VariableAddress[name1]             : 
 #   36|     mu36_6(char *)       = InitializeParameter[name1]         : &:r36_5
-#   36|     r36_7(char *)        = Load                               : &:r36_5, ~mu36_6
+#   36|     r36_7(char *)        = Load                               : &:r36_5, ~mu36_4
 #   36|     mu36_8(unknown)      = InitializeIndirection[name1]       : &:r36_7
 #   37|     r37_1(glval<bool>)   = VariableAddress[static_infos#init] : 
 #   37|     r37_2(bool)          = Load                               : &:r37_1, ~mu36_4
