@@ -596,6 +596,7 @@ unexplainedLoop
 | range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:367:10:367:10 | Load: x |
 | range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:367:10:367:10 | VariableAddress: x |
 unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
