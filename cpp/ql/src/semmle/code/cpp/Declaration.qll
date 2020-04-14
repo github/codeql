@@ -161,6 +161,7 @@ abstract class Declaration extends Locatable, @declaration {
   /** Holds if the declaration has a definition. */
   predicate hasDefinition() { exists(this.getDefinition()) }
 
+  /** DEPRECATED: Use `hasDefinition` instead. */
   predicate isDefined() { hasDefinition() }
 
   /** Gets the preferred location of this declaration, if any. */
