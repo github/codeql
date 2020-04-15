@@ -2,12 +2,24 @@
 
 import cpp
 
+/**
+ * An assignment to a variable with the value `0`. For example:
+ * ```
+ * int x;
+ * x = 0;
+ * ```
+ * but not:
+ * ```
+ * int x = 0;
+ * ```
+ */
 class ZeroAssignment extends AssignExpr {
   ZeroAssignment() {
     this.getAnOperand() instanceof VariableAccess and
     this.getAnOperand() instanceof Zero
   }
 
+  /** Gets a variable that is assigned the value `0`. */
   Variable assignedVariable() { result.getAnAccess() = this.getAnOperand() }
 }
 
