@@ -55,12 +55,16 @@ edges
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | array to pointer conversion |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | array to pointer conversion |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | array to pointer conversion |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | array to pointer conversion |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
@@ -73,10 +77,27 @@ edges
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:117:15:117:16 | array to pointer conversion | argvLocal.c:117:15:117:16 | printWrapper output argument |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | (const char *)... |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:121:9:121:10 | i4 |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:135:9:135:12 | (const char *)... |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:122:15:122:16 | i4 | argvLocal.c:122:15:122:16 | printWrapper output argument |
+| argvLocal.c:122:15:122:16 | printWrapper output argument | argvLocal.c:135:9:135:12 | (const char *)... |
+| argvLocal.c:122:15:122:16 | printWrapper output argument | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:122:15:122:16 | printWrapper output argument | argvLocal.c:136:15:136:18 | -- ... |
+| argvLocal.c:122:15:122:16 | printWrapper output argument | argvLocal.c:136:15:136:18 | -- ... |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | (const char *)... |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | (const char *)... |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
+| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | array to pointer conversion |
+| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | array to pointer conversion |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | array to pointer conversion |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | array to pointer conversion |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 |
@@ -89,6 +110,11 @@ edges
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
+| argvLocal.c:128:15:128:16 | array to pointer conversion | argvLocal.c:128:15:128:16 | printWrapper output argument |
+| argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:131:9:131:14 | (const char *)... |
+| argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:131:9:131:14 | ... + ... |
+| argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
+| argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
@@ -130,6 +156,8 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 nodes
+| argvLocal.c:9:25:9:31 | correct | semmle.label | correct |
+| argvLocal.c:10:9:10:15 | Chi | semmle.label | Chi |
 | argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
 | argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
 | argvLocal.c:95:9:95:15 | (const char *)... | semmle.label | (const char *)... |
@@ -178,12 +206,14 @@ nodes
 | argvLocal.c:117:15:117:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:117:15:117:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:117:15:117:16 | i3 | semmle.label | i3 |
+| argvLocal.c:117:15:117:16 | printWrapper output argument | semmle.label | printWrapper output argument |
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:121:9:121:10 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
 | argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
 | argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
 | argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
+| argvLocal.c:122:15:122:16 | printWrapper output argument | semmle.label | printWrapper output argument |
 | argvLocal.c:126:10:126:13 | argv | semmle.label | argv |
 | argvLocal.c:126:10:126:13 | argv | semmle.label | argv |
 | argvLocal.c:127:9:127:10 | (const char *)... | semmle.label | (const char *)... |
@@ -192,6 +222,7 @@ nodes
 | argvLocal.c:128:15:128:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:128:15:128:16 | array to pointer conversion | semmle.label | array to pointer conversion |
 | argvLocal.c:128:15:128:16 | i5 | semmle.label | i5 |
+| argvLocal.c:128:15:128:16 | printWrapper output argument | semmle.label | printWrapper output argument |
 | argvLocal.c:131:9:131:14 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:131:9:131:14 | (const char *)... | semmle.label | (const char *)... |
 | argvLocal.c:131:9:131:14 | ... + ... | semmle.label | ... + ... |
