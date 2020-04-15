@@ -430,6 +430,9 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
+  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
+  not iTo.isResultConflated()
+  or
   exists(ChiInstruction chi | iFrom = chi |
     not chi.isResultConflated() and
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
