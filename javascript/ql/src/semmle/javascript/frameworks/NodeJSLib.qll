@@ -594,6 +594,14 @@ module NodeJSLib {
 
     ChildProcessMethodCall() {
       this = DataFlow::moduleMember("child_process", methodName).getACall()
+      or
+      exists(DataFlow::CallNode promisify |
+        promisify = DataFlow::moduleMember("util", "promisify").getACall()
+      |
+        this = promisify.getACall() and
+        promisify.getArgument(0).getALocalSource() =
+          DataFlow::moduleMember("child_process", methodName)
+      )
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
