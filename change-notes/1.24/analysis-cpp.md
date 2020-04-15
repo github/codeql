@@ -24,11 +24,14 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 | No space for zero terminator (`cpp/no-space-for-terminator`) | More correct results | String arguments to formatting functions are now (usually) expected to be null terminated strings. |
 | Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) |  | This query is no longer run on LGTM. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | This query has been modified to be more conservative when identifying which pointers point to null-terminated strings.  This approach produces fewer, more accurate results. |
-| Overflow in uncontrolled allocation size (`cpp/uncontrolled-allocation-size`) | Fewer false positive results | Cases where the tainted allocation size is range checked are now more reliably excluded. |
-| Overflow in uncontrolled allocation size (`cpp/uncontrolled-allocation-size`) | Fewer false positive results | The query now produces fewer, more accurate results. |
+| Overflow in uncontrolled allocation size (`cpp/uncontrolled-allocation-size`) | Fewer false positive results | The query now produces fewer, more accurate results. Cases where the tainted allocation size is range checked are more reliably excluded. |
 | Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | This query no longer reports incorrect results in template classes. |
 | Unsafe array for days of the year (`cpp/leap-year/unsafe-array-for-days-of-the-year`) |  | This query is no longer run on LGTM. |
+| Boost\_asio TLS Settings Misconfiguration (`cpp/boost/tls-settings-misconfiguration`) | Query id change | Query id renamed from `cpp/boost/tls_settings_misconfiguration` (underscores to dashes) |
 | Unsigned comparison to zero (`cpp/unsigned-comparison-zero`) | More correct results | This query now also looks for comparisons of the form `0 <= x`. |
+| Signed overflow check (`cpp/signed-overflow-check`), Pointer overflow check (`cpp/pointer-overflow-check`), Possibly wrong buffer size in string copy (`cpp/bad-strncpy-size`) | More correct results | A new library is used for determining which expressions have identical value, giving more precise results. There is a performance cost to this, and the LGTM suite will overall run slower than before. |
+| All CWE-specific queries using taint tracking (`cpp/path-injection`, `cpp/cgi-xss`, `cpp/sql-injection`, `cpp/uncontrolled-process-operation`, `cpp/unbounded-write`, `cpp/tainted-format-string`, `cpp/tainted-format-string-through-global`, `cpp/uncontrolled-arithmetic`, `cpp/uncontrolled-allocation-size`, `cpp/user-controlled-bypass`, `cpp/cleartext-storage-buffer`, `cpp/tainted-permissions-check`) | More correct results | A new taint-tracking library is used, giving more precise results and offering _path explanations_ for results. There is a performance cost to this, and the LGTM suite will overall run slower than before. |
+
 
 ## Changes to libraries
 
@@ -36,8 +39,17 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
   - Track flow through functions that combine taint tracking with flow through fields.
   - Track flow through clone-like functions, that is, functions that read contents of a field from a
     parameter and stores the value in the field of a returned object.
-* Created the `semmle.code.cpp.models.interfaces.Allocation` library to model allocation such as `new` expressions and calls to `malloc`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
-* Created the `semmle.code.cpp.models.interfaces.Deallocation` library to model deallocation such as `delete` expressions and calls to `free`. This in intended to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more consistent and useful interface.
+* Created the `semmle.code.cpp.models.interfaces.Allocation` library to model
+  allocation such as `new` expressions and calls to `malloc`. This in intended
+  to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more
+  consistent and useful interface.
+  * The predicate `freeCall` in `semmle.code.cpp.commons.Alloc` has been
+    deprecated. The`Allocation` and `Deallocation` models in
+    `semmle.code.cpp.models.interfaces` should be used instead.
+  * Created the `semmle.code.cpp.models.interfaces.Deallocation` library to
+    model deallocation such as `delete` expressions and calls to `free`. This
+    in intended to replace the functionality in `semmle.code.cpp.commons.Alloc`
+    with a more consistent and useful interface.
 * The new class `StackVariable` should be used in place of `LocalScopeVariable`
   in most cases. The difference is that `StackVariable` does not include
   variables declared with `static` or `thread_local`.
@@ -46,13 +58,9 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
     about the _name or scope_ of variables should remain unchanged.
   * The `LocalScopeVariableReachability` library is deprecated in favor of
     `StackVariableReachability`. The functionality is the same.
-* The models library models `strlen` in more detail, and includes common variations such as `wcslen`.
-* The models library models `gets` and similar functions.
-* The models library now partially models `std::string`.
-* The taint tracking library (`semmle.code.cpp.dataflow.TaintTracking`) has had
-  the following improvements:
-  * The library now models data flow through `strdup` and similar functions.
-  * The library now models data flow through formatting functions such as `sprintf`.
-* The security pack taint tracking library (`semmle.code.cpp.security.TaintTracking`) uses a new intermediate representation. This provides a more precise analysis of pointers to stack variables and flow through parameters, improving the results of many security queries.
-* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering`) uses a new intermediate representation to provide a more precise analysis of heap allocated memory and pointers to stack variables.
-* `freeCall` in `semmle.code.cpp.commons.Alloc` has been deprecated. The`Allocation` and `Deallocation` models in `semmle.code.cpp.models.interfaces` should be used instead.
+* Taint tracking and data flow now features better modeling of commonly-used
+  library functions:
+  * `gets` and similar functions,
+  * the most common operations on `std::string`,
+  * `strdup` and similar functions, and
+  * formatting functions such as `sprintf`.
