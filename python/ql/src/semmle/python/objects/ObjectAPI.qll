@@ -415,7 +415,7 @@ class ClassValue extends Value {
      * ```
      * `this.lookup("f")` is equivalent to `C.__dict__['f']`, which is the class-method
      *  whereas
-     * `this.attr("f") is equivalent to `C.f`, which is a bound-method.
+     * `this.attr("f")` is equivalent to `C.f`, which is a bound-method.
      */
     Value lookup(string name) { this.(ClassObjectInternal).lookup(name, result, _) }
 
@@ -428,6 +428,29 @@ class ClassValue extends Value {
         this.hasAttribute("__aiter__")
         or
         this.hasAttribute("__getitem__")
+    }
+
+    /** Holds if this class is an iterator. */
+    predicate isIterator() {
+        this.hasAttribute("__iter__") and
+        (
+            major_version() = 3 and this.hasAttribute("__next__")
+            or
+            /*
+             * Because 'next' is a common method name we need to check that an __iter__
+             * method actually returns this class. This is not needed for Py3 as the
+             * '__next__' method exists to define a class as an iterator.
+             */
+
+            major_version() = 2 and
+            this.hasAttribute("next") and
+            exists(ClassValue other, FunctionValue iter | other.declaredAttribute("__iter__") = iter |
+                iter.getAnInferredReturnType() = this
+            )
+        )
+        or
+        /* This will be redundant when we have C class information */
+        this = ClassValue::generator()
     }
 
     /** Holds if this class is a container(). That is, does it have a __getitem__ method. */
@@ -550,6 +573,9 @@ class ClassValue extends Value {
 abstract class FunctionValue extends CallableValue {
     abstract string getQualifiedName();
 
+    /** Gets a longer, more descriptive version of toString() */
+    abstract string descriptiveString();
+
     /** Gets the minimum number of parameters that can be correctly passed to this function */
     abstract int minParameters();
 
@@ -581,6 +607,17 @@ abstract class FunctionValue extends CallableValue {
             exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) | not origin instanceof Lambda)
         )
     }
+
+    /** Gets a call-site from where this function is called as a method */
+    CallNode getAMethodCall() {
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().pointsTo() = bm and
+            bm.getFunction() = this
+        )
+    }
+
+    /** Gets a class that this function may return */
+    abstract ClassValue getAnInferredReturnType();
 }
 
 /** Class representing Python functions */
@@ -589,6 +626,15 @@ class PythonFunctionValue extends FunctionValue {
 
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
+    override string descriptiveString() {
+        if this.getScope().isMethod()
+        then
+            exists(Class cls | this.getScope().getScope() = cls |
+                result = "method " + this.getQualifiedName()
+            )
+        else result = "function " + this.getQualifiedName()
     }
 
     override int minParameters() {
@@ -609,6 +655,13 @@ class PythonFunctionValue extends FunctionValue {
 
     /** Gets a control flow node corresponding to a return statement in this function */
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
+
+    override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
+        result = this.getAReturnedNode().pointsTo().getClass()
+    }
 }
 
 /** Class representing builtin functions, such as `len` or `print` */
@@ -617,9 +670,18 @@ class BuiltinFunctionValue extends FunctionValue {
 
     override string getQualifiedName() { result = this.(BuiltinFunctionObjectInternal).getName() }
 
+    override string descriptiveString() { result = "builtin-function " + this.getName() }
+
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
+
+    override ClassValue getAnInferredReturnType() {
+        /* We have to do a special version of this because builtin functions have no
+         * explicit return nodes that we can query and get the class of.
+         */
+        result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
+    }
 }
 
 /** Class representing builtin methods, such as `list.append` or `set.add` */
@@ -634,9 +696,15 @@ class BuiltinMethodValue extends FunctionValue {
         )
     }
 
+    override string descriptiveString() { result = "builtin-method " + this.getQualifiedName() }
+
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
+
+    override ClassValue getAnInferredReturnType() {
+        result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
+    }
 }
 
 /**

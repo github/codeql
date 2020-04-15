@@ -13,4 +13,4 @@ We welcome contributions to our standard library and standard checks. Do you hav
 
 ## License
 
-The code in this repository is licensed under [Apache License 2.0](LICENSE) by [GitHub](https://github.com).
+The code in this repository is licensed under the [MIT License](LICENSE) by [GitHub](https://github.com).

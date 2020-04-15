@@ -341,6 +341,8 @@ namespace Semmle.Extraction.Tests
             string cwd = @"C:\Project")
         {
             Actions.GetEnvironmentVariable["CODEQL_AUTOBUILDER_CSHARP_NO_INDEXING"] = "false";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_ROOT"] = @"C:\codeql\csharp";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
@@ -364,8 +366,7 @@ namespace Semmle.Extraction.Tests
             Actions.GetCurrentDirectory = cwd;
             Actions.IsWindows = isWindows;
 
-            var options = new AutobuildOptions();
-            options.ReadEnvironment(Actions);
+            var options = new AutobuildOptions(Actions);
             return new Autobuilder(Actions, options);
         }
 

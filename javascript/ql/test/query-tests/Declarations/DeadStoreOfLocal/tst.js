@@ -166,3 +166,11 @@ function v() {
 	x;
 	y;
 });
+
+(function() {
+	if (something()) {
+		var nSign = foo;
+	} else {
+		console.log(nSign);
+	}
+})()

@@ -1,46 +1,46 @@
-| arguments | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
-| arguments | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
-| arguments | assignments.js:4:10:4:24 | function h() {} |
-| arguments | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
-| arguments | defaultargs.js:3:3:3:25 | functio ... = x) {} |
-| arguments | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
-| arguments | for.js:1:2:5:1 | functio ...    x;\\n} |
-| arguments | let.js:14:1:21:1 | functio ...     }\\n} |
-| arguments | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
-| arguments | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
-| arguments | variables.js:8:1:12:1 | functio ... ar x;\\n} |
-| arguments | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
-| arguments | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
-| f | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
-| g | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
-| g | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
-| g | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
-| h | assignments.js:4:10:4:24 | function h() {} |
-| h | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
-| o | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
-| o | for.js:1:2:5:1 | functio ...    x;\\n} |
-| x | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
-| x | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
-| x | defaultargs.js:3:3:3:25 | functio ... = x) {} |
-| x | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
-| x | for.js:1:2:5:1 | functio ...    x;\\n} |
-| x | legacyletstmt.js:1:1:8:0 | <toplevel> |
-| x | let.js:1:1:22:0 | <toplevel> |
-| x | let.js:1:1:22:0 | <toplevel> |
-| x | let.js:1:1:22:0 | <toplevel> |
-| x | let.js:1:1:22:0 | <toplevel> |
-| x | let.js:1:1:22:0 | <toplevel> |
-| x | let.js:14:1:21:1 | functio ...     }\\n} |
-| x | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
-| x | variables.js:8:1:12:1 | functio ... ar x;\\n} |
-| x | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
-| y | defaultargs.js:3:3:3:25 | functio ... = x) {} |
-| y | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
-| y | legacyletstmt.js:1:1:8:0 | <toplevel> |
-| y | let.js:1:1:22:0 | <toplevel> |
-| y | let.js:14:1:21:1 | functio ...     }\\n} |
-| y | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
-| y | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
-| y | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
-| z | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
-| z | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+| arrayPatternDefault.js:1:2:1:1 | arguments | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| arrayPatternDefault.js:1:11:1:11 | o | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| arrayPatternDefault.js:2:8:2:8 | x | arrayPatternDefault.js:1:2:4:1 | functio ... bal2;\\n} |
+| assignments.js:3:1:3:0 | arguments | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
+| assignments.js:4:6:4:6 | g | assignments.js:3:1:6:1 | functio ... = 56;\\n} |
+| assignments.js:4:10:4:9 | arguments | assignments.js:4:10:4:24 | function h() {} |
+| assignments.js:4:19:4:19 | h | assignments.js:4:10:4:24 | function h() {} |
+| defaultargs.js:2:7:2:7 | x | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:2:10:2:18 | arguments | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:3:3:3:2 | arguments | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:3:12:3:12 | f | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:3:14:3:14 | x | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:3:17:3:17 | y | defaultargs.js:3:3:3:25 | functio ... = x) {} |
+| defaultargs.js:4:3:4:2 | arguments | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| defaultargs.js:4:12:4:12 | g | defaultargs.js:1:2:5:1 | functio ... ]) {}\\n} |
+| defaultargs.js:4:14:4:14 | x | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| defaultargs.js:4:32:4:32 | y | defaultargs.js:4:3:4:51 | functio ... [0]) {} |
+| for.js:1:2:1:1 | arguments | for.js:1:2:5:1 | functio ...    x;\\n} |
+| for.js:1:11:1:11 | o | for.js:1:2:5:1 | functio ...    x;\\n} |
+| for.js:2:7:2:7 | x | for.js:1:2:5:1 | functio ...    x;\\n} |
+| legacyletstmt.js:3:6:3:6 | x | legacyletstmt.js:1:1:8:0 | <toplevel> |
+| legacyletstmt.js:3:14:3:14 | y | legacyletstmt.js:1:1:8:0 | <toplevel> |
+| let.js:2:9:2:9 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:4:13:4:13 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:5:18:5:18 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:5:26:5:26 | y | let.js:1:1:22:0 | <toplevel> |
+| let.js:6:17:6:17 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:9:18:9:18 | x | let.js:1:1:22:0 | <toplevel> |
+| let.js:14:1:14:0 | arguments | let.js:14:1:21:1 | functio ...     }\\n} |
+| let.js:14:14:14:14 | x | let.js:14:1:21:1 | functio ...     }\\n} |
+| let.js:17:11:17:11 | y | let.js:14:1:21:1 | functio ...     }\\n} |
+| typeoftype.ts:1:1:1:0 | arguments | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:2:7:2:7 | x | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:3:3:3:2 | arguments | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
+| typeoftype.ts:3:12:3:12 | g | typeoftype.ts:1:1:6:1 | functio ... x\\n  }\\n} |
+| typeoftype.ts:4:9:4:9 | y | typeoftype.ts:3:3:5:3 | functio ... e x\\n  } |
+| variables.js:8:1:8:0 | arguments | variables.js:8:1:12:1 | functio ... ar x;\\n} |
+| variables.js:9:6:9:6 | x | variables.js:8:1:12:1 | functio ... ar x;\\n} |
+| variables.js:13:1:13:0 | arguments | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:13:12:13:12 | y | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:13:15:13:15 | z | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:15:6:15:6 | x | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:16:2:16:1 | arguments | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+| variables.js:16:11:16:11 | h | variables.js:13:1:23:1 | functio ... z;\\n\\t}\\n} |
+| variables.js:16:13:16:13 | z | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |
+| variables.js:18:11:18:11 | y | variables.js:16:2:22:2 | functio ... y+z;\\n\\t} |

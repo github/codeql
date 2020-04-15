@@ -1236,6 +1236,26 @@
 | E.cs:375:20:375:20 | access to local variable s | non-empty | E.cs:374:21:374:31 | ... as ... | non-empty |
 | E.cs:375:20:375:20 | access to local variable s | non-null | E.cs:374:21:374:31 | ... as ... | non-null |
 | E.cs:375:20:375:20 | access to local variable s | null | E.cs:374:21:374:31 | ... as ... | null |
+| E.cs:382:13:382:68 | ... \|\| ... | false | E.cs:382:14:382:37 | ... && ... | false |
+| E.cs:382:13:382:68 | ... \|\| ... | false | E.cs:382:44:382:67 | ... && ... | false |
+| E.cs:382:14:382:23 | ... == ... | false | E.cs:382:14:382:15 | access to parameter e1 | non-null |
+| E.cs:382:14:382:23 | ... == ... | true | E.cs:382:14:382:15 | access to parameter e1 | null |
+| E.cs:382:14:382:37 | ... && ... | true | E.cs:382:14:382:23 | ... == ... | true |
+| E.cs:382:14:382:37 | ... && ... | true | E.cs:382:28:382:37 | ... != ... | true |
+| E.cs:382:28:382:37 | ... != ... | false | E.cs:382:28:382:29 | access to parameter e2 | null |
+| E.cs:382:28:382:37 | ... != ... | true | E.cs:382:28:382:29 | access to parameter e2 | non-null |
+| E.cs:382:44:382:53 | ... != ... | false | E.cs:382:44:382:45 | access to parameter e1 | null |
+| E.cs:382:44:382:53 | ... != ... | true | E.cs:382:44:382:45 | access to parameter e1 | non-null |
+| E.cs:382:44:382:67 | ... && ... | true | E.cs:382:44:382:53 | ... != ... | true |
+| E.cs:382:44:382:67 | ... && ... | true | E.cs:382:58:382:67 | ... == ... | true |
+| E.cs:382:58:382:67 | ... == ... | false | E.cs:382:58:382:59 | access to parameter e2 | non-null |
+| E.cs:382:58:382:67 | ... == ... | true | E.cs:382:58:382:59 | access to parameter e2 | null |
+| E.cs:384:13:384:22 | ... == ... | false | E.cs:384:13:384:14 | access to parameter e1 | non-null |
+| E.cs:384:13:384:22 | ... == ... | true | E.cs:384:13:384:14 | access to parameter e1 | null |
+| E.cs:384:13:384:36 | ... && ... | true | E.cs:384:13:384:22 | ... == ... | true |
+| E.cs:384:13:384:36 | ... && ... | true | E.cs:384:27:384:36 | ... == ... | true |
+| E.cs:384:27:384:36 | ... == ... | false | E.cs:384:27:384:28 | access to parameter e2 | non-null |
+| E.cs:384:27:384:36 | ... == ... | true | E.cs:384:27:384:28 | access to parameter e2 | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |

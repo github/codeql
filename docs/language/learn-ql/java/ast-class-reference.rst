@@ -1,5 +1,7 @@
-AST class reference
-===================
+Classes for working with Java code
+==================================
+
+CodeQL has a large selection of classes for working with Java statements and expressions.
 
 .. _Expr: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Expr.html
 .. _Stmt: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$Stmt.html

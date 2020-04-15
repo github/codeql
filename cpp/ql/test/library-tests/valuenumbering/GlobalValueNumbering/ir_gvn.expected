@@ -1,80 +1,78 @@
 test.cpp:
-#    1| int test00(int, int)
+#    1| void test00(int, int)
 #    1|   Block 0
-#    1|     v1_1(void)                 = EnterFunction            : 
-#    1|     m1_2(unknown)              = AliasedDefinition        : 
+#    1|     v1_1(void)                 = EnterFunction           : 
+#    1|     m1_2(unknown)              = AliasedDefinition       : 
 #    1|         valnum = unique
-#    1|     m1_3(unknown)              = InitializeNonLocal       : 
+#    1|     m1_3(unknown)              = InitializeNonLocal      : 
 #    1|         valnum = unique
-#    1|     m1_4(unknown)              = Chi                      : total:m1_2, partial:m1_3
+#    1|     m1_4(unknown)              = Chi                     : total:m1_2, partial:m1_3
 #    1|         valnum = unique
-#    1|     mu1_5(unknown)             = UnmodeledDefinition      : 
+#    1|     mu1_5(unknown)             = UnmodeledDefinition     : 
 #    1|         valnum = unique
-#    1|     r1_6(glval<int>)           = VariableAddress[p0]      : 
+#    1|     r1_6(glval<int>)           = VariableAddress[p0]     : 
 #    1|         valnum = r1_6, r5_1, r6_1
-#    1|     m1_7(int)                  = InitializeParameter[p0]  : &:r1_6
+#    1|     m1_7(int)                  = InitializeParameter[p0] : &:r1_6
 #    1|         valnum = m1_7, r5_2, r6_2
-#    1|     r1_8(glval<int>)           = VariableAddress[p1]      : 
+#    1|     r1_8(glval<int>)           = VariableAddress[p1]     : 
 #    1|         valnum = r1_8, r5_3, r6_3
-#    1|     m1_9(int)                  = InitializeParameter[p1]  : &:r1_8
+#    1|     m1_9(int)                  = InitializeParameter[p1] : &:r1_8
 #    1|         valnum = m1_9, r5_4, r6_4
-#    2|     r2_1(glval<int>)           = VariableAddress[x]       : 
+#    2|     r2_1(glval<int>)           = VariableAddress[x]      : 
 #    2|         valnum = r2_1, r5_6, r6_6, r7_1
-#    2|     m2_2(int)                  = Uninitialized[x]         : &:r2_1
+#    2|     m2_2(int)                  = Uninitialized[x]        : &:r2_1
 #    2|         valnum = unique
-#    2|     r2_3(glval<int>)           = VariableAddress[y]       : 
+#    2|     r2_3(glval<int>)           = VariableAddress[y]      : 
 #    2|         valnum = r2_3, r7_3
-#    2|     m2_4(int)                  = Uninitialized[y]         : &:r2_3
+#    2|     m2_4(int)                  = Uninitialized[y]        : &:r2_3
 #    2|         valnum = unique
-#    3|     r3_1(glval<unsigned char>) = VariableAddress[b]       : 
+#    3|     r3_1(glval<unsigned char>) = VariableAddress[b]      : 
 #    3|         valnum = unique
-#    3|     m3_2(unsigned char)        = Uninitialized[b]         : &:r3_1
+#    3|     m3_2(unsigned char)        = Uninitialized[b]        : &:r3_1
 #    3|         valnum = unique
-#    5|     r5_1(glval<int>)           = VariableAddress[p0]      : 
+#    5|     r5_1(glval<int>)           = VariableAddress[p0]     : 
 #    5|         valnum = r1_6, r5_1, r6_1
-#    5|     r5_2(int)                  = Load                     : &:r5_1, m1_7
+#    5|     r5_2(int)                  = Load                    : &:r5_1, m1_7
 #    5|         valnum = m1_7, r5_2, r6_2
-#    5|     r5_3(glval<int>)           = VariableAddress[p1]      : 
+#    5|     r5_3(glval<int>)           = VariableAddress[p1]     : 
 #    5|         valnum = r1_8, r5_3, r6_3
-#    5|     r5_4(int)                  = Load                     : &:r5_3, m1_9
+#    5|     r5_4(int)                  = Load                    : &:r5_3, m1_9
 #    5|         valnum = m1_9, r5_4, r6_4
-#    5|     r5_5(int)                  = Add                      : r5_2, r5_4
+#    5|     r5_5(int)                  = Add                     : r5_2, r5_4
 #    5|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    5|     r5_6(glval<int>)           = VariableAddress[x]       : 
+#    5|     r5_6(glval<int>)           = VariableAddress[x]      : 
 #    5|         valnum = r2_1, r5_6, r6_6, r7_1
-#    5|     m5_7(int)                  = Store                    : &:r5_6, r5_5
+#    5|     m5_7(int)                  = Store                   : &:r5_6, r5_5
 #    5|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    6|     r6_1(glval<int>)           = VariableAddress[p0]      : 
+#    6|     r6_1(glval<int>)           = VariableAddress[p0]     : 
 #    6|         valnum = r1_6, r5_1, r6_1
-#    6|     r6_2(int)                  = Load                     : &:r6_1, m1_7
+#    6|     r6_2(int)                  = Load                    : &:r6_1, m1_7
 #    6|         valnum = m1_7, r5_2, r6_2
-#    6|     r6_3(glval<int>)           = VariableAddress[p1]      : 
+#    6|     r6_3(glval<int>)           = VariableAddress[p1]     : 
 #    6|         valnum = r1_8, r5_3, r6_3
-#    6|     r6_4(int)                  = Load                     : &:r6_3, m1_9
+#    6|     r6_4(int)                  = Load                    : &:r6_3, m1_9
 #    6|         valnum = m1_9, r5_4, r6_4
-#    6|     r6_5(int)                  = Add                      : r6_2, r6_4
+#    6|     r6_5(int)                  = Add                     : r6_2, r6_4
 #    6|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    6|     r6_6(glval<int>)           = VariableAddress[x]       : 
+#    6|     r6_6(glval<int>)           = VariableAddress[x]      : 
 #    6|         valnum = r2_1, r5_6, r6_6, r7_1
-#    6|     m6_7(int)                  = Store                    : &:r6_6, r6_5
+#    6|     m6_7(int)                  = Store                   : &:r6_6, r6_5
 #    6|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    7|     r7_1(glval<int>)           = VariableAddress[x]       : 
+#    7|     r7_1(glval<int>)           = VariableAddress[x]      : 
 #    7|         valnum = r2_1, r5_6, r6_6, r7_1
-#    7|     r7_2(int)                  = Load                     : &:r7_1, m6_7
+#    7|     r7_2(int)                  = Load                    : &:r7_1, m6_7
 #    7|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    7|     r7_3(glval<int>)           = VariableAddress[y]       : 
+#    7|     r7_3(glval<int>)           = VariableAddress[y]      : 
 #    7|         valnum = r2_3, r7_3
-#    7|     m7_4(int)                  = Store                    : &:r7_3, r7_2
+#    7|     m7_4(int)                  = Store                   : &:r7_3, r7_2
 #    7|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
-#    8|     v8_1(void)                 = NoOp                     : 
-#    1|     r1_10(glval<int>)          = VariableAddress[#return] : 
-#    1|         valnum = unique
-#    1|     v1_11(void)                = ReturnValue              : &:r1_10
-#    1|     v1_12(void)                = UnmodeledUse             : mu*
-#    1|     v1_13(void)                = AliasedUse               : m1_3
-#    1|     v1_14(void)                = ExitFunction             : 
+#    8|     v8_1(void)                 = NoOp                    : 
+#    1|     v1_10(void)                = ReturnVoid              : 
+#    1|     v1_11(void)                = UnmodeledUse            : mu*
+#    1|     v1_12(void)                = AliasedUse              : m1_3
+#    1|     v1_13(void)                = ExitFunction            : 
 
-#   12| int test01(int, int)
+#   12| void test01(int, int)
 #   12|   Block 0
 #   12|     v12_1(void)                 = EnterFunction             : 
 #   12|     m12_2(unknown)              = AliasedDefinition         : 
@@ -154,14 +152,12 @@ test.cpp:
 #   18|     m18_4(int)                  = Store                     : &:r18_3, r18_2
 #   18|         valnum = m16_10, m17_10, m18_4, r16_8, r17_8, r18_2
 #   19|     v19_1(void)                 = NoOp                      : 
-#   12|     r12_10(glval<int>)          = VariableAddress[#return]  : 
-#   12|         valnum = unique
-#   12|     v12_11(void)                = ReturnValue               : &:r12_10
-#   12|     v12_12(void)                = UnmodeledUse              : mu*
-#   12|     v12_13(void)                = AliasedUse                : m12_3
-#   12|     v12_14(void)                = ExitFunction              : 
+#   12|     v12_10(void)                = ReturnVoid                : 
+#   12|     v12_11(void)                = UnmodeledUse              : mu*
+#   12|     v12_12(void)                = AliasedUse                : m12_3
+#   12|     v12_13(void)                = ExitFunction              : 
 
-#   25| int test02(int, int)
+#   25| void test02(int, int)
 #   25|   Block 0
 #   25|     v25_1(void)                 = EnterFunction                    : 
 #   25|     m25_2(unknown)              = AliasedDefinition                : 
@@ -248,14 +244,12 @@ test.cpp:
 #   32|     m32_4(int)                  = Store                            : &:r32_3, r32_2
 #   32|         valnum = m31_10, m32_4, r31_8, r32_2
 #   33|     v33_1(void)                 = NoOp                             : 
-#   25|     r25_10(glval<int>)          = VariableAddress[#return]         : 
-#   25|         valnum = unique
-#   25|     v25_11(void)                = ReturnValue                      : &:r25_10
-#   25|     v25_12(void)                = UnmodeledUse                     : mu*
-#   25|     v25_13(void)                = AliasedUse                       : ~m30_4
-#   25|     v25_14(void)                = ExitFunction                     : 
+#   25|     v25_10(void)                = ReturnVoid                       : 
+#   25|     v25_11(void)                = UnmodeledUse                     : mu*
+#   25|     v25_12(void)                = AliasedUse                       : ~m30_4
+#   25|     v25_13(void)                = ExitFunction                     : 
 
-#   39| int test03(int, int, int*)
+#   39| void test03(int, int, int*)
 #   39|   Block 0
 #   39|     v39_1(void)                 = EnterFunction             : 
 #   39|     m39_2(unknown)              = AliasedDefinition         : 
@@ -355,13 +349,11 @@ test.cpp:
 #   46|     m46_4(int)                  = Store                     : &:r46_3, r46_2
 #   46|         valnum = m43_10, m45_10, m46_4, r43_8, r45_8, r46_2
 #   47|     v47_1(void)                 = NoOp                      : 
-#   39|     v39_14(void)                = ReturnIndirection         : &:r39_12, m44_6
-#   39|     r39_15(glval<int>)          = VariableAddress[#return]  : 
-#   39|         valnum = unique
-#   39|     v39_16(void)                = ReturnValue               : &:r39_15
-#   39|     v39_17(void)                = UnmodeledUse              : mu*
-#   39|     v39_18(void)                = AliasedUse                : m39_3
-#   39|     v39_19(void)                = ExitFunction              : 
+#   39|     v39_14(void)                = ReturnIndirection[p2]     : &:r39_12, m44_6
+#   39|     v39_15(void)                = ReturnVoid                : 
+#   39|     v39_16(void)                = UnmodeledUse              : mu*
+#   39|     v39_17(void)                = AliasedUse                : m39_3
+#   39|     v39_18(void)                = ExitFunction              : 
 
 #   49| unsigned int my_strspn(char const*, char const*)
 #   49|   Block 0
@@ -531,8 +523,8 @@ test.cpp:
 #   65|         valnum = m53_1, m65_4, r62_2, r65_3
 #   65|     m65_4(unsigned int)         = Store                    : &:r65_1, r65_3
 #   65|         valnum = m53_1, m65_4, r62_2, r65_3
-#   49|     v49_14(void)                = ReturnIndirection        : &:r49_8, m49_9
-#   49|     v49_15(void)                = ReturnIndirection        : &:r49_12, m49_13
+#   49|     v49_14(void)                = ReturnIndirection[str]   : &:r49_8, m49_9
+#   49|     v49_15(void)                = ReturnIndirection[chars] : &:r49_12, m49_13
 #   49|     r49_16(glval<unsigned int>) = VariableAddress[#return] : 
 #   49|         valnum = r49_16, r65_1
 #   49|     v49_17(void)                = ReturnValue              : &:r49_16, m65_4
@@ -625,14 +617,14 @@ test.cpp:
 #-----|   Goto -> Block 2
 
 #   82|   Block 2
-#   82|     m82_1(unknown) = Phi               : from 0:~m77_5, from 1:~m80_4
+#   82|     m82_1(unknown) = Phi                     : from 0:~m77_5, from 1:~m80_4
 #   82|         valnum = unique
-#   82|     v82_2(void)    = NoOp              : 
-#   75|     v75_10(void)   = ReturnIndirection : &:r75_8, m75_9
-#   75|     v75_11(void)   = ReturnVoid        : 
-#   75|     v75_12(void)   = UnmodeledUse      : mu*
-#   75|     v75_13(void)   = AliasedUse        : ~m82_1
-#   75|     v75_14(void)   = ExitFunction      : 
+#   82|     v82_2(void)    = NoOp                    : 
+#   75|     v75_10(void)   = ReturnIndirection[vals] : &:r75_8, m75_9
+#   75|     v75_11(void)   = ReturnVoid              : 
+#   75|     v75_12(void)   = UnmodeledUse            : mu*
+#   75|     v75_13(void)   = AliasedUse              : ~m82_1
+#   75|     v75_14(void)   = ExitFunction            : 
 
 #   84| void test05(int, int, void*)
 #   84|   Block 0
@@ -689,7 +681,7 @@ test.cpp:
 #   88|     m88_10(int)       = Store                      : &:r88_9, r88_8
 #   88|         valnum = m88_10, m88_6, r88_8
 #   89|     v89_1(void)       = NoOp                       : 
-#   84|     v84_14(void)      = ReturnIndirection          : &:r84_12, m84_13
+#   84|     v84_14(void)      = ReturnIndirection[p]       : &:r84_12, m84_13
 #   84|     v84_15(void)      = ReturnVoid                 : 
 #   84|     v84_16(void)      = UnmodeledUse               : mu*
 #   84|     v84_17(void)      = AliasedUse                 : m84_3
@@ -818,7 +810,7 @@ test.cpp:
 #  109|         valnum = m105_7, m107_6, m109_4, r105_6, r107_5, r109_3
 #  109|     m109_4(int)              = Store                                   : &:r109_1, r109_3
 #  109|         valnum = m105_7, m107_6, m109_4, r105_6, r107_5, r109_3
-#  104|     v104_10(void)            = ReturnIndirection                       : &:r104_8, m104_9
+#  104|     v104_10(void)            = ReturnIndirection[pd]                   : &:r104_8, m104_9
 #  104|     r104_11(glval<int>)      = VariableAddress[#return]                : 
 #  104|         valnum = r104_11, r109_1
 #  104|     v104_12(void)            = ReturnValue                             : &:r104_11, m109_4
@@ -925,7 +917,7 @@ test.cpp:
 #  129|     m129_6(int)         = Store                     : &:r129_1, r129_5
 #  129|         valnum = m124_11, m128_6, m129_6, r128_2, r129_5
 #  130|     v130_1(void)        = NoOp                      : 
-#  124|     v124_12(void)       = ReturnIndirection         : &:r124_8, m128_7
+#  124|     v124_12(void)       = ReturnIndirection[pa]     : &:r124_8, m128_7
 #  124|     v124_13(void)       = ReturnVoid                : 
 #  124|     v124_14(void)       = UnmodeledUse              : mu*
 #  124|     v124_15(void)       = AliasedUse                : m124_3
@@ -1068,7 +1060,7 @@ test.cpp:
 #  149|     m149_6(int)        = Store                     : &:r149_1, r149_5
 #  149|         valnum = m144_6, m149_6, r144_5, r149_5
 #  150|     v150_1(void)       = NoOp                      : 
-#  143|     v143_10(void)      = ReturnIndirection         : &:r143_8, m147_7
+#  143|     v143_10(void)      = ReturnIndirection[pa]     : &:r143_8, m147_7
 #  143|     v143_11(void)      = ReturnVoid                : 
 #  143|     v143_12(void)      = UnmodeledUse              : mu*
 #  143|     v143_13(void)      = AliasedUse                : m143_3

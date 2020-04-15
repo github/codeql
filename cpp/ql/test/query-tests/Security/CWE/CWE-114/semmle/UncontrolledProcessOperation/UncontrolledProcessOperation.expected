@@ -1,2 +1,25 @@
-| test.cpp:26:10:26:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:42:18:42:23 | call to getenv | call to getenv |
-| test.cpp:31:10:31:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:43:18:43:23 | call to getenv | call to getenv |
+edges
+| test.cpp:24:30:24:36 | command | test.cpp:26:10:26:16 | command |
+| test.cpp:24:30:24:36 | command | test.cpp:26:10:26:16 | command |
+| test.cpp:29:30:29:36 | command | test.cpp:31:10:31:16 | command |
+| test.cpp:29:30:29:36 | command | test.cpp:31:10:31:16 | command |
+| test.cpp:42:18:42:23 | call to getenv | test.cpp:24:30:24:36 | command |
+| test.cpp:42:18:42:34 | (const char *)... | test.cpp:24:30:24:36 | command |
+| test.cpp:43:18:43:23 | call to getenv | test.cpp:29:30:29:36 | command |
+| test.cpp:43:18:43:34 | (const char *)... | test.cpp:29:30:29:36 | command |
+nodes
+| test.cpp:24:30:24:36 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:26:10:26:16 | command | semmle.label | command |
+| test.cpp:29:30:29:36 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:31:10:31:16 | command | semmle.label | command |
+| test.cpp:42:18:42:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:42:18:42:34 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:43:18:43:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:43:18:43:34 | (const char *)... | semmle.label | (const char *)... |
+#select
+| test.cpp:26:10:26:16 | command | test.cpp:42:18:42:23 | call to getenv | test.cpp:26:10:26:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:42:18:42:23 | call to getenv | call to getenv |
+| test.cpp:31:10:31:16 | command | test.cpp:43:18:43:23 | call to getenv | test.cpp:31:10:31:16 | command | The value of this argument may come from $@ and is being passed to system | test.cpp:43:18:43:23 | call to getenv | call to getenv |
