@@ -85,8 +85,6 @@ module SocketIO {
 
     /**
      * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
-     *
-     * Instead of `getOrigin()` to get a server origin from a reference, use `ServerObject.ref()` to get references to a given server.
      */
     deprecated DataFlow::SourceNode getOrigin() { result = this }
   }
@@ -285,9 +283,8 @@ module SocketIO {
     SendNode getASender() { result.getAReceiver() = this }
 
     /** Gets the acknowledgment callback, if any. */
-    DataFlow::FunctionNode getAck() {
-      result = getListener().getLastParameter() and
-      exists(result.getAnInvocation())
+    DataFlow::SourceNode getAck() {
+      result.(ReceiveCallback).getReceiveNode() = this
     }
 
     /** DEPRECATED. Use `getChannel()` instead. */
@@ -311,6 +308,9 @@ module SocketIO {
     override SocketIOClient::SendCallback getAReceiver() {
       result.getSendNode().getAReceiver() = rcv
     }
+
+    /** Gets the API call to which this is a callback. */
+    ReceiveNode getReceiveNode() { result = rcv }
   }
 
   /**
@@ -575,7 +575,7 @@ module SocketIOClient {
     DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
-    DataFlow::FunctionNode getAck() {
+    DataFlow::SourceNode getAck() {
       result = getListener().getLastParameter() and
       exists(result.getAnInvocation())
     }
@@ -588,11 +588,11 @@ module SocketIOClient {
   }
 
   /** An acknowledgment callback from a receive node. */
-  class RecieveCallback extends EventDispatch::Range, DataFlow::SourceNode {
+  class ReceiveCallback extends EventDispatch::Range, DataFlow::SourceNode {
     override SocketObject emitter;
     ReceiveNode rcv;
 
-    RecieveCallback() {
+    ReceiveCallback() {
       this = rcv.getListener().getLastParameter() and
       exists(this.getAnInvocation()) and
       emitter = rcv.getEmitter()
