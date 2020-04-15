@@ -3,7 +3,7 @@
 ## General improvements
 
 * Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
-* Analysis of flow through fields has been improved.
+* Analysis of flow through fields and elements of arrays and slices has been improved, which may lead to more results from the security queries.
 * Detection of test code has been improved. LGTM will not show alerts in test code by default.
 * Go 1.14 library changes have been modeled.
 * More sources of untrusted input as well as vulnerable sinks are modelled, which may lead to more results from the security queries.
