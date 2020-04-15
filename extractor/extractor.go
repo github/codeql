@@ -57,13 +57,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
-		if len(pkg.Errors) != 0 {
-			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
-			for _, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
-			}
-		}
-
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
 			log.Fatal(err)
@@ -74,6 +67,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		tw.ForEachObject(extractObjectType)
 		lbl := tw.Labeler.GlobalID(pkg.PkgPath + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
+
+		if len(pkg.Errors) != 0 {
+			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
+			for i, err := range pkg.Errors {
+				log.Printf("  %s", err.Error())
+				extractError(tw, err, lbl, i)
+			}
+		}
 	})
 
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -251,6 +252,43 @@ func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		dbscheme.ObjectTypesTable.Emit(tw, lbl, extractType(tw, tp))
 	}
+}
+
+// extractError extracts the message and location of a frontend error
+func extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
+	var (
+		lbl           = tw.Labeler.FreshID()
+		kind          = dbscheme.ErrorTypes[err.Kind].Index()
+		pos           = err.Pos
+		posComponents = strings.Split(err.Pos, ":")
+		file          = ""
+		line          = 0
+		col           = 0
+		e             error
+	)
+	switch len(posComponents) {
+	case 3:
+		// "file:line:col"
+		col, e = strconv.Atoi(posComponents[2])
+		if e != nil {
+			log.Printf("Warning: malformed column number `%s`: %v", posComponents[2], e)
+		}
+		fallthrough
+	case 2:
+		// "file:line"
+		file = posComponents[0]
+		line, e = strconv.Atoi(posComponents[1])
+		if e != nil {
+			log.Printf("Warning: malformed line number `%s`: %v", posComponents[1], e)
+		}
+	default:
+		// "", "-"
+		if pos != "" && pos != "-" {
+			log.Printf("Warning: malformed error position `%s`", pos)
+		}
+	}
+	file = filepath.ToSlash(srcarchive.TransformPath(file))
+	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, file, line, col, pkglbl, idx)
 }
 
 // extractPackage extracts AST information for all files in the given package

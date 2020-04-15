@@ -7,6 +7,7 @@ import semmle.go.AST
 import semmle.go.Comments
 import semmle.go.Concepts
 import semmle.go.Decls
+import semmle.go.Errors
 import semmle.go.Expr
 import semmle.go.Files
 import semmle.go.GoMod
