@@ -37,7 +37,7 @@ abstract deprecated class CustomPointsToFact extends @py_flow_node {
     abstract predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin);
 }
 
-/* For backwards compatibility */
+/** DEPRECATED -- Use PointsToExtension instead */
 deprecated class FinalCustomPointsToFact = CustomPointsToFact;
 
 abstract deprecated class CustomPointsToOriginFact extends CustomPointsToFact {
