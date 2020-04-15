@@ -20,10 +20,10 @@
 | testdata.go:268:2:268:2 | assignment to x | This definition of x is never used. |
 | testdata.go:309:2:309:2 | assignment to a | This definition of a is never used. |
 | testdata.go:321:2:321:2 | assignment to a | This definition of a is never used. |
-| testdata.go:385:3:385:3 | assignment to x | This definition of x is never used. |
-| testdata.go:430:3:430:3 | assignment to x | This definition of x is never used. |
+| testdata.go:387:3:387:3 | assignment to x | This definition of x is never used. |
 | testdata.go:432:3:432:3 | assignment to x | This definition of x is never used. |
-| testdata.go:439:2:439:2 | assignment to x | This definition of x is never used. |
-| testdata.go:486:3:486:3 | assignment to x | This definition of x is never used. |
-| testdata.go:540:3:540:3 | assignment to x | This definition of x is never used. |
-| testdata.go:578:4:578:4 | assignment to x | This definition of x is never used. |
+| testdata.go:434:3:434:3 | assignment to x | This definition of x is never used. |
+| testdata.go:441:2:441:2 | assignment to x | This definition of x is never used. |
+| testdata.go:488:3:488:3 | assignment to x | This definition of x is never used. |
+| testdata.go:542:3:542:3 | assignment to x | This definition of x is never used. |
+| testdata.go:580:4:580:4 | assignment to x | This definition of x is never used. |

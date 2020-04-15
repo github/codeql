@@ -10,12 +10,7 @@ import (
 	"net/http"
 )
 
-type RequestStruct struct {
-	Id       int64    `db:"id"`
-	Category []string `db:"category"`
-}
-
-func handler(db *sql.DB, req *http.Request) {
+func handler1(db *sql.DB, req *http.Request) {
 	// read data from request body and unmarshal to a indeterminacy struct
 	// POST: {"a": "b", "category": "test"}
 	var RequestDataFromJson map[string]interface{}

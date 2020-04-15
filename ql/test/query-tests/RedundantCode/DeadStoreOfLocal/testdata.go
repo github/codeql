@@ -381,6 +381,8 @@ func _() {
 func _() {
 	var x int
 	switch b {
+	case true:
+		_ = x
 	default:
 		x = deadStore() // BAD
 		fallthrough

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-func encryptValueGood(v interface{}) ([]byte, error) {
+func encryptValueGood2(v interface{}) ([]byte, error) {
 	jsonData, err := json.Marshal(v)
 	if err != nil {
 		return nil, err

@@ -1,12 +1,15 @@
 package main
 
+//go:generate depstubber -vendor github.com/codeskyblue/go-sh "" Command,InteractiveSession
+//go:generate depstubber -vendor golang.org/x/crypto/ssh Session
+
 import (
 	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
 
-	"github.com/codeskyblue/go-sh"
+	sh "github.com/codeskyblue/go-sh"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -87,15 +90,15 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	}
 	// github.com/codeskyblue/go-sh
 	{
-		sh.Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source)...)...)
-		sh.InteractiveSession().Call(shell, toInterfaceArray(append([]string{assumedNonShell}, source)...)...)
-		sh.InteractiveSession().Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source)...)...)
+		sh.Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
+		sh.InteractiveSession().Call(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
+		sh.InteractiveSession().Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
 	}
 }
-func toInterfaceArray(str ...string) []interface{} {
+func toInterfaceArray(strs []string) []interface{} {
 	res := make([]interface{}, 0)
-	for i := range str {
-		res = append(res, str[i])
+	for _, str := range strs {
+		res = append(res, str)
 	}
 	return res
 }
