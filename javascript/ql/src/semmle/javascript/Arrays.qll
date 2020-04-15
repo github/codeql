@@ -155,10 +155,10 @@ private module ArrayDataFlow {
       this.getMethodName() = "unshift"
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = this.getAnArgument() and
-      obj = this.getReceiver().getALocalSource()
+      obj.getAMethodCall() = this
     }
   }
 
@@ -188,10 +188,10 @@ private module ArrayDataFlow {
       element = this
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = this.(DataFlow::PropWrite).getRhs() and
-      this = obj.(DataFlow::SourceNode).getAPropertyWrite()
+      this = obj.getAPropertyWrite()
     }
   }
 
@@ -234,7 +234,7 @@ private module ArrayDataFlow {
       element = getCallback(0).getParameter(0)
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       this.getMethodName() = "map" and
       prop = arrayElement() and
       element = this.getCallback(0).getAReturn() and
@@ -254,7 +254,7 @@ private module ArrayDataFlow {
   private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
     ArrayCreationStep() { this instanceof DataFlow::ArrayCreationNode }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = this.(DataFlow::ArrayCreationNode).getAnElement() and
       obj = this
@@ -268,10 +268,10 @@ private module ArrayDataFlow {
   private class ArraySpliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
     ArraySpliceStep() { this.getMethodName() = "splice" }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = getArgument(2) and
-      obj = this.getReceiver().getALocalSource()
+      this = obj.getAMethodCall()
     }
   }
 

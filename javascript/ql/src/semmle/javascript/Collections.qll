@@ -52,9 +52,9 @@ abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, PseudoProperty prop) { none() }
+  predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, PseudoProperty prop) { none() }
 
-  final override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+  final override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     this.store(pred, succ, prop)
   }
 
@@ -132,8 +132,8 @@ private module CollectionDataFlow {
   private class SetAdd extends CollectionFlowStep, DataFlow::MethodCallNode {
     SetAdd() { this.getMethodName() = "add" }
 
-    override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
-      this = obj.(DataFlow::SourceNode).getAMethodCall() and
+    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
+      this = obj.getAMethodCall() and
       element = this.getArgument(0) and
       prop = setElement()
     }
@@ -226,8 +226,8 @@ private module CollectionDataFlow {
   class MapSet extends CollectionFlowStep, DataFlow::MethodCallNode {
     MapSet() { this.getMethodName() = "set" }
 
-    override predicate store(DataFlow::Node element, DataFlow::Node obj, PseudoProperty prop) {
-      this = obj.(DataFlow::SourceNode).getAMethodCall() and
+    override predicate store(DataFlow::Node element, DataFlow::SourceNode obj, PseudoProperty prop) {
+      this = obj.getAMethodCall() and
       element = this.getArgument(1) and
       prop = getAPseudoProperty()
     }

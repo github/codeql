@@ -244,8 +244,11 @@ abstract class Configuration extends string {
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
    */
-  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    none()
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -540,9 +543,10 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
    */
   cached
-  predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
