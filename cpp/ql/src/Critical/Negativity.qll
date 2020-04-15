@@ -129,7 +129,7 @@ predicate errorCondition(Variable v, Expr cond) {
  * - `cond` checks that `v` is not equal to `-1`, or
  * - `cond` checks that `v` is greater than or equal than `0`, or
  * - `cond` checks that `v` is greater than `-1`, or
- * - `cond` checks that `v` is not some common success value (see `errorCondition`).
+ * - `cond` checks that `v` is not some common error value (see `errorCondition`).
  */
 predicate successCondition(Variable v, Expr cond) {
   exists(NEExpr ne |
@@ -198,7 +198,7 @@ predicate checkedError(Variable v, ControlFlowNode n) {
 
 /**
  * Holds if the current value of the variable `v` at control-flow node
- * `n` may have been checked against a common set of *error* values.
+ * `n` may have been checked against a common set of *success* values.
  */
 predicate checkedSuccess(Variable v, ControlFlowNode n) {
   successSuccessor(v, n)
