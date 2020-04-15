@@ -1,3 +1,4 @@
 name: codeql-python-tests
 version: 0.0.0
 libraryPathDependencies: codeql-python
+extractor: python

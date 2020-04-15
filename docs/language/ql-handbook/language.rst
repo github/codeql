@@ -1002,7 +1002,7 @@ For casts between the primitive ``float`` and ``int`` types, the above rule mean
 Postfix casts
 ~~~~~~~~~~~~~
 
-*Available from Semmle 1.9.4 onward.* A postfix cast is a primary expression followed by a dot and then a class or primitive type in parentheses:
+A postfix cast is a primary expression followed by a dot and then a class or primitive type in parentheses:
 
 ::
 

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-When you contribute a new query to Semmle/ql for inclusion in the standard queries, or add a custom query for analysis in LGTM, you should also write a query help file. This file provides detailed information about the purpose and use of the query, which is available to users in LGTM (for example [here](https://lgtm.com/rules/1506093386171/)) and on the query homepages:
+When you contribute a new [supported query](supported-queries.md) to this repository, or add a custom query for analysis in LGTM, you should also write a query help file. This file provides detailed information about the purpose and use of the query, which is available to users in LGTM (for example [here](https://lgtm.com/rules/1506093386171/)) and on the query homepages:
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
