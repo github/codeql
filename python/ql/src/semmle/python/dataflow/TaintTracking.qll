@@ -155,7 +155,7 @@ abstract class TaintKind extends string {
      * For example, if this were a kind of string taint
      * the `result` would be `theStrType()`.
      */
-    ClassValue getType() { result.(ClassObjectInternal).getSource() = this.getClass() }
+    ClassValue getType() { none() }
 
     /**
      * Gets the boolean values (may be one, neither, or both) that
@@ -180,7 +180,10 @@ abstract class TaintKind extends string {
     TaintKind getTaintForIteration() { none() }
 
     predicate flowStep(DataFlow::Node fromnode, DataFlow::Node tonode, string edgeLabel) {
-        this.additionalFlowStepVar(fromnode.asVariable(), tonode.asVariable()) and
+        exists(DataFlowExtension::DataFlowVariable v |
+            v = fromnode.asVariable() and
+            v.getASuccessorVariable() = tonode.asVariable()
+        ) and
         edgeLabel = "custom taint variable step"
     }
 }
