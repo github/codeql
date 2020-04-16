@@ -1,16 +1,12 @@
 | LocalDataFlow.cs:53:15:53:19 | access to local variable sink0 |
-| LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 |
-| LocalDataFlow.cs:302:15:302:20 | access to local variable sink41 |
-| LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 |
-| LocalDataFlow.cs:306:15:306:20 | access to local variable sink43 |
-| LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 |
-| LocalDataFlow.cs:394:15:394:20 | access to local variable sink68 |
-| LocalDataFlow.cs:412:15:412:20 | access to local variable sink70 |
-| LocalDataFlow.cs:420:19:420:24 | access to local variable sink71 |
-| LocalDataFlow.cs:430:23:430:28 | access to local variable sink72 |
-| LocalDataFlow.cs:445:15:445:20 | access to local variable sink73 |
-| LocalDataFlow.cs:446:15:446:20 | access to local variable sink74 |
-| LocalDataFlow.cs:472:15:472:21 | access to parameter tainted |
+| LocalDataFlow.cs:275:15:275:20 | access to local variable sink67 |
+| LocalDataFlow.cs:277:15:277:20 | access to local variable sink68 |
+| LocalDataFlow.cs:295:15:295:20 | access to local variable sink70 |
+| LocalDataFlow.cs:303:19:303:24 | access to local variable sink71 |
+| LocalDataFlow.cs:313:23:313:28 | access to local variable sink72 |
+| LocalDataFlow.cs:328:15:328:20 | access to local variable sink73 |
+| LocalDataFlow.cs:329:15:329:20 | access to local variable sink74 |
+| LocalDataFlow.cs:355:15:355:21 | access to parameter tainted |
 | SSA.cs:9:15:9:22 | access to local variable ssaSink0 |
 | SSA.cs:25:15:25:22 | access to local variable ssaSink1 |
 | SSA.cs:43:15:43:22 | access to local variable ssaSink2 |
