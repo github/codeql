@@ -251,7 +251,7 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
@@ -264,7 +264,7 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   }
 
   // There might be multiple `ChiInstructions` that has a particular instruction as
-  // the total operand - so this definition give consistency errors in
+  // the total operand - so this definition gives consistency errors in
   // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
   // this consistency failure has.
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
@@ -430,9 +430,23 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
+  // The next two rules allow flow from partial definitions in setters to succeeding loads in the caller.
+  // First, we add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. Consider the following example:
+  // ```
+  // void setX(Point* p, int new_x) {
+  //   p->x = new_x;
+  // }
+  // ...
+  // setX(&p, taint());
+  // ```
+  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
+  // `setX`, which will be melded into `p` through a chi instruction.
   iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
   not iTo.isResultConflated()
   or
+  // Next, we add flow from non-conflated chi instructions to loads (even when they are not precise).
+  // This ensures that loads of `p->x` gets data flow from the `WriteSideEffectInstruction` above.
   exists(ChiInstruction chi | iFrom = chi |
     not chi.isResultConflated() and
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
