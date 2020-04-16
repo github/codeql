@@ -3,12 +3,13 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.FlowSource
 
 /**
  * The standard functions `gets` and `fgets`.
  */
 class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction {
+  SideEffectFunction, RemoteFlowFunction {
   GetsFunction() {
     exists(string name | hasGlobalOrStdName(name) |
       name = "gets" or // gets(str)
@@ -41,5 +42,9 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
     i = 0 and
     buffer = true and
     mustWrite = true
+  }
+
+  override predicate hasFlowSource(FunctionOutput output) {
+    output.isParameterDeref(0)
   }
 }
