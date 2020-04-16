@@ -33,10 +33,11 @@ predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func
 class BottleRoute extends ControlFlowNode {
     BottleRoute() { bottle_route(this, _, _) }
 
-    /** DEPRECATED: Use `getRoute` instead */
-    deprecated string getUrl() { result = this.getRoute() }
+    /** DEPRECATED: Use `getUrlPattern` instead */
+    deprecated string getUrl() { result = this.getUrlPattern() }
 
-    string getRoute() {
+    /** Gets the URL pattern this route will listen to */
+    string getUrlPattern() {
         exists(StrConst route |
             bottle_route(this, route.getAFlowNode(), _) and
             result = route.getText()
@@ -51,7 +52,7 @@ class BottleRoute extends ControlFlowNode {
             func.getArgByName(name) = result and
             exists(string match |
                 // see https://bottlepy.org/docs/dev/tutorial.html#dynamic-routes
-                match = this.getRoute().regexpFind(bottle_rule_syntax_re(), _, _) and
+                match = this.getUrlPattern().regexpFind(bottle_rule_syntax_re(), _, _) and
                 (
                     // for normal `<arg>` or `<arg:filter>`
                     name = match.regexpCapture(bottle_rule_syntax_re(), 5)
