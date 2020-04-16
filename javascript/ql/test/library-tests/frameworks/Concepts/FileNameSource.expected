@@ -27,3 +27,4 @@
 | tst-file-names.js:45:12:45:42 | globule ... /*.js") |
 | tst-file-names.js:46:12:46:51 | globule ... .js"]}) |
 | tst-file-names.js:47:12:47:52 | globule ... b.js"]) |
+| tst-file-names.js:51:15:51:23 | await foo |

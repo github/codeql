@@ -22,14 +22,13 @@ predicate string_const(Expr s) {
 
 from StrConst s
 where
-// Implicitly concatenated string is in a list and that list contains at least one other string.
-exists(List l, Expr other |
-    not s = other and
-    l.getAnElt() = s and
-    l.getAnElt() = other and
-    string_const(other)
-) and
-exists(s.getAnImplicitlyConcatenatedPart()) and
-not s.isParenthesized()
-
+    // Implicitly concatenated string is in a list and that list contains at least one other string.
+    exists(List l, Expr other |
+        not s = other and
+        l.getAnElt() = s and
+        l.getAnElt() = other and
+        string_const(other)
+    ) and
+    exists(s.getAnImplicitlyConcatenatedPart()) and
+    not s.isParenthesized()
 select s, "Implicit string concatenation. Maybe missing a comma?"

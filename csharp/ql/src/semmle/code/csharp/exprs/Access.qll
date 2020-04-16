@@ -388,7 +388,12 @@ library class PropertyAccessExpr extends Expr, @property_access_expr {
   /** Gets the target of this property access. */
   Property getProperty() { expr_access(this, result) }
 
-  override string toString() { result = "access to property " + this.getProperty().getName() }
+  override string toString() {
+    result = "access to property " + this.getProperty().getName()
+    or
+    not exists(this.getProperty()) and
+    result = "access to property (unknown)"
+  }
 }
 
 /**

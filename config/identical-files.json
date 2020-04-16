@@ -39,6 +39,12 @@
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
   ],
+  "DataFlow Java/C++/C# Consistency checks": [
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll"
+  ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"
@@ -235,6 +241,13 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
+  ],
+  "C++ IR PrintValueNumbering": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/PrintValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll"
   ],
   "C++ IR ConstantAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",

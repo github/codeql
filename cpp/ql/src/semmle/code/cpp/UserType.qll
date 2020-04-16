@@ -38,7 +38,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   override Specifier getASpecifier() { result = Type.super.getASpecifier() }
 
   override Location getLocation() {
-    if isDefined()
+    if hasDefinition()
     then result = this.getDefinitionLocation()
     else result = this.getADeclarationLocation()
   }

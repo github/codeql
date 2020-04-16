@@ -5,7 +5,9 @@
 Types
 #####
 
-QL is a statically typed language, so each variable must have a declared **type**. A type is a set of values.
+QL is a statically typed language, so each variable must have a declared type.
+
+A type is a set of values.
 For example, the type ``int`` is the set of integers. 
 Note that a value can belong to more than one of these sets, which means that it can have more 
 than one type.

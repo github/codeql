@@ -9263,6 +9263,17 @@
 </dependencies>
 </relation>
 <relation>
+<name>isRecord</name>
+<cardinality>100</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>100</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>interfaces</name>
 <cardinality>249736</cardinality>
 <columnsizes>

@@ -1,5 +1,7 @@
-AST class reference
-===================
+Abstract syntax tree classes for JavaScript and TypeScript
+==========================================================
+
+CodeQL has a large selection of classes for working with JavaScript and TypeScript statements and expressions.
 
 Statement classes
 -----------------

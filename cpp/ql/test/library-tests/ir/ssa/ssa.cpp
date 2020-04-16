@@ -280,3 +280,26 @@ void EscapedButNotConflated(bool c, Point p, int x1) {
   }
   int x = a.x; // The phi node here is not conflated
 }
+
+struct A {
+  int i;
+  A(int x) {}
+  A(A*) {}
+  A() {}
+};
+
+Point *NewAliasing(int x) {
+  Point* p = new Point;
+  Point* q = new Point;
+  int j = new A(new A(x))->i;
+  A* a = new A;
+  return p;
+}
+
+void unknownFunction(int argc, char **argv);
+
+int main(int argc, char **argv) {
+  unknownFunction(argc, argv);
+  unknownFunction(argc, argv);
+  return **argv; // Chi chain goes through side effects from unknownFunction
+}
