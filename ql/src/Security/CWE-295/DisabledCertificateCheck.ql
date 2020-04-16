@@ -8,7 +8,9 @@
  * @id go/disabled-certificate-check
  * @tags security
  *       external/cwe/cwe-295
- *
+ */
+
+/*
  * The approach taken by this query is to look for assignments that set `InsecureSkipVerify`
  * (from struct `Config` of package `crypto/tls`) to `true`. We exclude assignments that are
  * guarded by a feature-flag selecting whether verification should be skipped or not, since
