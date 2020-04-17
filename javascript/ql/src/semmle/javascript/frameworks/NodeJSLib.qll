@@ -589,7 +589,7 @@ module NodeJSLib {
   /**
    * Gets a possibly promisified (using `util.promisify`) version of the input `callback`.
    */
-  DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
+  private DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
     result = callback
     or
     exists(DataFlow::CallNode promisify |
