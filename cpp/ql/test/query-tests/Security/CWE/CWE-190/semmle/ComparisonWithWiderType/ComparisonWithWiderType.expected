@@ -13,4 +13,3 @@
 | test.c:107:14:107:26 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:83:16:83:16 | c | c | test.c:107:19:107:25 | ... >> ... | ... >> ... |
 | test.c:128:15:128:21 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:121:16:121:17 | uc | uc | test.c:123:19:123:20 | sz | sz |
 | test.c:139:15:139:21 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:121:16:121:17 | uc | uc | test.c:123:19:123:20 | sz | sz |
-| test.c:146:15:146:21 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type unsigned int. | test.c:121:16:121:17 | uc | uc | test.c:123:19:123:20 | sz | sz |

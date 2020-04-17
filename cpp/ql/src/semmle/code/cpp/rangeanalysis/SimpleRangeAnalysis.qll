@@ -125,11 +125,11 @@ private string getValue(Expr e) {
 private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   UnsignedBitwiseAndExpr() {
     (
-      getLeftOperand().getType().getUnderlyingType().(IntegralType).isUnsigned() or
+      getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
       getLeftOperand().getValue().toInt() >= 0
     ) and
     (
-      getRightOperand().getType().getUnderlyingType().(IntegralType).isUnsigned() or
+      getRightOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
       getRightOperand().getValue().toInt() >= 0
     )
   }

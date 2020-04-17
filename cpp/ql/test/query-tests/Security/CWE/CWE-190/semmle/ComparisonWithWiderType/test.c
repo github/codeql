@@ -143,5 +143,5 @@ void test13() {
 	if (sx < 0) {sx = 0;}
 	if (sx > 128) {sx = 128;}
 	sz = (unsigned)sx & (unsigned)sy;
-	for (uc = 0; uc < sz; uc++) {} // GOOD [FALSE POSITIVE]
+	for (uc = 0; uc < sz; uc++) {} // GOOD
 }
