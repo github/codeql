@@ -114,3 +114,34 @@ void test12() {
 	x = get_a_uint();
 	for (c = 0; c < ((x & 0xFF000000) >> 24); c++) {} // GOOD
 }
+
+int get_an_int();
+
+void test13() {
+	unsigned char uc;
+	int sx, sy;
+	unsigned ux, uy, sz;
+
+	ux = get_a_uint();
+	uy = get_a_uint();
+	sz = ux & uy;
+	for (uc = 0; uc < sz; uc++) {} // BAD
+
+	ux = get_a_uint();
+	uy = get_a_uint();
+	if (ux > 128) {ux = 128;}
+	sz = ux & uy;
+	for (uc = 0; uc < sz; uc++) {} // GOOD
+
+	sx = get_an_int();
+	sy = get_an_int();
+	sz = (unsigned)sx & (unsigned)sy;
+	for (uc = 0; uc < sz; uc++) {} // BAD
+
+	sx = get_an_int();
+	sy = get_an_int();
+	if (sx < 0) {sx = 0;}
+	if (sx > 128) {sx = 128;}
+	sz = (unsigned)sx & (unsigned)sy;
+	for (uc = 0; uc < sz; uc++) {} // GOOD [FALSE POSITIVE]
+}
