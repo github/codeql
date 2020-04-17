@@ -87,8 +87,6 @@
 | Identical operands (`js/redundant-operation`) | Fewer results | This query now recognizes cases where the operands change a value using ++/-- expressions. |
 | Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer results | This query now recognizes cases where a function uses the `Function.arguments` value to process a variable number of parameters. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional variations of URL scheme checks. |
-| Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional file system calls. |
-| Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional command execution calls. |
 
 ## Changes to libraries
 
