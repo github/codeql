@@ -459,7 +459,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = fsModuleMember(methodName).getACall() }
+    NodeJSFileSystemAccess() { this = maybePromisified(fsModuleMember(methodName)).getACall() }
 
     /**
      * Gets the name of the called method.
