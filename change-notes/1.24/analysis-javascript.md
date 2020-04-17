@@ -78,7 +78,7 @@
 | Expression has no effect (`js/useless-expression`) | Fewer false positive results | The query now recognizes block-level flow type annotations and ignores the first statement of a try block. |
 | Identical operands (`js/redundant-operation`) | Fewer results | This query now excludes cases where the operands change a value using ++/-- expressions. |
 | Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false positive results | This query now recognizes and excludes additional cases where a single replacement is likely to be intentional. |
-| Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes more variations of URL scheme checks. |
+| Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional variations of URL scheme checks. |
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | The query reports fewer duplicates and only flags handlers that explicitly access cookie data. |
 | Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer results | This query now excludes cases where a function uses the `Function.arguments` value to process a variable number of parameters. |
 | Syntax error (`js/syntax-error`) | Lower severity | This results of this query are now displayed with lower severity. |
