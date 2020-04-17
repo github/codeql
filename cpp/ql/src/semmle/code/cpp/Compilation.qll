@@ -40,6 +40,7 @@ class Compilation extends @compilation {
   /** Gets a file compiled during this invocation. */
   File getAFileCompiled() { result = getFileCompiled(_) }
 
+  /** Gets the `i`th file compiled during this invocation */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, unresolveElement(result)) }
 
   /**

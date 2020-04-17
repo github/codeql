@@ -317,6 +317,24 @@ class LocalVariable extends Variable {
       else result = d.getContainer()
     )
   }
+
+  /**
+   * Gets the location of a declaration of this variable.
+   *
+   * If the variable has one or more declarations, the location of the first declaration is used.
+   * If the variable has no declaration, the entry point of its declaring container is used.
+   */
+  Location getLocation() {
+    result =
+      min(Location loc |
+        loc = getADeclaration().getLocation()
+      |
+        loc order by loc.getStartLine(), loc.getStartColumn()
+      )
+    or
+    not exists(getADeclaration()) and
+    result = getDeclaringContainer().getEntry().getLocation()
+  }
 }
 
 /** A local variable that is not captured. */

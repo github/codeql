@@ -1462,6 +1462,9 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
     nd = DataFlow::thisNode(_)
+    or
+    // Skip captured variable nodes as the successor will be a use of that variable anyway.
+    nd = DataFlow::capturedVariableNode(_)
   }
 }
 
