@@ -38,10 +38,21 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 * The built-in C++20 "spaceship operator" (`<=>`) is now supported via the QL
   class `SpaceshipExpr`. Overloaded forms are modeled as calls to functions
   named `operator<=>`.
-* The data-flow library has been improved, which affects and improves some security queries. The improvements are:
+* The data-flow library (`semmle.code.cpp.dataflow.DataFlow` and
+  `semmle.code.cpp.dataflow.TaintTracking`) has been improved, which affects
+  and improves some security queries. The improvements are:
   - Track flow through functions that combine taint tracking with flow through fields.
   - Track flow through clone-like functions, that is, functions that read contents of a field from a
     parameter and stores the value in the field of a returned object.
+* The security pack taint tracking library
+  (`semmle.code.cpp.security.TaintTracking`) uses a new intermediate
+  representation. This provides a more precise analysis of flow through
+  parameters and pointers. For new queries, however, we continue to recommend
+  using `semmle.code.cpp.dataflow.TaintTracking`.
+* The global value numbering library
+  (`semmle.code.cpp.valuenumbering.GlobalValueNumbering`) uses a new
+  intermediate representation to provide a more precise analysis of
+  heap-allocated memory and pointers to stack variables.
 * Created the `semmle.code.cpp.models.interfaces.Allocation` library to model
   allocation such as `new` expressions and calls to `malloc`. This in intended
   to replace the functionality in `semmle.code.cpp.commons.Alloc` with a more
