@@ -587,15 +587,15 @@ module NodeJSLib {
   }
 
   /**
-   * Gets a possibly promisified (using `util.promisify`) version of the input `func`.
+   * Gets a possibly promisified (using `util.promisify`) version of the input `callback`.
    */
-  DataFlow::SourceNode maybePromisified(DataFlow::SourceNode func) {
-    result = func
+  DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
+    result = callback
     or
     exists(DataFlow::CallNode promisify |
       promisify = DataFlow::moduleMember("util", "promisify").getACall()
     |
-      result = promisify and promisify.getArgument(0).getALocalSource() = func
+      result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
   }
 
