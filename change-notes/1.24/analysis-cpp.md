@@ -35,6 +35,9 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The built-in C++20 "spaceship operator" (`<=>`) is now supported via the QL
+  class `SpaceshipExpr`. Overloaded forms are modeled as calls to functions
+  named `operator<=>`.
 * The data-flow library has been improved, which affects and improves some security queries. The improvements are:
   - Track flow through functions that combine taint tracking with flow through fields.
   - Track flow through clone-like functions, that is, functions that read contents of a field from a
