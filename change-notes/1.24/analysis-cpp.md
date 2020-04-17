@@ -14,24 +14,23 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| All CWE-specific queries using taint tracking (`cpp/path-injection`, `cpp/cgi-xss`, `cpp/sql-injection`, `cpp/uncontrolled-process-operation`, `cpp/unbounded-write`, `cpp/tainted-format-string`, `cpp/tainted-format-string-through-global`, `cpp/uncontrolled-arithmetic`, `cpp/uncontrolled-allocation-size`, `cpp/user-controlled-bypass`, `cpp/cleartext-storage-buffer`, `cpp/tainted-permissions-check`) | More correct results | A new taint-tracking library is used, giving more precise results and offering _path explanations_ for results. There is a performance cost to this, and the LGTM suite will overall run slower than before. |
+| Boost\_asio TLS Settings Misconfiguration (`cpp/boost/tls-settings-misconfiguration`) | Query id change | Query id renamed from `cpp/boost/tls_settings_misconfiguration` (underscores to dashes) |
 | Buffer not sufficient for string (`cpp/overflow-calculated`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
-| No space for zero terminator (`cpp/no-space-for-terminator`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
+| Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) |  | This query is no longer run on LGTM. |
 | Memory is never freed (`cpp/memory-never-freed`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
 | Memory may not be freed (`cpp/memory-may-not-be-freed`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
 | Mismatching new/free or malloc/delete (`cpp/new-free-mismatch`) | Fewer false positive results | Fixed false positive results in template code. |
 | Missing return statement (`cpp/missing-return`) | Fewer false positive results | Functions containing `asm` statements are no longer highlighted by this query. |
 | Missing return statement (`cpp/missing-return`) | More accurate locations | Locations reported by this query are now more accurate in some cases. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | More correct results | String arguments to formatting functions are now (usually) expected to be null terminated strings. |
-| Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) |  | This query is no longer run on LGTM. |
+| No space for zero terminator (`cpp/no-space-for-terminator`) | More true positive results | This query now identifies a wider variety of buffer allocations using the `semmle.code.cpp.models.interfaces.Allocation` library. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | This query has been modified to be more conservative when identifying which pointers point to null-terminated strings.  This approach produces fewer, more accurate results. |
 | Overflow in uncontrolled allocation size (`cpp/uncontrolled-allocation-size`) | Fewer false positive results | The query now produces fewer, more accurate results. Cases where the tainted allocation size is range checked are more reliably excluded. |
 | Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | This query no longer reports incorrect results in template classes. |
-| Unsafe array for days of the year (`cpp/leap-year/unsafe-array-for-days-of-the-year`) |  | This query is no longer run on LGTM. |
-| Boost\_asio TLS Settings Misconfiguration (`cpp/boost/tls-settings-misconfiguration`) | Query id change | Query id renamed from `cpp/boost/tls_settings_misconfiguration` (underscores to dashes) |
-| Unsigned comparison to zero (`cpp/unsigned-comparison-zero`) | More correct results | This query now also looks for comparisons of the form `0 <= x`. |
 | Signed overflow check (`cpp/signed-overflow-check`), Pointer overflow check (`cpp/pointer-overflow-check`), Possibly wrong buffer size in string copy (`cpp/bad-strncpy-size`) | More correct results | A new library is used for determining which expressions have identical value, giving more precise results. There is a performance cost to this, and the LGTM suite will overall run slower than before. |
-| All CWE-specific queries using taint tracking (`cpp/path-injection`, `cpp/cgi-xss`, `cpp/sql-injection`, `cpp/uncontrolled-process-operation`, `cpp/unbounded-write`, `cpp/tainted-format-string`, `cpp/tainted-format-string-through-global`, `cpp/uncontrolled-arithmetic`, `cpp/uncontrolled-allocation-size`, `cpp/user-controlled-bypass`, `cpp/cleartext-storage-buffer`, `cpp/tainted-permissions-check`) | More correct results | A new taint-tracking library is used, giving more precise results and offering _path explanations_ for results. There is a performance cost to this, and the LGTM suite will overall run slower than before. |
-
+| Unsafe array for days of the year (`cpp/leap-year/unsafe-array-for-days-of-the-year`) |  | This query is no longer run on LGTM. |
+| Unsigned comparison to zero (`cpp/unsigned-comparison-zero`) | More correct results | This query now also looks for comparisons of the form `0 <= x`. |
 
 ## Changes to libraries
 
