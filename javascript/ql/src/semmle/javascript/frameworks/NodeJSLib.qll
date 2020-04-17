@@ -587,21 +587,26 @@ module NodeJSLib {
   }
 
   /**
+   * Gets a possibly promisified (using `util.promisify`) version of the input `func`.
+   */
+  DataFlow::SourceNode maybePromisified(DataFlow::SourceNode func) {
+    result = func
+    or
+    exists(DataFlow::CallNode promisify |
+      promisify = DataFlow::moduleMember("util", "promisify").getACall()
+    |
+      result = promisify and promisify.getArgument(0).getALocalSource() = func
+    )
+  }
+
+  /**
    * A call to a method from module `child_process`.
    */
   private class ChildProcessMethodCall extends SystemCommandExecution, DataFlow::CallNode {
     string methodName;
 
     ChildProcessMethodCall() {
-      this = DataFlow::moduleMember("child_process", methodName).getACall()
-      or
-      exists(DataFlow::CallNode promisify |
-        promisify = DataFlow::moduleMember("util", "promisify").getACall()
-      |
-        this = promisify.getACall() and
-        promisify.getArgument(0).getALocalSource() =
-          DataFlow::moduleMember("child_process", methodName)
-      )
+      this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
