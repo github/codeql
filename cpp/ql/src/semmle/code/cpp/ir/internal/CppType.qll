@@ -453,12 +453,19 @@ CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
  */
 private int getPrecisionPriority(RealNumberType type) {
   // Prefer `double`, `float`, `long double` in that order.
-  if type instanceof DoubleType then result = 4
-  else if type instanceof FloatType then result = 3
-  else if type instanceof LongDoubleType then result = 2
-  // If we get this far, prefer non-extended-precision types.
-  else if not type.isExtendedPrecision() then result = 1
-  else result = 0
+  if type instanceof DoubleType
+  then result = 4
+  else
+    if type instanceof FloatType
+    then result = 3
+    else
+      if type instanceof LongDoubleType
+      then result = 2
+      else
+        // If we get this far, prefer non-extended-precision types.
+        if not type.isExtendedPrecision()
+        then result = 1
+        else result = 0
 }
 
 /**
