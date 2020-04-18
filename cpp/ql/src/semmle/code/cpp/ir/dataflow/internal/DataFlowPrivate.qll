@@ -186,7 +186,12 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  none() // stub implementation
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    node1.asInstruction() = store and
+    store.getDestinationAddress() = fa and
+    node2.asInstruction().(ChiInstruction).getPartial() = store and
+    f.(FieldContent).getField() = fa.getField()
+  )
 }
 
 /**
@@ -195,7 +200,12 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  none() // stub implementation
+  exists(FieldAddressInstruction fa, LoadInstruction load |
+    load.getSourceAddress() = fa and
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    fa.getField() = f.(FieldContent).getField() and
+    load = node2.asInstruction()
+  )
 }
 
 /**
