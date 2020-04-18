@@ -707,6 +707,7 @@ private newtype TTypeDomain =
  * `ImaginaryDomain`.
  */
 class TypeDomain extends TTypeDomain {
+  /** Gets a textual representation of this type domain. */
   string toString() { none() }
 }
 
