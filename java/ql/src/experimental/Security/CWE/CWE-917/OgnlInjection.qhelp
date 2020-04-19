@@ -27,8 +27,7 @@ and validate the expressions before evaluation.</p>
 </example>
 
 <references>
-<li>Oracle: <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jndi/">Java Naming and Directory Interface (JNDI)</a>.</li>
-<li>Black Hat materials: <a href="https://www.blackhat.com/docs/us-16/materials/us-16-Munoz-A-Journey-From-JNDI-LDAP-Manipulation-To-RCE-wp.pdf">A Journey from JNDI/LDAP Manipulation to Remote Code Execution Dream Land</a>.</li>
-<li>Veracode: <a href="https://www.veracode.com/blog/research/exploiting-jndi-injections-java">Exploiting JNDI Injections in Java</a>.</li>
+<li>OGNL library: <a href="https://github.com/jkuhnert/ognl/">OGNL library</a>.</li>
+<li>Struts security: <a href="https://struts.apache.org/security/#proactively-protect-from-ognl-expression-injections-attacks-if-easily-applicable">Proactively protect from OGNL Expression Injections attacks</a>.</li>
 </references>
 </qhelp>
