@@ -1601,6 +1601,9 @@ class MidPathNode extends PathNode, MkMidNode {
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
       SsaImplicitDefinition
     or
+    // Skip SSA definition of parameter as its location coincides with the parameter node
+    nd = DataFlow::ssaDefinitionNode(SSA::definition(any(SimpleParameter p)))
+    or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
     nd = any(AddExpr add).getAnOperand().flow()

@@ -22,7 +22,6 @@ newtype TNode =
     (kind = "call" or kind = "apply")
   } or
   TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
-  TUnusedParameterNode(SimpleParameter p) { not exists(SSA::definition(p)) } or
   TDestructuredModuleImportNode(ImportDeclaration decl) {
     exists(decl.getASpecifier().getImportedName())
   } or

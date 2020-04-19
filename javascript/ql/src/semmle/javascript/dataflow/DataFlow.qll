@@ -713,10 +713,6 @@ module DataFlow {
         parameterNode(paramNode, param)
       |
         result = paramNode
-        or
-        // special case: there is no SSA flow step for unused parameters
-        paramNode instanceof UnusedParameterNode and
-        result = param.getDefault().flow()
       )
     }
 
@@ -875,32 +871,6 @@ module DataFlow {
     override Expr getPropertyNameExpr() { none() }
 
     override string getPropertyName() { none() }
-  }
-
-  /**
-   * A data flow node representing an unused parameter.
-   *
-   * This case exists to ensure all parameters have a corresponding data-flow node.
-   * In most cases, parameters are represented by SSA definitions or destructuring pattern nodes.
-   */
-  private class UnusedParameterNode extends DataFlow::Node, TUnusedParameterNode {
-    SimpleParameter p;
-
-    UnusedParameterNode() { this = TUnusedParameterNode(p) }
-
-    override string toString() { result = p.toString() }
-
-    override ASTNode getAstNode() { result = p }
-
-    override BasicBlock getBasicBlock() { result = p.getBasicBlock() }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      p.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
-    override File getFile() { result = p.getFile() }
   }
 
   /**
@@ -1256,7 +1226,9 @@ module DataFlow {
   /**
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
-  predicate parameterNode(DataFlow::Node nd, Parameter p) { nd = lvalueNode(p) }
+  predicate parameterNode(DataFlow::Node nd, Parameter p) {
+    nd = valueNode(p)
+  }
 
   /**
    * INTERNAL: Use `thisNode(StmtContainer container)` instead.
@@ -1309,8 +1281,6 @@ module DataFlow {
     )
     or
     result = TValueNode(lvalue.(DestructuringPattern))
-    or
-    result = TUnusedParameterNode(lvalue)
   }
 
   /**
@@ -1363,6 +1333,11 @@ module DataFlow {
     exists(VarDef def |
       pred = valueNode(defSourceNode(def)) and
       succ = lvalueNode(def.getTarget())
+    )
+    or
+    exists(SimpleParameter param |
+      pred = valueNode(param) and // The value node represents the incoming argument
+      succ = lvalueNode(param) // The SSA node represents the parameters's local variable
     )
     or
     exists(PropertyPattern pattern |
@@ -1576,8 +1551,6 @@ module DataFlow {
     exists(PropertyPattern p | nd = TPropNode(p)) and cause = "heap"
     or
     nd instanceof TElementPatternNode and cause = "heap"
-    or
-    nd instanceof UnusedParameterNode and cause = "call"
   }
 
   /**
