@@ -15,7 +15,6 @@ newtype TNode =
   TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
   TPropNode(@property p) or
   TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or
-  TDestructuringPatternNode(DestructuringPattern dp) or
   TElementPatternNode(ArrayPattern ap, Expr p) { p = ap.getElement(_) } or
   TElementNode(ArrayExpr arr, Expr e) { e = arr.getAnElement() } or
   TReflectiveCallNode(MethodCallExpr ce, string kind) {

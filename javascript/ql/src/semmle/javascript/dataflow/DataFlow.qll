@@ -369,30 +369,6 @@ module DataFlow {
   }
 
   /**
-   * A node in the data flow graph which corresponds to the value destructured by an
-   * object or array pattern.
-   */
-  private class DestructuringPatternNode extends Node, TDestructuringPatternNode {
-    DestructuringPattern pattern;
-
-    DestructuringPatternNode() { this = TDestructuringPatternNode(pattern) }
-
-    override BasicBlock getBasicBlock() { result = pattern.getBasicBlock() }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      pattern.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
-    override string toString() { result = pattern.toString() }
-
-    override File getFile() { result = pattern.getFile() }
-
-    override ASTNode getAstNode() { result = pattern }
-  }
-
-  /**
    * A node in the data flow graph which corresponds to an element pattern of an
    * array pattern.
    */
@@ -828,7 +804,7 @@ module DataFlow {
     /** Gets the value pattern of this property pattern. */
     Expr getValuePattern() { result = prop.getValuePattern() }
 
-    override Node getBase() { result = TDestructuringPatternNode(prop.getObjectPattern()) }
+    override Node getBase() { result = TValueNode(prop.getObjectPattern()) }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
 
@@ -841,7 +817,7 @@ module DataFlow {
    * for `[ ...elts ] = arr`.
    */
   private class RestPatternAsPropRead extends PropRead, RestPatternNode {
-    override Node getBase() { result = TDestructuringPatternNode(pattern) }
+    override Node getBase() { result = TValueNode(pattern) }
 
     override Expr getPropertyNameExpr() { none() }
 
@@ -854,7 +830,7 @@ module DataFlow {
    * for `y`.
    */
   private class ElementPatternAsPropRead extends PropRead, ElementPatternNode {
-    override Node getBase() { result = TDestructuringPatternNode(pattern) }
+    override Node getBase() { result = TValueNode(pattern) }
 
     override Expr getPropertyNameExpr() { none() }
 
@@ -1332,7 +1308,7 @@ module DataFlow {
       result = TSsaDefNode(ssa)
     )
     or
-    result = TDestructuringPatternNode(lvalue)
+    result = TValueNode(lvalue.(DestructuringPattern))
     or
     result = TUnusedParameterNode(lvalue)
   }
