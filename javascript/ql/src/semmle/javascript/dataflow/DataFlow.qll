@@ -21,32 +21,9 @@
 import javascript
 private import internal.CallGraphs
 private import internal.FlowSteps as FlowSteps
+private import internal.DataFlowNode
 
 module DataFlow {
-  cached
-  private newtype TNode =
-    TValueNode(AST::ValueNode nd) or
-    TSsaDefNode(SsaDefinition d) or
-    TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
-    TPropNode(@property p) or
-    TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or
-    TDestructuringPatternNode(DestructuringPattern dp) or
-    TElementPatternNode(ArrayPattern ap, Expr p) { p = ap.getElement(_) } or
-    TElementNode(ArrayExpr arr, Expr e) { e = arr.getAnElement() } or
-    TReflectiveCallNode(MethodCallExpr ce, string kind) {
-      ce.getMethodName() = kind and
-      (kind = "call" or kind = "apply")
-    } or
-    TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
-    TUnusedParameterNode(SimpleParameter p) { not exists(SSA::definition(p)) } or
-    TDestructuredModuleImportNode(ImportDeclaration decl) {
-      exists(decl.getASpecifier().getImportedName())
-    } or
-    THtmlAttributeNode(HTML::Attribute attr) or
-    TExceptionalFunctionReturnNode(Function f) or
-    TExceptionalInvocationReturnNode(InvokeExpr e) or
-    TGlobalAccessPathRoot()
-
   /**
    * A node in the data flow graph.
    */
