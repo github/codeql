@@ -126,6 +126,42 @@ class ASTNode extends @ast_node, Locatable {
   predicate inExternsFile() { getTopLevel().isExterns() }
 
   /**
+   * Holds if this is an ambient node that is not a `TypeExpr` and is not inside a `.d.ts` file
+   *
+   * Since the overwhelming majority of ambient nodes are `TypeExpr` or inside `.d.ts` files,
+   * we avoid caching them.
+   */
+  cached
+  private predicate isAmbientInternal() {
+    getParent().isAmbientInternal()
+    or
+    not isAmbientTopLevel(getTopLevel()) and
+    (
+      this instanceof ExternalModuleDeclaration
+      or
+      this instanceof GlobalAugmentationDeclaration
+      or
+      this instanceof ExportAsNamespaceDeclaration
+      or
+      this instanceof TypeAliasDeclaration
+      or
+      this instanceof InterfaceDeclaration
+      or
+      hasDeclareKeyword(this)
+      or
+      hasTypeKeyword(this)
+      or
+      // An export such as `export declare function f()` should be seen as ambient.
+      hasDeclareKeyword(this.(ExportNamedDeclaration).getOperand())
+      or
+      exists(Function f |
+        this = f and
+        not f.hasBody()
+      )
+    )
+  }
+
+  /**
    * Holds if this is part of an ambient declaration or type annotation in a TypeScript file.
    *
    * A declaration is ambient if it occurs under a `declare` modifier or is
@@ -134,7 +170,22 @@ class ASTNode extends @ast_node, Locatable {
    * The TypeScript compiler emits no code for ambient declarations, but they
    * can affect name resolution and type checking at compile-time.
    */
-  predicate isAmbient() { getParent().isAmbient() }
+  pragma[inline]
+  predicate isAmbient() {
+    isAmbientInternal()
+    or
+    isAmbientTopLevel(getTopLevel())
+    or
+    this instanceof TypeExpr
+  }
+}
+
+/**
+ * Holds if the given file is a `.d.ts` file.
+ */
+cached
+private predicate isAmbientTopLevel(TopLevel tl) {
+  tl.getFile().getBaseName().matches("%.d.ts")
 }
 
 /**
@@ -197,11 +248,6 @@ class TopLevel extends @toplevel, StmtContainer {
   override ControlFlowNode getFirstControlFlowNode() { result = getEntry() }
 
   override string toString() { result = "<toplevel>" }
-
-  override predicate isAmbient() {
-    getFile().getFileType().isTypeScript() and
-    getFile().getBaseName().matches("%.d.ts")
-  }
 }
 
 /**
