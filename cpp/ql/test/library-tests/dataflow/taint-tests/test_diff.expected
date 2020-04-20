@@ -28,7 +28,6 @@
 | taint.cpp:181:8:181:9 | taint.cpp:185:11:185:16 | AST only |
 | taint.cpp:195:7:195:7 | taint.cpp:192:23:192:28 | AST only |
 | taint.cpp:195:7:195:7 | taint.cpp:193:6:193:6 | AST only |
-| taint.cpp:216:7:216:7 | taint.cpp:207:6:207:11 | AST only |
 | taint.cpp:229:3:229:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:233:8:233:8 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:236:3:236:6 | taint.cpp:223:10:223:15 | AST only |
