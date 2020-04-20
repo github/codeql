@@ -58,5 +58,8 @@
 	
 	$("#id").get(0).innerHTML = $("input").getAttribute("id"); // OK.
 	
-	$("#id").get(0).innerHTML = $(document).find("option").attr("value"); // NOT OK. 
+	$("#id").get(0).innerHTML = $(document).find("option").attr("value"); // NOT OK.
+	
+	var valMethod = $("textarea").val;
+	$("#id").get(0).innerHTML = valMethod(); // OK - Not a method call, not valid receiver for jQuery. 
 })();
