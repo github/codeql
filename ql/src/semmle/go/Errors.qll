@@ -18,6 +18,9 @@ class Error extends @error {
   /** Gets the index of this error among all errors reported for the same package. */
   int getIndex() { errors(this, _, _, _, _, _, _, _, result) }
 
+  /** Gets the file in which this error was reported, if it can be determined. */
+  File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to

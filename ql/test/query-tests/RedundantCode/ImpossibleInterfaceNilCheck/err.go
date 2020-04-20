@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// codeql test: expect frontend errors
+
 func errtest() {
 	x := unknownFunction()
 	var y interface{} = x
