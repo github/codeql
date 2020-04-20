@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>ACross-Site Request Forgery (CSRF) is an attack that forces an end user to execute unwanted actions
+            on a web application in which they’re currently authenticated. CSRF attacks specifically target
+            state-changing requests, not theft of data, since the attacker has no way to see the response to
+            the forged request.</p>
+
+    </overview>
+    <recommendation>
+
+        <p> When a Django project is created the CSRF middleware is activated by default in the MIDDLEWARE setting,
+            thereby providing CSRF protection to all the views. If disabled , which is not recommended,
+            csrf_protect() can be used on particular views that needs to be protected</p>
+
+    </recommendation>
+    <example>
+
+        <p>The following examples shows the Django's configuration with CSRF protection disabled.</p>
+
+        <sample src="CSRFMiddleware.py" />
+
+        <p>The corrected version does not include django.middleware.csrf.CsrfViewMiddleware, which
+            means that the CSRF protection via middleware is disabled and the developers have
+            to implement CSRF protection using decorators.</p>
+
+        <code>
+            @csrf_protect
+            def index(request):
+                return HttpResponse("Hello, world.")
+        </code>
+
+    </example>
+    <references>
+
+        <li>
+            OWASP:
+            <a href="https://owasp.org/www-community/attacks/csrf">Cross-Site Request Forgery (CSRF)</a>.
+        </li>
+        <li>
+            Wikipedia:
+            <a href="https://docs.djangoproject.com/en/3.0/ref/csrf/">Django Cross Site Request Forgery protection¶
+            </a>.
+        </li>
+        <li>
+            CWE:
+            <a href="https://owasp.org/www-community/attacks/csrf">CWE-352: Cross-Site Request Forgery (CSRF)</a>.
+        </li>
+
+    </references>
+</qhelp>
