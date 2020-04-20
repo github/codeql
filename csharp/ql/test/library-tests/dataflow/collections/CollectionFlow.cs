@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class A
+public class CollectionFlow
 {
-    public void M1()
+    public class A { }
+
+    public void ArrayInitializerFlow()
     {
         var a = new A();
         var @as = new[] { a };
@@ -14,7 +16,7 @@ public class A
         Sink(First(@as)); // flow
     }
 
-    public void M2(A other)
+    public void ArrayInitializerNoFlow(A other)
     {
         var a = new A();
         var @as = new[] { other };
@@ -23,7 +25,7 @@ public class A
         Sink(First(@as)); // no flow
     }
 
-    public void M3()
+    public void ArrayAssignmentFlow()
     {
         var a = new A();
         var @as = new A[1];
@@ -33,7 +35,7 @@ public class A
         Sink(First(@as)); // flow
     }
 
-    public void M4(A other)
+    public void ArrayAssignmentNoFlow(A other)
     {
         var a = new A();
         var @as = new A[1];
@@ -43,7 +45,7 @@ public class A
         Sink(First(@as)); // no flow
     }
 
-    public void M5()
+    public void ListAssignmentFlow()
     {
         var a = new A();
         var list = new List<A>();
@@ -53,7 +55,7 @@ public class A
         Sink(ListFirst(list)); // flow
     }
 
-    public void M6(A other)
+    public void ListAssignmentNoFlow(A other)
     {
         var list = new List<A>();
         list[0] = other;
@@ -62,7 +64,7 @@ public class A
         Sink(ListFirst(list)); // no flow
     }
 
-    public void M7()
+    public void ListInitializerFlow()
     {
         var a = new A();
         var list = new List<A>() { a };
@@ -71,7 +73,7 @@ public class A
         Sink(ListFirst(list)); // flow
     }
 
-    public void M8(A other)
+    public void ListInitializerNoFlow(A other)
     {
         var list = new List<A>() { other };
         Sink(list[0]); // no flow
@@ -79,7 +81,7 @@ public class A
         Sink(ListFirst(list)); // no flow
     }
 
-    public void M9()
+    public void ListAddFlow()
     {
         var a = new A();
         var list = new List<A>();
@@ -89,7 +91,7 @@ public class A
         Sink(ListFirst(list)); // flow
     }
 
-    public void M10(A other)
+    public void ListAddNoFlow(A other)
     {
         var list = new List<A>();
         list.Add(other);
@@ -98,70 +100,70 @@ public class A
         Sink(ListFirst(list)); // no flow
     }
 
-    public void M11()
+    public void DictionaryAssignmentFlow()
     {
         var a = new A();
         var dict = new Dictionary<int, A>();
         dict[0] = a;
         Sink(dict[0]); // flow
         SinkDictValue(dict); // flow
-        Sink(DictFirstValueA(dict)); // flow
-        Sink(DictFirstValueB(dict)); // flow [MISSING]
-        Sink(DictFirstValueC(dict)); // flow
+        Sink(DictIndexZero(dict)); // flow
+        Sink(DictFirstValue(dict)); // flow [MISSING]
+        Sink(DictValuesFirst(dict)); // flow
     }
 
-    public void M12(A other)
+    public void DictionaryAssignmentNoFlow(A other)
     {
         var dict = new Dictionary<int, A>();
         dict[0] = other;
         Sink(dict[0]); // no flow
         SinkDictValue(dict); // no flow
-        Sink(DictFirstValueA(dict)); // no flow
-        Sink(DictFirstValueB(dict)); // no flow
-        Sink(DictFirstValueC(dict)); // no flow
+        Sink(DictIndexZero(dict)); // no flow
+        Sink(DictFirstValue(dict)); // no flow
+        Sink(DictValuesFirst(dict)); // no flow
     }
 
-    public void M13()
+    public void DictionaryValueInitializerFlow()
     {
         var a = new A();
         var dict = new Dictionary<int, A>() { { 0, a } };
         Sink(dict[0]); // flow
         SinkDictValue(dict); // flow
-        Sink(DictFirstValueA(dict)); // flow
-        Sink(DictFirstValueB(dict)); // flow [MISSING]
-        Sink(DictFirstValueC(dict)); // flow
+        Sink(DictIndexZero(dict)); // flow
+        Sink(DictFirstValue(dict)); // flow [MISSING]
+        Sink(DictValuesFirst(dict)); // flow
     }
 
-    public void M14(A other)
+    public void DictionaryValueInitializerNoFlow(A other)
     {
         var dict = new Dictionary<int, A>() { { 0, other } };
         Sink(dict[0]); // no flow
         SinkDictValue(dict); // no flow
-        Sink(DictFirstValueA(dict)); // no flow
-        Sink(DictFirstValueB(dict)); // no flow
-        Sink(DictFirstValueC(dict)); // no flow
+        Sink(DictIndexZero(dict)); // no flow
+        Sink(DictFirstValue(dict)); // no flow
+        Sink(DictValuesFirst(dict)); // no flow
     }
 
-    public void M15()
+    public void DictionaryKeyInitializerFlow()
     {
         var a = new A();
         var dict = new Dictionary<A, int>() { { a, 0 } };
         Sink(dict.Keys.First()); // flow [MISSING]
         SinkDictKey(dict); // flow [MISSING]
-        Sink(DictFirstKeyA(dict)); // flow [MISSING]
-        Sink(DictFirstKeyB(dict)); // flow [MISSING]
+        Sink(DictKeysFirst(dict)); // flow [MISSING]
+        Sink(DictFirstKey(dict)); // flow [MISSING]
     }
 
-    public void M16(A other)
+    public void DictionaryKeyInitializerNoFlow(A other)
     {
         var dict = new Dictionary<A, int>() { { other, 0 } };
         Sink(dict.Keys.First()); // no flow
         SinkDictKey(dict); // no flow
-        Sink(DictFirstKeyA(dict)); // no flow
-        Sink(DictFirstKeyB(dict)); // no flow
+        Sink(DictKeysFirst(dict)); // no flow
+        Sink(DictFirstKey(dict)); // no flow
     }
 
-    public void M17()
+    public void ForeachFlow()
     {
         var a = new A();
         var @as = new[] { a };
@@ -169,14 +171,14 @@ public class A
             Sink(x); // flow
     }
 
-    public void M18(A other)
+    public void ForeachNoFlow(A other)
     {
         var @as = new[] { other };
         foreach (var x in @as)
             Sink(x); // no flow
     }
 
-    public void M19()
+    public void ArrayGetEnumeratorFlow()
     {
         var a = new A();
         var @as = new[] { a };
@@ -185,7 +187,7 @@ public class A
             Sink(enumerator.Current); // flow
     }
 
-    public void M20(A other)
+    public void ArrayGetEnumeratorNoFlow(A other)
     {
         var @as = new[] { other };
         var enumerator = @as.GetEnumerator();
@@ -193,7 +195,7 @@ public class A
             Sink(enumerator.Current); // no flow
     }
 
-    public void M21()
+    public void ListGetEnumeratorFlow()
     {
         var a = new A();
         var list = new List<A>();
@@ -217,13 +219,13 @@ public class A
 
     public static T ListFirst<T>(IList<T> list) => list[0];
 
-    public static T DictFirstValueA<T>(IDictionary<int, T> dict) => dict[0];
+    public static T DictIndexZero<T>(IDictionary<int, T> dict) => dict[0];
 
-    public static T DictFirstValueB<T>(IDictionary<int, T> dict) => dict.First().Value;
+    public static T DictFirstValue<T>(IDictionary<int, T> dict) => dict.First().Value;
 
-    public static T DictFirstValueC<T>(IDictionary<int, T> dict) => dict.Values.First();
+    public static T DictValuesFirst<T>(IDictionary<int, T> dict) => dict.Values.First();
 
-    public static T DictFirstKeyA<T>(IDictionary<T, int> dict) => dict.Keys.First();
+    public static T DictKeysFirst<T>(IDictionary<T, int> dict) => dict.Keys.First();
 
-    public static T DictFirstKeyB<T>(IDictionary<T, int> dict) => dict.First().Key;
+    public static T DictFirstKey<T>(IDictionary<T, int> dict) => dict.First().Key;
 }
