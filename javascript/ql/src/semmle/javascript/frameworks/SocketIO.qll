@@ -283,8 +283,8 @@ module SocketIO {
     SendNode getASender() { result.getAReceiver() = this }
 
     /** Gets the acknowledgment callback, if any. */
-    DataFlow::SourceNode getAck() {
-      result.(ReceiveCallback).getReceiveNode() = this
+    ReceiveCallback getAck() {
+      result.getReceiveNode() = this
     }
 
     /** DEPRECATED. Use `getChannel()` instead. */
@@ -374,10 +374,8 @@ module SocketIO {
     }
 
     /** Gets the acknowledgment callback, if any. */
-    DataFlow::FunctionNode getAck() {
-      // acknowledgments are only available when sending through a socket
-      exists(getSocket()) and
-      result = getLastArgument().getALocalSource()
+    SendCallback getAck() {
+      result.getSendNode()  =this
     }
 
     /** DEPRECATED. Use `getChannel()` instead. */
@@ -576,8 +574,7 @@ module SocketIOClient {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() {
-      result = getListener().getLastParameter() and
-      exists(result.getAnInvocation())
+      result.(ReceiveCallback).getReceiveNode() = this
     }
 
     /** Gets a server-side node that may be sending the data received here. */
@@ -664,9 +661,7 @@ module SocketIOClient {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() {
-      // acknowledgments are only available when sending through a socket
-      exists(getSocket()) and
-      result = getLastArgument().getALocalSource()
+      result.(SendCallback).getSendNode() = this
     }
 
     /** DEPRECATED. Use `getChannel()` instead. */
