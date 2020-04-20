@@ -270,6 +270,12 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
+/**
+ * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
+ * For instance, an update to a field of a struct containing only one field. For these cases we
+ * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
+ * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
 
@@ -465,6 +471,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
   )
   or
+  // Flow from stores to structs with a single field to a load of that field.
   iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom.(StoreInstruction) and
   exists(Class c, Type t |
     c = iTo.getResultType() and
