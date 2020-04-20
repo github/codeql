@@ -7,10 +7,14 @@ abstract class StringKind extends TaintKind {
     bindingset[this]
     StringKind() { this = this }
 
+    override TaintKind getTaintOfMethodResult(string name) {
+        name in ["strip", "format", "lstrip", "rstrip", "ljust", "rjust", "title", "capitalize"] and
+        result = this
+    }
+
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         result = this and
         (
-            str_method_call(fromnode, tonode) or
             slice(fromnode, tonode) or
             tonode.(BinaryExprNode).getAnOperand() = fromnode or
             os_path_join(fromnode, tonode) or
@@ -48,20 +52,6 @@ private class StringEqualitySanitizer extends Sanitizer {
             )
         )
     }
-}
-
-/* tonode = fromnode.xxx() where the call to xxx returns an identical or similar string */
-private predicate str_method_call(ControlFlowNode fromnode, CallNode tonode) {
-    exists(string method_name | tonode.getFunction().(AttrNode).getObject(method_name) = fromnode |
-        method_name = "strip" or
-        method_name = "format" or
-        method_name = "lstrip" or
-        method_name = "rstrip" or
-        method_name = "ljust" or
-        method_name = "rjust" or
-        method_name = "title" or
-        method_name = "capitalize"
-    )
 }
 
 /* tonode = ....format(fromnode) */
