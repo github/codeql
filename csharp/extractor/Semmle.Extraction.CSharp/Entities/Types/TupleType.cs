@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     class TupleType : Type<INamedTypeSymbol>
     {
-        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntity(cx, type);
+        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
         {

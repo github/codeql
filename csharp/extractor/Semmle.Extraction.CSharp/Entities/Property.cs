@@ -113,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
-            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
+            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
         public void VisitDeclaration(Context cx, PropertyDeclarationSyntax p)
