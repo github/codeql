@@ -270,6 +270,19 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+
+  ExplicitSingleFieldStoreQualifierNode() {
+    exists(FieldAddressInstruction field |
+      field = instr.getDestinationAddress() and
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    )
+  }
+
+  override Node getPreUpdateNode() { none() }
+}
+
 /**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
@@ -404,6 +417,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
+private predicate hasSize(Type t, int size) { t.getSize() = size }
+
 cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
@@ -450,6 +465,13 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   exists(ChiInstruction chi | iFrom = chi |
     not chi.isResultConflated() and
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  )
+  or
+  iTo.(CopyInstruction).getSourceValueOperand().getAnyDef() = iFrom and
+  exists(Class c, int size |
+    c = iTo.getResultType() and
+    hasSize(c, size) and
+    hasSize(iFrom.getResultType(), size)
   )
   or
   // Flow through modeled functions
