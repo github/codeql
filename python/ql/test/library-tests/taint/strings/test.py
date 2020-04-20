@@ -67,3 +67,13 @@ def test_urlsplit_urlparse():
     urlsplit_res = urlsplit(tainted_string)
     urlparse_res = urlparse(tainted_string)
     test(urlsplit_res, urlparse_res)
+
+def test_method_reference():
+    tainted_string = TAINTED_STRING
+
+    a = tainted_string.title()
+
+    func = tainted_string.title
+    b = func()
+
+    test(a, b) # TODO: `b` not tainted
