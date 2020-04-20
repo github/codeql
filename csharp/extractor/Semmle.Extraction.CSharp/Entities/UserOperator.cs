@@ -190,7 +190,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return result;
         }
 
-        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntity(cx, symbol);
+        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
         {
