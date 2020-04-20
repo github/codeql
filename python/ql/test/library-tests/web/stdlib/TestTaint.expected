@@ -1,0 +1,16 @@
+| test.py:16 | ok   | taint_sources | self | BaseHTTPRequestHandlerKind |
+| test.py:18 | ok   | taint_sources | Attribute | externally controlled string |
+| test.py:20 | ok   | taint_sources | Attribute | externally controlled string |
+| test.py:22 | ok   | taint_sources | Attribute | {externally controlled string} |
+| test.py:23 | ok   | taint_sources | Subscript | externally controlled string |
+| test.py:24 | ok   | taint_sources | Attribute() | externally controlled string |
+| test.py:25 | ok   | taint_sources | Attribute() | [externally controlled string] |
+| test.py:26 | fail | taint_sources | Attribute() | <NO TAINT> |
+| test.py:27 | ok   | taint_sources | Attribute() | [externally controlled string] |
+| test.py:28 | fail | taint_sources | Attribute() | <NO TAINT> |
+| test.py:29 | ok   | taint_sources | Attribute() | externally controlled string |
+| test.py:30 | ok   | taint_sources | Attribute() | externally controlled string |
+| test.py:31 | ok   | taint_sources | str() | externally controlled string |
+| test.py:32 | ok   | taint_sources | bytes() | externally controlled string |
+| test.py:34 | ok   | taint_sources | Attribute | file[externally controlled string] |
+| test.py:35 | ok   | taint_sources | Attribute() | externally controlled string |
