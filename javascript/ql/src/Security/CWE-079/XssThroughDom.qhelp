@@ -5,8 +5,7 @@
 
 <overview>
 <p>
-Writing text from a webpage to the same webpage without properly sanitizing the 
-input first, might allow for a cross-site scripting vulnerability.
+Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
 </p>
 <p>
 A webpage with this vulnerability unescapes an otherwise sanitized text, 
