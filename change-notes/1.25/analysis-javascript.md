@@ -19,4 +19,4 @@
 
 ## Changes to libraries
 
-
+* Added data flow for `Map` and `Set`, and added matching type-tracking steps that can accessed using the `CollectionsTypeTracking` module.
