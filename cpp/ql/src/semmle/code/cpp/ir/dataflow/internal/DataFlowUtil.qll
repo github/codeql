@@ -417,8 +417,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
-private predicate hasSize(Type t, int size) { t.getSize() = size }
-
 cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
@@ -467,11 +465,12 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
   )
   or
-  iTo.(CopyInstruction).getSourceValueOperand().getAnyDef() = iFrom and
-  exists(Class c, int size |
+  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom.(StoreInstruction) and
+  exists(Class c, Type t |
     c = iTo.getResultType() and
-    hasSize(c, size) and
-    hasSize(iFrom.getResultType(), size)
+    t = iFrom.getResultType() and
+    c.getAField().getUnspecifiedType() = t and
+    c.getSize() = t.getSize()
   )
   or
   // Flow through modeled functions
