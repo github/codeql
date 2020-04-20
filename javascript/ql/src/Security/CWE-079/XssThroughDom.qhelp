@@ -8,9 +8,9 @@
 Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
 </p>
 <p>
-A webpage with this vulnerability unescapes an otherwise sanitized text, 
-and thereby allows an attacker to use sanitized text in the DOM to perform a
-cross-site scripting attack. 
+A webpage with this vulnerability reads text from the DOM, and afterwards adds the text as HTML to the DOM.
+Using text from the DOM as HTML effectively unescapes the text, and thereby invalidates any escaping done on the text. 
+If an attacker is able to control the safe sanitized text, then this vulnerability can be exploited to perform a cross-site scripting attack. 
 </p>
 </overview>
 
