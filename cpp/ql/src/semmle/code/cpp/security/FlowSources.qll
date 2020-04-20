@@ -11,8 +11,8 @@ import semmle.code.cpp.models.interfaces.FlowSource
 abstract class RemoteFlowSource extends DataFlow::Node {
 }
 
-class FileDescriptorTaintedReturnSource extends RemoteFlowSource {
-  FileDescriptorTaintedReturnSource() {
+private class TaintedReturnSource extends RemoteFlowSource {
+  TaintedReturnSource() {
     exists(RemoteFlowFunction func, CallInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getStaticCallTarget() = func and
@@ -22,9 +22,9 @@ class FileDescriptorTaintedReturnSource extends RemoteFlowSource {
   }
 }
 
-class FileTaintedParameterSource extends RemoteFlowSource {
-  FileTaintedParameterSource() {
-    exists(RemoteFlowFunction func, ReadSideEffectInstruction instr, FunctionOutput output |
+private class TaintedParameterSource extends RemoteFlowSource {
+  TaintedParameterSource() {
+    exists(RemoteFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
       func.hasFlowSource(output) and
@@ -32,4 +32,3 @@ class FileTaintedParameterSource extends RemoteFlowSource {
     )
   }
 }
-
