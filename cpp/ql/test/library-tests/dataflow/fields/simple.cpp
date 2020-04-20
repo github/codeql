@@ -53,4 +53,18 @@ void foo()
     // Nothing should alert
     bar(i);
 }
+
+struct A
+{
+    int i;
+};
+
+void single_field_test()
+{
+    A a;
+    a.i = user_input();
+    A a2 = a;
+    sink(a2.i);
+}
+
 } // namespace Simple
