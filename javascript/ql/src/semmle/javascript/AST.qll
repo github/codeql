@@ -184,9 +184,7 @@ class ASTNode extends @ast_node, Locatable {
  * Holds if the given file is a `.d.ts` file.
  */
 cached
-private predicate isAmbientTopLevel(TopLevel tl) {
-  tl.getFile().getBaseName().matches("%.d.ts")
-}
+private predicate isAmbientTopLevel(TopLevel tl) { tl.getFile().getBaseName().matches("%.d.ts") }
 
 /**
  * A toplevel syntactic unit; that is, a stand-alone script, an inline script
