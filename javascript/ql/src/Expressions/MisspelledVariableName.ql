@@ -29,7 +29,7 @@ bindingset[name]
 int globalAccesses(string name) { result = count(GlobalVarAccess acc | acc.getName() = name) }
 
 /**
- * Holds if our heuristic says that the local variable `lvd` seems to be a misspelling of the global variable `gvd`.
+ * Holds if our heuristic says that the local variable `lvd` seems to be a misspelling of the global variable `gva`.
  * Otherwise the global variable is likely the misspelling.
  */
 predicate globalIsLikelyCorrect(GlobalVarAccess gva, VarDecl lvd) {
