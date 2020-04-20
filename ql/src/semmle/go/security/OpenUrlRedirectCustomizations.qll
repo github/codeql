@@ -7,6 +7,7 @@
 import go
 import UrlConcatenation
 import SafeUrlFlowCustomizations
+import semmle.go.dataflow.BarrierGuardUtil
 
 /**
  * Provides extension points for customizing the taint-tracking configuration for reasoning about
@@ -104,62 +105,22 @@ module OpenUrlRedirect {
 
   /**
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
-   * considered a barrier for purposes of URL redirection.
+   * considered a barrier guard for sanitizing untrusted URLs.
    */
-  class RedirectCheckBarrierGuard extends BarrierGuard, DataFlow::CallNode {
-    RedirectCheckBarrierGuard() {
-      this.getCalleeName().regexpMatch("(?i)(is_?)?(local_?url|valid_?redir(ect)?)")
-    }
-
-    override predicate checks(Expr e, boolean outcome) {
-      // `isLocalUrl(e)` is a barrier for `e` if it evaluates to `true`
-      getAnArgument().asExpr() = e and
-      outcome = true
-    }
-  }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrierGuard, BarrierGuard { }
 
   /**
-   * A check against a constant value, considered a barrier for redirection.
-   */
-  class EqualityTestGuard extends BarrierGuard, DataFlow::EqualityTestNode {
-    DataFlow::Node url;
-
-    EqualityTestGuard() {
-      exists(this.getAnOperand().getStringValue()) and
-      (
-        url = this.getAnOperand()
-        or
-        exists(DataFlow::MethodCallNode mc | mc = this.getAnOperand() |
-          mc.getTarget().getName() = "Hostname" and
-          url = mc.getReceiver()
-        )
-      )
-    }
-
-    override predicate checks(Expr e, boolean outcome) {
-      e = url.asExpr() and outcome = this.getPolarity()
-    }
-  }
-
-  /**
-   * A call to a regexp match function, considered as a barrier guard for unvalidated URLs.
+   * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheck extends BarrierGuard {
-    RegexpMatchFunction matchfn;
-    DataFlow::CallNode call;
+  class RegexpCheckAsBarrierGuard extends RegexpCheck, BarrierGuard { }
 
-    RegexpCheck() {
-      matchfn.getACall() = call and
-      this = matchfn.getResult().getNode(call).getASuccessor*()
-    }
-
-    override predicate checks(Expr e, boolean branch) {
-      e = matchfn.getValue().getNode(call).asExpr() and
-      (branch = false or branch = true)
-    }
-  }
+  /**
+   * A check against a constant value or the `Hostname` function,
+   * considered a barrier guard for url flow.
+   */
+  class UrlCheckAsBarrierGuard extends UrlCheck, BarrierGuard { }
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */

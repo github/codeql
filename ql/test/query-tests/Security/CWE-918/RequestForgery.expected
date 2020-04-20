@@ -13,6 +13,15 @@ edges
 | tst.go:36:2:36:2 | implicit dereference : URL | tst.go:36:2:36:2 | implicit dereference : URL |
 | tst.go:36:2:36:2 | implicit dereference : URL | tst.go:37:11:37:20 | call to String |
 | tst.go:36:2:36:2 | u [pointer] : URL | tst.go:36:2:36:2 | implicit dereference : URL |
+| websocket.go:54:21:54:31 | call to Referer : string | websocket.go:59:27:59:40 | untrustedInput |
+| websocket.go:68:21:68:31 | call to Referer : string | websocket.go:72:36:72:49 | untrustedInput |
+| websocket.go:82:21:82:31 | call to Referer : string | websocket.go:85:31:85:44 | untrustedInput |
+| websocket.go:101:21:101:31 | call to Referer : string | websocket.go:104:15:104:28 | untrustedInput |
+| websocket.go:120:21:120:31 | call to Referer : string | websocket.go:123:38:123:51 | untrustedInput |
+| websocket.go:148:21:148:31 | call to Referer : string | websocket.go:149:31:149:44 | untrustedInput |
+| websocket.go:154:21:154:31 | call to Referer : string | websocket.go:156:31:156:44 | untrustedInput |
+| websocket.go:189:21:189:31 | call to Referer : string | websocket.go:191:18:191:31 | untrustedInput |
+| websocket.go:196:21:196:31 | call to Referer : string | websocket.go:198:11:198:24 | untrustedInput |
 nodes
 | RequestForgery.go:8:12:8:34 | call to FormValue : string | semmle.label | call to FormValue : string |
 | RequestForgery.go:11:24:11:65 | ...+... | semmle.label | ...+... |
@@ -27,6 +36,24 @@ nodes
 | tst.go:36:2:36:2 | implicit dereference : URL | semmle.label | implicit dereference : URL |
 | tst.go:36:2:36:2 | u [pointer] : URL | semmle.label | u [pointer] : URL |
 | tst.go:37:11:37:20 | call to String | semmle.label | call to String |
+| websocket.go:54:21:54:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:59:27:59:40 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:68:21:68:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:72:36:72:49 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:82:21:82:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:85:31:85:44 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:101:21:101:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:104:15:104:28 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:120:21:120:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:123:38:123:51 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:148:21:148:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:149:31:149:44 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:154:21:154:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:156:31:156:44 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:189:21:189:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:191:18:191:31 | untrustedInput | semmle.label | untrustedInput |
+| websocket.go:196:21:196:31 | call to Referer : string | semmle.label | call to Referer : string |
+| websocket.go:198:11:198:24 | untrustedInput | semmle.label | untrustedInput |
 #select
 | RequestForgery.go:11:15:11:66 | call to Get | RequestForgery.go:8:12:8:34 | call to FormValue : string | RequestForgery.go:11:24:11:65 | ...+... | The $@ of this request depends on $@. | RequestForgery.go:11:24:11:65 | ...+... | URL | RequestForgery.go:8:12:8:34 | call to FormValue : string | a user-provided value |
 | tst.go:14:2:14:18 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:14:11:14:17 | tainted | The $@ of this request depends on $@. | tst.go:14:11:14:17 | tainted | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
@@ -36,3 +63,12 @@ nodes
 | tst.go:27:2:27:30 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:27:11:27:29 | ...+... | The $@ of this request depends on $@. | tst.go:27:11:27:29 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
 | tst.go:29:2:29:41 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:29:11:29:40 | ...+... | The $@ of this request depends on $@. | tst.go:29:11:29:40 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
 | tst.go:37:2:37:21 | call to Get | tst.go:10:13:10:35 | call to FormValue : string | tst.go:37:11:37:20 | call to String | The $@ of this request depends on $@. | tst.go:37:11:37:20 | call to String | URL | tst.go:10:13:10:35 | call to FormValue : string | a user-provided value |
+| websocket.go:59:12:59:53 | call to Dial | websocket.go:54:21:54:31 | call to Referer : string | websocket.go:59:27:59:40 | untrustedInput | The $@ of this request depends on $@. | websocket.go:59:27:59:40 | untrustedInput | WebSocket URL | websocket.go:54:21:54:31 | call to Referer : string | a user-provided value |
+| websocket.go:73:13:73:40 | call to DialConfig | websocket.go:68:21:68:31 | call to Referer : string | websocket.go:72:36:72:49 | untrustedInput | The $@ of this request depends on $@. | websocket.go:72:36:72:49 | untrustedInput | WebSocket URL | websocket.go:68:21:68:31 | call to Referer : string | a user-provided value |
+| websocket.go:85:3:85:50 | call to Dial | websocket.go:82:21:82:31 | call to Referer : string | websocket.go:85:31:85:44 | untrustedInput | The $@ of this request depends on $@. | websocket.go:85:31:85:44 | untrustedInput | WebSocket URL | websocket.go:82:21:82:31 | call to Referer : string | a user-provided value |
+| websocket.go:104:3:104:39 | call to Dial | websocket.go:101:21:101:31 | call to Referer : string | websocket.go:104:15:104:28 | untrustedInput | The $@ of this request depends on $@. | websocket.go:104:15:104:28 | untrustedInput | WebSocket URL | websocket.go:101:21:101:31 | call to Referer : string | a user-provided value |
+| websocket.go:123:3:123:62 | call to DialContext | websocket.go:120:21:120:31 | call to Referer : string | websocket.go:123:38:123:51 | untrustedInput | The $@ of this request depends on $@. | websocket.go:123:38:123:51 | untrustedInput | WebSocket URL | websocket.go:120:21:120:31 | call to Referer : string | a user-provided value |
+| websocket.go:149:3:149:45 | call to Dial | websocket.go:148:21:148:31 | call to Referer : string | websocket.go:149:31:149:44 | untrustedInput | The $@ of this request depends on $@. | websocket.go:149:31:149:44 | untrustedInput | WebSocket URL | websocket.go:148:21:148:31 | call to Referer : string | a user-provided value |
+| websocket.go:156:3:156:45 | call to Dial | websocket.go:154:21:154:31 | call to Referer : string | websocket.go:156:31:156:44 | untrustedInput | The $@ of this request depends on $@. | websocket.go:156:31:156:44 | untrustedInput | WebSocket URL | websocket.go:154:21:154:31 | call to Referer : string | a user-provided value |
+| websocket.go:191:3:191:32 | call to BuildProxy | websocket.go:189:21:189:31 | call to Referer : string | websocket.go:191:18:191:31 | untrustedInput | The $@ of this request depends on $@. | websocket.go:191:18:191:31 | untrustedInput | WebSocket URL | websocket.go:189:21:189:31 | call to Referer : string | a user-provided value |
+| websocket.go:198:3:198:25 | call to New | websocket.go:196:21:196:31 | call to Referer : string | websocket.go:198:11:198:24 | untrustedInput | The $@ of this request depends on $@. | websocket.go:198:11:198:24 | untrustedInput | WebSocket URL | websocket.go:196:21:196:31 | call to Referer : string | a user-provided value |
