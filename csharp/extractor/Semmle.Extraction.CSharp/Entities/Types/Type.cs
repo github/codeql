@@ -324,6 +324,14 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Type;
+            return other?.GetType() == GetType() && SymbolEqualityComparer.IncludeNullability.Equals(other.symbol, symbol);
+        }
+
+        public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
     }
 
     abstract class Type<T> : Type where T : ITypeSymbol

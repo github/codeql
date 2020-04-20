@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         static public TypeParameter Create(Context cx, ITypeParameterSymbol p) =>
-            TypeParameterFactory.Instance.CreateEntity(cx, p);
+            TypeParameterFactory.Instance.CreateEntityFromSymbol(cx, p);
 
         /// <summary>
         /// The variance of this type parameter.

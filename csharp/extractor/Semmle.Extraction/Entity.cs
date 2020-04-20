@@ -134,6 +134,19 @@ namespace Semmle.Extraction
             where Entity : ICachedEntity => cx.CreateNullableEntity(factory, init);
 
         /// <summary>
+        /// Creates and populates a new entity, or returns the existing one from the cache.
+        /// </summary>
+        /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
+        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
+        /// <param name="cx">The extractor context.</param>
+        /// <param name="factory">The factory used to construct the entity.</param>
+        /// <param name="init">The initializer for the entity, which may not be null.</param>
+        /// <returns>The entity.</returns>
+        public static Entity CreateEntityFromSymbol<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
+            where Entity : ICachedEntity
+            where Type : ISymbol => cx.CreateEntityFromSymbol(factory, init);
+
+        /// <summary>
         /// Creates and populates a new entity, but uses a different cache.
         /// </summary>
         /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
