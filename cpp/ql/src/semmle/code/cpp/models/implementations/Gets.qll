@@ -44,7 +44,8 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
     mustWrite = true
   }
 
-  override predicate hasFlowSource(FunctionOutput output) {
-    output.isParameterDeref(0)
+  override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
+    output.isParameterDeref(0) and
+    description = "String read by " + this.getName()
   }
 }
