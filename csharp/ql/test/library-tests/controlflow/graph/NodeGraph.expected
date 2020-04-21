@@ -1829,6 +1829,7 @@
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:222:9:225:9 | catch {...} | semmle.label | exception(OutOfMemoryException) |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | {...} | semmle.label | successor |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:39 | ...; | semmle.label | successor |
+| Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} | semmle.label | successor |
 | Finally.cs:224:13:224:39 | ...; | Finally.cs:224:31:224:37 | "Catch" | semmle.label | successor |
 | Finally.cs:224:31:224:37 | "Catch" | Finally.cs:224:13:224:38 | call to method WriteLine | semmle.label | successor |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:228:13:228:41 | ...; | semmle.label | successor |

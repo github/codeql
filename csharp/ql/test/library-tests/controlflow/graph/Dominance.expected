@@ -1625,7 +1625,6 @@ dominance
 | Finally.cs:217:5:231:5 | {...} | Finally.cs:218:9:229:9 | try {...} ... |
 | Finally.cs:218:9:229:9 | try {...} ... | Finally.cs:219:9:221:9 | {...} |
 | Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:37 | ...; |
-| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} |
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:220:31:220:35 | "Try" |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:36 | call to method WriteLine |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:222:9:225:9 | catch {...} |
@@ -4538,7 +4537,6 @@ postDominance
 | Finally.cs:217:5:231:5 | {...} | Finally.cs:216:10:216:12 | enter M11 |
 | Finally.cs:218:9:229:9 | try {...} ... | Finally.cs:217:5:231:5 | {...} |
 | Finally.cs:219:9:221:9 | {...} | Finally.cs:218:9:229:9 | try {...} ... |
-| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:31:220:35 | "Try" |
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:219:9:221:9 | {...} |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:37 | ...; |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:222:9:225:9 | catch {...} |
@@ -4546,6 +4544,7 @@ postDominance
 | Finally.cs:224:13:224:39 | ...; | Finally.cs:223:9:225:9 | {...} |
 | Finally.cs:224:31:224:37 | "Catch" | Finally.cs:224:13:224:39 | ...; |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine |
+| Finally.cs:227:9:229:9 | {...} | Finally.cs:224:13:224:38 | call to method WriteLine |
 | Finally.cs:228:13:228:40 | call to method WriteLine | Finally.cs:228:31:228:39 | "Finally" |
 | Finally.cs:228:13:228:41 | ...; | Finally.cs:227:9:229:9 | {...} |
 | Finally.cs:228:31:228:39 | "Finally" | Finally.cs:228:13:228:41 | ...; |
@@ -6985,7 +6984,6 @@ blockDominance
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:227:9:229:9 | {...} |
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine |
-| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:227:9:229:9 | {...} |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | enter M1 |
@@ -8793,11 +8791,11 @@ postBlockDominance
 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; |
 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; |
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:216:10:216:12 | enter M11 |
-| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:216:10:216:12 | enter M11 |
 | Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | enter M11 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine |
+| Finally.cs:227:9:229:9 | {...} | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:227:9:229:9 | {...} |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | enter M1 |
 | Foreach.cs:6:10:6:11 | exit M1 | Foreach.cs:6:10:6:11 | enter M1 |
