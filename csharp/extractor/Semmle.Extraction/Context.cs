@@ -51,7 +51,20 @@ namespace Semmle.Extraction
         /// <returns>The new/existing entity.</returns>
         public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
-            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
+            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init, objectEntityCache);
+        }
+
+        /// <summary>
+        /// Creates a new entity using the factory.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+            where Entity : ICachedEntity
+            where Type: ISymbol
+        {
+            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init, symbolEntityCache);
         }
 
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
@@ -136,8 +149,13 @@ namespace Semmle.Extraction
         public Label GetNewLabel() => new Label(GetNewId());
 
         private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+            => CreateNonNullEntity(factory, init, objectEntityCache);
+
+        private Entity CreateNonNullEntity<Type, Src, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init, IDictionary<Src, ICachedEntity> dictionary)
+            where Entity : ICachedEntity
+            where Type : Src
         {
-            if (objectEntityCache.TryGetValue(init, out var cached))
+            if (dictionary.TryGetValue(init, out var cached))
                 return (Entity)cached;
 
             using (StackGuard)
@@ -146,7 +164,7 @@ namespace Semmle.Extraction
                 var entity = factory.Create(this, init);
                 entity.Label = label;
 
-                objectEntityCache[init] = entity;
+                dictionary[init] = entity;
 
                 DefineLabel(entity, TrapWriter.Writer, Extractor);
                 if (entity.NeedsPopulation)
@@ -155,7 +173,7 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
                 using (var id = new StringWriter())
                 {
-                    entity.WriteId(id);
+                    entity.WriteQuotedId(id);
                     CheckEntityHasUniqueLabel(id.ToString(), entity);
                 }
 #endif
@@ -200,7 +218,9 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
         readonly Dictionary<string, ICachedEntity> idLabelCache = new Dictionary<string, ICachedEntity>();
 #endif
-        readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
+
+        readonly IDictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
+        readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.IncludeNullability);
         readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
@@ -269,6 +289,8 @@ namespace Semmle.Extraction
             Scope = scope;
             TrapWriter = trapWriter;
         }
+
+        public bool FromSource => Scope.FromSource;
 
         public bool IsGlobalContext => Scope.IsGlobalScope;
 

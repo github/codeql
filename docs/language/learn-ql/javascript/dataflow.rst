@@ -1,16 +1,15 @@
 Analyzing data flow in JavaScript and TypeScript
 ================================================
 
+This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
+
 Overview
 --------
-
-This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
-
+The various sections in this article describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
 As our running example, we will develop a query that identifies command-line arguments that are passed as a file path to the standard Node.js ``readFile`` function.
 While this is not a problematic pattern as such, it is typical of the kind of reasoning that is frequently used in security queries.
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
 
 Data flow nodes
 ---------------
@@ -465,12 +464,12 @@ Hint: array indices are properties with numeric names; you can use regular expre
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the ``tagName`` argument to the
 ``createElement`` function. (`Answer <#exercise-4>`__)
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
--  Learn about writing more precise data-flow analyses in :doc:`Advanced data-flow analysis using flow labels <flow-labels>`
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+-  Learn about writing more precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`
 
 Answers
 -------

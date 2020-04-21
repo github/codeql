@@ -442,17 +442,30 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
-    expr instanceof ConstructorCall or
-    expr.getTarget() instanceof AllocationFunction
-  } or // A precise side effect of an argument to a `Call`
+  TTranslatedCallSideEffects(Call expr) {
+    // Exclude allocations such as `malloc` (which happen to also be function calls).
+    // Both `TranslatedCallSideEffects` and `TranslatedAllocationSideEffects` generate
+    // the same side effects for its children as they both extend the `TranslatedSideEffects`
+    // class.
+    // Note: We can separate allocation side effects and call side effects into two
+    // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
+    not expr instanceof AllocationExpr and
+    (
+      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+      expr instanceof ConstructorCall
+    )
+  } or
+  // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
+  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()
       or
       expr = call.getQualifier().getFullyConverted() and
-      n = -1
+      n = -1 and
+      // Exclude calls to static member functions. They don't modify the qualifier
+      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
     ) and
     (
       call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and

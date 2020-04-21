@@ -5,7 +5,7 @@
 import csharp
 
 module UrlRedirect {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.controlflow.Guards
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.Mvc

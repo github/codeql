@@ -74,10 +74,10 @@ namespace Semmle.Autobuild
                 string target = builder.Options.MsBuildTarget != null
                                        ? builder.Options.MsBuildTarget
                                        : "rebuild";
-                string platform = builder.Options.MsBuildPlatform != null
+                string? platform = builder.Options.MsBuildPlatform != null
                                          ? builder.Options.MsBuildPlatform
                                          : projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
-                string configuration = builder.Options.MsBuildConfiguration != null
+                string? configuration = builder.Options.MsBuildConfiguration != null
                                               ? builder.Options.MsBuildConfiguration
                                               : projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
 
@@ -103,9 +103,9 @@ namespace Semmle.Autobuild
         ///
         /// Returns <code>null</code> when no version is specified.
         /// </summary>
-        public static VcVarsBatFile GetVcVarsBatFile(Autobuilder builder)
+        public static VcVarsBatFile? GetVcVarsBatFile(Autobuilder builder)
         {
-            VcVarsBatFile vsTools = null;
+            VcVarsBatFile? vsTools = null;
 
             if (builder.Options.VsToolsVersion != null)
             {

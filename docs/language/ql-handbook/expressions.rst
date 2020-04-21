@@ -3,11 +3,10 @@
 Expressions
 ###########
 
-An expression evaluates to a set of values in QL. For example, the expression ``1 + 2`` 
-evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string ``"QL"``.
+An expression evaluates to a set of values and has a type.
 
-A valid expression also has a :ref:`type <types>`. 
-In the above examples, ``1 + 2`` has type ``int`` and ``"QL"`` has type ``string``.
+For example, the expression ``1 + 2`` 
+evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string ``"QL"``. ``1 + 2`` has :ref:`type <types>` ``int`` and ``"QL"`` has type ``string``.
 
 The following sections describe the expressions that are available in QL.
 
@@ -296,6 +295,22 @@ The following aggregates are available in QL:
   evaluates to the empty set (instead of defaulting to ``0`` or the empty string).
   This is useful if you're only interested in results where the aggregation body is non-trivial.
 
+.. index:: unique
+
+- ``unique``: This aggregate depends on the values of ``<expression>`` over all possible assignments to
+  the aggregation variables. If there is a unique value of ``<expression>`` over the aggregation variables,
+  then the aggregate evaluates to that value.
+  Otherwise, the aggregate has no value.
+
+  For example, the following query returns the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
+  For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values, so the
+  value for ``y`` in the aggregate expression is not uniquely determined. ::
+
+      from int x
+      where x in [-5 .. 5] and x != 0
+      select unique(int y | y = x or y = x.abs() | y)
+
+  The ``unique`` aggregate is supported from release 2.1.0 of the CodeQL CLI, and release 1.24 of LGTM Enterprise.
 
 Evaluation of aggregates
 ========================

@@ -71,7 +71,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (symbol == null)
             {
                 info.Context.ModelError(info.Node, "Failed to determine symbol for member access");
-                return new MemberAccess(info.SetKind(ExprKind.UNKNOWN), expression, symbol);
+                // Default to property access - this can still give useful results but
+                // the target of the expression should be checked in QL.
+                return new MemberAccess(info.SetKind(ExprKind.PROPERTY_ACCESS), expression, symbol);
             }
 
             ExprKind kind;

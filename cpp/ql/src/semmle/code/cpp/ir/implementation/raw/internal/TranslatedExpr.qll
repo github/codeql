@@ -1100,13 +1100,36 @@ private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
 }
 
 private Opcode binaryArithmeticOpcode(BinaryArithmeticOperation expr) {
-  expr instanceof AddExpr and result instanceof Opcode::Add
+  (
+    expr instanceof AddExpr
+    or
+    expr instanceof ImaginaryRealAddExpr
+    or
+    expr instanceof RealImaginaryAddExpr
+  ) and
+  result instanceof Opcode::Add
   or
-  expr instanceof SubExpr and result instanceof Opcode::Sub
+  (
+    expr instanceof SubExpr
+    or
+    expr instanceof ImaginaryRealSubExpr
+    or
+    expr instanceof RealImaginarySubExpr
+  ) and
+  result instanceof Opcode::Sub
   or
-  expr instanceof MulExpr and result instanceof Opcode::Mul
+  (
+    expr instanceof MulExpr
+    or
+    expr instanceof ImaginaryMulExpr
+  ) and
+  result instanceof Opcode::Mul
   or
-  expr instanceof DivExpr and result instanceof Opcode::Div
+  (
+    expr instanceof DivExpr or
+    expr instanceof ImaginaryDivExpr
+  ) and
+  result instanceof Opcode::Div
   or
   expr instanceof RemExpr and result instanceof Opcode::Rem
   or
@@ -1649,6 +1672,11 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
 
   final override int getNumberOfArguments() {
     result = expr.getAllocatorCall().getNumberOfArguments()
+    or
+    // Make sure there's a result even when there is no allocator, as otherwise
+    // TranslatedCall::getChild() will not return the side effects for this call.
+    not exists(expr.getAllocatorCall()) and
+    result = 0
   }
 
   final override TranslatedExpr getArgument(int index) {

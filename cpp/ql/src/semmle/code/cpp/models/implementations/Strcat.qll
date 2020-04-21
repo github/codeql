@@ -1,11 +1,12 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The standard function `strcat` and its wide, sized, and Microsoft variants.
  */
-class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction {
+class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction {
   StrcatFunction() {
     exists(string name | name = getName() |
       name = "strcat" or // strcat(dst, src)
@@ -56,4 +57,19 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction {
   override predicate hasArrayWithNullTerminator(int param) { param = 1 }
 
   override predicate hasArrayWithUnknownSize(int param) { param = 0 }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = 0 and
+    buffer = true and
+    mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    (i = 0 or i = 1) and
+    buffer = true
+  }
 }

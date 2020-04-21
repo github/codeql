@@ -14,4 +14,6 @@ import python
 
 from PropertyObject prop, ClassObject cls
 where cls.declaredAttribute(_) = prop and not cls.failedInference() and not cls.isNewStyle()
-select prop, "Property " + prop.getName() + " will not work properly, as class " + cls.getName() + " is an old-style class."
+select prop,
+    "Property " + prop.getName() + " will not work properly, as class " + cls.getName() +
+        " is an old-style class."

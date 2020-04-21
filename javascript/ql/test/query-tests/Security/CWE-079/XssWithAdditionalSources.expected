@@ -333,6 +333,14 @@ nodes
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
 | tst.js:319:35:319:42 | location |
+| tst.js:330:18:330:34 | document.location |
+| tst.js:330:18:330:34 | document.location |
+| tst.js:336:18:336:35 | params.get('name') |
+| tst.js:336:18:336:35 | params.get('name') |
+| tst.js:347:20:347:36 | document.location |
+| tst.js:347:20:347:36 | document.location |
+| tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -647,6 +655,14 @@ edges
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
 | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

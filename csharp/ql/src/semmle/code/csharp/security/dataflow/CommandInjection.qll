@@ -5,7 +5,7 @@
 import csharp
 
 module CommandInjection {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.Diagnostics
   import semmle.code.csharp.security.Sanitizers
 

@@ -12,13 +12,9 @@
 
 import python
 
-FunctionValue iter() {
-    result = Value::named("iter")
-}
+FunctionValue iter() { result = Value::named("iter") }
 
-BuiltinFunctionValue next() {
-    result = Value::named("next")
-}
+BuiltinFunctionValue next() { result = Value::named("next") }
 
 predicate call_to_iter(CallNode call, EssaVariable sequence) {
     sequence.getAUse() = iter().getArgumentForCall(call, 0)
@@ -52,14 +48,14 @@ predicate stop_iteration_handled(CallNode call) {
 }
 
 from CallNode call
-where call_to_next(call, _) and
-not call_to_next_has_default(call) and
-not exists(EssaVariable iterator |
-    call_to_next(call, iterator.getAUse()) and
-    iter_not_exhausted(iterator)
-) and
-call.getNode().getScope().(Function).isGenerator() and
-not exists(Comp comp | comp.contains(call.getNode())) and
-not stop_iteration_handled(call)
-
+where
+    call_to_next(call, _) and
+    not call_to_next_has_default(call) and
+    not exists(EssaVariable iterator |
+        call_to_next(call, iterator.getAUse()) and
+        iter_not_exhausted(iterator)
+    ) and
+    call.getNode().getScope().(Function).isGenerator() and
+    not exists(Comp comp | comp.contains(call.getNode())) and
+    not stop_iteration_handled(call)
 select call, "Call to next() in a generator"

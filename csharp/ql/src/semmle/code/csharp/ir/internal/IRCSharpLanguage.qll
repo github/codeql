@@ -28,6 +28,44 @@ class IntegralType = CSharp::IntegralType;
 
 class FloatingPointType = CSharp::FloatingPointType;
 
+private newtype TTypeDomain = TRealDomain()
+
+/**
+ * The type domain of a floating-point type. One of `RealDomain`, `ComplexDomain`, or
+ * `ImaginaryDomain`.
+ */
+class TypeDomain extends TTypeDomain {
+  /** Gets a textual representation of this type domain. */
+  string toString() { none() }
+}
+
+/**
+ * The type domain of a floating-point type that represents a real number.
+ */
+class RealDomain extends TypeDomain, TRealDomain {
+  final override string toString() { result = "real" }
+}
+
+/**
+ * The type domain of a floating-point type that represents a complex number. Not currently used in
+ * C#.
+ */
+class ComplexDomain extends TypeDomain {
+  ComplexDomain() { none() }
+
+  final override string toString() { result = "complex" }
+}
+
+/**
+ * The type domain of a floating-point type that represents an imaginary number. Not currently used
+ * in C#.
+ */
+class ImaginaryDomain extends TypeDomain {
+  ImaginaryDomain() { none() }
+
+  final override string toString() { result = "imaginary" }
+}
+
 private newtype TClassDerivation =
   // Note that this is the `Class` type exported from this module, not CSharp::Class.
   MkClassDerivation(Class base, Class derived) { derived.getABaseType() = base }

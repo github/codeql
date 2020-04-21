@@ -12,4 +12,5 @@ private import implementations.Strcat
 private import implementations.Strcpy
 private import implementations.Strdup
 private import implementations.Strftime
+private import implementations.StdString
 private import implementations.Swap

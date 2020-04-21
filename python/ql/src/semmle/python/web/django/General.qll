@@ -27,11 +27,8 @@ abstract class DjangoRoute extends CallNode {
  * https://docs.djangoproject.com/en/3.0/topics/http/views/
  */
 class DjangoViewHandler extends PythonFunctionValue {
-
     /** Gets the index of the 'request' argument */
-    int getRequestArgIndex() {
-        result = 0
-    }
+    int getRequestArgIndex() { result = 0 }
 }
 
 /**
@@ -48,11 +45,7 @@ private class DjangoViewClass extends ClassValue {
 }
 
 class DjangoClassBasedViewHandler extends DjangoViewHandler {
-    DjangoClassBasedViewHandler() {
-        exists(DjangoViewClass cls |
-            cls.lookup(httpVerbLower()) = this
-        )
-    }
+    DjangoClassBasedViewHandler() { exists(DjangoViewClass cls | cls.lookup(httpVerbLower()) = this) }
 
     override int getRequestArgIndex() {
         // due to `self` being the first parameter
