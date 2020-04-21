@@ -423,6 +423,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
+pragma[noinline]
+private predicate getFieldSizeOfClass(Class c, Type type, int size) {
+  exists(Field f |
+    f.getDeclaringType() = c and
+    f.getType() = type and
+    type.getSize() = size
+  )
+}
+
 cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
@@ -472,12 +481,11 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   )
   or
   // Flow from stores to structs with a single field to a load of that field.
-  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom.(StoreInstruction) and
-  exists(Class c, Type t |
-    c = iTo.getResultType() and
-    t = iFrom.getResultType() and
-    c.getAField().getUnspecifiedType() = t and
-    c.getSize() = t.getSize()
+  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
+  exists(int size, Type type |
+    type = iFrom.getResultType() and
+    iTo.getResultType().getSize() = size and
+    getFieldSizeOfClass(iTo.getResultType(), type, size)
   )
   or
   // Flow through modeled functions
