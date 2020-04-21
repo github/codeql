@@ -107,11 +107,11 @@ void test_outer_with_ptr(Outer *pouter) {
   taint_inner_a_ptr(pouter->inner_ptr);
   taint_a_ptr(&pouter->a);
 
-  sink(outer.inner_nested.a); // flow [NOT DETECTED by AST]
+  sink(outer.inner_nested.a); // flow
   sink(outer.inner_ptr->a); // flow [NOT DETECTED by IR]
   sink(outer.a); // flow [NOT DETECTED]
 
-  sink(pouter->inner_nested.a); // flow [NOT DETECTED by AST]
+  sink(pouter->inner_nested.a); // flow
   sink(pouter->inner_ptr->a); // flow [NOT DETECTED by IR]
   sink(pouter->a); // flow [NOT DETECTED]
 }
@@ -128,10 +128,10 @@ void test_outer_with_ref(Outer *pouter) {
   taint_a_ref(pouter->a);
 
   sink(outer.inner_nested.a); // flow
-  sink(outer.inner_ptr->a); // flow [NOT DETECTED]
+  sink(outer.inner_ptr->a); // flow [NOT DETECTED by IR]
   sink(outer.a); // flow [NOT DETECTED by IR]
 
   sink(pouter->inner_nested.a); // flow
-  sink(pouter->inner_ptr->a); // flow [NOT DETECTED]
+  sink(pouter->inner_ptr->a); // flow [NOT DETECTED by IR]
   sink(pouter->a); // flow [NOT DETECTED by IR]
 }

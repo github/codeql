@@ -4,6 +4,14 @@
  * passed to a function, or similar.
  */
 
+/*
+ * Maintainer note: this file is one of several files that are similar but not
+ * identical. Many changes to this file will also apply to the others:
+ * - AddressConstantExpression.qll
+ * - AddressFlow.qll
+ * - EscapesTree.qll
+ */
+
 private import cpp
 
 /**

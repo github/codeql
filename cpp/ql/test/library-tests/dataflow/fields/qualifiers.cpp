@@ -30,21 +30,21 @@ namespace qualifiers {
 
   void getterArgument2(Outer outer) {
     pointerSetA(outer.getInner(), user_input());
-    sink(outer.inner->a); // flow [NOT DETECTED]
+    sink(outer.inner->a); // flow [NOT DETECTED by IR]
   }
 
   void getterArgument2Ref(Outer outer) {
     referenceSetA(*outer.getInner(), user_input());
-    sink(outer.inner->a); // flow [NOT DETECTED]
+    sink(outer.inner->a); // flow [NOT DETECTED by IR]
   }
 
   void assignToGetterStar(Outer outer) {
     (*outer.getInner()).a = user_input();
-    sink(outer.inner->a); // flow [NOT DETECTED]
+    sink(outer.inner->a); // flow [NOT DETECTED by IR]
   }
 
   void assignToGetterAmp(Outer outer) {
     (&outer)->getInner()->a = user_input();
-    sink(outer.inner->a); // flow [NOT DETECTED]
+    sink(outer.inner->a); // flow [NOT DETECTED by IR]
   }
 }
