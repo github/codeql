@@ -4,7 +4,7 @@
  *              for jump-to-definition in the code viewer.
  * @kind definitions
  * @id cpp/jump-to-definition
- * @tags local-references
+ * @tags ide-contextual-queries/local-references
  */
 
 import definitions
