@@ -2,6 +2,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import ModelUtil
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -49,6 +50,23 @@ private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction no
   nodeTo.(LoadInstruction).getSourceAddress() = nodeFrom
   or
   modeledInstructionTaintStep(nodeFrom, nodeTo)
+  or
+  // Flow through partial reads of arrays and unions
+  nodeTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = nodeFrom and
+  not nodeFrom.isResultConflated() and
+  (
+    nodeFrom.getResultType() instanceof ArrayType or
+    nodeFrom.getResultType() instanceof Union
+  )
+  or
+  // Flow from an element to an array or union that contains it.
+  nodeTo.(ChiInstruction).getPartial() = nodeFrom and
+  not nodeTo.isResultConflated() and
+  exists(Type t | nodeTo.getResultLanguageType().hasType(t, false) |
+    t instanceof Union
+    or
+    t instanceof ArrayType
+  )
 }
 
 /**
@@ -104,7 +122,10 @@ predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut)
   // could model this flow in two separate steps, but that would add reverse
   // flow from the write side-effect to the call instruction, which may not be
   // desirable.
-  exists(CallInstruction call, Function func, FunctionInput modelIn, OutParameterDeref modelMidOut, int indexMid, InParameter modelMidIn, OutReturnValue modelOut |
+  exists(
+    CallInstruction call, Function func, FunctionInput modelIn, OutParameterDeref modelMidOut,
+    int indexMid, InParameter modelMidIn, OutReturnValue modelOut
+  |
     instrIn = callInput(call, modelIn) and
     instrOut = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
