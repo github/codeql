@@ -11,73 +11,60 @@
 
 import python
 import semmle.python.strings
-import semmle.python.Import
 
 /*
-* Gets middleware that matches t: django.middleware.csrf.CsrfViewMiddleware | session_csrf.CsrfMiddleware.
-*/
+ * Gets middleware that matches t: django.middleware.csrf.CsrfViewMiddleware | session_csrf.CsrfMiddleware.
+ */
+
+private string getMiddlewareVar() {
+  /*
+   * Django's CSRF middleware Var
+   */
+
+  result = "MIDDLEWARE"
+  or
+  result = "MIDDLEWARE_CLASSES"
+}
 
 private string getCsrfMiddleware() {
   /*
    * Django's CSRF middle ware and
    * Mozilla's CSRF middle ware
-  */
+   */
+
   result = "django.middleware.csrf.CsrfViewMiddleware"
   or
   result = "session_csrf.CsrfMiddleware"
-
 }
 
 /*
  * Gets decorates that match the regex   : requires_csrf_token | ensure_csrf_cookie  | csrf_protect.
-*/
-private string getDecorator(){
-  result = "requires_csrf_token"
+ */
+
+private string getDecorator() {
+  result = "django.views.decorators.csrf.csrf_protect"
   or
-  result = "ensure_csrf_cookie"
+  result = "django.views.decorators.csrf.ensure_csrf_cookie"
   or
-  result = "csrf_protect"
+  result = "django.views.decorators.requires_csrf_token"
 }
 
-from  GlobalVariable g, StrConst s
-
+from List l, StrConst s, GlobalVariable g
 where
+  /*
+   * This checks if there is a GlobalVariable(list) named MIDDLEWARE or MIDDLEWARE_CLASES
+   * and contains the middlware string
+   */
 
-/*
- * This check makes sure that we are dealing with an Django application.
- * Django application has a global variable called MIDDLEWARE.
- */
-exists( | g.getId().regexpMatch("MIDDLEWARE.*") ) and
-/*
- * Check if there are any CSRF middleware from checking all the stringConst.
-*/
-count( |
-  exists( |
-    s.getS().regexpMatch(getCsrfMiddleware())
-  )
-) = 0 and
-/*
- * Check if CsrfViewMiddleware is imported as from django.middleware.csrf import CsrfViewMiddleware
- * and from django.middleware.csrf import *.
-*/
-count( Import k |
-  exists( |
-    k.getAnImportedModuleName().regexpMatch(".*csrf.*")
-  )
-) = 0 and
-count( ImportStar is |
-  exists( |
-    is.getImportedModuleName().regexpMatch(".*csrf.*")
-  )
-) = 0 and
-/*
- * Counts the number of CSRF decorator used and ensures that it's not used explicitly.
-*/
-count( Function f |
-  exists( |
-    repr(f.getADecorator()).regexpMatch(getDecorator())
-  )
-) = 0
+  exists( | g.getId().regexpMatch(getMiddlewareVar())) and
+  not exists( | s.getS().regexpMatch(getCsrfMiddleware())) and
+  not l.getParentNode().getAChildNode().toString().regexpMatch(g.getId()) and
+  not l.contains(s) and
+  /*
+   *  Check if any CSRF decorator is used
+   */
 
+  not exists(Function f | f.getADecorator().pointsTo(Value::named(getDecorator())))
 
-select g.getAnAccess(), "CSRF middleware is not enabled in MIDDLEWARE[] and CSRF is not implemented using decorator such as csrf_protect, ensure_csrf as well."
+select g.getAStore(),
+  "CSRF middleware is not enabled in MIDDLEWARE[] and CSRF is not implemented using decorator such as csrf_protect, ensure_csrf as well."
