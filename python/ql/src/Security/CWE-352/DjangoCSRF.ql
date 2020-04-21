@@ -53,7 +53,7 @@ from List l, StrConst s, GlobalVariable g
 where
   /*
    * This checks if there is a GlobalVariable(list) named MIDDLEWARE or MIDDLEWARE_CLASES
-   * and contains the middlware string
+   * and contains the middleware string
    */
 
   exists( | g.getId().regexpMatch(getMiddlewareVar())) and
