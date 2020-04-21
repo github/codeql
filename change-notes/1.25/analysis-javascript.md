@@ -19,4 +19,4 @@
 
 ## Changes to libraries
 
-
+* A library `semmle.javascript.explore.CallGraph` has been added to help write queries for exploring the call graph.
