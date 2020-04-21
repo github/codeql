@@ -67,3 +67,10 @@ argHasPostUpdate
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:68:21:68:30 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:123:21:123:36 | * ... | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:127:21:127:38 | * ... | ArgumentNode is missing PostUpdateNode. |
+| qualifiers.cpp:27:28:27:37 | call to user_input | ArgumentNode is missing PostUpdateNode. |
+| qualifiers.cpp:32:23:32:30 | call to getInner | ArgumentNode is missing PostUpdateNode. |
+| qualifiers.cpp:32:35:32:44 | call to user_input | ArgumentNode is missing PostUpdateNode. |
+| qualifiers.cpp:37:19:37:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| qualifiers.cpp:37:38:37:47 | call to user_input | ArgumentNode is missing PostUpdateNode. |

@@ -167,6 +167,42 @@ edges
 | by_reference.cpp:68:17:68:18 | ref arg & ... [a] | by_reference.cpp:69:22:69:23 | & ... [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | ref arg & ... [a] |
 | by_reference.cpp:69:22:69:23 | & ... [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:84:3:84:7 | inner [post update] [a] | by_reference.cpp:103:27:103:35 | ref arg inner_ptr [a] |
+| by_reference.cpp:84:3:84:7 | inner [post update] [a] | by_reference.cpp:107:29:107:37 | ref arg inner_ptr [a] |
+| by_reference.cpp:84:3:84:25 | ... = ... | by_reference.cpp:84:3:84:7 | inner [post update] [a] |
+| by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:3:84:25 | ... = ... |
+| by_reference.cpp:87:31:87:35 | inner [a] | by_reference.cpp:122:27:122:38 | ref arg inner_nested [a] |
+| by_reference.cpp:87:31:87:35 | inner [a] | by_reference.cpp:126:29:126:40 | ref arg inner_nested [a] |
+| by_reference.cpp:88:3:88:7 | inner [post update] [a] | by_reference.cpp:87:31:87:35 | inner [a] |
+| by_reference.cpp:88:3:88:7 | inner [post update] [a] | by_reference.cpp:122:27:122:38 | ref arg inner_nested [a] |
+| by_reference.cpp:88:3:88:7 | inner [post update] [a] | by_reference.cpp:126:29:126:40 | ref arg inner_nested [a] |
+| by_reference.cpp:88:3:88:24 | ... = ... | by_reference.cpp:88:3:88:7 | inner [post update] [a] |
+| by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | ... = ... |
+| by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:124:21:124:21 | ref arg a |
+| by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:128:23:128:23 | ref arg a |
+| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:95:25:95:26 | pa |
+| by_reference.cpp:103:21:103:25 | outer [post update] [inner_ptr, a] | by_reference.cpp:111:8:111:12 | outer [inner_ptr, a] |
+| by_reference.cpp:103:27:103:35 | ref arg inner_ptr [a] | by_reference.cpp:103:21:103:25 | outer [post update] [inner_ptr, a] |
+| by_reference.cpp:107:21:107:26 | pouter [post update] [inner_ptr, a] | by_reference.cpp:115:8:115:13 | pouter [inner_ptr, a] |
+| by_reference.cpp:107:29:107:37 | ref arg inner_ptr [a] | by_reference.cpp:107:21:107:26 | pouter [post update] [inner_ptr, a] |
+| by_reference.cpp:111:8:111:12 | outer [inner_ptr, a] | by_reference.cpp:111:14:111:22 | inner_ptr [a] |
+| by_reference.cpp:111:14:111:22 | inner_ptr [a] | by_reference.cpp:111:25:111:25 | a |
+| by_reference.cpp:115:8:115:13 | pouter [inner_ptr, a] | by_reference.cpp:115:16:115:24 | inner_ptr [a] |
+| by_reference.cpp:115:16:115:24 | inner_ptr [a] | by_reference.cpp:115:27:115:27 | a |
+| by_reference.cpp:122:21:122:25 | outer [post update] [inner_nested, a] | by_reference.cpp:130:8:130:12 | outer [inner_nested, a] |
+| by_reference.cpp:122:27:122:38 | ref arg inner_nested [a] | by_reference.cpp:122:21:122:25 | outer [post update] [inner_nested, a] |
+| by_reference.cpp:124:15:124:19 | outer [post update] [a] | by_reference.cpp:132:8:132:12 | outer [a] |
+| by_reference.cpp:124:21:124:21 | ref arg a | by_reference.cpp:124:15:124:19 | outer [post update] [a] |
+| by_reference.cpp:126:21:126:26 | pouter [post update] [inner_nested, a] | by_reference.cpp:134:8:134:13 | pouter [inner_nested, a] |
+| by_reference.cpp:126:29:126:40 | ref arg inner_nested [a] | by_reference.cpp:126:21:126:26 | pouter [post update] [inner_nested, a] |
+| by_reference.cpp:128:15:128:20 | pouter [post update] [a] | by_reference.cpp:136:8:136:13 | pouter [a] |
+| by_reference.cpp:128:23:128:23 | ref arg a | by_reference.cpp:128:15:128:20 | pouter [post update] [a] |
+| by_reference.cpp:130:8:130:12 | outer [inner_nested, a] | by_reference.cpp:130:14:130:25 | inner_nested [a] |
+| by_reference.cpp:130:14:130:25 | inner_nested [a] | by_reference.cpp:130:27:130:27 | a |
+| by_reference.cpp:132:8:132:12 | outer [a] | by_reference.cpp:132:14:132:14 | a |
+| by_reference.cpp:134:8:134:13 | pouter [inner_nested, a] | by_reference.cpp:134:16:134:27 | inner_nested [a] |
+| by_reference.cpp:134:16:134:27 | inner_nested [a] | by_reference.cpp:134:29:134:29 | a |
+| by_reference.cpp:136:8:136:13 | pouter [a] | by_reference.cpp:136:16:136:16 | a |
 | complex.cpp:34:15:34:15 | b [f, a_] | complex.cpp:44:8:44:8 | b [f, a_] |
 | complex.cpp:34:15:34:15 | b [f, b_] | complex.cpp:45:8:45:8 | b [f, b_] |
 | complex.cpp:44:8:44:8 | b [f, a_] | complex.cpp:44:10:44:10 | f [a_] |
@@ -205,6 +241,17 @@ edges
 | constructors.cpp:43:9:43:9 | g [b_] | constructors.cpp:26:15:26:15 | f [b_] |
 | constructors.cpp:46:9:46:9 | h [a_] | constructors.cpp:26:15:26:15 | f [a_] |
 | constructors.cpp:46:9:46:9 | h [b_] | constructors.cpp:26:15:26:15 | f [b_] |
+| qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] | qualifiers.cpp:23:10:23:14 | outer [inner, a] |
+| qualifiers.cpp:22:5:22:38 | ... = ... | qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] |
+| qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] | qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] |
+| qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:5:22:38 | ... = ... |
+| qualifiers.cpp:23:10:23:14 | outer [inner, a] | qualifiers.cpp:23:16:23:20 | inner [a] |
+| qualifiers.cpp:23:16:23:20 | inner [a] | qualifiers.cpp:23:23:23:23 | a |
+| qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] | qualifiers.cpp:28:10:28:14 | outer [inner, a] |
+| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] |
+| qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] |
+| qualifiers.cpp:28:10:28:14 | outer [inner, a] | qualifiers.cpp:28:16:28:20 | inner [a] |
+| qualifiers.cpp:28:16:28:20 | inner [a] | qualifiers.cpp:28:23:28:23 | a |
 | simple.cpp:26:15:26:15 | f [a_] | simple.cpp:28:10:28:10 | f [a_] |
 | simple.cpp:26:15:26:15 | f [b_] | simple.cpp:29:10:29:10 | f [b_] |
 | simple.cpp:28:10:28:10 | f [a_] | simple.cpp:28:12:28:12 | call to a |
@@ -448,6 +495,43 @@ nodes
 | by_reference.cpp:68:21:68:30 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
 | by_reference.cpp:69:22:69:23 | & ... [a] | semmle.label | & ... [a] |
+| by_reference.cpp:84:3:84:7 | inner [post update] [a] | semmle.label | inner [post update] [a] |
+| by_reference.cpp:84:3:84:25 | ... = ... | semmle.label | ... = ... |
+| by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:87:31:87:35 | inner [a] | semmle.label | inner [a] |
+| by_reference.cpp:88:3:88:7 | inner [post update] [a] | semmle.label | inner [post update] [a] |
+| by_reference.cpp:88:3:88:24 | ... = ... | semmle.label | ... = ... |
+| by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:95:25:95:26 | pa | semmle.label | pa |
+| by_reference.cpp:96:8:96:17 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:103:21:103:25 | outer [post update] [inner_ptr, a] | semmle.label | outer [post update] [inner_ptr, a] |
+| by_reference.cpp:103:27:103:35 | ref arg inner_ptr [a] | semmle.label | ref arg inner_ptr [a] |
+| by_reference.cpp:107:21:107:26 | pouter [post update] [inner_ptr, a] | semmle.label | pouter [post update] [inner_ptr, a] |
+| by_reference.cpp:107:29:107:37 | ref arg inner_ptr [a] | semmle.label | ref arg inner_ptr [a] |
+| by_reference.cpp:111:8:111:12 | outer [inner_ptr, a] | semmle.label | outer [inner_ptr, a] |
+| by_reference.cpp:111:14:111:22 | inner_ptr [a] | semmle.label | inner_ptr [a] |
+| by_reference.cpp:111:25:111:25 | a | semmle.label | a |
+| by_reference.cpp:115:8:115:13 | pouter [inner_ptr, a] | semmle.label | pouter [inner_ptr, a] |
+| by_reference.cpp:115:16:115:24 | inner_ptr [a] | semmle.label | inner_ptr [a] |
+| by_reference.cpp:115:27:115:27 | a | semmle.label | a |
+| by_reference.cpp:122:21:122:25 | outer [post update] [inner_nested, a] | semmle.label | outer [post update] [inner_nested, a] |
+| by_reference.cpp:122:27:122:38 | ref arg inner_nested [a] | semmle.label | ref arg inner_nested [a] |
+| by_reference.cpp:124:15:124:19 | outer [post update] [a] | semmle.label | outer [post update] [a] |
+| by_reference.cpp:124:21:124:21 | ref arg a | semmle.label | ref arg a |
+| by_reference.cpp:126:21:126:26 | pouter [post update] [inner_nested, a] | semmle.label | pouter [post update] [inner_nested, a] |
+| by_reference.cpp:126:29:126:40 | ref arg inner_nested [a] | semmle.label | ref arg inner_nested [a] |
+| by_reference.cpp:128:15:128:20 | pouter [post update] [a] | semmle.label | pouter [post update] [a] |
+| by_reference.cpp:128:23:128:23 | ref arg a | semmle.label | ref arg a |
+| by_reference.cpp:130:8:130:12 | outer [inner_nested, a] | semmle.label | outer [inner_nested, a] |
+| by_reference.cpp:130:14:130:25 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:130:27:130:27 | a | semmle.label | a |
+| by_reference.cpp:132:8:132:12 | outer [a] | semmle.label | outer [a] |
+| by_reference.cpp:132:14:132:14 | a | semmle.label | a |
+| by_reference.cpp:134:8:134:13 | pouter [inner_nested, a] | semmle.label | pouter [inner_nested, a] |
+| by_reference.cpp:134:16:134:27 | inner_nested [a] | semmle.label | inner_nested [a] |
+| by_reference.cpp:134:29:134:29 | a | semmle.label | a |
+| by_reference.cpp:136:8:136:13 | pouter [a] | semmle.label | pouter [a] |
+| by_reference.cpp:136:16:136:16 | a | semmle.label | a |
 | complex.cpp:34:15:34:15 | b [f, a_] | semmle.label | b [f, a_] |
 | complex.cpp:34:15:34:15 | b [f, b_] | semmle.label | b [f, b_] |
 | complex.cpp:44:8:44:8 | b [f, a_] | semmle.label | b [f, a_] |
@@ -490,6 +574,19 @@ nodes
 | constructors.cpp:43:9:43:9 | g [b_] | semmle.label | g [b_] |
 | constructors.cpp:46:9:46:9 | h [a_] | semmle.label | h [a_] |
 | constructors.cpp:46:9:46:9 | h [b_] | semmle.label | h [b_] |
+| qualifiers.cpp:22:5:22:9 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
+| qualifiers.cpp:22:5:22:38 | ... = ... | semmle.label | ... = ... |
+| qualifiers.cpp:22:11:22:18 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
+| qualifiers.cpp:22:27:22:36 | call to user_input | semmle.label | call to user_input |
+| qualifiers.cpp:23:10:23:14 | outer [inner, a] | semmle.label | outer [inner, a] |
+| qualifiers.cpp:23:16:23:20 | inner [a] | semmle.label | inner [a] |
+| qualifiers.cpp:23:23:23:23 | a | semmle.label | a |
+| qualifiers.cpp:27:5:27:9 | outer [post update] [inner, a] | semmle.label | outer [post update] [inner, a] |
+| qualifiers.cpp:27:11:27:18 | call to getInner [post update] [a] | semmle.label | call to getInner [post update] [a] |
+| qualifiers.cpp:27:28:27:37 | call to user_input | semmle.label | call to user_input |
+| qualifiers.cpp:28:10:28:14 | outer [inner, a] | semmle.label | outer [inner, a] |
+| qualifiers.cpp:28:16:28:20 | inner [a] | semmle.label | inner [a] |
+| qualifiers.cpp:28:23:28:23 | a | semmle.label | a |
 | simple.cpp:26:15:26:15 | f [a_] | semmle.label | f [a_] |
 | simple.cpp:26:15:26:15 | f [b_] | semmle.label | f [b_] |
 | simple.cpp:28:10:28:10 | f [a_] | semmle.label | f [a_] |
@@ -577,6 +674,12 @@ nodes
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:57:10:57:22 | call to getIndirectly | call to getIndirectly flows from $@ | by_reference.cpp:56:19:56:28 | call to user_input | call to user_input |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | call to getThroughNonMember flows from $@ | by_reference.cpp:62:25:62:34 | call to user_input | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | call to nonMemberGetA flows from $@ | by_reference.cpp:68:21:68:30 | call to user_input | call to user_input |
+| by_reference.cpp:111:25:111:25 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:111:25:111:25 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:115:27:115:27 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:115:27:115:27 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:130:27:130:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:130:27:130:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
+| by_reference.cpp:132:14:132:14 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:132:14:132:14 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
+| by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
+| by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
 | complex.cpp:44:12:44:12 | call to a | complex.cpp:55:13:55:22 | call to user_input | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:55:13:55:22 | call to user_input | call to user_input |
 | complex.cpp:44:12:44:12 | call to a | complex.cpp:57:13:57:22 | call to user_input | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:57:13:57:22 | call to user_input | call to user_input |
 | complex.cpp:45:12:45:12 | call to b | complex.cpp:56:13:56:22 | call to user_input | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:56:13:56:22 | call to user_input | call to user_input |
@@ -585,6 +688,8 @@ nodes
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:36:25:36:34 | call to user_input | call to user_input |
+| qualifiers.cpp:23:23:23:23 | a | qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:23:23:23:23 | a | a flows from $@ | qualifiers.cpp:22:27:22:36 | call to user_input | call to user_input |
+| qualifiers.cpp:28:23:28:23 | a | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:28:23:28:23 | a | a flows from $@ | qualifiers.cpp:27:28:27:37 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input | call to user_input |
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input | call to user_input |
