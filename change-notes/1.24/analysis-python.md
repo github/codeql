@@ -4,18 +4,31 @@ The following changes in version 1.24 affect Python analysis in all applications
 
 ## General improvements
 
-Support for Django version 2.x and 3.x
+- Support for Django version 2.x and 3.x
 
-## New queries
+- Taint tracking now correctly tracks taint in destructuring assignments. For example, if `tainted_list` is a list of tainted tainted elements, then
+    ```python
+    head, *tail = tainted_list
+    ```
+    will result in `tail` being tainted with the same taint as `tainted_list`, and `head` being tainted with the taint of the elements of `tainted_list`.
 
-| **Query**                   | **Tags**  | **Purpose**                                                        |
-|-----------------------------|-----------|--------------------------------------------------------------------|
+- A large number of libraries and queries have been moved to the new `Value` API, which should result in more precise results.
+
+- The `Value` API has been extended in various ways:
+   - A new `StringValue` class has been added, for tracking string literals.
+   - Values now have a `booleanValue` method which returns the boolean interpretation of the given value.
+   - Built-in methods for which the return type is not fixed are now modeled as returning an unknown value by default.
+
 
 ## Changes to existing queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
-| Uncontrolled command line (`py/command-line-injection`) | More results | We now model the `fabric` and `invoke` pacakges for command execution. |
+| Arbitrary file write during tarfile extraction (`py/tarslip`) | Fewer false negatives | Negations are now handled correctly in conditionals that may sanitize tainted values. |
+| First parameter of a method is not named 'self' (`py/not-named-self`) | Fewer false positives | `__class_getitem__` is now recognized as a class method. |
+| Import of deprecated module (`py/import-deprecated-module) | Fewer false positives | Deprecated modules used for backwards compatibility are no longer reported.|
+| Module imports itself (`py/import-own-module`) | Fewer false positives | Imports local to a given package are no longer classified as self-imports. |
+| Uncontrolled command line (`py/command-line-injection`) | More results | We now model the `fabric` and `invoke` packages for command execution. |
 
 ### Web framework support
 
@@ -38,3 +51,6 @@ queries:
 - py/stack-trace-exposure
 
 ## Changes to libraries
+### Taint tracking
+- The `urlsplit` and `urlparse` functions now propagate taint appropriately.
+- HTTP requests using the `requests` library are now modeled.
