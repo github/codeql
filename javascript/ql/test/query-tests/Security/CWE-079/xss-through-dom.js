@@ -62,4 +62,9 @@
 	
 	var valMethod = $("textarea").val;
 	$("#id").get(0).innerHTML = valMethod(); // NOT OK
+	
+	var myValue = $(document).find("option").attr("value");
+	if(myValue.property) {
+		$("#id").get(0).innerHTML = myValue; // OK.
+	}
 })();

@@ -12,6 +12,7 @@ module XssThroughDom {
   import Xss::XssThroughDom
   private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
   private import semmle.javascript.dataflow.InferredTypes
+  private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQuery
 
   /**
    * A taint-tracking configuration for reasoning about XSS through the DOM.
@@ -30,7 +31,7 @@ module XssThroughDom {
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
       guard instanceof TypeTestGuard or
-      guard instanceof HasNodePropertySanitizerGuard
+      guard instanceof UnsafeJQuery::PropertyPresenceSanitizer
     }
   }
 
@@ -120,24 +121,6 @@ module XssThroughDom {
     override predicate sanitizes(boolean outcome, Expr e) {
       polarity = outcome and
       e = typeof.getOperand()
-    }
-  }
-
-  /**
-   * The precense of a `nodeType` or `jquery` property indicates that the value is a DOM node, and not the text of a DOM node.
-   *
-   * This sanitizer helps prune infeasible paths in type-overloaded functions.
-   */
-  class HasNodePropertySanitizerGuard extends TaintTracking::SanitizerGuardNode {
-    DataFlow::PropRead read;
-
-    HasNodePropertySanitizerGuard() {
-      read = this and
-      read.getPropertyName() = ["nodeType", "jquery"]
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      e = read.getBase().asExpr() and outcome = true
     }
   }
 }
