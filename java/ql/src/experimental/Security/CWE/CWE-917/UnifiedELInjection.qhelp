@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The Java Unified Expression Language is a special purpose programming language mostly used in
+Java web applications for embedding expressions into web pages. Evaluation of unvalidated
+expressions can let attacker to modify Java objects' properties or execute arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>Avoid putting user data into an expression interpreter if possible. Otherwise, validate and/or
+encode the data to ensure it is not evaluated as expression language.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the code accepts a Unified EL expression from the user and evaluates
+it.</p>
+
+<sample src="UnifiedELInjection.java" />
+</example>
+
+<references>
+<li>Java EE 8 Tutorial: <a href="https://javaee.github.io/tutorial/jsf-el.html">Expression Language</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Expression_Language_Injection">Expression Language Injection</a>.</li>
+</references>
+</qhelp>

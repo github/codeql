@@ -1,0 +1,24 @@
+edges
+| UnifiedELInjection.java:9:36:9:60 | expr : String | UnifiedELInjection.java:11:5:11:6 | me |
+| UnifiedELInjection.java:14:35:14:59 | expr : String | UnifiedELInjection.java:17:5:17:6 | ve |
+| UnifiedELInjection.java:14:35:14:59 | expr : String | UnifiedELInjection.java:18:5:18:6 | ve |
+| UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:23:15:23:18 | expr |
+| UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:24:19:24:22 | expr |
+| UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:25:19:25:22 | expr |
+nodes
+| UnifiedELInjection.java:9:36:9:60 | expr : String | semmle.label | expr : String |
+| UnifiedELInjection.java:11:5:11:6 | me | semmle.label | me |
+| UnifiedELInjection.java:14:35:14:59 | expr : String | semmle.label | expr : String |
+| UnifiedELInjection.java:17:5:17:6 | ve | semmle.label | ve |
+| UnifiedELInjection.java:18:5:18:6 | ve | semmle.label | ve |
+| UnifiedELInjection.java:21:31:21:55 | expr : String | semmle.label | expr : String |
+| UnifiedELInjection.java:23:15:23:18 | expr | semmle.label | expr |
+| UnifiedELInjection.java:24:19:24:22 | expr | semmle.label | expr |
+| UnifiedELInjection.java:25:19:25:22 | expr | semmle.label | expr |
+#select
+| UnifiedELInjection.java:11:5:11:6 | me | UnifiedELInjection.java:9:36:9:60 | expr : String | UnifiedELInjection.java:11:5:11:6 | me | Unified EL expression might include input from $@. | UnifiedELInjection.java:9:36:9:60 | expr | this user input |
+| UnifiedELInjection.java:17:5:17:6 | ve | UnifiedELInjection.java:14:35:14:59 | expr : String | UnifiedELInjection.java:17:5:17:6 | ve | Unified EL expression might include input from $@. | UnifiedELInjection.java:14:35:14:59 | expr | this user input |
+| UnifiedELInjection.java:18:5:18:6 | ve | UnifiedELInjection.java:14:35:14:59 | expr : String | UnifiedELInjection.java:18:5:18:6 | ve | Unified EL expression might include input from $@. | UnifiedELInjection.java:14:35:14:59 | expr | this user input |
+| UnifiedELInjection.java:23:15:23:18 | expr | UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:23:15:23:18 | expr | Unified EL expression might include input from $@. | UnifiedELInjection.java:21:31:21:55 | expr | this user input |
+| UnifiedELInjection.java:24:19:24:22 | expr | UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:24:19:24:22 | expr | Unified EL expression might include input from $@. | UnifiedELInjection.java:21:31:21:55 | expr | this user input |
+| UnifiedELInjection.java:25:19:25:22 | expr | UnifiedELInjection.java:21:31:21:55 | expr : String | UnifiedELInjection.java:25:19:25:22 | expr | Unified EL expression might include input from $@. | UnifiedELInjection.java:21:31:21:55 | expr | this user input |
