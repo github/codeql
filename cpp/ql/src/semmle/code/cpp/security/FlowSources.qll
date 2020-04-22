@@ -15,6 +15,7 @@ abstract class RemoteFlowSource extends DataFlow::Node {
 
 private class TaintedReturnSource extends RemoteFlowSource {
   string sourceType;
+
   TaintedReturnSource() {
     exists(RemoteFlowFunction func, CallInstruction instr, FunctionOutput output |
       asInstruction() = instr and
@@ -24,13 +25,12 @@ private class TaintedReturnSource extends RemoteFlowSource {
     )
   }
 
-  override string getSourceType() {
-    result = sourceType
-  }
+  override string getSourceType() { result = sourceType }
 }
 
 private class TaintedParameterSource extends RemoteFlowSource {
   string sourceType;
+
   TaintedParameterSource() {
     exists(RemoteFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
       asInstruction() = instr and
@@ -40,7 +40,5 @@ private class TaintedParameterSource extends RemoteFlowSource {
     )
   }
 
-  override string getSourceType() {
-    result = sourceType
-  }
+  override string getSourceType() { result = sourceType }
 }
