@@ -1,0 +1,28 @@
+dataFlow
+| tst.js:2:16:2:23 | source() | tst.js:7:7:7:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:11:10:11:10 | e |
+| tst.js:2:16:2:23 | source() | tst.js:17:10:17:10 | v |
+| tst.js:2:16:2:23 | source() | tst.js:21:10:21:14 | value |
+| tst.js:2:16:2:23 | source() | tst.js:26:10:26:14 | value |
+| tst.js:2:16:2:23 | source() | tst.js:30:7:30:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:34:7:34:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:38:7:38:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:42:7:42:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:46:7:46:7 | e |
+| tst.js:2:16:2:23 | source() | tst.js:50:10:50:10 | e |
+| tst.js:2:16:2:23 | source() | tst.js:53:8:53:21 | map.get("key") |
+| tst.js:2:16:2:23 | source() | tst.js:59:8:59:22 | map2.get("foo") |
+| tst.js:2:16:2:23 | source() | tst.js:64:8:64:26 | map3.get(unknown()) |
+| tst.js:2:16:2:23 | source() | tst.js:69:8:69:26 | map3.get(unknown()) |
+typeTracking
+| tst.js:2:16:2:23 | source() | tst.js:2:16:2:23 | source() |
+| tst.js:2:16:2:23 | source() | tst.js:6:14:6:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:10:15:10:15 | e |
+| tst.js:2:16:2:23 | source() | tst.js:16:15:16:15 | v |
+| tst.js:2:16:2:23 | source() | tst.js:20:20:20:24 | value |
+| tst.js:2:16:2:23 | source() | tst.js:25:14:25:18 | value |
+| tst.js:2:16:2:23 | source() | tst.js:29:14:29:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:33:14:33:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:37:14:37:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:45:14:45:14 | e |
+| tst.js:2:16:2:23 | source() | tst.js:53:8:53:21 | map.get("key") |

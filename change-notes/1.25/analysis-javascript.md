@@ -20,3 +20,4 @@
 ## Changes to libraries
 
 * A library `semmle.javascript.explore.CallGraph` has been added to help write queries for exploring the call graph.
+* Added data flow for `Map` and `Set`, and added matching type-tracking steps that can accessed using the `CollectionsTypeTracking` module.
