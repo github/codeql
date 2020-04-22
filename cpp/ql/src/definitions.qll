@@ -132,7 +132,8 @@ private predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm)
  *  - `"X"` for macro accesses
  *  - `"I"` for import / include directives
  */
-cached Top definitionOf(Top e, string kind) {
+cached
+Top definitionOf(Top e, string kind) {
   (
     // call -> function called
     kind = "M" and

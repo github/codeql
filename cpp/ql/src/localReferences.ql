@@ -11,9 +11,8 @@ import definitions
 
 external string selectedSourceFile();
 
-cached File getEncodedFile(string name) {
-  result.getAbsolutePath().replaceAll(":", "_") = name
-}
+cached
+File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }
 
 from Top e, Top def, string kind
 where def = definitionOf(e, kind) and def.getFile() = getEncodedFile(selectedSourceFile())
