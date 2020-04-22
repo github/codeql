@@ -132,15 +132,6 @@ abstract class TaintKind extends string {
     }
 
     /**
-     * DEPRECATED -- Use `TaintFlow.additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind)` instead.
-     *
-     * Holds if this kind of taint passes from variable `fromvar` to  variable `tovar`
-     * This predicate is present for completeness. It is unlikely that any `TaintKind`
-     * implementation will ever need to override it.
-     */
-    deprecated predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar) { none() }
-
-    /**
      * Holds if this kind of taint "taints" `expr`.
      */
     final predicate taints(ControlFlowNode expr) {
@@ -356,41 +347,6 @@ abstract class Sanitizer extends string {
 
     /** Holds if `def` shows value to be untainted with `taint` */
     predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) { none() }
-}
-
-/**
- * DEPRECATED -- Use DataFlowExtension instead.
- *  An extension to taint-flow. For adding library or framework specific flows.
- * Examples include flow from a request to untrusted part of that request or
- * from a socket to data from that socket.
- */
-abstract deprecated class TaintFlow extends string {
-    bindingset[this]
-    TaintFlow() { any() }
-
-    /**
-     * Holds if `fromnode` being tainted with `fromkind` will result in `tonode` being tainted with `tokind`.
-     * Extensions to `TaintFlow` should override this to provide additional taint steps.
-     */
-    predicate additionalFlowStep(
-        ControlFlowNode fromnode, TaintKind fromkind, ControlFlowNode tonode, TaintKind tokind
-    ) {
-        none()
-    }
-
-    /**
-     * Holds if the given `kind` of taint passes from variable `fromvar` to variable `tovar`.
-     * This predicate is present for completeness. Most `TaintFlow` implementations will not need to override it.
-     */
-    predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind) {
-        none()
-    }
-
-    /**
-     * Holds if the given `kind` of taint cannot pass from variable `fromvar` to variable `tovar`.
-     * This predicate is present for completeness. Most `TaintFlow` implementations will not need to override it.
-     */
-    predicate prunedFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind) { none() }
 }
 
 /**
