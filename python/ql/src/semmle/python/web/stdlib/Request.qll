@@ -1,3 +1,8 @@
+/**
+ * Provides the sources and taint-flow for HTTP servers defined with standard library (stdlib).
+ * Specifically, we model `HttpRequestTaintSource`s from instances of `BaseHTTPRequestHandler`
+ * (or subclasses) and form parsing with `cgi.FieldStorage`.
+ */
 import python
 import semmle.python.security.TaintTracking
 import semmle.python.web.Http
