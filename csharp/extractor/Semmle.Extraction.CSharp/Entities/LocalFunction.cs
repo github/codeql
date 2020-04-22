@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write('*');
         }
 
-        public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntityFromSymbol(cx, field);
+        public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntity(cx, field);
 
         class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
         {

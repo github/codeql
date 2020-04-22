@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 TypeMention.Create(Context, syntax.Type, this, type);
         }
 
-        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntityFromSymbol(cx, prop);
+        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntity(cx, prop);
 
         public override void WriteId(TextWriter trapFile)
         {
