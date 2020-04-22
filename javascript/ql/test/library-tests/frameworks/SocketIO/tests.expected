@@ -122,6 +122,7 @@ test_SocketNode
 | tst.js:71:3:71:35 | socket. ...  => {}) | socket.io namespace with path '/' |
 | tst.js:72:3:72:46 | socket. ...  => {}) | socket.io namespace with path '/' |
 | tst.js:73:3:73:43 | socket. ...  => {}) | socket.io namespace with path '/' |
+| tst.js:84:16:84:21 | socket | socket.io namespace with path '/' |
 test_ClientSendNode_getEventName
 | client2.js:14:1:14:32 | sock.em ... there") | data |
 | client2.js:16:1:16:36 | sock.wr ...  => {}) | message |

@@ -190,7 +190,7 @@ module SocketIO {
       |
         on = base.getAMethodCall(EventEmitter::on()) and
         on.getArgument(0).mayHaveStringValue(connect) and
-        this = on.getCallback(1).getParameter(0)
+        this = on.getABoundCallbackParameter(1, 0)
       )
     }
 
