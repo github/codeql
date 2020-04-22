@@ -20,5 +20,6 @@
 | test.py:42 | test_str2 | c | externally controlled string |
 | test.py:50 | test_exc_info | res | exception.info |
 | test.py:58 | test_untrusted | res | externally controlled string |
-| test.py:69 | test_urlsplit_urlparse | urlparse_res | [externally controlled string] |
-| test.py:69 | test_urlsplit_urlparse | urlsplit_res | [externally controlled string] |
+| test.py:70 | test_urlsplit_urlparse | a | [externally controlled string] |
+| test.py:70 | test_urlsplit_urlparse | b | [externally controlled string] |
+| test.py:70 | test_urlsplit_urlparse | c | {externally controlled string} |
