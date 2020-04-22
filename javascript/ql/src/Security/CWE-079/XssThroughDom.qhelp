@@ -17,7 +17,7 @@ If an attacker is able to control the safe sanitized text, then this vulnerabili
 <recommendation>
 <p>
 To guard against cross-site scripting, consider using contextual output encoding/escaping before
-writing text to the page, or one of the other solutions that are mentioned in the references.
+writing text to the page, or one of the other solutions that are mentioned in the References section below.
 </p>
 </recommendation>
 
