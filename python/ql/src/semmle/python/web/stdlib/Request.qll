@@ -55,3 +55,67 @@ class HTTPMessageKind extends ExternalStringDictKind {
         )
     }
 }
+
+/** Source of parsed HTTP forms (by using the `cgi` module). */
+class CgiFieldStorageSource extends HttpRequestTaintSource {
+    CgiFieldStorageSource() { this = Value::named("cgi.FieldStorage").getACall() }
+
+    override predicate isSourceOf(TaintKind kind) { kind instanceof CgiFieldStorageFormKind }
+}
+
+/** TaintKind for a parsed HTTP form. */
+class CgiFieldStorageFormKind extends TaintKind {
+    /*
+     * There is a slight difference between how we model form/fields and how it is handled by the code.
+     * In the code
+     * ```
+     * form = cgi.FieldStorage()
+     * field = form['myfield']
+     * ```
+     * both `form` and `field` have the type `cgi.FieldStorage`. This allows the code to represent
+     * nested forms as `form['nested_form']['myfield']`. However, since HTML forms can't be nested
+     * we ignore that detail since it allows for a more clean modeling.
+     */
+    CgiFieldStorageFormKind() { this = "CgiFieldStorageFormKind" }
+
+    override TaintKind getTaintOfAttribute(string name) {
+        name = "value" and result.(SequenceKind).getItem() instanceof CgiFieldStorageFieldKind
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        name = "getvalue" and
+        (
+            result instanceof ExternalStringKind
+            or
+            result.(SequenceKind).getItem() instanceof ExternalStringKind
+        )
+        or
+        name = "getfirst" and
+        result instanceof ExternalStringKind
+        or
+        name = "getlist" and
+        result.(SequenceKind).getItem() instanceof ExternalStringKind
+    }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(SubscriptNode).getObject() = fromnode and
+        (
+            result instanceof CgiFieldStorageFieldKind
+            or
+            result.(SequenceKind).getItem() instanceof CgiFieldStorageFieldKind
+        )
+    }
+}
+
+/** TaintKind for the field of a parsed HTTP form. */
+class CgiFieldStorageFieldKind extends TaintKind {
+    CgiFieldStorageFieldKind() { this = "CgiFieldStorageFieldKind" }
+
+    override TaintKind getTaintOfAttribute(string name) {
+        name = "filename" and result instanceof ExternalStringKind
+        or
+        name = "file" and result instanceof ExternalFileObject
+        or
+        name = "value" and result instanceof ExternalStringKind
+    }
+}
