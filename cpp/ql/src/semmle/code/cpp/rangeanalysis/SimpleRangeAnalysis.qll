@@ -126,7 +126,7 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   UnsignedBitwiseAndExpr() {
     (
       getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
-      getLeftOperand().getValue().toInt() >= 0
+      getLeftOperand().getFullyConverted().getValue().toInt() >= 0
     ) and
     (
       getRightOperand()
@@ -135,7 +135,7 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
           .getUnderlyingType()
           .(IntegralType)
           .isUnsigned() or
-      getRightOperand().getValue().toInt() >= 0
+      getRightOperand().getFullyConverted().getValue().toInt() >= 0
     )
   }
 }
