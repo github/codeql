@@ -1,6 +1,6 @@
 /**
  * @name Cross-site scripting through DOM
- * @description Writing user controlled DOM to HTML can allow for
+ * @description Writing user-controlled DOM to HTML can allow for
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error

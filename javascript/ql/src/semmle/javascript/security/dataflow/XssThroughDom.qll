@@ -35,7 +35,7 @@ module XssThroughDom {
   }
 
   /**
-   * Gets an attribute name that could store user controlled data.
+   * Gets an attribute name that could store user-controlled data.
    *
    * Attributes such as "id", "href", and "src" are often used as input to HTML.
    * However, they are either rarely controlable by a user, or already a sink for other XSS vulnerabilities.
