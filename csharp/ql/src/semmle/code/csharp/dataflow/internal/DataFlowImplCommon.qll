@@ -415,8 +415,7 @@ class CastingNode extends Node {
   CastingNode() {
     this instanceof ParameterNode or
     this instanceof CastNode or
-    this instanceof OutNode or
-    this.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNode
+    this instanceof OutNodeExt
   }
 }
 
@@ -565,6 +564,18 @@ class ReturnNodeExt extends Node {
 }
 
 /**
+ * A node to which data can flow from a call. Either an ordinary out node
+ * or a post-update node associated with a call argument.
+ */
+class OutNodeExt extends Node {
+  OutNodeExt() {
+    this instanceof OutNode
+    or
+    this.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNode
+  }
+}
+
+/**
  * An extended return kind. A return kind describes how data can be returned
  * from a callable. This can either be through a returned value or an updated
  * parameter.
@@ -574,7 +585,7 @@ abstract class ReturnKindExt extends TReturnKindExt {
   abstract string toString();
 
   /** Gets a node corresponding to data flow out of `call`. */
-  abstract Node getAnOutNode(DataFlowCall call);
+  abstract OutNodeExt getAnOutNode(DataFlowCall call);
 }
 
 class ValueReturnKind extends ReturnKindExt, TValueReturn {
@@ -586,7 +597,9 @@ class ValueReturnKind extends ReturnKindExt, TValueReturn {
 
   override string toString() { result = kind.toString() }
 
-  override Node getAnOutNode(DataFlowCall call) { result = getAnOutNode(call, this.getKind()) }
+  override OutNodeExt getAnOutNode(DataFlowCall call) {
+    result = getAnOutNode(call, this.getKind())
+  }
 }
 
 class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
@@ -598,9 +611,9 @@ class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
 
   override string toString() { result = "param update " + pos }
 
-  override PostUpdateNode getAnOutNode(DataFlowCall call) {
+  override OutNodeExt getAnOutNode(DataFlowCall call) {
     exists(ArgumentNode arg |
-      result.getPreUpdateNode() = arg and
+      result.(PostUpdateNode).getPreUpdateNode() = arg and
       arg.argumentOf(call, this.getPosition())
     )
   }

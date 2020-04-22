@@ -1060,8 +1060,8 @@ private module LocalFlowBigStep {
       jumpStep(_, node, config) or
       additionalJumpStep(_, node, config) or
       node instanceof ParameterNode or
-      node instanceof OutNode or
-      node instanceof PostUpdateNode or
+      node instanceof OutNodeExt or
+      store(_, _, node) or
       read(_, _, node) or
       node instanceof CastNode
     )
