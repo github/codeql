@@ -54,8 +54,6 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
     getContainer().(Expr).getEnclosingStmt().nestedIn(outer)
   }
 
-  override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
-
   /**
    * Gets the `try` statement with a catch block containing this statement without
    * crossing function boundaries or other `try ` statements with catch blocks.
@@ -931,8 +929,6 @@ class DebuggerStmt extends @debuggerstmt, Stmt {
  */
 class FunctionDeclStmt extends @functiondeclstmt, Stmt, Function {
   override Stmt getEnclosingStmt() { result = this }
-
-  override predicate isAmbient() { Function.super.isAmbient() }
 }
 
 /**

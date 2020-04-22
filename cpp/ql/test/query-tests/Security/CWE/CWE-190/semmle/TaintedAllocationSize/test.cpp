@@ -5,8 +5,8 @@ typedef struct {} FILE;
 
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
+void free(void *ptr);
 int atoi(const char *nptr);
-
 struct MyStruct
 {
 	char data[256];
@@ -189,4 +189,50 @@ void more_bounded_tests() {
 			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
 		}
 	}
+}
+
+size_t get_untainted_size()
+{
+	return 10 * sizeof(int);
+}
+
+size_t get_tainted_size()
+{
+	return atoi(getenv("USER")) * sizeof(int);
+}
+
+size_t get_bounded_size()
+{
+	size_t s = atoi(getenv("USER")) * sizeof(int);
+
+	if (s < 0) { s = 0; }
+	if (s > 100) { s = 100; }
+
+	return s;
+}
+
+void *my_alloc(size_t s) {
+	void *ptr = malloc(s); // [UNHELPFUL RESULT]
+
+	return ptr;
+}
+
+void my_func(size_t s) {
+	void *ptr = malloc(s); // BAD
+
+	free(ptr);
+}
+
+void more_cases() {
+	int local_size = atoi(getenv("USER")) * sizeof(int);
+
+	malloc(local_size); // BAD
+	malloc(get_untainted_size()); // GOOD
+	malloc(get_tainted_size()); // BAD
+	malloc(get_bounded_size()); // GOOD
+
+	my_alloc(100); // GOOD
+	my_alloc(local_size); // BAD [NOT DETECTED IN CORRECT LOCATION]
+	my_func(100); // GOOD
+	my_func(local_size); // GOOD
 }

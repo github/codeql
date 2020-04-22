@@ -603,15 +603,10 @@ module TaintTracking {
      * 3) A `URLSearchParams` object (either `url.searchParams` or `new URLSearchParams(input)`) has a tainted value,
      *    which can be accessed using a `get` or `getAll` call. (See getableUrlPseudoProperty())
      */
-    override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       succ = this and
       (
-        (
-          prop = "searchParams" or
-          prop = "hash" or
-          prop = "search" or
-          prop = hiddenUrlPseudoProperty()
-        ) and
+        prop = ["searchParams", "hash", "search", hiddenUrlPseudoProperty()] and
         exists(DataFlow::NewNode newUrl | succ = newUrl |
           newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
           pred = newUrl.getArgument(0)

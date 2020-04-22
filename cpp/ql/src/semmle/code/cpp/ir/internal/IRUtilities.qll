@@ -23,17 +23,20 @@ Type getVariableType(Variable v) {
     then
       result = getDecayedType(declaredType)
       or
-      not exists(getDecayedType(declaredType)) and result = declaredType
+      not exists(getDecayedType(declaredType)) and result = v.getType()
     else
       if declaredType instanceof ArrayType and not declaredType.(ArrayType).hasArraySize()
       then
-        result = v.getInitializer().getExpr().getUnspecifiedType()
+        result = v.getInitializer().getExpr().getType()
         or
-        not exists(v.getInitializer()) and result = declaredType
-      else result = declaredType
+        not exists(v.getInitializer()) and result = v.getType()
+      else result = v.getType()
   )
 }
 
+/**
+ * Holds if the database contains a `case` label with the specified minimum and maximum value.
+ */
 predicate hasCaseEdge(SwitchCase switchCase, string minValue, string maxValue) {
   minValue = switchCase.getExpr().getFullyConverted().getValue() and
   if exists(switchCase.getEndExpr())

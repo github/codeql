@@ -192,6 +192,6 @@ The alert message defined in the final column in the ``select`` statement can be
 What next?
 **********
 
-- Take a look at the path queries for `C/C++ <https://help.semmle.com/wiki/label/CCPPOBJ/path-problem>`__, `C# <https://help.semmle.com/wiki/label/CSHARP/path-problem>`__, `Java <https://help.semmle.com/wiki/label/java/path-problem>`__, `JavaScript <https://help.semmle.com/wiki/label/js/path-problem>`__, and `Python <https://help.semmle.com/wiki/label/python/path-problem>`__ to see examples of the queries included in the Semmle tools.
+- Take a look at the path queries for `C/C++ <https://help.semmle.com/wiki/label/CCPPOBJ/path-problem>`__, `C# <https://help.semmle.com/wiki/label/CSHARP/path-problem>`__, `Java <https://help.semmle.com/wiki/label/java/path-problem>`__, `JavaScript <https://help.semmle.com/wiki/label/js/path-problem>`__, and `Python <https://help.semmle.com/wiki/label/python/path-problem>`__ to see examples of these queries.
 - Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.
 - For a full list of resources to help you learn CodeQL, including beginner tutorials and language-specific examples, visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__.

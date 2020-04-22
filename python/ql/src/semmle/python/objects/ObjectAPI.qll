@@ -540,10 +540,10 @@ class ClassValue extends Value {
     Value declaredAttribute(string name) { Types::declaredAttribute(this, name, result, _) }
 
     /**
-     * Holds if this class has the attribute `name`, including
-     * attributes declared by super classes.
+     * Holds if this class has the attribute `name`, including attributes
+     * declared by super classes.
      */
-    predicate hasAttribute(string name) { this.getMro().declares(name) }
+    override predicate hasAttribute(string name) { this.getMro().declares(name) }
 
     /**
      * Holds if this class declares the attribute `name`,
@@ -605,6 +605,14 @@ abstract class FunctionValue extends CallableValue {
             cls.declaredAttribute(name) = this and
             name != "__new__" and
             exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) | not origin instanceof Lambda)
+        )
+    }
+
+    /** Gets a call-site from where this function is called as a method */
+    CallNode getAMethodCall() {
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().pointsTo() = bm and
+            bm.getFunction() = this
         )
     }
 

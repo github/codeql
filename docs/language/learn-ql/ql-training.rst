@@ -32,7 +32,7 @@ We recommend that you download `CodeQL for Visual Studio Code <https://help.semm
 
    Information
 
-   The presentations listed below are used in CodeQL and variant analysis training sessions run by Semmle engineers. 
+   The presentations listed below are used in CodeQL and variant analysis training sessions run by GitHub engineers. 
    Therefore, be aware that the slides are designed to be presented by an instructor. 
    If you are using the slides without an instructor, please use the additional notes to help guide you through the examples. 
 
