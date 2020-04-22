@@ -62,13 +62,14 @@ module XssThroughDom {
         this.getArgument(0).mayHaveStringValue(unsafeAttributeName())
       ) and
       // looks like a $("<p>" + ... ) source, which is benign for this query.
-      not this
-          .getReceiver()
-          .(DataFlow::CallNode)
-          .getAnArgument()
-          .(StringOps::ConcatenationRoot)
-          .getConstantStringParts()
-          .substring(0, 1) = "<"
+      not exists(DataFlow::Node prefix |
+        DomBasedXss::isPrefixOfJQueryHtmlString(this
+              .getReceiver()
+              .(DataFlow::CallNode)
+              .getAnArgument(), prefix)
+      |
+        prefix.getStringValue().regexpMatch("\\s*<.*")
+      )
     }
   }
 
