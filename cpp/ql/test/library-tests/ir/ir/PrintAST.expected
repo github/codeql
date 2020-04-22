@@ -10265,6 +10265,224 @@ ir.cpp:
 # 1296|         1: [VariableAccess] y
 # 1296|             Type = [IntType] int
 # 1296|             ValueCategory = prvalue(load)
+# 1299| [TopLevelFunction] void gccBinaryConditional(bool, int, long)
+# 1299|   params: 
+# 1299|     0: [Parameter] b
+# 1299|         Type = [BoolType] bool
+# 1299|     1: [Parameter] x
+# 1299|         Type = [IntType] int
+# 1299|     2: [Parameter] y
+# 1299|         Type = [LongType] long
+# 1299|   body: [Block] { ... }
+# 1300|     0: [DeclStmt] declaration
+# 1300|       0: [VariableDeclarationEntry] definition of z
+# 1300|           Type = [IntType] int
+# 1300|         init: [Initializer] initializer for z
+# 1300|           expr: [VariableAccess] x
+# 1300|               Type = [IntType] int
+# 1300|               ValueCategory = prvalue(load)
+# 1301|     1: [ExprStmt] ExprStmt
+# 1301|       0: [AssignExpr] ... = ...
+# 1301|           Type = [IntType] int
+# 1301|           ValueCategory = lvalue
+# 1301|         0: [VariableAccess] z
+# 1301|             Type = [IntType] int
+# 1301|             ValueCategory = lvalue
+# 1301|         1: [ConditionalExpr] ... ? ... : ...
+# 1301|             Type = [IntType] int
+# 1301|             ValueCategory = prvalue
+# 1301|           0: [VariableAccess] b
+# 1301|               Type = [BoolType] bool
+# 1301|               ValueCategory = prvalue(load)
+# 1301|           1: [VariableAccess] x
+# 1301|               Type = [IntType] int
+# 1301|               ValueCategory = prvalue(load)
+# 1302|     2: [ExprStmt] ExprStmt
+# 1302|       0: [AssignExpr] ... = ...
+# 1302|           Type = [IntType] int
+# 1302|           ValueCategory = lvalue
+# 1302|         0: [VariableAccess] z
+# 1302|             Type = [IntType] int
+# 1302|             ValueCategory = lvalue
+# 1302|         1: [CStyleCast] (int)...
+# 1302|             Conversion = [IntegralConversion] integral conversion
+# 1302|             Type = [IntType] int
+# 1302|             ValueCategory = prvalue
+# 1302|           expr: [ConditionalExpr] ... ? ... : ...
+# 1302|               Type = [LongType] long
+# 1302|               ValueCategory = prvalue
+# 1302|             0: [VariableAccess] b
+# 1302|                 Type = [BoolType] bool
+# 1302|                 ValueCategory = prvalue(load)
+# 1302|             1: [VariableAccess] y
+# 1302|                 Type = [LongType] long
+# 1302|                 ValueCategory = prvalue(load)
+# 1303|     3: [ExprStmt] ExprStmt
+# 1303|       0: [AssignExpr] ... = ...
+# 1303|           Type = [IntType] int
+# 1303|           ValueCategory = lvalue
+# 1303|         0: [VariableAccess] z
+# 1303|             Type = [IntType] int
+# 1303|             ValueCategory = lvalue
+# 1303|         1: [ConditionalExpr] ... ? ... : ...
+# 1303|             Type = [IntType] int
+# 1303|             ValueCategory = prvalue
+# 1303|           0: [CStyleCast] (bool)...
+# 1303|               Conversion = [BoolConversion] conversion to bool
+# 1303|               Type = [BoolType] bool
+# 1303|               ValueCategory = prvalue
+# 1303|             expr: [VariableAccess] x
+# 1303|                 Type = [IntType] int
+# 1303|                 ValueCategory = prvalue(load)
+# 1303|           1: [VariableAccess] x
+# 1303|               Type = [IntType] int
+# 1303|               ValueCategory = prvalue(load)
+# 1304|     4: [ExprStmt] ExprStmt
+# 1304|       0: [AssignExpr] ... = ...
+# 1304|           Type = [IntType] int
+# 1304|           ValueCategory = lvalue
+# 1304|         0: [VariableAccess] z
+# 1304|             Type = [IntType] int
+# 1304|             ValueCategory = lvalue
+# 1304|         1: [CStyleCast] (int)...
+# 1304|             Conversion = [IntegralConversion] integral conversion
+# 1304|             Type = [IntType] int
+# 1304|             ValueCategory = prvalue
+# 1304|           expr: [ConditionalExpr] ... ? ... : ...
+# 1304|               Type = [LongType] long
+# 1304|               ValueCategory = prvalue
+# 1304|             0: [CStyleCast] (bool)...
+# 1304|                 Conversion = [BoolConversion] conversion to bool
+# 1304|                 Type = [BoolType] bool
+# 1304|                 ValueCategory = prvalue
+# 1304|               expr: [VariableAccess] x
+# 1304|                   Type = [IntType] int
+# 1304|                   ValueCategory = prvalue(load)
+# 1304|             1: [VariableAccess] y
+# 1304|                 Type = [LongType] long
+# 1304|                 ValueCategory = prvalue(load)
+# 1305|     5: [ExprStmt] ExprStmt
+# 1305|       0: [AssignExpr] ... = ...
+# 1305|           Type = [IntType] int
+# 1305|           ValueCategory = lvalue
+# 1305|         0: [VariableAccess] z
+# 1305|             Type = [IntType] int
+# 1305|             ValueCategory = lvalue
+# 1305|         1: [CStyleCast] (int)...
+# 1305|             Conversion = [IntegralConversion] integral conversion
+# 1305|             Type = [IntType] int
+# 1305|             ValueCategory = prvalue
+# 1305|           expr: [ConditionalExpr] ... ? ... : ...
+# 1305|               Type = [LongType] long
+# 1305|               ValueCategory = prvalue
+# 1305|             0: [CStyleCast] (bool)...
+# 1305|                 Conversion = [BoolConversion] conversion to bool
+# 1305|                 Type = [BoolType] bool
+# 1305|                 ValueCategory = prvalue
+# 1305|               expr: [VariableAccess] y
+# 1305|                   Type = [LongType] long
+# 1305|                   ValueCategory = prvalue(load)
+# 1305|             1: [CStyleCast] (long)...
+# 1305|                 Conversion = [IntegralConversion] integral conversion
+# 1305|                 Type = [LongType] long
+# 1305|                 ValueCategory = prvalue
+# 1305|               expr: [VariableAccess] x
+# 1305|                   Type = [IntType] int
+# 1305|                   ValueCategory = prvalue(load)
+# 1306|     6: [ExprStmt] ExprStmt
+# 1306|       0: [AssignExpr] ... = ...
+# 1306|           Type = [IntType] int
+# 1306|           ValueCategory = lvalue
+# 1306|         0: [VariableAccess] z
+# 1306|             Type = [IntType] int
+# 1306|             ValueCategory = lvalue
+# 1306|         1: [CStyleCast] (int)...
+# 1306|             Conversion = [IntegralConversion] integral conversion
+# 1306|             Type = [IntType] int
+# 1306|             ValueCategory = prvalue
+# 1306|           expr: [ConditionalExpr] ... ? ... : ...
+# 1306|               Type = [LongType] long
+# 1306|               ValueCategory = prvalue
+# 1306|             0: [CStyleCast] (bool)...
+# 1306|                 Conversion = [BoolConversion] conversion to bool
+# 1306|                 Type = [BoolType] bool
+# 1306|                 ValueCategory = prvalue
+# 1306|               expr: [VariableAccess] y
+# 1306|                   Type = [LongType] long
+# 1306|                   ValueCategory = prvalue(load)
+# 1306|             1: [VariableAccess] y
+# 1306|                 Type = [LongType] long
+# 1306|                 ValueCategory = prvalue(load)
+# 1308|     7: [ExprStmt] ExprStmt
+# 1308|       0: [AssignExpr] ... = ...
+# 1308|           Type = [IntType] int
+# 1308|           ValueCategory = lvalue
+# 1308|         0: [VariableAccess] z
+# 1308|             Type = [IntType] int
+# 1308|             ValueCategory = lvalue
+# 1308|         1: [ConditionalExpr] ... ? ... : ...
+# 1308|             Type = [IntType] int
+# 1308|             ValueCategory = prvalue
+# 1308|           0: [ParenthesisExpr] (...)
+# 1308|               Type = [BoolType] bool
+# 1308|               ValueCategory = prvalue
+# 1308|             expr: [LogicalOrExpr] ... || ...
+# 1308|                 Type = [BoolType] bool
+# 1308|                 ValueCategory = prvalue
+# 1308|               0: [LogicalAndExpr] ... && ...
+# 1308|                   Type = [BoolType] bool
+# 1308|                   ValueCategory = prvalue
+# 1308|                 0: [CStyleCast] (bool)...
+# 1308|                     Conversion = [BoolConversion] conversion to bool
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue
+# 1308|                   expr: [VariableAccess] x
+# 1308|                       Type = [IntType] int
+# 1308|                       ValueCategory = prvalue(load)
+# 1308|                 1: [VariableAccess] b
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue(load)
+# 1308|               1: [CStyleCast] (bool)...
+# 1308|                   Conversion = [BoolConversion] conversion to bool
+# 1308|                   Type = [BoolType] bool
+# 1308|                   ValueCategory = prvalue
+# 1308|                 expr: [VariableAccess] y
+# 1308|                     Type = [LongType] long
+# 1308|                     ValueCategory = prvalue(load)
+# 1308|           1: [VariableAccess] x
+# 1308|               Type = [IntType] int
+# 1308|               ValueCategory = prvalue(load)
+# 1309|     8: [ReturnStmt] return ...
+# 1311| [TopLevelFunction] bool predicateA()
+# 1311|   params: 
+# 1312| [TopLevelFunction] bool predicateB()
+# 1312|   params: 
+# 1314| [TopLevelFunction] int shortCircuitConditional(int, int)
+# 1314|   params: 
+# 1314|     0: [Parameter] x
+# 1314|         Type = [IntType] int
+# 1314|     1: [Parameter] y
+# 1314|         Type = [IntType] int
+# 1314|   body: [Block] { ... }
+# 1315|     0: [ReturnStmt] return ...
+# 1315|       0: [ConditionalExpr] ... ? ... : ...
+# 1315|           Type = [IntType] int
+# 1315|           ValueCategory = prvalue
+# 1315|         0: [LogicalAndExpr] ... && ...
+# 1315|             Type = [BoolType] bool
+# 1315|             ValueCategory = prvalue
+# 1315|           0: [FunctionCall] call to predicateA
+# 1315|               Type = [BoolType] bool
+# 1315|               ValueCategory = prvalue
+# 1315|           1: [FunctionCall] call to predicateB
+# 1315|               Type = [BoolType] bool
+# 1315|               ValueCategory = prvalue
+# 1315|         1: [VariableAccess] x
+# 1315|             Type = [IntType] int
+# 1315|             ValueCategory = prvalue(load)
+# 1315|         2: [VariableAccess] y
+# 1315|             Type = [IntType] int
+# 1315|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
