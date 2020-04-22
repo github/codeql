@@ -1767,6 +1767,11 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
   override ConditionalExpr expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    // Note that the ternary flavor needs no explicit `ConditionalBranch` instruction here, because
+    // the condition is a `TranslatedCondition`, which will simply connect the successor edges of
+    // the condition directly to the appropriate then/else block via
+    // `getChild[True|False]Successor()`.
+    // The binary flavor will override this predicate to add the `ConditionalBranch`.
     not resultIsVoid() and
     (
       (
