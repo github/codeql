@@ -2,6 +2,7 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.web.Http
 
+/** Source of BaseHTTPRequestHandler instances. */
 class StdLibRequestSource extends HttpRequestTaintSource {
     StdLibRequestSource() {
         exists(ClassValue cls |
@@ -16,6 +17,7 @@ class StdLibRequestSource extends HttpRequestTaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof BaseHTTPRequestHandlerKind }
 }
 
+/** TaintKind for an instance of BaseHTTPRequestHandler. */
 class BaseHTTPRequestHandlerKind extends TaintKind {
     BaseHTTPRequestHandlerKind() { this = "BaseHTTPRequestHandlerKind" }
 
@@ -31,6 +33,7 @@ class BaseHTTPRequestHandlerKind extends TaintKind {
     }
 }
 
+/** TaintKind for headers (instance of HTTPMessage). */
 class HTTPMessageKind extends ExternalStringDictKind {
     override TaintKind getTaintOfMethodResult(string name) {
         result = super.getTaintOfMethodResult(name)
