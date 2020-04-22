@@ -1,8 +1,12 @@
 edges
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | (const char *)... |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | (const char *)... |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | (const char *)... |
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | (const char *)... |
@@ -65,6 +69,9 @@ nodes
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
+| funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
 #select
 | funcsLocal.c:17:9:17:10 | i1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |
 | funcsLocal.c:27:9:27:10 | i3 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:26:8:26:9 | i3 | fgets |
@@ -73,3 +80,4 @@ nodes
 | funcsLocal.c:37:9:37:10 | i5 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:36:7:36:8 | i5 | gets |
 | funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:13:41:16 | call to gets | gets |
 | funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:18:41:20 | i61 | gets |
+| funcsLocal.c:58:9:58:10 | e1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |

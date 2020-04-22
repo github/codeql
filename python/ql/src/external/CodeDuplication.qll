@@ -66,7 +66,7 @@ class Copy extends @duplication_or_similarity {
     predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-        sourceFile().getName() = filepath and
+        sourceFile().getAbsolutePath() = filepath and
         startline = sourceStartLine() and
         startcolumn = sourceStartColumn() and
         endline = sourceEndLine() and

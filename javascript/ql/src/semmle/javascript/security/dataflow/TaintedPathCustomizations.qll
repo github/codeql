@@ -285,7 +285,7 @@ module TaintedPath {
     exists(RegExpSequence seq | seq = result |
       seq.getChild(0).getConstantValue() = "." and
       seq.getChild(1).getConstantValue() = "." and
-      seq.getAChild().getAMatchedString() = "/"
+      seq.getChild(2).getAMatchedString() = "/"
     )
     or
     exists(RegExpGroup group | result = group | group.getChild(0) = getADotDotSlashMatcher())

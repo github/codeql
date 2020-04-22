@@ -540,10 +540,10 @@ class ClassValue extends Value {
     Value declaredAttribute(string name) { Types::declaredAttribute(this, name, result, _) }
 
     /**
-     * Holds if this class has the attribute `name`, including
-     * attributes declared by super classes.
+     * Holds if this class has the attribute `name`, including attributes
+     * declared by super classes.
      */
-    predicate hasAttribute(string name) { this.getMro().declares(name) }
+    override predicate hasAttribute(string name) { this.getMro().declares(name) }
 
     /**
      * Holds if this class declares the attribute `name`,
@@ -630,6 +630,10 @@ abstract class FunctionValue extends CallableValue {
 class PythonFunctionValue extends FunctionValue {
     PythonFunctionValue() { this instanceof PythonFunctionObjectInternal }
 
+    override string getQualifiedName() {
+        result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
     override string descriptiveString() {
         if this.getScope().isMethod()
         then
@@ -637,10 +641,6 @@ class PythonFunctionValue extends FunctionValue {
                 result = "method " + this.getQualifiedName()
             )
         else result = "function " + this.getQualifiedName()
-    }
-
-    override string getQualifiedName() {
-        result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
     }
 
     override int minParameters() {

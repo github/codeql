@@ -1249,10 +1249,51 @@ char *strcpy(char *destination, const char *source);
 char *strcat(char *destination, const char *source);
 
 void test_strings(char *s1, char *s2) {
-	char buffer[1024] = {0};
+    char buffer[1024] = {0};
 
-	strcpy(buffer, s1);
-	strcat(buffer, s2);
+    strcpy(buffer, s1);
+    strcat(buffer, s2);
+}
+
+struct A {
+    int member;
+
+    static void static_member(A* a, int x) {
+        a->member = x;
+    }
+
+    static void static_member_without_def();
+};
+
+A* getAnInstanceOfA();
+
+void test_static_member_functions(int int_arg, A* a_arg) {
+    C c;
+    c.StaticMemberFunction(10);
+    C::StaticMemberFunction(10);
+
+    A a;
+    a.static_member(&a, int_arg);
+    A::static_member(&a, int_arg);
+
+    (&a)->static_member(a_arg, int_arg + 2);
+    (*a_arg).static_member(&a, 99);
+    a_arg->static_member(a_arg, -1);
+
+    a.static_member_without_def();
+    A::static_member_without_def();
+
+    getAnInstanceOfA()->static_member_without_def();
+}
+
+int missingReturnValue(bool b, int x) {
+    if (b) {
+        return x;
+    }
+}
+
+void returnVoid(int x, int y) {
+    return IntegerOps(x, y);
 }
 
 // semmle-extractor-options: -std=c++17 --clang

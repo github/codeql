@@ -39,11 +39,7 @@ class SourceNode extends DataFlow::Node {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  cached
-  predicate flowsTo(DataFlow::Node sink) {
-    sink = this or
-    flowsTo(sink.getAPredecessor())
-  }
+  predicate flowsTo(DataFlow::Node sink) { hasLocalSource(sink, this) }
 
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
@@ -193,6 +189,24 @@ class SourceNode extends DataFlow::Node {
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
     t2 = t.step(result, this)
   }
+}
+
+/**
+ * Holds if `source` is a `SourceNode` that can reach `sink` via local flow steps.
+ *
+ * The slightly backwards parametering ordering is to force correct indexing.
+ */
+cached
+private predicate hasLocalSource(DataFlow::Node sink, DataFlow::Node source) {
+  // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  source = sink and
+  source instanceof DataFlow::SourceNode
+  or
+  exists(DataFlow::Node mid |
+    hasLocalSource(mid, source) and
+    DataFlow::localFlowStep(mid, sink)
+  )
 }
 
 module SourceNode {

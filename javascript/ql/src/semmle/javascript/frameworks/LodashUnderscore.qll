@@ -14,10 +14,6 @@ module LodashUnderscore {
     abstract string getName();
   }
 
-  private class MemberAsSourceNode extends DataFlow::SourceNode::Range {
-    MemberAsSourceNode() { this instanceof Member }
-  }
-
   /**
    * An import of `lodash` or `underscore` accessing a given member of that package.
    */

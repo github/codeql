@@ -620,6 +620,16 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
     result = this.(ArrayLiteralNode).getSize() or
     result = this.(ArrayConstructorInvokeNode).getSize()
   }
+
+  /**
+   * Gets a data flow node corresponding to an array of values being passed as
+   * individual arguments to this array creation.
+   */
+  DataFlow::Node getASpreadArgument() {
+    exists(SpreadElement arg | arg = getAnElement().getEnclosingExpr() |
+      result = DataFlow::valueNode(arg.getOperand())
+    )
+  }
 }
 
 /**

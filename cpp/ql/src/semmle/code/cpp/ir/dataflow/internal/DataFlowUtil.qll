@@ -55,13 +55,25 @@ class Node extends TIRDataFlowNode {
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
    * modelling flow in and out of global variables.
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
+
+  /**
+   * Gets the expression that is partially defined by this node, if any.
+   *
+   * Partial definitions are created for field stores (`x.y = taint();` is a partial
+   * definition of `x`), and for calls that may change the value of an object (so
+   * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
+   * a partial definition of `&x`).
+   */
+  Expr asPartialDefinition() {
+    result = this.(PartialDefinitionNode).getInstruction().getUnconvertedResultExpression()
+  }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -96,6 +108,9 @@ class Node extends TIRDataFlowNode {
   string toString() { none() } // overridden by subclasses
 }
 
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
 class InstructionNode extends Node, TInstructionNode {
   Instruction instr;
 
@@ -143,25 +158,44 @@ class ExprNode extends InstructionNode {
 }
 
 /**
- * The value of a parameter at function entry, viewed as a node in a data
- * flow graph.
+ * A node representing a `Parameter`. This includes both explicit parameters such
+ * as `x` in `f(x)` and implicit parameters such as `this` in `x.f()`
  */
 class ParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
+  ParameterNode() {
+    instr instanceof InitializeParameterInstruction
+    or
+    instr instanceof InitializeThisInstruction
+  }
 
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+  predicate isParameterOf(Function f, int i) { none() } // overriden by subclasses
+}
 
+/**
+ * The value of a parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+private class ExplicitParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+
+  /** Gets the parameter corresponding to this node. */
   Parameter getParameter() { result = instr.getParameter() }
 
   override string toString() { result = instr.getParameter().toString() }
 }
 
-private class ThisParameterNode extends InstructionNode {
+private class ThisParameterNode extends ParameterNode {
   override InitializeThisInstruction instr;
+
+  override predicate isParameterOf(Function f, int i) {
+    i = -1 and instr.getEnclosingFunction() = f
+  }
 
   override string toString() { result = "this" }
 }
@@ -202,6 +236,38 @@ abstract class PostUpdateNode extends InstructionNode {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+}
+
+/**
+ * The base class for nodes that perform "partial definitions".
+ *
+ * In contrast to a normal "definition", which provides a new value for
+ * something, a partial definition is an expression that may affect a
+ * value, but does not necessarily replace it entirely. For example:
+ * ```
+ * x.y = 1; // a partial definition of the object `x`.
+ * x.y.z = 1; // a partial definition of the object `x.y`.
+ * x.setY(1); // a partial definition of the object `x`.
+ * setY(&x); // a partial definition of the object `x`.
+ * ```
+ */
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+
+private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+
+  ExplicitFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store, FieldInstruction field |
+      instr.getPartial() = store and field = store.getDestinationAddress()
+    )
+  }
+
+  // There might be multiple `ChiInstructions` that has a particular instruction as
+  // the total operand - so this definition gives consistency errors in
+  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
+  // this consistency failure has.
+  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
 /**
@@ -288,6 +354,10 @@ class VariableNode extends Node, TVariableNode {
  */
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as `argument` of a call.
+ */
 DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
@@ -305,7 +375,7 @@ ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
@@ -359,6 +429,28 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  // The next two rules allow flow from partial definitions in setters to succeeding loads in the caller.
+  // First, we add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. Consider the following example:
+  // ```
+  // void setX(Point* p, int new_x) {
+  //   p->x = new_x;
+  // }
+  // ...
+  // setX(&p, taint());
+  // ```
+  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
+  // `setX`, which will be melded into `p` through a chi instruction.
+  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
+  not iTo.isResultConflated()
+  or
+  // Next, we add flow from non-conflated chi instructions to loads (even when they are not precise).
+  // This ensures that loads of `p->x` gets data flow from the `WriteSideEffectInstruction` above.
+  exists(ChiInstruction chi | iFrom = chi |
+    not chi.isResultConflated() and
+    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  )
   or
   // Flow through modeled functions
   modelFlow(iFrom, iTo)
