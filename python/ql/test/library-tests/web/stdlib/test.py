@@ -69,7 +69,8 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/plain; charset=utf-8")
         self.end_headers()
-        self.wfile.write(b"Hello BaseHTTPRequestHandler")
+        self.wfile.write(b"Hello BaseHTTPRequestHandler\n")
+        self.wfile.writelines([b"1\n", b"2\n", b"3\n"])
         print(self.headers)
 
 
