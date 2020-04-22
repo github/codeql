@@ -659,7 +659,7 @@ module DataFlow {
         }
     }
 
-    private class ConfigurationAdapter extends TaintTracking::Configuration {
+    deprecated private class ConfigurationAdapter extends TaintTracking::Configuration {
         ConfigurationAdapter() { this instanceof Configuration }
 
         override predicate isSource(DataFlow::Node node, TaintKind kind) {
@@ -727,7 +727,7 @@ module DataFlow {
     }
 }
 
-private class DataFlowType extends TaintKind {
+deprecated private class DataFlowType extends TaintKind {
     DataFlowType() {
         this = "Data flow" and
         exists(DataFlow::Configuration c)

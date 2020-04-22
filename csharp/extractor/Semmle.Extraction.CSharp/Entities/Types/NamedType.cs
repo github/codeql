@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             typeArgumentsLazy = new Lazy<Type[]>(() => symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
         }
 
-        public static NamedType Create(Context cx, INamedTypeSymbol type) => NamedTypeFactory.Instance.CreateEntity(cx, type);
+        public static NamedType Create(Context cx, INamedTypeSymbol type) => NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, true, symbol, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)));
             trapFile.Write(";type");
         }
 
@@ -177,7 +177,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(referencedType);
+            referencedType.symbol.BuildNestedTypeId(Context, trapFile, referencedType.symbol);
             trapFile.Write(";typeRef");
         }
 
