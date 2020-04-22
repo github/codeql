@@ -56,11 +56,11 @@ OWASP:
 </li>
 <li>
 OWASP
-<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+<a href="https://owasp.org/www-community/attacks/DOM_Based_XSS">DOM Based XSS</a>.
 </li>
 <li>
 OWASP
-<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+<a href="https://owasp.org/www-community/Types_of_Cross-Site_Scripting">Types of Cross-Site
 Scripting</a>.
 </li>
 <li>
