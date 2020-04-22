@@ -2,6 +2,7 @@
  * Provides predicates for mapping the `FunctionInput` and `FunctionOutput`
  * classes used in function models to the corresponding instructions.
  */
+
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 
