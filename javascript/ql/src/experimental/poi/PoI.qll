@@ -3,7 +3,7 @@
  * in an unknown code base.
  *
  * To use this module, subclass the
- * `PoI` class, override *one* of its `is` predicates, and use
+ * `ActivePoI` class, override *one* of its `is` predicates, and use
  * `alertQuery` as a `@kind problem` query .  This will present
  * the desired points of interest as alerts that are easily browsable
  * in a codeql IDE.  By itself, this is no different from an ordinary
@@ -14,7 +14,7 @@
  * - this module comes with a collection of standard points of interest (see `StandardPoIs`)
  *
  * A global configuration for the points of interest (see
- * `PoIConfg`) can be used to easily manage multiple points of
+ * `PoIConfiguration`) can be used to easily manage multiple points of
  * interests, and to restrict the points of interest to specific
  * corners of the code base.
  *
@@ -300,15 +300,11 @@ predicate alertQuery(Locatable l1line, string msg, Node l2, string s2, Node l3, 
     (
       not exists(PoIConfiguration cfg) and
       PoIConfigDefaults::enabled(poi) and
-      PoIConfigDefaults::shown(l1) and
-      PoIConfigDefaults::shown(l2) and
-      PoIConfigDefaults::shown(l3)
+      PoIConfigDefaults::shown(l1)
       or
       exists(PoIConfiguration cfg |
         cfg.enabled(poi) and
-        cfg.shown(l1) and
-        cfg.shown(l2) and
-        cfg.shown(l3)
+        cfg.shown(l1)
       )
     ) and
     m = poi.getFormat() and
