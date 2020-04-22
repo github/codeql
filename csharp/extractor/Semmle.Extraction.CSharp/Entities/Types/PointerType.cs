@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Type PointedAtType { get; private set; }
 
-        public static PointerType Create(Context cx, IPointerTypeSymbol symbol) => PointerTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static PointerType Create(Context cx, IPointerTypeSymbol symbol) => PointerTypeFactory.Instance.CreateEntity(cx, symbol);
 
         class PointerTypeFactory : ICachedEntityFactory<IPointerTypeSymbol, PointerType>
         {
