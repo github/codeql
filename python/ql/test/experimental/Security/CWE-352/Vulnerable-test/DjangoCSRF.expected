@@ -1,0 +1,1 @@
+| DjangoCSRF.py:8:1:8:10 | MIDDLEWARE | csrf_middleware is not enabled in MIDDLEWARE() and CSRF is not implemented using decorator such as csrf_protect, ensure_csrf as well. |
