@@ -38,6 +38,9 @@ nodes
 | xss-through-dom.js:64:30:64:40 | valMethod() |
 | xss-through-dom.js:64:30:64:40 | valMethod() |
 | xss-through-dom.js:64:30:64:40 | valMethod() |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
 edges
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
 | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
@@ -52,6 +55,7 @@ edges
 | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
 | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") |
 | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
 #select
 | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:2:16:2:34 | $("textarea").val() | DOM text |
 | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:4:16:4:40 | $(".som ... .text() | DOM text |
@@ -66,3 +70,4 @@ edges
 | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | DOM text |
 | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:61:30:61:69 | $(docum ... value") | DOM text |
 | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:64:30:64:40 | valMethod() | DOM text |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | Cross-site scripting vulnerability due to $@. | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | DOM text |

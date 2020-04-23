@@ -349,3 +349,10 @@ function hash() {
   $(getUrl().hash.substring(1)); // NOT OK
 
 }
+
+function growl() {
+  var target = document.location.search
+  $.jGrowl(target);
+}
+
+
