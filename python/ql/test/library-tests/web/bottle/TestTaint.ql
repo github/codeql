@@ -26,7 +26,7 @@ where
         ) and
         has_taint = true
     ) and
-    if expected_taint = has_taint then test_res = "ok" else test_res = "failure"
+    if expected_taint = has_taint then test_res = "ok  " else test_res = "fail"
 // if expected_taint = has_taint then test_res = "✓" else test_res = "✕"
-select arg.getLocation().toString(), call.getScope().(Function).getName(), arg.toString(),
-    taint_string, test_res
+select arg.getLocation().toString(), test_res, call.getScope().(Function).getName(), arg.toString(),
+    taint_string

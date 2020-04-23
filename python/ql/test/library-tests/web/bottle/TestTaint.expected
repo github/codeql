@@ -1,45 +1,45 @@
-| taint.py:7 | test_taint | name | externally controlled string | ok |
-| taint.py:7 | test_taint | number | externally controlled string | ok |
-| taint.py:8 | test_taint | foo | <NO TAINT> | ok |
-| taint.py:14 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:15 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:17 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:18 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:20 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:22 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:23 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:25 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:28 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:30 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:31 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:33 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:34 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:35 | test_taint | Attribute() | [externally controlled string] | ok |
-| taint.py:37 | test_taint | Attribute() | externally controlled string | ok |
-| taint.py:40 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:41 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:44 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:45 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:48 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:49 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:52 | test_taint | Attribute | {bottle.FileUpload} | ok |
-| taint.py:53 | test_taint | Attribute | bottle.FileUpload | ok |
-| taint.py:55 | test_taint | Attribute | json[externally controlled string] | ok |
-| taint.py:56 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:56 | test_taint | Subscript | json[externally controlled string] | ok |
-| taint.py:58 | test_taint | Attribute | <NO TAINT> | failure |
-| taint.py:60 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:63 | test_taint | Attribute | {bottle.FileUpload} | ok |
-| taint.py:63 | test_taint | Attribute | {externally controlled string} | ok |
-| taint.py:65 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:67 | test_taint | Attribute | [externally controlled string] | ok |
-| taint.py:69 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:71 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:73 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:75 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:77 | test_taint | Attribute | [externally controlled string] | ok |
-| taint.py:78 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:80 | test_taint | Attribute | [externally controlled string] | ok |
-| taint.py:81 | test_taint | Subscript | externally controlled string | ok |
-| taint.py:83 | test_taint | Attribute | externally controlled string | ok |
-| taint.py:85 | test_taint | Attribute | externally controlled string | ok |
+| taint.py:7 | ok   | test_taint | name | externally controlled string |
+| taint.py:7 | ok   | test_taint | number | externally controlled string |
+| taint.py:8 | ok   | test_taint | foo | <NO TAINT> |
+| taint.py:14 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:15 | ok   | test_taint | Attribute() | externally controlled string |
+| taint.py:17 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:18 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:20 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:22 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:23 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:25 | ok   | test_taint | Attribute() | externally controlled string |
+| taint.py:28 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:30 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:31 | ok   | test_taint | Attribute() | externally controlled string |
+| taint.py:33 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:34 | ok   | test_taint | Attribute() | externally controlled string |
+| taint.py:35 | ok   | test_taint | Attribute() | [externally controlled string] |
+| taint.py:37 | ok   | test_taint | Attribute() | externally controlled string |
+| taint.py:40 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:41 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:44 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:45 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:48 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:49 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:52 | ok   | test_taint | Attribute | {bottle.FileUpload} |
+| taint.py:53 | ok   | test_taint | Attribute | bottle.FileUpload |
+| taint.py:55 | ok   | test_taint | Attribute | json[externally controlled string] |
+| taint.py:56 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:56 | ok   | test_taint | Subscript | json[externally controlled string] |
+| taint.py:58 | fail | test_taint | Attribute | <NO TAINT> |
+| taint.py:60 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:63 | ok   | test_taint | Attribute | {bottle.FileUpload} |
+| taint.py:63 | ok   | test_taint | Attribute | {externally controlled string} |
+| taint.py:65 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:67 | ok   | test_taint | Attribute | [externally controlled string] |
+| taint.py:69 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:71 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:73 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:75 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:77 | ok   | test_taint | Attribute | [externally controlled string] |
+| taint.py:78 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:80 | ok   | test_taint | Attribute | [externally controlled string] |
+| taint.py:81 | ok   | test_taint | Subscript | externally controlled string |
+| taint.py:83 | ok   | test_taint | Attribute | externally controlled string |
+| taint.py:85 | ok   | test_taint | Attribute | externally controlled string |
