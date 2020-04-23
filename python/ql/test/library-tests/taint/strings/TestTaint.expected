@@ -24,6 +24,6 @@
 | test.py:69 | test_urlsplit_urlparse | urlsplit_res | [externally controlled string] |
 | test.py:74 | test_tainted_file | tainted_file | file[externally controlled string] |
 | test.py:75 | test_tainted_file | Attribute() | externally controlled string |
-| test.py:76 | test_tainted_file | Attribute() | NO TAINT |
-| test.py:77 | test_tainted_file | Attribute() | NO TAINT |
+| test.py:76 | test_tainted_file | Attribute() | externally controlled string |
+| test.py:77 | test_tainted_file | Attribute() | [externally controlled string] |
 | test.py:78 | test_tainted_file | ListComp | NO TAINT |
