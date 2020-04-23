@@ -496,6 +496,40 @@ module JQuery {
         hasUnderlyingType("jQuery")
       }
     }
+
+    /**
+     * Gets a node that is written to `$.fn[something]`.
+     * JQuery plugins are registered this way.
+     */
+    private DataFlow::Node getAFnWrite() {
+      exists(DataFlow::PropWrite write, DataFlow::PropRead jQueryFN |
+        write.getBase() = jQueryFN and
+        jQueryFN.getBase().getALocalSource() = JQuery::dollar() and
+        jQueryFN.getPropertyName() = "fn" and
+        result = write.getRhs()
+      )
+    }
+
+    /**
+     * Gets a node that is backtracked from a node written to `$.fn[something]`.
+     */
+    private DataFlow::SourceNode writtenToJqueryFN(DataFlow::TypeBackTracker t) {
+      t.start() and result = getAFnWrite().getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 | result = writtenToJqueryFN(t2).backtrack(t2, t))
+    }
+
+    /**
+     * A `this` node in a JQuery plugin function, which is a JQuery object.
+     */
+    private class JQueryPluginThisObject extends Range {
+      JQueryPluginThisObject() {
+        this =
+          DataFlow::thisNode(writtenToJqueryFN(DataFlow::TypeBackTracker::end())
+                .(DataFlow::FunctionNode)
+                .getFunction())
+      }
+    }
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
