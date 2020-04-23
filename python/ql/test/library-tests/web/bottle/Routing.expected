@@ -10,4 +10,4 @@
 | taint.py:6:1:6:55 | Function test_taint | /test_taint/<name>/<number:int> |
 | xss_example.py:7:1:7:16 | Function hello | /hello/<name> |
 | xss_example.py:14:1:14:14 | Function xss | /xss/<name> |
-| xss_example.py:21:1:21:14 | Function xss | /easy-xss/<name:re:.*> |
+| xss_example.py:21:1:21:19 | Function easy_xss | /easy-xss/<name:re:.*> |
