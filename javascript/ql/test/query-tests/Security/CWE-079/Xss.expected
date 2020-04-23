@@ -355,6 +355,8 @@ nodes
 | tst.js:362:16:362:21 | target |
 | tst.js:366:21:366:26 | target |
 | tst.js:366:21:366:26 | target |
+| tst.js:369:18:369:23 | target |
+| tst.js:369:18:369:23 | target |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:38 | document.location |
 | typeahead.js:20:22:20:38 | document.location |
@@ -682,6 +684,8 @@ edges
 | tst.js:361:10:361:42 | target | tst.js:362:16:362:21 | target |
 | tst.js:361:10:361:42 | target | tst.js:366:21:366:26 | target |
 | tst.js:361:10:361:42 | target | tst.js:366:21:366:26 | target |
+| tst.js:361:10:361:42 | target | tst.js:369:18:369:23 | target |
+| tst.js:361:10:361:42 | target | tst.js:369:18:369:23 | target |
 | tst.js:361:19:361:35 | document.location | tst.js:361:19:361:42 | documen ... .search |
 | tst.js:361:19:361:35 | document.location | tst.js:361:19:361:42 | documen ... .search |
 | tst.js:361:19:361:42 | documen ... .search | tst.js:361:10:361:42 | target |
@@ -789,6 +793,7 @@ edges
 | tst.js:355:12:355:17 | target | tst.js:354:16:354:32 | document.location | tst.js:355:12:355:17 | target | Cross-site scripting vulnerability due to $@. | tst.js:354:16:354:32 | document.location | user-provided value |
 | tst.js:362:16:362:21 | target | tst.js:361:19:361:35 | document.location | tst.js:362:16:362:21 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
 | tst.js:366:21:366:26 | target | tst.js:361:19:361:35 | document.location | tst.js:366:21:366:26 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
+| tst.js:369:18:369:23 | target | tst.js:361:19:361:35 | document.location | tst.js:369:18:369:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:38 | document.location | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:38 | document.location | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
