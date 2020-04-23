@@ -26,7 +26,7 @@
  * ```
  * /**
  *  * @kind problem
- *  */
+ *  *\/
  *
  * import PoI
  *
