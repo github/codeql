@@ -238,11 +238,9 @@ private predicate in_source(Scope s) { exists(s.getEnclosingModule().getFile().g
 /**
  * Holds if this scope can be executed in the default context.
  * All modules and classes executed at import time and
- * all "public" functions and methods, including those invoked by the VM.
+ * all functions and methods, including those invoked by the VM.
  */
 predicate executes_in_runtime_context(Function f) {
-    /* "Public" scope, i.e. functions whose name starts not with an underscore, or special methods */
-    (f.getName().charAt(0) != "_" or f.isSpecialMethod() or f.isInitMethod()) and
     in_source(f)
 }
 
