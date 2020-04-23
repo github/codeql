@@ -67,4 +67,6 @@
 	if(myValue.property) {
 		$("#id").get(0).innerHTML = myValue; // OK.
 	}
+	
+	$.jGrowl($("input").get(0).name); // NOT OK.
 })();
