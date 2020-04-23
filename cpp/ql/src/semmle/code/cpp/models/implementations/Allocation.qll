@@ -255,6 +255,24 @@ class OperatorNewAllocationFunction extends AllocationFunction {
   }
 }
 
+pragma[inline]
+private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
+  sizeExpr instanceof MulExpr and
+  exists(SizeofOperator sizeofOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
+    sizeofOp != lengthExpr and
+    sizeof = sizeofOp.getValue().toInt()
+  )
+  or
+  not exists(int s, SizeofOperator sizeofOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    s = sizeofOp.(SizeofOperator).getValue().toInt()
+  ) and
+  lengthExpr = sizeExpr and
+  sizeof = 1
+}
+
 /**
  * An allocation expression that is a function call, such as call to `malloc`.
  */
@@ -272,7 +290,21 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
 
-  override Expr getSizeExpr() { result = getArgument(target.getSizeArg()) }
+  override Expr getSizeExpr() {
+    exists(Expr sizeExpr | sizeExpr = getArgument(target.getSizeArg()) |
+      if exists(target.getSizeMult())
+      then result = sizeExpr
+      else (
+        exists(Expr lengthExpr |
+          deconstructSizeExpr(sizeExpr, lengthExpr, _) and
+          result = lengthExpr
+        )
+        or
+        not exists(Expr lengthExpr | deconstructSizeExpr(sizeExpr, lengthExpr, _)) and
+        result = sizeExpr
+      )
+    )
+  }
 
   override int getSizeMult() {
     // malloc with multiplier argument that is a constant
@@ -280,7 +312,7 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     or
     // malloc with no multiplier argument
     not exists(target.getSizeMult()) and
-    result = 1
+    deconstructSizeExpr(getArgument(target.getSizeArg()), _, result)
   }
 
   override int getSizeBytes() { result = getSizeExpr().getValue().toInt() * getSizeMult() }
