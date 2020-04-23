@@ -91,6 +91,7 @@ allocationExprs
 | allocators.cpp:159:3:159:8 | call to malloc | getSizeExpr = count, getSizeMult = 4, requiresDealloc |
 | allocators.cpp:160:3:160:8 | call to malloc | getSizeExpr = ... + ..., getSizeMult = 1, requiresDealloc |
 | allocators.cpp:161:3:161:8 | call to malloc | getSizeExpr = count, getSizeMult = 8, requiresDealloc |
+| allocators.cpp:162:3:162:8 | call to malloc | getSizeExpr = ... * ..., requiresDealloc |
 deallocationFunctions
 | allocators.cpp:11:6:11:20 | operator delete | getFreedArg = 0 |
 | allocators.cpp:12:6:12:22 | operator delete[] | getFreedArg = 0 |

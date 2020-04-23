@@ -261,7 +261,7 @@ private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof
   exists(SizeofOperator sizeofOp |
     sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
     lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
-    sizeofOp != lengthExpr and
+    not lengthExpr instanceof SizeofOperator and
     sizeof = sizeofOp.getValue().toInt()
   )
   or

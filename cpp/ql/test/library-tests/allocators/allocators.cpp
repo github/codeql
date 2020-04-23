@@ -159,4 +159,5 @@ void testMalloc(size_t count) {
   malloc(count * sizeof(int));
   malloc(count * sizeof(int) + 1);
   malloc(((int) count) * sizeof(void *));
+  malloc(sizeof(void*) * sizeof(int));
 }
