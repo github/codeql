@@ -613,7 +613,7 @@ module JQuery {
   }
 
   /**
-   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>`.
+   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or $.extend($.fn, {<pluginName>, <plugin>})`.
    */
   predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
     exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
