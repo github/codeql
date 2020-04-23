@@ -67,3 +67,13 @@ def test_urlsplit_urlparse():
     urlsplit_res = urlsplit(tainted_string)
     urlparse_res = urlparse(tainted_string)
     test(urlsplit_res, urlparse_res)
+
+def test_tainted_file():
+    tainted_file = TAINTED_FILE
+    test(
+        tainted_file,
+        tainted_file.read(),
+        tainted_file.readline(),
+        tainted_file.readlines(),
+        [line for line in tainted_file],
+    )

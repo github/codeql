@@ -62,6 +62,12 @@
 | Taint externally controlled string | test.py:66 | test.py:66:22:66:35 | TAINTED_STRING |  |  -->  | Taint externally controlled string | test.py:68 | test.py:68:29:68:42 | tainted_string |  |
 | Taint externally controlled string | test.py:67 | test.py:67:29:67:42 | tainted_string |  |  -->  | Taint [externally controlled string] | test.py:67 | test.py:67:20:67:43 | urlsplit() |  |
 | Taint externally controlled string | test.py:68 | test.py:68:29:68:42 | tainted_string |  |  -->  | Taint [externally controlled string] | test.py:68 | test.py:68:20:68:43 | urlparse() |  |
+| Taint file[externally controlled string] | test.py:72 | test.py:72:20:72:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:74 | test.py:74:9:74:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:72 | test.py:72:20:72:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:75 | test.py:75:9:75:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:72 | test.py:72:20:72:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:76 | test.py:76:9:76:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:72 | test.py:72:20:72:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:77 | test.py:77:9:77:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:72 | test.py:72:20:72:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:78 | test.py:78:27:78:38 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:75 | test.py:75:9:75:20 | tainted_file |  |  -->  | Taint externally controlled string | test.py:75 | test.py:75:9:75:27 | Attribute() |  |
 | Taint json[externally controlled string] | test.py:6 | test.py:6:20:6:45 | Attribute() |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint externally controlled string | test.py:7 | test.py:7:9:7:25 | Subscript |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:25 | Subscript |  |
