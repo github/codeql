@@ -497,10 +497,6 @@ expr_flowstate(unique int id: @expr ref, int state: int ref);
 
 @generic = @type | @method | @local_function;
 
-is_generic(unique int id: @generic ref);
-
-is_constructed(unique int id: @generic ref);
-
 type_parameters(
   unique int id: @type_parameter ref,
   int index: int ref,

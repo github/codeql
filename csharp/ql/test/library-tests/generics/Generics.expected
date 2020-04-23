@@ -5,9 +5,6 @@ test2
 test3
 | generics.cs:13:18:13:21 | A<X> | generics.cs:13:18:13:21 | A<> |
 test4
-| Nesting.cs:12:18:12:18 | C | Unbound generic class with inconsistent name |
-| Nesting.cs:12:18:12:18 | C | Unbound generic class with inconsistent name |
-| Nesting.cs:12:18:12:18 | C | Unbound generic class with inconsistent name |
 test5
 test6
 | generics.cs:13:18:13:21 | A<T> | generics.cs:22:18:22:21 | B<> | generics.cs:22:18:22:21 | B<X> | generics.cs:25:23:25:24 | at |
@@ -102,9 +99,6 @@ test28
 | Nesting.cs:9:21:9:27 | MB2 | A<>.B<>.MB2<T4>(T1, T3, T4) |
 | Nesting.cs:9:21:9:27 | MB2 | A<Int32>.B<String>.MB2<T4>(int, string, T4) |
 | Nesting.cs:9:21:9:27 | MB2 | A<String>.B<Int32>.MB2<T4>(string, int, T4) |
-| Nesting.cs:12:18:12:18 | C | A<>.<> |
-| Nesting.cs:12:18:12:18 | C | A<Int32>.<> |
-| Nesting.cs:12:18:12:18 | C | A<String>.<> |
 | Nesting.cs:15:21:15:27 | MC2 | A<>.C.MC2<T5>(T1, T5) |
 | Nesting.cs:15:21:15:27 | MC2 | A<Int32>.C.MC2<T5>(int, T5) |
 | Nesting.cs:15:21:15:27 | MC2 | A<String>.C.MC2<T5>(string, T5) |
@@ -128,7 +122,6 @@ test28
 | generics.cs:51:22:51:29 | Inner<> | generics.Outer<Object>.Inner<U> |
 | generics.cs:137:21:137:25 | fs | generics.Subtle.fs<X>(int) |
 | generics.cs:139:21:139:25 | fs | generics.Subtle.fs<X>(int, int) |
-| generics.cs:147:14:147:14 | E | generics.Param<>.<> |
 | generics.cs:152:14:152:19 | CM1 | generics.ConstructedMethods.CM1<T>() |
 | generics.cs:153:11:153:16 | CM2 | generics.ConstructedMethods.CM2<T>(T) |
 | generics.cs:155:15:155:23 | Class<> | generics.ConstructedMethods.Class<T1> |
@@ -164,6 +157,8 @@ test30
 | Nesting.cs:3:17:3:19 | MA1 | A<String>.MA1(string) |
 | Nesting.cs:8:21:8:23 | MB1 | A<Int32>.B<String>.MB1(int, string) |
 | Nesting.cs:8:21:8:23 | MB1 | A<String>.B<Int32>.MB1(string, int) |
+| Nesting.cs:12:18:12:18 | C | A<Int32>.C |
+| Nesting.cs:12:18:12:18 | C | A<String>.C |
 | Nesting.cs:14:21:14:23 | MC1 | A<Int32>.C.MC1(int) |
 | Nesting.cs:14:21:14:23 | MC1 | A<String>.C.MC1(string) |
 | Nesting.cs:19:25:19:27 | MD1 | A<Int32>.C.D<Boolean>.MD1(int, bool) |
