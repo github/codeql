@@ -25,6 +25,9 @@ edges
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 |
+| simple.cpp:65:5:65:22 | Store [i] | simple.cpp:66:12:66:12 | Store [i] |
+| simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:5:65:22 | Store [i] |
+| simple.cpp:66:12:66:12 | Store [i] | simple.cpp:67:13:67:13 | i |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a |
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:31:23:31:23 | a |
 nodes
@@ -63,6 +66,10 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | semmle.label | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
+| simple.cpp:65:5:65:22 | Store [i] | semmle.label | Store [i] |
+| simple.cpp:65:11:65:20 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:66:12:66:12 | Store [i] | semmle.label | Store [i] |
+| simple.cpp:67:13:67:13 | i | semmle.label | i |
 | struct_init.c:20:20:20:29 | call to user_input | semmle.label | call to user_input |
 | struct_init.c:22:11:22:11 | a | semmle.label | a |
 | struct_init.c:27:7:27:16 | call to user_input | semmle.label | call to user_input |
@@ -78,5 +85,6 @@ nodes
 | aliasing.cpp:80:12:80:13 | m1 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 | m1 flows from $@ | aliasing.cpp:79:11:79:20 | call to user_input | call to user_input |
 | aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
+| simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:31:23:31:23 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:31:23:31:23 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |

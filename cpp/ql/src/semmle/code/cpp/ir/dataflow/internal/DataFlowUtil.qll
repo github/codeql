@@ -271,6 +271,25 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
 }
 
 /**
+ * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
+ * For instance, an update to a field of a struct containing only one field. For these cases we
+ * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
+ * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ */
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+
+  ExplicitSingleFieldStoreQualifierNode() {
+    exists(FieldAddressInstruction field |
+      field = instr.getDestinationAddress() and
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    )
+  }
+
+  override Node getPreUpdateNode() { none() }
+}
+
+/**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
  *
@@ -404,6 +423,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
+pragma[noinline]
+private predicate getFieldSizeOfClass(Class c, Type type, int size) {
+  exists(Field f |
+    f.getDeclaringType() = c and
+    f.getType() = type and
+    type.getSize() = size
+  )
+}
+
 cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
@@ -450,6 +478,14 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   exists(ChiInstruction chi | iFrom = chi |
     not chi.isResultConflated() and
     iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  )
+  or
+  // Flow from stores to structs with a single field to a load of that field.
+  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
+  exists(int size, Type type |
+    type = iFrom.getResultType() and
+    iTo.getResultType().getSize() = size and
+    getFieldSizeOfClass(iTo.getResultType(), type, size)
   )
   or
   // Flow through modeled functions
