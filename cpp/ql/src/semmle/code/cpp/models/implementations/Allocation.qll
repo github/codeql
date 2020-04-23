@@ -255,7 +255,6 @@ class OperatorNewAllocationFunction extends AllocationFunction {
   }
 }
 
-pragma[inline]
 private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
   sizeExpr instanceof MulExpr and
   exists(SizeofOperator sizeofOp |
