@@ -498,23 +498,11 @@ module JQuery {
     }
 
     /**
-     * Gets a node that is backtracked from a node written to `$.fn[something]`.
-     */
-    private DataFlow::SourceNode writtenToJqueryFN(DataFlow::TypeBackTracker t) {
-      t.start() and result = any(DataFlow::Node plugin | jQueryPluginDefinition(_, plugin)).getALocalSource()
-      or
-      exists(DataFlow::TypeBackTracker t2 | result = writtenToJqueryFN(t2).backtrack(t2, t))
-    }
-
-    /**
      * A `this` node in a JQuery plugin function, which is a JQuery object.
      */
     private class JQueryPluginThisObject extends Range {
       JQueryPluginThisObject() {
-        this =
-          DataFlow::thisNode(writtenToJqueryFN(DataFlow::TypeBackTracker::end())
-                .(DataFlow::FunctionNode)
-                .getFunction())
+        this = DataFlow::thisNode(any(JQueryPluginMethod method).getFunction())
       }
     }
   }
@@ -615,7 +603,7 @@ module JQuery {
   /**
    * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or $.extend($.fn, {<pluginName>, <plugin>})`.
    */
-  predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
+  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
     exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
       fn = jquery().getAPropertyRead("fn") and
       (
@@ -633,5 +621,42 @@ module JQuery {
         write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
       )
     )
+  }
+
+  /**
+   * Gets a node that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::SourceNode getAJQueryPluginMethod(
+    DataFlow::TypeBackTracker t, DataFlow::Node def
+  ) {
+    t.start() and jQueryPluginDefinition(_, def) and result.flowsTo(def)
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
+    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
+  }
+
+  /**
+   * A function that is registered as a jQuery plugin method.
+   */
+  class JQueryPluginMethod extends DataFlow::FunctionNode {
+    string pluginName;
+
+    JQueryPluginMethod() {
+      exists(DataFlow::Node def |
+        jQueryPluginDefinition(pluginName, def) and
+        this = getAJQueryPluginMethod(def)
+      )
+    }
+
+    /**
+     * Gets the name of this plugin.
+     */
+    string getPluginName() { result = pluginName }
   }
 }
