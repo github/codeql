@@ -68,4 +68,4 @@
 | taint.py:85:9:85:15 | request | bottle.request |
 | xss_example.py:7:11:7:14 | name | externally controlled string |
 | xss_example.py:14:9:14:12 | name | externally controlled string |
-| xss_example.py:21:9:21:12 | name | externally controlled string |
+| xss_example.py:21:14:21:17 | name | externally controlled string |

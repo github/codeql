@@ -18,7 +18,7 @@ def xss(name):
 # By specifically allowing ANY character to be captured by `name`, we can cause XSS by using
 # `<script>alert("oops")</script>` as `name`.
 @route('/easy-xss/<name:re:.*>')
-def xss(name):
+def easy_xss(name):
     return '<b>Hello {name}</b>!'.format(name=name)
 
 
