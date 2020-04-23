@@ -22,7 +22,34 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
+  // Overridden since `Declaration.getName` is abstract.
   override string getName() { functions(underlyingElement(this), result, _) }
+
+  // Overridden for performance: the optimizer cannot see that restricting
+  // `Declaration` to a specific qualified name will produce fewer rows than
+  // restricting it to `Function`. Therefore, when looking for a function by
+  // name, it scans `functions` before joining with this predicate unless we
+  // provide this specialized version of the predicate just for `Function`.
+  pragma[noinline]
+  override predicate hasQualifiedName(
+    string namespaceQualifier, string typeQualifier, string baseName
+  ) {
+    Declaration.super.hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
+  }
+
+  // Overridden for performance: see above.
+  pragma[noinline]
+  override predicate hasQualifiedName(string namespaceQualifier, string baseName) {
+    Declaration.super.hasQualifiedName(namespaceQualifier, baseName)
+  }
+
+  // Overridden for performance: see above.
+  pragma[noinline]
+  override predicate hasGlobalName(string name) { Declaration.super.hasGlobalName(name) }
+
+  // Overridden for performance: see above.
+  pragma[noinline]
+  override predicate hasGlobalOrStdName(string name) { Declaration.super.hasGlobalOrStdName(name) }
 
   /**
    * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
