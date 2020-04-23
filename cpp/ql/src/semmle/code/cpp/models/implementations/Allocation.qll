@@ -89,6 +89,18 @@ class MallocAllocationFunction extends AllocationFunction {
         or
         // kmem_zalloc(size, flags)
         name = "kmem_zalloc" and sizeArg = 0
+        or
+        // CRYPTO_malloc(size_t num, const char *file, int line)
+        name = "CRYPTO_malloc" and sizeArg = 0
+        or
+        // CRYPTO_zalloc(size_t num, const char *file, int line)
+        name = "CRYPTO_zalloc" and sizeArg = 0
+        or
+        // CRYPTO_secure_malloc(size_t num, const char *file, int line)
+        name = "CRYPTO_secure_malloc" and sizeArg = 0
+        or
+        // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        name = "CRYPTO_secure_zalloc" and sizeArg = 0
       )
     )
   }
@@ -169,6 +181,9 @@ class ReallocAllocationFunction extends AllocationFunction {
         or
         // CoTaskMemRealloc(ptr, size)
         name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0
+        or
+        // CRYPTO_realloc(void *addr, size_t num, const char *file, int line);
+        name = "CRYPTO_realloc" and sizeArg = 1 and reallocArg = 0
       )
     )
   }
