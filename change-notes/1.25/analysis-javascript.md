@@ -7,7 +7,7 @@
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
+| Cross-site scripting through DOM (`js/xss-through-dom`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities where existing text from the DOM is used as HTML. Results are not shown on LGTM by default. |
 
 ## Changes to existing queries
 

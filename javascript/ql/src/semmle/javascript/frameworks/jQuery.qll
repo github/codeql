@@ -538,9 +538,13 @@ module JQuery {
     MethodCall() {
       this = dollarCall() and name = "$"
       or
-      this = dollar().getAMemberCall(name)
+      this = ([dollar(), objectRef()]).getAMemberCall(name)
       or
-      this = objectRef().getAMethodCall(name)
+      // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
+      exists(DataFlow::PropRead read | read = this.getCalleeNode() |
+        read.getBase().getALocalSource() = [dollar(), objectRef()] and
+        read.getPropertyNameExpr().flow().mayHaveStringValue(name)
+      )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
       getReceiver() = legacyObjectSource() and
