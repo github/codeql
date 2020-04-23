@@ -26,4 +26,4 @@
 | test.py:75 | test_tainted_file | Attribute() | externally controlled string |
 | test.py:76 | test_tainted_file | Attribute() | externally controlled string |
 | test.py:77 | test_tainted_file | Attribute() | [externally controlled string] |
-| test.py:78 | test_tainted_file | ListComp | NO TAINT |
+| test.py:80 | test_tainted_file | line | externally controlled string |

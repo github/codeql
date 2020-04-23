@@ -75,5 +75,6 @@ def test_tainted_file():
         tainted_file.read(),
         tainted_file.readline(),
         tainted_file.readlines(),
-        [line for line in tainted_file],
     )
+    for line in tainted_file:
+        test(line)
