@@ -2,9 +2,13 @@ private import AliasConfigurationInternal
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import cpp
 private import AliasAnalysis
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SimpleSSA as UnaliasedSSA
 
 private newtype TAllocation =
-  TVariableAllocation(IRVariable var) or
+  TVariableAllocation(IRVariable var) {
+    // Only model variables that were not already handled in unaliased SSA.
+    not UnaliasedSSA::canReuseSSAForVariable(var)
+  } or
   TIndirectParameterAllocation(IRAutomaticUserVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)
   } or
@@ -35,8 +39,6 @@ abstract class Allocation extends TAllocation {
   abstract predicate alwaysEscapes();
 
   abstract predicate isAlwaysAllocatedOnStack();
-
-  final predicate isUnaliased() { not allocationEscapes(this) }
 }
 
 class VariableAllocation extends Allocation, TVariableAllocation {
@@ -88,7 +90,7 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
 
   final override Language::Location getLocation() { result = var.getLocation() }
 
-  final override string getUniqueId() { result = var.getUniqueId() }
+  final override string getUniqueId() { result = "*" + var.getUniqueId() }
 
   final override IRType getIRType() { result = var.getIRType() }
 

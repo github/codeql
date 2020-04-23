@@ -255,11 +255,7 @@ private predicate resultEscapesNonReturn(Instruction instr) {
  * allocation is marked as always escaping via `alwaysEscapes()`.
  */
 predicate allocationEscapes(Configuration::Allocation allocation) {
-  allocation.alwaysEscapes()
-  or
-  exists(IREscapeAnalysisConfiguration config |
-    config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
-  )
+  resultEscapesNonReturn(allocation.getABaseInstruction())
 }
 
 /**

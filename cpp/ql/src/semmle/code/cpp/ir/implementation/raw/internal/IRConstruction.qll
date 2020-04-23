@@ -62,6 +62,9 @@ private module Cached {
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
 
   cached
+  predicate canReuseSSAForMemoryResult(Instruction instruction) { none() }
+  
+  cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
     instruction instanceof UnmodeledDefinitionInstruction
     or
