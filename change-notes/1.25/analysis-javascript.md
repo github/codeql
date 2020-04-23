@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* Support for the following frameworks and libraries has been improved:
+  - [jQuery](https://jquery.com/)
 
 ## New queries
 
