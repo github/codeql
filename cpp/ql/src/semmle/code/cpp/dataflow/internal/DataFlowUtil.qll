@@ -43,7 +43,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  final Function getEnclosingCallable() { result = unique( | | this.getFunction()) }
+  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
