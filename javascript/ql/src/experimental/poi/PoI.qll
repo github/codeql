@@ -26,7 +26,7 @@
  * ```
  * /**
  *  * @kind problem
- *  *\/
+ *  */
  *
  * import PoI
  *
@@ -93,7 +93,7 @@ private module StandardPoIs {
   }
 
   /**
-   * An unpromoted route handler candidate, with explnatory data flow information.
+   * An unpromoted route handler candidate, with explanatory data flow information.
    */
   class UnpromotedRouteHandlerWithFlowPoI extends PoI {
     UnpromotedRouteHandlerWithFlowPoI() { this = "UnpromotedRouteHandlerWithFlowPoI" }
@@ -280,7 +280,7 @@ abstract class PoI extends string {
  * Should be used as:
  *
  * ```
- * query predicate problems = alertQuery/6;`
+ * query predicate problems = alertQuery/6;
  * ```
  *
  * Or alternatively:
