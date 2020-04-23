@@ -50,29 +50,6 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>`.
-   */
-  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
-    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
-      fn = jquery().getAPropertyRead("fn") and
-      (
-        write = fn.getAPropertyWrite()
-        or
-        exists(ExtendCall extend, DataFlow::SourceNode source |
-          fn.flowsTo(extend.getDestinationOperand()) and
-          source = extend.getASourceOperand() and
-          write = source.getAPropertyWrite()
-        )
-      ) and
-      plugin = write.getRhs() and
-      (
-        pluginName = write.getPropertyName() or
-        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
-      )
-    )
-  }
-
-  /**
    * Gets a node that is registered as a jQuery plugin method at `def`.
    */
   private DataFlow::SourceNode getAJQueryPluginMethod(

@@ -498,23 +498,10 @@ module JQuery {
     }
 
     /**
-     * Gets a node that is written to `$.fn[something]`.
-     * JQuery plugins are registered this way.
-     */
-    private DataFlow::Node getAFnWrite() {
-      exists(DataFlow::PropWrite write, DataFlow::PropRead jQueryFN |
-        write.getBase() = jQueryFN and
-        jQueryFN.getBase().getALocalSource() = JQuery::dollar() and
-        jQueryFN.getPropertyName() = "fn" and
-        result = write.getRhs()
-      )
-    }
-
-    /**
      * Gets a node that is backtracked from a node written to `$.fn[something]`.
      */
     private DataFlow::SourceNode writtenToJqueryFN(DataFlow::TypeBackTracker t) {
-      t.start() and result = getAFnWrite().getALocalSource()
+      t.start() and result = any(DataFlow::Node plugin | jQueryPluginDefinition(_, plugin)).getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = writtenToJqueryFN(t2).backtrack(t2, t))
     }
@@ -623,5 +610,28 @@ module JQuery {
       name = "$" and
       node = getArgument(0)
     }
+  }
+
+  /**
+   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>`.
+   */
+  predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
+    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
+      fn = jquery().getAPropertyRead("fn") and
+      (
+        write = fn.getAPropertyWrite()
+        or
+        exists(ExtendCall extend, DataFlow::SourceNode source |
+          fn.flowsTo(extend.getDestinationOperand()) and
+          source = extend.getASourceOperand() and
+          write = source.getAPropertyWrite()
+        )
+      ) and
+      plugin = write.getRhs() and
+      (
+        pluginName = write.getPropertyName() or
+        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
+      )
+    )
   }
 }
