@@ -352,7 +352,6 @@ function hash() {
 
 function growl() {
   var target = document.location.search
-  $.jGrowl(target);
+  $.jGrowl(target); // NOT OK
 }
-
 
