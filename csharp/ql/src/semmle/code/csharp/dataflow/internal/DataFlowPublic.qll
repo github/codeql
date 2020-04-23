@@ -230,4 +230,7 @@ class BarrierGuard extends Guard {
       this.controlsNode(result.getControlFlowNode(), e, v)
     )
   }
+
+  /** Holds if flow out from `node` is guarded by this guard. */
+  private predicate guardsFlowFrom(DataFlow::Node node) { none() }
 }

@@ -586,4 +586,7 @@ class BarrierGuard extends IRGuardCondition {
       this.controls(result.asInstruction().getBlock(), edge)
     )
   }
+
+  /** Holds if flow out from `node` is guarded by this guard. */
+  private predicate guardsFlowFrom(DataFlow::Node node) { none() }
 }

@@ -170,6 +170,11 @@ private predicate inBarrier(Node node, Configuration config) {
 private predicate outBarrier(Node node, Configuration config) {
   config.isBarrierOut(node) and
   config.isSink(node)
+  or
+  exists(BarrierGuard g |
+    config.isBarrierGuard(g) and
+    g.guardsFlowFrom(node)
+  )
 }
 
 private predicate fullBarrier(Node node, Configuration config) {
