@@ -1,0 +1,15 @@
+edges
+| MvelInjection.java:13:27:13:49 | getInputStream(...) : InputStream | MvelInjection.java:17:17:17:21 | input |
+| MvelInjection.java:22:27:22:49 | getInputStream(...) : InputStream | MvelInjection.java:27:30:27:39 | expression |
+| MvelInjection.java:32:27:32:49 | getInputStream(...) : InputStream | MvelInjection.java:38:7:38:15 | statement |
+nodes
+| MvelInjection.java:13:27:13:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:17:17:17:21 | input | semmle.label | input |
+| MvelInjection.java:22:27:22:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:27:30:27:39 | expression | semmle.label | expression |
+| MvelInjection.java:32:27:32:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:38:7:38:15 | statement | semmle.label | statement |
+#select
+| MvelInjection.java:17:17:17:21 | input | MvelInjection.java:13:27:13:49 | getInputStream(...) : InputStream | MvelInjection.java:17:17:17:21 | input | MVEL injection from $@. | MvelInjection.java:13:27:13:49 | getInputStream(...) | this user input |
+| MvelInjection.java:27:30:27:39 | expression | MvelInjection.java:22:27:22:49 | getInputStream(...) : InputStream | MvelInjection.java:27:30:27:39 | expression | MVEL injection from $@. | MvelInjection.java:22:27:22:49 | getInputStream(...) | this user input |
+| MvelInjection.java:38:7:38:15 | statement | MvelInjection.java:32:27:32:49 | getInputStream(...) : InputStream | MvelInjection.java:38:7:38:15 | statement | MVEL injection from $@. | MvelInjection.java:32:27:32:49 | getInputStream(...) | this user input |
