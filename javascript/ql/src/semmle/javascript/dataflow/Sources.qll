@@ -245,7 +245,7 @@ private module Cached {
    */
   cached
   predicate isSyntacticMethodCall(DataFlow::CallNode call) {
-    call.asExpr().(CallExpr).getCallee().getUnderlyingReference() instanceof PropAccess
+    call.getCalleeNode().asExpr().getUnderlyingReference() instanceof PropAccess
   }
 }
 
