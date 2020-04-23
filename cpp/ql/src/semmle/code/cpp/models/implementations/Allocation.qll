@@ -255,21 +255,34 @@ class OperatorNewAllocationFunction extends AllocationFunction {
   }
 }
 
+/**
+ * The predicate analyzes a `sizeExpr`, which is an argument to an allocation
+ * function like malloc, and tries to split it into an expression `lengthExpr`
+ * that describes the length of the allocated array, and the size of the allocated
+ * element type `sizeof`.
+ * If this is not possible, the allocation is considered to be of size 1 and of
+ * length `sizeExpr`.
+ */
 private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
-  sizeExpr instanceof MulExpr and
-  exists(SizeofOperator sizeofOp |
-    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-    lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
-    not lengthExpr instanceof SizeofOperator and
-    sizeof = sizeofOp.getValue().toInt()
+  if
+    sizeExpr instanceof MulExpr and
+    exists(SizeofOperator sizeofOp, Expr lengthOp |
+      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+      lengthOp = sizeExpr.(MulExpr).getAnOperand() and
+      not lengthOp instanceof SizeofOperator and
+      exists(sizeofOp.getValue().toInt())
+    )
+  then
+    exists(SizeofOperator sizeofOp |
+      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+      lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
+      not lengthExpr instanceof SizeofOperator and
+      sizeof = sizeofOp.getValue().toInt()
+    )
+  else (
+    lengthExpr = sizeExpr and
+    sizeof = 1
   )
-  or
-  not exists(int s, SizeofOperator sizeofOp |
-    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-    s = sizeofOp.(SizeofOperator).getValue().toInt()
-  ) and
-  lengthExpr = sizeExpr and
-  sizeof = 1
 }
 
 /**
@@ -293,15 +306,11 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     exists(Expr sizeExpr | sizeExpr = getArgument(target.getSizeArg()) |
       if exists(target.getSizeMult())
       then result = sizeExpr
-      else (
+      else
         exists(Expr lengthExpr |
           deconstructSizeExpr(sizeExpr, lengthExpr, _) and
           result = lengthExpr
         )
-        or
-        not exists(Expr lengthExpr | deconstructSizeExpr(sizeExpr, lengthExpr, _)) and
-        result = sizeExpr
-      )
     )
   }
 
