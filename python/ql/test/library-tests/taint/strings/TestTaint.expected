@@ -1,26 +1,26 @@
-| test.py:10 | test_json | a | externally controlled string |
-| test.py:10 | test_json | a | json[externally controlled string] |
-| test.py:10 | test_json | b | externally controlled string |
-| test.py:10 | test_json | b | json[externally controlled string] |
-| test.py:10 | test_json | c | externally controlled string |
-| test.py:10 | test_json | c | json[externally controlled string] |
-| test.py:21 | test_str | a | externally controlled string |
-| test.py:21 | test_str | b | externally controlled string |
-| test.py:21 | test_str | c | externally controlled string |
-| test.py:21 | test_str | d | externally controlled string |
-| test.py:21 | test_str | e | externally controlled string |
-| test.py:21 | test_str | f | externally controlled string |
-| test.py:21 | test_str | g | externally controlled string |
-| test.py:26 | test_const_sanitizer1 | tainted_string | NO TAINT |
-| test.py:28 | test_const_sanitizer1 | tainted_string | externally controlled string |
-| test.py:33 | test_const_sanitizer2 | tainted_string | NO TAINT |
-| test.py:35 | test_const_sanitizer2 | tainted_string | externally controlled string |
-| test.py:42 | test_str2 | a | externally controlled string |
-| test.py:42 | test_str2 | b | externally controlled string |
-| test.py:42 | test_str2 | c | externally controlled string |
-| test.py:50 | test_exc_info | res | exception.info |
-| test.py:58 | test_untrusted | res | externally controlled string |
-| test.py:71 | test_urlsplit_urlparse | a | [externally controlled string] |
-| test.py:71 | test_urlsplit_urlparse | b | [externally controlled string] |
-| test.py:71 | test_urlsplit_urlparse | c | {externally controlled string} |
-| test.py:71 | test_urlsplit_urlparse | d | [[externally controlled string]] |
+| test.py:11 | test_json | a | externally controlled string |
+| test.py:11 | test_json | a | json[externally controlled string] |
+| test.py:11 | test_json | b | externally controlled string |
+| test.py:11 | test_json | b | json[externally controlled string] |
+| test.py:11 | test_json | c | externally controlled string |
+| test.py:11 | test_json | c | json[externally controlled string] |
+| test.py:22 | test_str | a | externally controlled string |
+| test.py:22 | test_str | b | externally controlled string |
+| test.py:22 | test_str | c | externally controlled string |
+| test.py:22 | test_str | d | externally controlled string |
+| test.py:22 | test_str | e | externally controlled string |
+| test.py:22 | test_str | f | externally controlled string |
+| test.py:22 | test_str | g | externally controlled string |
+| test.py:27 | test_const_sanitizer1 | tainted_string | NO TAINT |
+| test.py:29 | test_const_sanitizer1 | tainted_string | externally controlled string |
+| test.py:34 | test_const_sanitizer2 | tainted_string | NO TAINT |
+| test.py:36 | test_const_sanitizer2 | tainted_string | externally controlled string |
+| test.py:43 | test_str2 | a | externally controlled string |
+| test.py:43 | test_str2 | b | externally controlled string |
+| test.py:43 | test_str2 | c | externally controlled string |
+| test.py:51 | test_exc_info | res | exception.info |
+| test.py:59 | test_untrusted | res | externally controlled string |
+| test.py:75 | test_urlsplit_urlparse | a | [externally controlled string] |
+| test.py:75 | test_urlsplit_urlparse | b | [externally controlled string] |
+| test.py:75 | test_urlsplit_urlparse | c | {externally controlled string} |
+| test.py:75 | test_urlsplit_urlparse | d | [[externally controlled string]] |
