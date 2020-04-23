@@ -262,16 +262,28 @@
 | g_class_init.py:9 | ControlFlowNode for FunctionExpr | Function _init | builtin-class function | 9 | import |
 | g_class_init.py:9 | ControlFlowNode for _init | Function _init | builtin-class function | 9 | import |
 | g_class_init.py:10 | ControlFlowNode for Attribute | int 2 | builtin-class int | 10 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:10 | ControlFlowNode for Attribute | int 2 | builtin-class int | 10 | runtime |
 | g_class_init.py:10 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 10 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:10 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 10 | runtime |
 | g_class_init.py:10 | ControlFlowNode for self | self | class C | 5 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:10 | ControlFlowNode for self | self | class C | 9 | runtime |
 | g_class_init.py:11 | ControlFlowNode for Attribute | Attribute | builtin-class method | 11 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:11 | ControlFlowNode for Attribute | Attribute | builtin-class method | 11 | runtime |
 | g_class_init.py:11 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 13 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:11 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 13 | runtime |
 | g_class_init.py:11 | ControlFlowNode for self | self | class C | 5 | code/g_class_init.py:6 from runtime |
+| g_class_init.py:11 | ControlFlowNode for self | self | class C | 9 | runtime |
 | g_class_init.py:13 | ControlFlowNode for FunctionExpr | Function _init2 | builtin-class function | 13 | import |
 | g_class_init.py:13 | ControlFlowNode for _init2 | Function _init2 | builtin-class function | 13 | import |
 | g_class_init.py:14 | ControlFlowNode for Attribute | int 3 | builtin-class int | 14 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:14 | ControlFlowNode for Attribute | int 3 | builtin-class int | 14 | code/g_class_init.py:11 from runtime |
+| g_class_init.py:14 | ControlFlowNode for Attribute | int 3 | builtin-class int | 14 | runtime |
 | g_class_init.py:14 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 14 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:14 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 14 | code/g_class_init.py:11 from runtime |
+| g_class_init.py:14 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 14 | runtime |
 | g_class_init.py:14 | ControlFlowNode for self | self | class C | 5 | code/g_class_init.py:11 from code/g_class_init.py:6 from runtime |
+| g_class_init.py:14 | ControlFlowNode for self | self | class C | 9 | code/g_class_init.py:11 from runtime |
+| g_class_init.py:14 | ControlFlowNode for self | self | class C | 13 | runtime |
 | g_class_init.py:16 | ControlFlowNode for FunctionExpr | Function method | builtin-class function | 16 | import |
 | g_class_init.py:16 | ControlFlowNode for method | Function method | builtin-class function | 16 | import |
 | g_class_init.py:17 | ControlFlowNode for self | self | class C | 16 | runtime |
@@ -1069,11 +1081,17 @@
 | r_regressions.py:11 | ControlFlowNode for FunctionExpr | Function _after_fork | builtin-class function | 11 | import |
 | r_regressions.py:11 | ControlFlowNode for _after_fork | Function _after_fork | builtin-class function | 11 | import |
 | r_regressions.py:12 | ControlFlowNode for Attribute | bool False | builtin-class bool | 12 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:12 | ControlFlowNode for Attribute | bool False | builtin-class bool | 12 | runtime |
 | r_regressions.py:12 | ControlFlowNode for False | bool False | builtin-class bool | 12 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:12 | ControlFlowNode for False | bool False | builtin-class bool | 12 | runtime |
 | r_regressions.py:12 | ControlFlowNode for self | self | class Queue | 7 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:12 | ControlFlowNode for self | self | class Queue | 11 | runtime |
 | r_regressions.py:13 | ControlFlowNode for Attribute | NoneType None | builtin-class NoneType | 13 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:13 | ControlFlowNode for Attribute | NoneType None | builtin-class NoneType | 13 | runtime |
 | r_regressions.py:13 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 13 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:13 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 13 | runtime |
 | r_regressions.py:13 | ControlFlowNode for self | self | class Queue | 7 | code/r_regressions.py:9 from runtime |
+| r_regressions.py:13 | ControlFlowNode for self | self | class Queue | 11 | runtime |
 | r_regressions.py:15 | ControlFlowNode for FunctionExpr | Function close | builtin-class function | 15 | import |
 | r_regressions.py:15 | ControlFlowNode for close | Function close | builtin-class function | 15 | import |
 | r_regressions.py:16 | ControlFlowNode for Attribute | bool True | builtin-class bool | 16 | runtime |
@@ -1112,22 +1130,38 @@
 | r_regressions.py:61 | ControlFlowNode for FunctionExpr | Function _dec | builtin-class function | 61 | runtime |
 | r_regressions.py:61 | ControlFlowNode for _dec | Function _dec | builtin-class function | 61 | code/r_regressions.py:85 from import |
 | r_regressions.py:61 | ControlFlowNode for _dec | Function _dec | builtin-class function | 61 | runtime |
+| r_regressions.py:62 | ControlFlowNode for is_class | bool False | builtin-class bool | 62 | runtime |
 | r_regressions.py:62 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:62 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | runtime |
 | r_regressions.py:62 | ControlFlowNode for isinstance | Builtin-function isinstance | builtin-class builtin_function_or_method | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:62 | ControlFlowNode for isinstance | Builtin-function isinstance | builtin-class builtin_function_or_method | 62 | runtime |
+| r_regressions.py:62 | ControlFlowNode for isinstance() | bool False | builtin-class bool | 62 | runtime |
 | r_regressions.py:62 | ControlFlowNode for isinstance() | bool True | builtin-class bool | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:62 | ControlFlowNode for isinstance() | bool True | builtin-class bool | 62 | runtime |
 | r_regressions.py:62 | ControlFlowNode for obj | class TestFirst | builtin-class type | 86 | code/r_regressions.py:85 from import |
 | r_regressions.py:62 | ControlFlowNode for type | builtin-class type | builtin-class type | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:62 | ControlFlowNode for type | builtin-class type | builtin-class type | 62 | runtime |
+| r_regressions.py:63 | ControlFlowNode for is_class | bool False | builtin-class bool | 62 | runtime |
 | r_regressions.py:63 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:63 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | runtime |
 | r_regressions.py:68 | ControlFlowNode for FunctionExpr | Function _wrapper | builtin-class function | 68 | code/r_regressions.py:85 from import |
+| r_regressions.py:68 | ControlFlowNode for FunctionExpr | Function _wrapper | builtin-class function | 68 | runtime |
 | r_regressions.py:68 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 68 | code/r_regressions.py:85 from import |
+| r_regressions.py:68 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 68 | runtime |
 | r_regressions.py:68 | ControlFlowNode for args | args | builtin-class tuple | 68 | runtime |
 | r_regressions.py:68 | ControlFlowNode for kwargs | kwargs | builtin-class dict | 68 | runtime |
+| r_regressions.py:72 | ControlFlowNode for is_class | bool False | builtin-class bool | 62 | runtime |
 | r_regressions.py:72 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | code/r_regressions.py:85 from import |
+| r_regressions.py:72 | ControlFlowNode for is_class | bool True | builtin-class bool | 62 | runtime |
 | r_regressions.py:73 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 68 | code/r_regressions.py:85 from import |
+| r_regressions.py:73 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 68 | runtime |
 | r_regressions.py:73 | ControlFlowNode for obj | class TestFirst | builtin-class type | 86 | code/r_regressions.py:85 from import |
 | r_regressions.py:73 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 73 | code/r_regressions.py:85 from import |
+| r_regressions.py:73 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 73 | runtime |
 | r_regressions.py:73 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 73 | code/r_regressions.py:85 from import |
+| r_regressions.py:73 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 73 | runtime |
 | r_regressions.py:74 | ControlFlowNode for obj | class TestFirst | builtin-class type | 86 | code/r_regressions.py:85 from import |
+| r_regressions.py:76 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 68 | runtime |
 | r_regressions.py:78 | ControlFlowNode for _dec | Function _dec | builtin-class function | 61 | code/r_regressions.py:85 from import |
 | r_regressions.py:78 | ControlFlowNode for _dec | Function _dec | builtin-class function | 61 | runtime |
 | r_regressions.py:80 | ControlFlowNode for FunctionExpr | Function deco | builtin-class function | 80 | import |
@@ -1136,6 +1170,7 @@
 | r_regressions.py:81 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 81 | runtime |
 | r_regressions.py:81 | ControlFlowNode for args | args | builtin-class tuple | 81 | runtime |
 | r_regressions.py:81 | ControlFlowNode for kwargs | kwargs | builtin-class dict | 81 | runtime |
+| r_regressions.py:82 | ControlFlowNode for True | bool True | builtin-class bool | 82 | runtime |
 | r_regressions.py:83 | ControlFlowNode for _wrapper | Function _wrapper | builtin-class function | 81 | runtime |
 | r_regressions.py:85 | ControlFlowNode for Str | 'method' | builtin-class str | 85 | import |
 | r_regressions.py:85 | ControlFlowNode for deco | Function deco | builtin-class function | 80 | import |

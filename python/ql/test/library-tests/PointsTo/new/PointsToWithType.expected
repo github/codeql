@@ -377,14 +377,18 @@
 | g_class_init.py:10 | ControlFlowNode for Attribute | int 2 | builtin-class int | 10 |
 | g_class_init.py:10 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 10 |
 | g_class_init.py:10 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:10 | ControlFlowNode for self | self | class C | 9 |
 | g_class_init.py:11 | ControlFlowNode for Attribute | Attribute | builtin-class method | 11 |
 | g_class_init.py:11 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 13 |
 | g_class_init.py:11 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:11 | ControlFlowNode for self | self | class C | 9 |
 | g_class_init.py:13 | ControlFlowNode for FunctionExpr | Function _init2 | builtin-class function | 13 |
 | g_class_init.py:13 | ControlFlowNode for _init2 | Function _init2 | builtin-class function | 13 |
 | g_class_init.py:14 | ControlFlowNode for Attribute | int 3 | builtin-class int | 14 |
 | g_class_init.py:14 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 14 |
 | g_class_init.py:14 | ControlFlowNode for self | self | class C | 5 |
+| g_class_init.py:14 | ControlFlowNode for self | self | class C | 9 |
+| g_class_init.py:14 | ControlFlowNode for self | self | class C | 13 |
 | g_class_init.py:16 | ControlFlowNode for FunctionExpr | Function method | builtin-class function | 16 |
 | g_class_init.py:16 | ControlFlowNode for method | Function method | builtin-class function | 16 |
 | g_class_init.py:17 | ControlFlowNode for self | self | class C | 16 |

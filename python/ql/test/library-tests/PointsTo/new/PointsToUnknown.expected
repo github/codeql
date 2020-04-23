@@ -243,9 +243,13 @@
 | r_regressions.py:43 | ControlFlowNode for x() | 43 |
 | r_regressions.py:44 | ControlFlowNode for data | 43 |
 | r_regressions.py:52 | ControlFlowNode for msg | 51 |
+| r_regressions.py:62 | ControlFlowNode for obj | 61 |
 | r_regressions.py:64 | ControlFlowNode for do_validation | 64 |
 | r_regressions.py:64 | ControlFlowNode for do_validation() | 64 |
+| r_regressions.py:66 | ControlFlowNode for obj | 61 |
+| r_regressions.py:73 | ControlFlowNode for obj | 61 |
 | r_regressions.py:73 | ControlFlowNode for setattr() | 73 |
+| r_regressions.py:74 | ControlFlowNode for obj | 61 |
 | r_regressions.py:90 | ControlFlowNode for Attribute | 90 |
 | r_regressions.py:90 | ControlFlowNode for Attribute() | 90 |
 | r_regressions.py:102 | ControlFlowNode for unrelated_call | 102 |
