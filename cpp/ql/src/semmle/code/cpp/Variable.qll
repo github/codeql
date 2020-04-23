@@ -115,10 +115,6 @@ class Variable extends Declaration, @variable {
     else result = this.getADeclarationLocation()
   }
 
-  /** Pulled out of `getAnAssignedValue` to fix a bad join order */
-  pragma[noinline]
-  private predicate aggregateLiteralHasType(AggregateLiteral lit, Class c) { lit.getType() = c }
-
   /**
    * Gets an expression that is assigned to this variable somewhere in the
    * program.
@@ -130,11 +126,7 @@ class Variable extends Declaration, @variable {
     or
     exists(AssignExpr ae | ae.getLValue().(Access).getTarget() = this and result = ae.getRValue())
     or
-    exists(AggregateLiteral l, Class c |
-      this.(Field).getDeclaringType() = c and
-      aggregateLiteralHasType(l, c) and
-      result = l.getChild(this.(Field).getInitializationOrder())
-    )
+    exists(ClassAggregateLiteral l | result = l.getFieldExpr(this))
   }
 
   /**
