@@ -52,20 +52,24 @@
 | taint.py:55:9:55:15 | request | bottle.request |
 | taint.py:56:9:56:15 | request | bottle.request |
 | taint.py:58:9:58:15 | request | bottle.request |
+| taint.py:59:9:59:15 | request | bottle.request |
 | taint.py:60:9:60:15 | request | bottle.request |
-| taint.py:63:9:63:15 | request | bottle.request |
-| taint.py:65:9:65:15 | request | bottle.request |
-| taint.py:67:9:67:15 | request | bottle.request |
+| taint.py:61:9:61:15 | request | bottle.request |
+| taint.py:62:27:62:33 | request | bottle.request |
+| taint.py:66:9:66:15 | request | bottle.request |
 | taint.py:69:9:69:15 | request | bottle.request |
 | taint.py:71:9:71:15 | request | bottle.request |
 | taint.py:73:9:73:15 | request | bottle.request |
 | taint.py:75:9:75:15 | request | bottle.request |
 | taint.py:77:9:77:15 | request | bottle.request |
-| taint.py:78:9:78:15 | request | bottle.request |
-| taint.py:80:9:80:15 | request | bottle.request |
+| taint.py:79:9:79:15 | request | bottle.request |
 | taint.py:81:9:81:15 | request | bottle.request |
 | taint.py:83:9:83:15 | request | bottle.request |
-| taint.py:85:9:85:15 | request | bottle.request |
+| taint.py:84:9:84:15 | request | bottle.request |
+| taint.py:86:9:86:15 | request | bottle.request |
+| taint.py:87:9:87:15 | request | bottle.request |
+| taint.py:89:9:89:15 | request | bottle.request |
+| taint.py:91:9:91:15 | request | bottle.request |
 | xss_example.py:7:11:7:14 | name | externally controlled string |
 | xss_example.py:14:9:14:12 | name | externally controlled string |
 | xss_example.py:21:14:21:17 | name | externally controlled string |

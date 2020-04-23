@@ -56,6 +56,12 @@ def test_taint(name = "World!", number="0", foo="foo"):
         request.json['some_key'],
 
         request.body, # file-like object
+        request.body.read(),
+        request.body.readline(),
+        request.body.readlines(),
+        [line for line in request.body],
+        # TODO: Should we handle `request.body.read1()`?
+        # TODO: Should we handle `request.body.readinto()`?
 
         request.GET, # alias for request.query
 

@@ -32,9 +32,8 @@ class BottleRequestKind extends TaintKind {
         name = "json" and
         result instanceof ExternalJsonKind
         or
-        // TODO: Not sure what TaintKind to use here
         name = "body" and
-        none()
+        result instanceof ExternalFileObject
         or
         name = "urlparts" and
         result.(ExternalUrlSplitResult).getItem() instanceof UntrustedStringKind
