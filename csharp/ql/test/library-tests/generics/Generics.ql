@@ -227,3 +227,26 @@ query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGeneri
   sourceDecl = ct.getSourceDeclaration() and
   ugt != sourceDecl
 }
+
+query predicate test28(UnboundGeneric ug, string s) {
+  ug.fromSource() and
+  s = ug.getQualifiedNameWithTypes()
+}
+
+query predicate test29(ConstructedGeneric cg, string s) {
+  cg.fromSource() and
+  s = cg.getQualifiedNameWithTypes()
+}
+
+query predicate test30(Declaration d, string s) {
+  d.fromSource() and
+  d instanceof @generic and
+  s = d.getQualifiedNameWithTypes() and
+  d != d.getSourceDeclaration() and
+  not d instanceof Generic
+}
+
+query predicate test31(ConstructedGeneric cg, string s) {
+  not exists(cg.getUnboundGeneric()) and
+  s = "Missing unbound generic"
+}
