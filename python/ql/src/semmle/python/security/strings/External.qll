@@ -195,6 +195,8 @@ class ExternalFileObject extends TaintKind {
         or
         name = "readlines" and result.(SequenceKind).getItem() = this.getValue()
     }
+
+    override TaintKind getTaintForIteration() { result = this.getValue() }
 }
 
 /**
