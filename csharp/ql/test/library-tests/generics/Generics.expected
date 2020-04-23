@@ -1,0 +1,71 @@
+test1
+| generics.cs:7:23:7:40 | GenericDelegate<> |
+test2
+| generics.cs:9:18:9:18 | A |
+test3
+| generics.cs:13:18:13:21 | A<X> | generics.cs:13:18:13:21 | A<> |
+test4
+test5
+test6
+| generics.cs:13:18:13:21 | A<T> | generics.cs:22:18:22:21 | B<> | generics.cs:22:18:22:21 | B<X> | generics.cs:25:23:25:24 | at |
+test7
+| generics.cs:13:18:13:21 | A<String> | generics.cs:22:18:22:21 | B<String> |
+test8
+| generics.cs:22:18:22:21 | B<String> | generics.cs:31:21:31:29 | fooParams |
+test9
+| generics.cs:22:18:22:21 | B<String> | generics.cs:35:51:35:53 | set_Name | generics.cs:35:51:35:53 | set_Name |
+test10
+| generics.cs:22:18:22:21 | B<String> | generics.cs:37:41:37:47 | myEvent |
+test11
+| generics.cs:22:18:22:21 | B<String> | generics.cs:39:37:39:38 | ++ |
+test12
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:73:18:73:21 | Item |
+test13
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:68:20:68:23 | Item |
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:73:18:73:21 | Item |
+test14
+| generics.cs:60:18:60:24 | Grid<> | generics.cs:68:20:68:23 | Item |
+test15
+| generics.cs:7:23:7:40 | GenericDelegate<String> |
+test16
+| generics.cs:134:11:134:16 | Subtle | generics.cs:137:21:137:25 | fs |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:139:21:139:25 | fs |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:141:21:141:22 | fs |
+test17
+| generics.cs:134:11:134:16 | Subtle | generics.cs:137:24:137:24 | X | generics.cs:137:21:137:25 | fs | generics.cs:139:24:139:24 | X | generics.cs:139:21:139:25 | fs | 1 |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:139:24:139:24 | X | generics.cs:139:21:139:25 | fs | generics.cs:137:24:137:24 | X | generics.cs:137:21:137:25 | fs | 2 |
+test18
+| generics.cs:13:18:13:21 | A<> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | T | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 1 | Test | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 1 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 1 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | String | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 1 | String | 2 | 2 |
+test19
+| generics.cs:137:21:137:25 | fs | generics.cs:137:24:137:24 | X | 1 |
+| generics.cs:139:21:139:25 | fs | generics.cs:139:24:139:24 | X | 1 |
+test20
+test21
+| generics.cs:147:14:147:14 | E | generics.cs:145:11:145:18 | Param<> |
+test22
+| generics.cs:152:14:152:19 | CM1 | Double |
+| generics.cs:152:14:152:19 | CM1 | Int32 |
+| generics.cs:153:11:153:16 | CM2 | Double |
+| generics.cs:153:11:153:16 | CM2 | Int32 |
+| generics.cs:157:23:157:29 | CM3 | Double |
+| generics.cs:157:23:157:29 | CM3 | Double |
+test23
+| generics.cs:178:11:178:24 | Inheritance<> | generics.cs:173:15:173:26 | Interface<T> |
+| generics.cs:178:11:178:24 | Inheritance<Int32> | generics.cs:173:15:173:26 | Interface<Int32> |
+test24
+| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:29:188:30 | T1 | in |
+| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:37:188:38 | T2 | out |
+test25
+| generics.cs:157:23:157:29 | CM3 |
+test26
+test27
+| generics.cs:51:22:51:29 | Inner<String> | generics.cs:51:22:51:29 | Inner<> | generics.cs:51:22:51:29 | Inner<> |
