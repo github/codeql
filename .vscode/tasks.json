@@ -1,0 +1,23 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Sync Identical Files",
+            "type": "process",
+            // Non-Windows OS will usually have Python 3 already installed at /usr/bin/python3.
+            "command": "python3",
+            "args": [
+                "config/sync-files.py",
+                "--latest"
+            ],
+            "windows": {
+                // On Windows, use whatever Python interpreter is configured for this workspace. The default is
+                // just `python`, so if Python is already on the path, this will find it.
+                "command": "${config:python.pythonPath}",
+            },
+            "problemMatcher": []
+        }
+    ]
+}
