@@ -1,6 +1,7 @@
 interface I1 { }
 
-struct S1 { } struct S2 { }
+struct S1 { }
+struct S2 { }
 
 class C0 { }
 class C1<T1> { }
@@ -30,4 +31,20 @@ class Tuples<T8, T9>
     static (string, T9) t3;
     static (T8, T9) t4;
     static (T8 a, T9 b) t5 = t4;
+}
+
+class Nested<T10>
+{
+    class NestedA<T11> { }
+    class NestedB
+    {
+        public class NestedC<T12> { }
+    }
+
+    Nested<int>.NestedA<string> x1;
+    Nested<string>.NestedA<int> x2;
+    Nested<int>.NestedB x3;
+    Nested<string>.NestedB x4;
+    Nested<int>.NestedB.NestedC<bool> x5;
+    Nested<string>.NestedB.NestedC<decimal> x6;
 }
