@@ -243,13 +243,13 @@ class Parameter extends Parameter_ {
     }
 
     /**
-     * Holds if this parameter is a 'varargs' parameter.
+     * Holds if this parameter is a "varargs" parameter.
      * The `varargs` in `f(a, b, *varargs)`.
      */
     predicate isVarargs() { exists(Function func | func.getVararg() = this) }
 
     /**
-     * Holds if this parameter is a 'kwargs' parameter.
+     * Holds if this parameter is a "kwargs" parameter.
      * The `kwargs` in `f(a, b, **kwargs)`.
      */
     predicate isKwargs() { exists(Function func | func.getKwarg() = this) }
@@ -296,7 +296,7 @@ class FunctionExpr extends FunctionExpr_, CallableExpr {
     override Arguments getArgs() { result = FunctionExpr_.super.getArgs() }
 }
 
-/** A lambda expression, such as lambda x:x*x */
+/** A lambda expression, such as `lambda x: x+1` */
 class Lambda extends Lambda_, CallableExpr {
     /** Gets the expression to the right of the colon in this lambda expression */
     Expr getExpression() {
