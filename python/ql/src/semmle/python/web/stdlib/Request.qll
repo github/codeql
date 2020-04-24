@@ -117,10 +117,8 @@ class CgiFieldStorageFieldKind extends TaintKind {
     CgiFieldStorageFieldKind() { this = "CgiFieldStorageFieldKind" }
 
     override TaintKind getTaintOfAttribute(string name) {
-        name = "filename" and result instanceof ExternalStringKind
+        name in ["filename", "value"] and result instanceof ExternalStringKind
         or
         name = "file" and result instanceof ExternalFileObject
-        or
-        name = "value" and result instanceof ExternalStringKind
     }
 }
