@@ -1,5 +1,5 @@
 /**
- * Provides the sources and taint-flow for HTTP servers defined with standard library (stdlib).
+ * Provides the sources and taint-flow for HTTP servers defined using the standard library (stdlib).
  * Specifically, we model `HttpRequestTaintSource`s from instances of `BaseHTTPRequestHandler`
  * (or subclasses) and form parsing with `cgi.FieldStorage`.
  */
