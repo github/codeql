@@ -1,7 +1,7 @@
 /**
- * @name Jump-to-definition links
+ * @name Find-references links
  * @description Generates use-definition pairs that provide the data
- *              for jump-to-definition in the code viewer.
+ *              for find-references in the code viewer.
  * @kind definitions
  * @id cpp/ide-find-references
  * @tags ide-contextual-queries/local-references
