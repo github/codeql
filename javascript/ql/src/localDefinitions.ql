@@ -3,11 +3,14 @@
  * @description Generates use-definition pairs that provide the data
  *              for jump-to-definition in the code viewer.
  * @kind definitions
- * @id js/jump-to-definition
+ * @id js/ide-jump-to-definition
+ * @tags ide-contextual-queries/local-definitions
  */
 
 import definitions
 
+external string selectedSourceFile();
+
 from Locatable e, ASTNode def, string kind
-where def = definitionOf(e, kind)
+where def = definitionOf(e, kind) and e.getFile() = getEncodedFile(selectedSourceFile())
 select e, def, kind
