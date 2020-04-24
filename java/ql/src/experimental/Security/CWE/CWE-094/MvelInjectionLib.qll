@@ -36,6 +36,11 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
       m instanceof ExecutableStatementEvaluationMethod and
       (ma = asExpr() or ma.getQualifier() = asExpr())
     )
+    or
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof CompiledExpressionEvaluationMethod and
+      (ma = asExpr() or ma.getQualifier() = asExpr())
+    )
   }
 }
 
@@ -118,6 +123,16 @@ class ExecutableStatementEvaluationMethod extends Method {
   }
 }
 
+/**
+ * Methods in `CompiledExpression` that trigger evaluating a MVEL expression.
+ */
+class CompiledExpressionEvaluationMethod extends Method {
+  CompiledExpressionEvaluationMethod() {
+    getDeclaringType() instanceof CompiledExpression and
+    hasName("getDirectValue")
+  }
+}
+
 class MVEL extends RefType {
   MVEL() { hasQualifiedName("org.mvel2", "MVEL") }
 }
@@ -128,4 +143,8 @@ class ExpressionCompiler extends RefType {
 
 class ExecutableStatement extends RefType {
   ExecutableStatement() { hasQualifiedName("org.mvel2.compiler", "ExecutableStatement") }
+}
+
+class CompiledExpression extends RefType {
+    CompiledExpression() { hasQualifiedName("org.mvel2.compiler", "CompiledExpression") }
 }
