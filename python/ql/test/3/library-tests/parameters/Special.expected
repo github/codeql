@@ -1,0 +1,4 @@
+| args | varargs |
+| kwargs | kwargs |
+| normal | normal |
+| pos_only | normal |

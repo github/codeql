@@ -1,0 +1,2 @@
+| normal | test.py:7:19:7:20 | UnaryExpr |
+| pos_only | test.py:5:21:5:22 | UnaryExpr |

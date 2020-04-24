@@ -1,0 +1,7 @@
+| test.py:4:1:11:2 | Function func | test.py:5:5:5:12 | pos_only |
+| test.py:4:1:11:2 | Function func | test.py:7:5:7:10 | normal |
+| test.py:4:1:11:2 | Function func | test.py:8:6:8:9 | args |
+| test.py:4:1:11:2 | Function func | test.py:10:7:10:12 | kwargs |
+| test.py:4:1:11:2 | Function func | test.py:12:5:12:41 | ExprStmt |
+| test.py:4:1:11:2 | Function func | test.py:13:5:13:15 | ExprStmt |
+| test.py:4:1:11:2 | Function func | test.py:14:5:14:17 | ExprStmt |

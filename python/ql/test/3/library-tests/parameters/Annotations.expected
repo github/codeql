@@ -1,0 +1,4 @@
+| args | test.py:8:12:8:23 | Str |
+| kwargs | test.py:10:15:10:30 | Str |
+| normal | test.py:7:13:7:15 | int |
+| pos_only | test.py:5:15:5:17 | int |
