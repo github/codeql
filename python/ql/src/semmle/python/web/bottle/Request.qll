@@ -20,13 +20,13 @@ class BottleRequestKind extends TaintKind {
         result.(BottleFormsDict).getValue() instanceof UntrustedStringKind
         or
         name = "files" and
-        result.(BottleFormsDict).getValue() instanceof FileUpload
+        result.(BottleFormsDict).getValue() instanceof BottleFileUpload
         or
         name = "POST" and
         (
             result.(BottleFormsDict).getValue() instanceof UntrustedStringKind
             or
-            result.(BottleFormsDict).getValue() instanceof FileUpload
+            result.(BottleFormsDict).getValue() instanceof BottleFileUpload
         )
         or
         name = "json" and
@@ -79,26 +79,26 @@ class BottleFormsDict extends DictKind {
     }
 }
 
-class FileUpload extends TaintKind {
-    FileUpload() { this = "bottle.FileUpload" }
+/** TaintKind for a bottle.FileUpload object (that wrap file uploads in bottle) */
+class BottleFileUpload extends TaintKind {
+    BottleFileUpload() { this = "bottle.FileUpload" }
 
     override TaintKind getTaintOfAttribute(string name) {
-        name = "filename" and result instanceof UntrustedStringKind
+        // `name` is the field name
+        name in ["name", "filename", "raw_filename", "content_type"] and
+        result instanceof UntrustedStringKind
         or
-        name = "raw_filename" and result instanceof UntrustedStringKind
+        name = "file" and result instanceof ExternalFileObject
         or
-        name = "file" and result instanceof UntrustedFile
+        name = "headers" and result.(DictKind).getValue() instanceof UntrustedStringKind
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        name in ["get_header"] and
+        result instanceof UntrustedStringKind
     }
 }
 
-class UntrustedFile extends TaintKind {
-    UntrustedFile() { this = "Untrusted file" }
-}
-
-//
-//   TO DO.. File uploads -- Should check about file uploads for other frameworks as well.
-//  Move UntrustedFile to shared location
-//
 /** Parameter to a bottle request handler function */
 class BottleRequestParameter extends HttpRequestTaintSource {
     BottleRequestParameter() {

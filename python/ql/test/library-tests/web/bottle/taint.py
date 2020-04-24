@@ -50,7 +50,11 @@ def test_taint(name = "World!", number="0", foo="foo"):
 
         # FormsDict
         request.files,
-        request.files.filename,
+        request.files.fieldname,
+        request.files.fieldname.filename,
+        request.files.fieldname.raw_filename,
+        request.files.fieldname.file,
+        request.files.fieldname.file.read(),
 
         request.json,
         request.json['some_key'],
