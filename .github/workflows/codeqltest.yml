@@ -89,7 +89,7 @@ jobs:
         Invoke-WebRequest -Uri https://github.com/github/codeql-cli-binaries/releases/download/v2.1.1/codeql.zip -OutFile codeql.zip
         echo "Done"
         echo "Unpacking CodeQL CLI..."
-        unzip -q codeql.zip
+        Expand-Archive codeql.zip
         rm -fo codeql.zip
         echo "Done"
 
