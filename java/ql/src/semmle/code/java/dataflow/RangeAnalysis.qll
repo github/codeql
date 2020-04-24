@@ -264,14 +264,21 @@ private newtype TReason =
  * without going through a bounding condition.
  */
 abstract class Reason extends TReason {
+  /** Gets a textual representation of this reason. */
   abstract string toString();
 }
 
+/**
+ * A reason for an inferred bound that indicates that the bound is inferred
+ * without going through a bounding condition.
+ */
 class NoReason extends Reason, TNoReason {
   override string toString() { result = "NoReason" }
 }
 
+/** A reason for an inferred bound pointing to a condition. */
 class CondReason extends Reason, TCondReason {
+  /** Gets the condition that is the reason for the bound. */
   Guard getCond() { this = TCondReason(result) }
 
   override string toString() { result = getCond().toString() }

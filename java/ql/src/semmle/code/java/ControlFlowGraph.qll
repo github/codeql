@@ -113,6 +113,7 @@ class ControlFlowNode extends Top, @exprparent {
     result = succ(this, NormalCompletion())
   }
 
+  /** Gets the basic block that contains this node. */
   BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
