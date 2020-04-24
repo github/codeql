@@ -67,6 +67,22 @@ private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction no
     or
     t instanceof ArrayType
   )
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  exists(IRFunction f, Parameter parameter |
+    nodeFrom = getInitializeParameter(f, parameter) and
+    nodeTo = getInitializeIndirection(f, parameter)
+  )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getAnOperand().(SideEffectOperand).getAnyDef() = nodeFrom and
+    read.getArgumentDef() = nodeTo
+  )
 }
 
 /**
@@ -134,4 +150,16 @@ predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut)
     modelMidOut.isParameterDeref(indexMid) and
     modelMidIn.isParameter(indexMid)
   )
+}
+
+pragma[noinline]
+private InitializeIndirectionInstruction getInitializeIndirection(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
+}
+
+pragma[noinline]
+private InitializeParameterInstruction getInitializeParameter(IRFunction f, Parameter p) {
+  result.getParameter() = p and
+  result.getEnclosingIRFunction() = f
 }
