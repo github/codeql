@@ -39,6 +39,7 @@ public class MvelInjection {
       ExpressionCompiler compiler = new ExpressionCompiler(input);
       ExecutableStatement statement = compiler.compile();
       statement.getValue(new Object(), new ImmutableDefaultFactory());
+      statement.getValue(new Object(), new Object(), new ImmutableDefaultFactory());
     }
   }
 
