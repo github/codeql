@@ -4,6 +4,7 @@
 
 import javascript
 import semmle.javascript.frameworks.Templating
+private import semmle.javascript.dataflow.InferredTypes
 
 module DOM {
   /**
@@ -292,10 +293,18 @@ module DOM {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
-        this = domValueRef().getAPropertyRead() or
-        this = domElementCreationOrQuery() or
+        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
+        or
+        this = domValueRef().getAPropertyRead()
+        or
+        this = domElementCreationOrQuery()
+        or
         this = domElementCollection()
+        or
+        exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
+          call.getNumArgument() = 1 and
+          forex(InferredType t | t = call.getArgument(0).analyze().getAType() | t = TTNumber())
+        )
       }
     }
   }

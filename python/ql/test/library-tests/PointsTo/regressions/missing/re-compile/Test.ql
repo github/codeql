@@ -1,10 +1,10 @@
 import python
 
-from NameNode name, CallNode call, string debug
+from ControlFlowNode arg, CallNode call, string debug
 where
-    call.getAnArg() = name and
+    call.getAnArg() = arg and
     call.getFunction().(NameNode).getId() = "check" and
-    if exists(name.pointsTo())
-    then debug = name.pointsTo().toString()
+    if exists(arg.pointsTo())
+    then debug = arg.pointsTo().toString()
     else debug = "<MISSING pointsTo()>"
-select name, debug
+select arg, debug

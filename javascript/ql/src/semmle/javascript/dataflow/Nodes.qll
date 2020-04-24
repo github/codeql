@@ -1196,6 +1196,14 @@ module ClassNode {
         getAPropertySource("prototype") = newCall and
         result = newCall.getCalleeNode()
       )
+      or
+      // util.inherits(C, D);
+      exists(DataFlow::CallNode inheritsCall |
+        inheritsCall = DataFlow::moduleMember("util", "inherits").getACall()
+      |
+        this = inheritsCall.getArgument(0).getALocalSource() and
+        result = inheritsCall.getArgument(1)
+      )
     }
   }
 }

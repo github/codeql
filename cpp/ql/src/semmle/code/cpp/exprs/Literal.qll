@@ -145,8 +145,6 @@ class HexLiteral extends Literal {
 
 /**
  * A C/C++ aggregate literal.
- *
- * For example:
  */
 class AggregateLiteral extends Expr, @aggregateliteral {
   override string getCanonicalQLClass() { result = "AggregateLiteral" }
