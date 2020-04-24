@@ -3,6 +3,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import org.mvel2.MVEL;
+import org.mvel2.ParserContext;
+import org.mvel2.compiler.CompiledAccExpression;
 import org.mvel2.compiler.CompiledExpression;
 import org.mvel2.compiler.ExecutableStatement;
 import org.mvel2.compiler.ExpressionCompiler;
@@ -48,6 +50,16 @@ public class MvelInjection {
       ExpressionCompiler compiler = new ExpressionCompiler(input);
       CompiledExpression expression = compiler.compile();
       expression.getDirectValue(new Object(), new ImmutableDefaultFactory());
+    }
+  }
+
+  public static void testCompiledAccExpressionGetValue(Socket socket) throws IOException {
+    try (InputStream in = socket.getInputStream()) {
+      byte[] bytes = new byte[1024];
+      int n = in.read(bytes);
+      String input = new String(bytes, 0, n);
+      CompiledAccExpression expression = new CompiledAccExpression(input.toCharArray(), Object.class, new ParserContext());
+      expression.getValue(new Object(), new ImmutableDefaultFactory());
     }
   }
 }

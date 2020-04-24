@@ -1,19 +1,23 @@
 edges
-| MvelInjection.java:14:27:14:49 | getInputStream(...) : InputStream | MvelInjection.java:18:17:18:21 | input |
-| MvelInjection.java:23:27:23:49 | getInputStream(...) : InputStream | MvelInjection.java:28:30:28:39 | expression |
-| MvelInjection.java:33:27:33:49 | getInputStream(...) : InputStream | MvelInjection.java:39:7:39:15 | statement |
-| MvelInjection.java:44:27:44:49 | getInputStream(...) : InputStream | MvelInjection.java:50:7:50:16 | expression |
+| MvelInjection.java:16:27:16:49 | getInputStream(...) : InputStream | MvelInjection.java:20:17:20:21 | input |
+| MvelInjection.java:25:27:25:49 | getInputStream(...) : InputStream | MvelInjection.java:30:30:30:39 | expression |
+| MvelInjection.java:35:27:35:49 | getInputStream(...) : InputStream | MvelInjection.java:41:7:41:15 | statement |
+| MvelInjection.java:46:27:46:49 | getInputStream(...) : InputStream | MvelInjection.java:52:7:52:16 | expression |
+| MvelInjection.java:57:27:57:49 | getInputStream(...) : InputStream | MvelInjection.java:62:7:62:16 | expression |
 nodes
-| MvelInjection.java:14:27:14:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| MvelInjection.java:18:17:18:21 | input | semmle.label | input |
-| MvelInjection.java:23:27:23:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| MvelInjection.java:28:30:28:39 | expression | semmle.label | expression |
-| MvelInjection.java:33:27:33:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| MvelInjection.java:39:7:39:15 | statement | semmle.label | statement |
-| MvelInjection.java:44:27:44:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| MvelInjection.java:50:7:50:16 | expression | semmle.label | expression |
+| MvelInjection.java:16:27:16:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:20:17:20:21 | input | semmle.label | input |
+| MvelInjection.java:25:27:25:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:30:30:30:39 | expression | semmle.label | expression |
+| MvelInjection.java:35:27:35:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:41:7:41:15 | statement | semmle.label | statement |
+| MvelInjection.java:46:27:46:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:52:7:52:16 | expression | semmle.label | expression |
+| MvelInjection.java:57:27:57:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjection.java:62:7:62:16 | expression | semmle.label | expression |
 #select
-| MvelInjection.java:18:17:18:21 | input | MvelInjection.java:14:27:14:49 | getInputStream(...) : InputStream | MvelInjection.java:18:17:18:21 | input | MVEL injection from $@. | MvelInjection.java:14:27:14:49 | getInputStream(...) | this user input |
-| MvelInjection.java:28:30:28:39 | expression | MvelInjection.java:23:27:23:49 | getInputStream(...) : InputStream | MvelInjection.java:28:30:28:39 | expression | MVEL injection from $@. | MvelInjection.java:23:27:23:49 | getInputStream(...) | this user input |
-| MvelInjection.java:39:7:39:15 | statement | MvelInjection.java:33:27:33:49 | getInputStream(...) : InputStream | MvelInjection.java:39:7:39:15 | statement | MVEL injection from $@. | MvelInjection.java:33:27:33:49 | getInputStream(...) | this user input |
-| MvelInjection.java:50:7:50:16 | expression | MvelInjection.java:44:27:44:49 | getInputStream(...) : InputStream | MvelInjection.java:50:7:50:16 | expression | MVEL injection from $@. | MvelInjection.java:44:27:44:49 | getInputStream(...) | this user input |
+| MvelInjection.java:20:17:20:21 | input | MvelInjection.java:16:27:16:49 | getInputStream(...) : InputStream | MvelInjection.java:20:17:20:21 | input | MVEL injection from $@. | MvelInjection.java:16:27:16:49 | getInputStream(...) | this user input |
+| MvelInjection.java:30:30:30:39 | expression | MvelInjection.java:25:27:25:49 | getInputStream(...) : InputStream | MvelInjection.java:30:30:30:39 | expression | MVEL injection from $@. | MvelInjection.java:25:27:25:49 | getInputStream(...) | this user input |
+| MvelInjection.java:41:7:41:15 | statement | MvelInjection.java:35:27:35:49 | getInputStream(...) : InputStream | MvelInjection.java:41:7:41:15 | statement | MVEL injection from $@. | MvelInjection.java:35:27:35:49 | getInputStream(...) | this user input |
+| MvelInjection.java:52:7:52:16 | expression | MvelInjection.java:46:27:46:49 | getInputStream(...) : InputStream | MvelInjection.java:52:7:52:16 | expression | MVEL injection from $@. | MvelInjection.java:46:27:46:49 | getInputStream(...) | this user input |
+| MvelInjection.java:62:7:62:16 | expression | MvelInjection.java:57:27:57:49 | getInputStream(...) : InputStream | MvelInjection.java:62:7:62:16 | expression | MVEL injection from $@. | MvelInjection.java:57:27:57:49 | getInputStream(...) | this user input |

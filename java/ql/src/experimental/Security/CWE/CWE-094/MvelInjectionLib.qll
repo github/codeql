@@ -17,7 +17,8 @@ class MvelInjectionConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     expressionCompilationStep(node1, node2) or
     createExpressionCompilerStep(node1, node2) or
-    expressionCompilerCompileStep(node1, node2)
+    expressionCompilerCompileStep(node1, node2) or
+    createCompiledAccExpressionStep(node1, node2)
   }
 }
 
@@ -33,12 +34,11 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
     )
     or
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m instanceof ExecutableStatementEvaluationMethod and
-      (ma = asExpr() or ma.getQualifier() = asExpr())
-    )
-    or
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m instanceof CompiledExpressionEvaluationMethod and
+      (
+        m instanceof ExecutableStatementEvaluationMethod or
+        m instanceof CompiledExpressionEvaluationMethod or
+        m instanceof CompiledAccExpressionEvaluationMethod
+      ) and
       (ma = asExpr() or ma.getQualifier() = asExpr())
     )
   }
@@ -67,6 +67,22 @@ predicate createExpressionCompilerStep(DataFlow::Node node1, DataFlow::Node node
     (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
     cc.getArgument(0) = node1.asExpr()
   )
+}
+
+/**
+ * Holds if `node1` to `node2` is a dataflow step creates `CompiledAccExpression`,
+ * i.e. `new CompiledAccExpression(tainted, ...)`.
+ */
+predicate createCompiledAccExpressionStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof CompiledAccExpression and
+    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc.getArgument(0) = node1.asExpr()
+  )
+}
+
+predicate test() {
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof CompiledAccExpression)
 }
 
 /**
@@ -133,6 +149,16 @@ class CompiledExpressionEvaluationMethod extends Method {
   }
 }
 
+/**
+ * Methods in `CompiledAccExpression` that trigger evaluating a MVEL expression.
+ */
+class CompiledAccExpressionEvaluationMethod extends Method {
+  CompiledAccExpressionEvaluationMethod() {
+    getDeclaringType() instanceof CompiledAccExpression and
+    hasName("getValue")
+  }
+}
+
 class MVEL extends RefType {
   MVEL() { hasQualifiedName("org.mvel2", "MVEL") }
 }
@@ -146,5 +172,9 @@ class ExecutableStatement extends RefType {
 }
 
 class CompiledExpression extends RefType {
-    CompiledExpression() { hasQualifiedName("org.mvel2.compiler", "CompiledExpression") }
+  CompiledExpression() { hasQualifiedName("org.mvel2.compiler", "CompiledExpression") }
+}
+
+class CompiledAccExpression extends RefType {
+  CompiledAccExpression() { hasQualifiedName("org.mvel2.compiler", "CompiledAccExpression") }
 }
