@@ -79,6 +79,9 @@ class BottleFormsDict extends DictKind {
     }
 }
 
+/** DEPRECATED: Use `BottleFileUpload` instead. */
+deprecated class FileUpload = BottleFileUpload;
+
 /** TaintKind for a bottle.FileUpload object (that wrap file uploads in bottle) */
 class BottleFileUpload extends TaintKind {
     BottleFileUpload() { this = "bottle.FileUpload" }
