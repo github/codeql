@@ -67,3 +67,51 @@ def test_urlsplit_urlparse():
     urlsplit_res = urlsplit(tainted_string)
     urlparse_res = urlparse(tainted_string)
     test(urlsplit_res, urlparse_res)
+
+def test_method_reference():
+    tainted_string = TAINTED_STRING
+
+    a = tainted_string.title()
+
+    func = tainted_string.title
+    b = func()
+
+    test(a, b) # TODO: `b` not tainted
+
+def test_str_methods():
+    tainted_string = TAINTED_STRING
+
+    test(
+        tainted_string.capitalize(),
+        tainted_string.casefold(),
+        tainted_string.center(),
+        tainted_string.encode('utf-8'),
+        tainted_string.encode('utf-8').decode('utf-8'),
+        tainted_string.expandtabs(),
+        tainted_string.format(foo=42),
+        tainted_string.format_map({'foo': 42}),
+        tainted_string.ljust(100),
+        tainted_string.lower(),
+        tainted_string.lstrip(),
+        tainted_string.lstrip('w.'),
+        tainted_string.partition(';'),
+        tainted_string.partition(';')[0],
+        tainted_string.replace('/', '', 1),
+        tainted_string.rjust(100),
+        tainted_string.rpartition(';'),
+        tainted_string.rpartition(';')[2],
+        tainted_string.rsplit(';', 4),
+        tainted_string.rsplit(';', 4)[-1],
+        tainted_string.rstrip(),
+        tainted_string.split(),
+        tainted_string.split()[0],
+        tainted_string.splitlines(),
+        tainted_string.splitlines()[0],
+        tainted_string.strip(),
+        tainted_string.swapcase(),
+        tainted_string.title(),
+        # ignoring, as I have never seen this in practice
+        # tainted_string.translate(translation_table),
+        tainted_string.upper(),
+        tainted_string.zfill(100),
+    )
