@@ -258,7 +258,8 @@ class Parameter extends Parameter_ {
 /** An expression that generates a callable object, either a function expression or a lambda */
 abstract class CallableExpr extends Expr {
     /**
-     * Gets the parameters of this callable.
+     * Gets The default values and annotations (type-hints) for the arguments of this callable.
+     *
      * This predicate is called getArgs(), rather than getParameters() for compatibility with Python's AST module.
      */
     abstract Arguments getArgs();
@@ -314,7 +315,12 @@ class Lambda extends Lambda_, CallableExpr {
     override Arguments getArgs() { result = Lambda_.super.getArgs() }
 }
 
-/** The arguments in a function definition */
+/**
+ * The default values and annotations (type hints) for the arguments in a function definition.
+ *
+ * Annotations (PEP 3107) is a general mechanism for providing annotations for a function,
+ * that is generally only used for type hints today (PEP 484).
+ */
 class Arguments extends Arguments_ {
     Expr getASubExpression() {
         result = this.getAKwDefault() or
