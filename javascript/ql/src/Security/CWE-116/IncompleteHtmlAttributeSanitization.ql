@@ -1,7 +1,7 @@
 /**
  * @name Incomplete HTML attribute sanitization
  * @description Writing incompletely sanitized values to HTML
- *              attribute strings  can lead to a cross-site
+ *              attribute strings can lead to a cross-site
  *              scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning

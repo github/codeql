@@ -30,8 +30,13 @@
 
 	<recommendation>
 
-		Sanitize all relevant HTML meta-characters when constructing
-		HTML dynamically, pay special attention to where the sanitized value is used.
+		<p>
+
+			Sanitize all relevant HTML meta-characters when
+			constructing HTML dynamically, and pay special attention to where the
+			sanitized value is used.
+
+		</p>
 
 	</recommendation>
 
@@ -75,8 +80,7 @@
 		</li>
 		<li>
 			OWASP
-			<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
-			Scripting</a>.
+			<a href="https://owasp.org/www-community/Types_of_Cross-Site_Scripting">Types of Cross-Site</a>.
 		</li>
 		<li>
 			Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
