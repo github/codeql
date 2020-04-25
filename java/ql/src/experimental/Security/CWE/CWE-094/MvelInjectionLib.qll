@@ -18,7 +18,9 @@ class MvelInjectionConfig extends TaintTracking::Configuration {
     expressionCompilationStep(node1, node2) or
     createExpressionCompilerStep(node1, node2) or
     expressionCompilerCompileStep(node1, node2) or
-    createCompiledAccExpressionStep(node1, node2)
+    createCompiledAccExpressionStep(node1, node2) or
+    scriptCompileStep(node1, node2) or
+    createMvelCompiledScriptStep(node1, node2)
   }
 }
 
@@ -30,7 +32,12 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
   MvelEvaluationSink() {
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
       m instanceof MvelEvalMethod and
-      ma.getAnArgument() = asExpr()
+      ma.getArgument(0) = asExpr()
+    )
+    or
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof MvelScriptEngineEvaluationMethod and
+      ma.getArgument(0) = asExpr()
     )
     or
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -38,7 +45,9 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
         m instanceof ExecutableStatementEvaluationMethod or
         m instanceof CompiledExpressionEvaluationMethod or
         m instanceof CompiledAccExpressionEvaluationMethod or
-        m instanceof AccessorEvaluationMethod
+        m instanceof AccessorEvaluationMethod or
+        m instanceof CompiledScriptEvaluationMethod or
+        m instanceof MvelCompiledScriptEvaluationMethod
       ) and
       (ma = asExpr() or ma.getQualifier() = asExpr())
     )
@@ -100,6 +109,30 @@ predicate expressionCompilerCompileStep(DataFlow::Node node1, DataFlow::Node nod
 }
 
 /**
+ * Holds if `node1` to `node2` is a dataflow step that compiles a script via `MvelScriptEngine`,
+ * i.e. `engine.compile(tainted)` or `engine.compiledScript(tainted)`.
+ */
+predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    m instanceof MvelScriptEngineCompilationnMethod and
+    (ma = node2.asExpr() or ma.getQualifier() = node2.asExpr()) and
+    ma.getArgument(0) = node1.asExpr()
+  )
+}
+
+/**
+ * Holds if `node1` to `node2` is a dataflow step creates `MvelCompiledScript`,
+ * i.e. `new MvelCompiledScript(engine, tainted)`.
+ */
+predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof MvelCompiledScript and
+    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc.getArgument(1) = node1.asExpr()
+  )
+}
+
+/**
  * Methods in the MVEL class that evaluate a MVEL expression.
  */
 class MvelEvalMethod extends Method {
@@ -131,7 +164,7 @@ class MvelCompileExpressionMethod extends Method {
 }
 
 /**
- * Methods in `ExecutableStatement` that trigger evaluating a MVEL expression.
+ * Methods in `ExecutableStatement` that evaluate a MVEL expression.
  */
 class ExecutableStatementEvaluationMethod extends Method {
   ExecutableStatementEvaluationMethod() {
@@ -141,7 +174,7 @@ class ExecutableStatementEvaluationMethod extends Method {
 }
 
 /**
- * Methods in `CompiledExpression` that trigger evaluating a MVEL expression.
+ * Methods in `CompiledExpression` that evaluate a MVEL expression.
  */
 class CompiledExpressionEvaluationMethod extends Method {
   CompiledExpressionEvaluationMethod() {
@@ -151,7 +184,7 @@ class CompiledExpressionEvaluationMethod extends Method {
 }
 
 /**
- * Methods in `CompiledAccExpression` that trigger evaluating a MVEL expression.
+ * Methods in `CompiledAccExpression` that evaluate a MVEL expression.
  */
 class CompiledAccExpressionEvaluationMethod extends Method {
   CompiledAccExpressionEvaluationMethod() {
@@ -161,12 +194,52 @@ class CompiledAccExpressionEvaluationMethod extends Method {
 }
 
 /**
- * Methods in `Accessor` that trigger evaluating a MVEL expression.
+ * Methods in `Accessor` that evaluate a MVEL expression.
  */
 class AccessorEvaluationMethod extends Method {
   AccessorEvaluationMethod() {
     getDeclaringType() instanceof Accessor and
     hasName("getValue")
+  }
+}
+
+/**
+ * Methods in `MvelScriptEngine` that evaluate a MVEL expression.
+ */
+class MvelScriptEngineEvaluationMethod extends Method {
+  MvelScriptEngineEvaluationMethod() {
+    getDeclaringType() instanceof MvelScriptEngine and
+    (hasName("eval") or hasName("evaluate"))
+  }
+}
+
+/**
+ * Methods in `MvelScriptEngine` that compile a MVEL expression.
+ */
+class MvelScriptEngineCompilationnMethod extends Method {
+  MvelScriptEngineCompilationnMethod() {
+    getDeclaringType() instanceof MvelScriptEngine and
+    (hasName("compile") or hasName("compiledScript"))
+  }
+}
+
+/**
+ * Methods in `CompiledScript` that evaluate a MVEL expression.
+ */
+class CompiledScriptEvaluationMethod extends Method {
+  CompiledScriptEvaluationMethod() {
+    getDeclaringType() instanceof CompiledScript and
+    hasName("eval")
+  }
+}
+
+/**
+ * Methods in `MvelCompiledScript` that evaluate a MVEL expression.
+ */
+class MvelCompiledScriptEvaluationMethod extends Method {
+  MvelCompiledScriptEvaluationMethod() {
+    getDeclaringType() instanceof MvelCompiledScript and
+    hasName("eval")
   }
 }
 
@@ -192,4 +265,16 @@ class CompiledAccExpression extends RefType {
 
 class Accessor extends RefType {
   Accessor() { hasQualifiedName("org.mvel2.compiler", "Accessor") }
+}
+
+class CompiledScript extends RefType {
+  CompiledScript() { hasQualifiedName("javax.script", "CompiledScript") }
+}
+
+class MvelScriptEngine extends RefType {
+  MvelScriptEngine() { hasQualifiedName("org.mvel2.jsr223", "MvelScriptEngine") }
+}
+
+class MvelCompiledScript extends RefType {
+  MvelCompiledScript() { hasQualifiedName("org.mvel2.jsr223", "MvelCompiledScript") }
 }
