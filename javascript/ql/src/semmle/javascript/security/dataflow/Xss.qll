@@ -80,6 +80,7 @@ module DomBasedXss {
         not exists(DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(this, prefix) and
           strval = prefix.getStringValue() and
+          not strval = "" and
           not strval.regexpMatch("\\s*<.*")
         ) and
         not DOM::locationRef().flowsTo(this)
