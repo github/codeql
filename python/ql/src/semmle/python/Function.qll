@@ -235,7 +235,10 @@ class Parameter extends Parameter_ {
 
     Variable getVariable() { result.getAnAccess() = this.asName() }
 
-    /** Gets the position of this parameter */
+    /**
+     * Gets the position of this parameter (if any).
+     * No result if this is a "varargs", "kwargs", or keyword-only parameter.
+     */
     int getPosition() { exists(Function f | f.getArg(result) = this) }
 
     /** Gets the name of this parameter */
