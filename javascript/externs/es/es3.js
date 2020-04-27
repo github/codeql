@@ -727,7 +727,7 @@ Array.prototype.unshift = function(var_args) {};
  * @template T,R
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
  */
-Array.prototype.reduce = function(callback, opt_initialValue) {};
+Array.prototype.reduce = function(callback, opt_initialValue) { if(callback) callback(); };
 
 /**
  * Apply a function simultaneously against two values of the array (from
@@ -740,7 +740,7 @@ Array.prototype.reduce = function(callback, opt_initialValue) {};
  * @template T,R
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight
  */
-Array.prototype.reduceRight = function(callback, opt_initialValue) {};
+Array.prototype.reduceRight = function(callback, opt_initialValue) { if(callback) callback(); };
 
 /**
  * Available in ECMAScript 5, Mozilla 1.6+.
@@ -751,7 +751,7 @@ Array.prototype.reduceRight = function(callback, opt_initialValue) {};
  * @template T,S
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
  */
-Array.prototype.every = function(callback, opt_thisobj) {};
+Array.prototype.every = function(callback, opt_thisobj) { if(callback) callback(); };
 
 /**
  * Available in ECMAScript 5, Mozilla 1.6+.
@@ -762,7 +762,7 @@ Array.prototype.every = function(callback, opt_thisobj) {};
  * @template T,S
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
  */
-Array.prototype.filter = function(callback, opt_thisobj) {};
+Array.prototype.filter = function(callback, opt_thisobj) { if(callback) callback(); };
 
 /**
  * Available in ECMAScript 5, Mozilla 1.6+.
@@ -773,7 +773,7 @@ Array.prototype.filter = function(callback, opt_thisobj) {};
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
  * @return {undefined}
  */
-Array.prototype.forEach = function(callback, opt_thisobj) {};
+Array.prototype.forEach = function(callback, opt_thisobj) { if(callback) callback(); };
 
 /**
  * Available in ECMAScript 5, Mozilla 1.6+.
@@ -808,7 +808,7 @@ Array.prototype.lastIndexOf = function(obj, opt_fromIndex) {};
  * @template T,S,R
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
  */
-Array.prototype.map = function(callback, opt_thisobj) {};
+Array.prototype.map = function(callback, opt_thisobj) { if(callback) callback(); };
 
 /**
  * Available in ECMAScript 5, Mozilla 1.6+.
@@ -819,7 +819,7 @@ Array.prototype.map = function(callback, opt_thisobj) {};
  * @template T,S
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
  */
-Array.prototype.some = function(callback, opt_thisobj) {};
+Array.prototype.some = function(callback, opt_thisobj) { if(callback) callback(); };
 
 /**
  * @type {number}

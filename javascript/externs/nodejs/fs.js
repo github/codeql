@@ -520,7 +520,7 @@ fs.WriteStream.prototype.prependOnceListener = function(event, listener) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.rename = function(oldPath, newPath, callback) {};
+fs.rename = function(oldPath, newPath, callback) { if(callback) callback(); };
 
 /**
  * @param {string} oldPath
@@ -534,7 +534,7 @@ fs.renameSync = function(oldPath, newPath) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.truncate = function(path, callback) {};
+fs.truncate = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -542,7 +542,7 @@ fs.truncate = function(path, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.truncate = function(path, len, callback) {};
+fs.truncate = function(path, len, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -556,7 +556,7 @@ fs.truncateSync = function(path, len) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.ftruncate = function(fd, callback) {};
+fs.ftruncate = function(fd, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -564,7 +564,7 @@ fs.ftruncate = function(fd, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.ftruncate = function(fd, len, callback) {};
+fs.ftruncate = function(fd, len, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -580,7 +580,7 @@ fs.ftruncateSync = function(fd, len) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.chown = function(path, uid, gid, callback) {};
+fs.chown = function(path, uid, gid, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -597,7 +597,7 @@ fs.chownSync = function(path, uid, gid) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.fchown = function(fd, uid, gid, callback) {};
+fs.fchown = function(fd, uid, gid, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -614,7 +614,7 @@ fs.fchownSync = function(fd, uid, gid) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.lchown = function(path, uid, gid, callback) {};
+fs.lchown = function(path, uid, gid, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -630,7 +630,7 @@ fs.lchownSync = function(path, uid, gid) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.chmod = function(path, mode, callback) {};
+fs.chmod = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -638,7 +638,7 @@ fs.chmod = function(path, mode, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.chmod = function(path, mode, callback) {};
+fs.chmod = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -660,7 +660,7 @@ fs.chmodSync = function(path, mode) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.fchmod = function(fd, mode, callback) {};
+fs.fchmod = function(fd, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -668,7 +668,7 @@ fs.fchmod = function(fd, mode, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.fchmod = function(fd, mode, callback) {};
+fs.fchmod = function(fd, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -690,7 +690,7 @@ fs.fchmodSync = function(fd, mode) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.lchmod = function(path, mode, callback) {};
+fs.lchmod = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -698,7 +698,7 @@ fs.lchmod = function(path, mode, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.lchmod = function(path, mode, callback) {};
+fs.lchmod = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -719,21 +719,21 @@ fs.lchmodSync = function(path, mode) {};
  * @param {(function(NodeJS.ErrnoException, fs.Stats): *)=} callback
  * @return {void}
  */
-fs.stat = function(path, callback) {};
+fs.stat = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
  * @param {(function(NodeJS.ErrnoException, fs.Stats): *)=} callback
  * @return {void}
  */
-fs.lstat = function(path, callback) {};
+fs.lstat = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
  * @param {(function(NodeJS.ErrnoException, fs.Stats): *)=} callback
  * @return {void}
  */
-fs.fstat = function(fd, callback) {};
+fs.fstat = function(fd, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -759,7 +759,7 @@ fs.fstatSync = function(fd) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.link = function(srcpath, dstpath, callback) {};
+fs.link = function(srcpath, dstpath, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} srcpath
@@ -775,7 +775,7 @@ fs.linkSync = function(srcpath, dstpath) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.symlink = function(srcpath, dstpath, type, callback) {};
+fs.symlink = function(srcpath, dstpath, type, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} srcpath
@@ -790,7 +790,7 @@ fs.symlinkSync = function(srcpath, dstpath, type) {};
  * @param {(function(NodeJS.ErrnoException, string): *)=} callback
  * @return {void}
  */
-fs.readlink = function(path, callback) {};
+fs.readlink = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -803,7 +803,7 @@ fs.readlinkSync = function(path) {};
  * @param {(function(NodeJS.ErrnoException, string): *)=} callback
  * @return {void}
  */
-fs.realpath = function(path, callback) {};
+fs.realpath = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -811,7 +811,7 @@ fs.realpath = function(path, callback) {};
  * @param {(function(NodeJS.ErrnoException, string): *)} callback
  * @return {void}
  */
-fs.realpath = function(path, cache, callback) {};
+fs.realpath = function(path, cache, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -825,7 +825,7 @@ fs.realpathSync = function(path, cache) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.unlink = function(path, callback) {};
+fs.unlink = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -838,7 +838,7 @@ fs.unlinkSync = function(path) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.rmdir = function(path, callback) {};
+fs.rmdir = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -851,7 +851,7 @@ fs.rmdirSync = function(path) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.mkdir = function(path, callback) {};
+fs.mkdir = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -859,7 +859,7 @@ fs.mkdir = function(path, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.mkdir = function(path, mode, callback) {};
+fs.mkdir = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -867,7 +867,7 @@ fs.mkdir = function(path, mode, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.mkdir = function(path, mode, callback) {};
+fs.mkdir = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -888,7 +888,7 @@ fs.mkdirSync = function(path, mode) {};
  * @param {(function(NodeJS.ErrnoException, string): void)=} callback
  * @return {void}
  */
-fs.mkdtemp = function(prefix, callback) {};
+fs.mkdtemp = function(prefix, callback) { if(callback) callback(); };
 
 /**
  * @param {string} prefix
@@ -901,7 +901,7 @@ fs.mkdtempSync = function(prefix) {};
  * @param {(function(NodeJS.ErrnoException, Array<string>): void)=} callback
  * @return {void}
  */
-fs.readdir = function(path, callback) {};
+fs.readdir = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -914,7 +914,7 @@ fs.readdirSync = function(path) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.close = function(fd, callback) {};
+fs.close = function(fd, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -928,7 +928,7 @@ fs.closeSync = function(fd) {};
  * @param {(function(NodeJS.ErrnoException, number): void)} callback
  * @return {void}
  */
-fs.open = function(path, flags, callback) {};
+fs.open = function(path, flags, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -937,7 +937,7 @@ fs.open = function(path, flags, callback) {};
  * @param {(function(NodeJS.ErrnoException, number): void)} callback
  * @return {void}
  */
-fs.open = function(path, flags, mode, callback) {};
+fs.open = function(path, flags, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -954,7 +954,7 @@ fs.openSync = function(path, flags, mode) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.utimes = function(path, atime, mtime, callback) {};
+fs.utimes = function(path, atime, mtime, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -963,7 +963,7 @@ fs.utimes = function(path, atime, mtime, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.utimes = function(path, atime, mtime, callback) {};
+fs.utimes = function(path, atime, mtime, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -988,7 +988,7 @@ fs.utimesSync = function(path, atime, mtime) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.futimes = function(fd, atime, mtime, callback) {};
+fs.futimes = function(fd, atime, mtime, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -997,7 +997,7 @@ fs.futimes = function(fd, atime, mtime, callback) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.futimes = function(fd, atime, mtime, callback) {};
+fs.futimes = function(fd, atime, mtime, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1020,7 +1020,7 @@ fs.futimesSync = function(fd, atime, mtime) {};
  * @param {(function(NodeJS.ErrnoException=): void)=} callback
  * @return {void}
  */
-fs.fsync = function(fd, callback) {};
+fs.fsync = function(fd, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1037,7 +1037,7 @@ fs.fsyncSync = function(fd) {};
  * @param {(function(NodeJS.ErrnoException, number, Buffer): void)=} callback
  * @return {void}
  */
-fs.write = function(fd, buffer, offset, length, position, callback) {};
+fs.write = function(fd, buffer, offset, length, position, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1047,7 +1047,7 @@ fs.write = function(fd, buffer, offset, length, position, callback) {};
  * @param {(function(NodeJS.ErrnoException, number, Buffer): void)=} callback
  * @return {void}
  */
-fs.write = function(fd, buffer, offset, length, callback) {};
+fs.write = function(fd, buffer, offset, length, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1055,7 +1055,7 @@ fs.write = function(fd, buffer, offset, length, callback) {};
  * @param {(function(NodeJS.ErrnoException, number, string): void)=} callback
  * @return {void}
  */
-fs.write = function(fd, data, callback) {};
+fs.write = function(fd, data, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1064,7 +1064,7 @@ fs.write = function(fd, data, callback) {};
  * @param {(function(NodeJS.ErrnoException, number, string): void)=} callback
  * @return {void}
  */
-fs.write = function(fd, data, offset, callback) {};
+fs.write = function(fd, data, offset, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1074,7 +1074,7 @@ fs.write = function(fd, data, offset, callback) {};
  * @param {(function(NodeJS.ErrnoException, number, string): void)=} callback
  * @return {void}
  */
-fs.write = function(fd, data, offset, encoding, callback) {};
+fs.write = function(fd, data, offset, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1104,7 +1104,7 @@ fs.writeSync = function(fd, data, position, enconding) {};
  * @param {(function(NodeJS.ErrnoException, number, Buffer): void)=} callback
  * @return {void}
  */
-fs.read = function(fd, buffer, offset, length, position, callback) {};
+fs.read = function(fd, buffer, offset, length, position, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1122,7 +1122,7 @@ fs.readSync = function(fd, buffer, offset, length, position) {};
  * @param {(function(NodeJS.ErrnoException, string): void)} callback
  * @return {void}
  */
-fs.readFile = function(filename, encoding, callback) {};
+fs.readFile = function(filename, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1130,7 +1130,7 @@ fs.readFile = function(filename, encoding, callback) {};
  * @param {(function(NodeJS.ErrnoException, string): void)} callback
  * @return {void}
  */
-fs.readFile = function(filename, options, callback) {};
+fs.readFile = function(filename, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1138,14 +1138,14 @@ fs.readFile = function(filename, options, callback) {};
  * @param {(function(NodeJS.ErrnoException, Buffer): void)} callback
  * @return {void}
  */
-fs.readFile = function(filename, options, callback) {};
+fs.readFile = function(filename, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
  * @param {(function(NodeJS.ErrnoException, Buffer): void)} callback
  * @return {void}
  */
-fs.readFile = function(filename, callback) {};
+fs.readFile = function(filename, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1174,7 +1174,7 @@ fs.readFileSync = function(filename, options) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.writeFile = function(filename, data, callback) {};
+fs.writeFile = function(filename, data, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1183,7 +1183,7 @@ fs.writeFile = function(filename, data, callback) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.writeFile = function(filename, data, options, callback) {};
+fs.writeFile = function(filename, data, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1192,7 +1192,7 @@ fs.writeFile = function(filename, data, options, callback) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.writeFile = function(filename, data, options, callback) {};
+fs.writeFile = function(filename, data, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1217,7 +1217,7 @@ fs.writeFileSync = function(filename, data, options) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.appendFile = function(filename, data, options, callback) {};
+fs.appendFile = function(filename, data, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1226,7 +1226,7 @@ fs.appendFile = function(filename, data, options, callback) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.appendFile = function(filename, data, options, callback) {};
+fs.appendFile = function(filename, data, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1234,7 +1234,7 @@ fs.appendFile = function(filename, data, options, callback) {};
  * @param {(function(NodeJS.ErrnoException): void)=} callback
  * @return {void}
  */
-fs.appendFile = function(filename, data, callback) {};
+fs.appendFile = function(filename, data, callback) { if(callback) callback(); };
 
 /**
  * @param {string} filename
@@ -1302,7 +1302,7 @@ fs.watch = function(filename, options, listener) {};
  * @param {(function(boolean): void)=} callback
  * @return {void}
  */
-fs.exists = function(path, callback) {};
+fs.exists = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -1345,7 +1345,7 @@ fs.constants;
  * @param {(function(NodeJS.ErrnoException): void)} callback
  * @return {void}
  */
-fs.access = function(path, callback) {};
+fs.access = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -1353,7 +1353,7 @@ fs.access = function(path, callback) {};
  * @param {(function(NodeJS.ErrnoException): void)} callback
  * @return {void}
  */
-fs.access = function(path, mode, callback) {};
+fs.access = function(path, mode, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} path
@@ -1381,7 +1381,7 @@ fs.createWriteStream = function(path, options) {};
  * @param {Function} callback
  * @return {void}
  */
-fs.fdatasync = function(fd, callback) {};
+fs.fdatasync = function(fd, callback) { if(callback) callback(); };
 
 /**
  * @param {number} fd
@@ -1623,7 +1623,7 @@ module.exports.fdatasyncSync = fs.fdatasyncSync;
  * @param {Function=} callback
  * @return {void}
  */
-fs.utimensat = function(path, atime, mtime, flags, callback) {};
+fs.utimensat = function(path, atime, mtime, flags, callback) { if(callback) callback(); };
 
 /**
  * @param {string} path
@@ -1642,7 +1642,7 @@ fs.utimensatSync = function(path, atime, mtime, flags) {};
  * @param {Function=} callback
  * @return {void}
  */
-fs.futimensat = function(fd, atime, mtime, flags, callback) {};
+fs.futimensat = function(fd, atime, mtime, flags, callback) { if(callback) callback(); };
 
 /**
  * @param {*} fd

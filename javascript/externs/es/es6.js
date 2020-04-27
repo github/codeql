@@ -373,7 +373,7 @@ TypedArray.prototype.entries = function() {};
  * @template S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/every
  */
-TypedArray.prototype.every = function(callback, opt_thisArg) {};
+TypedArray.prototype.every = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {number} value
@@ -394,7 +394,7 @@ TypedArray.prototype.fill = function(value, opt_begin, opt_end) {};
  * @template THIS,S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/filter
  */
-TypedArray.prototype.filter = function(callback, opt_thisArg) {};
+TypedArray.prototype.filter = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {function(this:S, number, number, !TypedArray) : boolean} callback
@@ -403,7 +403,7 @@ TypedArray.prototype.filter = function(callback, opt_thisArg) {};
  * @template S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/find
  */
-TypedArray.prototype.find = function(callback, opt_thisArg) {};
+TypedArray.prototype.find = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {function(this:S, number, number, !TypedArray) : boolean} callback
@@ -412,7 +412,7 @@ TypedArray.prototype.find = function(callback, opt_thisArg) {};
  * @template S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findIndex
  */
-TypedArray.prototype.findIndex = function(callback, opt_thisArg) {};
+TypedArray.prototype.findIndex = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {function(this:S, number, number, !TypedArray) : ?} callback
@@ -421,7 +421,7 @@ TypedArray.prototype.findIndex = function(callback, opt_thisArg) {};
  * @template S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/forEach
  */
-TypedArray.prototype.forEach = function(callback, opt_thisArg) {};
+TypedArray.prototype.forEach = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {number} searchElement
@@ -476,7 +476,7 @@ TypedArray.prototype.length;
  * @template THIS,S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/map
  */
-TypedArray.prototype.map = function(callback, opt_thisArg) {};
+TypedArray.prototype.map = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {function((number|INIT|RET), number, number, !TypedArray) : RET} callback
@@ -486,7 +486,7 @@ TypedArray.prototype.map = function(callback, opt_thisArg) {};
  * @nosideeffects
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/reduce
  */
-TypedArray.prototype.reduce = function(callback, opt_initialValue) {};
+TypedArray.prototype.reduce = function(callback, opt_initialValue) { if(callback) callback(); };
 
 /**
  * @param {function((number|INIT|RET), number, number, !TypedArray) : RET} callback
@@ -496,7 +496,7 @@ TypedArray.prototype.reduce = function(callback, opt_initialValue) {};
  * @nosideeffects
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/reduceRight
  */
-TypedArray.prototype.reduceRight = function(callback, opt_initialValue) {};
+TypedArray.prototype.reduceRight = function(callback, opt_initialValue) { if(callback) callback(); };
 
 /**
  * @return {THIS}
