@@ -1,5 +1,5 @@
-# This example illustrates that all valid results are not useful.
-# The alert in this file should be suppressed (TODO).
+# This example illustrates that not all valid results are useful.
+# The alert in this file should be suppressed.
 # see https://github.com/Semmle/ql/issues/3207
 
 def foo(l):
