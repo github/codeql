@@ -282,25 +282,21 @@ class OperatorNewAllocationFunction extends AllocationFunction {
  * is `a * 2` and `sizeof` is `4`.
  */
 private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
-  if
-    sizeExpr instanceof MulExpr and
-    exists(SizeofOperator sizeofOp, Expr lengthOp |
-      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-      lengthOp = sizeExpr.(MulExpr).getAnOperand() and
-      not lengthOp instanceof SizeofOperator and
-      exists(sizeofOp.getValue().toInt())
-    )
-  then
-    exists(SizeofOperator sizeofOp |
-      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-      lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
-      not lengthExpr instanceof SizeofOperator and
-      sizeof = sizeofOp.getValue().toInt()
-    )
-  else (
-    lengthExpr = sizeExpr and
-    sizeof = 1
+  exists(SizeofOperator sizeofOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
+    not lengthExpr instanceof SizeofOperator and
+    sizeof = sizeofOp.getValue().toInt()
   )
+  or
+  not exists(SizeofOperator sizeofOp, Expr lengthOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    lengthOp = sizeExpr.(MulExpr).getAnOperand() and
+    not lengthOp instanceof SizeofOperator and
+    exists(sizeofOp.getValue().toInt())
+  ) and
+  lengthExpr = sizeExpr and
+  sizeof = 1
 }
 
 /**
