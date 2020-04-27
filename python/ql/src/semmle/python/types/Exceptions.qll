@@ -46,7 +46,7 @@ class RaisingNode extends ControlFlowNode {
 
     /**
      * Gets the type of an exception that may be raised
-     *        at this control flow node
+     * at this control flow node
      */
     ClassValue getARaisedType() {
         result = this.localRaisedType()

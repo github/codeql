@@ -11,7 +11,7 @@ class OpenFileConfiguration extends TaintTracking::Configuration {
     OpenFileConfiguration() { this = "Open file configuration" }
 
     override predicate isSource(DataFlow::Node src, TaintKind kind) {
-        theOpenFunction().(FunctionObject).getACall() = src.asCfgNode() and
+        src.asCfgNode() = Value::named("open").getACall() and
         kind instanceof OpenFile
     }
 

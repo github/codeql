@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about calls that may invoke one
+ * of their arguments.
+ */
+
 import java
 import VirtualDispatch
 

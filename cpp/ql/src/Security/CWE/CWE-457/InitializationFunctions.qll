@@ -198,12 +198,12 @@ class InitializationFunction extends Function {
     )
     or
     // If we have no definition, we look at SAL annotations
-    not this.isDefined() and
+    not this.hasDefinition() and
     this.getParameter(i).(SALParameter).isOut() and
     evidence = SuggestiveSALAnnotation()
     or
     // We have some external information that this function conditionally initializes
-    not this.isDefined() and
+    not this.hasDefinition() and
     any(ValidatedExternalCondInitFunction vc).isExternallyVerified(this, i) and
     evidence = ExternalEvidence()
   }
@@ -406,7 +406,7 @@ class ConditionalInitializationFunction extends InitializationFunction {
        * Explicitly ignore pure virtual functions.
        */
 
-      this.isDefined() and
+      this.hasDefinition() and
       this.paramNotReassignedAt(this, i, c) and
       not this instanceof PureVirtualFunction
     )
@@ -616,11 +616,11 @@ private predicate functionSignature(Function f, string qualifiedName, string typ
  * are never statically linked together.
  */
 private Function getAPossibleDefinition(Function undefinedFunction) {
-  not undefinedFunction.isDefined() and
+  not undefinedFunction.hasDefinition() and
   exists(string qn, string typeSig |
     functionSignature(undefinedFunction, qn, typeSig) and functionSignature(result, qn, typeSig)
   ) and
-  result.isDefined()
+  result.hasDefinition()
 }
 
 /**
@@ -631,7 +631,7 @@ private Function getAPossibleDefinition(Function undefinedFunction) {
  */
 private Function getTarget1(Call c) {
   result = VirtualDispatch::getAViableTarget(c) and
-  result.isDefined()
+  result.hasDefinition()
 }
 
 /**

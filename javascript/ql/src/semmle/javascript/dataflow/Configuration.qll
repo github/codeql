@@ -244,8 +244,11 @@ abstract class Configuration extends string {
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
    */
-  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate isAdditionalStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    none()
+  }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -540,9 +543,10 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * EXPERIMENTAL. This API may change in the future.
    *
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
+   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
    */
   cached
-  predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
   /**
    * EXPERIMENTAL. This API may change in the future.
@@ -571,6 +575,71 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
   ) {
     loadProp = storeProp and
     loadStoreStep(pred, succ, loadProp)
+  }
+}
+
+/**
+ * A collection of pseudo-properties that are used in multiple files.
+ *
+ * A pseudo-property represents the location where some value is stored in an object.
+ *
+ * For use with load/store steps in `DataFlow::AdditionalFlowStep` and TypeTracking.
+ */
+module PseudoProperties {
+  bindingset[s]
+  private string pseudoProperty(string s) { result = "$" + s + "$" }
+
+  bindingset[s, v]
+  private string pseudoProperty(string s, string v) { result = "$" + s + "|" + v + "$" }
+
+  /**
+   * Gets a pseudo-property for the location of elements in a `Set`
+   */
+  string setElement() { result = pseudoProperty("setElement") }
+
+  /**
+   * Gets a pseudo-property for the location of elements in a JavaScript iterator.
+   */
+  string iteratorElement() { result = pseudoProperty("iteratorElement") }
+
+  /**
+   * Gets a pseudo-property for the location of elements in an `Array`.
+   */
+  string arrayElement() { result = pseudoProperty("arrayElement") }
+
+  /**
+   * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
+   */
+  string arrayLikeElement() { result = [setElement(), iteratorElement(), arrayElement()] }
+
+  /**
+   * Gets a pseudo-property for the location of map values, where the key is unknown.
+   */
+  string mapValueUnknownKey() { result = pseudoProperty("mapValueUnknownKey") }
+
+  /**
+   * Gets a pseudo-property for the location of all the values in a map.
+   */
+  string mapValueAll() { result = pseudoProperty("allMapValues") }
+
+  /**
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
+   * The string value of the `key` is encoded in the result, and there is only a result if the string value of `key` is known.
+   */
+  pragma[inline]
+  string mapValueKnownKey(DataFlow::Node key) {
+    result = pseudoProperty("mapValue", any(string s | key.mayHaveStringValue(s)))
+  }
+
+  /**
+   * Gets a pseudo-property for the location of a map value where the key is `key`.
+   */
+  pragma[inline]
+  string mapValue(DataFlow::Node key) {
+    result = mapValueKnownKey(key)
+    or
+    not exists(mapValueKnownKey(key)) and
+    result = mapValueUnknownKey()
   }
 }
 
@@ -1462,6 +1531,9 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
     nd = DataFlow::thisNode(_)
+    or
+    // Skip captured variable nodes as the successor will be a use of that variable anyway.
+    nd = DataFlow::capturedVariableNode(_)
   }
 }
 

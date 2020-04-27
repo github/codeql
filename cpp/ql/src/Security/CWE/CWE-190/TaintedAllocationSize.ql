@@ -15,31 +15,31 @@ import cpp
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 
-predicate taintedChild(Expr e, Expr tainted) {
-  (
-    isAllocationExpr(e)
-    or
-    any(MulExpr me | me.getAChild() instanceof SizeofOperator) = e
-  ) and
-  tainted = e.getAChild() and
+/**
+ * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
+ * taint sink.
+ */
+predicate allocSink(Expr alloc, Expr tainted) {
+  isAllocationExpr(alloc) and
+  tainted = alloc.getAChild() and
   tainted.getUnspecifiedType() instanceof IntegralType
 }
 
 class TaintedAllocationSizeConfiguration extends TaintTrackingConfiguration {
-  override predicate isSink(Element tainted) { taintedChild(_, tainted) }
+  override predicate isSink(Element tainted) { allocSink(_, tainted) }
 }
 
 predicate taintedAllocSize(
-  Expr e, Expr source, PathNode sourceNode, PathNode sinkNode, string taintCause
+  Expr source, Expr alloc, PathNode sourceNode, PathNode sinkNode, string taintCause
 ) {
   isUserInput(source, taintCause) and
   exists(Expr tainted |
-    taintedChild(e, tainted) and
+    allocSink(alloc, tainted) and
     taintedWithPath(source, tainted, sourceNode, sinkNode)
   )
 }
 
-from Expr e, Expr source, PathNode sourceNode, PathNode sinkNode, string taintCause
-where taintedAllocSize(e, source, sourceNode, sinkNode, taintCause)
-select e, sourceNode, sinkNode, "This allocation size is derived from $@ and might overflow",
+from Expr source, Expr alloc, PathNode sourceNode, PathNode sinkNode, string taintCause
+where taintedAllocSize(source, alloc, sourceNode, sinkNode, taintCause)
+select alloc, sourceNode, sinkNode, "This allocation size is derived from $@ and might overflow",
   source, "user input (" + taintCause + ")"

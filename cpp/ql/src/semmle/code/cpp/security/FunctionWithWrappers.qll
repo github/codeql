@@ -19,7 +19,7 @@ private predicate wrapperFunctionStep(
 ) {
   not target.isVirtual() and
   not source.isVirtual() and
-  source.isDefined() and
+  source.hasDefinition() and
   exists(Call call, Expr arg, Parameter sourceParam |
     // there is a 'call' to 'target' with argument 'arg' at index 'targetParamIndex'
     target = resolveCall(call) and

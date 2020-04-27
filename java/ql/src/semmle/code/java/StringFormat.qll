@@ -80,6 +80,7 @@ private newtype TFmtSyntax =
 
 /** A syntax for format strings. */
 class FmtSyntax extends TFmtSyntax {
+  /** Gets a textual representation of this format string syntax. */
   string toString() {
     result = "printf (%) syntax" and this = TFmtPrintf()
     or
@@ -130,6 +131,7 @@ class FormattingCall extends Call {
     formatWrapper(this.getCallee(), result, _)
   }
 
+  /** Gets the format string syntax used by this call. */
   FmtSyntax getSyntax() {
     this.getCallee() instanceof StringFormatMethod and result = TFmtPrintf()
     or
@@ -146,6 +148,7 @@ class FormattingCall extends Call {
     )
   }
 
+  /** Holds if this uses the "logger ({})" format syntax and the last argument is a `Throwable`. */
   predicate hasTrailingThrowableArgument() {
     getSyntax() = TFmtLogger() and
     getLastArg().getType().(RefType).getASourceSupertype*() instanceof TypeThrowable

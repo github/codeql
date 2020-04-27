@@ -107,7 +107,7 @@ def choose_latest_file(files):
 
 local_error_count = 0
 def emit_local_error(path, line, error):
-    print('ERROR: ' + path + ':' + line + " - " + error)
+    print('ERROR: ' + path + ':' + str(line) + " - " + error)
     global local_error_count
     local_error_count += 1
 

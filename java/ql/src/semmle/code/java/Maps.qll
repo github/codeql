@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about instances of
+ * `java.util.Map` and their methods.
+ */
+
 import java
 import Collections
 
@@ -47,6 +52,7 @@ class MapSizeMethod extends MapMethod {
 class MapMutation extends MethodAccess {
   MapMutation() { this.getMethod() instanceof MapMutator }
 
+  /** Holds if the result of this call is not immediately discarded. */
   predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
 }
 
@@ -72,7 +78,9 @@ class FreshMap extends ClassInstanceExpr {
 class MapPutCall extends MethodAccess {
   MapPutCall() { getCallee().(MapMethod).hasName("put") }
 
+  /** Gets the key argument of this call. */
   Expr getKey() { result = getArgument(0) }
 
+  /** Gets the value argument of this call. */
   Expr getValue() { result = getArgument(1) }
 }

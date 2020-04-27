@@ -10,4 +10,4 @@ Customers with any questions should contact their usual Semmle contact with any 
 If you're not a customer yet, contact us at info@semmle.com 
 with any questions you have about language and compiler support.
 
-.. include:: versions-compilers.rst
+.. include:: reusables/versions-compilers.rst

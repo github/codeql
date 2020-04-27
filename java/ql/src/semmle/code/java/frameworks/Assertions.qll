@@ -7,7 +7,7 @@
 
 import java
 
-newtype AssertKind =
+private newtype AssertKind =
   AssertKindTrue() or
   AssertKindFalse() or
   AssertKindNotNull() or
@@ -50,6 +50,7 @@ private predicate assertionMethod(Method m, AssertKind kind) {
   )
 }
 
+/** An assertion method. */
 class AssertionMethod extends Method {
   AssertionMethod() { assertionMethod(this, _) }
 

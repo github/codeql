@@ -79,11 +79,6 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { hasTypeKeyword(this) }
-
-  override predicate isAmbient() {
-    Stmt.super.isAmbient() or
-    isTypeOnly()
-  }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
@@ -267,11 +262,6 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
   predicate isTypeOnly() { hasTypeKeyword(this) }
-
-  override predicate isAmbient() {
-    Stmt.super.isAmbient() or
-    isTypeOnly()
-  }
 }
 
 /**
@@ -422,11 +412,6 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
 
   /** Gets an export specifier of this declaration. */
   ExportSpecifier getASpecifier() { result = getSpecifier(_) }
-
-  override predicate isAmbient() {
-    // An export such as `export declare function f()` should be seen as ambient.
-    hasDeclareKeyword(getOperand()) or getParent().isAmbient()
-  }
 }
 
 /**

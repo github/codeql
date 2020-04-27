@@ -540,10 +540,10 @@ class ClassValue extends Value {
     Value declaredAttribute(string name) { Types::declaredAttribute(this, name, result, _) }
 
     /**
-     * Holds if this class has the attribute `name`, including
-     * attributes declared by super classes.
+     * Holds if this class has the attribute `name`, including attributes
+     * declared by super classes.
      */
-    predicate hasAttribute(string name) { this.getMro().declares(name) }
+    override predicate hasAttribute(string name) { this.getMro().declares(name) }
 
     /**
      * Holds if this class declares the attribute `name`,
@@ -611,6 +611,17 @@ abstract class FunctionValue extends CallableValue {
     /** Gets a class that may be raised by this function */
     abstract ClassValue getARaisedType();
 
+    /** Gets a call-site from where this function is called as a function */
+    CallNode getAFunctionCall() { result.getFunction().pointsTo() = this }
+
+    /** Gets a call-site from where this function is called as a method */
+    CallNode getAMethodCall() {
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().pointsTo() = bm and
+            bm.getFunction() = this
+        )
+    }
+
     /** Gets a class that this function may return */
     abstract ClassValue getAnInferredReturnType();
 }
@@ -630,6 +641,15 @@ class PythonFunctionValue extends FunctionValue {
 
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
+    override string descriptiveString() {
+        if this.getScope().isMethod()
+        then
+            exists(Class cls | this.getScope().getScope() = cls |
+                result = "method " + this.getQualifiedName()
+            )
+        else result = "function " + this.getQualifiedName()
     }
 
     override int minParameters() {
@@ -677,7 +697,7 @@ class BuiltinFunctionValue extends FunctionValue {
         /* Information is unavailable for C code in general */
         none()
     }
-    
+
     override ClassValue getAnInferredReturnType() {
         /* We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
