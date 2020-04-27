@@ -22,7 +22,7 @@
 			common dangerous characters. The lack of sanitization for
 			<code>&quot;</code> is problematic when an incompletely sanitized
 			value is used as an HTML attribute in a string that
-			<strong>later</strong> is parsed as HTML.
+			later is parsed as HTML.
 
 		</p>
 
