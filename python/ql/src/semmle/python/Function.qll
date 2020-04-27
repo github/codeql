@@ -209,19 +209,31 @@ class Parameter extends Parameter_ {
 
     /** Gets the expression for the default value of this parameter */
     Expr getDefault() {
-        exists(Function f, int n, int c, int d, Arguments args | args = f.getDefinition().getArgs() |
-            f.getArg(n) = this and
-            c = count(f.getAnArg()) and
-            d = count(args.getADefault()) and
-            result = args.getDefault(d - c + n)
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // positional (normal)
+            f.getArg(i) = this and
+            result = args.getDefault(i)
+        )
+        or
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // keyword-only
+            f.getKeywordOnlyArg(i) = this and
+            result = args.getKwDefault(i)
         )
     }
 
     /** Gets the annotation expression of this parameter */
     Expr getAnnotation() {
-        exists(Function f, int n, Arguments args | args = f.getDefinition().getArgs() |
-            f.getArg(n) = this and
-            result = args.getAnnotation(n)
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // positional (normal)
+            f.getArg(i) = this and
+            result = args.getAnnotation(i)
+        )
+        or
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // keyword-only
+            f.getKeywordOnlyArg(i) = this and
+            result = args.getKwAnnotation(i)
         )
         or
         exists(Function f, Arguments args | args = f.getDefinition().getArgs() |
@@ -342,4 +354,19 @@ class Arguments extends Arguments_ {
         result = this.getAKwAnnotation() or
         result = this.getKwargannotation()
     }
+
+    // The following 4 methods are overwritten to provide better QLdoc. Since the
+    // Arguments_ is auto-generated, we can't change the poor auto-generated docs there :(
+
+    /** Gets the default value for the `index`'th positional parameter. */
+    override Expr getDefault(int index) { result = super.getDefault(index) }
+
+    /** Gets the default value for the `index`'th keyword-only parameter. */
+    override Expr getKwDefault(int index) { result = super.getKwDefault(index) }
+
+    /** Gets the annotation for the `index`'th positional parameter. */
+    override Expr getAnnotation(int index) { result = super.getAnnotation(index) }
+
+    /** Gets the annotation for the `index`'th keyword-only parameter. */
+    override Expr getKwAnnotation(int index) { result = super.getKwAnnotation(index) }
 }
