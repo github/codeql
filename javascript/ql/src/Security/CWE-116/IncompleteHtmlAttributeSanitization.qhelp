@@ -9,8 +9,8 @@
 			Sanitizing untrusted input for HTML meta-characters is an important
 			technique for preventing cross-site scripting attacks. Usually, this
 			is done by escaping <code>&lt;</code>, <code>&gt;</code>,
-			<code>&amp;</code> and <code>&quot;</code>. But the context in which
-			the sanitized value is used decides which characters that actually
+			<code>&amp;</code> and <code>&quot;</code>. However, the context in which
+			the sanitized value is used decides the characters that
 			need to be sanitized.
 
 		</p>
@@ -59,7 +59,7 @@
 		<p>
 
 			Sanitizing the user-controlled data for
-			<code>&quot;</code> prevents the vulnerability:
+			<code>&quot;</code> helps prevent the vulnerability:
 
 		</p>
 
