@@ -496,6 +496,15 @@ module JQuery {
         hasUnderlyingType("jQuery")
       }
     }
+
+    /**
+     * A `this` node in a JQuery plugin function, which is a JQuery object.
+     */
+    private class JQueryPluginThisObject extends Range {
+      JQueryPluginThisObject() {
+        this = DataFlow::thisNode(any(JQueryPluginMethod method).getFunction())
+      }
+    }
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
@@ -538,9 +547,13 @@ module JQuery {
     MethodCall() {
       this = dollarCall() and name = "$"
       or
-      this = dollar().getAMemberCall(name)
+      this = ([dollar(), objectRef()]).getAMemberCall(name)
       or
-      this = objectRef().getAMethodCall(name)
+      // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
+      exists(DataFlow::PropRead read | read = this.getCalleeNode() |
+        read.getBase().getALocalSource() = [dollar(), objectRef()] and
+        read.getPropertyNameExpr().flow().mayHaveStringValue(name)
+      )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
       getReceiver() = legacyObjectSource() and
@@ -585,5 +598,65 @@ module JQuery {
       name = "$" and
       node = getArgument(0)
     }
+  }
+
+  /**
+   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or `$.extend($.fn, {<pluginName>, <plugin>})`.
+   */
+  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
+    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
+      fn = jquery().getAPropertyRead("fn") and
+      (
+        write = fn.getAPropertyWrite()
+        or
+        exists(ExtendCall extend, DataFlow::SourceNode source |
+          fn.flowsTo(extend.getDestinationOperand()) and
+          source = extend.getASourceOperand() and
+          write = source.getAPropertyWrite()
+        )
+      ) and
+      plugin = write.getRhs() and
+      (
+        pluginName = write.getPropertyName() or
+        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
+      )
+    )
+  }
+
+  /**
+   * Gets a node that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::SourceNode getAJQueryPluginMethod(
+    DataFlow::TypeBackTracker t, DataFlow::Node def
+  ) {
+    t.start() and jQueryPluginDefinition(_, def) and result.flowsTo(def)
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
+    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
+  }
+
+  /**
+   * A function that is registered as a jQuery plugin method.
+   */
+  class JQueryPluginMethod extends DataFlow::FunctionNode {
+    string pluginName;
+
+    JQueryPluginMethod() {
+      exists(DataFlow::Node def |
+        jQueryPluginDefinition(pluginName, def) and
+        this = getAJQueryPluginMethod(def)
+      )
+    }
+
+    /**
+     * Gets the name of this plugin.
+     */
+    string getPluginName() { result = pluginName }
   }
 }

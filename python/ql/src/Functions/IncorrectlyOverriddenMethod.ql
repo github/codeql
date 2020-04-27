@@ -12,17 +12,17 @@
 import python
 import Expressions.CallArgs
 
-from Call call, FunctionObject func, FunctionObject overridden, string problem
+from Call call, FunctionValue func, FunctionValue overridden, string problem
 where
     func.overrides(overridden) and
     (
-        wrong_args_objectapi(call, func, _, problem) and
-        correct_args_if_called_as_method_objectapi(call, overridden)
+        wrong_args(call, func, _, problem) and
+        correct_args_if_called_as_method(call, overridden)
         or
         exists(string name |
-            illegally_named_parameter_objectapi(call, func, name) and
+            illegally_named_parameter(call, func, name) and
             problem = "an argument named '" + name + "'" and
-            overridden.getFunction().getAnArg().(Name).getId() = name
+            overridden.getScope().getAnArg().(Name).getId() = name
         )
     )
 select func,

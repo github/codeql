@@ -755,6 +755,11 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         sink = TCallableFlowSinkReturn()
       )
       or
+      name = "AsQueryable" and
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sink = TCallableFlowSinkReturn()
+      or
       name = "Average" and
       (
         arity = 2 and

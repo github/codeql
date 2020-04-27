@@ -2,7 +2,7 @@
 
 ## Introduction
 
-When you contribute a new query to Semmle/ql for inclusion in the standard queries, or add a custom query for analysis in LGTM, you should also write a query help file. This file provides detailed information about the purpose and use of the query, which is available to users in LGTM (for example [here](https://lgtm.com/rules/1506093386171/)) and on the query homepages:
+When you contribute a new [supported query](supported-queries.md) to this repository, or add a custom query for analysis in LGTM, you should also write a query help file. This file provides detailed information about the purpose and use of the query, which is available to users in LGTM (for example [here](https://lgtm.com/rules/1506093386171/)) and on the query homepages:
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
@@ -16,7 +16,7 @@ Query help files must have the same base name as the query they describe and mus
 
 ### File structure and layout
 
-Query files are written using an XML format called Qhelp, and stored in a file with a `.qhelp` extension. The basic structure is as follows:
+Query help files are written using a custom XML format, and stored in a file with a `.qhelp` extension. The basic structure is as follows:
 
 ```
 <!DOCTYPE qhelp SYSTEM "qhelp.dtd">
@@ -25,7 +25,7 @@ Query files are written using an XML format called Qhelp, and stored in a file w
 </qhelp>
 ```
 
-The header and single top-level `qhelp` element are both mandatory. 
+The header and single top-level `<qhelp>` element are both mandatory. 
 
 ### Section-level elements
 
@@ -36,7 +36,7 @@ Section-level elements are used to group the information within the query help f
 3.  `example`—an example of code showing the problem. Where possible, this section should also include a solution to the issue.
 4.  `references`—relevant references, such as authoritative sources on language semantics and best practice. 
 
-For further information about the other section-level, block, list and table elements supported by the qhelp format, see the [Query help reference](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-help.html) on help.semmle.com.
+For further information about the other section-level, block, list and table elements supported by query help files, see the [Query help reference](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-help.html) on help.semmle.com.
 
 
 ## English style
@@ -86,7 +86,7 @@ For example:
 
 >W. C. Wake, _Refactoring Workbook_, pp. 93 – 94, Addison-Wesley Professional, 2004.
 
-Note, & symbols need to be replaced by \&amp;. The symbol will be displayed correctly in the html files generated from the qhelp files.
+Note, & symbols need to be replaced by \&amp;. The symbol will be displayed correctly in the HTML files generated from the query help files.
 
 ### Academic papers
 
@@ -107,11 +107,11 @@ For example:
 
 ### Referencing potential security weaknesses
 
-If your query checks code for a CWE weakness, you should use the `@tags` element in the query file to reference the associated CWEs, as explained [here](query-metadata-style-guide.md). When you use these tags, a link to the appropriate entry from the [MITRE.org](https://cwe.mitre.org/scoring/index.html) site will automatically appear as a reference in the qhelp file.
+If your query checks code for a CWE weakness, you should use the `@tags` element in the query file to reference the associated CWEs, as explained [here](query-metadata-style-guide.md). When you use these tags, a link to the appropriate entry from the [MITRE.org](https://cwe.mitre.org/scoring/index.html) site will automatically appear as a reference in the output HTML file.
 
 ## Query help example 
 
-The following example is a qhelp file for a query from the standard query suite for Java: 
+The following example is a query help file for a query from the standard query suite for Java: 
 
 ```
 <!DOCTYPE qhelp PUBLIC

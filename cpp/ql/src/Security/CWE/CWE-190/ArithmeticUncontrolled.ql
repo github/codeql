@@ -2,7 +2,7 @@
  * @name Uncontrolled data in arithmetic expression
  * @description Arithmetic operations on uncontrolled data that is not
  *              validated can cause overflows.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id cpp/uncontrolled-arithmetic
@@ -15,6 +15,7 @@ import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
+import TaintedWithPath
 
 predicate isRandCall(FunctionCall fc) { fc.getTarget().getName() = "rand" }
 
@@ -40,9 +41,22 @@ class SecurityOptionsArith extends SecurityOptions {
   }
 }
 
-predicate taintedVarAccess(Expr origin, VariableAccess va) {
-  isUserInput(origin, _) and
-  tainted(origin, va)
+predicate isDiv(VariableAccess va) { exists(AssignDivExpr div | div.getLValue() = va) }
+
+predicate missingGuard(VariableAccess va, string effect) {
+  exists(Operation op | op.getAnOperand() = va |
+    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    or
+    missingGuardAgainstOverflow(op, va) and effect = "overflow"
+  )
+}
+
+class Configuration extends TaintTrackingConfiguration {
+  override predicate isSink(Element e) {
+    isDiv(e)
+    or
+    missingGuard(e, _)
+  }
 }
 
 /**
@@ -50,19 +64,17 @@ predicate taintedVarAccess(Expr origin, VariableAccess va) {
  * range.
  */
 predicate guardedByAssignDiv(Expr origin) {
-  isUserInput(origin, _) and
-  exists(AssignDivExpr div, VariableAccess va | tainted(origin, va) and div.getLValue() = va)
+  exists(VariableAccess va |
+    taintedWithPath(origin, va, _, _) and
+    isDiv(va)
+  )
 }
 
-from Expr origin, Operation op, VariableAccess va, string effect
+from Expr origin, VariableAccess va, string effect, PathNode sourceNode, PathNode sinkNode
 where
-  taintedVarAccess(origin, va) and
-  op.getAnOperand() = va and
-  (
-    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
-    or
-    missingGuardAgainstOverflow(op, va) and effect = "overflow"
-  ) and
+  taintedWithPath(origin, va, sourceNode, sinkNode) and
+  missingGuard(va, effect) and
   not guardedByAssignDiv(origin)
-select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  origin, "Uncontrolled value"
+select va, sourceNode, sinkNode,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
+  "Uncontrolled value"

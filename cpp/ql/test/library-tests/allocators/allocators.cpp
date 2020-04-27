@@ -149,3 +149,15 @@ void directOperatorCall() {
 	ptr = operator new(sizeof(int));
 	operator delete(ptr);
 }
+
+void *malloc(size_t);
+
+void testMalloc(size_t count) {
+  malloc(5);
+  malloc(5 * sizeof(int));
+  malloc(count);
+  malloc(count * sizeof(int));
+  malloc(count * sizeof(int) + 1);
+  malloc(((int) count) * sizeof(void *));
+  malloc(sizeof(void*) * sizeof(int));
+}

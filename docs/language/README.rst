@@ -109,7 +109,7 @@ examples, see the `template slide deck <https://github.com/Semmle/ql/blob/master
 Viewing the current version of the CodeQL documentation
 *******************************************************
 
-The documentation for the most recent Semmle release is 
+The documentation for the most recent release is 
 published to `help.semmle.com <https://help.semmle.com>`__. 
 There, you can also find the documentation for the CodeQL CLI,
 the CodeQL extension for Visual Studio Code, and LGTM Enterprise. 

@@ -349,3 +349,26 @@ function hash() {
   $(getUrl().hash.substring(1)); // NOT OK
 
 }
+
+function growl() {
+  var target = document.location.search
+  $.jGrowl(target); // NOT OK
+}
+
+function thisNodes() {
+	var pluginName = "myFancyJQueryPlugin";
+	var myPlugin = function () {
+	    var target = document.location.search
+	    this.html(target); // NOT OK. (this is a jQuery object)
+		this.innerHTML = target // OK. (this is a jQuery object)
+	
+		this.each(function (i, e) {
+			this.innerHTML = target; // NOT OK. (this is a DOM-node);
+			this.html(target); // OK. (this is a DOM-node);
+			
+			e.innerHTML = target; // NOT OK.
+		});
+	}
+	$.fn[pluginName] = myPlugin; 
+
+}
