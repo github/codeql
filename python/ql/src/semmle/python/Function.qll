@@ -94,7 +94,7 @@ class Function extends Function_, Scope, AstNode {
     int getPositionalParameterCount() { result = count(this.getAnArg()) }
 
     /** Gets the number of keyword-only parameters */
-    int getKeywordOnlyParameterCount() { result = count(this.getAKwonlyarg()) }
+    int getKeywordOnlyParameterCount() { result = count(this.getAKeywordOnlyArg()) }
 
     /** Whether this function accepts a variable number of arguments. That is, whether it has a starred (*arg) parameter. */
     predicate hasVarArg() { exists(this.getVararg()) }
