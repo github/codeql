@@ -49,7 +49,11 @@ class Function extends Function_, Scope, AstNode {
     string getArgName(int index) { result = this.getArg(index).(Name).getId() }
 
     Parameter getArgByName(string name) {
-        result = this.getAnArg() and
+        (
+            result = this.getAnArg()
+            or
+            result = this.getAKeywordOnlyArg()
+        ) and
         result.(Name).getId() = name
     }
 
@@ -102,6 +106,7 @@ class Function extends Function_, Scope, AstNode {
         result = this.getAStmt() or
         result = this.getAnArg() or
         result = this.getVararg() or
+        result = this.getAKeywordOnlyArg() or
         result = this.getKwarg()
     }
 
@@ -185,6 +190,8 @@ class Parameter extends Parameter_ {
             f.getVararg() = this
             or
             f.getKwarg() = this
+            or
+            f.getAKeywordOnlyArg() = this
         )
     }
 
@@ -322,11 +329,14 @@ class Lambda extends Lambda_, CallableExpr {
  * that is generally only used for type hints today (PEP 484).
  */
 class Arguments extends Arguments_ {
+
     Expr getASubExpression() {
+        result = this.getADefault() or
         result = this.getAKwDefault() or
+        //
         result = this.getAnAnnotation() or
-        result = this.getKwargannotation() or
         result = this.getVarargannotation() or
-        result = this.getADefault()
+        result = this.getAKwAnnotation() or
+        result = this.getKwargannotation()
     }
 }
