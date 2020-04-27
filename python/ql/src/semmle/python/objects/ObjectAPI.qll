@@ -383,6 +383,7 @@ class CallableValue extends Value {
             exists(int n |
                 call.getArg(n) = result and
                 this.(PythonFunctionObjectInternal).getScope().getArg(n + offset).getName() = name
+                // TODO: and not positional only argument (Python 3.8+)
             )
             or
             call.getArgByName(name) = result and
