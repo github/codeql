@@ -70,6 +70,7 @@ class SourceNode extends DataFlow::Node {
    * Holds if there is an assignment to property `propName` on this node,
    * and the right hand side of the assignment is `rhs`.
    */
+  pragma[nomagic]
   predicate hasPropertyWrite(string propName, DataFlow::Node rhs) {
     rhs = getAPropertyWrite(propName).getRhs()
   }

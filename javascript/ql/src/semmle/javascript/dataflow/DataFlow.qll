@@ -586,6 +586,7 @@ module DataFlow {
      * This predicate is undefined for spread properties, accessor
      * properties, and most uses of `Object.defineProperty`.
      */
+    pragma[nomagic]
     abstract Node getRhs();
 
     /**
