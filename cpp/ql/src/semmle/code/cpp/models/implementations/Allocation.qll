@@ -89,6 +89,18 @@ class MallocAllocationFunction extends AllocationFunction {
         or
         // kmem_zalloc(size, flags)
         name = "kmem_zalloc" and sizeArg = 0
+        or
+        // CRYPTO_malloc(size_t num, const char *file, int line)
+        name = "CRYPTO_malloc" and sizeArg = 0
+        or
+        // CRYPTO_zalloc(size_t num, const char *file, int line)
+        name = "CRYPTO_zalloc" and sizeArg = 0
+        or
+        // CRYPTO_secure_malloc(size_t num, const char *file, int line)
+        name = "CRYPTO_secure_malloc" and sizeArg = 0
+        or
+        // CRYPTO_secure_zalloc(size_t num, const char *file, int line)
+        name = "CRYPTO_secure_zalloc" and sizeArg = 0
       )
     )
   }
@@ -169,6 +181,9 @@ class ReallocAllocationFunction extends AllocationFunction {
         or
         // CoTaskMemRealloc(ptr, size)
         name = "CoTaskMemRealloc" and sizeArg = 1 and reallocArg = 0
+        or
+        // CRYPTO_realloc(void *addr, size_t num, const char *file, int line);
+        name = "CRYPTO_realloc" and sizeArg = 1 and reallocArg = 0
       )
     )
   }
@@ -256,6 +271,36 @@ class OperatorNewAllocationFunction extends AllocationFunction {
 }
 
 /**
+ * The predicate analyzes a `sizeExpr`, which is an argument to an allocation
+ * function like malloc, and tries to split it into an expression `lengthExpr`
+ * that describes the length of the allocated array, and the size of the allocated
+ * element type `sizeof`.
+ * If this is not possible, the allocation is considered to be of size 1 and of
+ * length `sizeExpr`.
+ */
+private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
+  if
+    sizeExpr instanceof MulExpr and
+    exists(SizeofOperator sizeofOp, Expr lengthOp |
+      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+      lengthOp = sizeExpr.(MulExpr).getAnOperand() and
+      not lengthOp instanceof SizeofOperator and
+      exists(sizeofOp.getValue().toInt())
+    )
+  then
+    exists(SizeofOperator sizeofOp |
+      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+      lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
+      not lengthExpr instanceof SizeofOperator and
+      sizeof = sizeofOp.getValue().toInt()
+    )
+  else (
+    lengthExpr = sizeExpr and
+    sizeof = 1
+  )
+}
+
+/**
  * An allocation expression that is a function call, such as call to `malloc`.
  */
 class CallAllocationExpr extends AllocationExpr, FunctionCall {
@@ -272,7 +317,17 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
 
-  override Expr getSizeExpr() { result = getArgument(target.getSizeArg()) }
+  override Expr getSizeExpr() {
+    exists(Expr sizeExpr | sizeExpr = getArgument(target.getSizeArg()) |
+      if exists(target.getSizeMult())
+      then result = sizeExpr
+      else
+        exists(Expr lengthExpr |
+          deconstructSizeExpr(sizeExpr, lengthExpr, _) and
+          result = lengthExpr
+        )
+    )
+  }
 
   override int getSizeMult() {
     // malloc with multiplier argument that is a constant
@@ -280,7 +335,7 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
     or
     // malloc with no multiplier argument
     not exists(target.getSizeMult()) and
-    result = 1
+    deconstructSizeExpr(getArgument(target.getSizeArg()), _, result)
   }
 
   override int getSizeBytes() { result = getSizeExpr().getValue().toInt() * getSizeMult() }

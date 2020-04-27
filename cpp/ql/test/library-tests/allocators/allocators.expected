@@ -55,6 +55,7 @@ allocationFunctions
 | allocators.cpp:122:7:122:20 | operator new[] | getPlacementArgument = 1, getSizeArg = 0 |
 | allocators.cpp:123:7:123:18 | operator new | getSizeArg = 0, requiresDealloc |
 | allocators.cpp:124:7:124:20 | operator new[] | getSizeArg = 0, requiresDealloc |
+| allocators.cpp:153:7:153:12 | malloc | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new | getSizeArg = 0, requiresDealloc |
 | file://:0:0:0:0 | operator new[] | getSizeArg = 0, requiresDealloc |
@@ -84,6 +85,13 @@ allocationExprs
 | allocators.cpp:143:13:143:28 | new[] | getSizeBytes = 400, requiresDealloc |
 | allocators.cpp:144:13:144:31 | new[] | getSizeExpr = x, getSizeMult = 900, requiresDealloc |
 | allocators.cpp:149:8:149:19 | call to operator new | getSizeBytes = 4, getSizeExpr = sizeof(int), getSizeMult = 1, requiresDealloc |
+| allocators.cpp:156:3:156:8 | call to malloc | getSizeBytes = 5, getSizeExpr = 5, getSizeMult = 1, requiresDealloc |
+| allocators.cpp:157:3:157:8 | call to malloc | getSizeBytes = 20, getSizeExpr = 5, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:158:3:158:8 | call to malloc | getSizeExpr = count, getSizeMult = 1, requiresDealloc |
+| allocators.cpp:159:3:159:8 | call to malloc | getSizeExpr = count, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:160:3:160:8 | call to malloc | getSizeExpr = ... + ..., getSizeMult = 1, requiresDealloc |
+| allocators.cpp:161:3:161:8 | call to malloc | getSizeExpr = count, getSizeMult = 8, requiresDealloc |
+| allocators.cpp:162:3:162:8 | call to malloc | getSizeBytes = 32, getSizeExpr = ... * ..., getSizeMult = 1, requiresDealloc |
 deallocationFunctions
 | allocators.cpp:11:6:11:20 | operator delete | getFreedArg = 0 |
 | allocators.cpp:12:6:12:22 | operator delete[] | getFreedArg = 0 |

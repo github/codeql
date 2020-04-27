@@ -21,4 +21,3 @@
 /codeql/
 
 csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
-.vscode

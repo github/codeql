@@ -4,6 +4,7 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [jGrowl](https://github.com/stanlemon/jGrowl)
+  - [jQuery](https://jquery.com/)
 
 ## New queries
 
