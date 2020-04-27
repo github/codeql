@@ -579,7 +579,7 @@ private predicate varMaybeNullInBlock_corrCond(
  * - int: A means a specific integer value and B means any other value.
  */
 
-newtype TrackVarKind =
+private newtype TrackVarKind =
   TrackVarKindNull() or
   TrackVarKindBool() or
   TrackVarKindEnum() or
@@ -701,7 +701,7 @@ private predicate isReset(
 }
 
 /** The abstract value of the tracked variable. */
-newtype TrackedValue =
+private newtype TrackedValue =
   TrackedValueA() or
   TrackedValueB() or
   TrackedValueUnknown()

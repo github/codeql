@@ -1,3 +1,7 @@
+/**
+ * Provides classes for representing abstract bounds for use in, for example, range analysis.
+ */
+
 import java
 private import SSA
 private import RangeUtils
@@ -14,6 +18,7 @@ private newtype TBound =
  * A bound that may be inferred for an expression plus/minus an integer delta.
  */
 abstract class Bound extends TBound {
+  /** Gets a textual representation of this bound. */
   abstract string toString();
 
   /** Gets an expression that equals this bound plus `delta`. */
@@ -22,6 +27,13 @@ abstract class Bound extends TBound {
   /** Gets an expression that equals this bound. */
   Expr getExpr() { result = getExpr(0) }
 
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `path`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }

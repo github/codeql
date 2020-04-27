@@ -365,12 +365,12 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
 }
 
 pragma[nomagic]
-predicate erasedTypeBound(RefType t) {
+private predicate erasedTypeBound(RefType t) {
   exists(RefType t0 | typeFlow(_, t0) and t = t0.getErasure())
 }
 
 pragma[nomagic]
-predicate typeBound(RefType t) { typeFlow(_, t) }
+private predicate typeBound(RefType t) { typeFlow(_, t) }
 
 /**
  * Holds if we have a bound for `n` that is better than `t`, taking only erased

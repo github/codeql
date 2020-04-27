@@ -1,3 +1,11 @@
+/**
+ * INTERNAL: This is part of the virtual dispatch computation.
+ *
+ * Provides a strengthening of the virtual dispatch relation using a dedicated
+ * data flow check for lambdas, anonymous classes, and other sufficiently
+ * private classes where all object instantiations are accounted for.
+ */
+
 import java
 private import VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
