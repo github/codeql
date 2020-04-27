@@ -343,7 +343,8 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
   override Expr getReallocPtr() { result = getArgument(target.getReallocPtrArg()) }
 
   override Type getAllocatedElementType() {
-    result = this.getFullyConverted().getUnderlyingType().(PointerType).getBaseType() and
+    result =
+      this.getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType() and
     not result instanceof VoidType
   }
 

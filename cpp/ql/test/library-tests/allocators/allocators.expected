@@ -86,7 +86,7 @@ allocationExprs
 | allocators.cpp:144:13:144:31 | new[] | getAllocatedElementType = char[30][30], getSizeExpr = x, getSizeMult = 900, requiresDealloc |
 | allocators.cpp:149:8:149:19 | call to operator new | getSizeBytes = 4, getSizeExpr = sizeof(int), getSizeMult = 1, requiresDealloc |
 | allocators.cpp:157:50:157:55 | call to malloc | getAllocatedElementType = const volatile int, getSizeBytes = 5, getSizeExpr = 5, getSizeMult = 1, requiresDealloc |
-| allocators.cpp:158:26:158:31 | call to malloc | getSizeBytes = 20, getSizeExpr = 5, getSizeMult = 4, requiresDealloc |
+| allocators.cpp:158:26:158:31 | call to malloc | getAllocatedElementType = int, getSizeBytes = 20, getSizeExpr = 5, getSizeMult = 4, requiresDealloc |
 | allocators.cpp:159:31:159:36 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 1, requiresDealloc |
 | allocators.cpp:160:16:160:21 | call to malloc | getAllocatedElementType = volatile long, getSizeExpr = count, getSizeMult = 4, requiresDealloc |
 | allocators.cpp:161:34:161:39 | call to malloc | getAllocatedElementType = const char, getSizeExpr = ... + ..., getSizeMult = 1, requiresDealloc |
