@@ -1,0 +1,43 @@
+edges
+| XsltInjection.java:21:44:21:66 | getInputStream(...) : InputStream | XsltInjection.java:22:5:22:59 | newTransformer(...) |
+| XsltInjection.java:26:66:26:88 | getInputStream(...) : InputStream | XsltInjection.java:27:5:27:74 | newTransformer(...) |
+| XsltInjection.java:30:45:30:70 | param : String | XsltInjection.java:33:5:33:59 | newTransformer(...) |
+| XsltInjection.java:37:54:37:76 | getInputStream(...) : InputStream | XsltInjection.java:38:5:38:74 | newTransformer(...) |
+| XsltInjection.java:42:82:42:104 | getInputStream(...) : InputStream | XsltInjection.java:43:5:43:59 | newTransformer(...) |
+| XsltInjection.java:47:91:47:113 | getInputStream(...) : InputStream | XsltInjection.java:48:5:48:59 | newTransformer(...) |
+| XsltInjection.java:52:120:52:142 | getInputStream(...) : InputStream | XsltInjection.java:53:5:53:74 | newTransformer(...) |
+| XsltInjection.java:57:102:57:124 | getInputStream(...) : InputStream | XsltInjection.java:58:5:58:59 | newTransformer(...) |
+| XsltInjection.java:62:44:62:66 | getInputStream(...) : InputStream | XsltInjection.java:66:5:66:34 | newTransformer(...) |
+| XsltInjection.java:70:44:70:66 | getInputStream(...) : InputStream | XsltInjection.java:73:5:73:34 | newTransformer(...) |
+nodes
+| XsltInjection.java:21:44:21:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:22:5:22:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:26:66:26:88 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:27:5:27:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:30:45:30:70 | param : String | semmle.label | param : String |
+| XsltInjection.java:33:5:33:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:37:54:37:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:38:5:38:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:42:82:42:104 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:43:5:43:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:47:91:47:113 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:48:5:48:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:52:120:52:142 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:53:5:53:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:57:102:57:124 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:58:5:58:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:62:44:62:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:66:5:66:34 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjection.java:70:44:70:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjection.java:73:5:73:34 | newTransformer(...) | semmle.label | newTransformer(...) |
+#select
+| XsltInjection.java:22:5:22:59 | newTransformer(...) | XsltInjection.java:21:44:21:66 | getInputStream(...) : InputStream | XsltInjection.java:22:5:22:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:21:44:21:66 | getInputStream(...) | this user input |
+| XsltInjection.java:27:5:27:74 | newTransformer(...) | XsltInjection.java:26:66:26:88 | getInputStream(...) : InputStream | XsltInjection.java:27:5:27:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:26:66:26:88 | getInputStream(...) | this user input |
+| XsltInjection.java:33:5:33:59 | newTransformer(...) | XsltInjection.java:30:45:30:70 | param : String | XsltInjection.java:33:5:33:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:30:45:30:70 | param | this user input |
+| XsltInjection.java:38:5:38:74 | newTransformer(...) | XsltInjection.java:37:54:37:76 | getInputStream(...) : InputStream | XsltInjection.java:38:5:38:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:37:54:37:76 | getInputStream(...) | this user input |
+| XsltInjection.java:43:5:43:59 | newTransformer(...) | XsltInjection.java:42:82:42:104 | getInputStream(...) : InputStream | XsltInjection.java:43:5:43:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:42:82:42:104 | getInputStream(...) | this user input |
+| XsltInjection.java:48:5:48:59 | newTransformer(...) | XsltInjection.java:47:91:47:113 | getInputStream(...) : InputStream | XsltInjection.java:48:5:48:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:47:91:47:113 | getInputStream(...) | this user input |
+| XsltInjection.java:53:5:53:74 | newTransformer(...) | XsltInjection.java:52:120:52:142 | getInputStream(...) : InputStream | XsltInjection.java:53:5:53:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:52:120:52:142 | getInputStream(...) | this user input |
+| XsltInjection.java:58:5:58:59 | newTransformer(...) | XsltInjection.java:57:102:57:124 | getInputStream(...) : InputStream | XsltInjection.java:58:5:58:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:57:102:57:124 | getInputStream(...) | this user input |
+| XsltInjection.java:66:5:66:34 | newTransformer(...) | XsltInjection.java:62:44:62:66 | getInputStream(...) : InputStream | XsltInjection.java:66:5:66:34 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:62:44:62:66 | getInputStream(...) | this user input |
+| XsltInjection.java:73:5:73:34 | newTransformer(...) | XsltInjection.java:70:44:70:66 | getInputStream(...) : InputStream | XsltInjection.java:73:5:73:34 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjection.java:70:44:70:66 | getInputStream(...) | this user input |
