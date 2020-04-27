@@ -1,4 +1,0 @@
-name: codeql-java-experimental-tests
-version: 0.0.0
-libraryPathDependencies: codeql-java-experimental
-extractor: java
