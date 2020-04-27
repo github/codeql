@@ -538,6 +538,14 @@ module DataFlow {
     abstract Expr getPropertyNameExpr();
 
     /**
+     * Holds if this property reference may access a property named `propName`.
+     */
+    predicate mayHavePropertyName(string propName) {
+      propName = this.getPropertyName() or
+      this.getPropertyNameExpr().flow().mayHaveStringValue(propName)
+    }
+
+    /**
      * Gets the name of the property being read or written,
      * if it can be statically determined.
      *
