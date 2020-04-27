@@ -28,7 +28,7 @@ void randomTester2()
 	{
 		int r;
 		get_rand2(&r);
-		r = r + 100; // BAD [NOT DETECTED]
+		r = r + 100; // BAD
 	}
 
 	{

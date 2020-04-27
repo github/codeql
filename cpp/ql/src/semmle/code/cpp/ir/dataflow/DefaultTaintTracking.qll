@@ -9,6 +9,7 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.ir.dataflow.TaintTracking2
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -113,7 +114,7 @@ private class ToGlobalVarTaintTrackingCfg extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
-private class FromGlobalVarTaintTrackingCfg extends DataFlow2::Configuration {
+private class FromGlobalVarTaintTrackingCfg extends DataFlow3::Configuration {
   FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -560,7 +561,7 @@ module TaintedWithPath {
     string toString() { result = "TaintTrackingConfiguration" }
   }
 
-  private class AdjustedConfiguration extends DataFlow3::Configuration {
+  private class AdjustedConfiguration extends TaintTracking2::Configuration {
     AdjustedConfiguration() { this = "AdjustedConfiguration" }
 
     override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
@@ -569,9 +570,7 @@ module TaintedWithPath {
       exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-      commonTaintStep(n1, n2)
-      or
+    override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
       exists(TaintTrackingConfiguration cfg | cfg.taintThroughGlobals() |
         writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
         or
@@ -579,9 +578,9 @@ module TaintedWithPath {
       )
     }
 
-    override predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
+    override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
 
-    override predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+    override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
   }
 
   /*
@@ -599,11 +598,11 @@ module TaintedWithPath {
    */
 
   private newtype TPathNode =
-    TWrapPathNode(DataFlow3::PathNode n) or
+    TWrapPathNode(DataFlow2::PathNode n) or
     // There's a single newtype constructor for both sources and sinks since
     // that makes it easiest to deal with the case where source = sink.
     TEndpointPathNode(Element e) {
-      exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
+      exists(AdjustedConfiguration cfg, DataFlow2::Node sourceNode, DataFlow2::Node sinkNode |
         cfg.hasFlow(sourceNode, sinkNode)
       |
         sourceNode = getNodeForSource(e)
@@ -633,7 +632,7 @@ module TaintedWithPath {
   }
 
   private class WrapPathNode extends PathNode, TWrapPathNode {
-    DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
+    DataFlow2::PathNode inner() { this = TWrapPathNode(result) }
 
     override string toString() { result = this.inner().toString() }
 
@@ -671,25 +670,25 @@ module TaintedWithPath {
 
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode a, PathNode b) {
-    DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
+    DataFlow2::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
     or
     // To avoid showing trivial-looking steps, we _replace_ the last node instead
     // of adding an edge out of it.
     exists(WrapPathNode sinkNode |
-      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
+      DataFlow2::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
     or
     // Same for the first node
     exists(WrapPathNode sourceNode |
-      DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
+      DataFlow2::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
       sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner())
     )
     or
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
-      DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
+      DataFlow2::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
       sourceNode.inner().getNode() = getNodeForSource(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
@@ -711,7 +710,7 @@ module TaintedWithPath {
    * the computation.
    */
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
-    exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
+    exists(AdjustedConfiguration cfg, DataFlow2::Node flowSource, DataFlow2::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
       flowSource = getNodeForSource(source) and
       cfg.hasFlow(flowSource, flowSink) and
