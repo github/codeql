@@ -7,7 +7,12 @@
 
 In this workshop, we will use CodeQL to analyze the source code of [U-Boot loader](https://en.wikipedia.org/wiki/Das_U-Boot), an open source boot loader used in embedded devices.
 
-This workshop assumes you have completed the [CodeQL workshop for C/C++: Introduction to global data flow workshop](https://gist.github.com/lcartey/a53ff1221f4a50aad639d35df8b2e99a). If you have not, or if you prefer a more beginner focused approach to this content, you can use the [CodeQL U-Boot Challenge Learning Lab](https://lab.github.com/githubtraining/codeql-u-boot-challenge-(cc++)) course, which provides a self-guided step-by-step automated workflow.
+This workshop assumes you have completed the 
+[CodeQL workshop for C/C++: Introduction to global data flow workshop](codeql-workshop-cpp-global-data-flow.md). If
+you have not, or if you prefer a more beginner focused approach to this content,
+you can use the 
+[CodeQL U-Boot Challenge Learning Lab](https://lab.github.com/githubtraining/codeql-u-boot-challenge-(cc++)) course,
+which provides a self-guided step-by-step automated workflow. 
 
 The goal for this workshop is to find a set of 9 remote-code-execution vulnerabilities in the U-Boot boot loader. These vulnerabilities were originally discovered by GitHub Security Lab researchers and have since been fixed. An attacker with positioning on the local network, or control of a malicious NFS server, could potentially achieve remote code execution on the U-Boot powered device. This was possible because the code read data from the network (that could be attacker-controlled) and passed it to the length parameter of a call to the memcpy function. When such a length parameter is not properly validated before use, it may lead to exploitable memory corruption vulnerabilities.
 

@@ -7,7 +7,8 @@
 
 In this workshop, we will use CodeQL to analyze the source code of the [GNU C Library](https://www.gnu.org/software/libc/) (glibc).
 
-This workshop assumes you have completed the [CodeQL for C/C++: Introduction to global data flow workshop](https://gist.github.com/lcartey/a53ff1221f4a50aad639d35df8b2e99a).
+This workshop assumes you have completed the
+[CodeQL workshop for C/C++: Introduction to global data flow workshop](codeql-workshop-cpp-global-data-flow.md).
 
 The goal of this challenge is to find unsafe uses of `alloca` in glibc. [alloca](http://man7.org/linux/man-pages/man3/alloca.3.html) is used to allocate a buffer on the stack. It is usually implemented by simply subtracting the size parameter from the stack pointer and returning the new value of the stack pointer. This means that it has two important benefits:
 

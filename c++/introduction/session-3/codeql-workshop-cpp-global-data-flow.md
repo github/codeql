@@ -5,7 +5,11 @@
 
 ## Problem statement
 
-In this workshop, we will use CodeQL to analyze the source code of [dotnet/coreclr](https://github.com/dotnet/coreclr), the runtime for .NET Core. This follows on from the [Introduction to local dataflow](https://gist.github.com/lcartey/db74e6041393062f9deef67456a229d3) workshop, and we recommend completing that workshop first.
+In this workshop, we will use CodeQL to analyze the source code of
+[dotnet/coreclr](https://github.com/dotnet/coreclr), the runtime for .NET
+Core. This follows on from the 
+[Introduction to local dataflow](../session-2/codeql-workshop-cpp-local-data-flow.md)
+workshop, and we recommend completing that workshop first. 
 
 Many security problems can be phrased in terms of _information flow_:
 
@@ -24,7 +28,8 @@ While local data flow is feasible to compute for all functions in a CodeQL datab
 
 The global data flow (and taint tracking) library avoids this problem by requiring that the query author specifies which _sources_ and _sinks_ are applicable. This allows the implementation to compute paths only between the restricted set of nodes, rather than for the full graph.
 
-In this workshop we will try to write a global data flow query to solve the format string problem introduced in the [Introduction to local dataflow](https://gist.github.com/lcartey/db74e6041393062f9deef67456a229d3) workshop.
+In this workshop we will try to write a global data flow query to solve the format
+string problem introduced in the [Introduction to local dataflow](../session-2/codeql-workshop-cpp-local-data-flow.md) 
 
 This workshops will provide:
  - Exploration of global data flow and taint tracking
