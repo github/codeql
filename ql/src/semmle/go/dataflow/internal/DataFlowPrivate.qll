@@ -272,3 +272,14 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
 }
 
 int accessPathLimit() { result = 5 }
+
+/**
+ * Gets the `i`th argument of call `c`, where the receiver of a method call
+ * counts as argument -1.
+ */
+Node getArgument(CallNode c, int i) {
+  result = c.getArgument(i)
+  or
+  result = c.(MethodCallNode).getReceiver() and
+  i = -1
+}
