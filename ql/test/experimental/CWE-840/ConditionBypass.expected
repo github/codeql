@@ -1,0 +1,2 @@
+| condition.go:9:5:9:46 | ...!=... | This comparision is between user controlled operands and hence may be bypassed. |
+| condition.go:16:5:16:62 | ...!=... | This comparision is between user controlled operands and hence may be bypassed. |
