@@ -553,6 +553,6 @@ This can be adapted from the ``SystemUriFlow`` class:
 Further reading
 ---------------
 
--  Learn about the standard libraries used to write queries for C# in :doc:`Introducing the C# libraries <introduce-libraries-csharp>`.
+-  Learn about the standard libraries used to write queries for C# in :doc:`CodeQL library for C# <introduce-libraries-csharp>`.
 -  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.

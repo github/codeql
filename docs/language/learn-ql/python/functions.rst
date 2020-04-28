@@ -3,7 +3,7 @@ Functions in Python
 
 You can use syntactic classes from the standard CodeQL library to find Python functions and identify calls to them.
 
-These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`Introducing the Python libraries <introduce-libraries-python>`."
+These examples use the standard CodeQL class `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__. For more information, see ":doc:`CodeQL library for Python <introduce-libraries-python>`."
 
 Finding all functions called "get..."
 -------------------------------------
