@@ -10,6 +10,9 @@
   - [marsdb](https://www.npmjs.com/package/marsdb)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
 
+* The analysis of sanitizers has improved, leading to more accurate
+  results from the security queries.
+
 ## New queries
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |

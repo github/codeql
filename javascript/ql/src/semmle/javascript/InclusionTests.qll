@@ -5,7 +5,7 @@
 private import javascript
 
 /**
- * A expression that checks if an element is contained in an array
+ * An expression that checks if an element is contained in an array
  * or is a substring of another string.
  *
  * Examples:
