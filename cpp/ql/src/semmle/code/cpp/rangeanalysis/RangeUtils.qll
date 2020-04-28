@@ -80,3 +80,44 @@ predicate backEdge(PhiInstruction phi, PhiInputOperand op) {
   phi.getAnOperand() = op and
   phi.getBlock() = op.getPredecessorBlock().getBackEdgeSuccessor(_)
 }
+
+/**
+ * Holds if a cast from `fromtyp` to `totyp` can be ignored for the purpose of
+ * range analysis.
+ */
+pragma[inline]
+private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
+  fromtyp.getSize() < totyp.getSize() and
+  (
+    fromtyp.isUnsigned()
+    or
+    totyp.isSigned()
+  )
+  or
+  fromtyp.getSize() <= totyp.getSize() and
+  (
+    fromtyp.isSigned() and
+    totyp.isSigned()
+    or
+    fromtyp.isUnsigned() and
+    totyp.isUnsigned()
+  )
+}
+
+class PtrToPtrCastInstruction extends ConvertInstruction {
+  PtrToPtrCastInstruction() {
+    getResultType() instanceof PointerType and
+    getUnary().getResultType() instanceof PointerType
+  }
+}
+
+class SafeIntCastInstruction extends ConvertInstruction {
+  SafeIntCastInstruction() { safeCast(getUnary().getResultType(), getResultType()) }
+}
+
+class SafeCastInstruction extends ConvertInstruction {
+  SafeCastInstruction() {
+    this instanceof PtrToPtrCastInstruction or
+    this instanceof SafeIntCastInstruction
+  }
+}
