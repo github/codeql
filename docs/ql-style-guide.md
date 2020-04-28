@@ -3,7 +3,7 @@
 ## Introduction
 
 This document describes how to format the code you contribute to this repository. It covers aspects such as layout, white-space, naming, and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
-Note, if you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
+Note, if you use [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html), you can autoformat your query in the editor.
 
 Words in *italic* are defined in the [Glossary](#glossary).
 

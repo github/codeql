@@ -36,7 +36,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 3. **Formatting**
 
-    - The queries and libraries must be [autoformatted](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
+    - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html).
 
 4. **Compilation**
 
