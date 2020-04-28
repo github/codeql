@@ -30,6 +30,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 Further reading
 ---------------
 
--  For examples of how to query common Python elements, see the `JavaScript cookbook <https://help.semmle.com/wiki/display/CBPython>`__.
+-  For examples of how to query common Python elements, see the `Python cookbook <https://help.semmle.com/wiki/display/CBPython>`__.
 -  For the queries used in LGTM, display a `Python query <https://lgtm.com/search?q=language%3APython&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
 -  For more information about the library for JavaScript see the `CodeQL library for Python <https://help.semmle.com/qldoc/python/>`__.
