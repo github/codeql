@@ -12,7 +12,7 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 - **Metric queries**: queries that compute statistics for your code.
 
-You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/semmle/ql>`__.
+You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
 .. pull-quote::
 
@@ -24,7 +24,7 @@ You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/ab
 
 
 This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages `here <https://help.semmle.com/QL/learn-ql/>`__, and detailed technical information about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
-For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__.
+For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/master/docs/ql-style-guide.md>`__.
 
 Basic query structure
 *********************
@@ -52,7 +52,7 @@ Query metadata
 
 Query metadata is used to identify your custom queries when they are added to the GitHub repository or used in your analysis. Metadata provides information about the query's purpose, and also specifies how to interpret and display the query results. For a full list of metadata properties, see :doc:`Metadata for CodeQL queries <query-metadata>`. The exact metadata requirement depends on how you are going to run your query:
 
-- If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__. 
+- If you are contributing a query to the GitHub repository, please read the `query metadata style guide <https://github.com/github/codeql/blob/master/docs/query-metadata-style-guide.md#metadata-area>`__. 
 - If you are adding a custom query to a query pack for analysis using LGTM , see `Writing custom queries to include in LGTM analysis <https://lgtm.com/help/lgtm/writing-custom-queries>`__.
 - If you are analyzing a database using the `CodeQL CLI <https://help.semmle.com/codeql/codeql-cli.html>`__, your query metadata must contain ``@kind``.
 - If you are running a query in the query console on LGTM or with the CodeQL extension for VS Code, metadata is not mandatory. However, if you want your results to be displayed as either an 'alert' or a 'path', you must specify the correct ``@kind`` property, as explained below. For more information, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com and `Analyzing your projects <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__ in the CodeQL for VS Code help.
@@ -73,7 +73,7 @@ Import statements
 =================
 
 Each query generally contains one or more ``import`` statements, which define the `libraries <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ or `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ to import into the query. Libraries and modules provide a way of grouping together related `types <https://help.semmle.com/QL/ql-handbook/types.html>`__, `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__, and other modules. The contents of each library or module that you import can then be accessed by the query. 
-Our `open source repository on GitHub <https://github.com/semmle/ql>`__ contains the standard CodeQL libraries for each supported language.   
+Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
 
 When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
 
@@ -86,7 +86,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see :doc:`Creating path queries <path-queries>`.
 
-You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/semmle/ql>`__.
+You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
 
 Optional CodeQL classes and predicates
 --------------------------------------
@@ -131,25 +131,25 @@ Select clauses for metric queries (``@kind metric``) consist of two 'columns', w
 Viewing the standard CodeQL queries
 ***********************************
 
-One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/semmle/ql>`__ and `CodeQL for Go <https://github.com/github/codeql-go>`__ repositories on GitHub. 
+One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/github/codeql>`__ and `CodeQL for Go <https://github.com/github/codeql-go>`__ repositories on GitHub. 
 
 You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
 
 Contributing queries
 ********************
 
-Contributions to the standard queries and libraries are very welcome. For more information, see our `contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__.
+Contributions to the standard queries and libraries are very welcome. For more information, see our `contributing guidelines <https://github.com/github/codeql/blob/master/CONTRIBUTING.md>`__.
 If you are contributing a query to the open source GitHub repository, writing a custom query for LGTM, or using a custom query in an analysis with the CodeQL CLI, then you need to include extra metadata in your query to ensure that the query results are interpreted and displayed correctly. See the following topics for more information on query metadata:
 
 -  :doc:`Metadata for CodeQL queries <query-metadata>`
--  `Query metadata style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md>`__
+-  `Query metadata style guide on GitHub <https://github.com/github/codeql/blob/master/docs/query-metadata-style-guide.md>`__
 
-Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ and the :doc:`Query help files <query-help>`.
+Query contributions to the open source GitHub repository may also have an accompanying query help file to provide information about their purpose for other users. For more information on writing query help, see the `Query help style guide on GitHub <https://github.com/github/codeql/blob/master/docs/query-help-style-guide.md>`__ and the :doc:`Query help files <query-help>`.
 
 Query help files
 ****************
 
-When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub, and the :doc:`Query help files <query-help>`. 
+When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/master/docs/query-help-style-guide.md>`__ on GitHub, and the :doc:`Query help files <query-help>`. 
 
 What next?
 ==========
