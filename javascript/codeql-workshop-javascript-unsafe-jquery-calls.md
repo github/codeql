@@ -60,7 +60,7 @@ To run CodeQL queries on Bootstrap online, follow these steps:
 If you get stuck, try searching our documentation and blog posts for help and ideas. Below are a few links to help you get started:
 - [Learning CodeQL](https://help.semmle.com/QL/learn-ql)
 - [Learning CodeQL for JavaScript](https://help.semmle.com/QL/learn-ql/javascript/ql-for-javascript.html)
-- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode)
+- [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
 
 ## Challenge
 The challenge is split into several steps. You can write one query per step, or work with a single query that you refine at each step.
