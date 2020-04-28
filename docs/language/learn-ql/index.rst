@@ -27,7 +27,6 @@ CodeQL is based on a powerful query language called QL. The following topics hel
    javascript/ql-for-javascript
    python/ql-for-python
    ql-training
-   technical-info 
 
 .. toctree::
    :hidden:
