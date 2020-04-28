@@ -18,7 +18,9 @@ Short link for this summary: <https://git.io/JfkGY>
 
 Blog describing the problem: <https://securitylab.github.com/research/apache-struts-CVE-2018-11776>
 
-A clone of the original struts repository with the vulnerability: <https://github.com/github/codeql-demo-struts-CVE-2017-9805>
+Clone of the original Struts repository with the vulnerability:
+- External: <https://lgtm.com/projects/g/mmosemmle/struts_9805>
+- Internal: <https://github.com/github/codeql-demo-struts-CVE-2017-9805>
 
 codeql cli reference: <https://help.semmle.com/codeql/codeql-cli/procedures/create-codeql-database.html>
 
@@ -42,7 +44,15 @@ To run CodeQL queries offline, follow these steps:
 
 <a id="orge8c9e69"></a>
 
-## Creating the database from a project
+## Obtaining a database of the vulnerable code
+
+There are two options here: you can obtain a pre-built database from downloads.lgtm.com or lgtm.com, or you can build your own with the CodeQL CLI.
+
+### Downloading a pre-built database
+- Download and unzip the database at https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-91ae344-CVE-2017-9805.zip OR
+- Log in to LGTM.com, go to https://lgtm.com/projects/g/m-y-mo/struts_9805/ci, scroll down to **CodeQL databases for local analysis**, and click to download the latest database for Java.
+
+### Creating a database with the CodeQL CLI
 
 The setup procedure using the `/bin/bash` shell, with one deviation from the reference manual: using `mvn clean compile` instead of `mvn clean install`.
 
@@ -90,7 +100,7 @@ codeql database create --language=java --command='mvn clean compile' \
 In VS Code,
 
 -   open vscode-codeql-starter workspace
--   add the mh\_struts\_db\_1 database
+-   add the unzipped Struts database you downloaded or created
 -   open `codeql-custom-queries-java/example.ql` and run `> codeql: run query` to test.
 -   save this file to `unsafe-deserialization.ql` for the rest of this demo
 
