@@ -299,7 +299,7 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override Location getLocation() { result = pd.getLocation() }
+  override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
