@@ -585,29 +585,26 @@ module HTTP {
         )
       }
 
-      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-        result instanceof RouteHandlerCandidate and
+      DataFlow::SourceNode trackRouteHandler(
+        DataFlow::TypeTracker t, RouteHandlerCandidate candidate
+      ) {
         exists(DataFlow::MethodCallNode set, DataFlow::Node setKey |
           setKey = set.getArgument(0) and
           this.getAMethodCall("set") = set and
-          result.flowsTo(set.getArgument(1))
-        |
-          exists(DataFlow::MethodCallNode get, DataFlow::Node getKey |
-            get = access and
-            getKey = get.getArgument(0) and
-            ref(this).getAMethodCall("get") = get
-          |
-            exists(string name |
-              getKey.mayHaveStringValue(name) and
-              setKey.mayHaveStringValue(name)
-            )
-          )
-          or
-          exists(DataFlow::MethodCallNode forEach |
-            forEach = ref(this).getAMethodCall("forEach") and
-            forEach.getCallback(0).getParameter(0) = access
-          )
+          candidate.flowsTo(set.getArgument(1)) and
+          result = this and // start type tracking on the Map object, because the route-handler is contained inside the Map.
+          t.startInProp(DataFlow::PseudoProperties::mapValue(setKey))
         )
+        or
+        exists(DataFlow::TypeTracker t2 | result = trackRouteHandler(t2, candidate).track(t2, t))
+        or
+        exists(DataFlow::TypeTracker t2 |
+          result = CollectionsTypeTracking::collectionStep(trackRouteHandler(t2, candidate), t, t2)
+        )
+      }
+
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        access = trackRouteHandler(DataFlow::TypeTracker::end(), result)
       }
     }
   }

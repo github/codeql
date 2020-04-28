@@ -124,7 +124,7 @@ routesMap.set("a", (req, res) => console.log(req));
 routesMap.set("b", (req, res) => console.log(req));
 routesMap.forEach((v, k) => app.get(k, v));
 app.get("a", routesMap.get("a"));
-app.get("b", routesMap.get("a"));
+app.get("b", routesMap.get("b"));
 
 let method = "GET";
 app[method.toLowerCase()](path, (req, res) => undefined);
@@ -145,3 +145,9 @@ app.use.apply(options.app, args);
 
 let handlers = { handlerA: (req, res) => undefined};
 app.use(handlers.handlerA.bind(data));
+
+for ([k, v] of routesMap) {
+	app.get(k, v)
+}
+
+app.get("b", routesMap.get("NOT_A_KEY!")); // no.
