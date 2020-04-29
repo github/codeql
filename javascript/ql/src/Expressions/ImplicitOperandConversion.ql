@@ -163,23 +163,23 @@ class PlusConversion extends NullOrUndefinedConversion {
   PlusConversion() { parent instanceof AddExpr or parent instanceof AssignAddExpr }
 
   override string getConversionTarget() {
-    result = getDefiniteCousinType()
+    result = getDefiniteSiblingType()
     or
-    not exists(getDefiniteCousinType()) and
+    not exists(getDefiniteSiblingType()) and
     result = "number or string"
   }
 
   /**
-   * Gets the cousin of this implicit conversion.
-   * E.g. if this is `a` in the expression `a + b`, then the cousin is `b`.
+   * Gets the sibling of this implicit conversion.
+   * E.g. if this is `a` in the expression `a + b`, then the sibling is `b`.
    */
-  private Expr getCousin() { result = parent.getAChild() and not result = this.getEnclosingExpr() }
+  private Expr getSibling() { result = parent.getAChild() and not result = this.getEnclosingExpr() }
 
   /**
-   * Gets the unique type of the cousin expression, if that type is `string` or `number`.
+   * Gets the unique type of the sibling expression, if that type is `string` or `number`.
    */
-  private string getDefiniteCousinType() {
-    result = unique(InferredType t | t = getCousin().flow().analyze().getAType()).getTypeofTag() and
+  private string getDefiniteSiblingType() {
+    result = unique(InferredType t | t = getSibling().flow().analyze().getAType()).getTypeofTag() and
     result = ["string", "number"]
   }
 }
