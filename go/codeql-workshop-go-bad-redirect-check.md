@@ -19,7 +19,7 @@ This [GitHub Security Advisory](https://github.com/oauth2-proxy/oauth2-proxy/sec
 In particular, a redirect string that starts with `//` or `/\`, e.g. `https://application-domain.com?redirect=//evil.com` or `https://application-domain.com?redirect=/\evil.com`, allows redirection to an external domain. 
 The code checked that the string might start with `/`, and then checked it against `//`, but failed to check it against `/\`.
 
-The refined version of this query is in the open-source CodeQL repository for Go analysis. You can [see the query here](https://github.com/codeql-go/blob/master/go/ql/src/Security/CWE-601/BadRedirectCheck.ql).
+The refined version of this query is in the open-source CodeQL repository for Go analysis. You can [see the query here](https://github.com/github/codeql-go/blob/master/ql/src/Security/CWE-601/BadRedirectCheck.ql).
 
 In this workshop, we will use CodeQL to analyze the source code of OAuth2 Proxy, taken from before the vulnerability was patched, and identify the same vulnerability.
 
