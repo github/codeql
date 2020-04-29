@@ -753,7 +753,6 @@ private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
   basicFlowStepNoBarrier(pred, succ, _, cfg) or
-  exploratoryStoreStep(pred, succ, cfg) or
   exploratoryLoadStep(pred, succ, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
   // the following three disjuncts taken together over-approximate flow through
@@ -835,7 +834,7 @@ private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
  * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
  * and somewhere in the program there exists a load-step that could possibly read the stored value.
  */
-predicate exploratoryStoreStep(
+predicate exploratoryForwardStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
   exists(string prop |
@@ -849,6 +848,35 @@ predicate exploratoryStoreStep(
 }
 
 /**
+ * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
+ * and `succ` has been found to be relevant during the backwards exploratory flow,
+ * and the backwards exploratory flow has found a relevant load-step with the same property as the store-step.
+ */
+private predicate exploratoryBackwardStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop | prop = getABackwardsRelevantStoreProperty(cfg) |
+    isAdditionalStoreStep(pred, succ, prop, cfg) or
+    basicStoreStep(pred, succ, prop)
+  )
+}
+
+/**
+ * Gets a property where the backwards exploratory flow has found a relevant load-step with that property.
+ * The property is therefore relevant for store-steps in the backwards exploratory flow.
+ *
+ * This private predicate is only used in `exploratoryBackwardStoreStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
+ */
+string getABackwardsRelevantStoreProperty(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node mid | isRelevant(mid, cfg) |
+    basicLoadStep(mid, _, result) or
+    isAdditionalLoadStep(mid, _, result, cfg)
+  )
+  or
+  result = getAPropertyUsedInLoadStore(cfg)
+}
+
+/**
  * Holds if `nd` may be reachable from a source under `cfg`.
  *
  * No call/return matching is done, so this is a relatively coarse over-approximation.
@@ -856,7 +884,10 @@ predicate exploratoryStoreStep(
 private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
   isSource(nd, cfg, _) and isLive()
   or
-  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) | exploratoryFlowStep(mid, nd, cfg))
+  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) |
+    exploratoryFlowStep(mid, nd, cfg) or
+    exploratoryForwardStoreStep(mid, nd, cfg)
+  )
 }
 
 /**
@@ -875,7 +906,10 @@ private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
  */
 predicate isRelevantBackStep(DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg) {
   isRelevantForward(nd, cfg) and
-  exploratoryFlowStep(nd, mid, cfg)
+  (
+    exploratoryFlowStep(nd, mid, cfg) or
+    exploratoryBackwardStoreStep(nd, mid, cfg)
+  )
 }
 
 /**
