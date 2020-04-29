@@ -120,7 +120,7 @@ class AnalyzedVarDef extends VarDef {
    * due to the given `cause`.
    */
   predicate isIncomplete(DataFlow::Incompleteness cause) {
-    this instanceof Parameter and cause = "call"
+    this instanceof Parameter and DataFlow::valueNode(this).(AnalyzedValueNode).isIncomplete(cause)
     or
     this instanceof ImportSpecifier and cause = "import"
     or
@@ -140,48 +140,59 @@ class AnalyzedVarDef extends VarDef {
   TopLevel getTopLevel() { result = this.(ASTNode).getTopLevel() }
 }
 
-/**
- * Flow analysis for simple parameters of selected functions.
- */
-private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
-  AnalyzedParameter() {
-    exists(FunctionWithAnalyzedParameters f, int parmIdx | this = f.getParameter(parmIdx) |
-      // we cannot track flow into rest parameters
-      not this.(Parameter).isRestParameter()
+private predicate isAnalyzedParameter(Parameter p) {
+  exists(FunctionWithAnalyzedParameters f, int parmIdx | p = f.getParameter(parmIdx) |
+    // we cannot track flow into rest parameters
+    not p.(Parameter).isRestParameter()
+  )
+}
+
+private class AnalyzedParameter extends AnalyzedValueNode {
+  override Parameter astNode;
+
+  AnalyzedParameter() { isAnalyzedParameter(astNode) }
+
+  FunctionWithAnalyzedParameters getFunction() { astNode = result.getAParameter() }
+
+  override AbstractValue getALocalValue() {
+    exists(DataFlow::AnalyzedNode pred |
+      getFunction().argumentPassing(astNode, pred.asExpr()) and
+      result = pred.getALocalValue()
     )
-  }
-
-  /** Gets the function this is a parameter of. */
-  FunctionWithAnalyzedParameters getFunction() { this = result.getAParameter() }
-
-  override DataFlow::AnalyzedNode getRhs() {
-    getFunction().argumentPassing(this, result.asExpr()) or
-    result = AnalyzedVarDef.super.getRhs()
-  }
-
-  override AbstractValue getAnRhsValue() {
-    result = AnalyzedVarDef.super.getAnRhsValue()
     or
-    not getFunction().mayReceiveArgument(this) and
+    not getFunction().mayReceiveArgument(astNode) and
     result = TAbstractUndefined()
+    or
+    result = astNode.getDefault().analyze().getALocalValue()
   }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     getFunction().isIncomplete(cause)
     or
-    not getFunction().argumentPassing(this, _) and
-    getFunction().mayReceiveArgument(this) and
+    not getFunction().argumentPassing(astNode, _) and
+    getFunction().mayReceiveArgument(astNode) and
     cause = "call"
+  }
+}
+
+/**
+ * Flow analysis for simple parameters of selected functions.
+ */
+private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @vardecl {
+  AnalyzedParameterAsVarDef() { this instanceof Parameter }
+
+  override AbstractValue getAnRhsValue() {
+    result = DataFlow::valueNode(this).(AnalyzedValueNode).getALocalValue()
   }
 }
 
 /**
  * Flow analysis for simple rest parameters.
  */
-private class AnalyzedRestParameter extends AnalyzedVarDef, @vardecl {
-  AnalyzedRestParameter() { this.(Parameter).isRestParameter() }
+private class AnalyzedRestParameter extends AnalyzedValueNode {
+  AnalyzedRestParameter() { astNode.(Parameter).isRestParameter() }
 
-  override AbstractValue getAnRhsValue() { result = TAbstractOtherObject() }
+  override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) { none() }
 }

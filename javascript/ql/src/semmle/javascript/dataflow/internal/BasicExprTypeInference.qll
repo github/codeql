@@ -416,23 +416,3 @@ private class AnalyzedOptionalChainExpr extends DataFlow::AnalyzedValueNode {
     result = TAbstractUndefined()
   }
 }
-
-/**
- * Flow analysis for parameter AST nodes.
- *
- * For legacy reasons this node takes its value from the SSA variable node,
- * even though the SSA variable node is a successor of this node.
- */
-private class AnalyzedParameterValueNode extends AnalyzedNode {
-  Parameter p;
-
-  AnalyzedParameterValueNode() {
-    DataFlow::parameterNode(this, p)
-  }
-
-  override AbstractValue getAValue() {
-    result = p.(AnalyzedVarDef).getAnRhsValue()
-    or
-    result = TIndefiniteAbstractValue("call")
-  }
-}
