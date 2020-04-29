@@ -214,3 +214,6 @@ Top definitionOf(Top e, string kind) {
   // later on.
   strictcount(result.getLocation()) < 10
 }
+
+cached
+File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }
