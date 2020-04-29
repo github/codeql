@@ -67,13 +67,11 @@ module DataFlow {
     /**
      * Gets the expression enclosing this data flow node.
      * In most cases the result is the same as `asExpr()`, however this method
-     * additionally the `InvokeExpr` corresponding to reflective calls, and the `Parameter`
-     * for a `DataFlow::ParameterNode`.
+     * additionally includes the `InvokeExpr` corresponding to reflective calls.
      */
     Expr getEnclosingExpr() {
       result = asExpr() or
-      this = DataFlow::reflectiveCallNode(result) or
-      result = this.(ParameterNode).getParameter()
+      this = DataFlow::reflectiveCallNode(result)
     }
 
     /** Gets the AST node corresponding to this data flow node, if any. */
