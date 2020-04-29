@@ -29,6 +29,10 @@ private class SystemCommandExecutors extends SystemCommandExecution::Range, Data
       pkg = "os/exec" and name = "Command" and cmdArg = 0
       or
       pkg = "os/exec" and name = "CommandContext" and cmdArg = 1
+      or
+      pkg = "syscall" and
+      (name = "Exec" or name = "ForkExec" or name = "StartProcess") and
+      cmdArg = 0
     )
   }
 
