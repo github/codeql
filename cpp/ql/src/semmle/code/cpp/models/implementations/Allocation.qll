@@ -342,6 +342,12 @@ class CallAllocationExpr extends AllocationExpr, FunctionCall {
 
   override Expr getReallocPtr() { result = getArgument(target.getReallocPtrArg()) }
 
+  override Type getAllocatedElementType() {
+    result =
+      this.getFullyConverted().getType().stripTopLevelSpecifiers().(PointerType).getBaseType() and
+    not result instanceof VoidType
+  }
+
   override predicate requiresDealloc() { target.requiresDealloc() }
 }
 
@@ -352,6 +358,8 @@ class NewAllocationExpr extends AllocationExpr, NewExpr {
   NewAllocationExpr() { this instanceof NewExpr }
 
   override int getSizeBytes() { result = getAllocatedType().getSize() }
+
+  override Type getAllocatedElementType() { result = getAllocatedType() }
 
   override predicate requiresDealloc() { not exists(getPlacementPointer()) }
 }
@@ -372,6 +380,8 @@ class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
     exists(getExtent()) and
     result = getAllocatedElementType().getSize()
   }
+
+  override Type getAllocatedElementType() { result = NewArrayExpr.super.getAllocatedElementType() }
 
   override int getSizeBytes() { result = getAllocatedType().getSize() }
 
