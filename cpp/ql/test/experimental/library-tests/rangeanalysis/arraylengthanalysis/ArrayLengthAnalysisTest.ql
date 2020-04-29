@@ -1,5 +1,5 @@
 import cpp
-import experimental.library.ArrayLengthAnalysis
+import experimental.semmle.code.cpp.rangeanalysis.ArrayLengthAnalysis
 
 from Instruction array, Length length, int delta, Offset offset, int offsetDelta
 where
