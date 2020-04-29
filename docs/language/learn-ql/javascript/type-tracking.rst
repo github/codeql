@@ -493,7 +493,7 @@ Prefer data-flow configurations when:
 - Differentiating between different kinds of user-controlled data -- see :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
-- Generating a path from source to sink -- see :doc:`constructing path queries <../writing-queries/path-queries>`.
+- Generating a path from source to sink -- see :doc:`Creating path queries <../writing-queries/path-queries>`.
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 
