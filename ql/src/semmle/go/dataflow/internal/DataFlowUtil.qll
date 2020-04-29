@@ -4,6 +4,7 @@
 
 import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
+private import DataFlowPrivate
 
 cached
 private newtype TNode =
@@ -421,17 +422,6 @@ class PostUpdateNode extends Node {
    * Gets the node before the state update.
    */
   Node getPreUpdateNode() { result = preupd }
-}
-
-/**
- * Gets the `i`th argument of call `c`, where the receiver of a method call
- * counts as argument -1.
- */
-private Node getArgument(CallNode c, int i) {
-  result = c.getArgument(i)
-  or
-  result = c.(MethodCallNode).getReceiver() and
-  i = -1
 }
 
 /**

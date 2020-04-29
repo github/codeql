@@ -4,6 +4,7 @@
  */
 
 import go
+private import semmle.go.dataflow.internal.DataFlowPrivate
 
 /**
  * An abstract representation of an input to a function, which is either a parameter
@@ -181,8 +182,8 @@ private class OutParameter extends FunctionOutput, TOutParameter {
   }
 
   override DataFlow::Node getExitNode(DataFlow::CallNode c) {
-    exists(DataFlow::ArgumentNode arg |
-      arg.argumentOf(c.asExpr(), index) and
+    exists(DataFlow::Node arg |
+      arg = getArgument(c, index) and
       result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
     )
   }
