@@ -748,24 +748,21 @@ private predicate basicFlowStep(
  * This predicate is field insensitive (it does not distinguish between `x` and `x.p`)
  * and hence should only be used for purposes of approximation.
  */
+pragma[inline]
 private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
-  isRelevantForward(pred, cfg) and
-  isLive() and
-  (
-    basicFlowStepNoBarrier(pred, succ, _, cfg) or
-    basicStoreStep(pred, succ, _) or
-    basicLoadStep(pred, succ, _) or
-    isAdditionalStoreStep(pred, succ, _, cfg) or
-    isAdditionalLoadStep(pred, succ, _, cfg) or
-    isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
-    // the following three disjuncts taken together over-approximate flow through
-    // higher-order calls
-    callback(pred, succ) or
-    succ = pred.(DataFlow::FunctionNode).getAParameter() or
-    exploratoryBoundInvokeStep(pred, succ)
-  )
+  basicFlowStepNoBarrier(pred, succ, _, cfg) or
+  basicStoreStep(pred, succ, _) or
+  basicLoadStep(pred, succ, _) or
+  isAdditionalStoreStep(pred, succ, _, cfg) or
+  isAdditionalLoadStep(pred, succ, _, cfg) or
+  isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
+  // the following three disjuncts taken together over-approximate flow through
+  // higher-order calls
+  callback(pred, succ) or
+  succ = pred.(DataFlow::FunctionNode).getAParameter() or
+  exploratoryBoundInvokeStep(pred, succ)
 }
 
 /**
@@ -798,9 +795,9 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLab
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isSource(nd, cfg, _)
+  isSource(nd, cfg, _) and isLive()
   or
-  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) and exploratoryFlowStep(mid, nd, cfg))
+  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) | exploratoryFlowStep(mid, nd, cfg))
 }
 
 /**
@@ -809,14 +806,17 @@ private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration c
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isRelevantForward(nd, cfg) and
-  isSink(nd, cfg, _)
+  isRelevantForward(nd, cfg) and isSink(nd, cfg, _)
   or
-  exists(DataFlow::Node mid |
-    isRelevant(mid, cfg) and
-    exploratoryFlowStep(nd, mid, cfg) and
-    isRelevantForward(nd, cfg)
-  )
+  exists(DataFlow::Node mid | isRelevant(mid, cfg) | isRelevantBackStep(mid, nd, cfg))
+}
+
+/**
+ * Holds if there is backwards data-flow step from `mid` to `nd` under `cfg`.
+ */
+predicate isRelevantBackStep(DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg) {
+  isRelevantForward(nd, cfg) and
+  exploratoryFlowStep(nd, mid, cfg)
 }
 
 /**
