@@ -22,7 +22,7 @@ void test1(unsigned int count) {
   a = (int *) malloc(sizeof(int) * (count + 1));
   sink(a); // (count, 1, Zero, 0)
   a = (int *) malloc(sizeof(int) * (2 * count));
-  sink(a); // (2*count, 0, Zero, 0)
+  sink(a); // none, as the size expression is too complicated
   char* c = (char *)malloc(count);
   sink(c); // /count, 0, Zero, 0)
   sink((unsigned char*)c); // (count, 0, Zero, 0)
@@ -86,5 +86,5 @@ void test2(unsigned int count, bool b) {
   a += 1;
   sink(a); // TODO, should be (count, 1, count, 2), but is (count, 1, count + 1, 1)
   a = (int*) malloc(sizeof(int) * (1024 - count));
-  sink(a); // (1024-count, 0, Zero, 0)
+  sink(a); // none, as the size expression is too complicated
 }

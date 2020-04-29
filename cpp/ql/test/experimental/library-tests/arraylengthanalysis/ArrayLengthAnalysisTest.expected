@@ -2,7 +2,6 @@
 | test.cpp:19:8:19:8 | Load: a | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
 | test.cpp:21:8:21:8 | Load: a | VNLength(Chi: ptr) | -1 | ZeroOffset | 0 |
 | test.cpp:23:8:23:8 | Load: a | VNLength(Chi: ptr) | 1 | ZeroOffset | 0 |
-| test.cpp:25:8:25:8 | Load: a | VNLength(Mul: ... * ...) | 0 | ZeroOffset | 0 |
 | test.cpp:27:8:27:8 | Load: c | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
 | test.cpp:28:8:28:24 | Convert: (unsigned char *)... | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
 | test.cpp:30:8:30:8 | Load: v | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
@@ -22,4 +21,3 @@
 | test.cpp:80:8:80:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Load: count) | 1 |
 | test.cpp:85:8:85:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 0 |
 | test.cpp:87:8:87:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 1 |
-| test.cpp:89:8:89:8 | Load: a | VNLength(Sub: ... - ...) | 0 | ZeroOffset | 0 |

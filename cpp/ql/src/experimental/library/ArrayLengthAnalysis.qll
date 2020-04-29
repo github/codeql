@@ -25,14 +25,30 @@ private import semmle.code.cpp.rangeanalysis.RangeUtils
 private newtype TLength =
   TZeroLength() or
   TVNLength(ValueNumber vn) {
+    not vn.getAnInstruction() instanceof ConstantInstruction and
     exists(Instruction i |
       vn.getAnInstruction() = i and
       (
         i.getResultIRType() instanceof IRSignedIntegerType or
         i.getResultIRType() instanceof IRUnsignedIntegerType
       )
-    ) and
-    not vn.getAnInstruction() instanceof ConstantInstruction
+    |
+      i instanceof PhiInstruction
+      or
+      i instanceof InitializeParameterInstruction
+      or
+      i instanceof CallInstruction
+      or
+      i instanceof VariableAddressInstruction
+      or
+      i instanceof FieldAddressInstruction
+      or
+      i.(LoadInstruction).getSourceAddress() instanceof VariableAddressInstruction
+      or
+      i.(LoadInstruction).getSourceAddress() instanceof FieldAddressInstruction
+      or
+      i.getAUse() instanceof ArgumentOperand
+    )
   }
 
 /**
@@ -40,8 +56,8 @@ private newtype TLength =
  * This class keeps track of the ValueNumber or Zero.
  * The delta is tracked in the predicate `knownArrayLength`.
  */
-abstract class Length extends TLength {
-  abstract string toString();
+class Length extends TLength {
+  string toString() { none() } // overridden in subclasses
 }
 
 /**
@@ -62,7 +78,7 @@ class VNLength extends Length, TVNLength {
 
   VNLength() { this = TVNLength(vn) }
 
-  /** Gets the SSA variable that equals value number bound. */
+  /** Gets an instruction with this value number bound. */
   Instruction getInstruction() { this = TVNLength(valueNumber(result)) }
 
   ValueNumber getValueNumber() { result = vn }
@@ -81,8 +97,8 @@ private newtype TOffset =
  * This class describes the offset of a pointer in a chunk of memory.
  * It is either an `Operand` or zero, an additional integer delta is added later.
  */
-abstract class Offset extends TOffset {
-  abstract string toString();
+class Offset extends TOffset {
+  string toString() { none() } // overridden in subclasses
 }
 
 /**
@@ -203,12 +219,10 @@ private predicate allocation(Instruction array, Length length, int delta) {
       (
         exists(Expr lengthExpr |
           deconstructMallocSizeExpr(alloc.getSizeExpr(), lengthExpr, delta) and
-          // TODO converted or unconverted here?
           length.(VNLength).getInstruction().getConvertedResultExpression() = lengthExpr
         )
         or
         not exists(int d | deconstructMallocSizeExpr(alloc.getSizeExpr(), _, d)) and
-        // TODO converted or unconverted here?
         length.(VNLength).getInstruction().getConvertedResultExpression() = alloc.getSizeExpr() and
         delta = 0
       )
@@ -245,14 +259,13 @@ predicate arrayAllocationOrDeclaration(Instruction array, Length length, int len
  * Holds if the instruction `array` represents a pointer to a chunk of memory that holds
  * `length + lengthDelta` elements, using only local analysis.
  * `array` points at `offset + offsetDelta` in the chunk of memory.
- * The pointer is in-bounds if `offset < length + lengthDelta` and
+ * The pointer is in-bounds if `offset + offsetDelta < length + lengthDelta` and
  * `offset + offsetDelta >= 0` holds.
- * The pointer is out-of-bounds if `offset >= length + lengthDelta`
+ * The pointer is out-of-bounds if `offset + offsetDelta >= length + lengthDelta`
  * or `offset + offsetDelta < 0` holds.
  * All pointers in this predicate are guaranteed to be non-null,
  * but are not guaranteed to be live.
  */
-cached
 predicate knownArrayLength(
   Instruction array, Length length, int lengthDelta, Offset offset, int offsetDelta
 ) {
