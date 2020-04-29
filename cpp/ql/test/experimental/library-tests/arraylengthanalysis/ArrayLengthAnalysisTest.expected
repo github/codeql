@@ -22,3 +22,4 @@
 | test.cpp:80:8:80:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Load: count) | 1 |
 | test.cpp:85:8:85:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 0 |
 | test.cpp:87:8:87:8 | Load: a | VNLength(InitializeParameter: count) | 1 | OpOffset(Add: ... + ...) | 1 |
+| test.cpp:89:8:89:8 | Load: a | VNLength(Sub: ... - ...) | 0 | ZeroOffset | 0 |

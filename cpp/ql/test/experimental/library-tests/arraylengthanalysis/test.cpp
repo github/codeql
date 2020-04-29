@@ -85,4 +85,6 @@ void test2(unsigned int count, bool b) {
   sink(a); // TODO, should be (count, 1, count, 1), but is (count, 1, count + 1, 0)
   a += 1;
   sink(a); // TODO, should be (count, 1, count, 2), but is (count, 1, count + 1, 1)
+  a = (int*) malloc(sizeof(int) * (1024 - count));
+  sink(a); // (1024-count, 0, Zero, 0)
 }

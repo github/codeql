@@ -176,9 +176,8 @@ private predicate deconstructMallocSizeExpr(Expr sizeExpr, Expr lengthExpr, int 
   or
   sizeExpr instanceof SubExpr and
   exists(Expr constantExpr |
-    lengthExpr = sizeExpr.(SubExpr).getAnOperand() and
-    constantExpr = sizeExpr.(SubExpr).getAnOperand() and
-    lengthExpr != constantExpr and
+    lengthExpr = sizeExpr.(SubExpr).getLeftOperand() and
+    constantExpr = sizeExpr.(SubExpr).getRightOperand() and
     delta = -constantExpr.getValue().toInt()
   )
 }
