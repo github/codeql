@@ -103,6 +103,19 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "MessageBodyReader parameter" }
 }
 
+private class SpringMultipartFileSource extends RemoteFlowSource {
+  SpringMultipartFileSource() {
+    exists(MethodAccess ma, Method m |
+      ma = this.asExpr() and
+      m = ma.getMethod() and
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+      m.getName().matches("get%")
+    )
+  }
+
+  override string getSourceType() { result = "Spring MultipartFile getter" }
+}
+
 private class SpringServletInputParameterSource extends RemoteFlowSource {
   SpringServletInputParameterSource() {
     this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
