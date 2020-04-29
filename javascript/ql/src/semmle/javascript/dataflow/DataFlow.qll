@@ -1340,6 +1340,12 @@ module DataFlow {
       succ = lvalueNode(param) // The SSA node represents the parameters's local variable
     )
     or
+    exists(Expr arg, Parameter param |
+      localArgumentPassing(arg, param) and
+      pred = valueNode(arg) and
+      succ = valueNode(param)
+    )
+    or
     exists(PropertyPattern pattern |
       pred = TPropNode(pattern) and
       succ = lvalueNode(pattern.getValuePattern())
@@ -1475,8 +1481,7 @@ module DataFlow {
    */
   private AST::ValueNode defSourceNode(VarDef def) {
     result = def.getSource() or
-    result = def.getDestructuringSource() or
-    localArgumentPassing(result, def)
+    result = def.getDestructuringSource()
   }
 
   /**
