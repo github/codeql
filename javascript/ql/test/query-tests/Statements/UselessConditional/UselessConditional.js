@@ -79,7 +79,7 @@ async function awaitFlow(){
 
     function f3(x) {
         (function(){
-            x || y // NOT OK
+            x || y // NOT OK, but whitelisted
         });
     }
     f3(true);
