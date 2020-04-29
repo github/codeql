@@ -44,7 +44,7 @@ class QLLexer(RegexLexer):
                 'max', 'min', 'module', 'newtype', 'not', 'none', 'or', 'order', 
                 'predicate', 'rank', 'result', 'select', 'strictconcat', 
                 'strictcount', 'strictsum', 'sum', 'super', 'then', 'this', 
-                'true', 'where'), prefix=r'\b', suffix=r'\b'),
+                'true', 'unique', 'where'), prefix=r'\b', suffix=r'\b'),
              Keyword),
             # Identifiers
             (r'@?\w', Name),
