@@ -229,7 +229,7 @@ module DataFlow {
      */
     private JSDocTypeExpr getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
-        this = lvalueNode(pattern) and
+        this = valueNode(pattern) and
         not ast_node_type(pattern, _) and
         result = pattern.getTypeAnnotation()
       )
