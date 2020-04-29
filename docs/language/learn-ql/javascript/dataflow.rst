@@ -188,6 +188,10 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 than local data flow. That is, the analysis may report spurious flows that cannot in fact happen. Moreover, global data flow analysis typically requires significantly
 more time and memory than local analysis.
 
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
