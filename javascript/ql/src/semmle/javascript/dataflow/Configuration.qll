@@ -753,8 +753,7 @@ private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
   basicFlowStepNoBarrier(pred, succ, _, cfg) or
-  basicStoreStep(pred, succ, _) or
-  isAdditionalStoreStep(pred, succ, _, cfg) or
+  exploratoryStoreStep(pred, succ, cfg) or
   exploratoryLoadStep(pred, succ, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
   // the following three disjuncts taken together over-approximate flow through
@@ -829,6 +828,23 @@ private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
   or
   exists(string storeProp | not storeProp = result |
     isAdditionalLoadStoreStep(_, _, result, storeProp, cfg)
+  )
+}
+
+/**
+ * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
+ * and somewhere in the program there exists a load-step that could possibly read the stored value.
+ */
+predicate exploratoryStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop |
+    basicLoadStep(_, _, prop) or
+    isAdditionalLoadStep(_, _, prop, cfg) or
+    prop = getAPropertyUsedInLoadStore(cfg)
+  |
+    isAdditionalStoreStep(pred, succ, prop, cfg) or
+    basicStoreStep(pred, succ, prop)
   )
 }
 
