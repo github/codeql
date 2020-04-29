@@ -32,4 +32,3 @@
 | tst.js:11:11:11:11 | g | tst.js:11:2:15:1 | functio ... rn x;\\n} |
 | tst.js:12:2:12:7 | x = 42 | tst.js:12:6:12:7 | 42 |
 | tst.js:19:11:19:11 | x | tst.js:19:2:19:16 | function x() {} |
-| tst.js:26:11:26:11 | a | tst.js:26:15:26:15 | b |
