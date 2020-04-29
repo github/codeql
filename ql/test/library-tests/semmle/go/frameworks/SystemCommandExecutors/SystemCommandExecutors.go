@@ -98,7 +98,6 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	// syscall
 	{
 		syscall.Exec(source, []string{"arg1", "arg2"}, []string{})
-		syscall.ForkExec(source, []string{"arg1", "arg2"}, &syscall.ProcAttr{})
 		syscall.StartProcess(source, []string{"arg1", "arg2"}, &syscall.ProcAttr{})
 
 		syscall.StartProcess(shell, []string{source, "arg2"}, &syscall.ProcAttr{})
