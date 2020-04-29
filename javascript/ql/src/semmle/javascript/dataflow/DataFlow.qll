@@ -1527,6 +1527,9 @@ module DataFlow {
       e instanceof FunctionBindExpr
       or
       e instanceof TaggedTemplateExpr
+      or
+      e instanceof Parameter and
+      not localArgumentPassing(_, e)
     )
     or
     nd.asExpr() instanceof ExternalModuleReference and
@@ -1562,10 +1565,6 @@ module DataFlow {
    * Holds if definition `def` cannot be completely analyzed due to `cause`.
    */
   private predicate defIsIncomplete(VarDef def, Incompleteness cause) {
-    def instanceof Parameter and
-    not localArgumentPassing(_, def) and
-    cause = "call"
-    or
     def instanceof ImportSpecifier and
     cause = "import"
     or

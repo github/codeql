@@ -45,8 +45,6 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
-  or
-  lhs = def and def.(Parameter).getDefault() = rhs
 }
 
 /**
