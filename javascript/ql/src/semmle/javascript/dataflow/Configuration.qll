@@ -754,9 +754,8 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStepNoBarrier(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  basicLoadStep(pred, succ, _) or
   isAdditionalStoreStep(pred, succ, _, cfg) or
-  isAdditionalLoadStep(pred, succ, _, cfg) or
+  exploratoryLoadStep(pred, succ, cfg) or
   isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
   // the following three disjuncts taken together over-approximate flow through
   // higher-order calls
@@ -787,6 +786,50 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLab
   nd.(AdditionalSink).isSinkFor(cfg, lbl)
   or
   cfg.isSink(nd, lbl)
+}
+
+/**
+ * Holds if there exists a load-step from `pred` to `succ` under configuration `cfg`,
+ * and the forwards exploratory flow has found a relevant store-step with the same property as the load-step.
+ */
+private predicate exploratoryLoadStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop | prop = getAForwardRelevantLoadProperty(cfg) |
+    isAdditionalLoadStep(pred, succ, prop, cfg)
+    or
+    basicLoadStep(pred, succ, prop)
+  )
+}
+
+/**
+ * Gets a property where the forwards exploratory flow has found a relevant store-step with that property.
+ * The property is therefore relevant for load-steps in the forward exploratory flow.
+ *
+ * This private predicate is only used in `exploratoryLoadStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
+ */
+private string getAForwardRelevantLoadProperty(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node previous | isRelevantForward(previous, cfg) |
+    basicStoreStep(previous, _, result) or
+    isAdditionalStoreStep(previous, _, result, cfg)
+  )
+  or
+  result = getAPropertyUsedInLoadStore(cfg)
+}
+
+/**
+ * Gets a property that is used in an `additionalLoadStoreStep` where the loaded and stored property are not the same.
+ *
+ * The properties from this predicate are used as a white-list of properties for load/store steps that should always be considered in the exploratory flow.
+ */
+private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
+  exists(string loadProp | not loadProp = result |
+    isAdditionalLoadStoreStep(_, _, loadProp, result, cfg)
+  )
+  or
+  exists(string storeProp | not storeProp = result |
+    isAdditionalLoadStoreStep(_, _, result, storeProp, cfg)
+  )
 }
 
 /**
