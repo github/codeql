@@ -132,6 +132,16 @@
 | Taint externally controlled string | test.py:112 | test.py:112:9:112:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:112 | test.py:112:9:112:30 | Attribute() |  |
 | Taint externally controlled string | test.py:115 | test.py:115:9:115:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:115 | test.py:115:9:115:30 | Attribute() |  |
 | Taint externally controlled string | test.py:116 | test.py:116:9:116:22 | tainted_string |  |  -->  | Taint externally controlled string | test.py:116 | test.py:116:9:116:33 | Attribute() |  |
+| Taint externally controlled string | test.py:127 | test.py:127:5:127:29 | For |  |  -->  | Taint externally controlled string | test.py:128 | test.py:128:14:128:17 | line |  |
+| Taint file[externally controlled string] | test.py:120 | test.py:120:20:120:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:122 | test.py:122:9:122:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:120 | test.py:120:20:120:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:123 | test.py:123:9:123:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:120 | test.py:120:20:120:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:124 | test.py:124:9:124:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:120 | test.py:120:20:120:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:125 | test.py:125:9:125:20 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:120 | test.py:120:20:120:31 | TAINTED_FILE |  |  -->  | Taint file[externally controlled string] | test.py:127 | test.py:127:17:127:28 | tainted_file |  |
+| Taint file[externally controlled string] | test.py:123 | test.py:123:9:123:20 | tainted_file |  |  -->  | Taint externally controlled string | test.py:123 | test.py:123:9:123:27 | Attribute() |  |
+| Taint file[externally controlled string] | test.py:124 | test.py:124:9:124:20 | tainted_file |  |  -->  | Taint externally controlled string | test.py:124 | test.py:124:9:124:31 | Attribute() |  |
+| Taint file[externally controlled string] | test.py:125 | test.py:125:9:125:20 | tainted_file |  |  -->  | Taint [externally controlled string] | test.py:125 | test.py:125:9:125:32 | Attribute() |  |
+| Taint file[externally controlled string] | test.py:127 | test.py:127:17:127:28 | tainted_file |  |  -->  | Taint externally controlled string | test.py:127 | test.py:127:5:127:29 | For |  |
 | Taint json[externally controlled string] | test.py:6 | test.py:6:20:6:45 | Attribute() |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint externally controlled string | test.py:7 | test.py:7:9:7:25 | Subscript |  |
 | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:20 | tainted_json |  |  -->  | Taint json[externally controlled string] | test.py:7 | test.py:7:9:7:25 | Subscript |  |

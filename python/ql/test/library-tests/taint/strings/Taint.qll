@@ -34,3 +34,11 @@ class ExceptionInfoSource extends TaintSource {
 
     override string toString() { result = "Exception info source" }
 }
+
+class ExternalFileObjectSource extends TaintSource {
+    ExternalFileObjectSource() { this.(NameNode).getId() = "TAINTED_FILE" }
+
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalFileObject }
+
+    override string toString() { result = "Tainted file source" }
+}

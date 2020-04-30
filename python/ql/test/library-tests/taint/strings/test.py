@@ -115,3 +115,14 @@ def test_str_methods():
         tainted_string.upper(),
         tainted_string.zfill(100),
     )
+
+def test_tainted_file():
+    tainted_file = TAINTED_FILE
+    test(
+        tainted_file,
+        tainted_file.read(),
+        tainted_file.readline(),
+        tainted_file.readlines(),
+    )
+    for line in tainted_file:
+        test(line)

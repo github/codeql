@@ -183,14 +183,20 @@ private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
 
 /** A kind of "taint", representing an open file-like object from an external source. */
 class ExternalFileObject extends TaintKind {
-    ExternalFileObject() { this = "file[" + any(ExternalStringKind key) + "]" }
+    ExternalStringKind valueKind;
+
+    ExternalFileObject() { this = "file[" + valueKind + "]" }
 
     /** Gets the taint kind for the contents of this file */
-    TaintKind getValue() { this = "file[" + result + "]" }
+    TaintKind getValue() { result = valueKind }
 
     override TaintKind getTaintOfMethodResult(string name) {
-        name = "read" and result = this.getValue()
+        name in ["read", "readline"] and result = this.getValue()
+        or
+        name = "readlines" and result.(SequenceKind).getItem() = this.getValue()
     }
+
+    override TaintKind getTaintForIteration() { result = this.getValue() }
 }
 
 /**
