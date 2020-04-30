@@ -43,16 +43,27 @@ storeIsPostUpdate
 argHasPostUpdate
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:56:13:56:15 | call to get | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:57:17:57:23 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:57:28:57:30 | call to get | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:64:21:64:28 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:73:25:73:32 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:126:12:126:18 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:160:32:160:59 | new | ArgumentNode is missing PostUpdateNode. |
+| D.cpp:22:25:22:31 | call to getElem | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:29:24:29:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:36:24:36:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:43:24:43:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:50:24:50:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:57:25:57:41 | new | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:50:17:50:26 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:51:8:51:8 | s | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:51:10:51:20 | call to getDirectly | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:56:19:56:28 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:57:8:57:8 | s | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:57:10:57:22 | call to getIndirectly | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:62:25:62:34 | call to user_input | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:63:8:63:8 | s | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:63:10:63:28 | call to getThroughNonMember | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:68:21:68:30 | call to user_input | ArgumentNode is missing PostUpdateNode. |
+| by_reference.cpp:69:8:69:20 | call to nonMemberGetA | ArgumentNode is missing PostUpdateNode. |

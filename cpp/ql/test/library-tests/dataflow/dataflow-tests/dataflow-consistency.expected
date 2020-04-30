@@ -23,6 +23,7 @@ postIsInSameCallable
 reverseRead
 storeIsPostUpdate
 argHasPostUpdate
+| dispatch.cpp:77:21:77:34 | call to allocateBottom | ArgumentNode is missing PostUpdateNode. |
 | dispatch.cpp:78:23:78:39 | * ... | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:18:7:18:7 | a | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:25:2:25:2 | b | ArgumentNode is missing PostUpdateNode. |
