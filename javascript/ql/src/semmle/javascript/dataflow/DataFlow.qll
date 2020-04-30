@@ -22,6 +22,7 @@ import javascript
 private import internal.CallGraphs
 private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
+private import internal.AnalyzedParameters
 
 module DataFlow {
   /**
@@ -1527,8 +1528,12 @@ module DataFlow {
       e instanceof TaggedTemplateExpr
       or
       e instanceof Parameter and
-      not localArgumentPassing(_, e)
+      not localArgumentPassing(_, e) and
+      not isAnalyzedParameter(e) and
+      not e.(Parameter).isRestParameter()
     )
+    or
+    nd.(AnalyzedParameter).hasIncompleteness(cause)
     or
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"

@@ -6,6 +6,7 @@
 
 private import javascript
 private import AbstractValuesImpl
+private import AnalyzedParameters
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.Refinements
 
@@ -140,41 +141,6 @@ class AnalyzedVarDef extends VarDef {
   TopLevel getTopLevel() { result = this.(ASTNode).getTopLevel() }
 }
 
-private predicate isAnalyzedParameter(Parameter p) {
-  exists(FunctionWithAnalyzedParameters f, int parmIdx | p = f.getParameter(parmIdx) |
-    // we cannot track flow into rest parameters
-    not p.(Parameter).isRestParameter()
-  )
-}
-
-private class AnalyzedParameter extends AnalyzedValueNode {
-  override Parameter astNode;
-
-  AnalyzedParameter() { isAnalyzedParameter(astNode) }
-
-  FunctionWithAnalyzedParameters getFunction() { astNode = result.getAParameter() }
-
-  override AbstractValue getALocalValue() {
-    exists(DataFlow::AnalyzedNode pred |
-      getFunction().argumentPassing(astNode, pred.asExpr()) and
-      result = pred.getALocalValue()
-    )
-    or
-    not getFunction().mayReceiveArgument(astNode) and
-    result = TAbstractUndefined()
-    or
-    result = astNode.getDefault().analyze().getALocalValue()
-  }
-
-  override predicate isIncomplete(DataFlow::Incompleteness cause) {
-    getFunction().isIncomplete(cause)
-    or
-    not getFunction().argumentPassing(astNode, _) and
-    getFunction().mayReceiveArgument(astNode) and
-    cause = "call"
-  }
-}
-
 /**
  * Flow analysis for simple parameters of selected functions.
  */
@@ -193,8 +159,6 @@ private class AnalyzedRestParameter extends AnalyzedValueNode {
   AnalyzedRestParameter() { astNode.(Parameter).isRestParameter() }
 
   override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
-
-  override predicate isIncomplete(DataFlow::Incompleteness cause) { none() }
 }
 
 /**
@@ -679,7 +643,7 @@ abstract class FunctionWithAnalyzedParameters extends Function {
    * Holds if `p` is a parameter of this function and `arg` is
    * the corresponding argument.
    */
-  abstract predicate argumentPassing(SimpleParameter p, Expr arg);
+  abstract predicate argumentPassing(Parameter p, Expr arg);
 
   /**
    * Holds if `p` is a parameter of this function that may receive a value from an argument.
@@ -699,7 +663,7 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
    */
   abstract DataFlow::InvokeNode getAnInvocation();
 
-  override predicate argumentPassing(SimpleParameter p, Expr arg) {
+  override predicate argumentPassing(Parameter p, Expr arg) {
     exists(DataFlow::InvokeNode invk, int argIdx | invk = getAnInvocation() |
       p = getParameter(argIdx) and
       not p.isRestParameter() and
