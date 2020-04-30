@@ -29,6 +29,16 @@ private class SystemCommandExecutors extends SystemCommandExecution::Range, Data
       pkg = "os/exec" and name = "Command" and cmdArg = 0
       or
       pkg = "os/exec" and name = "CommandContext" and cmdArg = 1
+      or
+      // NOTE: syscall.ForkExec exists only on unix.
+      // NOTE: syscall.CreateProcess and syscall.CreateProcessAsUser exist only on windows.
+      pkg = "syscall" and
+      (name = "Exec" or name = "ForkExec" or name = "StartProcess" or name = "CreateProcess") and
+      cmdArg = 0
+      or
+      pkg = "syscall" and
+      name = "CreateProcessAsUser" and
+      cmdArg = 1
     )
   }
 
