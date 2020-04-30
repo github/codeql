@@ -2,12 +2,16 @@
 
 ## General improvements
 
+* Support for the following frameworks and libraries has been improved:
+  - [jGrowl](https://github.com/stanlemon/jGrowl)
+  - [jQuery](https://jquery.com/)
 
 ## New queries
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Cross-site scripting through DOM (`js/xss-through-dom`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities where existing text from the DOM is used as HTML. Results are not shown on LGTM by default. |
+| Incomplete HTML attribute sanitization (`js/incomplete-html-attribute-sanitization`) | security, external/cwe/cwe-20, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities due to incomplete sanitization of HTML meta-characters. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 

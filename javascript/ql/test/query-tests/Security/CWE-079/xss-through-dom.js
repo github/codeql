@@ -67,4 +67,12 @@
 	if(myValue.property) {
 		$("#id").get(0).innerHTML = myValue; // OK.
 	}
+	
+	$.jGrowl($("input").get(0).name); // NOT OK.
+	
+    let selector = $("input").get(0).name;
+    if (something()) {
+        selector = $("textarea").val || ''
+    }
+    $(selector); // NOT OK
 })();

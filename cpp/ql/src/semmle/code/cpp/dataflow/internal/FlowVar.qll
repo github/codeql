@@ -113,44 +113,39 @@ class FlowVar extends TFlowVar {
  * ```
  */
 private module PartialDefinitions {
-  private newtype TPartialDefinition =
-    TExplicitFieldStoreQualifier(Expr qualifier, ControlFlowNode node) {
-      exists(FieldAccess fa | qualifier = fa.getQualifier() |
+  private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
+    assignmentLikeOperation(node, _, fa, _)
+  }
+
+  class PartialDefinition extends Expr {
+    ControlFlowNode node;
+
+    PartialDefinition() {
+      exists(FieldAccess fa | this = fa.getQualifier() |
+        // `fa = ...`, `fa += ...`, etc.
         isInstanceFieldWrite(fa, node)
         or
+        // `fa.a = ...`, `f(&fa)`, etc.
         exists(PartialDefinition pd |
           node = pd.getSubBasicBlockStart() and
           fa = pd.getDefinedExpr()
         )
       )
-    } or
-    TExplicitCallQualifier(Expr qualifier) {
+      or
+      // `e.f(...)`
       exists(Call call |
-        qualifier = call.getQualifier() and
+        this = call.getQualifier() and
         not call.getTarget().hasSpecifier("const")
-      )
-    } or
-    TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
-
-  private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
-    assignmentLikeOperation(node, _, fa, _)
-  }
-
-  class PartialDefinition extends TPartialDefinition {
-    Expr definedExpr;
-    ControlFlowNode node;
-
-    PartialDefinition() {
-      this = TExplicitFieldStoreQualifier(definedExpr, node)
+      ) and
+      node = this
       or
-      this = TExplicitCallQualifier(definedExpr) and node = definedExpr
-      or
-      this = TReferenceArgument(definedExpr, node)
+      // `f(e)`, `f(&e)`, etc.
+      referenceArgument(node, this)
     }
 
-    predicate partiallyDefines(Variable v) { definedExpr = v.getAnAccess() }
+    predicate partiallyDefines(Variable v) { this = v.getAnAccess() }
 
-    predicate partiallyDefinesThis(ThisExpr e) { definedExpr = e }
+    predicate partiallyDefinesThis(ThisExpr e) { this = e }
 
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
@@ -165,33 +160,29 @@ private module PartialDefinitions {
      * ```
      * The expression `x` is being partially defined.
      */
-    Expr getDefinedExpr() { result = definedExpr }
+    Expr getDefinedExpr() { result = this }
 
-    Location getLocation() {
-      not exists(definedExpr.getLocation()) and result = definedExpr.getParent().getLocation()
+    /**
+     * Gets the location of this element, adjusted to avoid unknown locations
+     * on compiler-generated `ThisExpr`s.
+     */
+    Location getActualLocation() {
+      not exists(this.getLocation()) and result = this.getParent().getLocation()
       or
-      definedExpr.getLocation() instanceof UnknownLocation and
-      result = definedExpr.getParent().getLocation()
+      this.getLocation() instanceof UnknownLocation and
+      result = this.getParent().getLocation()
       or
-      result = definedExpr.getLocation() and not result instanceof UnknownLocation
+      result = this.getLocation() and not result instanceof UnknownLocation
     }
-
-    string toString() { result = "partial def of " + definedExpr }
   }
 
   /**
    * A partial definition that's a definition by reference.
    */
-  class DefinitionByReference extends PartialDefinition, TReferenceArgument {
+  class DefinitionByReference extends PartialDefinition {
     VariableAccess va;
 
-    DefinitionByReference() {
-      // `this` is not restricted in this charpred. That's because the full
-      // extent of this class includes the charpred of the superclass, which
-      // relates `this` to `definedExpr`, and `va` is functionally determined
-      // by `definedExpr`.
-      referenceArgument(va, definedExpr)
-    }
+    DefinitionByReference() { referenceArgument(va, this) }
 
     VariableAccess getVariableAccess() { result = va }
 

@@ -220,11 +220,16 @@ abstract class JavaSecurityAlgoSpec extends CryptoAlgoSpec { }
 class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
   JavaSecurityMessageDigest() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().getQualifiedName() = "java.security.MessageDigest"
+      c.getDeclaringType().hasQualifiedName("java.security", "MessageDigest")
+    )
+    or
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
+      m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(Call).getArgument(0) }
 }
 
 class JavaSecuritySignature extends JavaSecurityAlgoSpec {

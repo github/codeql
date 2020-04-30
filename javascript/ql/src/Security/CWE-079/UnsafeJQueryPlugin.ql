@@ -16,7 +16,8 @@ import semmle.javascript.security.dataflow.UnsafeJQueryPlugin::UnsafeJQueryPlugi
 import DataFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, JQueryPluginMethod plugin
+  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
+  JQuery::JQueryPluginMethod plugin
 where
   cfg.hasFlowPath(source, sink) and
   source.getNode().(Source).getPlugin() = plugin and

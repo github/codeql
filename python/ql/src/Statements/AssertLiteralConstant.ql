@@ -17,7 +17,7 @@ import semmle.python.filters.Tests
 from Assert a, string value
 where
     /* Exclude asserts inside test cases */
-    not a.getScope() instanceof Test and
+    not a.getScope().getScope*() instanceof TestScope and
     exists(Expr test | test = a.getTest() |
         value = test.(IntegerLiteral).getN()
         or

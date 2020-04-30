@@ -80,6 +80,7 @@ module DomBasedXss {
         not exists(DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(this, prefix) and
           strval = prefix.getStringValue() and
+          not strval = "" and
           not strval.regexpMatch("\\s*<.*")
         ) and
         not DOM::locationRef().flowsTo(this)
@@ -99,6 +100,8 @@ module DomBasedXss {
       this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
       or
       this = any(Handlebars::SafeString s).getAnArgument()
+      or
+      this = any(JQuery::MethodCall call | call.getMethodName() = "jGrowl").getArgument(0)
     }
   }
 

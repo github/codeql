@@ -43,7 +43,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  Function getEnclosingCallable() { result = this.getFunction() }
+  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -299,7 +299,7 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override Location getLocation() { result = pd.getLocation() }
+  override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
