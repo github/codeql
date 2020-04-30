@@ -213,6 +213,25 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
     // `getNodeForSource`.
     node = DataFlow::definitionByReferenceNodeFromArgument(source)
   )
+  or
+  // don't use dataflow into binary instructions if both operands are unpredictable
+  exists(BinaryInstruction iTo |
+    iTo = node.asInstruction() and
+    not predictableInstruction(iTo.getLeft()) and
+    not predictableInstruction(iTo.getRight())
+  )
+  or
+  // don't use dataflow through calls to pure functions if two or more operands
+  // are unpredictable
+  exists(Instruction iFrom1, Instruction iFrom2, CallInstruction iTo |
+    iTo = node.asInstruction() and
+    isPureFunction(iTo.getStaticCallTarget().getName()) and
+    iFrom1 = iTo.getAnArgument() and
+    iFrom2 = iTo.getAnArgument() and
+    not predictableInstruction(iFrom1) and
+    not predictableInstruction(iFrom2) and
+    iFrom1 != iFrom2
+  )
 }
 
 cached
