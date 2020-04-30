@@ -180,18 +180,32 @@ private class ArrayContent extends Content, TArrayContent {
   override Type getType() { none() }
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
- * Thus, `node2` references an object with a field `f` that contains the
- * value of `node1`.
- */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    store = node2.asInstruction() and
+    store.getDestinationAddress() = fa and
+    store.getSourceValue() = node1.asInstruction() and
+    f.(FieldContent).getField() = fa.getField()
+  )
+}
+
+private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
   exists(FieldAddressInstruction fa, StoreInstruction store |
     node1.asInstruction() = store and
     store.getDestinationAddress() = fa and
     node2.asInstruction().(ChiInstruction).getPartial() = store and
     f.(FieldContent).getField() = fa.getField()
   )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+ * Thus, `node2` references an object with a field `f` that contains the
+ * value of `node1`.
+ */
+predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+  storeStepNoChi(node1, f, node2) or
+  storeStepChi(node1, f, node2)
 }
 
 /**

@@ -154,14 +154,17 @@ predicate too_few_args(Call call, Value callable, int limit) {
     not exists(call.getKwargs()) and
     arg_count(call) < limit and
     exists(FunctionValue func | func = get_function_or_initializer(callable) |
-        call = func.getACall().getNode() and
+        call = func.getAFunctionCall().getNode() and
         limit = func.minParameters() and
-        // The combination of misuse of `mox.Mox().StubOutWithMock()`
-        // and a bug in mox's implementation of methods results in having to
-        // pass 1 too few arguments to the mocked function.
+        /*
+         * The combination of misuse of `mox.Mox().StubOutWithMock()`
+         * and a bug in mox's implementation of methods results in having to
+         * pass 1 too few arguments to the mocked function.
+         */
+
         not (useOfMoxInModule(call.getEnclosingModule()) and func.isNormalMethod())
         or
-        call = func.getACall().getNode() and limit = func.minParameters() - 1
+        call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
         or
         callable instanceof ClassValue and
         call.getAFlowNode() = get_a_call(callable) and
@@ -198,9 +201,9 @@ predicate too_many_args(Call call, Value callable, int limit) {
         not func.getScope().hasVarArg() and
         limit >= 0
     |
-        call = func.getACall().getNode() and limit = func.maxParameters()
+        call = func.getAFunctionCall().getNode() and limit = func.maxParameters()
         or
-        call = func.getACall().getNode() and limit = func.maxParameters() - 1
+        call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
         or
         callable instanceof ClassValue and
         call.getAFlowNode() = get_a_call(callable) and
@@ -253,4 +256,9 @@ predicate overridden_call_objectapi(FunctionObject func, FunctionObject overridi
 predicate overridden_call(FunctionValue func, FunctionValue overriding, Call call) {
     overriding.overrides(func) and
     overriding.getACall().getNode() = call
+}
+
+/** Holds if `func` will raise a `NotImplemented` error. */
+predicate isAbstract(FunctionValue func) {
+    func.getARaisedType() = ClassValue::notImplementedError()
 }

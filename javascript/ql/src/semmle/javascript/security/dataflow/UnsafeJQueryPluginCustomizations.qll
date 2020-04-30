@@ -18,7 +18,7 @@ module UnsafeJQueryPlugin {
     /**
      * Gets the plugin that this source is used in.
      */
-    abstract JQueryPluginMethod getPlugin();
+    abstract JQuery::JQueryPluginMethod getPlugin();
   }
 
   /**
@@ -50,49 +50,6 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>`.
-   */
-  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
-    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
-      fn = jquery().getAPropertyRead("fn") and
-      (
-        write = fn.getAPropertyWrite()
-        or
-        exists(ExtendCall extend, DataFlow::SourceNode source |
-          fn.flowsTo(extend.getDestinationOperand()) and
-          source = extend.getASourceOperand() and
-          write = source.getAPropertyWrite()
-        )
-      ) and
-      plugin = write.getRhs() and
-      (
-        pluginName = write.getPropertyName() or
-        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
-      )
-    )
-  }
-
-  /**
-   * Gets a node that is registered as a jQuery plugin method at `def`.
-   */
-  private DataFlow::SourceNode getAJQueryPluginMethod(
-    DataFlow::TypeBackTracker t, DataFlow::Node def
-  ) {
-    t.start() and
-    jQueryPluginDefinition(_, def) and
-    result.flowsTo(def)
-    or
-    exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
-  }
-
-  /**
-   * Gets a function that is registered as a jQuery plugin method at `def`.
-   */
-  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
-    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
-  }
-
-  /**
    * Gets an operand to `extend`.
    */
   private DataFlow::SourceNode getAnExtendOperand(DataFlow::TypeBackTracker t, ExtendCall extend) {
@@ -110,28 +67,9 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * A function that is registered as a jQuery plugin method.
-   */
-  class JQueryPluginMethod extends DataFlow::FunctionNode {
-    string pluginName;
-
-    JQueryPluginMethod() {
-      exists(DataFlow::Node def |
-        jQueryPluginDefinition(pluginName, def) and
-        this = getAJQueryPluginMethod(def)
-      )
-    }
-
-    /**
-     * Gets the name of this plugin.
-     */
-    string getPluginName() { result = pluginName }
-  }
-
-  /**
    * Holds if `plugin` has a default option defined at `def`.
    */
-  private predicate hasDefaultOption(JQueryPluginMethod plugin, DataFlow::PropWrite def) {
+  private predicate hasDefaultOption(JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite def) {
     exists(ExtendCall extend, JQueryPluginOptions options, DataFlow::SourceNode default |
       options.getPlugin() = plugin and
       options = getAnExtendOperand(extend) and
@@ -144,7 +82,7 @@ module UnsafeJQueryPlugin {
    * The client-provided options object for a jQuery plugin.
    */
   class JQueryPluginOptions extends DataFlow::ParameterNode {
-    JQueryPluginMethod method;
+    JQuery::JQueryPluginMethod method;
 
     JQueryPluginOptions() {
       exists(string optionsPattern |
@@ -165,7 +103,7 @@ module UnsafeJQueryPlugin {
     /**
      * Gets the plugin method that these options are used in.
      */
-    JQueryPluginMethod getPlugin() { result = method }
+    JQuery::JQueryPluginMethod getPlugin() { result = method }
   }
 
   /**
@@ -224,7 +162,9 @@ module UnsafeJQueryPlugin {
    * The client-provided options object for a jQuery plugin, considered as a source for unsafe jQuery plugins.
    */
   class JQueryPluginOptionsAsSource extends Source, JQueryPluginOptions {
-    override JQueryPluginMethod getPlugin() { result = JQueryPluginOptions.super.getPlugin() }
+    override JQuery::JQueryPluginMethod getPlugin() {
+      result = JQueryPluginOptions.super.getPlugin()
+    }
   }
 
   /**
@@ -246,7 +186,7 @@ module UnsafeJQueryPlugin {
   /**
    * Holds if `plugin` likely expects `sink` to be treated as a HTML fragment.
    */
-  predicate isLikelyIntentionalHtmlSink(JQueryPluginMethod plugin, Sink sink) {
+  predicate isLikelyIntentionalHtmlSink(JQuery::JQueryPluginMethod plugin, Sink sink) {
     exists(DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
       hasDefaultOption(plugin, defaultDef) and
       defaultDef.getPropertyName() = finalRead.getPropertyName() and

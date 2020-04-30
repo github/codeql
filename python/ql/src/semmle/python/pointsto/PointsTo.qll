@@ -114,7 +114,7 @@ module PointsTo {
 
     /* Backwards compatibility */
     cached
-    deprecated predicate points_to(
+    predicate points_to(
         ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin
     ) {
         exists(ObjectInternal value |

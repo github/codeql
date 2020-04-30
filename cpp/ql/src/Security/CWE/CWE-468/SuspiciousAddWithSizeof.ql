@@ -28,5 +28,5 @@ where
   // is probably a mistake.
   addWithSizeof(e, sizeofExpr, _) and not isCharSzPtrExpr(e)
 select sizeofExpr,
-  "Suspicious sizeof offset in a pointer arithmetic expression. " + "The type of the pointer is " +
-    e.getFullyConverted().getType().toString() + "."
+  "Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@.",
+  e.getFullyConverted().getType() as t, t.toString()

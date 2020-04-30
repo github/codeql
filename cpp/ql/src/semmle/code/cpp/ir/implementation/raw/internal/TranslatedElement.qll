@@ -200,7 +200,11 @@ private predicate usedAsCondition(Expr expr) {
   or
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
-  exists(ConditionalExpr condExpr | condExpr.getCondition().getFullyConverted() = expr)
+  exists(ConditionalExpr condExpr |
+    // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
+    // be reused as a value if the condition is true.
+    condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
+  )
   or
   exists(NotExpr notExpr |
     notExpr.getOperand().getFullyConverted() = expr and
