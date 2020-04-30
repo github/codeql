@@ -156,7 +156,7 @@ The clause ``cmp.getOp(0) instanceof Is and cmp.getComparator(0) = literal`` che
 
    Tip
 
-   We have to use ``cmp.getOp(0)`` and ``cmp.getComparator(0)``\ as there is no ``cmp.getOp()`` or ``cmp.getComparator()``. The reason for this is that a ``Compare`` expression can have multiple operators. For example, the expression ``3 < x < 7`` has two operators and two comparators. You use ``cmp.getComparator(0)`` to get the first comparator (in this example the ``3``) and ``cmp.getComparator(1)`` to get the second comparator (in this example the ``7``).
+   We have to use ``cmp.getOp(0)`` and ``cmp.getComparator(0)``\ as there is no ``cmp.getOp()`` or ``cmp.getComparator()``. The reason for this is that a ``Compare`` expression can have multiple operators. For example, the expression ``3 < x < 7`` has two operators and two comparators. You use ``cmp.getComparator(0)`` to get the first comparator (in this example the ``x``) and ``cmp.getComparator(1)`` to get the second comparator (in this example the ``7``).
 
 Example finding duplicates in dictionary literals
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
