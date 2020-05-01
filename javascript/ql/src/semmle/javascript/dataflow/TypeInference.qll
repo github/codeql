@@ -256,13 +256,15 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
    * account for `finally` blocks and does not check reachability.
    */
   private predicate mayReturnImplicitly() {
-    exists(ConcreteControlFlowNode final |
-      final.getContainer() = astNode and
-      final.isAFinalNode() and
-      not final instanceof ReturnStmt and
-      not final instanceof ThrowStmt
-    )
+    terminalNode(astNode, any(ExprOrStmt st))
   }
+}
+
+pragma[noinline]
+private predicate terminalNode(Function f, ControlFlowNode final) {
+  final.isAFinalNodeOfContainer(f) and
+  not final instanceof ReturnStmt and
+  not final instanceof ThrowStmt
 }
 
 /**
