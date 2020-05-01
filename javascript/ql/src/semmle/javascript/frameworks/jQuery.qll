@@ -51,7 +51,9 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
 bindingset[methodName, call]
 private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodName) {
   not (
-    methodName = "val" // `jQuery.val()`
+    neverReturnsJQuery(methodName)
+    or
+    methodName = "val" and call.getNumArgument() = 0 // `jQuery.val()`
     or
     methodName = ["html", "text"] and call.getNumArgument() = 0 // `jQuery.html()`/`jQuery.text()`
     or
@@ -59,20 +61,23 @@ private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodNam
     methodName = ["attr", "prop"] and
     call.getNumArgument() = 1 and
     call.getArgument(0).mayHaveStringValue(_)
-    or
-    // `jQuery.data()`
-    methodName = "data" and call.getNumArgument() = 0
-    or
-    // `jQuery.data(key)`
-    methodName = "data" and call.getNumArgument() = 1 and call.getArgument(0).mayHaveStringValue(_)
-    or
-    methodName = ["Event", "Deferred"] // $.Event / $.Deferred
-    or
-    methodName = "trim" // $.trim()
-    or
-    // `$.ajax`, and related methods.
-    // note: there are 2 different `get` methods, and none of them return a jQuery object.
-    methodName = ["ajax", "get", "getJSON", "getScript", "post", "load"]
+  )
+}
+
+/**
+ * Holds if a jQuery method named `name` never returns a JQuery object.
+ */
+private predicate neverReturnsJQuery(string name) {
+  forex(ExternalMemberDecl decl |
+    decl.getBaseName() = "jQuery" and
+    decl.getName() = name
+  |
+    not decl
+        .getDocumentation()
+        .getATagByTitle("return")
+        .getType()
+        .getAnUnderlyingType()
+        .hasQualifiedName("jQuery")
   )
 }
 
