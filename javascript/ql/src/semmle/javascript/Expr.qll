@@ -22,12 +22,6 @@ class ExprOrType extends @exprortype, Documentable {
   Function getEnclosingFunction() { result = getContainer() }
 
   /**
-   * Gets the statement container (function or toplevel) in which
-   * this expression or type appears.
-   */
-  StmtContainer getContainer() { exprContainers(this, result) }
-
-  /**
    * Gets the JSDoc comment associated with this expression or type or its parent statement, if any.
    */
   override JSDoc getDocumentation() {
@@ -107,12 +101,6 @@ class ExprOrType extends @exprortype, Documentable {
  * ```
  */
 class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
-  /**
-   * Gets the statement container (function or toplevel) in which
-   * this expression appears.
-   */
-  override StmtContainer getContainer() { exprContainers(this, result) }
-
   /** Gets this expression, with any surrounding parentheses removed. */
   override Expr stripParens() { result = this }
 
@@ -632,9 +620,6 @@ class Property extends @property, Documentable {
 
   /** Gets the (0-based) index at which this property appears in its enclosing literal. */
   int getIndex() { this = getObjectExpr().getProperty(result) }
-
-  /** Gets the function or toplevel in which this property occurs. */
-  StmtContainer getContainer() { result = getObjectExpr().getContainer() }
 
   /**
    * Holds if this property is impure, that is, the evaluation of its name or

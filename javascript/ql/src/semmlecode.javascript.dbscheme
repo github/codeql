@@ -233,6 +233,7 @@ isDelegating (int yield: @yieldexpr ref);
 @exprparent = @exprorstmt | @property | @functiontypeexpr;
 @arraylike = @arrayexpr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
+@node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
 
 case @expr.kind of
    0 = @label
