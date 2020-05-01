@@ -234,23 +234,28 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
     )
   }
 
+  pragma[inline]
+  private Stmt getRawEnclosingStmt(Expr e) {
+    // For performance reasons, we need the enclosing statement without overrides
+    enclosingStmt(e, result)
+  }
+
   /**
    * Gets the data-flow node where exceptions thrown by this expression will
    * propagate if this expression causes an exception to be thrown.
    */
+  pragma[inline]
   DataFlow::Node getExceptionTarget() {
-    if exists(this.getEnclosingStmt().getEnclosingTryCatchStmt())
-    then
-      result =
-        DataFlow::parameterNode(this
-              .getEnclosingStmt()
-              .getEnclosingTryCatchStmt()
-              .getACatchClause()
-              .getAParameter())
-    else
-      result =
-        any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
+    result = getCatchParameterFromStmt(getRawEnclosingStmt(this))
+    or
+    not exists(getCatchParameterFromStmt(getRawEnclosingStmt(this))) and
+    result = any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
   }
+}
+
+cached
+private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
+  result = DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
 }
 
 /**
