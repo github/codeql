@@ -37,10 +37,43 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
     exists(JQuery::MethodCall jq |
       this.flow().getALocalSource() = jq and
-      // `jQuery.val()` does _not_ return a jQuery object
-      jq.getMethodName() != "val"
+      returnsAJqueryObject(jq, jq.getMethodName())
     )
   }
+}
+
+/**
+ * Holds if the jQuery method call `call`, with name `methodName`, returns a JQuery object.
+ * 
+ * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion. 
+ * The not is placed inside the predicate to avoid non-monotonic recursion. 
+ */
+bindingset[methodName, call]
+private predicate returnsAJqueryObject(DataFlow::CallNode call, string methodName) {
+  not (
+    methodName = "val" // `jQuery.val()`
+    or
+    methodName = ["html", "text"] and call.getNumArgument() = 0 // `jQuery.html()`/`jQuery.text()`
+    or
+    // `jQuery.attr(key)`/`jQuery.prop(key)`
+    methodName = ["attr", "prop"] and
+    call.getNumArgument() = 1 and
+    call.getArgument(0).mayHaveStringValue(_)
+    or
+    // `jQuery.data()`
+    methodName = "data" and call.getNumArgument() = 0
+    or
+    // `jQuery.data(key)`
+    methodName = "data" and call.getNumArgument() = 1 and call.getArgument(0).mayHaveStringValue(_)
+    or
+    methodName = ["Event", "Deferred"] // $.Event / $.Deferred
+    or
+    methodName = "trim" // $.trim()
+    or
+    // `$.ajax`, and related methods. 
+    // note: there are 2 different `get` methods, and none of them return a jQuery object.
+    methodName = ["ajax", "get", "getJSON", "getScript", "post", "load"]
+  )
 }
 
 /**
