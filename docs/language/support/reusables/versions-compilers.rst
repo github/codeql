@@ -13,7 +13,7 @@
    Arm Compiler 5 [2]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
    C#,C# up to 8.0. with .NET up to 4.8 [3]_,"Microsoft Visual Studio up to 2019, 
 
-   .NET Core up to 3.0","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET Core up to 3.1","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.14", "Go 1.11 or more recent", ``.go``
    Java,"Java 6 to 14 [4]_","javac (OpenJDK and Oracle JDK),
 
