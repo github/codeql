@@ -1,3 +1,7 @@
+/**
+ * Defines the set of possible `OperandTag`s, which are used to identify the role each `Operand`
+ * plays in the evaluation of its `Instruction`.
+ */
 private import OperandTagInternal
 
 private newtype TOperandTag =
@@ -24,10 +28,18 @@ private newtype TOperandTag =
  * an `Instruction` is determined by the instruction's opcode.
  */
 abstract class OperandTag extends TOperandTag {
+  /** Gets a textual representation of this operand tag */
   abstract string toString();
 
+  /**
+   * Gets an integer representing the order in which this operand should appear in the operand list
+   * of an instruction when printing the IR.
+   */
   abstract int getSortOrder();
 
+  /**
+   * Gets a label that will appear before the operand when printing the IR.
+   */
   string getLabel() { result = "" }
 }
 
