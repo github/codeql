@@ -115,17 +115,28 @@ module Closure {
     override DefaultClosureModuleDeclaration range;
   }
 
+  private GlobalVariable googVariable() {
+    variables(result, "goog", any(GlobalScope sc))
+  }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExpr() {
+    result.getReceiver() = googVariable().getAnAccess() and
+    result.getMethodName() = ["module", "declareModuleId"]
+  }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExprInContainer(StmtContainer container) {
+    result.getReceiver() = googModuleDeclExpr() and
+    container = result.getContainer()
+  }
+
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
     ClosureModule() {
-      // Use AST-based predicate to cut recursive dependencies.
-      exists(MethodCallExpr call |
-        getAStmt().(ExprStmt).getExpr() = call and
-        call.getReceiver().(GlobalVarAccess).getName() = "goog" and
-        (call.getMethodName() = "module" or call.getMethodName() = "declareModuleId")
-      )
+      exists(googModuleDeclExprInContainer(this))
     }
 
     /**
