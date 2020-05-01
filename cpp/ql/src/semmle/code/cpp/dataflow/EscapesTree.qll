@@ -223,7 +223,7 @@ private predicate lvalueMayEscapeMutablyAt(Expr e) {
   lvalueMayEscapeAt(e) and
   // A qualifier of a call to a const member function is converted to a const
   // class type.
-  not e.isConstant()
+  not e.getType().isConst()
 }
 
 private predicate addressFromVariableAccess(VariableAccess va, Expr e) {
