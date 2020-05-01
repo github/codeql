@@ -190,14 +190,15 @@ class Instruction extends Construction::TInstruction {
   final Language::Location getLocation() { result = getAST().getLocation() }
 
   /**
-   * Gets the `Expr` whose result is computed by this instruction, if any.
+   * Gets the  `Expr` whose result is computed by this instruction, if any. The `Expr` may be a
+   * conversion.
    */
   final Language::Expr getConvertedResultExpression() {
     result = Construction::getInstructionConvertedResultExpression(this)
   }
 
   /**
-   * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
+   * Gets the unconverted form of the `Expr` whose result is computed by this instruction, if any.
    */
   final Language::Expr getUnconvertedResultExpression() {
     result = Construction::getInstructionUnconvertedResultExpression(this)
