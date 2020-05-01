@@ -20,7 +20,9 @@ class MvelInjectionConfig extends TaintTracking::Configuration {
     expressionCompilerCompileStep(node1, node2) or
     createCompiledAccExpressionStep(node1, node2) or
     scriptCompileStep(node1, node2) or
-    createMvelCompiledScriptStep(node1, node2)
+    createMvelCompiledScriptStep(node1, node2) or
+    templateCompileStep(node1, node2) or
+    createTemplateCompilerStep(node1, node2)
   }
 }
 
@@ -31,7 +33,10 @@ class MvelInjectionConfig extends TaintTracking::Configuration {
 class MvelEvaluationSink extends DataFlow::ExprNode {
   MvelEvaluationSink() {
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
-      m instanceof MvelEvalMethod and
+      (
+        m instanceof MvelEvalMethod or
+        m instanceof TemplateRuntimeEvaluationMethod
+      ) and
       ma.getArgument(0) = asExpr()
     )
     or
@@ -114,7 +119,7 @@ predicate expressionCompilerCompileStep(DataFlow::Node node1, DataFlow::Node nod
  */
 predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    m instanceof MvelScriptEngineCompilationnMethod and
+    m instanceof MvelScriptEngineCompilationMethod and
     (ma = node2.asExpr() or ma.getQualifier() = node2.asExpr()) and
     ma.getArgument(0) = node1.asExpr()
   )
@@ -129,6 +134,36 @@ predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::Node node
     cc.getConstructedType() instanceof MvelCompiledScript and
     (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
     cc.getArgument(1) = node1.asExpr()
+  )
+}
+
+/**
+ * Holds if `node1` to `node2` is a dataflow step creates `TemplateCompiler`,
+ * i.e. `new TemplateCompiler(tainted)`.
+ */
+predicate createTemplateCompilerStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof TemplateCompiler and
+    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc.getArgument(0) = node1.asExpr()
+  )
+}
+
+/**
+ * Holds if `node1` to `node2` is a dataflow step that compiles a script via `TemplateCompiler`,
+ * i.e. `compiler.compile()` or `TemplateCompiler.compileTemplate(tainted)`.
+ */
+predicate templateCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    m instanceof TemplateCompilerCompileMethod and
+    ma.getQualifier() = node1.asExpr() and
+    ma = node2.asExpr()
+  )
+  or
+  exists(StaticMethodAccess ma, Method m | ma.getMethod() = m |
+    m instanceof TemplateCompilerCompileTemplateMethod and
+    (ma = node2.asExpr() or ma.getQualifier() = node2.asExpr()) and
+    ma.getArgument(0) = node1.asExpr()
   )
 }
 
@@ -216,8 +251,8 @@ class MvelScriptEngineEvaluationMethod extends Method {
 /**
  * Methods in `MvelScriptEngine` that compile a MVEL expression.
  */
-class MvelScriptEngineCompilationnMethod extends Method {
-  MvelScriptEngineCompilationnMethod() {
+class MvelScriptEngineCompilationMethod extends Method {
+  MvelScriptEngineCompilationMethod() {
     getDeclaringType() instanceof MvelScriptEngine and
     (hasName("compile") or hasName("compiledScript"))
   }
@@ -230,6 +265,36 @@ class CompiledScriptEvaluationMethod extends Method {
   CompiledScriptEvaluationMethod() {
     getDeclaringType() instanceof CompiledScript and
     hasName("eval")
+  }
+}
+
+/**
+ * Methods in `TemplateRuntime` that evaluate a MVEL template.
+ */
+class TemplateRuntimeEvaluationMethod extends Method {
+  TemplateRuntimeEvaluationMethod() {
+    getDeclaringType() instanceof TemplateRuntime and
+    (hasName("eval") or hasName("execute"))
+  }
+}
+
+/**
+ * `TemplateCompiler.compile()` method compiles a MVEL template.
+ */
+class TemplateCompilerCompileMethod extends Method {
+  TemplateCompilerCompileMethod() {
+    getDeclaringType() instanceof TemplateCompiler and
+    hasName("compile")
+  }
+}
+
+/**
+ * `TemplateCompiler.compileTemplate(tainted)` static method compiles a MVEL template.
+ */
+class TemplateCompilerCompileTemplateMethod extends Method {
+  TemplateCompilerCompileTemplateMethod() {
+    getDeclaringType() instanceof TemplateCompiler and
+    hasName("compileTemplate")
   }
 }
 
@@ -277,4 +342,12 @@ class MvelScriptEngine extends RefType {
 
 class MvelCompiledScript extends RefType {
   MvelCompiledScript() { hasQualifiedName("org.mvel2.jsr223", "MvelCompiledScript") }
+}
+
+class TemplateRuntime extends RefType {
+  TemplateRuntime() { hasQualifiedName("org.mvel2.templates", "TemplateRuntime") }
+}
+
+class TemplateCompiler extends RefType {
+  TemplateCompiler() { hasQualifiedName("org.mvel2.templates", "TemplateCompiler") }
 }
