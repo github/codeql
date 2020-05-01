@@ -821,12 +821,10 @@ private string getAForwardRelevantLoadProperty(DataFlow::Configuration cfg) {
  * The properties from this predicate are used as a white-list of properties for load/store steps that should always be considered in the exploratory flow.
  */
 private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
-  exists(string loadProp | not loadProp = result |
-    isAdditionalLoadStoreStep(_, _, loadProp, result, cfg)
-  )
-  or
-  exists(string storeProp | not storeProp = result |
-    isAdditionalLoadStoreStep(_, _, result, storeProp, cfg)
+  exists(string loadProp, string storeProp |
+    isAdditionalLoadStoreStep(_, _, loadProp, storeProp, cfg) and
+    storeProp != loadProp and
+    result = [storeProp, loadProp]
   )
 }
 
@@ -904,7 +902,9 @@ private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
 /**
  * Holds if there is backwards data-flow step from `mid` to `nd` under `cfg`.
  */
-private predicate isRelevantBackStep(DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg) {
+private predicate isRelevantBackStep(
+  DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg
+) {
   isRelevantForward(nd, cfg) and
   (
     exploratoryFlowStep(nd, mid, cfg) or
