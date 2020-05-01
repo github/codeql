@@ -271,33 +271,32 @@ class OperatorNewAllocationFunction extends AllocationFunction {
 }
 
 /**
- * The predicate analyzes a `sizeExpr`, which is an argument to an allocation
- * function like malloc, and tries to split it into an expression `lengthExpr`
- * that describes the length of the allocated array, and the size of the allocated
- * element type `sizeof`.
- * If this is not possible, the allocation is considered to be of size 1 and of
- * length `sizeExpr`.
+ * Holds if `sizeExpr` is an expression consisting of a subexpression
+ * `lengthExpr` multiplied by a constant `sizeof` that is the result of a
+ * `sizeof()` expression.  Alternatively if there isn't a suitable `sizeof()`
+ * expression, `lengthExpr = sizeExpr` and `sizeof = 1`.  For example:
+ * ```
+ * malloc(a * 2 * sizeof(char32_t));
+ * ```
+ * In this case if the `sizeExpr` is the argument to `malloc`, the `lengthExpr`
+ * is `a * 2` and `sizeof` is `4`.
  */
 private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof) {
-  if
-    sizeExpr instanceof MulExpr and
-    exists(SizeofOperator sizeofOp, Expr lengthOp |
-      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-      lengthOp = sizeExpr.(MulExpr).getAnOperand() and
-      not lengthOp instanceof SizeofOperator and
-      exists(sizeofOp.getValue().toInt())
-    )
-  then
-    exists(SizeofOperator sizeofOp |
-      sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
-      lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
-      not lengthExpr instanceof SizeofOperator and
-      sizeof = sizeofOp.getValue().toInt()
-    )
-  else (
-    lengthExpr = sizeExpr and
-    sizeof = 1
+  exists(SizeofOperator sizeofOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    lengthExpr = sizeExpr.(MulExpr).getAnOperand() and
+    not lengthExpr instanceof SizeofOperator and
+    sizeof = sizeofOp.getValue().toInt()
   )
+  or
+  not exists(SizeofOperator sizeofOp, Expr lengthOp |
+    sizeofOp = sizeExpr.(MulExpr).getAnOperand() and
+    lengthOp = sizeExpr.(MulExpr).getAnOperand() and
+    not lengthOp instanceof SizeofOperator and
+    exists(sizeofOp.getValue().toInt())
+  ) and
+  lengthExpr = sizeExpr and
+  sizeof = 1
 }
 
 /**
