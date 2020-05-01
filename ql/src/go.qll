@@ -25,6 +25,7 @@ import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.TaintTracking
 import semmle.go.dataflow.SSA
 import semmle.go.frameworks.HTTP
+import semmle.go.frameworks.Macaron
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.SQL
 import semmle.go.frameworks.XPath
