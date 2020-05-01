@@ -56,6 +56,11 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
       ) and
       (ma = asExpr() or ma.getQualifier() = asExpr())
     )
+    or
+    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof MvelRuntimeEvaluationMethod and
+      ma.getArgument(1) = asExpr()
+    )
   }
 }
 
@@ -308,6 +313,16 @@ class MvelCompiledScriptEvaluationMethod extends Method {
   }
 }
 
+/**
+ * Methods in `MVELRuntime` that evaluate a MVEL expression.
+ */
+class MvelRuntimeEvaluationMethod extends Method {
+  MvelRuntimeEvaluationMethod() {
+    getDeclaringType() instanceof MVELRuntime and
+    hasName("execute")
+  }
+}
+
 class MVEL extends RefType {
   MVEL() { hasQualifiedName("org.mvel2", "MVEL") }
 }
@@ -350,4 +365,8 @@ class TemplateRuntime extends RefType {
 
 class TemplateCompiler extends RefType {
   TemplateCompiler() { hasQualifiedName("org.mvel2.templates", "TemplateCompiler") }
+}
+
+class MVELRuntime extends RefType {
+  MVELRuntime() { hasQualifiedName("org.mvel2", "MVELRuntime") }
 }

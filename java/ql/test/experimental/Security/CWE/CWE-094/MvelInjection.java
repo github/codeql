@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.script.CompiledScript;
 import javax.script.SimpleScriptContext;
 import org.mvel2.MVEL;
+import org.mvel2.MVELRuntime;
 import org.mvel2.ParserContext;
 import org.mvel2.compiler.CompiledAccExpression;
 import org.mvel2.compiler.CompiledExpression;
@@ -130,5 +131,17 @@ public class MvelInjection {
 
     TemplateCompiler compiler = new TemplateCompiler(input);
     String output = (String) TemplateRuntime.execute(compiler.compile(), new HashMap());
+  }
+
+  public static void testMvelRuntimeExecute(Socket socket) throws Exception {
+    InputStream in = socket.getInputStream();
+
+    byte[] bytes = new byte[1024];
+    int n = in.read(bytes);
+    String input = new String(bytes, 0, n);
+
+    ExpressionCompiler compiler = new ExpressionCompiler(input);
+    CompiledExpression expression = compiler.compile();
+    MVELRuntime.execute(false, expression, new Object(), new ImmutableDefaultFactory());
   }
 }
