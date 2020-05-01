@@ -37,19 +37,19 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
     exists(JQuery::MethodCall jq |
       this.flow().getALocalSource() = jq and
-      returnsAJqueryObject(jq, jq.getMethodName())
+      returnsAJQueryObject(jq, jq.getMethodName())
     )
   }
 }
 
 /**
  * Holds if the jQuery method call `call`, with name `methodName`, returns a JQuery object.
- * 
- * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion. 
- * The not is placed inside the predicate to avoid non-monotonic recursion. 
+ *
+ * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion.
+ * The not is placed inside the predicate to avoid non-monotonic recursion.
  */
 bindingset[methodName, call]
-private predicate returnsAJqueryObject(DataFlow::CallNode call, string methodName) {
+private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodName) {
   not (
     methodName = "val" // `jQuery.val()`
     or
@@ -70,7 +70,7 @@ private predicate returnsAJqueryObject(DataFlow::CallNode call, string methodNam
     or
     methodName = "trim" // $.trim()
     or
-    // `$.ajax`, and related methods. 
+    // `$.ajax`, and related methods.
     // note: there are 2 different `get` methods, and none of them return a jQuery object.
     methodName = ["ajax", "get", "getJSON", "getScript", "post", "load"]
   )
