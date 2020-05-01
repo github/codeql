@@ -22,63 +22,35 @@ import org.mvel2.templates.TemplateRuntime;
 public class MvelInjection {
 
   public static void testWithMvelEval(Socket socket) throws IOException {
-    try (InputStream in = socket.getInputStream()) {
-      byte[] bytes = new byte[1024];
-      int n = in.read(bytes);
-      String input = new String(bytes, 0, n);
-      MVEL.eval(input);
-    }
+    MVEL.eval(read(socket));
   }
 
   public static void testWithMvelCompileAndExecute(Socket socket) throws IOException {
-    try (InputStream in = socket.getInputStream()) {
-      byte[] bytes = new byte[1024];
-      int n = in.read(bytes);
-      String input = new String(bytes, 0, n);
-      Serializable expression = MVEL.compileExpression(input);
-      MVEL.executeExpression(expression);
-    }
+    Serializable expression = MVEL.compileExpression(read(socket));
+    MVEL.executeExpression(expression);
   }
 
   public static void testWithExpressionCompiler(Socket socket) throws IOException {
-    try (InputStream in = socket.getInputStream()) {
-      byte[] bytes = new byte[1024];
-      int n = in.read(bytes);
-      String input = new String(bytes, 0, n);
-      ExpressionCompiler compiler = new ExpressionCompiler(input);
-      ExecutableStatement statement = compiler.compile();
-      statement.getValue(new Object(), new ImmutableDefaultFactory());
-      statement.getValue(new Object(), new Object(), new ImmutableDefaultFactory());
-    }
+    ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
+    ExecutableStatement statement = compiler.compile();
+    statement.getValue(new Object(), new ImmutableDefaultFactory());
+    statement.getValue(new Object(), new Object(), new ImmutableDefaultFactory());
   }
 
   public static void testWithCompiledExpressionGetDirectValue(Socket socket) throws IOException {
-    try (InputStream in = socket.getInputStream()) {
-      byte[] bytes = new byte[1024];
-      int n = in.read(bytes);
-      String input = new String(bytes, 0, n);
-      ExpressionCompiler compiler = new ExpressionCompiler(input);
-      CompiledExpression expression = compiler.compile();
-      expression.getDirectValue(new Object(), new ImmutableDefaultFactory());
-    }
+    ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
+    CompiledExpression expression = compiler.compile();
+    expression.getDirectValue(new Object(), new ImmutableDefaultFactory());
   }
 
   public static void testCompiledAccExpressionGetValue(Socket socket) throws IOException {
-    try (InputStream in = socket.getInputStream()) {
-      byte[] bytes = new byte[1024];
-      int n = in.read(bytes);
-      String input = new String(bytes, 0, n);
-      CompiledAccExpression expression = new CompiledAccExpression(input.toCharArray(), Object.class, new ParserContext());
-      expression.getValue(new Object(), new ImmutableDefaultFactory());
-    }
+    CompiledAccExpression expression = new CompiledAccExpression(
+      read(socket).toCharArray(), Object.class, new ParserContext());
+    expression.getValue(new Object(), new ImmutableDefaultFactory());
   }
 
   public static void testMvelScriptEngineCompileAndEvaluate(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
+    String input = read(socket);
 
     MvelScriptEngine engine = new MvelScriptEngine();
     CompiledScript compiledScript = engine.compile(input);
@@ -89,59 +61,38 @@ public class MvelInjection {
   }
 
   public static void testMvelCompiledScriptCompileAndEvaluate(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
-
     MvelScriptEngine engine = new MvelScriptEngine();
-    ExpressionCompiler compiler = new ExpressionCompiler(input);
+    ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     ExecutableStatement statement = compiler.compile();
     MvelCompiledScript script = new MvelCompiledScript(engine, statement);
     script.eval(new SimpleScriptContext());
   }
 
   public static void testTemplateRuntimeEval(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
-
-    TemplateRuntime.eval(input, new HashMap());
+    TemplateRuntime.eval(read(socket), new HashMap());
   }
 
   public static void testTemplateRuntimeCompileTemplateAndExecute(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
-
-    TemplateRuntime.execute(TemplateCompiler.compileTemplate(input), new HashMap());
+    TemplateRuntime.execute(
+      TemplateCompiler.compileTemplate(read(socket)), new HashMap());
   }
 
   public static void testTemplateRuntimeCompileAndExecute(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
-
-    TemplateCompiler compiler = new TemplateCompiler(input);
-    String output = (String) TemplateRuntime.execute(compiler.compile(), new HashMap());
+    TemplateCompiler compiler = new TemplateCompiler(read(socket));
+    TemplateRuntime.execute(compiler.compile(), new HashMap());
   }
 
   public static void testMvelRuntimeExecute(Socket socket) throws Exception {
-    InputStream in = socket.getInputStream();
-
-    byte[] bytes = new byte[1024];
-    int n = in.read(bytes);
-    String input = new String(bytes, 0, n);
-
-    ExpressionCompiler compiler = new ExpressionCompiler(input);
+    ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     CompiledExpression expression = compiler.compile();
     MVELRuntime.execute(false, expression, new Object(), new ImmutableDefaultFactory());
+  }
+
+  public static String read(Socket socket) throws IOException {
+    try (InputStream is = socket.getInputStream()) {
+      byte[] bytes = new byte[1024];
+      int n = is.read(bytes);
+      return new String(bytes, 0, n);
+    }
   }
 }
