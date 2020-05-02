@@ -118,7 +118,11 @@ module DataFlow {
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
-    predicate mayHaveStringValue(string s) { getAPredecessor().mayHaveStringValue(s) }
+    predicate mayHaveStringValue(string s) {
+      getAPredecessor().mayHaveStringValue(s)
+      or
+      s = getStringValue()
+    }
 
     /** Gets the string value of this node, if it is a string literal or constant string concatenation. */
     string getStringValue() { result = asExpr().getStringValue() }
@@ -296,11 +300,6 @@ module DataFlow {
 
     /** Gets the expression or declaration this node corresponds to. */
     override AST::ValueNode getAstNode() { result = astNode }
-
-    override predicate mayHaveStringValue(string s) {
-      Node.super.mayHaveStringValue(s) or
-      astNode.(ConstantString).getStringValue() = s
-    }
 
     override BasicBlock getBasicBlock() { astNode = result.getANode() }
 
@@ -587,6 +586,7 @@ module DataFlow {
      * This predicate is undefined for spread properties, accessor
      * properties, and most uses of `Object.defineProperty`.
      */
+    pragma[nomagic]
     abstract Node getRhs();
 
     /**
@@ -648,25 +648,24 @@ module DataFlow {
    * writes to the corresponding property.
    */
   private class ObjectDefinePropertyAsPropWrite extends PropWrite, ValueNode {
-    CallToObjectDefineProperty odp;
+    override MethodCallExpr astNode;
 
-    ObjectDefinePropertyAsPropWrite() { odp = this }
-
-    override Node getBase() { result = odp.getBaseObject() }
-
-    override Expr getPropertyNameExpr() { result = odp.getArgument(1).asExpr() }
-
-    override string getPropertyName() { result = odp.getPropertyName() }
-
-    override Node getRhs() {
-      // not using `CallToObjectDefineProperty::getAPropertyAttribute` for performance reasons
-      exists(ObjectLiteralNode propdesc |
-        propdesc.flowsTo(odp.getPropertyDescriptor()) and
-        propdesc.hasPropertyWrite("value", result)
-      )
+    ObjectDefinePropertyAsPropWrite() {
+      astNode.getReceiver().(GlobalVarAccess).getName() = "Object" and
+      astNode.getMethodName() = "defineProperty"
     }
 
-    override ControlFlowNode getWriteNode() { result = odp.getAstNode() }
+    override Node getBase() { result = astNode.getArgument(0).flow() }
+
+    override Expr getPropertyNameExpr() { result = astNode.getArgument(1) }
+
+    override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
+
+    override Node getRhs() {
+      result = astNode.getArgument(2).(ObjectExpr).getPropertyByName("value").getInit().flow()
+    }
+
+    override ControlFlowNode getWriteNode() { result = astNode }
   }
 
   /**
