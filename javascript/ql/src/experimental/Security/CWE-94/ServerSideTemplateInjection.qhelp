@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Server Side Template Injection vulnerabilities occur when user input is embedded 
+in a template in an unsafe manner allowing attackers to access the template context and
+run arbitrary code on the application server.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid including user input in any expression or template which may be dynamically rendered. 
+If user input must be included, use context-specific escaping before including it or run 
+render engine with sandbox options. 
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows html page being rendered with user input allowing attackers to access the 
+template context and run arbitrary code on the application server. 
+</p>
+
+<sample src="examples/ServerSideTemplateInjection.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection">Server Side Template Injection</a>.
+</li>
+<li>
+PortSwigger Research Blog: 
+<a href="https://portswigger.net/research/server-side-template-injection">Server Side Template Injection</a>.
+</li>
+</references>
+</qhelp>
