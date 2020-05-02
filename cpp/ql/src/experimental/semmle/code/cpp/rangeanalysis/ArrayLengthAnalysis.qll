@@ -39,10 +39,6 @@ private newtype TLength =
       or
       i instanceof CallInstruction
       or
-      i instanceof VariableAddressInstruction
-      or
-      i instanceof FieldAddressInstruction
-      or
       i.(LoadInstruction).getSourceAddress() instanceof VariableAddressInstruction
       or
       i.(LoadInstruction).getSourceAddress() instanceof FieldAddressInstruction
@@ -219,11 +215,11 @@ private predicate allocation(Instruction array, Length length, int delta) {
       (
         exists(Expr lengthExpr |
           deconstructMallocSizeExpr(alloc.getSizeExpr(), lengthExpr, delta) and
-          length.(VNLength).getInstruction().getUnconvertedResultExpression() = lengthExpr
+          length.(VNLength).getInstruction().getConvertedResultExpression() = lengthExpr
         )
         or
         not exists(int d | deconstructMallocSizeExpr(alloc.getSizeExpr(), _, d)) and
-        length.(VNLength).getInstruction().getUnconvertedResultExpression() = alloc.getSizeExpr() and
+        length.(VNLength).getInstruction().getConvertedResultExpression() = alloc.getSizeExpr() and
         delta = 0
       )
     )
