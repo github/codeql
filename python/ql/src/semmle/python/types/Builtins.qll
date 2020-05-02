@@ -103,7 +103,8 @@ class Builtin extends @py_cobject {
         ) and
         exists(string quoted_string |
             quoted_string = this.getName() and
-            result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
+            quoted_string.charAt(0) in ["b", "u"] and
+            result = quoted_string.substring(2,quoted_string.length()-1)
         )
     }
 }
