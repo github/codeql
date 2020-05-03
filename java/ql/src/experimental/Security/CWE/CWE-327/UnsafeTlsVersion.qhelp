@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Transport Layer Security (TLS) provides a number of security features such as 
+confidentiality, integrity, replay prevention and authenticatin. 
+There are several versions of TLS protocols. The latest is TLS 1.3.
+Unfortunately, older versions were found to be vulnerable to a number of attacks.</p>
+
+</overview>
+<recommendation>
+
+<p>An application should use TLS 1.3. Currenlty, TLS 1.2 is also considered acceptable.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows how a socket with an unsafe TLS version may be created:</p>
+
+<sample src="UnsafeTLSVersion.java" />
+
+<p>The next example creates a socket with the latest TLS version:</p>
+
+<sample src="SaferTLSVersion.java" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security</a>
+</li>
+
+<li>
+  OWASP:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>
+</li>
+
+<li>
+  Java SE Documentation:
+  <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">Java Secure Socket Extension (JSSE) Reference Guide</a>
+</li>
+
+<li>
+  Java SE API Specification:
+  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html">SSLContext</a>
+</li>
+
+<li>
+  Java SE API Specification:
+  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLParameters.html">SSLParameters</a>
+</li>
+
+<li>
+  Java SE API Specification:
+  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLSocket.html">SSLSocket</a>
+</li>
+
+</references>
+</qhelp>
