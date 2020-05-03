@@ -1,3 +1,8 @@
+import java.io.IOException;
+
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 import javax.naming.CompositeName;
 import javax.naming.InitialContext;
 import javax.naming.Name;
@@ -6,6 +11,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.ldap.InitialLdapContext;
 
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class JndiInjection {
@@ -69,10 +75,25 @@ public class JndiInjection {
     ctx.lookup(nameStr, null);
   }
 
+  public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException {
+    LdapTemplate ctx = new LdapTemplate();
+
+    ctx.lookup(nameStr);
+    ctx.lookupContext(nameStr);
+  }
+
   public void testShiroJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
     org.apache.shiro.jndi.JndiTemplate ctx = new org.apache.shiro.jndi.JndiTemplate();
 
     ctx.lookup(nameStr);
     ctx.lookup(nameStr, null);
+  }
+
+  public void testJMXServiceUrlBad1(@RequestParam String urlStr) throws IOException {
+    JMXConnectorFactory.connect(new JMXServiceURL(urlStr));
+
+    JMXServiceURL url = new JMXServiceURL(urlStr);
+    JMXConnector connector = JMXConnectorFactory.newJMXConnector(url, null);
+    connector.connect();
   }
 }
