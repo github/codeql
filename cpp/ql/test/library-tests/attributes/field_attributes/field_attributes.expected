@@ -1,0 +1,3 @@
+| field_attributes.cpp:2:22:2:22 | a | field_attributes.cpp:2:5:2:14 | deprecated |
+| field_attributes.cpp:8:35:8:35 | b | field_attributes.cpp:8:5:8:14 | deprecated |
+| field_attributes.cpp:8:35:8:35 | b | field_attributes.cpp:8:17:8:27 | unused |
