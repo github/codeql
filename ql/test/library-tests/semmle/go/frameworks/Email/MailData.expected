@@ -1,0 +1,9 @@
+| mail.go:16:56:16:77 | type conversion |
+| mail.go:22:24:22:37 | untrustedInput |
+| mail.go:29:32:29:36 | alert |
+| mail.go:29:43:29:47 | alert |
+| mail.go:29:50:29:54 | alert |
+| mail.go:32:46:32:50 | alert |
+| mail.go:36:47:36:51 | alert |
+| mail.go:37:47:37:51 | alert |
+| mail.go:40:35:40:39 | alert |

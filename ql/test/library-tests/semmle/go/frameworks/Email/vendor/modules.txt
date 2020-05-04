@@ -1,0 +1,6 @@
+# github.com/sendgrid/sendgrid-go v3.5.0+incompatible
+## explicit
+github.com/sendgrid/sendgrid-go
+# github.com/stretchr/testify v1.5.1
+## explicit
+github.com/stretchr/testify
