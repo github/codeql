@@ -93,6 +93,15 @@ module Fmt {
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
+
+  private class FprintfModel extends TaintTracking::FunctionModel {
+    FprintfModel() { this.hasQualifiedName("fmt", "Fprintf") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(any(int i | i > 0)) and
+      output.isParameter(0)
+    }
+  }
 }
 
 /** Provides models of commonly used functions in the `io` package. */
@@ -104,6 +113,15 @@ module Io {
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isParameter(0)
+    }
+  }
+
+  private class WriteStringModel extends TaintTracking::FunctionModel {
+    WriteStringModel() { this.hasQualifiedName("io", "WriteString") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and
+      output.isParameter(0)
     }
   }
 }
