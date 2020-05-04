@@ -249,13 +249,15 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
     result = getCatchParameterFromStmt(getRawEnclosingStmt(this))
     or
     not exists(getCatchParameterFromStmt(getRawEnclosingStmt(this))) and
-    result = any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
+    result =
+      any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
   }
 }
 
 cached
 private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
-  result = DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
+  result =
+    DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
 }
 
 /**

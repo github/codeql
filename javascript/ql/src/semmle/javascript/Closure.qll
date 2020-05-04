@@ -115,9 +115,7 @@ module Closure {
     override DefaultClosureModuleDeclaration range;
   }
 
-  private GlobalVariable googVariable() {
-    variables(result, "goog", any(GlobalScope sc))
-  }
+  private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
 
   pragma[nomagic]
   private MethodCallExpr googModuleDeclExpr() {
@@ -135,9 +133,7 @@ module Closure {
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    ClosureModule() {
-      exists(googModuleDeclExprInContainer(this))
-    }
+    ClosureModule() { exists(googModuleDeclExprInContainer(this)) }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.

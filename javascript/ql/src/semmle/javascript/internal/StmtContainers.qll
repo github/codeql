@@ -4,6 +4,7 @@
  * Provides predicates and classes for relating nodes to their
  * enclosing `StmtContainer`.
  */
+
 private import javascript
 
 cached
@@ -13,9 +14,7 @@ private StmtContainer getStmtContainer(@node_in_stmt_container node) {
   stmtContainers(node, result)
   or
   // Properties
-  exists(ASTNode parent |
-    properties(node, parent, _, _, _)
-  |
+  exists(ASTNode parent | properties(node, parent, _, _, _) |
     exprContainers(parent, result)
     or
     stmtContainers(parent, result)
@@ -46,7 +45,5 @@ class NodeInStmtContainer extends Locatable, @node_in_stmt_container {
    * Gets the function or toplevel to which this node belongs.
    */
   pragma[inline]
-  final StmtContainer getContainer() {
-    result = getStmtContainer(this)
-  }
+  final StmtContainer getContainer() { result = getStmtContainer(this) }
 }
