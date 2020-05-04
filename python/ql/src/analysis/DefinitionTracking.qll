@@ -490,3 +490,24 @@ class NiceLocationExpr extends @py_expr {
         )
     }
 }
+
+/**
+ * Gets an element, of kind `kind`, that element `e` uses, if any.
+ */
+cached
+Definition definitionOf(NiceLocationExpr use, string kind) {
+  exists(string f, int l |
+    result = getUniqueDefinition(use) and
+    kind = "Definition" and
+    use.hasLocationInfo(f, l, _, _, _) and
+    // Ignore if the definition is on the same line as the use
+    not result.getLocation().hasLocationInfo(f, l, _, _, _))
+}
+
+/**
+ * Returns an appropriately encoded version of a filename `name`
+ * passed by the VS Code extension in order to coincide with the
+ * output of `.getFile()` on locatable entities.
+ */
+cached
+File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }
