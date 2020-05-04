@@ -15,7 +15,7 @@ In most situations, you should not override this behavior.</p>
 </recommendation>
 
 <example>
-<p>The following example shows a Tomcat configuration with <code>useHttpOnly</code> disabled. Usually you should not to set this.</p>
+<p>The following example shows a Tomcat configuration with <code>useHttpOnly</code> disabled. Usually you should not set this.</p>
 
 <sample src="insecure-web.xml" />
 </example>
