@@ -1,7 +1,7 @@
 /**
  * @id java/sensitiveinfo-in-logfile
  * @name Insertion of sensitive information into log files
- * @description Writting sensitive information to log files can give valuable guidance to an attacker or expose sensitive user information.
+ * @description Writing sensitive information to log files can give valuable guidance to an attacker or expose sensitive user information.
  * @kind problem
  * @tags security
  *       external/cwe-532
@@ -80,4 +80,3 @@ class SensitiveLoggingConfig extends Configuration {
 from Node source, Node sink, SensitiveLoggingConfig conf, MethodAccess ma
 where conf.hasFlow(source, sink) and ma.getAnArgument() = source.asExpr() and ma.getAnArgument() = sink.asExpr()
 select "Outputting sensitive information $@ in method call $@.", source, ma, "to log files"
-
