@@ -363,11 +363,7 @@ class CallableValue extends Value {
             or
             exists(string name |
                 call.getArgByName(name) = result and
-                (
-                    this.(PythonFunctionObjectInternal).getScope().getArg(n).getName() = name
-                    or
-                    this.(BoundMethodObjectInternal).getFunction().getScope().getArg(n+1).getName() = name
-                )
+                this.getParameter(n).getId() = name
             )
             or
             called instanceof BoundMethodObjectInternal and
@@ -386,19 +382,11 @@ class CallableValue extends Value {
         |
             exists(int n |
                 call.getArg(n) = result and
-                exists(PythonFunctionObjectInternal py |
-                    py = this or py = this.(BoundMethodObjectInternal).getFunction()
-                |
-                    py.getScope().getArg(n + offset).getName() = name
-                )
+                this.getParameter(n+offset).getId() = name
             )
             or
             call.getArgByName(name) = result and
-            exists(PythonFunctionObjectInternal py |
-                py = this or py = this.(BoundMethodObjectInternal).getFunction()
-            |
-                exists(py.getScope().getArgByName(name))
-            )
+            exists(this.getParameterByName(name))
             or
             called instanceof BoundMethodObjectInternal and
             offset = 1 and
