@@ -13,7 +13,7 @@ query predicate callableFlow(string callable, string flow, boolean preservesValu
   )
 }
 
-query predicate callableFlowAp(string callable, string flow) {
+query predicate callableFlowAccessPath(string callable, string flow) {
   exists(
     LibraryTypeDataFlow x, CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink,
     AccessPath sinkAp, Callable c

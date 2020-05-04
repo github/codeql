@@ -860,25 +860,29 @@ private module ArgumentNodes {
    */
   class ImplicitDelegateArgumentNode extends ArgumentNode, TImplicitDelegateArgumentNode {
     private ControlFlow::Node cfn;
-    private int i;
-    private int j;
+    private int delegateIndex;
+    private int parameterIndex;
 
-    ImplicitDelegateArgumentNode() { this = TImplicitDelegateArgumentNode(cfn, i, j) }
+    ImplicitDelegateArgumentNode() {
+      this = TImplicitDelegateArgumentNode(cfn, delegateIndex, parameterIndex)
+    }
 
     private ImplicitDelegateDataFlowCall getDelegateCall() { result.getControlFlowNode() = cfn }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
       call = this.getDelegateCall() and
-      pos = j
+      pos = parameterIndex
     }
 
     override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = this.getDelegateCall().getDelegateParameterType(j) }
+    override Type getType() {
+      result = this.getDelegateCall().getDelegateParameterType(parameterIndex)
+    }
 
     override Location getLocation() { result = cfn.getLocation() }
 
-    override string toString() { result = "[implicit argument " + j + "] " + cfn }
+    override string toString() { result = "[implicit argument " + parameterIndex + "] " + cfn }
   }
 }
 
@@ -1332,8 +1336,8 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
   predicate preservesValue() { preservesValue = true }
 
   /**
-   * Gets the predecessor of this library-code node. `ap` describes the content
-   * that is read from when entering this node (if any).
+   * Gets the predecessor of this library-code node. The head of `ap` describes
+   * the content that is read from when entering this node (if any).
    */
   Node getPredecessor(AccessPath ap) {
     ap = sourceAp and
@@ -1352,8 +1356,8 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
   }
 
   /**
-   * Gets the successor of this library-code node. `ap` describes the content that
-   * is stored into when leaving this node (if any).
+   * Gets the successor of this library-code node. The head of `ap` describes
+   * the content that is stored into when leaving this node (if any).
    */
   Node getSuccessor(AccessPath ap) {
     ap = sinkAp and

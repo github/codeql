@@ -119,7 +119,7 @@ library class DelegateArgumentToLibraryCallable extends Expr {
   Call getCall() { result = call }
 
   /** Gets the index of this delegate argument in the call. */
-  int getArgumentIndex() { this.getCall().getArgument(result) = this }
+  int getArgumentIndex() { this = this.getCall().getArgument(result) }
 
   /** Gets the delegate type of this argument. */
   DelegateType getDelegateType() { result = dt }

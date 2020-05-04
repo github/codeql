@@ -163,7 +163,7 @@ class CallableFlowSink extends TCallableFlowSink {
   Expr getSink(Call c) { none() }
 
   /**
-   * Gets the type of the sink for call `c`. Unlik `getSink()`, this is defined
+   * Gets the type of the sink for call `c`. Unlike `getSink()`, this is defined
    * for all flow sink specifications.
    */
   Type getSinkType(Call c) { result = this.getSink(c).getType() }
@@ -235,18 +235,22 @@ private CallableFlowSinkDelegateArg getDelegateFlowSinkArg(
 
 /** A flow sink specification: parameter of a delegate argument. */
 class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDelegateArg {
-  private int i;
-  private int j;
+  private int delegateIndex;
+  private int parameterIndex;
 
-  CallableFlowSinkDelegateArg() { this = TCallableFlowSinkDelegateArg(i, j) }
+  CallableFlowSinkDelegateArg() {
+    this = TCallableFlowSinkDelegateArg(delegateIndex, parameterIndex)
+  }
 
   /** Gets the index of the delegate argument. */
-  int getDelegateIndex() { result = i }
+  int getDelegateIndex() { result = delegateIndex }
 
   /** Gets the index of the delegate parameter. */
-  int getDelegateParameterIndex() { result = j }
+  int getDelegateParameterIndex() { result = parameterIndex }
 
-  override string toString() { result = "parameter " + j + " of argument " + i }
+  override string toString() {
+    result = "parameter " + parameterIndex + " of argument " + delegateIndex
+  }
 
   override Expr getSink(Call c) {
     // The uses of the `j`th parameter are the actual sinks
@@ -256,10 +260,10 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
   override Type getSinkType(Call c) {
     result =
       c
-          .getArgument(i)
+          .getArgument(delegateIndex)
           .(DelegateArgumentToLibraryCallable)
           .getDelegateType()
-          .getParameter(j)
+          .getParameter(parameterIndex)
           .getType()
   }
 }
