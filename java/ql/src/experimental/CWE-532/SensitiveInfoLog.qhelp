@@ -22,8 +22,5 @@ the credentials are simply written to a debug log. In the 'GOOD' case, the crede
 <li>
 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Guide</a>
 </li>
-<li>
-<a href="https://cwe.mitre.org/data/definitions/532.html">CWE 532</a>
-</li>
 </references>
 </qhelp>
