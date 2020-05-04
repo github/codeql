@@ -158,5 +158,7 @@ predicate hasNoEffect(Expr e) {
   // exclude block-level flow type annotations. For example: `(name: empty)`.
   not e.(ParExpr).getExpression().getLastToken().getNextToken().getValue() = ":" and
   // exclude the first statement of a try block
-  not e = any(TryStmt stmt).getBody().getStmt(0).(ExprStmt).getExpr()
+  not e = any(TryStmt stmt).getBody().getStmt(0).(ExprStmt).getExpr() and
+  // exclude expressions that are alone in a file
+  not e.getParent().(ExprStmt).getParent().(TopLevel).getNumChild() = 1
 }
