@@ -16,3 +16,8 @@
 | 37 | 0 | ControlFlowNode for l | builtin method append |
 | 37 | 1 | ControlFlowNode for IntegerLiteral | builtin method append |
 | 38 | 0 | ControlFlowNode for l | Builtin-function len |
+| 40 | 0 | ControlFlowNode for IntegerLiteral | Function f |
+| 40 | 1 | ControlFlowNode for IntegerLiteral | Function f |
+| 40 | 2 | ControlFlowNode for IntegerLiteral | Function f |
+| 42 | 0 | ControlFlowNode for IntegerLiteral | Function C.n |
+| 42 | 0 | ControlFlowNode for c | Function C.n |

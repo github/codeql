@@ -13,3 +13,7 @@
 | 37 | ControlFlowNode for Attribute() | Method(builtin method append, List) |
 | 37 | ControlFlowNode for Attribute() | builtin method append |
 | 38 | ControlFlowNode for len() | Builtin-function len |
+| 40 | ControlFlowNode for f() | Function f |
+| 41 | ControlFlowNode for C() | class C |
+| 42 | ControlFlowNode for Attribute() | Function C.n |
+| 42 | ControlFlowNode for Attribute() | Method(Function C.n, C()) |
