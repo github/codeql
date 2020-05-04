@@ -1,7 +1,7 @@
-| templates.cpp:9:5:9:14 | using declaration |
-| usings.cpp:8:1:8:11 | using declaration |
-| usings.cpp:9:1:9:17 | using namespace N |
-| usings.cpp:18:3:18:13 | using declaration |
-| usings.cpp:21:5:21:14 | using declaration |
-| usings.cpp:34:3:34:20 | using declaration |
-| usings.cpp:42:5:42:22 | using declaration |
+| templates.cpp:9:5:9:14 | using declaration | UsingDeclarationEntry, enclosingElement:std |
+| usings.cpp:8:1:8:11 | using declaration | UsingDeclarationEntry, enclosingElement:(global namespace) |
+| usings.cpp:9:1:9:17 | using namespace N | UsingDirectiveEntry, enclosingElement:(global namespace) |
+| usings.cpp:18:3:18:13 | using declaration | UsingDeclarationEntry, enclosingElement:D |
+| usings.cpp:21:5:21:14 | using declaration | UsingDeclarationEntry, enclosingElement:{ ... } |
+| usings.cpp:34:3:34:20 | using declaration | UsingDeclarationEntry, enclosingElement:TD |
+| usings.cpp:42:5:42:22 | using declaration | UsingDeclarationEntry, enclosingElement:nsbar |
