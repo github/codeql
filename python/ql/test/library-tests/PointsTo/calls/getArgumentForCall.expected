@@ -19,5 +19,5 @@
 | 40 | ControlFlowNode for f() | Function f | 0 | ControlFlowNode for IntegerLiteral |
 | 40 | ControlFlowNode for f() | Function f | 1 | ControlFlowNode for IntegerLiteral |
 | 40 | ControlFlowNode for f() | Function f | 2 | ControlFlowNode for IntegerLiteral |
-| 42 | ControlFlowNode for Attribute() | Function C.n | 0 | ControlFlowNode for IntegerLiteral |
 | 42 | ControlFlowNode for Attribute() | Function C.n | 0 | ControlFlowNode for c |
+| 42 | ControlFlowNode for Attribute() | Function C.n | 1 | ControlFlowNode for IntegerLiteral |

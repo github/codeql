@@ -363,7 +363,7 @@ class CallableValue extends Value {
             or
             exists(string name |
                 call.getArgByName(name) = result and
-                this.(PythonFunctionObjectInternal).getScope().getArg(n + offset).getName() = name
+                this.(PythonFunctionObjectInternal).getScope().getArg(n).getName() = name
             )
             or
             called instanceof BoundMethodObjectInternal and
