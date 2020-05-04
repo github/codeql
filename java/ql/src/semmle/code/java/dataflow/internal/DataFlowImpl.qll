@@ -7,6 +7,7 @@
  * on each other without introducing mutual recursion among those configurations.
  */
 
+/* Test only. Do not merge. */
 private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
