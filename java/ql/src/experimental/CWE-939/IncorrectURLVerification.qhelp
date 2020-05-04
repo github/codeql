@@ -12,7 +12,7 @@
 </recommendation>
 
 <example>
-<p>The following example shows two ways of verify host domain. In the 'BAD' case,
+<p>The following example shows two ways of verifying host domain. In the 'BAD' case,
 verification is implemented as partial domain match. In the 'GOOD' case, full domain is verified.</p>
 <sample src="IncorrectURLVerification.java" />
 </example>
@@ -23,8 +23,5 @@ verification is implemented as partial domain match. In the 'GOOD' case, full do
 </li>
 <li>
 <a href="https://www.bugcrowd.com/resources/webinars/overview-of-common-android-app-vulnerabilities/">Common Android app vulnerabilities from bugcrowd</a>
-<li>
-<a href="https://cwe.mitre.org/data/definitions/939.html">CWE 939</a>
-</li>
 </references>
 </qhelp>
