@@ -86,7 +86,7 @@ class Closure extends Class {
     result.getName() = "operator()"
   }
 
-  override string toString() { result = "decltype([...](...){...})" }
+  override string getDescription() { result = "decltype([...](...){...})" }
 }
 
 /**

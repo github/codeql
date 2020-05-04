@@ -98,7 +98,12 @@ class Declaration extends Locatable, @declaration {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
 
-  override string toString() { result = this.getName() }
+  /**
+   * Gets a description of this `Declaration` for display purposes.
+   */
+  string getDescription() { result = this.getName() }
+
+  final override string toString() { result = this.getDescription() }
 
   /**
    * Gets the name of this declaration.

@@ -153,7 +153,7 @@ class UsingDeclarationEntry extends UsingEntry {
    */
   Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _) }
 
-  override string toString() { result = "using declaration" }
+  override string toString() { result = "using " + this.getDeclaration().getDescription() }
 }
 
 /**
