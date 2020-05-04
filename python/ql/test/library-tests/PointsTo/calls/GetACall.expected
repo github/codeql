@@ -10,3 +10,6 @@
 | 33 | ControlFlowNode for Attribute() | Function D.foo |
 | 34 | ControlFlowNode for Attribute() | Function D.foo |
 | 34 | ControlFlowNode for D() | class D |
+| 37 | ControlFlowNode for Attribute() | Method(builtin method append, List) |
+| 37 | ControlFlowNode for Attribute() | builtin method append |
+| 38 | ControlFlowNode for len() | Builtin-function len |
