@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Server Side Template Injection vulnerabilities occur when user input is embedded 
+Server-Side Template Injection vulnerabilities occur when user input is embedded 
 in a template in an unsafe manner allowing attackers to access the template context and
 run arbitrary code on the application server.
 </p>
