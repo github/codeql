@@ -127,7 +127,7 @@ module Closure {
 
   pragma[nomagic]
   private MethodCallExpr googModuleDeclExprInContainer(StmtContainer container) {
-    result.getReceiver() = googModuleDeclExpr() and
+    result = googModuleDeclExpr() and
     container = result.getContainer()
   }
 
