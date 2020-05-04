@@ -7,8 +7,11 @@
 | 23 | ControlFlowNode for Attribute() | Function f | arg1 | ControlFlowNode for w |
 | 23 | ControlFlowNode for Attribute() | Function f | arg2 | ControlFlowNode for z |
 | 23 | ControlFlowNode for Attribute() | Function f | self | ControlFlowNode for c |
+| 23 | ControlFlowNode for Attribute() | Method(Function f, C()) | arg0 | ControlFlowNode for w |
+| 23 | ControlFlowNode for Attribute() | Method(Function f, C()) | arg1 | ControlFlowNode for z |
 | 24 | ControlFlowNode for Attribute() | Function C.n | arg1 | ControlFlowNode for x |
 | 24 | ControlFlowNode for Attribute() | Function C.n | self | ControlFlowNode for c |
+| 24 | ControlFlowNode for Attribute() | Method(Function C.n, C()) | self | ControlFlowNode for x |
 | 25 | ControlFlowNode for Attribute() | Function C.n | arg1 | ControlFlowNode for z |
 | 25 | ControlFlowNode for Attribute() | Function C.n | self | ControlFlowNode for y |
 | 33 | ControlFlowNode for Attribute() | Function D.foo | arg | ControlFlowNode for IntegerLiteral |
@@ -19,3 +22,4 @@
 | 40 | ControlFlowNode for f() | Function f | arg2 | ControlFlowNode for IntegerLiteral |
 | 42 | ControlFlowNode for Attribute() | Function C.n | arg1 | ControlFlowNode for IntegerLiteral |
 | 42 | ControlFlowNode for Attribute() | Function C.n | self | ControlFlowNode for c |
+| 42 | ControlFlowNode for Attribute() | Method(Function C.n, C()) | arg1 | ControlFlowNode for IntegerLiteral |

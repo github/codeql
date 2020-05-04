@@ -448,6 +448,8 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         function = this.getFunction() and offset = 1
+        or
+        function = this and offset = 0
     }
 
     override predicate useOriginAsLegacyObject() { any() }

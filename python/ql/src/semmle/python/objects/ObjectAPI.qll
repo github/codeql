@@ -363,7 +363,11 @@ class CallableValue extends Value {
             or
             exists(string name |
                 call.getArgByName(name) = result and
-                this.(PythonFunctionObjectInternal).getScope().getArg(n).getName() = name
+                (
+                    this.(PythonFunctionObjectInternal).getScope().getArg(n).getName() = name
+                    or
+                    this.(BoundMethodObjectInternal).getFunction().getScope().getArg(n+1).getName() = name
+                )
             )
             or
             called instanceof BoundMethodObjectInternal and
@@ -382,11 +386,19 @@ class CallableValue extends Value {
         |
             exists(int n |
                 call.getArg(n) = result and
-                this.(PythonFunctionObjectInternal).getScope().getArg(n + offset).getName() = name
+                exists(PythonFunctionObjectInternal py |
+                    py = this or py = this.(BoundMethodObjectInternal).getFunction()
+                |
+                    py.getScope().getArg(n + offset).getName() = name
+                )
             )
             or
             call.getArgByName(name) = result and
-            exists(this.(PythonFunctionObjectInternal).getScope().getArgByName(name))
+            exists(PythonFunctionObjectInternal py |
+                py = this or py = this.(BoundMethodObjectInternal).getFunction()
+            |
+                exists(py.getScope().getArgByName(name))
+            )
             or
             called instanceof BoundMethodObjectInternal and
             offset = 1 and
@@ -394,6 +406,26 @@ class CallableValue extends Value {
             result = call.getFunction().(AttrNode).getObject()
         )
     }
+}
+
+/**
+ * Class representing bound-methods, such as `o.func`, where `o` is an instance
+ * of a class that has a callable attribute `func`.
+ */
+class BoundMethodValue extends CallableValue {
+    BoundMethodValue() { this instanceof BoundMethodObjectInternal }
+
+    /**
+     * Gets the callable that will be used when `this` called.
+     * The actual callable for `func` in `o.func`.
+     */
+    CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
+
+    /**
+     * Gets the value that will be used for the `self` parameter when `this` is called.
+     * The value for `o` in `o.func`.
+     */
+    Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
 }
 
 /**
