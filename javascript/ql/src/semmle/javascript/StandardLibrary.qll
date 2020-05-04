@@ -146,3 +146,37 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
     )
   }
 }
+
+/**
+ * A call to `String.prototype.split`.
+ *
+ * We heuristically include any call to a method called `split`, provided it either
+ * has exactly one arguments, or local data flow suggests that the receiver may be a string.
+ */
+class StringSplitCall extends DataFlow::MethodCallNode {
+  StringSplitCall() {
+    this.getMethodName() = "split" and
+    (getNumArgument() = 1 or getReceiver().mayHaveStringValue(_))
+  }
+
+  /**
+   * Gets a string that determines where the string is split.
+   */
+  string getSplitAt() {
+    getArgument(0).mayHaveStringValue(result)
+    or
+    result =
+      getArgument(0).getALocalSource().(DataFlow::RegExpCreationNode).getRoot().getAMatchedString()
+  }
+
+  /**
+   * Gets a the SourceNode for the string before it is split.
+   */
+  DataFlow::SourceNode getUnsplit() { result = getReceiver().getALocalSource() }
+
+  /**
+   * Gets a read of the `i`th element from the split string.
+   */
+  bindingset[i]
+  DataFlow::Node getAnElementRead(int i) { result = getAPropertyRead(i.toString()) }
+}
