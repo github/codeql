@@ -408,7 +408,7 @@ class PostUpdateNode extends Node {
       )
       or
       preupd instanceof ArgumentNode and
-      mutableType(preupd.getType())
+      mutableType(preupd.getType().getUnderlyingType())
     ) and
     (
       preupd = this.(SsaNode).getAUse()
