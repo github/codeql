@@ -47,15 +47,15 @@ module EmailData {
   bindingset[result]
   private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
 
-  /* Gets the value of the `i`th content parameter of the given `call` */
-  private DataFlow::Node getContent(DataFlow::CallNode call, int i) {
-    exists(DataFlow::CallNode cn, DataFlow::Node content |
+  private class NewContent extends TaintTracking::FunctionModel {
+    NewContent() {
       // func NewContent(contentType string, value string) *Content
-      cn.getTarget().hasQualifiedName(sendgridMail(), "NewContent") and
-      cn.getResult() = content and
-      content.getASuccessor*() = call.getArgument(i) and
-      result = cn.getArgument(1)
-    )
+      this.hasQualifiedName(sendgridMail(), "NewContent")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and output.isResult()
+    }
   }
 
   /** A data-flow node that is written to an email using the sendgrid/sendgrid-go package. */
@@ -69,17 +69,14 @@ module EmailData {
       or
       // func NewV3MailInit(from *Email, subject string, to *Email, content ...*Content) *SGMailV3
       exists(Function newv3MailInit |
-        newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit")
-      |
-        this = getContent(newv3MailInit.getACall(), any(int i | i >= 3))
-        or
-        this = newv3MailInit.getACall().getArgument(1)
+        newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit") and
+        this = newv3MailInit.getACall().getArgument(any(int i | i = 1 or i >= 3))
       )
       or
       // func (s *SGMailV3) AddContent(c ...*Content) *SGMailV3
       exists(Method addContent |
         addContent.hasQualifiedName(sendgridMail(), "SGMailV3", "AddContent") and
-        this = getContent(addContent.getACall(), _)
+        this = addContent.getACall().getAnArgument()
       )
     }
   }
