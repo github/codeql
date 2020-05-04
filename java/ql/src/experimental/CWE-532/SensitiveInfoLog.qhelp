@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-<p>Information written to log files can be of a sensitive nature and give valuable guidance to an attacker or expose sensitive user information. Third-party logging utilities like Log4J and SLF4J are widely used in Java projects. When sensitive information are written to logs without properly set logging levels, it is accessible to potential attackers who gains access to the
+<p>Information written to log files can be of a sensitive nature and give valuable guidance to an attacker or expose sensitive user information. Third-party logging utilities like Log4J and SLF4J are widely used in Java projects. When sensitive information is written to logs without properly set logging levels, it is accessible to potential attackers who can use it to gain access to
 file storage.</p>
 </overview>
 
