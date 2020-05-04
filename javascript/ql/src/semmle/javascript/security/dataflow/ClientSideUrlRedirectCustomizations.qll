@@ -51,9 +51,7 @@ module ClientSideUrlRedirect {
     exists(MethodCallExpr mce, string methodName |
       mce = queryAccess.asExpr() and mce.calls(nd.asExpr(), methodName)
     |
-      methodName = "split" and
-      // exclude `location.href.split('?')[0]`, which can never refer to the query string
-      not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
+      methodName = "split"
       or
       (methodName = "substring" or methodName = "substr" or methodName = "slice") and
       // exclude `location.href.substring(0, ...)` and similar, which can
@@ -66,6 +64,23 @@ module ClientSideUrlRedirect {
       mce = any(RegExpLiteral re).flow().(DataFlow::SourceNode).getAMethodCall("exec").asExpr() and
       nd.asExpr() = mce.getArgument(0)
     )
+  }
+
+  /**
+   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
+   */
+  class QueryPrefixSanitizer extends Sanitizer {
+    DataFlow::PropRead read;
+
+    QueryPrefixSanitizer() {
+      this = read and
+      read.getPropertyName() = "0" and
+      exists(DataFlow::MethodCallNode splitCall | splitCall = read.getBase().getALocalSource() |
+        splitCall.getMethodName() = "split" and
+        splitCall.getArgument(0).mayHaveStringValue("?") and
+        splitCall.getReceiver() = [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+      )
+    }
   }
 
   /**
