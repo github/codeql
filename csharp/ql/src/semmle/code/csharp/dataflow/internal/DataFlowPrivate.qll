@@ -1342,11 +1342,15 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
   Node getPredecessor(AccessPath ap) {
     ap = sourceAp and
     (
+      // The source is either an argument or a qualifier, for example
+      // `s` in `int.Parse(s)`
       exists(LibraryFlow::LibrarySourceConfiguration x, Call call |
         callCfn = call.getAControlFlowNode() and
         x.hasExprPath(source.getSource(call), result.(ExprNode).getControlFlowNode(), _, callCfn)
       )
       or
+      // The source is the output of a supplied delegate argument, for
+      // example the output of `Foo` in `new Lazy(Foo)`
       exists(DataFlowCall call, int pos |
         pos = source.(CallableFlowSourceDelegateArg).getArgumentIndex() and
         result.(ImplicitDelegateOutNode).isArgumentOf(call, pos) and
@@ -1366,15 +1370,19 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
         callCfn = call.getAControlFlowNode() and
         x.hasExprPath(_, callCfn, sink.getSink(call), e.getControlFlowNode())
       |
+        // The sink is an ordinary return value, for example `int.Parse(s)`
         sink instanceof CallableFlowSinkReturn and
         result = e
         or
+        // The sink is a qualifier, for example `list` in `list.Add(x)`
         sink instanceof CallableFlowSinkQualifier and
         if sinkAp = AccessPath::empty()
         then result = e
         else result.(ExprPostUpdateNode).getPreUpdateNode() = e
       )
       or
+      // The sink is an `out`/`ref` argument, for example `out i` in
+      // `int.TryParse(s, out i)`
       exists(LibraryFlow::LibrarySinkConfiguration x, OutRefReturnKind k |
         result =
           any(ParamOutNode out |
@@ -1384,13 +1392,22 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
           )
       )
       or
-      exists(DataFlowCall call, ImplicitDelegateDataFlowCall dcall, int i, int j |
+      // The sink is a parameter of a supplied delegate argument, for example
+      // the parameter of `Foo` in `list.Select(Foo)`.
+      //
+      // This is implemented using a node that represents the implicit argument
+      // (`ImplicitDelegateArgumentNode`) of the implicit call
+      // (`ImplicitDelegateDataFlowCall`) to `Foo`.
+      exists(
+        DataFlowCall call, ImplicitDelegateDataFlowCall dcall, int delegateIndex, int parameterIndex
+      |
         sink =
           any(CallableFlowSinkDelegateArg s |
-            i = s.getDelegateIndex() and j = s.getDelegateParameterIndex()
+            delegateIndex = s.getDelegateIndex() and
+            parameterIndex = s.getDelegateParameterIndex()
           ) and
-        result = TImplicitDelegateArgumentNode(dcall.getControlFlowNode(), _, j) and
-        dcall.isArgumentOf(call, i) and
+        result = TImplicitDelegateArgumentNode(dcall.getControlFlowNode(), _, parameterIndex) and
+        dcall.isArgumentOf(call, delegateIndex) and
         callCfn = call.getControlFlowNode()
       )
     )
