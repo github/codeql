@@ -20,6 +20,7 @@
 | Misspelled variable name (`js/misspelled-variable-name`) | Message changed | The message for this query now correctly identifies the misspelled variable in additional cases. |
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional file system calls. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional command execution calls. |
+| Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Less results | This query now recognizes additional safe patterns of doing URL redirects. |
 
 ## Changes to libraries
 
