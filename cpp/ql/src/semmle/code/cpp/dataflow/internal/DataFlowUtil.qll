@@ -655,7 +655,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getFunction() = node2.getFunction()
+    node1.getEnclosingCallable() = node2.getEnclosingCallable()
   }
 }
 
