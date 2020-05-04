@@ -1,5 +1,6 @@
 import json
 from copy import copy
+import sys
 
 def test_json():
     tainted_string = TAINTED_STRING
@@ -60,13 +61,18 @@ def test_untrusted():
 def exc_untrusted_call(arg):
     return arg
 
-from six.moves.urllib.parse import urlsplit, urlparse
+if sys.version_info[0] == 2:
+    from urlparse import urlsplit, urlparse, parse_qs, parse_qsl
+if sys.version_info[0] == 3:
+    from urllib.parse import urlsplit, urlparse, parse_qs, parse_qsl
 
 def test_urlsplit_urlparse():
     tainted_string = TAINTED_STRING
-    urlsplit_res = urlsplit(tainted_string)
-    urlparse_res = urlparse(tainted_string)
-    test(urlsplit_res, urlparse_res)
+    a = urlsplit(tainted_string)
+    b = urlparse(tainted_string)
+    c = parse_qs(tainted_string)
+    d = parse_qsl(tainted_string)
+    test(a, b, c, d)
 
 def test_method_reference():
     tainted_string = TAINTED_STRING
@@ -115,3 +121,14 @@ def test_str_methods():
         tainted_string.upper(),
         tainted_string.zfill(100),
     )
+
+def test_tainted_file():
+    tainted_file = TAINTED_FILE
+    test(
+        tainted_file,
+        tainted_file.read(),
+        tainted_file.readline(),
+        tainted_file.readlines(),
+    )
+    for line in tainted_file:
+        test(line)

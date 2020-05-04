@@ -2,22 +2,23 @@ package security.library.encryption;
 
 import java.util.Arrays;
 import java.util.List;
+import java.security.MessageDigest;
 
 class Test {
 	List<String> badStrings = Arrays.asList(
-			"DES", 
+			"DES",
 			"des",
 			"des_function",
 			"function_using_des",
 			"EncryptWithDES");
-			
+
 	List<String> goodStrings = Arrays.asList(
 			"AES",
 			"AES_function",
 			// false negative - can't think of a good way to detect this without
 			// catching things we shouldn't
 			"AESEncryption");
-			
+
 	List<String> unknownStrings = Arrays.asList(
 			// not a use of RC2 (camelCase is tricky)
 			"GetPrc2",
@@ -29,4 +30,12 @@ class Test {
 			"species",
 			// can't detect unknown algorithms
 			"SOMENEWACRONYM");
+        public static abstract class SomeDigest extends MessageDigest {
+		public SomeDigest() {
+			super("some");
+		}
+	}
+	public void test() throws Exception {
+		MessageDigest.getInstance("another");
+	}
 }

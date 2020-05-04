@@ -844,6 +844,7 @@ class EqualityTest extends BinaryExpr {
     this instanceof NEExpr
   }
 
+  /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
   boolean polarity() {
     result = true and this instanceof EQExpr
     or

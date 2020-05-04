@@ -15,5 +15,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 Further reading
 ---------------
 
+-  For examples of how to query common Go elements, see the `Go cookbook <https://help.semmle.com/wiki/display/CBGO>`__.
 -  For the queries used in LGTM, display a `Go query <https://lgtm.com/search?q=language%3Ago&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
 -  For more information about the library for Go see the `CodeQL library for Go <https://help.semmle.com/qldoc/go/>`__.

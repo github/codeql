@@ -138,6 +138,8 @@ string describeAllocationExpr(AllocationExpr e) {
   or
   result = "getReallocPtr = " + e.getReallocPtr().toString()
   or
+  result = "getAllocatedElementType = " + e.getAllocatedElementType().toString()
+  or
   e.requiresDealloc() and
   result = "requiresDealloc"
 }

@@ -299,7 +299,7 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override Location getLocation() { result = pd.getLocation() }
+  override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
@@ -495,8 +495,6 @@ cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
-  or
-  exprToExprStep_nocfg(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), nodeTo.asExpr())
   or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |

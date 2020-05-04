@@ -166,10 +166,13 @@ private predicate referenceFromVariableAccess(VariableAccess va, Expr reference)
   )
 }
 
-private predicate valueMayEscapeAt(Expr e) {
+private predicate addressMayEscapeAt(Expr e) {
   exists(Call call |
     e = call.getAnArgument().getFullyConverted() and
     not stdIdentityFunction(call.getTarget())
+    or
+    e = call.getQualifier().getFullyConverted() and
+    e.getUnderlyingType() instanceof PointerType
   )
   or
   exists(AssignExpr assign | e = assign.getRValue().getFullyConverted())
@@ -187,8 +190,8 @@ private predicate valueMayEscapeAt(Expr e) {
   exists(AsmStmt asm | e = asm.getAChild().(Expr).getFullyConverted())
 }
 
-private predicate valueMayEscapeMutablyAt(Expr e) {
-  valueMayEscapeAt(e) and
+private predicate addressMayEscapeMutablyAt(Expr e) {
+  addressMayEscapeAt(e) and
   exists(Type t | t = e.getType().getUnderlyingType() |
     exists(PointerType pt |
       pt = t
@@ -205,6 +208,22 @@ private predicate valueMayEscapeMutablyAt(Expr e) {
     // pointer to non-const type.
     t instanceof IntegralType
   )
+}
+
+private predicate lvalueMayEscapeAt(Expr e) {
+  // A call qualifier, like `q` in `q.f()`, is special in that the address of
+  // `q` escapes even though `q` is not a pointer or a reference.
+  exists(Call call |
+    e = call.getQualifier().getFullyConverted() and
+    e.getType().getUnspecifiedType() instanceof Class
+  )
+}
+
+private predicate lvalueMayEscapeMutablyAt(Expr e) {
+  lvalueMayEscapeAt(e) and
+  // A qualifier of a call to a const member function is converted to a const
+  // class type.
+  not e.getType().isConst()
 }
 
 private predicate addressFromVariableAccess(VariableAccess va, Expr e) {
@@ -253,8 +272,11 @@ private module EscapesTree_Cached {
    */
   cached
   predicate variableAddressEscapesTree(VariableAccess va, Expr e) {
-    valueMayEscapeAt(e) and
+    addressMayEscapeAt(e) and
     addressFromVariableAccess(va, e)
+    or
+    lvalueMayEscapeAt(e) and
+    lvalueFromVariableAccess(va, e)
   }
 
   /**
@@ -283,8 +305,11 @@ private module EscapesTree_Cached {
    */
   cached
   predicate variableAddressEscapesTreeNonConst(VariableAccess va, Expr e) {
-    valueMayEscapeMutablyAt(e) and
+    addressMayEscapeMutablyAt(e) and
     addressFromVariableAccess(va, e)
+    or
+    lvalueMayEscapeMutablyAt(e) and
+    lvalueFromVariableAccess(va, e)
   }
 
   /**

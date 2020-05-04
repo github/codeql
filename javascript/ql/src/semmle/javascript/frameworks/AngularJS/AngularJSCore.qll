@@ -461,6 +461,7 @@ class ComponentDirective extends CustomDirective, MkCustomComponent {
 
   override DataFlow::Node getDefinition() { result = comp }
 
+  pragma[nomagic]
   override DataFlow::ValueNode getMemberInit(string name) {
     comp.getConfig().hasPropertyWrite(name, result)
   }
