@@ -30,17 +30,9 @@ module EmailData {
   private class SmtpData extends Range {
     SmtpData() {
       // func (c *Client) Data() (io.WriteCloser, error)
-      exists(Method data, DataFlow::CallNode write, DataFlow::Node writer, int i |
+      exists(Method data |
         data.hasQualifiedName("net/smtp", "Client", "Data") and
-        writer = data.getACall().getResult(0) and
-        (
-          write.getTarget().hasQualifiedName("fmt", "Fprintf")
-          or
-          write.getTarget().hasQualifiedName("io", "WriteString")
-        ) and
-        writer.getASuccessor*() = write.getArgument(0) and
-        i > 0 and
-        write.getArgument(i) = this
+        this.(DataFlow::SsaNode).getInit() = data.getACall().getResult(0)
       )
       or
       // func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
