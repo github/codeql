@@ -21,7 +21,7 @@ render engine with sandbox options.
 
 <example>
 <p>
-The following example shows html page being rendered with user input allowing attackers to access the 
+The following example shows a page being rendered with user input allowing attackers to access the 
 template context and run arbitrary code on the application server. 
 </p>
 
