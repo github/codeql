@@ -679,10 +679,16 @@ module PointsToInternal {
             var = def.getSourceVariable() and
             mod = def.getScope().getEnclosingModule() and
             context.appliesToScope(def.getScope()) and
-            not exists(EssaVariable v | v.getSourceVariable() = var and v.getScope() = mod) and
+            not exists(EssaVariable v | builtin_not_in_outer_scope_helper(mod, var, v)) and
             value = ObjectInternal::builtin(var.getId()) and
             origin = def.getDefiningNode()
         )
+    }
+
+    pragma[noinline]
+    private predicate builtin_not_in_outer_scope_helper(Module mod, SsaSourceVariable sourcevar, EssaVariable v) {
+        mod = v.getScope() and
+        sourcevar = v.getSourceVariable()
     }
 
     /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, origin)`. */
@@ -992,11 +998,12 @@ module InterProceduralPointsTo {
             value = ObjectInternal::unknown() and
             origin = f
             or
-            exists(CfgOrigin orig |
+            exists(CfgOrigin orig, Scope s |
                 func.callResult(value, orig) and
-                origin = orig.asCfgNodeOrHere(f)
-            ) and
-            context.appliesTo(f)
+                origin = orig.asCfgNodeOrHere(f) and
+                s = f.getScope() and
+                context.appliesToScope(s)
+            )
         )
     }
 
@@ -1328,11 +1335,7 @@ module InterProceduralPointsTo {
             if srcvar instanceof EscapingAssignmentGlobalVariable
             then
                 /* If global variable can be reassigned, we need to track it through calls */
-                exists(EssaVariable var, Function func, PointsToContext callee |
-                    callsite_calls_function(def.getCall(), context, func, callee, _) and
-                    var_at_exit(srcvar, func, var) and
-                    PointsToInternal::variablePointsTo(var, callee, value, origin)
-                )
+                global_reassignment_helper(srcvar, def, context, value, origin)
                 or
                 exists(ObjectInternal callable |
                     PointsToInternal::pointsTo(def.getCall().getFunction(), context, callable, _) and
@@ -1342,6 +1345,15 @@ module InterProceduralPointsTo {
             else
                 /* Otherwise we can assume its value (but not those of its attributes or members) has not changed. */
                 PointsToInternal::variablePointsTo(def.getInput(), context, value, origin)
+        )
+    }
+
+    pragma[nomagic]
+    private predicate global_reassignment_helper(SsaSourceVariable srcvar, CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        exists(EssaVariable var, Function func, PointsToContext callee |
+            callsite_calls_function(def.getCall(), context, func, callee, _) and
+            var_at_exit(srcvar, func, var) and
+            PointsToInternal::variablePointsTo(var, callee, value, origin)
         )
     }
 

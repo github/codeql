@@ -30,8 +30,16 @@ abstract class InstanceObject extends ObjectInternal {
 
     pragma[noinline]
     private predicate classAttribute(string name, ObjectInternal cls_attr) {
+        exists(ClassObjectInternal classobj |
+            classAttribute_helper(name, classobj) and
+            classobj.lookup(name, cls_attr, _)
+        )
+    }
+
+    pragma[nomagic]
+    private predicate classAttribute_helper(string name, ClassObjectInternal classobj) {
         PointsToInternal::attributeRequired(this, name) and
-        this.getClass().(ClassObjectInternal).lookup(name, cls_attr, _)
+        classobj = this.getClass()
     }
 
     pragma[noinline]

@@ -581,11 +581,21 @@ class DeletionDefinition extends EssaNodeDefinition {
  */
 class ScopeEntryDefinition extends EssaNodeDefinition {
     ScopeEntryDefinition() {
-        this.getDefiningNode() = this.getSourceVariable().getScopeEntryDefinition() and
-        not this instanceof ImplicitSubModuleDefinition
+        exists(ControlFlowNode def_node, SsaSourceVariable sourcevar |
+            scopeEntryDefinition_helper(this, def_node, sourcevar) and
+            def_node = sourcevar.getScopeEntryDefinition()
+        )
     }
 
+
     override Scope getScope() { result.getEntryNode() = this.getDefiningNode() }
+}
+
+pragma[nomagic]
+private predicate scopeEntryDefinition_helper(EssaNodeDefinition def, ControlFlowNode def_node, SsaSourceVariable sourcevar) {
+    def_node = def.getDefiningNode() and
+    sourcevar = def.getSourceVariable() and
+    not def instanceof ImplicitSubModuleDefinition
 }
 
 /** Possible redefinition of variable via `from ... import *` */
