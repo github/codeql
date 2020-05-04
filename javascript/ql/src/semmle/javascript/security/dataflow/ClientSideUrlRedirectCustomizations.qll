@@ -9,6 +9,8 @@ import semmle.javascript.security.dataflow.RemoteFlowSources
 import UrlConcatenation
 
 module ClientSideUrlRedirect {
+  private import Xss::DomBasedXss as DomBasedXss
+
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
@@ -69,15 +71,7 @@ module ClientSideUrlRedirect {
   /**
    * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
    */
-  class QueryPrefixSanitizer extends Sanitizer {
-    StringSplitCall splitCall;
-
-    QueryPrefixSanitizer() {
-      this = splitCall.getAnElementRead(0) and
-      splitCall.getSplitAt() = "?" and
-      splitCall.getUnsplit() = [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
-    }
-  }
+  class QueryPrefixSanitizer extends Sanitizer, DomBasedXss::QueryPrefixSanitizer { }
 
   /**
    * A sink which is used to set the window location.

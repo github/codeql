@@ -279,6 +279,19 @@ module DomBasedXss {
   }
 
   /**
+   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
+   */
+  class QueryPrefixSanitizer extends Sanitizer {
+    StringSplitCall splitCall;
+
+    QueryPrefixSanitizer() {
+      this = splitCall.getAnElementRead(0) and
+      splitCall.getSplitAt() = "?" and
+      splitCall.getUnsplit() = [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *
