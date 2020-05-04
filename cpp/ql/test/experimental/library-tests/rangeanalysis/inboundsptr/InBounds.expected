@@ -1,0 +1,10 @@
+| test.cpp:14:18:14:18 | FieldAddress: a |
+| test.cpp:15:18:15:18 | FieldAddress: b |
+| test.cpp:26:5:26:12 | Store: ... = ... |
+| test.cpp:27:13:27:16 | Load: access to array |
+| test.cpp:33:5:33:12 | Store: ... = ... |
+| test.cpp:48:5:48:16 | Store: ... = ... |
+| test.cpp:64:11:64:14 | Load: access to array |
+| test.cpp:68:5:68:12 | Store: ... = ... |
+| test.cpp:70:3:70:11 | Store: ... = ... |
+| test.cpp:74:3:74:18 | Store: ... = ... |
