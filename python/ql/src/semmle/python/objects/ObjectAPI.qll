@@ -723,7 +723,7 @@ class PythonFunctionValue extends FunctionValue {
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
     override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
-    
+
     override ClassValue getAnInferredReturnType() {
         /* We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
@@ -779,7 +779,7 @@ class BuiltinMethodValue extends FunctionValue {
         /* Information is unavailable for C code in general */
         none()
     }
-    
+
     override ClassValue getAnInferredReturnType() {
         result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
     }
