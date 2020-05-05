@@ -96,33 +96,87 @@ class SourceNode extends DataFlow::Node {
   DataFlow::PropWrite getAPropertyWrite() { result = getAPropertyReference() }
 
   /**
-   * Gets an invocation of the method or constructor named `memberName` on this node.
+   * Gets an invocation that invokes the a member of this node as a function or constructor.
+   *
+   * Specifically, this includes invocations whose callee is derived from a property of this node,
+   * regardless of what receiver is passed to the call.
+   *
+   * For example, the following are all considered member invocations to `memberName` on `o`:
+   * ```js
+   * o.memberName();
+   * o['memberName']();
+   * let fn = o.memberName; fn();
+   * o.memberName.call(undefined, 1, 2, 3);
+   * new o.memberName();
+   * ```
    */
   DataFlow::InvokeNode getAMemberInvocation(string memberName) {
     result = getAPropertyRead(memberName).getAnInvocation()
   }
 
   /**
-   * Gets an invocation of a method or constructor of this node.
+   * Gets an invocation that invokes a member of this node as a function or constructor.
+   *
+   * Specifically, this includes calls whose callee is derived from a property of this node,
+   * regardless of what receiver is passed to the call.
+   *
+   * For example, the following invocations are all considered member invocations on `o`:
+   * ```js
+   * o.foo();
+   * o[p]();
+   * let fn = o[p]; fn();
+   * o[p].call(undefined, 1, 2, 3);
+   * new o[p]();
+   * ```
    */
   DataFlow::InvokeNode getAMemberInvocation() {
     result = getAPropertyRead().getAnInvocation()
   }
 
   /**
-   * Gets a function call that invokes method `memberName` on this node.
+   * Gets a function call that invokes the a member of this node as a function.
    *
-   * This includes both calls that have the syntactic shape of a method call
-   * (as in `o.m(...)`), and calls where the callee undergoes some additional
-   * data flow (as in `tmp = o.m; tmp(...)`).
+   * Specifically, this includes calls whose callee is derived from a property of this node,
+   * regardless of what receiver is passed to the call.
+   *
+   * For example, the following are all considered member calls to `memberName` on `o`:
+   * ```js
+   * o.memberName();
+   * o['memberName']();
+   * let fn = o.memberName; fn();
+   * o.memberName.call(undefined, 1, 2, 3);
+   * ```
    */
   DataFlow::CallNode getAMemberCall(string memberName) { result = getAMemberInvocation(memberName) }
 
   /**
-   * Gets a method call that invokes method `methodName` on this node.
+   * Gets a function call that invokes a member of this node as a function.
    *
-   * This includes only calls that have the syntactic shape of a method call,
-   * that is, `o.m(...)` or `o[p](...)`.
+   * Specifically, this includes calls whose callee is derived from a property of this node,
+   * regardless of what receiver is passed to the call.
+   *
+   * For example, the following are all considered member calls on `o`:
+   * ```js
+   * o.foo();
+   * o[p]();
+   * let fn = o[p]; fn();
+   * o[p].call(undefined, 1, 2, 3);
+   * ```
+   */
+  DataFlow::CallNode getAMemberCall() { result = getAMemberInvocation() }
+
+  /**
+   * Gets a call that invokes a method named `methodName` with this node as the receiver.
+   *
+   * This includes reflective calls when the name of the method can be determined.
+   *
+   * For example, the following are all considered method calls to `methodName` on `o`:
+   * ```js
+   * o.methodName();
+   * o['methodName']();
+   * o.methodName.call(o, 1, 2, 3);
+   * Foo.prototype.methodName.call(o, 1, 2, 3);
+   * ```
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
     result = getAMemberInvocation(methodName) and
@@ -132,10 +186,17 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
-   * Gets a method call that invokes a method on this node.
+   * Gets a call that invokes a method with this node as the receiver.
    *
-   * This includes only calls that have the syntactic shape of a method call,
-   * that is, `o.m(...)` or `o[p](...)`.
+   * This includes reflective calls when the callee is derived from a property.
+   *
+   * For example, the following are all considered method calls on `o`:
+   * ```js
+   * o.foo();
+   * o[p]();
+   * o.foo.call(o, 1, 2, 3);
+   * Foo.prototype.foo.call(o, 1, 2, 3);
+   * ```
    */
   DataFlow::CallNode getAMethodCall() {
     result = getAMemberInvocation() and
