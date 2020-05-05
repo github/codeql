@@ -8,7 +8,7 @@
 private import javascript
 
 cached
-private StmtContainer getStmtContainer(@node_in_stmt_container node) {
+private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   exprContainers(node, result)
   or
   stmtContainers(node, result)
