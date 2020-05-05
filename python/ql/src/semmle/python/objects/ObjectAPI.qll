@@ -425,7 +425,7 @@ class CallableValue extends Value {
             or
             exists(int n |
                 call.getArg(n) = result and
-                this.getParameter(n+offset).getId() = name
+                this.getParameter(n + offset).getId() = name
             )
             or
             called instanceof BoundMethodObjectInternal and
@@ -728,9 +728,11 @@ class PythonFunctionValue extends FunctionValue {
     override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
 
     override ClassValue getAnInferredReturnType() {
-        /* We have to do a special version of this because builtin functions have no
+        /*
+         * We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
          */
+
         result = this.getAReturnedNode().pointsTo().getClass()
     }
 }
@@ -753,9 +755,11 @@ class BuiltinFunctionValue extends FunctionValue {
     }
 
     override ClassValue getAnInferredReturnType() {
-        /* We have to do a special version of this because builtin functions have no
+        /*
+         * We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
          */
+
         result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
     }
 }
