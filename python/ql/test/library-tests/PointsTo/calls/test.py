@@ -40,3 +40,7 @@ len(l)
 f(arg0=0, arg1=1, arg2=2)
 c = C()
 c.n(arg1=1)
+
+# positional/keyword arguments for a builtin function
+open("foo.txt", "rb") # TODO: Not handled by getNamedArgumentForCall
+open(file="foo.txt", mode="rb") # TODO: Not handled by either getNamedArgumentForCall or getArgumentForCall
