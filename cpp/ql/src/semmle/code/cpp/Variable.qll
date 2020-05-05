@@ -260,7 +260,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
    */
   int getIndex() { param_decl_bind(underlyingElement(this), result, _) }
 
-  string getAnonymousParameterDescription() {
+  private string getAnonymousParameterDescription() {
     not exists(getName()) and
     exists(string idx |
       idx =
