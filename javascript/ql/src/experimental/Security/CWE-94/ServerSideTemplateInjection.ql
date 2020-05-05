@@ -25,11 +25,11 @@ abstract class ServerSideTemplateInjectionSink extends DataFlow::Node { }
 
 class SSTIPugSink extends ServerSideTemplateInjectionSink {
   SSTIPugSink() {
-    exists(CallNode compile, ModuleImportNode renderImport, Node sink |
+    exists(CallNode compile, ModuleImportNode renderImport |
       renderImport = moduleImport(["pug", "jade"]) and
       (
         compile = renderImport.getAMemberCall("compile") and
-        sink.getStartLine() != sink.getASuccessor().getStartLine()
+        exists(compile.getACall())
         or
         compile = renderImport.getAMemberCall("render")
       ) and
