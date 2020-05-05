@@ -12,7 +12,7 @@ ClassValue theBottleClass() { result = theBottleModule().attr("Bottle") }
  * Holds if the CFN `route` (representing some string) is set up for routing to `func` through Bottle.
  *
  * This can be done in many ways, but usually by decorating `func` with the `@bottle.route` decorator
- * (or decorating with `@bottle.get`, `@bottle.get`, etc.). These decorators can also be accessed from an
+ * (or decorating with `@bottle.get`, `@bottle.post`, etc.). These decorators can also be accessed from an
  * instance of a Bottle application, for example by decorating with `@app.route(route)` or `@app.post(route)`.
  * See:
  * - https://bottlepy.org/docs/dev/api.html#routing
