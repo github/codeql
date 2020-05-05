@@ -26,13 +26,12 @@ abstract class ServerSideTemplateInjectionSink extends DataFlow::Node { }
 class SSTIPugSink extends ServerSideTemplateInjectionSink {
   SSTIPugSink() {
     exists(CallNode compile, ModuleImportNode renderImport, Node sink |
-      (renderImport = moduleImport("pug") or renderImport = moduleImport("jade")) and
+      renderImport = moduleImport(["pug", "jade"]) and
       (
         compile = renderImport.getAMemberCall("compile") and
-        compile.flowsTo(sink) and
         sink.getStartLine() != sink.getASuccessor().getStartLine()
         or
-        compile = renderImport.getAMemberCall("render") and compile.flowsTo(sink)
+        compile = renderImport.getAMemberCall("render")
       ) and
       this = compile.getArgument(0)
     )
@@ -43,7 +42,6 @@ class SSTIDotSink extends ServerSideTemplateInjectionSink {
   SSTIDotSink() {
     exists(CallNode compile, Node sink |
       compile = moduleImport("dot").getAMemberCall("template") and
-      compile.flowsTo(sink) and
       sink.getStartLine() != sink.getASuccessor().getStartLine() and
       this = compile.getArgument(0)
     )
@@ -51,26 +49,16 @@ class SSTIDotSink extends ServerSideTemplateInjectionSink {
 }
 
 class SSTIEjsSink extends ServerSideTemplateInjectionSink {
-  SSTIEjsSink() {
-    exists(CallNode compile, Node sink |
-      compile = moduleImport("ejs").getAMemberCall("render") and
-      compile.flowsTo(sink) and
-      this = compile.getArgument(0)
-    )
-  }
+  SSTIEjsSink() { this = moduleImport("ejs").getAMemberCall("render").getArgument(0) }
 }
 
 class SSTINunjucksSink extends ServerSideTemplateInjectionSink {
   SSTINunjucksSink() {
-    exists(CallNode compile, Node sink |
-      compile = moduleImport("nunjucks").getAMemberCall("renderString") and
-      compile.flowsTo(sink) and
-      this = compile.getArgument(0)
-    )
+    this = moduleImport("nunjucks").getAMemberCall("renderString").getArgument(0)
   }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ServerSideTemplateInjectionConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an XPath expression.",
+select sink.getNode(), source, sink, "$@ flows to here and unsafely used as part of rendered template",
   source.getNode(), "User-provided value"

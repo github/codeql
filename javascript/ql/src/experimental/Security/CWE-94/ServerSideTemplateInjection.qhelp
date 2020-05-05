@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Server-Side Template Injection vulnerabilities occur when user input is embedded 
+Server-Side Template Injection vulnerabilities occur when user input is embedded
 in a template in an unsafe manner allowing attackers to access the template context and
 run arbitrary code on the application server.
 </p>
@@ -21,11 +21,28 @@ render engine with sandbox options.
 
 <example>
 <p>
-The following example shows a page being rendered with user input allowing attackers to access the 
+The following example shows a page being rendered with user input allowing attackers to access the
 template context and run arbitrary code on the application server. 
+Pug template engine (and other template engines) provides Interpolation feature - insertion of variable values into a string of some kind.
+For example, `Hello #{user.username}!`, could be used for printing username from scoped variable user, but `user.username` expression will be executed as valid javascript code.
+Unsafe injection of user input provides attacker ability to inject conteqnt like #{some_js_expression}.
+Injection of `#{global.process.exit(1)}` leads to code execution of `global.process.exit(1)` by server.
+Working exploit (as curl command):
+curl -i -s -k -X $'POST' -H $'Host: 127.0.0.1:5061' -H $'Connection: close' -H $'Content-Length: 40' -H $'Content-Type: application/x-www-form-urlencoded' --data-binary $'name=%23%7Bglobal.process.exit%281%29%7D' $'http://127.0.0.1:5061/'
 </p>
 
 <sample src="examples/ServerSideTemplateInjection.js" />
+</example>
+
+<example>
+<p>
+As the example of safe usage of rendering engine, please see example below.
+In opposite to first example, instead of concatenation of provided user input with the template
+it is possible to provide user input as a context - user input will be safely insterted
+and rendered inside correspondent placeholders.
+</p>
+
+<sample src="examples/ServerSideTemplateInjectionSafe.js" />
 </example>
 
 <references>
@@ -35,7 +52,7 @@ OWASP:
 </li>
 <li>
 PortSwigger Research Blog: 
-<a href="https://portswigger.net/research/server-side-template-injection">Server Side Template Injection</a>.
+<a href="https://portswigger.net/research/server-side-template-injection">Server-Side Template Injection</a>.
 </li>
 </references>
 </qhelp>
