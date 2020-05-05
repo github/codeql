@@ -75,8 +75,7 @@ Since we are boosting an existing security query we can reuse the predicates fro
 
     Your query should now look like the contents of the [`step2.ql` query](resources/step2.ql).
 
-3. Test both `isKnownSource` predicates and the `isKnownSink` predicate by [quick-evaluating them
-](https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html#running-a-specific-part-of-a-query-or-library) with CodeQL for VS Code and checking that they have results.
+3. Test both `isKnownSource` predicates and the `isKnownSink` predicate by [quick-evaluating them](https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html#running-a-specific-part-of-a-query-or-library) with CodeQL for VS Code and checking that they have results.
     There must be at least one known source and known sink in the database, otherwise ATM will not produce any results.
 
 4. Check whether the standard query has an `isAdditionalFlowStep` or `isAdditionalTaintStep` predicate defined in its data flow configuration.
@@ -158,6 +157,7 @@ This will exclude candidate endpoints predicted by machine learning that we can 
     In the example project, one of the sources of false positives is the arguments to logging calls such as `Logger.log`, for instance:
 
     ```js
+    // Logger.log = (message, ...objs) => console.log(message, objs);
     Logger.log("/updateName called with new name", req.body.name);
     ```
 
@@ -184,8 +184,11 @@ This will exclude candidate endpoints predicted by machine learning that we can 
     In the example project, another source of false positives is the sinks that are arguments to [Express](https://expressjs.com/) API calls such as `res.json`, for instance:
 
     ```js
-    res.json({
-      name: req.body.name
+    router.post('/updateName', async (req, res) => {
+      // ...
+      res.json({
+        name: req.body.name
+      });
     });
     ```
 
