@@ -156,7 +156,7 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
 class StringSplitCall extends DataFlow::MethodCallNode {
   StringSplitCall() {
     this.getMethodName() = "split" and
-    (getNumArgument() = [1,2] or getReceiver().mayHaveStringValue(_))
+    (getNumArgument() = [1, 2] or getReceiver().mayHaveStringValue(_))
   }
 
   /**
