@@ -1,0 +1,112 @@
+getAMethodCall
+| tst.js:3:12:3:14 | obj | apply | tst.js:18:5:18:42 | reflective call |
+| tst.js:3:12:3:14 | obj | apply | tst.js:21:5:21:27 | reflective call |
+| tst.js:3:12:3:14 | obj | apply | tst.js:25:5:25:25 | reflective call |
+| tst.js:3:12:3:14 | obj | call | tst.js:19:5:19:38 | reflective call |
+| tst.js:3:12:3:14 | obj | call | tst.js:22:5:22:24 | reflective call |
+| tst.js:3:12:3:14 | obj | call | tst.js:26:5:26:22 | reflective call |
+| tst.js:3:12:3:14 | obj | call | tst.js:29:5:29:28 | reflective call |
+| tst.js:3:12:3:14 | obj | call | tst.js:31:5:31:33 | reflective call |
+| tst.js:3:12:3:14 | obj | directMethodCall | tst.js:6:5:6:26 | obj.dir ... dCall() |
+| tst.js:8:16:8:23 | obj.prop | apply | tst.js:21:5:21:27 | prop.ap ... [1, 2]) |
+| tst.js:8:16:8:23 | obj.prop | call | tst.js:22:5:22:24 | prop.call(obj, 1, 2) |
+| tst.js:18:5:18:23 | obj.reflectiveApply | apply | tst.js:18:5:18:42 | obj.ref ... [1, 2]) |
+| tst.js:19:5:19:22 | obj.reflectiveCall | call | tst.js:19:5:19:38 | obj.ref ... , 1, 2) |
+| tst.js:24:14:24:24 | something() | apply | tst.js:25:5:25:25 | fn.appl ... [1, 2]) |
+| tst.js:24:14:24:24 | something() | call | tst.js:26:5:26:22 | fn.call(obj, 1, 2) |
+| tst.js:28:20:28:26 | obj.foo | call | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:28:31:28:39 | doNothing | call | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:31:5:31:14 | hasOwnProp | call | tst.js:31:5:31:33 | hasOwnP ... hello") |
+getAMethodCallNoName
+| tst.js:3:12:3:14 | obj | tst.js:6:5:6:26 | obj.dir ... dCall() |
+| tst.js:3:12:3:14 | obj | tst.js:18:5:18:42 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:19:5:19:38 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:21:5:21:27 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:22:5:22:24 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:25:5:25:25 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:26:5:26:22 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:29:5:29:28 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:31:5:31:33 | reflective call |
+| tst.js:8:16:8:23 | obj.prop | tst.js:21:5:21:27 | prop.ap ... [1, 2]) |
+| tst.js:8:16:8:23 | obj.prop | tst.js:22:5:22:24 | prop.call(obj, 1, 2) |
+| tst.js:18:5:18:23 | obj.reflectiveApply | tst.js:18:5:18:42 | obj.ref ... [1, 2]) |
+| tst.js:19:5:19:22 | obj.reflectiveCall | tst.js:19:5:19:38 | obj.ref ... , 1, 2) |
+| tst.js:24:14:24:24 | something() | tst.js:25:5:25:25 | fn.appl ... [1, 2]) |
+| tst.js:24:14:24:24 | something() | tst.js:26:5:26:22 | fn.call(obj, 1, 2) |
+| tst.js:28:20:28:26 | obj.foo | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:28:31:28:39 | doNothing | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:31:5:31:14 | hasOwnProp | tst.js:31:5:31:33 | hasOwnP ... hello") |
+getAMemberInvocation
+| tst.js:3:12:3:14 | obj | destruct | tst.js:12:5:12:14 | destruct() |
+| tst.js:3:12:3:14 | obj | directMethodCall | tst.js:6:5:6:26 | obj.dir ... dCall() |
+| tst.js:3:12:3:14 | obj | foo | tst.js:29:5:29:28 | reflective call |
+| tst.js:3:12:3:14 | obj | prop | tst.js:9:5:9:10 | prop() |
+| tst.js:3:12:3:14 | obj | prop | tst.js:21:5:21:27 | reflective call |
+| tst.js:3:12:3:14 | obj | prop | tst.js:22:5:22:24 | reflective call |
+| tst.js:3:12:3:14 | obj | reflectiveApply | tst.js:18:5:18:42 | reflective call |
+| tst.js:3:12:3:14 | obj | reflectiveCall | tst.js:19:5:19:38 | reflective call |
+| tst.js:8:16:8:23 | obj.prop | apply | tst.js:21:5:21:27 | prop.ap ... [1, 2]) |
+| tst.js:8:16:8:23 | obj.prop | call | tst.js:22:5:22:24 | prop.call(obj, 1, 2) |
+| tst.js:18:5:18:23 | obj.reflectiveApply | apply | tst.js:18:5:18:42 | obj.ref ... [1, 2]) |
+| tst.js:19:5:19:22 | obj.reflectiveCall | call | tst.js:19:5:19:38 | obj.ref ... , 1, 2) |
+| tst.js:24:14:24:24 | something() | apply | tst.js:25:5:25:25 | fn.appl ... [1, 2]) |
+| tst.js:24:14:24:24 | something() | call | tst.js:26:5:26:22 | fn.call(obj, 1, 2) |
+| tst.js:28:20:28:26 | obj.foo | call | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:28:31:28:39 | doNothing | call | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:31:5:31:14 | hasOwnProp | call | tst.js:31:5:31:33 | hasOwnP ... hello") |
+getAMemberInvocationNoName
+| tst.js:3:12:3:14 | obj | tst.js:6:5:6:26 | obj.dir ... dCall() |
+| tst.js:3:12:3:14 | obj | tst.js:9:5:9:10 | prop() |
+| tst.js:3:12:3:14 | obj | tst.js:12:5:12:14 | destruct() |
+| tst.js:3:12:3:14 | obj | tst.js:15:9:15:13 | elm() |
+| tst.js:3:12:3:14 | obj | tst.js:18:5:18:42 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:19:5:19:38 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:21:5:21:27 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:22:5:22:24 | reflective call |
+| tst.js:3:12:3:14 | obj | tst.js:29:5:29:28 | reflective call |
+| tst.js:8:16:8:23 | obj.prop | tst.js:21:5:21:27 | prop.ap ... [1, 2]) |
+| tst.js:8:16:8:23 | obj.prop | tst.js:22:5:22:24 | prop.call(obj, 1, 2) |
+| tst.js:18:5:18:23 | obj.reflectiveApply | tst.js:18:5:18:42 | obj.ref ... [1, 2]) |
+| tst.js:19:5:19:22 | obj.reflectiveCall | tst.js:19:5:19:38 | obj.ref ... , 1, 2) |
+| tst.js:24:14:24:24 | something() | tst.js:25:5:25:25 | fn.appl ... [1, 2]) |
+| tst.js:24:14:24:24 | something() | tst.js:26:5:26:22 | fn.call(obj, 1, 2) |
+| tst.js:28:20:28:26 | obj.foo | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:28:31:28:39 | doNothing | tst.js:29:5:29:28 | callbac ... , 1, 2) |
+| tst.js:31:5:31:14 | hasOwnProp | tst.js:31:5:31:33 | hasOwnP ... hello") |
+getAPropertyRead
+| tst.js:1:18:1:23 | Object | prototype | tst.js:1:18:1:33 | Object.prototype |
+| tst.js:1:18:1:33 | Object.prototype | hasOwnProperty | tst.js:1:18:1:48 | Object. ... roperty |
+| tst.js:3:12:3:14 | obj | destruct | tst.js:11:11:11:18 | destruct |
+| tst.js:3:12:3:14 | obj | directMethodCall | tst.js:6:5:6:24 | obj.directMethodCall |
+| tst.js:3:12:3:14 | obj | foo | tst.js:28:20:28:26 | obj.foo |
+| tst.js:3:12:3:14 | obj | prop | tst.js:8:16:8:23 | obj.prop |
+| tst.js:3:12:3:14 | obj | reflectiveApply | tst.js:18:5:18:23 | obj.reflectiveApply |
+| tst.js:3:12:3:14 | obj | reflectiveCall | tst.js:19:5:19:22 | obj.reflectiveCall |
+| tst.js:8:16:8:23 | obj.prop | apply | tst.js:21:5:21:14 | prop.apply |
+| tst.js:8:16:8:23 | obj.prop | call | tst.js:22:5:22:13 | prop.call |
+| tst.js:18:5:18:23 | obj.reflectiveApply | apply | tst.js:18:5:18:29 | obj.ref ... y.apply |
+| tst.js:19:5:19:22 | obj.reflectiveCall | call | tst.js:19:5:19:27 | obj.ref ... ll.call |
+| tst.js:24:14:24:24 | something() | apply | tst.js:25:5:25:12 | fn.apply |
+| tst.js:24:14:24:24 | something() | call | tst.js:26:5:26:11 | fn.call |
+| tst.js:28:20:28:26 | obj.foo | call | tst.js:29:5:29:17 | callback.call |
+| tst.js:28:31:28:39 | doNothing | call | tst.js:29:5:29:17 | callback.call |
+| tst.js:31:5:31:14 | hasOwnProp | call | tst.js:31:5:31:19 | hasOwnProp.call |
+getAPropertyReadNoName
+| tst.js:1:18:1:23 | Object | tst.js:1:18:1:33 | Object.prototype |
+| tst.js:1:18:1:33 | Object.prototype | tst.js:1:18:1:48 | Object. ... roperty |
+| tst.js:3:12:3:14 | obj | tst.js:6:5:6:24 | obj.directMethodCall |
+| tst.js:3:12:3:14 | obj | tst.js:8:16:8:23 | obj.prop |
+| tst.js:3:12:3:14 | obj | tst.js:11:11:11:18 | destruct |
+| tst.js:3:12:3:14 | obj | tst.js:14:14:14:16 | elm |
+| tst.js:3:12:3:14 | obj | tst.js:18:5:18:23 | obj.reflectiveApply |
+| tst.js:3:12:3:14 | obj | tst.js:19:5:19:22 | obj.reflectiveCall |
+| tst.js:3:12:3:14 | obj | tst.js:28:20:28:26 | obj.foo |
+| tst.js:8:16:8:23 | obj.prop | tst.js:21:5:21:14 | prop.apply |
+| tst.js:8:16:8:23 | obj.prop | tst.js:22:5:22:13 | prop.call |
+| tst.js:18:5:18:23 | obj.reflectiveApply | tst.js:18:5:18:29 | obj.ref ... y.apply |
+| tst.js:19:5:19:22 | obj.reflectiveCall | tst.js:19:5:19:27 | obj.ref ... ll.call |
+| tst.js:24:14:24:24 | something() | tst.js:25:5:25:12 | fn.apply |
+| tst.js:24:14:24:24 | something() | tst.js:26:5:26:11 | fn.call |
+| tst.js:28:20:28:26 | obj.foo | tst.js:29:5:29:17 | callback.call |
+| tst.js:28:31:28:39 | doNothing | tst.js:29:5:29:17 | callback.call |
+| tst.js:31:5:31:14 | hasOwnProp | tst.js:31:5:31:19 | hasOwnProp.call |

@@ -103,6 +103,13 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
+   * Gets an invocation of a method or constructor of this node.
+   */
+  DataFlow::InvokeNode getAMemberInvocation() {
+    result = getAPropertyRead().getAnInvocation()
+  }
+
+  /**
    * Gets a function call that invokes method `memberName` on this node.
    *
    * This includes both calls that have the syntactic shape of a method call
@@ -120,6 +127,8 @@ class SourceNode extends DataFlow::Node {
   DataFlow::CallNode getAMethodCall(string methodName) {
     result = getAMemberInvocation(methodName) and
     Cached::isSyntacticMethodCall(result)
+    or
+    Cached::reflectiveReceiverInvoke(this, methodName, result)
   }
 
   /**
@@ -128,7 +137,14 @@ class SourceNode extends DataFlow::Node {
    * This includes only calls that have the syntactic shape of a method call,
    * that is, `o.m(...)` or `o[p](...)`.
    */
-  DataFlow::CallNode getAMethodCall() { result = getAMethodCall(_) }
+  DataFlow::CallNode getAMethodCall() {
+    result = getAMemberInvocation() and
+    Cached::isSyntacticMethodCall(result)
+    or
+    Cached::reflectiveReceiverInvoke(this, _, result)
+    or
+    Cached::reflectiveDynamicReceiverInvoke(this, result)
+  }
 
   /**
    * Gets a chained method call that invokes `methodName` last.
@@ -247,7 +263,40 @@ private module Cached {
    */
   cached
   predicate isSyntacticMethodCall(DataFlow::CallNode call) {
-    call.getCalleeNode().asExpr().getUnderlyingReference() instanceof PropAccess
+    call = DataFlow::valueNode(any(MethodCallExpr e))
+  }
+
+  /**
+   * Gets a transitive immediate predecessor of the given reflective call.
+   */
+  private DataFlow::PropRead getReflectiveCallee(CallExpr call) {
+    exists(TReflectiveCallNode(call, _)) and
+    hasLocalSource(call.getReceiver().flow(), result)
+  }
+
+  /**
+   * Holds if `call` is a reflective call where `receiver` flows to the receiver and the callee
+   * is derived from a property named `name`.
+   */
+  cached
+  predicate reflectiveReceiverInvoke(DataFlow::SourceNode receiver, string name, DataFlow::CallNode call) {
+    exists(CallExpr expr | call = TReflectiveCallNode(expr, _) |
+      getReflectiveCallee(expr).getPropertyName() = name and
+      hasLocalSource(call.getReceiver(), receiver)
+    )
+  }
+
+  /**
+   * Holds if `call` is a reflective call where `receiver` flows to the receiver and the callee
+   * is derived from a property with a non-constant name.
+   */
+  cached
+  predicate reflectiveDynamicReceiverInvoke(DataFlow::SourceNode receiver, DataFlow::CallNode call) {
+    exists(DataFlow::PropRead read, CallExpr expr | call = TReflectiveCallNode(expr, _) |
+      getReflectiveCallee(expr) = read and
+      not exists(read.getPropertyName()) and
+      hasLocalSource(call.getReceiver(), receiver)
+    )
   }
 }
 
