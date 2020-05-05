@@ -36,10 +36,9 @@ curl -i -s -k -X $'POST' -H $'Host: 127.0.0.1:5061' -H $'Connection: close' -H $
 
 <example>
 <p>
-As the example of safe usage of rendering engine, please see example below.
-In opposite to first example, instead of concatenation of provided user input with the template
-it is possible to provide user input as a context - user input will be safely insterted
-and rendered inside correspondent placeholders.
+The example below provides an example of how to use a template engine without any risk of Server-Side Template Injection. 
+Instead of concatenating user input onto the template, the template uses a placeholder and safely inserts 
+the user input. 
 </p>
 
 <sample src="examples/ServerSideTemplateInjectionSafe.js" />
