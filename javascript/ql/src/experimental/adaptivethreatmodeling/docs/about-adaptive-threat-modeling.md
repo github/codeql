@@ -52,7 +52,7 @@ For full coverage, run the boosted query and the standard query together.
 
 You can help ATM find more security vulnerabilities in two ways:
 
-- You can improve the recall and precision of the known endpoints by adding more true positives to and removing any false positives from the set of known endpoints.
+- You can improve the recall and precision of the candidate endpoints by adding more true positives to and removing any false positives from the set of known endpoints.
   This will improve the scoring, increasing the likelihood that higher scoring results are true positives.
 - You can refine the endpoint filter such that it allows more true candidate endpoints to pass through and excludes more false candidate endpoints.
   This has the effect of increasing the number of true positives and reducing the number of false positives.
