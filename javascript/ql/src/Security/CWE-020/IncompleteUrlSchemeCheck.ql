@@ -29,7 +29,7 @@ DataFlow::SourceNode schemeOf(DataFlow::Node url) {
   // url.split(":")[0]
   exists(StringSplitCall split |
     split.getSeparator() = ":" and
-    result = split.getAnElementRead(0) and
+    result = split.getASubstringRead(0) and
     url = split.getBaseString()
   )
   or

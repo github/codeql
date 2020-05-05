@@ -178,5 +178,5 @@ class StringSplitCall extends DataFlow::MethodCallNode {
    * Gets a read of the `i`th element from the split string.
    */
   bindingset[i]
-  DataFlow::Node getAnElementRead(int i) { result = getAPropertyRead(i.toString()) }
+  DataFlow::Node getASubstringRead(int i) { result = getAPropertyRead(i.toString()) }
 }
