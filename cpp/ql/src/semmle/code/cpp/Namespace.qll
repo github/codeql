@@ -172,9 +172,7 @@ class UsingDirectiveEntry extends UsingEntry {
    */
   Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _) }
 
-  override string toString() {
-    result = "using namespace " + this.getNamespace().getFriendlyName()
-  }
+  override string toString() { result = "using namespace " + this.getNamespace().getFriendlyName() }
 }
 
 /**
