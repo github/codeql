@@ -45,19 +45,8 @@ module ArrayTaintTracking {
       name = "push" or
       name = "unshift"
     |
-      pred = call.getAnArgument() and
+      pred = [call.getAnArgument(), call.getASpreadArgument()] and
       succ.(DataFlow::SourceNode).getAMethodCall(name) = call
-    )
-    or
-    // `array.push(...e)`, `array.unshift(...e)`: if `e` is tainted, then so is `array`.
-    exists(string name |
-      name = "push" or
-      name = "unshift"
-    |
-      pred = call.getASpreadArgument() and
-      // Make sure we handle reflective calls
-      succ = call.getReceiver().getALocalSource() and
-      call.getCalleeName() = name
     )
     or
     // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.
