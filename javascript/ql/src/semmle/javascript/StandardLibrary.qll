@@ -151,12 +151,12 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
  * A call to `String.prototype.split`.
  *
  * We heuristically include any call to a method called `split`, provided it either
- * has exactly one arguments, or local data flow suggests that the receiver may be a string.
+ * has one or two arguments, or local data flow suggests that the receiver may be a string.
  */
 class StringSplitCall extends DataFlow::MethodCallNode {
   StringSplitCall() {
     this.getMethodName() = "split" and
-    (getNumArgument() = 1 or getReceiver().mayHaveStringValue(_))
+    (getNumArgument() = [1,2] or getReceiver().mayHaveStringValue(_))
   }
 
   /**
