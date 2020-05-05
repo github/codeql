@@ -1,4 +1,4 @@
 import go
 
-from MailData f
+from EmailData f
 select f

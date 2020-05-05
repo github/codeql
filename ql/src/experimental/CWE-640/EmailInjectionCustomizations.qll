@@ -25,6 +25,6 @@ module EmailInjection {
    * A data-flow node that becomes part of an email considered as a taint sink for email injection.
    */
   class MailDataAsSink extends Sink {
-    MailDataAsSink() { this instanceof MailData }
+    MailDataAsSink() { this instanceof EmailData }
   }
 }

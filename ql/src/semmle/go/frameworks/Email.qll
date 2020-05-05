@@ -3,44 +3,36 @@
 import go
 
 /**
- * A data-flow node that represents data written to an email.
- * Data in this case includes the email headers and the mail body
+ * A data-flow node that represents data written to an email, either as part
+ * of the headers or as part of the body.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `MailDataCall::Range` instead.
+ * extend `EmailData::Range` instead.
  */
-class MailData extends DataFlow::Node {
-  MailDataCall::Range self;
+class EmailData extends DataFlow::Node {
+  EmailData::Range self;
 
-  MailData() { this = self.getData() }
+  EmailData() { this = self }
 }
 
-/** Provides classes for working with calls which write data to an email. */
-module MailDataCall {
+/** Provides classes for working with data that is incorporated into an email. */
+module EmailData {
   /**
-   * A data-flow node that represents a call which writes data to an email.
-   * Data in this case refers to email headers and the mail body
+   * A data-flow node that represents data which is written to an email, either as part
+   * of the headers or as part of the body.
    *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `EmailData` instead.
    */
-  abstract class Range extends DataFlow::CallNode {
-    /** Gets data written to an email connection. */
-    abstract DataFlow::Node getData();
-  }
+  abstract class Range extends DataFlow::Node { }
 
-  /** Get the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
-  bindingset[result]
-  private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
-
-  /** A Client.Data expression string used in an API function of the net/smtp package. */
+  /** A data-flow node that is written to an email using the net/smtp package. */
   private class SmtpData extends Range {
     SmtpData() {
       // func (c *Client) Data() (io.WriteCloser, error)
-      this.getTarget().(Method).hasQualifiedName("net/smtp", "Client", "Data")
-    }
-
-    override DataFlow::Node getData() {
-      exists(DataFlow::CallNode write, DataFlow::Node writer, int i |
-        this.getResult(0) = writer and
+      exists(Method data, DataFlow::CallNode write, DataFlow::Node writer, int i |
+        data.hasQualifiedName("net/smtp", "Client", "Data") and
+        writer = data.getACall().getResult(0) and
         (
           write.getTarget().hasQualifiedName("fmt", "Fprintf")
           or
@@ -48,32 +40,21 @@ module MailDataCall {
         ) and
         writer.getASuccessor*() = write.getArgument(0) and
         i > 0 and
-        write.getArgument(i) = result
+        write.getArgument(i) = this
+      )
+      or
+      // func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
+      exists(Function sendMail |
+        sendMail.hasQualifiedName("net/smtp", "SendMail") and
+        this = sendMail.getACall().getArgument(4)
       )
     }
   }
 
-  /** A send mail expression string used in an API function of the net/smtp package. */
-  private class SmtpSendMail extends Range {
-    SmtpSendMail() {
-      // func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
-      this.getTarget().hasQualifiedName("net/smtp", "SendMail")
-    }
+  /** Gets the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
+  private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
 
-    override DataFlow::Node getData() { result = this.getArgument(4) }
-  }
-
-  /** A call to `NewSingleEmail` API function of the Sendgrid mail package. */
-  private class SendGridSingleEmail extends Range {
-    SendGridSingleEmail() {
-      // func NewSingleEmail(from *Email, subject string, to *Email, plainTextContent string, htmlContent string) *SGMailV3
-      this.getTarget().hasQualifiedName(sendgridMail(), "NewSingleEmail")
-    }
-
-    override DataFlow::Node getData() { result = this.getArgument([1, 3, 4]) }
-  }
-
-  /* Gets the value of the `i`-th content parameter of the given `call` */
+  /* Gets the value of the `i`th content parameter of the given `call` */
   private DataFlow::Node getContent(DataFlow::CallNode call, int i) {
     exists(DataFlow::CallNode cn, DataFlow::Node content |
       // func NewContent(contentType string, value string) *Content
@@ -84,27 +65,29 @@ module MailDataCall {
     )
   }
 
-  /** A call to `NewV3MailInit` API function of the Sendgrid mail package. */
-  private class SendGridV3Init extends Range {
-    SendGridV3Init() {
-      // func NewV3MailInit(from *Email, subject string, to *Email, content ...*Content) *SGMailV3
-      this.getTarget().hasQualifiedName(sendgridMail(), "NewV3MailInit")
-    }
-
-    override DataFlow::Node getData() {
-      exists(int i | result = getContent(this, i) and i >= 3)
+  /** A data-flow node that is written to an email using the sendgrid/sendgrid-go package. */
+  private class SendGridEmail extends Range {
+    SendGridEmail() {
+      // func NewSingleEmail(from *Email, subject string, to *Email, plainTextContent string, htmlContent string) *SGMailV3
+      exists(Function newSingleEmail |
+        newSingleEmail.hasQualifiedName(sendgridMail(), "NewSingleEmail") and
+        this = newSingleEmail.getACall().getArgument([1, 3, 4])
+      )
       or
-      result = this.getArgument(1)
-    }
-  }
-
-  /** A call to `AddContent` API function of the Sendgrid mail package. */
-  private class SendGridAddContent extends Range {
-    SendGridAddContent() {
+      // func NewV3MailInit(from *Email, subject string, to *Email, content ...*Content) *SGMailV3
+      exists(Function newv3MailInit |
+        newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit")
+      |
+        this = getContent(newv3MailInit.getACall(), any(int i | i >= 3))
+        or
+        this = newv3MailInit.getACall().getArgument(1)
+      )
+      or
       // func (s *SGMailV3) AddContent(c ...*Content) *SGMailV3
-      this.getTarget().(Method).hasQualifiedName(sendgridMail(), "SGMailV3", "AddContent")
+      exists(Method addContent |
+        addContent.hasQualifiedName(sendgridMail(), "SGMailV3", "AddContent") and
+        this = getContent(addContent.getACall(), _)
+      )
     }
-
-    override DataFlow::Node getData() { result = getContent(this, _) }
   }
 }
