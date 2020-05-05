@@ -31,3 +31,5 @@ app.post('/', (request, response) => {
     var html = getHTML(input)
     response.send(html);
 })
+
+app.listen(port, () => { console.log(`server is listening on ${port}`) })
