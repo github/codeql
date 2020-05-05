@@ -52,7 +52,6 @@ module EmailData {
   }
 
   /** Gets the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
-  bindingset[result]
   private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
 
   /* Gets the value of the `i`th content parameter of the given `call` */
@@ -67,8 +66,8 @@ module EmailData {
   }
 
   /** A data-flow node that is written to an email using the sendgrid/sendgrid-go package. */
-  private class SendGridSingleEmail extends Range {
-    SendGridSingleEmail() {
+  private class SendGridEmail extends Range {
+    SendGridEmail() {
       // func NewSingleEmail(from *Email, subject string, to *Email, plainTextContent string, htmlContent string) *SGMailV3
       exists(Function newSingleEmail |
         newSingleEmail.hasQualifiedName(sendgridMail(), "NewSingleEmail") and
