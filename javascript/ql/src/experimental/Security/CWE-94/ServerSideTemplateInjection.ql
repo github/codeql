@@ -40,9 +40,9 @@ class SSTIPugSink extends ServerSideTemplateInjectionSink {
 
 class SSTIDotSink extends ServerSideTemplateInjectionSink {
   SSTIDotSink() {
-    exists(CallNode compile, Node sink |
+    exists(CallNode compile |
       compile = moduleImport("dot").getAMemberCall("template") and
-      sink.getStartLine() != sink.getASuccessor().getStartLine() and
+      exists(compile.getACall()) and
       this = compile.getArgument(0)
     )
   }
