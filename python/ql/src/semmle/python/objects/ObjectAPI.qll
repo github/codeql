@@ -380,13 +380,13 @@ class CallableValue extends Value {
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
             called.functionAndOffset(this, offset)
         |
+            call.getArgByName(name) = result and
+            exists(this.getParameterByName(name))
+            or
             exists(int n |
                 call.getArg(n) = result and
                 this.getParameter(n+offset).getId() = name
             )
-            or
-            call.getArgByName(name) = result and
-            exists(this.getParameterByName(name))
             or
             called instanceof BoundMethodObjectInternal and
             offset = 1 and
