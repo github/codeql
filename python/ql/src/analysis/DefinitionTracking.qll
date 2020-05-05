@@ -492,7 +492,7 @@ class NiceLocationExpr extends @py_expr {
 }
 
 /**
- * Gets an element, of kind `kind`, that element `e` uses, if any.
+ * Gets the definition (of kind `kind`) for the expression `use`, if one can be found.
  */
 cached
 Definition definitionOf(NiceLocationExpr use, string kind) {
