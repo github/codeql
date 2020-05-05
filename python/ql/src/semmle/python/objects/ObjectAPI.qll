@@ -454,6 +454,9 @@ class BoundMethodValue extends CallableValue {
      * The value for `o` in `o.func`.
      */
     Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
+
+    /** Gets the parameter node that will be used for `self`. */
+    NameNode getSelfParameter() { result = this.(BoundMethodObjectInternal).getSelfParameter() }
 }
 
 /**

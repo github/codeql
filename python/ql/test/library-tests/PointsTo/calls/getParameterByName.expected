@@ -5,9 +5,6 @@
 | Function f | arg1 | ControlFlowNode for arg1 |
 | Function f | arg2 | ControlFlowNode for arg2 |
 | Method(Function C.n, C()) | arg1 | ControlFlowNode for arg1 |
-| Method(Function C.n, C()) | self | ControlFlowNode for self |
 | Method(Function C.n, class C) | arg1 | ControlFlowNode for arg1 |
-| Method(Function C.n, class C) | self | ControlFlowNode for self |
-| Method(Function f, C()) | arg0 | ControlFlowNode for arg0 |
 | Method(Function f, C()) | arg1 | ControlFlowNode for arg1 |
 | Method(Function f, C()) | arg2 | ControlFlowNode for arg2 |
