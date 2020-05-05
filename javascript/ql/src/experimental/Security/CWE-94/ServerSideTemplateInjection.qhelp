@@ -27,7 +27,7 @@ The Pug template engine (and other template engines) provides an interpolation f
 For example, <code>Hello #{user.username}!</code>, could be used for printing a username from a scoped variable user, 
 but the <code>user.username</code> expression will be executed as JavaScript.
 Unsafe injection of user input in a template therefore allows an attacker to inject arbitrary JavaScript code. 
-For example, a payload of <code>#{global.process.exit(1)}</code> will cause the server to crash.
+For example, a payload of <code>#{global.process.exit(1)}</code> will cause the below server to crash.
 </p>
 
 <sample src="examples/ServerSideTemplateInjection.js" />
