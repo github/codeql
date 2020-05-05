@@ -87,8 +87,6 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
    * is distinct from the `G<T>` used in the class definition, since in `G<T> g;`
    * the `T` will be the actual type parameter used for the `Other` that contains
    * `g`, whereas in `class G<T> { ... }` the `T` is a formal type parameter of `G`.
-   *
-   * It is important not to get confused by the superficial syntactic similarity.
    */
   override ConstructedType getAConstructedGeneric() {
     result = UnboundGeneric.super.getAConstructedGeneric()
@@ -354,10 +352,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
  * arguments have been supplied, for example `G<int>` or the `G<T>` in
  * `class Other<T> { G<T> g; }`. Constructed types can be divided further into
  * those that are open (for example `G1<T>` or `G2<T,T,U,int>`), in the sense
- * that one or more of their type argumentsis a type parameter, versus those
+ * that one or more of their type arguments is a type parameter, versus those
  * that are closed (for example `G1<int>` or `G2<long,long,float,int>`).
- *
- * We do not currently distinguish the two in this library.
  *
  * Either a constructed `struct` (`ConstructedStruct`), constructed `class`
  * (`ConstructedClass`), constructed `interface` (`ConstructedInterface`),
