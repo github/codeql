@@ -23,6 +23,7 @@
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Less results | This query now recognizes additional safe patterns of doing URL redirects. |
 | Client-side cross-site scripting (`js/xss`) | Less results | This query now recognizes more safe strings based on URLs. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes more url scheme checks. |
+| Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes more utility functions vulnerable to prototype polution. |
 
 ## Changes to libraries
 
