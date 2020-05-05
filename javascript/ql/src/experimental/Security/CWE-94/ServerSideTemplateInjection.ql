@@ -41,7 +41,6 @@ class SSTIDotSink extends ServerSideTemplateInjectionSink {
   SSTIDotSink() {
     exists(CallNode compile |
       compile = moduleImport("dot").getAMemberCall("template") and
-      exists(compile.getACall()) and
       this = compile.getArgument(0)
     )
   }
