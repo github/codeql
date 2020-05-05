@@ -30,7 +30,9 @@ class FunctionMonkeyPatch extends Function {
 }
 
 class ParameterMonkeyPatch extends Parameter {
-  override string getDescription() { result = super.getType().getName() + " " + super.getDescription() }
+  override string getDescription() {
+    result = super.getType().getName() + " " + super.getDescription()
+  }
 }
 
 from Element e, Element ti
