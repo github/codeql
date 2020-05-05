@@ -8,6 +8,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.TypeTracking
+private import internal.DataFlowNode
 
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
@@ -307,12 +308,13 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
-        astNode instanceof ImportMetaExpr
+        astNode instanceof ImportMetaExpr or
+        astNode instanceof InvokeExpr
       )
       or
       DataFlow::parameterNode(this, _)
       or
-      this instanceof DataFlow::Impl::InvokeNodeDef
+      this instanceof TReflectiveCallNode
       or
       DataFlow::thisNode(this, _)
       or
