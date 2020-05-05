@@ -98,8 +98,8 @@ module TaintedPath {
       )
       or
       // A `str.split()` call can either split into path elements (`str.split("/")`) or split by some other string.
-      exists(StringSplitCall mcn | dst = mcn and mcn.getUnsplit() = src |
-        if mcn.getSplitAt() = "/"
+      exists(StringSplitCall mcn | dst = mcn and mcn.getBaseString() = src |
+        if mcn.getSeparator() = "/"
         then
           srclabel.(Label::PosixPath).canContainDotDotSlash() and
           dstlabel instanceof Label::SplitPath

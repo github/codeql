@@ -23,8 +23,8 @@ import semmle.javascript.DynamicPropertyAccess
  */
 class SplitCall extends StringSplitCall {
   SplitCall() {
-    getSplitAt() = "." and
-    getUnsplit() instanceof ParameterNode
+    getSeparator() = "." and
+    getBaseString() instanceof ParameterNode
   }
 }
 

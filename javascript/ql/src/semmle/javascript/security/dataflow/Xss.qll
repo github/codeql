@@ -286,8 +286,8 @@ module DomBasedXss {
 
     QueryPrefixSanitizer() {
       this = splitCall.getAnElementRead(0) and
-      splitCall.getSplitAt() = "?" and
-      splitCall.getUnsplit() = [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+      splitCall.getSeparator() = "?" and
+      splitCall.getBaseString().getALocalSource() = [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
     }
   }
 

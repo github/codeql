@@ -170,9 +170,9 @@ class StringSplitCall extends DataFlow::MethodCallNode {
   }
 
   /**
-   * Gets a the SourceNode for the string before it is split.
+   * Gets the DataFlow::Node for the base string that is split.
    */
-  DataFlow::SourceNode getUnsplit() { result = getReceiver().getALocalSource() }
+  DataFlow::Node getBaseString() { result = getReceiver() }
 
   /**
    * Gets a read of the `i`th element from the split string.
