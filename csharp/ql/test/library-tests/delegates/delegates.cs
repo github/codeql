@@ -79,8 +79,8 @@ namespace Delegates
             bool b = pi(3) & ps(""); // generic invocation
 
             System.Threading.ContextCallback d; // assembly delegate
+
+            cd1?.Invoke(x); // qualifiable delegate invocation expression
         }
-
     }
-
 }

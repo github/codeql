@@ -534,7 +534,7 @@ class MutatorOperatorCall extends OperatorCall {
  * }
  * ```
  */
-class DelegateCall extends Call, @delegate_invocation_expr {
+class DelegateCall extends Call, QualifiableExpr, @delegate_invocation_expr {
   override Callable getTarget() { none() }
 
   /**
