@@ -1,6 +1,6 @@
 /**
- * @name Unsafe expansion of shorthand HTML tag
- * @description Using regular expressions to expand shorthand HTML
+ * @name Unsafe expansion of self-closing HTML tag
+ * @description Using regular expressions to expand self-closing HTML
  *              tags may lead to cross-site scripting vulnerabilities.
  * @kind problem
  * @problem.severity warning
@@ -15,14 +15,15 @@
 import javascript
 
 /**
- * A regular expression that captures the name and content of a shorthand HTML tag such as `<div id='foo'/>`.
+ * A regular expression that captures the name and content of a
+ * self-closing HTML tag such as `<div id='foo'/>`.
  */
-class ShorthandTagRecognizer extends RegExpLiteral {
-  ShorthandTagRecognizer() {
+class SelfClosingTagRecognizer extends DataFlow::RegExpCreationNode {
+  SelfClosingTagRecognizer() {
     exists(RegExpSequence seq, RegExpGroup name, RegExpGroup content |
       // `/.../g`
-      this.isGlobal() and
-      this = seq.getLiteral() and
+      RegExp::isGlobal(this.getFlags()) and
+      this.getRoot() = seq.getRootTerm() and
       // `/<.../`
       seq.getChild(0).getConstantValue() = "<" and
       // `/...\/>/`
@@ -46,22 +47,12 @@ class ShorthandTagRecognizer extends RegExpLiteral {
       )
     )
   }
-
-  /**
-   * Gets a data flow node that may refer to this regular expression.
-   */
-  DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
-    t.start() and
-    result = this.flow()
-    or
-    exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
-  }
 }
 
-from ShorthandTagRecognizer regexp, StringReplaceCall replace
+from SelfClosingTagRecognizer regexp, StringReplaceCall replace
 where
-  regexp.ref(DataFlow::TypeTracker::end()).flowsTo(replace.getArgument(0)) and
+  regexp.getAReference().flowsTo(replace.getArgument(0)) and
   replace.getRawReplacement().mayHaveStringValue("<$1></$2>")
 select replace,
-  "This HTML tag expansion may disable earlier sanitizations as $@ may match unintended strings.",
+  "This self-closing HTML tag expansion invalidates prior sanitization as $@ may match part of an attribute value.",
   regexp, "this regular expression"
