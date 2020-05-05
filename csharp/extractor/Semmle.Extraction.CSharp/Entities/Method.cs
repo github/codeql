@@ -129,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol, m.symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildNestedTypeId(m.Context, tb0, m.symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
@@ -163,47 +163,6 @@ namespace Semmle.Extraction.CSharp.Entities
             BuildMethodId(this, trapFile);
         }
 
-        /// <summary>
-        /// Adds an appropriate label ID to the trap builder <paramref name="trapFile"/>
-        /// for the type <paramref name="type"/> belonging to the signature of method
-        /// <paramref name="method"/>.
-        ///
-        /// For methods without type parameters this will always add the key of the
-        /// corresponding type.
-        ///
-        /// For methods with type parameters, this will add the key of the
-        /// corresponding type if the type does *not* contain one of the method
-        /// type parameters, otherwise it will add a textual representation of
-        /// the type. This distinction is required because type parameter IDs
-        /// refer to their declaring methods.
-        ///
-        /// Example:
-        ///
-        /// <code>
-        /// int Count&lt;T&gt;(IEnumerable<T> items)
-        /// </code>
-        ///
-        /// The label definitions for <code>Count</code> (<code>#4</code>) and <code>T</code>
-        /// (<code>#5</code>) will look like:
-        ///
-        /// <code>
-        /// #1=&lt;label for System.Int32&gt;
-        /// #2=&lt;label for type containing Count&gt;
-        /// #3=&lt;label for IEnumerable`1&gt;
-        /// #4=@"{#1} {#2}.Count`2(#3<T>);method"
-        /// #5=@"{#4}T;typeparameter"
-        /// </code>
-        ///
-        /// Note how <code>int</code> is referenced in the label definition <code>#3</code> for
-        /// <code>Count</code>, while <code>T[]</code> is represented textually in order
-        /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
-        /// <code>T</code> valid.
-        /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type, ISymbol symbolBeingDefined)
-        {
-            type.BuildTypeId(cx, trapFile, false, symbolBeingDefined, (cx0, tb0, type0, g) => AddSignatureTypeToId(cx, tb0, method, type0, g));
-        }
-
         protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
@@ -212,13 +171,13 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType, method);
+                method.ReceiverType.BuildNestedTypeId(cx, trapFile, method);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                AddSignatureTypeToId(cx, trapFile, method, param.Type, method);
+                param.Type.BuildNestedTypeId(cx, trapFile, method);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
