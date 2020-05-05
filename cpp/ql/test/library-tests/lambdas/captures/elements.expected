@@ -201,6 +201,7 @@
 | file://:0:0:0:0 | ..(*)(..) |
 | file://:0:0:0:0 | ..(*)(..) |
 | file://:0:0:0:0 | ..(..) |
+| file://:0:0:0:0 | __super |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
 | file://:0:0:0:0 | __va_list_tag && |
@@ -212,11 +213,9 @@
 | file://:0:0:0:0 | const lambda [] type at line 3, col. 5 |
 | file://:0:0:0:0 | const lambda [] type at line 3, col. 5 & |
 | file://:0:0:0:0 | const lambda [] type at line 3, col. 5 * |
-| file://:0:0:0:0 | const lambda [] type at line 3, col. 5 *const |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 & |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 * |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 5 *const |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 & |
 | file://:0:0:0:0 | const lambda [] type at line 15, col. 5 |
@@ -224,7 +223,6 @@
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 & |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 * |
-| file://:0:0:0:0 | const lambda [] type at line 22, col. 19 *const |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |

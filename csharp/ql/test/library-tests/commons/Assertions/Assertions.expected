@@ -1,0 +1,33 @@
+assertTrue
+| Assertions.cs:8:44:8:59 | call to method IsTrue | Assertions.cs:8:58:8:58 | access to parameter b |
+| Assertions.cs:9:45:9:55 | call to method MyAssert | Assertions.cs:9:54:9:54 | access to parameter b |
+| Assertions.cs:17:9:17:31 | call to method Assert | Assertions.cs:17:22:17:30 | ... != ... |
+| Assertions.cs:20:9:20:32 | call to method IsTrue | Assertions.cs:20:23:20:31 | ... == ... |
+| Assertions.cs:21:9:21:32 | call to method IsTrue | Assertions.cs:21:23:21:31 | ... != ... |
+| Assertions.cs:24:9:24:38 | call to method MyAssert | Assertions.cs:24:29:24:37 | ... == ... |
+| Assertions.cs:25:9:25:39 | call to method MyAssert2 | Assertions.cs:25:30:25:38 | ... == ... |
+| Assertions.cs:30:9:30:27 | call to method Assert | Assertions.cs:30:22:30:26 | false |
+| Assertions.cs:31:9:31:26 | call to method Assert | Assertions.cs:31:22:31:25 | true |
+| Assertions.cs:32:9:32:28 | call to method IsTrue | Assertions.cs:32:23:32:27 | false |
+| Assertions.cs:33:9:33:27 | call to method IsTrue | Assertions.cs:33:23:33:26 | true |
+| Assertions.cs:36:9:36:34 | call to method MyAssert | Assertions.cs:36:29:36:33 | false |
+| Assertions.cs:37:9:37:33 | call to method MyAssert | Assertions.cs:37:29:37:32 | true |
+| Assertions.cs:38:9:38:35 | call to method MyAssert2 | Assertions.cs:38:30:38:34 | false |
+| Assertions.cs:39:9:39:34 | call to method MyAssert2 | Assertions.cs:39:30:39:33 | true |
+| Assertions.cs:44:9:44:36 | call to method Requires | Assertions.cs:44:27:44:35 | ... != ... |
+| Assertions.cs:45:9:45:58 | call to method Requires | Assertions.cs:45:27:45:35 | ... != ... |
+| Assertions.cs:46:9:46:47 | call to method Requires | Assertions.cs:46:38:46:46 | ... != ... |
+| Assertions.cs:47:9:47:69 | call to method Requires | Assertions.cs:47:38:47:46 | ... != ... |
+| Assertions.cs:48:9:48:34 | call to method Assert | Assertions.cs:48:25:48:33 | ... != ... |
+| Assertions.cs:49:9:49:51 | call to method Assert | Assertions.cs:49:25:49:33 | ... != ... |
+| Assertions.cs:50:9:50:34 | call to method Assume | Assertions.cs:50:25:50:33 | ... != ... |
+| Assertions.cs:51:9:51:51 | call to method Assume | Assertions.cs:51:25:51:33 | ... != ... |
+assertFalse
+| Assertions.cs:22:9:22:33 | call to method IsFalse | Assertions.cs:22:24:22:32 | ... != ... |
+| Assertions.cs:23:9:23:33 | call to method IsFalse | Assertions.cs:23:24:23:32 | ... == ... |
+| Assertions.cs:34:9:34:28 | call to method IsFalse | Assertions.cs:34:24:34:27 | true |
+| Assertions.cs:35:9:35:29 | call to method IsFalse | Assertions.cs:35:24:35:28 | false |
+assertNull
+| Assertions.cs:18:9:18:24 | call to method IsNull | Assertions.cs:18:23:18:23 | access to local variable s |
+assertNonNull
+| Assertions.cs:19:9:19:27 | call to method IsNotNull | Assertions.cs:19:26:19:26 | access to local variable s |

@@ -18,7 +18,8 @@ import semmle.code.java.StringFormat
 int getNumberOfReferencedIndices(FormattingCall fmtcall) {
   exists(int maxref, int skippedrefs |
     maxref = max(FormatString fmt | fmtcall.getAFormatString() = fmt | fmt.getMaxFmtSpecIndex()) and
-    skippedrefs = count(int i |
+    skippedrefs =
+      count(int i |
         forex(FormatString fmt | fmtcall.getAFormatString() = fmt |
           i = fmt.getASkippedFmtSpecIndex()
         )

@@ -43,11 +43,11 @@ abstract class BadDynamicCall extends DynamicExpr {
       read = ssaDef.getARead() and
       ultimateSsaDef = ssaDef.getAnUltimateDefinition()
     |
-      ultimateSsaDef.getADefinition() = any(AssignableDefinition def |
-          source = def.getSource().stripImplicitCasts()
-        )
+      ultimateSsaDef.getADefinition() =
+        any(AssignableDefinition def | source = def.getSource().stripImplicitCasts())
       or
-      ultimateSsaDef.getADefinition() = any(AssignableDefinitions::ImplicitParameterDefinition p |
+      ultimateSsaDef.getADefinition() =
+        any(AssignableDefinitions::ImplicitParameterDefinition p |
           source = p.getParameter().getAnAssignedValue().stripImplicitCasts()
         )
     )
@@ -62,7 +62,8 @@ class BadDynamicMethodCall extends BadDynamicCall, DynamicMethodCall {
     not exists(Method m | m = getARuntimeTarget() |
       pt.isImplicitlyConvertibleTo(m.getDeclaringType())
     ) and
-    message = "The $@ of this dynamic method invocation can obtain (from $@) type $@, which does not have a method '"
+    message =
+      "The $@ of this dynamic method invocation can obtain (from $@) type $@, which does not have a method '"
         + getLateBoundTargetName() + "' with the appropriate signature." and
     target = "target"
   }
@@ -90,7 +91,8 @@ class BadDynamicOperatorCall extends BadDynamicCall, DynamicOperatorCall {
         target = number + " argument"
       )
     ) and
-    message = "The $@ of this dynamic operator can obtain (from $@) type $@, which does not match an operator '"
+    message =
+      "The $@ of this dynamic operator can obtain (from $@) type $@, which does not match an operator '"
         + getLateBoundTargetName() + "' with the appropriate signature."
   }
 

@@ -59,7 +59,8 @@ where
   not isCallToFunction(cs) and
   // conservatively only flag call sites where _all_ callees are illegal
   forex(DataFlow::InvokeNode cs2, Function otherCallee |
-    cs2.getInvokeExpr() = cs.getInvokeExpr() and otherCallee = cs2.getACallee() |
+    cs2.getInvokeExpr() = cs.getInvokeExpr() and otherCallee = cs2.getACallee()
+  |
     illegalInvocation(cs, otherCallee, _, _)
   ) and
   // require that all callees are known

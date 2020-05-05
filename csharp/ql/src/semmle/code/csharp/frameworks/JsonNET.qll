@@ -3,7 +3,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 
 /** Definitions relating to the `Json.NET` package. */
 module JsonNET {
@@ -50,7 +50,7 @@ module JsonNET {
     ) {
       // ToString methods
       c = getAToStringMethod() and
-      preservesValue = true and
+      preservesValue = false and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
@@ -210,7 +210,8 @@ module JsonNET {
       preservesValue = false
       or
       // operator string
-      c = any(Operator op |
+      c =
+        any(Operator op |
           op.getDeclaringType() = this.getABaseType*() and op.getReturnType() instanceof StringType
         ) and
       source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and

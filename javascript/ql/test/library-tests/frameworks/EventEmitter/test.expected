@@ -1,0 +1,17 @@
+| customEmitter.js:5:20:5:24 | "bar" | customEmitter.js:6:19:6:22 | data |
+| customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:12:21:12:25 | "baz" | customEmitter.js:22:14:22:18 | yData |
+| customEmitter.js:18:15:18:20 | "baz2" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:13:23:13:26 | data |
+| customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:22:14:22:18 | yData |
+| tst2.js:18:16:18:20 | "bar" | tst2.js:17:14:17:16 | bar |
+| tst.js:9:23:9:33 | 'FirstData' | tst.js:6:40:6:44 | first |
+| tst.js:10:24:10:35 | 'SecondData' | tst.js:7:32:7:37 | second |
+| tst.js:15:24:15:39 | 'OtherFirstData' | tst.js:14:41:14:50 | otherFirst |
+| tst.js:20:17:20:21 | "foo" | tst.js:19:16:19:18 | foo |
+| tst.js:21:17:21:21 | "bar" | tst.js:19:39:19:41 | bar |
+| tst.js:28:17:28:22 | "blab" | tst.js:25:16:25:20 | event |
+| tst.js:34:18:34:22 | "BOH" | tst.js:33:17:33:17 | x |
+| tst.js:40:20:40:27 | "yabity" | tst.js:39:19:39:19 | x |
+| tst.js:46:28:46:38 | 'FirstData' | tst.js:43:45:43:49 | first |
+| tst.js:47:29:47:40 | 'SecondData' | tst.js:44:37:44:42 | second |

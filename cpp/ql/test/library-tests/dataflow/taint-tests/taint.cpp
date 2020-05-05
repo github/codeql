@@ -195,7 +195,7 @@ void test_memcpy(int *source) {
 	sink(x);
 }
 
-// --- swap ---
+// --- std::swap ---
 
 namespace std {
 	template<class T> constexpr void swap(T& a, T& b);
@@ -353,4 +353,120 @@ void test_outparams()
 	sink(c); // tainted [NOT DETECTED]
 	sink(d); // tainted [NOT DETECTED]
 	sink(e);
+}
+
+// --- strdup ---
+
+typedef unsigned long size_t;
+char *strdup(const char *s1);
+char *strndup(const char *s1, size_t n);
+wchar_t* wcsdup(const wchar_t* s1);
+
+void test_strdup(char *source)
+{
+	char *a, *b, *c;
+
+	a = strdup(source);
+	b = strdup("hello, world");
+	c = strndup(source, 100);
+	sink(a); // tainted
+	sink(b);
+	sink(c); // tainted
+}
+
+void test_strndup(int source)
+{
+	char *a;
+
+	a = strndup("hello, world", source);
+	sink(a); // tainted
+}
+
+void test_wcsdup(wchar_t *source)
+{
+	wchar_t *a, *b;
+
+	a = wcsdup(source);
+	b = wcsdup(L"hello, world");
+	sink(a); // tainted
+	sink(b);
+}
+
+// --- qualifiers ---
+
+class MyClass2 {
+public:
+	MyClass2(int value);
+	void setMember(int value);
+	int getMember();
+
+	int member;
+};
+
+class MyClass3 {
+public:
+	MyClass3(const char *string);
+	void setString(const char *string);
+	const char *getString();
+
+	const char *buffer;
+};
+
+void test_qualifiers()
+{
+	MyClass2 a(0), b(0), *c;
+	MyClass3 d("");
+
+	sink(a);
+	sink(a.getMember());
+	a.setMember(source());
+	sink(a); // tainted
+	sink(a.getMember()); // tainted
+
+	sink(b);
+	sink(b.getMember());
+	b.member = source();
+	sink(b); // tainted
+	sink(b.member); // tainted
+	sink(b.getMember());
+
+	c = new MyClass2(0);
+
+	sink(c);
+	sink(c->getMember());
+	c->setMember(source());
+	sink(c); // tainted (deref)
+	sink(c->getMember()); // tainted
+
+	delete c;
+
+	sink(d);
+	sink(d.getString());
+	d.setString(strings::source());
+	sink(d); // tainted
+	sink(d.getString()); // tainted
+}
+
+// --- non-standard swap ---
+
+void swop(int &a, int &b)
+{
+	int c = a;
+	a = b;
+	b = c;
+}
+
+void test_swop() {
+	int x, y;
+
+	x = source();
+	y = 0;
+
+	sink(x); // tainted
+	sink(y); // clean
+
+	swop(x, y);
+
+	sink(x); // clean [FALSE POSITIVE]
+	sink(y); // tainted
 }

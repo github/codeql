@@ -155,8 +155,6 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @externalmoduledecl
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
-
-  override predicate isAmbient() { any() }
 }
 
 /**
@@ -176,8 +174,6 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmenta
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
-
-  override predicate isAmbient() { any() }
 }
 
 /** A TypeScript "import-equals" declaration. */
@@ -237,8 +233,6 @@ class ExportAsNamespaceDeclaration extends Stmt, @exportasnamespacedeclaration {
    * Gets the `X` in `export as namespace X`.
    */
   Identifier getIdentifier() { result = getChildExpr(0) }
-
-  override predicate isAmbient() { any() }
 }
 
 /**
@@ -258,8 +252,6 @@ class TypeAliasDeclaration extends @typealiasdeclaration, TypeParameterized, Stm
   TypeExpr getDefinition() { result = getChildTypeExpr(1) }
 
   override string describe() { result = "type alias " + getName() }
-
-  override predicate isAmbient() { any() }
 
   /**
    * Gets the canonical name of the type being defined.
@@ -285,8 +277,6 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
   }
 
   override StmtContainer getContainer() { result = Stmt.super.getContainer() }
-
-  override predicate isAmbient() { any() }
 
   override string describe() { result = "interface " + getName() }
 
@@ -532,8 +522,6 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
  */
 class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override string toString() { typeexprs(this, _, _, _, result) }
-
-  override predicate isAmbient() { any() }
 
   /**
    * Gets the static type expressed by this type annotation.
@@ -939,9 +927,7 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
   /**
    * Holds if this is a type of form `asserts E is T` or `asserts E`.
    */
-  predicate hasAssertsKeyword() {
-    hasAssertsKeyword(this)
-  }
+  predicate hasAssertsKeyword() { hasAssertsKeyword(this) }
 }
 
 /**
@@ -954,9 +940,7 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
  * ```
  */
 class IsTypeExpr extends PredicateTypeExpr {
-  IsTypeExpr() {
-    exists(getPredicateType())
-  }
+  IsTypeExpr() { exists(getPredicateType()) }
 }
 
 /**
@@ -1413,8 +1397,6 @@ class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueN
 
   /** Holds if this enumeration is declared with the `const` keyword. */
   predicate isConst() { isConstEnum(this) }
-
-  override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
 
   override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
 }
@@ -2312,18 +2294,14 @@ class EnumLiteralType extends TypeReference {
  * A type that refers to a type alias.
  */
 class TypeAliasReference extends TypeReference {
-  TypeAliasReference() {
-    type_alias(this, _)
-  }
+  TypeAliasReference() { type_alias(this, _) }
 
   /**
    * Gets the type behind the type alias.
    *
    * For example, for `type B<T> = T[][]`, this maps the type `B<number>` to `number[][]`.
    */
-  Type getAliasedType() {
-    type_alias(this, result)
-  }
+  Type getAliasedType() { type_alias(this, result) }
 }
 
 /**
@@ -2635,9 +2613,7 @@ class CallSignatureType extends @signature_type {
    *
    * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
    */
-  PlainArrayType getRestParameterArrayType() {
-    signature_rest_parameter(this, result)
-  }
+  PlainArrayType getRestParameterArrayType() { signature_rest_parameter(this, result) }
 }
 
 /**

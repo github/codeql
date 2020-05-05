@@ -7,10 +7,8 @@
 | constants/Constants.java:15:15:15:37 | ... + ... |
 | constants/Constants.java:15:37:15:37 | 1 |
 | constants/Constants.java:16:23:16:41 | Initializers.SFIELD |
-| constants/Constants.java:18:15:18:18 | (...) |
 | constants/Constants.java:18:16:18:17 | 12 |
 | constants/Constants.java:19:19:19:28 | "a string" |
-| constants/Constants.java:20:17:20:23 | (...) |
 | constants/Constants.java:20:17:20:31 | ...?...:... |
 | constants/Constants.java:20:18:20:18 | 3 |
 | constants/Constants.java:20:18:20:22 | ... < ... |

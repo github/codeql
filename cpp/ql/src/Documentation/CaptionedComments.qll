@@ -18,14 +18,13 @@ string getCommentTextCaptioned(Comment c, string caption) {
     dontCare = commentBody.regexpFind("\\n[/* \\t\\x0B\\f\\r]*" + caption, _, offset) and
     interestingSuffix = commentBody.suffix(offset) and
     endOfLine = interestingSuffix.indexOf("\n", 1, 0) and
-    captionedLine = interestingSuffix
+    captionedLine =
+      interestingSuffix
           .prefix(endOfLine)
           .regexpReplaceAll("^[/*\\s]*" + caption + "\\s*:?", "")
           .trim() and
-    followingLine = interestingSuffix
-          .prefix(interestingSuffix.indexOf("\n", 2, 0))
-          .suffix(endOfLine)
-          .trim() and
+    followingLine =
+      interestingSuffix.prefix(interestingSuffix.indexOf("\n", 2, 0)).suffix(endOfLine).trim() and
     if captionedLine = ""
     then result = caption + " comment"
     else

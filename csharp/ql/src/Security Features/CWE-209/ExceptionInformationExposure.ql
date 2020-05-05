@@ -14,7 +14,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.security.dataflow.XSS
+import semmle.code.csharp.security.dataflow.flowsinks.Remote
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
@@ -32,9 +32,8 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       source.asExpr().(PropertyAccess).getQualifier() = exceptionExpr
       or
       // Writing the result of ToString is bad
-      source.asExpr() = any(MethodCall mc |
-          mc.getQualifier() = exceptionExpr and mc.getTarget().hasName("ToString")
-        )
+      source.asExpr() =
+        any(MethodCall mc | mc.getQualifier() = exceptionExpr and mc.getTarget().hasName("ToString"))
     |
       // Expr has type `System.Exception`.
       exceptionExpr.getType().(RefType).getABaseType*() instanceof SystemExceptionClass and
@@ -47,7 +46,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XSS::Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     // Do not flow through Message

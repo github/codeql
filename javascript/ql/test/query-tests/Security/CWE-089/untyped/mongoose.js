@@ -21,7 +21,7 @@ app.post('/documents/find', (req, res) => {
     query.title = req.body.title;
 
     // NOT OK: query is tainted by user-provided object value
-    Document.aggregate('type', query);
+    Document.aggregate([query]);
 
     // NOT OK: query is tainted by user-provided object value
     Document.count(query);
@@ -60,6 +60,40 @@ app.post('/documents/find', (req, res) => {
     Document.updateMany(query);
 
     // NOT OK: query is tainted by user-provided object value
-    Document.updateOne(query);
-});
+	Document.updateOne(query).then(X);
 
+	Document.findByIdAndUpdate(X, query, function(){}); // NOT OK
+
+	new Mongoose.Query(X, Y, query)	// NOT OK
+		.and(query, function(){}) // NOT OK
+	;
+
+	Document.where(query)	// NOT OK
+		.and(query) // NOT OK
+		.or(query) // NOT OK
+		.distinct(X, query) // NOT OK
+		.comment(query) // OK
+		.count(query) // NOT OK
+		.exec()
+	;
+
+	Mongoose.createConnection(X).count(query); // OK (invalid program)
+	Mongoose.createConnection(X).model(Y).count(query); // NOT OK
+	Mongoose.createConnection(X).models[Y].count(query); // NOT OK
+
+	Document.findOne(X, (err, res) => res.count(query)); // NOT OK
+	Document.findOne(X, (err, res) => err.count(query)); // OK
+	Document.findOne(X).exec((err, res) => res.count(query)); // NOT OK
+	Document.findOne(X).exec((err, res) => err.count(query)); // OK
+	Document.findOne(X).then((res) => res.count(query)); // NOT OK
+	Document.findOne(X).then(Y, (err) => err.count(query)); // OK
+
+	Document.find(X, (err, res) => res[i].count(query)); // NOT OK
+	Document.find(X, (err, res) => err.count(query)); // OK
+	Document.find(X).exec((err, res) => res[i].count(query)); // NOT OK
+	Document.find(X).exec((err, res) => err.count(query)); // OK
+	Document.find(X).then((res) => res[i].count(query)); // NOT OK
+	Document.find(X).then(Y, (err) => err.count(query)); // OK
+
+	Document.count(X, (err, res) => res.count(query)); // OK (res is a number)
+});

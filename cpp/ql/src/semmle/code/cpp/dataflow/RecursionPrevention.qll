@@ -1,6 +1,6 @@
 /**
  * DEPRECATED: Recursion through `DataFlow::Configuration` is impossible in
- * Semmle Core 1.17 and above. There is no need for this module because it's
+ * any supported tooling. There is no need for this module because it's
  * impossible to accidentally depend on recursion through
  * `DataFlow::Configuration` in current releases.
  *

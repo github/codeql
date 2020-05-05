@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
 - `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
@@ -53,8 +53,8 @@ Code injection in Apache struts
 
 .. note::
 
-   More details on the CVE can be found here: https://blog.semmle.com/apache-struts-CVE-2018-11776/ and 
-   https://github.com/Semmle/demos/tree/master/ql_demos/java/Apache_Struts_CVE-2018-11776
+   More details on the CVE can be found here: https://securitylab.github.com/research/apache-struts-CVE-2018-11776 and 
+   https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2018-11776
 
    More details on OGNL can be found here: https://commons.apache.org/proper/commons-ognl/
 

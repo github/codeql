@@ -639,9 +639,15 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  * would be visible.
  */
 class SsaPhiNode extends SsaPseudoDefinition, TPhi {
-  override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(getBasicBlock().getAPredecessor(), getSourceVariable())
+  /**
+   * Gets the input to this phi node coming from the given predecessor block.
+   */
+  SsaVariable getInputFromBlock(BasicBlock bb) {
+    bb = getBasicBlock().getAPredecessor() and
+    result = getDefReachingEndOf(bb, getSourceVariable())
   }
+
+  override SsaVariable getAnInput() { result = getInputFromBlock(_) }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
     bb = getBasicBlock() and v = getSourceVariable() and i = -1
@@ -662,6 +668,27 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     endcolumn = startcolumn and
     getBasicBlock().getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
   }
+
+  /**
+   * If all inputs to this phi node are (transitive) refinements of the same variable,
+   * gets that variable.
+   */
+  SsaVariable getRephinedVariable() {
+    forex(SsaVariable input | input = getAnInput() | result = getRefinedVariable(input))
+  }
+}
+
+/**
+ * Gets the input to the given refinement node or rephinement node.
+ */
+private SsaVariable getRefinedVariable(SsaVariable v) {
+  result = getRefinedVariable(v.(SsaRefinementNode).getAnInput())
+  or
+  result = getRefinedVariable(v.(SsaPhiNode).getRephinedVariable())
+  or
+  not v instanceof SsaRefinementNode and
+  not v instanceof SsaPhiNode and
+  result = v
 }
 
 /**

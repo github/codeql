@@ -73,13 +73,13 @@ string extraDetail(
       else
         if strictcount(possibleGuard(hf, _)) = 1
         then
-          result = " (" + possibleGuard(hf, _) + " should appear in the #ifndef rather than " + s +
-              ")."
+          result =
+            " (" + possibleGuard(hf, _) + " should appear in the #ifndef rather than " + s + ")."
         else
           if strictcount(possibleGuard(hf, "")) = 1
           then
-            result = " (" + possibleGuard(hf, "") + " should appear in the #ifndef rather than " + s
-                + ")."
+            result =
+              " (" + possibleGuard(hf, "") + " should appear in the #ifndef rather than " + s + ")."
           else result = " (the macro " + s + " is checked for, but is not defined)."
   )
 }

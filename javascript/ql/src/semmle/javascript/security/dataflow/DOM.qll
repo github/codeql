@@ -85,8 +85,13 @@ class DomMethodCallExpr extends MethodCallExpr {
         name = "setAttributeNS" and argPos = 2
       ) and
       // restrict to potentially dangerous attributes
-      exists(string attr | 
-        attr = "action" or attr = "formaction" or attr = "href" or attr = "src" or attr = "xlink:href" |
+      exists(string attr |
+        attr = "action" or
+        attr = "formaction" or
+        attr = "href" or
+        attr = "src" or
+        attr = "xlink:href"
+      |
         getArgument(argPos - 1).getStringValue().toLowerCase() = attr
       )
     )
@@ -211,7 +216,7 @@ private class WindowNameAccess extends RemoteFlowSource {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or
     // Reference to `name` on a container that does not assign to it.
-    this.accessesGlobal("name") and
+    this.asExpr().(GlobalVarAccess).getName() = "name" and
     not exists(VarDef def |
       def.getAVariable().(GlobalVariable).getName() = "name" and
       def.getContainer() = this.asExpr().getContainer()

@@ -39,6 +39,12 @@
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
   ],
+  "DataFlow Java/C++/C# Consistency checks": [
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll"
+  ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"
@@ -81,6 +87,14 @@
   "IR IRType": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/IRType.qll"
+  ],
+  "IR IRConfiguration": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/IRConfiguration.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/IRConfiguration.qll"
+  ],
+  "IR UseSoundEscapeAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/UseSoundEscapeAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/UseSoundEscapeAnalysis.qll"
   ],
   "IR Operand Tag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
@@ -143,6 +157,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/Opcode.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/Opcode.qll"
   ],
+  "IR SSASanity": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSASanity.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSASanity.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSASanity.qll"
+  ],
   "C++ IR InstructionImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll",
@@ -177,9 +196,14 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstructionImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstructionImports.qll"
   ],
-  "C++ SSA AliasAnalysis": [
+  "SSA AliasAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
+  ],
+  "C++ SSA AliasAnalysisImports": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
   ],
   "C++ IR ValueNumberingImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
@@ -189,6 +213,10 @@
   "IR SSA SimpleSSA": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll"
+  ],
+  "IR AliasConfiguration (unaliased_ssa)": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll"
   ],
   "IR SSA SSAConstruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
@@ -200,12 +228,26 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll"
   ],
-  "IR ValueNumber": [
+  "IR ValueNumberInternal": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingInternal.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll"
+  ],
+  "C++ IR ValueNumber": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
+  ],
+  "C++ IR PrintValueNumbering": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/PrintValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll"
   ],
   "C++ IR ConstantAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
@@ -260,5 +302,12 @@
   "C# IR ValueNumberingImports": [
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
+  ],
+  "XML": [
+    "cpp/ql/src/semmle/code/cpp/XML.qll",
+    "csharp/ql/src/semmle/code/csharp/XML.qll",
+    "java/ql/src/semmle/code/xml/XML.qll",
+    "javascript/ql/src/semmle/javascript/XML.qll",
+    "python/ql/src/semmle/python/xml/XML.qll"
   ]
 }

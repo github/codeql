@@ -10,7 +10,7 @@ def OK1(seq):
     for _ in seq:
         do_something()
         print("Hi")
-        
+
 #OK counting
 def OK2(seq):
     i = 3
@@ -29,7 +29,7 @@ def OK4(n):
     r = range(n)
     for i in r:
         print("x")
-        
+
 #OK named as unused
 def OK5(seq):
     for unused_x in seq:
@@ -77,7 +77,7 @@ def fail4(coll, sequence):
         x = coll.pop()
     for s in sequence:
         do_something(x+1)
-        
+
 #OK See ODASA-4153 and ODASA-4533
 def fail5(t):
     x, y = t
@@ -106,3 +106,12 @@ def cleanup(sessions):
     for sess in sessions:
         # Original code had some comment about deleting sessions
         del sess
+
+# For SuspiciousUnusedLoopIterationVariable.ql
+# ok
+for x in list(range(100)):
+        print('hi')
+
+# ok
+for y in list(list(range(100))):
+        print('hi')

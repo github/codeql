@@ -16,113 +16,49 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.Xml
+private import semmle.code.csharp.dataflow.internal.DataFlowPublic
+private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 
-cached
-private module Cached {
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if `source` can flow to `sink` using a call to a library
-   * callable.
-   */
-  cached
-  predicate libraryFlow(Expr source, Expr sink, boolean preservesValue) {
-    exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSink csink, Call c |
-      source = csource.getSource(c) and
-      ltdf.callableFlow(csource, csink, c.getTarget().getSourceDeclaration(), preservesValue) and
-      sink = csink.getSink(c)
-    )
-  }
+private newtype TAccessPath =
+  TNilAccessPath() or
+  TAccessPathConsNil(Content c)
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if `source` can flow to the `out`/`ref` argument `outRef` using a call to a library
-   * callable.
-   */
-  cached
-  predicate libraryFlowOutRef(MethodCall mc, Expr source, Parameter outRef, boolean preservesValue) {
-    exists(
-      LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkArg csink, Method sm
-    |
-      source = csource.getSource(mc) and
-      mc.getTarget().getAParameter() = outRef and
-      sm = mc.getTarget().getSourceDeclaration() and
-      ltdf.callableFlow(csource, csink, sm, preservesValue) and
-      csink = getFlowSinkArg(sm, outRef.getPosition())
-    )
-  }
+/** An access path of length 0 or 1. */
+class AccessPath extends TAccessPath {
+  /** Gets the head of this access path, if any. */
+  Content getHead() { this = TAccessPathConsNil(result) }
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if output from the `i`th delegate argument of `call` can flow to `sink`, using
-   * the library target `callable`.
-   */
-  cached
-  predicate libraryFlowDelegateCallOut(
-    Call call, Callable callable, Expr sink, boolean preservesValue, int i
-  ) {
-    exists(LibraryTypeDataFlow ltdf, CallableFlowSourceDelegateArg csource, CallableFlowSink csink |
-      ltdf.callableFlow(csource, csink, callable, preservesValue) and
-      call.getTarget().getSourceDeclaration() = callable and
-      csource = getDelegateFlowSourceArg(callable, i) and
-      sink = csink.getSink(call)
-    )
-  }
+  /** Holds if this access path contains content `c`. */
+  predicate contains(Content c) { this = TAccessPathConsNil(c) }
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if `source` can flow to the `i`th parameter of the delegate at argument
-   * `j`. The call `call` is the call in which `sink` is an argument and`callable`
-   * is the library target.
-   */
-  cached
-  predicate libraryFlowDelegateCallIn(
-    Call call, Callable callable, Expr source, boolean preservesValue, int i, int j
-  ) {
-    exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkDelegateArg csink |
-      ltdf.callableFlow(csource, csink, callable, preservesValue) and
-      call.getTarget().getSourceDeclaration() = callable and
-      csink = getDelegateFlowSinkArg(callable, j, i) and
-      source = csource.getSource(call)
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if output from the `i`th delegate argument of `call` can flow to the `j`th parameter
-   * of the of delegate at argument `k`, using the library target `callable`.
-   */
-  cached
-  predicate libraryFlowDelegateCallOutIn(
-    Call call, Callable callable, boolean preservesValue, int i, int j, int k
-  ) {
-    exists(
-      LibraryTypeDataFlow ltdf, CallableFlowSourceDelegateArg csource,
-      CallableFlowSinkDelegateArg csink
-    |
-      ltdf.callableFlow(csource, csink, callable, preservesValue) and
-      call.getTarget().getSourceDeclaration() = callable and
-      csource = getDelegateFlowSourceArg(callable, i) and
-      csink = getDelegateFlowSinkArg(callable, k, j)
-    )
+  /** Gets a textual representation of this access path. */
+  string toString() {
+    result = this.getHead().toString()
+    or
+    this = TNilAccessPath() and
+    result = "<empty>"
   }
 }
 
-import Cached
+/** Provides predicates for constructing access paths. */
+module AccessPath {
+  /** Gets the empty access path. */
+  AccessPath empty() { result = TNilAccessPath() }
+
+  /** Gets a singleton property access path. */
+  AccessPath property(Property p) {
+    result = TAccessPathConsNil(any(PropertyContent c | c.getProperty() = p.getSourceDeclaration()))
+  }
+}
 
 /** An unbound callable. */
-library class SourceDeclarationCallable extends Callable {
-  SourceDeclarationCallable() { this = getSourceDeclaration() }
+class SourceDeclarationCallable extends Callable {
+  SourceDeclarationCallable() { this = this.getSourceDeclaration() }
 }
 
 /** An unbound method. */
-library class SourceDeclarationMethod extends SourceDeclarationCallable, Method { }
+class SourceDeclarationMethod extends SourceDeclarationCallable, Method { }
 
-// Internal representation of callable flow sources
 private newtype TCallableFlowSource =
   TCallableFlowSourceQualifier() or
   TCallableFlowSourceArg(int i) { hasArgumentPosition(_, i) } or
@@ -132,7 +68,8 @@ private predicate hasArgumentPosition(SourceDeclarationCallable callable, int po
   exists(int arity |
     if callable.getAParameter().isParams()
     then
-      arity = max(Call call |
+      arity =
+        max(Call call |
           call.getTarget().getSourceDeclaration() = callable
         |
           call.getNumberOfArguments()
@@ -159,93 +96,123 @@ private predicate hasDelegateArgumentPosition2(SourceDeclarationCallable c, int 
   )
 }
 
-/** A flow source in a call to a library callable. */
+/** A flow source specification. */
 class CallableFlowSource extends TCallableFlowSource {
-  /** Gets a textual representation of this flow source. */
+  /** Gets a textual representation of this flow source specification. */
   string toString() { none() }
 
   /** Gets the source of flow for call `c`, if any. */
   Expr getSource(Call c) { none() }
+
+  /**
+   * Gets the type of the source for call `c`. Unlike `getSource()`, this
+   * is defined for all flow source specifications.
+   */
+  Type getSourceType(Call c) { result = this.getSource(c).getType() }
 }
 
-/** A flow source in a call to a library callable: qualifier. */
+/** A flow source specification: (method call) qualifier. */
 class CallableFlowSourceQualifier extends CallableFlowSource, TCallableFlowSourceQualifier {
   override string toString() { result = "qualifier" }
 
   override Expr getSource(Call c) { result = c.getChild(-1) }
 }
 
-/** A flow source in a call to a library callable: argument. */
+/** A flow source specification: (method call) argument. */
 class CallableFlowSourceArg extends CallableFlowSource, TCallableFlowSourceArg {
-  override string toString() { result = "argument " + this.getArgumentIndex() }
+  private int i;
+
+  CallableFlowSourceArg() { this = TCallableFlowSourceArg(i) }
 
   /** Gets the index of this argument. */
-  int getArgumentIndex() { this = TCallableFlowSourceArg(result) }
+  int getArgumentIndex() { result = i }
 
-  override Expr getSource(Call c) { result = c.getArgument(getArgumentIndex()) }
+  override string toString() { result = "argument " + i }
+
+  override Expr getSource(Call c) { result = c.getArgument(i) }
 }
 
-/** A flow source in a call to a library callable: output from delegate argument. */
+/** A flow source specification: output from delegate argument. */
 class CallableFlowSourceDelegateArg extends CallableFlowSource, TCallableFlowSourceDelegateArg {
-  override string toString() { result = "output from argument " + getArgumentIndex().toString() }
+  private int i;
+
+  CallableFlowSourceDelegateArg() { this = TCallableFlowSourceDelegateArg(i) }
 
   /** Gets the index of this delegate argument. */
-  int getArgumentIndex() { this = TCallableFlowSourceDelegateArg(result) }
+  int getArgumentIndex() { result = i }
+
+  override string toString() { result = "output from argument " + i }
 
   override Expr getSource(Call c) { none() }
+
+  override Type getSourceType(Call c) { result = c.getArgument(i).getType() }
 }
 
-// Internal representation of callable flow sinks
 private newtype TCallableFlowSink =
   TCallableFlowSinkQualifier() or
   TCallableFlowSinkReturn() or
   TCallableFlowSinkArg(int i) { exists(SourceDeclarationCallable c | exists(c.getParameter(i))) } or
   TCallableFlowSinkDelegateArg(int i, int j) { hasDelegateArgumentPosition2(_, i, j) }
 
-/** A flow sink in a call to a library callable. */
+/** A flow sink specification. */
 class CallableFlowSink extends TCallableFlowSink {
-  /** Gets a textual representation of this flow sink. */
+  /** Gets a textual representation of this flow sink specification. */
   string toString() { none() }
 
   /** Gets the sink of flow for call `c`, if any. */
   Expr getSink(Call c) { none() }
+
+  /**
+   * Gets the type of the sink for call `c`. Unlike `getSink()`, this is defined
+   * for all flow sink specifications.
+   */
+  Type getSinkType(Call c) { result = this.getSink(c).getType() }
 }
 
-/** A flow sink in a call to a library callable: qualifier. */
+/** A flow sink specification: (method call) qualifier. */
 class CallableFlowSinkQualifier extends CallableFlowSink, TCallableFlowSinkQualifier {
   override string toString() { result = "qualifier" }
 
   override Expr getSink(Call c) { result = c.getChild(-1) }
 }
 
-/** A flow sink in a call to a library callable: return value. */
+/** A flow sink specification: return value. */
 class CallableFlowSinkReturn extends CallableFlowSink, TCallableFlowSinkReturn {
   override string toString() { result = "return" }
 
   override Expr getSink(Call c) { result = c }
 }
 
-/** The flow sink in an argument to a call to a library method. */
+/** A flow sink specification: (method call) argument. */
 class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
-  override string toString() { result = "argument " + this.getArgumentIndex() }
+  private int i;
+
+  CallableFlowSinkArg() { this = TCallableFlowSinkArg(i) }
 
   /** Gets the index of this `out`/`ref` argument. */
-  int getArgumentIndex() { this = TCallableFlowSinkArg(result) }
+  int getArgumentIndex() { result = i }
+
+  /** Gets the `out`/`ref` argument of method call `mc` matching this specification. */
+  Expr getArgument(MethodCall mc) {
+    exists(Parameter p |
+      p = mc.getTarget().getParameter(i) and
+      p.isOutOrRef() and
+      result = mc.getArgumentForParameter(p)
+    )
+  }
+
+  override string toString() { result = "argument " + i }
 
   override Expr getSink(Call c) {
     // The uses of the `i`th argument are the actual sinks
     none()
   }
+
+  override Type getSinkType(Call c) { result = this.getArgument(c).getType() }
 }
 
 /** Gets the flow source for argument `i` of callable `callable`. */
 private CallableFlowSourceArg getFlowSourceArg(SourceDeclarationCallable callable, int i) {
-  i = result.getArgumentIndex() and
-  hasArgumentPosition(callable, i)
-}
-
-/** Gets the flow sink for argument `i` of callable `callable`. */
-private CallableFlowSinkArg getFlowSinkArg(SourceDeclarationCallable callable, int i) {
   i = result.getArgumentIndex() and
   hasArgumentPosition(callable, i)
 }
@@ -266,11 +233,23 @@ private CallableFlowSinkDelegateArg getDelegateFlowSinkArg(
   hasDelegateArgumentPosition2(callable, i, j)
 }
 
-/** The flow sink in a call to a library callable: parameter of a delegate argument. */
+/** A flow sink specification: parameter of a delegate argument. */
 class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDelegateArg {
+  private int delegateIndex;
+  private int parameterIndex;
+
+  CallableFlowSinkDelegateArg() {
+    this = TCallableFlowSinkDelegateArg(delegateIndex, parameterIndex)
+  }
+
+  /** Gets the index of the delegate argument. */
+  int getDelegateIndex() { result = delegateIndex }
+
+  /** Gets the index of the delegate parameter. */
+  int getDelegateParameterIndex() { result = parameterIndex }
+
   override string toString() {
-    result = "parameter " + getDelegateParameterIndex() + " of argument " +
-        getDelegateIndex().toString()
+    result = "parameter " + parameterIndex + " of argument " + delegateIndex
   }
 
   override Expr getSink(Call c) {
@@ -278,18 +257,20 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
     none()
   }
 
-  /** Gets the index of the delegate argument. */
-  int getDelegateIndex() { this = TCallableFlowSinkDelegateArg(result, _) }
-
-  /** Gets the index of the delegate parameter. */
-  int getDelegateParameterIndex() { this = TCallableFlowSinkDelegateArg(_, result) }
+  override Type getSinkType(Call c) {
+    result =
+      c
+          .getArgument(delegateIndex)
+          .(DelegateArgumentToLibraryCallable)
+          .getDelegateType()
+          .getParameter(parameterIndex)
+          .getType()
+  }
 }
 
-/**
- * A specification of data flow for a library (non-source code) type.
- */
+/** A specification of data flow for a library (non-source code) type. */
 abstract class LibraryTypeDataFlow extends Type {
-  LibraryTypeDataFlow() { this = getSourceDeclaration() }
+  LibraryTypeDataFlow() { this = this.getSourceDeclaration() }
 
   /**
    * Holds if data may flow from `source` to `sink` when calling callable `c`.
@@ -299,10 +280,27 @@ abstract class LibraryTypeDataFlow extends Type {
    * to `x.ToString()` when `x` is a `string`, but not from `x` to `x.ToLower()`.
    */
   pragma[nomagic]
-  abstract predicate callableFlow(
+  predicate callableFlow(
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
     boolean preservesValue
-  );
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if data may flow from `source` to `sink` when calling callable `c`.
+   *
+   * `sourceAp` describes the contents of `source` that flows to `sink`
+   * (if any), and `sinkContent` describes the contents of `sink` that it
+   * flows to (if any).
+   */
+  pragma[nomagic]
+  predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c
+  ) {
+    none()
+  }
 }
 
 /** Data flow for `System.Int32`. */
@@ -613,38 +611,20 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
 }
 
 /** Data flow for `System.Lazy<>`. */
-class SystemLazyFlow extends LibraryTypeDataFlow {
-  SystemLazyFlow() { this instanceof SystemLazyClass }
-
+class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    (
-      constructorFlow(source, sink, c)
-      or
-      exists(Property p |
-        propertyFlow(p) and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn() and
-        c = p.getGetter()
-      )
-    ) and
-    preservesValue = true
-  }
-
-  private predicate constructorFlow(
-    CallableFlowSourceDelegateArg source, CallableFlowSink sink, Constructor c
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c
   ) {
     exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
-      c.getDeclaringType() = this and
+      c.(Constructor).getDeclaringType() = this and
       c.getParameter(i).getType().getSourceDeclaration() = t and
       source = getDelegateFlowSourceArg(c, i) and
-      sink = TCallableFlowSinkReturn()
+      sourceAp = AccessPath::empty() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::property(this.getValueProperty())
     )
   }
-
-  private predicate propertyFlow(Property p) { p = this.(SystemLazyClass).getValueProperty() }
 }
 
 /**
@@ -753,6 +733,11 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
+      or
+      name = "AsQueryable" and
+      arity = 1 and
+      source = TCallableFlowSourceArg(0) and
+      sink = TCallableFlowSinkReturn()
       or
       name = "Average" and
       (

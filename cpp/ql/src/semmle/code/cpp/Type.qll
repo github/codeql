@@ -376,6 +376,8 @@ private predicate isIntegralType(@builtintype type, int kind) {
     kind = 43
     or
     kind = 44
+    or
+    kind = 51
   )
 }
 
@@ -463,6 +465,8 @@ private predicate integralTypeMapping(int original, int canonical, int unsigned,
   original = 43 and canonical = 43 and unsigned = -1 and signed = -1 // char16_t
   or
   original = 44 and canonical = 44 and unsigned = -1 and signed = -1 // char32_t
+  or
+  original = 51 and canonical = 51 and unsigned = -1 and signed = -1 // char8_t
 }
 
 /**
@@ -697,28 +701,188 @@ class Int128Type extends IntegralType {
   override string getCanonicalQLClass() { result = "Int128Type" }
 }
 
+private newtype TTypeDomain =
+  TRealDomain() or
+  TComplexDomain() or
+  TImaginaryDomain()
+
 /**
- * The C/C++ floating point types. See 4.5.  This includes `float`,
- * `double` and `long double` types.
- * ```
- * float f;
- * double d;
- * long double ld;
- * ```
+ * The type domain of a floating-point type. One of `RealDomain`, `ComplexDomain`, or
+ * `ImaginaryDomain`.
+ */
+class TypeDomain extends TTypeDomain {
+  /** Gets a textual representation of this type domain. */
+  string toString() { none() }
+}
+
+/**
+ * The type domain of a floating-point type that represents a real number.
+ */
+class RealDomain extends TypeDomain, TRealDomain {
+  final override string toString() { result = "real" }
+}
+
+/**
+ * The type domain of a floating-point type that represents a complex number.
+ */
+class ComplexDomain extends TypeDomain, TComplexDomain {
+  final override string toString() { result = "complex" }
+}
+
+/**
+ * The type domain of a floating-point type that represents an imaginary number.
+ */
+class ImaginaryDomain extends TypeDomain, TImaginaryDomain {
+  final override string toString() { result = "imaginary" }
+}
+
+/**
+ * Data for floating-point types.
+ *
+ * kind: The original type kind. Can be any floating-point type kind.
+ * base: The numeric base of the number's representation. Can be 2 (binary) or 10 (decimal).
+ * domain: The type domain of the type. Can be `RealDomain`, `ComplexDomain`, or `ImaginaryDomain`.
+ * realKind: The type kind of the corresponding real type. For example, the corresponding real type
+ *   of `_Complex double` is `double`.
+ * extended: `true` if the number is an extended-precision floating-point number, such as
+ *   `_Float32x`.
+ */
+private predicate floatingPointTypeMapping(
+  int kind, int base, TTypeDomain domain, int realKind, boolean extended
+) {
+  // float
+  kind = 24 and base = 2 and domain = TRealDomain() and realKind = 24 and extended = false
+  or
+  // double
+  kind = 25 and base = 2 and domain = TRealDomain() and realKind = 25 and extended = false
+  or
+  // long double
+  kind = 26 and base = 2 and domain = TRealDomain() and realKind = 26 and extended = false
+  or
+  // _Complex float
+  kind = 27 and base = 2 and domain = TComplexDomain() and realKind = 24 and extended = false
+  or
+  // _Complex double
+  kind = 28 and base = 2 and domain = TComplexDomain() and realKind = 25 and extended = false
+  or
+  // _Complex long double
+  kind = 29 and base = 2 and domain = TComplexDomain() and realKind = 26 and extended = false
+  or
+  // _Imaginary float
+  kind = 30 and base = 2 and domain = TImaginaryDomain() and realKind = 24 and extended = false
+  or
+  // _Imaginary double
+  kind = 31 and base = 2 and domain = TImaginaryDomain() and realKind = 25 and extended = false
+  or
+  // _Imaginary long double
+  kind = 32 and base = 2 and domain = TImaginaryDomain() and realKind = 26 and extended = false
+  or
+  // __float128
+  kind = 38 and base = 2 and domain = TRealDomain() and realKind = 38 and extended = false
+  or
+  // _Complex __float128
+  kind = 39 and base = 2 and domain = TComplexDomain() and realKind = 38 and extended = false
+  or
+  // _Decimal32
+  kind = 40 and base = 10 and domain = TRealDomain() and realKind = 40 and extended = false
+  or
+  // _Decimal64
+  kind = 41 and base = 10 and domain = TRealDomain() and realKind = 41 and extended = false
+  or
+  // _Decimal128
+  kind = 42 and base = 10 and domain = TRealDomain() and realKind = 42 and extended = false
+  or
+  // _Float32
+  kind = 45 and base = 2 and domain = TRealDomain() and realKind = 45 and extended = false
+  or
+  // _Float32x
+  kind = 46 and base = 2 and domain = TRealDomain() and realKind = 46 and extended = true
+  or
+  // _Float64
+  kind = 47 and base = 2 and domain = TRealDomain() and realKind = 47 and extended = false
+  or
+  // _Float64x
+  kind = 48 and base = 2 and domain = TRealDomain() and realKind = 48 and extended = true
+  or
+  // _Float128
+  kind = 49 and base = 2 and domain = TRealDomain() and realKind = 49 and extended = false
+  or
+  // _Float128x
+  kind = 50 and base = 2 and domain = TRealDomain() and realKind = 50 and extended = true
+}
+
+/**
+ * The C/C++ floating point types. See 4.5.  This includes `float`, `double` and `long double`, the
+ * fixed-size floating-point types like `_Float32`, the extended-precision floating-point types like
+ * `_Float64x`, and the decimal floating-point types like `_Decimal32`. It also includes the complex
+ * and imaginary versions of all of these types.
  */
 class FloatingPointType extends ArithmeticType {
+  final int base;
+  final TypeDomain domain;
+  final int realKind;
+  final boolean extended;
+
   FloatingPointType() {
     exists(int kind |
       builtintypes(underlyingElement(this), _, kind, _, _, _) and
-      (
-        kind >= 24 and kind <= 32
-        or
-        kind >= 38 and kind <= 42
-        or
-        kind >= 45 and kind <= 50
-      )
+      floatingPointTypeMapping(kind, base, domain, realKind, extended)
     )
   }
+
+  /** Gets the numeric base of this type's representation: 2 (binary) or 10 (decimal). */
+  final int getBase() { result = base }
+
+  /**
+   * Gets the type domain of this type. Can be `RealDomain`, `ComplexDomain`, or `ImaginaryDomain`.
+   */
+  final TypeDomain getDomain() { result = domain }
+
+  /**
+   * Gets the corresponding real type of this type. For example, the corresponding real type of
+   * `_Complex double` is `double`.
+   */
+  final RealNumberType getRealType() {
+    builtintypes(unresolveElement(result), _, realKind, _, _, _)
+  }
+
+  /** Holds if this type is an extended precision floating-point type, such as `_Float32x`. */
+  final predicate isExtendedPrecision() { extended = true }
+}
+
+/**
+ * A floating-point type representing a real number.
+ */
+class RealNumberType extends FloatingPointType {
+  RealNumberType() { domain instanceof RealDomain }
+}
+
+/**
+ * A floating-point type representing a complex number.
+ */
+class ComplexNumberType extends FloatingPointType {
+  ComplexNumberType() { domain instanceof ComplexDomain }
+}
+
+/**
+ * A floating-point type representing an imaginary number.
+ */
+class ImaginaryNumberType extends FloatingPointType {
+  ImaginaryNumberType() { domain instanceof ImaginaryDomain }
+}
+
+/**
+ * A floating-point type whose representation is base 2.
+ */
+class BinaryFloatingPointType extends FloatingPointType {
+  BinaryFloatingPointType() { base = 2 }
+}
+
+/**
+ * A floating-point type whose representation is base 10.
+ */
+class DecimalFloatingPointType extends FloatingPointType {
+  DecimalFloatingPointType() { base = 10 }
 }
 
 /**
@@ -727,7 +891,7 @@ class FloatingPointType extends ArithmeticType {
  * float f;
  * ```
  */
-class FloatType extends FloatingPointType {
+class FloatType extends RealNumberType, BinaryFloatingPointType {
   FloatType() { builtintypes(underlyingElement(this), _, 24, _, _, _) }
 
   override string getCanonicalQLClass() { result = "FloatType" }
@@ -739,7 +903,7 @@ class FloatType extends FloatingPointType {
  * double d;
  * ```
  */
-class DoubleType extends FloatingPointType {
+class DoubleType extends RealNumberType, BinaryFloatingPointType {
   DoubleType() { builtintypes(underlyingElement(this), _, 25, _, _, _) }
 
   override string getCanonicalQLClass() { result = "DoubleType" }
@@ -751,7 +915,7 @@ class DoubleType extends FloatingPointType {
  * long double ld;
  * ```
  */
-class LongDoubleType extends FloatingPointType {
+class LongDoubleType extends RealNumberType, BinaryFloatingPointType {
   LongDoubleType() { builtintypes(underlyingElement(this), _, 26, _, _, _) }
 
   override string getCanonicalQLClass() { result = "LongDoubleType" }
@@ -763,7 +927,7 @@ class LongDoubleType extends FloatingPointType {
  * __float128 f128;
  * ```
  */
-class Float128Type extends FloatingPointType {
+class Float128Type extends RealNumberType, BinaryFloatingPointType {
   Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Float128Type" }
@@ -775,7 +939,7 @@ class Float128Type extends FloatingPointType {
  * _Decimal32 d32;
  * ```
  */
-class Decimal32Type extends FloatingPointType {
+class Decimal32Type extends RealNumberType, DecimalFloatingPointType {
   Decimal32Type() { builtintypes(underlyingElement(this), _, 40, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Decimal32Type" }
@@ -787,7 +951,7 @@ class Decimal32Type extends FloatingPointType {
  * _Decimal64 d64;
  * ```
  */
-class Decimal64Type extends FloatingPointType {
+class Decimal64Type extends RealNumberType, DecimalFloatingPointType {
   Decimal64Type() { builtintypes(underlyingElement(this), _, 41, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Decimal64Type" }
@@ -799,7 +963,7 @@ class Decimal64Type extends FloatingPointType {
  * _Decimal128 d128;
  * ```
  */
-class Decimal128Type extends FloatingPointType {
+class Decimal128Type extends RealNumberType, DecimalFloatingPointType {
   Decimal128Type() { builtintypes(underlyingElement(this), _, 42, _, _, _) }
 
   override string getCanonicalQLClass() { result = "Decimal128Type" }
@@ -831,6 +995,18 @@ class WideCharType extends IntegralType {
   WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
 
   override string getCanonicalQLClass() { result = "WideCharType" }
+}
+
+/**
+ * The C/C++ `char8_t` type.  This is available starting with C++20.
+ * ```
+ * char8_t c8;
+ * ```
+ */
+class Char8Type extends IntegralType {
+  Char8Type() { builtintypes(underlyingElement(this), _, 51, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Char8Type" }
 }
 
 /**
@@ -1166,8 +1342,8 @@ class ArrayType extends DerivedType {
   override string explain() {
     if exists(this.getArraySize())
     then
-      result = "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() +
-          "}"
+      result =
+        "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() + "}"
     else result = "array of {" + this.getBaseType().explain() + "}"
   }
 
@@ -1364,7 +1540,8 @@ class PointerToMemberType extends Type, @ptrtomember {
   }
 
   override string explain() {
-    result = "pointer to member of " + this.getClass().toString() + " with type {" +
+    result =
+      "pointer to member of " + this.getClass().toString() + " with type {" +
         this.getBaseType().explain() + "}"
   }
 
@@ -1400,7 +1577,8 @@ class RoutineType extends Type, @routinetype {
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
-    result = "function returning {" + this.getReturnType().explain() + "} with arguments (" +
+    result =
+      "function returning {" + this.getReturnType().explain() + "} with arguments (" +
         this.explainParameters(0) + ")"
   }
 

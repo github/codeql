@@ -91,36 +91,106 @@ private float wideningUpperBounds(ArithmeticType t) {
   result = 1.0 / 0.0 // +Inf
 }
 
+/**
+ * Gets the value of the expression `e`, if it is a constant.
+ * This predicate also handles the case of constant variables initialized in different
+ * compilation units, which doesn't necessarily have a getValue() result from the extractor.
+ */
+private string getValue(Expr e) {
+  if exists(e.getValue())
+  then result = e.getValue()
+  else
+    /*
+     * It should be safe to propagate the initialization value to a variable if:
+     * The type of v is const, and
+     * The type of v is not volatile, and
+     * Either:
+     *   v is a local/global variable, or
+     *   v is a static member variable
+     */
+
+    exists(VariableAccess access, StaticStorageDurationVariable v |
+      not v.getUnderlyingType().isVolatile() and
+      v.getUnderlyingType().isConst() and
+      e = access and
+      v = access.getTarget() and
+      result = getValue(v.getAnAssignedValue())
+    )
+}
+
+/**
+ * A bitwise `&` expression in which both operands are unsigned, or are effectively
+ * unsigned due to being a non-negative constant.
+ */
+private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
+  UnsignedBitwiseAndExpr() {
+    (
+      getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
+      getLeftOperand().getFullyConverted().getValue().toInt() >= 0
+    ) and
+    (
+      getRightOperand()
+          .getFullyConverted()
+          .getType()
+          .getUnderlyingType()
+          .(IntegralType)
+          .isUnsigned() or
+      getRightOperand().getFullyConverted().getValue().toInt() >= 0
+    )
+  }
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
   // `exprMinVal` to check this.
   exists(exprMinVal(e)) and
   (
-    exists(e.getValue().toFloat()) or
-    e instanceof UnaryPlusExpr or
-    e instanceof UnaryMinusExpr or
-    e instanceof MinExpr or
-    e instanceof MaxExpr or
-    e instanceof ConditionalExpr or
-    e instanceof AddExpr or
-    e instanceof SubExpr or
-    e instanceof AssignExpr or
-    e instanceof AssignAddExpr or
-    e instanceof AssignSubExpr or
-    e instanceof CrementOperation or
-    e instanceof RemExpr or
-    e instanceof CommaExpr or
-    e instanceof StmtExpr or
+    exists(getValue(e).toFloat())
+    or
+    e instanceof UnaryPlusExpr
+    or
+    e instanceof UnaryMinusExpr
+    or
+    e instanceof MinExpr
+    or
+    e instanceof MaxExpr
+    or
+    e instanceof ConditionalExpr
+    or
+    e instanceof AddExpr
+    or
+    e instanceof SubExpr
+    or
+    e instanceof AssignExpr
+    or
+    e instanceof AssignAddExpr
+    or
+    e instanceof AssignSubExpr
+    or
+    e instanceof CrementOperation
+    or
+    e instanceof RemExpr
+    or
+    e instanceof CommaExpr
+    or
+    e instanceof StmtExpr
+    or
     // A conversion is analyzable, provided that its child has an arithmetic
     // type. (Sometimes the child is a reference type, and so does not get
     // any bounds.) Rather than checking whether the type of the child is
     // arithmetic, we reuse the logic that is already encoded in
     // `exprMinVal`.
-    exists(exprMinVal(e.(Conversion).getExpr())) or
+    exists(exprMinVal(e.(Conversion).getExpr()))
+    or
     // Also allow variable accesses, provided that they have SSA
     // information.
-    exists(RangeSsaDefinition def, LocalScopeVariable v | e = def.getAUse(v))
+    exists(RangeSsaDefinition def, StackVariable v | e = def.getAUse(v))
+    or
+    e instanceof UnsignedBitwiseAndExpr
+    or
+    // `>>` by a constant
+    exists(e.(RShiftExpr).getRightOperand().getValue())
   )
 }
 
@@ -136,7 +206,7 @@ private predicate analyzableExpr(Expr e) {
  * here.
  */
 private predicate defDependsOnDef(
-  RangeSsaDefinition def, LocalScopeVariable v, RangeSsaDefinition srcDef, LocalScopeVariable srcVar
+  RangeSsaDefinition def, StackVariable v, RangeSsaDefinition srcDef, StackVariable srcVar
 ) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | exprDependsOnDef(expr, srcDef, srcVar))
@@ -171,7 +241,7 @@ private predicate defDependsOnDef(
  * Helper predicate for `defDependsOnDef`. This predicate matches
  * the structure of `getLowerBoundsImpl` and `getUpperBoundsImpl`.
  */
-private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, LocalScopeVariable srcVar) {
+private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVariable srcVar) {
   exists(UnaryMinusExpr negateExpr | e = negateExpr |
     exprDependsOnDef(negateExpr.getOperand(), srcDef, srcVar)
   )
@@ -218,6 +288,19 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, LocalScope
   or
   exists(Conversion convExpr | e = convExpr | exprDependsOnDef(convExpr.getExpr(), srcDef, srcVar))
   or
+  // unsigned `&`
+  exists(UnsignedBitwiseAndExpr andExpr |
+    andExpr = e and
+    exprDependsOnDef(andExpr.getAnOperand(), srcDef, srcVar)
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rs |
+    rs = e and
+    exists(rs.getRightOperand().getValue()) and
+    exprDependsOnDef(rs.getLeftOperand(), srcDef, srcVar)
+  )
+  or
   e = srcDef.getAUse(srcVar)
 }
 
@@ -226,7 +309,7 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, LocalScope
  * the structure of `getPhiLowerBounds` and `getPhiUpperBounds`.
  */
 private predicate phiDependsOnDef(
-  RangeSsaDefinition phi, LocalScopeVariable v, RangeSsaDefinition srcDef, LocalScopeVariable srcVar
+  RangeSsaDefinition phi, StackVariable v, RangeSsaDefinition srcDef, StackVariable srcVar
 ) {
   exists(VariableAccess access, ComparisonOperation guard |
     access = v.getAnAccess() and
@@ -241,19 +324,17 @@ private predicate phiDependsOnDef(
 
 /** The transitive closure of `defDependsOnDef`. */
 private predicate defDependsOnDefTransitively(
-  RangeSsaDefinition def, LocalScopeVariable v, RangeSsaDefinition srcDef, LocalScopeVariable srcVar
+  RangeSsaDefinition def, StackVariable v, RangeSsaDefinition srcDef, StackVariable srcVar
 ) {
   defDependsOnDef(def, v, srcDef, srcVar)
   or
-  exists(RangeSsaDefinition midDef, LocalScopeVariable midVar |
-    defDependsOnDef(def, v, midDef, midVar)
-  |
+  exists(RangeSsaDefinition midDef, StackVariable midVar | defDependsOnDef(def, v, midDef, midVar) |
     defDependsOnDefTransitively(midDef, midVar, srcDef, srcVar)
   )
 }
 
 /** The set of definitions that depend recursively on themselves. */
-private predicate isRecursiveDef(RangeSsaDefinition def, LocalScopeVariable v) {
+private predicate isRecursiveDef(RangeSsaDefinition def, StackVariable v) {
   defDependsOnDefTransitively(def, v, def, v)
 }
 
@@ -271,7 +352,7 @@ private predicate isRecursiveDef(RangeSsaDefinition def, LocalScopeVariable v) {
  *
  * This predicate finds all the definitions in the first set.
  */
-private predicate assignmentDef(RangeSsaDefinition def, LocalScopeVariable v, Expr expr) {
+private predicate assignmentDef(RangeSsaDefinition def, StackVariable v, Expr expr) {
   v.getUnspecifiedType() instanceof ArithmeticType and
   (
     def = v.getInitializer().getExpr() and def = expr
@@ -285,7 +366,7 @@ private predicate assignmentDef(RangeSsaDefinition def, LocalScopeVariable v, Ex
 }
 
 /** See comment above sourceDef. */
-private predicate analyzableDef(RangeSsaDefinition def, LocalScopeVariable v) {
+private predicate analyzableDef(RangeSsaDefinition def, StackVariable v) {
   assignmentDef(def, v, _) or defDependsOnDef(def, v, _, _)
 }
 
@@ -367,8 +448,8 @@ private float getTruncatedLowerBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getLowerBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by getLowerBoundsImpl might
       // overflow, so we replace invalid bounds with exprMinVal.
@@ -420,8 +501,8 @@ private float getTruncatedUpperBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getUpperBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
@@ -613,8 +694,22 @@ private float getLowerBoundsImpl(Expr expr) {
   )
   or
   // Use SSA to get the lower bounds for a variable use.
-  exists(RangeSsaDefinition def, LocalScopeVariable v | expr = def.getAUse(v) |
+  exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefLowerBounds(def, v)
+  )
+  or
+  // unsigned `&` (tighter bounds may exist)
+  exists(UnsignedBitwiseAndExpr andExpr |
+    andExpr = expr and
+    result = 0.0
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rsExpr, float left, int right |
+    rsExpr = expr and
+    left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
+    right = rsExpr.getRightOperand().getValue().toInt() and
+    result = left / 2.pow(right)
   )
 }
 
@@ -766,8 +861,24 @@ private float getUpperBoundsImpl(Expr expr) {
   )
   or
   // Use SSA to get the upper bounds for a variable use.
-  exists(RangeSsaDefinition def, LocalScopeVariable v | expr = def.getAUse(v) |
+  exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefUpperBounds(def, v)
+  )
+  or
+  // unsigned `&` (tighter bounds may exist)
+  exists(UnsignedBitwiseAndExpr andExpr, float left, float right |
+    andExpr = expr and
+    left = getFullyConvertedUpperBounds(andExpr.getLeftOperand()) and
+    right = getFullyConvertedUpperBounds(andExpr.getRightOperand()) and
+    result = left.minimum(right)
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rsExpr, float left, int right |
+    rsExpr = expr and
+    left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
+    right = rsExpr.getRightOperand().getValue().toInt() and
+    result = left / 2.pow(right)
   )
 }
 
@@ -860,7 +971,7 @@ private float boolConversionUpperBound(Expr expr) {
  * In this example, the lower bound of x is 0, but we can
  * use the guard to deduce that the lower bound is 2 inside the block.
  */
-private float getPhiLowerBounds(LocalScopeVariable v, RangeSsaDefinition phi) {
+private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(
     VariableAccess access, ComparisonOperation guard, boolean branch, float defLB, float guardLB
   |
@@ -877,7 +988,7 @@ private float getPhiLowerBounds(LocalScopeVariable v, RangeSsaDefinition phi) {
 }
 
 /** See comment for `getPhiLowerBounds`, above. */
-private float getPhiUpperBounds(LocalScopeVariable v, RangeSsaDefinition phi) {
+private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(
     VariableAccess access, ComparisonOperation guard, boolean branch, float defUB, float guardUB
   |
@@ -894,7 +1005,7 @@ private float getPhiUpperBounds(LocalScopeVariable v, RangeSsaDefinition phi) {
 }
 
 /** Only to be called by `getDefLowerBounds`. */
-private float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
+private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedLowerBounds(expr))
   or
@@ -936,7 +1047,7 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v
 }
 
 /** Only to be called by `getDefUpperBounds`. */
-private float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
+private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedUpperBounds(expr))
   or
@@ -982,7 +1093,7 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v
  * done by `getDefLowerBoundsImpl`, but this is where widening is applied
  * to prevent the analysis from exploding due to a recursive definition.
  */
-private float getDefLowerBounds(RangeSsaDefinition def, LocalScopeVariable v) {
+private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
   exists(float newLB, float truncatedLB |
     newLB = getDefLowerBoundsImpl(def, v) and
     if varMinVal(v) <= newLB and newLB <= varMaxVal(v)
@@ -996,7 +1107,8 @@ private float getDefLowerBounds(RangeSsaDefinition def, LocalScopeVariable v) {
       // The new lower bound is from a recursive source, so we round
       // down to one of a limited set of values to prevent the
       // recursion from exploding.
-      result = max(float widenLB |
+      result =
+        max(float widenLB |
           widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
           not widenLB > truncatedLB
         |
@@ -1011,7 +1123,7 @@ private float getDefLowerBounds(RangeSsaDefinition def, LocalScopeVariable v) {
 }
 
 /** See comment for `getDefLowerBounds`, above. */
-private float getDefUpperBounds(RangeSsaDefinition def, LocalScopeVariable v) {
+private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
   exists(float newUB, float truncatedUB |
     newUB = getDefUpperBoundsImpl(def, v) and
     if varMinVal(v) <= newUB and newUB <= varMaxVal(v)
@@ -1025,7 +1137,8 @@ private float getDefUpperBounds(RangeSsaDefinition def, LocalScopeVariable v) {
       // The new upper bound is from a recursive source, so we round
       // up to one of a fixed set of values to prevent the recursion
       // from exploding.
-      result = min(float widenUB |
+      result =
+        min(float widenUB |
           widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
           not widenUB < truncatedUB
         |
@@ -1044,9 +1157,7 @@ private float getDefUpperBounds(RangeSsaDefinition def, LocalScopeVariable v) {
  * unanalyzable definitions (such as function parameters) and make their
  * bounds unknown.
  */
-private predicate unanalyzableDefBounds(
-  RangeSsaDefinition def, LocalScopeVariable v, float lb, float ub
-) {
+private predicate unanalyzableDefBounds(RangeSsaDefinition def, StackVariable v, float lb, float ub) {
   v = def.getAVariable() and
   not analyzableDef(def, v) and
   lb = varMinVal(v) and
@@ -1268,13 +1379,13 @@ private module SimpleRangeAnalysisCached {
 
   /** Holds if the definition might overflow negatively. */
   cached
-  predicate defMightOverflowNegatively(RangeSsaDefinition def, LocalScopeVariable v) {
+  predicate defMightOverflowNegatively(RangeSsaDefinition def, StackVariable v) {
     getDefLowerBoundsImpl(def, v) < varMinVal(v)
   }
 
   /** Holds if the definition might overflow positively. */
   cached
-  predicate defMightOverflowPositively(RangeSsaDefinition def, LocalScopeVariable v) {
+  predicate defMightOverflowPositively(RangeSsaDefinition def, StackVariable v) {
     getDefUpperBoundsImpl(def, v) > varMaxVal(v)
   }
 
@@ -1283,7 +1394,7 @@ private module SimpleRangeAnalysisCached {
    * negatively).
    */
   cached
-  predicate defMightOverflow(RangeSsaDefinition def, LocalScopeVariable v) {
+  predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
     defMightOverflowNegatively(def, v) or
     defMightOverflowPositively(def, v)
   }

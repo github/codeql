@@ -131,7 +131,7 @@ private predicate boundCondition(
   or
   exists(SubExpr sub, ConstantIntegerExpr c, int d |
     // (v - d) - e < c
-    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = sub and
     comp.getGreaterOperand() = c and
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
@@ -139,7 +139,7 @@ private predicate boundCondition(
     delta = d + c.getIntValue()
     or
     // (v - d) - e > c
-    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = sub and
     comp.getLesserOperand() = c and
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
@@ -147,7 +147,7 @@ private predicate boundCondition(
     delta = d + c.getIntValue()
     or
     // e - (v - d) < c
-    comp.getLesserOperand().getProperExpr() = sub and
+    comp.getLesserOperand() = sub and
     comp.getGreaterOperand() = c and
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and
@@ -155,7 +155,7 @@ private predicate boundCondition(
     delta = d - c.getIntValue()
     or
     // e - (v - d) > c
-    comp.getGreaterOperand().getProperExpr() = sub and
+    comp.getGreaterOperand() = sub and
     comp.getLesserOperand() = c and
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and
@@ -264,14 +264,21 @@ private newtype TReason =
  * without going through a bounding condition.
  */
 abstract class Reason extends TReason {
+  /** Gets a textual representation of this reason. */
   abstract string toString();
 }
 
+/**
+ * A reason for an inferred bound that indicates that the bound is inferred
+ * without going through a bounding condition.
+ */
 class NoReason extends Reason, TNoReason {
   override string toString() { result = "NoReason" }
 }
 
+/** A reason for an inferred bound pointing to a condition. */
 class CondReason extends Reason, TCondReason {
+  /** Gets the condition that is the reason for the bound. */
   Guard getCond() { this = TCondReason(result) }
 
   override string toString() { result = getCond().toString() }

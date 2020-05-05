@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
 - `VIVO Vitro database <http://downloads.lgtm.com/snapshots/java/vivo-project/Vitro/vivo-project_Vitro_java-srcVersion_47ae42c01954432c3c3b92d5d163551ce367f510-dist_odasa-lgtm-2019-04-23-7ceff95-linux64.zip>`__
 
 .. note::
@@ -77,7 +77,7 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
 
 .. note::
 
-  - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
+  - When performing variant analysis, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
   - In this case, we start by looking for all the method calls that appear to run, before trying to refine the query to find cases which are vulnerable to query injection.
   - The ``select`` clause defines what this query is looking for:
   

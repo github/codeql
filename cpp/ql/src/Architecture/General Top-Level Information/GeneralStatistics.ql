@@ -38,14 +38,16 @@ where
   n = count(Function f | f.fromSource()).toString()
   or
   l = "Number of Lines Of Code" and
-  n = sum(File f, int toSum |
+  n =
+    sum(File f, int toSum |
       f.fromSource() and toSum = f.getMetrics().getNumberOfLinesOfCode()
     |
       toSum
     ).toString()
   or
   l = "Self-Containedness" and
-  n = (
+  n =
+    (
         100 * sum(Class c | c.fromSource() | c.getMetrics().getEfferentSourceCoupling()) /
           sum(Class c | c.fromSource() | c.getMetrics().getEfferentCoupling())
       ).toString() + "%"

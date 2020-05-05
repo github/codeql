@@ -18,7 +18,8 @@ private class DelegateFlowSource extends DataFlow::ExprNode {
   Callable c;
 
   DelegateFlowSource() {
-    this.getExpr() = any(Expr e |
+    this.getExpr() =
+      any(Expr e |
         c = e.(AnonymousFunctionExpr) or
         c = e.(CallableAccess).getTarget().getSourceDeclaration()
       )
@@ -116,6 +117,9 @@ library class DelegateArgumentToLibraryCallable extends Expr {
 
   /** Gets the call that this argument belongs to. */
   Call getCall() { result = call }
+
+  /** Gets the index of this delegate argument in the call. */
+  int getArgumentIndex() { this = this.getCall().getArgument(result) }
 
   /** Gets the delegate type of this argument. */
   DelegateType getDelegateType() { result = dt }

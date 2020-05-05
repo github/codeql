@@ -263,6 +263,19 @@
 | E.cs:361:17:361:17 | access to parameter s | E.cs:361:17:361:17 | access to parameter s | null | true |
 | E.cs:362:13:362:29 | ... != ... | E.cs:362:13:362:13 | access to local variable x | false | true |
 | E.cs:362:13:362:29 | ... != ... | E.cs:362:13:362:13 | access to local variable x | true | false |
+| E.cs:372:13:372:23 | ... is ... | E.cs:372:13:372:13 | access to parameter o | true | false |
+| E.cs:382:14:382:23 | ... == ... | E.cs:382:14:382:15 | access to parameter e1 | false | false |
+| E.cs:382:14:382:23 | ... == ... | E.cs:382:14:382:15 | access to parameter e1 | true | true |
+| E.cs:382:28:382:37 | ... != ... | E.cs:382:28:382:29 | access to parameter e2 | false | true |
+| E.cs:382:28:382:37 | ... != ... | E.cs:382:28:382:29 | access to parameter e2 | true | false |
+| E.cs:382:44:382:53 | ... != ... | E.cs:382:44:382:45 | access to parameter e1 | false | true |
+| E.cs:382:44:382:53 | ... != ... | E.cs:382:44:382:45 | access to parameter e1 | true | false |
+| E.cs:382:58:382:67 | ... == ... | E.cs:382:58:382:59 | access to parameter e2 | false | false |
+| E.cs:382:58:382:67 | ... == ... | E.cs:382:58:382:59 | access to parameter e2 | true | true |
+| E.cs:384:13:384:22 | ... == ... | E.cs:384:13:384:14 | access to parameter e1 | false | false |
+| E.cs:384:13:384:22 | ... == ... | E.cs:384:13:384:14 | access to parameter e1 | true | true |
+| E.cs:384:27:384:36 | ... == ... | E.cs:384:27:384:28 | access to parameter e2 | false | false |
+| E.cs:384:27:384:36 | ... == ... | E.cs:384:27:384:28 | access to parameter e2 | true | true |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

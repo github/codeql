@@ -1,13 +1,19 @@
+private import internal.OpcodeImports as Imports
+private import internal.OperandTag
+import Imports::MemoryAccessKind
+
 private newtype TOpcode =
   TNoOp() or
   TUninitialized() or
   TError() or
   TInitializeParameter() or
+  TInitializeIndirection() or
   TInitializeThis() or
   TEnterFunction() or
   TExitFunction() or
   TReturnValue() or
   TReturnVoid() or
+  TReturnIndirection() or
   TCopyValue() or
   TLoad() or
   TStore() or
@@ -57,13 +63,14 @@ private newtype TOpcode =
   TUnmodeledDefinition() or
   TUnmodeledUse() or
   TAliasedDefinition() or
+  TInitializeNonLocal() or
   TAliasedUse() or
   TPhi() or
   TBuiltIn() or
   TVarArgsStart() or
   TVarArgsEnd() or
   TVarArg() or
-  TVarArgCopy() or
+  TNextVarArg() or
   TCallSideEffect() or
   TCallReadSideEffect() or
   TIndirectReadSideEffect() or
@@ -75,6 +82,7 @@ private newtype TOpcode =
   TSizedBufferReadSideEffect() or
   TSizedBufferMustWriteSideEffect() or
   TSizedBufferMayWriteSideEffect() or
+  TInitializeDynamicAllocation() or
   TChi() or
   TInlineAsm() or
   TUnreached() or
@@ -82,11 +90,67 @@ private newtype TOpcode =
 
 class Opcode extends TOpcode {
   string toString() { result = "UnknownOpcode" }
+
+  /**
+   * Gets the kind of memory access performed by this instruction's result.
+   * Holds only for opcodes with a memory result.
+   */
+  MemoryAccessKind getWriteMemoryAccess() { none() }
+
+  /**
+   * Gets the kind of memory access performed by this instruction's `MemoryOperand`. Holds only for
+   * opcodes that read from memory.
+   */
+  MemoryAccessKind getReadMemoryAccess() { none() }
+
+  /**
+   * Holds if the instruction has an `AddressOperand`.
+   */
+  predicate hasAddressOperand() { none() }
+
+  /**
+   * Holds if the instruction has a `BufferSizeOperand`.
+   */
+  predicate hasBufferSizeOperand() { none() }
+
+  /**
+   * Holds if the instruction's write memory access is a `may` write, as opposed to a `must` write.
+   */
+  predicate hasMayWriteMemoryAccess() { none() }
+
+  /**
+   * Holds if the instruction's read memory access is a `may` read, as opposed to a `must` read.
+   */
+  predicate hasMayReadMemoryAccess() { none() }
+
+  /**
+   * Holds if the instruction must have an operand with the specified `OperandTag`.
+   */
+  final predicate hasOperand(OperandTag tag) {
+    hasOperandInternal(tag)
+    or
+    hasAddressOperand() and tag instanceof AddressOperandTag
+    or
+    hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
+  }
+
+  /**
+   * Holds if the instruction must have an operand with the specified `OperandTag`, ignoring
+   * `AddressOperandTag` and `BufferSizeOperandTag`.
+   */
+  predicate hasOperandInternal(OperandTag tag) { none() }
 }
 
-abstract class UnaryOpcode extends Opcode { }
+abstract class UnaryOpcode extends Opcode {
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof UnaryOperandTag }
+}
 
-abstract class BinaryOpcode extends Opcode { }
+abstract class BinaryOpcode extends Opcode {
+  final override predicate hasOperandInternal(OperandTag tag) {
+    tag instanceof LeftOperandTag or
+    tag instanceof RightOperandTag
+  }
+}
 
 abstract class PointerArithmeticOpcode extends BinaryOpcode { }
 
@@ -120,55 +184,166 @@ abstract class ThrowOpcode extends Opcode { }
 
 abstract class CatchOpcode extends Opcode { }
 
-abstract class OpcodeWithCondition extends Opcode { }
+abstract class OpcodeWithCondition extends Opcode {
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof ConditionOperandTag }
+}
 
 abstract class BuiltInOperationOpcode extends Opcode { }
 
 abstract class SideEffectOpcode extends Opcode { }
 
 /**
+ * An opcode that accesses a single memory location via an `AddressOperand`.
+ */
+abstract class IndirectMemoryAccessOpcode extends Opcode {
+  final override predicate hasAddressOperand() { any() }
+}
+
+/**
+ * An opcode that writes to a single memory location via an `AddressOperand`.
+ */
+abstract class IndirectWriteOpcode extends IndirectMemoryAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() { result instanceof IndirectMemoryAccess }
+}
+
+/**
+ * An opcode that reads from a single memory location via an `AddressOperand`.
+ */
+abstract class IndirectReadOpcode extends IndirectMemoryAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() { result instanceof IndirectMemoryAccess }
+}
+
+/**
+ * An opcode that accesses a memory buffer.
+ */
+abstract class BufferAccessOpcode extends Opcode {
+  final override predicate hasAddressOperand() { any() }
+}
+
+/**
+ * An opcode that accesses a memory buffer of unknown size.
+ */
+abstract class UnsizedBufferAccessOpcode extends BufferAccessOpcode { }
+
+/**
+ * An opcode that writes to a memory buffer of unknown size.
+ */
+abstract class UnsizedBufferWriteOpcode extends UnsizedBufferAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() { result instanceof BufferMemoryAccess }
+}
+
+/**
+ * An opcode that reads from a memory buffer of unknown size.
+ */
+abstract class UnsizedBufferReadOpcode extends UnsizedBufferAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() { result instanceof BufferMemoryAccess }
+}
+
+/**
+ * An opcode that access an entire memory allocation.
+ */
+abstract class EntireAllocationAccessOpcode extends Opcode {
+  final override predicate hasAddressOperand() { any() }
+}
+
+/**
+ * An opcode that write to an entire memory allocation.
+ */
+abstract class EntireAllocationWriteOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
+}
+
+/**
+ * An opcode that reads from an entire memory allocation.
+ */
+abstract class EntireAllocationReadOpcode extends EntireAllocationAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() {
+    result instanceof EntireAllocationMemoryAccess
+  }
+}
+
+/**
+ * An opcode that accesses a memory buffer whose size is determined by a `BufferSizeOperand`.
+ */
+abstract class SizedBufferAccessOpcode extends BufferAccessOpcode {
+  final override predicate hasBufferSizeOperand() { any() }
+}
+
+/**
+ * An opcode that writes to a memory buffer whose size is determined by a `BufferSizeOperand`.
+ */
+abstract class SizedBufferWriteOpcode extends SizedBufferAccessOpcode {
+  final override MemoryAccessKind getWriteMemoryAccess() {
+    result instanceof BufferMemoryAccess //TODO: SizedBufferMemoryAccess
+  }
+}
+
+/**
+ * An opcode that reads from a memory buffer whose size is determined by a `BufferSizeOperand`.
+ */
+abstract class SizedBufferReadOpcode extends SizedBufferAccessOpcode {
+  final override MemoryAccessKind getReadMemoryAccess() {
+    result instanceof BufferMemoryAccess //TODO: SizedBufferMemoryAccess
+  }
+}
+
+/**
+ * An opcode that might write to any escaped memory location.
+ */
+abstract class EscapedWriteOpcode extends Opcode {
+  final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An opcode that might read from any escaped memory location.
+ */
+abstract class EscapedReadOpcode extends Opcode {
+  final override MemoryAccessKind getReadMemoryAccess() { result instanceof EscapedMemoryAccess }
+}
+
+/**
+ * An opcode whose write memory access is a `may` write, as opposed to a `must` write.
+ */
+abstract class MayWriteOpcode extends Opcode {
+  final override predicate hasMayWriteMemoryAccess() { any() }
+}
+
+/**
+ * An opcode whose read memory access is a `may` read, as opposed to a `must` read.
+ */
+abstract class MayReadOpcode extends Opcode {
+  final override predicate hasMayReadMemoryAccess() { any() }
+}
+
+/**
  * An opcode that reads a value from memory.
  */
-abstract class OpcodeWithLoad extends MemoryAccessOpcode { }
+abstract class OpcodeWithLoad extends IndirectReadOpcode {
+  final override predicate hasOperandInternal(OperandTag tag) { tag instanceof LoadOperandTag }
+}
 
 /**
  * An opcode that reads from a set of memory locations as a side effect.
  */
-abstract class ReadSideEffectOpcode extends SideEffectOpcode { }
+abstract class ReadSideEffectOpcode extends SideEffectOpcode {
+  final override predicate hasOperandInternal(OperandTag tag) {
+    tag instanceof SideEffectOperandTag
+  }
+}
 
 /**
  * An opcode that writes to a set of memory locations as a side effect.
  */
 abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 
-/**
- * An opcode that definitely writes to a set of memory locations as a side effect.
- */
-abstract class MustWriteSideEffectOpcode extends WriteSideEffectOpcode { }
-
-/**
- * An opcode that may overwrite some, all, or none of an existing set of memory locations. Modeled
- * as a read of the original contents, plus a "may" write of the new contents.
- */
-abstract class MayWriteSideEffectOpcode extends WriteSideEffectOpcode { }
-
-/**
- * An opcode that accesses a buffer via an `AddressOperand`.
- */
-abstract class BufferAccessOpcode extends MemoryAccessOpcode { }
-
-/**
- * An opcode that accesses a buffer via an `AddressOperand` with a `BufferSizeOperand` specifying
- * the number of elements accessed.
- */
-abstract class SizedBufferAccessOpcode extends BufferAccessOpcode { }
-
 module Opcode {
   class NoOp extends Opcode, TNoOp {
     final override string toString() { result = "NoOp" }
   }
 
-  class Uninitialized extends MemoryAccessOpcode, TUninitialized {
+  class Uninitialized extends IndirectWriteOpcode, TUninitialized {
     final override string toString() { result = "Uninitialized" }
   }
 
@@ -176,8 +351,12 @@ module Opcode {
     final override string toString() { result = "Error" }
   }
 
-  class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter {
+  class InitializeParameter extends IndirectWriteOpcode, TInitializeParameter {
     final override string toString() { result = "InitializeParameter" }
+  }
+
+  class InitializeIndirection extends EntireAllocationWriteOpcode, TInitializeIndirection {
+    final override string toString() { result = "InitializeIndirection" }
   }
 
   class InitializeThis extends Opcode, TInitializeThis {
@@ -200,6 +379,14 @@ module Opcode {
     final override string toString() { result = "ReturnVoid" }
   }
 
+  class ReturnIndirection extends EntireAllocationReadOpcode, TReturnIndirection {
+    final override string toString() { result = "ReturnIndirection" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof SideEffectOperandTag
+    }
+  }
+
   class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue {
     final override string toString() { result = "CopyValue" }
   }
@@ -208,8 +395,12 @@ module Opcode {
     final override string toString() { result = "Load" }
   }
 
-  class Store extends CopyOpcode, MemoryAccessOpcode, TStore {
+  class Store extends CopyOpcode, IndirectWriteOpcode, TStore {
     final override string toString() { result = "Store" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof StoreValueOperandTag
+    }
   }
 
   class Add extends BinaryArithmeticOpcode, TAdd {
@@ -362,6 +553,10 @@ module Opcode {
 
   class Call extends Opcode, TCall {
     final override string toString() { result = "Call" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof CallTargetOperandTag
+    }
   }
 
   class CatchByType extends CatchOpcode, TCatchByType {
@@ -386,102 +581,151 @@ module Opcode {
 
   class UnmodeledDefinition extends Opcode, TUnmodeledDefinition {
     final override string toString() { result = "UnmodeledDefinition" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() {
+      result instanceof UnmodeledMemoryAccess
+    }
   }
 
   class UnmodeledUse extends Opcode, TUnmodeledUse {
     final override string toString() { result = "UnmodeledUse" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof UnmodeledUseOperandTag
+    }
   }
 
   class AliasedDefinition extends Opcode, TAliasedDefinition {
     final override string toString() { result = "AliasedDefinition" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() { result instanceof EscapedMemoryAccess }
+  }
+
+  class InitializeNonLocal extends Opcode, TInitializeNonLocal {
+    final override string toString() { result = "InitializeNonLocal" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() {
+      result instanceof NonLocalMemoryAccess
+    }
   }
 
   class AliasedUse extends Opcode, TAliasedUse {
     final override string toString() { result = "AliasedUse" }
+
+    final override MemoryAccessKind getReadMemoryAccess() { result instanceof NonLocalMemoryAccess }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof SideEffectOperandTag
+    }
   }
 
   class Phi extends Opcode, TPhi {
     final override string toString() { result = "Phi" }
+
+    final override MemoryAccessKind getWriteMemoryAccess() { result instanceof PhiMemoryAccess }
   }
 
   class BuiltIn extends BuiltInOperationOpcode, TBuiltIn {
     final override string toString() { result = "BuiltIn" }
   }
 
-  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart {
+  class VarArgsStart extends UnaryOpcode, TVarArgsStart {
     final override string toString() { result = "VarArgsStart" }
   }
 
-  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd {
+  class VarArgsEnd extends UnaryOpcode, TVarArgsEnd {
     final override string toString() { result = "VarArgsEnd" }
   }
 
-  class VarArg extends BuiltInOperationOpcode, TVarArg {
+  class VarArg extends UnaryOpcode, TVarArg {
     final override string toString() { result = "VarArg" }
   }
 
-  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy {
-    final override string toString() { result = "VarArgCopy" }
+  class NextVarArg extends UnaryOpcode, TNextVarArg {
+    final override string toString() { result = "NextVarArg" }
   }
 
-  class CallSideEffect extends MayWriteSideEffectOpcode, TCallSideEffect {
+  class CallSideEffect extends WriteSideEffectOpcode, EscapedWriteOpcode, MayWriteOpcode,
+    ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode, TCallSideEffect {
     final override string toString() { result = "CallSideEffect" }
   }
 
-  class CallReadSideEffect extends ReadSideEffectOpcode, TCallReadSideEffect {
+  class CallReadSideEffect extends ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode,
+    TCallReadSideEffect {
     final override string toString() { result = "CallReadSideEffect" }
   }
 
-  class IndirectReadSideEffect extends ReadSideEffectOpcode, MemoryAccessOpcode,
+  class IndirectReadSideEffect extends ReadSideEffectOpcode, IndirectReadOpcode,
     TIndirectReadSideEffect {
     final override string toString() { result = "IndirectReadSideEffect" }
   }
 
-  class IndirectMustWriteSideEffect extends MustWriteSideEffectOpcode, MemoryAccessOpcode,
+  class IndirectMustWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
     TIndirectMustWriteSideEffect {
     final override string toString() { result = "IndirectMustWriteSideEffect" }
   }
 
-  class IndirectMayWriteSideEffect extends MayWriteSideEffectOpcode, MemoryAccessOpcode,
-    TIndirectMayWriteSideEffect {
+  class IndirectMayWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
+    MayWriteOpcode, TIndirectMayWriteSideEffect {
     final override string toString() { result = "IndirectMayWriteSideEffect" }
   }
 
-  class BufferReadSideEffect extends ReadSideEffectOpcode, BufferAccessOpcode, TBufferReadSideEffect {
+  class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode,
+    TBufferReadSideEffect {
     final override string toString() { result = "BufferReadSideEffect" }
   }
 
-  class BufferMustWriteSideEffect extends MustWriteSideEffectOpcode, BufferAccessOpcode,
+  class BufferMustWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
     TBufferMustWriteSideEffect {
     final override string toString() { result = "BufferMustWriteSideEffect" }
   }
 
-  class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode,
-    TBufferMayWriteSideEffect {
+  class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
+    MayWriteOpcode, TBufferMayWriteSideEffect {
     final override string toString() { result = "BufferMayWriteSideEffect" }
   }
 
-  class SizedBufferReadSideEffect extends ReadSideEffectOpcode, SizedBufferAccessOpcode,
+  class SizedBufferReadSideEffect extends ReadSideEffectOpcode, SizedBufferReadOpcode,
     TSizedBufferReadSideEffect {
     final override string toString() { result = "SizedBufferReadSideEffect" }
   }
 
-  class SizedBufferMustWriteSideEffect extends MustWriteSideEffectOpcode, SizedBufferAccessOpcode,
+  class SizedBufferMustWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
     TSizedBufferMustWriteSideEffect {
     final override string toString() { result = "SizedBufferMustWriteSideEffect" }
   }
 
-  class SizedBufferMayWriteSideEffect extends MayWriteSideEffectOpcode, SizedBufferAccessOpcode,
-    TSizedBufferMayWriteSideEffect {
+  class SizedBufferMayWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
+    MayWriteOpcode, TSizedBufferMayWriteSideEffect {
     final override string toString() { result = "SizedBufferMayWriteSideEffect" }
+  }
+
+  class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode,
+    TInitializeDynamicAllocation {
+    final override string toString() { result = "InitializeDynamicAllocation" }
   }
 
   class Chi extends Opcode, TChi {
     final override string toString() { result = "Chi" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof ChiTotalOperandTag
+      or
+      tag instanceof ChiPartialOperandTag
+    }
+
+    final override MemoryAccessKind getWriteMemoryAccess() {
+      result instanceof ChiTotalMemoryAccess
+    }
   }
 
-  class InlineAsm extends Opcode, TInlineAsm {
+  class InlineAsm extends Opcode, EscapedWriteOpcode, MayWriteOpcode, EscapedReadOpcode,
+    MayReadOpcode, TInlineAsm {
     final override string toString() { result = "InlineAsm" }
+
+    final override predicate hasOperandInternal(OperandTag tag) {
+      tag instanceof SideEffectOperandTag
+    }
   }
 
   class Unreached extends Opcode, TUnreached {

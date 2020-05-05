@@ -14,14 +14,11 @@
  */
 
 import python
-
 import Expressions.CallArgs
 
-
-from Call call, ClassObject cls, string name, FunctionObject init
+from Call call, ClassValue cls, string name, FunctionValue init
 where
-    illegally_named_parameter(call, cls, name)
-    and init = get_function_or_initializer(cls)
-select
-    call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", init, init.getQualifiedName()
-
+    illegally_named_parameter(call, cls, name) and
+    init = get_function_or_initializer(cls)
+select call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", init,
+    init.getQualifiedName()

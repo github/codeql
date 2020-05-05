@@ -14,12 +14,20 @@ class DjangoResponse extends TaintKind {
 }
 
 private ClassValue theDjangoHttpResponseClass() {
-    result = Value::named("django.http.response.HttpResponse") and
+    (
+        // version 1.x
+        result = Value::named("django.http.response.HttpResponse")
+        or
+        // version 2.x
+        // https://docs.djangoproject.com/en/2.2/ref/request-response/#httpresponse-objects
+        result = Value::named("django.http.HttpResponse")
+    ) and
+    // TODO: does this do anything? when could they be the same???
     not result = theDjangoHttpRedirectClass()
 }
 
-/** Instantiation of a django response. */
-class DjangoResponseSource extends TaintSource {
+/** internal class used for tracking a django response. */
+private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
         exists(ClassValue cls |
             cls.getASuperType() = theDjangoHttpResponseClass() and

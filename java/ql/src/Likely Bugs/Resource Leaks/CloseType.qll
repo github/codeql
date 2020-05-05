@@ -9,8 +9,6 @@ import semmle.code.java.frameworks.Mockito
 private predicate flowsInto(Expr e, Variable v) {
   e = v.getAnAssignedValue()
   or
-  exists(ParExpr p | flowsInto(p, v) | e = p.getExpr())
-  or
   exists(CastExpr c | flowsInto(c, v) | e = c.getExpr())
   or
   exists(ConditionalExpr c | flowsInto(c, v) | e = c.getTrueExpr() or e = c.getFalseExpr())

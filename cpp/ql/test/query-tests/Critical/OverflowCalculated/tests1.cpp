@@ -33,7 +33,7 @@ void tests1(int case_num)
 			break;
 
 		case 3:
-			buffer = (char *)malloc(strlen(str) * sizeof(char)); // BAD [NOT DETECTED]
+			buffer = (char *)malloc(strlen(str) * sizeof(char)); // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -53,7 +53,7 @@ void tests1(int case_num)
 			break;
 
 		case 7:
-			buffer = (char *)realloc(buffer, strlen(str)); // BAD [NOT DETECTED]
+			buffer = (char *)realloc(buffer, strlen(str)); // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -106,7 +106,7 @@ void tests1(int case_num)
 			break;
 
 		case 105:
-			wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t)); // BAD [NOT DETECTED]
+			wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t)); // BAD
 			wcscpy(wbuffer, wstr);
 			break;
 

@@ -4,9 +4,9 @@ CodeQL training and variant analysis examples
 CodeQL and variant analysis
 ---------------------------
 
-`Variant analysis <https://semmle.com/variant-analysis>`__ is the process of using a known vulnerability as a seed to find similar problems in your code. Security engineers typically perform variant analysis to identify possible vulnerabilities and to ensure that these threats are properly fixed across multiple code bases.
+Variant analysis is the process of using a known vulnerability as a seed to find similar problems in your code. Security engineers typically perform variant analysis to identify possible vulnerabilities and to ensure that these threats are properly fixed across multiple code bases.
 
-`CodeQL <https://semmle.com/ql>`__ is the code analysis engine that underpins LGTM, Semmle's community driven security analysis platform. Together, CodeQL and LGTM provide continuous monitoring and scalable variant analysis for your projects, even if you don’t have your own team of dedicated security engineers. You can read more about using CodeQL and LGTM in variant analysis in the `Semmle blog <https://blog.semmle.com/tags/variant-analysis>`__.
+CodeQL is the code analysis engine that underpins LGTM, the community driven security analysis platform. Together, CodeQL and LGTM provide continuous monitoring and scalable variant analysis for your projects, even if you don’t have your own team of dedicated security engineers. You can read more about using CodeQL and LGTM in variant analysis on the `Security Lab research page <https://securitylab.github.com/research>`__.
 
 CodeQL is easy to learn, and exploring code using CodeQL is the most efficient way to perform variant analysis. 
 
@@ -25,14 +25,14 @@ When you have selected a presentation, use |arrow-r| and |arrow-l| to navigate b
 Press **p** to view the additional notes on slides that have an information icon |info| in the top right corner, and press **f** to enter full-screen mode.
 
 The presentations contain a number of query examples.
-We recommend that you download `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__ and import the example database for each presentation so that you can find the bugs mentioned in the slides. 
+We recommend that you download `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__ and add the example database for each presentation so that you can find the bugs mentioned in the slides. 
 
 
 .. pull-quote:: 
 
    Information
 
-   The presentations listed below are used in CodeQL and variant analysis training sessions run by Semmle engineers. 
+   The presentations listed below are used in CodeQL and variant analysis training sessions run by GitHub engineers. 
    Therefore, be aware that the slides are designed to be presented by an instructor. 
    If you are using the slides without an instructor, please use the additional notes to help guide you through the examples. 
 
@@ -57,10 +57,8 @@ CodeQL and variant analysis for Java
 - `Exercise: Apache Struts <../ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
 - `Introduction to global data flow <../ql-training/java/global-data-flow-java.html>`__–an introduction to analyzing global data flow in Java using CodeQL.
 
-More resources
-~~~~~~~~~~~~~~
+Further reading
+~~~~~~~~~~~~~~~
 
 - If you are completely new to CodeQL, look at our introductory topics in :doc:`Learning CodeQL <index>`.
-- To find more detailed information about how to write queries for specific languages, visit the links in :ref:`Writing CodeQL queries <writing-ql-queries>`.
-- To read more about how CodeQL queries have been used in Semmle's security research, and to read about new CodeQL developments, visit the `Semmle blog <https://blog.semmle.com>`__. 
-- Find more examples of queries written by Semmle's own security researchers in the `Semmle Demos repository <https://github.com/semmle/demos>`__ on GitHub.
+- To see examples of CodeQL queries that have been used to find security vulnerabilities and bugs in open source software projects, visit the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and the associated `repository <https://github.com/github/security-lab>`__.

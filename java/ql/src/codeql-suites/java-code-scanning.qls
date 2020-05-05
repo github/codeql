@@ -1,0 +1,4 @@
+- description: Standard Code Scanning queries for Java
+- qlpack: codeql-java
+- apply: code-scanning-selectors.yml
+  from: codeql-suite-helpers

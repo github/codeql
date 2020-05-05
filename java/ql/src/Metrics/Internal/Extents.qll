@@ -52,7 +52,8 @@ class RangeRefType extends RefType {
   }
 
   private Member lastMember() {
-    result = max(this.getAMember() as m
+    result =
+      max(this.getAMember() as m
         order by
           m.getLocation().getStartLine(), m.getLocation().getStartColumn()
       )

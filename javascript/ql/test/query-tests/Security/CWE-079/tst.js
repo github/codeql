@@ -132,7 +132,13 @@ function tst() {
       document.write(v);
   }
 
-  if (!(/\d+/.test(v)))
+  if (!(/\d+/.test(v))) // not effective - matches "123<script>...</script>"
+    return;
+
+  // NOT OK
+  document.write(v);
+
+  if (!(/^\d+$/.test(v)))
     return;
 
   // OK
@@ -291,4 +297,78 @@ function flowThroughPropertyNames() {
     obj[Math.random()] = window.name;
     for (var p in obj)
       $(p); // OK
+}
+
+function basicExceptions() {
+	try {
+		throw location;
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+
+	try {
+		try {
+			throw location
+		} finally {}
+	} catch(e) {
+		$("body").append(e); // NOT OK
+	}
+}
+
+function handlebarsSafeString() {
+	return new Handlebars.SafeString(location); // NOT OK!	
+}
+
+function test2() {
+  var target = document.location.search
+
+  // OK
+  $('myId').html(target.length)
+}
+
+function getTaintedUrl() {
+  return new URL(document.location);
+}
+
+function URLPseudoProperties() {
+  // NOT OK
+  let params = getTaintedUrl().searchParams;
+  $('name').html(params.get('name'));
+
+  // OK (.get is not defined on a URL)
+  let myUrl = getTaintedUrl();
+  $('name').html(myUrl.get('name'));
+
+}
+
+
+function hash() {
+  function getUrl() {
+    return new URL(document.location);
+  }
+  $(getUrl().hash.substring(1)); // NOT OK
+
+}
+
+function growl() {
+  var target = document.location.search
+  $.jGrowl(target); // NOT OK
+}
+
+function thisNodes() {
+	var pluginName = "myFancyJQueryPlugin";
+	var myPlugin = function () {
+	    var target = document.location.search
+	    this.html(target); // NOT OK. (this is a jQuery object)
+		this.innerHTML = target // OK. (this is a jQuery object)
+	
+		this.each(function (i, e) {
+			this.innerHTML = target; // NOT OK. (this is a DOM-node);
+			this.html(target); // OK. (this is a DOM-node);
+			
+			e.innerHTML = target; // NOT OK.
+		});
+	}
+	$.fn[pluginName] = myPlugin; 
+
 }

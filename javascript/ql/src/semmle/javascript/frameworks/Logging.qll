@@ -17,7 +17,7 @@ abstract class LoggerCall extends DataFlow::CallNode {
 /**
  * Gets a log level name that is used in RFC5424, `npm`, `console`.
  */
-private string getAStandardLoggerMethodName() {
+string getAStandardLoggerMethodName() {
   result = "crit" or
   result = "debug" or
   result = "error" or
@@ -58,9 +58,11 @@ private module Console {
     }
 
     override DataFlow::Node getAMessageComponent() {
-      if name = "assert"
-      then result = getArgument([1 .. getNumArgument()])
-      else result = getAnArgument()
+      (
+        if name = "assert"
+        then result = getArgument([1 .. getNumArgument()])
+        else result = getAnArgument()
+      )
       or
       result = getASpreadArgument()
     }
@@ -68,9 +70,7 @@ private module Console {
     /**
      * Gets the name of the console logging method, e.g. "log", "error", "assert", etc.
      */
-    string getName() {
-      result = name
-    }
+    string getName() { result = name }
   }
 }
 
@@ -99,7 +99,8 @@ private module Winston {
    */
   class WinstonLoggerCall extends LoggerCall, DataFlow::MethodCallNode {
     WinstonLoggerCall() {
-      this = DataFlow::moduleMember("winston", "createLogger")
+      this =
+        DataFlow::moduleMember("winston", "createLogger")
             .getACall()
             .getAMethodCall(getAStandardLoggerMethodName())
     }
@@ -121,7 +122,8 @@ private module log4js {
    */
   class Log4jsLoggerCall extends LoggerCall {
     Log4jsLoggerCall() {
-      this = DataFlow::moduleMember("log4js", "getLogger")
+      this =
+        DataFlow::moduleMember("log4js", "getLogger")
             .getACall()
             .getAMethodCall(getAStandardLoggerMethodName())
     }

@@ -62,6 +62,10 @@
 | a_simple.py:49 | g_0 = a |
 | a_simple.py:49 | h_0 = b |
 | a_simple.py:49 | i_0 = c |
+| a_simple.py:53 | l_0 = BinaryExpr[0] |
+| a_simple.py:53 | m_0 = BinaryExpr[1] |
+| a_simple.py:56 | s_0 = a[0] |
+| a_simple.py:56 | u_0 = a[1] |
 | b_condition.py:0 | __name___0 = ScopeEntryDefinition |
 | b_condition.py:0 | __package___0 = ScopeEntryDefinition |
 | b_condition.py:0 | double_attr_check_0 = ScopeEntryDefinition |

@@ -1,49 +1,64 @@
-
 import python
 
-/* A class representing the six comparison operators, ==, !=, <, <=, > and >=.
- *  */
+/** A class representing the six comparison operators, ==, !=, <, <=, > and >=. */
 class CompareOp extends int {
-
-    CompareOp() { 
-        this in [1..6]
-    }
+    CompareOp() { this in [1 .. 6] }
 
     /** Gets the logical inverse operator */
     CompareOp invert() {
-        this = eq() and result = ne() or
-        this = ne() and result = eq() or
-        this = lt() and result = ge() or
-        this = gt() and result = le() or
-        this = le() and result = gt() or
+        this = eq() and result = ne()
+        or
+        this = ne() and result = eq()
+        or
+        this = lt() and result = ge()
+        or
+        this = gt() and result = le()
+        or
+        this = le() and result = gt()
+        or
         this = ge() and result = lt()
     }
 
-    /** Gets the reverse operator (swapping the operands) */ 
+    /** Gets the reverse operator (swapping the operands) */
     CompareOp reverse() {
-        this = eq() and result = eq() or
-        this = ne() and result = ne() or
-        this = lt() and result = gt() or
-        this = gt() and result = lt() or
-        this = le() and result = ge() or
+        this = eq() and result = eq()
+        or
+        this = ne() and result = ne()
+        or
+        this = lt() and result = gt()
+        or
+        this = gt() and result = lt()
+        or
+        this = le() and result = ge()
+        or
         this = ge() and result = le()
     }
 
     string repr() {
-        this = eq() and result = "==" or
-        this = ne() and result = "!=" or
-        this = lt() and result = "<" or
-        this = gt() and result = ">" or
-        this = le() and result = "<=" or
+        this = eq() and result = "=="
+        or
+        this = ne() and result = "!="
+        or
+        this = lt() and result = "<"
+        or
+        this = gt() and result = ">"
+        or
+        this = le() and result = "<="
+        or
         this = ge() and result = ">="
     }
 
     predicate forOp(Cmpop op) {
-        op instanceof Eq and this = eq() or
-        op instanceof NotEq and this = ne() or
-        op instanceof Lt and this = lt() or
-        op instanceof LtE and this = le() or
-        op instanceof Gt and this = gt() or
+        op instanceof Eq and this = eq()
+        or
+        op instanceof NotEq and this = ne()
+        or
+        op instanceof Lt and this = lt()
+        or
+        op instanceof LtE and this = le()
+        or
+        op instanceof Gt and this = gt()
+        or
         op instanceof GtE and this = ge()
     }
 
@@ -53,31 +68,37 @@ class CompareOp extends int {
         or
         result = this.invert() and isTrue = false
     }
-
 }
 
 CompareOp eq() { result = 1 }
+
 CompareOp ne() { result = 2 }
+
 CompareOp lt() { result = 3 }
+
 CompareOp le() { result = 4 }
+
 CompareOp gt() { result = 5 }
+
 CompareOp ge() { result = 6 }
 
 /* Workaround precision limits in floating point numbers */
-bindingset[x] private predicate ok_magnitude(float x) {
-    x > -9007199254740992.0 // -2**53
-    and
+bindingset[x]
+private predicate ok_magnitude(float x) {
+    x > -9007199254740992.0 and // -2**53
     x < 9007199254740992.0 // 2**53
 }
 
-bindingset[x,y] private float add(float x, float y) {
+bindingset[x, y]
+private float add(float x, float y) {
     ok_magnitude(x) and
     ok_magnitude(y) and
     ok_magnitude(result) and
     result = x + y
 }
 
-bindingset[x,y] private float sub(float x, float y) {
+bindingset[x, y]
+private float sub(float x, float y) {
     ok_magnitude(x) and
     ok_magnitude(y) and
     ok_magnitude(result) and
@@ -85,7 +106,9 @@ bindingset[x,y] private float sub(float x, float y) {
 }
 
 /** Normalise equality cmp into the form `left op right + k`. */
-private predicate test(ControlFlowNode cmp, ControlFlowNode left, CompareOp op, ControlFlowNode right, float k) {
+private predicate test(
+    ControlFlowNode cmp, ControlFlowNode left, CompareOp op, ControlFlowNode right, float k
+) {
     simple_test(cmp, left, op, right) and k = 0
     or
     add_test(cmp, left, op, right, k)
@@ -99,82 +122,106 @@ private predicate test(ControlFlowNode cmp, ControlFlowNode left, CompareOp op, 
 
 /** Various simple tests in left op right + k form. */
 private predicate simple_test(CompareNode cmp, ControlFlowNode l, CompareOp cmpop, ControlFlowNode r) {
-    exists(Cmpop op |
-        cmp.operands(l, op, r) and cmpop.forOp(op)
-    )
+    exists(Cmpop op | cmp.operands(l, op, r) and cmpop.forOp(op))
 }
 
-private predicate add_test_left(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
-  exists(BinaryExprNode lhs, float c, float x, Num n |
+private predicate add_test_left(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
+    exists(BinaryExprNode lhs, float c, float x, Num n |
         lhs.getNode().getOp() instanceof Add and
-        test(cmp, lhs, op, r, c) and x = n.getN().toFloat() and k = sub(c, x) |
+        test(cmp, lhs, op, r, c) and
+        x = n.getN().toFloat() and
+        k = sub(c, x)
+    |
         l = lhs.getLeft() and n = lhs.getRight().getNode()
         or
         l = lhs.getRight() and n = lhs.getLeft().getNode()
     )
 }
 
-private predicate add_test_right(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
+private predicate add_test_right(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
     exists(BinaryExprNode rhs, float c, float x, Num n |
         rhs.getNode().getOp() instanceof Add and
-        test(cmp, l, op, rhs, c) and x = n.getN().toFloat() and k = add(c, x) |
+        test(cmp, l, op, rhs, c) and
+        x = n.getN().toFloat() and
+        k = add(c, x)
+    |
         r = rhs.getLeft() and n = rhs.getRight().getNode()
         or
         r = rhs.getRight() and n = rhs.getLeft().getNode()
     )
 }
 
-/* left + x op right + c => left op right + (c-x)
-   left op (right + x) + c => left op right + (c+x) */
-private predicate add_test(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
+/*
+ * left + x op right + c => left op right + (c-x)
+ *   left op (right + x) + c => left op right + (c+x)
+ */
+
+private predicate add_test(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
     add_test_left(cmp, l, op, r, k)
     or
-    add_test_right(cmp, l, op ,r, k)
+    add_test_right(cmp, l, op, r, k)
 }
 
-private predicate subtract_test_left(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
-   exists(BinaryExprNode lhs, float c, float x, Num n |
+private predicate subtract_test_left(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
+    exists(BinaryExprNode lhs, float c, float x, Num n |
         lhs.getNode().getOp() instanceof Sub and
         test(cmp, lhs, op, r, c) and
-        l = lhs.getLeft() and n = lhs.getRight().getNode() and
-        x = n.getN().toFloat() |
+        l = lhs.getLeft() and
+        n = lhs.getRight().getNode() and
+        x = n.getN().toFloat()
+    |
         k = add(c, x)
     )
 }
 
-private predicate subtract_test_right(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
+private predicate subtract_test_right(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
     exists(BinaryExprNode rhs, float c, float x, Num n |
         rhs.getNode().getOp() instanceof Sub and
         test(cmp, l, op, rhs, c) and
-        r = rhs.getRight() and n = rhs.getLeft().getNode() and
-        x = n.getN().toFloat() |
+        r = rhs.getRight() and
+        n = rhs.getLeft().getNode() and
+        x = n.getN().toFloat()
+    |
         k = sub(c, x)
     )
 }
 
-/* left - x op right + c => left op right + (c+x) 
-   left op (right - x) + c => left op right + (c-x) */
-private predicate subtract_test(CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
+/*
+ * left - x op right + c => left op right + (c+x)
+ *   left op (right - x) + c => left op right + (c-x)
+ */
+
+private predicate subtract_test(
+    CompareNode cmp, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
     subtract_test_left(cmp, l, op, r, k)
     or
     subtract_test_right(cmp, l, op, r, k)
 }
 
-private predicate not_test(UnaryExprNode u, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
-    u.getNode().getOp() instanceof Not
-    and
+private predicate not_test(
+    UnaryExprNode u, ControlFlowNode l, CompareOp op, ControlFlowNode r, float k
+) {
+    u.getNode().getOp() instanceof Not and
     test(u.getOperand(), l, op.invert(), r, k)
 }
 
-
-/** A comparison which can be simplified to the canonical form `x OP y + k` where `x` and `y` are `ControlFlowNode`s, 
+/**
+ * A comparison which can be simplified to the canonical form `x OP y + k` where `x` and `y` are `ControlFlowNode`s,
  * `k` is a floating point constant and `OP` is one of `<=`, `>`, `==` or `!=`.
  */
 class Comparison extends ControlFlowNode {
-
-    Comparison() {
-        test(this, _, _, _, _)
-    }
+    Comparison() { test(this, _, _, _, _) }
 
     /** Whether this condition tests `l op r + k` */
     predicate tests(ControlFlowNode l, CompareOp op, ControlFlowNode r, float k) {
@@ -183,14 +230,14 @@ class Comparison extends ControlFlowNode {
 
     /** Whether this condition tests `l op k` */
     predicate tests(ControlFlowNode l, CompareOp op, float k) {
-        exists(ControlFlowNode r, float x, float c |
-            test(this, l, op, r, c) |
+        exists(ControlFlowNode r, float x, float c | test(this, l, op, r, c) |
             x = r.getNode().(Num).getN().toFloat() and
             k = add(c, x)
         )
     }
 
-    /* The following predicates determine whether this test, when its result is `thisIsTrue`,
+    /*
+     * The following predicates determine whether this test, when its result is `thisIsTrue`,
      * is equivalent to the predicate `v OP k` or `v1 OP v2 + k`.
      * For example, the test `x <= y` being false, is equivalent to the predicate `x > y`.
      */
@@ -243,7 +290,8 @@ class Comparison extends ControlFlowNode {
         this.tests(v1.getAUse(), ge().conditional(thisIsTrue), v2.getAUse(), k)
     }
 
-    /** Whether the result of this comparison being `thisIsTrue` implies that the result of `that` is `isThatTrue`.
+    /**
+     * Whether the result of this comparison being `thisIsTrue` implies that the result of `that` is `isThatTrue`.
      * In other words, does the predicate that is equivalent to the result of `this` being `thisIsTrue`
      * imply the predicate that is equivalent to the result of `that` being `thatIsTrue`.
      * For example, assume that there are two tests, which when normalised have the form `x < y` and `x > y + 1`.
@@ -316,7 +364,7 @@ class Comparison extends ControlFlowNode {
             this.equivalentToGt(thisIsTrue, v, k1) and
             that.equivalentToGtEq(thatIsTrue, v, k2) and
             ge(k1, k2)
-             or
+            or
             /* `v >= k1` => `v > k2` iff k1 > k2 */
             this.equivalentToGtEq(thisIsTrue, v, k1) and
             that.equivalentToGt(thatIsTrue, v, k2) and
@@ -403,7 +451,6 @@ class Comparison extends ControlFlowNode {
             ge(k1, k2)
         )
     }
-
 }
 
 /* Work around differences in floating-point comparisons between Python and QL */
@@ -413,41 +460,27 @@ private predicate is_zero(float x) {
     x = -0.0
 }
 
-bindingset[x,y] private predicate lt(float x, float y) {
-    if is_zero(x) then
-        y > 0
-    else
-        x < y
-}
+bindingset[x, y]
+private predicate lt(float x, float y) { if is_zero(x) then y > 0 else x < y }
 
-bindingset[x,y] private predicate eq(float x, float y) {
-    if is_zero(x) then
-        is_zero(y)
-    else
-        x = y
-}
+bindingset[x, y]
+private predicate eq(float x, float y) { if is_zero(x) then is_zero(y) else x = y }
 
-bindingset[x,y] private predicate gt(float x, float y) {
-    lt(y, x)
-}
+bindingset[x, y]
+private predicate gt(float x, float y) { lt(y, x) }
 
-bindingset[x,y] private predicate le(float x, float y) {
-    lt(x, y) or eq(x, y)
-}
+bindingset[x, y]
+private predicate le(float x, float y) { lt(x, y) or eq(x, y) }
 
-bindingset[x,y] private predicate ge(float x, float y) {
-    lt(y, x) or eq(x, y)
-}
+bindingset[x, y]
+private predicate ge(float x, float y) { lt(y, x) or eq(x, y) }
 
-
-/** A basic block which terminates in a condition, splitting the subsequent control flow, 
+/**
+ * A basic block which terminates in a condition, splitting the subsequent control flow,
  * in which the condition is an instance of `Comparison`
  */
 class ComparisonControlBlock extends ConditionBlock {
-
-    ComparisonControlBlock() {
-        this.getLastNode() instanceof Comparison
-    }
+    ComparisonControlBlock() { this.getLastNode() instanceof Comparison }
 
     /** Whether this conditional guard determines that, in block `b`, `l == r + k` if `eq` is true, or `l != r + k` if `eq` is false, */
     predicate controls(ControlFlowNode l, CompareOp op, ControlFlowNode r, float k, BasicBlock b) {
@@ -467,16 +500,13 @@ class ComparisonControlBlock extends ConditionBlock {
         )
     }
 
-    Comparison getTest() {
-        this.getLastNode() = result
-    }
+    Comparison getTest() { this.getLastNode() = result }
 
     /** Whether this conditional guard implies that, in block `b`,  the result of `that` is `thatIsTrue` */
     predicate impliesThat(BasicBlock b, Comparison that, boolean thatIsTrue) {
         exists(boolean controlSense |
-            this.controls(b, controlSense) and 
+            this.controls(b, controlSense) and
             this.getTest().impliesThat(controlSense, that, thatIsTrue)
         )
     }
-
 }

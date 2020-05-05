@@ -23,6 +23,8 @@
 | clang_ms.cpp:11:5:11:13 | asm statement |
 | clang_ms.cpp:12:1:12:1 | return ... |
 | clang_ms.cpp:16:1:16:19 | // Test for CPP-184 |
+| clang_ms.cpp:17:1:17:32 | #pragma |
+| clang_ms.cpp:18:1:18:31 | #pragma |
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | _Complex __float128 |
@@ -48,6 +50,7 @@
 | file://:0:0:0:0 | __ptr32 |
 | file://:0:0:0:0 | __ptr64 |
 | file://:0:0:0:0 | __sptr |
+| file://:0:0:0:0 | __super |
 | file://:0:0:0:0 | __uptr |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
@@ -58,6 +61,7 @@
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | bool |
 | file://:0:0:0:0 | char |
+| file://:0:0:0:0 | char8_t |
 | file://:0:0:0:0 | char16_t |
 | file://:0:0:0:0 | char32_t |
 | file://:0:0:0:0 | const |
@@ -87,6 +91,7 @@
 | file://:0:0:0:0 | implicit_int |
 | file://:0:0:0:0 | inline |
 | file://:0:0:0:0 | int |
+| file://:0:0:0:0 | is_consteval |
 | file://:0:0:0:0 | is_constexpr |
 | file://:0:0:0:0 | is_thread_local |
 | file://:0:0:0:0 | long |

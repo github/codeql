@@ -3,7 +3,7 @@
  * @description Finds classes with many fields; they could probably be refactored by breaking them down into smaller classes, and using composition.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision medium
  * @id cpp/class-many-fields
  * @tags maintainability
  *       statistical
@@ -80,11 +80,8 @@ class VariableDeclarationLine extends TVariableDeclarationInfo {
    * (that is, the first is 0, the second is 1 and so on).
    */
   private int getRank() {
-    line = rank[result](VariableDeclarationLine vdl, int l |
-        vdl = TVariableDeclarationLine(c, f, l)
-      |
-        l
-      )
+    line =
+      rank[result](VariableDeclarationLine vdl, int l | vdl = TVariableDeclarationLine(c, f, l) | l)
   }
 
   /**
@@ -133,7 +130,8 @@ class VariableDeclarationGroup extends VariableDeclarationLine {
    * Gets the number of uniquely named `VariableDeclarationEntry`s in this group.
    */
   int getCount() {
-    result = count(VariableDeclarationLine l |
+    result =
+      count(VariableDeclarationLine l |
         l = getProximateNext*()
       |
         l.getAVDE().getVariable().getName()
@@ -166,7 +164,8 @@ class ExtClass extends Class {
 
 from ExtClass c, int n, VariableDeclarationGroup vdg, string suffix
 where
-  n = strictcount(string fieldName |
+  n =
+    strictcount(string fieldName |
       exists(Field f |
         f.getDeclaringType() = c and
         fieldName = f.getName() and

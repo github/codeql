@@ -5,3 +5,4 @@
 | A.java:31:11:31:19 | ... != ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:31:11:31:11 | x | x | A.java:29:17:29:20 | this | this |
 | A.java:40:14:40:25 | ... != ... | This check is useless, since $@ always is non-null. | A.java:40:14:40:17 | this | this | A.java:40:14:40:17 | this | this |
 | A.java:42:9:42:17 | ... != ... | This check is useless, $@ cannot be null here, since it is guarded by $@. | A.java:42:9:42:9 | x | x | A.java:39:9:39:17 | ... == ... | ... == ... |
+| A.java:52:9:52:24 | ... != ... | This check is useless, $@ cannot be null here, since $@ always is non-null. | A.java:52:9:52:16 | finalObj | finalObj | A.java:48:35:48:46 | new Object(...) | new Object(...) |

@@ -35,7 +35,7 @@
 | test.cpp:97:10:97:10 | Load: x | file://:0:0:0:0 | 0 | 1 | false | CompareLT: ... < ... | test.cpp:94:7:94:11 | test.cpp:94:7:94:11 |
 | test.cpp:100:10:100:10 | Load: x | file://:0:0:0:0 | 0 | 1 | true | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
 | test.cpp:102:10:102:10 | Load: x | file://:0:0:0:0 | 0 | 2 | false | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
-| test.cpp:107:5:107:10 | Phi: test10 | test.cpp:114:3:114:6 | Phi: call to sink | -1 | true | CompareLT: ... < ... | test.cpp:115:18:115:22 | test.cpp:115:18:115:22 |
+| test.cpp:117:10:117:10 | Load: i | test.cpp:114:3:114:6 | Phi: call to sink | -1 | true | CompareLT: ... < ... | test.cpp:116:7:116:11 | test.cpp:116:7:116:11 |
 | test.cpp:130:10:130:10 | Load: i | file://:0:0:0:0 | 0 | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:140:10:140:10 | Store: i | file://:0:0:0:0 | 0 | 1 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:140:10:140:10 | Store: i | test.cpp:135:16:135:16 | InitializeParameter: x | 0 | false | CompareLT: ... < ... | test.cpp:139:11:139:15 | test.cpp:139:11:139:15 |
@@ -59,3 +59,8 @@
 | test.cpp:183:10:183:10 | Load: i | test.cpp:175:23:175:23 | InitializeParameter: x | -1 | true | CompareLT: ... < ... | test.cpp:182:9:182:13 | test.cpp:182:9:182:13 |
 | test.cpp:185:10:185:10 | Load: i | test.cpp:175:23:175:23 | InitializeParameter: x | 0 | true | CompareLT: ... < ... | test.cpp:176:7:176:11 | test.cpp:176:7:176:11 |
 | test.cpp:187:10:187:10 | Store: i | test.cpp:175:23:175:23 | InitializeParameter: x | 0 | false | CompareLT: ... < ... | test.cpp:182:9:182:13 | test.cpp:182:9:182:13 |
+| test.cpp:194:8:194:8 | Load: l | test.cpp:191:16:191:16 | InitializeParameter: i | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
+| test.cpp:194:8:194:8 | Load: l | test.cpp:191:16:191:16 | InitializeParameter: i | 0 | true | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
+| test.cpp:200:10:200:10 | Load: i | test.cpp:198:25:198:25 | InitializeParameter: l | -1 | true | CompareLT: ... < ... | test.cpp:199:7:199:11 | test.cpp:199:7:199:11 |
+| test.cpp:203:11:203:11 | Load: i | test.cpp:198:25:198:25 | InitializeParameter: l | -3 | true | CompareLT: ... < ... | test.cpp:202:7:202:15 | test.cpp:202:7:202:15 |
+| test.cpp:209:10:209:10 | Load: x | test.cpp:207:24:207:24 | InitializeParameter: y | -3 | true | CompareLT: ... < ... | test.cpp:208:7:208:15 | test.cpp:208:7:208:15 |

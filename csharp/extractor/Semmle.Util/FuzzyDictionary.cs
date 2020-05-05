@@ -37,7 +37,7 @@ namespace Semmle.Util
     /// </remarks>
     ///
     /// <typeparam name="T">The value type.</typeparam>
-    public class FuzzyDictionary<T>
+    public class FuzzyDictionary<T> where T:class
     {
         // All data items indexed by the "base string" (stripped of numbers)
         readonly Dictionary<string, List<KeyValuePair<string, T>>> index = new Dictionary<string, List<KeyValuePair<string, T>>>();
@@ -61,7 +61,7 @@ namespace Semmle.Util
         /// <param name="v1">Vector 1</param>
         /// <param name="v2">Vector 2</param>
         /// <returns>The Hamming Distance.</returns>
-        static int HammingDistance<U>(IEnumerable<U> v1, IEnumerable<U> v2)
+        static int HammingDistance<U>(IEnumerable<U> v1, IEnumerable<U> v2) where U: notnull
         {
             return v1.Zip(v2, (x, y) => x.Equals(y) ? 0 : 1).Sum();
         }
@@ -72,11 +72,10 @@ namespace Semmle.Util
         /// <param name="query">The query string.</param>
         /// <param name="distance">The distance between the query string and the stored string.</param>
         /// <returns>The best match, or null (default).</returns>
-        public T FindMatch(string query, out int distance)
+        public T? FindMatch(string query, out int distance)
         {
             string root = StripDigits(query);
-            List<KeyValuePair<string, T>> list;
-            if (!index.TryGetValue(root, out list))
+            if (!index.TryGetValue(root, out var list))
             {
                 distance = 0;
                 return default(T);
@@ -93,9 +92,9 @@ namespace Semmle.Util
         /// <param name="distance">The distance function.</param>
         /// <param name="bestDistance">The distance between the query and the stored string.</param>
         /// <returns>The stored value.</returns>
-        static T BestMatch(string query, IEnumerable<KeyValuePair<string, T>> candidates, Func<string, string, int> distance, out int bestDistance)
+        static T? BestMatch(string query, IEnumerable<KeyValuePair<string, T>> candidates, Func<string, string, int> distance, out int bestDistance)
         {
-            T bestMatch = default(T);
+            T? bestMatch = default(T);
             bestDistance = 0;
             bool first = true;
 

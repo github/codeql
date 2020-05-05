@@ -16,7 +16,7 @@ import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.UI
 import semmle.code.csharp.security.dataflow.SqlInjection
-import semmle.code.csharp.security.dataflow.XSS
+import semmle.code.csharp.security.dataflow.flowsinks.Html
 import semmle.code.csharp.security.dataflow.UrlRedirect
 import semmle.code.csharp.security.Sanitizers
 import semmle.code.csharp.dataflow.DataFlow2::DataFlow2
@@ -100,7 +100,8 @@ module EncodingConfigurations {
       or
       // consider quote-replacing calls as additional sources for
       // SQL expressions (e.g., `s.Replace("\"", "\"\"")`)
-      source.asExpr() = any(MethodCall mc |
+      source.asExpr() =
+        any(MethodCall mc |
           mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
           mc.getArgument(0).getValue().regexpMatch("\"|'|`")
         )
@@ -113,7 +114,7 @@ module EncodingConfigurations {
 
     override string getKind() { result = "HTML expression" }
 
-    override predicate requiresEncoding(Node n) { n instanceof XSS::HtmlSink }
+    override predicate requiresEncoding(Node n) { n instanceof HtmlSink }
 
     override predicate isPossibleEncodedValue(Expr e) { e instanceof HtmlSanitizedExpr }
   }

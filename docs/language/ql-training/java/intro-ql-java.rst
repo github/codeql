@@ -11,7 +11,7 @@ Setup
 
 For this example you should download:
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
 - `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
@@ -68,7 +68,7 @@ A simple CodeQL query
 
    We are going to write a simple query which finds “if statements” with empty “then” blocks, so we can highlight the results like those on the previous slide. The query can be run in the `query console on LGTM <https://lgtm.com/query>`__, or in your `IDE <https://lgtm.com/help/lgtm/running-queries-ide>`__.
 
-   A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `Introduction to query files <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
+   A `query <https://help.semmle.com/QL/ql-handbook/queries.html>`__ consists of a “select” clause that indicates what results should be returned. Typically it will also provide a “from” clause to declare some variables, and a “where” clause to state conditions over those variables. For more information on the structure of query files (including links to useful topics in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__), see `Introduction to query files <https://help.semmle.com/QL/learn-ql/ql/writing-queries/introduction-to-queries.html>`__.
 
    In our example here, the first line of the query imports the `CodeQL library for Java <https://help.semmle.com/qldoc/java/>`__, which defines concepts like ``IfStmt`` and ``Block``.
    The query proper starts by declaring two variables–ifStmt and block. These variables represent sets of values in the database, according to the type of each of the variables. For example, ``ifStmt`` has the type ``IfStmt``, which means it represents the set of all if statements in the program.
@@ -105,8 +105,8 @@ Each query library also implicitly defines a module.
 
 .. note::
 
-  Queries are always contained in query files with the file extension ``.ql``. `Quick queries <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/quick-query.html>`__, run in `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/home-page.html>`__, are no exception: the quick query window maintains a temporary QL file in the background.
-
+  Queries are always contained in query files with the file extension ``.ql``. 
+  
   Parts of queries can be lifted into `library files <https://help.semmle.com/QL/ql-handbook/modules.html#library-modules>`__ with the extension ``.qll``. Definitions within such libraries can be brought into scope using “import” statements, and similarly QLL files can import each other’s definitions using “import” statements.
 
   Logic can be encapsulated as user-defined `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__, and organized into `modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__. Each QLL file implicitly defines a module, but QL and QLL files can also contain explicit module definitions, as we will see later.

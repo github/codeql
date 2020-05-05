@@ -56,7 +56,8 @@ VariableAccess getAnIncrement(Variable var) {
     exists(AssignAddExpr a | a.getLValue() = result and a.getRValue().getValue().toInt() > 0)
     or
     exists(AssignExpr a | a.getLValue() = result |
-      a.getRValue() = any(AddExpr ae |
+      a.getRValue() =
+        any(AddExpr ae |
           ae.getAnOperand() = var.getAnAccess() and
           ae.getAnOperand().getValue().toInt() > 0
         )
@@ -72,7 +73,8 @@ VariableAccess getADecrement(Variable var) {
     exists(AssignSubExpr a | a.getLValue() = result and a.getRValue().getValue().toInt() > 0)
     or
     exists(AssignExpr a | a.getLValue() = result |
-      a.getRValue() = any(SubExpr ae |
+      a.getRValue() =
+        any(SubExpr ae |
           ae.getLeftOperand() = var.getAnAccess() and
           ae.getRightOperand().getValue().toInt() > 0
         )
@@ -128,14 +130,16 @@ where
     exists(VariableAccess bound |
       upperBoundCheck(loop, bound) and
       reachesNoInc(bound, bound) and
-      msg = "The loop counter " + bound.getTarget().getName() +
+      msg =
+        "The loop counter " + bound.getTarget().getName() +
           " is not always incremented in the loop body."
     )
     or
     exists(VariableAccess bound |
       lowerBoundCheck(loop, bound) and
       reachesNoDec(bound, bound) and
-      msg = "The loop counter " + bound.getTarget().getName() +
+      msg =
+        "The loop counter " + bound.getTarget().getName() +
           " is not always decremented in the loop body."
     )
   )

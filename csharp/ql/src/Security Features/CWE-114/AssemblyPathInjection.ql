@@ -6,27 +6,14 @@
  * @kind problem
  * @id cs/assembly-path-injection
  * @problem.severity error
+ * @precision high
  * @tags security
  *       external/cwe/cwe-114
  */
 
-/*
- * consider: @precision high
- */
-
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
-
-class MainMethod extends Method {
-  MainMethod() {
-    this.hasName("Main") and
-    this.isStatic() and
-    (this.getReturnType() instanceof VoidType or this.getReturnType() instanceof IntType) and
-    if this.getNumberOfParameters() = 1
-    then this.getParameter(0).getType().(ArrayType).getElementType() instanceof StringType
-    else this.getNumberOfParameters() = 0
-  }
-}
+import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.commons.Util
 
 /**
  * A taint-tracking configuration for untrusted user input used to load a DLL.

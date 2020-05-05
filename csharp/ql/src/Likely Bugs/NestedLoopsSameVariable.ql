@@ -80,8 +80,9 @@ class NestedForLoopSameVariable extends ForStmt {
       location = outer.getLocation() and
       location.hasLocationInfo(_, startLine, _, _, _) and
       lineStr = startLine.toString() and
-      result = "Nested for statement uses loop variable " + name +
-          " of enclosing for statement (on line " + lineStr + ")."
+      result =
+        "Nested for statement uses loop variable " + name + " of enclosing for statement (on line " +
+          lineStr + ")."
     )
   }
 
@@ -89,11 +90,8 @@ class NestedForLoopSameVariable extends ForStmt {
   private ControlFlow::Node getAnUnguardedNode() {
     result.getElement().getParent+() = getOuterForStmt().getBody() and
     (
-      result = this
-            .getCondition()
-            .(ControlFlowElement)
-            .getAControlFlowExitNode()
-            .getAFalseSuccessor()
+      result =
+        this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
       or
       exists(ControlFlow::Node mid | mid = getAnUnguardedNode() |
         mid.getASuccessor() = result and

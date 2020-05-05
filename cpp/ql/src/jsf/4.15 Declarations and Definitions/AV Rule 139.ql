@@ -19,12 +19,14 @@ predicate twoDeclarations(Declaration element, Location l1, Location l2) {
 }
 
 predicate twoDeclarationFilesWithDifferentNames(Declaration d, string f1, string f2) {
-  f1 = min(string s, File f, Location l |
+  f1 =
+    min(string s, File f, Location l |
       twoDeclarations(d, l, _) and l.getFile() = f and s = f.getBaseName()
     |
       s
     ) and
-  f2 = min(string s, File f, Location l |
+  f2 =
+    min(string s, File f, Location l |
       twoDeclarations(d, l, _) and l.getFile() = f and s = f.getBaseName() and s != f1
     |
       s
@@ -32,12 +34,14 @@ predicate twoDeclarationFilesWithDifferentNames(Declaration d, string f1, string
 }
 
 predicate twoDeclarationFilesWithSameNames(Declaration d, string f1, string f2) {
-  f1 = min(string s, File f, Location l |
+  f1 =
+    min(string s, File f, Location l |
       twoDeclarations(d, l, _) and l.getFile() = f and s = f.toString()
     |
       s
     ) and
-  f2 = min(string s, File f, Location l |
+  f2 =
+    min(string s, File f, Location l |
       twoDeclarations(d, l, _) and l.getFile() = f and s = f.toString() and s != f1
     |
       s

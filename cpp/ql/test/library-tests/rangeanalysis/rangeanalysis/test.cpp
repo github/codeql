@@ -104,7 +104,7 @@ void test9(int x) {
 }
 
 // Phi nodes as bounds
-int test10(int y, int z, bool use_y) {
+void test10(int y, int z, bool use_y) {
   int x;
   if(use_y) {
     x = y;
@@ -112,9 +112,9 @@ int test10(int y, int z, bool use_y) {
     x = z;
   }
   sink();
-  for(int i = 0; i < x; i++) {
-    return i;
-  }
+  int i = source();
+  if (i < x)
+    sink(i);
 }
 
 // Irreducible CFGs
@@ -185,4 +185,27 @@ int test15(int i, int x) {
     sink(i); // i <= x
   }
   return i;
+}
+
+// safe integer type conversion
+int test16(int i) {
+  long l;
+  l = i;
+  sink(l);
+}
+
+// implicit integer casts
+void test17(int i, long l) {
+  if (i < l) {
+    sink(i);
+  }
+  if (i < l - 2) {
+    sink (i);
+  }
+}
+
+void test18(int x, int y) {
+  if (x < y - 2) {
+    sink(x);
+  }
 }

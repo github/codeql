@@ -57,19 +57,19 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         bool WritingLabel = false;
 
-        public void DefineLabel(IEntity entity, TextWriter trapFile)
+        public void DefineLabel(IEntity entity, TextWriter trapFile, IExtractor extractor)
         {
             if (WritingLabel)
             {
                 // Don't define a label whilst writing a label.
-                PopulateLater(() => DefineLabel(entity, trapFile));
+                PopulateLater(() => DefineLabel(entity, trapFile, extractor));
             }
             else
             {
                 try
                 {
                     WritingLabel = true;
-                    entity.DefineLabel(trapFile);
+                    entity.DefineLabel(trapFile, extractor);
                 }
                 finally
                 {
@@ -102,7 +102,7 @@ namespace Semmle.Extraction
                     entity.Label = label;
                     entityLabelCache[entity] = label;
 
-                    DefineLabel(entity, TrapWriter.Writer);
+                    DefineLabel(entity, TrapWriter.Writer, Extractor);
 
                     if (entity.NeedsPopulation)
                         Populate(init as ISymbol, entity);
@@ -148,14 +148,14 @@ namespace Semmle.Extraction
 
                 objectEntityCache[init] = entity;
 
-                DefineLabel(entity, TrapWriter.Writer);
+                DefineLabel(entity, TrapWriter.Writer, Extractor);
                 if (entity.NeedsPopulation)
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
                 using (var id = new StringWriter())
                 {
-                    entity.WriteId(id);
+                    entity.WriteQuotedId(id);
                     CheckEntityHasUniqueLabel(id.ToString(), entity);
                 }
 #endif
@@ -270,6 +270,8 @@ namespace Semmle.Extraction
             TrapWriter = trapWriter;
         }
 
+        public bool FromSource => Scope.FromSource;
+
         public bool IsGlobalContext => Scope.IsGlobalScope;
 
         public readonly ICommentGenerator CommentGenerator = new CommentProcessor();
@@ -282,7 +284,9 @@ namespace Semmle.Extraction
         ///     of the symbol is a constructed generic.
         /// </summary>
         /// <param name="symbol">The symbol to populate.</param>
-        public bool Defines(ISymbol symbol) => !Equals(symbol, symbol.OriginalDefinition) || Scope.InScope(symbol);
+        public bool Defines(ISymbol symbol) =>
+            !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
+            Scope.InScope(symbol);
 
         /// <summary>
         /// Whether the current extraction context defines a given file.

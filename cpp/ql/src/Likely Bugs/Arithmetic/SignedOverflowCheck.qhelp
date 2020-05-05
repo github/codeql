@@ -18,49 +18,39 @@ optimizing compiler.
 <recommendation>
 <p>
 Solutions to this problem can be thought of as falling into one of two
-categories: (1) rewrite the signed expression so that overflow cannot occur
-but the signedness remains, or (2) rewrite (or cast) the signed expression
-into unsigned form.
+categories:
 </p>
 
-<p>
-Below we list examples of expressions where signed overflow may
-occur, along with proposed solutions.  The list should not be
-considered exhaustive.
-</p>
+<ol>
+<li>Rewrite the signed expression so that overflow cannot occur
+but the signedness remains.</li>
+<li>Change the variables and all their uses to be unsigned.</li>
+</ol>
 
 <p>
-Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>, 
-it is possible to rewrite it as <code>(unsigned short)(i + delta)&nbsp;&lt;&nbsp;i</code>.
-Note that <code>i + delta</code>does not actually overflow, due to <code>int</code> promotion
+The following cases all fall into the first category.
 </p>
 
-<p>
-Given <code>unsigned short i, delta</code> and <code>i + delta &lt; i</code>,
-it is also possible to rewrite it as <code>USHORT_MAX - delta</code>. It must be true
-that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
+<ol>
+<li>
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is possible to rewrite it as <code>(unsigned short)(n1 + delta)&nbsp;&lt;&nbsp;n1</code>.
+Note that <code>n1 + delta</code> does not actually overflow, due to <code>int</code> promotion.
+</li>
+
+<li>
+Given <code>unsigned short n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is also possible to rewrite it as <code>n1 &gt; USHORT_MAX - delta</code>. The
+<code>limits.h</code> or <code>climits</code> header must then be included.
+</li>
+
+<li>
+Given <code>int n1, delta</code> and <code>n1 + delta &lt; n1</code>,
+it is possible to rewrite it as <code>n1 &gt; INT_MAX - delta</code>. It must be true
+that <code>delta &gt;= 0</code> and the <code>limits.h</code> or <code>climits</code>
 header has been included.
-</p>
-
-<p>
-Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
-it is possible to rewrite it as <code>INT_MAX - delta</code>. It must be true
-that <code>delta &gt; 0</code> and the <code>limits.h</code> or <code>climits</code>
-header has been included.
-</p>
-
-<p>
-Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
-it is also possible to rewrite it as <code>(unsigned)i + delta &lt; i</code>.
-Note that program semantics are affected by this change.
-</p>
-
-<p>
-Given <code>int i, delta</code> and <code>i + delta &lt; i</code>,
-it is also possible to rewrite it as <code>unsigned int i, delta</code> and
-<code>i + delta &lt; i</code>.  Note that program semantics are 
-affected by this change.
-</p>
+</li>
+</ol>
 </recommendation>
 
 <example>
@@ -68,7 +58,7 @@ affected by this change.
 In the following example, even though <code>delta</code> has been declared
 <code>unsigned short</code>, C/C++ type promotion rules require that its
 type is promoted to the larger type used in the addition and comparison,
-namely a <code>signed int</code>.  Addition is performed on 
+namely a <code>signed int</code>.  Addition is performed on
 signed integers, and may have undefined behavior if an overflow occurs.
 As a result, the entire (comparison) expression may also have an undefined
 result.
@@ -87,10 +77,10 @@ are avoided.
 <sample src="SignedOverflowCheck-good1.cpp" />
 <p>
 In the following example, even though both <code>n</code> and <code>delta</code>
-have been declared <code>unsigned short</code>, both are promoted to 
+have been declared <code>unsigned short</code>, both are promoted to
 <code>signed int</code> prior to addition.  Because we started out with the
 narrower <code>short</code> type, the addition is guaranteed not to overflow
-and is therefore defined.  But the fact that <code>n1 + delta</code> never 
+and is therefore defined.  But the fact that <code>n1 + delta</code> never
 overflows means that the condition <code>n1 + delta &lt; n1</code> will never
 hold true, which likely is not what the programmer intended. (see also the
 <code>cpp/bad-addition-overflow-check</code> query).
@@ -98,7 +88,7 @@ hold true, which likely is not what the programmer intended. (see also the
 <sample src="SignedOverflowCheck-bad2.cpp" />
 <p>
 The next example provides a solution to the previous one.  Even though
-<code>i + delta</code> does not overflow, casting it to an
+<code>n1 + delta</code> does not overflow, casting it to an
 <code>unsigned short</code> truncates the addition modulo 2^16,
 so that <code>unsigned short</code> "wrap around" may now be observed.
 Furthermore, since the left-hand side is now of type <code>unsigned short</code>,

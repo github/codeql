@@ -103,6 +103,19 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "MessageBodyReader parameter" }
 }
 
+private class SpringMultipartFileSource extends RemoteFlowSource {
+  SpringMultipartFileSource() {
+    exists(MethodAccess ma, Method m |
+      ma = this.asExpr() and
+      m = ma.getMethod() and
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+      m.getName().matches("get%")
+    )
+  }
+
+  override string getSourceType() { result = "Spring MultipartFile getter" }
+}
+
 private class SpringServletInputParameterSource extends RemoteFlowSource {
   SpringServletInputParameterSource() {
     this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
@@ -152,9 +165,13 @@ deprecated class RemoteUserInput extends UserInput {
   RemoteUserInput() { this instanceof RemoteFlowSource }
 }
 
-/** Input that may be controlled by a local user. */
+/** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
 
+/**
+ * A node with input from the local environment, such as files, standard in,
+ * environment variables, and main method parameters.
+ */
 class EnvInput extends LocalUserInput {
   EnvInput() {
     // Parameters to a main method.
@@ -180,6 +197,7 @@ class EnvInput extends LocalUserInput {
   }
 }
 
+/** A node with input from a database. */
 class DatabaseInput extends LocalUserInput {
   DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
 }
@@ -222,10 +240,12 @@ private class EnvTaintedMethod extends Method {
   }
 }
 
+/** The type `java.net.InetAddress`. */
 class TypeInetAddr extends RefType {
   TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
 }
 
+/** A reverse DNS method. */
 class ReverseDNSMethod extends Method {
   ReverseDNSMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and

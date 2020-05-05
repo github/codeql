@@ -1,13 +1,12 @@
-Analyzing data flow in C/C++
-============================
+Analyzing data flow in C and C++
+================================
 
-Overview
---------
+You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
 
-This topic describes how data flow analysis is implemented in the CodeQL libraries for C/C++ and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
+About data flow
+---------------
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -45,7 +44,7 @@ or using the predicates ``exprNode`` and ``parameterNode``:
     */
    ParameterNode parameterNode(Parameter p) { ... }
 
-The predicate ``localFlowStep(Node nodeFrom, Node, nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
+The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
 For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
 
@@ -139,6 +138,10 @@ Global data flow
 ----------------
 
 Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.
+
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
 
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -244,6 +247,49 @@ The following data flow configuration tracks data flow from environment variable
    select fopen, "This 'fopen' uses data from $@.",
      getenv, "call to 'getenv'"
 
+The following taint-tracking configuration tracks data from a call to ``ntohl`` to an array index operation. It uses the ``Guards`` library to recognize expressions that have been bounds-checked, and defines ``isSanitizer`` to prevent taint from propagating through them. It also uses ``isAdditionalTaintStep`` to add flow from loop bounds to loop indexes.
+
+.. code-block:: ql
+
+  import cpp
+  import semmle.code.cpp.controlflow.Guards
+  import semmle.code.cpp.dataflow.TaintTracking
+
+  class NetworkToBufferSizeConfiguration extends TaintTracking::Configuration {
+    NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
+
+    override predicate isSource(DataFlow::Node node) {
+      node.asExpr().(FunctionCall).getTarget().hasGlobalName("ntohl")
+    }
+
+    override predicate isSink(DataFlow::Node node) {
+      exists(ArrayExpr ae | node.asExpr() = ae.getArrayOffset())
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Loop loop, LoopCounter lc |
+        loop = lc.getALoop() and
+        loop.getControllingExpr().(RelationalOperation).getGreaterOperand() = pred.asExpr() |
+        succ.asExpr() = lc.getVariableAccessInLoop(loop)
+      )
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
+      exists(GuardCondition gc, Variable v |
+        gc.getAChild*() = v.getAnAccess() and
+        node.asExpr() = v.getAnAccess() and
+        gc.controls(node.asExpr().getBasicBlock(), _)
+      )
+    }
+  }
+
+  from DataFlow::Node ntohl, DataFlow::Node offset, NetworkToBufferSizeConfiguration conf
+  where conf.hasFlow(ntohl, offset)
+  select offset, "This array offset may be influenced by $@.", ntohl,
+    "converted data from the network"
+
+
+
 Exercises
 ~~~~~~~~~
 
@@ -253,12 +299,12 @@ Exercise 3: Write a class that represents flow sources from ``getenv``. (`Answer
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``gethostbyname``. (`Answer <#exercise-4>`__)
 
-What next?
-----------
+Further reading
+---------------
 
--  Try the worked examples in the following topics: :doc:`Example: Checking that constructors initialize all private fields <private-field-initialization>` and :doc:`Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator <zero-space-terminator>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+-  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>` and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
+-  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
 
 Answers
 -------

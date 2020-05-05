@@ -198,15 +198,15 @@ public class E
         var o = b ? null : "";
         o.M1(); // GOOD
         if (b)
-          o.M2(); // BAD (maybe)
+            o.M2(); // BAD (maybe)
         else
-          o.Select(x => x); // BAD (maybe)
+            o.Select(x => x); // BAD (maybe)
     }
 
     public int Ex14(string s)
     {
         if (s is string)
-          return s.Length;
+            return s.Length;
         return s.GetHashCode(); // BAD (always)
     }
 
@@ -361,6 +361,29 @@ public class E
         var x = s ?? o as string;
         if (x != (string)null)
             x.ToString(); // GOOD
+    }
+
+    static int Ex34(string s = null) => s.Length; // BAD (maybe)
+
+    static int Ex35(string s = "null") => s.Length; // GOOD
+
+    static int Ex36(object o)
+    {
+        if (o is string)
+        {
+            var s = o as string;
+            return s.Length; // GOOD (false positive)
+        }
+        return -1;
+    }
+
+    static bool Ex37(E e1, E e2)
+    {
+        if ((e1 == null && e2 != null) || (e1 != null && e2 == null))
+            return false;
+        if (e1 == null && e2 == null)
+            return true;
+        return e1.Long == e2.Long; // GOOD (false positive)
     }
 }
 

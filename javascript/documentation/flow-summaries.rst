@@ -5,7 +5,7 @@ Overview
 --------
 
 This document presents an approach for running information flow analyses (such as the standard
-Semmle security queries) on an application that depends on one or more npm packages. Instead of
+security queries) on an application that depends on one or more npm packages. Instead of
 installing the npm packages during the snapshot build and analyzing them together with application
 code, we analyze each package in isolation and compute *flow summaries* that record information
 about any sources, sinks and flow steps contributed by the package's API. These flow summaries
@@ -13,6 +13,10 @@ are then imported when building a snapshot of the application (usually in the fo
 added as external data), and are picked up by the standard security queries, allowing them to reason
 about flow into, out of and through the npm packages as though they had been included as part of the
 build.
+
+Note that flow summaries are an experimental technology, and not ready to be used in production
+queries or libraries. Also note that flow summaries do not currently work with CodeQL, but require
+the legacy Semmle Core toolchain.
 
 Motivating example
 ------------------
@@ -37,7 +41,7 @@ If the value of ``p`` can be controlled by an untrusted user, this would allow t
 folders, which may not be desirable.
 
 By analyzing the application code base together with the source code for the ``mkdirp`` package,
-Semmle's default path injection analysis would be able to track taint through the call to ``mkdirp`` into its
+the default path injection analysis would be able to track taint through the call to ``mkdirp`` into its
 implementation, which ultimately uses built-in Node.js file system APIs to create the folder. Since
 the path injection analysis has built-in models of these APIs it would then be able to spot and flag this
 vulnerability.
@@ -87,11 +91,11 @@ package. (Note that this requires a working installation of Semmle Core.)
 There are three default summary extraction queries:
 
 - Extract flow step summaries (``js/step-summary-extraction``,
-  ``Security/Summaries/ExtractSourceSummaries.ql``)
+  ``experimental/Summaries/ExtractSourceSummaries.ql``)
 - Extract sink summaries (``js/sink-summary-extraction``,
-  ``Security/Summaries/ExtractSinkSummaries.ql``)
+  ``experimental/Summaries/ExtractSinkSummaries.ql``)
 - Extract source summaries (``js/source-summary-extraction``,
-  ``Security/Summaries/ExtractSourceSummaries.ql``)
+  ``experimental/Summaries/ExtractSourceSummaries.ql``)
 
 You can run these queries individually against a snapshot of the npm package you want to create
 flow summaries for using ``odasa runQuery``, and store the output as CSV files named
@@ -103,7 +107,7 @@ project, we can extract sink summaries using the command
 .. code-block:: bash
 
   odasa runQuery \
-        --query $SEMMLE_DIST/queries/semmlecode-javascript-queries/Security/Summaries/ExtractSinkSummaries.ql \
+        --query $SEMMLE_DIST/queries/semmlecode-javascript-queries/experimental/Summaries/ExtractSinkSummaries.ql \
         --output-file additional-sinks.csv --snapshot mkdirp-snapshot
 
 

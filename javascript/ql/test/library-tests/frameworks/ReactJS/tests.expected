@@ -15,6 +15,7 @@ test_ReactComponent_getInstanceMethod
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | render | es5.js:3:11:5:3 | functio ... v>;\\n  } |
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | render | es5.js:19:11:21:3 | functio ... 1>;\\n  } |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | render | es6.js:2:9:4:3 | () {\\n   ... v>;\\n  } |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | render | exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | render | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
 | plainfn.js:5:1:7:1 | functio ... iv");\\n} | render | plainfn.js:5:1:7:1 | functio ... iv");\\n} |
 | plainfn.js:9:1:12:1 | functio ... rn x;\\n} | render | plainfn.js:9:1:12:1 | functio ... rn x;\\n} |
@@ -93,6 +94,7 @@ test_ReactComponent_ref
 | es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:16:9:16:12 | this |
 | es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:17:9:17:12 | this |
 | es6.js:14:1:20:1 | class H ...     }\\n} | es6.js:18:9:18:12 | this |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | exportedComponent.jsx:1:8:1:7 | this |
 | namedImport.js:3:1:3:28 | class C ... nent {} | namedImport.js:3:27:3:26 | this |
 | namedImport.js:5:1:5:20 | class D extends C {} | namedImport.js:5:19:5:18 | this |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | plainfn.js:1:1:1:0 | this |
@@ -189,6 +191,7 @@ test_ReactComponent_getADirectPropsSource
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | es5.js:20:24:20:33 | this.props |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | es6.js:1:37:1:36 | args |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | es6.js:3:24:3:33 | this.props |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | exportedComponent.jsx:1:29:1:33 | props |
 | namedImport.js:3:1:3:28 | class C ... nent {} | namedImport.js:3:27:3:26 | args |
 | namedImport.js:5:1:5:20 | class D extends C {} | namedImport.js:5:19:5:18 | args |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | plainfn.js:1:16:1:20 | props |
@@ -208,6 +211,7 @@ test_ReactComponent_getADirectPropsSource
 | thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:48:18:48:18 | y |
 test_ReactComponent_getACandidatePropsValue
 | es5.js:8:13:8:19 | 'world' |
+| importedComponent.jsx:4:32:4:36 | color |
 | props.js:5:46:5:67 | "propFr ... tProps" |
 | props.js:7:22:7:34 | "propFromJSX" |
 | props.js:9:33:9:53 | "propFr ... ructor" |
@@ -222,6 +226,7 @@ test_ReactComponent
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} |
 | es6.js:14:1:20:1 | class H ...     }\\n} |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} |
 | namedImport.js:3:1:3:28 | class C ... nent {} |
 | namedImport.js:5:1:5:20 | class D extends C {} |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} |
@@ -248,6 +253,7 @@ test_ReactComponent_getAPropRead
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | name | es5.js:4:24:4:38 | this.props.name |
 | es5.js:18:33:22:1 | {\\n  ren ... ;\\n  }\\n} | name | es5.js:20:24:20:38 | this.props.name |
 | es6.js:1:1:8:1 | class H ... ;\\n  }\\n} | name | es6.js:3:24:3:38 | this.props.name |
+| exportedComponent.jsx:1:8:3:1 | functio ... r}}/>\\n} | color | exportedComponent.jsx:2:32:2:42 | props.color |
 | plainfn.js:1:1:3:1 | functio ... div>;\\n} | name | plainfn.js:2:22:2:31 | props.name |
 | preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
 | probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |

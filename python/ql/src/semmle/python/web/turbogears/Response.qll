@@ -1,13 +1,11 @@
 import python
-
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 import TurboGears
 
-
-
 class ControllerMethodReturnValue extends HttpResponseTaintSink {
+    override string toString() { result = "TurboGears ControllerMethodReturnValue" }
 
     ControllerMethodReturnValue() {
         exists(TurboGearsControllerMethod m |
@@ -16,13 +14,11 @@ class ControllerMethodReturnValue extends HttpResponseTaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
-    }
-
+    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 }
 
 class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
+    override string toString() { result = "TurboGears ControllerMethodTemplatedReturnValue" }
 
     ControllerMethodTemplatedReturnValue() {
         exists(TurboGearsControllerMethod m |
@@ -31,8 +27,5 @@ class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringDictKind
-    }
-
+    override predicate sinks(TaintKind kind) { kind instanceof StringDictKind }
 }

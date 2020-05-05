@@ -81,10 +81,8 @@ class LockingPrimitive extends FunctionCall, LockOperation {
   override Function getLocked() { result = this.getTarget() }
 
   override UnlockOperation getMatchingUnlock() {
-    result.(UnlockingPrimitive).getTarget().getName() = this
-          .getTarget()
-          .getName()
-          .replaceAll("Lock", "Unlock")
+    result.(UnlockingPrimitive).getTarget().getName() =
+      this.getTarget().getName().replaceAll("Lock", "Unlock")
   }
 
   override string say() { result = "call to " + getLocked().getName() }

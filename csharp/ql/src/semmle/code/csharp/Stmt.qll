@@ -236,7 +236,8 @@ private module SwithStmtInternal {
     exists(int index, int rankIndex |
       result = ss.getChildStmt(index) and
       rankIndex = i + 1 and
-      index = rank[rankIndex](int j, Stmt s |
+      index =
+        rank[rankIndex](int j, Stmt s |
           // `getChild` includes both labeled statements and the targeted
           // statements of labeled statement as separate children, but we
           // only want the labeled statement

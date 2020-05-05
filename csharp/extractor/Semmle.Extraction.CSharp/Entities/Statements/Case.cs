@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                     if (cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                     {
                         var type = Type.Create(cx, symbol.GetAnnotatedType());
-                        Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);
+                        Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), isVar, this, 0);
                     }
                     break;
                 case DiscardDesignationSyntax discard:

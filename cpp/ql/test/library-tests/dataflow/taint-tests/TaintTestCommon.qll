@@ -1,5 +1,6 @@
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.models.interfaces.Taint
 
 /** Common data flow configuration to be used by tests. */
 class TestAllocationConfig extends TaintTracking::Configuration {
@@ -23,5 +24,41 @@ class TestAllocationConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node barrier) {
     barrier.asExpr().(VariableAccess).getTarget().hasName("sanitizer")
+  }
+}
+
+class SetMemberFunction extends TaintFunction {
+  SetMemberFunction() { this.hasName("setMember") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isQualifierObject()
+  }
+}
+
+class GetMemberFunction extends TaintFunction {
+  GetMemberFunction() { this.hasName("getMember") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+class SetStringFunction extends TaintFunction {
+  SetStringFunction() { this.hasName("setString") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+class GetStringFunction extends TaintFunction {
+  GetStringFunction() { this.hasName("getString") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 }

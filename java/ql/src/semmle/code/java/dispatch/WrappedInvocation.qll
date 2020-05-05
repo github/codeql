@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about calls that may invoke one
+ * of their arguments.
+ */
+
 import java
 import VirtualDispatch
 
@@ -37,7 +42,8 @@ class FunctionalInterface extends Interface {
  * `n`th parameter.
  */
 private predicate runner(Method m, int n, Method runmethod) {
-  m.getParameterType(n).(RefType).getSourceDeclaration().(FunctionalInterface).getRunMethod() = runmethod and
+  m.getParameterType(n).(RefType).getSourceDeclaration().(FunctionalInterface).getRunMethod() =
+    runmethod and
   (
     m.isNative()
     or

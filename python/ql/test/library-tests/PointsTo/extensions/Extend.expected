@@ -1,8 +1,7 @@
-WARNING: Predicate points_to has been deprecated and may be removed in future (Extend.ql:58,9-28)
-WARNING: Type CustomPointsToAttribute has been deprecated and may be removed in future (Extend.ql:27,35-58)
-WARNING: Type CustomPointsToObjectFact has been deprecated and may be removed in future (Extend.ql:42,32-56)
-WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:9,28-52)
-WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:55,38-62)
+WARNING: Type CustomPointsToAttribute has been deprecated and may be removed in future (Extend.ql:22,34-57)
+WARNING: Type CustomPointsToObjectFact has been deprecated and may be removed in future (Extend.ql:38,32-56)
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:5,28-52)
+WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:49,38-62)
 | test.py:4:1:4:3 | ControlFlowNode for one | int 1 |
 | test.py:5:1:5:3 | ControlFlowNode for two | int 2 |
 | test.py:8:1:8:1 | ControlFlowNode for IntegerLiteral | int 1 |

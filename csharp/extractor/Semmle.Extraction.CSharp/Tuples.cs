@@ -201,16 +201,6 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("explicitly_sized_array_creation", array);
         }
 
-        internal static void expr_compiler_generated(this TextWriter trapFile, Expression expr)
-        {
-            trapFile.WriteTuple("expr_compiler_generated", expr);
-        }
-
-        internal static void expr_location(this TextWriter trapFile, Expression exprKey, Location location)
-        {
-            trapFile.WriteTuple("expr_location", exprKey, location);
-        }
-
         internal static void expr_access(this TextWriter trapFile, Expression expr, IEntity access)
         {
             trapFile.WriteTuple("expr_access", expr, access);
@@ -231,19 +221,34 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("expr_call", expr, target);
         }
 
-        internal static void expr_parent(this TextWriter trapFile, Expression exprKey, int child, IExpressionParentEntity parent)
+        internal static void expr_compiler_generated(this TextWriter trapFile, Expression expr)
         {
-            trapFile.WriteTuple("expr_parent", exprKey, child, parent);
+            trapFile.WriteTuple("expr_compiler_generated", expr);
         }
 
-        internal static void expr_parent_top_level(this TextWriter trapFile, Expression exprKey, int child, IExpressionParentEntity parent)
+        internal static void expr_flowstate(this TextWriter trapFile, Expression expr, int flowState)
         {
-            trapFile.WriteTuple("expr_parent_top_level", exprKey, child, parent);
+            trapFile.WriteTuple("expr_flowstate", expr, flowState);
         }
 
-        internal static void expr_value(this TextWriter trapFile, Expression exprKey, string value)
+        internal static void expr_location(this TextWriter trapFile, Expression expr, Location location)
         {
-            trapFile.WriteTuple("expr_value", exprKey, value);
+            trapFile.WriteTuple("expr_location", expr, location);
+        }
+
+        internal static void expr_parent(this TextWriter trapFile, Expression expr, int child, IExpressionParentEntity parent)
+        {
+            trapFile.WriteTuple("expr_parent", expr, child, parent);
+        }
+
+        internal static void expr_parent_top_level(this TextWriter trapFile, Expression expr, int child, IExpressionParentEntity parent)
+        {
+            trapFile.WriteTuple("expr_parent_top_level", expr, child, parent);
+        }
+
+        internal static void expr_value(this TextWriter trapFile, Expression expr, string value)
+        {
+            trapFile.WriteTuple("expr_value", expr, value);
         }
 
         internal static void expressions(this TextWriter trapFile, Expression expr, ExprKind kind, Type exprType)
@@ -459,6 +464,11 @@ namespace Semmle.Extraction.CSharp
         internal static void specific_type_parameter_nullability(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, NullabilityEntity nullability)
         {
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
+        }
+
+        internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)
+        {
+            trapFile.WriteTuple("stackalloc_array_creation", array);
         }
 
         internal static void stmt_location(this TextWriter trapFile, Statement stmt, Location location)

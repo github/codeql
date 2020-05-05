@@ -123,13 +123,14 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
    * Anonymous classes and interfaces do not have a canonical name.
    */
   TypeName getTypeName() { result.getADefinition() = this }
-  
+
   /**
    * Gets the ClassOrInterface corresponding to either a super type or an implemented interface.
    */
   ClassOrInterface getASuperTypeDeclaration() {
     this.getSuperClass().(VarAccess).getVariable().getADeclaration() = result.getIdentifier() or
-    this.getASuperInterface().(LocalTypeAccess).getLocalTypeName().getADeclaration() = result.getIdentifier()
+    this.getASuperInterface().(LocalTypeAccess).getLocalTypeName().getADeclaration() =
+      result.getIdentifier()
   }
 }
 
@@ -334,11 +335,8 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
       else
         if exists(getClassInitializedMember())
         then
-          result = min(ClassInitializedMember m |
-              m = getClassInitializedMember()
-            |
-              m order by m.getIndex()
-            )
+          result =
+            min(ClassInitializedMember m | m = getClassInitializedMember() | m order by m.getIndex())
         else result = this
   }
 
@@ -688,7 +686,8 @@ class MethodDeclaration extends MemberDeclaration {
    */
   int getOverloadIndex() {
     exists(ClassOrInterface type, string name |
-      this = rank[result + 1](MethodDeclaration method, int i |
+      this =
+        rank[result + 1](MethodDeclaration method, int i |
           methodDeclaredInType(type, name, i, method)
         |
           method order by i
@@ -696,7 +695,8 @@ class MethodDeclaration extends MemberDeclaration {
     )
     or
     exists(ClassDefinition type |
-      this = rank[result + 1](ConstructorDeclaration ctor, int i |
+      this =
+        rank[result + 1](ConstructorDeclaration ctor, int i |
           ctor = type.getMemberByIndex(i)
         |
           ctor order by i
@@ -1059,12 +1059,6 @@ class FieldDeclaration extends MemberDeclaration, @field {
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
   predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
-
-  override predicate isAmbient() {
-    hasDeclareKeyword(this)
-    or
-    getParent().isAmbient()
-  }
 }
 
 /**
@@ -1156,7 +1150,8 @@ class FunctionCallSignature extends @function_call_signature, CallSignature {
   /** Gets the index of this function call signature among the function call signatures in the enclosing type. */
   int getOverloadIndex() {
     exists(ClassOrInterface type | type = getDeclaringType() |
-      this = rank[result + 1](FunctionCallSignature sig, int i |
+      this =
+        rank[result + 1](FunctionCallSignature sig, int i |
           sig = type.getMemberByIndex(i)
         |
           sig order by i
@@ -1186,7 +1181,8 @@ class ConstructorCallSignature extends @constructor_call_signature, CallSignatur
   /** Gets the index of this constructor call signature among the constructor call signatures in the enclosing type. */
   int getOverloadIndex() {
     exists(ClassOrInterface type | type = getDeclaringType() |
-      this = rank[result + 1](ConstructorCallSignature sig, int i |
+      this =
+        rank[result + 1](ConstructorCallSignature sig, int i |
           sig = type.getMemberByIndex(i)
         |
           sig order by i

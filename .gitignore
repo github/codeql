@@ -1,6 +1,7 @@
 # editor and OS artifacts
 *~
 .DS_STORE
+*.swp
 
 # query compilation caches
 .cache
@@ -13,5 +14,10 @@
 .vs/*
 !.vs/VSWorkspaceSettings.json
 
+# Byte-compiled python files
+*.pyc
+
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
+
+csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json

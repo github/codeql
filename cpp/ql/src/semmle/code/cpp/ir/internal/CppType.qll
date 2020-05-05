@@ -86,9 +86,15 @@ predicate hasUnsignedIntegerType(int byteSize) {
 }
 
 /**
- * Holds if an `IRFloatingPointType` with the specified `byteSize` should exist.
+ * Holds if an `IRFloatingPointType` with the specified size, base, and type domain should exist.
  */
-predicate hasFloatingPointType(int byteSize) { byteSize = any(FloatingPointType type).getSize() }
+predicate hasFloatingPointType(int byteSize, int base, TypeDomain domain) {
+  exists(FloatingPointType type |
+    byteSize = type.getSize() and
+    base = type.getBase() and
+    domain = type.getDomain()
+  )
+}
 
 private predicate isPointerIshType(Type type) {
   type instanceof PointerType
@@ -159,8 +165,13 @@ private IRType getIRTypeForPRValue(Type type) {
     isUnsignedIntegerType(unspecifiedType) and
     result.(IRUnsignedIntegerType).getByteSize() = type.getSize()
     or
-    unspecifiedType instanceof FloatingPointType and
-    result.(IRFloatingPointType).getByteSize() = type.getSize()
+    exists(FloatingPointType floatType, IRFloatingPointType irFloatType |
+      floatType = unspecifiedType and
+      irFloatType = result and
+      irFloatType.getByteSize() = floatType.getSize() and
+      irFloatType.getBase() = floatType.getBase() and
+      irFloatType.getDomain() = floatType.getDomain()
+    )
     or
     isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type)
     or
@@ -364,6 +375,11 @@ CppPRValueType getIntType() {
 CppPRValueType getBoolType() { exists(BoolType type | result.hasType(type, false)) }
 
 /**
+ * Gets the `CppType` that represents a glvalue of type `bool`.
+ */
+CppType getBoolGLValueType() { exists(BoolType type | result.hasType(type, true)) }
+
+/**
  * Gets the `CppType` that represents a glvalue of function type.
  */
 CppFunctionGLValueType getFunctionGLValueType() { any() }
@@ -411,7 +427,8 @@ private int getKindPriority(IntegralType type) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type |
+  result =
+    TPRValueType(max(IntegralType type |
         type.isSigned() and type.getSize() = byteSize
       |
         type order by getKindPriority(type), getSignPriority(type), type.toString() desc
@@ -423,7 +440,8 @@ CppPRValueType getCanonicalSignedIntegerType(int byteSize) {
  * `byteSize`.
  */
 CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
-  result = TPRValueType(max(IntegralType type |
+  result =
+    TPRValueType(max(IntegralType type |
         type.isUnsigned() and type.getSize() = byteSize
       |
         type order by getKindPriority(type), getSignPriority(type), type.toString() desc
@@ -431,14 +449,37 @@ CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
 }
 
 /**
- * Gets the `CppType` that is the canonical type for an `IRFloatingPointType` with the specified
- * `byteSize`.
+ * Gets the sort priority of a `RealNumberType` base on its precision.
  */
-CppPRValueType getCanonicalFloatingPointType(int byteSize) {
-  result = TPRValueType(max(FloatingPointType type |
-        type.getSize() = byteSize
+private int getPrecisionPriority(RealNumberType type) {
+  // Prefer `double`, `float`, `long double` in that order.
+  if type instanceof DoubleType
+  then result = 4
+  else
+    if type instanceof FloatType
+    then result = 3
+    else
+      if type instanceof LongDoubleType
+      then result = 2
+      else
+        // If we get this far, prefer non-extended-precision types.
+        if not type.isExtendedPrecision()
+        then result = 1
+        else result = 0
+}
+
+/**
+ * Gets the `CppType` that is the canonical type for an `IRFloatingPointType` with the specified
+ * size, base, and type domain.
+ */
+CppPRValueType getCanonicalFloatingPointType(int byteSize, int base, TypeDomain domain) {
+  result =
+    TPRValueType(max(FloatingPointType type |
+        type.getSize() = byteSize and
+        type.getBase() = base and
+        type.getDomain() = domain
       |
-        type order by type.toString() desc
+        type order by getPrecisionPriority(type.getRealType()), type.toString() desc
       ))
 }
 

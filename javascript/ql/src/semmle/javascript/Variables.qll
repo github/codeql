@@ -189,10 +189,8 @@ class Variable extends @variable, LexicalName {
    */
   predicate isCaptured() {
     this instanceof GlobalVariable or
-    getAnAccess().getContainer().getFunctionBoundary() != this
-          .(LocalVariable)
-          .getDeclaringContainer()
-          .getFunctionBoundary()
+    getAnAccess().getContainer().getFunctionBoundary() !=
+      this.(LocalVariable).getDeclaringContainer().getFunctionBoundary()
   }
 
   /** Holds if there is a declaration of this variable in `tl`. */
@@ -318,6 +316,24 @@ class LocalVariable extends Variable {
       then exists(FunctionDeclStmt fds | d = fds.getId() | result = fds.getEnclosingContainer())
       else result = d.getContainer()
     )
+  }
+
+  /**
+   * Gets the location of a declaration of this variable.
+   *
+   * If the variable has one or more declarations, the location of the first declaration is used.
+   * If the variable has no declaration, the entry point of its declaring container is used.
+   */
+  Location getLocation() {
+    result =
+      min(Location loc |
+        loc = getADeclaration().getLocation()
+      |
+        loc order by loc.getStartLine(), loc.getStartColumn()
+      )
+    or
+    not exists(getADeclaration()) and
+    result = getDeclaringContainer().getEntry().getLocation()
   }
 }
 
@@ -680,7 +696,7 @@ class Parameterized extends @parameterized, Documentable {
 }
 
 /**
- * A parameter declaration.
+ * A parameter declaration in a function or catch clause.
  *
  * Examples:
  *
@@ -688,6 +704,9 @@ class Parameterized extends @parameterized, Documentable {
  * function f(x, { y: z }, ...rest) {  // `x`, `{ y: z }` and `rest` are parameter declarations
  *   var [ a, b ] = rest;
  *   var c;
+ *   try {
+ *      x.m();
+ *   } catch(e) {} // `e` is a parameter declaration
  * }
  * ```
  */
@@ -761,9 +780,7 @@ class Parameter extends BindingPattern {
    * function f(x?: number) {}
    * ```
    */
-  predicate isDeclaredOptional() {
-    isOptionalParameterDeclaration(this)
-  }
+  predicate isDeclaredOptional() { isOptionalParameterDeclaration(this) }
 }
 
 /**

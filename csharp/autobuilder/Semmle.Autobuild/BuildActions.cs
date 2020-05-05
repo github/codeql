@@ -21,7 +21,7 @@ namespace Semmle.Autobuild
         /// <param name="env">Additional environment variables.</param>
         /// <param name="stdOut">The lines of stdout.</param>
         /// <returns>The process exit code.</returns>
-        int RunProcess(string exe, string args, string workingDirectory, IDictionary<string, string> env, out IList<string> stdOut);
+        int RunProcess(string exe, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut);
 
         /// <summary>
         /// Runs a process but does not capture its output.
@@ -31,7 +31,7 @@ namespace Semmle.Autobuild
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="env">Additional environment variables.</param>
         /// <returns>The process exit code.</returns>
-        int RunProcess(string exe, string args, string workingDirectory, IDictionary<string, string> env);
+        int RunProcess(string exe, string args, string? workingDirectory, IDictionary<string, string>? env);
 
         /// <summary>
         /// Tests whether a file exists, File.Exists().
@@ -63,7 +63,7 @@ namespace Semmle.Autobuild
         /// </summary>
         /// <param name="name">The name of the variable.</param>
         /// <returns>The string value, or null if the variable is not defined.</returns>
-        string GetEnvironmentVariable(string name);
+        string? GetEnvironmentVariable(string name);
 
         /// <summary>
         /// Gets the current directory, Directory.GetCurrentDirectory().
@@ -130,7 +130,7 @@ namespace Semmle.Autobuild
 
         bool IBuildActions.FileExists(string file) => File.Exists(file);
 
-        ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string workingDirectory, IDictionary<string, string> environment, bool redirectStandardOutput)
+        ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
         {
             var pi = new ProcessStartInfo(exe, arguments)
             {
@@ -141,16 +141,12 @@ namespace Semmle.Autobuild
                 pi.WorkingDirectory = workingDirectory;
 
             // Environment variables can only be used when not redirecting stdout
-            if (!redirectStandardOutput)
-            {
-                pi.Environment["UseSharedCompilation"] = "false";
-                if (environment != null)
-                    environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
-            }
+            if (!redirectStandardOutput && environment != null)
+                environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
             return pi;
         }
 
-        int IBuildActions.RunProcess(string cmd, string args, string workingDirectory, IDictionary<string, string> environment)
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, false);
             using (var p = Process.Start(pi))
@@ -160,7 +156,7 @@ namespace Semmle.Autobuild
             }
         }
 
-        int IBuildActions.RunProcess(string cmd, string args, string workingDirectory, IDictionary<string, string> environment, out IList<string> stdOut)
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment, out IList<string> stdOut)
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, true);
             return pi.ReadOutput(out stdOut);
@@ -170,7 +166,7 @@ namespace Semmle.Autobuild
 
         bool IBuildActions.DirectoryExists(string dir) => Directory.Exists(dir);
 
-        string IBuildActions.GetEnvironmentVariable(string name) => Environment.GetEnvironmentVariable(name);
+        string? IBuildActions.GetEnvironmentVariable(string name) => Environment.GetEnvironmentVariable(name);
 
         string IBuildActions.GetCurrentDirectory() => Directory.GetCurrentDirectory();
 

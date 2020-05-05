@@ -1,28 +1,27 @@
 import semmle.code.cpp.pointsto.PointsTo
 
 private predicate freed(Expr e) {
-  exists(FunctionCall fc, Expr arg |
-    freeCall(fc, arg) and
-    arg = e
-  )
-  or
-  exists(DeleteExpr de | de.getExpr() = e)
-  or
-  exists(DeleteArrayExpr de | de.getExpr() = e)
+  e = any(DeallocationExpr de).getFreedExpr()
   or
   exists(ExprCall c |
-    // cautiously assume that any ExprCall could be a freeCall.
+    // cautiously assume that any `ExprCall` could be a deallocation expression.
     c.getAnArgument() = e
   )
 }
 
+/** An expression that might be deallocated. */
 class FreedExpr extends PointsToExpr {
   FreedExpr() { freed(this) }
 
   override predicate interesting() { freed(this) }
 }
 
-predicate allocMayBeFreed(Expr alloc) {
-  isAllocationExpr(alloc) and
-  anythingPointsTo(alloc)
-}
+/**
+ * An allocation expression that might be deallocated. For example:
+ * ```
+ * int* p = new int;
+ * ...
+ * delete p;
+ * ```
+ */
+predicate allocMayBeFreed(AllocationExpr alloc) { anythingPointsTo(alloc) }

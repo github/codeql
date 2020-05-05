@@ -94,3 +94,8 @@ void f13_func(int x)
 {
 	if (x < 10) return; // GOOD
 }
+
+int f14()
+{
+	__asm__("rdtsc"); // GOOD
+}

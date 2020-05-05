@@ -9,9 +9,23 @@ class LanguageType = CppType;
 
 class OpaqueTypeTag = Cpp::Type;
 
+class TypeDomain = Cpp::TypeDomain;
+
+class RealDomain = Cpp::RealDomain;
+
+class ComplexDomain = Cpp::ComplexDomain;
+
+class ImaginaryDomain = Cpp::ImaginaryDomain;
+
 class Function = Cpp::Function;
 
 class Location = Cpp::Location;
+
+class UnknownLocation = Cpp::UnknownLocation;
+
+class UnknownDefaultLocation = Cpp::UnknownDefaultLocation;
+
+class File = Cpp::File;
 
 class AST = Cpp::Locatable;
 
@@ -32,7 +46,7 @@ class StringLiteral = Cpp::StringLiteral;
 
 class Variable = Cpp::Variable;
 
-class AutomaticVariable = Cpp::LocalScopeVariable;
+class AutomaticVariable = Cpp::StackVariable;
 
 class StaticVariable = Cpp::Variable;
 
@@ -66,10 +80,7 @@ int getTypeSize(Type type) { result = type.getSize() }
 
 int getPointerSize() { exists(Cpp::NullPointerType nullptr | result = nullptr.getSize()) }
 
-predicate isVariableAutomatic(Variable var) {
-  var instanceof Cpp::LocalScopeVariable and
-  not var.(Cpp::LocalScopeVariable).isStatic()
-}
+predicate isVariableAutomatic(Cpp::StackVariable var) { any() }
 
 string getStringLiteralText(StringLiteral s) {
   result = s.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ")
@@ -81,3 +92,17 @@ predicate hasPotentialLoop(Function f) {
 }
 
 predicate hasGoto(Function f) { exists(Cpp::GotoStmt s | s.getEnclosingFunction() = f) }
+
+/**
+ * Gets the offset of field `field` in bits.
+ */
+int getFieldBitOffset(Field field) {
+  if field instanceof Cpp::BitField
+  then result = (field.getByteOffset() * 8) + field.(Cpp::BitField).getBitOffset()
+  else result = field.getByteOffset() * 8
+}
+
+/**
+ * Holds if the specified `Function` can be overridden in a derived class.
+ */
+predicate isFunctionVirtual(Function f) { f.isVirtual() }

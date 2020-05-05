@@ -1,14 +1,5 @@
 package com.semmle.js.extractor.test;
 
-import com.semmle.js.extractor.AutoBuild;
-import com.semmle.js.extractor.ExtractorState;
-import com.semmle.js.extractor.FileExtractor;
-import com.semmle.js.extractor.FileExtractor.FileType;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.files.FileUtil;
-import com.semmle.util.files.FileUtil8;
-import com.semmle.util.process.Env;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -25,11 +16,23 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.semmle.js.extractor.AutoBuild;
+import com.semmle.js.extractor.DependencyInstallationResult;
+import com.semmle.js.extractor.ExtractorState;
+import com.semmle.js.extractor.FileExtractor;
+import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.files.FileUtil;
+import com.semmle.util.files.FileUtil8;
+import com.semmle.util.process.Env;
 
 public class AutoBuildTests {
   private Path SEMMLE_DIST, LGTM_SRC;
@@ -126,6 +129,12 @@ public class AutoBuildTests {
           for (File f : files) {
             actual.add(f.toString());
           }
+        }
+
+        @Override
+        protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
+          // never install dependencies during testing
+          return DependencyInstallationResult.empty;
         }
 
         @Override

@@ -110,7 +110,8 @@ class MetricClass extends Class {
       // m = number of methods that access some field
       m = count(this.getAccessingMethod()) and
       // r = average (over f) of number of methods that access field f
-      r = avg(Field f |
+      r =
+        avg(Field f |
           f = this.getAccessedField()
         |
           count(Function x | this.accessesLocalField(x, f))
@@ -169,7 +170,8 @@ class MetricClass extends Class {
   /** Gets the Chidamber and Kemerer lack-of-cohesion metric. */
   float getLackOfCohesionCK() {
     exists(int n1, int n2, float n |
-      n1 = count(MemberFunction m1, MemberFunction m2 |
+      n1 =
+        count(MemberFunction m1, MemberFunction m2 |
           not this.ignoreLackOfCohesionCK(m1) and
           not this.ignoreLackOfCohesionCK(m2) and
           this.distinctMembers(m1, m2) and
@@ -195,7 +197,8 @@ class MetricClass extends Class {
    * this class.
    */
   int getResponse() {
-    result = sum(MemberFunction f |
+    result =
+      sum(MemberFunction f |
         f.getDeclaringType() = this
       |
         count(Call call | call.getEnclosingFunction() = f)
@@ -237,7 +240,8 @@ class MetricClass extends Class {
    */
   float getSpecialisationIndex() {
     this.getNumberOfMemberFunctions() != 0 and
-    result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
+    result =
+      (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfMemberFunctions().(float)
   }
 
@@ -408,7 +412,8 @@ class MetricClass extends Class {
    * operators, and further proportional to the ratio of total operands to unique operands.
    */
   float getHalsteadDifficulty() {
-    result = (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
+    result =
+      (this.getHalsteadN1Distinct() * this.getHalsteadN2()).(float) /
         (2 * this.getHalsteadN2Distinct()).(float)
   }
 

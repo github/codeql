@@ -9,8 +9,9 @@
  * @metricAggregate avg max
  * @tags modularity
  */
+
 import python
 
-from ModuleObject m, int n
-where n = count(ModuleObject imp | imp = m.getAnImportedModule+() and imp != m)
-select m.getModule(), n
+from ModuleValue m, int n
+where n = count(ModuleValue imp | imp = m.getAnImportedModule+() and imp != m)
+select m.getScope(), n

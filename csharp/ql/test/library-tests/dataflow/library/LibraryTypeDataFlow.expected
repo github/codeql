@@ -1,3 +1,4 @@
+callableFlow
 | LibraryTypeDataFlow.DataContract.get_AString() | qualifier -> return | false |
 | System.Array.Add(object) | argument 0 -> qualifier | false |
 | System.Array.AsReadOnly<T>(T[]) | qualifier -> return | false |
@@ -661,10 +662,6 @@
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> return | false |
-| System.Lazy<>.Lazy(Func<T>) | output from argument 0 -> return | true |
-| System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | output from argument 0 -> return | true |
-| System.Lazy<>.Lazy(Func<T>, bool) | output from argument 0 -> return | true |
-| System.Lazy<>.get_Value() | qualifier -> return | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 0 -> parameter 1 of argument 2 | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 1 -> parameter 0 of argument 2 | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 2 -> parameter 0 of argument 3 | false |
@@ -1139,6 +1136,8 @@
 | System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource,TSource,TSource>>) | output from argument 1 -> return | false |
 | System.Linq.Queryable.All<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Any<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.AsQueryable(IEnumerable) | argument 0 -> return | false |
+| System.Linq.Queryable.AsQueryable<TElement>(IEnumerable<TElement>) | argument 0 -> return | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Double>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
@@ -1532,26 +1531,46 @@
 | System.Threading.Tasks.Task.WhenAny<TResult>(IEnumerable<Task<TResult>>) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 0 -> return | true |
 | System.Threading.Tasks.Task.WhenAny<TResult>(params Task<TResult>[]) | argument 1 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<TResult>, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, Object, TNewResult>, object, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
-| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult>, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | qualifier -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | output from argument 0 -> return | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | qualifier -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | output from argument 0 -> return | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object, CancellationToken) | argument 1 -> parameter 0 of argument 0 | true |
@@ -1664,3 +1683,7 @@
 | System.Web.HttpUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Web.HttpUtility.UrlEncode(string) | argument 0 -> return | false |
 | System.Web.UI.WebControls.TextBox.get_Text() | qualifier -> return | false |
+callableFlowAccessPath
+| System.Lazy<>.Lazy(Func<T>) | output from argument 0 [<empty>] -> return [Value] |
+| System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | output from argument 0 [<empty>] -> return [Value] |
+| System.Lazy<>.Lazy(Func<T>, bool) | output from argument 0 [<empty>] -> return [Value] |
