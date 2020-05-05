@@ -31,9 +31,4 @@ app.post('/', (request, response) => {
     response.send(html);
 })
 
-app.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
-    console.log(`server is listening on ${port}`)
-})
+app.listen(port, () => { console.log(`server is listening on ${port}`) })
