@@ -15,7 +15,7 @@ run arbitrary code on the application server.
 <p>
 Avoid including user input in any expression or template which may be dynamically rendered. 
 If user input must be included, use context-specific escaping before including it or run 
-render engine with sandbox options. 
+the rendering engine with sandbox options. 
 </p>
 </recommendation>
 
