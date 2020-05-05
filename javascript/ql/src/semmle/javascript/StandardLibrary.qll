@@ -162,7 +162,7 @@ class StringSplitCall extends DataFlow::MethodCallNode {
   /**
    * Gets a string that determines where the string is split.
    */
-  string getSplitAt() {
+  string getSeparator() {
     getArgument(0).mayHaveStringValue(result)
     or
     result =
