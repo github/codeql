@@ -23,12 +23,11 @@ render engine with sandbox options.
 <p>
 The following example shows a page being rendered with user input allowing attackers to access the
 template context and run arbitrary code on the application server. 
-Pug template engine (and other template engines) provides Interpolation feature - insertion of variable values into a string of some kind.
-For example, `Hello #{user.username}!`, could be used for printing username from scoped variable user, but `user.username` expression will be executed as valid javascript code.
-Unsafe injection of user input provides attacker ability to inject conteqnt like #{some_js_expression}.
-Injection of `#{global.process.exit(1)}` leads to code execution of `global.process.exit(1)` by server.
-Working exploit (as curl command):
-curl -i -s -k -X $'POST' -H $'Host: 127.0.0.1:5061' -H $'Connection: close' -H $'Content-Length: 40' -H $'Content-Type: application/x-www-form-urlencoded' --data-binary $'name=%23%7Bglobal.process.exit%281%29%7D' $'http://127.0.0.1:5061/'
+The Pug template engine (and other template engines) provides an interpolation feature - insertion of variable values into a string of some kind.
+For example, <code>Hello #{user.username}!</code>, could be used for printing a username from a scoped variable user, 
+but the <code>user.username</code> expression will be executed as JavaScript.
+Unsafe injection of user input in a template therefore allows an attacker to inject arbitrary JavaScript code. 
+For example, a payload of <code>#{global.process.exit(1)}</code> will cause the server to crash.
 </p>
 
 <sample src="examples/ServerSideTemplateInjection.js" />
