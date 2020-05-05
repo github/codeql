@@ -9,7 +9,7 @@
 
 
 
-int main() {
+int test() {
 
 
 

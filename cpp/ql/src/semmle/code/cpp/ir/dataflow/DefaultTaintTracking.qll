@@ -10,6 +10,7 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.ir.dataflow.TaintTracking2
+private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -218,7 +219,10 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
   exists(BinaryInstruction iTo |
     iTo = node.asInstruction() and
     not predictableInstruction(iTo.getLeft()) and
-    not predictableInstruction(iTo.getRight())
+    not predictableInstruction(iTo.getRight()) and
+    // propagate taint from either the pointer or the offset, regardless of predictability
+    not iTo instanceof PointerArithmeticInstruction
+  
   )
   or
   // don't use dataflow through calls to pure functions if two or more operands
@@ -468,6 +472,8 @@ private Element adjustedSink(DataFlow::Node sink) {
   or
   // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
   result.(AssignOperation).getAnOperand() = sink.asExpr()
+  or
+  result = sink.asOperand().(SideEffectOperand).getUse().(ReadSideEffectInstruction).getArgumentDef().getUnconvertedResultExpression()
 }
 
 /**
@@ -590,10 +596,25 @@ module TaintedWithPath {
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+      // Steps into and out of global variables
       exists(TaintTrackingConfiguration cfg | cfg.taintThroughGlobals() |
         writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
         or
         readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
+      )
+      or
+      // Step to return value of a modeled function when an input taints the
+      // dereference of the return value
+      exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
+        n1 = callInput(call, modelIn) and
+        (
+          func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+          or
+          func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+        ) and
+        call.getStaticCallTarget() = func and
+        modelOut.isReturnValueDeref() and
+        call = n2.asInstruction()
       )
     }
 
