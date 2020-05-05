@@ -104,6 +104,9 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
   )
 }
 
+/**
+ * A `ConvertInstruction` which casts from one pointer type to another.
+ */
 class PtrToPtrCastInstruction extends ConvertInstruction {
   PtrToPtrCastInstruction() {
     getResultType() instanceof PointerType and
@@ -111,10 +114,18 @@ class PtrToPtrCastInstruction extends ConvertInstruction {
   }
 }
 
+/**
+ * A `ConvertInstruction` which casts from one integer type to another in a way
+ * that cannot overflow or underflow.
+ */
 class SafeIntCastInstruction extends ConvertInstruction {
   SafeIntCastInstruction() { safeCast(getUnary().getResultType(), getResultType()) }
 }
 
+/**
+ * A `ConvertInstruction` which does not invalidate bounds determined by
+ * range analysis.
+ */
 class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
     this instanceof PtrToPtrCastInstruction or

@@ -124,7 +124,7 @@ private int getBaseSizeForPointerType(PointerType type) { result = type.getBaseT
  * steps to `array` that points to `offset + offsetDelta` in one step.
  * This predicate does not contain any recursive steps.
  */
-bindingset[prevOffset,prevOffsetDelta]
+bindingset[prevOffset, prevOffsetDelta]
 predicate simpleArrayLengthStep(
   Instruction array, Offset offset, int offsetDelta, Instruction prev, Offset prevOffset,
   int prevOffsetDelta
