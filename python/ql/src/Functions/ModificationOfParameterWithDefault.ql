@@ -25,7 +25,10 @@ predicate safe_method(string name) {
     name = "values" or
     name = "iteritems" or
     name = "iterkeys" or
-    name = "itervalues"
+    name = "itervalues" or
+    name = "__contains__" or
+    name = "__getitem__" or
+    name = "__getattribute__"
 }
 
 /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
