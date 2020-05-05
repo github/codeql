@@ -76,7 +76,7 @@ Since we are boosting an existing security query we can reuse the predicates fro
     Your query should now look like the contents of the [`step2.ql` query](resources/step2.ql).
 
 3. Test both `isKnownSource` predicates and the `isKnownSink` predicate by [quick-evaluating them
-](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#query-running-commands) with CodeQL for VS Code and checking that they have results.
+](https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html#running-a-specific-part-of-a-query-or-library) with CodeQL for VS Code and checking that they have results.
     There must be at least one known source and known sink in the database, otherwise ATM will not produce any results.
 
 4. Check whether the standard query has an `isAdditionalFlowStep` or `isAdditionalTaintStep` predicate defined in its data flow configuration.
