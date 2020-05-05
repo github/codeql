@@ -637,10 +637,12 @@ class IntersectionType extends RefType, @class {
 
   private RefType superInterface() { implInterface(this, result) }
 
+  /** Gets a textual representation of this type that includes all the intersected types. */
   string getLongName() {
     result = superType().toString() + concat(" & " + superInterface().toString())
   }
 
+  /** Gets the first bound of this intersection type. */
   RefType getFirstBound() { extendsReftype(this, result) }
 }
 

@@ -1,5 +1,6 @@
 import json
 from copy import copy
+import sys
 
 def test_json():
     tainted_string = TAINTED_STRING
@@ -60,10 +61,74 @@ def test_untrusted():
 def exc_untrusted_call(arg):
     return arg
 
-from six.moves.urllib.parse import urlsplit, urlparse
+if sys.version_info[0] == 2:
+    from urlparse import urlsplit, urlparse, parse_qs, parse_qsl
+if sys.version_info[0] == 3:
+    from urllib.parse import urlsplit, urlparse, parse_qs, parse_qsl
 
 def test_urlsplit_urlparse():
     tainted_string = TAINTED_STRING
-    urlsplit_res = urlsplit(tainted_string)
-    urlparse_res = urlparse(tainted_string)
-    test(urlsplit_res, urlparse_res)
+    a = urlsplit(tainted_string)
+    b = urlparse(tainted_string)
+    c = parse_qs(tainted_string)
+    d = parse_qsl(tainted_string)
+    test(a, b, c, d)
+
+def test_method_reference():
+    tainted_string = TAINTED_STRING
+
+    a = tainted_string.title()
+
+    func = tainted_string.title
+    b = func()
+
+    test(a, b) # TODO: `b` not tainted
+
+def test_str_methods():
+    tainted_string = TAINTED_STRING
+
+    test(
+        tainted_string.capitalize(),
+        tainted_string.casefold(),
+        tainted_string.center(),
+        tainted_string.encode('utf-8'),
+        tainted_string.encode('utf-8').decode('utf-8'),
+        tainted_string.expandtabs(),
+        tainted_string.format(foo=42),
+        tainted_string.format_map({'foo': 42}),
+        tainted_string.ljust(100),
+        tainted_string.lower(),
+        tainted_string.lstrip(),
+        tainted_string.lstrip('w.'),
+        tainted_string.partition(';'),
+        tainted_string.partition(';')[0],
+        tainted_string.replace('/', '', 1),
+        tainted_string.rjust(100),
+        tainted_string.rpartition(';'),
+        tainted_string.rpartition(';')[2],
+        tainted_string.rsplit(';', 4),
+        tainted_string.rsplit(';', 4)[-1],
+        tainted_string.rstrip(),
+        tainted_string.split(),
+        tainted_string.split()[0],
+        tainted_string.splitlines(),
+        tainted_string.splitlines()[0],
+        tainted_string.strip(),
+        tainted_string.swapcase(),
+        tainted_string.title(),
+        # ignoring, as I have never seen this in practice
+        # tainted_string.translate(translation_table),
+        tainted_string.upper(),
+        tainted_string.zfill(100),
+    )
+
+def test_tainted_file():
+    tainted_file = TAINTED_FILE
+    test(
+        tainted_file,
+        tainted_file.read(),
+        tainted_file.readline(),
+        tainted_file.readlines(),
+    )
+    for line in tainted_file:
+        test(line)

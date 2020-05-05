@@ -24,6 +24,7 @@
 | file://:0:0:0:0 | auto | auto |
 | file://:0:0:0:0 | bool | bool |
 | file://:0:0:0:0 | char | char |
+| file://:0:0:0:0 | char8_t | char8_t |
 | file://:0:0:0:0 | char16_t | char16_t |
 | file://:0:0:0:0 | char32_t | char32_t |
 | file://:0:0:0:0 | const __va_list_tag | __va_list_tag |

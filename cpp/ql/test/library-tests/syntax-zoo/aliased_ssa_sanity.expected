@@ -334,10 +334,6 @@ ambiguousSuccessors
 | membercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
 | membercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | membercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| misc.c:93:9:93:9 | Load: j | Goto | 2 | misc.c:93:9:93:9 | ConditionalBranch: j |
-| misc.c:93:9:93:9 | Load: j | Goto | 2 | misc.c:93:9:93:15 | VariableAddress: ... ? ... : ... |
-| misc.c:94:13:94:13 | Load: i | Goto | 2 | misc.c:94:9:94:19 | VariableAddress: ... ? ... : ... |
-| misc.c:94:13:94:13 | Load: i | Goto | 2 | misc.c:94:13:94:13 | ConditionalBranch: i |
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | newexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
@@ -418,10 +414,6 @@ ambiguousSuccessors
 | pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
 | pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| range_analysis.c:366:10:366:10 | Load: x | Goto | 2 | range_analysis.c:366:10:366:10 | ConditionalBranch: x |
-| range_analysis.c:366:10:366:10 | Load: x | Goto | 2 | range_analysis.c:366:10:366:15 | VariableAddress: ... ? ... : ... |
-| range_analysis.c:367:10:367:10 | Load: x | Goto | 2 | range_analysis.c:367:10:367:10 | ConditionalBranch: x |
-| range_analysis.c:367:10:367:10 | Load: x | Goto | 2 | range_analysis.c:367:10:367:17 | VariableAddress: ... ? ... : ... |
 | revsubscriptexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
 | revsubscriptexpr.c:1:6:1:6 | UnmodeledDefinition: g | Goto | 2 | revsubscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
 | staticmembercallexpr.cpp:6:6:6:6 | UnmodeledDefinition: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
@@ -515,48 +507,12 @@ ambiguousSuccessors
 | whilestmt.c:32:6:32:18 | UnmodeledDefinition: always_true_3 | Goto | 2 | dostmt.c:27:5:27:7 | NoOp: label ...: |
 | whilestmt.c:32:6:32:18 | UnmodeledDefinition: always_true_3 | Goto | 2 | whilestmt.c:33:9:33:9 | Constant: 1 |
 unexplainedLoop
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:93:9:93:9 | ConditionalBranch: j |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:93:9:93:9 | Load: j |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:93:9:93:9 | VariableAddress: j |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:94:9:94:10 | Load: sp |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:94:9:94:10 | VariableAddress: sp |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:94:13:94:13 | ConditionalBranch: i |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:94:13:94:13 | FieldAddress: i |
-| misc.c:91:6:91:33 | gnuConditionalOmittedOperand | misc.c:94:13:94:13 | Load: i |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:366:10:366:10 | ConditionalBranch: x |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:366:10:366:10 | Load: x |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:366:10:366:10 | VariableAddress: x |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:367:10:367:10 | ConditionalBranch: x |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:367:10:367:10 | Load: x |
-| range_analysis.c:355:14:355:27 | test_ternary01 | range_analysis.c:367:10:367:10 | VariableAddress: x |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
-| misc.c:93:9:93:9 | ConditionalBranch: j |
-| misc.c:93:9:93:15 | VariableAddress: ... ? ... : ... |
-| misc.c:93:9:93:15 | VariableAddress: ... ? ... : ... |
-| misc.c:93:15:93:15 | Constant: 2 |
-| misc.c:94:9:94:10 | VariableAddress: sp |
-| misc.c:94:9:94:19 | VariableAddress: ... ? ... : ... |
-| misc.c:94:9:94:19 | VariableAddress: ... ? ... : ... |
-| misc.c:94:13:94:13 | ConditionalBranch: i |
-| misc.c:94:19:94:19 | VariableAddress: i |
-| range_analysis.c:366:10:366:10 | ConditionalBranch: x |
-| range_analysis.c:366:10:366:15 | VariableAddress: ... ? ... : ... |
-| range_analysis.c:366:10:366:15 | VariableAddress: ... ? ... : ... |
-| range_analysis.c:366:15:366:15 | Constant: (unsigned int)... |
-| range_analysis.c:367:10:367:10 | ConditionalBranch: x |
-| range_analysis.c:367:10:367:10 | VariableAddress: x |
-| range_analysis.c:367:10:367:17 | VariableAddress: ... ? ... : ... |
-| range_analysis.c:367:10:367:17 | VariableAddress: ... ? ... : ... |
-| range_analysis.c:367:15:367:17 | Constant: (unsigned int)... |
-| range_analysis.c:368:19:368:21 | Constant: (unsigned int)... |
-| range_analysis.c:369:36:369:36 | Constant: 5 |
-| range_analysis.c:370:36:370:38 | Constant: 500 |
-| range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge

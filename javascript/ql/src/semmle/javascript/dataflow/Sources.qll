@@ -39,11 +39,7 @@ class SourceNode extends DataFlow::Node {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  cached
-  predicate flowsTo(DataFlow::Node sink) {
-    sink = this or
-    flowsTo(sink.getAPredecessor())
-  }
+  predicate flowsTo(DataFlow::Node sink) { Cached::hasLocalSource(sink, this) }
 
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
@@ -55,8 +51,7 @@ class SourceNode extends DataFlow::Node {
    * Gets a reference (read or write) of property `propName` on this node.
    */
   DataFlow::PropRef getAPropertyReference(string propName) {
-    result = getAPropertyReference() and
-    result.getPropertyName() = propName
+    Cached::namedPropRef(this, propName, result)
   }
 
   /**
@@ -75,6 +70,7 @@ class SourceNode extends DataFlow::Node {
    * Holds if there is an assignment to property `propName` on this node,
    * and the right hand side of the assignment is `rhs`.
    */
+  pragma[nomagic]
   predicate hasPropertyWrite(string propName, DataFlow::Node rhs) {
     rhs = getAPropertyWrite(propName).getRhs()
   }
@@ -82,7 +78,11 @@ class SourceNode extends DataFlow::Node {
   /**
    * Gets a reference (read or write) of any property on this node.
    */
-  DataFlow::PropRef getAPropertyReference() { flowsTo(result.getBase()) }
+  DataFlow::PropRef getAPropertyReference() {
+    Cached::namedPropRef(this, _, result)
+    or
+    Cached::dynamicPropRef(this, result)
+  }
 
   /**
    * Gets a read of any property on this node.
@@ -117,11 +117,8 @@ class SourceNode extends DataFlow::Node {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
-    exists(PropAccess pacc |
-      pacc = result.getCalleeNode().asExpr().getUnderlyingReference() and
-      flowsToExpr(pacc.getBase()) and
-      pacc.getPropertyName() = methodName
-    )
+    result = getAMemberInvocation(methodName) and
+    Cached::isSyntacticMethodCall(result)
   }
 
   /**
@@ -152,7 +149,7 @@ class SourceNode extends DataFlow::Node {
   /**
    * Gets an invocation (with our without `new`) of this node.
    */
-  DataFlow::InvokeNode getAnInvocation() { flowsTo(result.getCalleeNode()) }
+  DataFlow::InvokeNode getAnInvocation() { Cached::invocation(this, result) }
 
   /**
    * Gets a function call to this node.
@@ -192,6 +189,64 @@ class SourceNode extends DataFlow::Node {
   pragma[inline]
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
     t2 = t.step(result, this)
+  }
+}
+
+/**
+ * Cached predicates used by the member predicates in `SourceNode`.
+ */
+cached
+private module Cached {
+  /**
+   * Holds if `source` is a `SourceNode` that can reach `sink` via local flow steps.
+   *
+   * The slightly backwards parametering ordering is to force correct indexing.
+   */
+  cached
+  predicate hasLocalSource(DataFlow::Node sink, DataFlow::Node source) {
+    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // recursive case, so instead we check it explicitly here.
+    source = sink and
+    source instanceof DataFlow::SourceNode
+    or
+    exists(DataFlow::Node mid |
+      hasLocalSource(mid, source) and
+      DataFlow::localFlowStep(mid, sink)
+    )
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has property name `prop`.
+   */
+  cached
+  predicate namedPropRef(DataFlow::SourceNode base, string prop, DataFlow::PropRef ref) {
+    hasLocalSource(ref.getBase(), base) and
+    ref.getPropertyName() = prop
+  }
+
+  /**
+   * Holds if `base` flows to the base of `ref` and `ref` has no known property name.
+   */
+  cached
+  predicate dynamicPropRef(DataFlow::SourceNode base, DataFlow::PropRef ref) {
+    hasLocalSource(ref.getBase(), base) and
+    not exists(ref.getPropertyName())
+  }
+
+  /**
+   * Holds if `func` flows to the callee of `invoke`.
+   */
+  cached
+  predicate invocation(DataFlow::SourceNode func, DataFlow::InvokeNode invoke) {
+    hasLocalSource(invoke.getCalleeNode(), func)
+  }
+
+  /**
+   * Holds if `invoke` has the syntactic shape of a method call.
+   */
+  cached
+  predicate isSyntacticMethodCall(DataFlow::CallNode call) {
+    call.getCalleeNode().asExpr().getUnderlyingReference() instanceof PropAccess
   }
 }
 

@@ -1,3 +1,4 @@
+callableFlow
 | LibraryTypeDataFlow.DataContract.get_AString() | qualifier -> return | false |
 | System.Array.Add(object) | argument 0 -> qualifier | false |
 | System.Array.AsReadOnly<T>(T[]) | qualifier -> return | false |
@@ -661,10 +662,6 @@
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> return | false |
-| System.Lazy<>.Lazy(Func<T>) | output from argument 0 -> return | true |
-| System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | output from argument 0 -> return | true |
-| System.Lazy<>.Lazy(Func<T>, bool) | output from argument 0 -> return | true |
-| System.Lazy<>.get_Value() | qualifier -> return | true |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 0 -> parameter 1 of argument 2 | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | argument 1 -> parameter 0 of argument 2 | false |
 | System.Linq.Enumerable.Aggregate<TSource, TAccumulate, TResult>(IEnumerable<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, Func<TAccumulate, TResult>) | output from argument 2 -> parameter 0 of argument 3 | false |
@@ -1139,6 +1136,8 @@
 | System.Linq.Queryable.Aggregate<TSource>(IQueryable<TSource>, Expression<Func<TSource,TSource,TSource>>) | output from argument 1 -> return | false |
 | System.Linq.Queryable.All<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Any<TSource>(IQueryable<TSource>, Expression<Func<TSource,Boolean>>) | argument 0 -> parameter 0 of argument 1 | false |
+| System.Linq.Queryable.AsQueryable(IEnumerable) | argument 0 -> return | false |
+| System.Linq.Queryable.AsQueryable<TElement>(IEnumerable<TElement>) | argument 0 -> return | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Decimal>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Double>>) | argument 0 -> parameter 0 of argument 1 | false |
 | System.Linq.Queryable.Average<TSource>(IQueryable<TSource>, Expression<Func<TSource,Int32>>) | argument 0 -> parameter 0 of argument 1 | false |
@@ -1684,3 +1683,7 @@
 | System.Web.HttpUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Web.HttpUtility.UrlEncode(string) | argument 0 -> return | false |
 | System.Web.UI.WebControls.TextBox.get_Text() | qualifier -> return | false |
+callableFlowAccessPath
+| System.Lazy<>.Lazy(Func<T>) | output from argument 0 [<empty>] -> return [Value] |
+| System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | output from argument 0 [<empty>] -> return [Value] |
+| System.Lazy<>.Lazy(Func<T>, bool) | output from argument 0 [<empty>] -> return [Value] |

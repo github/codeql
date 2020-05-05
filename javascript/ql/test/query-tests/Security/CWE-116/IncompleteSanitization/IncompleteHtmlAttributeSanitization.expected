@@ -1,0 +1,45 @@
+nodes
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') |
+| tst.js:244:9:244:33 | s().rep ... /g, '') |
+| tst.js:244:9:244:33 | s().rep ... /g, '') |
+| tst.js:244:9:244:33 | s().rep ... /g, '') |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') |
+| tst.js:253:21:253:45 | s().rep ... /g, '') |
+| tst.js:253:21:253:45 | s().rep ... /g, '') |
+| tst.js:253:21:253:45 | s().rep ... /g, '') |
+| tst.js:254:32:254:56 | s().rep ... /g, '') |
+| tst.js:254:32:254:56 | s().rep ... /g, '') |
+| tst.js:254:32:254:56 | s().rep ... /g, '') |
+| tst.js:270:61:270:85 | s().rep ... /g, '') |
+| tst.js:270:61:270:85 | s().rep ... /g, '') |
+| tst.js:270:61:270:85 | s().rep ... /g, '') |
+| tst.js:274:6:274:94 | arr |
+| tst.js:274:12:274:94 | s().val ... g , '') |
+| tst.js:274:12:274:94 | s().val ... g , '') |
+| tst.js:275:9:275:11 | arr |
+| tst.js:275:9:275:21 | arr.join(" ") |
+| tst.js:275:9:275:21 | arr.join(" ") |
+edges
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') |
+| tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') | tst.js:249:9:249:33 | s().rep ... ]/g,'') |
+| tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') |
+| tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') |
+| tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') |
+| tst.js:274:6:274:94 | arr | tst.js:275:9:275:11 | arr |
+| tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:94 | arr |
+| tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:94 | arr |
+| tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") |
+| tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") |
+#select
+| tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | tst.js:243:9:243:31 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain quotes when it reaches this attribute definition. | tst.js:243:9:243:31 | s().rep ... ]/g,'') | this final HTML sanitizer step |
+| tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | tst.js:244:9:244:33 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain quotes when it reaches this attribute definition. | tst.js:244:9:244:33 | s().rep ... /g, '') | this final HTML sanitizer step |
+| tst.js:249:9:249:33 | s().rep ... ]/g,'') | tst.js:249:9:249:33 | s().rep ... ]/g,'') | tst.js:249:9:249:33 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain quotes when it reaches this attribute definition. | tst.js:249:9:249:33 | s().rep ... ]/g,'') | this final HTML sanitizer step |
+| tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or quotes when it reaches this attribute definition. | tst.js:253:21:253:45 | s().rep ... /g, '') | this final HTML sanitizer step |
+| tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or quotes when it reaches this attribute definition. | tst.js:254:32:254:56 | s().rep ... /g, '') | this final HTML sanitizer step |
+| tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or quotes when it reaches this attribute definition. | tst.js:270:61:270:85 | s().rep ... /g, '') | this final HTML sanitizer step |
+| tst.js:275:9:275:21 | arr.join(" ") | tst.js:274:12:274:94 | s().val ... g , '') | tst.js:275:9:275:21 | arr.join(" ") | Cross-site scripting vulnerability as the output of $@ may contain quotes when it reaches this attribute definition. | tst.js:274:12:274:94 | s().val ... g , '') | this final HTML sanitizer step |

@@ -47,7 +47,7 @@ void tests2(int case_num)
 			break;
 
 		case 4:
-			buffer = (char *)malloc((strlen(str1) + 1) * sizeof(char)); // BAD [NOT DETECTED]
+			buffer = (char *)malloc((strlen(str1) + 1) * sizeof(char)); // BAD
 			strcpy(buffer, str1);
 			strcat(buffer, str2);
 			break;

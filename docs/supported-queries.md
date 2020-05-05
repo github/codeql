@@ -70,7 +70,7 @@ The process must begin with the first step and must conclude with the final step
 
    d. Provide one or more `@tags` describing the query.
 
-      - Tags are free-form, but we have some conventions, especially for tagging security queries with corresponding CWE numbers.
+      - Tags are free-form, but we have some conventions. At a minimum, most queries should have at least one of `correctness`, `maintainability` or `security` to indicate the general kind of issue the query is intended to find. Security queries should also be tagged with corresponding [CWE](https://cwe.mitre.org/data/definitions/1000.html) numbers, for example `external/cwe/cwe-119` (prefer the most specific CWE that encompasses the target of the query).
 
 7. **Move your query out of `experimental`**
 

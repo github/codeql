@@ -3,7 +3,7 @@ Learning CodeQL
 
 CodeQL is the code analysis platform used by security researchers to automate variant analysis. 
 You can use CodeQL queries to explore code and quickly find variants of security vulnerabilities and bugs. 
-These queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/Semmle/ql>`__ to learn more. 
+These queries are easy to write and share–visit the topics below and `our open source repository on GitHub <https://github.com/github/codeql>`__ to learn more. 
 You can also try out CodeQL in the `query console on LGTM.com <https://lgtm.com/query>`__. 
 Here, you can query open source projects directly, without having to download CodeQL databases and libraries. 
 
@@ -27,7 +27,6 @@ CodeQL is based on a powerful query language called QL. The following topics hel
    javascript/ql-for-javascript
    python/ql-for-python
    ql-training
-   technical-info 
 
 .. toctree::
    :hidden:

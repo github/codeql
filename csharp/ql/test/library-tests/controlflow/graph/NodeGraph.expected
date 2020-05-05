@@ -1818,6 +1818,27 @@
 | Finally.cs:213:9:213:24 | ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | successor |
 | Finally.cs:213:9:213:25 | ...; | Finally.cs:213:9:213:12 | this access | semmle.label | successor |
 | Finally.cs:213:22:213:24 | "1" | Finally.cs:213:9:213:24 | ... = ... | semmle.label | successor |
+| Finally.cs:216:10:216:12 | enter M11 | Finally.cs:217:5:231:5 | {...} | semmle.label | successor |
+| Finally.cs:217:5:231:5 | {...} | Finally.cs:218:9:229:9 | try {...} ... | semmle.label | successor |
+| Finally.cs:218:9:229:9 | try {...} ... | Finally.cs:219:9:221:9 | {...} | semmle.label | successor |
+| Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:37 | ...; | semmle.label | successor |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:222:9:225:9 | catch {...} | semmle.label | exception(Exception) |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} | semmle.label | successor |
+| Finally.cs:220:13:220:37 | ...; | Finally.cs:220:31:220:35 | "Try" | semmle.label | successor |
+| Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:36 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:220:31:220:35 | "Try" | Finally.cs:222:9:225:9 | catch {...} | semmle.label | exception(OutOfMemoryException) |
+| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | {...} | semmle.label | successor |
+| Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:39 | ...; | semmle.label | successor |
+| Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:227:9:229:9 | {...} | semmle.label | successor |
+| Finally.cs:224:13:224:39 | ...; | Finally.cs:224:31:224:37 | "Catch" | semmle.label | successor |
+| Finally.cs:224:31:224:37 | "Catch" | Finally.cs:224:13:224:38 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:227:9:229:9 | {...} | Finally.cs:228:13:228:41 | ...; | semmle.label | successor |
+| Finally.cs:228:13:228:40 | call to method WriteLine | Finally.cs:230:9:230:34 | ...; | semmle.label | successor |
+| Finally.cs:228:13:228:41 | ...; | Finally.cs:228:31:228:39 | "Finally" | semmle.label | successor |
+| Finally.cs:228:31:228:39 | "Finally" | Finally.cs:228:13:228:40 | call to method WriteLine | semmle.label | successor |
+| Finally.cs:230:9:230:33 | call to method WriteLine | Finally.cs:216:10:216:12 | exit M11 | semmle.label | successor |
+| Finally.cs:230:9:230:34 | ...; | Finally.cs:230:27:230:32 | "Done" | semmle.label | successor |
+| Finally.cs:230:27:230:32 | "Done" | Finally.cs:230:9:230:33 | call to method WriteLine | semmle.label | successor |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:7:5:10:5 | {...} | semmle.label | successor |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:29:8:32 | access to parameter args | semmle.label | successor |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | exit M1 | semmle.label | empty |

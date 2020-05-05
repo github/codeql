@@ -532,13 +532,7 @@ library class ExprEvaluator extends int {
       interestingVariableAccess(e, va, v, true) and
       // All assignments must have the same int value
       result =
-        min(Expr value |
-          value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
-        |
-          getValueInternalNonSubExpr(value)
-        ) and
-      result =
-        max(Expr value |
+        unique(Expr value |
           value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
         |
           getValueInternalNonSubExpr(value)

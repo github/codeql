@@ -45,9 +45,6 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
   ) {
     exactScope = false and
     (
-      // Taint propagation using library code
-      LocalFlow::libraryFlow(e1, e2, scope, isSuccessor, false)
-      or
       // Taint from assigned value to element qualifier (`x[i] = 0`)
       exists(AssignExpr ae |
         e1 = ae.getRValue() and
@@ -162,11 +159,7 @@ module Cached {
     Stages::DataFlowStage::forceCachingInSameStage() and
     any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
     or
-    nodeTo = nodeFrom.(TaintedParameterNode).getUnderlyingNode()
-    or
-    nodeFrom = nodeTo.(TaintedReturnNode).getUnderlyingNode()
-    or
-    flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
+    nodeFrom = nodeTo.(YieldReturnNode).getPreUpdateNode()
     or
     localTaintStepCil(nodeFrom, nodeTo)
     or
@@ -180,7 +173,13 @@ module Cached {
       access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
     )
     or
-    flowThroughLibraryCallableOutRef(_, nodeFrom, nodeTo, false)
+    exists(LibraryCodeNode n | not n.preservesValue() |
+      n = nodeTo and
+      nodeFrom = n.getPredecessor(AccessPath::empty())
+      or
+      n = nodeFrom and
+      nodeTo = n.getSuccessor(AccessPath::empty())
+    )
   }
 }
 

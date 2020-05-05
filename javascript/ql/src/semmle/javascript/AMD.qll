@@ -290,6 +290,7 @@ private class AmdDependencyImport extends Import {
  * ```
  */
 class AmdModule extends Module {
+  cached
   AmdModule() { strictcount(AmdModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }
 
   /** Gets the definition of this module. */

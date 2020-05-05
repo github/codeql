@@ -6,11 +6,12 @@ private import DebugSSA
 
 bindingset[offset]
 private string getKeySuffixForOffset(int offset) {
+  offset >= 0 and
   if offset % 2 = 0 then result = "" else result = "_Chi"
 }
 
 bindingset[offset]
-private int getIndexForOffset(int offset) { result = offset / 2 }
+private int getIndexForOffset(int offset) { offset >= 0 and result = offset / 2 }
 
 /**
  * Property provide that dumps the memory access of each result. Useful for debugging SSA

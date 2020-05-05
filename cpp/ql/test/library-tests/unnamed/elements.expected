@@ -33,6 +33,7 @@
 | file://:0:0:0:0 | auto | Other |
 | file://:0:0:0:0 | bool | Other |
 | file://:0:0:0:0 | char | Other |
+| file://:0:0:0:0 | char8_t | Other |
 | file://:0:0:0:0 | char16_t | Other |
 | file://:0:0:0:0 | char32_t | Other |
 | file://:0:0:0:0 | const | Other |
@@ -58,6 +59,7 @@
 | file://:0:0:0:0 | int | Other |
 | file://:0:0:0:0 | int * | Other |
 | file://:0:0:0:0 | int[0] | Other |
+| file://:0:0:0:0 | is_consteval | Other |
 | file://:0:0:0:0 | is_constexpr | Other |
 | file://:0:0:0:0 | is_thread_local | Other |
 | file://:0:0:0:0 | long | Other |

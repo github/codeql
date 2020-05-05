@@ -1296,4 +1296,23 @@ void returnVoid(int x, int y) {
     return IntegerOps(x, y);
 }
 
+void gccBinaryConditional(bool b, int x, long y) {
+    int z = x;
+    z = b ?: x;
+    z = b ?: y;
+    z = x ?: x;
+    z = x ?: y;
+    z = y ?: x;
+    z = y ?: y;
+
+    z = (x && b || y) ?: x;
+}
+
+bool predicateA();
+bool predicateB();
+
+int shortCircuitConditional(int x, int y) {
+    return predicateA() && predicateB() ? x : y;
+}
+
 // semmle-extractor-options: -std=c++17 --clang
