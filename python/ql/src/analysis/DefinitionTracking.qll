@@ -496,12 +496,13 @@ class NiceLocationExpr extends @py_expr {
  */
 cached
 Definition definitionOf(NiceLocationExpr use, string kind) {
-  exists(string f, int l |
-    result = getUniqueDefinition(use) and
-    kind = "Definition" and
-    use.hasLocationInfo(f, l, _, _, _) and
-    // Ignore if the definition is on the same line as the use
-    not result.getLocation().hasLocationInfo(f, l, _, _, _))
+    exists(string f, int l |
+        result = getUniqueDefinition(use) and
+        kind = "Definition" and
+        use.hasLocationInfo(f, l, _, _, _) and
+        // Ignore if the definition is on the same line as the use
+        not result.getLocation().hasLocationInfo(f, l, _, _, _)
+    )
 }
 
 /**
