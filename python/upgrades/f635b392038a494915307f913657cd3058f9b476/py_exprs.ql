@@ -1,5 +1,23 @@
+class Location extends @location {
+    /** Gets the start line of this location */
+    int getStartLine() {
+        locations_default(this, _, result, _, _, _) or
+        locations_ast(this, _, result, _, _, _)
+    }
+
+    /** Gets the start column of this location */
+    int getStartColumn() {
+        locations_default(this, _, _, result, _, _) or
+        locations_ast(this, _, _, result, _, _)
+    }
+
+    string toString() { result = "<some file>" + ":" + this.getStartLine().toString() }
+}
+
 class Expr_ extends @py_expr {
     string toString() { result = "Expr" }
+
+    Location getLocation() { py_locations(result, this) }
 }
 
 class ExprParent_ extends @py_expr_parent {
@@ -15,6 +33,8 @@ class ExprList_ extends @py_expr_list {
 
 class Parameter_ extends @py_parameter {
     string toString() { result = "Parameter" }
+
+    Location getLocation() { result = this.(Expr_).getLocation() }
 }
 
 class ParameterList extends @py_parameter_list {
@@ -68,8 +88,8 @@ class Function_ extends @py_Function {
     string toString() { result = "Function" }
 }
 
-
-/** This class servers the same purpose as CallableExpr. CallableExpr is defined in Function.qll
+/**
+ * This class servers the same purpose as CallableExpr. CallableExpr is defined in Function.qll
  * To ease the burden of number of classes that needs to be implemented here, I make the class
  * hierarchy slightly different (that's why it's called Adjusted)
  */
@@ -84,7 +104,6 @@ abstract class CallableExprAdjusted extends Expr_ {
     /** Gets the function scope of this code expression. */
     abstract Function_ getInnerScope();
 }
-
 
 class Lambda_ extends @py_Lambda, CallableExprAdjusted, Expr_ {
     /** Gets the arguments of this lambda expression. */
@@ -118,6 +137,20 @@ where
             callable.getArgs() = args and
             args.getDefault(oldidx) = id and
             newidx = oldidx + count(callable.getInnerScope().getArg(_)) - count(args.getDefault(_))
+        )
+        or
+        exists(Arguments_ args, CallableExprAdjusted callable |
+            callable.getArgs() = args and
+            args.getKwDefault(oldidx) = id and
+            newidx =
+                max(int i |
+                    exists(Parameter_ param | param = callable.getInnerScope().getKwonlyarg(i) |
+                        param.getLocation().getStartLine() < id.getLocation().getStartLine()
+                        or
+                        param.getLocation().getStartLine() = id.getLocation().getStartLine() and
+                        param.getLocation().getStartColumn() < id.getLocation().getStartColumn()
+                    )
+                )
         )
     )
 select id, kind, parent, newidx
