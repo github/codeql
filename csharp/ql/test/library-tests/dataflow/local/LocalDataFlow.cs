@@ -127,7 +127,7 @@ public class LocalDataFlow
         Check(sink49);
         var sink50 = String.Copy(sink49);
         Check(sink50);
-        var sink51 = String.Join(", ", "", sink50, "");
+        var sink51 = String.Join(", ", new string[] { "", sink50, "" });
         Check(sink51);
         var sink52 = "".Insert(0, sink51);
         Check(sink52);
@@ -151,7 +151,7 @@ public class LocalDataFlow
         Check(nonSink0);
         nonSink0 = String.Copy(nonSink0);
         Check(nonSink0);
-        nonSink0 = String.Join(", ", "", nonSink0, "");
+        nonSink0 = String.Join(", ", new string[] { "", nonSink0, "" });
         Check(nonSink0);
         nonSink0 = "".Insert(0, nonSink0);
         Check(nonSink0);
@@ -217,13 +217,13 @@ public class LocalDataFlow
         // Ad hoc tracking (System.String), tainted
         var sink33 = (string)sink32.Substring(0).ToLowerInvariant().ToUpper().Trim(' ').Replace("a", "b").Insert(0, "").Clone();
         Check(sink33);
-        var sink48 = sink33.Normalize().Remove(4, 5).Split(' ');
+        var sink48 = sink33.Normalize().Remove(4, 5);
         Check(sink48);
 
         // Ad hoc tracking (System.String), not tainted
         nonSink0 = (string)nonSink0.Substring(0).ToLowerInvariant().ToUpper().Trim(' ').Replace("a", "b").Insert(0, "").Clone();
         Check(nonSink0);
-        var nonSink15 = nonSink0.Normalize().Remove(4, 5).Split(' ');
+        var nonSink15 = nonSink0.Normalize().Remove(4, 5);
         Check(nonSink15);
 
         // Ad hoc tracking (System.Text.StringBuilder), tainted

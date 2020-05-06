@@ -31,9 +31,9 @@ public class CollectionFlow
     {
         var a = new A();
         var c = new CollectionFlow() { As = { [0] = a } };
-        Sink(c.As[0]); // flow [MISSING]
-        SinkElem(c.As); // flow [MISSING]
-        Sink(First(c.As)); // flow [MISSING]
+        Sink(c.As[0]); // flow
+        SinkElem(c.As); // flow
+        Sink(First(c.As)); // flow
     }
 
     public void ArrayInitializerCSharp6NoFlow(A other)
@@ -128,7 +128,7 @@ public class CollectionFlow
         Sink(dict[0]); // flow
         SinkDictValue(dict); // flow
         Sink(DictIndexZero(dict)); // flow
-        Sink(DictFirstValue(dict)); // flow [MISSING]
+        Sink(DictFirstValue(dict)); // flow
         Sink(DictValuesFirst(dict)); // flow
     }
 
@@ -150,7 +150,7 @@ public class CollectionFlow
         Sink(dict[0]); // flow
         SinkDictValue(dict); // flow
         Sink(DictIndexZero(dict)); // flow
-        Sink(DictFirstValue(dict)); // flow [MISSING]
+        Sink(DictFirstValue(dict)); // flow
         Sink(DictValuesFirst(dict)); // flow
     }
 
@@ -168,11 +168,11 @@ public class CollectionFlow
     {
         var a = new A();
         var dict = new Dictionary<int, A>() { [0] = a };
-        Sink(dict[0]); // flow [MISSING]
-        SinkDictValue(dict); // flow [MISSING]
-        Sink(DictIndexZero(dict)); // flow [MISSING]
-        Sink(DictFirstValue(dict)); // flow [MISSING]
-        Sink(DictValuesFirst(dict)); // flow [MISSING]
+        Sink(dict[0]); // flow
+        SinkDictValue(dict); // flow
+        Sink(DictIndexZero(dict)); // flow
+        Sink(DictFirstValue(dict)); // flow
+        Sink(DictValuesFirst(dict)); // flow
     }
 
     public void DictionaryValueInitializerCSharp6NoFlow(A other)
@@ -190,10 +190,10 @@ public class CollectionFlow
     {
         var a = new A();
         var dict = new Dictionary<A, int>() { { a, 0 } };
-        Sink(dict.Keys.First()); // flow [MISSING]
-        SinkDictKey(dict); // flow [MISSING]
-        Sink(DictKeysFirst(dict)); // flow [MISSING]
-        Sink(DictFirstKey(dict)); // flow [MISSING]
+        Sink(dict.Keys.First()); // flow
+        SinkDictKey(dict); // flow
+        Sink(DictKeysFirst(dict)); // flow
+        Sink(DictFirstKey(dict)); // flow
     }
 
     public void DictionaryKeyInitializerNoFlow(A other)
@@ -209,10 +209,10 @@ public class CollectionFlow
     {
         var a = new A();
         var dict = new Dictionary<A, int>() { [a] = 0 };
-        Sink(dict.Keys.First()); // flow [MISSING]
-        SinkDictKey(dict); // flow [MISSING]
-        Sink(DictKeysFirst(dict)); // flow [MISSING]
-        Sink(DictFirstKey(dict)); // flow [MISSING]
+        Sink(dict.Keys.First()); // flow
+        SinkDictKey(dict); // flow
+        Sink(DictKeysFirst(dict)); // flow
+        Sink(DictFirstKey(dict)); // flow
     }
 
     public void DictionaryKeyInitializerCSharp6NoFlow(A other)
@@ -263,7 +263,7 @@ public class CollectionFlow
         list.Add(a);
         var enumerator = list.GetEnumerator();
         while (enumerator.MoveNext())
-            Sink(enumerator.Current); // flow [MISSING]
+            Sink(enumerator.Current); // flow
     }
 
     public void ListGetEnumeratorNoFlow(A other)
@@ -306,9 +306,9 @@ public class CollectionFlow
         var a = new A();
         var @as = new A[1];
         SetArray(@as, a);
-        Sink(@as[0]); // flow [MISSING]
-        SinkElem(@as); // flow [MISSING]
-        Sink(First(@as)); // flow [MISSING]
+        Sink(@as[0]); // flow
+        SinkElem(@as); // flow
+        Sink(First(@as)); // flow
     }
 
     public void ArraySetterNoFlow(A other)
@@ -344,9 +344,9 @@ public class CollectionFlow
 
     public void ParamsFlow()
     {
-        SinkParams(new A()); // flow [MISSING]
-        SinkParams(null, new A()); // flow [MISSING]
-        SinkParams(null, new A(), null); // flow [MISSING]
+        SinkParams(new A()); // flow
+        SinkParams(null, new A()); // flow
+        SinkParams(null, new A(), null); // flow
         SinkParams(new A[] { new A() }); // flow
     }
 
@@ -364,9 +364,9 @@ public class CollectionFlow
         var list = new List<A>();
         list.Add(a);
         list.Clear();
-        Sink(list[0]); // no flow [FALSE NEGATIVE]
-        SinkListElem(list); // no flow [FALSE NEGATIVE]
-        Sink(ListFirst(list)); // no flow [FALSE NEGATIVE]
+        Sink(list[0]); // no flow
+        SinkListElem(list); // no flow
+        Sink(ListFirst(list)); // no flow
     }
 
     public static void Sink<T>(T t) { }
