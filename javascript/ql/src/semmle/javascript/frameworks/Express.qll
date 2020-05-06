@@ -479,6 +479,13 @@ module Express {
       or
       kind = "body" and
       this.asExpr() = rh.getARequestBodyAccess()
+      or
+      // `value` in `router.param('foo', (req, res, next, value) => { ... })`
+      kind = "parameter" and
+      exists(RouteSetup setup | rh = setup.getARouteHandler() |
+        setup.getMethodName() = "param" and
+        this = rh.(DataFlow::FunctionNode).getParameter(3)
+      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
