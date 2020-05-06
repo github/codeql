@@ -11,7 +11,7 @@ import semmle.go.dataflow.FunctionInputsAndOutputs
  * A data-flow node that executes an operating system command,
  * for instance by spawning a new process.
  *
- * Extends this class to refine existing API models. If you want to model new APIs,
+ * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node {
