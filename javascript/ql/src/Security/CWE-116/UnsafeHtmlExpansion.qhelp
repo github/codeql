@@ -9,11 +9,11 @@
 			Sanitizing untrusted input for HTML meta-characters is an
 			important technique for preventing cross-site scripting attacks. But
 			even a sanitized input can be dangerous to use if it is modified
-			further before it is parsed as HTML.
+			further before a browser treats it as HTML.
 
 			A seemingly innocent transformation that expands a
-			self-closing HTML tag from <code>&gt;div attr="{sanitized}"/&lt;</code>
-			to <code>&gt;div attr="{sanitized}"&gt;&lt;/div&gt;</code> may
+			self-closing HTML tag from <code>&lt;div attr="{sanitized}"/&gt;</code>
+			to <code>&lt;div attr="{sanitized}"&gt;&lt;/div&gt;</code> may
 			in fact cause cross-site scripting vulnerabilities.
 
 		</p>
@@ -24,7 +24,7 @@
 		<p>
 
 			Use a (well-tested) sanitization library if at all
-			possible, and avoid modifying sanitized values further before parsing
+			possible, and avoid modifying sanitized values further before treating
 			them as HTML.
 
 		</p>
@@ -49,15 +49,15 @@
 
 			While it is generally known regular expressions are
 			ill-suited for parsing HTML, variants of this particular transformation
-			pattern has long been considered safe.
+			pattern have long been considered safe.
 
 		</p>
 
 		<p>
 
 			However, the function is not safe. As an example, consider
-			the following string which does not result in an alert when it is
-			treated as HTML:
+			the following string which does not result in an alert when a
+			browser treats it as HTML:
 
 		</p>
 
@@ -66,8 +66,7 @@
 		<p>
 
 			When the above function transforms the string, it becomes
-			a string that results in an alert when it is treated as HTML by a
-			modern browser:
+			a string that results in an alert when a browser treats it as HTML.
 
 		</p>
 
