@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id js/code-injection
+ * @id js/server-side-template-injection
  * @tags security
  *       external/cwe/cwe-094
  */
