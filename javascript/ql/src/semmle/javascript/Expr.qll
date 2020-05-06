@@ -308,6 +308,7 @@ class Label extends @label, Identifier, Expr {
  * 3n        // BigInt literal
  * "hello"   // string literal
  * /jsx?/    // regular-expression literal
+ * ```
  */
 class Literal extends @literal, Expr {
   /** Gets the value of this literal, as a string. */
