@@ -28,7 +28,7 @@ class SSTIPugSink extends ServerSideTemplateInjectionSink {
     exists(CallNode compile, ModuleImportNode renderImport |
       renderImport = moduleImport(["pug", "jade"]) and
       (
-        compile = renderImport.getAMemberCall("compile") and
+        compile = renderImport.getAMemberCall("compile")
         or
         compile = renderImport.getAMemberCall("render")
       ) and
