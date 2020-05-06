@@ -408,7 +408,7 @@ class PostUpdateNode extends Node {
       )
       or
       preupd instanceof ArgumentNode and
-      mutableType(preupd.getType().getUnderlyingType())
+      mutableType(preupd.getType())
     ) and
     (
       preupd = this.(SsaNode).getAUse()
@@ -463,11 +463,13 @@ class ArgumentNode extends Node {
  * mutate it or something it points to.
  */
 predicate mutableType(Type tp) {
-  tp instanceof ArrayType or
-  tp instanceof SliceType or
-  tp instanceof MapType or
-  tp instanceof PointerType or
-  tp instanceof InterfaceType
+  exists(Type underlying | underlying = tp.getUnderlyingType() |
+    underlying instanceof ArrayType or
+    underlying instanceof SliceType or
+    underlying instanceof MapType or
+    underlying instanceof PointerType or
+    underlying instanceof InterfaceType
+  )
 }
 
 /**

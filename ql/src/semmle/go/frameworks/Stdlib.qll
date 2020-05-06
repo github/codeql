@@ -115,7 +115,8 @@ module Fmt {
     Sscanner() { this.hasQualifiedName("fmt", ["Sscan", "Sscanf", "Sscanln"]) }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(0) and output.isParameter(any(int i | i > 0))
+      input.isParameter(0) and
+      exists(int i | if getName() = "Sscanf" then i > 1 else i > 0 | output.isParameter(i))
     }
   }
 }
