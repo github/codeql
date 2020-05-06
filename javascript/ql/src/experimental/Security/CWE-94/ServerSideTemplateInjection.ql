@@ -12,6 +12,7 @@
 
 import javascript
 import DataFlow
+import DataFlow::PathGraph
 
 class ServerSideTemplateInjectionConfiguration extends TaintTracking::Configuration {
   ServerSideTemplateInjectionConfiguration() { this = "ServerSideTemplateInjectionConfiguration" }
