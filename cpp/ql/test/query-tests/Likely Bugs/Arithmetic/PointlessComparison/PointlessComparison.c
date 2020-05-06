@@ -369,9 +369,9 @@ int shifts(void)
 {
 	unsigned int x = 3;
 
-	if (x >> 1 >= 1) {} // always true [BAD MESSAGE]
-	if (x >> 1 >= 2) {} // always false [BAD MESSAGE]
-	if (x >> 1 == 1) {} // always true [INCORRECT MESSAGE]
+	if (x >> 1 >= 1) {} // always true
+	if (x >> 1 >= 2) {} // always false
+	if (x >> 1 == 1) {} // always true [NOT DETECTED]
 }
 
 int bitwise_ands()
