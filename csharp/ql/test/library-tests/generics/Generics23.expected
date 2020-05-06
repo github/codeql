@@ -1,2 +1,0 @@
-| generics.cs:178:11:178:24 | Inheritance<> | generics.cs:173:15:173:26 | Interface<T> |
-| generics.cs:178:11:178:24 | Inheritance<Int32> | generics.cs:173:15:173:26 | Interface<Int32> |
