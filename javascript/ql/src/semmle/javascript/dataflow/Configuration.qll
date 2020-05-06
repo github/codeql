@@ -926,10 +926,10 @@ private predicate callInputStep(
     argumentPassing(invk, pred, f, succ)
     or
     isRelevant(pred, cfg) and
-    exists(SsaDefinition prevDef, SsaDefinition def |
-      pred = DataFlow::ssaDefinitionNode(prevDef) and
+    exists(LocalVariable variable, SsaDefinition def |
+      pred = DataFlow::capturedVariableNode(variable) and
       calls(invk, f) and
-      captures(f, prevDef, def) and
+      captures(f, variable, def) and
       succ = DataFlow::ssaDefinitionNode(def)
     )
   ) and

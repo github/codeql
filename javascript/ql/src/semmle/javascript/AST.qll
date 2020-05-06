@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -20,7 +21,7 @@ import javascript
  * abs(-42);
  * ```
  */
-class ASTNode extends @ast_node, Locatable {
+class ASTNode extends @ast_node, NodeInStmtContainer {
   override Location getLocation() { hasLocation(this, result) }
 
   override File getFile() {

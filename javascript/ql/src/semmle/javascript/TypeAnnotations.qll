@@ -3,11 +3,12 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
  */
-class TypeAnnotation extends @type_annotation, Locatable {
+class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
   /** Holds if this is the `any` type. */
   predicate isAny() { none() }
 
@@ -88,11 +89,6 @@ class TypeAnnotation extends @type_annotation, Locatable {
 
   /** Gets the function in which this type appears, if any. */
   Function getEnclosingFunction() { none() }
-
-  /**
-   * Gets the statement container (function or toplevel) in which this type appears.
-   */
-  StmtContainer getContainer() { none() }
 
   /**
    * Gets the top-level containing this type annotation.
