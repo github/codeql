@@ -64,26 +64,17 @@ class Arguments_ extends @py_arguments {
 }
 
 class Function_ extends @py_Function {
-    /** Gets the name of this function. */
-    string getName() { py_strs(result, this, 0) }
-
     /** Gets the positional parameter list of this function. */
     ParameterList getArgs() { py_parameter_lists(result, this) }
 
     /** Gets the nth positional parameter of this function. */
     Parameter_ getArg(int index) { result = this.getArgs().getItem(index) }
 
-    /** Gets the tuple (*) parameter of this function. */
-    Expr_ getVararg() { py_exprs(result, _, this, 2) }
-
     /** Gets the keyword-only parameter list of this function. */
     ExprList_ getKwonlyargs() { py_expr_lists(result, this, 3) }
 
     /** Gets the nth keyword-only parameter of this function. */
     Expr_ getKwonlyarg(int index) { result = this.getKwonlyargs().getItem(index) }
-
-    /** Gets the dictionary (**) parameter of this function. */
-    Expr_ getKwarg() { py_exprs(result, _, this, 4) }
 
     string toString() { result = "Function" }
 }
@@ -125,32 +116,42 @@ class FunctionExpr_ extends @py_FunctionExpr, CallableExprAdjusted, Expr_ {
     override string toString() { result = "FunctionExpr" }
 }
 
-from Expr_ id, int kind, ExprParent_ parent, int oldidx, int newidx
+
+/*
+ * This upgrade changes the *layout* of the default values for parameters, by
+ * making `Argument.getKwDefault(i)` return the default value for keyword-only parameter `i`
+ * (instead of the i'th default for a keyword-only parameter). `Argument.getDefault` is
+ * changed in the same manner to keep consistency.
+ */
+from Expr_ expr, int kind, ExprParent_ parent, int oldidx, int newidx
 where
-    py_exprs(id, kind, parent, oldidx) and
+    py_exprs(expr, kind, parent, oldidx) and
     (
-        not exists(Arguments_ args | args.getDefault(oldidx) = id) and
-        not exists(Arguments_ args | args.getKwDefault(oldidx) = id) and
+        // expr is not a parameter default
+        not exists(Arguments_ args | args.getDefault(oldidx) = expr) and
+        not exists(Arguments_ args | args.getKwDefault(oldidx) = expr) and
         newidx = oldidx
         or
+        // expr is a default for a normal parameter
         exists(Arguments_ args, CallableExprAdjusted callable |
             callable.getArgs() = args and
-            args.getDefault(oldidx) = id and
+            args.getDefault(oldidx) = expr and
             newidx = oldidx + count(callable.getInnerScope().getArg(_)) - count(args.getDefault(_))
         )
         or
+        // expr is a default for a keyword-only parameter
         exists(Arguments_ args, CallableExprAdjusted callable |
             callable.getArgs() = args and
-            args.getKwDefault(oldidx) = id and
+            args.getKwDefault(oldidx) = expr and
             newidx =
                 max(int i |
                     exists(Parameter_ param | param = callable.getInnerScope().getKwonlyarg(i) |
-                        param.getLocation().getStartLine() < id.getLocation().getStartLine()
+                        param.getLocation().getStartLine() < expr.getLocation().getStartLine()
                         or
-                        param.getLocation().getStartLine() = id.getLocation().getStartLine() and
-                        param.getLocation().getStartColumn() < id.getLocation().getStartColumn()
+                        param.getLocation().getStartLine() = expr.getLocation().getStartLine() and
+                        param.getLocation().getStartColumn() < expr.getLocation().getStartColumn()
                     )
                 )
         )
     )
-select id, kind, parent, newidx
+select expr, kind, parent, newidx
