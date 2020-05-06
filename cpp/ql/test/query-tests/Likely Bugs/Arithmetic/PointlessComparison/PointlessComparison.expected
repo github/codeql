@@ -42,5 +42,10 @@
 | PointlessComparison.c:373:6:373:16 | ... >= ... | Comparison is always false because ... >> ... <= 1.5. |
 | PointlessComparison.c:374:6:374:16 | ... == ... | Comparison is always false because ... >> ... >= 1.5. |
 | PointlessComparison.c:383:6:383:17 | ... >= ... | Comparison is always false because ... & ... <= 2. |
+| PointlessComparison.cpp:36:6:36:33 | ... >= ... | Comparison is always false because ... >> ... <= 9223372036854776000. |
+| PointlessComparison.cpp:41:6:41:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |
+| PointlessComparison.cpp:42:6:42:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |
+| PointlessComparison.cpp:43:6:43:29 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
+| PointlessComparison.cpp:44:6:44:28 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
 | RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |
 | Templates.cpp:9:10:9:24 | ... <= ... | Comparison is always true because local <= 32767. |
