@@ -9,7 +9,7 @@ module SQL {
   /**
    * A data-flow node whose string value is interpreted as (part of) a SQL query.
    *
-   * Extends this class to refine existing API models. If you want to model new APIs,
+   * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `SQL::QueryString::Range` instead.
    */
   class QueryString extends DataFlow::Node {
