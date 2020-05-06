@@ -82,6 +82,9 @@ class CaseEdge extends EdgeKind, TCaseEdge {
   string getMaxValue() { result = maxValue }
 }
 
+/**
+ * Predicates to access the single instance of each `EdgeKind` class.
+ */
 module EdgeKind {
   /**
    * Gets the single instance of the `GotoEdge` class.
