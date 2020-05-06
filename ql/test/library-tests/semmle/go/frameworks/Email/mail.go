@@ -12,31 +12,27 @@ import (
 func main() {
 	untrustedInput := "test"
 
-	// Not OK - 1 alert
-	smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(untrustedInput))
+	smtp.SendMail("test.test", nil, "from@from.com", nil /* email data */, []byte(untrustedInput))
 
 	s, _ := smtp.Dial("test.test")
-	write, _ := s.Data()
+	/* email data */ write, _ := s.Data()
 
-	// Not OK - 1 alert
 	io.WriteString(write, untrustedInput)
 
 	from := sendgrid.NewEmail("from", "from@from.com")
 	to := sendgrid.NewEmail("to", "to@to.com")
-	alert := "sub"
+	text := "sub"
 
-	// Not OK - 3 alerts
-	sendgrid.NewSingleEmail(from, alert, to, alert, alert)
+	sendgrid.NewSingleEmail(from /* email data */, text, to /* email data */, text,
+		/* email data */ text)
 
-	// Not OK - 1 alert
-	content := sendgrid.NewContent("text/html", alert)
+	content := sendgrid.NewContent("text/html", text)
 	v := sendgrid.NewV3Mail()
-	v.AddContent(content)
+	v.AddContent( /* email data */ content)
 
-	content2 := sendgrid.NewContent("text/html", alert)
-	content3 := sendgrid.NewContent("text/html", alert)
+	content2 := sendgrid.NewContent("text/html", text)
+	content3 := sendgrid.NewContent("text/html", text)
 
-	// Not OK - 3 alerts
-	v = sendgrid.NewV3MailInit(from, alert, to, content2, content3)
-
+	v = sendgrid.NewV3MailInit(from /* email data */, text, to /* email data */, content2,
+		/* email data */ content3)
 }

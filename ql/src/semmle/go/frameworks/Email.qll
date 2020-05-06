@@ -30,17 +30,9 @@ module EmailData {
   private class SmtpData extends Range {
     SmtpData() {
       // func (c *Client) Data() (io.WriteCloser, error)
-      exists(Method data, DataFlow::CallNode write, DataFlow::Node writer, int i |
+      exists(Method data |
         data.hasQualifiedName("net/smtp", "Client", "Data") and
-        writer = data.getACall().getResult(0) and
-        (
-          write.getTarget().hasQualifiedName("fmt", "Fprintf")
-          or
-          write.getTarget().hasQualifiedName("io", "WriteString")
-        ) and
-        writer.getASuccessor*() = write.getArgument(0) and
-        i > 0 and
-        write.getArgument(i) = this
+        this.(DataFlow::SsaNode).getInit() = data.getACall().getResult(0)
       )
       or
       // func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
@@ -54,15 +46,15 @@ module EmailData {
   /** Gets the package name `github.com/sendgrid/sendgrid-go/helpers/mail`. */
   private string sendgridMail() { result = "github.com/sendgrid/sendgrid-go/helpers/mail" }
 
-  /* Gets the value of the `i`th content parameter of the given `call` */
-  private DataFlow::Node getContent(DataFlow::CallNode call, int i) {
-    exists(DataFlow::CallNode cn, DataFlow::Node content |
+  private class NewContent extends TaintTracking::FunctionModel {
+    NewContent() {
       // func NewContent(contentType string, value string) *Content
-      cn.getTarget().hasQualifiedName(sendgridMail(), "NewContent") and
-      cn.getResult() = content and
-      content.getASuccessor*() = call.getArgument(i) and
-      result = cn.getArgument(1)
-    )
+      this.hasQualifiedName(sendgridMail(), "NewContent")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and output.isResult()
+    }
   }
 
   /** A data-flow node that is written to an email using the sendgrid/sendgrid-go package. */
@@ -76,18 +68,45 @@ module EmailData {
       or
       // func NewV3MailInit(from *Email, subject string, to *Email, content ...*Content) *SGMailV3
       exists(Function newv3MailInit |
-        newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit")
-      |
-        this = getContent(newv3MailInit.getACall(), any(int i | i >= 3))
-        or
-        this = newv3MailInit.getACall().getArgument(1)
+        newv3MailInit.hasQualifiedName(sendgridMail(), "NewV3MailInit") and
+        this = newv3MailInit.getACall().getArgument(any(int i | i = 1 or i >= 3))
       )
       or
       // func (s *SGMailV3) AddContent(c ...*Content) *SGMailV3
       exists(Method addContent |
         addContent.hasQualifiedName(sendgridMail(), "SGMailV3", "AddContent") and
-        this = getContent(addContent.getACall(), _)
+        this = addContent.getACall().getAnArgument()
       )
     }
+  }
+}
+
+/**
+ * A taint model of the `Writer.CreatePart` method from `mime/multipart`.
+ *
+ * If tainted data is written to the multipart section created by this method, the underlying writer
+ * should be considered tainted as well.
+ */
+private class MultipartWriterCreatePartModel extends TaintTracking::FunctionModel, Method {
+  MultipartWriterCreatePartModel() {
+    this.hasQualifiedName("mime/multipart", "Writer", "CreatePart")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isResult(0) and output.isReceiver()
+  }
+}
+
+/**
+ * A taint model of the `NewWriter` function from `mime/multipart`.
+ *
+ * If tainted data is written to the writer created by this function, the underlying writer
+ * should be considered tainted as well.
+ */
+private class MultipartNewWriterModel extends TaintTracking::FunctionModel {
+  MultipartNewWriterModel() { this.hasQualifiedName("mime/multipart", "NewWriter") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isResult() and output.isParameter(0)
   }
 }

@@ -67,43 +67,94 @@ module PathFilePath {
   }
 }
 
+/** Provides models of commonly used functions in the `bytes` package. */
+private module Bytes {
+  private class BufferBytes extends TaintTracking::FunctionModel, Method {
+    BufferBytes() { this.hasQualifiedName("bytes", "Buffer", ["Bytes", "String"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isResult()
+    }
+  }
+}
+
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
   /** The `Sprint` function or one of its variants. */
   class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() {
-      exists(string sprint | sprint.matches("Sprint%") | hasQualifiedName("fmt", sprint))
-    }
+    Sprinter() { this.hasQualifiedName("fmt", ["Sprint", "Sprintf", "Sprintln"]) }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
 
+  /** The `Print` function or one of its variants. */
+  private class Printer extends Function {
+    Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
+  }
+
+  /** A call to `Print`, `Fprint`, or similar. */
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    PrintCall() {
-      exists(string fn |
-        fn = "Print%"
-        or
-        fn = "Fprint%"
-      |
-        this.getTarget().hasQualifiedName("fmt", fn)
-      )
-    }
+    PrintCall() { this.getTarget() instanceof Printer or this.getTarget() instanceof Fprinter }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+  }
+
+  /** The `Fprint` function or one of its variants. */
+  private class Fprinter extends TaintTracking::FunctionModel {
+    Fprinter() { this.hasQualifiedName("fmt", ["Fprint", "Fprintf", "Fprintln"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(any(int i | i > 0)) and output.isParameter(0)
+    }
+  }
+
+  /** The `Sscan` function or one of its variants. */
+  private class Sscanner extends TaintTracking::FunctionModel {
+    Sscanner() { this.hasQualifiedName("fmt", ["Sscan", "Sscanf", "Sscanln"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and
+      exists(int i | if getName() = "Sscanf" then i > 1 else i > 0 | output.isParameter(i))
+    }
   }
 }
 
 /** Provides models of commonly used functions in the `io` package. */
 module Io {
   private class ReaderRead extends TaintTracking::FunctionModel, Method {
-    ReaderRead() {
-      exists(Method im | im.hasQualifiedName("io", "Reader", "Read") | this.implements(im))
-    }
+    ReaderRead() { this.implements("io", "Reader", "Read") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isParameter(0)
+    }
+  }
+
+  private class WriterWrite extends TaintTracking::FunctionModel, Method {
+    WriterWrite() { this.implements("io", "Writer", "Write") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class WriteString extends TaintTracking::FunctionModel {
+    WriteString() { this.hasQualifiedName("io", "WriteString") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and output.isParameter(0)
+    }
+  }
+}
+
+/** Provides models of commonly used functions in the `bufio` package. */
+module Bufio {
+  private class NewWriter extends TaintTracking::FunctionModel {
+    NewWriter() { this.hasQualifiedName("bufio", "NewWriter") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isResult() and output.isParameter(0)
     }
   }
 }

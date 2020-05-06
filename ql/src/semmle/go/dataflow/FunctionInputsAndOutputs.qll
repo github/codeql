@@ -12,7 +12,14 @@ private import semmle.go.dataflow.internal.DataFlowPrivate
  */
 private newtype TFunctionInput =
   TInParameter(int i) { exists(SignatureType s | exists(s.getParameterType(i))) } or
-  TInReceiver()
+  TInReceiver() or
+  TInResult(int index) {
+    // the one and only result
+    index = -1
+    or
+    // one among several results
+    exists(SignatureType s | exists(s.getResultType(index)))
+  }
 
 /**
  * An abstract representation of an input to a function, which is either a parameter
@@ -24,6 +31,12 @@ class FunctionInput extends TFunctionInput {
 
   /** Holds if this represents the receiver of a function. */
   predicate isReceiver() { none() }
+
+  /** Holds if this represents the result of a function. */
+  predicate isResult() { none() }
+
+  /** Holds if this represents the `i`th result of a function. */
+  predicate isResult(int i) { none() }
 
   /** Gets the data-flow node corresponding to this input for the call `c`. */
   final DataFlow::Node getNode(DataFlow::CallNode c) { result = getEntryNode(c) }
@@ -68,6 +81,47 @@ private class ReceiverInput extends FunctionInput, TInReceiver {
   }
 
   override string toString() { result = "receiver" }
+}
+
+/**
+ * A result position of a function, viewed as an input.
+ *
+ * Results are usually outputs rather than inputs, but for taint tracking it can be useful to
+ * think of taint propagating backwards from a result of a function to its arguments. For instance,
+ * the function `bufio.NewWriter` returns a writer `bw` that buffers write operations to an
+ * underlying writer `w`. If tainted data is written to `bw`, then it makes sense to propagate
+ * that taint back to the underlying writer `w`, which can be modeled by saying that
+ * `bufio.NewWriter` propagates taint from its result to its first argument.
+ */
+private class ResultInput extends FunctionInput, TInResult {
+  int index;
+
+  ResultInput() { this = TInResult(index) }
+
+  override predicate isResult() { index = -1 }
+
+  override predicate isResult(int i) { i = index and i >= 0 }
+
+  override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
+    exists(DataFlow::PostUpdateNode pun, DataFlow::Node init |
+      pun = result and
+      init = pun.(DataFlow::SsaNode).getInit()
+    |
+      index = -1 and
+      init = c.getResult()
+      or
+      index >= 0 and
+      init = c.getResult(index)
+    )
+  }
+
+  override DataFlow::Node getExitNode(FuncDef f) { none() }
+
+  override string toString() {
+    index = -1 and result = "result"
+    or
+    index >= 0 and result = "result " + index
+  }
 }
 
 /**
