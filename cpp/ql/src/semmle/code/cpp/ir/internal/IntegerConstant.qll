@@ -1,6 +1,6 @@
 /**
- * Provides predicates for manipulating integer constants tracked by constant folding and similar
- * analyses.
+ * Provides predicates for manipulating integer constants that are tracked by constant folding and
+ * similar analyses.
  */
 
 /**

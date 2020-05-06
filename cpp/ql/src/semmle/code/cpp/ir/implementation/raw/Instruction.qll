@@ -584,9 +584,9 @@ class ConditionalBranchInstruction extends Instruction {
 
   final Instruction getCondition() { result = getConditionOperand().getDef() }
 
-  final Instruction getTrueSuccessor() { result = getSuccessor(trueEdge()) }
+  final Instruction getTrueSuccessor() { result = getSuccessor(EdgeKind::trueEdge()) }
 
-  final Instruction getFalseSuccessor() { result = getSuccessor(falseEdge()) }
+  final Instruction getFalseSuccessor() { result = getSuccessor(EdgeKind::falseEdge()) }
 }
 
 class ExitFunctionInstruction extends Instruction {
@@ -906,7 +906,7 @@ class SwitchInstruction extends Instruction {
 
   final Instruction getACaseSuccessor() { exists(CaseEdge edge | result = getSuccessor(edge)) }
 
-  final Instruction getDefaultSuccessor() { result = getSuccessor(defaultEdge()) }
+  final Instruction getDefaultSuccessor() { result = getSuccessor(EdgeKind::defaultEdge()) }
 }
 
 /**
