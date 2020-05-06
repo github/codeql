@@ -21,15 +21,13 @@ private import cpp
  * template functions, these functions are essentially casts, so we treat them
  * as such.
  */
-private predicate stdIdentityFunction(Function f) {
-  f.getNamespace().getParentNamespace() instanceof GlobalNamespace and
-  f.getNamespace().getName() = "std" and
-  (
-    f.getName() = "move"
-    or
-    f.getName() = "forward"
-  )
-}
+private predicate stdIdentityFunction(Function f) { f.hasQualifiedName("std", ["move", "forward"]) }
+
+/**
+ * Holds if `f` is an instantiation of `std::addressof`, which effectively
+ * converts a reference to a pointer.
+ */
+private predicate stdAddressOf(Function f) { f.hasQualifiedName("std", "addressof") }
 
 private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
   lvalueIn.getConversion() = lvalueOut.(ParenthesisExpr)
@@ -94,6 +92,14 @@ private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
   referenceIn.getConversion() = lvalueOut.(ReferenceDereferenceExpr)
+}
+
+private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
+  pointerOut =
+    any(FunctionCall call |
+      stdAddressOf(call.getTarget()) and
+      referenceIn = call.getArgument(0).getFullyConverted()
+    )
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
@@ -185,6 +191,7 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
     node = call and
     outer = call.getAnArgument().getFullyConverted() and
     not stdIdentityFunction(call.getTarget()) and
+    not stdAddressOf(call.getTarget()) and
     exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
       not rt.getBaseType().isConst()
     )
@@ -194,6 +201,11 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
   exists(Expr lvalueMid |
     referenceToLvalueStep(reference, lvalueMid) and
     lvalueToUpdate(lvalueMid, outer, node)
+  )
+  or
+  exists(Expr pointerMid |
+    referenceToPointerStep(reference, pointerMid) and
+    pointerToUpdate(pointerMid, outer, node)
   )
   or
   exists(Expr referenceMid |
