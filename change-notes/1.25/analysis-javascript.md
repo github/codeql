@@ -20,6 +20,7 @@
 | Misspelled variable name (`js/misspelled-variable-name`) | Message changed | The message for this query now correctly identifies the misspelled variable in additional cases. |
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional file system calls. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional command execution calls. |
+| Expression has no effect (`js/useless-expression`) | Less results | This query no longer flags an expression when that expression is the only content of the containing file. |
 
 ## Changes to libraries
 
