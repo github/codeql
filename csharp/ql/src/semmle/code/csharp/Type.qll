@@ -1000,8 +1000,7 @@ class TypeMention extends @type_mention {
 /**
  * Module for reasoning about typerefs.
  */
-// private 
-module TypeRefs {
+private module TypeRefs {
   /**
    * A typeref is a reference to a type in some assembly.
    * Often, a type can be present in multiple assemblies.
@@ -1026,14 +1025,14 @@ module TypeRefs {
   }
 
   /** Gets the location of a type. */
-  Location typeLocation(Type t) {
+  private Location typeLocation(Type t) {
     type_location(t, result)
     or
     exists(Type decl | constructed_generic(decl, t) and result = typeLocation(decl))
   }
 
   /** Gets a "canonical location" for a type. A type has only one canonical location. */
-  Location canonicalTypeLocation(Type t) {
+  private Location canonicalTypeLocation(Type t) {
     result = typeLocation(t) and
     not locationIsBetter(result, typeLocation(t))
   }
@@ -1044,10 +1043,11 @@ module TypeRefs {
     or
     typeLocation instanceof Assembly and betterLocation instanceof SourceLocation
     or
-    typeLocation.(SourceLocation).getFile().getAbsolutePath() < betterLocation.(SourceLocation).getFile().getAbsolutePath()
+    typeLocation.(SourceLocation).getFile().getAbsolutePath() <
+      betterLocation.(SourceLocation).getFile().getAbsolutePath()
   }
 
-  predicate isCanonicalType(Type type) {
+  private predicate isCanonicalType(Type type) {
     not exists(TypeRef tr |
       type = tr.getAType() and
       locationIsBetter(canonicalTypeLocation(type), canonicalTypeLocation(tr.getAType()))
