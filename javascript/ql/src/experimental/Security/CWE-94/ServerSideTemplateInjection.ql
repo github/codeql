@@ -58,5 +58,6 @@ class SSTINunjucksSink extends ServerSideTemplateInjectionSink {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ServerSideTemplateInjectionConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and unsafely used as part of rendered template",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and unsafely used as part of rendered template", source.getNode(),
+  "User-provided value"
