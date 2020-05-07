@@ -727,21 +727,6 @@ private predicate basicFlowStepNoBarrier(
 }
 
 /**
- * Holds if there is a flow step from `pred` to `succ` described by `summary`
- * under configuration `cfg`.
- *
- * Summary steps through function calls are not taken into account.
- */
-private predicate basicFlowStep(
-  DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
-) {
-  basicFlowStepNoBarrier(pred, succ, summary, cfg) and
-  isRelevant(pred, cfg) and
-  not isLabeledBarrierEdge(cfg, pred, succ, summary.getStartLabel()) and
-  not isBarrierEdge(cfg, pred, succ)
-}
-
-/**
  * Holds if there is a flow step from `pred` to `succ` under configuration `cfg`,
  * including both basic flow steps and steps into/out of properties.
  *
@@ -1339,7 +1324,8 @@ private predicate flowStep(
   DataFlow::Node pred, DataFlow::Configuration cfg, DataFlow::Node succ, PathSummary summary
 ) {
   (
-    basicFlowStep(pred, succ, summary, cfg)
+    basicFlowStepNoBarrier(pred, succ, summary, cfg) and
+    isRelevant(pred, cfg)
     or
     // Flow through a function that returns a value that depends on one of its arguments
     // or a captured variable
