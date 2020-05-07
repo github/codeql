@@ -150,12 +150,3 @@ Query help files
 ****************
 
 When you write a custom query, we also recommend that you write a query help file to explain the purpose of the query to other users. For more information, see the `Query help style guide <https://github.com/github/codeql/blob/master/docs/query-help-style-guide.md>`__ on GitHub, and the :doc:`Query help files <query-help>`. 
-
-What next?
-==========
-
-- See the queries used in real-life variant analysis on the `GitHub Security Lab website <https://securitylab.github.com/research>`__.
-- To learn more about writing path queries, see :doc:`Creating path queries <path-queries>`.
-- Take a look at the `built-in queries <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__ to see examples of the queries included in CodeQL.
-- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.
-- For a full list of resources to help you learn CodeQL, including beginner tutorials and language-specific examples, visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__.

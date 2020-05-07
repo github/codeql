@@ -105,3 +105,8 @@ The new elements added here don't need to be clickable, so we added them directl
 .. image:: ../../images/ql-select-statement-similarity.png
    :alt: Results showing the extent of similarity
    :class: border
+
+Further reading
+---------------
+
+- `CodeQL repository <https://github.com/github/codeql>`__

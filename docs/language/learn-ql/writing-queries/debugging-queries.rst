@@ -151,4 +151,4 @@ Now the structure we want is clearer. We've separated out the easy part into its
 Further information
 -------------------
 
-- Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
