@@ -21,10 +21,32 @@ class JndiInjectionFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    compositeNameStep(node1, node2) or
+    nameStep(node1, node2) or
     jmxServiceUrlStep(node1, node2) or
     jmxConnectorStep(node1, node2) or
-    rmiConnectorStep(node1, node2)
+    rmiConnectorStep(node1, node2) or
+    providerUrlEnvStep(node1, node2)
+  }
+}
+
+/** The class `javax.naming.directory.SearchControls`. */
+class TypeSearchControls extends Class {
+  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
+}
+
+/** The interface `org.springframework.ldap.core.LdapOperations`. */
+class TypeSpringLdapOperations extends Interface {
+  TypeSpringLdapOperations() {
+    this.hasQualifiedName("org.springframework.ldap.core", "LdapOperations") or
+    this.hasQualifiedName("org.springframework.ldap", "LdapOperations")
+  }
+}
+
+/** The interface `org.springframework.ldap.core.ContextMapper`. */
+class TypeSpringContextMapper extends Interface {
+  TypeSpringContextMapper() {
+    this.hasQualifiedName("org.springframework.ldap.core", "ContextMapper<T>") or
+    this.hasQualifiedName("org.springframework.ldap", "ContextMapper<T>")
   }
 }
 
@@ -50,6 +72,11 @@ class TypeJMXServiceURL extends Class {
   TypeJMXServiceURL() { this.hasQualifiedName("javax.management.remote", "JMXServiceURL") }
 }
 
+/** The interface `javax.naming.Context`. */
+class TypeNamingContext extends Interface {
+  TypeNamingContext() { this.hasQualifiedName("javax.naming", "Context") }
+}
+
 /**
  * JNDI sink for JNDI injection vulnerabilities, i.e. 1st argument to `lookup`, `lookupLink`,
  * `doLookup`, `rename`, `list` or `listBindings` method from `InitialContext`.
@@ -73,17 +100,38 @@ predicate jndiSinkMethod(Method m, int index) {
  */
 predicate springJndiTemplateSinkMethod(Method m, int index) {
   m.getDeclaringType() instanceof TypeSpringJndiTemplate and
-  m.hasName("lookup") and
+  (m.hasName("lookup") or m.hasName("setEnvironment")) and
   index = 0
 }
 
 /**
- * Spring sink for JNDI injection vulnerabilities, i.e. 1st argument to `lookup` or `lookupContext`
- * method from Spring's `LdapTemplate`.
+ * Spring sink for JNDI injection vulnerabilities, i.e. 1st argument to `lookup`, `lookupContext`,
+ * `findByDn`, `rename`, `list`, `listBindings`, `unbind`, `search` or `searchForObject` method
+ * from Spring's `LdapOperations`.
  */
-predicate springLdapTemplateSinkMethod(Method m, int index) {
-  m.getDeclaringType() instanceof TypeSpringLdapTemplate and
-  (m.hasName("lookup") or m.hasName("lookupContext")) and
+predicate springLdapTemplateSinkMethod(MethodAccess ma, Method m, int index) {
+  m.getDeclaringType().getAnAncestor() instanceof TypeSpringLdapOperations and
+  (
+    m.hasName("lookup")
+    or
+    m.hasName("lookupContext")
+    or
+    m.hasName("findByDn")
+    or
+    m.hasName("rename")
+    or
+    m.hasName("list")
+    or
+    m.hasName("listBindings")
+    or
+    m.hasName("unbind") and ma.getArgument(1).(CompileTimeConstantExpr).getBooleanValue() = true
+    or
+    m.getName().matches("search%") and
+    m.getParameterType(m.getNumberOfParameters() - 1) instanceof TypeSpringContextMapper and
+    not m.getAParamType() instanceof TypeSearchControls
+    or
+    m.hasName("search") and ma.getArgument(3).(CompileTimeConstantExpr).getBooleanValue() = true
+  ) and
   index = 0
 }
 
@@ -108,10 +156,10 @@ predicate jmxConnectorFactorySinkMethod(Method m, int index) {
 }
 
 /** Holds if parameter at index `index` in method `m` is JNDI injection sink. */
-predicate jndiInjectionSinkMethod(Method m, int index) {
+predicate jndiInjectionSinkMethod(MethodAccess ma, Method m, int index) {
   jndiSinkMethod(m, index) or
   springJndiTemplateSinkMethod(m, index) or
-  springLdapTemplateSinkMethod(m, index) or
+  springLdapTemplateSinkMethod(ma, m, index) or
   shiroSinkMethod(m, index) or
   jmxConnectorFactorySinkMethod(m, index)
 }
@@ -122,7 +170,7 @@ class JndiInjectionSink extends DataFlow::ExprNode {
     exists(MethodAccess ma, Method m, int index |
       ma.getMethod() = m and
       ma.getArgument(index) = this.getExpr() and
-      jndiInjectionSinkMethod(m, index)
+      jndiInjectionSinkMethod(ma, m, index)
     )
     or
     exists(MethodAccess ma, Method m |
@@ -131,15 +179,25 @@ class JndiInjectionSink extends DataFlow::ExprNode {
       m.getDeclaringType().getAnAncestor() instanceof TypeJMXConnector and
       m.hasName("connect")
     )
+    or
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getAnAncestor() instanceof TypeInitialContext or
+      cc.getConstructedType() instanceof TypeSpringJndiTemplate
+    |
+      cc.getArgument(0) = this.getExpr()
+    )
   }
 }
 
 /**
- * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName`,
- * i.e. `new CompositeName(tainted)`.
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName` or
+ * `CompoundName`, i.e. `new CompositeName(tainted)` or `new CompoundName(tainted)`.
  */
-predicate compositeNameStep(ExprNode n1, ExprNode n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeCompositeName |
+predicate nameStep(ExprNode n1, ExprNode n2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof TypeCompositeName or
+    cc.getConstructedType() instanceof TypeCompoundName
+  |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
@@ -176,5 +234,29 @@ predicate rmiConnectorStep(ExprNode n1, ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRMIConnector |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and
+ * `Hashtable` or `Properties`, i.e. `env.put(Context.PROVIDER_URL, tainted)` or
+ * `env.setProperty(Context.PROVIDER_URL, tainted)`.
+ */
+predicate providerUrlEnvStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getArgument(1) and n2.asExpr() = ma.getQualifier()
+  |
+    ma.getMethod() = m and
+    m.getDeclaringType().getAnAncestor() instanceof TypeProperty and
+    (m.hasName("put") or m.hasName("setProperty")) and
+    (
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
+      or
+      exists(Field f |
+        ma.getArgument(0) = f.getAnAccess() and
+        f.hasName("PROVIDER_URL") and
+        f.getDeclaringType() instanceof TypeNamingContext
+      )
+    )
   )
 }

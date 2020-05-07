@@ -1,17 +1,25 @@
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 import javax.naming.CompositeName;
+import javax.naming.CompoundName;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import javax.naming.ldap.InitialLdapContext;
 
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.NameClassPairCallbackHandler;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class JndiInjection {
@@ -35,7 +43,7 @@ public class JndiInjection {
   }
 
   public void testInitialDirContextBad1(@RequestParam String nameStr) throws NamingException {
-    Name name = new CompositeName(nameStr);
+    Name name = new CompoundName(nameStr, new Properties());
     InitialDirContext ctx = new InitialDirContext();
 
     ctx.lookup(nameStr);
@@ -77,9 +85,22 @@ public class JndiInjection {
 
   public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException {
     LdapTemplate ctx = new LdapTemplate();
+    Name name = new CompositeName(nameStr);
 
     ctx.lookup(nameStr);
     ctx.lookupContext(nameStr);
+    ctx.findByDn(name, null);
+    ctx.rename(name, null);
+    ctx.list(name);
+    ctx.listBindings(name);
+    ctx.unbind(nameStr, true);
+
+    ctx.search(nameStr, "", 0, true, null);
+    ctx.search(nameStr, "", 0, new String[] {}, (ContextMapper<Object>) new Object());
+    ctx.search(nameStr, "", 0, (ContextMapper<Object>) new Object());
+    ctx.search(nameStr, "", (ContextMapper) new Object());
+    
+    ctx.searchForObject(nameStr, "", (ContextMapper) new Object());
   }
 
   public void testShiroJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
@@ -95,5 +116,62 @@ public class JndiInjection {
     JMXServiceURL url = new JMXServiceURL(urlStr);
     JMXConnector connector = JMXConnectorFactory.newJMXConnector(url, null);
     connector.connect();
+  }
+
+  public void testEnvBad1(@RequestParam String urlStr) throws NamingException {
+    Hashtable<String, String> env = new Hashtable<String, String>();
+    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    env.put(Context.PROVIDER_URL, urlStr);
+    new InitialContext(env);
+  }
+
+  public void testEnvBad2(@RequestParam String urlStr) throws NamingException {
+    Hashtable<String, String> env = new Hashtable<String, String>();
+    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    env.put("java.naming.provider.url", urlStr);
+    new InitialDirContext(env);
+  }
+
+  public void testSpringJndiTemplatePropertiesBad1(@RequestParam String urlStr) throws NamingException {
+    Properties props = new Properties();
+    props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    props.put(Context.PROVIDER_URL, urlStr);
+    new JndiTemplate(props);
+  }
+
+  public void testSpringJndiTemplatePropertiesBad2(@RequestParam String urlStr) throws NamingException {
+    Properties props = new Properties();
+    props.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    props.setProperty("java.naming.provider.url", urlStr);
+    new JndiTemplate(props);
+  }
+
+  public void testSpringJndiTemplatePropertiesBad3(@RequestParam String urlStr) throws NamingException {
+    Properties props = new Properties();
+    props.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    props.setProperty("java.naming.provider.url", urlStr);
+    JndiTemplate template = new JndiTemplate();
+    template.setEnvironment(props);
+  }
+
+  public void testSpringLdapTemplateOk1(@RequestParam String nameStr) throws NamingException {
+    LdapTemplate ctx = new LdapTemplate();
+
+    ctx.unbind(nameStr);
+    ctx.unbind(nameStr, false);
+
+    ctx.search(nameStr, "", 0, false, null);
+    ctx.search(nameStr, "", new SearchControls(), (NameClassPairCallbackHandler) new Object());
+    ctx.search(nameStr, "", new SearchControls(), (NameClassPairCallbackHandler) new Object(), null);
+    ctx.search(nameStr, "", (NameClassPairCallbackHandler) new Object());
+    ctx.search(nameStr, "", 0, new String[] {}, (AttributesMapper<Object>) new Object());
+    ctx.search(nameStr, "", 0, (AttributesMapper<Object>) new Object());
+    ctx.search(nameStr, "", (AttributesMapper) new Object());
+    ctx.search(nameStr, "", new SearchControls(), (ContextMapper) new Object());
+    ctx.search(nameStr, "", new SearchControls(), (AttributesMapper) new Object());
+    ctx.search(nameStr, "", new SearchControls(), (ContextMapper) new Object(), null);
+    ctx.search(nameStr, "", new SearchControls(), (AttributesMapper) new Object(), null);
+
+    ctx.searchForObject(nameStr, "", new SearchControls(), (ContextMapper) new Object());
   }
 }

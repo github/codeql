@@ -9,3 +9,8 @@ class TypeInitialContext extends Class {
 class TypeCompositeName extends Class {
   TypeCompositeName() { this.hasQualifiedName("javax.naming", "CompositeName") }
 }
+
+/** The class `javax.naming.CompoundName`. */
+class TypeCompoundName extends Class {
+  TypeCompoundName() { this.hasQualifiedName("javax.naming", "CompoundName") }
+}
