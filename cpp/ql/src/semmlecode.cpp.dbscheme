@@ -1641,6 +1641,67 @@ case @expr.kind of
 | 326 = @spaceshipexpr
 ;
 
+@var_args_expr = @vastartexpr
+               | @vaendexpr
+               | @vaargexpr
+               | @vacopyexpr
+               ;
+
+@buildin_op = @var_args_expr
+            | @noopexpr
+            | @offsetofexpr
+            | @intaddrexpr
+            | @hasassignexpr
+            | @hascopyexpr
+            | @hasnothrowassign
+            | @hasnothrowconstr
+            | @hasnothrowcopy
+            | @hastrivialassign
+            | @hastrivialconstr
+            | @hastrivialcopy
+            | @hastrivialdestructor
+            | @hasuserdestr
+            | @hasvirtualdestr
+            | @isabstractexpr
+            | @isbaseofexpr
+            | @isclassexpr
+            | @isconvtoexpr
+            | @isemptyexpr
+            | @isenumexpr
+            | @ispodexpr
+            | @ispolyexpr
+            | @isunionexpr
+            | @typescompexpr
+            | @builtinshufflevector
+            | @builtinconvertvector
+            | @builtinaddressof
+            | @istriviallyconstructibleexpr
+            | @isdestructibleexpr
+            | @isnothrowdestructibleexpr
+            | @istriviallydestructibleexpr
+            | @istriviallyassignableexpr
+            | @isnothrowassignableexpr
+            | @isstandardlayoutexpr
+            | @istriviallycopyableexpr
+            | @isliteraltypeexpr
+            | @hastrivialmoveconstructorexpr
+            | @hastrivialmoveassignexpr
+            | @hasnothrowmoveassignexpr
+            | @isconstructibleexpr
+            | @isnothrowconstructibleexpr
+            | @hasfinalizerexpr
+            | @isdelegateexpr
+            | @isinterfaceclassexpr
+            | @isrefarrayexpr
+            | @isrefclassexpr
+            | @issealedexpr
+            | @issimplevalueclassexpr
+            | @isvalueclassexpr
+            | @isfinalexpr
+            | @builtinchooseexpr
+            | @builtincomplex
+            ;
+
 new_allocated_type(
     unique int expr: @new_expr ref,
     int type_id: @type ref
