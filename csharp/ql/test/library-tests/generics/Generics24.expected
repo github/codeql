@@ -1,2 +1,0 @@
-| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:29:188:30 | T1 | in |
-| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:37:188:38 | T2 | out |
