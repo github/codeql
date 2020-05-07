@@ -130,7 +130,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
 /**
  * A C++ `using` directive or `using` declaration.
  */
-abstract class UsingEntry extends Locatable, @using {
+class UsingEntry extends Locatable, @using {
   override Location getLocation() { usings(underlyingElement(this), _, result) }
 }
 

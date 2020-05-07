@@ -34,10 +34,10 @@ abstract class Conversion extends Expr {
  * a `PointerBaseClassConversion`, or some other semantic conversion. Similarly,
  * a `PointerDerivedClassConversion` may also be a `CStyleCast` or a `StaticCast`.
  *
- * This is an abstract root QL class representing the different casts.  For
+ * This is a root QL class representing the different casts.  For
  * specific examples, consult the documentation for any of QL classes mentioned above.
  */
-abstract class Cast extends Conversion, @cast {
+class Cast extends Conversion, @cast {
   /**
    * Gets a string describing the semantic conversion operation being performed by
    * this cast.
@@ -699,7 +699,7 @@ class SizeofPackOperator extends Expr, @sizeof_pack {
 /**
  * A C/C++ sizeof expression.
  */
-abstract class SizeofOperator extends Expr, @runtime_sizeof {
+class SizeofOperator extends Expr, @runtime_sizeof {
   override int getPrecedence() { result = 16 }
 }
 
@@ -762,7 +762,7 @@ class SizeofTypeOperator extends SizeofOperator {
 /**
  * A C++11 `alignof` expression.
  */
-abstract class AlignofOperator extends Expr, @runtime_alignof {
+class AlignofOperator extends Expr, @runtime_alignof {
   override int getPrecedence() { result = 16 }
 }
 

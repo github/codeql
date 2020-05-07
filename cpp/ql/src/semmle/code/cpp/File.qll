@@ -3,7 +3,7 @@ import semmle.code.cpp.Declaration
 import semmle.code.cpp.metrics.MetricFile
 
 /** A file or folder. */
-abstract class Container extends Locatable, @container {
+class Container extends Locatable, @container {
   /**
    * Gets the absolute, canonical path of this container, using forward slashes
    * as path separator.
@@ -28,7 +28,7 @@ abstract class Container extends Locatable, @container {
    * a bare root prefix, that is, the path has no path segments. A container
    * whose absolute path has no segments is always a `Folder`, not a `File`.
    */
-  abstract string getAbsolutePath();
+  string getAbsolutePath() { none() } // overridden by subclasses
 
   /**
    * DEPRECATED: Use `getLocation` instead.
@@ -36,7 +36,7 @@ abstract class Container extends Locatable, @container {
    *
    * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
-  abstract deprecated string getURL();
+  deprecated string getURL() { none() } // overridden by subclasses
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
