@@ -12,25 +12,25 @@
 import python
 import semmle.python.strings
 
-from GlobalVariable g
+from GlobalVariable g, Assign assign, Expr elt
 where
   /*
-   * Regex matching MIDDLEWARE & MIDDLEWARE_CLASSES(backwards compatibility)
-   * Checks if there is a GlobalVariable(List/Tuple) named MIDDLEWARE or MIDDLEWARE_CLASES
+   * Checks if an GlobalVariable named MIDDLEWARE or MIDDLEWARE_CLASSES is present
    * and contains the middleware string
    */
 
-  g.getId().regexpMatch("MIDDLEWARE(_CLASSES)?") and
-  not exists(List l |
-    l.getParentNode().getAChildNode().toString().regexpMatch(g.getId()) and
-    exists(StrConst mw | mw.getS().regexpMatch(".*csrf.*") and l.contains(mw))
+  g.getId() in ["MIDDLEWARE", "MIDDLEWARE_CLASSES"] and
+  assign.getATarget() = g.getAStore() and
+  (
+    elt = assign.getValue().(List).getAnElt()
+    or
+    elt = assign.getValue().(Tuple).getAnElt()
   ) and
-  not exists(Tuple t |
-    t.getParentNode().getAChildNode().toString().regexpMatch(g.getId()) and
-    exists(StrConst mw | mw.getS().regexpMatch(".*csrf.*") and t.contains(mw))
-  ) and
-  /* Check if any CSRF decorator is used (requires_csrf_token | ensure_csrf_cookie  | csrf_protect) */
+  not elt.(StrConst).getS() in ["django.middleware.csrf.CsrfViewMiddleware",
+        "session_csrf.CsrfMiddleware"] and
+  /* Check if any CSRF decorator is used (csrf_protect) */
   not exists(FunctionExpr f |
-    f.getADecoratorCall().getFunc().toString().regexpMatch(".*csrf_(protect|exempt|cookie).*")
+    f.getADecorator().pointsTo() = Value::named("django.views.decorators.csrf.csrf_protect")
   )
-select g.getAStore(),"csrf_middleware is not enabled in MIDDLEWARE() and CSRF is not implemented using decorator such as csrf_protect, ensure_csrf as well."
+select g.getAStore(),
+  "csrf_middleware is not enabled in MIDDLEWARE() and CSRF is not implemented using decorator such as csrf_protect as well."
