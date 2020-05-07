@@ -241,7 +241,7 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
     inner instanceof ThisExpr
     or
     inner instanceof Call
-    // `baseValue` could also be `*` or `ReferenceDereferenceExpr`, but we
+    // `inner` could also be `*` or `ReferenceDereferenceExpr`, but we
     // can't do anything useful with those at the moment.
   )
 }
