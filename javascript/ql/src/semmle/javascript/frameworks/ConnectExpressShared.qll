@@ -41,6 +41,11 @@ module ConnectExpressShared {
       result = "request,response,next,parameter"
     }
 
+    /** Gets the signature corresonding to `(req, res, next) => {...}`. */
+    RouteHandlerSignature requestResponseNext() {
+      result = "request,response,next"
+    }
+
     /** Gets the signature corresonding to `(err, req, res, next) => {...}`. */
     RouteHandlerSignature errorRequestResponseNext() { result = "error,request,response,next" }
   }
@@ -99,8 +104,7 @@ module ConnectExpressShared {
           kind)
     else
       result =
-        getRouteHandlerParameter(routeHandler,
-          RouteHandlerSignature::requestResponseNextParameter(), kind)
+        getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNext(), kind)
   }
 
   /**
