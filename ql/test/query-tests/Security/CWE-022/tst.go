@@ -3,11 +3,20 @@ package main
 import (
 	"archive/zip"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 )
+
+func uploadFile(w http.ResponseWriter, r *http.Request) {
+	file, handler, _ := r.FormFile("file")
+	// err handling
+	defer file.Close()
+	tempFile, _ := ioutil.TempFile("/tmp", handler.Filename) // NOT OK
+	// do stuff with tempFile
+}
 
 func unzip2(f string, root string) {
 	r, _ := zip.OpenReader(f)

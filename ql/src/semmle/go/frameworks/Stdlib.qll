@@ -166,11 +166,13 @@ module IoUtil {
       exists(string fn | getTarget().hasQualifiedName("io/ioutil", fn) |
         fn = "ReadDir" or
         fn = "ReadFile" or
+        fn = "TempDir" or
+        fn = "TempFile" or
         fn = "WriteFile"
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = getAnArgument() }
   }
 
   /**
