@@ -24,9 +24,13 @@ class JndiInjectionFlowConfig extends TaintTracking::Configuration {
     nameStep(node1, node2) or
     jmxServiceUrlStep(node1, node2) or
     jmxConnectorStep(node1, node2) or
-    rmiConnectorStep(node1, node2) or
-    providerUrlEnvStep(node1, node2)
+    rmiConnectorStep(node1, node2)
   }
+}
+
+/** The class `java.util.Hashtable`. */
+class TypeHashtable extends Class {
+  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
 /** The class `javax.naming.directory.SearchControls`. */
@@ -100,7 +104,7 @@ predicate jndiSinkMethod(Method m, int index) {
  */
 predicate springJndiTemplateSinkMethod(Method m, int index) {
   m.getDeclaringType() instanceof TypeSpringJndiTemplate and
-  (m.hasName("lookup") or m.hasName("setEnvironment")) and
+  m.hasName("lookup") and
   index = 0
 }
 
@@ -155,13 +159,33 @@ predicate jmxConnectorFactorySinkMethod(Method m, int index) {
   index = 0
 }
 
+/**
+ * Tainted value passed to env `Hashtable` as the prodiver UDL, i.e.
+ * `env.put(Context.PROVIDER_URL, tainted)` or `env.setProperty(Context.PROVIDER_URL, tainted)`.
+ */
+predicate providerUrlEnv(MethodAccess ma, Method m, int index) {
+  m.getDeclaringType().getAnAncestor() instanceof TypeHashtable and
+  (m.hasName("put") or m.hasName("setProperty")) and
+  (
+    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
+    or
+    exists(Field f |
+      ma.getArgument(0) = f.getAnAccess() and
+      f.hasName("PROVIDER_URL") and
+      f.getDeclaringType() instanceof TypeNamingContext
+    )
+  ) and
+  index = 1
+}
+
 /** Holds if parameter at index `index` in method `m` is JNDI injection sink. */
 predicate jndiInjectionSinkMethod(MethodAccess ma, Method m, int index) {
   jndiSinkMethod(m, index) or
   springJndiTemplateSinkMethod(m, index) or
   springLdapTemplateSinkMethod(ma, m, index) or
   shiroSinkMethod(m, index) or
-  jmxConnectorFactorySinkMethod(m, index)
+  jmxConnectorFactorySinkMethod(m, index) or
+  providerUrlEnv(ma, m, index)
 }
 
 /** A data flow sink for unvalidated user input that is used in JNDI lookup. */
@@ -178,13 +202,6 @@ class JndiInjectionSink extends DataFlow::ExprNode {
       ma.getQualifier() = this.getExpr() and
       m.getDeclaringType().getAnAncestor() instanceof TypeJMXConnector and
       m.hasName("connect")
-    )
-    or
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeInitialContext or
-      cc.getConstructedType() instanceof TypeSpringJndiTemplate
-    |
-      cc.getArgument(0) = this.getExpr()
     )
   }
 }
@@ -234,29 +251,5 @@ predicate rmiConnectorStep(ExprNode n1, ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRMIConnector |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
-  )
-}
-
-/**
- * Holds if `n1` to `n2` is a dataflow step that converts between `String` and
- * `Hashtable` or `Properties`, i.e. `env.put(Context.PROVIDER_URL, tainted)` or
- * `env.setProperty(Context.PROVIDER_URL, tainted)`.
- */
-predicate providerUrlEnvStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getArgument(1) and n2.asExpr() = ma.getQualifier()
-  |
-    ma.getMethod() = m and
-    m.getDeclaringType().getAnAncestor() instanceof TypeProperty and
-    (m.hasName("put") or m.hasName("setProperty")) and
-    (
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
-      or
-      exists(Field f |
-        ma.getArgument(0) = f.getAnAccess() and
-        f.hasName("PROVIDER_URL") and
-        f.getDeclaringType() instanceof TypeNamingContext
-      )
-    )
   )
 }

@@ -174,4 +174,18 @@ public class JndiInjection {
 
     ctx.searchForObject(nameStr, "", new SearchControls(), (ContextMapper) new Object());
   }
+
+  public void testEnvOk1(@RequestParam String urlStr) throws NamingException {
+    Hashtable<String, String> env = new Hashtable<String, String>();
+    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    env.put(Context.SECURITY_PRINCIPAL, urlStr);
+    new InitialContext(env);
+  }
+
+  public void testEnvOk2(@RequestParam String urlStr) throws NamingException {
+    Hashtable<String, String> env = new Hashtable<String, String>();
+    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
+    env.put("java.naming.security.principal", urlStr);
+    new InitialContext(env);
+  }
 }
