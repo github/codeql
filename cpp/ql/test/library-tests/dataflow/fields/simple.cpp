@@ -67,4 +67,22 @@ void single_field_test()
     sink(a2.i);
 }
 
+struct C {
+    int f1;
+};
+
+struct C2
+{
+    C f2;
+
+    int getf2f1() {
+        return f2.f1;
+    }
+
+    void m() {
+        f2.f1 = user_input();
+        sink(getf2f1()); // flow
+    }
+};
+
 } // namespace Simple
