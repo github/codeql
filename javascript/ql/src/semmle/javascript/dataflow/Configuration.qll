@@ -748,24 +748,18 @@ private predicate basicFlowStep(
  * This predicate is field insensitive (it does not distinguish between `x` and `x.p`)
  * and hence should only be used for purposes of approximation.
  */
+pragma[inline]
 private predicate exploratoryFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
 ) {
-  isRelevantForward(pred, cfg) and
-  isLive() and
-  (
-    basicFlowStepNoBarrier(pred, succ, _, cfg) or
-    basicStoreStep(pred, succ, _) or
-    basicLoadStep(pred, succ, _) or
-    isAdditionalStoreStep(pred, succ, _, cfg) or
-    isAdditionalLoadStep(pred, succ, _, cfg) or
-    isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
-    // the following three disjuncts taken together over-approximate flow through
-    // higher-order calls
-    callback(pred, succ) or
-    succ = pred.(DataFlow::FunctionNode).getAParameter() or
-    exploratoryBoundInvokeStep(pred, succ)
-  )
+  basicFlowStepNoBarrier(pred, succ, _, cfg) or
+  exploratoryLoadStep(pred, succ, cfg) or
+  isAdditionalLoadStoreStep(pred, succ, _, _, cfg) or
+  // the following three disjuncts taken together over-approximate flow through
+  // higher-order calls
+  callback(pred, succ) or
+  succ = pred.(DataFlow::FunctionNode).getAParameter() or
+  exploratoryBoundInvokeStep(pred, succ)
 }
 
 /**
@@ -793,14 +787,105 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLab
 }
 
 /**
+ * Holds if there exists a load-step from `pred` to `succ` under configuration `cfg`,
+ * and the forwards exploratory flow has found a relevant store-step with the same property as the load-step.
+ */
+private predicate exploratoryLoadStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop | prop = getAForwardRelevantLoadProperty(cfg) |
+    isAdditionalLoadStep(pred, succ, prop, cfg)
+    or
+    basicLoadStep(pred, succ, prop)
+  )
+}
+
+/**
+ * Gets a property where the forwards exploratory flow has found a relevant store-step with that property.
+ * The property is therefore relevant for load-steps in the forward exploratory flow.
+ *
+ * This private predicate is only used in `exploratoryLoadStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
+ */
+private string getAForwardRelevantLoadProperty(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node previous | isRelevantForward(previous, cfg) |
+    basicStoreStep(previous, _, result) or
+    isAdditionalStoreStep(previous, _, result, cfg)
+  )
+  or
+  result = getAPropertyUsedInLoadStore(cfg)
+}
+
+/**
+ * Gets a property that is used in an `additionalLoadStoreStep` where the loaded and stored property are not the same.
+ *
+ * The properties from this predicate are used as a white-list of properties for load/store steps that should always be considered in the exploratory flow.
+ */
+private string getAPropertyUsedInLoadStore(DataFlow::Configuration cfg) {
+  exists(string loadProp, string storeProp |
+    isAdditionalLoadStoreStep(_, _, loadProp, storeProp, cfg) and
+    storeProp != loadProp and
+    result = [storeProp, loadProp]
+  )
+}
+
+/**
+ * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
+ * and somewhere in the program there exists a load-step that could possibly read the stored value.
+ */
+private predicate exploratoryForwardStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop |
+    basicLoadStep(_, _, prop) or
+    isAdditionalLoadStep(_, _, prop, cfg) or
+    prop = getAPropertyUsedInLoadStore(cfg)
+  |
+    isAdditionalStoreStep(pred, succ, prop, cfg) or
+    basicStoreStep(pred, succ, prop)
+  )
+}
+
+/**
+ * Holds if there exists a store-step from `pred` to `succ` under configuration `cfg`,
+ * and `succ` has been found to be relevant during the backwards exploratory flow,
+ * and the backwards exploratory flow has found a relevant load-step with the same property as the store-step.
+ */
+private predicate exploratoryBackwardStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg
+) {
+  exists(string prop | prop = getABackwardsRelevantStoreProperty(cfg) |
+    isAdditionalStoreStep(pred, succ, prop, cfg) or
+    basicStoreStep(pred, succ, prop)
+  )
+}
+
+/**
+ * Gets a property where the backwards exploratory flow has found a relevant load-step with that property.
+ * The property is therefore relevant for store-steps in the backwards exploratory flow.
+ *
+ * This private predicate is only used in `exploratoryBackwardStoreStep`, and exists as a separate predicate to give the compiler a hint about join-ordering.
+ */
+private string getABackwardsRelevantStoreProperty(DataFlow::Configuration cfg) {
+  exists(DataFlow::Node mid | isRelevant(mid, cfg) |
+    basicLoadStep(mid, _, result) or
+    isAdditionalLoadStep(mid, _, result, cfg)
+  )
+  or
+  result = getAPropertyUsedInLoadStore(cfg)
+}
+
+/**
  * Holds if `nd` may be reachable from a source under `cfg`.
  *
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isSource(nd, cfg, _)
+  isSource(nd, cfg, _) and isLive()
   or
-  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) and exploratoryFlowStep(mid, nd, cfg))
+  exists(DataFlow::Node mid | isRelevantForward(mid, cfg) |
+    exploratoryFlowStep(mid, nd, cfg) or
+    exploratoryForwardStoreStep(mid, nd, cfg)
+  )
 }
 
 /**
@@ -809,13 +894,21 @@ private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration c
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isRelevantForward(nd, cfg) and
-  isSink(nd, cfg, _)
+  isRelevantForward(nd, cfg) and isSink(nd, cfg, _)
   or
-  exists(DataFlow::Node mid |
-    isRelevant(mid, cfg) and
-    exploratoryFlowStep(nd, mid, cfg) and
-    isRelevantForward(nd, cfg)
+  exists(DataFlow::Node mid | isRelevant(mid, cfg) | isRelevantBackStep(mid, nd, cfg))
+}
+
+/**
+ * Holds if there is backwards data-flow step from `mid` to `nd` under `cfg`.
+ */
+private predicate isRelevantBackStep(
+  DataFlow::Node mid, DataFlow::Node nd, DataFlow::Configuration cfg
+) {
+  isRelevantForward(nd, cfg) and
+  (
+    exploratoryFlowStep(nd, mid, cfg) or
+    exploratoryBackwardStoreStep(nd, mid, cfg)
   )
 }
 

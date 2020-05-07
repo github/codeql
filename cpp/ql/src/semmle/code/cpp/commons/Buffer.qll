@@ -92,13 +92,7 @@ int getBufferSize(Expr bufferExpr, Element why) {
     // dataflow (all sources must be the same size)
     bufferExprNode = DataFlow::exprNode(bufferExpr) and
     result =
-      min(Expr def |
-        DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode)
-      |
-        getBufferSize(def, _)
-      ) and
-    result =
-      max(Expr def |
+      unique(Expr def |
         DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode)
       |
         getBufferSize(def, _)

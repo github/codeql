@@ -156,6 +156,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * Holds if the `i`th argument of this invocation is an object literal whose property
    * `name` is set to `result`.
    */
+  pragma[nomagic]
   DataFlow::ValueNode getOptionArgument(int i, string name) {
     getOptionsArgument(i).hasPropertyWrite(name, result)
   }

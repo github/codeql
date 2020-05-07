@@ -505,8 +505,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
-  exprToExprStep_nocfg(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), nodeTo.asExpr())
-  or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
     (
@@ -674,7 +672,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getFunction() = node2.getFunction()
+    node1.getEnclosingCallable() = node2.getEnclosingCallable()
   }
 }
 
