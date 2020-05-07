@@ -68,7 +68,7 @@ class ValueNumberBound extends Bound, TBoundValueNumber {
 
   ValueNumberBound() { this = TBoundValueNumber(vn) }
 
-  /** Gets the SSA variable that equals this bound. */
+  /** Gets an `Instruction` that equals this bound. */
   override Instruction getInstruction(int delta) {
     this = TBoundValueNumber(valueNumber(result)) and delta = 0
   }
@@ -77,5 +77,6 @@ class ValueNumberBound extends Bound, TBoundValueNumber {
 
   override Location getLocation() { result = vn.getLocation() }
 
+  /** Gets the value number that equals this bound. */
   ValueNumber getValueNumber() { result = vn }
 }
