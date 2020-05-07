@@ -53,7 +53,9 @@ module ClientSideUrlRedirect {
     exists(MethodCallExpr mce, string methodName |
       mce = queryAccess.asExpr() and mce.calls(nd.asExpr(), methodName)
     |
-      methodName = "split"
+      methodName = "split" and
+      // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
+      not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
       or
       (methodName = "substring" or methodName = "substr" or methodName = "slice") and
       // exclude `location.href.substring(0, ...)` and similar, which can
