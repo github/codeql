@@ -434,7 +434,15 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   (
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
-    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
+    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Encoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Decoder")
   ) and
   (
     method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1

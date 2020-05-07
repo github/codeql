@@ -77,3 +77,4 @@ The process must begin with the first step and must conclude with the final step
    - The structure of an `experimental` subdirectory mirrors the structure of its parent directory, so this step may just be a matter of removing the `experimental/` prefix of the query and test paths. Be sure to also edit any references to the query path in tests.
    - Add the query to one of the legacy suite files in `ql/<language>/config/suites/<language>/` if it exists. Note that there are separate suite directories for C and C++, `c` and `cpp` respectively, and the query should be added to one or both as appropriate.
    - Add a release note to `change-notes/<next-version>/analysis-<language>.md`.
+   - Your pull request will be flagged automatically for a review by the documentation team to ensure that the query help file is ready for wider use. 
