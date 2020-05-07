@@ -71,8 +71,7 @@ module InclusionTest {
       count(this.getACallee()) = 1 and
       count(callee.getAReturnedExpr()) = 1 and
       not this.isImprecise() and
-      inner.getContainerNode().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
-      inner.getContainedNode().getALocalSource().getEnclosingExpr() = callee.getAParameter()
+      inner.getContainerNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter())
     }
 
     override DataFlow::Node getContainerNode() {
