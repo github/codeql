@@ -611,8 +611,8 @@ is to compare them to each other to determine whether two data-flow nodes have t
 Further reading
 ---------------
 
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/go-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
 
 .. |ast| image:: ast.png
 .. |cfg| image:: cfg.png
