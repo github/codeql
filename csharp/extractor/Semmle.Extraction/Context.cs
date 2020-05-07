@@ -165,7 +165,7 @@ namespace Semmle.Extraction
             if (init is null) throw new ArgumentException("Unexpected null value", nameof(init));
 
             if (objectEntityCache.TryGetValue(init, out var cached))
-                return (Entity)cached!;
+                return (Entity)cached;
 
             using (StackGuard)
             {

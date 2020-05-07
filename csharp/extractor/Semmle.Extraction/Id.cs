@@ -34,12 +34,7 @@ namespace Semmle.Extraction
 
         public override string ToString() => "*";
 
-        public override bool Equals(object? obj)
-        {
-            // Expand logic to allow for nullability control flow analysis
-            if (obj is null) return false;
-            return obj.GetType() == GetType();
-        }
+        public override bool Equals(object? obj) => obj?.GetType() == GetType();
 
         public override int GetHashCode() => 0;
 
