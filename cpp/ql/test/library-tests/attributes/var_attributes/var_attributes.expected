@@ -3,6 +3,7 @@
 | ms_var_attributes.cpp:7:5:7:10 | myInt2 | ms_var_attributes.h:4:1:4:9 | dllexport |
 | ms_var_attributes.cpp:8:15:8:20 | myInt4 | ms_var_attributes.cpp:8:1:8:9 | dllexport |
 | ms_var_attributes.cpp:9:5:9:10 | myInt5 | ms_var_attributes.h:7:1:7:9 | dllexport |
+| ms_var_attributes.cpp:12:42:12:46 | field | ms_var_attributes.cpp:12:14:12:21 | property |
 | ms_var_attributes.h:5:22:5:27 | myInt3 | ms_var_attributes.h:5:1:5:9 | dllexport |
 | var_attributes.c:1:12:1:19 | weak_var | var_attributes.c:1:36:1:39 | weak |
 | var_attributes.c:2:12:2:22 | weakref_var | var_attributes.c:2:39:2:45 | weakref |

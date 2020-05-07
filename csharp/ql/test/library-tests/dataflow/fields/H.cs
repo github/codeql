@@ -150,5 +150,22 @@ public class H
         Sink(b); // no flow
     }
 
+    void SetNested(A a, object o)
+    {
+        var b = new B();
+        b.FieldB = o;
+        a.FieldA = b;
+    }
+
+    void M8()
+    {
+        var a = new A();
+        var o = new object();
+        SetNested(a, o);
+        var b = (B) a.FieldA;
+        Sink(b); // flow (from `new B()` inside `SetNested`)
+        Sink(b.FieldB); // flow
+    }
+
     public static void Sink(object o) { }
 }

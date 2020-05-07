@@ -70,10 +70,11 @@ The process must begin with the first step and must conclude with the final step
 
    d. Provide one or more `@tags` describing the query.
 
-      - Tags are free-form, but we have some conventions, especially for tagging security queries with corresponding CWE numbers.
+      - Tags are free-form, but we have some conventions. At a minimum, most queries should have at least one of `correctness`, `maintainability` or `security` to indicate the general kind of issue the query is intended to find. Security queries should also be tagged with corresponding [CWE](https://cwe.mitre.org/data/definitions/1000.html) numbers, for example `external/cwe/cwe-119` (prefer the most specific CWE that encompasses the target of the query).
 
 7. **Move your query out of `experimental`**
 
    - The structure of an `experimental` subdirectory mirrors the structure of its parent directory, so this step may just be a matter of removing the `experimental/` prefix of the query and test paths. Be sure to also edit any references to the query path in tests.
    - Add the query to one of the legacy suite files in `ql/<language>/config/suites/<language>/` if it exists. Note that there are separate suite directories for C and C++, `c` and `cpp` respectively, and the query should be added to one or both as appropriate.
    - Add a release note to `change-notes/<next-version>/analysis-<language>.md`.
+   - Your pull request will be flagged automatically for a review by the documentation team to ensure that the query help file is ready for wider use. 

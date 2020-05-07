@@ -338,7 +338,7 @@ class PointerToFieldLiteral extends ImplicitThisFieldAccess {
  * int myFunctionTarget(int);
  *
  * void myFunction() {
- *   int (*myFunctionPointer)(int) = &myTarget;
+ *   int (*myFunctionPointer)(int) = &myFunctionTarget;
  * }
  * ```
  */

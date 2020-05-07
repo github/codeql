@@ -78,11 +78,11 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
 cached
 private module CachedSteps {
   /**
-   * Holds if `f` captures the variable defined by `def` in `cap`.
+   * Holds if `f` captures the given `variable` in `cap`.
    */
   cached
-  predicate captures(Function f, SsaExplicitDefinition def, SsaVariableCapture cap) {
-    def.getSourceVariable() = cap.getSourceVariable() and
+  predicate captures(Function f, LocalVariable variable, SsaVariableCapture cap) {
+    variable = cap.getSourceVariable() and
     f = cap.getContainer()
   }
 

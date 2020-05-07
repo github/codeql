@@ -306,16 +306,6 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("indexers", propKey, name, declaringType, memberType, unboundProperty);
         }
 
-        internal static void is_constructed(this TextWriter trapFile, IEntity typeOrMethod)
-        {
-            trapFile.WriteTuple("is_constructed", typeOrMethod);
-        }
-
-        internal static void is_generic(this TextWriter trapFile, IEntity typeOrMethod)
-        {
-            trapFile.WriteTuple("is_generic", typeOrMethod);
-        }
-
         internal static void local_function_stmts(this TextWriter trapFile, Entities.Statements.LocalFunction fnStmt, LocalFunction fn)
         {
             trapFile.WriteTuple("local_function_stmts", fnStmt, fn);
