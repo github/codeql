@@ -18,9 +18,10 @@ The following changes in version 1.25 affect Java analysis in all applications.
 
 ## Changes to libraries
 
-* The data-flow library has been improved, which affects and improves most security queries. Flow
-  through methods now takes nested field reads/writes into account. For example, the library is
-  able to track flow from `"taint"` to `sink()` via the method `getF2F1()` in
+* The data-flow library has been improved, which affects most security queries by potentially
+  adding more results. Flow through methods now takes nested field reads/writes into account.
+  For example, the library is able to track flow from `"taint"` to `sink()` via the method
+  `getF2F1()` in
   ```java
   class C1 {
     String f1;
