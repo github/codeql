@@ -212,19 +212,18 @@ module Vue {
       result = getALifecycleHook(_)
     }
 
+    pragma[noinline]
+    private DataFlow::PropWrite getAPropertyValueWrite(string name) {
+      result = getData().getALocalSource().getAPropertyWrite(name)
+      or
+      result = getABoundFunction().getALocalSource().(DataFlow::FunctionNode).getReceiver().getAPropertyWrite(name)
+    }
+
     /**
      * Gets a node for the value for property `name` of this instance.
      */
     DataFlow::Node getAPropertyValue(string name) {
-      exists(DataFlow::SourceNode obj | obj.getAPropertyWrite(name).getRhs() = result |
-        obj.flowsTo(getData())
-        or
-        exists(DataFlow::FunctionNode bound |
-          bound.flowsTo(getABoundFunction()) and
-          not bound.getFunction() instanceof ArrowFunctionExpr and
-          obj = bound.getReceiver()
-        )
-      )
+      result = getAPropertyValueWrite(name).getRhs()
       or
       exists(DataFlow::FunctionNode getter |
         getter.flowsTo(getAccessor(name, "get")) and
