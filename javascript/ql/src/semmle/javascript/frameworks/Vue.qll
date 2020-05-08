@@ -303,20 +303,19 @@ module Vue {
       result = getOptionSource(_).getAPropertySource()
     }
 
+    pragma[noinline]
+    private DataFlow::PropWrite getAPropertyValueWrite(string name) {
+      result = getData().getALocalSource().getAPropertyWrite(name)
+      or
+      result = getABoundFunction().getALocalSource().(DataFlow::FunctionNode).getReceiver().getAPropertyWrite(name)
+    }
+
     /**
      * Gets the data flow node that flows into the property `name` of this instance, or is
      * returned form a getter defining that property.
      */
     DataFlow::Node getAPropertyValue(string name) {
-      exists(DataFlow::SourceNode obj | obj.getAPropertyWrite(name).getRhs() = result |
-        obj.flowsTo(getData())
-        or
-        exists(DataFlow::FunctionNode bound |
-          bound.flowsTo(getABoundFunction()) and
-          not bound.getFunction() instanceof ArrowFunctionExpr and
-          obj = bound.getReceiver()
-        )
-      )
+      result = getAPropertyValueWrite(name).getRhs()
       or
       exists(DataFlow::FunctionNode getter |
         getter.flowsTo(getAccessor(name, DataFlow::MemberKind::getter())) and
