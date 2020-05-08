@@ -527,6 +527,12 @@ module TaintTracking {
     }
   }
 
+  pragma[nomagic]
+  private DataFlow::MethodCallNode execMethodCall() {
+    result.getMethodName() = "exec" and
+    result.getReceiver().analyze().getAType() = TTRegExp()
+  }
+
   /**
    * A taint-propagating data flow edge from the first (and only) argument in a call to
    * `RegExp.prototype.exec` to its result.
@@ -534,13 +540,18 @@ module TaintTracking {
   private class RegExpExecTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
-        call.getReceiver().analyze().getAType() = TTRegExp() and
-        call.getMethodName() = "exec" and
+        call = execMethodCall() and
         call.getNumArgument() = 1 and
         pred = call.getArgument(0) and
         succ = call
       )
     }
+  }
+
+  pragma[nomagic]
+  private DataFlow::MethodCallNode matchMethodCall() {
+    result.getMethodName() = "match" and
+    result.getArgument(0).analyze().getAType() = TTRegExp()
   }
 
   /**
@@ -549,9 +560,8 @@ module TaintTracking {
   private class StringMatchTaintStep extends SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "match" and
+        call = matchMethodCall() and
         call.getNumArgument() = 1 and
-        call.getArgument(0).analyze().getAType() = TTRegExp() and
         pred = call.getReceiver() and
         succ = call
       )
