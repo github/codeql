@@ -160,7 +160,7 @@ predicate jmxConnectorFactorySinkMethod(Method m, int index) {
 }
 
 /**
- * Tainted value passed to env `Hashtable` as the prodiver UDL, i.e.
+ * Tainted value passed to env `Hashtable` as the provider URL, i.e.
  * `env.put(Context.PROVIDER_URL, tainted)` or `env.setProperty(Context.PROVIDER_URL, tainted)`.
  */
 predicate providerUrlEnv(MethodAccess ma, Method m, int index) {
