@@ -9,7 +9,8 @@ import javascript
  *
  * A taint propagating data flow edge arising from an operation in a URI library.
  */
-deprecated abstract class UriLibraryStep extends DataFlow::ValueNode, TaintTracking::AdditionalTaintStep { }
+abstract deprecated class UriLibraryStep extends DataFlow::ValueNode,
+  TaintTracking::AdditionalTaintStep { }
 
 /**
  * Provides classes for working with [urijs](http://medialize.github.io/URI.js/) code.
@@ -298,7 +299,9 @@ private module ClosureLibraryUri {
    */
   private class ArgumentStep extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::InvokeNode invoke, int arg | pred = invoke.getArgument(arg) and succ = invoke |
+      exists(DataFlow::InvokeNode invoke, int arg |
+        pred = invoke.getArgument(arg) and succ = invoke
+      |
         // goog.Uri constructor
         invoke = Closure::moduleImport("goog.Uri").getAnInstantiation() and arg = 0
         or

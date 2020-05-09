@@ -30,7 +30,9 @@ private class ComposedFunction extends DataFlow::CallNode {
  */
 private class ComposedFunctionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(int fnIndex, DataFlow::FunctionNode fn, ComposedFunction composed, DataFlow::CallNode call |
+    exists(
+      int fnIndex, DataFlow::FunctionNode fn, ComposedFunction composed, DataFlow::CallNode call
+    |
       fn = composed.getFunction(fnIndex) and
       call = composed.getACall()
     |

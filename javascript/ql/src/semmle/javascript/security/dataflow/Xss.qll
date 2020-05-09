@@ -245,7 +245,7 @@ module DomBasedXss {
   /**
    * A Vue `v-html` attribute, viewed as an XSS sink.
    */
-  class VHtmlSink extends Vue::VHtmlAttribute, DomBasedXss::Sink {}
+  class VHtmlSink extends Vue::VHtmlAttribute, DomBasedXss::Sink { }
 
   /**
    * A property read from a safe property is considered a sanitizer.

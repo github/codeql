@@ -312,26 +312,26 @@ module TaintTracking {
   cached
   private module Cached {
     /**
-    * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-    * data flow edge, which doesn't fit into a more specific category.
-    */
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge, which doesn't fit into a more specific category.
+     */
     cached
     predicate genericStep(DataFlow::Node pred, DataFlow::Node succ) {
       any(SharedTaintStep step).step(pred, succ)
     }
 
     /**
-    * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-    * data flow edge, contribued by the heuristics library.
-    */
+     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+     * data flow edge, contribued by the heuristics library.
+     */
     cached
     predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) {
       any(SharedTaintStep step).heuristicStep(pred, succ)
     }
 
     /**
-    * Holds if `pred -> succ` is an edge contributed by an `AdditionalTaintStep` instance.
-    */
+     * Holds if `pred -> succ` is an edge contributed by an `AdditionalTaintStep` instance.
+     */
     cached
     predicate legacyAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       any(AdditionalTaintStep step).step(pred, succ)
@@ -343,96 +343,97 @@ module TaintTracking {
     cached
     module Public {
       /**
-      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-      * data flow edge through a URI library function.
-      */
+       * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+       * data flow edge through a URI library function.
+       */
       cached
       predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).uriStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
+       */
       cached
       predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).persistentStorageStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through the heap.
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through the heap.
+       */
       cached
       predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).heapStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through an array.
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through an array.
+       */
       cached
       predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).arrayStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through the
-      * properties of a view compenent, such as the `state` or `props` of a React component.
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through the
+       * properties of a view compenent, such as the `state` or `props` of a React component.
+       */
       cached
       predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).viewComponentStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through string
-      * concatenation.
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through string
+       * concatenation.
+       */
       cached
       predicate stringConcatenationStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).stringConcatenationStep(pred, succ)
       }
 
       /**
-      * Holds if `pred -> succ` is a taint propagating data flow edge through string manipulation
-      * (other than concatenation).
-      */
+       * Holds if `pred -> succ` is a taint propagating data flow edge through string manipulation
+       * (other than concatenation).
+       */
       cached
       predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).stringManipulationStep(pred, succ)
       }
 
       /**
-      *  Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-      * data flow edge through data serialization, such as `JSON.stringify`.
-      */
+       *  Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+       * data flow edge through data serialization, such as `JSON.stringify`.
+       */
       cached
       predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).serializeStep(pred, succ)
       }
 
       /**
-      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-      * data flow edge through data deserialization, such as `JSON.parse`.
-      */
+       * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+       * data flow edge through data deserialization, such as `JSON.parse`.
+       */
       cached
       predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).deserializeStep(pred, succ)
       }
 
       /**
-      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-      * data flow edge through a promise.
-      *
-      * These steps consider a promise object to tainted if it can resolve to
-      * a tainted value.
-      */
+       * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+       * data flow edge through a promise.
+       *
+       * These steps consider a promise object to tainted if it can resolve to
+       * a tainted value.
+       */
       cached
       predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
         any(SharedTaintStep step).promiseStep(pred, succ)
       }
     }
   }
+
   import Cached::Public
 
   /**

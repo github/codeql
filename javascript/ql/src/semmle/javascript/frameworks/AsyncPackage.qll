@@ -168,12 +168,14 @@ module AsyncPackage {
    */
   private class IterationOutputTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i, IterationCall call |
+      exists(
+        DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i, IterationCall call
+      |
         iteratee = call.getIteratorCallback().getALocalSource() and
         final = call.getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getLastParameter(iteratee).getACall().getArgument(i) and
         succ = final.getParameter(i) and
-        exists (string name | name = call.getName() |
+        exists(string name | name = call.getName() |
           name = "concat" or
           name = "map" or
           name = "reduce" or
