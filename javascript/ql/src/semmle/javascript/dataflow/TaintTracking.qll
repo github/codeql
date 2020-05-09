@@ -422,7 +422,7 @@ module TaintTracking {
 
       /**
       * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-      * data flow edge through data deserialization, such as `JSON.parse`.
+      * data flow edge through a promise.
       *
       * These steps consider a promise object to tainted if it can resolve to
       * a tainted value.
