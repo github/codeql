@@ -12,9 +12,7 @@ import javascript
  * The target of a heuristic additional flow step in a security query.
  */
 deprecated class HeuristicAdditionalTaintStep extends DataFlow::Node {
-  HeuristicAdditionalTaintStep() {
-    any(TaintTracking::SharedTaintStep step).heuristicStep(_, this)
-  }
+  HeuristicAdditionalTaintStep() { any(TaintTracking::SharedTaintStep step).heuristicStep(_, this) }
 }
 
 /**
