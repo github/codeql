@@ -28,7 +28,7 @@ private class ComposedFunction extends DataFlow::CallNode {
 /**
  * A taint step for a composed function.
  */
-private class ComposedFunctionTaintStep extends TaintTracking::SharedTaintStep {
+private class ComposedFunctionTaintStep extends TaintTracking::GenericStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(
       int fnIndex, DataFlow::FunctionNode fn, ComposedFunction composed, DataFlow::CallNode call

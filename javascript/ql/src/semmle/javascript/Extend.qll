@@ -160,7 +160,7 @@ private class FunctionalExtendCallShallow extends ExtendCall {
  * A taint propagating data flow edge from the objects flowing into an extend call to its return value
  * and to the source of the destination object.
  */
-private class ExtendCallTaintStep extends TaintTracking::SharedTaintStep {
+private class ExtendCallTaintStep extends TaintTracking::GenericStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ExtendCall extend |
       pred = extend.getASourceOperand() and succ = extend.getDestinationOperand().getALocalSource()

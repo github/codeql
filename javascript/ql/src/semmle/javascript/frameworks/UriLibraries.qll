@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * DEPRECATED. Use `TaintTracking::SharedTaintStep` or `TaintTracking::uriStep` instead.
+ * DEPRECATED. Use `TaintTracking::UriStep` or `TaintTracking::uriStep` instead.
  *
  * A taint propagating data flow edge arising from an operation in a URI library.
  */
@@ -59,8 +59,8 @@ module urijs {
   /**
    * A taint step in the urijs library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // flow through "constructors" (`new` is optional)
       exists(DataFlow::InvokeNode invk | invk = succ and invk = invocation() |
         pred = invk.getAnArgument()
@@ -92,8 +92,8 @@ module uridashjs {
   /**
    * A taint step in the urijs library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "parse" or
         name = "serialize" or
@@ -122,8 +122,8 @@ module punycode {
   /**
    * A taint step in the punycode library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "decode" or
         name = "encode" or
@@ -155,8 +155,8 @@ module urlParse {
   /**
    * A taint step in the url-parse library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call | succ = call |
         // parse(pred)
         call = call() and
@@ -189,8 +189,8 @@ module querystringify {
   /**
    * A taint step in the querystringify library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "parse" or
         name = "stringify"
@@ -217,8 +217,8 @@ module querydashstring {
   /**
    * A taint step in the query-string library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "parse" or
         name = "extract" or
@@ -245,8 +245,8 @@ module url {
   /**
    * A taint step in the url library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "parse" or
         name = "format" or
@@ -274,8 +274,8 @@ module querystring {
   /**
    * A taint step in the querystring library.
    */
-  private class Step extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class Step extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(string name, DataFlow::CallNode call |
         name = "escape" or
         name = "unescape" or
@@ -297,8 +297,8 @@ private module ClosureLibraryUri {
   /**
    * Taint step from an argument of a `goog.Uri` call to the return value.
    */
-  private class ArgumentStep extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class ArgumentStep extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::InvokeNode invoke, int arg |
         pred = invoke.getArgument(arg) and succ = invoke
       |
@@ -374,8 +374,8 @@ private module ClosureLibraryUri {
   }
 
   /** A taint step derived from a setter call on a `goog.Uri` object. */
-  private class SetterCallStep extends TaintTracking::SharedTaintStep {
-    override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+  private class SetterCallStep extends TaintTracking::UriStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(SetterCall call |
         pred = call.getReceiver() and succ = call
         or
@@ -393,8 +393,8 @@ private module ClosureLibraryUri {
     /**
      * A taint step in the path module.
      */
-    private class Step extends TaintTracking::SharedTaintStep {
-      override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    private class Step extends TaintTracking::UriStep {
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         exists(DataFlow::SourceNode ref, DataFlow::CallNode call |
           ref = NodeJSLib::Path::moduleMember("parse") or
           // a ponyfill: https://www.npmjs.com/package/path-parse

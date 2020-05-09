@@ -131,7 +131,7 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
 /**
  * A taint step for a property projection.
  */
-private class PropertyProjectionTaintStep extends TaintTracking::SharedTaintStep {
+private class PropertyProjectionTaintStep extends TaintTracking::GenericStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // reading from a tainted object yields a tainted result
     exists(PropertyProjection projection |

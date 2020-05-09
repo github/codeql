@@ -275,7 +275,7 @@ module NodeJSLib {
   /**
    * A call to a path-module method that preserves taint.
    */
-  private class PathFlowStep extends TaintTracking::SharedTaintStep {
+  private class PathFlowStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string methodName |
         call = NodeJSLib::Path::moduleMember(methodName).getACall() and
@@ -305,7 +305,7 @@ module NodeJSLib {
   /**
    * A call to a fs-module method that preserves taint.
    */
-  private class FsFlowStep extends TaintTracking::SharedTaintStep {
+  private class FsFlowStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string methodName |
         call = FS::moduleMember(methodName).getACall()
@@ -324,7 +324,7 @@ module NodeJSLib {
   /**
    * A model of taint propagation through `new Buffer` and `Buffer.from`.
    */
-  private class BufferTaintStep extends TaintTracking::SharedTaintStep {
+  private class BufferTaintStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::InvokeNode invoke |
         invoke = DataFlow::globalVarRef("Buffer").getAnInstantiation()

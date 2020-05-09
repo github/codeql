@@ -67,7 +67,7 @@ module Base64 {
    * Note that we currently do not model base64 encoding as a taint-propagating data flow edge
    * to avoid false positives.
    */
-  private class Base64DecodingStep extends TaintTracking::SharedTaintStep {
+  private class Base64DecodingStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Decode dec |
         pred = dec.getInput() and

@@ -126,7 +126,7 @@ module Typeahead {
   /**
    * A taint step that models that a function in the `source` of typeahead.js is used to determine the input to the suggestion function.
    */
-  private class TypeaheadSourceTaintStep extends TaintTracking::SharedTaintStep {
+  private class TypeaheadSourceTaintStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // Matches `$(...).typeahead({..}, {source: function(q, cb) {..;cb(<pred>);..}, templates: { suggestion: function(<succ>) {} } })`.
       exists(TypeaheadSource typeahead |

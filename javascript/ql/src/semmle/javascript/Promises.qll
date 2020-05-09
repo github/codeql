@@ -473,8 +473,8 @@ private module PromiseFlow {
  */
 deprecated predicate promiseTaintStep = TaintTracking::promiseStep/2;
 
-private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
-  override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
+private class PromiseTaintStep extends TaintTracking::PromiseStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // from `x` to `new Promise((res, rej) => res(x))`
     pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
     or
@@ -607,7 +607,7 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+  private class ClosurePromiseTaintStep extends TaintTracking::GenericStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |

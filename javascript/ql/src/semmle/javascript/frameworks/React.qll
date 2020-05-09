@@ -560,8 +560,8 @@ private class ReactJSXElement extends JSXElement {
  * taint to flow from `v` to any read of `c2.state.p`, where `c2`
  * also is an instance of `C`.
  */
-private class StateTaintStep extends TaintTracking::SharedTaintStep {
-  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+private class StateTaintStep extends TaintTracking::ViewComponentStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
       (
         c.getACandidateStateSource().flowsTo(pwn.getBase()) or
@@ -585,8 +585,8 @@ private class StateTaintStep extends TaintTracking::SharedTaintStep {
  * taint to flow from `v` to any read of `c2.props.p`, where `c2`
  * also is an instance of `C`.
  */
-private class PropsTaintStep extends TaintTracking::SharedTaintStep {
-  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+private class PropsTaintStep extends TaintTracking::ViewComponentStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ReactComponent c, string name, DataFlow::PropRead prn |
       prn = c.getAPropRead(name) or
       prn = c.getAPreviousPropsSource().getAPropertyRead(name)
