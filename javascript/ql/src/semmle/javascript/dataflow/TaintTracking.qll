@@ -215,8 +215,12 @@ module TaintTracking {
      * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
      * data flow edge.
      */
-    cached
     predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+  }
+
+  cached
+  private predicate sharedTaintStepInternal(DataFlow::Node pred, DataFlow::Node succ, SharedTaintStep kind) {
+    kind.step(pred, succ)
   }
 
   /**
@@ -346,21 +350,21 @@ module TaintTracking {
    * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
    */
   predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(PersistentStorageStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(PersistentStorageStep step))
   }
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through the heap.
    */
   predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(HeapStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(HeapStep step))
   }
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through an array.
    */
   predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(ArrayStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(ArrayStep step))
   }
 
   /**
@@ -368,7 +372,7 @@ module TaintTracking {
    * properties of a view compenent, such as the `state` or `props` of a React component.
    */
   predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(ViewComponentStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(ViewComponentStep step))
   }
 
   /**
@@ -376,7 +380,7 @@ module TaintTracking {
    * concatenation.
    */
   predicate stringConcatenationStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(StringConcatenationStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(StringConcatenationStep step))
   }
 
   /**
@@ -384,7 +388,7 @@ module TaintTracking {
    * (other than concatenation).
    */
   predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(StringManipulationStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(StringManipulationStep step))
   }
 
   /**
@@ -392,7 +396,7 @@ module TaintTracking {
    * data flow edge through data serialization, such as `JSON.stringify`.
    */
   predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(SerializeStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(SerializeStep step))
   }
 
   /**
@@ -400,7 +404,7 @@ module TaintTracking {
    * data flow edge through data deserialization, such as `JSON.parse`.
    */
   predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(DeserializeStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(DeserializeStep step))
   }
 
   /**
@@ -411,7 +415,7 @@ module TaintTracking {
    * a tainted value.
    */
   predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(PromiseStep step).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, any(PromiseStep step))
   }
 
   /**
@@ -428,7 +432,7 @@ module TaintTracking {
    */
   predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     any(AdditionalTaintStep s).step(pred, succ) or
-    any(SharedTaintStep s).step(pred, succ)
+    sharedTaintStepInternal(pred, succ, _)
   }
 
   /**
