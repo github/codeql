@@ -13,7 +13,8 @@ it results an attacker gaining access to the sensitive block.
  Never decide whether to authenticate a user based on data that may be controlled by that user. 
  If necessary, ensure that the data is validated extensively when it is input before any 
  authentication checks are performed.
-
+</p>
+<p>
 It is still possible to have a system that "remembers" users, thus not requiring 
 the user to login on every interaction. For example, personalization settings can be applied 
 without authentication because this is not sensitive information. However, users
@@ -21,7 +22,7 @@ should be allowed to take sensitive actions only when they have been fully authe
     </recommendation>
     <example>
         <p>
-The following example shows a comparision where an user controlled 
+The following example shows a comparison where an user controlled 
 expression is used to guard a sensitive method. This should be avoided.:
 </p>
         <sample src="SensitiveConditionBypassBad.go" />

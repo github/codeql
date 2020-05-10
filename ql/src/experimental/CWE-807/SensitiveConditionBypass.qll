@@ -22,6 +22,26 @@ predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(SensitiveAction a | a = sink and type = SensitiveExpr::secret())
 }
 
+private class ConstComparisonExpr extends ComparisonExpr {
+  string constString;
+
+  ConstComparisonExpr() {
+    exists(DataFlow::Node n |
+      n.getASuccessor*() = DataFlow::exprNode(this.getAnOperand()) and
+      constString = n.getStringValue()
+    )
+  }
+
+  predicate isPotentialFalsePositive() {
+    // if its an empty string
+    constString.length() = 0 or
+    // // if it is uri path
+    constString.matches("/%") or
+    constString.matches("%/") or
+    constString.matches("%/%")
+  }
+}
+
 /**
  * A data-flow configuration for reasoning about
  * user-controlled bypassing of sensitive actions.
@@ -40,18 +60,9 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
-  }
-}
-
-class ConstConfiguration extends DataFlow::Configuration {
-  ConstConfiguration() { this = "Constant expression flow" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(string val | source.getStringValue() = val)
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
+    exists(ConstComparisonExpr c |
+      c.getAnOperand() = sink.asExpr() and
+      not c.isPotentialFalsePositive()
+    )
   }
 }
