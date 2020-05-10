@@ -4,6 +4,7 @@
  */
 
 import java
+import semmle.code.java.frameworks.Networking
 
 /** The class `org.springframework.http.HttpEntity` or an instantiation of it. */
 class SpringHttpEntity extends Class {
@@ -37,4 +38,18 @@ class SpringResponseEntityBodyBuilder extends Interface {
 /** The class `org.springframework.http.HttpHeaders`. */
 class SpringHttpHeaders extends Class {
   SpringHttpHeaders() { this.hasQualifiedName("org.springframework.http", "HttpHeaders") }
+}
+
+/** Models `org.springframework.http.RequestEntity`s instantiation expressions. */
+class SpringRequestEntityInstanceExpr extends ClassInstanceExpr {
+  int numArgs;
+
+  SpringRequestEntityInstanceExpr() {
+    this.getConstructedType() instanceof SpringRequestEntity and
+    numArgs = this.getNumArgument()
+  }
+
+  Argument getUriArg() {
+    exists(Argument a | this.getAnArgument() = a and a.getType() instanceof TypeUri | result = a)
+  }
 }

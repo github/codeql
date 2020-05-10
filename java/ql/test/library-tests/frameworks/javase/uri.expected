@@ -1,0 +1,6 @@
+| Uri.java:14:19:14:33 | new URI(...) | Uri.java:14:27:14:32 | "uri1" |
+| Uri.java:17:19:17:53 | new URI(...) | Uri.java:17:35:17:39 | "ssp" |
+| Uri.java:21:20:21:86 | new URI(...) | Uri.java:21:48:21:53 | "host" |
+| Uri.java:23:20:23:62 | new URI(...) | Uri.java:23:36:23:41 | "host" |
+| Uri.java:26:20:26:76 | new URI(...) | Uri.java:26:36:26:46 | "authority" |
+| Uri.java:29:20:29:48 | create(...) | Uri.java:29:31:29:47 | "http://foo.com/" |

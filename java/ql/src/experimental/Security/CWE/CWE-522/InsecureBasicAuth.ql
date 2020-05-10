@@ -10,6 +10,7 @@
 
 import java
 import semmle.code.java.frameworks.Networking
+import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
@@ -19,19 +20,6 @@ import DataFlow::PathGraph
 private string getPrivateHostRegex() {
   result =
     "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?"
-}
-
-/**
- * The Java class `org.apache.http.client.methods.HttpRequestBase`. Popular subclasses include `HttpGet`, `HttpPost`, and `HttpPut`.
- * And the Java class `org.apache.http.message.BasicHttpRequest`.
- */
-class ApacheHttpRequest extends RefType {
-  ApacheHttpRequest() {
-    this
-        .getASourceSupertype*()
-        .hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
-    this.getASourceSupertype*().hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
-  }
 }
 
 /**
@@ -167,7 +155,7 @@ class HttpURLOpenMethod extends Method {
 /** Constructor of `ApacheHttpRequest` */
 predicate apacheHttpRequest(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
-    cc.getConstructedType() instanceof ApacheHttpRequest and
+    cc.getConstructedType() instanceof TypeApacheHttpRequestBase and
     node2.asExpr() = cc and
     cc.getAnArgument() = node1.asExpr()
   )
