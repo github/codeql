@@ -51,12 +51,29 @@ void test2(unsigned int count) {
   for(unsigned int i = 0; i < count; ++i) {
     a = (int*) malloc(sizeof(int) * count);
     for (int j = 0; j < count; ++j) {
-      a[j] = 0; // in-bounds TODO not detected
+      a[j] = 0; // in-bounds, but not detected due to RangeAnalysis shortcomings
+    }
+  }
+
+  for(unsigned int i = 0; i < 10; ++i) {
+    a = (int*) malloc(sizeof(int) * i);
+    for (unsigned int j = 0; j < i; ++j) {
+      a[j] = 0; // in-bounds
+    }
+  }
+
+}
+void test3(int count) {
+  for(int i = 0; i < count; ++i) {
+    int * a = (int*) malloc(sizeof(int) * i);
+    for (int j = 0; j < i; ++j) {
+      a[j] = 0; // in-bounds
     }
   }
 }
 
-void test3(unsigned long count) {
+
+void test4(unsigned long count) {
   if (count < 1) {
     return;  
   } 
@@ -74,13 +91,13 @@ void test3(unsigned long count) {
   a[count - 3] = 0; // in-bounds
 }
 
-void test4(unsigned int count) {
+void test5(unsigned int count) {
   int* a = (int*) malloc(sizeof(int) * count);
   a[0] = 0; // unknown, call-site dependant
 }
 
 
-void test5(unsigned int count, bool b) {
+void test6(unsigned int count, bool b) {
   if(count < 4) {
     return;
   }
@@ -96,14 +113,14 @@ void test5(unsigned int count, bool b) {
   a[0] = 0; // unknown
 }
 
-void test6(unsigned int object) {
+void test7(unsigned int object) {
   unsigned int* ptr = &object;
   *ptr = 0; // in-bounds, but needs ArrayLengthAnalysis improvements.
 }
 
-void test7() {
+void test8() {
   void (*foo)(unsigned int);
-  foo = &test6;
+  foo = &test7;
   foo(4); // in-bounds, but needs ArrayLengthAnalysis improvements.
 }
 

@@ -91,11 +91,14 @@ predicate inBounds(PointerDereferenceInstruction ptrDeref) {
         length instanceof VNLength and
         offset instanceof OpOffset and
         b.getValueNumber() = length.(VNLength).getValueNumber() and
+        // It holds that offset <= length + offsetBoundDelta
         boundedOperand(offset.(OpOffset).getOperand(), b, offsetBoundDelta, /*upper*/ true, _) and
-        // this ensures that offset <= length holds
-        offsetBoundDelta <= 0 and
-        // with that we get that offset + offsetDelta < length offsetBoundDelta + lengthDelta - offsetBoundDelta
+        // it also holds that
         offsetDelta < lengthDelta - offsetBoundDelta
+        // taking both inequalities together we get
+        //    offset <= length + offsetBoundDelta
+        // => offset + offsetDelta <= length + offsetBoundDelta + offsetDelta < length + offsetBoundDelta + lengthDelta - offsetBoundDelta
+        // as required
       )
     )
   )
