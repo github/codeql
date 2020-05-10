@@ -1,11 +1,23 @@
 edges
-| RequestForgery.java:20:21:20:51 | getParameter(...) : String | RequestForgery.java:21:36:21:38 | url |
-| RequestForgery.java:24:30:24:60 | getParameter(...) : String | RequestForgery.java:25:16:25:18 | url |
+| RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | RequestForgeryBad.java:22:36:22:38 | url |
+| RequestForgeryBad.java:25:30:25:60 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url |
+| RequestForgeryBad.java:30:26:30:56 | getParameter(...) : String | RequestForgeryBad.java:31:16:31:18 | url |
+| RequestForgeryBad.java:34:26:34:56 | getParameter(...) : String | RequestForgeryBad.java:35:16:35:18 | url |
+| RequestForgeryBad.java:38:26:38:56 | getParameter(...) : String | RequestForgeryBad.java:39:16:39:18 | url |
 nodes
-| RequestForgery.java:20:21:20:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:21:36:21:38 | url | semmle.label | url |
-| RequestForgery.java:24:30:24:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgery.java:25:16:25:18 | url | semmle.label | url |
+| RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgeryBad.java:22:36:22:38 | url | semmle.label | url |
+| RequestForgeryBad.java:25:30:25:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgeryBad.java:26:16:26:18 | url | semmle.label | url |
+| RequestForgeryBad.java:30:26:30:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgeryBad.java:31:16:31:18 | url | semmle.label | url |
+| RequestForgeryBad.java:34:26:34:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgeryBad.java:35:16:35:18 | url | semmle.label | url |
+| RequestForgeryBad.java:38:26:38:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgeryBad.java:39:16:39:18 | url | semmle.label | url |
 #select
-| RequestForgery.java:21:36:21:55 | openConnection(...) | RequestForgery.java:20:21:20:51 | getParameter(...) : String | RequestForgery.java:21:36:21:38 | url | URL on which openConnection is called may have been constructed from remote source |
-| RequestForgery.java:25:16:25:35 | openConnection(...) | RequestForgery.java:24:30:24:60 | getParameter(...) : String | RequestForgery.java:25:16:25:18 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgeryBad.java:22:36:22:55 | openConnection(...) | RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | RequestForgeryBad.java:22:36:22:38 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgeryBad.java:26:16:26:35 | openConnection(...) | RequestForgeryBad.java:25:30:25:60 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgeryBad.java:31:16:31:35 | openConnection(...) | RequestForgeryBad.java:30:26:30:56 | getParameter(...) : String | RequestForgeryBad.java:31:16:31:18 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgeryBad.java:35:16:35:35 | openConnection(...) | RequestForgeryBad.java:34:26:34:56 | getParameter(...) : String | RequestForgeryBad.java:35:16:35:18 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgeryBad.java:39:16:39:35 | openConnection(...) | RequestForgeryBad.java:38:26:38:56 | getParameter(...) : String | RequestForgeryBad.java:39:16:39:18 | url | URL on which openConnection is called may have been constructed from remote source |

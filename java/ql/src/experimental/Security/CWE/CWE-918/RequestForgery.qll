@@ -6,11 +6,39 @@ import DataFlow::PathGraph
 class URLConstructor extends ClassInstanceExpr {
   URLConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
-  Expr stringArg() {
-    // Query only in URL's that were constructed by calling the single parameter string constructor.
-    this.getConstructor().getNumberOfParameters() = 1 and
-    this.getConstructor().getParameter(0).getType() instanceof TypeString and
-    result = this.getArgument(0)
+  Expr specArg() {
+    // URL(String spec)
+    (
+      this.getConstructor().getNumberOfParameters() = 1 and
+      result = this.getArgument(0)
+    ) or
+    // URL(URL context, String spec)
+    (
+      this.getConstructor().getNumberOfParameters() = 2 and
+      this.getArgument(0).getType() instanceof TypeUrl and
+      this.getArgument(1).getType() instanceof TypeString and
+      result = this.getArgument(1)
+    )
+  }
+
+  Expr hostArg() {
+    // URL(String protocol, String host, int port, String file)
+    (
+      this.getConstructor().getNumberOfParameters() = 4 and
+      this.getArgument(0).getType() instanceof TypeString and
+      this.getArgument(1).getType() instanceof TypeString and
+      this.getArgument(2).getType() instanceof NumericType and
+      this.getArgument(3).getType() instanceof TypeString and
+      result = this.getArgument(1)
+    ) or 
+    // URL(String protocol, String host, String file)
+    (
+      this.getConstructor().getNumberOfParameters() = 3 and
+      this.getArgument(0).getType() instanceof TypeString and
+      this.getArgument(1).getType() instanceof TypeString and
+      this.getArgument(2).getType() instanceof TypeString and
+      result = this.getArgument(1)
+    )
   }
 }
 
@@ -34,7 +62,10 @@ class RemoteURLToOpenConnectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(URLConstructor u |
-      node1.asExpr() = u.stringArg() and
+      (
+        node1.asExpr() = u.specArg() or 
+        node1.asExpr() = u.hostArg()
+      ) and
       node2.asExpr() = u
     )
   }
