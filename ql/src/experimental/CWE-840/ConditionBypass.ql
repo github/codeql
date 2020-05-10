@@ -1,11 +1,10 @@
 /**
  * @name Comparision Expression Check Bypass
- * @description This query tests for user-controlled bypassing
- *  of a comparision expression i.e. instances where both the
- *  lhs and rhs of a comparision are user controlled.
+ * @description Comparing two user controlled inputs may
+ * lead to an effective bypass of the comparison check.
  * @id go/condition-bypass
  * @kind problem
- * @problem.severity medium
+ * @problem.severity warning
  * @tags external/cwe/cwe-840
  */
 
@@ -20,11 +19,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     source instanceof UntrustedFlowSource
     or
-    exists(string fieldName |
-      source.(DataFlow::FieldReadNode).getField().hasQualifiedName("net/http", "Request", fieldName)
-    |
-      fieldName = "Host"
-    )
+    source = any(Field f | f.hasQualifiedName("net/http", "Request", "Host")).getARead()
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -40,5 +35,5 @@ where
   rhs.getNode().asExpr() = c.getRightOperand() and
   config.hasFlowPath(lhsSource, lhs) and
   lhs.getNode().asExpr() = c.getLeftOperand()
-select c, "This comparision is between user controlled operands and "
-+ "hence may be bypassed."
+select c, "This comparision is between user controlled operands derived from $@", lhsSource,
+  " and $@", rhsSource, "hence may be bypassed."

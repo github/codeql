@@ -8,15 +8,15 @@ a bypass of the conditional check as the attacker may modify parameters to match
     </overview>
     <recommendation>
         <p>
-To guard against this, it is advisable to avoid framing a comparision 
+To guard against this, it is advisable to avoid framing a comparison 
 where both sides are untrusted user inputs.
 Instead, use a configuration to store and access the values required.
 </p>
     </recommendation>
     <example>
         <p>
-The following example shows a comparision where both the sides 
-are from attacker controlled request headers. This should be avoided.:
+The following example shows a comparison where both the sides 
+are from attacker-controlled request headers. This should be avoided.:
 </p>
         <sample src="ConditionBypassBad.go" />
         <p>
@@ -24,12 +24,4 @@ One way to remedy the problem is to test against a value stored in a configurati
 </p>
         <sample src="ConditionBypassGood.go" />
     </example>
-    <references>
-        <li>
-            MITRE:
-            <a href="https://cwe.mitre.org/data/definitions/840.html">
-                CWE-840.
-            </a>
-        </li>
-    </references>
 </qhelp>
