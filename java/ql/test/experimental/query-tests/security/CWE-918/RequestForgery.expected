@@ -1,0 +1,11 @@
+edges
+| RequestForgery.java:20:21:20:51 | getParameter(...) : String | RequestForgery.java:21:36:21:38 | url |
+| RequestForgery.java:24:30:24:60 | getParameter(...) : String | RequestForgery.java:25:16:25:18 | url |
+nodes
+| RequestForgery.java:20:21:20:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:21:36:21:38 | url | semmle.label | url |
+| RequestForgery.java:24:30:24:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RequestForgery.java:25:16:25:18 | url | semmle.label | url |
+#select
+| RequestForgery.java:21:36:21:55 | openConnection(...) | RequestForgery.java:20:21:20:51 | getParameter(...) : String | RequestForgery.java:21:36:21:38 | url | URL on which openConnection is called may have been constructed from remote source |
+| RequestForgery.java:25:16:25:35 | openConnection(...) | RequestForgery.java:24:30:24:60 | getParameter(...) : String | RequestForgery.java:25:16:25:18 | url | URL on which openConnection is called may have been constructed from remote source |
