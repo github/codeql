@@ -44,7 +44,7 @@ namespace Semmle.Extraction.Tests
         public IDictionary<string, string> RunProcessOut = new Dictionary<string, string>();
         public IDictionary<string, string> RunProcessWorkingDirectory = new Dictionary<string, string>();
 
-        int IBuildActions.RunProcess(string cmd, string args, string workingDirectory, IDictionary<string, string> env, out IList<string> stdOut)
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut)
         {
             var pattern = cmd + " " + args;
             RunProcessIn.Add(pattern);
@@ -60,7 +60,7 @@ namespace Semmle.Extraction.Tests
             throw new ArgumentException("Missing RunProcess " + pattern);
         }
 
-        int IBuildActions.RunProcess(string cmd, string args, string workingDirectory, IDictionary<string, string> env)
+        int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env)
         {
             var pattern = cmd + " " + args;
             RunProcessIn.Add(pattern);
@@ -90,16 +90,16 @@ namespace Semmle.Extraction.Tests
             throw new ArgumentException("Missing DirectoryExists " + dir);
         }
 
-        public IDictionary<string, string> GetEnvironmentVariable = new Dictionary<string, string>();
+        public IDictionary<string, string?> GetEnvironmentVariable = new Dictionary<string, string?>();
 
-        string IBuildActions.GetEnvironmentVariable(string name)
+        string? IBuildActions.GetEnvironmentVariable(string name)
         {
             if (GetEnvironmentVariable.TryGetValue(name, out var ret))
                 return ret;
             throw new ArgumentException("Missing GetEnvironmentVariable " + name);
         }
 
-        public string GetCurrentDirectory;
+        public string GetCurrentDirectory = "";
 
         string IBuildActions.GetCurrentDirectory()
         {
@@ -334,10 +334,10 @@ namespace Semmle.Extraction.Tests
         }
 
         Autobuilder CreateAutoBuilder(string lgtmLanguage, bool isWindows,
-            string buildless = null, string solution = null, string buildCommand = null, string ignoreErrors = null,
-            string msBuildArguments = null, string msBuildPlatform = null, string msBuildConfiguration = null, string msBuildTarget = null,
-            string dotnetArguments = null, string dotnetVersion = null, string vsToolsVersion = null,
-            string nugetRestore = null, string allSolutions = null,
+            string? buildless = null, string? solution = null, string? buildCommand = null, string? ignoreErrors = null,
+            string? msBuildArguments = null, string? msBuildPlatform = null, string? msBuildConfiguration = null, string? msBuildTarget = null,
+            string? dotnetArguments = null, string? dotnetVersion = null, string? vsToolsVersion = null,
+            string? nugetRestore = null, string? allSolutions = null,
             string cwd = @"C:\Project")
         {
             Actions.GetEnvironmentVariable["CODEQL_AUTOBUILDER_CSHARP_NO_INDEXING"] = "false";

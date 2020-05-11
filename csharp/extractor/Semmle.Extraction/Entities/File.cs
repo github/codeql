@@ -50,12 +50,12 @@ namespace Semmle.Extraction.Entities
                         Where(t => t.FilePath == Path).
                         Select(tree => tree.GetText()))
                     {
-                        var rawText = text.ToString();
+                        var rawText = text.ToString() ?? "";
                         var lineCounts = LineCounter.ComputeLineCounts(rawText);
                         if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
 
                         trapFile.numlines(this, lineCounts);
-                        Context.TrapWriter.Archive(fi.FullName, text.Encoding);
+                        Context.TrapWriter.Archive(fi.FullName, text.Encoding ?? System.Text.Encoding.Default);
                     }
                 }
 
@@ -111,17 +111,17 @@ namespace Semmle.Extraction.Entities
             }
 
             public static GeneratedFile Create(Context cx) =>
-                GeneratedFileFactory.Instance.CreateEntity(cx, null);
+                GeneratedFileFactory.Instance.CreateNullableEntity(cx, null);
 
-            class GeneratedFileFactory : ICachedEntityFactory<string, GeneratedFile>
+            class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
             {
                 public static readonly GeneratedFileFactory Instance = new GeneratedFileFactory();
 
-                public GeneratedFile Create(Context cx, string init) => new GeneratedFile(cx);
+                public GeneratedFile Create(Context cx, string? init) => new GeneratedFile(cx);
             }
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         class FileFactory : ICachedEntityFactory<string, File>
         {

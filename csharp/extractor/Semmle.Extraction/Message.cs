@@ -15,23 +15,23 @@ namespace Semmle.Extraction
         public readonly string Text;
         public readonly string StackTrace;
         public readonly string EntityText;
-        public readonly Entities.Location Location;
+        public readonly Entities.Location? Location;
 
-        public Message(string text, string entityText, Entities.Location location, string stackTrace="", Severity severity = Severity.Error)
+        public Message(string text, string entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             Severity = severity;
             Text = text;
-            StackTrace = stackTrace;
+            StackTrace = stackTrace ?? "";
             EntityText = entityText;
             Location = location;
         }
 
-        public static Message Create(Context cx, string text, ISymbol symbol, string stackTrace= "", Severity severity = Severity.Error)
+        public static Message Create(Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
         {
-            return new Message(text, symbol.ToString(), Entities.Location.Create(cx, symbol.Locations.FirstOrDefault()), stackTrace, severity);
+            return new Message(text, symbol.ToString() ?? "", Entities.Location.Create(cx, symbol.Locations.FirstOrDefault()), stackTrace, severity);
         }
 
-        public static Message Create(Context cx, string text, SyntaxNode node, string stackTrace = "", Severity severity = Severity.Error)
+        public static Message Create(Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
         {
             return new Message(text, node.ToString(), Entities.Location.Create(cx, node.GetLocation()), stackTrace, severity);
         }
