@@ -54,7 +54,7 @@ func goodRedirect3(url string, rw http.ResponseWriter, req *http.Request) {
 func getTarget(redirect string) string {
 	u, _ := url.Parse(redirect)
 
-	if u.Path[0] != "/" {
+	if u.Path[0] != '/' {
 		return "/"
 	}
 
@@ -66,21 +66,21 @@ func goodRedirect4(url string, rw http.ResponseWriter, req *http.Request) {
 }
 
 func getTarget1(redirect string) string {
-	if redirect[0] != "/" {
+	if redirect[0] != '/' {
 		return "/"
 	}
 
 	return path.Clean(redirect)
 }
 
-func badRedirect2(url string, rw http.ResponseWriter, req *http.Request) {
+func badRedirect1(url string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, getTarget1(url), 302)
 }
 
 func getTarget2(redirect string) string {
 	u, _ := url.Parse(redirect)
 
-	if u.Path[0] != "/" {
+	if u.Path[0] != '/' {
 		return "/"
 	}
 
