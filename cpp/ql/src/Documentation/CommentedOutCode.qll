@@ -171,7 +171,7 @@ class CommentBlock extends Comment {
   }
 
   /**
-   * This predicate holds if the comment block is a C style comment, and each
+   * Holds if the comment block is a C-style comment, and each
    * comment line starts with a *.
    */
   predicate isDocumentation() {
