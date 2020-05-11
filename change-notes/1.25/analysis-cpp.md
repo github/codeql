@@ -18,7 +18,7 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
 * The data-flow library has been improved, which affects most security queries by potentially
   adding more results. Flow through functions now takes nested field reads/writes into account.
-  For example, the library is able to track flow from `"taint"` to `sink()` via the method
+  For example, the library is able to track flow from `taint()` to `sink()` via the method
   `getf2f1()` in
   ```c
   struct C {
@@ -27,7 +27,7 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
   struct C2
   {
-    C f2;
+      C f2;
 
       int getf2f1() {
           return f2.f1; // Nested field read
@@ -35,7 +35,7 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
       void m() {
           f2.f1 = taint();
-          sink(getf2f1()); // NEW: "taint" reaches here
+          sink(getf2f1()); // NEW: taint() reaches here
       }
   };
   ```
