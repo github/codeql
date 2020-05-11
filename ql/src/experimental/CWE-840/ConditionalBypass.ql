@@ -14,7 +14,7 @@ import go
  * A taint-tracking configuration for reasoning about conditional bypass.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ConitionalBypass" }
+  Configuration() { this = "ConditionalBypass" }
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof UntrustedFlowSource
