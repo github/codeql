@@ -161,6 +161,4 @@ You could also try writing more of your own QL queries to find interesting facts
 Further reading
 ---------------
 
--  Learn more about recursion in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Put your QL skills to the test and solve the :doc:`River crossing puzzle <cross-the-river>`.
--  Start using QL to analyze projects. See :doc:`Learning CodeQL <../../index>` for a summary of the available languages and resources.
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
