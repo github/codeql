@@ -28,7 +28,6 @@
 | LocalClass | LocalClass |
 | LocalClass | n |
 | MemberClass | MemberClass |
-| Object | <clinit> |
 | Object | Object |
 | Object | clone |
 | Object | equals |

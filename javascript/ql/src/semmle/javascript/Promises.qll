@@ -176,7 +176,7 @@ module PromiseTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = LoadStoreStep(field) and
+      summary = CopyStep(field) and
       step.loadStore(pred, result, field)
     )
   }
@@ -232,9 +232,9 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
-  final override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+  final override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     this.store(pred, succ, prop)
   }
 
@@ -245,6 +245,12 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 
   final override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.loadStore(pred, succ, prop)
+  }
+
+  final override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    none()
   }
 }
 
@@ -267,7 +273,7 @@ private module PromiseFlow {
 
     PromiseDefitionStep() { this = promise }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = valueProp() and
       pred = promise.getResolveParameter().getACall().getArgument(0) and
       succ = this
@@ -296,7 +302,7 @@ private module PromiseFlow {
 
     CreationStep() { this = promise }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = valueProp() and
       pred = promise.getValue() and
       succ = this
@@ -362,7 +368,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = valueProp() and
       pred = getCallback([0 .. 1]).getAReturn() and
       succ = this
@@ -396,7 +402,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = errorProp() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this
@@ -424,7 +430,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = errorProp() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this

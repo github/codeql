@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CommentProcessing
     /// <param name="duplicationGuardKey">The duplication guard key of the element, if any</param>
     /// <param name="commentBlock">The comment block associated with the element</param>
     /// <param name="binding">The relationship between the commentblock and the element</param>
-    public delegate void CommentBindingCallback(Label elementLabel, Key duplicationGuardKey, ICommentBlock commentBlock, CommentBinding binding);
+    public delegate void CommentBindingCallback(Label elementLabel, Key? duplicationGuardKey, ICommentBlock commentBlock, CommentBinding binding);
 
     /// <summary>
     /// Computes the binding information between comments and program elements.
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementLabel">Label of the element.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="location">Location of the element.</param>
-        void AddElement(Label elementLabel, Key duplicationGuardKey, Location location);
+        void AddElement(Label elementLabel, Key? duplicationGuardKey, Location location);
 
         /// <summary>
         /// Registers a line of comment.

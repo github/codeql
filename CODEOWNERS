@@ -1,11 +1,20 @@
-/cpp/ @Semmle/cpp-analysis
-/csharp/ @Semmle/cs
-/java/ @Semmle/java
-/javascript/ @Semmle/js
-/python/ @Semmle/python
+/cpp/ @github/codeql-c-analysis
+/csharp/ @github/codeql-csharp
+/java/ @github/codeql-java
+/javascript/ @github/codeql-javascript
+/python/ @github/codeql-python
+
+# Assign query help for docs review
 /cpp/**/*.qhelp @hubwriter
 /csharp/**/*.qhelp @jf205
 /java/**/*.qhelp @felicitymay
 /javascript/**/*.qhelp @mchammer01
 /python/**/*.qhelp @felicitymay
 /docs/language/ @shati-patel @jf205
+
+# Exclude help for experimental queries from docs review
+/cpp/**/experimental/**/*.qhelp @github/codeql-c-analysis
+/csharp/**/experimental/**/*.qhelp @github/codeql-csharp
+/java/**/experimental/**/*.qhelp @github/codeql-java
+/javascript/**/experimental/**/*.qhelp @github/codeql-javascript
+/python/**/experimental/**/*.qhelp @github/codeql-python

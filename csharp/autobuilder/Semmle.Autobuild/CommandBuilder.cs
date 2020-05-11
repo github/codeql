@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -13,10 +13,10 @@ namespace Semmle.Autobuild
 
         readonly StringBuilder arguments;
         bool firstCommand;
-        string executable;
+        string? executable;
         readonly EscapeMode escapingMode;
-        readonly string workingDirectory;
-        readonly IDictionary<string, string> environment;
+        readonly string? workingDirectory;
+        readonly IDictionary<string, string>? environment;
         readonly bool silent;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Semmle.Autobuild
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="environment">Additional environment variables.</param>
         /// <param name="silent">Whether this command should be run silently.</param>
-        public CommandBuilder(IBuildActions actions, string workingDirectory = null, IDictionary<string, string> environment = null, bool silent = false)
+        public CommandBuilder(IBuildActions actions, string? workingDirectory = null, IDictionary<string, string>? environment = null, bool silent = false)
         {
             arguments = new StringBuilder();
             if (actions.IsWindows())
@@ -50,7 +50,7 @@ namespace Semmle.Autobuild
             RunCommand(odasa, "index --auto");
         }
 
-        public CommandBuilder CallBatFile(string batFile, string argumentsOpt = null)
+        public CommandBuilder CallBatFile(string batFile, string? argumentsOpt = null)
         {
             NextCommand();
             arguments.Append(" CALL");
@@ -66,7 +66,7 @@ namespace Semmle.Autobuild
         /// <param name="command">The command to run.</param>
         /// <param name="argumentsOpt">Additional arguments.</param>
         /// <returns>this for chaining calls.</returns>
-        public CommandBuilder IndexCommand(string odasa, string command, string argumentsOpt = null)
+        public CommandBuilder IndexCommand(string odasa, string command, string? argumentsOpt = null)
         {
             OdasaIndex(odasa);
             QuoteArgument(command);
@@ -151,7 +151,7 @@ namespace Semmle.Autobuild
                 arguments.Append(' ');
         }
 
-        public CommandBuilder Argument(string argumentsOpt)
+        public CommandBuilder Argument(string? argumentsOpt)
         {
             if (argumentsOpt != null)
             {
@@ -169,7 +169,7 @@ namespace Semmle.Autobuild
                 arguments.Append(" &&");
         }
 
-        public CommandBuilder RunCommand(string exe, string argumentsOpt = null)
+        public CommandBuilder RunCommand(string exe, string? argumentsOpt = null, bool quoteExe = true)
         {
             var (exe0, arg0) =
                 escapingMode == EscapeMode.Process && exe.EndsWith(".exe", System.StringComparison.Ordinal)
@@ -183,7 +183,10 @@ namespace Semmle.Autobuild
             }
             else
             {
-                QuoteArgument(exe0);
+                if (quoteExe)
+                    QuoteArgument(exe0);
+                else
+                    Argument(exe0);
             }
             Argument(arg0);
             Argument(argumentsOpt);
@@ -193,6 +196,14 @@ namespace Semmle.Autobuild
         /// <summary>
         /// Returns a build script that contains just this command.
         /// </summary>
-        public BuildScript Script => BuildScript.Create(executable, arguments.ToString(), silent, workingDirectory, environment);
+        public BuildScript Script
+        {
+            get
+            {
+                if (executable is null)
+                    throw new System.InvalidOperationException("executable is null");
+                return BuildScript.Create(executable, arguments.ToString(), silent, workingDirectory, environment);
+            }
+        }
     }
 }

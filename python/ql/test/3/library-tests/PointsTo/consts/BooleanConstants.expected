@@ -1,5 +1,3 @@
-WARNING: Predicate points_to has been deprecated and may be removed in future (BooleanConstants.ql:6,25-44)
-WARNING: Predicate points_to has been deprecated and may be removed in future (BooleanConstants.ql:7,29-48)
 | module.py | 2 | ControlFlowNode for ImportExpr | import | true |
 | module.py | 2 | ControlFlowNode for sys | import | true |
 | module.py | 3 | ControlFlowNode for Compare | import | false |

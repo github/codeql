@@ -43,7 +43,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  Function getEnclosingCallable() { result = this.getFunction() }
+  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -299,7 +299,7 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override Location getLocation() { result = pd.getLocation() }
+  override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
@@ -496,8 +496,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
-  exprToExprStep_nocfg(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), nodeTo.asExpr())
-  or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
     (
@@ -657,7 +655,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getFunction() = node2.getFunction()
+    node1.getEnclosingCallable() = node2.getEnclosingCallable()
   }
 }
 

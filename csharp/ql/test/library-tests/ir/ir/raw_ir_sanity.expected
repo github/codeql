@@ -9,6 +9,7 @@ instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges

@@ -64,8 +64,12 @@ class OpenNode extends TaintSink {
 
     OpenNode() {
         exists(CallNode call |
-            call.getFunction().refersTo(Object::builtin("open")) and
-            call.getAnArg() = this
+            call = Value::named("open").getACall() and
+            (
+                call.getArg(0) = this
+                or
+                call.getArgByName("file") = this
+            )
         )
     }
 

@@ -459,7 +459,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = fsModuleMember(methodName).getACall() }
+    NodeJSFileSystemAccess() { this = maybePromisified(fsModuleMember(methodName)).getACall() }
 
     /**
      * Gets the name of the called method.
@@ -587,13 +587,26 @@ module NodeJSLib {
   }
 
   /**
+   * Gets a possibly promisified (using `util.promisify`) version of the input `callback`.
+   */
+  private DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
+    result = callback
+    or
+    exists(DataFlow::CallNode promisify |
+      promisify = DataFlow::moduleMember("util", "promisify").getACall()
+    |
+      result = promisify and promisify.getArgument(0).getALocalSource() = callback
+    )
+  }
+
+  /**
    * A call to a method from module `child_process`.
    */
   private class ChildProcessMethodCall extends SystemCommandExecution, DataFlow::CallNode {
     string methodName;
 
     ChildProcessMethodCall() {
-      this = DataFlow::moduleMember("child_process", methodName).getACall()
+      this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {

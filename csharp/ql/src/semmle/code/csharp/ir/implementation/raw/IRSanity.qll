@@ -150,6 +150,26 @@ module InstructionSanity {
   }
 
   /**
+   * Holds if a memory operand is connected to a definition with an unmodeled result, other than
+   * `UnmodeledDefinition` itself.
+   */
+  query predicate memoryOperandDefinitionIsUnmodeled(
+    Instruction instr, string message, IRFunction func, string funcText
+  ) {
+    exists(MemoryOperand operand, Instruction def |
+      operand = instr.getAnOperand() and
+      not operand instanceof UnmodeledUseOperand and
+      def = operand.getAnyDef() and
+      not def.isResultModeled() and
+      not def instanceof UnmodeledDefinitionInstruction and
+      message =
+        "Memory operand definition has unmodeled result, but is not the `UnmodeledDefinition` instruction in function '$@'" and
+      func = instr.getEnclosingIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction())
+    )
+  }
+
+  /**
    * Holds if operand `operand` consumes a value that was defined in
    * a different function.
    */

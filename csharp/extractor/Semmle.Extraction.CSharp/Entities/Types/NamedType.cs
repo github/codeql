@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (symbol.TypeKind == TypeKind.Error)
             {
-                Context.Extractor.MissingType(symbol.ToString());
+                Context.Extractor.MissingType(symbol.ToString(), Context.FromSource);
                 return;
             }
 
@@ -40,8 +40,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else if (symbol.IsReallyUnbound())
                 {
-                    trapFile.is_generic(this);
-
                     for (int i = 0; i < symbol.TypeParameters.Length; ++i)
                     {
                         TypeParameter.Create(Context, symbol.TypeParameters[i]);
@@ -52,7 +50,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    trapFile.is_constructed(this);
                     trapFile.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef);
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)

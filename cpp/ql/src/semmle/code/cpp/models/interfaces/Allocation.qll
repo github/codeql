@@ -73,6 +73,11 @@ abstract class AllocationExpr extends Expr {
   Expr getReallocPtr() { none() }
 
   /**
+   * Gets the type of the elements that are allocated, if it can be determined.
+   */
+  Type getAllocatedElementType() { none() }
+
+  /**
    * Whether or not this allocation requires a corresponding deallocation of
    * some sort (most do, but `alloca` for example does not).  If it is unclear,
    * we default to no (for example a placement `new` allocation may or may not

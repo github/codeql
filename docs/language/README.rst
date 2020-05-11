@@ -104,12 +104,12 @@ generates html slide shows in the ``<slides-output>`` directory when run from
 the ``ql-training`` source directory.
 
 For more information about creating slides for QL training and variant analysis 
-examples, see the `template slide deck <https://github.com/Semmle/ql/blob/master/docs/language/ql-training/template.rst>`__.
+examples, see the `template slide deck <https://github.com/github/codeql/blob/master/docs/language/ql-training/template.rst>`__.
 
 Viewing the current version of the CodeQL documentation
 *******************************************************
 
-The documentation for the most recent Semmle release is 
+The documentation for the most recent release is 
 published to `help.semmle.com <https://help.semmle.com>`__. 
 There, you can also find the documentation for the CodeQL CLI,
 the CodeQL extension for Visual Studio Code, and LGTM Enterprise. 

@@ -68,21 +68,27 @@ newtype Completion =
    */
   ThrowCompletion(ThrowableType tt)
 
+/** A completion that is either a `NormalCompletion` or a `BooleanCompletion`. */
 class NormalOrBooleanCompletion extends Completion {
   NormalOrBooleanCompletion() {
     this instanceof NormalCompletion or this instanceof BooleanCompletion
   }
 
+  /** Gets a textual representation of this completion. */
   string toString() { result = "completion" }
 }
 
+/** Gets the completion `ContinueCompletion(NoLabel())`. */
 ContinueCompletion anonymousContinueCompletion() { result = ContinueCompletion(NoLabel()) }
 
+/** Gets the completion `ContinueCompletion(JustLabel(l))`. */
 ContinueCompletion labelledContinueCompletion(Label l) { result = ContinueCompletion(JustLabel(l)) }
 
+/** Gets the completion `BreakCompletion(NoLabel())`. */
 BreakCompletion anonymousBreakCompletion() { result = BreakCompletion(NoLabel()) }
 
+/** Gets the completion `BreakCompletion(JustLabel(l))`. */
 BreakCompletion labelledBreakCompletion(Label l) { result = BreakCompletion(JustLabel(l)) }
 
-/** Gets the completion `booleanCompletion(value, value)`. */
+/** Gets the completion `BooleanCompletion(value, value)`. */
 Completion basicBooleanCompletion(boolean value) { result = BooleanCompletion(value, value) }

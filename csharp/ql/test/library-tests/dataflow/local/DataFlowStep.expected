@@ -24,8 +24,7 @@
 | Capture.cs:58:21:58:21 | 1 | Capture.cs:58:17:58:21 | SSA def(i) |
 | Capture.cs:61:17:61:17 | 1 | Capture.cs:61:13:61:17 | SSA def(i) |
 | Capture.cs:63:9:63:17 | SSA call def(i) | Capture.cs:64:13:64:13 | access to local variable i |
-| LocalDataFlow.cs:49:23:49:23 | this | LocalDataFlow.cs:299:39:299:51 | this access |
-| LocalDataFlow.cs:49:30:49:30 | b | LocalDataFlow.cs:96:21:96:21 | access to parameter b |
+| LocalDataFlow.cs:49:30:49:30 | b | LocalDataFlow.cs:85:21:85:21 | access to parameter b |
 | LocalDataFlow.cs:52:13:52:34 | SSA def(sink0) | LocalDataFlow.cs:53:15:53:19 | access to local variable sink0 |
 | LocalDataFlow.cs:52:21:52:34 | "taint source" | LocalDataFlow.cs:52:13:52:34 | SSA def(sink0) |
 | LocalDataFlow.cs:53:15:53:19 | [post] access to local variable sink0 | LocalDataFlow.cs:61:18:61:22 | access to local variable sink0 |
@@ -38,567 +37,402 @@
 | LocalDataFlow.cs:60:21:60:25 | "abc" | LocalDataFlow.cs:60:13:60:25 | SSA def(sink1) |
 | LocalDataFlow.cs:61:9:61:22 | ... + ... | LocalDataFlow.cs:61:9:61:22 | SSA def(sink1) |
 | LocalDataFlow.cs:61:9:61:22 | SSA def(sink1) | LocalDataFlow.cs:62:15:62:19 | access to local variable sink1 |
-| LocalDataFlow.cs:61:18:61:22 | access to local variable sink0 | LocalDataFlow.cs:204:20:204:24 | access to local variable sink0 |
-| LocalDataFlow.cs:62:15:62:19 | [post] access to local variable sink1 | LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 |
-| LocalDataFlow.cs:62:15:62:19 | access to local variable sink1 | LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 |
+| LocalDataFlow.cs:61:18:61:22 | access to local variable sink0 | LocalDataFlow.cs:169:20:169:24 | access to local variable sink0 |
+| LocalDataFlow.cs:62:15:62:19 | [post] access to local variable sink1 | LocalDataFlow.cs:69:21:69:25 | access to local variable sink1 |
+| LocalDataFlow.cs:62:15:62:19 | access to local variable sink1 | LocalDataFlow.cs:69:21:69:25 | access to local variable sink1 |
 | LocalDataFlow.cs:65:9:65:25 | ... + ... | LocalDataFlow.cs:65:9:65:25 | SSA def(nonSink0) |
 | LocalDataFlow.cs:65:9:65:25 | SSA def(nonSink0) | LocalDataFlow.cs:66:15:66:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:66:15:66:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:75:24:75:31 | access to local variable nonSink0 |
-| LocalDataFlow.cs:66:15:66:22 | access to local variable nonSink0 | LocalDataFlow.cs:75:24:75:31 | access to local variable nonSink0 |
-| LocalDataFlow.cs:69:13:69:51 | SSA def(sink2) | LocalDataFlow.cs:70:9:70:13 | access to local variable sink2 |
-| LocalDataFlow.cs:69:21:69:51 | object creation of type Dictionary<Int32,String[]> | LocalDataFlow.cs:69:13:69:51 | SSA def(sink2) |
-| LocalDataFlow.cs:70:9:70:13 | [post] access to local variable sink2 | LocalDataFlow.cs:71:15:71:19 | access to local variable sink2 |
-| LocalDataFlow.cs:70:9:70:13 | access to local variable sink2 | LocalDataFlow.cs:71:15:71:19 | access to local variable sink2 |
-| LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 | LocalDataFlow.cs:76:18:76:22 | access to local variable sink1 |
-| LocalDataFlow.cs:74:13:74:55 | SSA def(nonSink1) | LocalDataFlow.cs:75:9:75:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:74:24:74:55 | object creation of type Dictionary<String,String> | LocalDataFlow.cs:74:13:74:55 | SSA def(nonSink1) |
-| LocalDataFlow.cs:75:9:75:16 | [post] access to local variable nonSink1 | LocalDataFlow.cs:76:9:76:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:75:9:75:16 | access to local variable nonSink1 | LocalDataFlow.cs:76:9:76:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:75:24:75:31 | [post] access to local variable nonSink0 | LocalDataFlow.cs:84:20:84:27 | access to local variable nonSink0 |
-| LocalDataFlow.cs:75:24:75:31 | access to local variable nonSink0 | LocalDataFlow.cs:84:20:84:27 | access to local variable nonSink0 |
-| LocalDataFlow.cs:76:9:76:16 | [post] access to local variable nonSink1 | LocalDataFlow.cs:77:15:77:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:76:9:76:16 | access to local variable nonSink1 | LocalDataFlow.cs:77:15:77:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:76:18:76:22 | [post] access to local variable sink1 | LocalDataFlow.cs:80:21:80:25 | access to local variable sink1 |
-| LocalDataFlow.cs:76:18:76:22 | access to local variable sink1 | LocalDataFlow.cs:80:21:80:25 | access to local variable sink1 |
-| LocalDataFlow.cs:80:13:80:32 | SSA def(sink5) | LocalDataFlow.cs:81:15:81:19 | access to local variable sink5 |
-| LocalDataFlow.cs:80:21:80:25 | access to local variable sink1 | LocalDataFlow.cs:204:33:204:37 | access to local variable sink1 |
-| LocalDataFlow.cs:80:21:80:32 | ... + ... | LocalDataFlow.cs:80:13:80:32 | SSA def(sink5) |
-| LocalDataFlow.cs:81:15:81:19 | [post] access to local variable sink5 | LocalDataFlow.cs:88:22:88:26 | access to local variable sink5 |
-| LocalDataFlow.cs:81:15:81:19 | access to local variable sink5 | LocalDataFlow.cs:88:22:88:26 | access to local variable sink5 |
-| LocalDataFlow.cs:84:9:84:36 | SSA def(nonSink0) | LocalDataFlow.cs:85:15:85:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:84:20:84:36 | ... + ... | LocalDataFlow.cs:84:9:84:36 | SSA def(nonSink0) |
-| LocalDataFlow.cs:85:15:85:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:92:21:92:28 | access to local variable nonSink0 |
-| LocalDataFlow.cs:85:15:85:22 | access to local variable nonSink0 | LocalDataFlow.cs:92:21:92:28 | access to local variable nonSink0 |
-| LocalDataFlow.cs:88:13:88:27 | SSA def(sink6) | LocalDataFlow.cs:89:15:89:19 | access to local variable sink6 |
-| LocalDataFlow.cs:88:22:88:26 | access to local variable sink5 | LocalDataFlow.cs:88:13:88:27 | SSA def(sink6) |
-| LocalDataFlow.cs:89:15:89:19 | [post] access to local variable sink6 | LocalDataFlow.cs:96:31:96:35 | [b (line 49): false] access to local variable sink6 |
-| LocalDataFlow.cs:89:15:89:19 | access to local variable sink6 | LocalDataFlow.cs:96:31:96:35 | [b (line 49): false] access to local variable sink6 |
-| LocalDataFlow.cs:92:9:92:29 | SSA def(nonSink0) | LocalDataFlow.cs:93:15:93:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:92:21:92:28 | access to local variable nonSink0 | LocalDataFlow.cs:92:9:92:29 | SSA def(nonSink0) |
-| LocalDataFlow.cs:96:13:96:35 | [b (line 49): false] SSA def(sink7) | LocalDataFlow.cs:97:15:97:19 | [b (line 49): false] access to local variable sink7 |
-| LocalDataFlow.cs:96:13:96:35 | [b (line 49): true] SSA def(sink7) | LocalDataFlow.cs:97:15:97:19 | [b (line 49): true] access to local variable sink7 |
-| LocalDataFlow.cs:96:21:96:21 | access to parameter b | LocalDataFlow.cs:100:20:100:20 | [b (line 49): false] access to parameter b |
-| LocalDataFlow.cs:96:21:96:21 | access to parameter b | LocalDataFlow.cs:100:20:100:20 | [b (line 49): true] access to parameter b |
-| LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... | LocalDataFlow.cs:96:13:96:35 | [b (line 49): false] SSA def(sink7) |
-| LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... | LocalDataFlow.cs:96:13:96:35 | [b (line 49): true] SSA def(sink7) |
-| LocalDataFlow.cs:96:25:96:27 | [b (line 49): true] "a" | LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... |
-| LocalDataFlow.cs:96:31:96:35 | [b (line 49): false] access to local variable sink6 | LocalDataFlow.cs:96:21:96:35 | ... ? ... : ... |
-| LocalDataFlow.cs:97:15:97:19 | [b (line 49): false] access to local variable sink7 | LocalDataFlow.cs:100:9:100:36 | SSA phi(sink7) |
-| LocalDataFlow.cs:97:15:97:19 | [b (line 49): true] access to local variable sink7 | LocalDataFlow.cs:100:9:100:36 | SSA phi(sink7) |
-| LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) | LocalDataFlow.cs:101:15:101:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:100:9:100:36 | SSA phi(sink7) | LocalDataFlow.cs:104:29:104:33 | access to local variable sink7 |
-| LocalDataFlow.cs:100:20:100:36 | [b (line 49): false] ... ? ... : ... | LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) |
-| LocalDataFlow.cs:100:20:100:36 | [b (line 49): true] ... ? ... : ... | LocalDataFlow.cs:100:9:100:36 | SSA def(nonSink0) |
-| LocalDataFlow.cs:100:24:100:28 | "abc" | LocalDataFlow.cs:100:20:100:36 | [b (line 49): true] ... ? ... : ... |
-| LocalDataFlow.cs:100:32:100:36 | "def" | LocalDataFlow.cs:100:20:100:36 | [b (line 49): false] ... ? ... : ... |
-| LocalDataFlow.cs:101:15:101:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:108:32:108:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:101:15:101:22 | access to local variable nonSink0 | LocalDataFlow.cs:108:32:108:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:104:13:104:33 | SSA def(sink8) | LocalDataFlow.cs:105:15:105:19 | access to local variable sink8 |
-| LocalDataFlow.cs:104:21:104:33 | (...) ... | LocalDataFlow.cs:104:13:104:33 | SSA def(sink8) |
-| LocalDataFlow.cs:104:29:104:33 | access to local variable sink7 | LocalDataFlow.cs:104:21:104:33 | (...) ... |
-| LocalDataFlow.cs:105:15:105:19 | [post] access to local variable sink8 | LocalDataFlow.cs:112:21:112:25 | access to local variable sink8 |
-| LocalDataFlow.cs:105:15:105:19 | access to local variable sink8 | LocalDataFlow.cs:112:21:112:25 | access to local variable sink8 |
-| LocalDataFlow.cs:108:13:108:39 | SSA def(nonSink3) | LocalDataFlow.cs:109:15:109:22 | access to local variable nonSink3 |
-| LocalDataFlow.cs:108:24:108:39 | (...) ... | LocalDataFlow.cs:108:13:108:39 | SSA def(nonSink3) |
-| LocalDataFlow.cs:108:32:108:39 | access to local variable nonSink0 | LocalDataFlow.cs:108:24:108:39 | (...) ... |
-| LocalDataFlow.cs:108:32:108:39 | access to local variable nonSink0 | LocalDataFlow.cs:116:20:116:27 | access to local variable nonSink0 |
-| LocalDataFlow.cs:112:13:112:35 | SSA def(sink9) | LocalDataFlow.cs:113:15:113:19 | access to local variable sink9 |
-| LocalDataFlow.cs:112:21:112:25 | access to local variable sink8 | LocalDataFlow.cs:112:21:112:35 | ... as ... |
-| LocalDataFlow.cs:112:21:112:25 | access to local variable sink8 | LocalDataFlow.cs:200:22:200:26 | access to local variable sink8 |
-| LocalDataFlow.cs:112:21:112:35 | ... as ... | LocalDataFlow.cs:112:13:112:35 | SSA def(sink9) |
-| LocalDataFlow.cs:113:15:113:19 | [post] access to local variable sink9 | LocalDataFlow.cs:120:37:120:41 | access to local variable sink9 |
-| LocalDataFlow.cs:113:15:113:19 | access to local variable sink9 | LocalDataFlow.cs:120:37:120:41 | access to local variable sink9 |
-| LocalDataFlow.cs:116:9:116:37 | SSA def(nonSink3) | LocalDataFlow.cs:117:15:117:22 | access to local variable nonSink3 |
-| LocalDataFlow.cs:116:20:116:27 | access to local variable nonSink0 | LocalDataFlow.cs:116:20:116:37 | ... as ... |
-| LocalDataFlow.cs:116:20:116:27 | access to local variable nonSink0 | LocalDataFlow.cs:149:22:149:29 | access to local variable nonSink0 |
-| LocalDataFlow.cs:116:20:116:37 | ... as ... | LocalDataFlow.cs:116:9:116:37 | SSA def(nonSink3) |
-| LocalDataFlow.cs:120:13:120:43 | SSA def(sink10) | LocalDataFlow.cs:121:15:121:20 | access to local variable sink10 |
-| LocalDataFlow.cs:120:22:120:43 | array creation of type Object[] | LocalDataFlow.cs:120:13:120:43 | SSA def(sink10) |
-| LocalDataFlow.cs:120:37:120:41 | access to local variable sink9 | LocalDataFlow.cs:128:61:128:65 | access to local variable sink9 |
-| LocalDataFlow.cs:121:15:121:20 | [post] access to local variable sink10 | LocalDataFlow.cs:218:22:218:27 | access to local variable sink10 |
-| LocalDataFlow.cs:121:15:121:20 | access to local variable sink10 | LocalDataFlow.cs:218:22:218:27 | access to local variable sink10 |
-| LocalDataFlow.cs:124:13:124:42 | SSA def(nonSink4) | LocalDataFlow.cs:125:15:125:22 | access to local variable nonSink4 |
-| LocalDataFlow.cs:124:24:124:42 | array creation of type Object[] | LocalDataFlow.cs:124:13:124:42 | SSA def(nonSink4) |
-| LocalDataFlow.cs:124:39:124:40 | 42 | LocalDataFlow.cs:124:39:124:40 | (...) ... |
-| LocalDataFlow.cs:125:15:125:22 | [post] access to local variable nonSink4 | LocalDataFlow.cs:222:20:222:27 | access to local variable nonSink4 |
-| LocalDataFlow.cs:125:15:125:22 | access to local variable nonSink4 | LocalDataFlow.cs:222:20:222:27 | access to local variable nonSink4 |
-| LocalDataFlow.cs:128:13:128:69 | SSA def(sink11) | LocalDataFlow.cs:129:15:129:20 | access to local variable sink11 |
-| LocalDataFlow.cs:128:22:128:69 | object creation of type Dictionary<String,String> | LocalDataFlow.cs:128:13:128:69 | SSA def(sink11) |
-| LocalDataFlow.cs:128:61:128:65 | [post] access to local variable sink9 | LocalDataFlow.cs:132:55:132:59 | access to local variable sink9 |
-| LocalDataFlow.cs:128:61:128:65 | access to local variable sink9 | LocalDataFlow.cs:132:55:132:59 | access to local variable sink9 |
-| LocalDataFlow.cs:129:15:129:20 | [post] access to local variable sink11 | LocalDataFlow.cs:136:22:136:27 | access to local variable sink11 |
-| LocalDataFlow.cs:129:15:129:20 | access to local variable sink11 | LocalDataFlow.cs:136:22:136:27 | access to local variable sink11 |
-| LocalDataFlow.cs:132:9:132:67 | SSA def(nonSink1) | LocalDataFlow.cs:133:15:133:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:132:20:132:67 | object creation of type Dictionary<String,String> | LocalDataFlow.cs:132:9:132:67 | SSA def(nonSink1) |
-| LocalDataFlow.cs:132:55:132:59 | [post] access to local variable sink9 | LocalDataFlow.cs:144:34:144:38 | access to local variable sink9 |
-| LocalDataFlow.cs:132:55:132:59 | access to local variable sink9 | LocalDataFlow.cs:144:34:144:38 | access to local variable sink9 |
-| LocalDataFlow.cs:133:15:133:22 | [post] access to local variable nonSink1 | LocalDataFlow.cs:140:20:140:27 | access to local variable nonSink1 |
-| LocalDataFlow.cs:133:15:133:22 | access to local variable nonSink1 | LocalDataFlow.cs:140:20:140:27 | access to local variable nonSink1 |
-| LocalDataFlow.cs:136:13:136:55 | SSA def(sink14) | LocalDataFlow.cs:137:15:137:20 | access to local variable sink14 |
-| LocalDataFlow.cs:136:22:136:27 | [post] access to local variable sink11 | LocalDataFlow.cs:210:22:210:27 | access to local variable sink11 |
-| LocalDataFlow.cs:136:22:136:27 | access to local variable sink11 | LocalDataFlow.cs:210:22:210:27 | access to local variable sink11 |
-| LocalDataFlow.cs:136:22:136:55 | call to method First | LocalDataFlow.cs:136:13:136:55 | SSA def(sink14) |
-| LocalDataFlow.cs:136:35:136:35 | x | LocalDataFlow.cs:136:40:136:40 | access to parameter x |
-| LocalDataFlow.cs:136:40:136:40 | access to parameter x | LocalDataFlow.cs:136:40:136:46 | access to property Value |
-| LocalDataFlow.cs:140:9:140:55 | SSA def(nonSink3) | LocalDataFlow.cs:206:33:206:40 | access to local variable nonSink3 |
-| LocalDataFlow.cs:140:20:140:27 | [post] access to local variable nonSink1 | LocalDataFlow.cs:141:15:141:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:140:20:140:27 | access to local variable nonSink1 | LocalDataFlow.cs:141:15:141:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:140:20:140:55 | (...) ... | LocalDataFlow.cs:140:9:140:55 | SSA def(nonSink3) |
-| LocalDataFlow.cs:140:20:140:55 | call to method First | LocalDataFlow.cs:140:20:140:55 | (...) ... |
-| LocalDataFlow.cs:140:35:140:35 | x | LocalDataFlow.cs:140:40:140:40 | access to parameter x |
-| LocalDataFlow.cs:140:40:140:40 | access to parameter x | LocalDataFlow.cs:140:40:140:46 | access to property Value |
-| LocalDataFlow.cs:141:15:141:22 | [post] access to local variable nonSink1 | LocalDataFlow.cs:214:20:214:27 | access to local variable nonSink1 |
-| LocalDataFlow.cs:141:15:141:22 | access to local variable nonSink1 | LocalDataFlow.cs:214:20:214:27 | access to local variable nonSink1 |
-| LocalDataFlow.cs:144:13:144:39 | SSA def(sink15) | LocalDataFlow.cs:145:15:145:20 | access to local variable sink15 |
-| LocalDataFlow.cs:144:22:144:39 | call to method Parse | LocalDataFlow.cs:144:13:144:39 | SSA def(sink15) |
-| LocalDataFlow.cs:144:34:144:38 | [post] access to local variable sink9 | LocalDataFlow.cs:147:37:147:41 | access to local variable sink9 |
-| LocalDataFlow.cs:144:34:144:38 | access to local variable sink9 | LocalDataFlow.cs:147:37:147:41 | access to local variable sink9 |
-| LocalDataFlow.cs:145:15:145:20 | access to local variable sink15 | LocalDataFlow.cs:196:22:196:27 | access to local variable sink15 |
-| LocalDataFlow.cs:147:13:147:56 | SSA def(sink16) | LocalDataFlow.cs:148:15:148:20 | access to local variable sink16 |
-| LocalDataFlow.cs:147:22:147:56 | call to method TryParse | LocalDataFlow.cs:147:13:147:56 | SSA def(sink16) |
-| LocalDataFlow.cs:147:37:147:41 | [post] access to local variable sink9 | LocalDataFlow.cs:149:44:149:48 | access to local variable sink9 |
-| LocalDataFlow.cs:147:37:147:41 | access to local variable sink9 | LocalDataFlow.cs:149:44:149:48 | access to local variable sink9 |
-| LocalDataFlow.cs:149:13:149:49 | SSA def(sink17) | LocalDataFlow.cs:150:15:150:20 | access to local variable sink17 |
-| LocalDataFlow.cs:149:22:149:29 | [post] access to local variable nonSink0 | LocalDataFlow.cs:151:36:151:43 | access to local variable nonSink0 |
-| LocalDataFlow.cs:149:22:149:29 | access to local variable nonSink0 | LocalDataFlow.cs:151:36:151:43 | access to local variable nonSink0 |
-| LocalDataFlow.cs:149:22:149:49 | call to method Replace | LocalDataFlow.cs:149:13:149:49 | SSA def(sink17) |
-| LocalDataFlow.cs:149:44:149:48 | [post] access to local variable sink9 | LocalDataFlow.cs:151:46:151:50 | access to local variable sink9 |
-| LocalDataFlow.cs:149:44:149:48 | access to local variable sink9 | LocalDataFlow.cs:151:46:151:50 | access to local variable sink9 |
-| LocalDataFlow.cs:151:13:151:51 | SSA def(sink18) | LocalDataFlow.cs:152:15:152:20 | access to local variable sink18 |
-| LocalDataFlow.cs:151:22:151:51 | call to method Format | LocalDataFlow.cs:151:13:151:51 | SSA def(sink18) |
-| LocalDataFlow.cs:151:36:151:43 | [post] access to local variable nonSink0 | LocalDataFlow.cs:153:44:153:51 | access to local variable nonSink0 |
-| LocalDataFlow.cs:151:36:151:43 | access to local variable nonSink0 | LocalDataFlow.cs:153:44:153:51 | access to local variable nonSink0 |
-| LocalDataFlow.cs:151:46:151:50 | [post] access to local variable sink9 | LocalDataFlow.cs:155:33:155:37 | access to local variable sink9 |
-| LocalDataFlow.cs:151:46:151:50 | access to local variable sink9 | LocalDataFlow.cs:155:33:155:37 | access to local variable sink9 |
-| LocalDataFlow.cs:152:15:152:20 | [post] access to local variable sink18 | LocalDataFlow.cs:153:36:153:41 | access to local variable sink18 |
-| LocalDataFlow.cs:152:15:152:20 | access to local variable sink18 | LocalDataFlow.cs:153:36:153:41 | access to local variable sink18 |
-| LocalDataFlow.cs:153:13:153:52 | SSA def(sink19) | LocalDataFlow.cs:154:15:154:20 | access to local variable sink19 |
-| LocalDataFlow.cs:153:22:153:52 | call to method Format | LocalDataFlow.cs:153:13:153:52 | SSA def(sink19) |
-| LocalDataFlow.cs:153:44:153:51 | [post] access to local variable nonSink0 | LocalDataFlow.cs:172:32:172:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:153:44:153:51 | access to local variable nonSink0 | LocalDataFlow.cs:172:32:172:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:155:13:155:38 | SSA def(sink45) | LocalDataFlow.cs:156:15:156:20 | access to local variable sink45 |
-| LocalDataFlow.cs:155:22:155:38 | call to method Parse | LocalDataFlow.cs:155:13:155:38 | SSA def(sink45) |
-| LocalDataFlow.cs:155:33:155:37 | [post] access to local variable sink9 | LocalDataFlow.cs:158:36:158:40 | access to local variable sink9 |
-| LocalDataFlow.cs:155:33:155:37 | access to local variable sink9 | LocalDataFlow.cs:158:36:158:40 | access to local variable sink9 |
-| LocalDataFlow.cs:158:13:158:56 | SSA def(sink46) | LocalDataFlow.cs:159:15:159:20 | access to local variable sink46 |
-| LocalDataFlow.cs:158:22:158:56 | call to method TryParse | LocalDataFlow.cs:158:13:158:56 | SSA def(sink46) |
-| LocalDataFlow.cs:158:36:158:40 | [post] access to local variable sink9 | LocalDataFlow.cs:198:22:198:26 | access to local variable sink9 |
-| LocalDataFlow.cs:158:36:158:40 | access to local variable sink9 | LocalDataFlow.cs:198:22:198:26 | access to local variable sink9 |
-| LocalDataFlow.cs:159:15:159:20 | access to local variable sink46 | LocalDataFlow.cs:160:37:160:42 | access to local variable sink46 |
-| LocalDataFlow.cs:160:13:160:43 | SSA def(sink47) | LocalDataFlow.cs:161:15:161:20 | access to local variable sink47 |
-| LocalDataFlow.cs:160:22:160:43 | call to method ToByte | LocalDataFlow.cs:160:13:160:43 | SSA def(sink47) |
-| LocalDataFlow.cs:161:15:161:20 | access to local variable sink47 | LocalDataFlow.cs:162:40:162:45 | access to local variable sink47 |
-| LocalDataFlow.cs:162:13:162:46 | SSA def(sink49) | LocalDataFlow.cs:163:15:163:20 | access to local variable sink49 |
-| LocalDataFlow.cs:162:22:162:46 | call to method Concat | LocalDataFlow.cs:162:13:162:46 | SSA def(sink49) |
-| LocalDataFlow.cs:162:40:162:45 | access to local variable sink47 | LocalDataFlow.cs:162:40:162:45 | (...) ... |
-| LocalDataFlow.cs:163:15:163:20 | [post] access to local variable sink49 | LocalDataFlow.cs:164:34:164:39 | access to local variable sink49 |
-| LocalDataFlow.cs:163:15:163:20 | access to local variable sink49 | LocalDataFlow.cs:164:34:164:39 | access to local variable sink49 |
-| LocalDataFlow.cs:164:13:164:40 | SSA def(sink50) | LocalDataFlow.cs:165:15:165:20 | access to local variable sink50 |
-| LocalDataFlow.cs:164:22:164:40 | call to method Copy | LocalDataFlow.cs:164:13:164:40 | SSA def(sink50) |
-| LocalDataFlow.cs:164:34:164:39 | access to local variable sink49 | LocalDataFlow.cs:164:22:164:40 | call to method Copy |
-| LocalDataFlow.cs:165:15:165:20 | [post] access to local variable sink50 | LocalDataFlow.cs:166:44:166:49 | access to local variable sink50 |
-| LocalDataFlow.cs:165:15:165:20 | access to local variable sink50 | LocalDataFlow.cs:166:44:166:49 | access to local variable sink50 |
-| LocalDataFlow.cs:166:13:166:54 | SSA def(sink51) | LocalDataFlow.cs:167:15:167:20 | access to local variable sink51 |
-| LocalDataFlow.cs:166:22:166:54 | call to method Join | LocalDataFlow.cs:166:13:166:54 | SSA def(sink51) |
-| LocalDataFlow.cs:167:15:167:20 | [post] access to local variable sink51 | LocalDataFlow.cs:168:35:168:40 | access to local variable sink51 |
-| LocalDataFlow.cs:167:15:167:20 | access to local variable sink51 | LocalDataFlow.cs:168:35:168:40 | access to local variable sink51 |
-| LocalDataFlow.cs:168:13:168:41 | SSA def(sink52) | LocalDataFlow.cs:169:15:169:20 | access to local variable sink52 |
-| LocalDataFlow.cs:168:22:168:41 | call to method Insert | LocalDataFlow.cs:168:13:168:41 | SSA def(sink52) |
-| LocalDataFlow.cs:172:9:172:40 | SSA def(nonSink2) | LocalDataFlow.cs:173:15:173:22 | access to local variable nonSink2 |
-| LocalDataFlow.cs:172:20:172:40 | call to method Parse | LocalDataFlow.cs:172:9:172:40 | SSA def(nonSink2) |
-| LocalDataFlow.cs:172:32:172:39 | [post] access to local variable nonSink0 | LocalDataFlow.cs:174:39:174:46 | access to local variable nonSink0 |
-| LocalDataFlow.cs:172:32:172:39 | access to local variable nonSink0 | LocalDataFlow.cs:174:39:174:46 | access to local variable nonSink0 |
-| LocalDataFlow.cs:174:13:174:61 | SSA def(nonSink7) | LocalDataFlow.cs:175:15:175:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:174:24:174:61 | call to method TryParse | LocalDataFlow.cs:174:13:174:61 | SSA def(nonSink7) |
-| LocalDataFlow.cs:174:39:174:46 | [post] access to local variable nonSink0 | LocalDataFlow.cs:176:20:176:27 | access to local variable nonSink0 |
-| LocalDataFlow.cs:174:39:174:46 | access to local variable nonSink0 | LocalDataFlow.cs:176:20:176:27 | access to local variable nonSink0 |
-| LocalDataFlow.cs:176:9:176:50 | SSA def(nonSink0) | LocalDataFlow.cs:177:15:177:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:176:20:176:27 | [post] access to local variable nonSink0 | LocalDataFlow.cs:176:42:176:49 | access to local variable nonSink0 |
-| LocalDataFlow.cs:176:20:176:27 | access to local variable nonSink0 | LocalDataFlow.cs:176:42:176:49 | access to local variable nonSink0 |
-| LocalDataFlow.cs:176:20:176:50 | call to method Replace | LocalDataFlow.cs:176:9:176:50 | SSA def(nonSink0) |
-| LocalDataFlow.cs:177:15:177:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:178:34:178:41 | access to local variable nonSink0 |
-| LocalDataFlow.cs:177:15:177:22 | access to local variable nonSink0 | LocalDataFlow.cs:178:34:178:41 | access to local variable nonSink0 |
-| LocalDataFlow.cs:178:9:178:52 | SSA def(nonSink0) | LocalDataFlow.cs:179:15:179:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:178:20:178:52 | call to method Format | LocalDataFlow.cs:178:9:178:52 | SSA def(nonSink0) |
-| LocalDataFlow.cs:178:34:178:41 | [post] access to local variable nonSink0 | LocalDataFlow.cs:178:44:178:51 | access to local variable nonSink0 |
-| LocalDataFlow.cs:178:34:178:41 | access to local variable nonSink0 | LocalDataFlow.cs:178:44:178:51 | access to local variable nonSink0 |
-| LocalDataFlow.cs:179:15:179:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:180:31:180:38 | access to local variable nonSink0 |
-| LocalDataFlow.cs:179:15:179:22 | access to local variable nonSink0 | LocalDataFlow.cs:180:31:180:38 | access to local variable nonSink0 |
-| LocalDataFlow.cs:180:9:180:39 | SSA def(nonSink7) | LocalDataFlow.cs:181:15:181:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:180:20:180:39 | call to method Parse | LocalDataFlow.cs:180:9:180:39 | SSA def(nonSink7) |
-| LocalDataFlow.cs:180:31:180:38 | [post] access to local variable nonSink0 | LocalDataFlow.cs:182:34:182:41 | access to local variable nonSink0 |
-| LocalDataFlow.cs:180:31:180:38 | access to local variable nonSink0 | LocalDataFlow.cs:182:34:182:41 | access to local variable nonSink0 |
-| LocalDataFlow.cs:182:9:182:57 | SSA def(nonSink7) | LocalDataFlow.cs:183:15:183:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:182:20:182:57 | call to method TryParse | LocalDataFlow.cs:182:9:182:57 | SSA def(nonSink7) |
-| LocalDataFlow.cs:183:15:183:22 | access to local variable nonSink7 | LocalDataFlow.cs:184:40:184:47 | access to local variable nonSink7 |
-| LocalDataFlow.cs:184:13:184:48 | SSA def(nonSink14) | LocalDataFlow.cs:185:15:185:23 | access to local variable nonSink14 |
-| LocalDataFlow.cs:184:25:184:48 | call to method ToByte | LocalDataFlow.cs:184:13:184:48 | SSA def(nonSink14) |
-| LocalDataFlow.cs:184:40:184:47 | access to local variable nonSink7 | LocalDataFlow.cs:186:38:186:45 | access to local variable nonSink7 |
-| LocalDataFlow.cs:186:9:186:46 | SSA def(nonSink0) | LocalDataFlow.cs:187:15:187:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:186:20:186:46 | call to method Concat | LocalDataFlow.cs:186:9:186:46 | SSA def(nonSink0) |
-| LocalDataFlow.cs:186:38:186:45 | access to local variable nonSink7 | LocalDataFlow.cs:186:38:186:45 | (...) ... |
-| LocalDataFlow.cs:187:15:187:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:188:32:188:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:187:15:187:22 | access to local variable nonSink0 | LocalDataFlow.cs:188:32:188:39 | access to local variable nonSink0 |
-| LocalDataFlow.cs:188:9:188:40 | SSA def(nonSink0) | LocalDataFlow.cs:189:15:189:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:188:20:188:40 | call to method Copy | LocalDataFlow.cs:188:9:188:40 | SSA def(nonSink0) |
-| LocalDataFlow.cs:188:32:188:39 | access to local variable nonSink0 | LocalDataFlow.cs:188:20:188:40 | call to method Copy |
-| LocalDataFlow.cs:189:15:189:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:190:42:190:49 | access to local variable nonSink0 |
-| LocalDataFlow.cs:189:15:189:22 | access to local variable nonSink0 | LocalDataFlow.cs:190:42:190:49 | access to local variable nonSink0 |
-| LocalDataFlow.cs:190:9:190:54 | SSA def(nonSink0) | LocalDataFlow.cs:191:15:191:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:190:20:190:54 | call to method Join | LocalDataFlow.cs:190:9:190:54 | SSA def(nonSink0) |
-| LocalDataFlow.cs:191:15:191:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:192:33:192:40 | access to local variable nonSink0 |
-| LocalDataFlow.cs:191:15:191:22 | access to local variable nonSink0 | LocalDataFlow.cs:192:33:192:40 | access to local variable nonSink0 |
-| LocalDataFlow.cs:192:9:192:41 | SSA def(nonSink0) | LocalDataFlow.cs:193:15:193:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:192:20:192:41 | call to method Insert | LocalDataFlow.cs:192:9:192:41 | SSA def(nonSink0) |
-| LocalDataFlow.cs:196:13:196:32 | SSA def(sink20) | LocalDataFlow.cs:197:15:197:20 | access to local variable sink20 |
-| LocalDataFlow.cs:196:22:196:32 | ... > ... | LocalDataFlow.cs:196:13:196:32 | SSA def(sink20) |
-| LocalDataFlow.cs:197:15:197:20 | access to local variable sink20 | LocalDataFlow.cs:226:22:226:27 | access to local variable sink20 |
-| LocalDataFlow.cs:198:13:198:40 | SSA def(sink21) | LocalDataFlow.cs:199:15:199:20 | access to local variable sink21 |
-| LocalDataFlow.cs:198:22:198:40 | call to method Equals | LocalDataFlow.cs:198:13:198:40 | SSA def(sink21) |
-| LocalDataFlow.cs:200:13:200:45 | SSA def(sink22) | LocalDataFlow.cs:201:15:201:20 | access to local variable sink22 |
-| LocalDataFlow.cs:200:22:200:26 | [post] access to local variable sink8 | LocalDataFlow.cs:206:20:206:24 | access to local variable sink8 |
-| LocalDataFlow.cs:200:22:200:26 | access to local variable sink8 | LocalDataFlow.cs:206:20:206:24 | access to local variable sink8 |
-| LocalDataFlow.cs:200:22:200:45 | call to method Equals | LocalDataFlow.cs:200:13:200:45 | SSA def(sink22) |
-| LocalDataFlow.cs:200:43:200:44 | 41 | LocalDataFlow.cs:200:35:200:44 | (...) ... |
-| LocalDataFlow.cs:204:9:204:38 | SSA def(nonSink7) | LocalDataFlow.cs:205:15:205:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:204:20:204:24 | [post] access to local variable sink0 | LocalDataFlow.cs:411:30:411:34 | access to local variable sink0 |
-| LocalDataFlow.cs:204:20:204:24 | access to local variable sink0 | LocalDataFlow.cs:411:30:411:34 | access to local variable sink0 |
-| LocalDataFlow.cs:204:20:204:38 | call to method Equals | LocalDataFlow.cs:204:9:204:38 | SSA def(nonSink7) |
-| LocalDataFlow.cs:204:33:204:37 | [post] access to local variable sink1 | LocalDataFlow.cs:320:22:320:26 | access to local variable sink1 |
-| LocalDataFlow.cs:204:33:204:37 | access to local variable sink1 | LocalDataFlow.cs:320:22:320:26 | access to local variable sink1 |
-| LocalDataFlow.cs:206:9:206:41 | SSA def(nonSink7) | LocalDataFlow.cs:207:15:207:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:206:20:206:41 | call to method Equals | LocalDataFlow.cs:206:9:206:41 | SSA def(nonSink7) |
-| LocalDataFlow.cs:207:15:207:22 | access to local variable nonSink7 | LocalDataFlow.cs:230:20:230:27 | access to local variable nonSink7 |
-| LocalDataFlow.cs:210:13:210:31 | SSA def(sink23) | LocalDataFlow.cs:211:15:211:20 | access to local variable sink23 |
-| LocalDataFlow.cs:210:22:210:31 | access to indexer | LocalDataFlow.cs:210:13:210:31 | SSA def(sink23) |
-| LocalDataFlow.cs:211:15:211:20 | [post] access to local variable sink23 | LocalDataFlow.cs:234:37:234:42 | access to local variable sink23 |
-| LocalDataFlow.cs:211:15:211:20 | access to local variable sink23 | LocalDataFlow.cs:234:37:234:42 | access to local variable sink23 |
-| LocalDataFlow.cs:214:9:214:31 | SSA def(nonSink0) | LocalDataFlow.cs:215:15:215:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:214:20:214:27 | [post] access to local variable nonSink1 | LocalDataFlow.cs:328:9:328:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:214:20:214:27 | access to local variable nonSink1 | LocalDataFlow.cs:328:9:328:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:214:20:214:31 | access to indexer | LocalDataFlow.cs:214:9:214:31 | SSA def(nonSink0) |
-| LocalDataFlow.cs:215:15:215:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:246:39:246:46 | access to local variable nonSink0 |
-| LocalDataFlow.cs:215:15:215:22 | access to local variable nonSink0 | LocalDataFlow.cs:246:39:246:46 | access to local variable nonSink0 |
-| LocalDataFlow.cs:218:13:218:30 | SSA def(sink24) | LocalDataFlow.cs:219:15:219:20 | access to local variable sink24 |
-| LocalDataFlow.cs:218:22:218:27 | access to local variable sink10 | LocalDataFlow.cs:363:32:363:37 | access to local variable sink10 |
-| LocalDataFlow.cs:218:22:218:30 | access to array element | LocalDataFlow.cs:218:13:218:30 | SSA def(sink24) |
-| LocalDataFlow.cs:222:9:222:30 | SSA def(nonSink3) | LocalDataFlow.cs:223:15:223:22 | access to local variable nonSink3 |
-| LocalDataFlow.cs:222:20:222:27 | access to local variable nonSink4 | LocalDataFlow.cs:377:35:377:42 | access to local variable nonSink4 |
-| LocalDataFlow.cs:222:20:222:30 | access to array element | LocalDataFlow.cs:222:9:222:30 | SSA def(nonSink3) |
-| LocalDataFlow.cs:226:13:226:36 | SSA def(sink25) | LocalDataFlow.cs:227:15:227:20 | access to local variable sink25 |
-| LocalDataFlow.cs:226:22:226:36 | ... \|\| ... | LocalDataFlow.cs:226:13:226:36 | SSA def(sink25) |
-| LocalDataFlow.cs:230:9:230:36 | SSA def(nonSink7) | LocalDataFlow.cs:231:15:231:22 | access to local variable nonSink7 |
-| LocalDataFlow.cs:230:20:230:36 | ... \|\| ... | LocalDataFlow.cs:230:9:230:36 | SSA def(nonSink7) |
-| LocalDataFlow.cs:234:13:234:43 | SSA def(sink26) | LocalDataFlow.cs:235:15:235:20 | access to local variable sink26 |
-| LocalDataFlow.cs:234:22:234:43 | object creation of type Uri | LocalDataFlow.cs:234:13:234:43 | SSA def(sink26) |
-| LocalDataFlow.cs:235:15:235:20 | [post] access to local variable sink26 | LocalDataFlow.cs:236:22:236:27 | access to local variable sink26 |
-| LocalDataFlow.cs:235:15:235:20 | access to local variable sink26 | LocalDataFlow.cs:236:22:236:27 | access to local variable sink26 |
-| LocalDataFlow.cs:236:13:236:38 | SSA def(sink27) | LocalDataFlow.cs:237:15:237:20 | access to local variable sink27 |
-| LocalDataFlow.cs:236:22:236:27 | [post] access to local variable sink26 | LocalDataFlow.cs:238:22:238:27 | access to local variable sink26 |
-| LocalDataFlow.cs:236:22:236:27 | access to local variable sink26 | LocalDataFlow.cs:238:22:238:27 | access to local variable sink26 |
-| LocalDataFlow.cs:236:22:236:38 | call to method ToString | LocalDataFlow.cs:236:13:236:38 | SSA def(sink27) |
-| LocalDataFlow.cs:238:13:238:40 | SSA def(sink28) | LocalDataFlow.cs:239:15:239:20 | access to local variable sink28 |
-| LocalDataFlow.cs:238:22:238:27 | [post] access to local variable sink26 | LocalDataFlow.cs:240:22:240:27 | access to local variable sink26 |
-| LocalDataFlow.cs:238:22:238:27 | access to local variable sink26 | LocalDataFlow.cs:240:22:240:27 | access to local variable sink26 |
-| LocalDataFlow.cs:238:22:238:40 | access to property PathAndQuery | LocalDataFlow.cs:238:13:238:40 | SSA def(sink28) |
-| LocalDataFlow.cs:240:13:240:33 | SSA def(sink29) | LocalDataFlow.cs:241:15:241:20 | access to local variable sink29 |
-| LocalDataFlow.cs:240:22:240:27 | [post] access to local variable sink26 | LocalDataFlow.cs:242:22:242:27 | access to local variable sink26 |
-| LocalDataFlow.cs:240:22:240:27 | access to local variable sink26 | LocalDataFlow.cs:242:22:242:27 | access to local variable sink26 |
-| LocalDataFlow.cs:240:22:240:33 | access to property Query | LocalDataFlow.cs:240:13:240:33 | SSA def(sink29) |
-| LocalDataFlow.cs:242:13:242:42 | SSA def(sink30) | LocalDataFlow.cs:243:15:243:20 | access to local variable sink30 |
-| LocalDataFlow.cs:242:22:242:42 | access to property OriginalString | LocalDataFlow.cs:242:13:242:42 | SSA def(sink30) |
-| LocalDataFlow.cs:243:15:243:20 | [post] access to local variable sink30 | LocalDataFlow.cs:258:49:258:54 | access to local variable sink30 |
-| LocalDataFlow.cs:243:15:243:20 | access to local variable sink30 | LocalDataFlow.cs:258:49:258:54 | access to local variable sink30 |
-| LocalDataFlow.cs:246:13:246:47 | SSA def(nonSink8) | LocalDataFlow.cs:247:15:247:22 | access to local variable nonSink8 |
-| LocalDataFlow.cs:246:24:246:47 | object creation of type Uri | LocalDataFlow.cs:246:13:246:47 | SSA def(nonSink8) |
-| LocalDataFlow.cs:247:15:247:22 | [post] access to local variable nonSink8 | LocalDataFlow.cs:248:20:248:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:247:15:247:22 | access to local variable nonSink8 | LocalDataFlow.cs:248:20:248:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:248:9:248:38 | SSA def(nonSink0) | LocalDataFlow.cs:249:15:249:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:248:20:248:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:250:20:250:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:248:20:248:27 | access to local variable nonSink8 | LocalDataFlow.cs:250:20:250:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:248:20:248:38 | call to method ToString | LocalDataFlow.cs:248:9:248:38 | SSA def(nonSink0) |
-| LocalDataFlow.cs:250:9:250:40 | SSA def(nonSink0) | LocalDataFlow.cs:251:15:251:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:250:20:250:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:252:20:252:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:250:20:250:27 | access to local variable nonSink8 | LocalDataFlow.cs:252:20:252:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:250:20:250:40 | access to property PathAndQuery | LocalDataFlow.cs:250:9:250:40 | SSA def(nonSink0) |
-| LocalDataFlow.cs:252:9:252:33 | SSA def(nonSink0) | LocalDataFlow.cs:253:15:253:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:252:20:252:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:254:20:254:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:252:20:252:27 | access to local variable nonSink8 | LocalDataFlow.cs:254:20:254:27 | access to local variable nonSink8 |
-| LocalDataFlow.cs:252:20:252:33 | access to property Query | LocalDataFlow.cs:252:9:252:33 | SSA def(nonSink0) |
-| LocalDataFlow.cs:254:9:254:42 | SSA def(nonSink0) | LocalDataFlow.cs:255:15:255:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:254:20:254:42 | access to property OriginalString | LocalDataFlow.cs:254:9:254:42 | SSA def(nonSink0) |
-| LocalDataFlow.cs:255:15:255:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:264:51:264:58 | access to local variable nonSink0 |
-| LocalDataFlow.cs:255:15:255:22 | access to local variable nonSink0 | LocalDataFlow.cs:264:51:264:58 | access to local variable nonSink0 |
-| LocalDataFlow.cs:258:13:258:55 | SSA def(sink31) | LocalDataFlow.cs:259:15:259:20 | access to local variable sink31 |
-| LocalDataFlow.cs:258:22:258:55 | object creation of type StringReader | LocalDataFlow.cs:258:13:258:55 | SSA def(sink31) |
-| LocalDataFlow.cs:259:15:259:20 | [post] access to local variable sink31 | LocalDataFlow.cs:260:22:260:27 | access to local variable sink31 |
-| LocalDataFlow.cs:259:15:259:20 | access to local variable sink31 | LocalDataFlow.cs:260:22:260:27 | access to local variable sink31 |
-| LocalDataFlow.cs:260:13:260:39 | SSA def(sink32) | LocalDataFlow.cs:261:15:261:20 | access to local variable sink32 |
-| LocalDataFlow.cs:260:22:260:39 | call to method ReadToEnd | LocalDataFlow.cs:260:13:260:39 | SSA def(sink32) |
-| LocalDataFlow.cs:261:15:261:20 | [post] access to local variable sink32 | LocalDataFlow.cs:270:30:270:35 | access to local variable sink32 |
-| LocalDataFlow.cs:261:15:261:20 | access to local variable sink32 | LocalDataFlow.cs:270:30:270:35 | access to local variable sink32 |
-| LocalDataFlow.cs:264:13:264:59 | SSA def(nonSink9) | LocalDataFlow.cs:265:15:265:22 | access to local variable nonSink9 |
-| LocalDataFlow.cs:264:24:264:59 | object creation of type StringReader | LocalDataFlow.cs:264:13:264:59 | SSA def(nonSink9) |
-| LocalDataFlow.cs:265:15:265:22 | [post] access to local variable nonSink9 | LocalDataFlow.cs:266:20:266:27 | access to local variable nonSink9 |
-| LocalDataFlow.cs:265:15:265:22 | access to local variable nonSink9 | LocalDataFlow.cs:266:20:266:27 | access to local variable nonSink9 |
-| LocalDataFlow.cs:266:9:266:39 | SSA def(nonSink0) | LocalDataFlow.cs:267:15:267:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:266:20:266:39 | call to method ReadToEnd | LocalDataFlow.cs:266:9:266:39 | SSA def(nonSink0) |
-| LocalDataFlow.cs:267:15:267:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:276:28:276:35 | access to local variable nonSink0 |
-| LocalDataFlow.cs:267:15:267:22 | access to local variable nonSink0 | LocalDataFlow.cs:276:28:276:35 | access to local variable nonSink0 |
-| LocalDataFlow.cs:270:13:270:127 | SSA def(sink33) | LocalDataFlow.cs:271:15:271:20 | access to local variable sink33 |
-| LocalDataFlow.cs:270:22:270:127 | (...) ... | LocalDataFlow.cs:270:13:270:127 | SSA def(sink33) |
-| LocalDataFlow.cs:270:30:270:119 | call to method Insert | LocalDataFlow.cs:270:30:270:127 | call to method Clone |
-| LocalDataFlow.cs:270:30:270:127 | call to method Clone | LocalDataFlow.cs:270:22:270:127 | (...) ... |
-| LocalDataFlow.cs:271:15:271:20 | [post] access to local variable sink33 | LocalDataFlow.cs:272:22:272:27 | access to local variable sink33 |
-| LocalDataFlow.cs:271:15:271:20 | access to local variable sink33 | LocalDataFlow.cs:272:22:272:27 | access to local variable sink33 |
-| LocalDataFlow.cs:272:13:272:63 | SSA def(sink48) | LocalDataFlow.cs:273:15:273:20 | access to local variable sink48 |
-| LocalDataFlow.cs:272:22:272:27 | [post] access to local variable sink33 | LocalDataFlow.cs:282:40:282:45 | access to local variable sink33 |
-| LocalDataFlow.cs:272:22:272:27 | access to local variable sink33 | LocalDataFlow.cs:282:40:282:45 | access to local variable sink33 |
-| LocalDataFlow.cs:272:22:272:63 | call to method Split | LocalDataFlow.cs:272:13:272:63 | SSA def(sink48) |
-| LocalDataFlow.cs:276:9:276:127 | SSA def(nonSink0) | LocalDataFlow.cs:277:15:277:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:276:20:276:127 | (...) ... | LocalDataFlow.cs:276:9:276:127 | SSA def(nonSink0) |
-| LocalDataFlow.cs:276:28:276:119 | call to method Insert | LocalDataFlow.cs:276:28:276:127 | call to method Clone |
-| LocalDataFlow.cs:276:28:276:127 | call to method Clone | LocalDataFlow.cs:276:20:276:127 | (...) ... |
-| LocalDataFlow.cs:277:15:277:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:278:25:278:32 | access to local variable nonSink0 |
-| LocalDataFlow.cs:277:15:277:22 | access to local variable nonSink0 | LocalDataFlow.cs:278:25:278:32 | access to local variable nonSink0 |
-| LocalDataFlow.cs:278:13:278:68 | SSA def(nonSink15) | LocalDataFlow.cs:279:15:279:23 | access to local variable nonSink15 |
-| LocalDataFlow.cs:278:25:278:32 | [post] access to local variable nonSink0 | LocalDataFlow.cs:291:43:291:50 | access to local variable nonSink0 |
-| LocalDataFlow.cs:278:25:278:32 | access to local variable nonSink0 | LocalDataFlow.cs:291:43:291:50 | access to local variable nonSink0 |
-| LocalDataFlow.cs:278:25:278:68 | call to method Split | LocalDataFlow.cs:278:13:278:68 | SSA def(nonSink15) |
-| LocalDataFlow.cs:282:13:282:46 | SSA def(sink34) | LocalDataFlow.cs:283:15:283:20 | access to local variable sink34 |
-| LocalDataFlow.cs:282:22:282:46 | object creation of type StringBuilder | LocalDataFlow.cs:282:13:282:46 | SSA def(sink34) |
-| LocalDataFlow.cs:283:15:283:20 | [post] access to local variable sink34 | LocalDataFlow.cs:284:22:284:27 | access to local variable sink34 |
-| LocalDataFlow.cs:283:15:283:20 | access to local variable sink34 | LocalDataFlow.cs:284:22:284:27 | access to local variable sink34 |
-| LocalDataFlow.cs:284:13:284:38 | SSA def(sink35) | LocalDataFlow.cs:285:15:285:20 | access to local variable sink35 |
-| LocalDataFlow.cs:284:22:284:38 | call to method ToString | LocalDataFlow.cs:284:13:284:38 | SSA def(sink35) |
-| LocalDataFlow.cs:285:15:285:20 | [post] access to local variable sink35 | LocalDataFlow.cs:287:27:287:32 | access to local variable sink35 |
-| LocalDataFlow.cs:285:15:285:20 | access to local variable sink35 | LocalDataFlow.cs:287:27:287:32 | access to local variable sink35 |
-| LocalDataFlow.cs:286:13:286:42 | SSA def(sink36) | LocalDataFlow.cs:287:9:287:14 | access to local variable sink36 |
-| LocalDataFlow.cs:286:22:286:42 | object creation of type StringBuilder | LocalDataFlow.cs:286:13:286:42 | SSA def(sink36) |
-| LocalDataFlow.cs:287:9:287:14 | [post] access to local variable sink36 | LocalDataFlow.cs:288:15:288:20 | access to local variable sink36 |
-| LocalDataFlow.cs:287:9:287:14 | access to local variable sink36 | LocalDataFlow.cs:288:15:288:20 | access to local variable sink36 |
-| LocalDataFlow.cs:291:13:291:51 | SSA def(nonSink10) | LocalDataFlow.cs:292:15:292:23 | access to local variable nonSink10 |
-| LocalDataFlow.cs:291:25:291:51 | object creation of type StringBuilder | LocalDataFlow.cs:291:13:291:51 | SSA def(nonSink10) |
-| LocalDataFlow.cs:292:15:292:23 | [post] access to local variable nonSink10 | LocalDataFlow.cs:293:20:293:28 | access to local variable nonSink10 |
-| LocalDataFlow.cs:292:15:292:23 | access to local variable nonSink10 | LocalDataFlow.cs:293:20:293:28 | access to local variable nonSink10 |
-| LocalDataFlow.cs:293:9:293:39 | SSA def(nonSink0) | LocalDataFlow.cs:294:15:294:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:293:20:293:28 | [post] access to local variable nonSink10 | LocalDataFlow.cs:295:9:295:17 | access to local variable nonSink10 |
-| LocalDataFlow.cs:293:20:293:28 | access to local variable nonSink10 | LocalDataFlow.cs:295:9:295:17 | access to local variable nonSink10 |
-| LocalDataFlow.cs:293:20:293:39 | call to method ToString | LocalDataFlow.cs:293:9:293:39 | SSA def(nonSink0) |
-| LocalDataFlow.cs:294:15:294:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:295:30:295:37 | access to local variable nonSink0 |
-| LocalDataFlow.cs:294:15:294:22 | access to local variable nonSink0 | LocalDataFlow.cs:295:30:295:37 | access to local variable nonSink0 |
-| LocalDataFlow.cs:295:9:295:17 | [post] access to local variable nonSink10 | LocalDataFlow.cs:296:15:296:23 | access to local variable nonSink10 |
-| LocalDataFlow.cs:295:9:295:17 | access to local variable nonSink10 | LocalDataFlow.cs:296:15:296:23 | access to local variable nonSink10 |
-| LocalDataFlow.cs:299:13:299:52 | SSA def(sink40) | LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 |
-| LocalDataFlow.cs:299:22:299:52 | object creation of type Lazy<String> | LocalDataFlow.cs:299:13:299:52 | SSA def(sink40) |
-| LocalDataFlow.cs:299:39:299:51 | [output] delegate creation of type Func<String> | LocalDataFlow.cs:299:22:299:52 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:299:39:299:51 | this access | LocalDataFlow.cs:309:42:309:57 | this access |
-| LocalDataFlow.cs:300:15:300:20 | [post] access to local variable sink40 | LocalDataFlow.cs:301:22:301:27 | access to local variable sink40 |
-| LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 | LocalDataFlow.cs:301:22:301:27 | access to local variable sink40 |
-| LocalDataFlow.cs:301:13:301:33 | SSA def(sink41) | LocalDataFlow.cs:302:15:302:20 | access to local variable sink41 |
-| LocalDataFlow.cs:301:22:301:27 | access to local variable sink40 | LocalDataFlow.cs:301:22:301:33 | access to property Value |
-| LocalDataFlow.cs:301:22:301:33 | access to property Value | LocalDataFlow.cs:301:13:301:33 | SSA def(sink41) |
-| LocalDataFlow.cs:303:13:303:59 | SSA def(sink42) | LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 |
-| LocalDataFlow.cs:303:22:303:59 | object creation of type Lazy<String> | LocalDataFlow.cs:303:13:303:59 | SSA def(sink42) |
-| LocalDataFlow.cs:303:39:303:58 | [output] (...) => ... | LocalDataFlow.cs:303:22:303:59 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:304:15:304:20 | [post] access to local variable sink42 | LocalDataFlow.cs:305:22:305:27 | access to local variable sink42 |
-| LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 | LocalDataFlow.cs:305:22:305:27 | access to local variable sink42 |
-| LocalDataFlow.cs:305:13:305:33 | SSA def(sink43) | LocalDataFlow.cs:306:15:306:20 | access to local variable sink43 |
-| LocalDataFlow.cs:305:22:305:27 | access to local variable sink42 | LocalDataFlow.cs:305:22:305:33 | access to property Value |
-| LocalDataFlow.cs:305:22:305:33 | access to property Value | LocalDataFlow.cs:305:13:305:33 | SSA def(sink43) |
-| LocalDataFlow.cs:309:13:309:58 | SSA def(nonSink12) | LocalDataFlow.cs:310:15:310:23 | access to local variable nonSink12 |
-| LocalDataFlow.cs:309:25:309:58 | object creation of type Lazy<String> | LocalDataFlow.cs:309:13:309:58 | SSA def(nonSink12) |
-| LocalDataFlow.cs:309:42:309:57 | [output] delegate creation of type Func<String> | LocalDataFlow.cs:309:25:309:58 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:310:15:310:23 | [post] access to local variable nonSink12 | LocalDataFlow.cs:311:20:311:28 | access to local variable nonSink12 |
-| LocalDataFlow.cs:310:15:310:23 | access to local variable nonSink12 | LocalDataFlow.cs:311:20:311:28 | access to local variable nonSink12 |
-| LocalDataFlow.cs:311:9:311:34 | SSA def(nonSink0) | LocalDataFlow.cs:312:15:312:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:311:20:311:28 | access to local variable nonSink12 | LocalDataFlow.cs:311:20:311:34 | access to property Value |
-| LocalDataFlow.cs:311:20:311:34 | access to property Value | LocalDataFlow.cs:311:9:311:34 | SSA def(nonSink0) |
-| LocalDataFlow.cs:313:9:313:46 | SSA def(nonSink12) | LocalDataFlow.cs:314:15:314:23 | access to local variable nonSink12 |
-| LocalDataFlow.cs:313:21:313:46 | object creation of type Lazy<String> | LocalDataFlow.cs:313:9:313:46 | SSA def(nonSink12) |
-| LocalDataFlow.cs:313:38:313:45 | [output] (...) => ... | LocalDataFlow.cs:313:21:313:46 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:314:15:314:23 | [post] access to local variable nonSink12 | LocalDataFlow.cs:315:20:315:28 | access to local variable nonSink12 |
-| LocalDataFlow.cs:314:15:314:23 | access to local variable nonSink12 | LocalDataFlow.cs:315:20:315:28 | access to local variable nonSink12 |
-| LocalDataFlow.cs:315:9:315:34 | SSA def(nonSink0) | LocalDataFlow.cs:316:15:316:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:315:20:315:28 | access to local variable nonSink12 | LocalDataFlow.cs:315:20:315:34 | access to property Value |
-| LocalDataFlow.cs:315:20:315:34 | access to property Value | LocalDataFlow.cs:315:9:315:34 | SSA def(nonSink0) |
-| LocalDataFlow.cs:316:15:316:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:328:26:328:33 | access to local variable nonSink0 |
-| LocalDataFlow.cs:316:15:316:22 | access to local variable nonSink0 | LocalDataFlow.cs:328:26:328:33 | access to local variable nonSink0 |
-| LocalDataFlow.cs:319:13:319:49 | SSA def(sink3) | LocalDataFlow.cs:320:9:320:13 | access to local variable sink3 |
-| LocalDataFlow.cs:319:21:319:49 | object creation of type Dictionary<Int32,String> | LocalDataFlow.cs:319:13:319:49 | SSA def(sink3) |
-| LocalDataFlow.cs:320:9:320:13 | [post] access to local variable sink3 | LocalDataFlow.cs:321:15:321:19 | access to local variable sink3 |
-| LocalDataFlow.cs:320:9:320:13 | access to local variable sink3 | LocalDataFlow.cs:321:15:321:19 | access to local variable sink3 |
-| LocalDataFlow.cs:320:22:320:26 | [post] access to local variable sink1 | LocalDataFlow.cs:329:22:329:26 | access to local variable sink1 |
-| LocalDataFlow.cs:320:22:320:26 | access to local variable sink1 | LocalDataFlow.cs:329:22:329:26 | access to local variable sink1 |
-| LocalDataFlow.cs:321:15:321:19 | [post] access to local variable sink3 | LocalDataFlow.cs:322:22:322:26 | access to local variable sink3 |
-| LocalDataFlow.cs:321:15:321:19 | access to local variable sink3 | LocalDataFlow.cs:322:22:322:26 | access to local variable sink3 |
-| LocalDataFlow.cs:322:13:322:33 | SSA def(sink12) | LocalDataFlow.cs:323:15:323:20 | access to local variable sink12 |
-| LocalDataFlow.cs:322:22:322:26 | [post] access to local variable sink3 | LocalDataFlow.cs:369:57:369:61 | access to local variable sink3 |
-| LocalDataFlow.cs:322:22:322:26 | access to local variable sink3 | LocalDataFlow.cs:369:57:369:61 | access to local variable sink3 |
-| LocalDataFlow.cs:322:22:322:33 | access to property Values | LocalDataFlow.cs:322:13:322:33 | SSA def(sink12) |
-| LocalDataFlow.cs:323:15:323:20 | [post] access to local variable sink12 | LocalDataFlow.cs:324:22:324:27 | access to local variable sink12 |
-| LocalDataFlow.cs:323:15:323:20 | access to local variable sink12 | LocalDataFlow.cs:324:22:324:27 | access to local variable sink12 |
-| LocalDataFlow.cs:324:13:324:37 | SSA def(sink13) | LocalDataFlow.cs:325:15:325:20 | access to local variable sink13 |
-| LocalDataFlow.cs:324:22:324:37 | call to method Reverse | LocalDataFlow.cs:324:13:324:37 | SSA def(sink13) |
-| LocalDataFlow.cs:328:9:328:16 | [post] access to local variable nonSink1 | LocalDataFlow.cs:329:9:329:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:328:9:328:16 | access to local variable nonSink1 | LocalDataFlow.cs:329:9:329:16 | access to local variable nonSink1 |
-| LocalDataFlow.cs:329:9:329:16 | [post] access to local variable nonSink1 | LocalDataFlow.cs:330:15:330:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:329:9:329:16 | access to local variable nonSink1 | LocalDataFlow.cs:330:15:330:22 | access to local variable nonSink1 |
-| LocalDataFlow.cs:329:22:329:26 | [post] access to local variable sink1 | LocalDataFlow.cs:403:30:403:34 | access to local variable sink1 |
-| LocalDataFlow.cs:329:22:329:26 | access to local variable sink1 | LocalDataFlow.cs:403:30:403:34 | access to local variable sink1 |
-| LocalDataFlow.cs:330:15:330:22 | [post] access to local variable nonSink1 | LocalDataFlow.cs:331:24:331:31 | access to local variable nonSink1 |
-| LocalDataFlow.cs:330:15:330:22 | access to local variable nonSink1 | LocalDataFlow.cs:331:24:331:31 | access to local variable nonSink1 |
-| LocalDataFlow.cs:331:13:331:38 | SSA def(nonSink5) | LocalDataFlow.cs:332:15:332:22 | access to local variable nonSink5 |
-| LocalDataFlow.cs:331:24:331:31 | [post] access to local variable nonSink1 | LocalDataFlow.cs:383:63:383:70 | access to local variable nonSink1 |
-| LocalDataFlow.cs:331:24:331:31 | access to local variable nonSink1 | LocalDataFlow.cs:383:63:383:70 | access to local variable nonSink1 |
-| LocalDataFlow.cs:331:24:331:38 | access to property Values | LocalDataFlow.cs:331:13:331:38 | SSA def(nonSink5) |
-| LocalDataFlow.cs:332:15:332:22 | [post] access to local variable nonSink5 | LocalDataFlow.cs:333:24:333:31 | access to local variable nonSink5 |
-| LocalDataFlow.cs:332:15:332:22 | access to local variable nonSink5 | LocalDataFlow.cs:333:24:333:31 | access to local variable nonSink5 |
-| LocalDataFlow.cs:333:13:333:41 | SSA def(nonSink6) | LocalDataFlow.cs:334:15:334:22 | access to local variable nonSink6 |
-| LocalDataFlow.cs:333:24:333:41 | call to method Reverse | LocalDataFlow.cs:333:13:333:41 | SSA def(nonSink6) |
-| LocalDataFlow.cs:337:13:337:52 | SSA def(taintedDataContract) | LocalDataFlow.cs:338:22:338:40 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:337:13:337:52 | SSA qualifier def(taintedDataContract.AList) | LocalDataFlow.cs:340:22:340:46 | access to property AList |
-| LocalDataFlow.cs:337:35:337:52 | object creation of type DataContract | LocalDataFlow.cs:337:13:337:52 | SSA def(taintedDataContract) |
-| LocalDataFlow.cs:338:13:338:48 | SSA def(sink53) | LocalDataFlow.cs:339:15:339:20 | access to local variable sink53 |
-| LocalDataFlow.cs:338:22:338:40 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:340:22:340:40 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:338:22:338:40 | access to local variable taintedDataContract | LocalDataFlow.cs:340:22:340:40 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:338:22:338:48 | access to property AString | LocalDataFlow.cs:338:13:338:48 | SSA def(sink53) |
-| LocalDataFlow.cs:340:13:340:57 | SSA def(sink54) | LocalDataFlow.cs:341:15:341:20 | access to local variable sink54 |
-| LocalDataFlow.cs:340:22:340:40 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:347:20:347:38 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:340:22:340:40 | access to local variable taintedDataContract | LocalDataFlow.cs:347:20:347:38 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:340:22:340:46 | [post] access to property AList | LocalDataFlow.cs:349:20:349:44 | access to property AList |
-| LocalDataFlow.cs:340:22:340:46 | access to property AList | LocalDataFlow.cs:349:20:349:44 | access to property AList |
-| LocalDataFlow.cs:340:22:340:57 | access to property AString | LocalDataFlow.cs:340:13:340:57 | SSA def(sink54) |
-| LocalDataFlow.cs:344:13:344:55 | SSA def(nonTaintedDataContract) | LocalDataFlow.cs:345:20:345:41 | access to local variable nonTaintedDataContract |
-| LocalDataFlow.cs:344:38:344:55 | object creation of type DataContract | LocalDataFlow.cs:344:13:344:55 | SSA def(nonTaintedDataContract) |
-| LocalDataFlow.cs:345:9:345:49 | SSA def(nonSink0) | LocalDataFlow.cs:346:15:346:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:345:20:345:49 | access to property AString | LocalDataFlow.cs:345:9:345:49 | SSA def(nonSink0) |
-| LocalDataFlow.cs:347:9:347:44 | SSA def(nonSink2) | LocalDataFlow.cs:348:15:348:22 | access to local variable nonSink2 |
-| LocalDataFlow.cs:347:20:347:38 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:349:20:349:38 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:347:20:347:38 | access to local variable taintedDataContract | LocalDataFlow.cs:349:20:349:38 | access to local variable taintedDataContract |
-| LocalDataFlow.cs:347:20:347:44 | access to property AnInt | LocalDataFlow.cs:347:9:347:44 | SSA def(nonSink2) |
-| LocalDataFlow.cs:349:9:349:53 | SSA def(nonSink2) | LocalDataFlow.cs:350:15:350:22 | access to local variable nonSink2 |
-| LocalDataFlow.cs:349:20:349:53 | access to property AnInt | LocalDataFlow.cs:349:9:349:53 | SSA def(nonSink2) |
-| LocalDataFlow.cs:353:17:353:37 | SSA def(taintedTextBox) | LocalDataFlow.cs:354:22:354:35 | access to local variable taintedTextBox |
-| LocalDataFlow.cs:353:34:353:37 | null | LocalDataFlow.cs:353:17:353:37 | SSA def(taintedTextBox) |
-| LocalDataFlow.cs:354:13:354:40 | SSA def(sink60) | LocalDataFlow.cs:355:15:355:20 | access to local variable sink60 |
-| LocalDataFlow.cs:354:22:354:40 | access to property Text | LocalDataFlow.cs:354:13:354:40 | SSA def(sink60) |
-| LocalDataFlow.cs:358:17:358:40 | SSA def(nonTaintedTextBox) | LocalDataFlow.cs:359:20:359:36 | access to local variable nonTaintedTextBox |
-| LocalDataFlow.cs:358:37:358:40 | null | LocalDataFlow.cs:358:17:358:40 | SSA def(nonTaintedTextBox) |
-| LocalDataFlow.cs:359:9:359:41 | SSA def(nonSink0) | LocalDataFlow.cs:360:15:360:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:359:20:359:41 | access to property Text | LocalDataFlow.cs:359:9:359:41 | SSA def(nonSink0) |
-| LocalDataFlow.cs:363:22:363:27 | SSA def(sink61) | LocalDataFlow.cs:364:19:364:24 | access to local variable sink61 |
-| LocalDataFlow.cs:363:32:363:37 | access to local variable sink10 | LocalDataFlow.cs:365:30:365:35 | access to local variable sink10 |
-| LocalDataFlow.cs:365:21:365:51 | SSA def(sink62) | LocalDataFlow.cs:366:15:366:20 | access to local variable sink62 |
-| LocalDataFlow.cs:365:30:365:51 | call to method GetEnumerator | LocalDataFlow.cs:365:21:365:51 | SSA def(sink62) |
-| LocalDataFlow.cs:366:15:366:20 | [post] access to local variable sink62 | LocalDataFlow.cs:367:22:367:27 | access to local variable sink62 |
-| LocalDataFlow.cs:366:15:366:20 | access to local variable sink62 | LocalDataFlow.cs:367:22:367:27 | access to local variable sink62 |
-| LocalDataFlow.cs:367:13:367:35 | SSA def(sink63) | LocalDataFlow.cs:368:15:368:20 | access to local variable sink63 |
-| LocalDataFlow.cs:367:22:367:27 | access to local variable sink62 | LocalDataFlow.cs:367:22:367:35 | access to property Current |
-| LocalDataFlow.cs:367:22:367:35 | access to property Current | LocalDataFlow.cs:367:13:367:35 | SSA def(sink63) |
-| LocalDataFlow.cs:369:48:369:77 | SSA def(sink64) | LocalDataFlow.cs:370:15:370:20 | access to local variable sink64 |
-| LocalDataFlow.cs:369:57:369:77 | (...) ... | LocalDataFlow.cs:369:48:369:77 | SSA def(sink64) |
-| LocalDataFlow.cs:369:57:369:77 | call to method GetEnumerator | LocalDataFlow.cs:369:57:369:77 | (...) ... |
-| LocalDataFlow.cs:370:15:370:20 | [post] access to local variable sink64 | LocalDataFlow.cs:371:22:371:27 | access to local variable sink64 |
-| LocalDataFlow.cs:370:15:370:20 | access to local variable sink64 | LocalDataFlow.cs:371:22:371:27 | access to local variable sink64 |
-| LocalDataFlow.cs:371:13:371:35 | SSA def(sink65) | LocalDataFlow.cs:372:15:372:20 | access to local variable sink65 |
-| LocalDataFlow.cs:371:22:371:27 | access to local variable sink64 | LocalDataFlow.cs:371:22:371:35 | access to property Current |
-| LocalDataFlow.cs:371:22:371:35 | access to property Current | LocalDataFlow.cs:371:13:371:35 | SSA def(sink65) |
-| LocalDataFlow.cs:372:15:372:20 | access to local variable sink65 | LocalDataFlow.cs:373:22:373:27 | access to local variable sink65 |
-| LocalDataFlow.cs:373:13:373:33 | SSA def(sink66) | LocalDataFlow.cs:374:15:374:20 | access to local variable sink66 |
-| LocalDataFlow.cs:373:22:373:27 | access to local variable sink65 | LocalDataFlow.cs:373:22:373:33 | access to property Value |
-| LocalDataFlow.cs:373:22:373:33 | access to property Value | LocalDataFlow.cs:373:13:373:33 | SSA def(sink66) |
-| LocalDataFlow.cs:377:22:377:30 | SSA def(nonSink17) | LocalDataFlow.cs:378:19:378:27 | access to local variable nonSink17 |
-| LocalDataFlow.cs:377:35:377:42 | access to local variable nonSink4 | LocalDataFlow.cs:379:33:379:40 | access to local variable nonSink4 |
-| LocalDataFlow.cs:379:21:379:56 | SSA def(nonSink18) | LocalDataFlow.cs:380:15:380:23 | access to local variable nonSink18 |
-| LocalDataFlow.cs:379:33:379:56 | call to method GetEnumerator | LocalDataFlow.cs:379:21:379:56 | SSA def(nonSink18) |
-| LocalDataFlow.cs:380:15:380:23 | [post] access to local variable nonSink18 | LocalDataFlow.cs:381:20:381:28 | access to local variable nonSink18 |
-| LocalDataFlow.cs:380:15:380:23 | access to local variable nonSink18 | LocalDataFlow.cs:381:20:381:28 | access to local variable nonSink18 |
-| LocalDataFlow.cs:381:9:381:36 | SSA def(nonSink3) | LocalDataFlow.cs:382:15:382:22 | access to local variable nonSink3 |
-| LocalDataFlow.cs:381:20:381:28 | access to local variable nonSink18 | LocalDataFlow.cs:381:20:381:36 | access to property Current |
-| LocalDataFlow.cs:381:20:381:36 | access to property Current | LocalDataFlow.cs:381:9:381:36 | SSA def(nonSink3) |
-| LocalDataFlow.cs:383:51:383:86 | SSA def(nonSink19) | LocalDataFlow.cs:384:15:384:23 | access to local variable nonSink19 |
-| LocalDataFlow.cs:383:63:383:86 | (...) ... | LocalDataFlow.cs:383:51:383:86 | SSA def(nonSink19) |
-| LocalDataFlow.cs:383:63:383:86 | call to method GetEnumerator | LocalDataFlow.cs:383:63:383:86 | (...) ... |
-| LocalDataFlow.cs:384:15:384:23 | [post] access to local variable nonSink19 | LocalDataFlow.cs:385:25:385:33 | access to local variable nonSink19 |
-| LocalDataFlow.cs:384:15:384:23 | access to local variable nonSink19 | LocalDataFlow.cs:385:25:385:33 | access to local variable nonSink19 |
-| LocalDataFlow.cs:385:13:385:41 | SSA def(nonSink20) | LocalDataFlow.cs:386:15:386:23 | access to local variable nonSink20 |
-| LocalDataFlow.cs:385:25:385:33 | access to local variable nonSink19 | LocalDataFlow.cs:385:25:385:41 | access to property Current |
-| LocalDataFlow.cs:385:25:385:41 | access to property Current | LocalDataFlow.cs:385:13:385:41 | SSA def(nonSink20) |
-| LocalDataFlow.cs:386:15:386:23 | access to local variable nonSink20 | LocalDataFlow.cs:387:20:387:28 | access to local variable nonSink20 |
-| LocalDataFlow.cs:387:9:387:34 | SSA def(nonSink0) | LocalDataFlow.cs:388:15:388:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:387:20:387:28 | access to local variable nonSink20 | LocalDataFlow.cs:387:20:387:34 | access to property Value |
-| LocalDataFlow.cs:387:20:387:34 | access to property Value | LocalDataFlow.cs:387:9:387:34 | SSA def(nonSink0) |
-| LocalDataFlow.cs:391:13:391:51 | SSA def(sink67) | LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 |
-| LocalDataFlow.cs:391:22:391:51 | call to method Run | LocalDataFlow.cs:391:13:391:51 | SSA def(sink67) |
-| LocalDataFlow.cs:391:31:391:50 | [output] (...) => ... | LocalDataFlow.cs:391:22:391:51 | call to method Run |
-| LocalDataFlow.cs:392:15:392:20 | [post] access to local variable sink67 | LocalDataFlow.cs:393:28:393:33 | access to local variable sink67 |
-| LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 | LocalDataFlow.cs:393:28:393:33 | access to local variable sink67 |
-| LocalDataFlow.cs:393:13:393:33 | SSA def(sink68) | LocalDataFlow.cs:394:15:394:20 | access to local variable sink68 |
-| LocalDataFlow.cs:393:22:393:33 | await ... | LocalDataFlow.cs:393:13:393:33 | SSA def(sink68) |
-| LocalDataFlow.cs:393:28:393:33 | access to local variable sink67 | LocalDataFlow.cs:393:22:393:33 | await ... |
-| LocalDataFlow.cs:397:13:397:42 | SSA def(nonSink21) | LocalDataFlow.cs:398:15:398:23 | access to local variable nonSink21 |
-| LocalDataFlow.cs:397:25:397:42 | call to method Run | LocalDataFlow.cs:397:13:397:42 | SSA def(nonSink21) |
-| LocalDataFlow.cs:397:34:397:41 | [output] (...) => ... | LocalDataFlow.cs:397:25:397:42 | call to method Run |
-| LocalDataFlow.cs:398:15:398:23 | [post] access to local variable nonSink21 | LocalDataFlow.cs:399:26:399:34 | access to local variable nonSink21 |
-| LocalDataFlow.cs:398:15:398:23 | access to local variable nonSink21 | LocalDataFlow.cs:399:26:399:34 | access to local variable nonSink21 |
-| LocalDataFlow.cs:399:9:399:34 | SSA def(nonSink0) | LocalDataFlow.cs:400:15:400:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:399:20:399:34 | await ... | LocalDataFlow.cs:399:9:399:34 | SSA def(nonSink0) |
-| LocalDataFlow.cs:399:26:399:34 | access to local variable nonSink21 | LocalDataFlow.cs:399:20:399:34 | await ... |
-| LocalDataFlow.cs:400:15:400:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:407:28:407:35 | access to local variable nonSink0 |
-| LocalDataFlow.cs:400:15:400:22 | access to local variable nonSink0 | LocalDataFlow.cs:407:28:407:35 | access to local variable nonSink0 |
-| LocalDataFlow.cs:403:13:403:36 | SSA def(sink69) | LocalDataFlow.cs:404:15:404:20 | access to local variable sink69 |
-| LocalDataFlow.cs:403:22:403:36 | $"..." | LocalDataFlow.cs:403:13:403:36 | SSA def(sink69) |
-| LocalDataFlow.cs:407:9:407:37 | SSA def(nonSink0) | LocalDataFlow.cs:408:15:408:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:407:20:407:37 | $"..." | LocalDataFlow.cs:407:9:407:37 | SSA def(nonSink0) |
-| LocalDataFlow.cs:408:15:408:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:415:31:415:38 | access to local variable nonSink0 |
-| LocalDataFlow.cs:408:15:408:22 | access to local variable nonSink0 | LocalDataFlow.cs:415:31:415:38 | access to local variable nonSink0 |
-| LocalDataFlow.cs:411:13:411:34 | SSA def(sink70) | LocalDataFlow.cs:412:15:412:20 | access to local variable sink70 |
-| LocalDataFlow.cs:411:22:411:34 | ... = ... | LocalDataFlow.cs:411:13:411:34 | SSA def(sink70) |
-| LocalDataFlow.cs:411:22:411:34 | SSA def(sink0) | LocalDataFlow.cs:443:34:443:38 | access to local variable sink0 |
-| LocalDataFlow.cs:411:22:411:34 | SSA def(sink0) | LocalDataFlow.cs:444:22:444:26 | access to local variable sink0 |
-| LocalDataFlow.cs:411:30:411:34 | access to local variable sink0 | LocalDataFlow.cs:411:22:411:34 | ... = ... |
-| LocalDataFlow.cs:411:30:411:34 | access to local variable sink0 | LocalDataFlow.cs:411:22:411:34 | SSA def(sink0) |
-| LocalDataFlow.cs:412:15:412:20 | [post] access to local variable sink70 | LocalDataFlow.cs:419:13:419:18 | access to local variable sink70 |
-| LocalDataFlow.cs:412:15:412:20 | access to local variable sink70 | LocalDataFlow.cs:419:13:419:18 | access to local variable sink70 |
-| LocalDataFlow.cs:415:9:415:38 | SSA def(nonSink0) | LocalDataFlow.cs:416:15:416:22 | access to local variable nonSink0 |
-| LocalDataFlow.cs:415:20:415:38 | ... = ... | LocalDataFlow.cs:415:9:415:38 | SSA def(nonSink0) |
-| LocalDataFlow.cs:415:31:415:38 | access to local variable nonSink0 | LocalDataFlow.cs:415:20:415:38 | ... = ... |
-| LocalDataFlow.cs:416:15:416:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:423:13:423:20 | access to local variable nonSink0 |
-| LocalDataFlow.cs:416:15:416:22 | access to local variable nonSink0 | LocalDataFlow.cs:423:13:423:20 | access to local variable nonSink0 |
-| LocalDataFlow.cs:419:13:419:18 | access to local variable sink70 | LocalDataFlow.cs:419:23:419:35 | SSA def(sink71) |
-| LocalDataFlow.cs:419:13:419:18 | access to local variable sink70 | LocalDataFlow.cs:427:17:427:22 | access to local variable sink70 |
-| LocalDataFlow.cs:419:23:419:35 | SSA def(sink71) | LocalDataFlow.cs:420:19:420:24 | access to local variable sink71 |
-| LocalDataFlow.cs:423:13:423:20 | access to local variable nonSink0 | LocalDataFlow.cs:423:25:423:40 | SSA def(nonSink16) |
-| LocalDataFlow.cs:423:13:423:20 | access to local variable nonSink0 | LocalDataFlow.cs:435:17:435:24 | access to local variable nonSink0 |
-| LocalDataFlow.cs:423:25:423:40 | SSA def(nonSink16) | LocalDataFlow.cs:424:19:424:27 | access to local variable nonSink16 |
-| LocalDataFlow.cs:427:17:427:22 | access to local variable sink70 | LocalDataFlow.cs:429:18:429:30 | SSA def(sink72) |
-| LocalDataFlow.cs:429:18:429:30 | SSA def(sink72) | LocalDataFlow.cs:430:23:430:28 | access to local variable sink72 |
-| LocalDataFlow.cs:435:17:435:24 | access to local variable nonSink0 | LocalDataFlow.cs:437:18:437:33 | SSA def(nonSink17) |
-| LocalDataFlow.cs:435:17:435:24 | access to local variable nonSink0 | LocalDataFlow.cs:443:22:443:29 | access to local variable nonSink0 |
-| LocalDataFlow.cs:437:18:437:33 | SSA def(nonSink17) | LocalDataFlow.cs:438:23:438:31 | access to local variable nonSink17 |
-| LocalDataFlow.cs:443:13:443:38 | SSA def(sink73) | LocalDataFlow.cs:445:15:445:20 | access to local variable sink73 |
-| LocalDataFlow.cs:443:22:443:29 | access to local variable nonSink0 | LocalDataFlow.cs:443:22:443:38 | ... ?? ... |
-| LocalDataFlow.cs:443:22:443:29 | access to local variable nonSink0 | LocalDataFlow.cs:444:31:444:38 | access to local variable nonSink0 |
-| LocalDataFlow.cs:443:22:443:38 | ... ?? ... | LocalDataFlow.cs:443:13:443:38 | SSA def(sink73) |
-| LocalDataFlow.cs:443:34:443:38 | access to local variable sink0 | LocalDataFlow.cs:443:22:443:38 | ... ?? ... |
-| LocalDataFlow.cs:443:34:443:38 | access to local variable sink0 | LocalDataFlow.cs:444:22:444:26 | access to local variable sink0 |
-| LocalDataFlow.cs:444:13:444:38 | SSA def(sink74) | LocalDataFlow.cs:446:15:446:20 | access to local variable sink74 |
-| LocalDataFlow.cs:444:22:444:26 | access to local variable sink0 | LocalDataFlow.cs:444:22:444:38 | ... ?? ... |
-| LocalDataFlow.cs:444:22:444:38 | ... ?? ... | LocalDataFlow.cs:444:13:444:38 | SSA def(sink74) |
-| LocalDataFlow.cs:444:31:444:38 | access to local variable nonSink0 | LocalDataFlow.cs:444:22:444:38 | ... ?? ... |
-| LocalDataFlow.cs:464:28:464:30 | this | LocalDataFlow.cs:464:41:464:45 | this access |
-| LocalDataFlow.cs:464:50:464:52 | this | LocalDataFlow.cs:464:56:464:60 | this access |
-| LocalDataFlow.cs:464:50:464:52 | value | LocalDataFlow.cs:464:64:464:68 | access to parameter value |
-| LocalDataFlow.cs:470:41:470:47 | tainted | LocalDataFlow.cs:472:15:472:21 | access to parameter tainted |
-| LocalDataFlow.cs:475:44:475:53 | nonTainted | LocalDataFlow.cs:477:15:477:24 | access to parameter nonTainted |
-| LocalDataFlow.cs:480:44:480:44 | x | LocalDataFlow.cs:483:21:483:21 | access to parameter x |
-| LocalDataFlow.cs:480:67:480:68 | os | LocalDataFlow.cs:486:32:486:33 | access to parameter os |
-| LocalDataFlow.cs:483:21:483:21 | access to parameter x | LocalDataFlow.cs:483:16:483:21 | ... = ... |
-| LocalDataFlow.cs:486:32:486:33 | access to parameter os | LocalDataFlow.cs:486:26:486:33 | ... = ... |
-| LocalDataFlow.cs:491:41:491:44 | args | LocalDataFlow.cs:493:29:493:32 | access to parameter args |
-| LocalDataFlow.cs:493:29:493:32 | [post] access to parameter args | LocalDataFlow.cs:494:27:494:30 | access to parameter args |
-| LocalDataFlow.cs:493:29:493:32 | access to parameter args | LocalDataFlow.cs:494:27:494:30 | access to parameter args |
+| LocalDataFlow.cs:66:15:66:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:73:20:73:27 | access to local variable nonSink0 |
+| LocalDataFlow.cs:66:15:66:22 | access to local variable nonSink0 | LocalDataFlow.cs:73:20:73:27 | access to local variable nonSink0 |
+| LocalDataFlow.cs:69:13:69:32 | SSA def(sink5) | LocalDataFlow.cs:70:15:70:19 | access to local variable sink5 |
+| LocalDataFlow.cs:69:21:69:25 | access to local variable sink1 | LocalDataFlow.cs:169:33:169:37 | access to local variable sink1 |
+| LocalDataFlow.cs:69:21:69:32 | ... + ... | LocalDataFlow.cs:69:13:69:32 | SSA def(sink5) |
+| LocalDataFlow.cs:70:15:70:19 | [post] access to local variable sink5 | LocalDataFlow.cs:77:22:77:26 | access to local variable sink5 |
+| LocalDataFlow.cs:70:15:70:19 | access to local variable sink5 | LocalDataFlow.cs:77:22:77:26 | access to local variable sink5 |
+| LocalDataFlow.cs:73:9:73:36 | SSA def(nonSink0) | LocalDataFlow.cs:74:15:74:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:73:20:73:36 | ... + ... | LocalDataFlow.cs:73:9:73:36 | SSA def(nonSink0) |
+| LocalDataFlow.cs:74:15:74:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:81:21:81:28 | access to local variable nonSink0 |
+| LocalDataFlow.cs:74:15:74:22 | access to local variable nonSink0 | LocalDataFlow.cs:81:21:81:28 | access to local variable nonSink0 |
+| LocalDataFlow.cs:77:13:77:27 | SSA def(sink6) | LocalDataFlow.cs:78:15:78:19 | access to local variable sink6 |
+| LocalDataFlow.cs:77:22:77:26 | access to local variable sink5 | LocalDataFlow.cs:77:13:77:27 | SSA def(sink6) |
+| LocalDataFlow.cs:78:15:78:19 | [post] access to local variable sink6 | LocalDataFlow.cs:85:31:85:35 | [b (line 49): false] access to local variable sink6 |
+| LocalDataFlow.cs:78:15:78:19 | access to local variable sink6 | LocalDataFlow.cs:85:31:85:35 | [b (line 49): false] access to local variable sink6 |
+| LocalDataFlow.cs:81:9:81:29 | SSA def(nonSink0) | LocalDataFlow.cs:82:15:82:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:81:21:81:28 | access to local variable nonSink0 | LocalDataFlow.cs:81:9:81:29 | SSA def(nonSink0) |
+| LocalDataFlow.cs:85:13:85:35 | [b (line 49): false] SSA def(sink7) | LocalDataFlow.cs:86:15:86:19 | [b (line 49): false] access to local variable sink7 |
+| LocalDataFlow.cs:85:13:85:35 | [b (line 49): true] SSA def(sink7) | LocalDataFlow.cs:86:15:86:19 | [b (line 49): true] access to local variable sink7 |
+| LocalDataFlow.cs:85:21:85:21 | access to parameter b | LocalDataFlow.cs:89:20:89:20 | [b (line 49): false] access to parameter b |
+| LocalDataFlow.cs:85:21:85:21 | access to parameter b | LocalDataFlow.cs:89:20:89:20 | [b (line 49): true] access to parameter b |
+| LocalDataFlow.cs:85:21:85:35 | ... ? ... : ... | LocalDataFlow.cs:85:13:85:35 | [b (line 49): false] SSA def(sink7) |
+| LocalDataFlow.cs:85:21:85:35 | ... ? ... : ... | LocalDataFlow.cs:85:13:85:35 | [b (line 49): true] SSA def(sink7) |
+| LocalDataFlow.cs:85:25:85:27 | [b (line 49): true] "a" | LocalDataFlow.cs:85:21:85:35 | ... ? ... : ... |
+| LocalDataFlow.cs:85:31:85:35 | [b (line 49): false] access to local variable sink6 | LocalDataFlow.cs:85:21:85:35 | ... ? ... : ... |
+| LocalDataFlow.cs:86:15:86:19 | [b (line 49): false] access to local variable sink7 | LocalDataFlow.cs:89:9:89:36 | SSA phi(sink7) |
+| LocalDataFlow.cs:86:15:86:19 | [b (line 49): true] access to local variable sink7 | LocalDataFlow.cs:89:9:89:36 | SSA phi(sink7) |
+| LocalDataFlow.cs:89:9:89:36 | SSA def(nonSink0) | LocalDataFlow.cs:90:15:90:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:89:9:89:36 | SSA phi(sink7) | LocalDataFlow.cs:93:29:93:33 | access to local variable sink7 |
+| LocalDataFlow.cs:89:20:89:36 | [b (line 49): false] ... ? ... : ... | LocalDataFlow.cs:89:9:89:36 | SSA def(nonSink0) |
+| LocalDataFlow.cs:89:20:89:36 | [b (line 49): true] ... ? ... : ... | LocalDataFlow.cs:89:9:89:36 | SSA def(nonSink0) |
+| LocalDataFlow.cs:89:24:89:28 | "abc" | LocalDataFlow.cs:89:20:89:36 | [b (line 49): true] ... ? ... : ... |
+| LocalDataFlow.cs:89:32:89:36 | "def" | LocalDataFlow.cs:89:20:89:36 | [b (line 49): false] ... ? ... : ... |
+| LocalDataFlow.cs:90:15:90:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:97:32:97:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:90:15:90:22 | access to local variable nonSink0 | LocalDataFlow.cs:97:32:97:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:93:13:93:33 | SSA def(sink8) | LocalDataFlow.cs:94:15:94:19 | access to local variable sink8 |
+| LocalDataFlow.cs:93:21:93:33 | (...) ... | LocalDataFlow.cs:93:13:93:33 | SSA def(sink8) |
+| LocalDataFlow.cs:93:29:93:33 | access to local variable sink7 | LocalDataFlow.cs:93:21:93:33 | (...) ... |
+| LocalDataFlow.cs:94:15:94:19 | [post] access to local variable sink8 | LocalDataFlow.cs:101:21:101:25 | access to local variable sink8 |
+| LocalDataFlow.cs:94:15:94:19 | access to local variable sink8 | LocalDataFlow.cs:101:21:101:25 | access to local variable sink8 |
+| LocalDataFlow.cs:97:13:97:39 | SSA def(nonSink3) | LocalDataFlow.cs:98:15:98:22 | access to local variable nonSink3 |
+| LocalDataFlow.cs:97:24:97:39 | (...) ... | LocalDataFlow.cs:97:13:97:39 | SSA def(nonSink3) |
+| LocalDataFlow.cs:97:32:97:39 | access to local variable nonSink0 | LocalDataFlow.cs:97:24:97:39 | (...) ... |
+| LocalDataFlow.cs:97:32:97:39 | access to local variable nonSink0 | LocalDataFlow.cs:105:20:105:27 | access to local variable nonSink0 |
+| LocalDataFlow.cs:101:13:101:35 | SSA def(sink9) | LocalDataFlow.cs:102:15:102:19 | access to local variable sink9 |
+| LocalDataFlow.cs:101:21:101:25 | access to local variable sink8 | LocalDataFlow.cs:101:21:101:35 | ... as ... |
+| LocalDataFlow.cs:101:21:101:25 | access to local variable sink8 | LocalDataFlow.cs:165:22:165:26 | access to local variable sink8 |
+| LocalDataFlow.cs:101:21:101:35 | ... as ... | LocalDataFlow.cs:101:13:101:35 | SSA def(sink9) |
+| LocalDataFlow.cs:102:15:102:19 | [post] access to local variable sink9 | LocalDataFlow.cs:109:34:109:38 | access to local variable sink9 |
+| LocalDataFlow.cs:102:15:102:19 | access to local variable sink9 | LocalDataFlow.cs:109:34:109:38 | access to local variable sink9 |
+| LocalDataFlow.cs:105:9:105:37 | SSA def(nonSink3) | LocalDataFlow.cs:106:15:106:22 | access to local variable nonSink3 |
+| LocalDataFlow.cs:105:20:105:27 | access to local variable nonSink0 | LocalDataFlow.cs:105:20:105:37 | ... as ... |
+| LocalDataFlow.cs:105:20:105:27 | access to local variable nonSink0 | LocalDataFlow.cs:114:22:114:29 | access to local variable nonSink0 |
+| LocalDataFlow.cs:105:20:105:37 | ... as ... | LocalDataFlow.cs:105:9:105:37 | SSA def(nonSink3) |
+| LocalDataFlow.cs:106:15:106:22 | [post] access to local variable nonSink3 | LocalDataFlow.cs:171:33:171:40 | access to local variable nonSink3 |
+| LocalDataFlow.cs:106:15:106:22 | access to local variable nonSink3 | LocalDataFlow.cs:171:33:171:40 | access to local variable nonSink3 |
+| LocalDataFlow.cs:109:13:109:39 | SSA def(sink15) | LocalDataFlow.cs:110:15:110:20 | access to local variable sink15 |
+| LocalDataFlow.cs:109:22:109:39 | call to method Parse | LocalDataFlow.cs:109:13:109:39 | SSA def(sink15) |
+| LocalDataFlow.cs:109:34:109:38 | [post] access to local variable sink9 | LocalDataFlow.cs:112:37:112:41 | access to local variable sink9 |
+| LocalDataFlow.cs:109:34:109:38 | access to local variable sink9 | LocalDataFlow.cs:112:37:112:41 | access to local variable sink9 |
+| LocalDataFlow.cs:110:15:110:20 | access to local variable sink15 | LocalDataFlow.cs:161:22:161:27 | access to local variable sink15 |
+| LocalDataFlow.cs:112:13:112:56 | SSA def(sink16) | LocalDataFlow.cs:113:15:113:20 | access to local variable sink16 |
+| LocalDataFlow.cs:112:22:112:56 | call to method TryParse | LocalDataFlow.cs:112:13:112:56 | SSA def(sink16) |
+| LocalDataFlow.cs:112:37:112:41 | [post] access to local variable sink9 | LocalDataFlow.cs:114:44:114:48 | access to local variable sink9 |
+| LocalDataFlow.cs:112:37:112:41 | access to local variable sink9 | LocalDataFlow.cs:114:44:114:48 | access to local variable sink9 |
+| LocalDataFlow.cs:114:13:114:49 | SSA def(sink17) | LocalDataFlow.cs:115:15:115:20 | access to local variable sink17 |
+| LocalDataFlow.cs:114:22:114:29 | [post] access to local variable nonSink0 | LocalDataFlow.cs:116:36:116:43 | access to local variable nonSink0 |
+| LocalDataFlow.cs:114:22:114:29 | access to local variable nonSink0 | LocalDataFlow.cs:116:36:116:43 | access to local variable nonSink0 |
+| LocalDataFlow.cs:114:22:114:49 | call to method Replace | LocalDataFlow.cs:114:13:114:49 | SSA def(sink17) |
+| LocalDataFlow.cs:114:44:114:48 | [post] access to local variable sink9 | LocalDataFlow.cs:116:46:116:50 | access to local variable sink9 |
+| LocalDataFlow.cs:114:44:114:48 | access to local variable sink9 | LocalDataFlow.cs:116:46:116:50 | access to local variable sink9 |
+| LocalDataFlow.cs:116:13:116:51 | SSA def(sink18) | LocalDataFlow.cs:117:15:117:20 | access to local variable sink18 |
+| LocalDataFlow.cs:116:22:116:51 | call to method Format | LocalDataFlow.cs:116:13:116:51 | SSA def(sink18) |
+| LocalDataFlow.cs:116:36:116:43 | [post] access to local variable nonSink0 | LocalDataFlow.cs:118:44:118:51 | access to local variable nonSink0 |
+| LocalDataFlow.cs:116:36:116:43 | access to local variable nonSink0 | LocalDataFlow.cs:118:44:118:51 | access to local variable nonSink0 |
+| LocalDataFlow.cs:116:46:116:50 | [post] access to local variable sink9 | LocalDataFlow.cs:120:33:120:37 | access to local variable sink9 |
+| LocalDataFlow.cs:116:46:116:50 | access to local variable sink9 | LocalDataFlow.cs:120:33:120:37 | access to local variable sink9 |
+| LocalDataFlow.cs:117:15:117:20 | [post] access to local variable sink18 | LocalDataFlow.cs:118:36:118:41 | access to local variable sink18 |
+| LocalDataFlow.cs:117:15:117:20 | access to local variable sink18 | LocalDataFlow.cs:118:36:118:41 | access to local variable sink18 |
+| LocalDataFlow.cs:118:13:118:52 | SSA def(sink19) | LocalDataFlow.cs:119:15:119:20 | access to local variable sink19 |
+| LocalDataFlow.cs:118:22:118:52 | call to method Format | LocalDataFlow.cs:118:13:118:52 | SSA def(sink19) |
+| LocalDataFlow.cs:118:44:118:51 | [post] access to local variable nonSink0 | LocalDataFlow.cs:137:32:137:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:118:44:118:51 | access to local variable nonSink0 | LocalDataFlow.cs:137:32:137:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:120:13:120:38 | SSA def(sink45) | LocalDataFlow.cs:121:15:121:20 | access to local variable sink45 |
+| LocalDataFlow.cs:120:22:120:38 | call to method Parse | LocalDataFlow.cs:120:13:120:38 | SSA def(sink45) |
+| LocalDataFlow.cs:120:33:120:37 | [post] access to local variable sink9 | LocalDataFlow.cs:123:36:123:40 | access to local variable sink9 |
+| LocalDataFlow.cs:120:33:120:37 | access to local variable sink9 | LocalDataFlow.cs:123:36:123:40 | access to local variable sink9 |
+| LocalDataFlow.cs:123:13:123:56 | SSA def(sink46) | LocalDataFlow.cs:124:15:124:20 | access to local variable sink46 |
+| LocalDataFlow.cs:123:22:123:56 | call to method TryParse | LocalDataFlow.cs:123:13:123:56 | SSA def(sink46) |
+| LocalDataFlow.cs:123:36:123:40 | [post] access to local variable sink9 | LocalDataFlow.cs:163:22:163:26 | access to local variable sink9 |
+| LocalDataFlow.cs:123:36:123:40 | access to local variable sink9 | LocalDataFlow.cs:163:22:163:26 | access to local variable sink9 |
+| LocalDataFlow.cs:124:15:124:20 | access to local variable sink46 | LocalDataFlow.cs:125:37:125:42 | access to local variable sink46 |
+| LocalDataFlow.cs:125:13:125:43 | SSA def(sink47) | LocalDataFlow.cs:126:15:126:20 | access to local variable sink47 |
+| LocalDataFlow.cs:125:22:125:43 | call to method ToByte | LocalDataFlow.cs:125:13:125:43 | SSA def(sink47) |
+| LocalDataFlow.cs:126:15:126:20 | access to local variable sink47 | LocalDataFlow.cs:127:40:127:45 | access to local variable sink47 |
+| LocalDataFlow.cs:127:13:127:46 | SSA def(sink49) | LocalDataFlow.cs:128:15:128:20 | access to local variable sink49 |
+| LocalDataFlow.cs:127:22:127:46 | call to method Concat | LocalDataFlow.cs:127:13:127:46 | SSA def(sink49) |
+| LocalDataFlow.cs:127:40:127:45 | access to local variable sink47 | LocalDataFlow.cs:127:40:127:45 | (...) ... |
+| LocalDataFlow.cs:128:15:128:20 | [post] access to local variable sink49 | LocalDataFlow.cs:129:34:129:39 | access to local variable sink49 |
+| LocalDataFlow.cs:128:15:128:20 | access to local variable sink49 | LocalDataFlow.cs:129:34:129:39 | access to local variable sink49 |
+| LocalDataFlow.cs:129:13:129:40 | SSA def(sink50) | LocalDataFlow.cs:130:15:130:20 | access to local variable sink50 |
+| LocalDataFlow.cs:129:22:129:40 | [library code] call to method Copy | LocalDataFlow.cs:129:22:129:40 | call to method Copy |
+| LocalDataFlow.cs:129:22:129:40 | call to method Copy | LocalDataFlow.cs:129:13:129:40 | SSA def(sink50) |
+| LocalDataFlow.cs:129:34:129:39 | access to local variable sink49 | LocalDataFlow.cs:129:22:129:40 | [library code] call to method Copy |
+| LocalDataFlow.cs:130:15:130:20 | [post] access to local variable sink50 | LocalDataFlow.cs:131:44:131:49 | access to local variable sink50 |
+| LocalDataFlow.cs:130:15:130:20 | access to local variable sink50 | LocalDataFlow.cs:131:44:131:49 | access to local variable sink50 |
+| LocalDataFlow.cs:131:13:131:54 | SSA def(sink51) | LocalDataFlow.cs:132:15:132:20 | access to local variable sink51 |
+| LocalDataFlow.cs:131:22:131:54 | call to method Join | LocalDataFlow.cs:131:13:131:54 | SSA def(sink51) |
+| LocalDataFlow.cs:132:15:132:20 | [post] access to local variable sink51 | LocalDataFlow.cs:133:35:133:40 | access to local variable sink51 |
+| LocalDataFlow.cs:132:15:132:20 | access to local variable sink51 | LocalDataFlow.cs:133:35:133:40 | access to local variable sink51 |
+| LocalDataFlow.cs:133:13:133:41 | SSA def(sink52) | LocalDataFlow.cs:134:15:134:20 | access to local variable sink52 |
+| LocalDataFlow.cs:133:22:133:41 | call to method Insert | LocalDataFlow.cs:133:13:133:41 | SSA def(sink52) |
+| LocalDataFlow.cs:137:9:137:40 | SSA def(nonSink2) | LocalDataFlow.cs:138:15:138:22 | access to local variable nonSink2 |
+| LocalDataFlow.cs:137:20:137:40 | call to method Parse | LocalDataFlow.cs:137:9:137:40 | SSA def(nonSink2) |
+| LocalDataFlow.cs:137:32:137:39 | [post] access to local variable nonSink0 | LocalDataFlow.cs:139:39:139:46 | access to local variable nonSink0 |
+| LocalDataFlow.cs:137:32:137:39 | access to local variable nonSink0 | LocalDataFlow.cs:139:39:139:46 | access to local variable nonSink0 |
+| LocalDataFlow.cs:139:13:139:61 | SSA def(nonSink7) | LocalDataFlow.cs:140:15:140:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:139:24:139:61 | call to method TryParse | LocalDataFlow.cs:139:13:139:61 | SSA def(nonSink7) |
+| LocalDataFlow.cs:139:39:139:46 | [post] access to local variable nonSink0 | LocalDataFlow.cs:141:20:141:27 | access to local variable nonSink0 |
+| LocalDataFlow.cs:139:39:139:46 | access to local variable nonSink0 | LocalDataFlow.cs:141:20:141:27 | access to local variable nonSink0 |
+| LocalDataFlow.cs:141:9:141:50 | SSA def(nonSink0) | LocalDataFlow.cs:142:15:142:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:141:20:141:27 | [post] access to local variable nonSink0 | LocalDataFlow.cs:141:42:141:49 | access to local variable nonSink0 |
+| LocalDataFlow.cs:141:20:141:27 | access to local variable nonSink0 | LocalDataFlow.cs:141:42:141:49 | access to local variable nonSink0 |
+| LocalDataFlow.cs:141:20:141:50 | call to method Replace | LocalDataFlow.cs:141:9:141:50 | SSA def(nonSink0) |
+| LocalDataFlow.cs:142:15:142:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:143:34:143:41 | access to local variable nonSink0 |
+| LocalDataFlow.cs:142:15:142:22 | access to local variable nonSink0 | LocalDataFlow.cs:143:34:143:41 | access to local variable nonSink0 |
+| LocalDataFlow.cs:143:9:143:52 | SSA def(nonSink0) | LocalDataFlow.cs:144:15:144:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:143:20:143:52 | call to method Format | LocalDataFlow.cs:143:9:143:52 | SSA def(nonSink0) |
+| LocalDataFlow.cs:143:34:143:41 | [post] access to local variable nonSink0 | LocalDataFlow.cs:143:44:143:51 | access to local variable nonSink0 |
+| LocalDataFlow.cs:143:34:143:41 | access to local variable nonSink0 | LocalDataFlow.cs:143:44:143:51 | access to local variable nonSink0 |
+| LocalDataFlow.cs:144:15:144:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:145:31:145:38 | access to local variable nonSink0 |
+| LocalDataFlow.cs:144:15:144:22 | access to local variable nonSink0 | LocalDataFlow.cs:145:31:145:38 | access to local variable nonSink0 |
+| LocalDataFlow.cs:145:9:145:39 | SSA def(nonSink7) | LocalDataFlow.cs:146:15:146:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:145:20:145:39 | call to method Parse | LocalDataFlow.cs:145:9:145:39 | SSA def(nonSink7) |
+| LocalDataFlow.cs:145:31:145:38 | [post] access to local variable nonSink0 | LocalDataFlow.cs:147:34:147:41 | access to local variable nonSink0 |
+| LocalDataFlow.cs:145:31:145:38 | access to local variable nonSink0 | LocalDataFlow.cs:147:34:147:41 | access to local variable nonSink0 |
+| LocalDataFlow.cs:147:9:147:57 | SSA def(nonSink7) | LocalDataFlow.cs:148:15:148:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:147:20:147:57 | call to method TryParse | LocalDataFlow.cs:147:9:147:57 | SSA def(nonSink7) |
+| LocalDataFlow.cs:148:15:148:22 | access to local variable nonSink7 | LocalDataFlow.cs:149:40:149:47 | access to local variable nonSink7 |
+| LocalDataFlow.cs:149:13:149:48 | SSA def(nonSink14) | LocalDataFlow.cs:150:15:150:23 | access to local variable nonSink14 |
+| LocalDataFlow.cs:149:25:149:48 | call to method ToByte | LocalDataFlow.cs:149:13:149:48 | SSA def(nonSink14) |
+| LocalDataFlow.cs:149:40:149:47 | access to local variable nonSink7 | LocalDataFlow.cs:151:38:151:45 | access to local variable nonSink7 |
+| LocalDataFlow.cs:151:9:151:46 | SSA def(nonSink0) | LocalDataFlow.cs:152:15:152:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:151:20:151:46 | call to method Concat | LocalDataFlow.cs:151:9:151:46 | SSA def(nonSink0) |
+| LocalDataFlow.cs:151:38:151:45 | access to local variable nonSink7 | LocalDataFlow.cs:151:38:151:45 | (...) ... |
+| LocalDataFlow.cs:152:15:152:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:153:32:153:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:152:15:152:22 | access to local variable nonSink0 | LocalDataFlow.cs:153:32:153:39 | access to local variable nonSink0 |
+| LocalDataFlow.cs:153:9:153:40 | SSA def(nonSink0) | LocalDataFlow.cs:154:15:154:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:153:20:153:40 | [library code] call to method Copy | LocalDataFlow.cs:153:20:153:40 | call to method Copy |
+| LocalDataFlow.cs:153:20:153:40 | call to method Copy | LocalDataFlow.cs:153:9:153:40 | SSA def(nonSink0) |
+| LocalDataFlow.cs:153:32:153:39 | access to local variable nonSink0 | LocalDataFlow.cs:153:20:153:40 | [library code] call to method Copy |
+| LocalDataFlow.cs:154:15:154:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:155:42:155:49 | access to local variable nonSink0 |
+| LocalDataFlow.cs:154:15:154:22 | access to local variable nonSink0 | LocalDataFlow.cs:155:42:155:49 | access to local variable nonSink0 |
+| LocalDataFlow.cs:155:9:155:54 | SSA def(nonSink0) | LocalDataFlow.cs:156:15:156:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:155:20:155:54 | call to method Join | LocalDataFlow.cs:155:9:155:54 | SSA def(nonSink0) |
+| LocalDataFlow.cs:156:15:156:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:157:33:157:40 | access to local variable nonSink0 |
+| LocalDataFlow.cs:156:15:156:22 | access to local variable nonSink0 | LocalDataFlow.cs:157:33:157:40 | access to local variable nonSink0 |
+| LocalDataFlow.cs:157:9:157:41 | SSA def(nonSink0) | LocalDataFlow.cs:158:15:158:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:157:20:157:41 | call to method Insert | LocalDataFlow.cs:157:9:157:41 | SSA def(nonSink0) |
+| LocalDataFlow.cs:158:15:158:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:195:39:195:46 | access to local variable nonSink0 |
+| LocalDataFlow.cs:158:15:158:22 | access to local variable nonSink0 | LocalDataFlow.cs:195:39:195:46 | access to local variable nonSink0 |
+| LocalDataFlow.cs:161:13:161:32 | SSA def(sink20) | LocalDataFlow.cs:162:15:162:20 | access to local variable sink20 |
+| LocalDataFlow.cs:161:22:161:32 | ... > ... | LocalDataFlow.cs:161:13:161:32 | SSA def(sink20) |
+| LocalDataFlow.cs:162:15:162:20 | access to local variable sink20 | LocalDataFlow.cs:175:22:175:27 | access to local variable sink20 |
+| LocalDataFlow.cs:163:13:163:40 | SSA def(sink21) | LocalDataFlow.cs:164:15:164:20 | access to local variable sink21 |
+| LocalDataFlow.cs:163:22:163:26 | [post] access to local variable sink9 | LocalDataFlow.cs:183:37:183:41 | access to local variable sink9 |
+| LocalDataFlow.cs:163:22:163:26 | access to local variable sink9 | LocalDataFlow.cs:183:37:183:41 | access to local variable sink9 |
+| LocalDataFlow.cs:163:22:163:40 | call to method Equals | LocalDataFlow.cs:163:13:163:40 | SSA def(sink21) |
+| LocalDataFlow.cs:165:13:165:45 | SSA def(sink22) | LocalDataFlow.cs:166:15:166:20 | access to local variable sink22 |
+| LocalDataFlow.cs:165:22:165:26 | [post] access to local variable sink8 | LocalDataFlow.cs:171:20:171:24 | access to local variable sink8 |
+| LocalDataFlow.cs:165:22:165:26 | access to local variable sink8 | LocalDataFlow.cs:171:20:171:24 | access to local variable sink8 |
+| LocalDataFlow.cs:165:22:165:45 | call to method Equals | LocalDataFlow.cs:165:13:165:45 | SSA def(sink22) |
+| LocalDataFlow.cs:165:43:165:44 | 41 | LocalDataFlow.cs:165:35:165:44 | (...) ... |
+| LocalDataFlow.cs:169:9:169:38 | SSA def(nonSink7) | LocalDataFlow.cs:170:15:170:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:169:20:169:24 | [post] access to local variable sink0 | LocalDataFlow.cs:294:30:294:34 | access to local variable sink0 |
+| LocalDataFlow.cs:169:20:169:24 | access to local variable sink0 | LocalDataFlow.cs:294:30:294:34 | access to local variable sink0 |
+| LocalDataFlow.cs:169:20:169:38 | call to method Equals | LocalDataFlow.cs:169:9:169:38 | SSA def(nonSink7) |
+| LocalDataFlow.cs:169:33:169:37 | [post] access to local variable sink1 | LocalDataFlow.cs:286:30:286:34 | access to local variable sink1 |
+| LocalDataFlow.cs:169:33:169:37 | access to local variable sink1 | LocalDataFlow.cs:286:30:286:34 | access to local variable sink1 |
+| LocalDataFlow.cs:171:9:171:41 | SSA def(nonSink7) | LocalDataFlow.cs:172:15:172:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:171:20:171:41 | call to method Equals | LocalDataFlow.cs:171:9:171:41 | SSA def(nonSink7) |
+| LocalDataFlow.cs:172:15:172:22 | access to local variable nonSink7 | LocalDataFlow.cs:179:20:179:27 | access to local variable nonSink7 |
+| LocalDataFlow.cs:175:13:175:36 | SSA def(sink25) | LocalDataFlow.cs:176:15:176:20 | access to local variable sink25 |
+| LocalDataFlow.cs:175:22:175:36 | ... \|\| ... | LocalDataFlow.cs:175:13:175:36 | SSA def(sink25) |
+| LocalDataFlow.cs:179:9:179:36 | SSA def(nonSink7) | LocalDataFlow.cs:180:15:180:22 | access to local variable nonSink7 |
+| LocalDataFlow.cs:179:20:179:36 | ... \|\| ... | LocalDataFlow.cs:179:9:179:36 | SSA def(nonSink7) |
+| LocalDataFlow.cs:183:13:183:42 | SSA def(sink26) | LocalDataFlow.cs:184:15:184:20 | access to local variable sink26 |
+| LocalDataFlow.cs:183:22:183:42 | object creation of type Uri | LocalDataFlow.cs:183:13:183:42 | SSA def(sink26) |
+| LocalDataFlow.cs:184:15:184:20 | [post] access to local variable sink26 | LocalDataFlow.cs:185:22:185:27 | access to local variable sink26 |
+| LocalDataFlow.cs:184:15:184:20 | access to local variable sink26 | LocalDataFlow.cs:185:22:185:27 | access to local variable sink26 |
+| LocalDataFlow.cs:185:13:185:38 | SSA def(sink27) | LocalDataFlow.cs:186:15:186:20 | access to local variable sink27 |
+| LocalDataFlow.cs:185:22:185:27 | [post] access to local variable sink26 | LocalDataFlow.cs:187:22:187:27 | access to local variable sink26 |
+| LocalDataFlow.cs:185:22:185:27 | access to local variable sink26 | LocalDataFlow.cs:187:22:187:27 | access to local variable sink26 |
+| LocalDataFlow.cs:185:22:185:38 | call to method ToString | LocalDataFlow.cs:185:13:185:38 | SSA def(sink27) |
+| LocalDataFlow.cs:187:13:187:40 | SSA def(sink28) | LocalDataFlow.cs:188:15:188:20 | access to local variable sink28 |
+| LocalDataFlow.cs:187:22:187:27 | [post] access to local variable sink26 | LocalDataFlow.cs:189:22:189:27 | access to local variable sink26 |
+| LocalDataFlow.cs:187:22:187:27 | access to local variable sink26 | LocalDataFlow.cs:189:22:189:27 | access to local variable sink26 |
+| LocalDataFlow.cs:187:22:187:40 | access to property PathAndQuery | LocalDataFlow.cs:187:13:187:40 | SSA def(sink28) |
+| LocalDataFlow.cs:189:13:189:33 | SSA def(sink29) | LocalDataFlow.cs:190:15:190:20 | access to local variable sink29 |
+| LocalDataFlow.cs:189:22:189:27 | [post] access to local variable sink26 | LocalDataFlow.cs:191:22:191:27 | access to local variable sink26 |
+| LocalDataFlow.cs:189:22:189:27 | access to local variable sink26 | LocalDataFlow.cs:191:22:191:27 | access to local variable sink26 |
+| LocalDataFlow.cs:189:22:189:33 | access to property Query | LocalDataFlow.cs:189:13:189:33 | SSA def(sink29) |
+| LocalDataFlow.cs:191:13:191:42 | SSA def(sink30) | LocalDataFlow.cs:192:15:192:20 | access to local variable sink30 |
+| LocalDataFlow.cs:191:22:191:42 | access to property OriginalString | LocalDataFlow.cs:191:13:191:42 | SSA def(sink30) |
+| LocalDataFlow.cs:192:15:192:20 | [post] access to local variable sink30 | LocalDataFlow.cs:207:49:207:54 | access to local variable sink30 |
+| LocalDataFlow.cs:192:15:192:20 | access to local variable sink30 | LocalDataFlow.cs:207:49:207:54 | access to local variable sink30 |
+| LocalDataFlow.cs:195:13:195:47 | SSA def(nonSink8) | LocalDataFlow.cs:196:15:196:22 | access to local variable nonSink8 |
+| LocalDataFlow.cs:195:24:195:47 | object creation of type Uri | LocalDataFlow.cs:195:13:195:47 | SSA def(nonSink8) |
+| LocalDataFlow.cs:196:15:196:22 | [post] access to local variable nonSink8 | LocalDataFlow.cs:197:20:197:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:196:15:196:22 | access to local variable nonSink8 | LocalDataFlow.cs:197:20:197:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:197:9:197:38 | SSA def(nonSink0) | LocalDataFlow.cs:198:15:198:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:197:20:197:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:199:20:199:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:197:20:197:27 | access to local variable nonSink8 | LocalDataFlow.cs:199:20:199:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:197:20:197:38 | call to method ToString | LocalDataFlow.cs:197:9:197:38 | SSA def(nonSink0) |
+| LocalDataFlow.cs:199:9:199:40 | SSA def(nonSink0) | LocalDataFlow.cs:200:15:200:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:199:20:199:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:201:20:201:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:199:20:199:27 | access to local variable nonSink8 | LocalDataFlow.cs:201:20:201:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:199:20:199:40 | access to property PathAndQuery | LocalDataFlow.cs:199:9:199:40 | SSA def(nonSink0) |
+| LocalDataFlow.cs:201:9:201:33 | SSA def(nonSink0) | LocalDataFlow.cs:202:15:202:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:201:20:201:27 | [post] access to local variable nonSink8 | LocalDataFlow.cs:203:20:203:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:201:20:201:27 | access to local variable nonSink8 | LocalDataFlow.cs:203:20:203:27 | access to local variable nonSink8 |
+| LocalDataFlow.cs:201:20:201:33 | access to property Query | LocalDataFlow.cs:201:9:201:33 | SSA def(nonSink0) |
+| LocalDataFlow.cs:203:9:203:42 | SSA def(nonSink0) | LocalDataFlow.cs:204:15:204:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:203:20:203:42 | access to property OriginalString | LocalDataFlow.cs:203:9:203:42 | SSA def(nonSink0) |
+| LocalDataFlow.cs:204:15:204:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:213:51:213:58 | access to local variable nonSink0 |
+| LocalDataFlow.cs:204:15:204:22 | access to local variable nonSink0 | LocalDataFlow.cs:213:51:213:58 | access to local variable nonSink0 |
+| LocalDataFlow.cs:207:13:207:55 | SSA def(sink31) | LocalDataFlow.cs:208:15:208:20 | access to local variable sink31 |
+| LocalDataFlow.cs:207:22:207:55 | object creation of type StringReader | LocalDataFlow.cs:207:13:207:55 | SSA def(sink31) |
+| LocalDataFlow.cs:208:15:208:20 | [post] access to local variable sink31 | LocalDataFlow.cs:209:22:209:27 | access to local variable sink31 |
+| LocalDataFlow.cs:208:15:208:20 | access to local variable sink31 | LocalDataFlow.cs:209:22:209:27 | access to local variable sink31 |
+| LocalDataFlow.cs:209:13:209:39 | SSA def(sink32) | LocalDataFlow.cs:210:15:210:20 | access to local variable sink32 |
+| LocalDataFlow.cs:209:22:209:39 | call to method ReadToEnd | LocalDataFlow.cs:209:13:209:39 | SSA def(sink32) |
+| LocalDataFlow.cs:210:15:210:20 | [post] access to local variable sink32 | LocalDataFlow.cs:219:30:219:35 | access to local variable sink32 |
+| LocalDataFlow.cs:210:15:210:20 | access to local variable sink32 | LocalDataFlow.cs:219:30:219:35 | access to local variable sink32 |
+| LocalDataFlow.cs:213:13:213:59 | SSA def(nonSink9) | LocalDataFlow.cs:214:15:214:22 | access to local variable nonSink9 |
+| LocalDataFlow.cs:213:24:213:59 | object creation of type StringReader | LocalDataFlow.cs:213:13:213:59 | SSA def(nonSink9) |
+| LocalDataFlow.cs:214:15:214:22 | [post] access to local variable nonSink9 | LocalDataFlow.cs:215:20:215:27 | access to local variable nonSink9 |
+| LocalDataFlow.cs:214:15:214:22 | access to local variable nonSink9 | LocalDataFlow.cs:215:20:215:27 | access to local variable nonSink9 |
+| LocalDataFlow.cs:215:9:215:39 | SSA def(nonSink0) | LocalDataFlow.cs:216:15:216:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:215:20:215:39 | call to method ReadToEnd | LocalDataFlow.cs:215:9:215:39 | SSA def(nonSink0) |
+| LocalDataFlow.cs:216:15:216:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:225:28:225:35 | access to local variable nonSink0 |
+| LocalDataFlow.cs:216:15:216:22 | access to local variable nonSink0 | LocalDataFlow.cs:225:28:225:35 | access to local variable nonSink0 |
+| LocalDataFlow.cs:219:13:219:127 | SSA def(sink33) | LocalDataFlow.cs:220:15:220:20 | access to local variable sink33 |
+| LocalDataFlow.cs:219:22:219:127 | (...) ... | LocalDataFlow.cs:219:13:219:127 | SSA def(sink33) |
+| LocalDataFlow.cs:219:30:219:119 | call to method Insert | LocalDataFlow.cs:219:30:219:127 | [library code] call to method Clone |
+| LocalDataFlow.cs:219:30:219:127 | [library code] call to method Clone | LocalDataFlow.cs:219:30:219:127 | call to method Clone |
+| LocalDataFlow.cs:219:30:219:127 | call to method Clone | LocalDataFlow.cs:219:22:219:127 | (...) ... |
+| LocalDataFlow.cs:220:15:220:20 | [post] access to local variable sink33 | LocalDataFlow.cs:221:22:221:27 | access to local variable sink33 |
+| LocalDataFlow.cs:220:15:220:20 | access to local variable sink33 | LocalDataFlow.cs:221:22:221:27 | access to local variable sink33 |
+| LocalDataFlow.cs:221:13:221:63 | SSA def(sink48) | LocalDataFlow.cs:222:15:222:20 | access to local variable sink48 |
+| LocalDataFlow.cs:221:22:221:27 | [post] access to local variable sink33 | LocalDataFlow.cs:231:40:231:45 | access to local variable sink33 |
+| LocalDataFlow.cs:221:22:221:27 | access to local variable sink33 | LocalDataFlow.cs:231:40:231:45 | access to local variable sink33 |
+| LocalDataFlow.cs:221:22:221:63 | call to method Split | LocalDataFlow.cs:221:13:221:63 | SSA def(sink48) |
+| LocalDataFlow.cs:225:9:225:127 | SSA def(nonSink0) | LocalDataFlow.cs:226:15:226:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:225:20:225:127 | (...) ... | LocalDataFlow.cs:225:9:225:127 | SSA def(nonSink0) |
+| LocalDataFlow.cs:225:28:225:119 | call to method Insert | LocalDataFlow.cs:225:28:225:127 | [library code] call to method Clone |
+| LocalDataFlow.cs:225:28:225:127 | [library code] call to method Clone | LocalDataFlow.cs:225:28:225:127 | call to method Clone |
+| LocalDataFlow.cs:225:28:225:127 | call to method Clone | LocalDataFlow.cs:225:20:225:127 | (...) ... |
+| LocalDataFlow.cs:226:15:226:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:227:25:227:32 | access to local variable nonSink0 |
+| LocalDataFlow.cs:226:15:226:22 | access to local variable nonSink0 | LocalDataFlow.cs:227:25:227:32 | access to local variable nonSink0 |
+| LocalDataFlow.cs:227:13:227:68 | SSA def(nonSink15) | LocalDataFlow.cs:228:15:228:23 | access to local variable nonSink15 |
+| LocalDataFlow.cs:227:25:227:32 | [post] access to local variable nonSink0 | LocalDataFlow.cs:240:43:240:50 | access to local variable nonSink0 |
+| LocalDataFlow.cs:227:25:227:32 | access to local variable nonSink0 | LocalDataFlow.cs:240:43:240:50 | access to local variable nonSink0 |
+| LocalDataFlow.cs:227:25:227:68 | call to method Split | LocalDataFlow.cs:227:13:227:68 | SSA def(nonSink15) |
+| LocalDataFlow.cs:231:13:231:46 | SSA def(sink34) | LocalDataFlow.cs:232:15:232:20 | access to local variable sink34 |
+| LocalDataFlow.cs:231:22:231:46 | object creation of type StringBuilder | LocalDataFlow.cs:231:13:231:46 | SSA def(sink34) |
+| LocalDataFlow.cs:232:15:232:20 | [post] access to local variable sink34 | LocalDataFlow.cs:233:22:233:27 | access to local variable sink34 |
+| LocalDataFlow.cs:232:15:232:20 | access to local variable sink34 | LocalDataFlow.cs:233:22:233:27 | access to local variable sink34 |
+| LocalDataFlow.cs:233:13:233:38 | SSA def(sink35) | LocalDataFlow.cs:234:15:234:20 | access to local variable sink35 |
+| LocalDataFlow.cs:233:22:233:38 | call to method ToString | LocalDataFlow.cs:233:13:233:38 | SSA def(sink35) |
+| LocalDataFlow.cs:234:15:234:20 | [post] access to local variable sink35 | LocalDataFlow.cs:236:27:236:32 | access to local variable sink35 |
+| LocalDataFlow.cs:234:15:234:20 | access to local variable sink35 | LocalDataFlow.cs:236:27:236:32 | access to local variable sink35 |
+| LocalDataFlow.cs:235:13:235:42 | SSA def(sink36) | LocalDataFlow.cs:236:9:236:14 | access to local variable sink36 |
+| LocalDataFlow.cs:235:22:235:42 | object creation of type StringBuilder | LocalDataFlow.cs:235:13:235:42 | SSA def(sink36) |
+| LocalDataFlow.cs:236:9:236:14 | [post] access to local variable sink36 | LocalDataFlow.cs:237:15:237:20 | access to local variable sink36 |
+| LocalDataFlow.cs:236:9:236:14 | access to local variable sink36 | LocalDataFlow.cs:237:15:237:20 | access to local variable sink36 |
+| LocalDataFlow.cs:240:13:240:51 | SSA def(nonSink10) | LocalDataFlow.cs:241:15:241:23 | access to local variable nonSink10 |
+| LocalDataFlow.cs:240:25:240:51 | object creation of type StringBuilder | LocalDataFlow.cs:240:13:240:51 | SSA def(nonSink10) |
+| LocalDataFlow.cs:241:15:241:23 | [post] access to local variable nonSink10 | LocalDataFlow.cs:242:20:242:28 | access to local variable nonSink10 |
+| LocalDataFlow.cs:241:15:241:23 | access to local variable nonSink10 | LocalDataFlow.cs:242:20:242:28 | access to local variable nonSink10 |
+| LocalDataFlow.cs:242:9:242:39 | SSA def(nonSink0) | LocalDataFlow.cs:243:15:243:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:242:20:242:28 | [post] access to local variable nonSink10 | LocalDataFlow.cs:244:9:244:17 | access to local variable nonSink10 |
+| LocalDataFlow.cs:242:20:242:28 | access to local variable nonSink10 | LocalDataFlow.cs:244:9:244:17 | access to local variable nonSink10 |
+| LocalDataFlow.cs:242:20:242:39 | call to method ToString | LocalDataFlow.cs:242:9:242:39 | SSA def(nonSink0) |
+| LocalDataFlow.cs:243:15:243:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:244:30:244:37 | access to local variable nonSink0 |
+| LocalDataFlow.cs:243:15:243:22 | access to local variable nonSink0 | LocalDataFlow.cs:244:30:244:37 | access to local variable nonSink0 |
+| LocalDataFlow.cs:244:9:244:17 | [post] access to local variable nonSink10 | LocalDataFlow.cs:245:15:245:23 | access to local variable nonSink10 |
+| LocalDataFlow.cs:244:9:244:17 | access to local variable nonSink10 | LocalDataFlow.cs:245:15:245:23 | access to local variable nonSink10 |
+| LocalDataFlow.cs:248:13:248:52 | SSA def(taintedDataContract) | LocalDataFlow.cs:249:22:249:40 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:248:13:248:52 | SSA qualifier def(taintedDataContract.AList) | LocalDataFlow.cs:251:22:251:46 | access to property AList |
+| LocalDataFlow.cs:248:35:248:52 | object creation of type DataContract | LocalDataFlow.cs:248:13:248:52 | SSA def(taintedDataContract) |
+| LocalDataFlow.cs:249:13:249:48 | SSA def(sink53) | LocalDataFlow.cs:250:15:250:20 | access to local variable sink53 |
+| LocalDataFlow.cs:249:22:249:40 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:251:22:251:40 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:249:22:249:40 | access to local variable taintedDataContract | LocalDataFlow.cs:251:22:251:40 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:249:22:249:48 | access to property AString | LocalDataFlow.cs:249:13:249:48 | SSA def(sink53) |
+| LocalDataFlow.cs:251:13:251:57 | SSA def(sink54) | LocalDataFlow.cs:252:15:252:20 | access to local variable sink54 |
+| LocalDataFlow.cs:251:22:251:40 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:258:20:258:38 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:251:22:251:40 | access to local variable taintedDataContract | LocalDataFlow.cs:258:20:258:38 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:251:22:251:46 | [post] access to property AList | LocalDataFlow.cs:260:20:260:44 | access to property AList |
+| LocalDataFlow.cs:251:22:251:46 | access to property AList | LocalDataFlow.cs:260:20:260:44 | access to property AList |
+| LocalDataFlow.cs:251:22:251:57 | access to property AString | LocalDataFlow.cs:251:13:251:57 | SSA def(sink54) |
+| LocalDataFlow.cs:255:13:255:55 | SSA def(nonTaintedDataContract) | LocalDataFlow.cs:256:20:256:41 | access to local variable nonTaintedDataContract |
+| LocalDataFlow.cs:255:38:255:55 | object creation of type DataContract | LocalDataFlow.cs:255:13:255:55 | SSA def(nonTaintedDataContract) |
+| LocalDataFlow.cs:256:9:256:49 | SSA def(nonSink0) | LocalDataFlow.cs:257:15:257:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:256:20:256:49 | access to property AString | LocalDataFlow.cs:256:9:256:49 | SSA def(nonSink0) |
+| LocalDataFlow.cs:258:9:258:44 | SSA def(nonSink2) | LocalDataFlow.cs:259:15:259:22 | access to local variable nonSink2 |
+| LocalDataFlow.cs:258:20:258:38 | [post] access to local variable taintedDataContract | LocalDataFlow.cs:260:20:260:38 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:258:20:258:38 | access to local variable taintedDataContract | LocalDataFlow.cs:260:20:260:38 | access to local variable taintedDataContract |
+| LocalDataFlow.cs:258:20:258:44 | access to property AnInt | LocalDataFlow.cs:258:9:258:44 | SSA def(nonSink2) |
+| LocalDataFlow.cs:260:9:260:53 | SSA def(nonSink2) | LocalDataFlow.cs:261:15:261:22 | access to local variable nonSink2 |
+| LocalDataFlow.cs:260:20:260:53 | access to property AnInt | LocalDataFlow.cs:260:9:260:53 | SSA def(nonSink2) |
+| LocalDataFlow.cs:264:17:264:37 | SSA def(taintedTextBox) | LocalDataFlow.cs:265:22:265:35 | access to local variable taintedTextBox |
+| LocalDataFlow.cs:264:34:264:37 | null | LocalDataFlow.cs:264:17:264:37 | SSA def(taintedTextBox) |
+| LocalDataFlow.cs:265:13:265:40 | SSA def(sink60) | LocalDataFlow.cs:266:15:266:20 | access to local variable sink60 |
+| LocalDataFlow.cs:265:22:265:40 | access to property Text | LocalDataFlow.cs:265:13:265:40 | SSA def(sink60) |
+| LocalDataFlow.cs:269:17:269:40 | SSA def(nonTaintedTextBox) | LocalDataFlow.cs:270:20:270:36 | access to local variable nonTaintedTextBox |
+| LocalDataFlow.cs:269:37:269:40 | null | LocalDataFlow.cs:269:17:269:40 | SSA def(nonTaintedTextBox) |
+| LocalDataFlow.cs:270:9:270:41 | SSA def(nonSink0) | LocalDataFlow.cs:271:15:271:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:270:20:270:41 | access to property Text | LocalDataFlow.cs:270:9:270:41 | SSA def(nonSink0) |
+| LocalDataFlow.cs:274:13:274:51 | SSA def(sink67) | LocalDataFlow.cs:275:15:275:20 | access to local variable sink67 |
+| LocalDataFlow.cs:274:22:274:51 | [library code] call to method Run | LocalDataFlow.cs:274:22:274:51 | call to method Run |
+| LocalDataFlow.cs:274:22:274:51 | call to method Run | LocalDataFlow.cs:274:13:274:51 | SSA def(sink67) |
+| LocalDataFlow.cs:274:31:274:50 | [output] (...) => ... | LocalDataFlow.cs:274:22:274:51 | [library code] call to method Run |
+| LocalDataFlow.cs:275:15:275:20 | [post] access to local variable sink67 | LocalDataFlow.cs:276:28:276:33 | access to local variable sink67 |
+| LocalDataFlow.cs:275:15:275:20 | access to local variable sink67 | LocalDataFlow.cs:276:28:276:33 | access to local variable sink67 |
+| LocalDataFlow.cs:276:13:276:33 | SSA def(sink68) | LocalDataFlow.cs:277:15:277:20 | access to local variable sink68 |
+| LocalDataFlow.cs:276:22:276:33 | await ... | LocalDataFlow.cs:276:13:276:33 | SSA def(sink68) |
+| LocalDataFlow.cs:276:28:276:33 | access to local variable sink67 | LocalDataFlow.cs:276:22:276:33 | await ... |
+| LocalDataFlow.cs:280:13:280:42 | SSA def(nonSink21) | LocalDataFlow.cs:281:15:281:23 | access to local variable nonSink21 |
+| LocalDataFlow.cs:280:25:280:42 | [library code] call to method Run | LocalDataFlow.cs:280:25:280:42 | call to method Run |
+| LocalDataFlow.cs:280:25:280:42 | call to method Run | LocalDataFlow.cs:280:13:280:42 | SSA def(nonSink21) |
+| LocalDataFlow.cs:280:34:280:41 | [output] (...) => ... | LocalDataFlow.cs:280:25:280:42 | [library code] call to method Run |
+| LocalDataFlow.cs:281:15:281:23 | [post] access to local variable nonSink21 | LocalDataFlow.cs:282:26:282:34 | access to local variable nonSink21 |
+| LocalDataFlow.cs:281:15:281:23 | access to local variable nonSink21 | LocalDataFlow.cs:282:26:282:34 | access to local variable nonSink21 |
+| LocalDataFlow.cs:282:9:282:34 | SSA def(nonSink0) | LocalDataFlow.cs:283:15:283:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:282:20:282:34 | await ... | LocalDataFlow.cs:282:9:282:34 | SSA def(nonSink0) |
+| LocalDataFlow.cs:282:26:282:34 | access to local variable nonSink21 | LocalDataFlow.cs:282:20:282:34 | await ... |
+| LocalDataFlow.cs:283:15:283:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:290:28:290:35 | access to local variable nonSink0 |
+| LocalDataFlow.cs:283:15:283:22 | access to local variable nonSink0 | LocalDataFlow.cs:290:28:290:35 | access to local variable nonSink0 |
+| LocalDataFlow.cs:286:13:286:36 | SSA def(sink69) | LocalDataFlow.cs:287:15:287:20 | access to local variable sink69 |
+| LocalDataFlow.cs:286:22:286:36 | $"..." | LocalDataFlow.cs:286:13:286:36 | SSA def(sink69) |
+| LocalDataFlow.cs:290:9:290:37 | SSA def(nonSink0) | LocalDataFlow.cs:291:15:291:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:290:20:290:37 | $"..." | LocalDataFlow.cs:290:9:290:37 | SSA def(nonSink0) |
+| LocalDataFlow.cs:291:15:291:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:298:31:298:38 | access to local variable nonSink0 |
+| LocalDataFlow.cs:291:15:291:22 | access to local variable nonSink0 | LocalDataFlow.cs:298:31:298:38 | access to local variable nonSink0 |
+| LocalDataFlow.cs:294:13:294:34 | SSA def(sink70) | LocalDataFlow.cs:295:15:295:20 | access to local variable sink70 |
+| LocalDataFlow.cs:294:22:294:34 | ... = ... | LocalDataFlow.cs:294:13:294:34 | SSA def(sink70) |
+| LocalDataFlow.cs:294:22:294:34 | SSA def(sink0) | LocalDataFlow.cs:326:34:326:38 | access to local variable sink0 |
+| LocalDataFlow.cs:294:22:294:34 | SSA def(sink0) | LocalDataFlow.cs:327:22:327:26 | access to local variable sink0 |
+| LocalDataFlow.cs:294:30:294:34 | access to local variable sink0 | LocalDataFlow.cs:294:22:294:34 | ... = ... |
+| LocalDataFlow.cs:294:30:294:34 | access to local variable sink0 | LocalDataFlow.cs:294:22:294:34 | SSA def(sink0) |
+| LocalDataFlow.cs:295:15:295:20 | [post] access to local variable sink70 | LocalDataFlow.cs:302:13:302:18 | access to local variable sink70 |
+| LocalDataFlow.cs:295:15:295:20 | access to local variable sink70 | LocalDataFlow.cs:302:13:302:18 | access to local variable sink70 |
+| LocalDataFlow.cs:298:9:298:38 | SSA def(nonSink0) | LocalDataFlow.cs:299:15:299:22 | access to local variable nonSink0 |
+| LocalDataFlow.cs:298:20:298:38 | ... = ... | LocalDataFlow.cs:298:9:298:38 | SSA def(nonSink0) |
+| LocalDataFlow.cs:298:31:298:38 | access to local variable nonSink0 | LocalDataFlow.cs:298:20:298:38 | ... = ... |
+| LocalDataFlow.cs:299:15:299:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:306:13:306:20 | access to local variable nonSink0 |
+| LocalDataFlow.cs:299:15:299:22 | access to local variable nonSink0 | LocalDataFlow.cs:306:13:306:20 | access to local variable nonSink0 |
+| LocalDataFlow.cs:302:13:302:18 | access to local variable sink70 | LocalDataFlow.cs:302:23:302:35 | SSA def(sink71) |
+| LocalDataFlow.cs:302:13:302:18 | access to local variable sink70 | LocalDataFlow.cs:310:17:310:22 | access to local variable sink70 |
+| LocalDataFlow.cs:302:23:302:35 | SSA def(sink71) | LocalDataFlow.cs:303:19:303:24 | access to local variable sink71 |
+| LocalDataFlow.cs:306:13:306:20 | access to local variable nonSink0 | LocalDataFlow.cs:306:25:306:40 | SSA def(nonSink16) |
+| LocalDataFlow.cs:306:13:306:20 | access to local variable nonSink0 | LocalDataFlow.cs:318:17:318:24 | access to local variable nonSink0 |
+| LocalDataFlow.cs:306:25:306:40 | SSA def(nonSink16) | LocalDataFlow.cs:307:19:307:27 | access to local variable nonSink16 |
+| LocalDataFlow.cs:310:17:310:22 | access to local variable sink70 | LocalDataFlow.cs:312:18:312:30 | SSA def(sink72) |
+| LocalDataFlow.cs:312:18:312:30 | SSA def(sink72) | LocalDataFlow.cs:313:23:313:28 | access to local variable sink72 |
+| LocalDataFlow.cs:318:17:318:24 | access to local variable nonSink0 | LocalDataFlow.cs:320:18:320:33 | SSA def(nonSink17) |
+| LocalDataFlow.cs:318:17:318:24 | access to local variable nonSink0 | LocalDataFlow.cs:326:22:326:29 | access to local variable nonSink0 |
+| LocalDataFlow.cs:320:18:320:33 | SSA def(nonSink17) | LocalDataFlow.cs:321:23:321:31 | access to local variable nonSink17 |
+| LocalDataFlow.cs:326:13:326:38 | SSA def(sink73) | LocalDataFlow.cs:328:15:328:20 | access to local variable sink73 |
+| LocalDataFlow.cs:326:22:326:29 | access to local variable nonSink0 | LocalDataFlow.cs:326:22:326:38 | ... ?? ... |
+| LocalDataFlow.cs:326:22:326:29 | access to local variable nonSink0 | LocalDataFlow.cs:327:31:327:38 | access to local variable nonSink0 |
+| LocalDataFlow.cs:326:22:326:38 | ... ?? ... | LocalDataFlow.cs:326:13:326:38 | SSA def(sink73) |
+| LocalDataFlow.cs:326:34:326:38 | access to local variable sink0 | LocalDataFlow.cs:326:22:326:38 | ... ?? ... |
+| LocalDataFlow.cs:326:34:326:38 | access to local variable sink0 | LocalDataFlow.cs:327:22:327:26 | access to local variable sink0 |
+| LocalDataFlow.cs:327:13:327:38 | SSA def(sink74) | LocalDataFlow.cs:329:15:329:20 | access to local variable sink74 |
+| LocalDataFlow.cs:327:22:327:26 | access to local variable sink0 | LocalDataFlow.cs:327:22:327:38 | ... ?? ... |
+| LocalDataFlow.cs:327:22:327:38 | ... ?? ... | LocalDataFlow.cs:327:13:327:38 | SSA def(sink74) |
+| LocalDataFlow.cs:327:31:327:38 | access to local variable nonSink0 | LocalDataFlow.cs:327:22:327:38 | ... ?? ... |
+| LocalDataFlow.cs:347:28:347:30 | this | LocalDataFlow.cs:347:41:347:45 | this access |
+| LocalDataFlow.cs:347:50:347:52 | this | LocalDataFlow.cs:347:56:347:60 | this access |
+| LocalDataFlow.cs:347:50:347:52 | value | LocalDataFlow.cs:347:64:347:68 | access to parameter value |
+| LocalDataFlow.cs:353:41:353:47 | tainted | LocalDataFlow.cs:355:15:355:21 | access to parameter tainted |
+| LocalDataFlow.cs:358:44:358:53 | nonTainted | LocalDataFlow.cs:360:15:360:24 | access to parameter nonTainted |
+| LocalDataFlow.cs:363:44:363:44 | x | LocalDataFlow.cs:366:21:366:21 | access to parameter x |
+| LocalDataFlow.cs:363:67:363:68 | os | LocalDataFlow.cs:369:32:369:33 | access to parameter os |
+| LocalDataFlow.cs:366:21:366:21 | access to parameter x | LocalDataFlow.cs:366:16:366:21 | ... = ... |
+| LocalDataFlow.cs:369:32:369:33 | access to parameter os | LocalDataFlow.cs:369:26:369:33 | ... = ... |
+| LocalDataFlow.cs:374:41:374:44 | args | LocalDataFlow.cs:376:29:376:32 | access to parameter args |
+| LocalDataFlow.cs:376:29:376:32 | [post] access to parameter args | LocalDataFlow.cs:377:27:377:30 | access to parameter args |
+| LocalDataFlow.cs:376:29:376:32 | access to parameter args | LocalDataFlow.cs:377:27:377:30 | access to parameter args |
 | SSA.cs:5:17:5:17 | SSA entry def(this.S) | SSA.cs:67:9:67:14 | access to field S |
 | SSA.cs:5:17:5:17 | this | SSA.cs:67:9:67:12 | this access |
 | SSA.cs:5:26:5:32 | tainted | SSA.cs:8:24:8:30 | access to parameter tainted |

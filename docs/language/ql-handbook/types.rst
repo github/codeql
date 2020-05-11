@@ -5,7 +5,9 @@
 Types
 #####
 
-QL is a statically typed language, so each variable must have a declared **type**. A type is a set of values.
+QL is a statically typed language, so each variable must have a declared type.
+
+A type is a set of values.
 For example, the type ``int`` is the set of integers. 
 Note that a value can belong to more than one of these sets, which means that it can have more 
 than one type.
@@ -383,7 +385,7 @@ Algebraic datatypes
 *******************
 
 .. note:: The syntax for algebraic datatypes is considered experimental and is subject to
-   change. However, they appear in the `standard QL libraries <https://github.com/Semmle/ql>`_
+   change. However, they appear in the `standard QL libraries <https://github.com/github/codeql>`_
    so the following sections should help you understand those examples.
 
 An algebraic datatype is another form of user-defined type, declared with the keyword ``newtype``.

@@ -2,7 +2,7 @@
  * @name Overflow in uncontrolled allocation size
  * @description Allocating memory with a size controlled by an external
  *              user can result in integer overflow.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cpp/uncontrolled-allocation-size
@@ -13,21 +13,33 @@
 
 import cpp
 import semmle.code.cpp.security.TaintTracking
+import TaintedWithPath
 
-predicate taintedAllocSize(Expr e, Expr source, string taintCause) {
-  (
-    isAllocationExpr(e) or
-    any(MulExpr me | me.getAChild() instanceof SizeofOperator) = e
-  ) and
+/**
+ * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
+ * taint sink.
+ */
+predicate allocSink(Expr alloc, Expr tainted) {
+  isAllocationExpr(alloc) and
+  tainted = alloc.getAChild() and
+  tainted.getUnspecifiedType() instanceof IntegralType
+}
+
+class TaintedAllocationSizeConfiguration extends TaintTrackingConfiguration {
+  override predicate isSink(Element tainted) { allocSink(_, tainted) }
+}
+
+predicate taintedAllocSize(
+  Expr source, Expr alloc, PathNode sourceNode, PathNode sinkNode, string taintCause
+) {
+  isUserInput(source, taintCause) and
   exists(Expr tainted |
-    tainted = e.getAChild() and
-    tainted.getUnspecifiedType() instanceof IntegralType and
-    isUserInput(source, taintCause) and
-    tainted(source, tainted)
+    allocSink(alloc, tainted) and
+    taintedWithPath(source, tainted, sourceNode, sinkNode)
   )
 }
 
-from Expr e, Expr source, string taintCause
-where taintedAllocSize(e, source, taintCause)
-select e, "This allocation size is derived from $@ and might overflow", source,
-  "user input (" + taintCause + ")"
+from Expr source, Expr alloc, PathNode sourceNode, PathNode sinkNode, string taintCause
+where taintedAllocSize(source, alloc, sourceNode, sinkNode, taintCause)
+select alloc, sourceNode, sinkNode, "This allocation size is derived from $@ and might overflow",
+  source, "user input (" + taintCause + ")"

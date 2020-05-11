@@ -34,7 +34,7 @@ namespace Semmle.Extraction
             return cachedModel;
         }
 
-        private SemanticModel cachedModel;
+        private SemanticModel? cachedModel;
 
         /// <summary>
         /// Access to the trap file.
@@ -49,7 +49,31 @@ namespace Semmle.Extraction
         /// <param name="factory">The entity factory.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity where Type:struct
+        {
+            return CreateNonNullEntity(factory, init);
+        }
+
+        /// <summary>
+        /// Creates a new entity using the factory.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateNullableEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        {
+            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
+        }
+
+        /// <summary>
+        /// Creates a new entity using the factory.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+            where Entity : ICachedEntity
+            where Type: ISymbol
         {
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
         }
@@ -135,8 +159,11 @@ namespace Semmle.Extraction
 
         public Label GetNewLabel() => new Label(GetNewId());
 
-        private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        public Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+            where Entity : ICachedEntity
         {
+            if (init is null) throw new ArgumentException("Unexpected null value", nameof(init));
+
             if (objectEntityCache.TryGetValue(init, out var cached))
                 return (Entity)cached;
 
@@ -155,7 +182,7 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
                 using (var id = new StringWriter())
                 {
-                    entity.WriteId(id);
+                    entity.WriteQuotedId(id);
                     CheckEntityHasUniqueLabel(id.ToString(), entity);
                 }
 #endif
@@ -270,6 +297,8 @@ namespace Semmle.Extraction
             TrapWriter = trapWriter;
         }
 
+        public bool FromSource => Scope.FromSource;
+
         public bool IsGlobalContext => Scope.IsGlobalScope;
 
         public readonly ICommentGenerator CommentGenerator = new CommentProcessor();
@@ -358,7 +387,7 @@ namespace Semmle.Extraction
         /// <param name="optionalSymbol">Symbol for reporting errors.</param>
         /// <param name="entity">The entity to populate.</param>
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
-        public void Populate(ISymbol optionalSymbol, ICachedEntity entity)
+        public void Populate(ISymbol? optionalSymbol, ICachedEntity entity)
         {
             if (WritingLabel)
             {
@@ -451,9 +480,9 @@ namespace Semmle.Extraction
         /// <param name="message">The error message.</param>
         /// <param name="entityText">A textual representation of the failed entity.</param>
         /// <param name="location">The location of the error.</param>
-        /// <param name="stackTrace">An optional stack trace of the error, or an empty string.</param>
+        /// <param name="stackTrace">An optional stack trace of the error, or null.</param>
         /// <param name="severity">The severity of the error.</param>
-        public void ExtractionError(string message, string entityText, Entities.Location location, string stackTrace = "", Severity severity = Severity.Error)
+        public void ExtractionError(string message, string entityText, Entities.Location location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             var msg = new Message(message, entityText, location, stackTrace, severity);
             ExtractionError(msg);
@@ -465,7 +494,7 @@ namespace Semmle.Extraction
         /// <param name="message">The text of the message.</param>
         /// <param name="optionalSymbol">The symbol of the error, or null.</param>
         /// <param name="optionalEntity">The entity of the error, or null.</param>
-        public void ExtractionError(string message, ISymbol optionalSymbol, IEntity optionalEntity)
+        public void ExtractionError(string message, ISymbol? optionalSymbol, IEntity optionalEntity)
         {
             if (!(optionalSymbol is null))
             {
@@ -537,7 +566,7 @@ namespace Semmle.Extraction
         /// <param name="node">Optional syntax node for error reporting.</param>
         /// <param name="symbol">Optional symbol for error reporting.</param>
         /// <param name="a">The action to perform.</param>
-        static public void Try(this Context context, SyntaxNode node, ISymbol symbol, Action a)
+        static public void Try(this Context context, SyntaxNode? node, ISymbol? symbol, Action a)
         {
             try
             {

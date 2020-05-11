@@ -42,9 +42,6 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
     result = getIdentifier().getName() // Overridden in ClassExpr
   }
 
-  /** Gets the nearest enclosing function or toplevel in which this class or interface occurs. */
-  StmtContainer getContainer() { result = this.(ExprOrStmt).getContainer() }
-
   /** Gets a member declared in this class or interface. */
   MemberDeclaration getAMember() { result.getDeclaringType() = this }
 
@@ -278,9 +275,6 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
  * ```
  */
 class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
-  /** Gets the nearest enclosing function or toplevel in which this class declaration occurs. */
-  override StmtContainer getContainer() { result = Stmt.super.getContainer() }
-
   override ControlFlowNode getFirstControlFlowNode() {
     if hasDeclareKeyword(this) then result = this else result = getIdentifier()
   }
@@ -322,9 +316,6 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
   }
 
   override predicate isImpure() { none() }
-
-  /** Gets the nearest enclosing function or toplevel in which this class expression occurs. */
-  override StmtContainer getContainer() { result = Expr.super.getContainer() }
 
   override ControlFlowNode getFirstControlFlowNode() {
     if exists(getIdentifier())
@@ -544,9 +535,6 @@ class MemberDeclaration extends @property, Documentable {
 
   /** Gets the index of this member within its enclosing type. */
   int getMemberIndex() { properties(this, _, result, _, _) }
-
-  /** Gets the nearest enclosing function or toplevel in which this member occurs. */
-  StmtContainer getContainer() { result = getDeclaringType().getContainer() }
 
   /** Holds if the name of this member is computed by an impure expression. */
   predicate hasImpureNameExpr() { isComputed() and getNameExpr().isImpure() }
@@ -1059,12 +1047,6 @@ class FieldDeclaration extends MemberDeclaration, @field {
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
   predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
-
-  override predicate isAmbient() {
-    hasDeclareKeyword(this)
-    or
-    getParent().isAmbient()
-  }
 }
 
 /**

@@ -21,9 +21,9 @@ private predicate idOf(@compilation x, int y) = equivalenceRelation(id/2)(x, y)
  * Three things happen to each file during a compilation:
  *
  *   1. The file is compiled by a real compiler, such as gcc or VC.
- *   2. The file is parsed by Semmle's C++ front-end.
+ *   2. The file is parsed by the CodeQL C++ front-end.
  *   3. The parsed representation is converted to database tables by
- *      Semmle's extractor.
+ *      the CodeQL extractor.
  *
  * This class provides CPU and elapsed time information for steps 2 and 3,
  * but not for step 1.
@@ -40,6 +40,7 @@ class Compilation extends @compilation {
   /** Gets a file compiled during this invocation. */
   File getAFileCompiled() { result = getFileCompiled(_) }
 
+  /** Gets the `i`th file compiled during this invocation */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, unresolveElement(result)) }
 
   /**

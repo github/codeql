@@ -114,6 +114,18 @@ class Types
             {
                 Sink(this.Field);
             }
+
+            void M10()
+            {
+                var a = new A();
+                var e2 = new E2();
+                Sink(Through(a)); // flow
+                Sink(Through(e2)); // flow
+                Sink((E2)Through(a)); // no flow
+                Sink((A)Through(e2)); // no flow
+            }
         }
     }
+
+    static object Through(object x) => x;
 }

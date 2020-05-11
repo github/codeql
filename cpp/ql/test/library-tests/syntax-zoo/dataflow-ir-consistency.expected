@@ -1,11 +1,5 @@
 uniqueEnclosingCallable
 uniqueTypeBound
-| break_labels.c:13:5:13:18 | VariableAddress | Node should have one type bound but has 2. |
-| break_labels.c:13:12:13:17 | Store | Node should have one type bound but has 2. |
-| enum.c:6:2:6:10 | VariableAddress | Node should have one type bound but has 2. |
-| enum.c:6:9:6:9 | Store | Node should have one type bound but has 2. |
-| parameterinitializer.cpp:4:5:4:13 | VariableAddress | Node should have one type bound but has 2. |
-| parameterinitializer.cpp:4:12:4:12 | Store | Node should have one type bound but has 2. |
 uniqueTypeRepr
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
@@ -796,6 +790,10 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
+| assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| file://:0:0:0:0 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| ir.cpp:531:14:531:14 | Store | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead

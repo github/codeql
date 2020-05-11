@@ -4,7 +4,7 @@
  *
  * By default they fall back to the reasonable defaults provided in
  * `DefaultOptions.qll`, but by modifying this file, you can customize
- * the standard Semmle analyses to give better results for your project.
+ * the standard analyses to give better results for your project.
  */
 
 import cpp

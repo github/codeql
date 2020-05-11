@@ -4,6 +4,7 @@
 | customEmitter.js:18:15:18:20 | "baz2" | customEmitter.js:13:23:13:26 | data |
 | customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:13:23:13:26 | data |
 | customEmitter.js:21:15:21:20 | "baz3" | customEmitter.js:22:14:22:18 | yData |
+| tst2.js:18:16:18:20 | "bar" | tst2.js:17:14:17:16 | bar |
 | tst.js:9:23:9:33 | 'FirstData' | tst.js:6:40:6:44 | first |
 | tst.js:10:24:10:35 | 'SecondData' | tst.js:7:32:7:37 | second |
 | tst.js:15:24:15:39 | 'OtherFirstData' | tst.js:14:41:14:50 | otherFirst |

@@ -23,7 +23,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            var ns = Namespace.Create(cx, (INamespaceSymbol)cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol);
+            var @namespace = (INamespaceSymbol) cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol;
+            var ns = Namespace.Create(cx, @namespace);
             trapFile.namespace_declarations(this, ns);
             trapFile.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation()));
 

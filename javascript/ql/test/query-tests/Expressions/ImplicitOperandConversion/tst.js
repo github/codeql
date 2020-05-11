@@ -105,5 +105,8 @@ function l() {
     }
     g()|0;
     g();
+
+    var a = g() + 2;
+    var b = g() + "str";
 });
 

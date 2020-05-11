@@ -44,7 +44,6 @@
 | test.cpp:383:12:383:13 | 0 | test.cpp:384:33:384:35 | tmp |
 | test.cpp:383:12:383:13 | 0 | test.cpp:385:8:385:10 | tmp |
 | test.cpp:384:10:384:13 | & ... | test.cpp:384:3:384:8 | call to memcpy |
-| test.cpp:384:10:384:13 | ref arg & ... | test.cpp:384:3:384:8 | call to memcpy |
 | test.cpp:384:10:384:13 | ref arg & ... | test.cpp:384:33:384:35 | tmp |
 | test.cpp:384:10:384:13 | ref arg & ... | test.cpp:385:8:385:10 | tmp |
 | test.cpp:384:11:384:13 | tmp | test.cpp:384:10:384:13 | & ... |
@@ -59,7 +58,6 @@
 | test.cpp:389:12:389:13 | 0 | test.cpp:394:10:394:12 | tmp |
 | test.cpp:390:19:390:21 | tmp | test.cpp:390:18:390:21 | & ... |
 | test.cpp:391:10:391:13 | & ... | test.cpp:391:3:391:8 | call to memcpy |
-| test.cpp:391:10:391:13 | ref arg & ... | test.cpp:391:3:391:8 | call to memcpy |
 | test.cpp:391:10:391:13 | ref arg & ... | test.cpp:391:33:391:35 | tmp |
 | test.cpp:391:10:391:13 | ref arg & ... | test.cpp:392:8:392:10 | tmp |
 | test.cpp:391:10:391:13 | ref arg & ... | test.cpp:394:10:394:12 | tmp |

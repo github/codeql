@@ -103,6 +103,9 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   /**
    * Holds if this function is declared to be `constexpr`.
+   *
+   * Note that this does not hold if the function has been declared
+   * `consteval`.
    */
   predicate isDeclaredConstexpr() { this.hasSpecifier("declared_constexpr") }
 
@@ -115,8 +118,15 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * template <typename T> constexpr int g(T x) { return f(x); }
    * ```
    * `g<int>` is declared constexpr, but is not constexpr.
+   *
+   * Will also hold if this function is `consteval`.
    */
   predicate isConstexpr() { this.hasSpecifier("is_constexpr") }
+
+  /**
+   * Holds if this function is declared to be `consteval`.
+   */
+  predicate isConsteval() { this.hasSpecifier("is_consteval") }
 
   /**
    * Holds if this function is declared with `__attribute__((naked))` or

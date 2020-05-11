@@ -540,10 +540,10 @@ class ClassValue extends Value {
     Value declaredAttribute(string name) { Types::declaredAttribute(this, name, result, _) }
 
     /**
-     * Holds if this class has the attribute `name`, including
-     * attributes declared by super classes.
+     * Holds if this class has the attribute `name`, including attributes
+     * declared by super classes.
      */
-    predicate hasAttribute(string name) { this.getMro().declares(name) }
+    override predicate hasAttribute(string name) { this.getMro().declares(name) }
 
     /**
      * Holds if this class declares the attribute `name`,
@@ -572,6 +572,9 @@ class ClassValue extends Value {
  */
 abstract class FunctionValue extends CallableValue {
     abstract string getQualifiedName();
+
+    /** Gets a longer, more descriptive version of toString() */
+    abstract string descriptiveString();
 
     /** Gets the minimum number of parameters that can be correctly passed to this function */
     abstract int minParameters();
@@ -605,6 +608,20 @@ abstract class FunctionValue extends CallableValue {
         )
     }
 
+    /** Gets a class that may be raised by this function */
+    abstract ClassValue getARaisedType();
+
+    /** Gets a call-site from where this function is called as a function */
+    CallNode getAFunctionCall() { result.getFunction().pointsTo() = this }
+
+    /** Gets a call-site from where this function is called as a method */
+    CallNode getAMethodCall() {
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().pointsTo() = bm and
+            bm.getFunction() = this
+        )
+    }
+
     /** Gets a class that this function may return */
     abstract ClassValue getAnInferredReturnType();
 }
@@ -615,6 +632,15 @@ class PythonFunctionValue extends FunctionValue {
 
     override string getQualifiedName() {
         result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
+    override string descriptiveString() {
+        if this.getScope().isMethod()
+        then
+            exists(Class cls | this.getScope().getScope() = cls |
+                result = "method " + this.getQualifiedName()
+            )
+        else result = "function " + this.getQualifiedName()
     }
 
     override int minParameters() {
@@ -636,6 +662,8 @@ class PythonFunctionValue extends FunctionValue {
     /** Gets a control flow node corresponding to a return statement in this function */
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
+    override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
+    
     override ClassValue getAnInferredReturnType() {
         /* We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
@@ -650,9 +678,16 @@ class BuiltinFunctionValue extends FunctionValue {
 
     override string getQualifiedName() { result = this.(BuiltinFunctionObjectInternal).getName() }
 
+    override string descriptiveString() { result = "builtin-function " + this.getName() }
+
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
+
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
+        none()
+    }
 
     override ClassValue getAnInferredReturnType() {
         /* We have to do a special version of this because builtin functions have no
@@ -674,10 +709,17 @@ class BuiltinMethodValue extends FunctionValue {
         )
     }
 
+    override string descriptiveString() { result = "builtin-method " + this.getQualifiedName() }
+
     override int minParameters() { none() }
 
     override int maxParameters() { none() }
 
+    override ClassValue getARaisedType() {
+        /* Information is unavailable for C code in general */
+        none()
+    }
+    
     override ClassValue getAnInferredReturnType() {
         result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
     }
@@ -905,6 +947,9 @@ module ClassValue {
     /** Get the `ClassValue` for the `LookupError` class. */
     ClassValue lookupError() { result = TBuiltinClassObject(Builtin::builtin("LookupError")) }
 
+    /** Get the `ClassValue` for the `IndexError` class. */
+    ClassValue indexError() { result = TBuiltinClassObject(Builtin::builtin("IndexError")) }
+
     /** Get the `ClassValue` for the `IOError` class. */
     ClassValue ioError() { result = TBuiltinClassObject(Builtin::builtin("IOError")) }
 
@@ -925,4 +970,7 @@ module ClassValue {
     ClassValue unicodeDecodeError() {
         result = TBuiltinClassObject(Builtin::builtin("UnicodeDecodeError"))
     }
+
+    /** Get the `ClassValue` for the `SystemExit` class. */
+    ClassValue systemExit() { result = TBuiltinClassObject(Builtin::builtin("SystemExit")) }
 }

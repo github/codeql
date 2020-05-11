@@ -88,6 +88,16 @@ void test_std_move() {
   sink(std::move(getenv("VAR")));
 }
 
+void flow_to_outparam(char ** ret, char *arg) {
+    *ret = arg; 
+}
+
+void test_outparams() {
+    char *p2 = nullptr;
+    flow_to_outparam(&p2, getenv("VAR"));
+    sink(p2); // tainted
+}
+
 struct Point {
   int x;
   int y;

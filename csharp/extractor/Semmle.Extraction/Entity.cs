@@ -42,7 +42,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The location for reporting purposes.
         /// </summary>
-        Location ReportingLocation { get; }
+        Location? ReportingLocation { get; }
 
         /// <summary>
         /// How the entity handles .push and .pop.
@@ -92,7 +92,7 @@ namespace Semmle.Extraction
 
         bool NeedsPopulation { get; }
 
-        object UnderlyingObject { get; }
+        object? UnderlyingObject { get; }
     }
 
     /// <summary>
@@ -127,8 +127,11 @@ namespace Semmle.Extraction
         /// <param name="factory">The factory used to construct the entity.</param>
         /// <param name="init">The initializer for the entity, which may not be null.</param>
         /// <returns>The entity.</returns>
-        public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity => cx.CreateEntity(factory, init);
+        public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init) where Type : notnull
+            where Entity : ICachedEntity => cx.CreateNonNullEntity(factory, init);
+
+        public static Entity CreateNullableEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
+            where Entity : ICachedEntity => cx.CreateNullableEntity(factory, init);
 
         /// <summary>
         /// Creates and populates a new entity, but uses a different cache.
@@ -153,7 +156,7 @@ namespace Semmle.Extraction
             catch(Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 trapFile.WriteLine("\"");
-                extractor.Message(new Message("Unhandled exception generating id", entity.ToString(), null, ex.StackTrace.ToString()));
+                extractor.Message(new Message("Unhandled exception generating id", entity.ToString() ?? "", null, ex.StackTrace));
             }
             trapFile.WriteLine();
         }
