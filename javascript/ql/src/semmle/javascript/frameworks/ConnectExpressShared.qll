@@ -58,7 +58,7 @@ module ConnectExpressShared {
     (
       sig.has("next")
       implies
-      function.getParameter(sig.getParameterIndex("next")).getName() = "next"
+      function.getParameter(sig.getParameterIndex("next")).getName() = ["next", "cb"]
     )
   }
 
