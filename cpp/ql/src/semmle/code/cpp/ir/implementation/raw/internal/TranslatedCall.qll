@@ -375,7 +375,7 @@ class TranslatedAllocationSideEffects extends TranslatedSideEffects,
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    kind = gotoEdge() and
+    kind = EdgeKind::gotoEdge() and
     if exists(getChild(0))
     then result = getChild(0).getFirstInstruction()
     else result = getParent().getChildSuccessor(this)
