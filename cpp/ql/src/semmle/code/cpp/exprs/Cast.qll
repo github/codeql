@@ -52,6 +52,9 @@ class Cast extends Conversion, @cast {
  * run "semmle/code/cpp/ASTConsistency.ql".
  */
 module CastConsistency {
+  /**
+   * Holds if the cast has more than one result for `Cast.getSemanticConversionString()`.
+   */
   query predicate multipleSemanticConversionStrings(Cast cast, Type fromType, string kind) {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and
@@ -59,12 +62,19 @@ module CastConsistency {
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has no result for `Cast.getSemanticConversionString()`.
+   */
   query predicate missingSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have exactly one semantic conversion kind
     not exists(cast.getSemanticConversionString()) and
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has a result for `Cast.getSemanticConversionString()` that indicates that the
+   * kind of its semantic conversion is not known.
+   */
   query predicate unknownSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have a known semantic conversion kind
     cast.getSemanticConversionString() = "unknown conversion" and
