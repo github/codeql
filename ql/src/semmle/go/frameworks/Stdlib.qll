@@ -596,7 +596,7 @@ module Log {
 
 /** Provides models of some functions in the `encoding/json` package. */
 module EncodingJson {
-  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/json", "Marshal") or
       this.hasQualifiedName("encoding/json", "MarshalIndent")

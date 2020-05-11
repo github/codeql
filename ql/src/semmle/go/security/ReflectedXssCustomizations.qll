@@ -69,6 +69,14 @@ module ReflectedXss {
         //  - '%', which could be a format string.
         call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
       )
+      or
+      exists(DataFlow::Node pred | body = pred.getASuccessor*() |
+        // data starting with `<` cannot cause an HTML content type to be detected.
+        pred.getStringValue().regexpMatch("^[^<].*")
+        or
+        // json data cannot begin with `<`
+        pred = any(EncodingJson::MarshalFunction mf).getOutput().getExitNode(_)
+      )
     )
   }
 
