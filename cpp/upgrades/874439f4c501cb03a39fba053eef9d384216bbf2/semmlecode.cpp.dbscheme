@@ -1647,7 +1647,7 @@ case @expr.kind of
                | @vacopyexpr
                ;
 
-@buildin_op = @var_args_expr
+@builtin_op = @var_args_expr
             | @noopexpr
             | @offsetofexpr
             | @intaddrexpr
