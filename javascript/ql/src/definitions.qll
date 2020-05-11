@@ -15,7 +15,7 @@ private import Declarations.Declarations
  * For example, in the expression `f(x)`, `f` has kind `"M"` while
  * `x` has kind `"V"`.
  */
-string refKind(RefExpr r) {
+private string refKind(RefExpr r) {
   if exists(InvokeExpr invk | r = invk.getCallee().getUnderlyingReference())
   then result = "M"
   else result = "V"
@@ -24,7 +24,7 @@ string refKind(RefExpr r) {
 /**
  * Gets a class, function or object literal `va` may refer to.
  */
-ASTNode lookupDef(VarAccess va) {
+private ASTNode lookupDef(VarAccess va) {
   exists(AbstractValue av | av = va.analyze().getAValue() |
     result = av.(AbstractClass).getClass() or
     result = av.(AbstractFunction).getFunction() or
@@ -36,7 +36,7 @@ ASTNode lookupDef(VarAccess va) {
  * Holds if `va` is of kind `kind` and `def` is the unique class,
  * function or object literal it refers to.
  */
-predicate variableDefLookup(VarAccess va, ASTNode def, string kind) {
+private predicate variableDefLookup(VarAccess va, ASTNode def, string kind) {
   count(lookupDef(va)) = 1 and
   def = lookupDef(va) and
   kind = refKind(va)
@@ -50,7 +50,7 @@ predicate variableDefLookup(VarAccess va, ASTNode def, string kind) {
  * expression of `y` is a variable access `x` of kind `"V"` that refers to
  * the declaration `x = 42`.
  */
-predicate variableDeclLookup(VarAccess va, VarDecl decl, string kind) {
+private predicate variableDeclLookup(VarAccess va, VarDecl decl, string kind) {
   // restrict to declarations in same file to avoid accidentally picking up
   // unrelated global definitions
   decl = firstRefInTopLevel(va.getVariable(), Decl(), va.getTopLevel()) and
@@ -65,7 +65,7 @@ predicate variableDeclLookup(VarAccess va, VarDecl decl, string kind) {
  * For example, in the statement `var a = require("./a")`, the path expression
  * `"./a"` imports a module `a` in the same folder.
  */
-predicate importLookup(ASTNode path, Module target, string kind) {
+private predicate importLookup(ASTNode path, Module target, string kind) {
   kind = "I" and
   (
     exists(Import i |
@@ -83,7 +83,7 @@ predicate importLookup(ASTNode path, Module target, string kind) {
 /**
  * Gets a node that may write the property read by `prn`.
  */
-ASTNode getAWrite(DataFlow::PropRead prn) {
+private ASTNode getAWrite(DataFlow::PropRead prn) {
   exists(DataFlow::AnalyzedNode base, DefiniteAbstractValue baseVal, string propName |
     base = prn.getBase() and
     propName = prn.getPropertyName() and
@@ -111,7 +111,7 @@ ASTNode getAWrite(DataFlow::PropRead prn) {
  * only such property write. Parameter `kind` is always bound to `"M"`
  * at the moment.
  */
-predicate propertyLookup(Expr prop, ASTNode write, string kind) {
+private predicate propertyLookup(Expr prop, ASTNode write, string kind) {
   exists(DataFlow::PropRead prn | prop = prn.getPropertyNameExpr() |
     count(getAWrite(prn)) = 1 and
     write = getAWrite(prn) and
@@ -122,7 +122,7 @@ predicate propertyLookup(Expr prop, ASTNode write, string kind) {
 /**
  * Holds if `ref` is an identifier that refers to a type declared at `decl`.
  */
-predicate typeLookup(ASTNode ref, ASTNode decl, string kind) {
+private predicate typeLookup(ASTNode ref, ASTNode decl, string kind) {
   exists(TypeAccess typeAccess |
     ref = typeAccess.getIdentifier() and
     decl = typeAccess.getTypeName().getADefinition() and
@@ -133,7 +133,7 @@ predicate typeLookup(ASTNode ref, ASTNode decl, string kind) {
 /**
  * Holds if `ref` is the callee name of an invocation of `decl`.
  */
-predicate typedInvokeLookup(ASTNode ref, ASTNode decl, string kind) {
+private predicate typedInvokeLookup(ASTNode ref, ASTNode decl, string kind) {
   not variableDefLookup(ref, decl, _) and
   not propertyLookup(ref, decl, _) and
   exists(InvokeExpr invoke, Expr callee |
@@ -147,7 +147,7 @@ predicate typedInvokeLookup(ASTNode ref, ASTNode decl, string kind) {
 /**
  * Holds if `ref` is a JSDoc type annotation referring to a class defined at `decl`.
  */
-predicate jsdocTypeLookup(JSDocNamedTypeExpr ref, ASTNode decl, string kind) {
+private predicate jsdocTypeLookup(JSDocNamedTypeExpr ref, ASTNode decl, string kind) {
   decl = ref.getClass().getAstNode() and
   kind = "T"
 }

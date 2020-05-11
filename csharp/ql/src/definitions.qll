@@ -6,7 +6,7 @@
 import csharp
 
 /** An element with an associated definition. */
-abstract class Use extends @type_mention_parent {
+abstract private class Use extends @type_mention_parent {
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
@@ -46,7 +46,7 @@ abstract class Use extends @type_mention_parent {
 }
 
 /** A method call/access. */
-class MethodUse extends Use, QualifiableExpr {
+private class MethodUse extends Use, QualifiableExpr {
   MethodUse() {
     this instanceof MethodCall or
     this instanceof MethodAccess
@@ -90,7 +90,7 @@ class MethodUse extends Use, QualifiableExpr {
 }
 
 /** An access. */
-class AccessUse extends Access, Use {
+private class AccessUse extends Access, Use {
   AccessUse() {
     not this.getTarget().(Parameter).getCallable() instanceof Accessor and
     not this = any(LocalVariableDeclAndInitExpr d).getLValue() and
@@ -136,7 +136,7 @@ class AccessUse extends Access, Use {
 }
 
 /** A type mention. */
-class TypeMentionUse extends Use, TypeMention {
+private class TypeMentionUse extends Use, TypeMention {
   TypeMentionUse() {
     // In type mentions such as `T[]`, `T?`, `T*`, and `(S, T)`, we only want
     // uses for the nested type mentions

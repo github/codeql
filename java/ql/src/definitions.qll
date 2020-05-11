@@ -14,7 +14,7 @@ import java
  * the location may be slightly inaccurate and include such whitespace,
  * but it should suffice for the purpose of avoiding overlapping definitions.
  */
-class LocationOverridingMethodAccess extends MethodAccess {
+private class LocationOverridingMethodAccess extends MethodAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(MemberRefExpr e | e.getReferencedCallable() = getMethod() |
       exists(int elRef, int ecRef | e.hasLocationInfo(path, _, _, elRef, ecRef) |
@@ -73,7 +73,7 @@ class LocationOverridingMethodAccess extends MethodAccess {
  * Restricts the location of a type access to exclude
  * the type arguments and qualifier, if any.
  */
-class LocationOverridingTypeAccess extends TypeAccess {
+private class LocationOverridingTypeAccess extends TypeAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
@@ -112,7 +112,7 @@ class LocationOverridingTypeAccess extends TypeAccess {
  * Restricts the location of a field access to the name of the accessed field only,
  * excluding its qualifier.
  */
-class LocationOverridingFieldAccess extends FieldAccess {
+private class LocationOverridingFieldAccess extends FieldAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.hasLocationInfo(path, _, _, el, ec) and
     sl = el and
@@ -124,7 +124,7 @@ class LocationOverridingFieldAccess extends FieldAccess {
  * Restricts the location of a single-type-import declaration to the name of the imported type only,
  * excluding the `import` keyword and the package name.
  */
-class LocationOverridingImportType extends ImportType {
+private class LocationOverridingImportType extends ImportType {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
@@ -141,7 +141,7 @@ class LocationOverridingImportType extends ImportType {
  * Restricts the location of a single-static-import declaration to the name of the imported member(s) only,
  * excluding the `import` keyword and the package name.
  */
-class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
+private class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
@@ -154,7 +154,7 @@ class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
   }
 }
 
-Element definition(Element e, string kind) {
+private Element definition(Element e, string kind) {
   e.(MethodAccess).getMethod().getSourceDeclaration() = result and
   kind = "M" and
   not result instanceof InitializerMethod
@@ -173,14 +173,14 @@ Element definition(Element e, string kind) {
   e.(ImportStaticTypeMember).getAMemberImport() = result and kind = "I"
 }
 
-predicate dummyVarAccess(VarAccess va) {
+private predicate dummyVarAccess(VarAccess va) {
   exists(AssignExpr ae, InitializerMethod im |
     ae.getDest() = va and
     ae.getParent() = im.getBody().getAChild()
   )
 }
 
-predicate dummyTypeAccess(TypeAccess ta) {
+private predicate dummyTypeAccess(TypeAccess ta) {
   exists(FunctionalExpr e |
     e.getAnonymousClass().getClassInstanceExpr().getTypeName() = ta.getParent*()
   )
