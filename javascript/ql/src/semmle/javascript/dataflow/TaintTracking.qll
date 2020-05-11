@@ -778,7 +778,8 @@ module TaintTracking {
    */
   class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
     AdHocWhitelistCheckSanitizer() {
-      getCalleeName().regexpMatch("(?i).*((?<!un)safe|whitelist|allow|(?<!un)auth(?!or\\b)).*") and
+      getCalleeName()
+          .regexpMatch("(?i).*((?<!un)safe|whitelist|valid|allow|(?<!un)auth(?!or\\b)).*") and
       getNumArgument() = 1
     }
 
