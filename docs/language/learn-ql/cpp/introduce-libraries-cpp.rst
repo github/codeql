@@ -525,6 +525,5 @@ This table lists `Preprocessor <https://help.semmle.com/qldoc/cpp/semmle/code/cp
 Further reading
 ---------------
 
--  Experiment with the worked examples in the CodeQL for C/C++ topics: :doc:`Functions in C and C++ <function-classes>`, :doc:`Expressions, types, and statements in C and C++ <expressions-types>`, :doc:`Conversions and classes in C and C++ <conversions-classes>`, and :doc:`Analyzing data flow in C and C++ <dataflow>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -493,7 +493,7 @@ Prefer data-flow configurations when:
 - Differentiating between different kinds of user-controlled data -- see :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
-- Generating a path from source to sink -- see :doc:`constructing path queries <../writing-queries/path-queries>`.
+- Generating a path from source to sink -- see :doc:`Creating path queries <../writing-queries/path-queries>`.
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 
@@ -521,6 +521,5 @@ Type tracking is used in a few places in the standard libraries:
 Further reading
 ---------------
 
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
--  Learn about writing precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`.
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

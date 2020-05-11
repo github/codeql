@@ -4,6 +4,6 @@ You can download the database as a zip file by clicking the link on the slide ab
 #. Add the unzipped database to Visual Studio Code
 #. Upgrade the database if necessary
 
-For further information, see `Using the extension <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__ in the CodeQL for Visual Studio Code help.
+For further information, see `Analyzing your projects <https://help.semmle.com/codeql/codeql-for-vscode/procedures/using-extension.html>`__ in the CodeQL for Visual Studio Code help.
 
 Note that results generated in the query console are likely to differ to those generated in CodeQL for Visual Studio Code as LGTM.com analyzes the most recent revisions of each project that has been added–the CodeQL database available to download above is based on an historical version of the codebase.
