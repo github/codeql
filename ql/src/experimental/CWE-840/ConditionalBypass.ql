@@ -1,8 +1,8 @@
 /**
- * @name Comparision Expression Check Bypass
- * @description Comparing two user controlled inputs may
- * lead to an effective bypass of the comparison check.
- * @id go/condition-bypass
+ * @name User-controlled bypass of condition
+ * @description A check that compares two user-controlled inputs with each other can be bypassed
+ *              by a malicious user.
+ * @id go/user-controlled-bypass
  * @kind problem
  * @problem.severity warning
  * @tags external/cwe/cwe-840
@@ -11,10 +11,10 @@
 import go
 
 /**
- * A data-flow configuration for reasoning about Condition Bypass.
+ * A taint-tracking configuration for reasoning about conditional bypass.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "Comparision Expression Check Bypass" }
+  Configuration() { this = "ConitionalBypass" }
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof UntrustedFlowSource
@@ -35,5 +35,6 @@ where
   rhs.getNode().asExpr() = c.getRightOperand() and
   config.hasFlowPath(lhsSource, lhs) and
   lhs.getNode().asExpr() = c.getLeftOperand()
-select c, "This comparision is between user controlled operands derived from $@", lhsSource,
-  " and $@", rhsSource, "hence may be bypassed."
+select c,
+  "This comparison compares user-controlled values from $@ and $@, and hence can be bypassed.",
+  lhsSource, "here", rhsSource, "here"
