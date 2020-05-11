@@ -263,3 +263,8 @@ Here are some more example queries that solve the river crossing puzzle:
      to model the situation, instead of defining everything as a subclass of ``string``.
 
      ➤ `See solution in the query console on LGTM.com <https://lgtm.com/query/7260748307619718263/>`__
+
+Further reading
+---------------
+
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

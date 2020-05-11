@@ -99,7 +99,3 @@ Here is the metadata for one of the standard Java queries:
 .. |image0| image:: ../../images/query-metadata.png
 
 For more examples of query metadata, see the standard CodeQL queries in our `GitHub repository <https://github.com/github/codeql>`__.
-
-
-
-
