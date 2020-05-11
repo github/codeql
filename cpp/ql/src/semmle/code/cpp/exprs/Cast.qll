@@ -48,10 +48,10 @@ class Cast extends Conversion, @cast {
 /**
  * INTERNAL: Do not use.
  * Query predicates used to check invariants that should hold for all `Cast`
- * nodes. To run all sanity queries for the ASTs, including the ones below,
- * run "semmle/code/cpp/ASTSanity.ql".
+ * nodes. To run all consistency queries for the ASTs, including the ones below,
+ * run "semmle/code/cpp/ASTConsistency.ql".
  */
-module CastSanity {
+module CastConsistency {
   query predicate multipleSemanticConversionStrings(Cast cast, Type fromType, string kind) {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and

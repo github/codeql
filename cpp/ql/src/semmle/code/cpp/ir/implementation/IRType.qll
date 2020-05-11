@@ -275,7 +275,7 @@ class IROpaqueType extends IRSizedType, TIROpaqueType {
   final override int getByteSize() { result = byteSize }
 }
 
-module IRTypeSanity {
+module IRTypeConsistency {
   query predicate missingCanonicalLanguageType(IRType type, string message) {
     not exists(type.getCanonicalLanguageType()) and
     message = "Type does not have a canonical `LanguageType`"
@@ -300,5 +300,5 @@ module IRTypeSanity {
         concat(type.getIRType().toString(), ", ")
   }
 
-  import Language::LanguageTypeSanity
+  import Language::LanguageTypeConsistency
 }
