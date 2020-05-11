@@ -15,14 +15,14 @@ private FunctionObject yamlLoad() { result = ModuleObject::named("yaml").attr("l
 
 /** `yaml.load(untrusted)` vulnerability. */
 class YamlLoadNode extends DeserializationSink {
-    override string toString() { result = "yaml.load vulnerability" }
+  override string toString() { result = "yaml.load vulnerability" }
 
-    YamlLoadNode() {
-        exists(CallNode call |
-            yamlLoad().getACall() = call and
-            call.getAnArg() = this
-        )
-    }
+  YamlLoadNode() {
+    exists(CallNode call |
+      yamlLoad().getACall() = call and
+      call.getAnArg() = this
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }

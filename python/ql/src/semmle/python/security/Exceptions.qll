@@ -14,9 +14,9 @@ private Value traceback_function(string name) { result = Module::named("tracebac
  * message, arguments or parts of the exception traceback.
  */
 class ExceptionInfo extends StringKind {
-    ExceptionInfo() { this = "exception.info" }
+  ExceptionInfo() { this = "exception.info" }
 
-    override string repr() { result = "exception info" }
+  override string repr() { result = "exception info" }
 }
 
 /**
@@ -29,15 +29,15 @@ abstract class ErrorInfoSource extends TaintSource { }
  * This kind represents exceptions themselves.
  */
 class ExceptionKind extends TaintKind {
-    ExceptionKind() { this = "exception.kind" }
+  ExceptionKind() { this = "exception.kind" }
 
-    override string repr() { result = "exception" }
+  override string repr() { result = "exception" }
 
-    override TaintKind getTaintOfAttribute(string name) {
-        name = "args" and result instanceof ExceptionInfoSequence
-        or
-        name = "message" and result instanceof ExceptionInfo
-    }
+  override TaintKind getTaintOfAttribute(string name) {
+    name = "args" and result instanceof ExceptionInfoSequence
+    or
+    name = "message" and result instanceof ExceptionInfo
+  }
 }
 
 /**
@@ -45,18 +45,18 @@ class ExceptionKind extends TaintKind {
  * `except` statement.
  */
 class ExceptionSource extends ErrorInfoSource {
-    ExceptionSource() {
-        exists(ClassValue cls |
-            cls.getASuperType() = ClassValue::baseException() and
-            this.(ControlFlowNode).pointsTo().getClass() = cls
-        )
-        or
-        this = any(ExceptStmt s).getName().getAFlowNode()
-    }
+  ExceptionSource() {
+    exists(ClassValue cls |
+      cls.getASuperType() = ClassValue::baseException() and
+      this.(ControlFlowNode).pointsTo().getClass() = cls
+    )
+    or
+    this = any(ExceptStmt s).getName().getAFlowNode()
+  }
 
-    override string toString() { result = "exception.source" }
+  override string toString() { result = "exception.source" }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionKind }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionKind }
 }
 
 /**
@@ -64,7 +64,7 @@ class ExceptionSource extends ErrorInfoSource {
  * for instance the contents of the `args` attribute, or the stack trace.
  */
 class ExceptionInfoSequence extends SequenceKind {
-    ExceptionInfoSequence() { this.getItem() instanceof ExceptionInfo }
+  ExceptionInfoSequence() { this.getItem() instanceof ExceptionInfo }
 }
 
 /**
@@ -72,23 +72,23 @@ class ExceptionInfoSequence extends SequenceKind {
  * sequences of exception information.
  */
 class CallToTracebackFunction extends ErrorInfoSource {
-    CallToTracebackFunction() {
-        exists(string name |
-            name = "extract_tb" or
-            name = "extract_stack" or
-            name = "format_list" or
-            name = "format_exception_only" or
-            name = "format_exception" or
-            name = "format_tb" or
-            name = "format_stack"
-        |
-            this = traceback_function(name).getACall()
-        )
-    }
+  CallToTracebackFunction() {
+    exists(string name |
+      name = "extract_tb" or
+      name = "extract_stack" or
+      name = "format_list" or
+      name = "format_exception_only" or
+      name = "format_exception" or
+      name = "format_tb" or
+      name = "format_stack"
+    |
+      this = traceback_function(name).getACall()
+    )
+  }
 
-    override string toString() { result = "exception.info.sequence.source" }
+  override string toString() { result = "exception.info.sequence.source" }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfoSequence }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfoSequence }
 }
 
 /**
@@ -96,9 +96,9 @@ class CallToTracebackFunction extends ErrorInfoSource {
  * string of information about an exception.
  */
 class FormattedTracebackSource extends ErrorInfoSource {
-    FormattedTracebackSource() { this = traceback_function("format_exc").getACall() }
+  FormattedTracebackSource() { this = traceback_function("format_exc").getACall() }
 
-    override string toString() { result = "exception.info.source" }
+  override string toString() { result = "exception.info.source" }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfo }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfo }
 }

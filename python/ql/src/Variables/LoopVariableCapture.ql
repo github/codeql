@@ -13,33 +13,33 @@ import python
 
 // Gets the scope of the iteration variable of the looping scope
 Scope iteration_variable_scope(AstNode loop) {
-    result = loop.(For).getScope()
-    or
-    result = loop.(Comp).getFunction()
+  result = loop.(For).getScope()
+  or
+  result = loop.(Comp).getFunction()
 }
 
 predicate capturing_looping_construct(CallableExpr capturing, AstNode loop, Variable var) {
-    var.getScope() = iteration_variable_scope(loop) and
-    var.getAnAccess().getScope() = capturing.getInnerScope() and
-    capturing.getParentNode+() = loop and
-    (
-        loop.(For).getTarget() = var.getAnAccess()
-        or
-        var = loop.(Comp).getAnIterationVariable()
-    )
+  var.getScope() = iteration_variable_scope(loop) and
+  var.getAnAccess().getScope() = capturing.getInnerScope() and
+  capturing.getParentNode+() = loop and
+  (
+    loop.(For).getTarget() = var.getAnAccess()
+    or
+    var = loop.(Comp).getAnIterationVariable()
+  )
 }
 
 predicate escaping_capturing_looping_construct(CallableExpr capturing, AstNode loop, Variable var) {
-    capturing_looping_construct(capturing, loop, var) and
-    // Escapes if used out side of for loop or is a lambda in a comprehension
-    (
-        loop instanceof For and
-        exists(Expr e | e.pointsTo(_, _, capturing) | not loop.contains(e))
-        or
-        loop.(Comp).getElt() = capturing
-        or
-        loop.(Comp).getElt().(Tuple).getAnElt() = capturing
-    )
+  capturing_looping_construct(capturing, loop, var) and
+  // Escapes if used out side of for loop or is a lambda in a comprehension
+  (
+    loop instanceof For and
+    exists(Expr e | e.pointsTo(_, _, capturing) | not loop.contains(e))
+    or
+    loop.(Comp).getElt() = capturing
+    or
+    loop.(Comp).getElt().(Tuple).getAnElt() = capturing
+  )
 }
 
 from CallableExpr capturing, AstNode loop, Variable var

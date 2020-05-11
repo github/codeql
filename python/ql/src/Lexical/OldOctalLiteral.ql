@@ -12,17 +12,17 @@
 import python
 
 predicate is_old_octal(IntegerLiteral i) {
-    exists(string text | text = i.getText() |
-        text.charAt(0) = "0" and
-        not text = "00" and
-        exists(text.charAt(1).toInt()) and
-        /* Do not flag file permission masks */
-        exists(int len | len = text.length() |
-            len != 4 and
-            len != 5 and
-            len != 7
-        )
+  exists(string text | text = i.getText() |
+    text.charAt(0) = "0" and
+    not text = "00" and
+    exists(text.charAt(1).toInt()) and
+    /* Do not flag file permission masks */
+    exists(int len | len = text.length() |
+      len != 4 and
+      len != 5 and
+      len != 7
     )
+  )
 }
 
 from IntegerLiteral i

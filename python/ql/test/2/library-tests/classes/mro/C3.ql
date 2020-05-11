@@ -4,7 +4,7 @@ import semmle.python.pointsto.PointsTo
 import semmle.python.objects.ObjectInternal
 
 ClassList mro(ClassObjectInternal cls) {
-    if Types::isNewStyle(cls) then result = Mro::newStyleMro(cls) else result = Mro::oldStyleMro(cls)
+  if Types::isNewStyle(cls) then result = Mro::newStyleMro(cls) else result = Mro::oldStyleMro(cls)
 }
 
 from ClassObjectInternal cls

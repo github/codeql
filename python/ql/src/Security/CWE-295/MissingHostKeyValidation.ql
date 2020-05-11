@@ -14,21 +14,21 @@ import python
 private ModuleValue theParamikoClientModule() { result = Value::named("paramiko.client") }
 
 private ClassValue theParamikoSSHClientClass() {
-    result = theParamikoClientModule().attr("SSHClient")
+  result = theParamikoClientModule().attr("SSHClient")
 }
 
 private ClassValue unsafe_paramiko_policy(string name) {
-    (name = "AutoAddPolicy" or name = "WarningPolicy") and
-    result = theParamikoClientModule().attr(name)
+  (name = "AutoAddPolicy" or name = "WarningPolicy") and
+  result = theParamikoClientModule().attr(name)
 }
 
 from CallNode call, ControlFlowNode arg, string name
 where
-    call =
-        theParamikoSSHClientClass().lookup("set_missing_host_key_policy").(FunctionValue).getACall() and
-    arg = call.getAnArg() and
-    (
-        arg.pointsTo(unsafe_paramiko_policy(name)) or
-        arg.pointsTo().getClass() = unsafe_paramiko_policy(name)
-    )
+  call =
+    theParamikoSSHClientClass().lookup("set_missing_host_key_policy").(FunctionValue).getACall() and
+  arg = call.getAnArg() and
+  (
+    arg.pointsTo(unsafe_paramiko_policy(name)) or
+    arg.pointsTo().getClass() = unsafe_paramiko_policy(name)
+  )
 select call, "Setting missing host key policy to " + name + " may be unsafe."

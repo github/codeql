@@ -14,7 +14,7 @@ private import semmle.python.web.Http
  * Represents an argument to the `django.redirect` function.
  */
 class DjangoRedirect extends HttpRedirectTaintSink {
-    override string toString() { result = "django.redirect" }
+  override string toString() { result = "django.redirect" }
 
-    DjangoRedirect() { this = redirect().getACall().getAnArg() }
+  DjangoRedirect() { this = redirect().getACall().getAnArg() }
 }

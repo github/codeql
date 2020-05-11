@@ -14,10 +14,10 @@ import python
 
 from ClassValue iterable, FunctionValue iter, ClassValue iterator
 where
-    iter = iterable.lookup("__iter__") and
-    iterator = iter.getAnInferredReturnType() and
-    not iterator.isIterator()
+  iter = iterable.lookup("__iter__") and
+  iterator = iter.getAnInferredReturnType() and
+  not iterator.isIterator()
 select iterator,
-    "Class " + iterator.getName() +
-        " is returned as an iterator (by $@) but does not fully implement the iterator interface.",
-    iter, iter.getName()
+  "Class " + iterator.getName() +
+    " is returned as an iterator (by $@) but does not fully implement the iterator interface.",
+  iter, iter.getName()

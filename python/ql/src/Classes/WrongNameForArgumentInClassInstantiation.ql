@@ -18,7 +18,7 @@ import Expressions.CallArgs
 
 from Call call, ClassValue cls, string name, FunctionValue init
 where
-    illegally_named_parameter(call, cls, name) and
-    init = get_function_or_initializer(cls)
+  illegally_named_parameter(call, cls, name) and
+  init = get_function_or_initializer(cls)
 select call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", init,
-    init.getQualifiedName()
+  init.getQualifiedName()

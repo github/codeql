@@ -6,5 +6,5 @@ import External
  * This class is a simple sub-class of `ExternalStringKind`.
  */
 class UntrustedStringKind extends ExternalStringKind {
-    UntrustedStringKind() { this = "externally controlled string" }
+  UntrustedStringKind() { this = "externally controlled string" }
 }

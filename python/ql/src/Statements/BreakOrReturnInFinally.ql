@@ -16,12 +16,12 @@ import python
 
 from Stmt s, string kind
 where
-    s instanceof Return and kind = "return" and exists(Try t | t.getFinalbody().contains(s))
-    or
-    s instanceof Break and
-    kind = "break" and
-    exists(Try t | t.getFinalbody().contains(s) |
-        not exists(For loop | loop.contains(s) and t.getFinalbody().contains(loop)) and
-        not exists(While loop | loop.contains(s) and t.getFinalbody().contains(loop))
-    )
+  s instanceof Return and kind = "return" and exists(Try t | t.getFinalbody().contains(s))
+  or
+  s instanceof Break and
+  kind = "break" and
+  exists(Try t | t.getFinalbody().contains(s) |
+    not exists(For loop | loop.contains(s) and t.getFinalbody().contains(loop)) and
+    not exists(While loop | loop.contains(s) and t.getFinalbody().contains(loop))
+  )
 select s, "'" + kind + "' in a finally block will swallow any exceptions raised."

@@ -13,6 +13,6 @@ import python
 
 from SubscriptNode store
 where
-    store.isStore() and
-    store.getIndex().pointsTo(Value::named("None"))
+  store.isStore() and
+  store.getIndex().pointsTo(Value::named("None"))
 select store

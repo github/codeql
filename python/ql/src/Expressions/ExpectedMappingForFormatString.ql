@@ -15,12 +15,12 @@ import semmle.python.strings
 
 from Expr e, ClassValue t
 where
-    exists(BinaryExpr b |
-        b.getOp() instanceof Mod and
-        format_string(b.getLeft()) and
-        e = b.getRight() and
-        mapping_format(b.getLeft()) and
-        e.pointsTo().getClass() = t and
-        not t.isMapping()
-    )
+  exists(BinaryExpr b |
+    b.getOp() instanceof Mod and
+    format_string(b.getLeft()) and
+    e = b.getRight() and
+    mapping_format(b.getLeft()) and
+    e.pointsTo().getClass() = t and
+    not t.isMapping()
+  )
 select e, "Right hand side of a % operator must be a mapping, not class $@.", t, t.getName()

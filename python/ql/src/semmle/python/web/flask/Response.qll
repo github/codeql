@@ -8,48 +8,48 @@ import semmle.python.web.flask.General
  * http response malice.
  */
 class FlaskRoutedResponse extends HttpResponseTaintSink {
-    FlaskRoutedResponse() {
-        exists(PythonFunctionValue response |
-            flask_routing(_, response.getScope()) and
-            this = response.getAReturnedNode()
-        )
-    }
+  FlaskRoutedResponse() {
+    exists(PythonFunctionValue response |
+      flask_routing(_, response.getScope()) and
+      this = response.getAReturnedNode()
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 
-    override string toString() { result = "flask.routed.response" }
+  override string toString() { result = "flask.routed.response" }
 }
 
 class FlaskResponseArgument extends HttpResponseTaintSink {
-    FlaskResponseArgument() {
-        exists(CallNode call |
-            (
-                call.getFunction().pointsTo(theFlaskReponseClass())
-                or
-                call.getFunction().pointsTo(Value::named("flask.make_response"))
-            ) and
-            call.getArg(0) = this
-        )
-    }
+  FlaskResponseArgument() {
+    exists(CallNode call |
+      (
+        call.getFunction().pointsTo(theFlaskReponseClass())
+        or
+        call.getFunction().pointsTo(Value::named("flask.make_response"))
+      ) and
+      call.getArg(0) = this
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 
-    override string toString() { result = "flask.response.argument" }
+  override string toString() { result = "flask.response.argument" }
 }
 
 class FlaskResponseTaintKind extends TaintKind {
-    FlaskResponseTaintKind() { this = "flask.Response" }
+  FlaskResponseTaintKind() { this = "flask.Response" }
 }
 
 class FlaskResponseConfiguration extends TaintTracking::Configuration {
-    FlaskResponseConfiguration() { this = "Flask response configuration" }
+  FlaskResponseConfiguration() { this = "Flask response configuration" }
 
-    override predicate isSource(DataFlow::Node node, TaintKind kind) {
-        kind instanceof FlaskResponseTaintKind and
-        (
-            node.asCfgNode().(CallNode).getFunction().pointsTo(theFlaskReponseClass())
-            or
-            node.asCfgNode().(CallNode).getFunction().pointsTo(Value::named("flask.make_response"))
-        )
-    }
+  override predicate isSource(DataFlow::Node node, TaintKind kind) {
+    kind instanceof FlaskResponseTaintKind and
+    (
+      node.asCfgNode().(CallNode).getFunction().pointsTo(theFlaskReponseClass())
+      or
+      node.asCfgNode().(CallNode).getFunction().pointsTo(Value::named("flask.make_response"))
+    )
+  }
 }

@@ -14,8 +14,8 @@ import python
 
 from If i
 where
-    not exists(Stmt s |
-        i.getStmt(_) = s and
-        not s instanceof Pass
-    )
+  not exists(Stmt s |
+    i.getStmt(_) = s and
+    not s instanceof Pass
+  )
 select i

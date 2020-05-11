@@ -16,10 +16,10 @@ import AdvancedFormatting
 
 from AdvancedFormattingCall call, AdvancedFormatString fmt, string name
 where
-    call.getAFormat() = fmt and
-    not name = call.getAKeyword().getArg() and
-    fmt.getFieldName(_, _) = name and
-    not exists(call.getKwargs())
+  call.getAFormat() = fmt and
+  not name = call.getAKeyword().getArg() and
+  fmt.getFieldName(_, _) = name and
+  not exists(call.getKwargs())
 select call,
-    "Missing named argument for string format. Format $@ requires '" + name + "', but it is omitted.",
-    fmt, "\"" + fmt.getText() + "\""
+  "Missing named argument for string format. Format $@ requires '" + name + "', but it is omitted.",
+  fmt, "\"" + fmt.getText() + "\""
