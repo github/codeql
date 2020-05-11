@@ -1,3 +1,9 @@
+/**
+ * @name SSRF
+ * @description Server Side Request Forgery
+ * @kind path-problem
+ */
+
 import java
 import RequestForgery
 
