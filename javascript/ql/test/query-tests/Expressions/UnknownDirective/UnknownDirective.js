@@ -45,3 +45,7 @@ function yui() {
     ":nomunge"; // NOT OK
     "foo(), bar, baz:nomunge"; // NOT OK
 }
+
+function babel_typeof(obj) { 
+    "@babel/helpers - typeof"
+}
