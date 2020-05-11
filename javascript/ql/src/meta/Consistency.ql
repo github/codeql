@@ -5,8 +5,8 @@
  *              results.
  * @kind table
  * @problem.severity error
- * @id js/sanity/api-contracts
- * @tags sanity
+ * @id js/consistency/api-contracts
+ * @tags consistency
  */
 
 import javascript
@@ -66,7 +66,7 @@ predicate uniqueness_error(int number, string what, string problem) {
  * is the QL class name of the entity violating the contract, `problem` describes
  * the violation, and `what` gives location information where possible.
  */
-predicate ast_sanity(string clsname, string problem, string what) {
+predicate ast_consistency(string clsname, string problem, string what) {
   exists(Locatable l | clsname = l.getAQlClass() |
     uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l.getLocation()
     or
@@ -120,7 +120,7 @@ predicate ast_sanity(string clsname, string problem, string what) {
  * Holds if a location entity of QL class `clsname` does not have a unique `toString`,
  * where `problem` describes the problem and `what` gives location information where possible.
  */
-predicate location_sanity(string clsname, string problem, string what) {
+predicate location_consistency(string clsname, string problem, string what) {
   exists(Location l | clsname = l.getAQlClass() |
     uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l
     or
@@ -138,7 +138,7 @@ predicate hasCFG(StmtContainer sc) { not exists(Error err | err.getFile() = sc.g
  * is the QL class name of the entity violating the contract, `problem` describes
  * the violation, and `what` gives location information.
  */
-predicate cfg_sanity(string clsname, string problem, string what) {
+predicate cfg_consistency(string clsname, string problem, string what) {
   exists(StmtContainer cont | clsname = cont.getAQlClass() and hasCFG(cont) |
     uniqueness_error(count(cont.getEntry()), "getEntry", problem) and
     what = "at " + cont.getLocation()
@@ -158,7 +158,7 @@ predicate cfg_sanity(string clsname, string problem, string what) {
  * is the QL class name of the entity violating the contract, `problem` describes
  * the violation, and `what` gives location information.
  */
-predicate scope_sanity(string clsname, string problem, string what) {
+predicate scope_consistency(string clsname, string problem, string what) {
   exists(Scope s | clsname = s.getAQlClass() |
     uniqueness_error(count(s.toString()), "toString", problem) and what = "a scope"
     or
@@ -180,7 +180,7 @@ predicate scope_sanity(string clsname, string problem, string what) {
  * Holds if a JSDoc type expression of QL class `clsname` does not have a unique `toString`,
  * where `problem` describes the problem and `what` is the empty string.
  */
-predicate jsdoc_sanity(string clsname, string problem, string what) {
+predicate jsdoc_consistency(string clsname, string problem, string what) {
   exists(JSDocTypeExprParent jsdtep | clsname = jsdtep.getAQlClass() |
     uniqueness_error(count(jsdtep.toString()), "toString", problem) and what = ""
   )
@@ -190,7 +190,7 @@ predicate jsdoc_sanity(string clsname, string problem, string what) {
  * Holds if a variable reference does not refer to a unique variable,
  * where `problem` describes the problem and `what` is the name of the variable.
  */
-predicate varref_sanity(string clsname, string problem, string what) {
+predicate varref_consistency(string clsname, string problem, string what) {
   exists(VarRef vr, int n | n = count(vr.getVariable()) and n != 1 |
     clsname = vr.getAQlClass() and
     what = vr.getName() and
@@ -200,10 +200,10 @@ predicate varref_sanity(string clsname, string problem, string what) {
 
 from string clsname, string problem, string what
 where
-  ast_sanity(clsname, problem, what) or
-  location_sanity(clsname, problem, what) or
-  scope_sanity(clsname, problem, what) or
-  cfg_sanity(clsname, problem, what) or
-  jsdoc_sanity(clsname, problem, what) or
-  varref_sanity(clsname, problem, what)
+  ast_consistency(clsname, problem, what) or
+  location_consistency(clsname, problem, what) or
+  scope_consistency(clsname, problem, what) or
+  cfg_consistency(clsname, problem, what) or
+  jsdoc_consistency(clsname, problem, what) or
+  varref_consistency(clsname, problem, what)
 select clsname + " " + what + " has " + problem
