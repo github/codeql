@@ -9,7 +9,7 @@ func use(xs ...interface{})      {}
 func t(xs ...interface{}) string { return "sadsad" }
 func login(xs ...interface{})    {}
 
-var test = "localhost"
+const test = "localhost"
 
 // Should alert as authkey is sensitive
 func ex1(w http.ResponseWriter, r *http.Request) {
