@@ -18,10 +18,10 @@ Instead, use a configuration to store and access the values required.
 The following example shows a comparison where both the sides 
 are from attacker-controlled request headers. This should be avoided.:
 </p>
-        <sample src="ConditionBypassBad.go" />
+        <sample src="ConditionalBypassBad.go" />
         <p>
 One way to remedy the problem is to test against a value stored in a configuration:
 </p>
-        <sample src="ConditionBypassGood.go" />
+        <sample src="ConditionalBypassGood.go" />
     </example>
 </qhelp>
