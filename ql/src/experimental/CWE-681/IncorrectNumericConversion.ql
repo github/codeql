@@ -1,10 +1,11 @@
 /**
- * @name Incorrect Conversion between Numeric Types
+ * @name Incorrect conversion between numeric types
  * @description Converting the result of strconv.Atoi (and other parsers from strconv package)
- *              to numeric types of lower bit size can produce unexpected values.
+ *              to numeric types of smaller bit size can produce unexpected values.
  * @kind path-problem
  * @id go/incorrect-numeric-conversion
  * @tags security
+ *       external/cwe/cwe-190
  *       external/cwe/cwe-681
  */
 
