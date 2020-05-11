@@ -17,6 +17,6 @@ where
   not d.getExpr().getStringValue() = ":" and
   // but exclude attribute top-levels: `<a href="javascript:'some-attribute-string'">`
   not d.getParent() instanceof CodeInAttribute and
-  // exclude babel generated directives like "@babel/helpers - typeof". 
+  // exclude babel generated directives like "@babel/helpers - typeof".
   not d.getDirectiveText().prefix(14) = "@babel/helpers"
 select d, "Unknown directive: '" + truncate(d.getDirectiveText(), 20, " ... (truncated)") + "'."
