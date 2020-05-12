@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The web server receives a URL or similar request from an upstream component and retrieves the contents of this URL, but it does not sufficiently ensure that the request is being sent to the expected destination. By providing URLs to unexpected hosts or ports, attackers can make it appear that the server is sending the request, possibly bypassing access controls such as firewalls that prevent the attackers from accessing the URLs directly. The server can be used as a proxy to conduct port scanning of hosts in internal networks, use other URLs such as that can access documents on the system (using file://), or use other protocols such as gopher:// or tftp://, which may provide greater control over the contents of requests.
+</p>
+<p>
+There are many different HTTP request frameworks.  This query currently
+supports urllib, urllib2, httplib, requests.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against SSRF attacks, it is advisable to avoid putting user input
+directly into the request URL. Instead, maintain a list of authorized
+URLs on the server; then choose from that list based on the user input provided.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example calls <code>requests.get</code> directly on a
+value provided by an incoming HTTP request.This directly makes a request to the given host and is  therefore inherently unsafe.
+</p>
+<sample src="RequestsBad.py" />
+</example>
+
+<p>
+Changing the code to check the URL against a list or a string of valid URL's removes the vulnerability.
+</p>
+<sample src="RequestsGood.py" />
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">Server Side Request Forgery</a>.
+</li>
+<li>
+OWASP guidance on preventing SSRF attacks:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">SSRF Prevention Cheat Sheet</a>.
+</li>
+</references>
+
+</qhelp>
