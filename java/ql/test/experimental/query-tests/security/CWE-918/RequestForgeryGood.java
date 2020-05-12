@@ -25,5 +25,13 @@ public class RequestForgeryGood extends HttpServlet {
 		}
 		URL url = new URL("https://" + domain + "/webhook");
 		URLConnection connection = url.openConnection();
+
+        // only suffix of URL spec controlled by remote source
+		url = new URL("https://domain.com/activate?webhook=" + request.getParameter("webhook"));
+		connection = url.openConnection();
+
+		// only prefix of URL host controlled by remote source
+		url = new URL("https", request.getParameter("webhook") + ".safe.com", "webhook");
+		connection = url.openConnection();
 	}
 }

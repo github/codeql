@@ -22,7 +22,7 @@ public class RequestForgeryBad extends HttpServlet {
         URLConnection connection = url.openConnection();
 
 		// host of spec parameter constructed from remote source
-		url = new URL("https://" + request.getParameter("webhook") + ".domain.com/webhook");
+		url = new URL(request.getParameter("webhook") + ".domain.com/webhook");
 		connection = url.openConnection();
 
 		// spec parameter constructed from remote source with context URL
@@ -31,11 +31,15 @@ public class RequestForgeryBad extends HttpServlet {
 		connection = url.openConnection();
 
 		// host parameter constructed from remote source
-		url = new URL("https", request.getParameter("webhook"), 8080, "webhook");
+		url = new URL("https", request.getParameter("webhook"), "webhook");
+		connection = url.openConnection();
+
+		// host parameter suffix controlled by remote source
+		url = new URL("https", "webhook." + request.getParameter("webhook"), "webhook");
 		connection = url.openConnection();
 
 		// host parameter constructed from remote source
-		url = new URL("https", request.getParameter("webhook"), "webhook");
+		url = new URL("https", request.getParameter("webhook"), 8080, "webhook");
 		connection = url.openConnection();
 	}
 }

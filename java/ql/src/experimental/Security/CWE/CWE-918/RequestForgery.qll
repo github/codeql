@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 
 class URLConstructor extends ClassInstanceExpr {
@@ -49,24 +50,61 @@ class URLOpenConnectionMethod extends Method {
   }
 }
 
-class RemoteURLToOpenConnectionFlowConfig extends TaintTracking::Configuration {
-  RemoteURLToOpenConnectionFlowConfig() { this = "OpenConnection::RemoteURLToOpenConnectionFlowConfig" }
+abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
+  bindingset[this]
+  UnsafeURLFlowConfiguration() { any() }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow::Node node) {
     exists(MethodAccess m |
-      sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenConnectionMethod
+      node.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenConnectionMethod
     )
   }
 
+  override predicate isBarrier(DataFlow::Node node) {
+    TaintTracking::defaultTaintBarrier(node)
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    this.isAdditionalTaintStep(node1, node2) or
+    TaintTracking::defaultAdditionalTaintStep(node1, node2) and
+    not this.blockAdditionalTaintStep(node1, node2)
+  }
+
+  abstract predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2);
+
+  predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    none()
+  }
+}
+
+class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
+  UnsafeURLSpecFlowConfiguration() { this = "RequestForgery::UnsafeURLSpecFlowConfiguration" }
+
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(URLConstructor u |
-      (
-        node1.asExpr() = u.specArg() or 
-        node1.asExpr() = u.hostArg()
-      ) and
+      node1.asExpr() = u.specArg() and 
       node2.asExpr() = u
     )
+  }
+
+  override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asExpr().(AddExpr).getRightOperand() = node1.asExpr()
+  }
+}
+
+class UnsafeURLHostFlowConfiguration extends UnsafeURLFlowConfiguration {
+  UnsafeURLHostFlowConfiguration() { this = "RequestForgery::UnsafeURLHostFlowConfiguration" }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(URLConstructor u |
+      node1.asExpr() = u.hostArg() and
+      node2.asExpr() = u
+    )
+  }
+
+  override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asExpr().(AddExpr).getLeftOperand() = node1.asExpr()
   }
 }
