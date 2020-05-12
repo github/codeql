@@ -70,6 +70,14 @@ abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
   predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 }
 
+predicate endsLikeProtocol(Expr expr) {
+  exists(string str | str = expr.(StringLiteral).getRepresentedString() | str.matches("%://"))
+  or
+  exists(Variable var | expr = var.getAnAccess() | endsLikeProtocol(var.getAnAssignedValue()))
+  or
+  endsLikeProtocol(expr.(AddExpr).getRightOperand())
+}
+
 class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
   UnsafeURLSpecFlowConfiguration() { this = "RequestForgery::UnsafeURLSpecFlowConfiguration" }
 
@@ -86,7 +94,7 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
       // user controlled suffix in URL spec is usually okay
       e.getRightOperand() = node1.asExpr() and
       // left operand ending with :// usually means it is only protocol part
-      not e.getLeftOperand().(StringLiteral).getValue().matches("%://")
+      not endsLikeProtocol(e.getLeftOperand())
     )
   }
 }
