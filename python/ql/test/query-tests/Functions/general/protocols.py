@@ -116,3 +116,6 @@ class OK(object):
     def __call__(self):
         yield 0
         raise StopIteration
+
+    def __bool__(self):
+        raise TypeError
