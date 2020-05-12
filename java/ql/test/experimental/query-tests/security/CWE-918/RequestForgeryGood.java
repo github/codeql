@@ -18,7 +18,7 @@ public class RequestForgeryGood extends HttpServlet {
 	throws ServletException, IOException, MalformedURLException {
 		// host of spec parameter controlled by server
 		String domain;
-		if (request.getParameter("webhook") == "github") {
+		if (request.getParameter("webhook").equals("github")) {
 			domain = "github.com";
 		} else {
 			domain = "fallback.com";

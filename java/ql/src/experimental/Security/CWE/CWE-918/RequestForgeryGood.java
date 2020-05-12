@@ -4,7 +4,7 @@ public class TestServlet extends HttpServlet {
         String target = request.getParameter("target");
 
         String subdomain;
-        if (target.contentEquals("EU")) {
+        if (target.equals("EU")) {
             subdomain = "europe";
         } else {
             subdomain = "global";
