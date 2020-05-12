@@ -49,7 +49,7 @@ predicate ejbCalls(Callable origin, ForbiddenCallable target, Call call) {
  * Specification of "forbidden callables".
  */
 
-/** A method or constructor may not be called by an EJB due to container interference. */
+/** A method or constructor that may not be called by an EJB due to container interference. */
 class ForbiddenContainerInterferenceCallable extends ForbiddenCallable {
   ForbiddenContainerInterferenceCallable() {
     this.getDeclaringType().getASupertype*().getSourceDeclaration() instanceof ClassLoaderClass or
