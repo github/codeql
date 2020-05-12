@@ -6,7 +6,17 @@ import javascript
 
 module NoSQL {
   /** An expression that is interpreted as a NoSQL query. */
-  abstract class Query extends Expr { }
+  abstract class Query extends Expr {
+    /** Gets an expression that is interpreted as a code operator in this query. */
+    DataFlow::Node getACodeOperator() { none() }
+  }
+}
+
+/**
+ * Gets the value of a `$where` property of an object that flows to `n`.
+ */
+private DataFlow::Node getADollarWherePropertyValue(DataFlow::Node n) {
+  result = n.getALocalSource().getAPropertyWrite("$where").getRhs()
 }
 
 /**
@@ -190,6 +200,10 @@ private module MongoDB {
    */
   class Query extends NoSQL::Query {
     Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 }
 
@@ -678,6 +692,10 @@ private module Mongoose {
    */
   class MongoDBQueryPart extends NoSQL::Query {
     MongoDBQueryPart() { any(InvokeNode call).interpretsArgumentAsQuery(this.flow()) }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 
   /**
@@ -763,6 +781,10 @@ private module Minimongo {
    */
   class Query extends NoSQL::Query {
     Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 }
 
@@ -809,5 +831,9 @@ private module MarsDB {
    */
   class Query extends NoSQL::Query {
     Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 }
