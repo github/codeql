@@ -227,7 +227,7 @@ class FormatCall extends MethodCall {
   }
 
   /**
-   * DEPRECATED: Use `FormatFlow` module instead.
+   * DEPRECATED: Use `FormatFlow::hasFlowPath()` instead.
    *
    * Gets a format string. Global data flow analysis is applied to retrieve all
    * sources that can reach this method call.
