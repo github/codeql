@@ -4,7 +4,7 @@ from flask import Flask, request, make_response
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
+def hello_world():
     return "Hello World!"
 
 from flask.views import MethodView
@@ -44,3 +44,24 @@ def unsafe():
 def safe():
     first_name = request.args.get('name', '')
     return make_response("Your name is " + escape(first_name))
+
+@app.route('/hello/<name>')
+def hello(name):
+    return make_response("Your name is " + name)
+
+@app.route('/foo/<path:subpath>')
+def foo(subpath):
+    return make_response("The subpath is " + subpath)
+
+@app.route('/multiple/') # TODO: not recognized as route
+@app.route('/multiple/foo/<foo>') # TODO: not recognized as route
+@app.route('/multiple/bar/<bar>')
+def multiple(foo=None, bar=None):
+    return make_response("foo={!r} bar={!r}".format(foo, bar))
+
+@app.route('/complex/<string(length=2):lang_code>')
+def complex(lang_code):
+    return make_response("lang_code {}".format(lang_code))
+
+if __name__ == "__main__":
+    app.run(debug=True)

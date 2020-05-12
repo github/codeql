@@ -15,3 +15,7 @@
 | test.py:45 | Attribute() | externally controlled string |
 | test.py:46 | first_name | externally controlled string |
 | test.py:46 | make_response() | flask.Response |
+| test.py:50 | make_response() | flask.Response |
+| test.py:54 | make_response() | flask.Response |
+| test.py:60 | make_response() | flask.Response |
+| test.py:64 | make_response() | flask.Response |
