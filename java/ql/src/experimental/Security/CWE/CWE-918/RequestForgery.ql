@@ -19,4 +19,4 @@ where
     any(UnsafeURLHostFlowConfiguration c).hasFlowPath(source, sink)
   )
 select call, source, sink,
-  "URL on which openConnection is called may have been constructed from remote source"
+  "The URL used for this network request may have been constructed from user-provided value"
