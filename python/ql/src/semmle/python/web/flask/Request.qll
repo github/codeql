@@ -3,54 +3,25 @@ import semmle.python.security.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.flask.General
 
-private Value theFlaskRequestObject() { result = Value::named("flask.request") }
+/** Source of `flask.request`s. */
+class FlaskRequestSource extends HttpRequestTaintSource {
+    FlaskRequestSource() { this.(ControlFlowNode).pointsTo(Value::named("flask.request")) }
 
-/** Holds if `attr` is an access of attribute `name` of the flask request object */
-private predicate flask_request_attr(AttrNode attr, string name) {
-    attr.isLoad() and
-    attr.getObject(name).pointsTo(theFlaskRequestObject())
+    override predicate isSourceOf(TaintKind kind) { kind instanceof FlaskRequestKind }
 }
 
-/** Source of external data from a flask request */
-class FlaskRequestData extends HttpRequestTaintSource {
-    FlaskRequestData() {
-        not this instanceof FlaskRequestArgs and
-        exists(string name | flask_request_attr(this, name) |
-            name = "path" or
-            name = "full_path" or
-            name = "base_url" or
-            name = "url"
-        )
+/** TaintKind for `flask.request`. */
+class FlaskRequestKind extends TaintKind {
+    FlaskRequestKind() { this = "FlaskRequestKind" }
+
+    override TaintKind getTaintOfAttribute(string name) {
+        name in ["path", "full_path", "base_url", "url"] and
+        result instanceof ExternalStringKind
+        or
+        name in ["args", "form", "values", "files", "headers", "json"] and
+        result instanceof ExternalStringDictKind
+        or
+        name in ["json"] and
+        result instanceof ExternalJsonKind
     }
-
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
-
-    override string toString() { result = "flask.request" }
-}
-
-/** Source of dictionary whose values are externally controlled */
-class FlaskRequestArgs extends HttpRequestTaintSource {
-    FlaskRequestArgs() {
-        exists(string attr | flask_request_attr(this, attr) |
-            attr = "args" or
-            attr = "form" or
-            attr = "values" or
-            attr = "files" or
-            attr = "headers" or
-            attr = "json"
-        )
-    }
-
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringDictKind }
-
-    override string toString() { result = "flask.request.args" }
-}
-
-/** Source of dictionary whose values are externally controlled */
-class FlaskRequestJson extends HttpRequestTaintSource {
-    FlaskRequestJson() { flask_request_attr(this, "json") }
-
-    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalJsonKind }
-
-    override string toString() { result = "flask.request.json" }
 }
