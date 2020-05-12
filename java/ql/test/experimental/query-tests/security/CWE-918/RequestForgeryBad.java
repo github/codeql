@@ -42,6 +42,10 @@ public class RequestForgeryBad extends HttpServlet {
 		url = new URL("https", "webhook." + request.getParameter("webhook"), "webhook");
 		connection = url.openConnection();
 
+		// FALSE NEGATIVE: url host controlled by remote source
+		url = new URL("https", request.getParameter("webhook-name") + ".com", "webhook");
+		connection = url.openConnection();
+
 		// host parameter constructed from remote source
 		url = new URL("https", request.getParameter("webhook"), 8080, "webhook");
 		connection = url.openConnection();
