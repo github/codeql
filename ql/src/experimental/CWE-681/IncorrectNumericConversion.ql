@@ -13,23 +13,27 @@
 import go
 import DataFlow::PathGraph
 
+/** A function that parses integers. */
 class Atoi extends Function {
   Atoi() { this.hasQualifiedName("strconv", "Atoi") }
 }
 
+/** A function that parses floating-point numbers. */
 class ParseFloat extends Function {
   ParseFloat() { this.hasQualifiedName("strconv", "ParseFloat") }
 }
 
+/** A function that parses integers with a specifiable bitSize. */
 class ParseInt extends Function {
   ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
 }
 
+/** A function that parses unsigned integers with a specifiable bitSize. */
 class ParseUint extends Function {
   ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
 }
 
-/** Provides a class for modeling number parser calls. */
+/** Provides a class for modeling calls to number-parsing functions. */
 module ParserCall {
   /**
    * A data-flow call node that parses a number.
