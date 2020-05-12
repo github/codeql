@@ -166,7 +166,7 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
 }
 
 /**
- * A `message-drive` child XML element of a bean type element in an `ejb-jar.xml` file.
+ * A `message-driven` child XML element of a bean type element in an `ejb-jar.xml` file.
  */
 class EjbJarMessageDrivenElement extends EjbJarBeanTypeElement {
   EjbJarMessageDrivenElement() { this.getName() = "message-driven" }
