@@ -21,7 +21,7 @@ class FlaskRequestKind extends TaintKind {
         name in ["path", "full_path", "base_url", "url"] and
         result instanceof ExternalStringKind
         or
-        name in ["args", "form", "values", "files", "headers", "json"] and
+        name in ["args", "form", "values", "files", "headers"] and
         result instanceof ExternalStringDictKind
         or
         name in ["json"] and
