@@ -249,9 +249,17 @@ string formatBitSize(ParserCall call) {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  exists(Lt64BitFlowConfig cfg | cfg.hasFlowPath(source, sink)) or
-  exists(Lt32BitFlowConfig cfg | cfg.hasFlowPath(source, sink)) or
-  exists(Lt16BitFlowConfig cfg | cfg.hasFlowPath(source, sink))
+  (
+    exists(Lt64BitFlowConfig cfg | cfg.hasFlowPath(source, sink))
+    or
+    exists(Lt32BitFlowConfig cfg | cfg.hasFlowPath(source, sink))
+    or
+    exists(Lt16BitFlowConfig cfg | cfg.hasFlowPath(source, sink))
+  ) and
+  // Exclude results in test files:
+  exists(File fl | fl = sink.getNode().asExpr().(NumericConversionExpr).getFile() |
+    not fl instanceof TestFile
+  )
 select source.getNode(), source, sink,
   "Incorrect conversion of a " + formatBitSize(source.getNode().(ParserCall)) + "-bit number from " +
     source.getNode().(ParserCall).getParserName() + " result to a lower bit size type " +
