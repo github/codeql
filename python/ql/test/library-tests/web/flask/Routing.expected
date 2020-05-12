@@ -2,5 +2,6 @@
 | /dangerous | Function dangerous |
 | /dangerous-with-cfg-split | Function dangerous2 |
 | /safe | Function safe |
+| /test_taint/<name>/<int:number> | Function test_taint |
 | /the/ | Function get |
 | /unsafe | Function unsafe |

@@ -1,3 +1,14 @@
+| taint.py:10:9:10:20 | Attribute | externally controlled string |
+| taint.py:11:9:11:25 | Attribute | externally controlled string |
+| taint.py:12:9:12:24 | Attribute | externally controlled string |
+| taint.py:13:9:13:19 | Attribute | externally controlled string |
+| taint.py:15:9:15:20 | Attribute | {externally controlled string} |
+| taint.py:16:9:16:20 | Attribute | {externally controlled string} |
+| taint.py:17:9:17:22 | Attribute | {externally controlled string} |
+| taint.py:18:9:18:21 | Attribute | {externally controlled string} |
+| taint.py:19:9:19:23 | Attribute | {externally controlled string} |
+| taint.py:20:9:20:20 | Attribute | json[externally controlled string] |
+| taint.py:20:9:20:20 | Attribute | {externally controlled string} |
 | test.py:29:12:29:23 | Attribute | {externally controlled string} |
 | test.py:33:9:33:20 | Attribute | {externally controlled string} |
 | test.py:35:16:35:27 | Attribute | {externally controlled string} |
