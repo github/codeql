@@ -190,15 +190,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result.getEnclosingFunction() = callable and
-    result.hasMemoryResult()
-    or
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
     tag = AliasedUseTag() and
     operandTag instanceof SideEffectOperandTag and
     result = getUnmodeledDefinitionInstruction()

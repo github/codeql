@@ -94,7 +94,7 @@ abstract class TranslatedCall extends TranslatedExpr {
     )
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CallTag() and
     (
       operandTag instanceof CallTargetOperandTag and
@@ -115,7 +115,9 @@ abstract class TranslatedCall extends TranslatedExpr {
     result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
@@ -381,7 +383,7 @@ class TranslatedAllocationSideEffects extends TranslatedSideEffects,
     else result = getParent().getChildSuccessor(this)
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag = addressOperand() and
     result = getPrimaryInstructionForSideEffect(OnlyInstructionTag())
@@ -437,7 +439,7 @@ class TranslatedStructorCallSideEffects extends TranslatedCallSideEffects {
 
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag instanceof OnlyInstructionTag and
     operandTag instanceof AddressOperandTag and
     result = getParent().(TranslatedStructorCall).getQualifierResult()
@@ -513,15 +515,10 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag instanceof OnlyInstructionTag and
     operandTag instanceof AddressOperandTag and
     result = getTranslatedExpr(arg).getResult()
-    or
-    tag instanceof OnlyInstructionTag and
-    operandTag instanceof SideEffectOperandTag and
-    not isWrite() and
-    result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     or
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
@@ -531,7 +528,8 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
             .getFullyConverted()).getResult()
   }
 
-  override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  override CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+    not isWrite() and
     if hasSpecificReadSideEffect(any(BufferAccessOpcode op))
     then
       result = getUnknownType() and

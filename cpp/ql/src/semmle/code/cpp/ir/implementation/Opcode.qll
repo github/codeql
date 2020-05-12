@@ -590,9 +590,7 @@ module Opcode {
   class UnmodeledUse extends Opcode, TUnmodeledUse {
     final override string toString() { result = "UnmodeledUse" }
 
-    final override predicate hasOperandInternal(OperandTag tag) {
-      tag instanceof UnmodeledUseOperandTag
-    }
+    final override predicate hasOperandInternal(OperandTag tag) { none() }
   }
 
   class AliasedDefinition extends Opcode, TAliasedDefinition {

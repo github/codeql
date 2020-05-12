@@ -239,32 +239,18 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = getInstruction(UnwindTag())
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result.getEnclosingFunction() = func and
-    result.hasMemoryResult()
-    or
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
-    tag = AliasedUseTag() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ReturnTag() and
     hasReturnValue() and
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(ReturnValueAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getUnmodeledDefinitionInstruction()
     )
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = ReturnTag() and
     hasReturnValue() and
     operandTag instanceof LoadOperandTag and
@@ -445,7 +431,7 @@ abstract class TranslatedParameter extends TranslatedElement {
     result = getIRVariable()
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
@@ -457,9 +443,6 @@ abstract class TranslatedParameter extends TranslatedElement {
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(InitializerVariableAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
     )
     or
     tag = InitializerIndirectStoreTag() and
@@ -734,17 +717,15 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
     resultType = getVoidType()
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag = sideEffectOperand() and
-    result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
-    or
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag = addressOperand() and
     result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = OnlyInstructionTag() and
     operandTag = sideEffectOperand() and
     result = getUnknownType()
