@@ -4,8 +4,8 @@
  *              and should therefore have a prior definition.
  * @kind problem
  * @problem.severity error
- * @id java/sanity/uncertain-ssa-update-without-prior-def
- * @tags sanity
+ * @id java/consistency/uncertain-ssa-update-without-prior-def
+ * @tags consistency
  */
 
 import java

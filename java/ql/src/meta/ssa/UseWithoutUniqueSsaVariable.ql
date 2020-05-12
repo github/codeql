@@ -4,8 +4,8 @@
  *              should have a unique associated SSA variable.
  * @kind problem
  * @problem.severity error
- * @id java/sanity/use-without-unique-ssa-variable
- * @tags sanity
+ * @id java/consistency/use-without-unique-ssa-variable
+ * @tags consistency
  */
 
 import java

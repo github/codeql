@@ -3,8 +3,8 @@
  * @description Every SSA refinement node should have exactly one input.
  * @kind problem
  * @problem.severity error
- * @id js/sanity/ambiguous-refinement-node
- * @tags sanity
+ * @id js/consistency/ambiguous-refinement-node
+ * @tags consistency
  */
 
 import javascript

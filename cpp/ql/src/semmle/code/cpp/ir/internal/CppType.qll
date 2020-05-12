@@ -544,9 +544,9 @@ string getOpaqueTagIdentityString(Type tag) {
   result = getTypeIdentityString(tag)
 }
 
-module LanguageTypeSanity {
+module LanguageTypeConsistency {
   /**
-   * Sanity query to detect C++ `Type` objects which have no corresponding `CppType` object.
+   * Consistency query to detect C++ `Type` objects which have no corresponding `CppType` object.
    */
   query predicate missingCppType(Type type, string message) {
     not exists(getTypeForPRValue(type)) and
