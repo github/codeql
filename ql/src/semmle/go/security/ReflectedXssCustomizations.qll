@@ -103,4 +103,13 @@ module ReflectedXss {
       )
     }
   }
+
+  /**
+   * A check against a constant value, considered a barrier for reflected XSS.
+   */
+  class EqualityTestGuard extends SanitizerGuard, DataFlow::EqualityTestNode {
+    override predicate checks(Expr e, boolean outcome) {
+      e = this.getAnOperand().asExpr() and this.eq(outcome, _, _)
+    }
+  }
 }
