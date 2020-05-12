@@ -1,0 +1,4 @@
+| SensitiveConditionBypassBad.go:7:5:7:39 | ...!=... | This sensitive comparision check can potentially be bypassed. |
+| condition.go:16:5:16:34 | ...!=... | This sensitive comparision check can potentially be bypassed. |
+| condition.go:25:5:25:35 | ...!=... | This sensitive comparision check can potentially be bypassed. |
+| condition.go:34:5:34:35 | ...!=... | This sensitive comparision check can potentially be bypassed. |
