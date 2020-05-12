@@ -81,6 +81,7 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // user controlled suffix in URL spec is usually okay
     node2.asExpr().(AddExpr).getRightOperand() = node1.asExpr()
   }
 }
@@ -96,6 +97,7 @@ class UnsafeURLHostFlowConfiguration extends UnsafeURLFlowConfiguration {
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // user controlled prefix in URL host is usually okay
     node2.asExpr().(AddExpr).getLeftOperand() = node1.asExpr()
   }
 }
