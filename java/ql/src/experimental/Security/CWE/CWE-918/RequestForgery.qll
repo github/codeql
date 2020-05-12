@@ -81,8 +81,13 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // user controlled suffix in URL spec is usually okay
-    node2.asExpr().(AddExpr).getRightOperand() = node1.asExpr()
+    exists(AddExpr e |
+      node2.asExpr() = e and
+      // user controlled suffix in URL spec is usually okay
+      e.getRightOperand() = node1.asExpr() and
+      // left operand ending with :// usually means it is only protocol part
+      not e.getLeftOperand().(StringLiteral).getValue().matches("%://")
+    )
   }
 }
 
