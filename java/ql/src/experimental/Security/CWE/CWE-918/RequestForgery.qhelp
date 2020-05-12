@@ -27,7 +27,7 @@ a list of authorized request targets and choose from that list based on the user
 <example>
 <p>
 The following example shows an HTTP request parameter being used directly in a URL request without
-validating the input, which facilitates an SSRF attack. The request <code>url.openConnection()</code>
+validating the input, which facilitates an SSRF attack. Request made using URL <code>new URL(...)</code>
 is vulnerable since attackers can choose the value of <code>target</code> to be anything they want. For
 instance, the attacker can choose <code>"internal.example.com/#"</code> as the target, causing the
 URL used in the request to be <code>"https://internal.example.com/#.example.com/data"</code>.
