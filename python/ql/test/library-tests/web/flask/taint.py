@@ -18,4 +18,6 @@ def test_taint(name = "World!", number="0", foo="foo"):
         request.files,
         request.headers,
         request.json,
+        request.json['foo'],
+        request.json['foo']['bar'],
     )
