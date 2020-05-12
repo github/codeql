@@ -27,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 
     Note
 
-    An in-depth discussion of ``select`` statements for path and metric queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see :doc:`Creating path queries <path-queries>`.
+    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see :doc:`Creating path queries <path-queries>`.
 
 Developing a select statement
 -----------------------------
