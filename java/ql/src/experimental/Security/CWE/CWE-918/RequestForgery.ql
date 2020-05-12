@@ -1,7 +1,11 @@
 /**
- * @name SSRF
- * @description Server Side Request Forgery
+ * @name Uncontrolled data used in network request
+ * @description Sending network requests with user-controlled data allows for request forgery attacks.
  * @kind path-problem
+ * @problem.severity error
+ * @id java/request-forgery
+ * @tags security
+ *       external/cwe/cwe-918
  */
 
 import java
