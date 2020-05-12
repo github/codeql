@@ -144,6 +144,7 @@ class Lt32BitFlowConfig extends TaintTracking::Configuration, DataFlow::Configur
   Lt32BitFlowConfig() { this = "Lt32BitFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
+    // NOTE: target bit size 0 is already addressed in Lt64BitFlowConfig.
     exists(ParserCall call | call.getTargetBitSize() = [/*0,*/ 32] | source = call)
   }
 
