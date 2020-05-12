@@ -27,6 +27,13 @@
 | defaulttainttracking.cpp:113:9:113:14 | call to getenv | defaulttainttracking.cpp:113:5:113:5 | x | AST only |
 | defaulttainttracking.cpp:113:9:113:14 | call to getenv | defaulttainttracking.cpp:114:10:114:10 | x | IR only |
 | defaulttainttracking.cpp:113:9:113:14 | call to getenv | test_diff.cpp:2:11:2:13 | p#0 | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:10:11:10:13 | p#0 | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:120:7:120:7 | x | AST only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:123:23:123:24 | pp | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:124:8:124:9 | pp | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:124:12:124:12 | y | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | defaulttainttracking.cpp:130:13:130:14 | & ... | IR only |
+| defaulttainttracking.cpp:120:11:120:16 | call to getenv | test_diff.cpp:2:11:2:13 | p#0 | IR only |
 | globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
 | test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:11:104:20 | (...) | IR only |
