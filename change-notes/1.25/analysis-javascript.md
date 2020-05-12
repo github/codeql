@@ -6,6 +6,8 @@
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
+  - [marsdb](https://www.npmjs.com/package/marsdb)
+  - [minimongo](https://www.npmjs.com/package/minimongo/)
 
 ## New queries
 
