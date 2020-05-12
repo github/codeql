@@ -6,7 +6,7 @@
 import csharp
 
 /** An element with an associated definition. */
-abstract private class Use extends @type_mention_parent {
+abstract class Use extends @type_mention_parent {
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
