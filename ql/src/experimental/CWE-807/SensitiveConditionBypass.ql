@@ -1,14 +1,15 @@
-// /**
-//  * @name User-controlled bypassing of sensitive action
-//  * @description This query tests for user-controlled bypassing
-//  *  of sensitive actions.
-//  * @id go/sensitive-condition-bypass
-//  * @kind problem
-//  * @problem.severity warning
-//  * @tags external/cwe/cwe-807
-//  *       external/cwe/cwe-247
-//  *       external/cwe/cwe-350
-//  */
+/**
+ * @name User-controlled bypassing of sensitive action
+ * @description This query tests for user-controlled bypassing
+ *  of sensitive actions.
+ * @id go/sensitive-condition-bypass
+ * @kind problem
+ * @problem.severity warning
+ * @tags external/cwe/cwe-807
+ *       external/cwe/cwe-247
+ *       external/cwe/cwe-350
+ */
+
 import go
 import SensitiveConditionBypass
 
