@@ -17,6 +17,8 @@
 | addressOf.cpp:56:7:56:7 | a | addressOf.cpp:57:18:57:45 | ... + ... |
 | addressOf.cpp:56:7:56:7 | a | addressOf.cpp:58:18:58:18 | a |
 | addressOf.cpp:61:33:61:35 | ref | addressOf.cpp:63:24:63:26 | ref |
+| addressOf.cpp:76:7:76:7 | x | addressOf.cpp:76:10:76:11 | 0 |
+| addressOf.cpp:77:8:77:8 | y | addressOf.cpp:77:12:77:49 | ... + ... |
 | indirect_use.cpp:20:10:20:10 | p | indirect_use.cpp:20:14:20:15 | ip |
 | indirect_use.cpp:25:10:25:10 | p | indirect_use.cpp:25:14:25:19 | ... + ... |
 | indirect_use.cpp:25:10:25:10 | p | indirect_use.cpp:26:5:26:7 | ... -- |
