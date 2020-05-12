@@ -32,7 +32,7 @@ void test2()
 	if (!rename(file1, file2))
 	{
 		file1.set("d.txt");
-		remove(file1); // GOOD
+		remove(file1); // GOOD [FALSE POSITIVE]
 	}
 }
 
@@ -46,6 +46,6 @@ void test3()
 	create(file1);
 	if (!rename(file1, file2))
 	{
-		remove(file1); // BAD [NOT DETECTED]
+		remove(file1); // BAD
 	}
 }
