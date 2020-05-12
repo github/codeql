@@ -17,6 +17,7 @@ private newtype TEdgeKind =
  * `EdgeKind`.
  */
 abstract class EdgeKind extends TEdgeKind {
+  /** Gets a textual representation of this edge kind. */
   abstract string toString();
 }
 
@@ -28,8 +29,6 @@ class GotoEdge extends EdgeKind, TGotoEdge {
   final override string toString() { result = "Goto" }
 }
 
-GotoEdge gotoEdge() { result = TGotoEdge() }
-
 /**
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
@@ -37,8 +36,6 @@ GotoEdge gotoEdge() { result = TGotoEdge() }
 class TrueEdge extends EdgeKind, TTrueEdge {
   final override string toString() { result = "True" }
 }
-
-TrueEdge trueEdge() { result = TTrueEdge() }
 
 /**
  * A "false" edge, representing the successor of a conditional branch when the
@@ -48,8 +45,6 @@ class FalseEdge extends EdgeKind, TFalseEdge {
   final override string toString() { result = "False" }
 }
 
-FalseEdge falseEdge() { result = TFalseEdge() }
-
 /**
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
@@ -58,8 +53,6 @@ class ExceptionEdge extends EdgeKind, TExceptionEdge {
   final override string toString() { result = "Exception" }
 }
 
-ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
-
 /**
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
@@ -67,8 +60,6 @@ ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
 class DefaultEdge extends EdgeKind, TDefaultEdge {
   final override string toString() { result = "Default" }
 }
-
-DefaultEdge defaultEdge() { result = TDefaultEdge() }
 
 /**
  * A "case" edge, representing the successor of a `Switch` instruction when the
@@ -91,4 +82,48 @@ class CaseEdge extends EdgeKind, TCaseEdge {
   string getMaxValue() { result = maxValue }
 }
 
-CaseEdge caseEdge(string minValue, string maxValue) { result = TCaseEdge(minValue, maxValue) }
+/**
+ * Predicates to access the single instance of each `EdgeKind` class.
+ */
+module EdgeKind {
+  /**
+   * Gets the single instance of the `GotoEdge` class.
+   */
+  GotoEdge gotoEdge() { result = TGotoEdge() }
+
+  /**
+   * Gets the single instance of the `TrueEdge` class.
+   */
+  TrueEdge trueEdge() { result = TTrueEdge() }
+
+  /**
+   * Gets the single instance of the `FalseEdge` class.
+   */
+  FalseEdge falseEdge() { result = TFalseEdge() }
+
+  /**
+   * Gets the single instance of the `ExceptionEdge` class.
+   */
+  ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
+
+  /**
+   * Gets the single instance of the `DefaultEdge` class.
+   */
+  DefaultEdge defaultEdge() { result = TDefaultEdge() }
+
+  /**
+   * Gets the `CaseEdge` representing a `case` label with the specified lower and upper bounds.
+   * For example:
+   * ```
+   * switch (x) {
+   *   case 1:  // Edge kind is `caseEdge("1", "1")`
+   *     return x;
+   *   case 2...8:  // Edge kind is `caseEdge("2", "8")`
+   *     return x - 1;
+   *   default:  // Edge kind is `defaultEdge()`
+   *     return 0;
+   *  }
+   * ```
+   */
+  CaseEdge caseEdge(string minValue, string maxValue) { result = TCaseEdge(minValue, maxValue) }
+}

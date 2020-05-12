@@ -111,11 +111,11 @@ module Internal {
    *
    * Example: `if (x === null) ...`.
    */
-  private class SanityCheckingUndefinedNullGuard extends DefensiveExpressionTest {
+  private class ConsistencyCheckingUndefinedNullGuard extends DefensiveExpressionTest {
     UndefinedNullTest test;
     boolean polarity;
 
-    SanityCheckingUndefinedNullGuard() {
+    ConsistencyCheckingUndefinedNullGuard() {
       exists(IfStmt c |
         this = c.getCondition().flow() and
         test = stripNotsAndParens(c.getCondition(), polarity) and

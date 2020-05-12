@@ -15,7 +15,7 @@ This topic explains how to write your select statement to generate helpful analy
 Overview
 --------
 
-Alert queries must have the property ``@kind problem`` defined in their metadata. For further information, see the :doc:`query metadata reference <query-metadata>`. 
+Alert queries must have the property ``@kind problem`` defined in their metadata. For further information, see :doc:`Metadata for CodeQL queries <query-metadata>`. 
 In their most basic form, the ``select`` statement must select two 'columns':
 
 -  **Element**—a code element that's identified by the query. This defines the location of the alert.
@@ -105,3 +105,8 @@ The new elements added here don't need to be clickable, so we added them directl
 .. image:: ../../images/ql-select-statement-similarity.png
    :alt: Results showing the extent of similarity
    :class: border
+
+Further reading
+---------------
+
+- `CodeQL repository <https://github.com/github/codeql>`__

@@ -146,7 +146,7 @@ public class ExtractionMetrics {
 
   public void stopPhase(
       ExtractionPhase
-          event /* technically not needed, but useful for documentation and sanity checking */) {
+          event /* technically not needed, but useful for documentation and consistency checking */) {
     if (stack.isEmpty()) {
       failTimings(
           String.format(

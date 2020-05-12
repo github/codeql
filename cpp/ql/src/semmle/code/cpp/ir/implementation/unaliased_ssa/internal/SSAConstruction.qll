@@ -941,7 +941,7 @@ private module CachedForDebugging {
   }
 }
 
-module SSASanity {
+module SSAConsistency {
   query predicate multipleOperandMemoryLocations(
     OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
   ) {

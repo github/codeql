@@ -202,7 +202,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsType);
         }
 
-        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, null);
+        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateNullableEntity(cx, null);
 
         class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
         {

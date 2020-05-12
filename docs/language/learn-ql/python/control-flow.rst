@@ -117,6 +117,6 @@ Example finding mutually exclusive blocks within the same function
 Further reading
 ---------------
 
-- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
 
-.. include:: ../../reusables/python-other-resources.rst

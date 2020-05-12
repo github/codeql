@@ -4,7 +4,7 @@ import semmle.code.cpp.exprs.Expr
  * A C/C++ builtin operation. This is the root QL class encompassing
  * built-in functionality.
  */
-abstract class BuiltInOperation extends Expr {
+class BuiltInOperation extends Expr, @builtin_op {
   override string getCanonicalQLClass() { result = "BuiltInOperation" }
 }
 
@@ -12,17 +12,7 @@ abstract class BuiltInOperation extends Expr {
  * A C/C++ built-in operation that is used to support functions with variable numbers of arguments.
  * This includes `va_start`, `va_end`, `va_copy`, and `va_arg`.
  */
-class VarArgsExpr extends BuiltInOperation {
-  VarArgsExpr() {
-    this instanceof BuiltInVarArgsStart
-    or
-    this instanceof BuiltInVarArgsEnd
-    or
-    this instanceof BuiltInVarArg
-    or
-    this instanceof BuiltInVarArgCopy
-  }
-}
+class VarArgsExpr extends BuiltInOperation, @var_args_expr { }
 
 /**
  * A C/C++ `__builtin_va_start` built-in operation (used by some

@@ -82,7 +82,8 @@ abstract class Call extends Expr, NameQualifiableElement {
 
   /**
    * Holds if this call passes the variable accessed by `va` by
-   * reference as the `i`th argument.
+   * reference as the `i`th argument. The qualifier of a call to a member
+   * function is `i = -1`.
    *
    * A variable is passed by reference if the `i`th parameter of the function
    * receives an address that points within the object denoted by `va`. For a
@@ -101,11 +102,15 @@ abstract class Call extends Expr, NameQualifiableElement {
    */
   predicate passesByReference(int i, VariableAccess va) {
     variableAddressEscapesTree(va, this.getArgument(i).getFullyConverted())
+    or
+    variableAddressEscapesTree(va, this.getQualifier().getFullyConverted()) and
+    i = -1
   }
 
   /**
    * Holds if this call passes the variable accessed by `va` by
-   * reference to non-const data as the `i`th argument.
+   * reference to non-const data as the `i`th argument. The qualifier of a
+   * call to a member function is `i = -1`.
    *
    * A variable is passed by reference if the `i`th parameter of the function
    * receives an address that points within the object denoted by `va`. For a
@@ -124,6 +129,9 @@ abstract class Call extends Expr, NameQualifiableElement {
    */
   predicate passesByReferenceNonConst(int i, VariableAccess va) {
     variableAddressEscapesTreeNonConst(va, this.getArgument(i).getFullyConverted())
+    or
+    variableAddressEscapesTreeNonConst(va, this.getQualifier().getFullyConverted()) and
+    i = -1
   }
 }
 

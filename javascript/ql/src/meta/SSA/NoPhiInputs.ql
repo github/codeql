@@ -3,8 +3,8 @@
  * @description Every SSA phi node should have two or more inputs.
  * @kind problem
  * @problem.severity error
- * @id js/sanity/dead-phi-node
- * @tags sanity
+ * @id js/consistency/dead-phi-node
+ * @tags consistency
  */
 
 import javascript

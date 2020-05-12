@@ -275,12 +275,24 @@ class IROpaqueType extends IRSizedType, TIROpaqueType {
   final override int getByteSize() { result = byteSize }
 }
 
-module IRTypeSanity {
+/**
+ * INTERNAL: Do not use.
+ * Query predicates used to check invariants that should hold for all `IRType` objects. To run all
+ * consistency queries for the IR, including the ones below, run
+ * "semmle/code/cpp/IR/IRConsistency.ql".
+ */
+module IRTypeConsistency {
+  /**
+   * Holds if the type has no result for `IRType.getCanonicalLanguageType()`.
+   */
   query predicate missingCanonicalLanguageType(IRType type, string message) {
     not exists(type.getCanonicalLanguageType()) and
     message = "Type does not have a canonical `LanguageType`"
   }
 
+  /**
+   * Holds if the type has more than one result for `IRType.getCanonicalLanguageType()`.
+   */
   query predicate multipleCanonicalLanguageTypes(IRType type, string message) {
     strictcount(type.getCanonicalLanguageType()) > 1 and
     message =
@@ -288,11 +300,17 @@ module IRTypeSanity {
         concat(type.getCanonicalLanguageType().toString(), ", ")
   }
 
+  /**
+   * Holds if the type has no result for `LanguageType.getIRType()`.
+   */
   query predicate missingIRType(Language::LanguageType type, string message) {
     not exists(type.getIRType()) and
     message = "`LanguageType` does not have a corresponding `IRType`."
   }
 
+  /**
+   * Holds if the type has more than one result for `LanguageType.getIRType()`.
+   */
   query predicate multipleIRTypes(Language::LanguageType type, string message) {
     strictcount(type.getIRType()) > 1 and
     message =
@@ -300,5 +318,5 @@ module IRTypeSanity {
         concat(type.getIRType().toString(), ", ")
   }
 
-  import Language::LanguageTypeSanity
+  import Language::LanguageTypeConsistency
 }

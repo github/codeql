@@ -1,3 +1,8 @@
+/**
+ * Defines the set of possible `OperandTag`s, which are used to identify the role each `Operand`
+ * plays in the evaluation of its `Instruction`.
+ */
+
 private import OperandTagInternal
 
 private newtype TOperandTag =
@@ -24,10 +29,18 @@ private newtype TOperandTag =
  * an `Instruction` is determined by the instruction's opcode.
  */
 abstract class OperandTag extends TOperandTag {
+  /** Gets a textual representation of this operand tag */
   abstract string toString();
 
+  /**
+   * Gets an integer that represents where this this operand will appear in the operand list of an
+   * instruction when the IR is printed.
+   */
   abstract int getSortOrder();
 
+  /**
+   * Gets a label that will appear before the operand when the IR is printed.
+   */
   string getLabel() { result = "" }
 }
 
@@ -47,7 +60,7 @@ abstract class RegisterOperandTag extends OperandTag { }
 abstract class TypedOperandTag extends MemoryOperandTag { }
 
 // Note: individual subtypes are listed in the order that the operands should
-// appear in the operand list of the instruction when printing.
+// appear in the operand list of the instruction when the IR is printed.
 /**
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`, `InitializeParameter`, `IndirectReadSideEffect`).

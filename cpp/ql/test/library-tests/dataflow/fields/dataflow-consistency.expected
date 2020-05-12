@@ -43,6 +43,7 @@ storeIsPostUpdate
 argHasPostUpdate
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:57:11:57:24 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:57:17:57:23 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:64:21:64:28 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:73:25:73:32 | new | ArgumentNode is missing PostUpdateNode. |

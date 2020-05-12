@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Server-Side Template Injection vulnerabilities occur when user input is embedded
+in a template in an unsafe manner allowing attackers to access the template context and
+run arbitrary code on the application server.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid including user input in any expression or template which may be dynamically rendered. 
+If user input must be included, use context-specific escaping before including it or run 
+the rendering engine with sandbox options. 
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a page being rendered with user input allowing attackers to access the
+template context and run arbitrary code on the application server. 
+The Pug template engine (and other template engines) provides an interpolation feature - insertion of variable values into a string of some kind.
+For example, <code>Hello #{user.username}!</code>, could be used for printing a username from a scoped variable user, 
+but the <code>user.username</code> expression will be executed as JavaScript.
+Unsafe injection of user input in a template therefore allows an attacker to inject arbitrary JavaScript code. 
+For example, a payload of <code>#{global.process.exit(1)}</code> will cause the below server to crash.
+</p>
+
+<sample src="examples/ServerSideTemplateInjection.js" />
+</example>
+
+<example>
+<p>
+The example below provides an example of how to use a template engine without any risk of Server-Side Template Injection. 
+Instead of concatenating user input onto the template, the template uses a placeholder and safely inserts 
+the user input. 
+</p>
+
+<sample src="examples/ServerSideTemplateInjectionSafe.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection">Server Side Template Injection</a>.
+</li>
+<li>
+PortSwigger Research Blog: 
+<a href="https://portswigger.net/research/server-side-template-injection">Server-Side Template Injection</a>.
+</li>
+</references>
+</qhelp>

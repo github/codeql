@@ -468,13 +468,6 @@ Hint: array indices are properties with numeric names; you can use regular expre
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the ``tagName`` argument to the
 ``createElement`` function. (`Answer <#exercise-4>`__)
 
-Further reading
----------------
-
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
--  Learn about writing more precise data-flow analyses in :doc:`Using flow labels for precise data flow analysis <flow-labels>`
-
 Answers
 -------
 
@@ -557,3 +550,11 @@ Exercise 4
   from HardCodedTagNameConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
   where cfg.hasFlow(source, sink)
   select source, sink
+
+Further reading
+---------------
+
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

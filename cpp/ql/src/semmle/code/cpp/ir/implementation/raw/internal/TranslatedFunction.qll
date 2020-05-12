@@ -720,7 +720,7 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind edge) {
     tag = OnlyInstructionTag() and
-    edge = gotoEdge() and
+    edge = EdgeKind::gotoEdge() and
     result = getParent().getChildSuccessor(this)
   }
 

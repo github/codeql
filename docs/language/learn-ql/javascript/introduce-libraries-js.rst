@@ -1031,6 +1031,5 @@ Predicate ``YAMLMapping.maps(key, value)`` models the key-value relation represe
 Further reading
 ---------------
 
--  Learn about the standard CodeQL libraries used to write queries for TypeScript in :doc:`CodeQL libraries for TypeScript <introduce-libraries-ts>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

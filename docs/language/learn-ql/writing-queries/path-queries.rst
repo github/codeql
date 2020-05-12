@@ -189,9 +189,8 @@ The ``element`` that you select in the first column depends on the purpose of th
 
 The alert message defined in the final column in the ``select`` statement can be developed to give more detail about the alert or path found by the query using links and placeholders. For more information, see :doc:`Defining the results of a query <select-statement>`. 
 
-What next?
-**********
+Further reading
+***************
 
-- Take a look at the path queries for `C/C++ <https://help.semmle.com/wiki/label/CCPPOBJ/path-problem>`__, `C# <https://help.semmle.com/wiki/label/CSHARP/path-problem>`__, `Java <https://help.semmle.com/wiki/label/java/path-problem>`__, `JavaScript <https://help.semmle.com/wiki/label/js/path-problem>`__, and `Python <https://help.semmle.com/wiki/label/python/path-problem>`__ to see examples of these queries.
-- Explore the `query cookbooks <https://help.semmle.com/wiki/display/QL/QL+cookbooks>`__ to see how to access the basic language elements contained in the CodeQL libraries.
-- For a full list of resources to help you learn CodeQL, including beginner tutorials and language-specific examples, visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__.
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- `CodeQL repository <https://github.com/github/codeql>`__

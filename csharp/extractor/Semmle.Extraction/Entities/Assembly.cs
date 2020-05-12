@@ -8,7 +8,7 @@ namespace Semmle.Extraction.Entities
         readonly string assemblyPath;
         readonly IAssemblySymbol assembly;
 
-        Assembly(Context cx, Microsoft.CodeAnalysis.Location init)
+        Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)
             : base(cx, init)
         {
             if (init == null)
@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             }
             else
             {
-                assembly = symbol.MetadataModule.ContainingAssembly;
+                assembly = init.MetadataModule.ContainingAssembly;
                 var identity = assembly.Identity;
                 var idString = identity.Name + " " + identity.Version;
                 assemblyPath = cx.Extractor.GetAssemblyFile(idString);
@@ -30,7 +30,7 @@ namespace Semmle.Extraction.Entities
         {
             if (assemblyPath != null)
             {
-                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
+                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString() ?? "",
                     assembly.Identity.Name, assembly.Identity.Version.ToString());
             }
         }
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.Entities
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as Assembly;
             if (other == null || other.GetType() != typeof(Assembly))
@@ -50,20 +50,20 @@ namespace Semmle.Extraction.Entities
             return Equals(symbol, other.symbol);
         }
 
-        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc);
+        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location? loc) => AssemblyConstructorFactory.Instance.CreateNullableEntity(cx, loc);
 
-        class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, Assembly>
+        class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
             public static readonly AssemblyConstructorFactory Instance = new AssemblyConstructorFactory();
 
-            public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location init) => new Assembly(cx, init);
+            public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
         }
 
         public static Location CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
-            return AssemblyConstructorFactory.Instance.CreateEntity(cx, null);
+            return AssemblyConstructorFactory.Instance.CreateNullableEntity(cx, null);
         }
 
         public override void WriteId(System.IO.TextWriter trapFile)

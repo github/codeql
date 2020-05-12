@@ -148,7 +148,7 @@ However, as written it is difficult for the optimizer to pick out the best order
 
 Now the structure we want is clearer. We've separated out the easy part into its own predicate ``locInfo``, and the main predicate ``sameLoc`` is just a larger join.
 
-Further information
--------------------
+Further reading
+---------------
 
-- Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
