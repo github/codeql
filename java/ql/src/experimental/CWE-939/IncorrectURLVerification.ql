@@ -8,10 +8,6 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow
-import PathGraph
 
 
 /**
@@ -49,11 +45,11 @@ class HostVerificationMethodAccess extends MethodAccess {
         ) and
         this.getMethod().getNumberOfParameters() = 1 and 
         (
-            this.getArgument(0).(StringLiteral).getRepresentedString().charAt(0) != "." or  //string constant comparison
-            this.getArgument(0).(AddExpr).getLeftOperand().(VarAccess).getVariable().getAnAssignedValue().(StringLiteral).getRepresentedString().charAt(0) != "." or   //var1+var2, check var1 starts with "."
-            this.getArgument(0).(AddExpr).getLeftOperand().(StringLiteral).getRepresentedString().charAt(0) != "." or  //"."+var2, check string constant "."
-            exists (MethodAccess ma | this.getArgument(0) = ma and ma.getMethod().hasName("getString") and ma.getArgument(0).toString().indexOf("R.string") = 0) or  //res.getString(R.string.key)
-            this.getArgument(0).(VarAccess).getVariable().getAnAssignedValue().(StringLiteral).getRepresentedString().charAt(0) != "."  //check variable starts with "."
+            this.getArgument(0).(StringLiteral).getRepresentedString().charAt(0) != "." or  //string constant comparison e.g. uri.getHost().endsWith("example.com")
+            this.getArgument(0).(AddExpr).getLeftOperand().(VarAccess).getVariable().getAnAssignedValue().(StringLiteral).getRepresentedString().charAt(0) != "." or   //var1+var2, check var1 starts with "." e.g. String domainName = "example"; Uri.parse(url).getHost().endsWith(domainName+".com")
+            this.getArgument(0).(AddExpr).getLeftOperand().(StringLiteral).getRepresentedString().charAt(0) != "." or  //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
+            exists (MethodAccess ma | this.getArgument(0) = ma and ma.getMethod().hasName("getString") and ma.getArgument(0).toString().indexOf("R.string") = 0) or  //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)
+            this.getArgument(0).(VarAccess).getVariable().getAnAssignedValue().(StringLiteral).getRepresentedString().charAt(0) != "."  //check variable starts with "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith(domainName)
         )
     }
 }
