@@ -16,6 +16,11 @@ nodes
 | ZipSlipBad.js:7:22:7:31 | entry.path |
 | ZipSlipBad.js:8:37:8:44 | fileName |
 | ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path |
+| ZipSlipBad.js:15:22:15:31 | entry.path |
+| ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:16:30:16:37 | fileName |
 | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
 | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
 | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
@@ -33,6 +38,10 @@ edges
 | ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
 | ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
 | ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
 | ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
 | ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
 | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
@@ -42,4 +51,5 @@ edges
 | TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | TarSlipBad.js:6:36:6:46 | header.name | item path |
 | ZipSlipBad2.js:6:22:6:29 | fileName | ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:6:22:6:29 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad2.js:5:37:5:46 | entry.path | item path |
 | ZipSlipBad.js:8:37:8:44 | fileName | ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:8:37:8:44 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:7:22:7:31 | entry.path | item path |
+| ZipSlipBad.js:16:30:16:37 | fileName | ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:16:30:16:37 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:15:22:15:31 | entry.path | item path |
 | ZipSlipBadUnzipper.js:8:37:8:44 | fileName | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:8:37:8:44 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | item path |
