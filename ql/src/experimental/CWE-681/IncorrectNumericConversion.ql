@@ -3,6 +3,7 @@
  * @description Converting the result of strconv.Atoi (and other parsers from strconv package)
  *              to numeric types of smaller bit size can produce unexpected values.
  * @kind path-problem
+ * @problem.severity warning
  * @id go/incorrect-numeric-conversion
  * @tags security
  *       external/cwe/cwe-190
@@ -28,6 +29,7 @@ class ParseUint extends Function {
   ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
 }
 
+/** Provides a class for modeling number parser calls. */
 module ParserCall {
   /**
    * A data-flow call node that parses a number.
@@ -51,12 +53,10 @@ class ParserCall extends DataFlow::CallNode {
   string getParserName() { result = self.getParserName() }
 }
 
-int archBasedBitSize() { result = 0 }
-
 class AtoiCall extends DataFlow::CallNode, ParserCall::Range {
   AtoiCall() { exists(Atoi atoi | this = atoi.getACall()) }
 
-  override int getTargetBitSize() { result = archBasedBitSize() }
+  override int getTargetBitSize() { result = 0 }
 
   override string getParserName() { result = "strconv.Atoi" }
 }
@@ -90,27 +90,10 @@ class NumericConversionExpr extends ConversionExpr {
   int bitSize;
 
   NumericConversionExpr() {
-    exists(ConversionExpr conv |
-      fullTypeName = conv.getTypeExpr().getType().getUnderlyingType*().getName() and
-      (
-        // 8 bit
-        fullTypeName = ["int8", "uint8"] and
-        bitSize = 8
-        or
-        // 16 bit
-        fullTypeName = ["int16", "uint16"] and
-        bitSize = 16
-        or
-        // 32 bit
-        fullTypeName = ["int32", "uint32", "float32"] and
-        bitSize = 32
-        or
-        // 64 bit
-        fullTypeName = ["int64", "uint64", "float64"] and
-        bitSize = 64
-      )
-    |
-      this = conv
+    exists(NumericType conv |
+      conv = getTypeExpr().getType().getUnderlyingType() and
+      fullTypeName = conv.getName() and
+      bitSize = conv.getSize()
     )
   }
 
