@@ -23,7 +23,7 @@
 	<recommendation>
 		<p>
 
-			Use a (well-tested) sanitization library if at all
+			Use a well-tested sanitization library if at all
 			possible, and avoid modifying sanitized values further before treating
 			them as HTML.
 
@@ -36,10 +36,9 @@
 
 			The following function transforms a self-closing HTML tag
 			to a pair of open/close tags.  It does so for all non-<code>img</code>
-			and non-<code>area</code> tags using a regular expression with two
+			and non-<code>area</code> tags, by using a regular expression with two
 			capture groups. The first capture group corresponds to the name of the
-			tag, and the second capture group corresponds to the content of
-			the tag.
+			tag, and the second capture group to the content of the tag.
 
 		</p>
 
@@ -56,8 +55,8 @@
 		<p>
 
 			However, the function is not safe. As an example, consider
-			the following string which does not result in an alert when a
-			browser treats it as HTML:
+			the following string:
+
 
 		</p>
 
