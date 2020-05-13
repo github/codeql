@@ -82,8 +82,6 @@ private predicate ordering_method(string name) {
 private predicate cast_method(string name) {
     name = "__nonzero__" and major_version() = 2
     or
-    name = "__bool__"
-    or
     name = "__int__"
     or
     name = "__float__"
