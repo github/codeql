@@ -139,3 +139,6 @@ re.compile(r'(?:(?P<n1>^(?:|x)))')
 
 #Potentially mis-parsed character set
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")
+
+#Allow unicode in raw strings
+re.compile(r"[\U00010000-\U0010FFFF]")
