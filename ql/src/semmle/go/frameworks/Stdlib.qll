@@ -122,8 +122,8 @@ module Fmt {
 }
 
 /** Provides models of commonly used functions in the `io` package. */
-module IO {
-  private class Copy extends TaintTracking::FunctionModel, Function {
+module Io {
+  private class Copy extends TaintTracking::FunctionModel {
     Copy() {
       // func Copy(dst Writer, src Reader) (written int64, err error)
       // func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
@@ -138,7 +138,7 @@ module IO {
     }
   }
 
-  private class Pipe extends TaintTracking::FunctionModel, Function {
+  private class Pipe extends TaintTracking::FunctionModel {
     Pipe() {
       // func Pipe() (*PipeReader, *PipeWriter)
       hasQualifiedName("io", "Pipe")
@@ -149,8 +149,8 @@ module IO {
     }
   }
 
-  private class IORead extends TaintTracking::FunctionModel, Function {
-    IORead() {
+  private class ReadAtLeast extends TaintTracking::FunctionModel {
+    ReadAtLeast() {
       // func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
       // func ReadFull(r Reader, buf []byte) (n int, err error)
       hasQualifiedName("io", "ReadAtLeast") or
@@ -175,7 +175,7 @@ module IO {
 
   private class ByteReaderReadByte extends TaintTracking::FunctionModel, Method {
     ByteReaderReadByte() {
-      // ReadByte() (byte, error)
+      // func ReadByte() (byte, error)
       this.implements("io", "ByteReader", "ReadByte")
     }
 
@@ -186,7 +186,7 @@ module IO {
 
   private class ByteWriterWriteByte extends TaintTracking::FunctionModel, Method {
     ByteWriterWriteByte() {
-      // WriteByte(c byte) error
+      // func WriteByte(c byte) error
       this.implements("io", "ByteWriter", "WriteByte")
     }
 
@@ -197,7 +197,7 @@ module IO {
 
   private class ReaderRead extends TaintTracking::FunctionModel, Method {
     ReaderRead() {
-      // Read(p []byte) (n int, err error)
+      // func Read(p []byte) (n int, err error)
       this.implements("io", "Reader", "Read")
     }
 
@@ -206,7 +206,7 @@ module IO {
     }
   }
 
-  private class LimitReader extends TaintTracking::FunctionModel, Function {
+  private class LimitReader extends TaintTracking::FunctionModel {
     LimitReader() {
       // func LimitReader(r Reader, n int64) Reader
       this.hasQualifiedName("io", "LimitReader")
@@ -217,7 +217,7 @@ module IO {
     }
   }
 
-  private class MultiReader extends TaintTracking::FunctionModel, Function {
+  private class MultiReader extends TaintTracking::FunctionModel {
     MultiReader() {
       // func MultiReader(readers ...Reader) Reader
       this.hasQualifiedName("io", "MultiReader")
@@ -228,7 +228,7 @@ module IO {
     }
   }
 
-  private class TeeReader extends TaintTracking::FunctionModel, Function {
+  private class TeeReader extends TaintTracking::FunctionModel {
     TeeReader() {
       // func TeeReader(r Reader, w Writer) Reader
       this.hasQualifiedName("io", "TeeReader")
@@ -242,17 +242,19 @@ module IO {
   }
 
   private class ReaderAtReadAt extends TaintTracking::FunctionModel, Method {
-    ReaderAtReadAt() { this.implements("io", "ReaderAt", "ReadAt") }
+    ReaderAtReadAt() {
+      // func ReadAt(p []byte, off int64) (n int, err error)
+      this.implements("io", "ReaderAt", "ReadAt")
+    }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      // ReadAt(p []byte, off int64) (n int, err error)
       input.isReceiver() and output.isParameter(0)
     }
   }
 
   private class ReaderFromReadFrom extends TaintTracking::FunctionModel, Method {
     ReaderFromReadFrom() {
-      // ReadFrom(r Reader) (n int64, err error)
+      // func ReadFrom(r Reader) (n int64, err error)
       this.implements("io", "ReaderFrom", "ReadFrom")
     }
 
@@ -263,7 +265,7 @@ module IO {
 
   private class RuneReaderReadRune extends TaintTracking::FunctionModel, Method {
     RuneReaderReadRune() {
-      // ReadRune() (r rune, size int, err error)
+      // func ReadRune() (r rune, size int, err error)
       this.implements("io", "RuneReader", "ReadRune")
     }
 
@@ -272,7 +274,7 @@ module IO {
     }
   }
 
-  private class NewSectionReader extends TaintTracking::FunctionModel, Function {
+  private class NewSectionReader extends TaintTracking::FunctionModel {
     NewSectionReader() {
       // func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
       this.hasQualifiedName("io", "NewSectionReader")
@@ -283,10 +285,9 @@ module IO {
     }
   }
 
-  // A Taint Model for the stdlib io StringWriter interface
   private class StringWriterWriteString extends TaintTracking::FunctionModel, Method {
     StringWriterWriteString() {
-      // WriteString(s string) (n int, err error)
+      // func WriteString(s string) (n int, err error)
       this.implements("io", "StringWriter", "WriteString")
     }
 
@@ -297,7 +298,7 @@ module IO {
 
   private class WriterWrite extends TaintTracking::FunctionModel, Method {
     WriterWrite() {
-      // Write(p []byte) (n int, err error)
+      // func Write(p []byte) (n int, err error)
       this.implements("io", "Writer", "Write")
     }
 
@@ -306,7 +307,7 @@ module IO {
     }
   }
 
-  private class MultiWriter extends TaintTracking::FunctionModel, Function {
+  private class MultiWriter extends TaintTracking::FunctionModel {
     MultiWriter() {
       // func MultiWriter(writers ...Writer) Writer
       hasQualifiedName("io", "MultiWriter")
@@ -319,7 +320,7 @@ module IO {
 
   private class WriterAtWriteAt extends TaintTracking::FunctionModel, Method {
     WriterAtWriteAt() {
-      // WriteAt(p []byte, off int64) (n int, err error)
+      // func WriteAt(p []byte, off int64) (n int, err error)
       this.implements("io", "WriterAt", "WriteAt")
     }
 
@@ -330,7 +331,7 @@ module IO {
 
   private class WriterToWriteTo extends TaintTracking::FunctionModel, Method {
     WriterToWriteTo() {
-      // WriteTo(w Writer) (n int64, err error)
+      // func WriteTo(w Writer) (n int64, err error)
       this.implements("io", "WriterTo", "WriteTo")
     }
 
