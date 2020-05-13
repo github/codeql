@@ -2,12 +2,13 @@
  * Provides classes for properties, indexers, and accessors.
  */
 
-import Type
 import Member
 import Stmt
-private import semmle.code.csharp.ExprOrStmtParent
-private import dotnet
+import Type
 private import cil
+private import dotnet
+private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * A declaration that may have accessors. Either an event (`Event`), a property

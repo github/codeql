@@ -4,6 +4,7 @@
 
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),

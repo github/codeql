@@ -4,10 +4,6 @@
  * All expressions have the common base class `Expr`.
  */
 
-import semmle.code.csharp.Location
-import semmle.code.csharp.Stmt
-import semmle.code.csharp.Callable
-import semmle.code.csharp.Type
 import Access
 import ArithmeticOperation
 import Assignment
@@ -19,9 +15,14 @@ import Dynamic
 import Literal
 import LogicalOperation
 import semmle.code.csharp.controlflow.ControlFlowElement
+import semmle.code.csharp.Callable
+import semmle.code.csharp.Location
+import semmle.code.csharp.Stmt
+import semmle.code.csharp.Type
+private import dotnet
 private import semmle.code.csharp.Enclosing::Internal
 private import semmle.code.csharp.frameworks.System
-private import dotnet
+private import semmle.code.csharp.TypeRef
 
 /**
  * An expression. Either an access (`Access`), a call (`Call`), an object or

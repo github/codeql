@@ -16,6 +16,7 @@
 import Location
 import Namespace
 private import dotnet
+private import TypeRef
 
 /**
  * A generic declaration. Either an unbound generic (`UnboundGeneric`) or a

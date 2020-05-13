@@ -4,6 +4,7 @@
 
 import Member
 import Type
+private import TypeRef
 
 /**
  * An event, for example `E` on line 3 in

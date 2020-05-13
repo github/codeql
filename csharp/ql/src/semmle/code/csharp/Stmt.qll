@@ -4,12 +4,13 @@
  * All statements have the common base class `Stmt`.
  */
 
-import Location
 import Element
+import Location
 import Member
 import exprs.Expr
 private import semmle.code.csharp.Enclosing::Internal
 private import semmle.code.csharp.frameworks.System
+private import TypeRef
 
 /**
  * A statement.

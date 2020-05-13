@@ -3,13 +3,14 @@
  * such as methods and operators.
  */
 
-import Type
 import Member
 import Stmt
+import Type
 import exprs.Call
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
+private import TypeRef
 
 /**
  * An element that can be called.

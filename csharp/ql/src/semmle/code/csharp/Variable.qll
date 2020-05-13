@@ -3,12 +3,13 @@
  * constants.
  */
 
-import Element
-import Callable
-import Type
 import Assignable
+import Callable
+import Element
+import Type
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
