@@ -185,6 +185,8 @@ abstract class Import extends ASTNode {
 }
 
 /**
+ * DEPRECATED. Use `PathExpr` instead.
+ *
  * A path expression that appears in a module and is resolved relative to it.
  */
 deprecated
