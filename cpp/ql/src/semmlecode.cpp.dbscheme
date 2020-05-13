@@ -1143,6 +1143,13 @@ conversionkinds(
     int kind: int ref
 );
 
+@conversion = @cast
+            | @array_to_pointer
+            | @parexpr
+            | @reference_to
+            | @ref_indirect
+            ;
+
 /*
 case @funbindexpr.kind of
   0 = @normal_call  // a normal call
@@ -1799,6 +1806,8 @@ lambda_capture(
 @varbindexpr = @varaccess | @ctorfieldinit | @dtorfielddestruct;
 @addressable = @function | @variable ;
 @accessible = @addressable | @enumconstant ;
+
+@access = @varaccess | @routineexpr ;
 
 fold(
     int expr: @foldexpr ref,
