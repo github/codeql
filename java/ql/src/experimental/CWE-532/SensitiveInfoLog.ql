@@ -12,71 +12,53 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 import PathGraph
 
-/** Class of popular logging utilities **/
-class LoggerType extends RefType {
-    LoggerType() {
-        this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
-        this.hasQualifiedName("org.slf4j", "Logger")  //SLF4j and Gradle Logging
-    }
-}
-
-/** Concatenated string with a variable that keeps sensitive information judging by its name **/
-class CredentialExpr extends Expr {
-    CredentialExpr() {
-        exists (Variable v | this.(AddExpr).getAnOperand() = v.getAnAccess() | v.getName().regexpMatch(getACredentialRegex()))
-    }
-}
-
-/** Source in concatenated string or variable itself  **/
-class CredentialSource extends DataFlow::ExprNode {
-    CredentialSource() {
-        exists (
-            Variable v | this.asExpr() = v.getAnAccess() | v.getName().regexpMatch(getACredentialRegex())
-        ) or
-        exists (
-            this.asExpr().(AddExpr).getAnOperand().(CredentialExpr)  
-        ) or
-        exists (
-            this.asExpr().(CredentialExpr)  
-        )
-    }
-}
-
 /**
-  * Gets a regular expression for matching names of variables that indicate the value being held is a credential.
-  */
-
+ * Gets a regular expression for matching names of variables that indicate the value being held is a credential
+ */
 private string getACredentialRegex() {
   result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
   result = "(?i).*(username|url).*"
 }
 
-class SensitiveLoggingSink extends DataFlow::ExprNode {
-    SensitiveLoggingSink() {
-        exists(MethodAccess ma |
-            ma.getMethod().getDeclaringType() instanceof LoggerType and
-            (
-                ma.getMethod().hasName("debug")
-            ) and
-            this.asExpr() = ma.getAnArgument()
-        )
-    }
+/** The variable or concatenated string with the variable that keeps sensitive information judging by its name * */
+class CredentialExpr extends Expr {
+  CredentialExpr() {
+    exists(Variable v |
+      (this.(AddExpr).getAnOperand() = v.getAnAccess() or this = v.getAnAccess())
+    |
+      v.getName().regexpMatch(getACredentialRegex())
+    )
+  }
 }
 
-class SensitiveLoggingConfig extends Configuration {
-    SensitiveLoggingConfig() {
-        this = "SensitiveLoggingConfig"
-    }
-
-    override predicate isSource(Node source) {
-        source instanceof CredentialSource
-    }
-
-    override predicate isSink(Node sink) {
-        sink instanceof SensitiveLoggingSink
-    }
+/** Class of popular logging utilities * */
+class LoggerType extends RefType {
+  LoggerType() {
+    this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
+    this.hasQualifiedName("org.slf4j", "Logger") //SLF4j and Gradle Logging
+  }
 }
 
-from Node source, Node sink, SensitiveLoggingConfig conf, MethodAccess ma
-where conf.hasFlow(source, sink) and ma.getAnArgument() = source.asExpr() and ma.getAnArgument() = sink.asExpr()
-select "Outputting sensitive information $@ in method call $@.", source, ma, "to log files"
+predicate isSensitiveLoggingSink(DataFlow::Node sink) {
+  exists(MethodAccess ma |
+    ma.getMethod().getDeclaringType() instanceof LoggerType and
+    ma.getMethod().hasName("debug") and
+    sink.asExpr() = ma.getAnArgument()
+  )
+}
+
+class LoggerConfiguration extends DataFlow::Configuration {
+  LoggerConfiguration() { this = "Logger Configuration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
+
+  override predicate isSink(DataFlow::Node sink) { isSensitiveLoggingSink(sink) }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    TaintTracking::localTaintStep(node1, node2)
+  }
+}
+
+from LoggerConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
+select "Outputting sensitive information in ", sink, "to log file"
