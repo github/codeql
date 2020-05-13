@@ -108,7 +108,7 @@ predicate signaturesMatch(MethodSignature method, MethodSignature other) {
     method.getBody().getThisTypeAnnotation().getType() =
       other.getBody().getThisTypeAnnotation().getType()
   ) and
-  // The types are compared in matchingCallSignature. This is sanity-check that the textual representation of the type-annotations are somewhat similar.
+  // The types are compared in matchingCallSignature. This is a consistency check that the textual representation of the type-annotations are somewhat similar.
   forall(int i | i in [0 .. -1 + method.getBody().getNumParameter()] |
     getParameterTypeAnnotation(method, i) = getParameterTypeAnnotation(other, i)
   ) and

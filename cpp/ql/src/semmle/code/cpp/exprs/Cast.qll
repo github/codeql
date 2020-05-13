@@ -48,10 +48,13 @@ class Cast extends Conversion, @cast {
 /**
  * INTERNAL: Do not use.
  * Query predicates used to check invariants that should hold for all `Cast`
- * nodes. To run all sanity queries for the ASTs, including the ones below,
- * run "semmle/code/cpp/ASTSanity.ql".
+ * nodes. To run all consistency queries for the ASTs, including the ones below,
+ * run "semmle/code/cpp/ASTConsistency.ql".
  */
-module CastSanity {
+module CastConsistency {
+  /**
+   * Holds if the cast has more than one result for `Cast.getSemanticConversionString()`.
+   */
   query predicate multipleSemanticConversionStrings(Cast cast, Type fromType, string kind) {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and
@@ -59,12 +62,19 @@ module CastSanity {
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has no result for `Cast.getSemanticConversionString()`.
+   */
   query predicate missingSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have exactly one semantic conversion kind
     not exists(cast.getSemanticConversionString()) and
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has a result for `Cast.getSemanticConversionString()` that indicates that the
+   * kind of its semantic conversion is not known.
+   */
   query predicate unknownSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have a known semantic conversion kind
     cast.getSemanticConversionString() = "unknown conversion" and

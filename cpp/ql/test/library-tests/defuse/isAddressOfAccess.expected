@@ -25,6 +25,10 @@
 | addressOf.cpp:62:11:62:13 | ptr |  |
 | addressOf.cpp:63:19:63:21 | ptr |  |
 | addressOf.cpp:63:24:63:26 | ref | non-const address |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:77:27:77:27 | x | non-const address |
+| addressOf.cpp:77:48:77:48 | x |  |
 | file://:0:0:0:0 | captured |  |
 | file://:0:0:0:0 | captured |  |
 | file://:0:0:0:0 | captured | non-const address |

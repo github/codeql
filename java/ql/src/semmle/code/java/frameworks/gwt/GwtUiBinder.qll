@@ -8,26 +8,44 @@
 import java
 import GwtUiBinderXml
 
+/**
+ * An annotation in the package `com.google.gwt.uibinder.client`.
+ */
 class GwtUiBinderClientAnnotation extends Annotation {
   GwtUiBinderClientAnnotation() { getType().getPackage().hasName("com.google.gwt.uibinder.client") }
 }
 
+/**
+ * A `@com.google.gwt.uibinder.client.UiHandler` annotation.
+ */
 class GwtUiHandlerAnnotation extends GwtUiBinderClientAnnotation {
   GwtUiHandlerAnnotation() { getType().hasName("UiHandler") }
 }
 
+/**
+ * A `@com.google.gwt.uibinder.client.UiField` annotation.
+ */
 class GwtUiFieldAnnotation extends GwtUiBinderClientAnnotation {
   GwtUiFieldAnnotation() { getType().hasName("UiField") }
 }
 
+/**
+ * A `@com.google.gwt.uibinder.client.UiTemplate` annotation.
+ */
 class GwtUiTemplateAnnotation extends GwtUiBinderClientAnnotation {
   GwtUiTemplateAnnotation() { getType().hasName("UiTemplate") }
 }
 
+/**
+ * A `@com.google.gwt.uibinder.client.UiFactory` annotation.
+ */
 class GwtUiFactoryAnnotation extends GwtUiBinderClientAnnotation {
   GwtUiFactoryAnnotation() { getType().hasName("UiFactory") }
 }
 
+/**
+ * A `@com.google.gwt.uibinder.client.UiConstructor` annotation.
+ */
 class GwtUiConstructorAnnotation extends GwtUiBinderClientAnnotation {
   GwtUiConstructorAnnotation() { getType().hasName("UiConstructor") }
 }

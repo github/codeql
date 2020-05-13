@@ -42,7 +42,7 @@ Zoom in on the code...
 
   The pseudocode in the slide illustrates this. 
   The function is declared to take an array of length 12 (presumably three data points for each thruster). 
-  However, there’s no sanity checking, and a developer might call it with an array that’s too short, holding direction information for only one of the thrusters. 
+  However, there’s no bounds checking, and a developer might call it with an array that’s too short, holding direction information for only one of the thrusters. 
   The function will then read past the end of the array, and unpredictable results occur.
 
 Write a query...

@@ -164,6 +164,5 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
 Further reading
 ---------------
 
--  Find out how to query metadata and white space: :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>`, and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -364,3 +364,21 @@ int callCommand(void)
     return 1;
   return 0;
 }
+
+int shifts(void)
+{
+	unsigned int x = 3;
+
+	if (x >> 1 >= 1) {} // always true
+	if (x >> 1 >= 2) {} // always false
+	if (x >> 1 == 1) {} // always true [NOT DETECTED]
+}
+
+int bitwise_ands()
+{
+	unsigned int x = 0xFF;
+
+	if ((x & 2) >= 1) {}
+	if ((x & 2) >= 2) {}
+	if ((x & 2) >= 3) {} // always false
+}

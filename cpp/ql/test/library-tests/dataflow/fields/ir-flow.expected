@@ -35,6 +35,22 @@ edges
 | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:22:69:23 | BufferReadSideEffect [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
 | by_reference.cpp:69:22:69:23 | BufferReadSideEffect [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:84:3:84:25 | Chi [a] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:84:3:84:25 | Chi [a] | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:84:3:84:25 | Store | by_reference.cpp:84:3:84:25 | Chi [a] |
+| by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:84:3:84:25 | Store |
+| by_reference.cpp:88:3:88:24 | Chi [a] | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:3:88:24 | Chi [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:88:3:88:24 | Store | by_reference.cpp:88:3:88:24 | Chi [a] |
+| by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | Store |
+| by_reference.cpp:102:21:102:39 | Chi [a] | by_reference.cpp:110:27:110:27 | a |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:21:102:39 | Chi [a] |
+| by_reference.cpp:106:21:106:41 | Chi [a] | by_reference.cpp:114:29:114:29 | a |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | by_reference.cpp:106:21:106:41 | Chi [a] |
+| by_reference.cpp:122:21:122:38 | Chi [a] | by_reference.cpp:130:27:130:27 | a |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:122:21:122:38 | Chi [a] |
+| by_reference.cpp:126:21:126:40 | Chi [a] | by_reference.cpp:134:29:134:29 | a |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | by_reference.cpp:126:21:126:40 | Chi [a] |
 | simple.cpp:65:5:65:22 | Store [i] | simple.cpp:66:12:66:12 | Store [i] |
 | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:5:65:22 | Store [i] |
 | simple.cpp:66:12:66:12 | Store [i] | simple.cpp:67:13:67:13 | i |
@@ -97,6 +113,24 @@ nodes
 | by_reference.cpp:68:21:68:30 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
 | by_reference.cpp:69:22:69:23 | BufferReadSideEffect [a] | semmle.label | BufferReadSideEffect [a] |
+| by_reference.cpp:84:3:84:25 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:84:3:84:25 | Store | semmle.label | Store |
+| by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:88:3:88:24 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:88:3:88:24 | Store | semmle.label | Store |
+| by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:102:21:102:39 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:106:21:106:41 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:110:27:110:27 | a | semmle.label | a |
+| by_reference.cpp:114:29:114:29 | a | semmle.label | a |
+| by_reference.cpp:122:21:122:38 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:126:21:126:40 | Chi [a] | semmle.label | Chi [a] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:130:27:130:27 | a | semmle.label | a |
+| by_reference.cpp:134:29:134:29 | a | semmle.label | a |
 | simple.cpp:65:5:65:22 | Store [i] | semmle.label | Store [i] |
 | simple.cpp:65:11:65:20 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:66:12:66:12 | Store [i] | semmle.label | Store [i] |
@@ -127,6 +161,10 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | call to nonMemberGetA flows from $@ | by_reference.cpp:68:21:68:30 | call to user_input | call to user_input |
+| by_reference.cpp:110:27:110:27 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:110:27:110:27 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:114:29:114:29 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:114:29:114:29 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:130:27:130:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:130:27:130:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
+| by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
