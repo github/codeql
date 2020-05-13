@@ -1,6 +1,6 @@
 package main
 
-//go:generate depstubber -vendor github.com/gorilla/mux "" Vars
+//go:generate depstubber -vendor github.com/gorilla/mux "" Vars,NewRouter
 
 import (
 	"fmt"
