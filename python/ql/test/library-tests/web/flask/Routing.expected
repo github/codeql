@@ -1,7 +1,13 @@
 | / | Function hello |
+| /cache_control | Function cache_control |
 | /dangerous | Function dangerous |
 | /dangerous-with-cfg-split | Function dangerous2 |
+| /debug/<foo>/<bar> | Function debug |
+| /file_upload | Function file_upload |
+| /form | Function form |
+| /input_stream | Function input_stream |
 | /safe | Function safe |
+| /stream | Function stream |
 | /test_taint/<name>/<int:number> | Function test_taint |
 | /the/ | Function get |
 | /unsafe | Function unsafe |

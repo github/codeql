@@ -1,3 +1,9 @@
+| taint.py:172:12:172:15 | flask.routed.response | externally controlled string |
+| taint.py:182:12:182:15 | flask.routed.response | externally controlled string |
+| taint.py:193:12:193:15 | flask.routed.response | externally controlled string |
+| taint.py:200:12:200:15 | flask.routed.response | externally controlled string |
+| taint.py:209:12:209:15 | flask.routed.response | externally controlled string |
+| taint.py:217:12:217:15 | flask.routed.response | externally controlled string |
 | test.py:8:12:8:25 | flask.routed.response | externally controlled string |
 | test.py:29:12:29:38 | flask.routed.response | externally controlled string |
 | test.py:35:16:35:37 | flask.routed.response | externally controlled string |
