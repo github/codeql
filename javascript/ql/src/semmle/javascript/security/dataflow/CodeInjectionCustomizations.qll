@@ -115,4 +115,11 @@ module CodeInjection {
       )
     }
   }
+
+  /**
+   * A code operator of a NoSQL query as a code injection sink.
+   */
+  class NoSQLCodeInjectionSink extends Sink {
+    NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
+  }
 }
