@@ -756,7 +756,13 @@ private module Minimongo {
     exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
   }
 
+  /**
+   * Provides signatures for the Collection methods.
+   */
   module CollectionMethodSignatures {
+    /**
+     * Holds if Collection method `name` interprets parameter `n` as a query.
+     */
     predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
       // implements most of the MongoDB interface
       MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
@@ -806,7 +812,7 @@ private module MarsDB {
   /** Gets a data flow node referring to a MarsDB collection. */
   private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
     t.start() and
-    // new Collection(...)
+    // [new] Collection(...)
     result = getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInvocation()
     or
     exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
