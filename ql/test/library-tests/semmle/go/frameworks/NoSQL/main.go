@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func test(coll *mongo.Collection, filter interface{}, models []WriteModel, ctx context.Context) {
+func test(coll *mongo.Collection, filter interface{}, models []mongo.WriteModel, ctx context.Context) {
 
 	fieldName := "test"
 	document := filter

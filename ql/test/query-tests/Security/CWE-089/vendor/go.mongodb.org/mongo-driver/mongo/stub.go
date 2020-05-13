@@ -193,7 +193,7 @@ func (_ *Collection) Watch(_ context.Context, _ interface{}, _ ...*interface{}) 
 	return nil, nil
 }
 
-func Connect(_ context.Context, _ ...*interface{}) (*Client, error) {
+func Connect(_ context.Context, _ ...interface{}) (*Client, error) {
 	return nil, nil
 }
 
