@@ -2,13 +2,32 @@ import AliasAnalysis
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 private import semmle.code.cpp.Print
+private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConstruction as OldSSA
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import AliasConfiguration
 
 private class IntValue = Ints::IntValue;
+
+/**
+ * Holds if we should treat the allocation `var` as escaped. If using sound escape analysis, we
+ * invoke the escape analysis to determine this. If not using sound escape analysis, we assume that
+ * no stack allocation escapes.
+ */
+private predicate treatAllocationAsEscaped(Allocation var) {
+  // If the configuration says to use sound escape analysis, do that analysis.
+  exists(IREscapeAnalysisConfiguration config |
+    config.useSoundEscapeAnalysis()
+  ) and
+  allocationEscapes(var)
+  or
+  // If the allocation always escapes (for example, a global variable), treat it as escaped even if
+  // not using sound escape analysis.
+  var.alwaysEscapes()
+}
 
 private predicate isIndirectOrBufferMemoryAccess(MemoryAccessKind kind) {
   kind instanceof IndirectMemoryAccess or
@@ -131,6 +150,12 @@ abstract class MemoryLocation extends TMemoryLocation {
    * with automatic storage duration).
    */
   predicate isAlwaysAllocatedOnStack() { none() }
+
+  /**
+   * Holds if any def/use information calculated for this location can be safely reused by future
+   * iterations of SSA.
+   */
+  predicate canReuseSSA() { any() }
 }
 
 abstract class VirtualVariable extends MemoryLocation { }
@@ -147,7 +172,7 @@ abstract class AllocationMemoryLocation extends MemoryLocation {
   }
 
   final override VirtualVariable getVirtualVariable() {
-    if allocationEscapes(var)
+    if treatAllocationAsEscaped(var)
     then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
     else result.(AllocationMemoryLocation).getAllocation() = var
   }
@@ -248,7 +273,7 @@ class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
 
 class EntireAllocationVirtualVariable extends EntireAllocationMemoryLocation, VirtualVariable {
   EntireAllocationVirtualVariable() {
-    not allocationEscapes(var) and
+    not treatAllocationAsEscaped(var) and
     not isMayAccess()
   }
 }
@@ -260,7 +285,7 @@ class EntireAllocationVirtualVariable extends EntireAllocationMemoryLocation, Vi
  */
 class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
   VariableVirtualVariable() {
-    not allocationEscapes(var) and
+    not treatAllocationAsEscaped(var) and
     type = var.getIRType() and
     coversEntireVariable() and
     not isMayAccess()
@@ -556,7 +581,18 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
+/**
+ * Holds if the def/use information for the result of `instr` can be reused from the previous
+ * iteration of the IR.
+ */
+predicate canReuseSSAForOldResult(Instruction instr) {
+  OldSSA::canReuseSSAForMemoryResult(instr)
+}
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
+  // Ignore instructions that already have modeled results, because SSA construction can just reuse
+  // their def/use information.
+  not canReuseSSAForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
     (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
@@ -588,6 +624,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  // Ignore operands that are already modeled, because SSA construction can just reuse their def/use
+  // information.
+  not canReuseSSAForOldResult(operand.getAnyDef()) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and

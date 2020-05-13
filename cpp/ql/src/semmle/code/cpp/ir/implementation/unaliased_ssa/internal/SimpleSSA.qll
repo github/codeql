@@ -13,12 +13,25 @@ private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRTy
 }
 
 /**
+ * Holds if we should treat the allocation `var` as escaped. If using sound escape analysis, we
+ * invoke the escape analysis to determine this. If not using sound escape analysis, we assume that
+ * no allocation escapes. Note that this flavor of SSA only models stack variables, so this setting
+ * has no effect on how non-stack allocations are handled.
+ */
+private predicate treatAllocationAsEscaped(Allocation var) {
+  exists(IREscapeAnalysisConfiguration config |
+    config.useSoundEscapeAnalysis()
+  ) and
+  allocationEscapes(var)
+}
+
+/**
  * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a
  * variable if its address never escapes and all reads and writes of that variable access the entire
  * variable using the original type of the variable.
  */
 private predicate isVariableModeled(Allocation var) {
-  not allocationEscapes(var) and
+  not treatAllocationAsEscaped(var) and
   forall(Instruction instr, AddressOperand addrOperand, IRType type |
     addrOperand = instr.getResultAddressOperand() and
     type = instr.getResultIRType() and
@@ -33,6 +46,17 @@ private predicate isVariableModeled(Allocation var) {
   |
     isTotalAccess(var, addrOperand, type) and not memOperand.hasMayReadMemoryAccess()
   )
+}
+
+/**
+ * Holds if the SSA use/def chain for the specified variable can be safely reused by later
+ * iterations of SSA construction. This will hold only if we modeled the variable soundly, so that
+ * subsequent iterations will recompute SSA for any variable that we assumed did not escape, but
+ * actually would have escaped if we had used a sound escape analysis.
+ */
+predicate canReuseSSAForVariable(IRAutomaticVariable var) {
+  isVariableModeled(var) and
+  not allocationEscapes(var)
 }
 
 private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
@@ -57,6 +81,8 @@ class MemoryLocation extends TMemoryLocation {
   final Language::LanguageType getType() { result = var.getLanguageType() }
 
   final string getUniqueId() { result = var.getUniqueId() }
+
+  final predicate canReuseSSA() { canReuseSSAForVariable(var) }
 }
 
 class VirtualVariable extends MemoryLocation { }
@@ -70,6 +96,10 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   def = use and result instanceof MustExactlyOverlap
   or
   none() // Avoid compiler error in SSAConstruction
+}
+
+predicate canReuseSSAForOldResult(Instruction instr) {
+  none()
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {

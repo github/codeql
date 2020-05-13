@@ -1,3 +1,4 @@
+import semmle.code.cpp.ir.IRConfiguration
 import semmle.code.cpp.ir.implementation.raw.IR
 import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 import semmle.code.cpp.ir.implementation.internal.OperandTag
