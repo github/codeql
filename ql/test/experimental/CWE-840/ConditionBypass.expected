@@ -1,2 +1,0 @@
-| condition.go:9:5:9:46 | ...!=... | This comparision is between user controlled operands derived from $@ | condition.go:9:5:9:12 | selection of Header : Header |  and $@ | condition.go:9:41:9:46 | selection of Host : string | hence may be bypassed. |
-| condition.go:16:5:16:62 | ...!=... | This comparision is between user controlled operands derived from $@ | condition.go:16:5:16:12 | selection of Header : Header |  and $@ | condition.go:16:41:16:48 | selection of Header : Header | hence may be bypassed. |
