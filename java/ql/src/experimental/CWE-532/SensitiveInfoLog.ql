@@ -20,14 +20,10 @@ private string getACredentialRegex() {
   result = "(?i)(.*username|url).*"
 }
 
-/** The variable or concatenated string with the variable that keeps sensitive information judging by its name * */
+/** Variable keeps sensitive information judging by its name * */
 class CredentialExpr extends Expr {
   CredentialExpr() {
-    exists(Variable v |
-      (this.(AddExpr).getAnOperand() = v.getAnAccess() or this = v.getAnAccess())
-    |
-      v.getName().regexpMatch(getACredentialRegex())
-    )
+    exists(Variable v | this = v.getAnAccess() | v.getName().regexpMatch(getACredentialRegex()))
   }
 }
 
