@@ -813,7 +813,8 @@ private module MarsDB {
   private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
     t.start() and
     // new Collection(...)
-    result = getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInstantiation()
+    result =
+      getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInstantiation()
     or
     exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
   }
