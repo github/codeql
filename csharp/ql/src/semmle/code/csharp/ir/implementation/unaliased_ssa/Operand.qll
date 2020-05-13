@@ -19,11 +19,7 @@ private newtype TOperand =
   ) {
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
     not Construction::isInCycle(useInstr) and
-    (
-      strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
-      or
-      tag instanceof UnmodeledUseOperandTag
-    )
+    strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
@@ -325,16 +321,6 @@ class ConditionOperand extends RegisterOperand {
   override ConditionOperandTag tag;
 
   override string toString() { result = "Condition" }
-}
-
-/**
- * An operand of the special `UnmodeledUse` instruction, representing a value
- * whose set of uses is unknown.
- */
-class UnmodeledUseOperand extends NonPhiMemoryOperand {
-  override UnmodeledUseOperandTag tag;
-
-  override string toString() { result = "UnmodeledUse" }
 }
 
 /**
