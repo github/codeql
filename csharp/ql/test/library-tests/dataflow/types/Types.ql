@@ -23,4 +23,4 @@ class Conf extends DataFlow::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
 where conf.hasFlowPath(source, sink)
-select source, sink, sink, "$@", sink, sink.toString()
+select source, source, sink, "$@", sink, sink.toString()
