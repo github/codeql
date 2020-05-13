@@ -1,9 +1,6 @@
 # github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
 ## explicit
 github.com/codeskyblue/go-sh
-# github.com/github/depstubber v0.0.0-20200414025517-59c2db8e9405
-## explicit
-github.com/github/depstubber
 # golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59
 ## explicit
 golang.org/x/crypto
