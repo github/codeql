@@ -9,7 +9,7 @@ module NoSQL {
   /**
    * A data-flow node whose string value is interpreted as (part of) a NoSQL query.
    *
-   * Extends this class to refine existing API models. If you want to model new APIs,
+   * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `NoSQL::QueryString::Range` instead.
    */
   class NoSQLQueryString extends DataFlow::Node {
