@@ -2,7 +2,7 @@
  * @id java/sensitiveinfo-in-logfile
  * @name Insertion of sensitive information into log files
  * @description Writing sensitive information to log files can give valuable guidance to an attacker or expose sensitive user information.
- * @kind problem
+ * @kind path-problem
  * @tags security
  *       external/cwe-532
  */
@@ -55,6 +55,7 @@ class LoggerConfiguration extends DataFlow::Configuration {
   }
 }
 
-from LoggerConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select "Outputting sensitive information in ", sink, "to log file"
+from LoggerConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Outputting $@ to log.", source.getNode(),
+  "sensitive information"
