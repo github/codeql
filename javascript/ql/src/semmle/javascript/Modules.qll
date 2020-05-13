@@ -187,10 +187,11 @@ abstract class Import extends ASTNode {
 /**
  * A path expression that appears in a module and is resolved relative to it.
  */
+deprecated
 abstract class PathExprInModule extends PathExpr {
-  PathExprInModule() { exists(getEnclosingModule()) }
-
-  override Folder getSearchRoot(int priority) {
-    getEnclosingModule().searchRoot(this, result, priority)
+  PathExprInModule() {
+    this.(Expr).getTopLevel() instanceof Module
+    or
+    this.(Comment).getTopLevel() instanceof Module
   }
 }
