@@ -64,7 +64,7 @@ void single_field_test()
     A a;
     a.i = user_input();
     A a2 = a;
-    sink(a2.i);
+    sink(a2.i); // flow
 }
 
 struct C {
@@ -81,7 +81,7 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); // flow
+        sink(getf2f1()); // flow [NOT DETECTED by IR]
     }
 };
 

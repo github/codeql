@@ -48,25 +48,25 @@ struct S {
 void test_setDirectly() {
   S s;
   s.setDirectly(user_input());
-  sink(s.getDirectly()); // flow
+  sink(s.getDirectly()); // flow [NOT DETECTED by IR]
 }
 
 void test_setIndirectly() {
   S s;
   s.setIndirectly(user_input());
-  sink(s.getIndirectly()); // flow
+  sink(s.getIndirectly()); // flow [NOT DETECTED by IR]
 }
 
 void test_setThroughNonMember() {
   S s;
   s.setThroughNonMember(user_input());
-  sink(s.getThroughNonMember()); // flow
+  sink(s.getThroughNonMember()); // flow [NOT DETECTED by IR]
 }
 
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // flow
+  sink(nonMemberGetA(&s)); // flow [NOT DETECTED by IR]
 }
 
 ////////////////////
@@ -127,7 +127,7 @@ void test_outer_with_ref(Outer *pouter) {
   taint_inner_a_ref(*pouter->inner_ptr);
   taint_a_ref(pouter->a);
 
-  sink(outer.inner_nested.a); // flow
+  sink(outer.inner_nested.a); // flow [IR]
   sink(outer.inner_ptr->a); // flow [NOT DETECTED by IR]
   sink(outer.a); // flow [NOT DETECTED by IR]
 

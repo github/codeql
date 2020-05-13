@@ -41,8 +41,8 @@ void bar(Bar &b)
   // then it tracks that both `a_` and `b_` have followed `f` in _some_ access
   // path somewhere in the search. That makes the library conclude that there
   // could be flow to `b.f.a_` even when the flow was actually to `b.f.b_`.
-  sink(b.f.a()); // flow [FALSE POSITIVE through `b2.f.setB` and `b3.f.setB`]
-  sink(b.f.b()); // flow [FALSE POSITIVE through `b1.f.setA` and `b3.f.setA`]
+  sink(b.f.a()); // flow [FALSE POSITIVE through `b2.f.setB` and `b3.f.setB` in AST, NOT DETECTED by IR]
+  sink(b.f.b()); // flow [FALSE POSITIVE through `b1.f.setA` (AST) and `b3.f.setA` in AST, NOT DETECTED by IR]
 }
 
 void foo()

@@ -35,12 +35,12 @@ void assignAfterAlias() {
   S s1 = { 0, 0 };
   S &ref1 = s1;
   ref1.m1 = user_input();
-  sink(s1.m1); // flow [FALSE NEGATIVE]
+  sink(s1.m1); // flow [NOT DETECTED by AST]
 
   S s2 = { 0, 0 };
   S &ref2 = s2;
   s2.m1 = user_input();
-  sink(ref2.m1); // flow [FALSE NEGATIVE]
+  sink(ref2.m1); // flow [NOT DETECTED by AST]
 }
 
 void assignAfterCopy() {
@@ -77,14 +77,14 @@ void pointerIntermediate() {
   Wrapper w = { { 0, 0 } };
   S *s = &w.s;
   s->m1 = user_input();
-  sink(w.s.m1); // flow [FALSE NEGATIVE]
+  sink(w.s.m1); // flow [NOT DETECTED by AST]
 }
 
 void referenceIntermediate() {
   Wrapper w = { { 0, 0 } };
   S &s = w.s;
   s.m1 = user_input();
-  sink(w.s.m1); // flow [FALSE NEGATIVE]
+  sink(w.s.m1); // flow [NOT DETECTED by AST]
 }
 
 void nestedAssign() {

@@ -19,7 +19,7 @@ public:
   };
 
   static void sinkWrap(Box2* b2) {
-    sink(b2->getBox1()->getElem());
+    sink(b2->getBox1()->getElem()); // flow from f1, f2, f3, f9 [NOT DETECTED by IR]
   }
 
   Box2* boxfield;
@@ -61,6 +61,6 @@ public:
 
 private:
   void f5b() {
-    sink(boxfield->box->elem);
+    sink(boxfield->box->elem); // flow [NOT DETECTED by IR]
   }
 };

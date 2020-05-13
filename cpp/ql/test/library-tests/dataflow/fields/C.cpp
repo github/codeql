@@ -26,9 +26,9 @@ public:
 
   void func()
   {
-    sink(s1); // flow
+    sink(s1); // flow [NOT DETECTED by IR]
     sink(s2); // flow [NOT DETECTED]
-    sink(s3); // flow
+    sink(s3); // flow [NOT DETECTED by IR]
     sink(s4); // flow [NOT DETECTED]
   }
 

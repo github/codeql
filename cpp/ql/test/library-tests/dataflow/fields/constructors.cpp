@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); // flow (through `f` and `h`)
-    sink(f.b()); // flow (through `g` and `h`)
+    sink(f.a()); // flow (through `f` and `h`) [NOT DETECTED by IR]
+    sink(f.b()); // flow (through `g` and `h`) [NOT DETECTED by IR]
 }
 
 void foo()
