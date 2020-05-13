@@ -492,8 +492,15 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // `LoadInstruction` together directly, this rule will break if there's any
   // reassignment of the parameter indirection, including a conditional one that
   // leads to a phi node.
-  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() =
-    iFrom.(InitializeIndirectionInstruction)
+  exists(InitializeIndirectionInstruction init |
+    iFrom = init and
+    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = init and
+    // Check that the types match. Otherwise we can get flow from an object to
+    // its fields, which leads to field conflation when there's flow from other
+    // fields to the object elsewhere.
+    init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
+      iTo.getResultType().getUnspecifiedType()
+  )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom
