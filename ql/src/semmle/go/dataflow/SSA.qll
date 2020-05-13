@@ -353,6 +353,15 @@ class SsaWithFields extends TSsaWithFields {
   }
 
   /**
+   * Gets an SSA-with-fields variable that is similar to this SSA-with-fields variable in the
+   * sense that it has the same root variable and the same sequence of field accesses.
+   */
+  SsaWithFields similar() {
+    result.getBaseVariable().getSourceVariable() = this.getBaseVariable().getSourceVariable() and
+    result.getQualifiedName() = this.getQualifiedName()
+  }
+
+  /**
    * Gets the qualified name of the source variable or variable and fields that this represents.
    *
    * For example, for an SSA variable that represents the field `a.b`, this would get the string
