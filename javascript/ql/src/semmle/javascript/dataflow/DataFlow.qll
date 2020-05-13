@@ -218,8 +218,7 @@ module DataFlow {
       // IIFE call -> return value of IIFE
       exists(Function fun |
         localCall(this.asExpr(), fun) and
-        result = fun.getAReturnedExpr().flow() and
-        strictcount(fun.getAReturnedExpr()) = 1 and
+        result = unique(Expr ret | ret = fun.getAReturnedExpr()).flow() and
         not fun.getExit().isJoin() // can only reach exit by the return statement
       )
     }
