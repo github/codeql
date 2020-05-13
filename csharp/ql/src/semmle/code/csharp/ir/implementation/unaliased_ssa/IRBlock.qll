@@ -31,10 +31,14 @@ class IRBlockBase extends TIRBlock {
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
     this =
-      rank[result + 1](IRBlock funcBlock |
-        funcBlock.getEnclosingFunction() = getEnclosingFunction()
+      rank[result + 1](IRBlock funcBlock, int sortOverride |
+        funcBlock.getEnclosingFunction() = getEnclosingFunction() and
+        // Ensure that the block containing `EnterFunction` always comes first.
+        if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
+        then sortOverride = 0
+        else sortOverride = 1
       |
-        funcBlock order by funcBlock.getUniqueId()
+        funcBlock order by sortOverride, funcBlock.getUniqueId()
       )
   }
 

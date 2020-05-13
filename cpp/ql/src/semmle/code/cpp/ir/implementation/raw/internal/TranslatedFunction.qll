@@ -138,12 +138,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = getInstruction(ReturnTag())
       or
       tag = ReturnTag() and
-      result = getInstruction(UnmodeledUseTag())
+      result = getInstruction(AliasedUseTag())
       or
       tag = UnwindTag() and
-      result = getInstruction(UnmodeledUseTag())
-      or
-      tag = UnmodeledUseTag() and
       result = getInstruction(AliasedUseTag())
       or
       tag = AliasedUseTag() and
@@ -220,10 +217,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         exists(TryStmt try | try.getEnclosingFunction() = func) or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
       )
-      or
-      tag = UnmodeledUseTag() and
-      opcode instanceof Opcode::UnmodeledUse and
-      resultType = getVoidType()
       or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and

@@ -257,7 +257,6 @@ module InstructionConsistency {
     Operand useOperand, string message, IRFunction func, string funcText
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
-      not useOperand.getUse() instanceof UnmodeledUseInstruction and
       not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and

@@ -20,9 +20,8 @@ bad_asts.cpp:
 #   10|     mu10_9(int)       = Store                    : &:r10_1, r10_8
 #    9|     r9_8(glval<int>)  = VariableAddress[#return] : 
 #    9|     v9_9(void)        = ReturnValue              : &:r9_8, ~mu9_4
-#    9|     v9_10(void)       = UnmodeledUse             : mu*
-#    9|     v9_11(void)       = AliasedUse               : ~mu9_4
-#    9|     v9_12(void)       = ExitFunction             : 
+#    9|     v9_10(void)       = AliasedUse               : ~mu9_4
+#    9|     v9_11(void)       = ExitFunction             : 
 
 #   14| void Bad::CallBadMemberFunction()
 #   14|   Block 0
@@ -44,9 +43,8 @@ bad_asts.cpp:
 #   16|     mu16_7(S)             = ^IndirectMayWriteSideEffect[-1] : &:r16_1
 #   17|     v17_1(void)           = NoOp                            : 
 #   14|     v14_5(void)           = ReturnVoid                      : 
-#   14|     v14_6(void)           = UnmodeledUse                    : mu*
-#   14|     v14_7(void)           = AliasedUse                      : ~mu14_4
-#   14|     v14_8(void)           = ExitFunction                    : 
+#   14|     v14_6(void)           = AliasedUse                      : ~mu14_4
+#   14|     v14_7(void)           = ExitFunction                    : 
 
 #   22| void Bad::Point::Point()
 #   22|   Block 0
@@ -57,9 +55,8 @@ bad_asts.cpp:
 #   22|     r22_5(glval<Point>) = InitializeThis      : 
 #   23|     v23_1(void)         = NoOp                : 
 #   22|     v22_6(void)         = ReturnVoid          : 
-#   22|     v22_7(void)         = UnmodeledUse        : mu*
-#   22|     v22_8(void)         = AliasedUse          : ~mu22_4
-#   22|     v22_9(void)         = ExitFunction        : 
+#   22|     v22_7(void)         = AliasedUse          : ~mu22_4
+#   22|     v22_8(void)         = ExitFunction        : 
 
 #   26| void Bad::CallCopyConstructor(Bad::Point const&)
 #   26|   Block 0
@@ -81,9 +78,8 @@ bad_asts.cpp:
 #   28|     v28_1(void)           = NoOp                     : 
 #   26|     v26_9(void)           = ReturnIndirection[a]     : &:r26_7, ~mu26_4
 #   26|     v26_10(void)          = ReturnVoid               : 
-#   26|     v26_11(void)          = UnmodeledUse             : mu*
-#   26|     v26_12(void)          = AliasedUse               : ~mu26_4
-#   26|     v26_13(void)          = ExitFunction             : 
+#   26|     v26_11(void)          = AliasedUse               : ~mu26_4
+#   26|     v26_12(void)          = ExitFunction             : 
 
 #   30| void Bad::errorExpr()
 #   30|   Block 0
@@ -103,9 +99,8 @@ bad_asts.cpp:
 #   33|     mu33_2(int)         = Store                   : &:r33_1, r0_2
 #   34|     v34_1(void)         = NoOp                    : 
 #   30|     v30_5(void)         = ReturnVoid              : 
-#   30|     v30_6(void)         = UnmodeledUse            : mu*
-#   30|     v30_7(void)         = AliasedUse              : ~mu30_4
-#   30|     v30_8(void)         = ExitFunction            : 
+#   30|     v30_6(void)         = AliasedUse              : ~mu30_4
+#   30|     v30_7(void)         = ExitFunction            : 
 
 clang.cpp:
 #    5| int* globalIntAddress()
@@ -120,9 +115,8 @@ clang.cpp:
 #    6|     mu6_4(int *)       = Store                      : &:r6_1, r6_3
 #    5|     r5_5(glval<int *>) = VariableAddress[#return]   : 
 #    5|     v5_6(void)         = ReturnValue                : &:r5_5, ~mu5_4
-#    5|     v5_7(void)         = UnmodeledUse               : mu*
-#    5|     v5_8(void)         = AliasedUse                 : ~mu5_4
-#    5|     v5_9(void)         = ExitFunction               : 
+#    5|     v5_7(void)         = AliasedUse                 : ~mu5_4
+#    5|     v5_8(void)         = ExitFunction               : 
 
 complex.c:
 #    1| void complex_literals()
@@ -168,9 +162,8 @@ complex.c:
 #   11|     mu11_4(_Imaginary long double)       = Store                : &:r11_1, r11_3
 #   12|     v12_1(void)                          = NoOp                 : 
 #    1|     v1_5(void)                           = ReturnVoid           : 
-#    1|     v1_6(void)                           = UnmodeledUse         : mu*
-#    1|     v1_7(void)                           = AliasedUse           : ~mu1_4
-#    1|     v1_8(void)                           = ExitFunction         : 
+#    1|     v1_6(void)                           = AliasedUse           : ~mu1_4
+#    1|     v1_7(void)                           = ExitFunction         : 
 
 #   14| void complex_arithmetic()
 #   14|   Block 0
@@ -338,9 +331,8 @@ complex.c:
 #   55|     mu55_7(_Imaginary float)       = Store                : &:r55_6, r55_5
 #   56|     v56_1(void)                    = NoOp                 : 
 #   14|     v14_5(void)                    = ReturnVoid           : 
-#   14|     v14_6(void)                    = UnmodeledUse         : mu*
-#   14|     v14_7(void)                    = AliasedUse           : ~mu14_4
-#   14|     v14_8(void)                    = ExitFunction         : 
+#   14|     v14_6(void)                    = AliasedUse           : ~mu14_4
+#   14|     v14_7(void)                    = ExitFunction         : 
 
 #   58| void complex_conversions()
 #   58|   Block 0
@@ -694,9 +686,8 @@ complex.c:
 #  144|     mu144_5(long double)                  = Store                : &:r144_4, r144_3
 #  145|     v145_1(void)                          = NoOp                 : 
 #   58|     v58_5(void)                           = ReturnVoid           : 
-#   58|     v58_6(void)                           = UnmodeledUse         : mu*
-#   58|     v58_7(void)                           = AliasedUse           : ~mu58_4
-#   58|     v58_8(void)                           = ExitFunction         : 
+#   58|     v58_6(void)                           = AliasedUse           : ~mu58_4
+#   58|     v58_7(void)                           = ExitFunction         : 
 
 ir.cpp:
 #    1| void Constants()
@@ -791,9 +782,8 @@ ir.cpp:
 #   40|     mu40_3(double)                   = Store                    : &:r40_1, r40_2
 #   41|     v41_1(void)                      = NoOp                     : 
 #    1|     v1_5(void)                       = ReturnVoid               : 
-#    1|     v1_6(void)                       = UnmodeledUse             : mu*
-#    1|     v1_7(void)                       = AliasedUse               : ~mu1_4
-#    1|     v1_8(void)                       = ExitFunction             : 
+#    1|     v1_6(void)                       = AliasedUse               : ~mu1_4
+#    1|     v1_7(void)                       = ExitFunction             : 
 
 #   43| void Foo()
 #   43|   Block 0
@@ -826,9 +816,8 @@ ir.cpp:
 #   47|     mu47_8(int)         = Store               : &:r47_7, r47_6
 #   48|     v48_1(void)         = NoOp                : 
 #   43|     v43_5(void)         = ReturnVoid          : 
-#   43|     v43_6(void)         = UnmodeledUse        : mu*
-#   43|     v43_7(void)         = AliasedUse          : ~mu43_4
-#   43|     v43_8(void)         = ExitFunction        : 
+#   43|     v43_6(void)         = AliasedUse          : ~mu43_4
+#   43|     v43_7(void)         = ExitFunction        : 
 
 #   50| void IntegerOps(int, int)
 #   50|   Block 0
@@ -1001,9 +990,8 @@ ir.cpp:
 #   84|     mu84_8(int)       = Store                  : &:r84_7, r84_6
 #   85|     v85_1(void)       = NoOp                   : 
 #   50|     v50_9(void)       = ReturnVoid             : 
-#   50|     v50_10(void)      = UnmodeledUse           : mu*
-#   50|     v50_11(void)      = AliasedUse             : ~mu50_4
-#   50|     v50_12(void)      = ExitFunction           : 
+#   50|     v50_10(void)      = AliasedUse             : ~mu50_4
+#   50|     v50_11(void)      = ExitFunction           : 
 
 #   87| void IntegerCompare(int, int)
 #   87|   Block 0
@@ -1061,9 +1049,8 @@ ir.cpp:
 #   95|     mu95_7(bool)       = Store                  : &:r95_6, r95_5
 #   96|     v96_1(void)        = NoOp                   : 
 #   87|     v87_9(void)        = ReturnVoid             : 
-#   87|     v87_10(void)       = UnmodeledUse           : mu*
-#   87|     v87_11(void)       = AliasedUse             : ~mu87_4
-#   87|     v87_12(void)       = ExitFunction           : 
+#   87|     v87_10(void)       = AliasedUse             : ~mu87_4
+#   87|     v87_11(void)       = ExitFunction           : 
 
 #   98| void IntegerCrement(int)
 #   98|   Block 0
@@ -1107,9 +1094,8 @@ ir.cpp:
 #  104|     mu104_8(int)       = Store                  : &:r104_7, r104_6
 #  105|     v105_1(void)       = NoOp                   : 
 #   98|     v98_7(void)        = ReturnVoid             : 
-#   98|     v98_8(void)        = UnmodeledUse           : mu*
-#   98|     v98_9(void)        = AliasedUse             : ~mu98_4
-#   98|     v98_10(void)       = ExitFunction           : 
+#   98|     v98_8(void)        = AliasedUse             : ~mu98_4
+#   98|     v98_9(void)        = ExitFunction           : 
 
 #  107| void IntegerCrement_LValue(int)
 #  107|   Block 0
@@ -1141,9 +1127,8 @@ ir.cpp:
 #  111|     mu111_9(int *)       = Store                  : &:r111_8, r111_7
 #  112|     v112_1(void)         = NoOp                   : 
 #  107|     v107_7(void)         = ReturnVoid             : 
-#  107|     v107_8(void)         = UnmodeledUse           : mu*
-#  107|     v107_9(void)         = AliasedUse             : ~mu107_4
-#  107|     v107_10(void)        = ExitFunction           : 
+#  107|     v107_8(void)         = AliasedUse             : ~mu107_4
+#  107|     v107_9(void)         = ExitFunction           : 
 
 #  114| void FloatOps(double, double)
 #  114|   Block 0
@@ -1225,9 +1210,8 @@ ir.cpp:
 #  130|     mu130_5(double)       = Store                  : &:r130_4, r130_3
 #  131|     v131_1(void)          = NoOp                   : 
 #  114|     v114_9(void)          = ReturnVoid             : 
-#  114|     v114_10(void)         = UnmodeledUse           : mu*
-#  114|     v114_11(void)         = AliasedUse             : ~mu114_4
-#  114|     v114_12(void)         = ExitFunction           : 
+#  114|     v114_10(void)         = AliasedUse             : ~mu114_4
+#  114|     v114_11(void)         = ExitFunction           : 
 
 #  133| void FloatCompare(double, double)
 #  133|   Block 0
@@ -1285,9 +1269,8 @@ ir.cpp:
 #  141|     mu141_7(bool)         = Store                  : &:r141_6, r141_5
 #  142|     v142_1(void)          = NoOp                   : 
 #  133|     v133_9(void)          = ReturnVoid             : 
-#  133|     v133_10(void)         = UnmodeledUse           : mu*
-#  133|     v133_11(void)         = AliasedUse             : ~mu133_4
-#  133|     v133_12(void)         = ExitFunction           : 
+#  133|     v133_10(void)         = AliasedUse             : ~mu133_4
+#  133|     v133_11(void)         = ExitFunction           : 
 
 #  144| void FloatCrement(float)
 #  144|   Block 0
@@ -1331,9 +1314,8 @@ ir.cpp:
 #  150|     mu150_8(float)       = Store                  : &:r150_7, r150_6
 #  151|     v151_1(void)         = NoOp                   : 
 #  144|     v144_7(void)         = ReturnVoid             : 
-#  144|     v144_8(void)         = UnmodeledUse           : mu*
-#  144|     v144_9(void)         = AliasedUse             : ~mu144_4
-#  144|     v144_10(void)        = ExitFunction           : 
+#  144|     v144_8(void)         = AliasedUse             : ~mu144_4
+#  144|     v144_9(void)         = ExitFunction           : 
 
 #  153| void PointerOps(int*, int)
 #  153|   Block 0
@@ -1412,9 +1394,8 @@ ir.cpp:
 #  169|     v169_1(void)         = NoOp                     : 
 #  153|     v153_11(void)        = ReturnIndirection[p]     : &:r153_7, ~mu153_4
 #  153|     v153_12(void)        = ReturnVoid               : 
-#  153|     v153_13(void)        = UnmodeledUse             : mu*
-#  153|     v153_14(void)        = AliasedUse               : ~mu153_4
-#  153|     v153_15(void)        = ExitFunction             : 
+#  153|     v153_13(void)        = AliasedUse               : ~mu153_4
+#  153|     v153_14(void)        = ExitFunction             : 
 
 #  171| void ArrayAccess(int*, int)
 #  171|   Block 0
@@ -1499,9 +1480,8 @@ ir.cpp:
 #  185|     v185_1(void)           = NoOp                     : 
 #  171|     v171_11(void)          = ReturnIndirection[p]     : &:r171_7, ~mu171_4
 #  171|     v171_12(void)          = ReturnVoid               : 
-#  171|     v171_13(void)          = UnmodeledUse             : mu*
-#  171|     v171_14(void)          = AliasedUse               : ~mu171_4
-#  171|     v171_15(void)          = ExitFunction             : 
+#  171|     v171_13(void)          = AliasedUse               : ~mu171_4
+#  171|     v171_14(void)          = ExitFunction             : 
 
 #  187| void StringLiteral(int)
 #  187|   Block 0
@@ -1534,9 +1514,8 @@ ir.cpp:
 #  190|     mu190_8(wchar_t)          = Store                  : &:r190_1, r190_7
 #  191|     v191_1(void)              = NoOp                   : 
 #  187|     v187_7(void)              = ReturnVoid             : 
-#  187|     v187_8(void)              = UnmodeledUse           : mu*
-#  187|     v187_9(void)              = AliasedUse             : ~mu187_4
-#  187|     v187_10(void)             = ExitFunction           : 
+#  187|     v187_8(void)              = AliasedUse             : ~mu187_4
+#  187|     v187_9(void)              = ExitFunction           : 
 
 #  193| void PointerCompare(int*, int*)
 #  193|   Block 0
@@ -1600,9 +1579,8 @@ ir.cpp:
 #  193|     v193_13(void)        = ReturnIndirection[p]     : &:r193_7, ~mu193_4
 #  193|     v193_14(void)        = ReturnIndirection[q]     : &:r193_11, ~mu193_4
 #  193|     v193_15(void)        = ReturnVoid               : 
-#  193|     v193_16(void)        = UnmodeledUse             : mu*
-#  193|     v193_17(void)        = AliasedUse               : ~mu193_4
-#  193|     v193_18(void)        = ExitFunction             : 
+#  193|     v193_16(void)        = AliasedUse               : ~mu193_4
+#  193|     v193_17(void)        = ExitFunction             : 
 
 #  204| void PointerCrement(int*)
 #  204|   Block 0
@@ -1649,9 +1627,8 @@ ir.cpp:
 #  211|     v211_1(void)         = NoOp                     : 
 #  204|     v204_9(void)         = ReturnIndirection[p]     : &:r204_7, ~mu204_4
 #  204|     v204_10(void)        = ReturnVoid               : 
-#  204|     v204_11(void)        = UnmodeledUse             : mu*
-#  204|     v204_12(void)        = AliasedUse               : ~mu204_4
-#  204|     v204_13(void)        = ExitFunction             : 
+#  204|     v204_11(void)        = AliasedUse               : ~mu204_4
+#  204|     v204_12(void)        = ExitFunction             : 
 
 #  213| void CompoundAssignment()
 #  213|   Block 0
@@ -1695,9 +1672,8 @@ ir.cpp:
 #  227|     mu227_7(long)        = Store               : &:r227_2, r227_6
 #  228|     v228_1(void)         = NoOp                : 
 #  213|     v213_5(void)         = ReturnVoid          : 
-#  213|     v213_6(void)         = UnmodeledUse        : mu*
-#  213|     v213_7(void)         = AliasedUse          : ~mu213_4
-#  213|     v213_8(void)         = ExitFunction        : 
+#  213|     v213_6(void)         = AliasedUse          : ~mu213_4
+#  213|     v213_7(void)         = ExitFunction        : 
 
 #  230| void UninitializedVariables()
 #  230|   Block 0
@@ -1713,9 +1689,8 @@ ir.cpp:
 #  232|     mu232_4(int)       = Store               : &:r232_1, r232_3
 #  233|     v233_1(void)       = NoOp                : 
 #  230|     v230_5(void)       = ReturnVoid          : 
-#  230|     v230_6(void)       = UnmodeledUse        : mu*
-#  230|     v230_7(void)       = AliasedUse          : ~mu230_4
-#  230|     v230_8(void)       = ExitFunction        : 
+#  230|     v230_6(void)       = AliasedUse          : ~mu230_4
+#  230|     v230_7(void)       = ExitFunction        : 
 
 #  235| int Parameters(int, int)
 #  235|   Block 0
@@ -1736,9 +1711,8 @@ ir.cpp:
 #  236|     mu236_7(int)       = Store                    : &:r236_1, r236_6
 #  235|     r235_9(glval<int>) = VariableAddress[#return] : 
 #  235|     v235_10(void)      = ReturnValue              : &:r235_9, ~mu235_4
-#  235|     v235_11(void)      = UnmodeledUse             : mu*
-#  235|     v235_12(void)      = AliasedUse               : ~mu235_4
-#  235|     v235_13(void)      = ExitFunction             : 
+#  235|     v235_11(void)      = AliasedUse               : ~mu235_4
+#  235|     v235_12(void)      = ExitFunction             : 
 
 #  239| void IfStatements(bool, int, int)
 #  239|   Block 0
@@ -1796,9 +1770,8 @@ ir.cpp:
 #  251|   Block 6
 #  251|     v251_1(void)  = NoOp         : 
 #  239|     v239_11(void) = ReturnVoid   : 
-#  239|     v239_12(void) = UnmodeledUse : mu*
-#  239|     v239_13(void) = AliasedUse   : ~mu239_4
-#  239|     v239_14(void) = ExitFunction : 
+#  239|     v239_12(void) = AliasedUse   : ~mu239_4
+#  239|     v239_13(void) = ExitFunction : 
 
 #  240|   Block 7
 #  240|     v240_4(void) = NoOp : 
@@ -1823,11 +1796,10 @@ ir.cpp:
 #-----|   Goto (back edge) -> Block 3
 
 #  257|   Block 2
-#  257|     v257_1(void)  = NoOp         : 
-#  253|     v253_7(void)  = ReturnVoid   : 
-#  253|     v253_8(void)  = UnmodeledUse : mu*
-#  253|     v253_9(void)  = AliasedUse   : ~mu253_4
-#  253|     v253_10(void) = ExitFunction : 
+#  257|     v257_1(void) = NoOp         : 
+#  253|     v253_7(void) = ReturnVoid   : 
+#  253|     v253_8(void) = AliasedUse   : ~mu253_4
+#  253|     v253_9(void) = ExitFunction : 
 
 #  254|   Block 3
 #  254|     r254_1(glval<int>) = VariableAddress[n] : 
@@ -1863,11 +1835,10 @@ ir.cpp:
 #-----|   True (back edge) -> Block 1
 
 #  263|   Block 2
-#  263|     v263_1(void)  = NoOp         : 
-#  259|     v259_7(void)  = ReturnVoid   : 
-#  259|     v259_8(void)  = UnmodeledUse : mu*
-#  259|     v259_9(void)  = AliasedUse   : ~mu259_4
-#  259|     v259_10(void) = ExitFunction : 
+#  263|     v263_1(void) = NoOp         : 
+#  259|     v259_7(void) = ReturnVoid   : 
+#  259|     v259_8(void) = AliasedUse   : ~mu259_4
+#  259|     v259_9(void) = ExitFunction : 
 
 #  265| void For_Empty()
 #  265|   Block 0
@@ -1881,9 +1852,8 @@ ir.cpp:
 
 #  265|   Block 1
 #  265|     v265_5(void) = ReturnVoid   : 
-#  265|     v265_6(void) = UnmodeledUse : mu*
-#  265|     v265_7(void) = AliasedUse   : ~mu265_4
-#  265|     v265_8(void) = ExitFunction : 
+#  265|     v265_6(void) = AliasedUse   : ~mu265_4
+#  265|     v265_7(void) = ExitFunction : 
 
 #  268|   Block 2
 #  268|     v268_1(void) = NoOp : 
@@ -1902,9 +1872,8 @@ ir.cpp:
 
 #  272|   Block 1
 #  272|     v272_5(void) = ReturnVoid   : 
-#  272|     v272_6(void) = UnmodeledUse : mu*
-#  272|     v272_7(void) = AliasedUse   : ~mu272_4
-#  272|     v272_8(void) = ExitFunction : 
+#  272|     v272_6(void) = AliasedUse   : ~mu272_4
+#  272|     v272_7(void) = ExitFunction : 
 
 #  274|   Block 2
 #  274|     v274_1(void) = NoOp : 
@@ -1937,9 +1906,8 @@ ir.cpp:
 #  283|   Block 3
 #  283|     v283_1(void) = NoOp         : 
 #  278|     v278_5(void) = ReturnVoid   : 
-#  278|     v278_6(void) = UnmodeledUse : mu*
-#  278|     v278_7(void) = AliasedUse   : ~mu278_4
-#  278|     v278_8(void) = ExitFunction : 
+#  278|     v278_6(void) = AliasedUse   : ~mu278_4
+#  278|     v278_7(void) = ExitFunction : 
 
 #  285| void For_Update()
 #  285|   Block 0
@@ -1954,9 +1922,8 @@ ir.cpp:
 
 #  285|   Block 1
 #  285|     v285_5(void) = ReturnVoid   : 
-#  285|     v285_6(void) = UnmodeledUse : mu*
-#  285|     v285_7(void) = AliasedUse   : ~mu285_4
-#  285|     v285_8(void) = ExitFunction : 
+#  285|     v285_6(void) = AliasedUse   : ~mu285_4
+#  285|     v285_7(void) = ExitFunction : 
 
 #  288|   Block 2
 #  288|     v288_1(void)       = NoOp               : 
@@ -1994,9 +1961,8 @@ ir.cpp:
 #  296|   Block 3
 #  296|     v296_1(void) = NoOp         : 
 #  292|     v292_5(void) = ReturnVoid   : 
-#  292|     v292_6(void) = UnmodeledUse : mu*
-#  292|     v292_7(void) = AliasedUse   : ~mu292_4
-#  292|     v292_8(void) = ExitFunction : 
+#  292|     v292_6(void) = AliasedUse   : ~mu292_4
+#  292|     v292_7(void) = ExitFunction : 
 
 #  298| void For_InitUpdate()
 #  298|   Block 0
@@ -2011,9 +1977,8 @@ ir.cpp:
 
 #  298|   Block 1
 #  298|     v298_5(void) = ReturnVoid   : 
-#  298|     v298_6(void) = UnmodeledUse : mu*
-#  298|     v298_7(void) = AliasedUse   : ~mu298_4
-#  298|     v298_8(void) = ExitFunction : 
+#  298|     v298_6(void) = AliasedUse   : ~mu298_4
+#  298|     v298_7(void) = ExitFunction : 
 
 #  300|   Block 2
 #  300|     v300_1(void)       = NoOp               : 
@@ -2056,9 +2021,8 @@ ir.cpp:
 #  309|   Block 3
 #  309|     v309_1(void) = NoOp         : 
 #  304|     v304_5(void) = ReturnVoid   : 
-#  304|     v304_6(void) = UnmodeledUse : mu*
-#  304|     v304_7(void) = AliasedUse   : ~mu304_4
-#  304|     v304_8(void) = ExitFunction : 
+#  304|     v304_6(void) = AliasedUse   : ~mu304_4
+#  304|     v304_7(void) = ExitFunction : 
 
 #  311| void For_InitConditionUpdate()
 #  311|   Block 0
@@ -2092,9 +2056,8 @@ ir.cpp:
 #  315|   Block 3
 #  315|     v315_1(void) = NoOp         : 
 #  311|     v311_5(void) = ReturnVoid   : 
-#  311|     v311_6(void) = UnmodeledUse : mu*
-#  311|     v311_7(void) = AliasedUse   : ~mu311_4
-#  311|     v311_8(void) = ExitFunction : 
+#  311|     v311_6(void) = AliasedUse   : ~mu311_4
+#  311|     v311_7(void) = ExitFunction : 
 
 #  317| void For_Break()
 #  317|   Block 0
@@ -2141,9 +2104,8 @@ ir.cpp:
 #  322|     v322_1(void) = NoOp         : 
 #  323|     v323_1(void) = NoOp         : 
 #  317|     v317_5(void) = ReturnVoid   : 
-#  317|     v317_6(void) = UnmodeledUse : mu*
-#  317|     v317_7(void) = AliasedUse   : ~mu317_4
-#  317|     v317_8(void) = ExitFunction : 
+#  317|     v317_6(void) = AliasedUse   : ~mu317_4
+#  317|     v317_7(void) = ExitFunction : 
 
 #  325| void For_Continue_Update()
 #  325|   Block 0
@@ -2190,9 +2152,8 @@ ir.cpp:
 #  331|   Block 5
 #  331|     v331_1(void) = NoOp         : 
 #  325|     v325_5(void) = ReturnVoid   : 
-#  325|     v325_6(void) = UnmodeledUse : mu*
-#  325|     v325_7(void) = AliasedUse   : ~mu325_4
-#  325|     v325_8(void) = ExitFunction : 
+#  325|     v325_6(void) = AliasedUse   : ~mu325_4
+#  325|     v325_7(void) = ExitFunction : 
 
 #  333| void For_Continue_NoUpdate()
 #  333|   Block 0
@@ -2234,9 +2195,8 @@ ir.cpp:
 #  339|   Block 5
 #  339|     v339_1(void) = NoOp         : 
 #  333|     v333_5(void) = ReturnVoid   : 
-#  333|     v333_6(void) = UnmodeledUse : mu*
-#  333|     v333_7(void) = AliasedUse   : ~mu333_4
-#  333|     v333_8(void) = ExitFunction : 
+#  333|     v333_6(void) = AliasedUse   : ~mu333_4
+#  333|     v333_7(void) = ExitFunction : 
 
 #  341| int Dereference(int*)
 #  341|   Block 0
@@ -2261,9 +2221,8 @@ ir.cpp:
 #  341|     v341_9(void)         = ReturnIndirection[p]     : &:r341_7, ~mu341_4
 #  341|     r341_10(glval<int>)  = VariableAddress[#return] : 
 #  341|     v341_11(void)        = ReturnValue              : &:r341_10, ~mu341_4
-#  341|     v341_12(void)        = UnmodeledUse             : mu*
-#  341|     v341_13(void)        = AliasedUse               : ~mu341_4
-#  341|     v341_14(void)        = ExitFunction             : 
+#  341|     v341_12(void)        = AliasedUse               : ~mu341_4
+#  341|     v341_13(void)        = ExitFunction             : 
 
 #  348| int* AddressOf()
 #  348|   Block 0
@@ -2277,9 +2236,8 @@ ir.cpp:
 #  349|     mu349_4(int *)       = Store                    : &:r349_1, r349_3
 #  348|     r348_5(glval<int *>) = VariableAddress[#return] : 
 #  348|     v348_6(void)         = ReturnValue              : &:r348_5, ~mu348_4
-#  348|     v348_7(void)         = UnmodeledUse             : mu*
-#  348|     v348_8(void)         = AliasedUse               : ~mu348_4
-#  348|     v348_9(void)         = ExitFunction             : 
+#  348|     v348_7(void)         = AliasedUse               : ~mu348_4
+#  348|     v348_8(void)         = ExitFunction             : 
 
 #  352| void Break(int)
 #  352|   Block 0
@@ -2313,12 +2271,11 @@ ir.cpp:
 #-----|   Goto (back edge) -> Block 5
 
 #  357|   Block 4
-#  357|     v357_1(void)  = NoOp         : 
-#  358|     v358_1(void)  = NoOp         : 
-#  352|     v352_7(void)  = ReturnVoid   : 
-#  352|     v352_8(void)  = UnmodeledUse : mu*
-#  352|     v352_9(void)  = AliasedUse   : ~mu352_4
-#  352|     v352_10(void) = ExitFunction : 
+#  357|     v357_1(void) = NoOp         : 
+#  358|     v358_1(void) = NoOp         : 
+#  352|     v352_7(void) = ReturnVoid   : 
+#  352|     v352_8(void) = AliasedUse   : ~mu352_4
+#  352|     v352_9(void) = ExitFunction : 
 
 #  353|   Block 5
 #  353|     r353_1(glval<int>) = VariableAddress[n] : 
@@ -2371,11 +2328,10 @@ ir.cpp:
 #-----|   True (back edge) -> Block 1
 
 #  367|   Block 5
-#  367|     v367_1(void)  = NoOp         : 
-#  360|     v360_7(void)  = ReturnVoid   : 
-#  360|     v360_8(void)  = UnmodeledUse : mu*
-#  360|     v360_9(void)  = AliasedUse   : ~mu360_4
-#  360|     v360_10(void) = ExitFunction : 
+#  367|     v367_1(void) = NoOp         : 
+#  360|     v360_7(void) = ReturnVoid   : 
+#  360|     v360_8(void) = AliasedUse   : ~mu360_4
+#  360|     v360_9(void) = ExitFunction : 
 
 #  372| void Call()
 #  372|   Block 0
@@ -2388,9 +2344,8 @@ ir.cpp:
 #  373|     mu373_3(unknown)       = ^CallSideEffect           : ~mu372_4
 #  374|     v374_1(void)           = NoOp                      : 
 #  372|     v372_5(void)           = ReturnVoid                : 
-#  372|     v372_6(void)           = UnmodeledUse              : mu*
-#  372|     v372_7(void)           = AliasedUse                : ~mu372_4
-#  372|     v372_8(void)           = ExitFunction              : 
+#  372|     v372_6(void)           = AliasedUse                : ~mu372_4
+#  372|     v372_7(void)           = ExitFunction              : 
 
 #  376| int CallAdd(int, int)
 #  376|   Block 0
@@ -2413,9 +2368,8 @@ ir.cpp:
 #  377|     mu377_9(int)           = Store                    : &:r377_1, r377_7
 #  376|     r376_9(glval<int>)     = VariableAddress[#return] : 
 #  376|     v376_10(void)          = ReturnValue              : &:r376_9, ~mu376_4
-#  376|     v376_11(void)          = UnmodeledUse             : mu*
-#  376|     v376_12(void)          = AliasedUse               : ~mu376_4
-#  376|     v376_13(void)          = ExitFunction             : 
+#  376|     v376_11(void)          = AliasedUse               : ~mu376_4
+#  376|     v376_12(void)          = ExitFunction             : 
 
 #  380| int Comma(int, int)
 #  380|   Block 0
@@ -2442,9 +2396,8 @@ ir.cpp:
 #  381|     mu381_13(int)          = Store                     : &:r381_1, r381_12
 #  380|     r380_9(glval<int>)     = VariableAddress[#return]  : 
 #  380|     v380_10(void)          = ReturnValue               : &:r380_9, ~mu380_4
-#  380|     v380_11(void)          = UnmodeledUse              : mu*
-#  380|     v380_12(void)          = AliasedUse                : ~mu380_4
-#  380|     v380_13(void)          = ExitFunction              : 
+#  380|     v380_11(void)          = AliasedUse                : ~mu380_4
+#  380|     v380_12(void)          = ExitFunction              : 
 
 #  384| void Switch(int)
 #  384|   Block 0
@@ -2522,12 +2475,11 @@ ir.cpp:
 #-----|   Goto -> Block 9
 
 #  409|   Block 9
-#  409|     v409_1(void)  = NoOp         : 
-#  410|     v410_1(void)  = NoOp         : 
-#  384|     v384_7(void)  = ReturnVoid   : 
-#  384|     v384_8(void)  = UnmodeledUse : mu*
-#  384|     v384_9(void)  = AliasedUse   : ~mu384_4
-#  384|     v384_10(void) = ExitFunction : 
+#  409|     v409_1(void) = NoOp         : 
+#  410|     v410_1(void) = NoOp         : 
+#  384|     v384_7(void) = ReturnVoid   : 
+#  384|     v384_8(void) = AliasedUse   : ~mu384_4
+#  384|     v384_9(void) = ExitFunction : 
 
 #  422| Point ReturnStruct(Point)
 #  422|   Block 0
@@ -2543,9 +2495,8 @@ ir.cpp:
 #  423|     mu423_4(Point)       = Store                    : &:r423_1, r423_3
 #  422|     r422_7(glval<Point>) = VariableAddress[#return] : 
 #  422|     v422_8(void)         = ReturnValue              : &:r422_7, ~mu422_4
-#  422|     v422_9(void)         = UnmodeledUse             : mu*
-#  422|     v422_10(void)        = AliasedUse               : ~mu422_4
-#  422|     v422_11(void)        = ExitFunction             : 
+#  422|     v422_9(void)         = AliasedUse               : ~mu422_4
+#  422|     v422_10(void)        = ExitFunction             : 
 
 #  426| void FieldAccess()
 #  426|   Block 0
@@ -2572,9 +2523,8 @@ ir.cpp:
 #  430|     mu430_5(int *)       = Store               : &:r430_1, r430_4
 #  431|     v431_1(void)         = NoOp                : 
 #  426|     v426_5(void)         = ReturnVoid          : 
-#  426|     v426_6(void)         = UnmodeledUse        : mu*
-#  426|     v426_7(void)         = AliasedUse          : ~mu426_4
-#  426|     v426_8(void)         = ExitFunction        : 
+#  426|     v426_6(void)         = AliasedUse          : ~mu426_4
+#  426|     v426_7(void)         = ExitFunction        : 
 
 #  433| void LogicalOr(bool, bool)
 #  433|   Block 0
@@ -2636,9 +2586,8 @@ ir.cpp:
 #  445|   Block 7
 #  445|     v445_1(void)  = NoOp         : 
 #  433|     v433_9(void)  = ReturnVoid   : 
-#  433|     v433_10(void) = UnmodeledUse : mu*
-#  433|     v433_11(void) = AliasedUse   : ~mu433_4
-#  433|     v433_12(void) = ExitFunction : 
+#  433|     v433_10(void) = AliasedUse   : ~mu433_4
+#  433|     v433_11(void) = ExitFunction : 
 
 #  447| void LogicalAnd(bool, bool)
 #  447|   Block 0
@@ -2700,9 +2649,8 @@ ir.cpp:
 #  459|   Block 7
 #  459|     v459_1(void)  = NoOp         : 
 #  447|     v447_9(void)  = ReturnVoid   : 
-#  447|     v447_10(void) = UnmodeledUse : mu*
-#  447|     v447_11(void) = AliasedUse   : ~mu447_4
-#  447|     v447_12(void) = ExitFunction : 
+#  447|     v447_10(void) = AliasedUse   : ~mu447_4
+#  447|     v447_11(void) = ExitFunction : 
 
 #  461| void LogicalNot(bool, bool)
 #  461|   Block 0
@@ -2757,9 +2705,8 @@ ir.cpp:
 #  473|   Block 6
 #  473|     v473_1(void)  = NoOp         : 
 #  461|     v461_9(void)  = ReturnVoid   : 
-#  461|     v461_10(void) = UnmodeledUse : mu*
-#  461|     v461_11(void) = AliasedUse   : ~mu461_4
-#  461|     v461_12(void) = ExitFunction : 
+#  461|     v461_10(void) = AliasedUse   : ~mu461_4
+#  461|     v461_11(void) = ExitFunction : 
 
 #  475| void ConditionValues(bool, bool)
 #  475|   Block 0
@@ -2830,9 +2777,8 @@ ir.cpp:
 #  479|     mu479_11(bool)       = Store                        : &:r479_10, r479_9
 #  480|     v480_1(void)         = NoOp                         : 
 #  475|     v475_9(void)         = ReturnVoid                   : 
-#  475|     v475_10(void)        = UnmodeledUse                 : mu*
-#  475|     v475_11(void)        = AliasedUse                   : ~mu475_4
-#  475|     v475_12(void)        = ExitFunction                 : 
+#  475|     v475_10(void)        = AliasedUse                   : ~mu475_4
+#  475|     v475_11(void)        = ExitFunction                 : 
 
 #  479|   Block 8
 #  479|     r479_12(glval<bool>) = VariableAddress[#temp479:11] : 
@@ -2909,9 +2855,8 @@ ir.cpp:
 #  483|     mu483_15(int)       = Store                        : &:r483_1, r483_14
 #  484|     v484_1(void)        = NoOp                         : 
 #  482|     v482_11(void)       = ReturnVoid                   : 
-#  482|     v482_12(void)       = UnmodeledUse                 : mu*
-#  482|     v482_13(void)       = AliasedUse                   : ~mu482_4
-#  482|     v482_14(void)       = ExitFunction                 : 
+#  482|     v482_12(void)       = AliasedUse                   : ~mu482_4
+#  482|     v482_13(void)       = ExitFunction                 : 
 
 #  486| void Conditional_LValue(bool)
 #  486|   Block 0
@@ -2938,9 +2883,8 @@ ir.cpp:
 #  489|     mu489_7(int)           = Store                       : &:r489_6, r489_1
 #  490|     v490_1(void)           = NoOp                        : 
 #  486|     v486_7(void)           = ReturnVoid                  : 
-#  486|     v486_8(void)           = UnmodeledUse                : mu*
-#  486|     v486_9(void)           = AliasedUse                  : ~mu486_4
-#  486|     v486_10(void)          = ExitFunction                : 
+#  486|     v486_8(void)           = AliasedUse                  : ~mu486_4
+#  486|     v486_9(void)           = ExitFunction                : 
 
 #  489|   Block 2
 #  489|     r489_8(glval<int>)     = VariableAddress[x]          : 
@@ -2975,11 +2919,10 @@ ir.cpp:
 #-----|   Goto -> Block 2
 
 #  494|   Block 2
-#  494|     v494_1(void)  = NoOp         : 
-#  492|     v492_7(void)  = ReturnVoid   : 
-#  492|     v492_8(void)  = UnmodeledUse : mu*
-#  492|     v492_9(void)  = AliasedUse   : ~mu492_4
-#  492|     v492_10(void) = ExitFunction : 
+#  494|     v494_1(void) = NoOp         : 
+#  492|     v492_7(void) = ReturnVoid   : 
+#  492|     v492_8(void) = AliasedUse   : ~mu492_4
+#  492|     v492_9(void) = ExitFunction : 
 
 #  493|   Block 3
 #  493|     r493_7(glval<unknown>) = FunctionAddress[VoidFunc] : 
@@ -3007,9 +2950,8 @@ ir.cpp:
 #  500|     mu500_3(int *)       = Store               : &:r500_2, r500_1
 #  501|     v501_1(void)         = NoOp                : 
 #  496|     v496_5(void)         = ReturnVoid          : 
-#  496|     v496_6(void)         = UnmodeledUse        : mu*
-#  496|     v496_7(void)         = AliasedUse          : ~mu496_4
-#  496|     v496_8(void)         = ExitFunction        : 
+#  496|     v496_6(void)         = AliasedUse          : ~mu496_4
+#  496|     v496_7(void)         = ExitFunction        : 
 
 #  503| void InitList(int, float)
 #  503|   Block 0
@@ -3057,9 +2999,8 @@ ir.cpp:
 #  509|     mu509_3(int)         = Store                  : &:r509_1, r509_2
 #  510|     v510_1(void)         = NoOp                   : 
 #  503|     v503_9(void)         = ReturnVoid             : 
-#  503|     v503_10(void)        = UnmodeledUse           : mu*
-#  503|     v503_11(void)        = AliasedUse             : ~mu503_4
-#  503|     v503_12(void)        = ExitFunction           : 
+#  503|     v503_10(void)        = AliasedUse             : ~mu503_4
+#  503|     v503_11(void)        = ExitFunction           : 
 
 #  512| void NestedInitList(int, float)
 #  512|   Block 0
@@ -3136,9 +3077,8 @@ ir.cpp:
 #  516|     mu516_18(int)         = Store                     : &:r516_16, r516_17
 #  517|     v517_1(void)          = NoOp                      : 
 #  512|     v512_9(void)          = ReturnVoid                : 
-#  512|     v512_10(void)         = UnmodeledUse              : mu*
-#  512|     v512_11(void)         = AliasedUse                : ~mu512_4
-#  512|     v512_12(void)         = ExitFunction              : 
+#  512|     v512_10(void)         = AliasedUse                : ~mu512_4
+#  512|     v512_11(void)         = ExitFunction              : 
 
 #  519| void ArrayInit(int, float)
 #  519|   Block 0
@@ -3186,9 +3126,8 @@ ir.cpp:
 #  522|     mu522_11(unknown[8])  = Store                  : &:r522_9, r522_10
 #  523|     v523_1(void)          = NoOp                   : 
 #  519|     v519_9(void)          = ReturnVoid             : 
-#  519|     v519_10(void)         = UnmodeledUse           : mu*
-#  519|     v519_11(void)         = AliasedUse             : ~mu519_4
-#  519|     v519_12(void)         = ExitFunction           : 
+#  519|     v519_10(void)         = AliasedUse             : ~mu519_4
+#  519|     v519_11(void)         = ExitFunction           : 
 
 #  530| void UnionInit(int, float)
 #  530|   Block 0
@@ -3209,9 +3148,8 @@ ir.cpp:
 #  531|     mu531_7(double)       = Store                  : &:r531_3, r531_6
 #  533|     v533_1(void)          = NoOp                   : 
 #  530|     v530_9(void)          = ReturnVoid             : 
-#  530|     v530_10(void)         = UnmodeledUse           : mu*
-#  530|     v530_11(void)         = AliasedUse             : ~mu530_4
-#  530|     v530_12(void)         = ExitFunction           : 
+#  530|     v530_10(void)         = AliasedUse             : ~mu530_4
+#  530|     v530_11(void)         = ExitFunction           : 
 
 #  535| void EarlyReturn(int, int)
 #  535|   Block 0
@@ -3234,9 +3172,8 @@ ir.cpp:
 
 #  535|   Block 1
 #  535|     v535_9(void)  = ReturnVoid   : 
-#  535|     v535_10(void) = UnmodeledUse : mu*
-#  535|     v535_11(void) = AliasedUse   : ~mu535_4
-#  535|     v535_12(void) = ExitFunction : 
+#  535|     v535_10(void) = AliasedUse   : ~mu535_4
+#  535|     v535_11(void) = ExitFunction : 
 
 #  537|   Block 2
 #  537|     v537_1(void) = NoOp : 
@@ -3272,9 +3209,8 @@ ir.cpp:
 #  543|   Block 1
 #  543|     r543_9(glval<int>) = VariableAddress[#return] : 
 #  543|     v543_10(void)      = ReturnValue              : &:r543_9, ~mu543_4
-#  543|     v543_11(void)      = UnmodeledUse             : mu*
-#  543|     v543_12(void)      = AliasedUse               : ~mu543_4
-#  543|     v543_13(void)      = ExitFunction             : 
+#  543|     v543_11(void)      = AliasedUse               : ~mu543_4
+#  543|     v543_12(void)      = ExitFunction             : 
 
 #  545|   Block 2
 #  545|     r545_1(glval<int>) = VariableAddress[#return] : 
@@ -3310,9 +3246,8 @@ ir.cpp:
 #  552|     mu552_7(int)             = Store                    : &:r552_1, r552_5
 #  551|     r551_7(glval<int>)       = VariableAddress[#return] : 
 #  551|     v551_8(void)             = ReturnValue              : &:r551_7, ~mu551_4
-#  551|     v551_9(void)             = UnmodeledUse             : mu*
-#  551|     v551_10(void)            = AliasedUse               : ~mu551_4
-#  551|     v551_11(void)            = ExitFunction             : 
+#  551|     v551_9(void)             = AliasedUse               : ~mu551_4
+#  551|     v551_10(void)            = ExitFunction             : 
 
 #  560| int EnumSwitch(E)
 #  560|   Block 0
@@ -3333,9 +3268,8 @@ ir.cpp:
 #  560|   Block 1
 #  560|     r560_7(glval<int>) = VariableAddress[#return] : 
 #  560|     v560_8(void)       = ReturnValue              : &:r560_7, ~mu560_4
-#  560|     v560_9(void)       = UnmodeledUse             : mu*
-#  560|     v560_10(void)      = AliasedUse               : ~mu560_4
-#  560|     v560_11(void)      = ExitFunction             : 
+#  560|     v560_9(void)       = AliasedUse               : ~mu560_4
+#  560|     v560_10(void)      = ExitFunction             : 
 
 #  564|   Block 2
 #  564|     v564_1(void)       = NoOp                     : 
@@ -3416,9 +3350,8 @@ ir.cpp:
 #  579|     mu579_10(unknown[2])    = Store                    : &:r579_8, r579_9
 #  580|     v580_1(void)            = NoOp                     : 
 #  571|     v571_5(void)            = ReturnVoid               : 
-#  571|     v571_6(void)            = UnmodeledUse             : mu*
-#  571|     v571_7(void)            = AliasedUse               : ~mu571_4
-#  571|     v571_8(void)            = ExitFunction             : 
+#  571|     v571_6(void)            = AliasedUse               : ~mu571_4
+#  571|     v571_7(void)            = ExitFunction             : 
 
 #  584| void VarArgs()
 #  584|   Block 0
@@ -3440,9 +3373,8 @@ ir.cpp:
 #  585|     mu585_12(unknown)      = ^BufferMayWriteSideEffect[2]    : &:r585_6
 #  586|     v586_1(void)           = NoOp                            : 
 #  584|     v584_5(void)           = ReturnVoid                      : 
-#  584|     v584_6(void)           = UnmodeledUse                    : mu*
-#  584|     v584_7(void)           = AliasedUse                      : ~mu584_4
-#  584|     v584_8(void)           = ExitFunction                    : 
+#  584|     v584_6(void)           = AliasedUse                      : ~mu584_4
+#  584|     v584_7(void)           = ExitFunction                    : 
 
 #  590| void SetFuncPtr()
 #  590|   Block 0
@@ -3470,9 +3402,8 @@ ir.cpp:
 #  594|     mu594_7(..(*)(..))       = Store                          : &:r594_6, r594_5
 #  595|     v595_1(void)             = NoOp                           : 
 #  590|     v590_5(void)             = ReturnVoid                     : 
-#  590|     v590_6(void)             = UnmodeledUse                   : mu*
-#  590|     v590_7(void)             = AliasedUse                     : ~mu590_4
-#  590|     v590_8(void)             = ExitFunction                   : 
+#  590|     v590_6(void)             = AliasedUse                     : ~mu590_4
+#  590|     v590_7(void)             = ExitFunction                   : 
 
 #  615| void DeclareObject()
 #  615|   Block 0
@@ -3513,9 +3444,8 @@ ir.cpp:
 #  619|     mu619_10(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r619_5
 #  620|     v620_1(void)           = NoOp                            : 
 #  615|     v615_5(void)           = ReturnVoid                      : 
-#  615|     v615_6(void)           = UnmodeledUse                    : mu*
-#  615|     v615_7(void)           = AliasedUse                      : ~mu615_4
-#  615|     v615_8(void)           = ExitFunction                    : 
+#  615|     v615_6(void)           = AliasedUse                      : ~mu615_4
+#  615|     v615_7(void)           = ExitFunction                    : 
 
 #  622| void CallMethods(String&, String*, String)
 #  622|   Block 0
@@ -3561,9 +3491,8 @@ ir.cpp:
 #  622|     v622_15(void)           = ReturnIndirection[r]            : &:r622_7, ~mu622_4
 #  622|     v622_16(void)           = ReturnIndirection[p]            : &:r622_11, ~mu622_4
 #  622|     v622_17(void)           = ReturnVoid                      : 
-#  622|     v622_18(void)           = UnmodeledUse                    : mu*
-#  622|     v622_19(void)           = AliasedUse                      : ~mu622_4
-#  622|     v622_20(void)           = ExitFunction                    : 
+#  622|     v622_18(void)           = AliasedUse                      : ~mu622_4
+#  622|     v622_19(void)           = ExitFunction                    : 
 
 #  628| void C::~C()
 #  628|   Block 0
@@ -3582,9 +3511,8 @@ ir.cpp:
 #  628|     v628_12(void)           = Call                     : func:r628_11, this:r628_10
 #  628|     mu628_13(unknown)       = ^CallSideEffect          : ~mu628_4
 #  628|     v628_14(void)           = ReturnVoid               : 
-#  628|     v628_15(void)           = UnmodeledUse             : mu*
-#  628|     v628_16(void)           = AliasedUse               : ~mu628_4
-#  628|     v628_17(void)           = ExitFunction             : 
+#  628|     v628_15(void)           = AliasedUse               : ~mu628_4
+#  628|     v628_16(void)           = ExitFunction             : 
 
 #  630| int C::StaticMemberFunction(int)
 #  630|   Block 0
@@ -3600,9 +3528,8 @@ ir.cpp:
 #  631|     mu631_4(int)       = Store                    : &:r631_1, r631_3
 #  630|     r630_7(glval<int>) = VariableAddress[#return] : 
 #  630|     v630_8(void)       = ReturnValue              : &:r630_7, ~mu630_4
-#  630|     v630_9(void)       = UnmodeledUse             : mu*
-#  630|     v630_10(void)      = AliasedUse               : ~mu630_4
-#  630|     v630_11(void)      = ExitFunction             : 
+#  630|     v630_9(void)       = AliasedUse               : ~mu630_4
+#  630|     v630_10(void)      = ExitFunction             : 
 
 #  634| int C::InstanceMemberFunction(int)
 #  634|   Block 0
@@ -3619,9 +3546,8 @@ ir.cpp:
 #  635|     mu635_4(int)       = Store                    : &:r635_1, r635_3
 #  634|     r634_8(glval<int>) = VariableAddress[#return] : 
 #  634|     v634_9(void)       = ReturnValue              : &:r634_8, ~mu634_4
-#  634|     v634_10(void)      = UnmodeledUse             : mu*
-#  634|     v634_11(void)      = AliasedUse               : ~mu634_4
-#  634|     v634_12(void)      = ExitFunction             : 
+#  634|     v634_10(void)      = AliasedUse               : ~mu634_4
+#  634|     v634_11(void)      = ExitFunction             : 
 
 #  638| int C::VirtualMemberFunction(int)
 #  638|   Block 0
@@ -3638,9 +3564,8 @@ ir.cpp:
 #  639|     mu639_4(int)       = Store                    : &:r639_1, r639_3
 #  638|     r638_8(glval<int>) = VariableAddress[#return] : 
 #  638|     v638_9(void)       = ReturnValue              : &:r638_8, ~mu638_4
-#  638|     v638_10(void)      = UnmodeledUse             : mu*
-#  638|     v638_11(void)      = AliasedUse               : ~mu638_4
-#  638|     v638_12(void)      = ExitFunction             : 
+#  638|     v638_10(void)      = AliasedUse               : ~mu638_4
+#  638|     v638_11(void)      = ExitFunction             : 
 
 #  642| void C::FieldAccess()
 #  642|   Block 0
@@ -3682,9 +3607,8 @@ ir.cpp:
 #  649|     mu649_4(int)       = Store               : &:r649_3, r649_2
 #  650|     v650_1(void)       = NoOp                : 
 #  642|     v642_6(void)       = ReturnVoid          : 
-#  642|     v642_7(void)       = UnmodeledUse        : mu*
-#  642|     v642_8(void)       = AliasedUse          : ~mu642_4
-#  642|     v642_9(void)       = ExitFunction        : 
+#  642|     v642_7(void)       = AliasedUse          : ~mu642_4
+#  642|     v642_8(void)       = ExitFunction        : 
 
 #  652| void C::MethodCalls()
 #  652|   Block 0
@@ -3717,9 +3641,8 @@ ir.cpp:
 #-----|     mu0_3(C)               = ^IndirectMayWriteSideEffect[-1]         : &:r0_1
 #  656|     v656_1(void)           = NoOp                                    : 
 #  652|     v652_6(void)           = ReturnVoid                              : 
-#  652|     v652_7(void)           = UnmodeledUse                            : mu*
-#  652|     v652_8(void)           = AliasedUse                              : ~mu652_4
-#  652|     v652_9(void)           = ExitFunction                            : 
+#  652|     v652_7(void)           = AliasedUse                              : ~mu652_4
+#  652|     v652_8(void)           = ExitFunction                            : 
 
 #  658| void C::C()
 #  658|   Block 0
@@ -3753,9 +3676,8 @@ ir.cpp:
 #  662|     mu662_9(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r662_4
 #  664|     v664_1(void)           = NoOp                            : 
 #  658|     v658_6(void)           = ReturnVoid                      : 
-#  658|     v658_7(void)           = UnmodeledUse                    : mu*
-#  658|     v658_8(void)           = AliasedUse                      : ~mu658_4
-#  658|     v658_9(void)           = ExitFunction                    : 
+#  658|     v658_7(void)           = AliasedUse                      : ~mu658_4
+#  658|     v658_8(void)           = ExitFunction                    : 
 
 #  675| int DerefReference(int&)
 #  675|   Block 0
@@ -3775,9 +3697,8 @@ ir.cpp:
 #  675|     v675_9(void)         = ReturnIndirection[r]     : &:r675_7, ~mu675_4
 #  675|     r675_10(glval<int>)  = VariableAddress[#return] : 
 #  675|     v675_11(void)        = ReturnValue              : &:r675_10, ~mu675_4
-#  675|     v675_12(void)        = UnmodeledUse             : mu*
-#  675|     v675_13(void)        = AliasedUse               : ~mu675_4
-#  675|     v675_14(void)        = ExitFunction             : 
+#  675|     v675_12(void)        = AliasedUse               : ~mu675_4
+#  675|     v675_13(void)        = ExitFunction             : 
 
 #  679| int& TakeReference()
 #  679|   Block 0
@@ -3791,9 +3712,8 @@ ir.cpp:
 #  680|     mu680_4(int &)       = Store                    : &:r680_1, r680_3
 #  679|     r679_5(glval<int &>) = VariableAddress[#return] : 
 #  679|     v679_6(void)         = ReturnValue              : &:r679_5, ~mu679_4
-#  679|     v679_7(void)         = UnmodeledUse             : mu*
-#  679|     v679_8(void)         = AliasedUse               : ~mu679_4
-#  679|     v679_9(void)         = ExitFunction             : 
+#  679|     v679_7(void)         = AliasedUse               : ~mu679_4
+#  679|     v679_8(void)         = ExitFunction             : 
 
 #  685| void InitReference(int)
 #  685|   Block 0
@@ -3823,9 +3743,8 @@ ir.cpp:
 #  688|     mu688_8(String &)       = Store                            : &:r688_1, r688_7
 #  689|     v689_1(void)            = NoOp                             : 
 #  685|     v685_7(void)            = ReturnVoid                       : 
-#  685|     v685_8(void)            = UnmodeledUse                     : mu*
-#  685|     v685_9(void)            = AliasedUse                       : ~mu685_4
-#  685|     v685_10(void)           = ExitFunction                     : 
+#  685|     v685_8(void)            = AliasedUse                       : ~mu685_4
+#  685|     v685_9(void)            = ExitFunction                     : 
 
 #  691| void ArrayReferences()
 #  691|   Block 0
@@ -3850,9 +3769,8 @@ ir.cpp:
 #  694|     mu694_9(int)              = Store               : &:r694_1, r694_8
 #  695|     v695_1(void)              = NoOp                : 
 #  691|     v691_5(void)              = ReturnVoid          : 
-#  691|     v691_6(void)              = UnmodeledUse        : mu*
-#  691|     v691_7(void)              = AliasedUse          : ~mu691_4
-#  691|     v691_8(void)              = ExitFunction        : 
+#  691|     v691_6(void)              = AliasedUse          : ~mu691_4
+#  691|     v691_7(void)              = ExitFunction        : 
 
 #  697| void FunctionReferences()
 #  697|   Block 0
@@ -3877,9 +3795,8 @@ ir.cpp:
 #  700|     mu700_6(unknown)         = ^CallSideEffect                : ~mu697_4
 #  701|     v701_1(void)             = NoOp                           : 
 #  697|     v697_5(void)             = ReturnVoid                     : 
-#  697|     v697_6(void)             = UnmodeledUse                   : mu*
-#  697|     v697_7(void)             = AliasedUse                     : ~mu697_4
-#  697|     v697_8(void)             = ExitFunction                   : 
+#  697|     v697_6(void)             = AliasedUse                     : ~mu697_4
+#  697|     v697_7(void)             = ExitFunction                   : 
 
 #  704| int min<int>(int, int)
 #  704|   Block 0
@@ -3921,9 +3838,8 @@ ir.cpp:
 #  705|     mu705_18(int)       = Store                        : &:r705_1, r705_17
 #  704|     r704_9(glval<int>)  = VariableAddress[#return]     : 
 #  704|     v704_10(void)       = ReturnValue                  : &:r704_9, ~mu704_4
-#  704|     v704_11(void)       = UnmodeledUse                 : mu*
-#  704|     v704_12(void)       = AliasedUse                   : ~mu704_4
-#  704|     v704_13(void)       = ExitFunction                 : 
+#  704|     v704_11(void)       = AliasedUse                   : ~mu704_4
+#  704|     v704_12(void)       = ExitFunction                 : 
 
 #  708| int CallMin(int, int)
 #  708|   Block 0
@@ -3946,9 +3862,8 @@ ir.cpp:
 #  709|     mu709_9(int)           = Store                    : &:r709_1, r709_7
 #  708|     r708_9(glval<int>)     = VariableAddress[#return] : 
 #  708|     v708_10(void)          = ReturnValue              : &:r708_9, ~mu708_4
-#  708|     v708_11(void)          = UnmodeledUse             : mu*
-#  708|     v708_12(void)          = AliasedUse               : ~mu708_4
-#  708|     v708_13(void)          = ExitFunction             : 
+#  708|     v708_11(void)          = AliasedUse               : ~mu708_4
+#  708|     v708_12(void)          = ExitFunction             : 
 
 #  715| long Outer<long>::Func<void*, char>(void*, char)
 #  715|   Block 0
@@ -3968,9 +3883,8 @@ ir.cpp:
 #  715|     v715_11(void)         = ReturnIndirection[x]     : &:r715_7, ~mu715_4
 #  715|     r715_12(glval<long>)  = VariableAddress[#return] : 
 #  715|     v715_13(void)         = ReturnValue              : &:r715_12, ~mu715_4
-#  715|     v715_14(void)         = UnmodeledUse             : mu*
-#  715|     v715_15(void)         = AliasedUse               : ~mu715_4
-#  715|     v715_16(void)         = ExitFunction             : 
+#  715|     v715_14(void)         = AliasedUse               : ~mu715_4
+#  715|     v715_15(void)         = ExitFunction             : 
 
 #  720| double CallNestedTemplateFunc()
 #  720|   Block 0
@@ -3990,9 +3904,8 @@ ir.cpp:
 #  721|     mu721_10(double)       = Store                        : &:r721_1, r721_9
 #  720|     r720_5(glval<double>)  = VariableAddress[#return]     : 
 #  720|     v720_6(void)           = ReturnValue                  : &:r720_5, ~mu720_4
-#  720|     v720_7(void)           = UnmodeledUse                 : mu*
-#  720|     v720_8(void)           = AliasedUse                   : ~mu720_4
-#  720|     v720_9(void)           = ExitFunction                 : 
+#  720|     v720_7(void)           = AliasedUse                   : ~mu720_4
+#  720|     v720_8(void)           = ExitFunction                 : 
 
 #  724| void TryCatch(bool)
 #  724|   Block 0
@@ -4012,12 +3925,11 @@ ir.cpp:
 #-----|   True -> Block 3
 
 #  724|   Block 1
-#  724|     v724_7(void) = UnmodeledUse : mu*
-#  724|     v724_8(void) = AliasedUse   : ~mu724_4
-#  724|     v724_9(void) = ExitFunction : 
+#  724|     v724_7(void) = AliasedUse   : ~mu724_4
+#  724|     v724_8(void) = ExitFunction : 
 
 #  724|   Block 2
-#  724|     v724_10(void) = Unwind : 
+#  724|     v724_9(void) = Unwind : 
 #-----|   Goto -> Block 1
 
 #  728|   Block 3
@@ -4117,7 +4029,7 @@ ir.cpp:
 
 #  743|   Block 14
 #  743|     v743_1(void)  = NoOp       : 
-#  724|     v724_11(void) = ReturnVoid : 
+#  724|     v724_10(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
 #  745| Base& Base::operator=(Base const&)
@@ -4155,9 +4067,8 @@ ir.cpp:
 #-----|     v0_23(void)            = ReturnIndirection[p#0]          : &:r0_3, ~mu745_4
 #  745|     r745_9(glval<Base &>)  = VariableAddress[#return]        : 
 #  745|     v745_10(void)          = ReturnValue                     : &:r745_9, ~mu745_4
-#  745|     v745_11(void)          = UnmodeledUse                    : mu*
-#  745|     v745_12(void)          = AliasedUse                      : ~mu745_4
-#  745|     v745_13(void)          = ExitFunction                    : 
+#  745|     v745_11(void)          = AliasedUse                      : ~mu745_4
+#  745|     v745_12(void)          = ExitFunction                    : 
 
 #  745| void Base::Base(Base const&)
 #  745|   Block 0
@@ -4178,9 +4089,8 @@ ir.cpp:
 #  745|     v745_11(void)          = NoOp                            : 
 #-----|     v0_5(void)             = ReturnIndirection[p#0]          : &:r0_3, ~mu745_4
 #  745|     v745_12(void)          = ReturnVoid                      : 
-#  745|     v745_13(void)          = UnmodeledUse                    : mu*
-#  745|     v745_14(void)          = AliasedUse                      : ~mu745_4
-#  745|     v745_15(void)          = ExitFunction                    : 
+#  745|     v745_13(void)          = AliasedUse                      : ~mu745_4
+#  745|     v745_14(void)          = ExitFunction                    : 
 
 #  748| void Base::Base()
 #  748|   Block 0
@@ -4196,9 +4106,8 @@ ir.cpp:
 #  748|     mu748_10(String)       = ^IndirectMayWriteSideEffect[-1] : &:r748_6
 #  749|     v749_1(void)           = NoOp                            : 
 #  748|     v748_11(void)          = ReturnVoid                      : 
-#  748|     v748_12(void)          = UnmodeledUse                    : mu*
-#  748|     v748_13(void)          = AliasedUse                      : ~mu748_4
-#  748|     v748_14(void)          = ExitFunction                    : 
+#  748|     v748_12(void)          = AliasedUse                      : ~mu748_4
+#  748|     v748_13(void)          = ExitFunction                    : 
 
 #  750| void Base::~Base()
 #  750|   Block 0
@@ -4213,9 +4122,8 @@ ir.cpp:
 #  751|     v751_4(void)           = Call                     : func:r751_3, this:r751_2
 #  751|     mu751_5(unknown)       = ^CallSideEffect          : ~mu750_4
 #  750|     v750_6(void)           = ReturnVoid               : 
-#  750|     v750_7(void)           = UnmodeledUse             : mu*
-#  750|     v750_8(void)           = AliasedUse               : ~mu750_4
-#  750|     v750_9(void)           = ExitFunction             : 
+#  750|     v750_7(void)           = AliasedUse               : ~mu750_4
+#  750|     v750_8(void)           = ExitFunction             : 
 
 #  754| Middle& Middle::operator=(Middle const&)
 #  754|   Block 0
@@ -4269,9 +4177,8 @@ ir.cpp:
 #-----|     v0_37(void)              = ReturnIndirection[p#0]                 : &:r0_3, ~mu754_4
 #  754|     r754_12(glval<Middle &>) = VariableAddress[#return]               : 
 #  754|     v754_13(void)            = ReturnValue                            : &:r754_12, ~mu754_4
-#  754|     v754_14(void)            = UnmodeledUse                           : mu*
-#  754|     v754_15(void)            = AliasedUse                             : ~mu754_4
-#  754|     v754_16(void)            = ExitFunction                           : 
+#  754|     v754_14(void)            = AliasedUse                             : ~mu754_4
+#  754|     v754_15(void)            = ExitFunction                           : 
 
 #  757| void Middle::Middle()
 #  757|   Block 0
@@ -4292,9 +4199,8 @@ ir.cpp:
 #  757|     mu757_15(String)        = ^IndirectMayWriteSideEffect[-1]        : &:r757_11
 #  758|     v758_1(void)            = NoOp                                   : 
 #  757|     v757_16(void)           = ReturnVoid                             : 
-#  757|     v757_17(void)           = UnmodeledUse                           : mu*
-#  757|     v757_18(void)           = AliasedUse                             : ~mu757_4
-#  757|     v757_19(void)           = ExitFunction                           : 
+#  757|     v757_17(void)           = AliasedUse                             : ~mu757_4
+#  757|     v757_18(void)           = ExitFunction                           : 
 
 #  759| void Middle::~Middle()
 #  759|   Block 0
@@ -4313,9 +4219,8 @@ ir.cpp:
 #  760|     v760_8(void)           = Call                                   : func:r760_7, this:r760_6
 #  760|     mu760_9(unknown)       = ^CallSideEffect                        : ~mu759_4
 #  759|     v759_6(void)           = ReturnVoid                             : 
-#  759|     v759_7(void)           = UnmodeledUse                           : mu*
-#  759|     v759_8(void)           = AliasedUse                             : ~mu759_4
-#  759|     v759_9(void)           = ExitFunction                           : 
+#  759|     v759_7(void)           = AliasedUse                             : ~mu759_4
+#  759|     v759_8(void)           = ExitFunction                           : 
 
 #  763| Derived& Derived::operator=(Derived const&)
 #  763|   Block 0
@@ -4369,9 +4274,8 @@ ir.cpp:
 #-----|     v0_37(void)               = ReturnIndirection[p#0]                    : &:r0_3, ~mu763_4
 #  763|     r763_12(glval<Derived &>) = VariableAddress[#return]                  : 
 #  763|     v763_13(void)             = ReturnValue                               : &:r763_12, ~mu763_4
-#  763|     v763_14(void)             = UnmodeledUse                              : mu*
-#  763|     v763_15(void)             = AliasedUse                                : ~mu763_4
-#  763|     v763_16(void)             = ExitFunction                              : 
+#  763|     v763_14(void)             = AliasedUse                                : ~mu763_4
+#  763|     v763_15(void)             = ExitFunction                              : 
 
 #  766| void Derived::Derived()
 #  766|   Block 0
@@ -4392,9 +4296,8 @@ ir.cpp:
 #  766|     mu766_15(String)        = ^IndirectMayWriteSideEffect[-1]           : &:r766_11
 #  767|     v767_1(void)            = NoOp                                      : 
 #  766|     v766_16(void)           = ReturnVoid                                : 
-#  766|     v766_17(void)           = UnmodeledUse                              : mu*
-#  766|     v766_18(void)           = AliasedUse                                : ~mu766_4
-#  766|     v766_19(void)           = ExitFunction                              : 
+#  766|     v766_17(void)           = AliasedUse                                : ~mu766_4
+#  766|     v766_18(void)           = ExitFunction                              : 
 
 #  768| void Derived::~Derived()
 #  768|   Block 0
@@ -4413,9 +4316,8 @@ ir.cpp:
 #  769|     v769_8(void)           = Call                                      : func:r769_7, this:r769_6
 #  769|     mu769_9(unknown)       = ^CallSideEffect                           : ~mu768_4
 #  768|     v768_6(void)           = ReturnVoid                                : 
-#  768|     v768_7(void)           = UnmodeledUse                              : mu*
-#  768|     v768_8(void)           = AliasedUse                                : ~mu768_4
-#  768|     v768_9(void)           = ExitFunction                              : 
+#  768|     v768_7(void)           = AliasedUse                                : ~mu768_4
+#  768|     v768_8(void)           = ExitFunction                              : 
 
 #  775| void MiddleVB1::MiddleVB1()
 #  775|   Block 0
@@ -4436,9 +4338,8 @@ ir.cpp:
 #  775|     mu775_15(String)         = ^IndirectMayWriteSideEffect[-1]           : &:r775_11
 #  776|     v776_1(void)             = NoOp                                      : 
 #  775|     v775_16(void)            = ReturnVoid                                : 
-#  775|     v775_17(void)            = UnmodeledUse                              : mu*
-#  775|     v775_18(void)            = AliasedUse                                : ~mu775_4
-#  775|     v775_19(void)            = ExitFunction                              : 
+#  775|     v775_17(void)            = AliasedUse                                : ~mu775_4
+#  775|     v775_18(void)            = ExitFunction                              : 
 
 #  777| void MiddleVB1::~MiddleVB1()
 #  777|   Block 0
@@ -4457,9 +4358,8 @@ ir.cpp:
 #  778|     v778_8(void)             = Call                                      : func:r778_7, this:r778_6
 #  778|     mu778_9(unknown)         = ^CallSideEffect                           : ~mu777_4
 #  777|     v777_6(void)             = ReturnVoid                                : 
-#  777|     v777_7(void)             = UnmodeledUse                              : mu*
-#  777|     v777_8(void)             = AliasedUse                                : ~mu777_4
-#  777|     v777_9(void)             = ExitFunction                              : 
+#  777|     v777_7(void)             = AliasedUse                                : ~mu777_4
+#  777|     v777_8(void)             = ExitFunction                              : 
 
 #  784| void MiddleVB2::MiddleVB2()
 #  784|   Block 0
@@ -4480,9 +4380,8 @@ ir.cpp:
 #  784|     mu784_15(String)         = ^IndirectMayWriteSideEffect[-1]           : &:r784_11
 #  785|     v785_1(void)             = NoOp                                      : 
 #  784|     v784_16(void)            = ReturnVoid                                : 
-#  784|     v784_17(void)            = UnmodeledUse                              : mu*
-#  784|     v784_18(void)            = AliasedUse                                : ~mu784_4
-#  784|     v784_19(void)            = ExitFunction                              : 
+#  784|     v784_17(void)            = AliasedUse                                : ~mu784_4
+#  784|     v784_18(void)            = ExitFunction                              : 
 
 #  786| void MiddleVB2::~MiddleVB2()
 #  786|   Block 0
@@ -4501,9 +4400,8 @@ ir.cpp:
 #  787|     v787_8(void)             = Call                                      : func:r787_7, this:r787_6
 #  787|     mu787_9(unknown)         = ^CallSideEffect                           : ~mu786_4
 #  786|     v786_6(void)             = ReturnVoid                                : 
-#  786|     v786_7(void)             = UnmodeledUse                              : mu*
-#  786|     v786_8(void)             = AliasedUse                                : ~mu786_4
-#  786|     v786_9(void)             = ExitFunction                              : 
+#  786|     v786_7(void)             = AliasedUse                                : ~mu786_4
+#  786|     v786_8(void)             = ExitFunction                              : 
 
 #  793| void DerivedVB::DerivedVB()
 #  793|   Block 0
@@ -4534,9 +4432,8 @@ ir.cpp:
 #  793|     mu793_25(String)          = ^IndirectMayWriteSideEffect[-1]                : &:r793_21
 #  794|     v794_1(void)              = NoOp                                           : 
 #  793|     v793_26(void)             = ReturnVoid                                     : 
-#  793|     v793_27(void)             = UnmodeledUse                                   : mu*
-#  793|     v793_28(void)             = AliasedUse                                     : ~mu793_4
-#  793|     v793_29(void)             = ExitFunction                                   : 
+#  793|     v793_27(void)             = AliasedUse                                     : ~mu793_4
+#  793|     v793_28(void)             = ExitFunction                                   : 
 
 #  795| void DerivedVB::~DerivedVB()
 #  795|   Block 0
@@ -4563,9 +4460,8 @@ ir.cpp:
 #  796|     v796_16(void)             = Call                                           : func:r796_15, this:r796_14
 #  796|     mu796_17(unknown)         = ^CallSideEffect                                : ~mu795_4
 #  795|     v795_6(void)              = ReturnVoid                                     : 
-#  795|     v795_7(void)              = UnmodeledUse                                   : mu*
-#  795|     v795_8(void)              = AliasedUse                                     : ~mu795_4
-#  795|     v795_9(void)              = ExitFunction                                   : 
+#  795|     v795_7(void)              = AliasedUse                                     : ~mu795_4
+#  795|     v795_8(void)              = ExitFunction                                   : 
 
 #  799| void HierarchyConversions()
 #  799|   Block 0
@@ -4857,9 +4753,8 @@ ir.cpp:
 #  839|     mu839_5(Base *)            = Store                                     : &:r839_4, r839_3
 #  840|     v840_1(void)               = NoOp                                      : 
 #  799|     v799_5(void)               = ReturnVoid                                : 
-#  799|     v799_6(void)               = UnmodeledUse                              : mu*
-#  799|     v799_7(void)               = AliasedUse                                : ~mu799_4
-#  799|     v799_8(void)               = ExitFunction                              : 
+#  799|     v799_6(void)               = AliasedUse                                : ~mu799_4
+#  799|     v799_7(void)               = ExitFunction                              : 
 
 #  842| void PolymorphicBase::PolymorphicBase()
 #  842|   Block 0
@@ -4870,9 +4765,8 @@ ir.cpp:
 #  842|     r842_5(glval<PolymorphicBase>) = InitializeThis      : 
 #  842|     v842_6(void)                   = NoOp                : 
 #  842|     v842_7(void)                   = ReturnVoid          : 
-#  842|     v842_8(void)                   = UnmodeledUse        : mu*
-#  842|     v842_9(void)                   = AliasedUse          : ~mu842_4
-#  842|     v842_10(void)                  = ExitFunction        : 
+#  842|     v842_8(void)                   = AliasedUse          : ~mu842_4
+#  842|     v842_9(void)                   = ExitFunction        : 
 
 #  846| void PolymorphicDerived::PolymorphicDerived()
 #  846|   Block 0
@@ -4888,9 +4782,8 @@ ir.cpp:
 #  846|     mu846_10(PolymorphicBase)         = ^IndirectMayWriteSideEffect[-1]                               : &:r846_6
 #  846|     v846_11(void)                     = NoOp                                                          : 
 #  846|     v846_12(void)                     = ReturnVoid                                                    : 
-#  846|     v846_13(void)                     = UnmodeledUse                                                  : mu*
-#  846|     v846_14(void)                     = AliasedUse                                                    : ~mu846_4
-#  846|     v846_15(void)                     = ExitFunction                                                  : 
+#  846|     v846_13(void)                     = AliasedUse                                                    : ~mu846_4
+#  846|     v846_14(void)                     = ExitFunction                                                  : 
 
 #  846| void PolymorphicDerived::~PolymorphicDerived()
 #  846|   Block 0
@@ -4905,9 +4798,8 @@ ir.cpp:
 #  846|     v846_8(void)                      = Call                                                          : func:r846_7, this:r846_6
 #  846|     mu846_9(unknown)                  = ^CallSideEffect                                               : ~mu846_4
 #  846|     v846_10(void)                     = ReturnVoid                                                    : 
-#  846|     v846_11(void)                     = UnmodeledUse                                                  : mu*
-#  846|     v846_12(void)                     = AliasedUse                                                    : ~mu846_4
-#  846|     v846_13(void)                     = ExitFunction                                                  : 
+#  846|     v846_11(void)                     = AliasedUse                                                    : ~mu846_4
+#  846|     v846_12(void)                     = ExitFunction                                                  : 
 
 #  849| void DynamicCast()
 #  849|   Block 0
@@ -4967,9 +4859,8 @@ ir.cpp:
 #  864|     mu864_5(void *)                     = Store                               : &:r864_1, r864_4
 #  865|     v865_1(void)                        = NoOp                                : 
 #  849|     v849_5(void)                        = ReturnVoid                          : 
-#  849|     v849_6(void)                        = UnmodeledUse                        : mu*
-#  849|     v849_7(void)                        = AliasedUse                          : ~mu849_4
-#  849|     v849_8(void)                        = ExitFunction                        : 
+#  849|     v849_6(void)                        = AliasedUse                          : ~mu849_4
+#  849|     v849_7(void)                        = ExitFunction                        : 
 
 #  867| void String::String()
 #  867|   Block 0
@@ -4988,9 +4879,8 @@ ir.cpp:
 #  868|     mu868_8(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r868_3
 #  869|     v869_1(void)           = NoOp                            : 
 #  867|     v867_6(void)           = ReturnVoid                      : 
-#  867|     v867_7(void)           = UnmodeledUse                    : mu*
-#  867|     v867_8(void)           = AliasedUse                      : ~mu867_4
-#  867|     v867_9(void)           = ExitFunction                    : 
+#  867|     v867_7(void)           = AliasedUse                      : ~mu867_4
+#  867|     v867_8(void)           = ExitFunction                    : 
 
 #  871| void ArrayConversions()
 #  871|   Block 0
@@ -5043,9 +4933,8 @@ ir.cpp:
 #  880|     mu880_4(char(*)[5])       = Store                  : &:r880_3, r880_2
 #  881|     v881_1(void)              = NoOp                   : 
 #  871|     v871_5(void)              = ReturnVoid             : 
-#  871|     v871_6(void)              = UnmodeledUse           : mu*
-#  871|     v871_7(void)              = AliasedUse             : ~mu871_4
-#  871|     v871_8(void)              = ExitFunction           : 
+#  871|     v871_6(void)              = AliasedUse             : ~mu871_4
+#  871|     v871_7(void)              = ExitFunction           : 
 
 #  883| void FuncPtrConversions(int(*)(int), void*)
 #  883|   Block 0
@@ -5072,9 +4961,8 @@ ir.cpp:
 #  886|     v886_1(void)             = NoOp                     : 
 #  883|     v883_11(void)            = ReturnIndirection[p]     : &:r883_9, ~mu883_4
 #  883|     v883_12(void)            = ReturnVoid               : 
-#  883|     v883_13(void)            = UnmodeledUse             : mu*
-#  883|     v883_14(void)            = AliasedUse               : ~mu883_4
-#  883|     v883_15(void)            = ExitFunction             : 
+#  883|     v883_13(void)            = AliasedUse               : ~mu883_4
+#  883|     v883_14(void)            = ExitFunction             : 
 
 #  888| void VAListUsage(int, __va_list_tag[1])
 #  888|   Block 0
@@ -5121,9 +5009,8 @@ ir.cpp:
 #  894|     v894_1(void)                    = NoOp                        : 
 #  888|     v888_11(void)                   = ReturnIndirection[args]     : &:r888_9, ~mu888_4
 #  888|     v888_12(void)                   = ReturnVoid                  : 
-#  888|     v888_13(void)                   = UnmodeledUse                : mu*
-#  888|     v888_14(void)                   = AliasedUse                  : ~mu888_4
-#  888|     v888_15(void)                   = ExitFunction                : 
+#  888|     v888_13(void)                   = AliasedUse                  : ~mu888_4
+#  888|     v888_14(void)                   = ExitFunction                : 
 
 #  896| void VarArgUsage(int)
 #  896|   Block 0
@@ -5188,9 +5075,8 @@ ir.cpp:
 #  906|     v906_3(void)                    = VarArgsEnd                       : r906_2
 #  907|     v907_1(void)                    = NoOp                             : 
 #  896|     v896_11(void)                   = ReturnVoid                       : 
-#  896|     v896_12(void)                   = UnmodeledUse                     : mu*
-#  896|     v896_13(void)                   = AliasedUse                       : ~mu896_4
-#  896|     v896_14(void)                   = ExitFunction                     : 
+#  896|     v896_12(void)                   = AliasedUse                       : ~mu896_4
+#  896|     v896_13(void)                   = ExitFunction                     : 
 
 #  909| void CastToVoid(int)
 #  909|   Block 0
@@ -5204,9 +5090,8 @@ ir.cpp:
 #  910|     v910_2(void)       = Convert                : r910_1
 #  911|     v911_1(void)       = NoOp                   : 
 #  909|     v909_7(void)       = ReturnVoid             : 
-#  909|     v909_8(void)       = UnmodeledUse           : mu*
-#  909|     v909_9(void)       = AliasedUse             : ~mu909_4
-#  909|     v909_10(void)      = ExitFunction           : 
+#  909|     v909_8(void)       = AliasedUse             : ~mu909_4
+#  909|     v909_9(void)       = ExitFunction           : 
 
 #  913| void ConstantConditions(int)
 #  913|   Block 0
@@ -5231,9 +5116,8 @@ ir.cpp:
 #  915|     mu915_6(int)       = Store                        : &:r915_1, r915_5
 #  916|     v916_1(void)       = NoOp                         : 
 #  913|     v913_7(void)       = ReturnVoid                   : 
-#  913|     v913_8(void)       = UnmodeledUse                 : mu*
-#  913|     v913_9(void)       = AliasedUse                   : ~mu913_4
-#  913|     v913_10(void)      = ExitFunction                 : 
+#  913|     v913_8(void)       = AliasedUse                   : ~mu913_4
+#  913|     v913_9(void)       = ExitFunction                 : 
 
 #  915|   Block 2
 #  915|     r915_7(glval<int>) = VariableAddress[x]           : 
@@ -5320,9 +5204,8 @@ ir.cpp:
 #  956|     mu956_10(Overaligned)  = Store                           : &:r956_8, r956_9
 #  957|     v957_1(void)           = NoOp                            : 
 #  949|     v949_5(void)           = ReturnVoid                      : 
-#  949|     v949_6(void)           = UnmodeledUse                    : mu*
-#  949|     v949_7(void)           = AliasedUse                      : ~mu949_4
-#  949|     v949_8(void)           = ExitFunction                    : 
+#  949|     v949_6(void)           = AliasedUse                      : ~mu949_4
+#  949|     v949_7(void)           = ExitFunction                    : 
 
 #  959| void OperatorNewArray(int)
 #  959|   Block 0
@@ -5410,9 +5293,8 @@ ir.cpp:
 #  967|     r967_10(int *)                         = Convert                         : r967_7
 #  968|     v968_1(void)                           = NoOp                            : 
 #  959|     v959_7(void)                           = ReturnVoid                      : 
-#  959|     v959_8(void)                           = UnmodeledUse                    : mu*
-#  959|     v959_9(void)                           = AliasedUse                      : ~mu959_4
-#  959|     v959_10(void)                          = ExitFunction                    : 
+#  959|     v959_8(void)                           = AliasedUse                      : ~mu959_4
+#  959|     v959_9(void)                           = ExitFunction                    : 
 
 #  970| int designatedInit()
 #  970|   Block 0
@@ -5451,9 +5333,8 @@ ir.cpp:
 #  972|     mu972_7(int)             = Store                    : &:r972_1, r972_6
 #  970|     r970_5(glval<int>)       = VariableAddress[#return] : 
 #  970|     v970_6(void)             = ReturnValue              : &:r970_5, ~mu970_4
-#  970|     v970_7(void)             = UnmodeledUse             : mu*
-#  970|     v970_8(void)             = AliasedUse               : ~mu970_4
-#  970|     v970_9(void)             = ExitFunction             : 
+#  970|     v970_7(void)             = AliasedUse               : ~mu970_4
+#  970|     v970_8(void)             = ExitFunction             : 
 
 #  975| void IfStmtWithDeclaration(int, int)
 #  975|   Block 0
@@ -5533,9 +5414,8 @@ ir.cpp:
 #  985|   Block 6
 #  985|     v985_1(void)  = NoOp         : 
 #  975|     v975_9(void)  = ReturnVoid   : 
-#  975|     v975_10(void) = UnmodeledUse : mu*
-#  975|     v975_11(void) = AliasedUse   : ~mu975_4
-#  975|     v975_12(void) = ExitFunction : 
+#  975|     v975_10(void) = AliasedUse   : ~mu975_4
+#  975|     v975_11(void) = ExitFunction : 
 
 #  987| void WhileStmtWithDeclaration(int, int)
 #  987|   Block 0
@@ -5595,9 +5475,8 @@ ir.cpp:
 #  994|   Block 6
 #  994|     v994_1(void)  = NoOp         : 
 #  987|     v987_9(void)  = ReturnVoid   : 
-#  987|     v987_10(void) = UnmodeledUse : mu*
-#  987|     v987_11(void) = AliasedUse   : ~mu987_4
-#  987|     v987_12(void) = ExitFunction : 
+#  987|     v987_10(void) = AliasedUse   : ~mu987_4
+#  987|     v987_11(void) = ExitFunction : 
 
 #  988|   Block 7
 #  988|     r988_2(glval<bool>) = VariableAddress[b] : 
@@ -5642,9 +5521,8 @@ ir.cpp:
 #  996|     v996_11(void)            = ReturnIndirection[a]     : &:r996_7, ~mu996_4
 #  996|     r996_12(glval<int>)      = VariableAddress[#return] : 
 #  996|     v996_13(void)            = ReturnValue              : &:r996_12, ~mu996_4
-#  996|     v996_14(void)            = UnmodeledUse             : mu*
-#  996|     v996_15(void)            = AliasedUse               : ~mu996_4
-#  996|     v996_16(void)            = ExitFunction             : 
+#  996|     v996_14(void)            = AliasedUse               : ~mu996_4
+#  996|     v996_15(void)            = ExitFunction             : 
 
 # 1000| int ExprStmt(int, int, int)
 # 1000|   Block 0
@@ -5695,9 +5573,8 @@ ir.cpp:
 # 1011|     mu1011_5(int)        = Store                    : &:r1011_1, r1011_4
 # 1000|     r1000_11(glval<int>) = VariableAddress[#return] : 
 # 1000|     v1000_12(void)       = ReturnValue              : &:r1000_11, ~mu1000_4
-# 1000|     v1000_13(void)       = UnmodeledUse             : mu*
-# 1000|     v1000_14(void)       = AliasedUse               : ~mu1000_4
-# 1000|     v1000_15(void)       = ExitFunction             : 
+# 1000|     v1000_13(void)       = AliasedUse               : ~mu1000_4
+# 1000|     v1000_14(void)       = ExitFunction             : 
 
 # 1015| void OperatorDelete()
 # 1015|   Block 0
@@ -5717,9 +5594,8 @@ ir.cpp:
 # 1020|     v1020_2(void)              = NoOp                : 
 # 1021|     v1021_1(void)              = NoOp                : 
 # 1015|     v1015_5(void)              = ReturnVoid          : 
-# 1015|     v1015_6(void)              = UnmodeledUse        : mu*
-# 1015|     v1015_7(void)              = AliasedUse          : ~mu1015_4
-# 1015|     v1015_8(void)              = ExitFunction        : 
+# 1015|     v1015_6(void)              = AliasedUse          : ~mu1015_4
+# 1015|     v1015_7(void)              = ExitFunction        : 
 
 # 1024| void OperatorDeleteArray()
 # 1024|   Block 0
@@ -5739,9 +5615,8 @@ ir.cpp:
 # 1029|     v1029_2(void)              = NoOp                : 
 # 1030|     v1030_1(void)              = NoOp                : 
 # 1024|     v1024_5(void)              = ReturnVoid          : 
-# 1024|     v1024_6(void)              = UnmodeledUse        : mu*
-# 1024|     v1024_7(void)              = AliasedUse          : ~mu1024_4
-# 1024|     v1024_8(void)              = ExitFunction        : 
+# 1024|     v1024_6(void)              = AliasedUse          : ~mu1024_4
+# 1024|     v1024_7(void)              = ExitFunction        : 
 
 # 1034| void EmptyStructInit()
 # 1034|   Block 0
@@ -5753,9 +5628,8 @@ ir.cpp:
 # 1035|     mu1035_2(EmptyStruct)       = Uninitialized[s]    : &:r1035_1
 # 1036|     v1036_1(void)               = NoOp                : 
 # 1034|     v1034_5(void)               = ReturnVoid          : 
-# 1034|     v1034_6(void)               = UnmodeledUse        : mu*
-# 1034|     v1034_7(void)               = AliasedUse          : ~mu1034_4
-# 1034|     v1034_8(void)               = ExitFunction        : 
+# 1034|     v1034_6(void)               = AliasedUse          : ~mu1034_4
+# 1034|     v1034_7(void)               = ExitFunction        : 
 
 # 1038| void (lambda [] type at line 1038, col. 12)::operator()() const
 # 1038|   Block 0
@@ -5766,9 +5640,8 @@ ir.cpp:
 # 1038|     r1038_5(glval<decltype([...](...){...})>) = InitializeThis      : 
 # 1038|     v1038_6(void)                             = NoOp                : 
 # 1038|     v1038_7(void)                             = ReturnVoid          : 
-# 1038|     v1038_8(void)                             = UnmodeledUse        : mu*
-# 1038|     v1038_9(void)                             = AliasedUse          : ~mu1038_4
-# 1038|     v1038_10(void)                            = ExitFunction        : 
+# 1038|     v1038_8(void)                             = AliasedUse          : ~mu1038_4
+# 1038|     v1038_9(void)                             = ExitFunction        : 
 
 # 1038| void(* (lambda [] type at line 1038, col. 12)::operator void (*)()() const)()
 # 1038|   Block 0
@@ -5782,9 +5655,8 @@ ir.cpp:
 # 1038|     mu1038_8(..(*)(..))                       = Store                    : &:r1038_6, r1038_7
 # 1038|     r1038_9(glval<..(*)(..)>)                 = VariableAddress[#return] : 
 # 1038|     v1038_10(void)                            = ReturnValue              : &:r1038_9, ~mu1038_4
-# 1038|     v1038_11(void)                            = UnmodeledUse             : mu*
-# 1038|     v1038_12(void)                            = AliasedUse               : ~mu1038_4
-# 1038|     v1038_13(void)                            = ExitFunction             : 
+# 1038|     v1038_11(void)                            = AliasedUse               : ~mu1038_4
+# 1038|     v1038_12(void)                            = ExitFunction             : 
 
 # 1040| void Lambda(int, String const&)
 # 1040|   Block 0
@@ -5951,9 +5823,8 @@ ir.cpp:
 # 1056|     v1056_1(void)                             = NoOp                                   : 
 # 1040|     v1040_11(void)                            = ReturnIndirection[s]                   : &:r1040_9, ~mu1040_4
 # 1040|     v1040_12(void)                            = ReturnVoid                             : 
-# 1040|     v1040_13(void)                            = UnmodeledUse                           : mu*
-# 1040|     v1040_14(void)                            = AliasedUse                             : ~mu1040_4
-# 1040|     v1040_15(void)                            = ExitFunction                           : 
+# 1040|     v1040_13(void)                            = AliasedUse                             : ~mu1040_4
+# 1040|     v1040_14(void)                            = ExitFunction                           : 
 
 # 1041| char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator()(float) const
 # 1041|   Block 0
@@ -5969,9 +5840,8 @@ ir.cpp:
 # 1041|     mu1041_10(char)                           = Store                    : &:r1041_8, r1041_9
 # 1041|     r1041_11(glval<char>)                     = VariableAddress[#return] : 
 # 1041|     v1041_12(void)                            = ReturnValue              : &:r1041_11, ~mu1041_4
-# 1041|     v1041_13(void)                            = UnmodeledUse             : mu*
-# 1041|     v1041_14(void)                            = AliasedUse               : ~mu1041_4
-# 1041|     v1041_15(void)                            = ExitFunction             : 
+# 1041|     v1041_13(void)                            = AliasedUse               : ~mu1041_4
+# 1041|     v1041_14(void)                            = ExitFunction             : 
 
 # 1041| char(* (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator char (*)(float)() const)(float)
 # 1041|   Block 0
@@ -5985,9 +5855,8 @@ ir.cpp:
 # 1041|     mu1041_8(..(*)(..))                       = Store                    : &:r1041_6, r1041_7
 # 1041|     r1041_9(glval<..(*)(..)>)                 = VariableAddress[#return] : 
 # 1041|     v1041_10(void)                            = ReturnValue              : &:r1041_9, ~mu1041_4
-# 1041|     v1041_11(void)                            = UnmodeledUse             : mu*
-# 1041|     v1041_12(void)                            = AliasedUse               : ~mu1041_4
-# 1041|     v1041_13(void)                            = ExitFunction             : 
+# 1041|     v1041_11(void)                            = AliasedUse               : ~mu1041_4
+# 1041|     v1041_12(void)                            = ExitFunction             : 
 
 # 1043| char (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::operator()(float) const
 # 1043|   Block 0
@@ -6017,9 +5886,8 @@ ir.cpp:
 # 1043|     mu1043_18(char)                              = Store                           : &:r1043_8, r1043_17
 # 1043|     r1043_19(glval<char>)                        = VariableAddress[#return]        : 
 # 1043|     v1043_20(void)                               = ReturnValue                     : &:r1043_19, ~mu1043_4
-# 1043|     v1043_21(void)                               = UnmodeledUse                    : mu*
-# 1043|     v1043_22(void)                               = AliasedUse                      : ~mu1043_4
-# 1043|     v1043_23(void)                               = ExitFunction                    : 
+# 1043|     v1043_21(void)                               = AliasedUse                      : ~mu1043_4
+# 1043|     v1043_22(void)                               = ExitFunction                    : 
 
 # 1045| void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::~<unnamed>()
 # 1045|   Block 0
@@ -6034,9 +5902,8 @@ ir.cpp:
 # 1045|     v1045_8(void)                             = Call                     : func:r1045_7, this:r1045_6
 # 1045|     mu1045_9(unknown)                         = ^CallSideEffect          : ~mu1045_4
 # 1045|     v1045_10(void)                            = ReturnVoid               : 
-# 1045|     v1045_11(void)                            = UnmodeledUse             : mu*
-# 1045|     v1045_12(void)                            = AliasedUse               : ~mu1045_4
-# 1045|     v1045_13(void)                            = ExitFunction             : 
+# 1045|     v1045_11(void)                            = AliasedUse               : ~mu1045_4
+# 1045|     v1045_12(void)                            = ExitFunction             : 
 
 # 1045| char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::operator()(float) const
 # 1045|   Block 0
@@ -6063,9 +5930,8 @@ ir.cpp:
 # 1045|     mu1045_14(char)                              = Store                           : &:r1045_8, r1045_13
 # 1045|     r1045_15(glval<char>)                        = VariableAddress[#return]        : 
 # 1045|     v1045_16(void)                               = ReturnValue                     : &:r1045_15, ~mu1045_4
-# 1045|     v1045_17(void)                               = UnmodeledUse                    : mu*
-# 1045|     v1045_18(void)                               = AliasedUse                      : ~mu1045_4
-# 1045|     v1045_19(void)                               = ExitFunction                    : 
+# 1045|     v1045_17(void)                               = AliasedUse                      : ~mu1045_4
+# 1045|     v1045_18(void)                               = ExitFunction                    : 
 
 # 1047| char (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator()(float) const
 # 1047|   Block 0
@@ -6092,9 +5958,8 @@ ir.cpp:
 # 1047|     mu1047_18(char)                              = Store                           : &:r1047_8, r1047_17
 # 1047|     r1047_19(glval<char>)                        = VariableAddress[#return]        : 
 # 1047|     v1047_20(void)                               = ReturnValue                     : &:r1047_19, ~mu1047_4
-# 1047|     v1047_21(void)                               = UnmodeledUse                    : mu*
-# 1047|     v1047_22(void)                               = AliasedUse                      : ~mu1047_4
-# 1047|     v1047_23(void)                               = ExitFunction                    : 
+# 1047|     v1047_21(void)                               = AliasedUse                      : ~mu1047_4
+# 1047|     v1047_22(void)                               = ExitFunction                    : 
 
 # 1049| void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::~<unnamed>()
 # 1049|   Block 0
@@ -6109,9 +5974,8 @@ ir.cpp:
 # 1049|     v1049_8(void)                             = Call                     : func:r1049_7, this:r1049_6
 # 1049|     mu1049_9(unknown)                         = ^CallSideEffect          : ~mu1049_4
 # 1049|     v1049_10(void)                            = ReturnVoid               : 
-# 1049|     v1049_11(void)                            = UnmodeledUse             : mu*
-# 1049|     v1049_12(void)                            = AliasedUse               : ~mu1049_4
-# 1049|     v1049_13(void)                            = ExitFunction             : 
+# 1049|     v1049_11(void)                            = AliasedUse               : ~mu1049_4
+# 1049|     v1049_12(void)                            = ExitFunction             : 
 
 # 1049| char (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::operator()(float) const
 # 1049|   Block 0
@@ -6136,9 +6000,8 @@ ir.cpp:
 # 1049|     mu1049_15(char)                              = Store                           : &:r1049_8, r1049_14
 # 1049|     r1049_16(glval<char>)                        = VariableAddress[#return]        : 
 # 1049|     v1049_17(void)                               = ReturnValue                     : &:r1049_16, ~mu1049_4
-# 1049|     v1049_18(void)                               = UnmodeledUse                    : mu*
-# 1049|     v1049_19(void)                               = AliasedUse                      : ~mu1049_4
-# 1049|     v1049_20(void)                               = ExitFunction                    : 
+# 1049|     v1049_18(void)                               = AliasedUse                      : ~mu1049_4
+# 1049|     v1049_19(void)                               = ExitFunction                    : 
 
 # 1051| char (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::operator()(float) const
 # 1051|   Block 0
@@ -6167,9 +6030,8 @@ ir.cpp:
 # 1051|     mu1051_17(char)                              = Store                           : &:r1051_8, r1051_16
 # 1051|     r1051_18(glval<char>)                        = VariableAddress[#return]        : 
 # 1051|     v1051_19(void)                               = ReturnValue                     : &:r1051_18, ~mu1051_4
-# 1051|     v1051_20(void)                               = UnmodeledUse                    : mu*
-# 1051|     v1051_21(void)                               = AliasedUse                      : ~mu1051_4
-# 1051|     v1051_22(void)                               = ExitFunction                    : 
+# 1051|     v1051_20(void)                               = AliasedUse                      : ~mu1051_4
+# 1051|     v1051_21(void)                               = ExitFunction                    : 
 
 # 1054| char (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator()(float) const
 # 1054|   Block 0
@@ -6207,9 +6069,8 @@ ir.cpp:
 # 1054|     mu1054_24(char)                              = Store                           : &:r1054_8, r1054_23
 # 1054|     r1054_25(glval<char>)                        = VariableAddress[#return]        : 
 # 1054|     v1054_26(void)                               = ReturnValue                     : &:r1054_25, ~mu1054_4
-# 1054|     v1054_27(void)                               = UnmodeledUse                    : mu*
-# 1054|     v1054_28(void)                               = AliasedUse                      : ~mu1054_4
-# 1054|     v1054_29(void)                               = ExitFunction                    : 
+# 1054|     v1054_27(void)                               = AliasedUse                      : ~mu1054_4
+# 1054|     v1054_28(void)                               = ExitFunction                    : 
 
 # 1077| void RangeBasedFor(vector<int> const&)
 # 1077|   Block 0
@@ -6304,9 +6165,8 @@ ir.cpp:
 # 1089|     v1089_1(void)  = NoOp                 : 
 # 1077|     v1077_9(void)  = ReturnIndirection[v] : &:r1077_7, ~mu1077_4
 # 1077|     v1077_10(void) = ReturnVoid           : 
-# 1077|     v1077_11(void) = UnmodeledUse         : mu*
-# 1077|     v1077_12(void) = AliasedUse           : ~mu1077_4
-# 1077|     v1077_13(void) = ExitFunction         : 
+# 1077|     v1077_11(void) = AliasedUse           : ~mu1077_4
+# 1077|     v1077_12(void) = ExitFunction         : 
 
 #-----|   Block 6
 #-----|     r0_24(glval<iterator>)   = VariableAddress[(__begin)]      : 
@@ -6400,9 +6260,8 @@ ir.cpp:
 # 1110|     mu1110_4(int)       = Store                    : &:r1110_1, r1110_3
 # 1108|     r1108_7(glval<int>) = VariableAddress[#return] : 
 # 1108|     v1108_8(void)       = ReturnValue              : &:r1108_7, ~mu1108_4
-# 1108|     v1108_9(void)       = UnmodeledUse             : mu*
-# 1108|     v1108_10(void)      = AliasedUse               : ~mu1108_4
-# 1108|     v1108_11(void)      = ExitFunction             : 
+# 1108|     v1108_9(void)       = AliasedUse               : ~mu1108_4
+# 1108|     v1108_10(void)      = ExitFunction             : 
 
 # 1113| void AsmStmtWithOutputs(unsigned int&, unsigned int, unsigned int&, unsigned int)
 # 1113|   Block 0
@@ -6436,9 +6295,8 @@ ir.cpp:
 # 1113|     v1113_17(void)                  = ReturnIndirection[a]     : &:r1113_7, ~mu1113_4
 # 1113|     v1113_18(void)                  = ReturnIndirection[c]     : &:r1113_13, ~mu1113_4
 # 1113|     v1113_19(void)                  = ReturnVoid               : 
-# 1113|     v1113_20(void)                  = UnmodeledUse             : mu*
-# 1113|     v1113_21(void)                  = AliasedUse               : ~mu1113_4
-# 1113|     v1113_22(void)                  = ExitFunction             : 
+# 1113|     v1113_20(void)                  = AliasedUse               : ~mu1113_4
+# 1113|     v1113_21(void)                  = ExitFunction             : 
 
 # 1122| void ExternDeclarations()
 # 1122|   Block 0
@@ -6454,9 +6312,8 @@ ir.cpp:
 # 1127|     mu1127_2(int)       = Uninitialized[h]    : &:r1127_1
 # 1129|     v1129_1(void)       = NoOp                : 
 # 1122|     v1122_5(void)       = ReturnVoid          : 
-# 1122|     v1122_6(void)       = UnmodeledUse        : mu*
-# 1122|     v1122_7(void)       = AliasedUse          : ~mu1122_4
-# 1122|     v1122_8(void)       = ExitFunction        : 
+# 1122|     v1122_6(void)       = AliasedUse          : ~mu1122_4
+# 1122|     v1122_7(void)       = ExitFunction        : 
 
 # 1137| void ExternDeclarationsInMacro()
 # 1137|   Block 0
@@ -6490,9 +6347,8 @@ ir.cpp:
 # 1139|     v1139_14(void) = NoOp         : 
 # 1140|     v1140_1(void)  = NoOp         : 
 # 1137|     v1137_5(void)  = ReturnVoid   : 
-# 1137|     v1137_6(void)  = UnmodeledUse : mu*
-# 1137|     v1137_7(void)  = AliasedUse   : ~mu1137_4
-# 1137|     v1137_8(void)  = ExitFunction : 
+# 1137|     v1137_6(void)  = AliasedUse   : ~mu1137_4
+# 1137|     v1137_7(void)  = ExitFunction : 
 
 # 1142| void TryCatchNoCatchAny(bool)
 # 1142|   Block 0
@@ -6512,12 +6368,11 @@ ir.cpp:
 #-----|   True -> Block 3
 
 # 1142|   Block 1
-# 1142|     v1142_7(void) = UnmodeledUse : mu*
-# 1142|     v1142_8(void) = AliasedUse   : ~mu1142_4
-# 1142|     v1142_9(void) = ExitFunction : 
+# 1142|     v1142_7(void) = AliasedUse   : ~mu1142_4
+# 1142|     v1142_8(void) = ExitFunction : 
 
 # 1142|   Block 2
-# 1142|     v1142_10(void) = Unwind : 
+# 1142|     v1142_9(void) = Unwind : 
 #-----|   Goto -> Block 1
 
 # 1146|   Block 3
@@ -6612,7 +6467,7 @@ ir.cpp:
 
 # 1158|   Block 13
 # 1158|     v1158_1(void)  = NoOp       : 
-# 1142|     v1142_11(void) = ReturnVoid : 
+# 1142|     v1142_10(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
 # 1162| void VectorTypes(int)
@@ -6675,9 +6530,8 @@ ir.cpp:
 # 1167|     mu1167_7(__attribute((vector_size(16UL))) int)       = Store                            : &:r1167_6, r1167_5
 # 1168|     v1168_1(void)                                        = NoOp                             : 
 # 1162|     v1162_7(void)                                        = ReturnVoid                       : 
-# 1162|     v1162_8(void)                                        = UnmodeledUse                     : mu*
-# 1162|     v1162_9(void)                                        = AliasedUse                       : ~mu1162_4
-# 1162|     v1162_10(void)                                       = ExitFunction                     : 
+# 1162|     v1162_8(void)                                        = AliasedUse                       : ~mu1162_4
+# 1162|     v1162_9(void)                                        = ExitFunction                     : 
 
 # 1172| int ModeledCallTarget(int)
 # 1172|   Block 0
@@ -6706,9 +6560,8 @@ ir.cpp:
 # 1175|     mu1175_4(int)           = Store                              : &:r1175_1, r1175_3
 # 1172|     r1172_7(glval<int>)     = VariableAddress[#return]           : 
 # 1172|     v1172_8(void)           = ReturnValue                        : &:r1172_7, ~mu1172_4
-# 1172|     v1172_9(void)           = UnmodeledUse                       : mu*
-# 1172|     v1172_10(void)          = AliasedUse                         : ~mu1172_4
-# 1172|     v1172_11(void)          = ExitFunction                       : 
+# 1172|     v1172_9(void)           = AliasedUse                         : ~mu1172_4
+# 1172|     v1172_10(void)          = ExitFunction                       : 
 
 # 1178| String ReturnObjectImpl()
 # 1178|   Block 0
@@ -6728,9 +6581,8 @@ ir.cpp:
 # 1179|     mu1179_10(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1179_5
 # 1178|     r1178_5(glval<String>)  = VariableAddress[#return]        : 
 # 1178|     v1178_6(void)           = ReturnValue                     : &:r1178_5, ~mu1178_4
-# 1178|     v1178_7(void)           = UnmodeledUse                    : mu*
-# 1178|     v1178_8(void)           = AliasedUse                      : ~mu1178_4
-# 1178|     v1178_9(void)           = ExitFunction                    : 
+# 1178|     v1178_7(void)           = AliasedUse                      : ~mu1178_4
+# 1178|     v1178_8(void)           = ExitFunction                    : 
 
 # 1182| void switch1Case(int)
 # 1182|   Block 0
@@ -6763,9 +6615,8 @@ ir.cpp:
 # 1188|     mu1188_4(int)       = Store              : &:r1188_1, r1188_3
 # 1189|     v1189_1(void)       = NoOp               : 
 # 1182|     v1182_7(void)       = ReturnVoid         : 
-# 1182|     v1182_8(void)       = UnmodeledUse       : mu*
-# 1182|     v1182_9(void)       = AliasedUse         : ~mu1182_4
-# 1182|     v1182_10(void)      = ExitFunction       : 
+# 1182|     v1182_8(void)       = AliasedUse         : ~mu1182_4
+# 1182|     v1182_9(void)       = ExitFunction       : 
 
 # 1191| void switch2Case_fallthrough(int)
 # 1191|   Block 0
@@ -6806,9 +6657,8 @@ ir.cpp:
 # 1199|     mu1199_4(int)       = Store              : &:r1199_1, r1199_3
 # 1200|     v1200_1(void)       = NoOp               : 
 # 1191|     v1191_7(void)       = ReturnVoid         : 
-# 1191|     v1191_8(void)       = UnmodeledUse       : mu*
-# 1191|     v1191_9(void)       = AliasedUse         : ~mu1191_4
-# 1191|     v1191_10(void)      = ExitFunction       : 
+# 1191|     v1191_8(void)       = AliasedUse         : ~mu1191_4
+# 1191|     v1191_9(void)       = ExitFunction       : 
 
 # 1202| void switch2Case(int)
 # 1202|   Block 0
@@ -6851,9 +6701,8 @@ ir.cpp:
 # 1211|     mu1211_4(int)       = Store              : &:r1211_1, r1211_3
 # 1212|     v1212_1(void)       = NoOp               : 
 # 1202|     v1202_7(void)       = ReturnVoid         : 
-# 1202|     v1202_8(void)       = UnmodeledUse       : mu*
-# 1202|     v1202_9(void)       = AliasedUse         : ~mu1202_4
-# 1202|     v1202_10(void)      = ExitFunction       : 
+# 1202|     v1202_8(void)       = AliasedUse         : ~mu1202_4
+# 1202|     v1202_9(void)       = ExitFunction       : 
 
 # 1214| void switch2Case_default(int)
 # 1214|   Block 0
@@ -6904,9 +6753,8 @@ ir.cpp:
 # 1228|     mu1228_4(int)       = Store              : &:r1228_1, r1228_3
 # 1229|     v1229_1(void)       = NoOp               : 
 # 1214|     v1214_7(void)       = ReturnVoid         : 
-# 1214|     v1214_8(void)       = UnmodeledUse       : mu*
-# 1214|     v1214_9(void)       = AliasedUse         : ~mu1214_4
-# 1214|     v1214_10(void)      = ExitFunction       : 
+# 1214|     v1214_8(void)       = AliasedUse         : ~mu1214_4
+# 1214|     v1214_9(void)       = ExitFunction       : 
 
 # 1231| int staticLocalInit(int)
 # 1231|   Block 0
@@ -6938,9 +6786,8 @@ ir.cpp:
 # 1237|     mu1237_13(int)       = Store                    : &:r1237_1, r1237_12
 # 1231|     r1231_7(glval<int>)  = VariableAddress[#return] : 
 # 1231|     v1231_8(void)        = ReturnValue              : &:r1231_7, ~mu1231_4
-# 1231|     v1231_9(void)        = UnmodeledUse             : mu*
-# 1231|     v1231_10(void)       = AliasedUse               : ~mu1231_4
-# 1231|     v1231_11(void)       = ExitFunction             : 
+# 1231|     v1231_9(void)        = AliasedUse               : ~mu1231_4
+# 1231|     v1231_10(void)       = ExitFunction             : 
 
 # 1234|   Block 2
 # 1234|     r1234_4(glval<int>) = VariableAddress[c] : 
@@ -7013,9 +6860,8 @@ ir.cpp:
 # 1244|     v1244_1(void)  = NoOp                       : 
 # 1240|     v1240_9(void)  = ReturnIndirection[dynamic] : &:r1240_7, ~mu1240_4
 # 1240|     v1240_10(void) = ReturnVoid                 : 
-# 1240|     v1240_11(void) = UnmodeledUse               : mu*
-# 1240|     v1240_12(void) = AliasedUse                 : ~mu1240_4
-# 1240|     v1240_13(void) = ExitFunction               : 
+# 1240|     v1240_11(void) = AliasedUse                 : ~mu1240_4
+# 1240|     v1240_12(void) = ExitFunction               : 
 
 # 1241|   Block 6
 # 1241|     r1241_4(glval<String>) = VariableAddress[a]              : 
@@ -7074,9 +6920,8 @@ ir.cpp:
 # 1251|     v1251_13(void)             = ReturnIndirection[s1]        : &:r1251_7, ~mu1251_4
 # 1251|     v1251_14(void)             = ReturnIndirection[s2]        : &:r1251_11, ~mu1251_4
 # 1251|     v1251_15(void)             = ReturnVoid                   : 
-# 1251|     v1251_16(void)             = UnmodeledUse                 : mu*
-# 1251|     v1251_17(void)             = AliasedUse                   : ~mu1251_4
-# 1251|     v1251_18(void)             = ExitFunction                 : 
+# 1251|     v1251_16(void)             = AliasedUse                   : ~mu1251_4
+# 1251|     v1251_17(void)             = ExitFunction                 : 
 
 # 1261| void A::static_member(A*, int)
 # 1261|   Block 0
@@ -7099,9 +6944,8 @@ ir.cpp:
 # 1263|     v1263_1(void)       = NoOp                     : 
 # 1261|     v1261_11(void)      = ReturnIndirection[a]     : &:r1261_7, ~mu1261_4
 # 1261|     v1261_12(void)      = ReturnVoid               : 
-# 1261|     v1261_13(void)      = UnmodeledUse             : mu*
-# 1261|     v1261_14(void)      = AliasedUse               : ~mu1261_4
-# 1261|     v1261_15(void)      = ExitFunction             : 
+# 1261|     v1261_13(void)      = AliasedUse               : ~mu1261_4
+# 1261|     v1261_14(void)      = ExitFunction             : 
 
 # 1270| void test_static_member_functions(int, A*)
 # 1270|   Block 0
@@ -7201,9 +7045,8 @@ ir.cpp:
 # 1287|     v1287_1(void)           = NoOp                                       : 
 # 1270|     v1270_11(void)          = ReturnIndirection[a_arg]                   : &:r1270_9, ~mu1270_4
 # 1270|     v1270_12(void)          = ReturnVoid                                 : 
-# 1270|     v1270_13(void)          = UnmodeledUse                               : mu*
-# 1270|     v1270_14(void)          = AliasedUse                                 : ~mu1270_4
-# 1270|     v1270_15(void)          = ExitFunction                               : 
+# 1270|     v1270_13(void)          = AliasedUse                                 : ~mu1270_4
+# 1270|     v1270_14(void)          = ExitFunction                               : 
 
 # 1289| int missingReturnValue(bool, int)
 # 1289|   Block 0
@@ -7231,9 +7074,8 @@ ir.cpp:
 # 1291|     mu1291_4(int)       = Store                    : &:r1291_1, r1291_3
 # 1289|     r1289_9(glval<int>) = VariableAddress[#return] : 
 # 1289|     v1289_10(void)      = ReturnValue              : &:r1289_9, ~mu1289_4
-# 1289|     v1289_11(void)      = UnmodeledUse             : mu*
-# 1289|     v1289_12(void)      = AliasedUse               : ~mu1289_4
-# 1289|     v1289_13(void)      = ExitFunction             : 
+# 1289|     v1289_11(void)      = AliasedUse               : ~mu1289_4
+# 1289|     v1289_12(void)      = ExitFunction             : 
 
 # 1295| void returnVoid(int, int)
 # 1295|   Block 0
@@ -7254,9 +7096,8 @@ ir.cpp:
 # 1296|     mu1296_7(unknown)       = ^CallSideEffect             : ~mu1295_4
 # 1296|     v1296_8(void)           = NoOp                        : 
 # 1295|     v1295_9(void)           = ReturnVoid                  : 
-# 1295|     v1295_10(void)          = UnmodeledUse                : mu*
-# 1295|     v1295_11(void)          = AliasedUse                  : ~mu1295_4
-# 1295|     v1295_12(void)          = ExitFunction                : 
+# 1295|     v1295_10(void)          = AliasedUse                  : ~mu1295_4
+# 1295|     v1295_11(void)          = ExitFunction                : 
 
 # 1299| void gccBinaryConditional(bool, int, long)
 # 1299|   Block 0
@@ -7440,9 +7281,8 @@ ir.cpp:
 # 1308|     mu1308_9(int)       = Store                        : &:r1308_8, r1308_7
 # 1309|     v1309_1(void)       = NoOp                         : 
 # 1299|     v1299_11(void)      = ReturnVoid                   : 
-# 1299|     v1299_12(void)      = UnmodeledUse                 : mu*
-# 1299|     v1299_13(void)      = AliasedUse                   : ~mu1299_4
-# 1299|     v1299_14(void)      = ExitFunction                 : 
+# 1299|     v1299_12(void)      = AliasedUse                   : ~mu1299_4
+# 1299|     v1299_13(void)      = ExitFunction                 : 
 
 # 1308|   Block 20
 # 1308|     r1308_10(glval<int>) = VariableAddress[#temp1308:9] : 
@@ -7537,9 +7377,8 @@ ir.cpp:
 # 1315|     mu1315_20(int)       = Store                         : &:r1315_1, r1315_19
 # 1314|     r1314_9(glval<int>)  = VariableAddress[#return]      : 
 # 1314|     v1314_10(void)       = ReturnValue                   : &:r1314_9, ~mu1314_4
-# 1314|     v1314_11(void)       = UnmodeledUse                  : mu*
-# 1314|     v1314_12(void)       = AliasedUse                    : ~mu1314_4
-# 1314|     v1314_13(void)       = ExitFunction                  : 
+# 1314|     v1314_11(void)       = AliasedUse                    : ~mu1314_4
+# 1314|     v1314_12(void)       = ExitFunction                  : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
@@ -7556,9 +7395,8 @@ perf-regression.cpp:
 #    6|     mu6_10(unknown[1073741824])   = Store                : &:r6_8, r6_9
 #    6|     v6_11(void)                   = NoOp                 : 
 #    6|     v6_12(void)                   = ReturnVoid           : 
-#    6|     v6_13(void)                   = UnmodeledUse         : mu*
-#    6|     v6_14(void)                   = AliasedUse           : ~mu6_4
-#    6|     v6_15(void)                   = ExitFunction         : 
+#    6|     v6_13(void)                   = AliasedUse           : ~mu6_4
+#    6|     v6_14(void)                   = ExitFunction         : 
 
 #    9| int main()
 #    9|   Block 0
@@ -7583,9 +7421,8 @@ perf-regression.cpp:
 #   12|     mu12_3(int)           = Store                           : &:r12_1, r12_2
 #    9|     r9_5(glval<int>)      = VariableAddress[#return]        : 
 #    9|     v9_6(void)            = ReturnValue                     : &:r9_5, ~mu9_4
-#    9|     v9_7(void)            = UnmodeledUse                    : mu*
-#    9|     v9_8(void)            = AliasedUse                      : ~mu9_4
-#    9|     v9_9(void)            = ExitFunction                    : 
+#    9|     v9_7(void)            = AliasedUse                      : ~mu9_4
+#    9|     v9_8(void)            = ExitFunction                    : 
 
 struct_init.cpp:
 #   16| void let_info_escape(Info*)
@@ -7605,9 +7442,8 @@ struct_init.cpp:
 #   18|     v18_1(void)          = NoOp                            : 
 #   16|     v16_9(void)          = ReturnIndirection[info]         : &:r16_7, ~mu16_4
 #   16|     v16_10(void)         = ReturnVoid                      : 
-#   16|     v16_11(void)         = UnmodeledUse                    : mu*
-#   16|     v16_12(void)         = AliasedUse                      : ~mu16_4
-#   16|     v16_13(void)         = ExitFunction                    : 
+#   16|     v16_11(void)         = AliasedUse                      : ~mu16_4
+#   16|     v16_12(void)         = ExitFunction                    : 
 
 #   20| void declare_static_infos()
 #   20|   Block 0
@@ -7624,9 +7460,8 @@ struct_init.cpp:
 #   25|     mu25_7(unknown)       = ^BufferMayWriteSideEffect[0]     : &:r25_3
 #   26|     v26_1(void)           = NoOp                             : 
 #   20|     v20_5(void)           = ReturnVoid                       : 
-#   20|     v20_6(void)           = UnmodeledUse                     : mu*
-#   20|     v20_7(void)           = AliasedUse                       : ~mu20_4
-#   20|     v20_8(void)           = ExitFunction                     : 
+#   20|     v20_6(void)           = AliasedUse                       : ~mu20_4
+#   20|     v20_7(void)           = ExitFunction                     : 
 
 #   28| void declare_local_infos()
 #   28|   Block 0
@@ -7664,9 +7499,8 @@ struct_init.cpp:
 #   33|     mu33_7(unknown)         = ^BufferMayWriteSideEffect[0]     : &:r33_3
 #   34|     v34_1(void)             = NoOp                             : 
 #   28|     v28_5(void)             = ReturnVoid                       : 
-#   28|     v28_6(void)             = UnmodeledUse                     : mu*
-#   28|     v28_7(void)             = AliasedUse                       : ~mu28_4
-#   28|     v28_8(void)             = ExitFunction                     : 
+#   28|     v28_6(void)             = AliasedUse                       : ~mu28_4
+#   28|     v28_7(void)             = ExitFunction                     : 
 
 #   36| void declare_static_runtime_infos(char const*)
 #   36|   Block 0
@@ -7695,9 +7529,8 @@ struct_init.cpp:
 #   42|     v42_1(void)           = NoOp                             : 
 #   36|     v36_9(void)           = ReturnIndirection[name1]         : &:r36_7, ~mu36_4
 #   36|     v36_10(void)          = ReturnVoid                       : 
-#   36|     v36_11(void)          = UnmodeledUse                     : mu*
-#   36|     v36_12(void)          = AliasedUse                       : ~mu36_4
-#   36|     v36_13(void)          = ExitFunction                     : 
+#   36|     v36_11(void)          = AliasedUse                       : ~mu36_4
+#   36|     v36_12(void)          = ExitFunction                     : 
 
 #   37|   Block 2
 #   37|     r37_4(glval<Info[2]>)   = VariableAddress[static_infos] : 
