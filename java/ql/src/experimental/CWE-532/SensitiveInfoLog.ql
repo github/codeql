@@ -42,7 +42,7 @@ class LoggerType extends RefType {
 predicate isSensitiveLoggingSink(DataFlow::Node sink) {
   exists(MethodAccess ma |
     ma.getMethod().getDeclaringType() instanceof LoggerType and
-    (ma.getMethod().hasName("debug") or ma.getMethod().hasName("trace")) and
+    (ma.getMethod().hasName("debug") or ma.getMethod().hasName("trace")) and //Check low priority log levels which are more likely to be real issues to reduce false positives
     sink.asExpr() = ma.getAnArgument()
   )
 }
