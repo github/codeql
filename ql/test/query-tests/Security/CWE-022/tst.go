@@ -15,7 +15,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	// err handling
 	defer file.Close()
 	tempFile, _ := ioutil.TempFile("/tmp", handler.Filename) // NOT OK
-	// do stuff with tempFile
+	use(tempFile)
 }
 
 func unzip2(f string, root string) {
@@ -50,3 +50,5 @@ func containedIn(f string, root string) bool {
 	}
 	return false
 }
+
+func use(v interface{}) {}
