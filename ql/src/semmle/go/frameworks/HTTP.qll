@@ -54,13 +54,21 @@ private module StdlibHttp {
     }
   }
 
+  /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
   private class StdlibResponseWriter extends HTTP::ResponseWriter::Range {
-    StdlibResponseWriter() { this.getType().implements("net/http", "ResponseWriter") }
+    SsaWithFields v;
+
+    StdlibResponseWriter() {
+      this = v.getBaseVariable().getSourceVariable() and
+      exists(Type t | t.implements("net/http", "ResponseWriter") | v.getType() = t)
+    }
+
+    override DataFlow::Node getANode() { result = v.similar().getAUse().getASuccessor*() }
 
     /** Gets a header object that corresponds to this HTTP response. */
     DataFlow::MethodCallNode getAHeaderObject() {
-      result.getTarget().hasQualifiedName("net/http", _, "Header") and
-      this.getARead() = result.getReceiver()
+      result.getTarget().getName() = "Header" and
+      this.getANode() = result.getReceiver()
     }
   }
 

@@ -59,7 +59,7 @@ module ReflectedXss {
     not htmlTypeSpecified(body) and
     (
       exists(HTTP::HeaderWrite hw | hw = body.getResponseWriter().getAHeaderWrite() |
-        hw.definesHeader("content-type", _)
+        hw.getName().getStringValue().toLowerCase() = "content-type"
       )
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |

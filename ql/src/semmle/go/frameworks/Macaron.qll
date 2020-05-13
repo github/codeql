@@ -6,11 +6,16 @@ import go
 
 private module Macaron {
   private class Context extends HTTP::ResponseWriter::Range {
+    SsaWithFields v;
+
     Context() {
+      this = v.getBaseVariable().getSourceVariable() and
       exists(Method m | m.hasQualifiedName("gopkg.in/macaron.v1", "Context", "Redirect") |
-        m = this.getType().getMethod("Redirect")
+        v.getType().getMethod("Redirect") = m
       )
     }
+
+    override DataFlow::Node getANode() { result = v.similar().getAUse().getASuccessor*() }
   }
 
   private class RedirectCall extends HTTP::Redirect::Range, DataFlow::MethodCallNode {
@@ -20,6 +25,6 @@ private module Macaron {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getARead() = this.getReceiver() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 }
