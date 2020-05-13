@@ -812,8 +812,8 @@ private module MarsDB {
   /** Gets a data flow node referring to a MarsDB collection. */
   private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
     t.start() and
-    // [new] Collection(...)
-    result = getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInvocation()
+    // new Collection(...)
+    result = getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInstantiation()
     or
     exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
   }
