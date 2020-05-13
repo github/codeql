@@ -1,0 +1,22 @@
+edges
+| xpathFlow.py:10:18:10:29 | dict of externally controlled string | xpathFlow.py:10:18:10:44 | externally controlled string |
+| xpathFlow.py:10:18:10:29 | dict of externally controlled string | xpathFlow.py:10:18:10:44 | externally controlled string |
+| xpathFlow.py:10:18:10:44 | externally controlled string | xpathFlow.py:13:20:13:29 | externally controlled string |
+| xpathFlow.py:10:18:10:44 | externally controlled string | xpathFlow.py:13:20:13:29 | externally controlled string |
+| xpathFlow.py:18:18:18:29 | dict of externally controlled string | xpathFlow.py:18:18:18:44 | externally controlled string |
+| xpathFlow.py:18:18:18:29 | dict of externally controlled string | xpathFlow.py:18:18:18:44 | externally controlled string |
+| xpathFlow.py:18:18:18:44 | externally controlled string | xpathFlow.py:21:29:21:38 | externally controlled string |
+| xpathFlow.py:18:18:18:44 | externally controlled string | xpathFlow.py:21:29:21:38 | externally controlled string |
+| xpathFlow.py:27:18:27:29 | dict of externally controlled string | xpathFlow.py:27:18:27:44 | externally controlled string |
+| xpathFlow.py:27:18:27:29 | dict of externally controlled string | xpathFlow.py:27:18:27:44 | externally controlled string |
+| xpathFlow.py:27:18:27:44 | externally controlled string | xpathFlow.py:29:29:29:38 | externally controlled string |
+| xpathFlow.py:27:18:27:44 | externally controlled string | xpathFlow.py:29:29:29:38 | externally controlled string |
+| xpathFlow.py:35:18:35:29 | dict of externally controlled string | xpathFlow.py:35:18:35:44 | externally controlled string |
+| xpathFlow.py:35:18:35:29 | dict of externally controlled string | xpathFlow.py:35:18:35:44 | externally controlled string |
+| xpathFlow.py:35:18:35:44 | externally controlled string | xpathFlow.py:37:38:37:47 | externally controlled string |
+| xpathFlow.py:35:18:35:44 | externally controlled string | xpathFlow.py:37:38:37:47 | externally controlled string |
+#select
+| xpathFlow.py:13:20:13:29 | xpathQuery | xpathFlow.py:10:18:10:29 | dict of externally controlled string | xpathFlow.py:13:20:13:29 | externally controlled string | This Xpath query depends on $@. | xpathFlow.py:10:18:10:29 | Attribute | a user-provided value |
+| xpathFlow.py:21:29:21:38 | xpathQuery | xpathFlow.py:18:18:18:29 | dict of externally controlled string | xpathFlow.py:21:29:21:38 | externally controlled string | This Xpath query depends on $@. | xpathFlow.py:18:18:18:29 | Attribute | a user-provided value |
+| xpathFlow.py:29:29:29:38 | xpathQuery | xpathFlow.py:27:18:27:29 | dict of externally controlled string | xpathFlow.py:29:29:29:38 | externally controlled string | This Xpath query depends on $@. | xpathFlow.py:27:18:27:29 | Attribute | a user-provided value |
+| xpathFlow.py:37:38:37:47 | xpathQuery | xpathFlow.py:35:18:35:29 | dict of externally controlled string | xpathFlow.py:37:38:37:47 | externally controlled string | This Xpath query depends on $@. | xpathFlow.py:35:18:35:29 | Attribute | a user-provided value |
