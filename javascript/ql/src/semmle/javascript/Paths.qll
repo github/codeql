@@ -194,7 +194,17 @@ abstract class PathExpr extends Locatable {
   Folder getSearchRoot(int priority) {
     // We default to the enclosing module's search root, though this may be overridden.
     getEnclosingModule().searchRoot(this, result, priority)
+    or
+    result = getAdditionalSearchRoot(priority)
   }
+
+  /**
+   * INTERNAL. Use `getSearchRoot` instead.
+   *
+   * Can be overridden by subclasses of `PathExpr` to provide additional search roots
+   * without overriding `getSearchRoot`.
+   */
+  Folder getAdditionalSearchRoot(int priority) { none() }
 
   /** Gets the `i`th component of this path. */
   string getComponent(int i) { result = getValue().(PathString).getComponent(i) }
@@ -276,8 +286,8 @@ private class ConcatPath extends PathExpr {
     )
   }
 
-  override Folder getSearchRoot(int priority) {
-    result = this.(AddExpr).getAnOperand().(PathExpr).getSearchRoot(priority)
+  override Folder getAdditionalSearchRoot(int priority) {
+    result = this.(AddExpr).getAnOperand().(PathExpr).getAdditionalSearchRoot(priority)
   }
 }
 
