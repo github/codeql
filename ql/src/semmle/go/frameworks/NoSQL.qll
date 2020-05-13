@@ -9,7 +9,7 @@ module NoSQL {
   /**
    * A data-flow node whose string value is interpreted as (part of) a NoSQL query.
    *
-   * Extends this class to refine existing API models. If you want to model new APIs,
+   * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `NoSQL::QueryString::Range` instead.
    */
   class NoSQLQueryString extends DataFlow::Node {
@@ -17,11 +17,6 @@ module NoSQL {
 
     NoSQLQueryString() { this = self }
   }
-
-  //TODO : Replace the following two predicate definitions with a simple call to package()
-  private string mongoDb() { result = "go.mongodb.org/mongo-driver/mongo" }
-
-  private string mongoBsonPrimitive() { result = "go.mongodb.org/mongo-driver/bson/primitive" }
 
   /** Provides classes for working with SQL query strings. */
   module NoSQLQueryString {
@@ -89,18 +84,21 @@ module NoSQL {
       MongoDbCollectionQueryString() {
         exists(Method meth, string methodName, int n |
           collectionMethods(methodName, n) and
-          meth.hasQualifiedName(mongoDb(), "Collection", methodName) and
+          meth.hasQualifiedName("go.mongodb.org/mongo-driver/mongo", "Collection", methodName) and
           this = meth.getACall().getArgument(n)
         )
       }
     }
   }
 
-  predicate isAdditionalMongoTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
-    // Taint bson.E if input is tainted
-    exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, prev) |
+  /**
+   * Holds if taint flows from `pred` to `succ` through a MongoDB-specific API.
+   */
+  predicate isAdditionalMongoTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Taint an entry if the `Value` is tainted
+    exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, pred) |
       base = succ.getASuccessor*() and
-      base.getType().hasQualifiedName(mongoBsonPrimitive(), "E") and
+      base.getType().hasQualifiedName("go.mongodb.org/mongo-driver/bson/primitive", "E") and
       f.getName() = "Value"
     )
   }
