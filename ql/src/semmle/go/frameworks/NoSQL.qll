@@ -96,9 +96,12 @@ module NoSQL {
     }
   }
 
-  predicate isAdditionalMongoTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
-    // Taint bson.E if input is tainted
-    exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, prev) |
+  /**
+   * Holds if taint flows from `pred` to `succ` through a MongoDB-specific API.
+   */
+  predicate isAdditionalMongoTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Taint an entry if the `Value` is tainted
+    exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, pred) |
       base = succ.getASuccessor*() and
       base.getType().hasQualifiedName(mongoBsonPrimitive(), "E") and
       f.getName() = "Value"
