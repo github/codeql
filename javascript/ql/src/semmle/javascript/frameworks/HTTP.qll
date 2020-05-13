@@ -370,6 +370,7 @@ module HTTP {
       /**
        * Gets a route handler that is defined by this setup.
        */
+      pragma[nomagic]
       abstract DataFlow::SourceNode getARouteHandler();
 
       /**

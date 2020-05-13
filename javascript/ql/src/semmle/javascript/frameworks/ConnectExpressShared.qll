@@ -81,6 +81,7 @@ module ConnectExpressShared {
    *
    * `kind` is one of: "error", "request", "response", "next".
    */
+  pragma[inline]
   Parameter getRouteParameterHandlerParameter(Function routeHandler, string kind) {
     result =
       getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNextParameter(),
@@ -92,6 +93,7 @@ module ConnectExpressShared {
    *
    * `kind` is one of: "error", "request", "response", "next".
    */
+  pragma[inline]
   Parameter getRouteHandlerParameter(Function routeHandler, string kind) {
     if routeHandler.getNumParameter() = 4
     then
