@@ -17,7 +17,7 @@ import PathGraph
  */
 private string getACredentialRegex() {
   result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i).*(username|url).*"
+  result = "(?i)(.*username|url).*"
 }
 
 /** The variable or concatenated string with the variable that keeps sensitive information judging by its name * */
@@ -42,7 +42,7 @@ class LoggerType extends RefType {
 predicate isSensitiveLoggingSink(DataFlow::Node sink) {
   exists(MethodAccess ma |
     ma.getMethod().getDeclaringType() instanceof LoggerType and
-    ma.getMethod().hasName("debug") and
+    (ma.getMethod().hasName("debug") or ma.getMethod().hasName("trace")) and
     sink.asExpr() = ma.getAnArgument()
   )
 }
