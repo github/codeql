@@ -18,4 +18,4 @@ string describe(Function f) {
 
 from Function f
 where exists(f.getLocation())
-select f, f.getName(), concat(describe(f), ", ")
+select f, f.getName(), f.getParameterString(), concat(describe(f), ", ")
