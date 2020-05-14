@@ -23,32 +23,49 @@ private newtype TOperand =
     defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
   }
 
-private class OperandBase extends TOperand {
+/**
+ * Base class for all register operands. This is a placeholder for the IPA union type that we will
+ * eventually use for this purpose.
+ */
+private class RegisterOperandBase extends TRegisterOperand {
   abstract string toString();
 }
 
-private class RegisterOperandBase extends OperandBase, TRegisterOperand {
-  abstract override string toString();
-}
-
+/**
+ * Returns the register operand with the specified parameters.
+ */
 private RegisterOperandBase registerOperand(
   Instruction useInstr, RegisterOperandTag tag, Instruction defInstr
 ) {
   result = TRegisterOperand(useInstr, tag, defInstr)
 }
 
-private class NonPhiMemoryOperandBase extends OperandBase, TNonPhiMemoryOperand {
-  abstract override string toString();
+/**
+ * Base class for all non-Phi memory operands. This is a placeholder for the IPA union type that we
+ * will eventually use for this purpose.
+ */
+private class NonPhiMemoryOperandBase extends TNonPhiMemoryOperand {
+  abstract string toString();
 }
 
+/**
+ * Returns the non-Phi memory operand with the specified parameters.
+ */
 private NonPhiMemoryOperandBase nonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
   result = TNonPhiMemoryOperand(useInstr, tag)
 }
 
-private class PhiOperandBase extends OperandBase, TPhiOperand {
-  abstract override string toString();
+/**
+ * Base class for all Phi operands. This is a placeholder for the IPA union type that we will
+ * eventually use for this purpose.
+ */
+private class PhiOperandBase extends TPhiOperand {
+  abstract string toString();
 }
 
+/**
+ * Returns the Phi operand with the specified parameters.
+ */
 private PhiOperandBase phiOperand(
   Instruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
 ) {
@@ -58,8 +75,8 @@ private PhiOperandBase phiOperand(
 /**
  * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
  */
-class Operand extends OperandBase {
-  override string toString() { result = "Operand" }
+class Operand extends TOperand {
+  string toString() { result = "Operand" }
 
   final Language::Location getLocation() { result = getUse().getLocation() }
 
