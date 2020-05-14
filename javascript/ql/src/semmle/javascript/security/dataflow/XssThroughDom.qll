@@ -81,10 +81,7 @@ module XssThroughDom {
     DOMTextSource() {
       exists(DataFlow::PropRead read | read = this |
         read.getBase().getALocalSource() = DOM::domValueRef() and
-        exists(string propName | propName = ["innerText", "textContent", "value", "name"] |
-          read.getPropertyName() = propName or
-          read.getPropertyNameExpr().flow().mayHaveStringValue(propName)
-        )
+        read.mayHavePropertyName(["innerText", "textContent", "value", "name"])
       )
       or
       exists(DataFlow::MethodCallNode mcn | mcn = this |
