@@ -27,3 +27,7 @@
 | functions.cpp:38:2:38:8 | MyClass | MyClass | const MyClass & from | declaration:functions.cpp:38:2:38:8 |
 | functions.cpp:39:2:39:8 | MyClass | MyClass | MyClass && from | declaration:functions.cpp:39:2:39:8 |
 | functions.cpp:40:2:40:13 | operator int | operator int |  | declaration:functions.cpp:40:2:40:13 |
+| functions.cpp:43:6:43:6 | h | h | int x | TopLevelFunction, declaration:functions.cpp:43:6:43:6, declaration:functions.cpp:44:6:44:6, isTopLevel |
+| functions.cpp:43:6:43:6 | h | h | int y | TopLevelFunction, declaration:functions.cpp:43:6:43:6, declaration:functions.cpp:44:6:44:6, isTopLevel |
+| functions.cpp:44:6:44:6 | h | h | int x | TopLevelFunction, declaration:functions.cpp:43:6:43:6, declaration:functions.cpp:44:6:44:6, isTopLevel |
+| functions.cpp:44:6:44:6 | h | h | int y | TopLevelFunction, declaration:functions.cpp:43:6:43:6, declaration:functions.cpp:44:6:44:6, isTopLevel |
