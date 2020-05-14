@@ -5,7 +5,10 @@ import semmle.python.web.flask.General
 
 /** Source of `flask.request`s. */
 class FlaskRequestSource extends HttpRequestTaintSource {
-    FlaskRequestSource() { this.(ControlFlowNode).pointsTo(Value::named("flask.request")) }
+    FlaskRequestSource() {
+        this.(ControlFlowNode).pointsTo(Value::named("flask.request")) and
+        not any(Import i).contains(this.(ControlFlowNode).getNode())
+    }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof FlaskRequestKind }
 }
