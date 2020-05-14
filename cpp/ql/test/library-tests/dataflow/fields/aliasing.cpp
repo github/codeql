@@ -26,8 +26,8 @@ void callSetters() {
   referenceSetter(s2);
   copySetter(s3);
 
-  sink(s1.m1); // flow
-  sink(s2.m1); // flow
+  sink(s1.m1); // $ast,ir=flow
+  sink(s2.m1); // $ast,ir=flow
   sink(s3.m1); // no flow
 }
 
@@ -35,12 +35,12 @@ void assignAfterAlias() {
   S s1 = { 0, 0 };
   S &ref1 = s1;
   ref1.m1 = user_input();
-  sink(s1.m1); // flow [NOT DETECTED by AST]
+  sink(s1.m1); // $f-:ast=flow $ir=flow
 
   S s2 = { 0, 0 };
   S &ref2 = s2;
   s2.m1 = user_input();
-  sink(ref2.m1); // flow [NOT DETECTED by AST]
+  sink(ref2.m1); // $f-:ast=flow $ir=flow
 }
 
 void assignAfterCopy() {
@@ -59,7 +59,7 @@ void assignBeforeCopy() {
   S s2 = { 0, 0 };
   s2.m1 = user_input();
   S copy2 = s2;
-  sink(copy2.m1); // flow
+  sink(copy2.m1); // $ast,ir=flow
 }
 
 struct Wrapper {
@@ -77,18 +77,18 @@ void pointerIntermediate() {
   Wrapper w = { { 0, 0 } };
   S *s = &w.s;
   s->m1 = user_input();
-  sink(w.s.m1); // flow [NOT DETECTED by AST]
+  sink(w.s.m1); // $f-:ast=flow $ir=flow
 }
 
 void referenceIntermediate() {
   Wrapper w = { { 0, 0 } };
   S &s = w.s;
   s.m1 = user_input();
-  sink(w.s.m1); // flow [NOT DETECTED by AST]
+  sink(w.s.m1); // $f-:ast=flow $ir=flow
 }
 
 void nestedAssign() {
   Wrapper w = { { 0, 0 } };
   w.s.m1 = user_input();
-  sink(w.s.m1); // flow
+  sink(w.s.m1); // $ast,ir=flow
 }

@@ -18,7 +18,7 @@ void sink(char *b);
 
 void handlePacket(packet *p)
 {
-    sink(p->data.buffer); // flow [NOT DETECTED by IR]
+    sink(p->data.buffer); // $ast=flow $f-:ir=flow
 }
 
 void f(buf* b)
@@ -28,7 +28,7 @@ void f(buf* b)
     argument_source(raw);
     argument_source(b->buffer);
     argument_source(p.data.buffer);
-    sink(raw); // flow [NOT DETECTED by IR]
-    sink(b->buffer); // flow [NOT DETECTED by IR]
+    sink(raw); // $ast=flow $f-:ir=flow
+    sink(b->buffer); // $ast=flow $f-:ir=flow
     handlePacket(&p);
 }
