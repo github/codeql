@@ -7,7 +7,7 @@ test_RouteHandlerExpr_getBody
 | src/express2.js:3:25:3:55 | functio ... , res } | src/express2.js:3:25:3:55 | functio ... , res } |
 | src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -30,7 +30,7 @@ test_RouteSetup
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() | false |
 | src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() | false |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() | false |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() | false |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:2:11:2:19 | express() | false |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() | false |
@@ -59,7 +59,7 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -188,6 +188,8 @@ test_isRequest
 | src/express3.js:5:14:5:16 | req |
 | src/express3.js:5:35:5:37 | req |
 | src/express4.js:5:27:5:29 | req |
+| src/express4.js:6:18:6:20 | req |
+| src/express4.js:7:18:7:20 | req |
 | src/express.js:5:16:5:18 | req |
 | src/express.js:6:26:6:28 | req |
 | src/express.js:23:3:23:5 | req |
@@ -223,7 +225,7 @@ test_RouteSetup_getRouter
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:2:11:2:19 | express() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() |
@@ -259,7 +261,7 @@ test_StandardRouteHandler
 | src/express2.js:3:25:3:55 | functio ... , res } | src/express2.js:5:11:5:13 | e() | src/express2.js:3:34:3:36 | req | src/express2.js:3:39:3:41 | res |
 | src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:5:11:5:13 | e() | src/express2.js:4:41:4:47 | request | src/express2.js:4:50:4:55 | result |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:2:11:2:19 | express() | src/express3.js:4:32:4:34 | req | src/express3.js:4:37:4:39 | res |
-| src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:2:11:2:19 | express() | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:2:11:2:19 | express() | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:2:11:2:19 | express() | src/express.js:4:32:4:34 | req | src/express.js:4:37:4:39 | res |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:2:11:2:19 | express() | src/express.js:16:28:16:30 | req | src/express.js:16:33:16:35 | res |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:2:11:2:19 | express() | src/express.js:22:39:22:41 | req | src/express.js:22:44:22:46 | res |
@@ -275,8 +277,8 @@ test_StandardRouteHandler
 test_RequestInputAccess
 | src/express3.js:5:14:5:32 | req.param("header") | parameter | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:35:5:50 | req.param("val") | parameter | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express4.js:5:9:5:11 | foo | parameter | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
-| src/express4.js:5:14:5:21 | bar: baz | parameter | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:5:9:5:11 | foo | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:5:14:5:21 | bar: baz | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:5:16:5:34 | req.param("target") | parameter | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:26:6:44 | req.param("target") | parameter | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:23:3:23:10 | req.body | body | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -350,6 +352,8 @@ test_ResponseExpr
 | src/express3.js:5:3:5:51 | res.hea ... "val")) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:6:3:6:5 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:6:3:6:17 | res.send("val") | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express4.js:8:3:8:5 | res | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:8:3:8:20 | res.send(dynamic1) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:5:3:5:5 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:3:6:5 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:3:6:45 | res.hea ... rget")) | src/express.js:4:23:9:1 | functio ... res);\\n} |
@@ -420,7 +424,7 @@ test_RouterDefinition_getARouteHandler
 | src/express2.js:2:14:2:23 | e.Router() | src/express2.js:3:25:3:55 | functio ... , res } |
 | src/express2.js:2:14:2:23 | e.Router() | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express3.js:2:11:2:19 | express() | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express4.js:2:11:2:19 | express() | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:2:11:2:19 | express() | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:2:11:2:19 | express() | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -482,7 +486,7 @@ test_RouteSetup_getServer
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() |
 | src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() |
@@ -521,7 +525,7 @@ test_RouteHandlerExpr
 | src/express2.js:6:9:6:14 | router | src/express2.js:6:1:6:15 | app.use(router) | false |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | true |
 | src/express3.js:12:9:12:20 | getHandler() | src/express3.js:12:1:12:21 | app.use ... dler()) | false |
-| src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | true |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | true |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:1:9:2 | app.get ... es);\\n}) | true |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:3:18:4 | router. ... );\\n  }) | true |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | true |
@@ -591,7 +595,7 @@ test_RouteSetup_getRequestMethod
 | src/express2.js:3:1:3:56 | router. ...  res }) | GET |
 | src/express2.js:3:1:4:77 | router. ... sult }) | POST |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | GET |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | GET |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | GET |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | GET |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | GET |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | POST |
@@ -625,7 +629,7 @@ test_RouteExpr
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:2:11:2:19 | express() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() |
@@ -671,6 +675,8 @@ test_RouteHandler_getAResponseExpr
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:3:5:51 | res.hea ... "val")) |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:5 | res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:17 | res.send("val") |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:8:3:8:5 | res |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:8:3:8:20 | res.send(dynamic1) |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:3:5:5 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:5 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:45 | res.hea ... rget")) |
@@ -746,6 +752,8 @@ test_isResponse
 | src/express3.js:5:3:5:51 | res.hea ... "val")) |
 | src/express3.js:6:3:6:5 | res |
 | src/express3.js:6:3:6:17 | res.send("val") |
+| src/express4.js:8:3:8:5 | res |
+| src/express4.js:8:3:8:20 | res.send(dynamic1) |
 | src/express.js:5:3:5:5 | res |
 | src/express.js:6:3:6:5 | res |
 | src/express.js:6:3:6:45 | res.hea ... rget")) |
@@ -812,6 +820,7 @@ test_ResponseBody
 | src/csurf-example.js:26:12:26:42 | 'csrf w ... t here' | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} |
 | src/csurf-example.js:33:14:33:34 | 'no csr ... t here' | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } |
 | src/express3.js:6:12:6:16 | "val" | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express4.js:8:12:8:19 | dynamic1 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:17:14:17:23 | "Go away." | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/params.js:8:18:8:22 | value | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:15:12:15:18 | "Hello" | src/params.js:14:24:16:1 | functio ... lo");\\n} |
@@ -819,6 +828,7 @@ test_ResponseSendArgument
 | src/csurf-example.js:26:12:26:42 | 'csrf w ... t here' | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} |
 | src/csurf-example.js:33:14:33:34 | 'no csr ... t here' | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } |
 | src/express3.js:6:12:6:16 | "val" | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express4.js:8:12:8:19 | dynamic1 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:17:14:17:23 | "Go away." | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/params.js:8:18:8:22 | value | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:15:12:15:18 | "Hello" | src/params.js:14:24:16:1 | functio ... lo");\\n} |
@@ -840,7 +850,7 @@ test_RouteSetup_getARouteHandler
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:10:12:10:32 | functio ...  res){} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -925,7 +935,7 @@ test_RouteSetup_getRouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | 0 | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | 0 | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | 0 | src/express3.js:12:9:12:20 | getHandler() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | 0 | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | 0 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | 0 | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | 0 | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | 0 | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -991,7 +1001,7 @@ test_RouteHandler
 | src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:4:41:4:47 | request | src/express2.js:4:50:4:55 | result |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:32:4:34 | req | src/express3.js:4:37:4:39 | res |
 | src/express3.js:10:12:10:32 | functio ...  res){} | src/express3.js:10:22:10:24 | req | src/express3.js:10:27:10:29 | res |
-| src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:32:4:34 | req | src/express.js:4:37:4:39 | res |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:28:16:30 | req | src/express.js:16:33:16:35 | res |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:39:22:41 | req | src/express.js:22:44:22:46 | res |
@@ -1023,7 +1033,7 @@ test_RouteSetup_getARouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
-| src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -1066,7 +1076,9 @@ test_RequestExpr
 | src/express2.js:4:60:4:66 | request | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express3.js:5:14:5:16 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:35:5:37 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express4.js:5:27:5:29 | req | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
+| src/express4.js:5:27:5:29 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:6:18:6:20 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:7:18:7:20 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:5:16:5:18 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:26:6:28 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:23:3:23:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -1101,7 +1113,9 @@ test_RouteHandler_getARequestExpr
 | src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:4:60:4:66 | request |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:14:5:16 | req |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:35:5:37 | req |
-| src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:5:27:5:29 | req |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:5:27:5:29 | req |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:6:18:6:20 | req |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:7:18:7:20 | req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:16:5:18 | req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:26:6:28 | req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:23:3:23:5 | req |
