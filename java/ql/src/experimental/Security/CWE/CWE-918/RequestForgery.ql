@@ -3,7 +3,7 @@
  * @description Sending network requests with user-controlled data allows for request forgery attacks.
  * @kind path-problem
  * @problem.severity error
- * @id java/request-forgery
+ * @id java/server-side-request-forgery
  * @tags security
  *       external/cwe/cwe-918
  */
