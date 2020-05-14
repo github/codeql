@@ -6,7 +6,7 @@ class B
     Elem *e = new Elem();
     Box1 *b1 = new Box1(e, nullptr);
     Box2 *b2 = new Box2(b1);
-    sink(b2->box1->elem1); // flow
+    sink(b2->box1->elem1); // $ast $f-:ir
     sink(b2->box1->elem2); // no flow
   }
 
@@ -16,7 +16,7 @@ class B
     Box1 *b1 = new B::Box1(nullptr, e);
     Box2 *b2 = new Box2(b1);
     sink(b2->box1->elem1); // no flow
-    sink(b2->box1->elem2); // flow
+    sink(b2->box1->elem2); // $ast $f-:ir
   }
 
   static void sink(void *o) {}
