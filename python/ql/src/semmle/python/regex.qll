@@ -124,6 +124,14 @@ abstract class RegexString extends Expr {
         )
     }
 
+    // escaped characters without any special handling (yet)
+    private predicate singleEscape(int i) {
+        exists(string c |
+          c = this.getChar(i) and
+          c != "x" and c != "U"
+        )
+    } 
+
     private predicate escapedCharacter(int start, int end) {
         this.escapingChar(start) and
         not exists(this.getText().substring(start + 1, end + 1).toInt()) and
@@ -133,7 +141,9 @@ abstract class RegexString extends Expr {
             end in [start + 2 .. start + 4] and
             exists(this.getText().substring(start + 1, end).toInt())
             or
-            this.getChar(start + 1) != "x" and end = start + 2
+            this.getChar(start + 1) = "U" and end = start + 10
+            or
+            this.singleEscape(start + 1) and end = start + 2
         )
     }
 
