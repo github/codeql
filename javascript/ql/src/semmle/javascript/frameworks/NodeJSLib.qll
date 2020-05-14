@@ -479,7 +479,9 @@ module NodeJSLib {
       methodName = "write" or
       methodName = "writeFile" or
       methodName = "writeFileSync" or
-      methodName = "writeSync"
+      methodName = "writeSync" or
+      methodName = "link" or
+      methodName = "linkSync"
     }
 
     override DataFlow::Node getADataNode() {
