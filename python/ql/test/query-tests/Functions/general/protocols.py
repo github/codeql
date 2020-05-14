@@ -117,5 +117,7 @@ class OK(object):
         yield 0
         raise StopIteration
 
+    # __bool__ returns `True` by default, so raising `TypeError` should not give an alert
+    # FP reported in https://github.com/github/codeql/issues/2388
     def __bool__(self):
         raise TypeError
