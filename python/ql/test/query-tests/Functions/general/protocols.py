@@ -119,3 +119,7 @@ class OK(object):
 
     def __bool__(self):
         raise TypeError
+
+class BadBool(object):
+    def __bool__(self):
+        raise ZeroDivisionError()
