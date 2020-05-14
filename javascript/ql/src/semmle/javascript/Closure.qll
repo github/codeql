@@ -154,7 +154,7 @@ module Closure {
 
     /**
      * Gets the top-level `exports` variable in this module, if this module is defined by
-     * a `good.module` call.
+     * a `goog.module` call.
      *
      * This variable denotes the object exported from this module.
      *
