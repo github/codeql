@@ -108,6 +108,13 @@ module ZipSlip {
       // to be a zipslip vulnerability since it may truncate an
       // existing file.
       this = NodeJSLib::Fs::moduleMember("createWriteStream").getACall().getArgument(0)
+      or
+      // Not covered by `FileSystemWriteSink` because a later call
+      // to `fs.write` is required for a write to take place.
+      exists(DataFlow::CallNode call | this = call.getArgument(0) |
+        call = NodeJSLib::Fs::moduleMember(["open", "openSync"]).getACall() and
+        call.getArgument(1).getStringValue().regexpMatch("(?i)w.{0,2}")
+      )
     }
   }
 
