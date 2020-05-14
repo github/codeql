@@ -758,6 +758,9 @@ class EqualityTestNode extends BinaryOperationNode, ExprNode {
     outcome = expr.getPolarity() and
     expr.hasOperands(lhs.asExpr(), rhs.asExpr())
   }
+
+  /** Gets the polarity of this equality test, that is, `true` for `==` and `false` for `!=`. */
+  boolean getPolarity() { result = expr.getPolarity() }
 }
 
 /**
