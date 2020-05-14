@@ -127,9 +127,9 @@ module ZipSlip {
    */
   class PathSanitizer extends Sanitizer, DataFlow::CallNode {
     PathSanitizer() {
-      this = DataFlow::moduleMember("path", "join").getACall() and
+      this = NodeJSLib::Path::moduleMember("join").getACall() and
       exists(DataFlow::CallNode inner | inner = getArgument(1) |
-        inner = DataFlow::moduleMember("path", "join").getACall() and
+        inner = NodeJSLib::Path::moduleMember("join").getACall() and
         inner.getArgument(0).mayHaveStringValue("/")
       )
     }
