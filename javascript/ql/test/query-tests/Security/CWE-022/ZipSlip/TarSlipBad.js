@@ -4,6 +4,11 @@ const extract = tar.extract();
 
 extract.on('entry', (header, stream, next) => {
   const out = fs.createWriteStream(header.name);
+
+  if (header.linkname) {
+    fs.linkSync(header.linkname, "foo");
+  }
+
   stream.pipe(out);
   stream.on('end', () => {
     next();
