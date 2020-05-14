@@ -1,6 +1,6 @@
 /**
  * @id java/incorrect-url-verification
- * @name Insertion of sensitive information into log files
+ * @name Incorrect URL verification
  * @description Apps that rely on URL parsing to verify that a given URL is pointing to a trusted server are susceptible to wrong ways of URL parsing and verification.
  * @kind problem
  * @tags security
@@ -83,5 +83,5 @@ class HostVerificationMethodAccess extends MethodAccess {
 
 from UriGetHostMethod um, MethodAccess uma, HostVerificationMethodAccess hma
 where hma.getQualifier() = uma and uma.getMethod() = um
-select "Potentially improper URL verification with $@ in $@ having $@.", hma, hma.getFile(),
+select "Potentially improper URL verification at ", hma, "having $@ ", hma.getFile(),
   hma.getArgument(0), "user-provided value"
