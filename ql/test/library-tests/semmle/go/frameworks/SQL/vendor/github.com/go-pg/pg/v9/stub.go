@@ -19,87 +19,59 @@ type Conn struct{}
 
 func (_ Conn) AddQueryHook(_ QueryHook) {}
 
-func (_ Conn) Begin() (*Tx, interface {
-	Error() string
-}) {
+func (_ Conn) Begin() (*Tx, error) {
 	return nil, nil
 }
 
-func (_ Conn) Close() interface {
-	Error() string
-} {
+func (_ Conn) Close() error {
 	return nil
 }
 
-func (_ Conn) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) CreateComposite(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ Conn) CreateComposite(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ Conn) CreateTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ Conn) CreateTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ Conn) Delete(_ interface{}) interface {
-	Error() string
-} {
+func (_ Conn) Delete(_ interface{}) error {
 	return nil
 }
 
-func (_ Conn) DropComposite(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ Conn) DropComposite(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ Conn) DropTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ Conn) DropTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ Conn) Exec(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) Exec(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) ExecOne(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) ExecOne(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) ForceDelete(_ interface{}) interface {
-	Error() string
-} {
+func (_ Conn) ForceDelete(_ interface{}) error {
 	return nil
 }
 
@@ -107,17 +79,15 @@ func (_ Conn) Formatter() interface{} {
 	return nil
 }
 
-func (_ Conn) Insert(_ ...interface{}) interface {
-	Error() string
-} {
+func (_ Conn) Insert(_ ...interface{}) error {
 	return nil
 }
 
-func (_ Conn) Model(_ ...interface{}) *interface{} {
+func (_ Conn) Model(_ ...interface{}) interface{} {
 	return nil
 }
 
-func (_ Conn) ModelContext(_ context.Context, _ ...interface{}) *interface{} {
+func (_ Conn) ModelContext(_ context.Context, _ ...interface{}) interface{} {
 	return nil
 }
 
@@ -129,53 +99,35 @@ func (_ Conn) PoolStats() *PoolStats {
 	return nil
 }
 
-func (_ Conn) Prepare(_ string) (*Stmt, interface {
-	Error() string
-}) {
+func (_ Conn) Prepare(_ string) (*Stmt, error) {
 	return nil, nil
 }
 
-func (_ Conn) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ Conn) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ Conn) RunInTransaction(_ func(*Tx) interface {
-	Error() string
-}) interface {
-	Error() string
-} {
+func (_ Conn) RunInTransaction(_ func(*Tx) error) error {
 	return nil
 }
 
-func (_ Conn) Select(_ interface{}) interface {
-	Error() string
-} {
+func (_ Conn) Select(_ interface{}) error {
 	return nil
 }
 
-func (_ Conn) Update(_ interface{}) interface {
-	Error() string
-} {
+func (_ Conn) Update(_ interface{}) error {
 	return nil
 }
 
@@ -199,87 +151,59 @@ type DB struct{}
 
 func (_ DB) AddQueryHook(_ QueryHook) {}
 
-func (_ DB) Begin() (*Tx, interface {
-	Error() string
-}) {
+func (_ DB) Begin() (*Tx, error) {
 	return nil, nil
 }
 
-func (_ DB) Close() interface {
-	Error() string
-} {
+func (_ DB) Close() error {
 	return nil
 }
 
-func (_ DB) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) CreateComposite(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ DB) CreateComposite(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ DB) CreateTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ DB) CreateTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ DB) Delete(_ interface{}) interface {
-	Error() string
-} {
+func (_ DB) Delete(_ interface{}) error {
 	return nil
 }
 
-func (_ DB) DropComposite(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ DB) DropComposite(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ DB) DropTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ DB) DropTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ DB) Exec(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) Exec(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) ExecOne(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) ExecOne(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) ForceDelete(_ interface{}) interface {
-	Error() string
-} {
+func (_ DB) ForceDelete(_ interface{}) error {
 	return nil
 }
 
@@ -287,17 +211,15 @@ func (_ DB) Formatter() interface{} {
 	return nil
 }
 
-func (_ DB) Insert(_ ...interface{}) interface {
-	Error() string
-} {
+func (_ DB) Insert(_ ...interface{}) error {
 	return nil
 }
 
-func (_ DB) Model(_ ...interface{}) *interface{} {
+func (_ DB) Model(_ ...interface{}) interface{} {
 	return nil
 }
 
-func (_ DB) ModelContext(_ context.Context, _ ...interface{}) *interface{} {
+func (_ DB) ModelContext(_ context.Context, _ ...interface{}) interface{} {
 	return nil
 }
 
@@ -309,53 +231,35 @@ func (_ DB) PoolStats() *PoolStats {
 	return nil
 }
 
-func (_ DB) Prepare(_ string) (*Stmt, interface {
-	Error() string
-}) {
+func (_ DB) Prepare(_ string) (*Stmt, error) {
 	return nil, nil
 }
 
-func (_ DB) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ DB) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ DB) RunInTransaction(_ func(*Tx) interface {
-	Error() string
-}) interface {
-	Error() string
-} {
+func (_ DB) RunInTransaction(_ func(*Tx) error) error {
 	return nil
 }
 
-func (_ DB) Select(_ interface{}) interface {
-	Error() string
-} {
+func (_ DB) Select(_ interface{}) error {
 	return nil
 }
 
-func (_ DB) Update(_ interface{}) interface {
-	Error() string
-} {
+func (_ DB) Update(_ interface{}) error {
 	return nil
 }
 
@@ -401,27 +305,19 @@ func (_ *Listener) ChannelSize(_ int) <-chan *Notification {
 	return nil
 }
 
-func (_ *Listener) Close() interface {
-	Error() string
-} {
+func (_ *Listener) Close() error {
 	return nil
 }
 
-func (_ *Listener) Listen(_ ...string) interface {
-	Error() string
-} {
+func (_ *Listener) Listen(_ ...string) error {
 	return nil
 }
 
-func (_ *Listener) Receive() (string, string, interface {
-	Error() string
-}) {
+func (_ *Listener) Receive() (string, string, error) {
 	return "", "", nil
 }
 
-func (_ *Listener) ReceiveTimeout(_ time.Duration) (string, string, interface {
-	Error() string
-}) {
+func (_ *Listener) ReceiveTimeout(_ time.Duration) (string, string, error) {
 	return "", "", nil
 }
 
@@ -435,22 +331,18 @@ type Notification struct {
 }
 
 type Options struct {
-	Network string
-	Addr    string
-	Dialer  func(context.Context, string, string) (net.Conn, interface {
-		Error() string
-	})
-	User            string
-	Password        string
-	Database        string
-	ApplicationName string
-	TLSConfig       *tls.Config
-	DialTimeout     time.Duration
-	ReadTimeout     time.Duration
-	WriteTimeout    time.Duration
-	OnConnect       func(*Conn) interface {
-		Error() string
-	}
+	Network               string
+	Addr                  string
+	Dialer                func(context.Context, string, string) (net.Conn, error)
+	User                  string
+	Password              string
+	Database              string
+	ApplicationName       string
+	TLSConfig             *tls.Config
+	DialTimeout           time.Duration
+	ReadTimeout           time.Duration
+	WriteTimeout          time.Duration
+	OnConnect             func(*Conn) error
 	MaxRetries            int
 	RetryStatementTimeout bool
 	MinRetryBackoff       time.Duration
@@ -483,106 +375,72 @@ type QueryEvent struct {
 	Query     interface{}
 	Params    []interface{}
 	Result    interface{}
-	Err       interface {
-		Error() string
-	}
-	Stash map[interface{}]interface{}
+	Err       error
+	Stash     map[interface{}]interface{}
 }
 
-func (_ *QueryEvent) FormattedQuery() (string, interface {
-	Error() string
-}) {
+func (_ *QueryEvent) FormattedQuery() (string, error) {
 	return "", nil
 }
 
-func (_ *QueryEvent) UnformattedQuery() (string, interface {
-	Error() string
-}) {
+func (_ *QueryEvent) UnformattedQuery() (string, error) {
 	return "", nil
 }
 
 type QueryHook interface {
-	AfterQuery(_ context.Context, _ *QueryEvent) interface {
-		Error() string
-	}
-	BeforeQuery(_ context.Context, _ *QueryEvent) (context.Context, interface {
-		Error() string
-	})
+	AfterQuery(_ context.Context, _ *QueryEvent) error
+	BeforeQuery(_ context.Context, _ *QueryEvent) (context.Context, error)
 }
 
 type Stmt struct{}
 
-func (_ *Stmt) Close() interface {
-	Error() string
-} {
+func (_ *Stmt) Close() error {
 	return nil
 }
 
-func (_ *Stmt) Exec(_ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) Exec(_ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) ExecContext(_ context.Context, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) ExecContext(_ context.Context, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) ExecOne(_ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) ExecOne(_ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) ExecOneContext(_ context.Context, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) ExecOneContext(_ context.Context, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) Query(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) Query(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) QueryContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) QueryContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) QueryOne(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) QueryOne(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Stmt) QueryOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Stmt) QueryOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
 type Tx struct{}
 
-func (_ *Tx) Begin() (*Tx, interface {
-	Error() string
-}) {
+func (_ *Tx) Begin() (*Tx, error) {
 	return nil, nil
 }
 
-func (_ *Tx) Close() interface {
-	Error() string
-} {
+func (_ *Tx) Close() error {
 	return nil
 }
 
-func (_ *Tx) Commit() interface {
-	Error() string
-} {
+func (_ *Tx) Commit() error {
 	return nil
 }
 
@@ -590,63 +448,43 @@ func (_ *Tx) Context() context.Context {
 	return nil
 }
 
-func (_ *Tx) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) CopyFrom(_ io.Reader, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) CopyTo(_ io.Writer, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) CreateTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) CreateTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ *Tx) Delete(_ interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) Delete(_ interface{}) error {
 	return nil
 }
 
-func (_ *Tx) DropTable(_ interface{}, _ *interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) DropTable(_ interface{}, _ interface{}) error {
 	return nil
 }
 
-func (_ *Tx) Exec(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) Exec(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) ExecContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) ExecOne(_ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) ExecOne(_ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) ExecOneContext(_ context.Context, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) ForceDelete(_ interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) ForceDelete(_ interface{}) error {
 	return nil
 }
 
@@ -654,67 +492,47 @@ func (_ *Tx) Formatter() interface{} {
 	return nil
 }
 
-func (_ *Tx) Insert(_ ...interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) Insert(_ ...interface{}) error {
 	return nil
 }
 
-func (_ *Tx) Model(_ ...interface{}) *interface{} {
+func (_ *Tx) Model(_ ...interface{}) interface{} {
 	return nil
 }
 
-func (_ *Tx) ModelContext(_ context.Context, _ ...interface{}) *interface{} {
+func (_ *Tx) ModelContext(_ context.Context, _ ...interface{}) interface{} {
 	return nil
 }
 
-func (_ *Tx) Prepare(_ string) (*Stmt, interface {
-	Error() string
-}) {
+func (_ *Tx) Prepare(_ string) (*Stmt, error) {
 	return nil, nil
 }
 
-func (_ *Tx) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) Query(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) QueryContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) QueryOne(_ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, interface {
-	Error() string
-}) {
+func (_ *Tx) QueryOneContext(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ *Tx) Rollback() interface {
-	Error() string
-} {
+func (_ *Tx) Rollback() error {
 	return nil
 }
 
-func (_ *Tx) RunInTransaction(_ func(*Tx) interface {
-	Error() string
-}) interface {
-	Error() string
-} {
+func (_ *Tx) RunInTransaction(_ func(*Tx) error) error {
 	return nil
 }
 
-func (_ *Tx) Select(_ interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) Select(_ interface{}) error {
 	return nil
 }
 
@@ -722,8 +540,6 @@ func (_ *Tx) Stmt(_ *Stmt) *Stmt {
 	return nil
 }
 
-func (_ *Tx) Update(_ interface{}) interface {
-	Error() string
-} {
+func (_ *Tx) Update(_ interface{}) error {
 	return nil
 }

@@ -63,11 +63,11 @@ type ClientOptions struct {
 	MaxConnIdleTime        *time.Duration
 	MaxPoolSize            *uint64
 	MinPoolSize            *uint64
-	PoolMonitor            *interface{}
-	Monitor                *interface{}
-	ReadConcern            *interface{}
-	ReadPreference         *interface{}
-	Registry               *interface{}
+	PoolMonitor            interface{}
+	Monitor                interface{}
+	ReadConcern            interface{}
+	ReadPreference         interface{}
+	Registry               interface{}
 	ReplicaSet             *string
 	RetryWrites            *bool
 	RetryReads             *bool
@@ -75,7 +75,7 @@ type ClientOptions struct {
 	Direct                 *bool
 	SocketTimeout          *time.Duration
 	TLSConfig              *tls.Config
-	WriteConcern           *interface{}
+	WriteConcern           interface{}
 	ZlibLevel              *int
 	ZstdLevel              *int
 	AutoEncryptionOptions  *AutoEncryptionOptions
@@ -143,23 +143,23 @@ func (_ *ClientOptions) SetMinPoolSize(_ uint64) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetMonitor(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetMonitor(_ interface{}) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetPoolMonitor(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetPoolMonitor(_ interface{}) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetReadConcern(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetReadConcern(_ interface{}) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetReadPreference(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetReadPreference(_ interface{}) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetRegistry(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetRegistry(_ interface{}) *ClientOptions {
 	return nil
 }
 
@@ -187,7 +187,7 @@ func (_ *ClientOptions) SetTLSConfig(_ *tls.Config) *ClientOptions {
 	return nil
 }
 
-func (_ *ClientOptions) SetWriteConcern(_ *interface{}) *ClientOptions {
+func (_ *ClientOptions) SetWriteConcern(_ interface{}) *ClientOptions {
 	return nil
 }
 

@@ -59,7 +59,7 @@ func (_ *Client) Connect(_ context.Context) error {
 	return nil
 }
 
-func (_ *Client) Database(_ string, _ ...*interface{}) *Database {
+func (_ *Client) Database(_ string, _ ...interface{}) *Database {
 	return nil
 }
 
@@ -67,11 +67,11 @@ func (_ *Client) Disconnect(_ context.Context) error {
 	return nil
 }
 
-func (_ *Client) ListDatabaseNames(_ context.Context, _ interface{}, _ ...*interface{}) ([]string, error) {
+func (_ *Client) ListDatabaseNames(_ context.Context, _ interface{}, _ ...interface{}) ([]string, error) {
 	return nil, nil
 }
 
-func (_ *Client) ListDatabases(_ context.Context, _ interface{}, _ ...*interface{}) (ListDatabasesResult, error) {
+func (_ *Client) ListDatabases(_ context.Context, _ interface{}, _ ...interface{}) (ListDatabasesResult, error) {
 	return ListDatabasesResult{}, nil
 }
 
@@ -79,11 +79,11 @@ func (_ *Client) NumberSessionsInProgress() int {
 	return 0
 }
 
-func (_ *Client) Ping(_ context.Context, _ *interface{}) error {
+func (_ *Client) Ping(_ context.Context, _ interface{}) error {
 	return nil
 }
 
-func (_ *Client) StartSession(_ ...*interface{}) (Session, error) {
+func (_ *Client) StartSession(_ ...interface{}) (Session, error) {
 	return nil, nil
 }
 
@@ -91,29 +91,29 @@ func (_ *Client) UseSession(_ context.Context, _ func(SessionContext) error) err
 	return nil
 }
 
-func (_ *Client) UseSessionWithOptions(_ context.Context, _ *interface{}, _ func(SessionContext) error) error {
+func (_ *Client) UseSessionWithOptions(_ context.Context, _ interface{}, _ func(SessionContext) error) error {
 	return nil
 }
 
-func (_ *Client) Watch(_ context.Context, _ interface{}, _ ...*interface{}) (*ChangeStream, error) {
+func (_ *Client) Watch(_ context.Context, _ interface{}, _ ...interface{}) (*ChangeStream, error) {
 	return nil, nil
 }
 
 type Collection struct{}
 
-func (_ *Collection) Aggregate(_ context.Context, _ interface{}, _ ...*interface{}) (*Cursor, error) {
+func (_ *Collection) Aggregate(_ context.Context, _ interface{}, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
-func (_ *Collection) BulkWrite(_ context.Context, _ []WriteModel, _ ...*interface{}) (*BulkWriteResult, error) {
+func (_ *Collection) BulkWrite(_ context.Context, _ []WriteModel, _ ...interface{}) (*BulkWriteResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) Clone(_ ...*interface{}) (*Collection, error) {
+func (_ *Collection) Clone(_ ...interface{}) (*Collection, error) {
 	return nil, nil
 }
 
-func (_ *Collection) CountDocuments(_ context.Context, _ interface{}, _ ...*interface{}) (int64, error) {
+func (_ *Collection) CountDocuments(_ context.Context, _ interface{}, _ ...interface{}) (int64, error) {
 	return 0, nil
 }
 
@@ -121,15 +121,15 @@ func (_ *Collection) Database() *Database {
 	return nil
 }
 
-func (_ *Collection) DeleteMany(_ context.Context, _ interface{}, _ ...*interface{}) (*DeleteResult, error) {
+func (_ *Collection) DeleteMany(_ context.Context, _ interface{}, _ ...interface{}) (*DeleteResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) DeleteOne(_ context.Context, _ interface{}, _ ...*interface{}) (*DeleteResult, error) {
+func (_ *Collection) DeleteOne(_ context.Context, _ interface{}, _ ...interface{}) (*DeleteResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) Distinct(_ context.Context, _ string, _ interface{}, _ ...*interface{}) ([]interface{}, error) {
+func (_ *Collection) Distinct(_ context.Context, _ string, _ interface{}, _ ...interface{}) ([]interface{}, error) {
 	return nil, nil
 }
 
@@ -137,27 +137,27 @@ func (_ *Collection) Drop(_ context.Context) error {
 	return nil
 }
 
-func (_ *Collection) EstimatedDocumentCount(_ context.Context, _ ...*interface{}) (int64, error) {
+func (_ *Collection) EstimatedDocumentCount(_ context.Context, _ ...interface{}) (int64, error) {
 	return 0, nil
 }
 
-func (_ *Collection) Find(_ context.Context, _ interface{}, _ ...*interface{}) (*Cursor, error) {
+func (_ *Collection) Find(_ context.Context, _ interface{}, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
-func (_ *Collection) FindOne(_ context.Context, _ interface{}, _ ...*interface{}) *SingleResult {
+func (_ *Collection) FindOne(_ context.Context, _ interface{}, _ ...interface{}) *SingleResult {
 	return nil
 }
 
-func (_ *Collection) FindOneAndDelete(_ context.Context, _ interface{}, _ ...*interface{}) *SingleResult {
+func (_ *Collection) FindOneAndDelete(_ context.Context, _ interface{}, _ ...interface{}) *SingleResult {
 	return nil
 }
 
-func (_ *Collection) FindOneAndReplace(_ context.Context, _ interface{}, _ interface{}, _ ...*interface{}) *SingleResult {
+func (_ *Collection) FindOneAndReplace(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) *SingleResult {
 	return nil
 }
 
-func (_ *Collection) FindOneAndUpdate(_ context.Context, _ interface{}, _ interface{}, _ ...*interface{}) *SingleResult {
+func (_ *Collection) FindOneAndUpdate(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) *SingleResult {
 	return nil
 }
 
@@ -165,11 +165,11 @@ func (_ *Collection) Indexes() IndexView {
 	return IndexView{}
 }
 
-func (_ *Collection) InsertMany(_ context.Context, _ []interface{}, _ ...*interface{}) (*InsertManyResult, error) {
+func (_ *Collection) InsertMany(_ context.Context, _ []interface{}, _ ...interface{}) (*InsertManyResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) InsertOne(_ context.Context, _ interface{}, _ ...*interface{}) (*InsertOneResult, error) {
+func (_ *Collection) InsertOne(_ context.Context, _ interface{}, _ ...interface{}) (*InsertOneResult, error) {
 	return nil, nil
 }
 
@@ -177,19 +177,19 @@ func (_ *Collection) Name() string {
 	return ""
 }
 
-func (_ *Collection) ReplaceOne(_ context.Context, _ interface{}, _ interface{}, _ ...*interface{}) (*UpdateResult, error) {
+func (_ *Collection) ReplaceOne(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (*UpdateResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) UpdateMany(_ context.Context, _ interface{}, _ interface{}, _ ...*interface{}) (*UpdateResult, error) {
+func (_ *Collection) UpdateMany(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (*UpdateResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) UpdateOne(_ context.Context, _ interface{}, _ interface{}, _ ...*interface{}) (*UpdateResult, error) {
+func (_ *Collection) UpdateOne(_ context.Context, _ interface{}, _ interface{}, _ ...interface{}) (*UpdateResult, error) {
 	return nil, nil
 }
 
-func (_ *Collection) Watch(_ context.Context, _ interface{}, _ ...*interface{}) (*ChangeStream, error) {
+func (_ *Collection) Watch(_ context.Context, _ interface{}, _ ...interface{}) (*ChangeStream, error) {
 	return nil, nil
 }
 
@@ -231,7 +231,7 @@ func (_ *Cursor) TryNext(_ context.Context) bool {
 
 type Database struct{}
 
-func (_ *Database) Aggregate(_ context.Context, _ interface{}, _ ...*interface{}) (*Cursor, error) {
+func (_ *Database) Aggregate(_ context.Context, _ interface{}, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
@@ -239,7 +239,7 @@ func (_ *Database) Client() *Client {
 	return nil
 }
 
-func (_ *Database) Collection(_ string, _ ...*interface{}) *Collection {
+func (_ *Database) Collection(_ string, _ ...interface{}) *Collection {
 	return nil
 }
 
@@ -247,11 +247,11 @@ func (_ *Database) Drop(_ context.Context) error {
 	return nil
 }
 
-func (_ *Database) ListCollectionNames(_ context.Context, _ interface{}, _ ...*interface{}) ([]string, error) {
+func (_ *Database) ListCollectionNames(_ context.Context, _ interface{}, _ ...interface{}) ([]string, error) {
 	return nil, nil
 }
 
-func (_ *Database) ListCollections(_ context.Context, _ interface{}, _ ...*interface{}) (*Cursor, error) {
+func (_ *Database) ListCollections(_ context.Context, _ interface{}, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
@@ -259,27 +259,27 @@ func (_ *Database) Name() string {
 	return ""
 }
 
-func (_ *Database) ReadConcern() *interface{} {
+func (_ *Database) ReadConcern() interface{} {
 	return nil
 }
 
-func (_ *Database) ReadPreference() *interface{} {
+func (_ *Database) ReadPreference() interface{} {
 	return nil
 }
 
-func (_ *Database) RunCommand(_ context.Context, _ interface{}, _ ...*interface{}) *SingleResult {
+func (_ *Database) RunCommand(_ context.Context, _ interface{}, _ ...interface{}) *SingleResult {
 	return nil
 }
 
-func (_ *Database) RunCommandCursor(_ context.Context, _ interface{}, _ ...*interface{}) (*Cursor, error) {
+func (_ *Database) RunCommandCursor(_ context.Context, _ interface{}, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
-func (_ *Database) Watch(_ context.Context, _ interface{}, _ ...*interface{}) (*ChangeStream, error) {
+func (_ *Database) Watch(_ context.Context, _ interface{}, _ ...interface{}) (*ChangeStream, error) {
 	return nil, nil
 }
 
-func (_ *Database) WriteConcern() *interface{} {
+func (_ *Database) WriteConcern() interface{} {
 	return nil
 }
 
@@ -295,28 +295,28 @@ type DeleteResult struct {
 
 type IndexModel struct {
 	Keys    interface{}
-	Options *interface{}
+	Options interface{}
 }
 
 type IndexView struct{}
 
-func (_ IndexView) CreateMany(_ context.Context, _ []IndexModel, _ ...*interface{}) ([]string, error) {
+func (_ IndexView) CreateMany(_ context.Context, _ []IndexModel, _ ...interface{}) ([]string, error) {
 	return nil, nil
 }
 
-func (_ IndexView) CreateOne(_ context.Context, _ IndexModel, _ ...*interface{}) (string, error) {
+func (_ IndexView) CreateOne(_ context.Context, _ IndexModel, _ ...interface{}) (string, error) {
 	return "", nil
 }
 
-func (_ IndexView) DropAll(_ context.Context, _ ...*interface{}) (interface{}, error) {
+func (_ IndexView) DropAll(_ context.Context, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ IndexView) DropOne(_ context.Context, _ string, _ ...*interface{}) (interface{}, error) {
+func (_ IndexView) DropOne(_ context.Context, _ string, _ ...interface{}) (interface{}, error) {
 	return nil, nil
 }
 
-func (_ IndexView) List(_ context.Context, _ ...*interface{}) (*Cursor, error) {
+func (_ IndexView) List(_ context.Context, _ ...interface{}) (*Cursor, error) {
 	return nil, nil
 }
 
@@ -338,20 +338,20 @@ type Pipeline []interface{}
 type Session interface {
 	AbortTransaction(_ context.Context) error
 	AdvanceClusterTime(_ interface{}) error
-	AdvanceOperationTime(_ *interface{}) error
+	AdvanceOperationTime(_ interface{}) error
 	Client() *Client
 	ClusterTime() interface{}
 	CommitTransaction(_ context.Context) error
 	EndSession(_ context.Context)
-	OperationTime() *interface{}
-	StartTransaction(_ ...*interface{}) error
-	WithTransaction(_ context.Context, _ func(SessionContext) (interface{}, error), _ ...*interface{}) (interface{}, error)
+	OperationTime() interface{}
+	StartTransaction(_ ...interface{}) error
+	WithTransaction(_ context.Context, _ func(SessionContext) (interface{}, error), _ ...interface{}) (interface{}, error)
 }
 
 type SessionContext interface {
 	AbortTransaction(_ context.Context) error
 	AdvanceClusterTime(_ interface{}) error
-	AdvanceOperationTime(_ *interface{}) error
+	AdvanceOperationTime(_ interface{}) error
 	Client() *Client
 	ClusterTime() interface{}
 	CommitTransaction(_ context.Context) error
@@ -359,10 +359,10 @@ type SessionContext interface {
 	Done() <-chan struct{}
 	EndSession(_ context.Context)
 	Err() error
-	OperationTime() *interface{}
-	StartTransaction(_ ...*interface{}) error
+	OperationTime() interface{}
+	StartTransaction(_ ...interface{}) error
 	Value(_ interface{}) interface{}
-	WithTransaction(_ context.Context, _ func(SessionContext) (interface{}, error), _ ...*interface{}) (interface{}, error)
+	WithTransaction(_ context.Context, _ func(SessionContext) (interface{}, error), _ ...interface{}) (interface{}, error)
 }
 
 type SingleResult struct{}
