@@ -107,7 +107,7 @@ module ZipSlip {
       // However, we want to consider even the bare `createWriteStream`
       // to be a zipslip vulnerability since it may truncate an
       // existing file.
-      this = DataFlow::moduleImport("fs").getAMemberCall("createWriteStream").getArgument(0)
+      this = NodeJSLib::Fs::moduleMember("createWriteStream").getACall().getArgument(0)
     }
   }
 
