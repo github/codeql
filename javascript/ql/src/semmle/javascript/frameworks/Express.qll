@@ -461,28 +461,21 @@ module Express {
     string kind;
 
     RequestInputAccess() {
-      exists(DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+      exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
         (
-          this.(DataFlow::MethodCallNode).calls(request, "param")
+          this = request.getAMethodCall("param")
           or
-          exists(DataFlow::PropRead base, string propName |
-            // `req.params.name` or `req.query.name`
-            base.accesses(request, propName) and
-            this = base.getAPropertyReference(_)
-          |
-            propName = "params" or
-            propName = "query"
-          )
+          this = request.getAPropertyRead(["params", "query"]).getAPropertyRead()
         )
         or
         // `req.originalUrl`
         kind = "url" and
-        this.(DataFlow::PropRef).accesses(request, "originalUrl")
+        this = request.getAPropertyRead("originalUrl")
         or
         // `req.cookies`
         kind = "cookie" and
-        this.(DataFlow::PropRef).accesses(request, "cookies")
+        this = request.getAPropertyRead("cookies")
       )
       or
       kind = "body" and
