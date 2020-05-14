@@ -122,6 +122,20 @@ module ZipSlip {
   }
 
   /**
+   * An expression that forces the output path to be in the current working folder.
+   * Recognizes the pattern: `path.join(cwd, path.join('/', orgPath))`.
+   */
+  class PathSanitizer extends Sanitizer, DataFlow::CallNode {
+    PathSanitizer() {
+      this = DataFlow::moduleMember("path", "join").getACall() and
+      exists(DataFlow::CallNode inner | inner = getArgument(1) |
+        inner = DataFlow::moduleMember("path", "join").getACall() and
+        inner.getArgument(0).mayHaveStringValue("/")
+      )
+    }
+  }
+
+  /**
    * Gets a string which is sufficient to exclude to make
    * a filepath definitely not refer to parent directories.
    */
