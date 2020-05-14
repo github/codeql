@@ -121,7 +121,7 @@ void taint_x(Point *pp) {
 }
 
 void y_to_sink(Point *pp) {
-  sink(pp->y); // not tainted [FALSE POSITIVE]
+  sink(pp->y); // not tainted
 }
 
 void test_conflated_fields2() {
