@@ -705,20 +705,17 @@ module NodeJSLib {
   /**
    * A call to a method from module `vm`
    */
-  class VmModuleMethodCall extends DataFlow::CallNode {
-    string methodName;
+  class VmModuleMemberInvocation extends DataFlow::InvokeNode {
+    string memberName;
 
-    VmModuleMethodCall() { this = DataFlow::moduleMember("vm", methodName).getACall() }
+    VmModuleMemberInvocation() { this = DataFlow::moduleMember("vm", memberName).getAnInvocation() }
 
     /**
      * Gets the code to be executed as part of this call.
      */
     DataFlow::Node getACodeArgument() {
-      (
-        methodName = "runInContext" or
-        methodName = "runInNewContext" or
-        methodName = "runInThisContext"
-      ) and
+      memberName in ["Script", "SourceTextModule", "compileFunction", "runInContext",
+            "runInNewContext", "runInThisContext"] and
       // all of the above methods take the command as their first argument
       result = getArgument(0)
     }
