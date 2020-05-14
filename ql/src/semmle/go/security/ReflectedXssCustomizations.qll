@@ -109,7 +109,11 @@ module ReflectedXss {
    */
   class EqualityTestGuard extends SanitizerGuard, DataFlow::EqualityTestNode {
     override predicate checks(Expr e, boolean outcome) {
-      e = this.getAnOperand().asExpr() and this.eq(outcome, _, _)
+      exists(DataFlow::Node const | const.isConst() |
+        const = this.getAnOperand() and
+        e = this.getAnOperand().asExpr() and
+        this.eq(outcome, _, _)
+      )
     }
   }
 }

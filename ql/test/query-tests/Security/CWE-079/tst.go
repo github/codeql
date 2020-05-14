@@ -48,7 +48,7 @@ func serve8() {
 		if service != "service1" && service != "service2" {
 			fmt.Fprintln(w, "Service not found")
 		} else {
-			// OK: json data cannot cause an HTML content type to be detected
+			// OK, but caught: service is known to be either "service1" or "service2" here
 			w.Write([]byte(service))
 		}
 	})
