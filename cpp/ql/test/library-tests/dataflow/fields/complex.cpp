@@ -22,6 +22,12 @@ public:
   Bar() : f(0, 0) {}
 };
 
+class Outer
+{
+public:
+  Bar inner;
+};
+
 int user_input()
 {
   return 42;
@@ -31,31 +37,32 @@ void sink(int x)
 {
 }
 
-void bar(Bar &b)
+void bar(Outer &b)
 {
   // The library correctly finds that the four `user_input` sources can make it
   // to the `sink` calls, but it also finds some source/sink combinations that
   // are impossible. Those false positives here are a consequence of how the
   // shared data flow library overapproximates field flow. The library only
-  // tracks the head (`f`) and the length (2) of the field access path, and
-  // then it tracks that both `a_` and `b_` have followed `f` in _some_ access
-  // path somewhere in the search. That makes the library conclude that there
-  // could be flow to `b.f.a_` even when the flow was actually to `b.f.b_`.
-  sink(b.f.a()); //$ast=flow 55:13 $ast=flow 57:13 $f-:ir=flow
-  sink(b.f.b()); //$ast=flow 56:13 $ast=flow 58:13 $f-:ir=flow
+  // tracks the final two fields (`f` and `inner`) and the length (3) of the field
+  // access path, and then it tracks that both `a_` and `b_` have followed `f.inner`
+  // in _some_ access path somewhere in the search. That makes the library conclude
+  // that there could be flow to `b.inner.f.a_` even when the flow was actually to
+  // `b.inner.f.b_`.
+  sink(b.inner.f.a()); // $ast=flow 61:19 $f+:ast=flow 62:19 $ast=flow 63:19 $f+:ast=flow 64:19 $f-:ir=flow
+  sink(b.inner.f.b()); // $f+:ast=flow 61:19 $ast=flow 62:19 $f+:ast=flow 63:19 $ast=flow 64:19 $f-:ir=flow
 }
 
 void foo()
 {
-  Bar b1;
-  Bar b2;
-  Bar b3;
-  Bar b4;
+  Outer b1;
+  Outer b2;
+  Outer b3;
+  Outer b4;
 
-  b1.f.setA(user_input());
-  b2.f.setB(user_input());
-  b3.f.setA(user_input());
-  b3.f.setB(user_input());
+  b1.inner.f.setA(user_input());
+  b2.inner.f.setB(user_input());
+  b3.inner.f.setA(user_input());
+  b3.inner.f.setB(user_input());
 
   // Only a() should alert
   bar(b1);
