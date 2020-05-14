@@ -124,35 +124,47 @@ abstract class RegexString extends Expr {
         )
     }
 
-    // escaped characters without any special handling (yet)
+    /** Escaped characters without any special handling (yet) */
     private predicate singleEscape(int i) {
         exists(string c |
           c = this.getChar(i) and
-          c != "x" and c != "U" and c!= "N"
+          c != "x" and c != "u" and c != "U" and c != "N"
         )
-    } 
+    }
+
+    /** Named unicode characters, eg \N{degree sign} */
+    private predicate escapedName(int start, int end) {
+        this.getChar(start + 1) = "N" and
+        this.getChar(start + 2) = "{" and
+        this.getChar(end - 1) = "}" and
+        end > start and
+        not exists(int i |
+            i > start + 2 and
+            i < end - 1 and
+            this.getChar(i) = "}"
+        )
+    }
 
     private predicate escapedCharacter(int start, int end) {
         this.escapingChar(start) and
         not exists(this.getText().substring(start + 1, end + 1).toInt()) and
         (
+            // hex value \xhh
             this.getChar(start + 1) = "x" and end = start + 4
             or
+            // octal value \ooo
             end in [start + 2 .. start + 4] and
             exists(this.getText().substring(start + 1, end).toInt())
             or
+            // 16-bit hex value
+            this.getChar(start + 1) = "u" and end = start + 6
+            or
+            // 32-bit hex value
             this.getChar(start + 1) = "U" and end = start + 10
             or
-            this.getChar(start + 1) = "N" and
-            this.getChar(start + 2) = "{" and
-            this.getChar(end - 1) = "}" and
-            end > start and
-            not exists(int i |
-              i > start + 2 and
-              i < end - 1 and
-              this.getChar(i) = "}"
-            )
+            escapedName(start, end)
             or
+            // single character not handled above, update when adding a new case
             this.singleEscape(start + 1) and end = start + 2
         )
     }
