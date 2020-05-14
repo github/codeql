@@ -191,10 +191,10 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
     result = ""
     or
     index = getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName()
+    result = min(getParameter(index).getTypedName())
     or
     index < getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+    result = min(getParameter(index).getTypedName()) + ", " + getParameterStringFrom(index + 1)
   }
 
   /** Gets a call to this function. */
@@ -623,11 +623,11 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
     result = ""
     or
     index = getNumberOfParameters() - 1 and
-    result = getParameterDeclarationEntry(index).getTypedName()
+    result = min(getParameterDeclarationEntry(index).getTypedName())
     or
     index < getNumberOfParameters() - 1 and
     result =
-      getParameterDeclarationEntry(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+      min(getParameterDeclarationEntry(index).getTypedName()) + ", " + getParameterStringFrom(index + 1)
   }
 
   /**
