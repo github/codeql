@@ -116,6 +116,8 @@ predicate preferred_raise(string name, ClassObject ex) {
     ordering_method(name) and ex = theTypeErrorType()
     or
     arithmetic_method(name) and ex = Object::builtin("ArithmeticError")
+    or
+    name = "__bool__" and ex = theTypeErrorType()
 }
 
 predicate no_need_to_raise(string name, string message) {
