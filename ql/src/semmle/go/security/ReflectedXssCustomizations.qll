@@ -71,7 +71,7 @@ module ReflectedXss {
       )
       or
       exists(DataFlow::Node pred | body = pred.getASuccessor*() |
-        // data starting with `<` cannot cause an HTML content type to be detected.
+        // data starting with a character other than `<` cannot cause an HTML content type to be detected.
         pred.getStringValue().regexpMatch("^[^<].*")
         or
         // json data cannot begin with `<`
