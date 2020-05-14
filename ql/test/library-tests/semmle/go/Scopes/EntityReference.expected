@@ -13,6 +13,7 @@
 | file://:0:0:0:0 | int | <library> | types.go:27:25:27:27 | int |
 | file://:0:0:0:0 | int | <library> | types.go:33:24:33:26 | int |
 | file://:0:0:0:0 | int | <library> | types.go:37:24:37:26 | int |
+| file://:0:0:0:0 | int | <library> | types.go:43:9:43:11 | int |
 | main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:5:6:5:6 | t |
 | main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:13:13:13:13 | t |
 | main.go:5:6:5:6 | t | main.go@5:6:5:6 | main.go:17:29:17:29 | t |
@@ -42,6 +43,7 @@
 | main.go:23:16:23:19 | bump | main.go@23:16:23:19 | main.go:23:16:23:19 | bump |
 | types.go:3:6:3:17 | iHaveAMethod | types.go@3:6:3:17 | main.go:17:12:17:23 | iHaveAMethod |
 | types.go:3:6:3:17 | iHaveAMethod | types.go@3:6:3:17 | types.go:3:6:3:17 | iHaveAMethod |
+| types.go:3:6:3:17 | iHaveAMethod | types.go@3:6:3:17 | types.go:42:2:42:13 | iHaveAMethod |
 | types.go:4:2:4:5 | meth | types.go@4:2:4:5 | main.go:18:2:18:7 | selection of meth |
 | types.go:4:2:4:5 | meth | types.go@4:2:4:5 | main.go:18:4:18:7 | meth |
 | types.go:4:2:4:5 | meth | types.go@4:2:4:5 | types.go:4:2:4:5 | meth |
@@ -65,3 +67,5 @@
 | types.go:33:22:33:22 | a | types.go@33:22:33:22 | types.go:33:22:33:22 | a |
 | types.go:33:22:33:22 | a | types.go@33:22:33:22 | types.go:34:9:34:9 | a |
 | types.go:37:16:37:20 | meth2 | types.go@37:16:37:20 | types.go:37:16:37:20 | meth2 |
+| types.go:41:6:41:27 | iHaveARedeclaredMethod | types.go@41:6:41:27 | types.go:41:6:41:27 | iHaveARedeclaredMethod |
+| types.go:43:2:43:5 | meth | types.go@43:2:43:5 | types.go:43:2:43:5 | meth |

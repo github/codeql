@@ -1,10 +1,16 @@
 | iHaveAMethod | meth | iHaveAMethod | meth |
+| iHaveARedeclaredMethod | meth | iHaveARedeclaredMethod | meth |
 | meth1Iface | meth1 | meth1Iface | meth1 |
-| meth1Iface | meth1 | twoMethods | meth1 |
+| notImpl | meth1 | notImpl | meth1 |
+| notImpl | meth2 | notImpl | meth2 |
+| pointer type | bump | pointer type | bump |
 | pointer type | meth | iHaveAMethod | meth |
+| pointer type | meth | iHaveARedeclaredMethod | meth |
+| pointer type | meth | pointer type | meth |
 | pointer type | meth1 | meth1Iface | meth1 |
+| pointer type | meth1 | pointer type | meth1 |
 | pointer type | meth1 | twoMethods | meth1 |
+| starImpl | meth2 | starImpl | meth2 |
 | starImpl | meth2 | twoMethods | meth2 |
-| twoMethods | meth1 | meth1Iface | meth1 |
 | twoMethods | meth1 | twoMethods | meth1 |
 | twoMethods | meth2 | twoMethods | meth2 |
