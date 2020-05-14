@@ -128,7 +128,7 @@ abstract class RegexString extends Expr {
     private predicate singleEscape(int i) {
         exists(string c |
           c = this.getChar(i) and
-          c != "x" and c != "U"
+          c != "x" and c != "U" and c!= "N"
         )
     } 
 
@@ -142,6 +142,16 @@ abstract class RegexString extends Expr {
             exists(this.getText().substring(start + 1, end).toInt())
             or
             this.getChar(start + 1) = "U" and end = start + 10
+            or
+            this.getChar(start + 1) = "N" and
+            this.getChar(start + 2) = "{" and
+            this.getChar(end - 1) = "}" and
+            end > start and
+            not exists(int i |
+              i > start + 2 and
+              i < end - 1 and
+              this.getChar(i) = "}"
+            )
             or
             this.singleEscape(start + 1) and end = start + 2
         )
