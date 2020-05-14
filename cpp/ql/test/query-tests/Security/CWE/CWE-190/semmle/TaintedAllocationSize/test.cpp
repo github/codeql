@@ -254,7 +254,7 @@ void equality_cases() {
 		}
 		if (size2 == 100)
 		{
-			malloc(size2 * sizeof(int)); // GOOD [FALSE POSITIVE]
+			malloc(size2 * sizeof(int)); // GOOD
 		}
 	}
 	{
@@ -263,14 +263,14 @@ void equality_cases() {
 		if (size != 100)
 			return;
 
-		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		malloc(size * sizeof(int)); // GOOD
 	}
 	{
 		int size;
 
 		if ((get_size(size)) && (size == 100))
 		{
-			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+			malloc(size * sizeof(int)); // GOOD
 		}
 	}
 	{
@@ -287,7 +287,7 @@ void equality_cases() {
 		if ((!get_size(size)) || (size != 100))
 			return;
 
-		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		malloc(size * sizeof(int)); // GOOD
 	}
 	{
 		int size;

@@ -59,30 +59,16 @@ edges
 | test.cpp:227:24:227:37 | (const char *)... | test.cpp:237:10:237:19 | (size_t)... |
 | test.cpp:235:11:235:20 | (size_t)... | test.cpp:214:23:214:23 | s |
 | test.cpp:237:10:237:19 | (size_t)... | test.cpp:220:21:220:21 | s |
-| test.cpp:241:2:241:32 | Chi | test.cpp:271:17:271:20 | get_size output argument |
 | test.cpp:241:2:241:32 | Chi | test.cpp:279:17:279:20 | get_size output argument |
-| test.cpp:241:2:241:32 | Chi | test.cpp:287:18:287:21 | get_size output argument |
 | test.cpp:241:2:241:32 | Chi | test.cpp:295:18:295:21 | get_size output argument |
 | test.cpp:241:18:241:23 | call to getenv | test.cpp:241:2:241:32 | Chi |
 | test.cpp:241:18:241:31 | (const char *)... | test.cpp:241:2:241:32 | Chi |
 | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
 | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
-| test.cpp:249:20:249:25 | call to getenv | test.cpp:257:11:257:29 | ... * ... |
-| test.cpp:249:20:249:25 | call to getenv | test.cpp:257:11:257:29 | ... * ... |
 | test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
 | test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
-| test.cpp:249:20:249:33 | (const char *)... | test.cpp:257:11:257:29 | ... * ... |
-| test.cpp:249:20:249:33 | (const char *)... | test.cpp:257:11:257:29 | ... * ... |
-| test.cpp:261:19:261:24 | call to getenv | test.cpp:266:10:266:27 | ... * ... |
-| test.cpp:261:19:261:24 | call to getenv | test.cpp:266:10:266:27 | ... * ... |
-| test.cpp:261:19:261:32 | (const char *)... | test.cpp:266:10:266:27 | ... * ... |
-| test.cpp:261:19:261:32 | (const char *)... | test.cpp:266:10:266:27 | ... * ... |
-| test.cpp:271:17:271:20 | get_size output argument | test.cpp:273:11:273:28 | ... * ... |
-| test.cpp:271:17:271:20 | get_size output argument | test.cpp:273:11:273:28 | ... * ... |
 | test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
 | test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
-| test.cpp:287:18:287:21 | get_size output argument | test.cpp:290:10:290:27 | ... * ... |
-| test.cpp:287:18:287:21 | get_size output argument | test.cpp:290:10:290:27 | ... * ... |
 | test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
 | test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
 nodes
@@ -156,26 +142,10 @@ nodes
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
 | test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
-| test.cpp:257:11:257:29 | ... * ... | semmle.label | ... * ... |
-| test.cpp:257:11:257:29 | ... * ... | semmle.label | ... * ... |
-| test.cpp:257:11:257:29 | ... * ... | semmle.label | ... * ... |
-| test.cpp:261:19:261:24 | call to getenv | semmle.label | call to getenv |
-| test.cpp:261:19:261:32 | (const char *)... | semmle.label | (const char *)... |
-| test.cpp:266:10:266:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:266:10:266:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:266:10:266:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:271:17:271:20 | get_size output argument | semmle.label | get_size output argument |
-| test.cpp:273:11:273:28 | ... * ... | semmle.label | ... * ... |
-| test.cpp:273:11:273:28 | ... * ... | semmle.label | ... * ... |
-| test.cpp:273:11:273:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:279:17:279:20 | get_size output argument | semmle.label | get_size output argument |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
 | test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
-| test.cpp:287:18:287:21 | get_size output argument | semmle.label | get_size output argument |
-| test.cpp:290:10:290:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:290:10:290:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:290:10:290:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:295:18:295:21 | get_size output argument | semmle.label | get_size output argument |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
@@ -195,9 +165,5 @@ nodes
 | test.cpp:229:2:229:7 | call to malloc | test.cpp:227:24:227:29 | call to getenv | test.cpp:229:9:229:18 | local_size | This allocation size is derived from $@ and might overflow | test.cpp:227:24:227:29 | call to getenv | user input (getenv) |
 | test.cpp:231:2:231:7 | call to malloc | test.cpp:201:14:201:19 | call to getenv | test.cpp:231:9:231:24 | call to get_tainted_size | This allocation size is derived from $@ and might overflow | test.cpp:201:14:201:19 | call to getenv | user input (getenv) |
 | test.cpp:253:4:253:9 | call to malloc | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:249:20:249:25 | call to getenv | user input (getenv) |
-| test.cpp:257:4:257:9 | call to malloc | test.cpp:249:20:249:25 | call to getenv | test.cpp:257:11:257:29 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:249:20:249:25 | call to getenv | user input (getenv) |
-| test.cpp:266:3:266:8 | call to malloc | test.cpp:261:19:261:24 | call to getenv | test.cpp:266:10:266:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:261:19:261:24 | call to getenv | user input (getenv) |
-| test.cpp:273:4:273:9 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:273:11:273:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
 | test.cpp:281:4:281:9 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:281:11:281:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
-| test.cpp:290:3:290:8 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:290:10:290:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
 | test.cpp:298:3:298:8 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:298:10:298:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
