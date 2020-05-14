@@ -31,8 +31,7 @@ class UriGetHostMethod extends Method {
 }
 
 /**
- * A library method that acts like `String.format` by formatting a number of
- * its arguments according to a format string.
+ * The method access with incorrect string comparision
  */
 class HostVerificationMethodAccess extends MethodAccess {
   HostVerificationMethodAccess() {
