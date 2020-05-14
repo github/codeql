@@ -48,7 +48,7 @@ func serve8() {
 		if service != "service1" && service != "service2" {
 			fmt.Fprintln(w, "Service not found")
 		} else {
-			// OK, but caught: service is known to be either "service1" or "service2" here
+			// OK (service is known to be either "service1" or "service2" here), but currently flagged
 			w.Write([]byte(service))
 		}
 	})
