@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); //$ast=flow 39:12 $ast=flow 41:12 $f-:ir=flow
-    sink(f.b()); //$ast=flow 40:12 $ast=flow 42:12 $f-:ir=flow
+    sink(f.a()); //$ast=39:12 $ast=41:12 $f-:ir
+    sink(f.b()); //$ast=40:12 $ast=42:12 $f-:ir
 }
 
 void foo()
@@ -64,7 +64,7 @@ void single_field_test()
     A a;
     a.i = user_input();
     A a2 = a;
-    sink(a2.i); //$ast,ir=flow
+    sink(a2.i); //$ast,ir
 }
 
 struct C {
@@ -81,7 +81,7 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); //$ast=flow $f-:ir=flow
+        sink(getf2f1()); //$ast $f-:ir
     }
 };
 

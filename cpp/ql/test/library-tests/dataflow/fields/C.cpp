@@ -26,10 +26,10 @@ public:
 
   void func()
   {
-    sink(s1); // $ast=flow $f-:ir=flow
-    sink(s2); // $f-:ast=flow $f-:ir=flow
-    sink(s3); // $ast=flow $f-:ir=flow
-    sink(s4); // $f-:ast=flow $f-:ir=flow
+    sink(s1); // $ast $f-:ir
+    sink(s2); // $f-:ast $f-:ir
+    sink(s3); // $ast $f-:ir
+    sink(s4); // $f-:ast $f-:ir
   }
 
   static void sink(const void *o) {}
