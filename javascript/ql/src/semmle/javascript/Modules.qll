@@ -189,8 +189,7 @@ abstract class Import extends ASTNode {
  *
  * A path expression that appears in a module and is resolved relative to it.
  */
-deprecated
-abstract class PathExprInModule extends PathExpr {
+abstract deprecated class PathExprInModule extends PathExpr {
   PathExprInModule() {
     this.(Expr).getTopLevel() instanceof Module
     or
