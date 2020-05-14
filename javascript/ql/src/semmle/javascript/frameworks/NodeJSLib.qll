@@ -703,7 +703,12 @@ module NodeJSLib {
   }
 
   /**
-   * A call to a method from module `vm`
+   * DEPRECATED Use `VmModuleMemberInvocation` instead.
+   */
+  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
+
+  /**
+   * An invocation of a member from module `vm`
    */
   class VmModuleMemberInvocation extends DataFlow::InvokeNode {
     string memberName;
@@ -711,12 +716,12 @@ module NodeJSLib {
     VmModuleMemberInvocation() { this = DataFlow::moduleMember("vm", memberName).getAnInvocation() }
 
     /**
-     * Gets the code to be executed as part of this call.
+     * Gets the code to be executed as part of this invocation.
      */
     DataFlow::Node getACodeArgument() {
       memberName in ["Script", "SourceTextModule", "compileFunction", "runInContext",
             "runInNewContext", "runInThisContext"] and
-      // all of the above methods take the command as their first argument
+      // all of the above methods/constructors take the command as their first argument
       result = getArgument(0)
     }
   }
