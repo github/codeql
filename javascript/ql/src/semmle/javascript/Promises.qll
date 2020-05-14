@@ -85,7 +85,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
  */
 abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
-   * Gets the value this promise is resolved with.
+   * Gets a value this promise is resolved with.
    */
   abstract DataFlow::Node getValue();
 }
@@ -94,6 +94,16 @@ abstract class PromiseCreationCall extends DataFlow::CallNode {
  * A promise that is created using a `.resolve()` call.
  */
 abstract class ResolvedPromiseDefinition extends PromiseCreationCall { }
+
+/**
+ * A promise that is created using a `Promise.all(array)` call.
+ */
+abstract class PromiseAllCreation extends PromiseCreationCall {
+  /**
+   * Gets a node for the array of values given to the `Promise.all(array)` call.
+   */
+  abstract DataFlow::Node getArrayNode();
+}
 
 /**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
@@ -119,6 +129,15 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   override DataFlow::Node getValue() {
     result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
   }
+}
+
+/**
+ * An aggregated promise created using `Promise.all()`.
+ */
+class ES2015PromiseAllDefinition extends AggregateES2015PromiseDefinition, PromiseAllCreation {
+  ES2015PromiseAllDefinition() { this.getCalleeName() = "all" }
+
+  override DataFlow::Node getArrayNode() { result = getArgument(0) }
 }
 
 /**
@@ -303,15 +322,27 @@ private module PromiseFlow {
     CreationStep() { this = promise }
 
     override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      not promise instanceof PromiseAllCreation and
       prop = valueProp() and
       pred = promise.getValue() and
+      succ = this
+      or
+      promise instanceof PromiseAllCreation and
+      prop = valueProp() and
+      pred = promise.(PromiseAllCreation).getArrayNode() and
       succ = this
     }
 
     override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       // Copy the value of a resolved promise to the value of this promise.
+      not promise instanceof PromiseAllCreation and
       prop = valueProp() and
       pred = promise.getValue() and
+      succ = this
+      or
+      promise instanceof PromiseAllCreation and
+      prop = valueProp() and
+      pred = promise.(PromiseAllCreation).getArrayNode() and
       succ = this
     }
   }
@@ -532,6 +563,15 @@ module Bluebird {
     override DataFlow::Node getValue() {
       result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
     }
+  }
+
+  /**
+   * A promise created using `Promise.all`:
+   */
+  class BluebirdPromiseAllDefinition extends AggregateBluebirdPromiseDefinition, PromiseAllCreation {
+    BluebirdPromiseAllDefinition() { this.getCalleeName() = "all" }
+
+    override DataFlow::Node getArrayNode() { result = getArgument(0) }
   }
 }
 
