@@ -1,5 +1,6 @@
 const fs = require('fs');
 const unzip = require('unzip');
+const path = require('path');
 
 fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
@@ -11,4 +12,6 @@ fs.createReadStream('archive.zip')
     else {
       console.log('skipping bad path', fileName);
     }
+
+    fs.createWriteStream(path.join(cwd, path.join('/', fileName)));
   });
