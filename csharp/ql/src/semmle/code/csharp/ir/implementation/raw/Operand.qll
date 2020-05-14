@@ -14,12 +14,8 @@ private newtype TOperand =
     not Construction::isInCycle(useInstr) and
     strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
   } or
-  TNonPhiMemoryOperand(
-    Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
-  ) {
-    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
-    not Construction::isInCycle(useInstr) and
-    strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+  TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
+    useInstr.getOpcode().hasOperand(tag)
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
@@ -45,10 +41,8 @@ private class NonPhiMemoryOperandBase extends OperandBase, TNonPhiMemoryOperand 
   abstract override string toString();
 }
 
-private NonPhiMemoryOperandBase nonPhiMemoryOperand(
-  Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
-) {
-  result = TNonPhiMemoryOperand(useInstr, tag, defInstr, overlap)
+private NonPhiMemoryOperandBase nonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
+  result = TNonPhiMemoryOperand(useInstr, tag)
 }
 
 private class PhiOperandBase extends OperandBase, TPhiOperand {
@@ -234,17 +228,14 @@ class MemoryOperand extends Operand {
  */
 class NonPhiOperand extends Operand {
   Instruction useInstr;
-  Instruction defInstr;
   OperandTag tag;
 
   NonPhiOperand() {
-    this = registerOperand(useInstr, tag, defInstr) or
-    this = nonPhiMemoryOperand(useInstr, tag, defInstr, _)
+    this = registerOperand(useInstr, tag, _) or
+    this = nonPhiMemoryOperand(useInstr, tag)
   }
 
   final override Instruction getUse() { result = useInstr }
-
-  final override Instruction getAnyDef() { result = defInstr }
 
   final override string getDumpLabel() { result = tag.getLabel() }
 
@@ -258,8 +249,13 @@ class NonPhiOperand extends Operand {
  */
 class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
   override RegisterOperandTag tag;
+  Instruction defInstr;
+
+  RegisterOperand() { this = registerOperand(useInstr, tag, defInstr) }
 
   final override string toString() { result = tag.toString() }
+
+  final override Instruction getAnyDef() { result = defInstr }
 
   final override Overlap getDefinitionOverlap() {
     // All register results overlap exactly with their uses.
@@ -269,13 +265,21 @@ class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
 
 class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOperandBase {
   override MemoryOperandTag tag;
-  Overlap overlap;
 
-  NonPhiMemoryOperand() { this = TNonPhiMemoryOperand(useInstr, tag, defInstr, overlap) }
+  NonPhiMemoryOperand() { this = nonPhiMemoryOperand(useInstr, tag) }
 
   final override string toString() { result = tag.toString() }
 
-  final override Overlap getDefinitionOverlap() { result = overlap }
+  final override Instruction getAnyDef() { hasDefinition(result, _) }
+
+  final override Overlap getDefinitionOverlap() { hasDefinition(_, result) }
+
+  pragma[noinline]
+  private predicate hasDefinition(Instruction defInstr, Overlap overlap) {
+    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
+    not Construction::isInCycle(useInstr) and
+    strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+  }
 }
 
 class TypedOperand extends NonPhiMemoryOperand {
