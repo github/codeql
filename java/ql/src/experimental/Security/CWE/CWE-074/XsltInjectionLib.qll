@@ -24,7 +24,10 @@ class XsltInjectionFlowConfig extends TaintTracking::Configuration {
     documentBuilderStep(node1, node2) or
     domSourceStep(node1, node2) or
     newTransformerOrTemplatesStep(node1, node2) or
-    newTransformerFromTemplatesStep(node1, node2)
+    newTransformerFromTemplatesStep(node1, node2) or
+    xsltCompilerStep(node1, node2) or
+    xsltExecutableStep(node1, node2) or
+    xsltPackageStep(node1, node2)
   }
 }
 
@@ -43,12 +46,71 @@ class TypeTemplates extends Interface {
   TypeTemplates() { this.hasQualifiedName("javax.xml.transform", "Templates") }
 }
 
+/** The method `net.sf.saxon.s9api.XsltTransformer.transform`. */
+class XsltTransformerTransformMethod extends Method {
+  XsltTransformerTransformMethod() {
+    this.getDeclaringType().hasQualifiedName("net.sf.saxon.s9api", "XsltTransformer") and
+    this.hasName("transform")
+  }
+}
+
+/** The method `net.sf.saxon.s9api.Xslt30Transformer.transform`. */
+class Xslt30TransformerTransformMethod extends Method {
+  Xslt30TransformerTransformMethod() {
+    this.getDeclaringType().hasQualifiedName("net.sf.saxon.s9api", "Xslt30Transformer") and
+    this.hasName("transform")
+  }
+}
+
+/** The method `net.sf.saxon.s9api.Xslt30Transformer.applyTemplates`. */
+class Xslt30TransformerApplyTemplatesMethod extends Method {
+  Xslt30TransformerApplyTemplatesMethod() {
+    this.getDeclaringType().hasQualifiedName("net.sf.saxon.s9api", "Xslt30Transformer") and
+    this.hasName("applyTemplates")
+  }
+}
+
+/** The method `net.sf.saxon.s9api.Xslt30Transformer.callFunction`. */
+class Xslt30TransformerCallFunctionMethod extends Method {
+  Xslt30TransformerCallFunctionMethod() {
+    this.getDeclaringType().hasQualifiedName("net.sf.saxon.s9api", "Xslt30Transformer") and
+    this.hasName("callFunction")
+  }
+}
+
+/** The method `net.sf.saxon.s9api.Xslt30Transformer.callTemplate`. */
+class Xslt30TransformerCallTemplateMethod extends Method {
+  Xslt30TransformerCallTemplateMethod() {
+    this.getDeclaringType().hasQualifiedName("net.sf.saxon.s9api", "Xslt30Transformer") and
+    this.hasName("callTemplate")
+  }
+}
+
+/** The class `net.sf.saxon.s9api.XsltCompiler`. */
+class TypeXsltCompiler extends Class {
+  TypeXsltCompiler() { this.hasQualifiedName("net.sf.saxon.s9api", "XsltCompiler") }
+}
+
+/** The class `net.sf.saxon.s9api.XsltExecutable`. */
+class TypeXsltExecutable extends Class {
+  TypeXsltExecutable() { this.hasQualifiedName("net.sf.saxon.s9api", "XsltExecutable") }
+}
+
+/** The class `net.sf.saxon.s9api.XsltPackage`. */
+class TypeXsltPackage extends Class {
+  TypeXsltPackage() { this.hasQualifiedName("net.sf.saxon.s9api", "XsltPackage") }
+}
+
 /** A data flow sink for unvalidated user input that is used in XSLT transformation. */
 class XsltInjectionSink extends DataFlow::ExprNode {
   XsltInjectionSink() {
-    exists(MethodAccess ma |
-      ma.getQualifier() = this.getExpr() and
-      ma instanceof TransformerTransform
+    exists(MethodAccess ma, Method m | m = ma.getMethod() and ma.getQualifier() = this.getExpr() |
+      ma instanceof TransformerTransform or
+      m instanceof XsltTransformerTransformMethod or
+      m instanceof Xslt30TransformerTransformMethod or
+      m instanceof Xslt30TransformerApplyTemplatesMethod or
+      m instanceof Xslt30TransformerCallFunctionMethod or
+      m instanceof Xslt30TransformerCallTemplateMethod
     )
   }
 }
@@ -175,5 +237,52 @@ predicate newTransformerFromTemplatesStep(ExprNode n1, ExprNode n2) {
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TypeTemplates and
     m.hasName("newTransformer")
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `Source` or `URI` and
+ * `XsltExecutable` or `XsltPackage`, i.e. `XsltCompiler.compile(tainted)` or
+ * `XsltCompiler.loadExecutablePackage(tainted)` or `XsltCompiler.compilePackage(tainted)` or
+ * `XsltCompiler.loadLibraryPackage(tainted)`.
+ */
+predicate xsltCompilerStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    n1.asExpr() = ma.getArgument(0) and
+    n2.asExpr() = ma and
+    m.getDeclaringType() instanceof TypeXsltCompiler and
+    (
+      m.hasName("compile") or
+      m.hasName("loadExecutablePackage") or
+      m.hasName("compilePackage") or
+      m.hasName("loadLibraryPackage")
+    )
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `XsltExecutable` and
+ * `XsltTransformer` or `Xslt30Transformer`, i.e. `XsltExecutable.load()` or
+ * `XsltExecutable.load30()`.
+ */
+predicate xsltExecutableStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma and
+    m.getDeclaringType() instanceof TypeXsltExecutable and
+    (m.hasName("load") or m.hasName("load30"))
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `XsltPackage` and
+ * `XsltExecutable`, i.e. `XsltPackage.link()`.
+ */
+predicate xsltPackageStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma and
+    m.getDeclaringType() instanceof TypeXsltPackage and
+    m.hasName("link")
   )
 }
