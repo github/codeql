@@ -438,7 +438,7 @@ class CastingNode extends Node {
 
 newtype TContentOption =
   TContentNone() or
-  TContentSome(Content f)
+  TContentSome(Content c)
 
 private class ContentOption extends TContentOption {
   Content getContent() { this = TContentSome(result) }

@@ -294,9 +294,9 @@ private predicate nodeCandFwd1(Node node, boolean fromArg, Configuration config)
     )
     or
     // read
-    exists(Content f |
-      nodeCandFwd1Read(f, node, fromArg, config) and
-      nodeCandFwd1IsStored(f, config) and
+    exists(Content c |
+      nodeCandFwd1Read(c, node, fromArg, config) and
+      nodeCandFwd1IsStored(c, config) and
       not inBarrier(node, config)
     )
     or
@@ -321,10 +321,10 @@ private predicate nodeCandFwd1(Node node, boolean fromArg, Configuration config)
 private predicate nodeCandFwd1(Node node, Configuration config) { nodeCandFwd1(node, _, config) }
 
 pragma[nomagic]
-private predicate nodeCandFwd1Read(Content f, Node node, boolean fromArg, Configuration config) {
+private predicate nodeCandFwd1Read(Content c, Node node, boolean fromArg, Configuration config) {
   exists(Node mid |
     nodeCandFwd1(mid, fromArg, config) and
-    read(mid, f, node)
+    read(mid, c, node)
   )
 }
 
@@ -421,15 +421,15 @@ private predicate nodeCand1_0(Node node, boolean toReturn, Configuration config)
   )
   or
   // store
-  exists(Content f |
-    nodeCand1Store(f, node, toReturn, config) and
-    nodeCand1IsRead(f, config)
+  exists(Content c |
+    nodeCand1Store(c, node, toReturn, config) and
+    nodeCand1IsRead(c, config)
   )
   or
   // read
-  exists(Node mid, Content f |
-    read(node, f, mid) and
-    nodeCandFwd1IsStored(f, unbind(config)) and
+  exists(Node mid, Content c |
+    read(node, c, mid) and
+    nodeCandFwd1IsStored(c, unbind(config)) and
     nodeCand1(mid, toReturn, config)
   )
   or
@@ -451,15 +451,15 @@ private predicate nodeCand1_0(Node node, boolean toReturn, Configuration config)
 }
 
 /**
- * Holds if `f` is the target of a read in the flow covered by `nodeCand1`.
+ * Holds if `c` is the target of a read in the flow covered by `nodeCand1`.
  */
 pragma[nomagic]
-private predicate nodeCand1IsRead(Content f, Configuration config) {
+private predicate nodeCand1IsRead(Content c, Configuration config) {
   exists(Node mid, Node node |
     useFieldFlow(config) and
     nodeCandFwd1(node, unbind(config)) and
-    read(node, f, mid) and
-    nodeCandFwd1IsStored(f, unbind(config)) and
+    read(node, c, mid) and
+    nodeCandFwd1IsStored(c, unbind(config)) and
     nodeCand1(mid, _, config)
   )
 }
@@ -475,12 +475,12 @@ private predicate nodeCand1Store(Content c, Node node, boolean toReturn, Configu
 }
 
 /**
- * Holds if `f` is the target of both a read and a store in the flow covered
+ * Holds if `c` is the target of both a read and a store in the flow covered
  * by `nodeCand1`.
  */
-private predicate nodeCand1IsReadAndStored(Content f, Configuration conf) {
-  nodeCand1IsRead(f, conf) and
-  nodeCand1Store(f, _, _, conf)
+private predicate nodeCand1IsReadAndStored(Content c, Configuration conf) {
+  nodeCand1IsRead(c, conf) and
+  nodeCand1Store(c, _, _, conf)
 }
 
 pragma[nomagic]
@@ -581,10 +581,10 @@ private predicate store(Node n1, Content c, Node n2, Configuration config) {
 }
 
 pragma[nomagic]
-private predicate read(Node n1, Content f, Node n2, Configuration config) {
-  nodeCand1IsReadAndStored(f, config) and
+private predicate read(Node n1, Content c, Node n2, Configuration config) {
+  nodeCand1IsReadAndStored(c, config) and
   nodeCand1(n2, unbind(config)) and
-  read(n1, f, n2)
+  read(n1, c, n2)
 }
 
 pragma[noinline]
@@ -756,16 +756,16 @@ private predicate nodeCandFwd2(
     )
     or
     // store
-    exists(Node mid, Content f |
+    exists(Node mid |
       nodeCandFwd2(mid, fromArg, argStored, _, config) and
-      store(mid, f, node, config) and
+      store(mid, _, node, config) and
       stored = true
     )
     or
     // read
-    exists(Content f |
-      nodeCandFwd2Read(f, node, fromArg, argStored, config) and
-      nodeCandFwd2IsStored(f, stored, config)
+    exists(Content c |
+      nodeCandFwd2Read(c, node, fromArg, argStored, config) and
+      nodeCandFwd2IsStored(c, stored, config)
     )
     or
     // flow into a callable
@@ -789,25 +789,25 @@ private predicate nodeCandFwd2(
 }
 
 /**
- * Holds if `f` is the target of a store in the flow covered by `nodeCandFwd2`.
+ * Holds if `c` is the target of a store in the flow covered by `nodeCandFwd2`.
  */
 pragma[noinline]
-private predicate nodeCandFwd2IsStored(Content f, boolean stored, Configuration config) {
+private predicate nodeCandFwd2IsStored(Content c, boolean stored, Configuration config) {
   exists(Node mid, Node node |
     useFieldFlow(config) and
     nodeCand1(node, unbind(config)) and
     nodeCandFwd2(mid, _, _, stored, config) and
-    store(mid, f, node, config)
+    store(mid, c, node, config)
   )
 }
 
 pragma[nomagic]
 private predicate nodeCandFwd2Read(
-  Content f, Node node, boolean fromArg, BooleanOption argStored, Configuration config
+  Content c, Node node, boolean fromArg, BooleanOption argStored, Configuration config
 ) {
   exists(Node mid |
     nodeCandFwd2(mid, fromArg, argStored, true, config) and
-    read(mid, f, node, config)
+    read(mid, c, node, config)
   )
 }
 
@@ -904,15 +904,15 @@ private predicate nodeCand2(
     )
     or
     // store
-    exists(Content f |
-      nodeCand2Store(f, node, toReturn, returnRead, read, config) and
-      nodeCand2IsRead(f, read, config)
+    exists(Content c |
+      nodeCand2Store(c, node, toReturn, returnRead, read, config) and
+      nodeCand2IsRead(c, read, config)
     )
     or
     // read
-    exists(Node mid, Content f, boolean read0 |
-      read(node, f, mid, config) and
-      nodeCandFwd2IsStored(f, unbindBool(read0), unbind(config)) and
+    exists(Node mid, Content c, boolean read0 |
+      read(node, c, mid, config) and
+      nodeCandFwd2IsStored(c, unbindBool(read0), unbind(config)) and
       nodeCand2(mid, toReturn, returnRead, read0, config) and
       read = true
     )
@@ -938,51 +938,51 @@ private predicate nodeCand2(
 }
 
 /**
- * Holds if `f` is the target of a read in the flow covered by `nodeCand2`.
+ * Holds if `c` is the target of a read in the flow covered by `nodeCand2`.
  */
 pragma[noinline]
-private predicate nodeCand2IsRead(Content f, boolean read, Configuration config) {
+private predicate nodeCand2IsRead(Content c, boolean read, Configuration config) {
   exists(Node mid, Node node |
     useFieldFlow(config) and
     nodeCandFwd2(node, _, _, true, unbind(config)) and
-    read(node, f, mid, config) and
-    nodeCandFwd2IsStored(f, unbindBool(read), unbind(config)) and
+    read(node, c, mid, config) and
+    nodeCandFwd2IsStored(c, unbindBool(read), unbind(config)) and
     nodeCand2(mid, _, _, read, config)
   )
 }
 
 pragma[nomagic]
 private predicate nodeCand2Store(
-  Content f, Node node, boolean toReturn, BooleanOption returnRead, boolean stored,
+  Content c, Node node, boolean toReturn, BooleanOption returnRead, boolean stored,
   Configuration config
 ) {
   exists(Node mid |
-    store(node, f, mid, config) and
+    store(node, c, mid, config) and
     nodeCand2(mid, toReturn, returnRead, true, config) and
     nodeCandFwd2(node, _, _, stored, unbind(config))
   )
 }
 
 /**
- * Holds if `f` is the target of a store in the flow covered by `nodeCand2`.
+ * Holds if `c` is the target of a store in the flow covered by `nodeCand2`.
  */
 pragma[nomagic]
-private predicate nodeCand2IsStored(Content f, boolean stored, Configuration conf) {
+private predicate nodeCand2IsStored(Content c, boolean stored, Configuration conf) {
   exists(Node node |
-    nodeCand2Store(f, node, _, _, stored, conf) and
+    nodeCand2Store(c, node, _, _, stored, conf) and
     nodeCand2(node, _, _, stored, conf)
   )
 }
 
 /**
- * Holds if `f` is the target of both a store and a read in the path graph
+ * Holds if `c` is the target of both a store and a read in the path graph
  * covered by `nodeCand2`.
  */
 pragma[noinline]
-private predicate nodeCand2IsReadAndStored(Content f, Configuration conf) {
+private predicate nodeCand2IsReadAndStored(Content c, Configuration conf) {
   exists(boolean apNonEmpty |
-    nodeCand2IsStored(f, apNonEmpty, conf) and
-    nodeCand2IsRead(f, apNonEmpty, conf)
+    nodeCand2IsStored(c, apNonEmpty, conf) and
+    nodeCand2IsRead(c, apNonEmpty, conf)
   )
 }
 
@@ -1162,11 +1162,11 @@ private module LocalFlowBigStep {
 private import LocalFlowBigStep
 
 pragma[nomagic]
-private predicate readCand2(Node node1, Content f, Node node2, Configuration config) {
-  read(node1, f, node2, config) and
+private predicate readCand2(Node node1, Content c, Node node2, Configuration config) {
+  read(node1, c, node2, config) and
   nodeCand2(node1, _, _, true, unbind(config)) and
   nodeCand2(node2, config) and
-  nodeCand2IsReadAndStored(f, unbind(config))
+  nodeCand2IsReadAndStored(c, unbind(config))
 }
 
 pragma[nomagic]
