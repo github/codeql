@@ -47,11 +47,13 @@ module ZipSlip {
     )
   }
 
-  /** Gets a property that is used to get the filename part of an archive entry. */
+  /** Gets a property that is used to get a filename part of an archive entry. */
   private string getAFilenameProperty() {
     result = "path" // Used by library 'unzip'.
     or
     result = "name" // Used by library 'tar-stream'.
+    or
+    result = "linkname" // linked file name, used by 'tar-stream'.
   }
 
   /** An archive entry path access, as a source for unsafe archive extraction. */
