@@ -413,7 +413,7 @@ class ArrayAccess extends Expr, @arrayaccess {
 /**
  * An array creation expression.
  *
- * For example, an expression such as `new String[3][2]` or
+ * For example, an expression such as `new String[2][3]` or
  * `new String[][] { { "a", "b", "c" } , { "d", "e", "f" } }`.
  *
  * In both examples, `String` is the type name. In the first

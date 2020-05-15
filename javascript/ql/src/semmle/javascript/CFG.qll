@@ -379,8 +379,9 @@ class GuardControlFlowNode extends SyntheticControlFlowNode, @guard_node {
    * is known to hold at `bb`.
    */
   predicate dominates(ReachableBasicBlock bb) {
-    this = bb.getANode() or
-    dominates(bb.getImmediateDominator())
+    this = bb.getANode()
+    or
+    exists(ReachableBasicBlock prev | prev.strictlyDominates(bb) | this = prev.getANode())
   }
 }
 

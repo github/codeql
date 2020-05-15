@@ -25,6 +25,8 @@ abstract class HeuristicSink extends DataFlow::Node { }
 
 private class HeuristicCodeInjectionSink extends HeuristicSink, CodeInjection::Sink {
   HeuristicCodeInjectionSink() {
+    isAssignedTo(this, "$where")
+    or
     isAssignedToOrConcatenatedWith(this, "(?i)(command|cmd|exec|code|script|program)")
     or
     isArgTo(this, "(?i)(eval|run)") // "exec" clashes too often with `RegExp.prototype.exec`

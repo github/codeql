@@ -93,13 +93,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = this.getInstruction(ReturnTag())
       or
       tag = ReturnTag() and
-      result = this.getInstruction(UnmodeledUseTag())
+      result = this.getInstruction(AliasedUseTag())
       or
       tag = UnwindTag() and
-      result = this.getInstruction(UnmodeledUseTag())
-      or
-      tag = UnmodeledUseTag() and
-      result = getInstruction(AliasedUseTag())
+      result = this.getInstruction(AliasedUseTag())
       or
       tag = AliasedUseTag() and
       result = this.getInstruction(ExitFunctionTag())
@@ -171,10 +168,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         exists(ThrowStmt throw | throw.getEnclosingCallable() = callable)
       )
       or
-      tag = UnmodeledUseTag() and
-      opcode instanceof Opcode::UnmodeledUse and
-      resultType = getVoidType()
-      or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and
       resultType = getVoidType()
@@ -190,15 +183,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result.getEnclosingFunction() = callable and
-    result.hasMemoryResult()
-    or
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
     tag = AliasedUseTag() and
     operandTag instanceof SideEffectOperandTag and
     result = getUnmodeledDefinitionInstruction()

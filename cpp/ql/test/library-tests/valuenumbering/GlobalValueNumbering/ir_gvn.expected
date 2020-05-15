@@ -68,9 +68,8 @@ test.cpp:
 #    7|         valnum = m5_7, m6_7, m7_4, r5_5, r6_5, r7_2
 #    8|     v8_1(void)                 = NoOp                    : 
 #    1|     v1_10(void)                = ReturnVoid              : 
-#    1|     v1_11(void)                = UnmodeledUse            : mu*
-#    1|     v1_12(void)                = AliasedUse              : m1_3
-#    1|     v1_13(void)                = ExitFunction            : 
+#    1|     v1_11(void)                = AliasedUse              : m1_3
+#    1|     v1_12(void)                = ExitFunction            : 
 
 #   12| void test01(int, int)
 #   12|   Block 0
@@ -153,9 +152,8 @@ test.cpp:
 #   18|         valnum = m16_10, m17_10, m18_4, r16_8, r17_8, r18_2
 #   19|     v19_1(void)                 = NoOp                      : 
 #   12|     v12_10(void)                = ReturnVoid                : 
-#   12|     v12_11(void)                = UnmodeledUse              : mu*
-#   12|     v12_12(void)                = AliasedUse                : m12_3
-#   12|     v12_13(void)                = ExitFunction              : 
+#   12|     v12_11(void)                = AliasedUse                : m12_3
+#   12|     v12_12(void)                = ExitFunction              : 
 
 #   25| void test02(int, int)
 #   25|   Block 0
@@ -245,9 +243,8 @@ test.cpp:
 #   32|         valnum = m31_10, m32_4, r31_8, r32_2
 #   33|     v33_1(void)                 = NoOp                             : 
 #   25|     v25_10(void)                = ReturnVoid                       : 
-#   25|     v25_11(void)                = UnmodeledUse                     : mu*
-#   25|     v25_12(void)                = AliasedUse                       : ~m30_4
-#   25|     v25_13(void)                = ExitFunction                     : 
+#   25|     v25_11(void)                = AliasedUse                       : ~m30_4
+#   25|     v25_12(void)                = ExitFunction                     : 
 
 #   39| void test03(int, int, int*)
 #   39|   Block 0
@@ -351,9 +348,8 @@ test.cpp:
 #   47|     v47_1(void)                 = NoOp                      : 
 #   39|     v39_14(void)                = ReturnIndirection[p2]     : &:r39_12, m44_6
 #   39|     v39_15(void)                = ReturnVoid                : 
-#   39|     v39_16(void)                = UnmodeledUse              : mu*
-#   39|     v39_17(void)                = AliasedUse                : m39_3
-#   39|     v39_18(void)                = ExitFunction              : 
+#   39|     v39_16(void)                = AliasedUse                : m39_3
+#   39|     v39_17(void)                = ExitFunction              : 
 
 #   49| unsigned int my_strspn(char const*, char const*)
 #   49|   Block 0
@@ -528,9 +524,8 @@ test.cpp:
 #   49|     r49_16(glval<unsigned int>) = VariableAddress[#return] : 
 #   49|         valnum = r49_16, r65_1
 #   49|     v49_17(void)                = ReturnValue              : &:r49_16, m65_4
-#   49|     v49_18(void)                = UnmodeledUse             : mu*
-#   49|     v49_19(void)                = AliasedUse               : m49_3
-#   49|     v49_20(void)                = ExitFunction             : 
+#   49|     v49_18(void)                = AliasedUse               : m49_3
+#   49|     v49_19(void)                = ExitFunction             : 
 
 #   75| void test04(two_values*)
 #   75|   Block 0
@@ -622,9 +617,8 @@ test.cpp:
 #   82|     v82_2(void)    = NoOp                    : 
 #   75|     v75_10(void)   = ReturnIndirection[vals] : &:r75_8, m75_9
 #   75|     v75_11(void)   = ReturnVoid              : 
-#   75|     v75_12(void)   = UnmodeledUse            : mu*
-#   75|     v75_13(void)   = AliasedUse              : ~m82_1
-#   75|     v75_14(void)   = ExitFunction            : 
+#   75|     v75_12(void)   = AliasedUse              : ~m82_1
+#   75|     v75_13(void)   = ExitFunction            : 
 
 #   84| void test05(int, int, void*)
 #   84|   Block 0
@@ -683,9 +677,8 @@ test.cpp:
 #   89|     v89_1(void)       = NoOp                       : 
 #   84|     v84_14(void)      = ReturnIndirection[p]       : &:r84_12, m84_13
 #   84|     v84_15(void)      = ReturnVoid                 : 
-#   84|     v84_16(void)      = UnmodeledUse               : mu*
-#   84|     v84_17(void)      = AliasedUse                 : m84_3
-#   84|     v84_18(void)      = ExitFunction               : 
+#   84|     v84_16(void)      = AliasedUse                 : m84_3
+#   84|     v84_17(void)      = ExitFunction               : 
 
 #   88|   Block 2
 #   88|     r88_11(glval<int>) = VariableAddress[x]         : 
@@ -743,9 +736,8 @@ test.cpp:
 #   91|     r91_6(glval<int>) = VariableAddress[#return] : 
 #   91|         valnum = r91_6, r93_1
 #   91|     v91_7(void)       = ReturnValue              : &:r91_6, m93_4
-#   91|     v91_8(void)       = UnmodeledUse             : mu*
-#   91|     v91_9(void)       = AliasedUse               : m91_3
-#   91|     v91_10(void)      = ExitFunction             : 
+#   91|     v91_8(void)       = AliasedUse               : m91_3
+#   91|     v91_9(void)       = ExitFunction             : 
 
 #  104| int inheritanceConversions(Derived*)
 #  104|   Block 0
@@ -814,9 +806,8 @@ test.cpp:
 #  104|     r104_11(glval<int>)      = VariableAddress[#return]                : 
 #  104|         valnum = r104_11, r109_1
 #  104|     v104_12(void)            = ReturnValue                             : &:r104_11, m109_4
-#  104|     v104_13(void)            = UnmodeledUse                            : mu*
-#  104|     v104_14(void)            = AliasedUse                              : m104_3
-#  104|     v104_15(void)            = ExitFunction                            : 
+#  104|     v104_13(void)            = AliasedUse                              : m104_3
+#  104|     v104_14(void)            = ExitFunction                            : 
 
 #  112| void test06()
 #  112|   Block 0
@@ -839,9 +830,8 @@ test.cpp:
 #  116|         valnum = unique
 #  117|     v117_1(void)           = NoOp                : 
 #  112|     v112_6(void)           = ReturnVoid          : 
-#  112|     v112_7(void)           = UnmodeledUse        : mu*
-#  112|     v112_8(void)           = AliasedUse          : m112_3
-#  112|     v112_9(void)           = ExitFunction        : 
+#  112|     v112_7(void)           = AliasedUse          : m112_3
+#  112|     v112_8(void)           = ExitFunction        : 
 
 #  124| void test_read_arg_same(A*, int)
 #  124|   Block 0
@@ -919,9 +909,8 @@ test.cpp:
 #  130|     v130_1(void)        = NoOp                      : 
 #  124|     v124_12(void)       = ReturnIndirection[pa]     : &:r124_8, m128_7
 #  124|     v124_13(void)       = ReturnVoid                : 
-#  124|     v124_14(void)       = UnmodeledUse              : mu*
-#  124|     v124_15(void)       = AliasedUse                : m124_3
-#  124|     v124_16(void)       = ExitFunction              : 
+#  124|     v124_14(void)       = AliasedUse                : m124_3
+#  124|     v124_15(void)       = ExitFunction              : 
 
 #  135| void test_read_global_same()
 #  135|   Block 0
@@ -986,9 +975,8 @@ test.cpp:
 #  140|         valnum = m140_6, r140_5
 #  141|     v141_1(void)       = NoOp                      : 
 #  135|     v135_6(void)       = ReturnVoid                : 
-#  135|     v135_7(void)       = UnmodeledUse              : mu*
-#  135|     v135_8(void)       = AliasedUse                : ~m139_7
-#  135|     v135_9(void)       = ExitFunction              : 
+#  135|     v135_7(void)       = AliasedUse                : ~m139_7
+#  135|     v135_8(void)       = ExitFunction              : 
 
 #  143| void test_read_arg_different(A*)
 #  143|   Block 0
@@ -1062,9 +1050,8 @@ test.cpp:
 #  150|     v150_1(void)       = NoOp                      : 
 #  143|     v143_10(void)      = ReturnIndirection[pa]     : &:r143_8, m147_7
 #  143|     v143_11(void)      = ReturnVoid                : 
-#  143|     v143_12(void)      = UnmodeledUse              : mu*
-#  143|     v143_13(void)      = AliasedUse                : m143_3
-#  143|     v143_14(void)      = ExitFunction              : 
+#  143|     v143_12(void)      = AliasedUse                : m143_3
+#  143|     v143_13(void)      = ExitFunction              : 
 
 #  152| void test_read_global_different(int)
 #  152|   Block 0
@@ -1133,6 +1120,5 @@ test.cpp:
 #  158|         valnum = m158_6, r158_5
 #  159|     v159_1(void)       = NoOp                      : 
 #  152|     v152_8(void)       = ReturnVoid                : 
-#  152|     v152_9(void)       = UnmodeledUse              : mu*
-#  152|     v152_10(void)      = AliasedUse                : ~m156_7
-#  152|     v152_11(void)      = ExitFunction              : 
+#  152|     v152_9(void)       = AliasedUse                : ~m156_7
+#  152|     v152_10(void)      = ExitFunction              : 

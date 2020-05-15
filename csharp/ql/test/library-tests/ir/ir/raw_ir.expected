@@ -52,9 +52,8 @@ array.cs:
 #   10|     r10_6(Int32[])         = PointerAdd[4]            : r10_3, r10_5
 #   10|     mu10_7(Int32)          = Store                    : &:r10_6, r10_1
 #    2|     v2_5(Void)             = ReturnVoid               : 
-#    2|     v2_6(Void)             = UnmodeledUse             : mu*
-#    2|     v2_7(Void)             = AliasedUse               : ~mu2_3
-#    2|     v2_8(Void)             = ExitFunction             : 
+#    2|     v2_6(Void)             = AliasedUse               : ~mu2_3
+#    2|     v2_7(Void)             = ExitFunction             : 
 
 #   13| System.Void ArrayTest.twod_and_init_acc()
 #   13|   Block 0
@@ -144,9 +143,8 @@ array.cs:
 #   20|     r20_8(Int32[])          = PointerAdd[4]       : r20_6, r20_7
 #   20|     mu20_9(Int32)           = Store               : &:r20_8, r20_1
 #   13|     v13_5(Void)             = ReturnVoid          : 
-#   13|     v13_6(Void)             = UnmodeledUse        : mu*
-#   13|     v13_7(Void)             = AliasedUse          : ~mu13_3
-#   13|     v13_8(Void)             = ExitFunction        : 
+#   13|     v13_6(Void)             = AliasedUse          : ~mu13_3
+#   13|     v13_7(Void)             = ExitFunction        : 
 
 assignop.cs:
 #    4| System.Void AssignOp.Main()
@@ -216,9 +214,8 @@ assignop.cs:
 #   17|     r17_4(Int32)        = BitOr               : r17_3, r17_1
 #   17|     mu17_5(Int32)       = Store               : &:r17_2, r17_4
 #    4|     v4_4(Void)          = ReturnVoid          : 
-#    4|     v4_5(Void)          = UnmodeledUse        : mu*
-#    4|     v4_6(Void)          = AliasedUse          : ~mu4_3
-#    4|     v4_7(Void)          = ExitFunction        : 
+#    4|     v4_5(Void)          = AliasedUse          : ~mu4_3
+#    4|     v4_6(Void)          = ExitFunction        : 
 
 casts.cs:
 #   11| System.Void Casts.Main()
@@ -243,9 +240,8 @@ casts.cs:
 #   15|     r15_4(Casts_B)        = CheckedConvertOrNull     : r15_3
 #   15|     mu15_5(Casts_B)       = Store                    : &:r15_1, r15_4
 #   11|     v11_4(Void)           = ReturnVoid               : 
-#   11|     v11_5(Void)           = UnmodeledUse             : mu*
-#   11|     v11_6(Void)           = AliasedUse               : ~mu11_3
-#   11|     v11_7(Void)           = ExitFunction             : 
+#   11|     v11_5(Void)           = AliasedUse               : ~mu11_3
+#   11|     v11_6(Void)           = ExitFunction             : 
 
 collections.cs:
 #   11| System.Void Collections.Main()
@@ -288,9 +284,8 @@ collections.cs:
 #   16|     mu16_14(<unknown>)                      = ^CallSideEffect             : ~mu11_3
 #   13|     mu13_6(Dictionary<Int32,MyClass>)       = Store                       : &:r13_1, r13_2
 #   11|     v11_4(Void)                             = ReturnVoid                  : 
-#   11|     v11_5(Void)                             = UnmodeledUse                : mu*
-#   11|     v11_6(Void)                             = AliasedUse                  : ~mu11_3
-#   11|     v11_7(Void)                             = ExitFunction                : 
+#   11|     v11_5(Void)                             = AliasedUse                  : ~mu11_3
+#   11|     v11_6(Void)                             = ExitFunction                : 
 
 constructor_init.cs:
 #    5| System.Void BaseClass..ctor()
@@ -301,9 +296,8 @@ constructor_init.cs:
 #    5|     r5_4(glval<BaseClass>) = InitializeThis      : 
 #    6|     v6_1(Void)             = NoOp                : 
 #    5|     v5_5(Void)             = ReturnVoid          : 
-#    5|     v5_6(Void)             = UnmodeledUse        : mu*
-#    5|     v5_7(Void)             = AliasedUse          : ~mu5_3
-#    5|     v5_8(Void)             = ExitFunction        : 
+#    5|     v5_6(Void)             = AliasedUse          : ~mu5_3
+#    5|     v5_7(Void)             = ExitFunction        : 
 
 #    9| System.Void BaseClass..ctor(System.Int32)
 #    9|   Block 0
@@ -319,9 +313,8 @@ constructor_init.cs:
 #   11|     r11_4(glval<Int32>)    = FieldAddress[num]      : r11_3
 #   11|     mu11_5(Int32)          = Store                  : &:r11_4, r11_2
 #    9|     v9_7(Void)             = ReturnVoid             : 
-#    9|     v9_8(Void)             = UnmodeledUse           : mu*
-#    9|     v9_9(Void)             = AliasedUse             : ~mu9_3
-#    9|     v9_10(Void)            = ExitFunction           : 
+#    9|     v9_8(Void)             = AliasedUse             : ~mu9_3
+#    9|     v9_9(Void)             = ExitFunction           : 
 
 #   17| System.Void DerivedClass..ctor()
 #   17|   Block 0
@@ -335,9 +328,8 @@ constructor_init.cs:
 #   17|     mu17_8(<unknown>)          = ^CallSideEffect                   : ~mu17_3
 #   18|     v18_1(Void)                = NoOp                              : 
 #   17|     v17_9(Void)                = ReturnVoid                        : 
-#   17|     v17_10(Void)               = UnmodeledUse                      : mu*
-#   17|     v17_11(Void)               = AliasedUse                        : ~mu17_3
-#   17|     v17_12(Void)               = ExitFunction                      : 
+#   17|     v17_10(Void)               = AliasedUse                        : ~mu17_3
+#   17|     v17_11(Void)               = ExitFunction                      : 
 
 #   21| System.Void DerivedClass..ctor(System.Int32)
 #   21|   Block 0
@@ -355,9 +347,8 @@ constructor_init.cs:
 #   21|     mu21_12(<unknown>)         = ^CallSideEffect                   : ~mu21_3
 #   22|     v22_1(Void)                = NoOp                              : 
 #   21|     v21_13(Void)               = ReturnVoid                        : 
-#   21|     v21_14(Void)               = UnmodeledUse                      : mu*
-#   21|     v21_15(Void)               = AliasedUse                        : ~mu21_3
-#   21|     v21_16(Void)               = ExitFunction                      : 
+#   21|     v21_14(Void)               = AliasedUse                        : ~mu21_3
+#   21|     v21_15(Void)               = ExitFunction                      : 
 
 #   25| System.Void DerivedClass..ctor(System.Int32,System.Int32)
 #   25|   Block 0
@@ -376,9 +367,8 @@ constructor_init.cs:
 #   25|     mu25_13(<unknown>)         = ^CallSideEffect               : ~mu25_3
 #   26|     v26_1(Void)                = NoOp                          : 
 #   25|     v25_14(Void)               = ReturnVoid                    : 
-#   25|     v25_15(Void)               = UnmodeledUse                  : mu*
-#   25|     v25_16(Void)               = AliasedUse                    : ~mu25_3
-#   25|     v25_17(Void)               = ExitFunction                  : 
+#   25|     v25_15(Void)               = AliasedUse                    : ~mu25_3
+#   25|     v25_16(Void)               = ExitFunction                  : 
 
 #   29| System.Void DerivedClass.Main()
 #   29|   Block 0
@@ -407,9 +397,8 @@ constructor_init.cs:
 #   33|     mu33_7(<unknown>)          = ^CallSideEffect               : ~mu29_3
 #   33|     mu33_8(DerivedClass)       = Store                         : &:r33_1, r33_2
 #   29|     v29_4(Void)                = ReturnVoid                    : 
-#   29|     v29_5(Void)                = UnmodeledUse                  : mu*
-#   29|     v29_6(Void)                = AliasedUse                    : ~mu29_3
-#   29|     v29_7(Void)                = ExitFunction                  : 
+#   29|     v29_5(Void)                = AliasedUse                    : ~mu29_3
+#   29|     v29_6(Void)                = ExitFunction                  : 
 
 crement.cs:
 #    3| System.Void CrementOpsTest.Main()
@@ -449,9 +438,8 @@ crement.cs:
 #    9|     r9_6(glval<Int32>) = VariableAddress[x]  : 
 #    9|     mu9_7(Int32)       = Store               : &:r9_6, r9_2
 #    3|     v3_4(Void)         = ReturnVoid          : 
-#    3|     v3_5(Void)         = UnmodeledUse        : mu*
-#    3|     v3_6(Void)         = AliasedUse          : ~mu3_3
-#    3|     v3_7(Void)         = ExitFunction        : 
+#    3|     v3_5(Void)         = AliasedUse          : ~mu3_3
+#    3|     v3_6(Void)         = ExitFunction        : 
 
 delegates.cs:
 #    6| System.Int32 Delegates.returns(System.Int32)
@@ -467,9 +455,8 @@ delegates.cs:
 #    8|     mu8_4(Int32)       = Store                    : &:r8_1, r8_3
 #    6|     r6_6(glval<Int32>) = VariableAddress[#return] : 
 #    6|     v6_7(Void)         = ReturnValue              : &:r6_6, ~mu6_3
-#    6|     v6_8(Void)         = UnmodeledUse             : mu*
-#    6|     v6_9(Void)         = AliasedUse               : ~mu6_3
-#    6|     v6_10(Void)        = ExitFunction             : 
+#    6|     v6_8(Void)         = AliasedUse               : ~mu6_3
+#    6|     v6_9(Void)         = ExitFunction             : 
 
 #   11| System.Void Delegates.Main()
 #   11|   Block 0
@@ -490,9 +477,8 @@ delegates.cs:
 #   13|     v13_5(Void)       = Call                     : func:r13_3, this:r13_2, 0:r13_4
 #   13|     mu13_6(<unknown>) = ^CallSideEffect          : ~mu11_3
 #   11|     v11_4(Void)       = ReturnVoid               : 
-#   11|     v11_5(Void)       = UnmodeledUse             : mu*
-#   11|     v11_6(Void)       = AliasedUse               : ~mu11_3
-#   11|     v11_7(Void)       = ExitFunction             : 
+#   11|     v11_5(Void)       = AliasedUse               : ~mu11_3
+#   11|     v11_6(Void)       = ExitFunction             : 
 
 events.cs:
 #    8| System.Void Events..ctor()
@@ -510,9 +496,8 @@ events.cs:
 #   10|     r10_7(glval<MyDel>) = FieldAddress[Inst]     : r10_6
 #   10|     mu10_8(MyDel)       = Store                  : &:r10_7, r10_1
 #    8|     v8_5(Void)          = ReturnVoid             : 
-#    8|     v8_6(Void)          = UnmodeledUse           : mu*
-#    8|     v8_7(Void)          = AliasedUse             : ~mu8_3
-#    8|     v8_8(Void)          = ExitFunction           : 
+#    8|     v8_6(Void)          = AliasedUse             : ~mu8_3
+#    8|     v8_7(Void)          = ExitFunction           : 
 
 #   13| System.Void Events.AddEvent()
 #   13|   Block 0
@@ -528,9 +513,8 @@ events.cs:
 #   15|     v15_6(Void)          = Call                         : func:r15_2, this:r15_1, 0:r15_5
 #   15|     mu15_7(<unknown>)    = ^CallSideEffect              : ~mu13_3
 #   13|     v13_5(Void)          = ReturnVoid                   : 
-#   13|     v13_6(Void)          = UnmodeledUse                 : mu*
-#   13|     v13_7(Void)          = AliasedUse                   : ~mu13_3
-#   13|     v13_8(Void)          = ExitFunction                 : 
+#   13|     v13_6(Void)          = AliasedUse                   : ~mu13_3
+#   13|     v13_7(Void)          = ExitFunction                 : 
 
 #   18| System.Void Events.RemoveEvent()
 #   18|   Block 0
@@ -546,9 +530,8 @@ events.cs:
 #   20|     v20_6(Void)          = Call                            : func:r20_2, this:r20_1, 0:r20_5
 #   20|     mu20_7(<unknown>)    = ^CallSideEffect                 : ~mu18_3
 #   18|     v18_5(Void)          = ReturnVoid                      : 
-#   18|     v18_6(Void)          = UnmodeledUse                    : mu*
-#   18|     v18_7(Void)          = AliasedUse                      : ~mu18_3
-#   18|     v18_8(Void)          = ExitFunction                    : 
+#   18|     v18_6(Void)          = AliasedUse                      : ~mu18_3
+#   18|     v18_7(Void)          = ExitFunction                    : 
 
 #   23| System.String Events.Fun(System.String)
 #   23|   Block 0
@@ -564,9 +547,8 @@ events.cs:
 #   25|     mu25_4(String)       = Store                    : &:r25_1, r25_3
 #   23|     r23_7(glval<String>) = VariableAddress[#return] : 
 #   23|     v23_8(Void)          = ReturnValue              : &:r23_7, ~mu23_3
-#   23|     v23_9(Void)          = UnmodeledUse             : mu*
-#   23|     v23_10(Void)         = AliasedUse               : ~mu23_3
-#   23|     v23_11(Void)         = ExitFunction             : 
+#   23|     v23_9(Void)          = AliasedUse               : ~mu23_3
+#   23|     v23_10(Void)         = ExitFunction             : 
 
 #   28| System.Void Events.Main(System.String[])
 #   28|   Block 0
@@ -600,9 +582,8 @@ events.cs:
 #   33|     v33_4(Void)            = Call                         : func:r33_3, this:r33_2
 #   33|     mu33_5(<unknown>)      = ^CallSideEffect              : ~mu28_3
 #   28|     v28_6(Void)            = ReturnVoid                   : 
-#   28|     v28_7(Void)            = UnmodeledUse                 : mu*
-#   28|     v28_8(Void)            = AliasedUse                   : ~mu28_3
-#   28|     v28_9(Void)            = ExitFunction                 : 
+#   28|     v28_7(Void)            = AliasedUse                   : ~mu28_3
+#   28|     v28_8(Void)            = ExitFunction                 : 
 
 foreach.cs:
 #    4| System.Void ForEach.Main()
@@ -680,9 +661,8 @@ foreach.cs:
 #    7|     v7_24(Void)           = Call                      : func:r7_23, this:r7_22
 #    7|     mu7_25(<unknown>)     = ^CallSideEffect           : ~mu4_3
 #    4|     v4_4(Void)            = ReturnVoid                : 
-#    4|     v4_5(Void)            = UnmodeledUse              : mu*
-#    4|     v4_6(Void)            = AliasedUse                : ~mu4_3
-#    4|     v4_7(Void)            = ExitFunction              : 
+#    4|     v4_5(Void)            = AliasedUse                : ~mu4_3
+#    4|     v4_6(Void)            = ExitFunction              : 
 
 func_with_param_call.cs:
 #    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
@@ -703,9 +683,8 @@ func_with_param_call.cs:
 #    7|     mu7_7(Int32)       = Store                    : &:r7_1, r7_6
 #    5|     r5_8(glval<Int32>) = VariableAddress[#return] : 
 #    5|     v5_9(Void)         = ReturnValue              : &:r5_8, ~mu5_3
-#    5|     v5_10(Void)        = UnmodeledUse             : mu*
-#    5|     v5_11(Void)        = AliasedUse               : ~mu5_3
-#    5|     v5_12(Void)        = ExitFunction             : 
+#    5|     v5_10(Void)        = AliasedUse               : ~mu5_3
+#    5|     v5_11(Void)        = ExitFunction             : 
 
 #   10| System.Int32 test_call_with_param.g()
 #   10|   Block 0
@@ -721,9 +700,8 @@ func_with_param_call.cs:
 #   12|     mu12_7(Int32)       = Store                    : &:r12_1, r12_5
 #   10|     r10_4(glval<Int32>) = VariableAddress[#return] : 
 #   10|     v10_5(Void)         = ReturnValue              : &:r10_4, ~mu10_3
-#   10|     v10_6(Void)         = UnmodeledUse             : mu*
-#   10|     v10_7(Void)         = AliasedUse               : ~mu10_3
-#   10|     v10_8(Void)         = ExitFunction             : 
+#   10|     v10_6(Void)         = AliasedUse               : ~mu10_3
+#   10|     v10_7(Void)         = ExitFunction             : 
 
 indexers.cs:
 #    8| System.String Indexers.MyClass.get_Item(System.Int32)
@@ -745,9 +723,8 @@ indexers.cs:
 #   10|     mu10_9(String)         = Store                      : &:r10_1, r10_8
 #    8|     r8_5(glval<String>)    = VariableAddress[#return]   : 
 #    8|     v8_6(Void)             = ReturnValue                : &:r8_5, ~mu8_3
-#    8|     v8_7(Void)             = UnmodeledUse               : mu*
-#    8|     v8_8(Void)             = AliasedUse                 : ~mu8_3
-#    8|     v8_9(Void)             = ExitFunction               : 
+#    8|     v8_7(Void)             = AliasedUse                 : ~mu8_3
+#    8|     v8_8(Void)             = ExitFunction               : 
 
 #   12| System.Void Indexers.MyClass.set_Item(System.Int32,System.String)
 #   12|   Block 0
@@ -769,9 +746,8 @@ indexers.cs:
 #   14|     r14_8(String[])        = PointerAdd[8]              : r14_5, r14_7
 #   14|     mu14_9(String)         = Store                      : &:r14_8, r14_2
 #   12|     v12_7(Void)            = ReturnVoid                 : 
-#   12|     v12_8(Void)            = UnmodeledUse               : mu*
-#   12|     v12_9(Void)            = AliasedUse                 : ~mu12_3
-#   12|     v12_10(Void)           = ExitFunction               : 
+#   12|     v12_8(Void)            = AliasedUse                 : ~mu12_3
+#   12|     v12_9(Void)            = ExitFunction               : 
 
 #   19| System.Void Indexers.Main()
 #   19|   Block 0
@@ -811,9 +787,8 @@ indexers.cs:
 #   24|     v24_11(Void)          = Call                      : func:r24_3, this:r24_2, 0:r24_4, 1:r24_9
 #   24|     mu24_12(<unknown>)    = ^CallSideEffect           : ~mu19_3
 #   19|     v19_4(Void)           = ReturnVoid                : 
-#   19|     v19_5(Void)           = UnmodeledUse              : mu*
-#   19|     v19_6(Void)           = AliasedUse                : ~mu19_3
-#   19|     v19_7(Void)           = ExitFunction              : 
+#   19|     v19_5(Void)           = AliasedUse                : ~mu19_3
+#   19|     v19_6(Void)           = ExitFunction              : 
 
 inheritance_polymorphism.cs:
 #    3| System.Int32 A.function()
@@ -827,9 +802,8 @@ inheritance_polymorphism.cs:
 #    5|     mu5_3(Int32)       = Store                    : &:r5_1, r5_2
 #    3|     r3_5(glval<Int32>) = VariableAddress[#return] : 
 #    3|     v3_6(Void)         = ReturnValue              : &:r3_5, ~mu3_3
-#    3|     v3_7(Void)         = UnmodeledUse             : mu*
-#    3|     v3_8(Void)         = AliasedUse               : ~mu3_3
-#    3|     v3_9(Void)         = ExitFunction             : 
+#    3|     v3_7(Void)         = AliasedUse               : ~mu3_3
+#    3|     v3_8(Void)         = ExitFunction             : 
 
 #   15| System.Int32 C.function()
 #   15|   Block 0
@@ -842,9 +816,8 @@ inheritance_polymorphism.cs:
 #   17|     mu17_3(Int32)       = Store                    : &:r17_1, r17_2
 #   15|     r15_5(glval<Int32>) = VariableAddress[#return] : 
 #   15|     v15_6(Void)         = ReturnValue              : &:r15_5, ~mu15_3
-#   15|     v15_7(Void)         = UnmodeledUse             : mu*
-#   15|     v15_8(Void)         = AliasedUse               : ~mu15_3
-#   15|     v15_9(Void)         = ExitFunction             : 
+#   15|     v15_7(Void)         = AliasedUse               : ~mu15_3
+#   15|     v15_8(Void)         = ExitFunction             : 
 
 #   23| System.Void Program.Main()
 #   23|   Block 0
@@ -887,9 +860,8 @@ inheritance_polymorphism.cs:
 #   34|     r34_4(Int32)      = Call                      : func:r34_3, this:r34_2
 #   34|     mu34_5(<unknown>) = ^CallSideEffect           : ~mu23_3
 #   23|     v23_4(Void)       = ReturnVoid                : 
-#   23|     v23_5(Void)       = UnmodeledUse              : mu*
-#   23|     v23_6(Void)       = AliasedUse                : ~mu23_3
-#   23|     v23_7(Void)       = ExitFunction              : 
+#   23|     v23_5(Void)       = AliasedUse                : ~mu23_3
+#   23|     v23_6(Void)       = ExitFunction              : 
 
 inoutref.cs:
 #   11| System.Void InOutRef.set(MyClass,MyClass)
@@ -907,9 +879,8 @@ inoutref.cs:
 #   13|     r13_4(MyClass)        = Load                    : &:r13_3, ~mu11_3
 #   13|     mu13_5(MyClass)       = Store                   : &:r13_4, r13_2
 #   11|     v11_8(Void)           = ReturnVoid              : 
-#   11|     v11_9(Void)           = UnmodeledUse            : mu*
-#   11|     v11_10(Void)          = AliasedUse              : ~mu11_3
-#   11|     v11_11(Void)          = ExitFunction            : 
+#   11|     v11_9(Void)           = AliasedUse              : ~mu11_3
+#   11|     v11_10(Void)          = ExitFunction            : 
 
 #   16| System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass)
 #   16|   Block 0
@@ -967,9 +938,8 @@ inoutref.cs:
 #   26|     v26_7(Void)            = Call                    : func:r26_1, 0:r26_3, 1:r26_6
 #   26|     mu26_8(<unknown>)      = ^CallSideEffect         : ~mu16_3
 #   16|     v16_14(Void)           = ReturnVoid              : 
-#   16|     v16_15(Void)           = UnmodeledUse            : mu*
-#   16|     v16_16(Void)           = AliasedUse              : ~mu16_3
-#   16|     v16_17(Void)           = ExitFunction            : 
+#   16|     v16_15(Void)           = AliasedUse              : ~mu16_3
+#   16|     v16_16(Void)           = ExitFunction            : 
 
 #   29| System.Void InOutRef.Main()
 #   29|   Block 0
@@ -1006,9 +976,8 @@ inoutref.cs:
 #   36|     r36_4(Int32)           = Load                      : &:r36_3, ~mu29_3
 #   36|     mu36_5(Int32)          = Store                     : &:r36_1, r36_4
 #   29|     v29_4(Void)            = ReturnVoid                : 
-#   29|     v29_5(Void)            = UnmodeledUse              : mu*
-#   29|     v29_6(Void)            = AliasedUse                : ~mu29_3
-#   29|     v29_7(Void)            = ExitFunction              : 
+#   29|     v29_5(Void)            = AliasedUse                : ~mu29_3
+#   29|     v29_6(Void)            = ExitFunction              : 
 
 isexpr.cs:
 #    8| System.Void IsExpr.Main()
@@ -1038,9 +1007,8 @@ isexpr.cs:
 
 #    8|   Block 1
 #    8|     v8_4(Void) = ReturnVoid   : 
-#    8|     v8_5(Void) = UnmodeledUse : mu*
-#    8|     v8_6(Void) = AliasedUse   : ~mu8_3
-#    8|     v8_7(Void) = ExitFunction : 
+#    8|     v8_5(Void) = AliasedUse   : ~mu8_3
+#    8|     v8_6(Void) = ExitFunction : 
 
 #   13|   Block 2
 #   13|     v13_9(Void) = ConditionalBranch : r13_7
@@ -1245,9 +1213,8 @@ jumps.cs:
 #   38|     v38_3(Void)       = Call                       : func:r38_1, 0:r38_2
 #   38|     mu38_4(<unknown>) = ^CallSideEffect            : ~mu5_3
 #    5|     v5_4(Void)        = ReturnVoid                 : 
-#    5|     v5_5(Void)        = UnmodeledUse               : mu*
-#    5|     v5_6(Void)        = AliasedUse                 : ~mu5_3
-#    5|     v5_7(Void)        = ExitFunction               : 
+#    5|     v5_5(Void)        = AliasedUse                 : ~mu5_3
+#    5|     v5_6(Void)        = ExitFunction               : 
 
 lock.cs:
 #    5| System.Void LockTest.A()
@@ -1290,9 +1257,8 @@ lock.cs:
 
 #    5|   Block 1
 #    5|     v5_4(Void) = ReturnVoid   : 
-#    5|     v5_5(Void) = UnmodeledUse : mu*
-#    5|     v5_6(Void) = AliasedUse   : ~mu5_3
-#    5|     v5_7(Void) = ExitFunction : 
+#    5|     v5_5(Void) = AliasedUse   : ~mu5_3
+#    5|     v5_6(Void) = ExitFunction : 
 
 #    8|   Block 2
 #    8|     r8_17(<funcaddr>)    = FunctionAddress[Exit]     : 
@@ -1311,9 +1277,8 @@ obj_creation.cs:
 #    7|     r7_4(glval<MyClass>) = InitializeThis      : 
 #    8|     v8_1(Void)           = NoOp                : 
 #    7|     v7_5(Void)           = ReturnVoid          : 
-#    7|     v7_6(Void)           = UnmodeledUse        : mu*
-#    7|     v7_7(Void)           = AliasedUse          : ~mu7_3
-#    7|     v7_8(Void)           = ExitFunction        : 
+#    7|     v7_6(Void)           = AliasedUse          : ~mu7_3
+#    7|     v7_7(Void)           = ExitFunction        : 
 
 #   11| System.Void ObjCreation.MyClass..ctor(System.Int32)
 #   11|   Block 0
@@ -1329,9 +1294,8 @@ obj_creation.cs:
 #   13|     r13_4(glval<Int32>)   = FieldAddress[x]         : r13_3
 #   13|     mu13_5(Int32)         = Store                   : &:r13_4, r13_2
 #   11|     v11_7(Void)           = ReturnVoid              : 
-#   11|     v11_8(Void)           = UnmodeledUse            : mu*
-#   11|     v11_9(Void)           = AliasedUse              : ~mu11_3
-#   11|     v11_10(Void)          = ExitFunction            : 
+#   11|     v11_8(Void)           = AliasedUse              : ~mu11_3
+#   11|     v11_9(Void)           = ExitFunction            : 
 
 #   17| System.Void ObjCreation.SomeFun(ObjCreation.MyClass)
 #   17|   Block 0
@@ -1342,9 +1306,8 @@ obj_creation.cs:
 #   17|     mu17_5(MyClass)       = InitializeParameter[x] : &:r17_4
 #   18|     v18_1(Void)           = NoOp                   : 
 #   17|     v17_6(Void)           = ReturnVoid             : 
-#   17|     v17_7(Void)           = UnmodeledUse           : mu*
-#   17|     v17_8(Void)           = AliasedUse             : ~mu17_3
-#   17|     v17_9(Void)           = ExitFunction           : 
+#   17|     v17_7(Void)           = AliasedUse             : ~mu17_3
+#   17|     v17_8(Void)           = ExitFunction           : 
 
 #   21| System.Void ObjCreation.Main()
 #   21|   Block 0
@@ -1382,9 +1345,8 @@ obj_creation.cs:
 #   27|     v27_7(Void)           = Call                          : func:r27_1, 0:r27_2
 #   27|     mu27_8(<unknown>)     = ^CallSideEffect               : ~mu21_3
 #   21|     v21_4(Void)           = ReturnVoid                    : 
-#   21|     v21_5(Void)           = UnmodeledUse                  : mu*
-#   21|     v21_6(Void)           = AliasedUse                    : ~mu21_3
-#   21|     v21_7(Void)           = ExitFunction                  : 
+#   21|     v21_5(Void)           = AliasedUse                    : ~mu21_3
+#   21|     v21_6(Void)           = ExitFunction                  : 
 
 pointers.cs:
 #    3| System.Void Pointers.addone(System.Int32[])
@@ -1417,9 +1379,8 @@ pointers.cs:
 
 #    3|   Block 1
 #    3|     v3_6(Void) = ReturnVoid   : 
-#    3|     v3_7(Void) = UnmodeledUse : mu*
-#    3|     v3_8(Void) = AliasedUse   : ~mu3_3
-#    3|     v3_9(Void) = ExitFunction : 
+#    3|     v3_7(Void) = AliasedUse   : ~mu3_3
+#    3|     v3_8(Void) = ExitFunction : 
 
 #    9|   Block 2
 #    9|     r9_4(glval<Int32>) = VariableAddress[i]      : 
@@ -1513,9 +1474,8 @@ pointers.cs:
 #   40|     v40_4(Void)             = Call                      : func:r40_1, 0:r40_3
 #   40|     mu40_5(<unknown>)       = ^CallSideEffect           : ~mu25_3
 #   25|     v25_4(Void)             = ReturnVoid                : 
-#   25|     v25_5(Void)             = UnmodeledUse              : mu*
-#   25|     v25_6(Void)             = AliasedUse                : ~mu25_3
-#   25|     v25_7(Void)             = ExitFunction              : 
+#   25|     v25_5(Void)             = AliasedUse                : ~mu25_3
+#   25|     v25_6(Void)             = ExitFunction              : 
 
 prop.cs:
 #    7| System.Int32 PropClass.get_Prop()
@@ -1532,9 +1492,8 @@ prop.cs:
 #    9|     mu9_6(Int32)           = Store                    : &:r9_1, r9_4
 #    7|     r7_5(glval<Int32>)     = VariableAddress[#return] : 
 #    7|     v7_6(Void)             = ReturnValue              : &:r7_5, ~mu7_3
-#    7|     v7_7(Void)             = UnmodeledUse             : mu*
-#    7|     v7_8(Void)             = AliasedUse               : ~mu7_3
-#    7|     v7_9(Void)             = ExitFunction             : 
+#    7|     v7_7(Void)             = AliasedUse               : ~mu7_3
+#    7|     v7_8(Void)             = ExitFunction             : 
 
 #   12| System.Void PropClass.set_Prop(System.Int32)
 #   12|   Block 0
@@ -1549,9 +1508,8 @@ prop.cs:
 #   14|     r14_3(glval<Int32>)     = VariableAddress[prop]      : 
 #   14|     mu14_4(Int32)           = Store                      : &:r14_3, r14_2
 #   12|     v12_7(Void)             = ReturnVoid                 : 
-#   12|     v12_8(Void)             = UnmodeledUse               : mu*
-#   12|     v12_9(Void)             = AliasedUse                 : ~mu12_3
-#   12|     v12_10(Void)            = ExitFunction               : 
+#   12|     v12_8(Void)             = AliasedUse                 : ~mu12_3
+#   12|     v12_9(Void)             = ExitFunction               : 
 
 #   18| System.Int32 PropClass.func()
 #   18|   Block 0
@@ -1564,9 +1522,8 @@ prop.cs:
 #   20|     mu20_3(Int32)           = Store                    : &:r20_1, r20_2
 #   18|     r18_5(glval<Int32>)     = VariableAddress[#return] : 
 #   18|     v18_6(Void)             = ReturnValue              : &:r18_5, ~mu18_3
-#   18|     v18_7(Void)             = UnmodeledUse             : mu*
-#   18|     v18_8(Void)             = AliasedUse               : ~mu18_3
-#   18|     v18_9(Void)             = ExitFunction             : 
+#   18|     v18_7(Void)             = AliasedUse               : ~mu18_3
+#   18|     v18_8(Void)             = ExitFunction             : 
 
 #   26| System.Void Prog.Main()
 #   26|   Block 0
@@ -1593,9 +1550,8 @@ prop.cs:
 #   30|     mu30_6(<unknown>)       = ^CallSideEffect            : ~mu26_3
 #   30|     mu30_7(Int32)           = Store                      : &:r30_1, r30_5
 #   26|     v26_4(Void)             = ReturnVoid                 : 
-#   26|     v26_5(Void)             = UnmodeledUse               : mu*
-#   26|     v26_6(Void)             = AliasedUse                 : ~mu26_3
-#   26|     v26_7(Void)             = ExitFunction               : 
+#   26|     v26_5(Void)             = AliasedUse                 : ~mu26_3
+#   26|     v26_6(Void)             = ExitFunction               : 
 
 simple_call.cs:
 #    5| System.Int32 test_simple_call.f()
@@ -1608,9 +1564,8 @@ simple_call.cs:
 #    7|     mu7_3(Int32)       = Store                    : &:r7_1, r7_2
 #    5|     r5_4(glval<Int32>) = VariableAddress[#return] : 
 #    5|     v5_5(Void)         = ReturnValue              : &:r5_4, ~mu5_3
-#    5|     v5_6(Void)         = UnmodeledUse             : mu*
-#    5|     v5_7(Void)         = AliasedUse               : ~mu5_3
-#    5|     v5_8(Void)         = ExitFunction             : 
+#    5|     v5_6(Void)         = AliasedUse               : ~mu5_3
+#    5|     v5_7(Void)         = ExitFunction             : 
 
 #   10| System.Int32 test_simple_call.g()
 #   10|   Block 0
@@ -1625,9 +1580,8 @@ simple_call.cs:
 #   12|     mu12_5(Int32)                  = Store                    : &:r12_1, r12_3
 #   10|     r10_5(glval<Int32>)            = VariableAddress[#return] : 
 #   10|     v10_6(Void)                    = ReturnValue              : &:r10_5, ~mu10_3
-#   10|     v10_7(Void)                    = UnmodeledUse             : mu*
-#   10|     v10_8(Void)                    = AliasedUse               : ~mu10_3
-#   10|     v10_9(Void)                    = ExitFunction             : 
+#   10|     v10_7(Void)                    = AliasedUse               : ~mu10_3
+#   10|     v10_8(Void)                    = ExitFunction             : 
 
 simple_function.cs:
 #    5| System.Int32 test_simple_function.f()
@@ -1640,9 +1594,8 @@ simple_function.cs:
 #    7|     mu7_3(Int32)       = Store                    : &:r7_1, r7_2
 #    5|     r5_4(glval<Int32>) = VariableAddress[#return] : 
 #    5|     v5_5(Void)         = ReturnValue              : &:r5_4, ~mu5_3
-#    5|     v5_6(Void)         = UnmodeledUse             : mu*
-#    5|     v5_7(Void)         = AliasedUse               : ~mu5_3
-#    5|     v5_8(Void)         = ExitFunction             : 
+#    5|     v5_6(Void)         = AliasedUse               : ~mu5_3
+#    5|     v5_7(Void)         = ExitFunction             : 
 
 stmts.cs:
 #    5| System.Int32 test_stmts.ifStmt(System.Int32)
@@ -1663,9 +1616,8 @@ stmts.cs:
 #    5|   Block 1
 #    5|     r5_6(glval<Int32>) = VariableAddress[#return] : 
 #    5|     v5_7(Void)         = ReturnValue              : &:r5_6, ~mu5_3
-#    5|     v5_8(Void)         = UnmodeledUse             : mu*
-#    5|     v5_9(Void)         = AliasedUse               : ~mu5_3
-#    5|     v5_10(Void)        = ExitFunction             : 
+#    5|     v5_8(Void)         = AliasedUse               : ~mu5_3
+#    5|     v5_9(Void)         = ExitFunction             : 
 
 #   10|   Block 2
 #   10|     r10_1(glval<Int32>) = VariableAddress[#return] : 
@@ -1693,9 +1645,8 @@ stmts.cs:
 
 #   13|   Block 1
 #   13|     v13_6(Void) = ReturnVoid   : 
-#   13|     v13_7(Void) = UnmodeledUse : mu*
-#   13|     v13_8(Void) = AliasedUse   : ~mu13_3
-#   13|     v13_9(Void) = ExitFunction : 
+#   13|     v13_7(Void) = AliasedUse   : ~mu13_3
+#   13|     v13_8(Void) = ExitFunction : 
 
 #   16|   Block 2
 #   16|     r16_1(glval<Int32>) = VariableAddress[i] : 
@@ -1741,9 +1692,8 @@ stmts.cs:
 #   22|   Block 1
 #   22|     r22_4(glval<Int32>) = VariableAddress[#return] : 
 #   22|     v22_5(Void)         = ReturnValue              : &:r22_4, ~mu22_3
-#   22|     v22_6(Void)         = UnmodeledUse             : mu*
-#   22|     v22_7(Void)         = AliasedUse               : ~mu22_3
-#   22|     v22_8(Void)         = ExitFunction             : 
+#   22|     v22_6(Void)         = AliasedUse               : ~mu22_3
+#   22|     v22_7(Void)         = ExitFunction             : 
 
 #   29|   Block 2
 #   29|     v29_1(Void) = NoOp : 
@@ -1799,12 +1749,11 @@ stmts.cs:
 #-----|   True -> Block 3
 
 #   46|   Block 1
-#   46|     v46_4(Void) = UnmodeledUse : mu*
-#   46|     v46_5(Void) = AliasedUse   : ~mu46_3
-#   46|     v46_6(Void) = ExitFunction : 
+#   46|     v46_4(Void) = AliasedUse   : ~mu46_3
+#   46|     v46_5(Void) = ExitFunction : 
 
 #   46|   Block 2
-#   46|     v46_7(Void) = Unwind : 
+#   46|     v46_6(Void) = Unwind : 
 #-----|   Goto -> Block 1
 
 #   52|   Block 3
@@ -1827,7 +1776,7 @@ stmts.cs:
 #   65|     r65_1(Int32)        = Constant[2]        : 
 #   65|     r65_2(glval<Int32>) = VariableAddress[x] : 
 #   65|     mu65_3(Int32)       = Store              : &:r65_2, r65_1
-#   46|     v46_8(Void)         = ReturnVoid         : 
+#   46|     v46_7(Void)         = ReturnVoid         : 
 #-----|   Goto -> Block 1
 
 #   55|   Block 6
@@ -1866,9 +1815,8 @@ stmts.cs:
 
 #   69|   Block 1
 #   69|     v69_4(Void) = ReturnVoid   : 
-#   69|     v69_5(Void) = UnmodeledUse : mu*
-#   69|     v69_6(Void) = AliasedUse   : ~mu69_3
-#   69|     v69_7(Void) = ExitFunction : 
+#   69|     v69_5(Void) = AliasedUse   : ~mu69_3
+#   69|     v69_6(Void) = ExitFunction : 
 
 #   72|   Block 2
 #   72|     r72_7(glval<Int32>) = VariableAddress[i] : 
@@ -1944,9 +1892,8 @@ stmts.cs:
 
 #   89|   Block 1
 #   89|     v89_4(Void) = ReturnVoid   : 
-#   89|     v89_5(Void) = UnmodeledUse : mu*
-#   89|     v89_6(Void) = AliasedUse   : ~mu89_3
-#   89|     v89_7(Void) = ExitFunction : 
+#   89|     v89_5(Void) = AliasedUse   : ~mu89_3
+#   89|     v89_6(Void) = ExitFunction : 
 
 #   94|   Block 2
 #   94|     r94_1(glval<Int32>) = VariableAddress[x] : 
@@ -1985,9 +1932,8 @@ stmts.cs:
 #  108|     r108_5(glval<Int32>) = VariableAddress[num] : 
 #  108|     mu108_6(Int32)       = Store                : &:r108_5, r108_4
 #   99|     v99_4(Void)          = ReturnVoid           : 
-#   99|     v99_5(Void)          = UnmodeledUse         : mu*
-#   99|     v99_6(Void)          = AliasedUse           : ~mu99_3
-#   99|     v99_7(Void)          = ExitFunction         : 
+#   99|     v99_5(Void)          = AliasedUse           : ~mu99_3
+#   99|     v99_6(Void)          = ExitFunction         : 
 
 using.cs:
 #    7| System.Void UsingStmt.MyDisposable..ctor()
@@ -1998,9 +1944,8 @@ using.cs:
 #    7|     r7_4(glval<MyDisposable>) = InitializeThis      : 
 #    7|     v7_5(Void)                = NoOp                : 
 #    7|     v7_6(Void)                = ReturnVoid          : 
-#    7|     v7_7(Void)                = UnmodeledUse        : mu*
-#    7|     v7_8(Void)                = AliasedUse          : ~mu7_3
-#    7|     v7_9(Void)                = ExitFunction        : 
+#    7|     v7_7(Void)                = AliasedUse          : ~mu7_3
+#    7|     v7_8(Void)                = ExitFunction        : 
 
 #    8| System.Void UsingStmt.MyDisposable.DoSomething()
 #    8|   Block 0
@@ -2010,9 +1955,8 @@ using.cs:
 #    8|     r8_4(glval<MyDisposable>) = InitializeThis      : 
 #    8|     v8_5(Void)                = NoOp                : 
 #    8|     v8_6(Void)                = ReturnVoid          : 
-#    8|     v8_7(Void)                = UnmodeledUse        : mu*
-#    8|     v8_8(Void)                = AliasedUse          : ~mu8_3
-#    8|     v8_9(Void)                = ExitFunction        : 
+#    8|     v8_7(Void)                = AliasedUse          : ~mu8_3
+#    8|     v8_8(Void)                = ExitFunction        : 
 
 #    9| System.Void UsingStmt.MyDisposable.Dispose()
 #    9|   Block 0
@@ -2022,9 +1966,8 @@ using.cs:
 #    9|     r9_4(glval<MyDisposable>) = InitializeThis      : 
 #    9|     v9_5(Void)                = NoOp                : 
 #    9|     v9_6(Void)                = ReturnVoid          : 
-#    9|     v9_7(Void)                = UnmodeledUse        : mu*
-#    9|     v9_8(Void)                = AliasedUse          : ~mu9_3
-#    9|     v9_9(Void)                = ExitFunction        : 
+#    9|     v9_7(Void)                = AliasedUse          : ~mu9_3
+#    9|     v9_8(Void)                = ExitFunction        : 
 
 #   12| System.Void UsingStmt.Main()
 #   12|   Block 0
@@ -2065,9 +2008,8 @@ using.cs:
 #   26|     v26_4(Void)                = Call                          : func:r26_3, this:r26_2
 #   26|     mu26_5(<unknown>)          = ^CallSideEffect               : ~mu12_3
 #   12|     v12_4(Void)                = ReturnVoid                    : 
-#   12|     v12_5(Void)                = UnmodeledUse                  : mu*
-#   12|     v12_6(Void)                = AliasedUse                    : ~mu12_3
-#   12|     v12_7(Void)                = ExitFunction                  : 
+#   12|     v12_5(Void)                = AliasedUse                    : ~mu12_3
+#   12|     v12_6(Void)                = ExitFunction                  : 
 
 variables.cs:
 #    5| System.Void test_variables.f()
@@ -2092,6 +2034,5 @@ variables.cs:
 #   10|     r10_3(Int32)        = Load                : &:r10_2, ~mu5_3
 #   10|     mu10_4(Int32)       = Store               : &:r10_1, r10_3
 #    5|     v5_4(Void)          = ReturnVoid          : 
-#    5|     v5_5(Void)          = UnmodeledUse        : mu*
-#    5|     v5_6(Void)          = AliasedUse          : ~mu5_3
-#    5|     v5_7(Void)          = ExitFunction        : 
+#    5|     v5_5(Void)          = AliasedUse          : ~mu5_3
+#    5|     v5_6(Void)          = ExitFunction        : 

@@ -226,7 +226,6 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
 Further reading
 ---------------
 
-- ":doc:`Analyzing control flow in Python <control-flow>`"
-- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
 
-.. include:: ../../reusables/python-other-resources.rst

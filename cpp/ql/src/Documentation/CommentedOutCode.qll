@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for identifying C/C++ comments that look like code.
+ */
+
 import cpp
 
 /**
@@ -137,8 +141,14 @@ class CommentBlock extends Comment {
     )
   }
 
+  /**
+   * Gets the last comment associated with this comment block.
+   */
   Comment lastComment() { result = this.getComment(max(int i | exists(this.getComment(i)))) }
 
+  /**
+   * Gets the contents of the `i`'th comment associated with this comment block.
+   */
   string getLine(int i) {
     this instanceof CStyleComment and
     result = this.getContents().regexpCapture("(?s)/\\*+(.*)\\*+/", 1).splitAt("\n", i)
@@ -146,14 +156,24 @@ class CommentBlock extends Comment {
     this instanceof CppStyleComment and result = this.getComment(i).getContents().suffix(2)
   }
 
+  /**
+   * Gets the number of lines in the comments associated with this comment block.
+   */
   int numLines() {
     result = strictcount(int i, string line | line = this.getLine(i) and line.trim() != "")
   }
 
+  /**
+   * Gets the number of lines that look like code in the comments associated with this comment block.
+   */
   int numCodeLines() {
     result = strictcount(int i, string line | line = this.getLine(i) and looksLikeCode(line))
   }
 
+  /**
+   * Holds if the comment block is a C-style comment, and each
+   * comment line starts with a *.
+   */
   predicate isDocumentation() {
     // If a C-style comment starts each line with a *, then it's
     // probably documentation rather than code.
@@ -161,6 +181,12 @@ class CommentBlock extends Comment {
     forex(int i | i in [1 .. this.numLines() - 1] | this.getLine(i).trim().matches("*%"))
   }
 
+  /**
+   * Holds if this comment block looks like code that has been commented out. Specifically:
+   * 1. It does not look like documentation (see `isDocumentation`).
+   * 2. It is not in a header file without any declaration entries or top level declarations.
+   * 3. More than half of the lines in the comment block look like code.
+   */
   predicate isCommentedOutCode() {
     not this.isDocumentation() and
     not this.getFile().(HeaderFile).noTopLevelCode() and

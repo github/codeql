@@ -110,3 +110,9 @@ Example query
       hashCons(outer.getCondition()) = hashCons(inner.getCondition())
     select inner.getCondition(), "The condition of this if statement duplicates the condition of $@",
       outer.getCondition(), "an enclosing if statement"
+
+Further reading
+---------------
+
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

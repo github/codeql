@@ -61,7 +61,7 @@ namespace Semmle.Autobuild
             /// <param name="silent">Whether this command should run silently.</param>
             /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
             /// <param name="environment">Additional environment variables.</param>
-            public BuildCommand(string exe, string argumentsOpt, bool silent, string? workingDirectory = null, IDictionary<string, string>? environment = null)
+            public BuildCommand(string exe, string? argumentsOpt, bool silent, string? workingDirectory = null, IDictionary<string, string>? environment = null)
             {
                 this.exe = exe;
                 this.arguments = argumentsOpt ?? "";
@@ -183,7 +183,7 @@ namespace Semmle.Autobuild
         /// <param name="silent">Whether the executable should run silently.</param>
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="environment">Additional environment variables.</param>
-        public static BuildScript Create(string exe, string argumentsOpt, bool silent, string? workingDirectory, IDictionary<string, string>? environment) =>
+        public static BuildScript Create(string exe, string? argumentsOpt, bool silent, string? workingDirectory, IDictionary<string, string>? environment) =>
             new BuildCommand(exe, argumentsOpt, silent, workingDirectory, environment);
 
         /// <summary>

@@ -340,10 +340,6 @@ For more information about these classes, see ":doc:`Analyzing data flow and tra
 Further reading
 ---------------
 
-- ":doc:`Functions in Python <functions>`"
-- ":doc:`Expressions and statements in Python <statements-expressions>`"
-- ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
-- ":doc:`Analyzing control flow in Python <control-flow>`"
-- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+.. include:: ../../reusables/python-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
 
-.. include:: ../../reusables/python-other-resources.rst

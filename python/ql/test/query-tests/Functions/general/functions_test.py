@@ -193,3 +193,8 @@ def list_default(x=[1,2,3,4]):
 
 def tuple_default(x=(1,2)):
     do_stuff_based_on_type(x)
+
+# Modification of parameter with default (safe method)
+
+def safe_method(x=[]):
+    return x.count(42)

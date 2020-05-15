@@ -206,8 +206,3 @@ The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.
       </fragment>
    </qhelp>
 
-Further information
-===================
-
-- To learn more about contributing to the standard CodeQL queries and libraries, see our `Contributing guidelines <https://github.com/github/codeql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
-- To learn more about writing custom queries, and how to format your code for clarity and consistency, see `Writing CodeQL queries <https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html>`__.
