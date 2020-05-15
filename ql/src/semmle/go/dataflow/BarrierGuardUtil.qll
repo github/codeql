@@ -25,7 +25,7 @@ class RedirectCheckBarrierGuard extends DataFlow::BarrierGuard, DataFlow::CallNo
  * An equality check comparing a data-flow node against a constant string, considered as
  * a barrier guard for sanitizing untrusted URLs.
  *
- * Additionally, a check comparing `url.Hostname()` against a constant string is also 
+ * Additionally, a check comparing `url.Hostname()` against a constant string is also
  * considered a barrier guard for `url`.
  */
 class UrlCheck extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
@@ -40,11 +40,11 @@ class UrlCheck extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
         mc.getTarget().getName() = "Hostname" and
         url = mc.getReceiver()
       )
-    }
+    )
+  }
 
-    override predicate checks(Expr e, boolean outcome) {
-      e = url.asExpr() and outcome = this.getPolarity()
-    }
+  override predicate checks(Expr e, boolean outcome) {
+    e = url.asExpr() and outcome = this.getPolarity()
   }
 }
 
