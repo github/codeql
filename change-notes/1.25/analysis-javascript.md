@@ -3,11 +3,13 @@
 ## General improvements
 
 * Support for the following frameworks and libraries has been improved:
+  - [bluebird](http://bluebirdjs.com/)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
   - [marsdb](https://www.npmjs.com/package/marsdb)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
+  - [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 ## New queries
 
