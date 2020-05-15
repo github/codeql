@@ -221,8 +221,7 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-abstract class ChiOperandTag extends MemoryOperandTag {
-}
+abstract class ChiOperandTag extends MemoryOperandTag { }
 
 class ChiTotalOperandTag extends ChiOperandTag, TChiTotalOperand {
   final override string toString() { result = "ChiTotal" }
