@@ -311,10 +311,22 @@ private module MsSql {
  */
 private module Sequelize {
   /** Gets an import of the `sequelize` module. */
-  DataFlow::ModuleImportNode sequelize() { result.getPath() = "sequelize" }
+  DataFlow::SourceNode sequelize() { result = DataFlow::moduleImport("sequelize") }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  DataFlow::SourceNode newSequelize() { result = sequelize().getAnInstantiation() }
+  private DataFlow::SourceNode newSequelize(DataFlow::TypeTracker t) {
+    t.start() and
+    result = sequelize().getAnInstantiation()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = newSequelize(t2).track(t2, t)
+    )
+  }
+
+  /** Gets an expression that creates an instance of the `Sequelize` class. */
+  DataFlow::SourceNode newSequelize() {
+    result = newSequelize(DataFlow::TypeTracker::end())
+  }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {

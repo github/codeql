@@ -15,6 +15,7 @@
 | postgres5.js:8:21:8:25 | query |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
+| sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |
 | spanner2.js:5:26:5:35 | "SQL code" |
 | spanner2.js:7:35:7:44 | "SQL code" |
 | spanner.js:6:8:6:17 | "SQL code" |
