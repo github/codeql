@@ -82,8 +82,6 @@ private predicate ordering_method(string name) {
 private predicate cast_method(string name) {
     name = "__nonzero__" and major_version() = 2
     or
-    name = "__bool__"
-    or
     name = "__int__"
     or
     name = "__float__"
@@ -118,6 +116,8 @@ predicate preferred_raise(string name, ClassObject ex) {
     ordering_method(name) and ex = theTypeErrorType()
     or
     arithmetic_method(name) and ex = Object::builtin("ArithmeticError")
+    or
+    name = "__bool__" and ex = theTypeErrorType()
 }
 
 predicate no_need_to_raise(string name, string message) {

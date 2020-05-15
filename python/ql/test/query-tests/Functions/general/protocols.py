@@ -101,6 +101,9 @@ class IncorrectSpecialMethods(object):
     def __getattr__(self):
         raise ZeroDivisionError()
 
+    def __bool__(self):
+        raise ZeroDivisionError()
+
 def f(self):
     pass
 
@@ -116,3 +119,8 @@ class OK(object):
     def __call__(self):
         yield 0
         raise StopIteration
+
+    # __bool__ returns `True` by default, so raising `TypeError` should not give an alert
+    # FP reported in https://github.com/github/codeql/issues/2388
+    def __bool__(self):
+        raise TypeError
