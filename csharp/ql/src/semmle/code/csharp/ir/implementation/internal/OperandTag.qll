@@ -15,7 +15,6 @@ private newtype TOperandTag =
   TLeftOperand() or
   TRightOperand() or
   TConditionOperand() or
-  TUnmodeledUseOperand() or
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) { Language::hasPositionalArgIndex(argIndex) } or
@@ -164,18 +163,6 @@ class ConditionOperandTag extends RegisterOperandTag, TConditionOperand {
 }
 
 ConditionOperandTag conditionOperand() { result = TConditionOperand() }
-
-/**
- * An operand of the special `UnmodeledUse` instruction, representing a value
- * whose set of uses is unknown.
- */
-class UnmodeledUseOperandTag extends MemoryOperandTag, TUnmodeledUseOperand {
-  final override string toString() { result = "UnmodeledUse" }
-
-  final override int getSortOrder() { result = 9 }
-}
-
-UnmodeledUseOperandTag unmodeledUseOperand() { result = TUnmodeledUseOperand() }
 
 /**
  * The operand representing the target function of an `Call` instruction.

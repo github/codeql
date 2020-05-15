@@ -55,7 +55,6 @@ module InstructionConsistency {
           operand.getOperandTag() = tag
         ) and
       operandCount > 1 and
-      not tag instanceof UnmodeledUseOperandTag and
       message =
         "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
           " in function '$@'." and
@@ -158,7 +157,6 @@ module InstructionConsistency {
   ) {
     exists(MemoryOperand operand, Instruction def |
       operand = instr.getAnOperand() and
-      not operand instanceof UnmodeledUseOperand and
       def = operand.getAnyDef() and
       not def.isResultModeled() and
       not def instanceof UnmodeledDefinitionInstruction and
@@ -259,7 +257,6 @@ module InstructionConsistency {
     Operand useOperand, string message, IRFunction func, string funcText
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
-      not useOperand.getUse() instanceof UnmodeledUseInstruction and
       not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and

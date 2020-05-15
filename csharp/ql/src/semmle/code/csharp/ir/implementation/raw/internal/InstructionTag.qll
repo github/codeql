@@ -30,7 +30,6 @@ newtype TInstructionTag =
   ReturnTag() or
   ExitFunctionTag() or
   UnmodeledDefinitionTag() or
-  UnmodeledUseTag() or
   AliasedDefinitionTag() or
   AliasedUseTag() or
   SwitchBranchTag() or
@@ -127,8 +126,6 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ExitFunctionTag() and result = "ExitFunc"
   or
   tag = UnmodeledDefinitionTag() and result = "UnmodeledDef"
-  or
-  tag = UnmodeledUseTag() and result = "UnmodeledUse"
   or
   tag = AliasedDefinitionTag() and result = "AliasedDef"
   or

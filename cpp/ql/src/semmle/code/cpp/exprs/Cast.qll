@@ -7,7 +7,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * Instances of this class are not present in the main AST which is navigated by parent/child links. Instead,
  * instances of this class are attached to nodes in the main AST via special conversion links.
  */
-abstract class Conversion extends Expr {
+class Conversion extends Expr, @conversion {
   /** Gets the expression being converted. */
   Expr getExpr() { result.getConversion() = this }
 

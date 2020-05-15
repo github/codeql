@@ -1,4 +1,13 @@
 nodes
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:36 | location.search |
@@ -108,6 +117,14 @@ nodes
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 edges
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
@@ -212,6 +229,8 @@ edges
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 #select
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:18:24:18:31 | req.body | User-provided value |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:19:36:19:43 | req.body | User-provided value |
 | angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:10:22:10:29 | location | User-provided value |
 | angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:30 | location | angularjs.js:13:23:13:37 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:13:23:13:30 | location | User-provided value |
 | angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:35 | location | angularjs.js:16:28:16:42 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:16:28:16:35 | location | User-provided value |

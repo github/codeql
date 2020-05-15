@@ -97,3 +97,23 @@ void test_outparams() {
     flow_to_outparam(&p2, getenv("VAR"));
     sink(p2); // tainted
 }
+
+
+void *memcpy(void *dst, void *src, int size);
+
+struct ContainsArray {
+  int arr[16];
+  int x;
+};
+
+void taint_array(ContainsArray *ca, int offset) {
+  int tainted = getenv("VAR")[0];
+  memcpy(ca->arr + offset, &tainted, sizeof(int));
+}
+
+void test_conflated_fields3(int arbitrary) {
+  ContainsArray ca;
+  ca.x = 0;
+  taint_array(&ca, arbitrary);
+  sink(ca.x); // not tainted [FALSE POSITIVE]
+}

@@ -61,7 +61,6 @@ private newtype TOpcode =
   TReThrow() or
   TUnwind() or
   TUnmodeledDefinition() or
-  TUnmodeledUse() or
   TAliasedDefinition() or
   TInitializeNonLocal() or
   TAliasedUse() or
@@ -584,14 +583,6 @@ module Opcode {
 
     final override MemoryAccessKind getWriteMemoryAccess() {
       result instanceof UnmodeledMemoryAccess
-    }
-  }
-
-  class UnmodeledUse extends Opcode, TUnmodeledUse {
-    final override string toString() { result = "UnmodeledUse" }
-
-    final override predicate hasOperandInternal(OperandTag tag) {
-      tag instanceof UnmodeledUseOperandTag
     }
   }
 

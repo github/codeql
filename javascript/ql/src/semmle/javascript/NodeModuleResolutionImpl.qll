@@ -112,7 +112,7 @@ class MainModulePath extends PathExpr, @json_string {
 
   override string getValue() { result = this.(JSONString).getValue() }
 
-  override Folder getSearchRoot(int priority) {
+  override Folder getAdditionalSearchRoot(int priority) {
     priority = 0 and
     result = pkg.getFile().getParentContainer()
   }

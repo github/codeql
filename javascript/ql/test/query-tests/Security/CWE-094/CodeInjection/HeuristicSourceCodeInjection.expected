@@ -1,4 +1,13 @@
 nodes
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:36 | location.search |
@@ -112,6 +121,14 @@ nodes
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 edges
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
