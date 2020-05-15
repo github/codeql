@@ -26,3 +26,5 @@ connection.query({
 });
  
 connection.end();
+
+exports.connection = connection;

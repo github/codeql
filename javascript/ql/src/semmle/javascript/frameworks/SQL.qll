@@ -28,38 +28,61 @@ module SQL {
  * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
  */
 private module MySql {
-  /** Gets the package name `mysql` or `mysql2`. */
-  string mysql() { result = "mysql" or result = "mysql2" }
+  private DataFlow::SourceNode mysql() {
+    result = DataFlow::moduleImport(["mysql", "mysql2"])
+  }
 
-  /** Gets a call to `mysql.createConnection`. */
-  DataFlow::SourceNode createConnection() {
-    result = DataFlow::moduleMember(mysql(), "createConnection").getACall()
+  private DataFlow::CallNode createPool() {
+    result = mysql().getAMemberCall("createPool")
   }
 
   /** Gets a call to `mysql.createPool`. */
-  DataFlow::SourceNode createPool() {
-    result = DataFlow::moduleMember(mysql(), "createPool").getACall()
+  private DataFlow::SourceNode pool(DataFlow::TypeTracker t) {
+    t.start() and
+    result = createPool()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = pool(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a call to `mysql.createPool`. */
+  private DataFlow::SourceNode pool() {
+    result = pool(DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a call to `mysql.createConnection`. */
+  DataFlow::CallNode createConnection() {
+    result = mysql().getAMemberCall("createConnection")
+  }
+
+  /** Gets a data flow node that contains a freshly created MySQL connection instance. */
+  private DataFlow::SourceNode connection(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      result = createConnection()
+      or
+      result = pool().getAMethodCall("getConnection").getABoundCallbackParameter(0, 1)
+    )
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = connection(t2).track(t2, t)
+    )
   }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   DataFlow::SourceNode connection() {
-    result = createConnection()
-    or
-    result = createPool().getAMethodCall("getConnection").getCallback(0).getParameter(1)
+    result = connection(DataFlow::TypeTracker::end())
   }
 
   /** A call to the MySql `query` method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
-    override MethodCallExpr astNode;
-
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(DataFlow::SourceNode recv | recv = createPool() or recv = connection() |
-        this = recv.getAMethodCall("query")
-      )
+      this = [pool(), connection()].getAMethodCall("query")
     }
 
     override DataFlow::Node getAQueryArgument() {
-      result = DataFlow::valueNode(astNode.getArgument(0))
+      result = getArgument(0)
     }
   }
 
@@ -71,18 +94,9 @@ private module MySql {
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
   class EscapingSanitizer extends SQL::SqlSanitizer, @callexpr {
     EscapingSanitizer() {
-      exists(string esc | esc = "escape" or esc = "escapeId" |
-        exists(DataFlow::SourceNode escape, MethodCallExpr mce |
-          escape = DataFlow::moduleMember(mysql(), esc) or
-          escape = connection().getAPropertyRead(esc) or
-          escape = createPool().getAPropertyRead(esc)
-        |
-          this = mce and
-          mce = escape.getACall().asExpr() and
-          input = mce.getArgument(0) and
-          output = mce
-        )
-      )
+      this = [mysql(), pool(), connection()].getAMemberCall(["escape", "escapeId"]).asExpr() and
+      input = this.(MethodCallExpr).getArgument(0) and
+      output = this
     }
   }
 
@@ -91,9 +105,8 @@ private module MySql {
     string kind;
 
     Credentials() {
-      exists(DataFlow::SourceNode call, string prop |
-        (call = createConnection() or call = createPool()) and
-        call.asExpr().(CallExpr).hasOptionArgument(0, prop, this) and
+      exists(string prop |
+        this = [createConnection(), createPool()].getOptionArgument(0, prop).asExpr() and
         (
           prop = "user" and kind = "user name"
           or
