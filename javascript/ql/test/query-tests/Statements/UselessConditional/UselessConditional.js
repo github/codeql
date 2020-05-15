@@ -176,3 +176,17 @@ async function awaitFlow(){
 	if (v) { // OK
 	}
 });
+
+(function() {
+    function outer(x) {
+        addEventListener("click", () => {
+            if (!x && something()) { // NOT OK
+                something();
+            }
+        });
+    }
+    function inner() {
+        outer(); // Omit parameter
+    }
+    inner();
+});
