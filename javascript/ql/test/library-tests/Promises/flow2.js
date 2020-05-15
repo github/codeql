@@ -14,4 +14,8 @@
 	var [clean2, tainted2] = await Promise.resolve(Promise.all(["clean", source]));
 	sink(clean2); // OK - but flagged by taint-tracking
 	sink(tainted2); // NOT OK
+
+	var [clean2, tainted2] = await Promise.all(["clean", Promise.resolve(source)]);
+	sink(clean2); // OK - but flagged by taint-tracking
+	sink(tainted2); // NOT OK - but only flagged by taint-tracking
 });
