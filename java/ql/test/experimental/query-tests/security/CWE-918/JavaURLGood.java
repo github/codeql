@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RequestForgeryGood extends HttpServlet {
+public class JavaURLGood extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException, MalformedURLException {
 		// host of spec parameter controlled by server

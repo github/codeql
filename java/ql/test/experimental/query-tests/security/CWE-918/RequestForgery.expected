@@ -1,38 +1,38 @@
 edges
-| RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | RequestForgeryBad.java:22:36:22:38 | url |
-| RequestForgeryBad.java:25:17:25:56 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url |
-| RequestForgeryBad.java:25:68:25:103 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url |
-| RequestForgeryBad.java:29:30:29:65 | getParameter(...) : String | RequestForgeryBad.java:30:16:30:18 | url |
-| RequestForgeryBad.java:34:36:34:71 | getParameter(...) : String | RequestForgeryBad.java:35:16:35:18 | url |
-| RequestForgeryBad.java:39:26:39:56 | getParameter(...) : String | RequestForgeryBad.java:40:16:40:18 | url |
-| RequestForgeryBad.java:43:26:43:56 | getParameter(...) : String | RequestForgeryBad.java:44:16:44:18 | url |
-| RequestForgeryBad.java:47:39:47:69 | getParameter(...) : String | RequestForgeryBad.java:48:16:48:18 | url |
-| RequestForgeryBad.java:55:26:55:56 | getParameter(...) : String | RequestForgeryBad.java:56:16:56:18 | url |
+| JavaURLBad.java:21:21:21:51 | getParameter(...) : String | JavaURLBad.java:22:36:22:38 | url |
+| JavaURLBad.java:25:17:25:56 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url |
+| JavaURLBad.java:25:68:25:103 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url |
+| JavaURLBad.java:29:30:29:65 | getParameter(...) : String | JavaURLBad.java:30:16:30:18 | url |
+| JavaURLBad.java:34:36:34:71 | getParameter(...) : String | JavaURLBad.java:35:16:35:18 | url |
+| JavaURLBad.java:39:26:39:56 | getParameter(...) : String | JavaURLBad.java:40:16:40:18 | url |
+| JavaURLBad.java:43:26:43:56 | getParameter(...) : String | JavaURLBad.java:44:16:44:18 | url |
+| JavaURLBad.java:47:39:47:69 | getParameter(...) : String | JavaURLBad.java:48:16:48:18 | url |
+| JavaURLBad.java:55:26:55:56 | getParameter(...) : String | JavaURLBad.java:56:16:56:18 | url |
 nodes
-| RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:22:36:22:38 | url | semmle.label | url |
-| RequestForgeryBad.java:25:17:25:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:25:68:25:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:26:16:26:18 | url | semmle.label | url |
-| RequestForgeryBad.java:29:30:29:65 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:30:16:30:18 | url | semmle.label | url |
-| RequestForgeryBad.java:34:36:34:71 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:35:16:35:18 | url | semmle.label | url |
-| RequestForgeryBad.java:39:26:39:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:40:16:40:18 | url | semmle.label | url |
-| RequestForgeryBad.java:43:26:43:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:44:16:44:18 | url | semmle.label | url |
-| RequestForgeryBad.java:47:39:47:69 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:48:16:48:18 | url | semmle.label | url |
-| RequestForgeryBad.java:55:26:55:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RequestForgeryBad.java:56:16:56:18 | url | semmle.label | url |
+| JavaURLBad.java:21:21:21:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:22:36:22:38 | url | semmle.label | url |
+| JavaURLBad.java:25:17:25:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:25:68:25:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:26:16:26:18 | url | semmle.label | url |
+| JavaURLBad.java:29:30:29:65 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:30:16:30:18 | url | semmle.label | url |
+| JavaURLBad.java:34:36:34:71 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:35:16:35:18 | url | semmle.label | url |
+| JavaURLBad.java:39:26:39:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:40:16:40:18 | url | semmle.label | url |
+| JavaURLBad.java:43:26:43:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:44:16:44:18 | url | semmle.label | url |
+| JavaURLBad.java:47:39:47:69 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:48:16:48:18 | url | semmle.label | url |
+| JavaURLBad.java:55:26:55:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaURLBad.java:56:16:56:18 | url | semmle.label | url |
 #select
-| RequestForgeryBad.java:22:36:22:55 | openConnection(...) | RequestForgeryBad.java:21:21:21:51 | getParameter(...) : String | RequestForgeryBad.java:22:36:22:38 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:26:16:26:35 | openConnection(...) | RequestForgeryBad.java:25:17:25:56 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:26:16:26:35 | openConnection(...) | RequestForgeryBad.java:25:68:25:103 | getParameter(...) : String | RequestForgeryBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:30:16:30:35 | openConnection(...) | RequestForgeryBad.java:29:30:29:65 | getParameter(...) : String | RequestForgeryBad.java:30:16:30:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:35:16:35:35 | openConnection(...) | RequestForgeryBad.java:34:36:34:71 | getParameter(...) : String | RequestForgeryBad.java:35:16:35:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:40:16:40:35 | openConnection(...) | RequestForgeryBad.java:39:26:39:56 | getParameter(...) : String | RequestForgeryBad.java:40:16:40:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:44:16:44:35 | openConnection(...) | RequestForgeryBad.java:43:26:43:56 | getParameter(...) : String | RequestForgeryBad.java:44:16:44:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:48:16:48:35 | openConnection(...) | RequestForgeryBad.java:47:39:47:69 | getParameter(...) : String | RequestForgeryBad.java:48:16:48:18 | url | The URL used for this network request may have been constructed from user-provided value |
-| RequestForgeryBad.java:56:16:56:35 | openConnection(...) | RequestForgeryBad.java:55:26:55:56 | getParameter(...) : String | RequestForgeryBad.java:56:16:56:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:22:36:22:55 | openConnection(...) | JavaURLBad.java:21:21:21:51 | getParameter(...) : String | JavaURLBad.java:22:36:22:38 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:26:16:26:35 | openConnection(...) | JavaURLBad.java:25:17:25:56 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:26:16:26:35 | openConnection(...) | JavaURLBad.java:25:68:25:103 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:30:16:30:35 | openConnection(...) | JavaURLBad.java:29:30:29:65 | getParameter(...) : String | JavaURLBad.java:30:16:30:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:35:16:35:35 | openConnection(...) | JavaURLBad.java:34:36:34:71 | getParameter(...) : String | JavaURLBad.java:35:16:35:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:40:16:40:35 | openConnection(...) | JavaURLBad.java:39:26:39:56 | getParameter(...) : String | JavaURLBad.java:40:16:40:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:44:16:44:35 | openConnection(...) | JavaURLBad.java:43:26:43:56 | getParameter(...) : String | JavaURLBad.java:44:16:44:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:48:16:48:35 | openConnection(...) | JavaURLBad.java:47:39:47:69 | getParameter(...) : String | JavaURLBad.java:48:16:48:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JavaURLBad.java:56:16:56:35 | openConnection(...) | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | JavaURLBad.java:56:16:56:18 | url | The URL used for this network request may have been constructed from user-provided value |

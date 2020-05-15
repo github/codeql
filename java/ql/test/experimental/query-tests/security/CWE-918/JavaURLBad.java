@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RequestForgeryBad extends HttpServlet {
+public class JavaURLBad extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException, MalformedURLException {
         // spec parameter constructed from remote source
