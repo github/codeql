@@ -327,7 +327,6 @@ private module PromiseFlow {
       pred = promise.getValue() and
       succ = this
       or
-      promise instanceof PromiseAllCreation and
       prop = valueProp() and
       pred = promise.(PromiseAllCreation).getArrayNode() and
       succ = this
