@@ -4,6 +4,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 import JavaURL as JavaURL
+import GoogleHTTPClient as GoogleHTTPClient
 
 abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
   bindingset[this]
@@ -11,7 +12,11 @@ abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node node) { JavaURL::isUnsafeURLFlowSink(node) }
+  override predicate isSink(DataFlow::Node node) {
+    JavaURL::isUnsafeURLFlowSink(node)
+    or
+    GoogleHTTPClient::isUnsafeURLFlowSink(node)
+  }
 
   override predicate isBarrier(DataFlow::Node node) { TaintTracking::defaultTaintBarrier(node) }
 
@@ -40,6 +45,8 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     JavaURL::unsafeURLSpecFlowTaintStep(node1, node2)
+    or
+    GoogleHTTPClient::unsafeURLSpecFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -58,6 +65,8 @@ class UnsafeURLHostFlowConfiguration extends UnsafeURLFlowConfiguration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     JavaURL::unsafeURLHostFlowTaintStep(node1, node2)
+    or
+    GoogleHTTPClient::unsafeURLHostFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
