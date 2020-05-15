@@ -14,6 +14,7 @@
 | postgres2.js:30:16:30:41 | 'SELECT ... number' |
 | postgres3.js:15:16:15:40 | 'SELECT ... s name' |
 | postgres5.js:8:21:8:25 | query |
+| postgresImport.js:4:18:4:43 | 'SELECT ... number' |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
 | sequelizeImport.js:3:17:3:118 | 'SELECT ... Y name' |

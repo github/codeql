@@ -123,21 +123,8 @@ private module MySql {
  * Provides classes modelling the `pg` package.
  */
 private module Postgres {
-  /** Gets an expression of the form `new require('pg').Client()`. */
-  DataFlow::SourceNode newClient() {
-    result = DataFlow::moduleImport("pg").getAConstructorInvocation("Client")
-  }
-
-  /** Gets a data flow node that holds a freshly created Postgres client instance. */
-  DataFlow::SourceNode client() {
-    result = newClient()
-    or
-    // pool.connect(function(err, client) { ... })
-    result = newPool().getAMethodCall("connect").getCallback(0).getParameter(1)
-  }
-
   /** Gets an expression that constructs a new connection pool. */
-  DataFlow::SourceNode newPool() {
+  DataFlow::InvokeNode newPool() {
     // new require('pg').Pool()
     result = DataFlow::moduleImport("pg").getAConstructorInvocation("Pool")
     or
@@ -145,25 +132,55 @@ private module Postgres {
     result = DataFlow::moduleImport("pg-pool").getAnInstantiation()
   }
 
-  private DataFlow::SourceNode clientOrPool(DataFlow::TypeTracker t) {
+  /** Gets a data flow node referring to a connection pool. */
+  private DataFlow::SourceNode pool(DataFlow::TypeTracker t) {
     t.start() and
-    (result = client() or result = newPool())
+    result = newPool()
     or
-    exists(DataFlow::TypeTracker t2 | result = clientOrPool(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 |
+      result = pool(t2).track(t2, t)
+    )
+  }
+  
+  /** Gets a data flow node referring to a connection pool. */
+  DataFlow::SourceNode pool() {
+    result = pool(DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a creation of a Postgres client. */
+  DataFlow::InvokeNode newClient() {
+    result = DataFlow::moduleImport("pg").getAConstructorInvocation("Client")
+  }
+
+  /** Gets a data flow node referring to a Postgres client. */
+  private DataFlow::SourceNode client(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      result = newClient()
+      or
+      result = pool().getAMethodCall("connect").getABoundCallbackParameter(0, 1)
+    )
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = client(t2).track(t2, t)
+    )
+  }
+  
+  /** Gets a data flow node referring to a Postgres client. */
+  DataFlow::SourceNode client() {
+    result = client(DataFlow::TypeTracker::end())
   }
 
   private DataFlow::SourceNode clientOrPool() {
-    result = clientOrPool(DataFlow::TypeTracker::end())
+    result = client() or result = pool()
   }
 
   /** A call to the Postgres `query` method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
-    override MethodCallExpr astNode;
-
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = clientOrPool().getAMethodCall("query") }
 
     override DataFlow::Node getAQueryArgument() {
-      result = DataFlow::valueNode(astNode.getArgument(0))
+      result = getArgument(0)
     }
   }
 
@@ -177,14 +194,12 @@ private module Postgres {
     string kind;
 
     Credentials() {
-      exists(DataFlow::InvokeNode call, string prop |
-        (call = newClient() or call = newPool()) and
-        this = call.getOptionArgument(0, prop).asExpr() and
-        (
-          prop = "user" and kind = "user name"
-          or
-          prop = "password" and kind = prop
-        )
+      exists(string prop |
+        this = [newClient(), newPool()].getOptionArgument(0, prop).asExpr()
+      |
+        prop = "user" and kind = "user name"
+        or
+        prop = "password" and kind = prop
       )
     }
 
