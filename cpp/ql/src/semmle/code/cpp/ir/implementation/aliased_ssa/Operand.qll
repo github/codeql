@@ -28,6 +28,7 @@ private newtype TOperand =
  * eventually use for this purpose.
  */
 private class RegisterOperandBase extends TRegisterOperand {
+  /** Gets a textual representation of this element. */
   abstract string toString();
 }
 
@@ -45,6 +46,7 @@ private RegisterOperandBase registerOperand(
  * will eventually use for this purpose.
  */
 private class NonPhiMemoryOperandBase extends TNonPhiMemoryOperand {
+  /** Gets a textual representation of this element. */
   abstract string toString();
 }
 
