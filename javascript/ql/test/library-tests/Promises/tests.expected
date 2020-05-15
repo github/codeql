@@ -233,12 +233,7 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:129:69:129:69 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:131:43:131:43 | x |
 exclusiveTaintFlow
-| flow2.js:2:15:2:22 | "source" | flow2.js:5:8:5:10 | arr |
-| flow2.js:2:15:2:22 | "source" | flow2.js:7:8:7:13 | arr[1] |
-| flow2.js:2:15:2:22 | "source" | flow2.js:11:7:11:11 | clean |
-| flow2.js:2:15:2:22 | "source" | flow2.js:15:7:15:12 | clean2 |
-| flow2.js:2:15:2:22 | "source" | flow2.js:19:7:19:12 | clean2 |
-| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted2 |
+| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
 typetrack
 | flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | copy $PromiseResolveField$ |

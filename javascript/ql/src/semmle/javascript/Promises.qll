@@ -476,7 +476,11 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue()
+  pred = succ.(PromiseCreationCall).getValue() and
+  not succ instanceof PromiseAllCreation
+  or
+  // from `arr` to `Promise.all(arr)`
+  pred = succ.(PromiseAllCreation).getArrayNode()
   or
   exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
     // from `p` to `x` in `p.then(x => ...)`
