@@ -46,7 +46,7 @@ Library path
 ------------
 
 The library path is an ordered list of directory locations. It is used
-for resolving module imports (see `Module resolution <#module-resolution>`__)). The library path is not strictly
+for resolving module imports (see `Module resolution <#module-resolution>`__). The library path is not strictly
 speaking a core part of the QL language, since different
 implementations of QL construct it in slightly different ways. Most QL
 tools also allow you to explicitly specify the library path on the command line for a
