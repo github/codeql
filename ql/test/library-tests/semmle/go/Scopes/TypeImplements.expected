@@ -2,12 +2,17 @@
 | * starImpl | twoMethods |
 | * starImpl | twoMethodsEmbedded |
 | * t | iHaveAMethod |
+| * t | iHaveARedeclaredMethod |
 | iHaveAMethod | iHaveAMethod |
+| iHaveAMethod | iHaveARedeclaredMethod |
+| iHaveARedeclaredMethod | iHaveAMethod |
+| iHaveARedeclaredMethod | iHaveARedeclaredMethod |
 | interface { meth1 func() bool } | meth1Iface |
 | interface { meth1 func() bool; meth2 func() int } | meth1Iface |
 | interface { meth1 func() bool; meth2 func() int } | twoMethods |
 | interface { meth1 func() bool; meth2 func() int } | twoMethodsEmbedded |
 | interface { meth func() int } | iHaveAMethod |
+| interface { meth func() int } | iHaveARedeclaredMethod |
 | meth1Iface | meth1Iface |
 | twoMethods | meth1Iface |
 | twoMethods | twoMethods |

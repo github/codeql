@@ -10,3 +10,4 @@
 | types.go:27:17:27:21 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.starImpl.meth2 | file://:0:0:0:0 |  | starImpl |
 | types.go:33:16:33:20 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.notImpl.meth1 | file://:0:0:0:0 |  | notImpl |
 | types.go:37:16:37:20 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.notImpl.meth2 | file://:0:0:0:0 |  | notImpl |
+| types.go:43:2:43:5 | meth | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.iHaveARedeclaredMethod.meth | file://:0:0:0:0 |  | iHaveARedeclaredMethod |

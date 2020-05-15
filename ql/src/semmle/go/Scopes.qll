@@ -406,6 +406,9 @@ class Method extends Function {
     result = this.getReceiverType().getPackage()
   }
 
+  /** Holds if this method is declared in an interface. */
+  predicate isInterfaceMethod() { getReceiverType().getUnderlyingType() instanceof InterfaceType }
+
   /** Gets the receiver variable of this method. */
   Variable getReceiver() { result = receiver }
 
@@ -464,8 +467,14 @@ class Method extends Function {
    * Holds if this method implements the method `m`, that is, if `m` is a method
    * on an interface, and this is a method with the same name on a type that
    * implements that interface.
+   *
+   * Note that all methods implement themselves, and interface methods _only_
+   * implement themselves.
    */
   predicate implements(Method m) {
+    this = m
+    or
+    not isInterfaceMethod() and
     exists(Type t |
       this = t.getMethod(m.getName()) and
       t.implements(m.getReceiverType().getUnderlyingType())

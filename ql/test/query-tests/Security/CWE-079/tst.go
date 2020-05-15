@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -51,6 +52,20 @@ func serve8() {
 			// OK (service is known to be either "service1" or "service2" here), but currently flagged
 			w.Write([]byte(service))
 		}
+	})
+}
+
+type mix struct {
+	io.Writer
+	http.ResponseWriter
+}
+
+func serve9(log io.Writer) {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		username := r.Form.Get("username")
+		// OK: not a ResponseWriter
+		log.Write(username)
 	})
 	http.ListenAndServe(":80", nil)
 }
