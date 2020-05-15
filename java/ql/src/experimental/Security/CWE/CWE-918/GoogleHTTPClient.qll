@@ -76,7 +76,7 @@ private predicate taintStepCommon(DataFlow::Node node1, DataFlow::Node node2) {
     m.getQualifier().getType() instanceof TypeHttpRequest and
     m.getMethod().getName() = "setUrl" and
     node1.asExpr() = m.getArgument(0) and
-    node2.asExpr() = m
+    node2.asExpr() = m.getQualifier()
   )
 }
 
@@ -87,7 +87,7 @@ predicate unsafeURLHostFlowTaintStep(DataFlow::Node node1, DataFlow::Node node2)
     m.getQualifier().getType() instanceof TypeGenericUrl and
     m.getMethod().getName() = "setHost" and
     node1.asExpr() = m.getArgument(0) and
-    node2.asExpr() = m
+    node2.asExpr() = m.getQualifier()
   )
 }
 
@@ -102,7 +102,7 @@ predicate unsafeURLSpecFlowTaintStep(DataFlow::Node node1, DataFlow::Node node2)
 
 predicate isUnsafeURLFlowSink(DataFlow::Node node) {
   exists(MethodAccess m |
-    node.asExpr() = m and
+    node.asExpr() = m.getQualifier() and
     m.getQualifier().getType() instanceof TypeHttpRequest and
     m.getMethod().getName() in ["execute", "executeAsync"]
   )
