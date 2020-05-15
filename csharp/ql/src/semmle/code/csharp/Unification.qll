@@ -10,9 +10,75 @@ private import Caching
  * equal modulo identity conversions and type parameters.
  */
 module Gvn {
+  /**
+   * Gets the name of type `t`, including the enclosing type of `t` as a qualifier,
+   * but only if the enclosing type is not a `GenericType`.
+   */
+  string getNameNested(Type t) {
+    if not t instanceof NestedType or t.(NestedType).getDeclaringType() instanceof GenericType
+    then result = t.getName()
+    else result = getNameNested(t.(NestedType).getDeclaringType()) + "." + t.getName()
+  }
+
+  /**
+   * A generic type. This is either a type with a type parameter, a type with
+   * a type argument, or a nested type with a generic enclosing type.
+   *
+   * In this class, type parameters and type arguments are collectively referred
+   * to as "arguments".
+   */
+  class GenericType extends Type {
+    GenericType() {
+      exists(this.getChild(0))
+      or
+      this.(NestedType).getDeclaringType() instanceof GenericType
+    }
+
+    /** Gets the generic containing type, if any. */
+    GenericType getGenericDeclaringType() { result = this.(NestedType).getDeclaringType() }
+
+    /**
+     * Gets the number of arguments of the generic containing type, or 0 if there
+     * is no generic containing type.
+     */
+    int getNumberOfDeclaringArguments() {
+      result = this.getGenericDeclaringType().getNumberOfArguments()
+      or
+      not exists(this.getGenericDeclaringType()) and result = 0
+    }
+
+    /** Gets the number of arguments of this type, not taking nested types into account. */
+    int getNumberOfArgumentsSelf() { result = count(int i | exists(this.getChild(i)) and i >= 0) }
+
+    /** Gets the number of arguments of this type, taking nested types into account. */
+    int getNumberOfArguments() {
+      result = this.getNumberOfDeclaringArguments() + this.getNumberOfArgumentsSelf()
+    }
+
+    /** Gets the `i`th argument of this type, taking nested types into account. */
+    Type getArgument(int i) {
+      result = this.getGenericDeclaringType().getArgument(i)
+      or
+      exists(int offset |
+        offset = this.getNumberOfDeclaringArguments() and
+        result = this.getChild(i - offset) and
+        i >= offset
+      )
+    }
+
+    /** Gets a textual representation of this type, taking nested types into account. */
+    string toStringNested() {
+      exists(string name | name = getNameNested(this) |
+        result = this.getGenericDeclaringType().toStringNested() + "." + name
+        or
+        not exists(this.getGenericDeclaringType()) and result = name
+      )
+    }
+  }
+
   private class LeafType extends Type {
     LeafType() {
-      not exists(this.getAChild()) and
+      not this instanceof GenericType and
       not this instanceof TypeParameter and
       not this instanceof DynamicType
     }
@@ -28,14 +94,22 @@ module Gvn {
       or
       this = TArrayTypeKind(_, _) and result = 1
       or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
-        result = ugt.getNumberOfTypeParameters()
+      exists(GenericType t | this = TConstructedType(t.getSourceDeclaration()) |
+        result = t.getNumberOfArguments()
       )
     }
 
-    /** Gets a textual representation of this kind when applied to arguments `args`. */
+    /** Gets the source declaration type that this kind corresponds to, if any. */
+    GenericType getConstructedSourceDeclaration() { this = TConstructedType(result) }
+
+    /**
+     * Gets a textual representation of this kind when applied to arguments `args`.
+     *
+     * This predicate is restricted to built-in generics (pointers, nullables, and
+     * arrays).
+     */
     bindingset[args]
-    string toString(string args) {
+    string toStringBuiltin(string args) {
       this = TPointerTypeKind() and result = args + "*"
       or
       this = TNullableTypeKind() and result = args + "?"
@@ -43,14 +117,14 @@ module Gvn {
       exists(int rnk | this = TArrayTypeKind(_, rnk) |
         result = args + "[" + concat(int i | i in [0 .. rnk - 2] | ",") + "]"
       )
-      or
-      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
-        result = ugt.getNameWithoutBrackets() + "<" + args + ">"
-      )
     }
 
     /** Gets a textual representation of this kind. */
-    string toString() { result = toString("") }
+    string toString() {
+      result = this.toStringBuiltin("")
+      or
+      result = this.getConstructedSourceDeclaration().toStringNested()
+    }
 
     /** Gets the location of this kind. */
     Location getLocation() { result instanceof EmptyLocation }
@@ -64,11 +138,9 @@ module Gvn {
     or
     t = any(ArrayType at | result = TArrayTypeKind(at.getDimension(), at.getRank()))
     or
-    result = TConstructedType(t.(ConstructedType).getUnboundGeneric())
+    result = TConstructedType(t.getSourceDeclaration())
     or
-    result = TConstructedType(t.(TupleType).getUnderlyingType().getUnboundGeneric())
-    or
-    result = TConstructedType(t)
+    result = TConstructedType(t.(TupleType).getUnderlyingType().getSourceDeclaration())
   }
 
   /**
@@ -107,7 +179,7 @@ module Gvn {
     override CompoundTypeKind getKind() { result = l.getKind() }
   }
 
-  private ConstructedGvnTypeList gvnConstructed(Type t, CompoundTypeKind k, int i) {
+  private ConstructedGvnTypeList gvnConstructed(GenericType t, CompoundTypeKind k, int i) {
     result = TConstructedGvnTypeNil(k) and
     i = -1 and
     k = getTypeKind(t)
@@ -118,14 +190,16 @@ module Gvn {
   }
 
   pragma[noinline]
-  private GvnType gvnTypeChild(Type t, int i) { result = getGlobalValueNumber(t.getChild(i)) }
+  private GvnType gvnTypeArgument(GenericType t, int i) {
+    result = getGlobalValueNumber(t.getArgument(i))
+  }
 
   pragma[noinline]
   private predicate gvnConstructedCons(
-    Type t, CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
+    GenericType t, CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
   ) {
     tail = gvnConstructed(t, k, i - 1) and
-    head = gvnTypeChild(t, i)
+    head = gvnTypeArgument(t, i)
   }
 
   private class ConstructedGvnTypeList extends TConstructedGvnTypeList {
@@ -150,17 +224,47 @@ module Gvn {
       )
     }
 
+    /**
+     * Gets a textual representation of this constructed type, restricted
+     * to the prefix `t` of the underlying source declaration type.
+     *
+     * The `toString()` calculation needs to be split up into prefixes, in
+     * order to apply the type arguments correctly. For example, a source
+     * declaration type `A<>.B.C<,>` applied to types `int, string, bool`
+     * needs to be printed as `A<int>.B.C<string,bool>`.
+     */
+    language[monotonicAggregates]
+    private string toStringConstructed(GenericType t) {
+      t = this.getKind().getConstructedSourceDeclaration().getGenericDeclaringType*() and
+      exists(int offset, int children, string name, string nameArgs |
+        offset = t.getNumberOfDeclaringArguments() and
+        children = t.getNumberOfArgumentsSelf() and
+        name = getNameNested(t) and
+        if children = 0
+        then nameArgs = name
+        else
+          exists(string offsetArgs |
+            offsetArgs =
+              concat(int i |
+                i in [offset .. offset + children - 1]
+              |
+                this.getArg(i).toString(), "," order by i
+              ) and
+            nameArgs = name.prefix(name.length() - children - 1) + "<" + offsetArgs + ">"
+          )
+      |
+        offset = 0 and result = nameArgs
+        or
+        result = this.toStringConstructed(t.getGenericDeclaringType()) + "." + nameArgs
+      )
+    }
+
     language[monotonicAggregates]
     string toString() {
-      exists(CompoundTypeKind k, string args |
-        k = this.getKind() and
-        args =
-          concat(int i |
-            i in [0 .. k.getNumberOfTypeParameters() - 1]
-          |
-            this.getArg(i).toString(), "," order by i
-          ) and
-        result = k.toString(args)
+      exists(CompoundTypeKind k | k = this.getKind() |
+        result = k.toStringBuiltin(this.getArg(0).toString())
+        or
+        result = this.toStringConstructed(k.getConstructedSourceDeclaration())
       )
     }
 
@@ -366,7 +470,12 @@ module Gvn {
       TArrayTypeKind(int dim, int rnk) {
         exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
       } or
-      TConstructedType(UnboundGenericType ugt) { exists(ugt.getATypeParameter()) }
+      TConstructedType(GenericType sourceDecl) {
+        sourceDecl = any(GenericType t).getSourceDeclaration() and
+        not sourceDecl instanceof PointerType and
+        not sourceDecl instanceof NullableType and
+        not sourceDecl instanceof ArrayType
+      }
 
     cached
     newtype TGvnType =
