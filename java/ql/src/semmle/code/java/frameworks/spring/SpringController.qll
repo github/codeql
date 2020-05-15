@@ -1,4 +1,5 @@
 import java
+import SpringWeb
 
 /**
  * An annotation type that identifies Spring components.
@@ -59,6 +60,19 @@ class SpringInitBinderMethod extends SpringControllerMethod {
 }
 
 /**
+ * An `AnnotationType` which is used to indicate a `RequestMapping`.
+ */
+class SpringRequestMappingAnnotationType extends AnnotationType {
+  SpringRequestMappingAnnotationType() {
+    // `@RequestMapping` used directly as an annotation.
+    hasQualifiedName("org.springframework.web.bind.annotation", "RequestMapping")
+    or
+    // `@RequestMapping` can be used as a meta-annotation on other annotation types, e.g. GetMapping, PostMapping etc.
+    getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType
+  }
+}
+
+/**
  * A method on a Spring controller that is executed in response to a web request.
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
@@ -68,8 +82,74 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
-      superMethod.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping")
+      superMethod.getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType
     )
+  }
+
+  /** Gets a request mapping parameter. */
+  SpringRequestMappingParameter getARequestParameter() {
+    result = getAParameter()
+  }
+}
+
+/** A Spring framework annotation indicating remote user input from servlets. */
+class SpringServletInputAnnotation extends Annotation {
+  SpringServletInputAnnotation() {
+    exists(AnnotationType a |
+      a = this.getType() and
+      a.getPackage().getName() = "org.springframework.web.bind.annotation"
+    |
+      a.hasName("MatrixVariable") or
+      a.hasName("RequestParam") or
+      a.hasName("RequestHeader") or
+      a.hasName("CookieValue") or
+      a.hasName("RequestPart") or
+      a.hasName("PathVariable") or
+      a.hasName("RequestBody")
+    )
+  }
+}
+
+class SpringRequestMappingParameter extends Parameter {
+  SpringRequestMappingParameter() { getCallable() instanceof SpringRequestMappingMethod }
+
+  /** Holds if the parameter should not be consider a direct source of taint. */
+  predicate isNotDirectlyTaintedInput() {
+    getType().(RefType).getAnAncestor() instanceof SpringWebRequest or
+    getType().(RefType).getAnAncestor() instanceof SpringNativeWebRequest or
+    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletRequest") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletResponse") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "HttpSession") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "PushBuilder") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.http", "HttpMethod") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "Locale") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.util", "TimeZone") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.time", "ZoneId") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "OutputStream") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Writer") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.servlet.mvc.support", "RedirectAttributes") or
+    // Also covers BindingResult. Note, you can access the field value through this interface, which should be considered tainted
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.validation", "Errors") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.bind.support", "SessionStatus") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.util", "UriComponentsBuilder") or
+    this instanceof SpringModel
+  }
+
+  predicate isTaintedInput() {
+    // InputStream or Reader parameters allow access to the body of a request
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
+    // The SpringServletInputAnnotations allow access to the URI, request parameters, cookie values and the body of the request
+    this.getAnAnnotation() instanceof SpringServletInputAnnotation or
+    // HttpEntity is like @RequestBody, but with a wrapper including the headers
+    // TODO model unwrapping aspects
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.http", "HttpEntity<T>") or
+    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
+    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute") or
+    // Any parameter which is not explicitly identified, is consider to be an `@RequestParam`, if
+    // it is a simple bean property) or a @ModelAttribute if not
+    not isNotDirectlyTaintedInput()
   }
 }
 
