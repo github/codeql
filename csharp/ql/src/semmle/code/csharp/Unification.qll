@@ -10,16 +10,22 @@ private import Caching
  * equal modulo identity conversions and type parameters.
  */
 module Gvn {
-  /** Gets the qualified name of type `t`. */
-  string getQualifiedName(Type t) {
+  /**
+   * Gets the name of type `t`, including the enclosing type of `t` as a qualifier,
+   * but only if the enclosing type is not a `GenericType`.
+   */
+  string getNameNested(Type t) {
     if not t instanceof NestedType or t.(NestedType).getDeclaringType() instanceof GenericType
     then result = t.getName()
-    else result = getQualifiedName(t.(NestedType).getDeclaringType()) + "." + t.getName()
+    else result = getNameNested(t.(NestedType).getDeclaringType()) + "." + t.getName()
   }
 
   /**
    * A generic type. This is either a type with a type parameter, a type with
    * a type argument, or a nested type with a generic enclosing type.
+   *
+   * In this class, type parameters and type arguments are collectively referred
+   * to as "arguments".
    */
   class GenericType extends Type {
     GenericType() {
@@ -29,43 +35,43 @@ module Gvn {
     }
 
     /** Gets the generic containing type, if any. */
-    GenericType getQualifier() { result = this.(NestedType).getDeclaringType() }
+    GenericType getGenericDeclaringType() { result = this.(NestedType).getDeclaringType() }
 
     /**
-     * Gets the number of children of the generic containing type, or 0 if there
+     * Gets the number of arguments of the generic containing type, or 0 if there
      * is no generic containing type.
      */
-    int getNumberOfQualifierChildrenExt() {
-      result = this.getQualifier().getNumberOfChildrenExt()
+    int getNumberOfDeclaringArguments() {
+      result = this.getGenericDeclaringType().getNumberOfArguments()
       or
-      not exists(this.getQualifier()) and result = 0
+      not exists(this.getGenericDeclaringType()) and result = 0
     }
 
-    /** Gets the number of children of this type, not taking nested types into account. */
-    int getNumberOfChildrenSelf() { result = count(int i | exists(this.getChild(i)) and i >= 0) }
+    /** Gets the number of arguments of this type, not taking nested types into account. */
+    int getNumberOfArgumentsSelf() { result = count(int i | exists(this.getChild(i)) and i >= 0) }
 
-    /** Gets the number of children of this type, taking nested types into account. */
-    int getNumberOfChildrenExt() {
-      result = this.getNumberOfQualifierChildrenExt() + this.getNumberOfChildrenSelf()
+    /** Gets the number of arguments of this type, taking nested types into account. */
+    int getNumberOfArguments() {
+      result = this.getNumberOfDeclaringArguments() + this.getNumberOfArgumentsSelf()
     }
 
-    /** Gets the `i`th child of this type, taking nested types into account. */
-    Type getChildExt(int i) {
-      result = this.getQualifier().getChildExt(i)
+    /** Gets the `i`th argument of this type, taking nested types into account. */
+    Type getArgument(int i) {
+      result = this.getGenericDeclaringType().getArgument(i)
       or
       exists(int offset |
-        offset = this.getNumberOfQualifierChildrenExt() and
+        offset = this.getNumberOfDeclaringArguments() and
         result = this.getChild(i - offset) and
         i >= offset
       )
     }
 
     /** Gets a textual representation of this type, taking nested types into account. */
-    string toStringExt() {
-      exists(string name | name = getQualifiedName(this) |
-        result = this.getQualifier().toStringExt() + "." + name
+    string toStringNested() {
+      exists(string name | name = getNameNested(this) |
+        result = this.getGenericDeclaringType().toStringNested() + "." + name
         or
-        not exists(this.getQualifier()) and result = name
+        not exists(this.getGenericDeclaringType()) and result = name
       )
     }
   }
@@ -89,7 +95,7 @@ module Gvn {
       this = TArrayTypeKind(_, _) and result = 1
       or
       exists(GenericType t | this = TConstructedType(t.getSourceDeclaration()) |
-        result = t.getNumberOfChildrenExt()
+        result = t.getNumberOfArguments()
       )
     }
 
@@ -117,7 +123,7 @@ module Gvn {
     string toString() {
       result = this.toStringBuiltin("")
       or
-      result = this.getConstructedSourceDeclaration().toStringExt()
+      result = this.getConstructedSourceDeclaration().toStringNested()
     }
 
     /** Gets the location of this kind. */
@@ -184,8 +190,8 @@ module Gvn {
   }
 
   pragma[noinline]
-  private GvnType gvnTypeChildExt(GenericType t, int i) {
-    result = getGlobalValueNumber(t.getChildExt(i))
+  private GvnType gvnTypeArgument(GenericType t, int i) {
+    result = getGlobalValueNumber(t.getArgument(i))
   }
 
   pragma[noinline]
@@ -193,7 +199,7 @@ module Gvn {
     GenericType t, CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
   ) {
     tail = gvnConstructed(t, k, i - 1) and
-    head = gvnTypeChildExt(t, i)
+    head = gvnTypeArgument(t, i)
   }
 
   private class ConstructedGvnTypeList extends TConstructedGvnTypeList {
@@ -229,11 +235,11 @@ module Gvn {
      */
     language[monotonicAggregates]
     private string toStringConstructed(GenericType t) {
-      t = this.getKind().getConstructedSourceDeclaration().getQualifier*() and
+      t = this.getKind().getConstructedSourceDeclaration().getGenericDeclaringType*() and
       exists(int offset, int children, string name, string nameArgs |
-        offset = t.getNumberOfQualifierChildrenExt() and
-        children = t.getNumberOfChildrenSelf() and
-        name = getQualifiedName(t) and
+        offset = t.getNumberOfDeclaringArguments() and
+        children = t.getNumberOfArgumentsSelf() and
+        name = getNameNested(t) and
         if children = 0
         then nameArgs = name
         else
@@ -249,7 +255,7 @@ module Gvn {
       |
         offset = 0 and result = nameArgs
         or
-        result = this.toStringConstructed(t.getQualifier()) + "." + nameArgs
+        result = this.toStringConstructed(t.getGenericDeclaringType()) + "." + nameArgs
       )
     }
 

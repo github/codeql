@@ -280,8 +280,8 @@ private module Gvn {
   }
 
   pragma[noinline]
-  private GvnType gvnTypeChildExt(Unification::GenericType t, int i) {
-    result = getGlobalValueNumber(t.getChildExt(i))
+  private GvnType gvnTypeArgument(Unification::GenericType t, int i) {
+    result = getGlobalValueNumber(t.getArgument(i))
   }
 
   pragma[noinline]
@@ -290,7 +290,7 @@ private module Gvn {
     ConstructedGvnTypeList tail
   ) {
     tail = gvnConstructed(t, k, i - 1) and
-    head = gvnTypeChildExt(t, i)
+    head = gvnTypeArgument(t, i)
   }
 
   /** Gets the global value number for a given type. */
@@ -356,11 +356,11 @@ private module Gvn {
      */
     language[monotonicAggregates]
     private string toStringConstructed(Unification::GenericType t) {
-      t = this.getKind().getConstructedSourceDeclaration().getQualifier*() and
+      t = this.getKind().getConstructedSourceDeclaration().getGenericDeclaringType*() and
       exists(int offset, int children, string name, string nameArgs |
-        offset = t.getNumberOfQualifierChildrenExt() and
-        children = t.getNumberOfChildrenSelf() and
-        name = Unification::getQualifiedName(t) and
+        offset = t.getNumberOfDeclaringArguments() and
+        children = t.getNumberOfArgumentsSelf() and
+        name = Unification::getNameNested(t) and
         if children = 0
         then nameArgs = name
         else
@@ -376,7 +376,7 @@ private module Gvn {
       |
         offset = 0 and result = nameArgs
         or
-        result = this.toStringConstructed(t.getQualifier()) + "." + nameArgs
+        result = this.toStringConstructed(t.getGenericDeclaringType()) + "." + nameArgs
       )
     }
 
