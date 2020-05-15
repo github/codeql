@@ -216,6 +216,18 @@ private class RemoteTaintedMethod extends Method {
     this instanceof HttpServletRequestGetRequestURIMethod or
     this instanceof HttpServletRequestGetRequestURLMethod or
     this instanceof HttpServletRequestGetRemoteUserMethod or
+    exists(SpringWebRequest swr |
+      this = swr.getAMethod() |
+      this.hasName("getDescription") or
+      this.hasName("getHeader") or
+      this.hasName("getHeaderNames") or
+      this.hasName("getHeaderValues") or
+      this.hasName("getParameter") or
+      this.hasName("getParameterMap") or
+      this.hasName("getParameterNames") or
+      this.hasName("getParameterValues")
+      // TODO consider getRemoteUser
+    ) or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
