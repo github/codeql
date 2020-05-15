@@ -16,7 +16,8 @@ import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.SpringWeb
+import semmle.code.java.frameworks.spring.SpringWeb
+import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
@@ -118,7 +119,7 @@ private class SpringMultipartFileSource extends RemoteFlowSource {
 
 private class SpringServletInputParameterSource extends RemoteFlowSource {
   SpringServletInputParameterSource() {
-    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
+    this.asParameter() = any(SpringRequestMappingParameter srmp | srmp.isTaintedInput())
   }
 
   override string getSourceType() { result = "Spring servlet input parameter" }
