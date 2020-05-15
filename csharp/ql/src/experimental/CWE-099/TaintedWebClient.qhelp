@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The WebClient class provices common methods for sending data to and receiving data from a resource identified by a URI.
+Even that the name of the class is WebClient the support is not only limited to WebResources but also local resources. This
+can result in sensitive information being revealed.</p>
+
+<p>URIs that are naively constructed from data controlled by a user may contain local paths with unexpected special characters,
+such as "..". Such a path may potentially point to any directory on the file system.</p>
+
+</overview>
+<recommendation>
+
+<p>Validate user input before using it to ensure that is a URI of an external resource and not a local one. 
+Pontetial solutions:</p>
+
+<ul>
+<li>Sanitize potentially tainted paths using <code>System.Uri.IsWellFormedUriString</code>.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the first example, a domain name is read from a <code>HttpRequest</code> and then used to request this domain. However, a
+malicious user could enter a local path - for example, "../../../etc/passwd". In the second example, it
+appears that user is restricted to the HTTPS protocol handler. However, a malicious user could
+still enter a local path. For example, the string "../../../etc/passwd" will result in the code
+reading the file located at "/etc/passwd", which is the system's password file. This file would then be
+sent back to the user, giving them access to all the system's passwords.</p>
+
+<sample src="TaintedWebClient.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.
+</li>
+<li>
+CWE-099:
+<a href="https://cwe.mitre.org/data/definitions/99.html">Resource Injection</a>.
+</li>
+
+</references>
+</qhelp>
