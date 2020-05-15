@@ -270,15 +270,27 @@ private module Sqlite {
  */
 private module MsSql {
   /** Gets a reference to the `mssql` module. */
-  DataFlow::ModuleImportNode mssql() { result.getPath() = "mssql" }
+  DataFlow::SourceNode mssql() { result = DataFlow::moduleImport("mssql") }
 
-  /** Gets an expression that creates a request object. */
-  DataFlow::SourceNode request() {
-    // new require('mssql').Request()
-    result = mssql().getAConstructorInvocation("Request")
+  /** Gets a data flow node referring to a request object. */
+  private DataFlow::SourceNode request(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      // new require('mssql').Request()
+      result = mssql().getAConstructorInvocation("Request")
+      or
+      // request.input(...)
+      result = request().getAMethodCall("input")
+    )
     or
-    // request.input(...)
-    result = request().getAMethodCall("input")
+    exists(DataFlow::TypeTracker t2 |
+      result = request(t2).track(t2, t)
+    )
+  }
+  
+  /** Gets a data flow node referring to a request object. */
+  DataFlow::SourceNode request() {
+    result = request(DataFlow::TypeTracker::end())
   }
 
   /** A tagged template evaluated as a query. */
@@ -293,15 +305,13 @@ private module MsSql {
   }
 
   /** A call to a MsSql query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
-    override MethodCallExpr astNode;
-
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(string meth | this = request().getAMethodCall(meth) | meth = "query" or meth = "batch")
+      this = request().getAMethodCall(["query", "batch"])
     }
 
     override DataFlow::Node getAQueryArgument() {
-      result = DataFlow::valueNode(astNode.getArgument(0))
+      result = getArgument(0)
     }
   }
 
