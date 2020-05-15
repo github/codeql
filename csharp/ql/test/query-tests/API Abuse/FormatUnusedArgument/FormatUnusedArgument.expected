@@ -1,13 +1,31 @@
-| FormatUnusedArgument.cs:11:9:11:29 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:11:23:11:25 | "X" | format string | FormatUnusedArgument.cs:11:28:11:28 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:14:9:14:34 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:14:23:14:27 | "{0}" | format string | FormatUnusedArgument.cs:14:33:14:33 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:17:9:17:38 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | format string | FormatUnusedArgument.cs:17:37:17:37 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:20:9:20:38 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | format string | FormatUnusedArgument.cs:20:34:20:34 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:34:23:34 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:37:23:37 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:40:23:40 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:26:9:26:35 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:26:23:26:31 | "{{sdc}}" | format string | FormatUnusedArgument.cs:26:34:26:34 | (...) ... | this supplied value |
-| FormatUnusedArgument.cs:38:9:38:33 | call to method Format | The $@ ignores $@. | FormatUnusedArgument.cs:38:23:38:29 | "{{0}}" | format string | FormatUnusedArgument.cs:38:32:38:32 | (...) ... | this supplied value |
-| FormatUnusedArgumentBad.cs:7:9:7:71 | call to method WriteLine | The $@ ignores $@. | FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | format string | FormatUnusedArgumentBad.cs:7:61:7:70 | (...) ... | this supplied value |
-| FormatUnusedArgumentBad.cs:8:9:8:77 | call to method WriteLine | The $@ ignores $@. | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | format string | FormatUnusedArgumentBad.cs:8:63:8:64 | access to parameter ex | this supplied value |
-| FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:61:9:62 | access to parameter ex | this supplied value |
-| FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:65:9:74 | (...) ... | this supplied value |
+nodes
+| FormatUnusedArgument.cs:8:23:8:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
+| FormatUnusedArgument.cs:11:23:11:25 | "X" | semmle.label | "X" |
+| FormatUnusedArgument.cs:14:23:14:27 | "{0}" | semmle.label | "{0}" |
+| FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | semmle.label | "{0} {0}" |
+| FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | semmle.label | "{1} {1}" |
+| FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | semmle.label | "abcdefg" |
+| FormatUnusedArgument.cs:26:23:26:31 | "{{sdc}}" | semmle.label | "{{sdc}}" |
+| FormatUnusedArgument.cs:29:23:29:33 | "{{{0:D}}}" | semmle.label | "{{{0:D}}}" |
+| FormatUnusedArgument.cs:32:23:32:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
+| FormatUnusedArgument.cs:35:23:35:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
+| FormatUnusedArgument.cs:38:23:38:29 | "{{0}}" | semmle.label | "{{0}}" |
+| FormatUnusedArgument.cs:42:23:42:24 | "" | semmle.label | "" |
+| FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | semmle.label | "Error processing file: {0}" |
+| FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | semmle.label | "Error processing file: {1} ({1})" |
+| FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
+edges
+#select
+| FormatUnusedArgument.cs:11:9:11:29 | call to method Format | FormatUnusedArgument.cs:11:23:11:25 | "X" | FormatUnusedArgument.cs:11:23:11:25 | "X" | The $@ ignores $@. | FormatUnusedArgument.cs:11:23:11:25 | "X" | format string | FormatUnusedArgument.cs:11:28:11:28 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:14:9:14:34 | call to method Format | FormatUnusedArgument.cs:14:23:14:27 | "{0}" | FormatUnusedArgument.cs:14:23:14:27 | "{0}" | The $@ ignores $@. | FormatUnusedArgument.cs:14:23:14:27 | "{0}" | format string | FormatUnusedArgument.cs:14:33:14:33 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:17:9:17:38 | call to method Format | FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | The $@ ignores $@. | FormatUnusedArgument.cs:17:23:17:31 | "{0} {0}" | format string | FormatUnusedArgument.cs:17:37:17:37 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:20:9:20:38 | call to method Format | FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | The $@ ignores $@. | FormatUnusedArgument.cs:20:23:20:31 | "{1} {1}" | format string | FormatUnusedArgument.cs:20:34:20:34 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:34:23:34 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:37:23:37 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:23:9:23:41 | call to method Format | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | The $@ ignores $@. | FormatUnusedArgument.cs:23:23:23:31 | "abcdefg" | format string | FormatUnusedArgument.cs:23:40:23:40 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:26:9:26:35 | call to method Format | FormatUnusedArgument.cs:26:23:26:31 | "{{sdc}}" | FormatUnusedArgument.cs:26:23:26:31 | "{{sdc}}" | The $@ ignores $@. | FormatUnusedArgument.cs:26:23:26:31 | "{{sdc}}" | format string | FormatUnusedArgument.cs:26:34:26:34 | (...) ... | this supplied value |
+| FormatUnusedArgument.cs:38:9:38:33 | call to method Format | FormatUnusedArgument.cs:38:23:38:29 | "{{0}}" | FormatUnusedArgument.cs:38:23:38:29 | "{{0}}" | The $@ ignores $@. | FormatUnusedArgument.cs:38:23:38:29 | "{{0}}" | format string | FormatUnusedArgument.cs:38:32:38:32 | (...) ... | this supplied value |
+| FormatUnusedArgumentBad.cs:7:9:7:71 | call to method WriteLine | FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | format string | FormatUnusedArgumentBad.cs:7:61:7:70 | (...) ... | this supplied value |
+| FormatUnusedArgumentBad.cs:8:9:8:77 | call to method WriteLine | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | format string | FormatUnusedArgumentBad.cs:8:63:8:64 | access to parameter ex | this supplied value |
+| FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:61:9:62 | access to parameter ex | this supplied value |
+| FormatUnusedArgumentBad.cs:9:9:9:75 | call to method WriteLine | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | The $@ ignores $@. | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | format string | FormatUnusedArgumentBad.cs:9:65:9:74 | (...) ... | this supplied value |
