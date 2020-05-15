@@ -26,7 +26,7 @@ class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectFunction,
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     i = [0, 1] and
     buffer = false and
-    mustWrite = true
+    mustWrite = false
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
