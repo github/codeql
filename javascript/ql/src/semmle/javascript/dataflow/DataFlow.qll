@@ -1533,7 +1533,7 @@ module DataFlow {
       not e.(Parameter).isRestParameter()
     )
     or
-    nd.(AnalyzedParameter).hasIncompleteness(cause)
+    nd.(AnalyzedNode).hasAdditionalIncompleteness(cause)
     or
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"

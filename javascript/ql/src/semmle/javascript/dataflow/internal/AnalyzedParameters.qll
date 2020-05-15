@@ -34,13 +34,7 @@ class AnalyzedParameter extends AnalyzedValueNode {
     result = astNode.getDefault().analyze().getALocalValue()
   }
 
-  /**
-   * Whether this node should be considered incomplete with the given cause.
-   *
-   * For performance reasons, this is not an override of `isIncomplete`, but is
-   * explicitly included in that predicate.
-   */
-  predicate hasIncompleteness(DataFlow::Incompleteness cause) {
+  override predicate hasAdditionalIncompleteness(DataFlow::Incompleteness cause) {
     getFunction().isIncomplete(cause)
     or
     not getFunction().argumentPassing(astNode, _) and

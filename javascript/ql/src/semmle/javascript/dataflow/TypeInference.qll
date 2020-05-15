@@ -156,6 +156,14 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Holds if the flow analysis can infer at least one abstract value for this node. */
   predicate hasFlow() { exists(getAValue()) }
+
+  /**
+   * INTERNAL. Use `isIncomplete()` instead.
+   *
+   * Subclasses may override this to contribute additional incompleteness to this node
+   * without overriding `isIncomplete()`.
+   */
+  predicate hasAdditionalIncompleteness(DataFlow::Incompleteness cause) { none() }
 }
 
 /**
