@@ -289,7 +289,9 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOper
 
   final override string toString() { result = tag.toString() }
 
-  final override Instruction getAnyDef() { hasDefinition(result, _) }
+  final override Instruction getAnyDef() {
+    result = unique(Instruction defInstr | hasDefinition(defInstr, _))
+  }
 
   final override Overlap getDefinitionOverlap() { hasDefinition(_, result) }
 
