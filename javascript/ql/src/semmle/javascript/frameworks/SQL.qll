@@ -439,25 +439,79 @@ private module Spanner {
     result = DataFlow::moduleMember("@google-cloud/spanner", "Spanner")
   }
 
-  /**
-   * Gets a node that refers to an instance of the `Database` class.
-   */
+  /** Gets a data flow node referring to the result of `Spanner()` or `new Spanner()`. */
+  private DataFlow::SourceNode spannerNew(DataFlow::TypeTracker t) {
+    t.start() and
+    result = spanner().getAnInvocation()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = spannerNew(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a data flow node referring to the result of `Spanner()` or `new Spanner()`. */
+  DataFlow::SourceNode spannerNew() {
+    result = spannerNew(DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a data flow node referring to the result of `.instance()`. */
+  private DataFlow::SourceNode instance(DataFlow::TypeTracker t) {
+    t.start() and
+    result = spannerNew().getAMethodCall("instance")
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = instance(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a data flow node referring to the result of `.instance()`. */
+  DataFlow::SourceNode instance() {
+    result = instance(DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a node that refers to an instance of the `Database` class. */
+  private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
+    t.start() and
+    result = instance().getAMethodCall("database")
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = database(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a node that refers to an instance of the `Database` class. */
   DataFlow::SourceNode database() {
-    result = spanner().getAnInvocation().getAMethodCall("instance").getAMethodCall("database")
+    result = database(DataFlow::TypeTracker::end())
   }
 
-  /**
-   * Gets a node that refers to an instance of the `v1.SpannerClient` class.
-   */
-  DataFlow::SourceNode v1SpannerClient() {
+  /** Gets a node that refers to an instance of the `v1.SpannerClient` class. */
+  private DataFlow::SourceNode v1SpannerClient(DataFlow::TypeTracker t) {
+    t.start() and
     result = spanner().getAPropertyRead("v1").getAPropertyRead("SpannerClient").getAnInstantiation()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = v1SpannerClient(t2).track(t2, t)
+    )
   }
 
-  /**
-   * Gets a node that refers to a transaction object.
-   */
+  /** Gets a node that refers to an instance of the `v1.SpannerClient` class. */
+  DataFlow::SourceNode v1SpannerClient() {
+    result = v1SpannerClient(DataFlow::TypeTracker::end())
+  }
+
+  /** Gets a node that refers to a transaction object. */
+  private DataFlow::SourceNode transaction(DataFlow::TypeTracker t) {
+    t.start() and
+    result = database().getAMethodCall("runTransaction").getABoundCallbackParameter(0, 1)
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = transaction(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a node that refers to a transaction object. */
   DataFlow::SourceNode transaction() {
-    result = database().getAMethodCall("runTransaction").getCallback(0).getParameter(1)
+    result = transaction(DataFlow::TypeTracker::end())
   }
 
   /**
@@ -481,9 +535,7 @@ private module Spanner {
    */
   class DatabaseRunCall extends SqlExecution {
     DatabaseRunCall() {
-      exists(string run | run = "run" or run = "runPartitionedUpdate" or run = "runStream" |
-        this = database().getAMethodCall(run)
-      )
+      this = database().getAMethodCall(["run", "runPartitionedUpdate", "runStream"])
     }
   }
 
@@ -492,9 +544,7 @@ private module Spanner {
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
-      exists(string run | run = "run" or run = "runStream" or run = "runUpdate" |
-        this = transaction().getAMethodCall(run)
-      )
+      this = transaction().getAMethodCall(["run", "runStream", "runUpdate"])
     }
   }
 
@@ -503,9 +553,7 @@ private module Spanner {
    */
   class ExecuteSqlCall extends SqlExecution {
     ExecuteSqlCall() {
-      exists(string exec | exec = "executeSql" or exec = "executeStreamingSql" |
-        this = v1SpannerClient().getAMethodCall(exec)
-      )
+      this = v1SpannerClient().getAMethodCall(["executeSql", "executeStreamingSql"])
     }
 
     override DataFlow::Node getAQueryArgument() {
