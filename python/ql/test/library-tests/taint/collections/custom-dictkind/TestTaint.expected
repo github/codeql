@@ -1,0 +1,12 @@
+| test.py:8 | test_custom_kind | Subscript | externally controlled string |
+| test.py:9 | test_custom_kind | Attribute() | externally controlled string |
+| test.py:10 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:11 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:15 | test_custom_kind | Subscript | externally controlled string |
+| test.py:16 | test_custom_kind | Attribute() | externally controlled string |
+| test.py:17 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:18 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:22 | test_custom_kind | Subscript | externally controlled string |
+| test.py:23 | test_custom_kind | Attribute() | externally controlled string |
+| test.py:24 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:25 | test_custom_kind | Attribute | file[externally controlled string] |

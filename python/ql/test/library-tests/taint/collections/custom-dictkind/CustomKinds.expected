@@ -1,0 +1,12 @@
+| test.py:3:20:3:31 | TAINTED_DICT | BarDictKind | {externally controlled string} |
+| test.py:3:20:3:31 | TAINTED_DICT | ExternalStringDictKind | {externally controlled string} |
+| test.py:3:20:3:31 | TAINTED_DICT | FooDictKind | {externally controlled string} |
+| test.py:3:20:3:31 | TAINTED_DICT | StringDictKind | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | BarDictKind | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | ExternalStringDictKind | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | FooDictKind | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | StringDictKind | {externally controlled string} |
+| test.py:5:16:5:23 | BAR_DICT | BarDictKind | {externally controlled string} |
+| test.py:5:16:5:23 | BAR_DICT | ExternalStringDictKind | {externally controlled string} |
+| test.py:5:16:5:23 | BAR_DICT | FooDictKind | {externally controlled string} |
+| test.py:5:16:5:23 | BAR_DICT | StringDictKind | {externally controlled string} |
