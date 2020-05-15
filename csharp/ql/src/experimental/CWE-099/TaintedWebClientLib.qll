@@ -17,7 +17,7 @@ class SystemNetWebClientClass extends SystemNetClass {
 //Extend the already existent SystemUriClass to not touch the stdlib.
 /** The `System.Uri` class. */
 class SystemUriClassExtra extends SystemUriClass {
-  /** Gets the `DownloadString` method. */
+  /** Gets the `IsWellFormedUriString` method. */
   Method getIsWellFormedUriStringMethod() { result = this.getAMethod("IsWellFormedUriString") }
 }
 
