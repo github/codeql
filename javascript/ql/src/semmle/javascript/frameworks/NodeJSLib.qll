@@ -306,7 +306,7 @@ module NodeJSLib {
 
     FsFlowTarget() {
       exists(DataFlow::CallNode call, string methodName |
-        call = Fs::moduleMember(methodName).getACall()
+        call = FS::moduleMember(methodName).getACall()
       |
         methodName = "realpathSync" and
         tainted = call.getArgument(0) and
@@ -432,7 +432,7 @@ module NodeJSLib {
   /**
    * Provides predicates for working with the "fs" module and its variants as a single module.
    */
-  module Fs {
+  module FS {
     /**
      * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
@@ -464,7 +464,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = maybePromisified(Fs::moduleMember(methodName)).getACall() }
+    NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
 
     /**
      * Gets the name of the called method.
@@ -587,8 +587,8 @@ module NodeJSLib {
         name = "readdir" or
         name = "realpath"
       |
-        this = Fs::moduleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
-        this = Fs::moduleMember(name + "Sync").getACall()
+        this = FS::moduleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
+        this = FS::moduleMember(name + "Sync").getACall()
       )
     }
   }
