@@ -338,11 +338,27 @@ class SsaWithFields extends TSsaWithFields {
   /** Gets a use that refers to this SSA variable with fields. */
   DataFlow::Node getAUse() { this = accessPath(result.asInstruction()) }
 
+  /** Gets the type of this SSA variable with fields. */
+  Type getType() {
+    exists(SsaVariable var | this = TRoot(var) | result = var.getType())
+    or
+    exists(Field f | this = TStep(_, f) | result = f.getType())
+  }
+
   /** Gets a textual representation of this element. */
   string toString() {
     exists(SsaVariable var | this = TRoot(var) | result = "(" + var + ")")
     or
     exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base + "." + f.getName())
+  }
+
+  /**
+   * Gets an SSA-with-fields variable that is similar to this SSA-with-fields variable in the
+   * sense that it has the same root variable and the same sequence of field accesses.
+   */
+  SsaWithFields similar() {
+    result.getBaseVariable().getSourceVariable() = this.getBaseVariable().getSourceVariable() and
+    result.getQualifiedName() = this.getQualifiedName()
   }
 
   /**

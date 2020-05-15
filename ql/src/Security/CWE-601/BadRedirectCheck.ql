@@ -142,15 +142,6 @@ predicate isBadRedirectCheckOrWrapper(DataFlow::Node check, SsaWithFields v) {
 }
 
 /**
- * Gets an SSA-with-fields variable that is similar to `v` in the sense that it has the same
- * root variable and the same sequence of field accesses.
- */
-SsaWithFields similar(SsaWithFields v) {
-  result.getBaseVariable().getSourceVariable() = v.getBaseVariable().getSourceVariable() and
-  result.getQualifiedName() = v.getQualifiedName()
-}
-
-/**
  * Holds if `check` checks that `v` has a leading slash, but not whether it has another slash or a
  * backslash in its second position.
  */
@@ -161,8 +152,8 @@ predicate isBadRedirectCheck(DataFlow::Node check, SsaWithFields v) {
   // (we allow those checks to be on variables that are most likely equivalent to `v`
   // to rule out false positives due to minor variations in data flow)
   not (
-    isCheckedForSecondSlash(similar(v)) and
-    isCheckedForSecondBackslash(similar(v))
+    isCheckedForSecondSlash(v.similar()) and
+    isCheckedForSecondBackslash(v.similar())
   )
 }
 

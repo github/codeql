@@ -137,7 +137,7 @@ module OpenUrlRedirect {
     }
 
     override predicate checks(Expr e, boolean outcome) {
-      e = url.asExpr() and this.eq(outcome, _, _)
+      e = url.asExpr() and outcome = this.getPolarity()
     }
   }
 
