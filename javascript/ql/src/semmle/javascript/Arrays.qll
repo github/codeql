@@ -253,14 +253,10 @@ private module ArrayDataFlow {
    */
   private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::ArrayCreationNode {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
-      prop = arrayElement() and
-      element = this.getAnElement() and
-      obj = this
-      or
       exists(int i |
         element = this.getElement(i) and
         obj = this and
-        prop = i.toString()
+        prop = arrayElement(i)
       )
     }
   }

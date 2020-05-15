@@ -608,6 +608,16 @@ module PseudoProperties {
   string arrayElement() { result = pseudoProperty("arrayElement") }
 
   /**
+   * Gets a pseudo-property for the location of the `i`th element in an `Array`.
+   */
+  bindingset[i]
+  string arrayElement(int i) {
+    i < 5 and result = i.toString()
+    or
+    result = arrayElement()
+  }
+
+  /**
    * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
    */
   string arrayLikeElement() { result = [setElement(), iteratorElement(), arrayElement()] }
