@@ -101,6 +101,9 @@ class IncorrectSpecialMethods(object):
     def __getattr__(self):
         raise ZeroDivisionError()
 
+    def __bool__(self):
+        raise ZeroDivisionError()
+
 def f(self):
     pass
 
@@ -121,7 +124,3 @@ class OK(object):
     # FP reported in https://github.com/github/codeql/issues/2388
     def __bool__(self):
         raise TypeError
-
-class BadBool(object):
-    def __bool__(self):
-        raise ZeroDivisionError()
