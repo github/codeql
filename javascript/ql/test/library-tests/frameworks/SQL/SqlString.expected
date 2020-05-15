@@ -39,3 +39,4 @@
 | spanner.js:19:16:19:34 | { sql: "SQL code" } |
 | spanner.js:19:23:19:32 | "SQL code" |
 | sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
+| sqliteImport.js:2:8:2:44 | "UPDATE ... id = ?" |

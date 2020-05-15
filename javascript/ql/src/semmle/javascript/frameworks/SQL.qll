@@ -224,10 +224,23 @@ private module Sqlite {
     result = sqlite().getAConstructorInvocation("Database")
   }
 
-  /** A call to a Sqlite query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
-    override MethodCallExpr astNode;
+  /** Gets a data flow node referring to a Sqlite database instance. */
+  private DataFlow::SourceNode db(DataFlow::TypeTracker t) {
+    t.start() and
+    result = newDb()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = db(t2).track(t2, t)
+    )
+  }
 
+  /** Gets a data flow node referring to a Sqlite database instance. */
+  DataFlow::SourceNode db() {
+    result = db(DataFlow::TypeTracker::end())
+  }
+
+  /** A call to a Sqlite query method. */
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
       exists(string meth |
         meth = "all" or
@@ -237,12 +250,12 @@ private module Sqlite {
         meth = "prepare" or
         meth = "run"
       |
-        this = newDb().getAMethodCall(meth)
+        this = db().getAMethodCall(meth)
       )
     }
 
     override DataFlow::Node getAQueryArgument() {
-      result = DataFlow::valueNode(astNode.getArgument(0))
+      result = getArgument(0)
     }
   }
 
