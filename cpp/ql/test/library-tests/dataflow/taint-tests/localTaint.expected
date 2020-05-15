@@ -600,3 +600,4 @@
 | taint.cpp:483:12:483:15 | line | taint.cpp:483:11:483:15 | & ... |  |
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
+| taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
