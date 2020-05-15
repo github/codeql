@@ -470,3 +470,17 @@ void test_swop() {
 	sink(x); // clean [FALSE POSITIVE]
 	sink(y); // tainted
 }
+
+// --- getdelim ---
+
+struct FILE;
+
+int getdelim(char ** lineptr, size_t * n, int delimiter, FILE *stream);
+
+void test_getdelim(FILE* source1) {
+	char* line = nullptr;
+	size_t n;
+	getdelim(&line, &n, '\n', source1);
+
+	sink(line);
+}
