@@ -14,8 +14,14 @@
 
 package com.google.api.client.http;
 
+import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
+
 public final class HttpRequest {
   HttpRequest(HttpTransport transport, String requestMethod) { }
   public GenericUrl getUrl() { return null; }
   public HttpRequest setUrl(GenericUrl url) { return this; }
+  public HttpResponse execute() throws IOException { return null; }
+  public Future<HttpResponse> executeAsync(Executor executor) { return null; }
 }

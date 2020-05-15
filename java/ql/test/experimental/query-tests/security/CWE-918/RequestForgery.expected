@@ -1,4 +1,21 @@
 edges
+| GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest |
+| GoogleHTTPClientBad.java:33:37:33:67 | getParameter(...) : String | GoogleHTTPClientBad.java:35:9:35:19 | httpRequest |
+| GoogleHTTPClientBad.java:37:27:37:57 | getParameter(...) : String | GoogleHTTPClientBad.java:40:9:40:19 | httpRequest |
+| GoogleHTTPClientBad.java:42:23:42:53 | getParameter(...) : String | GoogleHTTPClientBad.java:45:9:45:19 | httpRequest |
+| GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | GoogleHTTPClientBad.java:50:9:50:19 | httpRequest |
+| GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | GoogleHTTPClientBad.java:50:9:50:19 | httpRequest |
+| GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | GoogleHTTPClientBad.java:55:9:55:19 | httpRequest |
+| GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | GoogleHTTPClientBad.java:55:9:55:19 | httpRequest |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:60:9:60:19 | httpRequest |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:64:9:64:19 | httpRequest |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:66:9:66:53 | buildRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:67:9:67:46 | buildDeleteRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:68:9:68:43 | buildGetRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:69:9:69:50 | buildPostRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:70:9:70:49 | buildPutRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:71:9:71:51 | buildPatchRequest(...) |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:72:9:72:44 | buildHeadRequest(...) |
 | JavaURLBad.java:21:21:21:51 | getParameter(...) : String | JavaURLBad.java:22:36:22:38 | url |
 | JavaURLBad.java:25:17:25:56 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url |
 | JavaURLBad.java:25:68:25:103 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url |
@@ -9,6 +26,32 @@ edges
 | JavaURLBad.java:47:39:47:69 | getParameter(...) : String | JavaURLBad.java:48:16:48:18 | url |
 | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | JavaURLBad.java:56:16:56:18 | url |
 nodes
+| GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:33:37:33:67 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:35:9:35:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:37:27:37:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:40:9:40:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:42:23:42:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:45:9:45:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:50:9:50:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:50:9:50:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:55:9:55:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:55:9:55:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GoogleHTTPClientBad.java:60:9:60:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:64:9:64:19 | httpRequest | semmle.label | httpRequest |
+| GoogleHTTPClientBad.java:66:9:66:53 | buildRequest(...) | semmle.label | buildRequest(...) |
+| GoogleHTTPClientBad.java:67:9:67:46 | buildDeleteRequest(...) | semmle.label | buildDeleteRequest(...) |
+| GoogleHTTPClientBad.java:68:9:68:43 | buildGetRequest(...) | semmle.label | buildGetRequest(...) |
+| GoogleHTTPClientBad.java:69:9:69:50 | buildPostRequest(...) | semmle.label | buildPostRequest(...) |
+| GoogleHTTPClientBad.java:70:9:70:49 | buildPutRequest(...) | semmle.label | buildPutRequest(...) |
+| GoogleHTTPClientBad.java:71:9:71:51 | buildPatchRequest(...) | semmle.label | buildPatchRequest(...) |
+| GoogleHTTPClientBad.java:72:9:72:44 | buildHeadRequest(...) | semmle.label | buildHeadRequest(...) |
 | JavaURLBad.java:21:21:21:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JavaURLBad.java:22:36:22:38 | url | semmle.label | url |
 | JavaURLBad.java:25:17:25:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -27,6 +70,23 @@ nodes
 | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JavaURLBad.java:56:16:56:18 | url | semmle.label | url |
 #select
+| GoogleHTTPClientBad.java:31:9:31:29 | execute(...) | GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:35:9:35:29 | execute(...) | GoogleHTTPClientBad.java:33:37:33:67 | getParameter(...) : String | GoogleHTTPClientBad.java:35:9:35:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:40:9:40:29 | execute(...) | GoogleHTTPClientBad.java:37:27:37:57 | getParameter(...) : String | GoogleHTTPClientBad.java:40:9:40:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:45:9:45:29 | execute(...) | GoogleHTTPClientBad.java:42:23:42:53 | getParameter(...) : String | GoogleHTTPClientBad.java:45:9:45:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:50:9:50:29 | execute(...) | GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | GoogleHTTPClientBad.java:50:9:50:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:50:9:50:29 | execute(...) | GoogleHTTPClientBad.java:47:30:47:60 | getParameter(...) : String | GoogleHTTPClientBad.java:50:9:50:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:55:9:55:29 | execute(...) | GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | GoogleHTTPClientBad.java:55:9:55:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:55:9:55:29 | execute(...) | GoogleHTTPClientBad.java:52:26:52:56 | getParameter(...) : String | GoogleHTTPClientBad.java:55:9:55:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:60:9:60:29 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:60:9:60:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:64:9:64:29 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:64:9:64:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:66:9:66:63 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:66:9:66:53 | buildRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:67:9:67:56 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:67:9:67:46 | buildDeleteRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:68:9:68:53 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:68:9:68:43 | buildGetRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:69:9:69:60 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:69:9:69:50 | buildPostRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:70:9:70:59 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:70:9:70:49 | buildPutRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:71:9:71:61 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:71:9:71:51 | buildPatchRequest(...) | The URL used for this network request may have been constructed from user-provided value |
+| GoogleHTTPClientBad.java:72:9:72:54 | execute(...) | GoogleHTTPClientBad.java:58:28:58:58 | getParameter(...) : String | GoogleHTTPClientBad.java:72:9:72:44 | buildHeadRequest(...) | The URL used for this network request may have been constructed from user-provided value |
 | JavaURLBad.java:22:36:22:55 | openConnection(...) | JavaURLBad.java:21:21:21:51 | getParameter(...) : String | JavaURLBad.java:22:36:22:38 | url | The URL used for this network request may have been constructed from user-provided value |
 | JavaURLBad.java:26:16:26:35 | openConnection(...) | JavaURLBad.java:25:17:25:56 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
 | JavaURLBad.java:26:16:26:35 | openConnection(...) | JavaURLBad.java:25:68:25:103 | getParameter(...) : String | JavaURLBad.java:26:16:26:18 | url | The URL used for this network request may have been constructed from user-provided value |
