@@ -297,4 +297,20 @@ void equality_cases() {
 
 		malloc(size * sizeof(int)); // BAD
 	}
+	{
+		int size = atoi(getenv("USER"));
+
+		if ((size == 50) || (size == 100))
+		{
+			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		}
+	}
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size != 50 && size != 100)
+			return;
+
+		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+	}
 }
