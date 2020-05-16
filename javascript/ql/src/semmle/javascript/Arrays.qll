@@ -256,7 +256,9 @@ private module ArrayDataFlow {
       exists(int i |
         element = this.getElement(i) and
         obj = this and
-        prop = arrayElement(i)
+        if this = any(PromiseAllCreation c).getArrayNode()
+        then prop = arrayElement(i)
+        else prop = arrayElement()
       )
     }
   }
