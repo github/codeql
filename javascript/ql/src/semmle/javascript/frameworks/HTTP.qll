@@ -209,18 +209,14 @@ module HTTP {
      *
      * Use `RequestSource.ref()` to get reference to this request object.
      */
-    final Servers::RequestSource getARequestSource() {
-      result.getRouteHandler() = this
-    }
+    final Servers::RequestSource getARequestSource() { result.getRouteHandler() = this }
 
     /**
      * Gets a response object originating from this route handler.
      *
      * Use `ResponseSource.ref()` to get reference to this response object.
      */
-    final Servers::ResponseSource getAResponseSource() {
-      result.getRouteHandler() = this
-    }
+    final Servers::ResponseSource getAResponseSource() { result.getRouteHandler() = this }
 
     /**
      * Gets an expression that contains a request object handled
@@ -315,8 +311,7 @@ module HTTP {
       abstract RouteHandler getRouteHandler();
 
       /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated
-      predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
+      deprecated predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
@@ -326,9 +321,7 @@ module HTTP {
       }
 
       /** Gets a `SourceNode` that refers to this request object. */
-      DataFlow::SourceNode ref() {
-        result = ref(DataFlow::TypeTracker::end())
-      }
+      DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
     }
 
     /**
@@ -343,8 +336,7 @@ module HTTP {
       abstract RouteHandler getRouteHandler();
 
       /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated
-      predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
+      deprecated predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
@@ -354,9 +346,7 @@ module HTTP {
       }
 
       /** Gets a `SourceNode` that refers to this response object. */
-      DataFlow::SourceNode ref() {
-        result = ref(DataFlow::TypeTracker::end())
-      }
+      DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
     }
 
     /**
