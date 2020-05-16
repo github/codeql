@@ -421,7 +421,7 @@ private AnalyzedVarDef defIn(GlobalVariable gv, TopLevel tl) {
  * Holds if there is a write to a property with the same name as `gv` on an object
  * for which the analysis is incomplete due to the given `reason`.
  */
-pragma[noinline]
+cached
 private predicate clobberedProp(GlobalVariable gv, DataFlow::Incompleteness reason) {
   exists(AnalyzedNode base |
     potentialPropWriteOfGlobal(base, gv) and
@@ -429,13 +429,13 @@ private predicate clobberedProp(GlobalVariable gv, DataFlow::Incompleteness reas
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate indefiniteObjectValue(AbstractValue val, DataFlow::Incompleteness reason) {
   val.isIndefinite(reason) and
   val.getType() = TTObject()
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate potentialPropWriteOfGlobal(AnalyzedNode base, GlobalVariable gv) {
   exists(DataFlow::PropWrite pwn |
     pwn.getPropertyName() = gv.getName() and
