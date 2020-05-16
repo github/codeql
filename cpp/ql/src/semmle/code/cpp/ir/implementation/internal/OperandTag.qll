@@ -221,7 +221,9 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
+abstract class ChiOperandTag extends MemoryOperandTag { }
+
+class ChiTotalOperandTag extends ChiOperandTag, TChiTotalOperand {
   final override string toString() { result = "ChiTotal" }
 
   final override int getSortOrder() { result = 13 }
@@ -231,7 +233,7 @@ class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
 
 ChiTotalOperandTag chiTotalOperand() { result = TChiTotalOperand() }
 
-class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
+class ChiPartialOperandTag extends ChiOperandTag, TChiPartialOperand {
   final override string toString() { result = "ChiPartial" }
 
   final override int getSortOrder() { result = 14 }
