@@ -100,9 +100,7 @@ private predicate step(Node n1, Node n2) {
   or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
   or
