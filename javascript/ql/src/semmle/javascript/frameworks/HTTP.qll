@@ -214,9 +214,9 @@ module HTTP {
     }
 
     /**
-     * Gets a request object originating from this route handler.
+     * Gets a response object originating from this route handler.
      *
-     * Use `RequestSource.ref()` to get reference to this request object.
+     * Use `ResponseSource.ref()` to get reference to this response object.
      */
     final Servers::ResponseSource getAResponseSource() {
       result.getRouteHandler() = this
@@ -343,6 +343,7 @@ module HTTP {
       abstract RouteHandler getRouteHandler();
 
       /** DEPRECATED. Use `ref().flowsTo()` instead. */
+      deprecated
       predicate flowsTo(DataFlow::Node nd) { ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
