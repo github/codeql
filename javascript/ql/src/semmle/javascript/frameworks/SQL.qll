@@ -28,33 +28,23 @@ module SQL {
  * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
  */
 private module MySql {
-  private DataFlow::SourceNode mysql() {
-    result = DataFlow::moduleImport(["mysql", "mysql2"])
-  }
+  private DataFlow::SourceNode mysql() { result = DataFlow::moduleImport(["mysql", "mysql2"]) }
 
-  private DataFlow::CallNode createPool() {
-    result = mysql().getAMemberCall("createPool")
-  }
+  private DataFlow::CallNode createPool() { result = mysql().getAMemberCall("createPool") }
 
   /** Gets a call to `mysql.createPool`. */
   private DataFlow::SourceNode pool(DataFlow::TypeTracker t) {
     t.start() and
     result = createPool()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = pool(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = pool(t2).track(t2, t))
   }
 
   /** Gets a call to `mysql.createPool`. */
-  private DataFlow::SourceNode pool() {
-    result = pool(DataFlow::TypeTracker::end())
-  }
+  private DataFlow::SourceNode pool() { result = pool(DataFlow::TypeTracker::end()) }
 
   /** Gets a call to `mysql.createConnection`. */
-  DataFlow::CallNode createConnection() {
-    result = mysql().getAMemberCall("createConnection")
-  }
+  DataFlow::CallNode createConnection() { result = mysql().getAMemberCall("createConnection") }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   private DataFlow::SourceNode connection(DataFlow::TypeTracker t) {
@@ -65,25 +55,17 @@ private module MySql {
       result = pool().getAMethodCall("getConnection").getABoundCallbackParameter(0, 1)
     )
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = connection(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = connection(t2).track(t2, t))
   }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
-  DataFlow::SourceNode connection() {
-    result = connection(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode connection() { result = connection(DataFlow::TypeTracker::end()) }
 
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() {
-      this = [pool(), connection()].getAMethodCall("query")
-    }
+    QueryCall() { this = [pool(), connection()].getAMethodCall("query") }
 
-    override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -137,15 +119,11 @@ private module Postgres {
     t.start() and
     result = newPool()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = pool(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = pool(t2).track(t2, t))
   }
-  
+
   /** Gets a data flow node referring to a connection pool. */
-  DataFlow::SourceNode pool() {
-    result = pool(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode pool() { result = pool(DataFlow::TypeTracker::end()) }
 
   /** Gets a creation of a Postgres client. */
   DataFlow::InvokeNode newClient() {
@@ -161,27 +139,19 @@ private module Postgres {
       result = pool().getAMethodCall("connect").getABoundCallbackParameter(0, 1)
     )
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = client(t2).track(t2, t)
-    )
-  }
-  
-  /** Gets a data flow node referring to a Postgres client. */
-  DataFlow::SourceNode client() {
-    result = client(DataFlow::TypeTracker::end())
+    exists(DataFlow::TypeTracker t2 | result = client(t2).track(t2, t))
   }
 
-  private DataFlow::SourceNode clientOrPool() {
-    result = client() or result = pool()
-  }
+  /** Gets a data flow node referring to a Postgres client. */
+  DataFlow::SourceNode client() { result = client(DataFlow::TypeTracker::end()) }
+
+  private DataFlow::SourceNode clientOrPool() { result = client() or result = pool() }
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() { this = clientOrPool().getAMethodCall("query") }
 
-    override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -194,9 +164,7 @@ private module Postgres {
     string kind;
 
     Credentials() {
-      exists(string prop |
-        this = [newClient(), newPool()].getOptionArgument(0, prop).asExpr()
-      |
+      exists(string prop | this = [newClient(), newPool()].getOptionArgument(0, prop).asExpr() |
         prop = "user" and kind = "user name"
         or
         prop = "password" and kind = prop
@@ -229,15 +197,11 @@ private module Sqlite {
     t.start() and
     result = newDb()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = db(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = db(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to a Sqlite database instance. */
-  DataFlow::SourceNode db() {
-    result = db(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode db() { result = db(DataFlow::TypeTracker::end()) }
 
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
@@ -254,9 +218,7 @@ private module Sqlite {
       )
     }
 
-    override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
@@ -283,15 +245,11 @@ private module MsSql {
       result = request().getAMethodCall("input")
     )
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = request(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = request(t2).track(t2, t))
   }
-  
+
   /** Gets a data flow node referring to a request object. */
-  DataFlow::SourceNode request() {
-    result = request(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode request() { result = request(DataFlow::TypeTracker::end()) }
 
   /** A tagged template evaluated as a query. */
   private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
@@ -306,13 +264,9 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() {
-      this = request().getAMethodCall(["query", "batch"])
-    }
+    QueryCall() { this = request().getAMethodCall(["query", "batch"]) }
 
-    override DataFlow::Node getAQueryArgument() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
 
   /** An expression that is passed to a method that interprets it as SQL. */
@@ -369,15 +323,11 @@ private module Sequelize {
     t.start() and
     result = sequelize().getAnInstantiation()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = newSequelize(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = newSequelize(t2).track(t2, t))
   }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  DataFlow::SourceNode newSequelize() {
-    result = newSequelize(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode newSequelize() { result = newSequelize(DataFlow::TypeTracker::end()) }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
@@ -444,75 +394,55 @@ private module Spanner {
     t.start() and
     result = spanner().getAnInvocation()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = spannerNew(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = spannerNew(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to the result of `Spanner()` or `new Spanner()`. */
-  DataFlow::SourceNode spannerNew() {
-    result = spannerNew(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode spannerNew() { result = spannerNew(DataFlow::TypeTracker::end()) }
 
   /** Gets a data flow node referring to the result of `.instance()`. */
   private DataFlow::SourceNode instance(DataFlow::TypeTracker t) {
     t.start() and
     result = spannerNew().getAMethodCall("instance")
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = instance(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to the result of `.instance()`. */
-  DataFlow::SourceNode instance() {
-    result = instance(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode instance() { result = instance(DataFlow::TypeTracker::end()) }
 
   /** Gets a node that refers to an instance of the `Database` class. */
   private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
     t.start() and
     result = instance().getAMethodCall("database")
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = database(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = database(t2).track(t2, t))
   }
 
   /** Gets a node that refers to an instance of the `Database` class. */
-  DataFlow::SourceNode database() {
-    result = database(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode database() { result = database(DataFlow::TypeTracker::end()) }
 
   /** Gets a node that refers to an instance of the `v1.SpannerClient` class. */
   private DataFlow::SourceNode v1SpannerClient(DataFlow::TypeTracker t) {
     t.start() and
     result = spanner().getAPropertyRead("v1").getAPropertyRead("SpannerClient").getAnInstantiation()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = v1SpannerClient(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = v1SpannerClient(t2).track(t2, t))
   }
 
   /** Gets a node that refers to an instance of the `v1.SpannerClient` class. */
-  DataFlow::SourceNode v1SpannerClient() {
-    result = v1SpannerClient(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode v1SpannerClient() { result = v1SpannerClient(DataFlow::TypeTracker::end()) }
 
   /** Gets a node that refers to a transaction object. */
   private DataFlow::SourceNode transaction(DataFlow::TypeTracker t) {
     t.start() and
     result = database().getAMethodCall("runTransaction").getABoundCallbackParameter(0, 1)
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = transaction(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = transaction(t2).track(t2, t))
   }
 
   /** Gets a node that refers to a transaction object. */
-  DataFlow::SourceNode transaction() {
-    result = transaction(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode transaction() { result = transaction(DataFlow::TypeTracker::end()) }
 
   /**
    * A call to a Spanner method that executes a SQL query.
@@ -543,9 +473,7 @@ private module Spanner {
    * A call to `Transaction.run`, `Transaction.runStream` or `Transaction.runUpdate`.
    */
   class TransactionRunCall extends SqlExecution {
-    TransactionRunCall() {
-      this = transaction().getAMethodCall(["run", "runStream", "runUpdate"])
-    }
+    TransactionRunCall() { this = transaction().getAMethodCall(["run", "runStream", "runUpdate"]) }
   }
 
   /**
