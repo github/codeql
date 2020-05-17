@@ -389,6 +389,10 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   )
   or
   m instanceof StringReplaceMethod
+  or
+  exists(SpringUntrustedDataType dt |
+    m.(GetterMethod) = dt.getAMethod()
+  )
 }
 
 private class StringReplaceMethod extends Method {
