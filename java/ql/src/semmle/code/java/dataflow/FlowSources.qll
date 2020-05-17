@@ -18,6 +18,7 @@ import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.frameworks.spring.SpringController
+import semmle.code.java.frameworks.spring.SpringWebClient
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
@@ -228,6 +229,7 @@ private class RemoteTaintedMethod extends Method {
       this.hasName("getParameterValues")
       // TODO consider getRemoteUser
     ) or
+    this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
