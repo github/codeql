@@ -424,6 +424,22 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     tracked = ma.getAnArgument() and
     sink = ma
   )
+  or
+  exists(Method springResponseEntityOfOk |
+    sink.getMethod() = springResponseEntityOfOk and
+    springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
+    springResponseEntityOfOk.getName().regexpMatch("ok|of") and
+    tracked = sink.getArgument(0) and
+    tracked.getType() instanceof TypeString
+  )
+  or
+  exists(Method springResponseEntityBody |
+    sink.getMethod() = springResponseEntityBody and
+    springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
+    springResponseEntityBody.getName().regexpMatch("body") and
+    tracked = sink.getArgument(0) and
+    tracked.getType() instanceof TypeString
+  )
 }
 
 /**
