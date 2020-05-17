@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.Maps
 import SpringWeb
+import SpringWebClient
 
 /**
  * An annotation type that identifies Spring controllers.
@@ -296,6 +297,13 @@ class SpringModelResponseType extends RefType {
   }
 }
 
+/** Strips wrapper types. */
+private RefType stripType(Type t) {
+  result = t or
+  result = stripType(t.(Array).getComponentType()) or
+  result = stripType(t.(ParameterizedType).getATypeArgument())
+}
+
 /**
  * A user data type which may be populated from a HTTP request.
  *
@@ -310,11 +318,16 @@ class SpringUntrustedDataType extends RefType {
       p.getAnAnnotation().(SpringServletInputAnnotation).getType().hasName("RequestBody")
       |
       this.fromSource() and
-      this = p.getType()
+      this = stripType(p.getType())
+    )
+    or
+    exists(SpringRestTemplateResponseEntityMethod rm |
+      this = stripType(rm.getAReference().getType().(ParameterizedType).getTypeArgument(0)) and
+      this.fromSource()
     )
     or
     exists(SpringUntrustedDataType mt |
-      this = mt.getAField().getType() and
+      this = stripType(mt.getAField().getType()) and
       this.fromSource()
     )
   }
