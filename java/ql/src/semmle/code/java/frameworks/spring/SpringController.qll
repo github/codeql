@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.Maps
 import SpringWeb
 
 /**
@@ -39,7 +40,7 @@ class SpringModelAttributeMethod extends SpringControllerMethod {
     // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
-      superMethod.hasAnnotation("org.springframework.web.bind.annotation", "ModelAttribute")
+      superMethod.getAnAnnotation() instanceof SpringModelAttributeAnnotation
     )
   }
 }
@@ -110,6 +111,12 @@ class SpringServletInputAnnotation extends Annotation {
   }
 }
 
+class SpringModelAttributeAnnotation extends Annotation {
+  SpringModelAttributeAnnotation() {
+    getType().hasQualifiedName("org.springframework.web.bind.annotation", "ModelAttribute")
+  }
+}
+
 class SpringRequestMappingParameter extends Parameter {
   SpringRequestMappingParameter() { getCallable() instanceof SpringRequestMappingMethod }
 
@@ -133,10 +140,11 @@ class SpringRequestMappingParameter extends Parameter {
     getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.validation", "Errors") or
     getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.bind.support", "SessionStatus") or
     getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.util", "UriComponentsBuilder") or
+    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.data.domain", "Pageable") or
     this instanceof SpringModel
   }
 
-  predicate isTaintedInput() {
+  predicate isExplicitlyTaintedInput() {
     // InputStream or Reader parameters allow access to the body of a request
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
@@ -146,7 +154,37 @@ class SpringRequestMappingParameter extends Parameter {
     // TODO model unwrapping aspects
     getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.http", "HttpEntity<T>") or
     this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
-    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute") or
+    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute")
+  }
+
+  predicate isImplicitRequestParam() {
+    // Any parameter which is not explicitly handled, is consider to be an `@RequestParam`, if
+    // it is a simple bean property
+    not isNotDirectlyTaintedInput() and
+    not isExplicitlyTaintedInput() and
+    (
+      getType() instanceof PrimitiveType or
+      getType() instanceof TypeString
+    )
+  }
+
+  predicate isImplicitModelAttribute() {
+    // Any parameter which is not explicitly handled, is consider to be an `@ModelAttribute`, if
+    // it is not an implicit request param
+    not isNotDirectlyTaintedInput() and
+    not isExplicitlyTaintedInput() and
+    not isImplicitRequestParam()
+  }
+
+  /** Holds if this is an explicit or implicit @ModelAttribute parameter */
+  predicate isModelAttribute() {
+    isImplicitModelAttribute() or
+    getAnAnnotation() instanceof SpringModelAttributeAnnotation
+  }
+
+  /** Holds if the input is tainted */
+  predicate isTaintedInput() {
+    isExplicitlyTaintedInput() or
     // Any parameter which is not explicitly identified, is consider to be an `@RequestParam`, if
     // it is a simple bean property) or a @ModelAttribute if not
     not isNotDirectlyTaintedInput()
@@ -170,7 +208,7 @@ abstract class SpringModel extends Parameter {
  * A `java.util.Map` can be accepted as the model parameter for a Spring `RequestMapping` method.
  */
 class SpringModelPlainMap extends SpringModel {
-  SpringModelPlainMap() { getType().(RefType).hasQualifiedName("java.util", "Map") }
+  SpringModelPlainMap() { getType() instanceof MapType }
 
   override RefType getATypeInModel() {
     exists(MethodAccess methodCall |
