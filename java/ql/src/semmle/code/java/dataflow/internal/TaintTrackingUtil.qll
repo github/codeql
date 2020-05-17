@@ -8,6 +8,8 @@ private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
 private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.frameworks.Protobuf
+private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.jackson.JacksonSerializability
@@ -252,6 +254,22 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
     or
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
+    or
+    // A SpringHttpEntity is a wrapper around a body and some headers
+    // Track flow through iff body is a String
+    exists(SpringHttpEntity she |
+      sink.getConstructor() = she.getAConstructor() and
+      argi = 0 and
+      tracked.getType() instanceof TypeString
+    )
+    or
+    // A SpringRequestEntity is a wrapper around a body and some headers
+    // Track flow through iff body is a String
+    exists(SpringResponseEntity sre |
+      sink.getConstructor() = sre.getAConstructor() and
+      argi = 0 and
+      tracked.getType() instanceof TypeString
+    )
   )
 }
 
