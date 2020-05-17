@@ -105,19 +105,26 @@ class SpringResponseBodyAnnotationType extends AnnotationType {
  * A method on a Spring controller that is executed in response to a web request.
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
+  Annotation requestMappingAnnotation;
   SpringRequestMappingMethod() {
     // Any method that declares the @RequestMapping annotation, or overrides a method that declares
     // the annotation. We have to do this explicit check because the @RequestMapping annotation is
     // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
-      superMethod.getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType
+      requestMappingAnnotation = superMethod.getAnAnnotation() and
+      requestMappingAnnotation.getType() instanceof SpringRequestMappingAnnotationType
     )
   }
 
   /** Gets a request mapping parameter. */
   SpringRequestMappingParameter getARequestParameter() {
     result = getAParameter()
+  }
+
+  /** Gets the "produces" @RequestMapping annotation value, if present. */
+  string getProduces() {
+    result = requestMappingAnnotation.getValue("produces").(StringLiteral).getValue()
   }
 
   /** Holds if this is considered an @ResponseBody method. */
