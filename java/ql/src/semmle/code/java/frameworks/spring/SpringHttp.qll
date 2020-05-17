@@ -33,3 +33,7 @@ class SpringResponseEntityBodyBuilder extends Interface {
     hasName("BodyBuilder")
   }
 }
+
+class SpringHttpHeaders extends Class {
+  SpringHttpHeaders() { hasQualifiedName("org.springframework.http", "HttpHeaders") }
+}

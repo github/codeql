@@ -393,6 +393,19 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   exists(SpringUntrustedDataType dt |
     m.(GetterMethod) = dt.getAMethod()
   )
+  or
+  exists(SpringHttpEntity sre |
+    m = sre.getAMethod() and
+    m.getName().regexpMatch("getBody|getHeaders")
+  )
+  or
+  exists(SpringHttpHeaders headers |
+    m = headers.getAMethod() |
+    m.getReturnType() instanceof TypeString
+    or
+    m.getReturnType().(RefType).getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "List") and
+    m.getReturnType().(ParameterizedType).getTypeArgument(0) instanceof TypeString
+  )
 }
 
 private class StringReplaceMethod extends Method {
