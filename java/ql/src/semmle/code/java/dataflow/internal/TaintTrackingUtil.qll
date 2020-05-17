@@ -387,6 +387,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName().regexpMatch("get|toArray|subList|spliterator|set|iterator|listIterator") or
     (m.getName().regexpMatch("remove") and not m.getReturnType() instanceof BooleanType)
   )
+  or
+  m instanceof StringReplaceMethod
 }
 
 private class StringReplaceMethod extends Method {
