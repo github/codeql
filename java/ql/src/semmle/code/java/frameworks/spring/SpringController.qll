@@ -295,3 +295,27 @@ class SpringModelResponseType extends RefType {
     exists(SpringModel model | usesType(model.getATypeInModel(), this))
   }
 }
+
+/**
+ * A user data type which may be populated from a HTTP request.
+ *
+ * This includes types directly referred to as either @ModelAttribute or @RequestBody parameters,
+ * or types which are referred to by those types.
+ */
+class SpringUntrustedDataType extends RefType {
+  SpringUntrustedDataType() {
+    exists(SpringRequestMappingParameter p |
+      p.isModelAttribute()
+      or
+      p.getAnAnnotation().(SpringServletInputAnnotation).getType().hasName("RequestBody")
+      |
+      this.fromSource() and
+      this = p.getType()
+    )
+    or
+    exists(SpringUntrustedDataType mt |
+      this = mt.getAField().getType() and
+      this.fromSource()
+    )
+  }
+}
