@@ -35,7 +35,9 @@ class XssSink extends DataFlow::ExprNode {
     or
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |
       requestMappingMethod = rs.getEnclosingCallable() and
-      this.asExpr() = rs.getResult() |
+      this.asExpr() = rs.getResult() and
+      (not exists(requestMappingMethod.getProduces()) or requestMappingMethod.getProduces().matches("text/%"))
+      |
       // If a Spring request mapping method is either annotated with @ResponseBody (or equivalent),
       // or returns a HttpEntity or sub-type, then the return value of the method is converted into
       // a HTTP reponse using a HttpMessageConverter implementation. The implementation is chosen
