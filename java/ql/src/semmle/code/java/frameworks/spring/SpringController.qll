@@ -3,7 +3,7 @@ import semmle.code.java.Maps
 import SpringWeb
 
 /**
- * An annotation type that identifies Spring components.
+ * An annotation type that identifies Spring controllers.
  */
 class SpringControllerAnnotation extends AnnotationType {
   SpringControllerAnnotation() {
@@ -16,10 +16,28 @@ class SpringControllerAnnotation extends AnnotationType {
 }
 
 /**
+ * An annotation type that identifies Spring rest controllers.
+ *
+ * Rest controllers are the same as controllers, but imply the @ResponseBody annotation.
+ */
+class SpringRestControllerAnnotation extends SpringControllerAnnotation {
+  SpringRestControllerAnnotation() {
+    hasName("RestController")
+  }
+}
+
+/**
  * A class annotated, directly or indirectly, as a Spring `Controller`.
  */
 class SpringController extends Class {
   SpringController() { getAnAnnotation().getType() instanceof SpringControllerAnnotation }
+}
+
+/**
+ * A class annotated, directly or indirectly, as a Spring `RestController`.
+ */
+class SpringRestController extends SpringController {
+  SpringRestController() { getAnAnnotation().getType() instanceof SpringRestControllerAnnotation }
 }
 
 /**
@@ -74,6 +92,16 @@ class SpringRequestMappingAnnotationType extends AnnotationType {
 }
 
 /**
+ * An `AnnotationType` which is used to indicate a `ResponseBody`.
+ */
+class SpringResponseBodyAnnotationType extends AnnotationType {
+  SpringResponseBodyAnnotationType() {
+    // `@ResponseBody` used directly as an annotation.
+    hasQualifiedName("org.springframework.web.bind.annotation", "ResponseBody")
+  }
+}
+
+/**
  * A method on a Spring controller that is executed in response to a web request.
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
@@ -90,6 +118,15 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   /** Gets a request mapping parameter. */
   SpringRequestMappingParameter getARequestParameter() {
     result = getAParameter()
+  }
+
+  /** Holds if this is considered an @ResponseBody method. */
+  predicate isResponseBody() {
+    getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType
+    or
+    getDeclaringType().getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType
+    or
+    getDeclaringType() instanceof SpringRestController
   }
 }
 
