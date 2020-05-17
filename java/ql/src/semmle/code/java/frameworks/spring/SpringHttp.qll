@@ -26,3 +26,10 @@ class SpringResponseEntity extends Class {
         .hasQualifiedName("org.springframework.http", "ResponseEntity")
   }
 }
+
+class SpringResponseEntityBodyBuilder extends Interface {
+  SpringResponseEntityBodyBuilder() {
+    getSourceDeclaration().getEnclosingType() = any(SpringResponseEntity sre) and
+    hasName("BodyBuilder")
+  }
+}
