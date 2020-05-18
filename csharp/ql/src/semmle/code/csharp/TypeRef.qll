@@ -11,6 +11,7 @@ import csharp
  * This is used for extensionals that can be supplied
  * as either type references or types.
  */
+cached
 @type_or_ref getTypeRef(@type type) {
   result = type
   or
@@ -37,7 +38,7 @@ private module TypeRefs {
      */
     Type getCanonicalType() {
       result = this.getAType() and
-      isCanonicalType(result)
+      not locationIsBetter(canonicalTypeLocation(result), canonicalTypeLocation(this.getAType()))
     }
   }
 
@@ -62,12 +63,5 @@ private module TypeRefs {
     or
     typeLocation.(SourceLocation).getFile().getAbsolutePath() <
       betterLocation.(SourceLocation).getFile().getAbsolutePath()
-  }
-
-  private predicate isCanonicalType(Type type) {
-    not exists(TypeRef tr |
-      type = tr.getAType() and
-      locationIsBetter(canonicalTypeLocation(type), canonicalTypeLocation(tr.getAType()))
-    )
   }
 }
