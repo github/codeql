@@ -13,3 +13,13 @@ request.query('select 1 as number', (err, result) => {
 request.batch('create procedure #temporary as select * from table', (err, result) => {
     // ... error checks
 })
+
+class C {
+    constructor(req) {
+        this.req = req;
+    }
+    send() {
+        this.req.query('select 1 as number', (err, result) => {})
+    }
+}
+new C(new sql.Request());

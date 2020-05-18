@@ -9,6 +9,12 @@
   - [jQuery](https://jquery.com/)
   - [marsdb](https://www.npmjs.com/package/marsdb)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
+  - [mssql](https://www.npmjs.com/package/mssql)
+  - [mysql](https://www.npmjs.com/package/mysql)
+  - [pg](https://www.npmjs.com/package/pg)
+  - [sequelize](https://www.npmjs.com/package/sequelize)
+  - [spanner](https://www.npmjs.com/package/spanner)
+  - [sqlite](https://www.npmjs.com/package/sqlite)
   - [ssh2](https://www.npmjs.com/package/ssh2)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
 
