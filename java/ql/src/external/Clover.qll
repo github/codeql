@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with Clover reports. */
+
 import java
 
 /**
@@ -18,6 +20,7 @@ class CloverCoverage extends XMLElement {
     this.getName() = "coverage"
   }
 
+  /** Gets a project for this `coverage` element. */
   CloverProject getAProject() { result = this.getAChild() }
 }
 
@@ -27,6 +30,7 @@ class CloverCoverage extends XMLElement {
  * all subclasses of this class, to share code.
  */
 abstract class CloverMetricsContainer extends XMLElement {
+  /** Gets the Clover `metrics` child element for this element. */
   CloverMetrics getMetrics() { result = this.getAChild() }
 }
 
@@ -44,42 +48,61 @@ class CloverMetrics extends XMLElement {
 
   private float ratio(string name) { result = attr("covered" + name) / attr(name).(float) }
 
+  /** Gets the value of the `conditionals` attribute. */
   int getNumConditionals() { result = attr("conditionals") }
 
+  /** Gets the value of the `coveredconditionals` attribute. */
   int getNumCoveredConditionals() { result = attr("coveredconditionals") }
 
+  /** Gets the value of the `statements` attribute. */
   int getNumStatements() { result = attr("statements") }
 
+  /** Gets the value of the `coveredstatements` attribute. */
   int getNumCoveredStatements() { result = attr("coveredstatements") }
 
+  /** Gets the value of the `elements` attribute. */
   int getNumElements() { result = attr("elements") }
 
+  /** Gets the value of the `coveredelements` attribute. */
   int getNumCoveredElements() { result = attr("coveredelements") }
 
+  /** Gets the value of the `methods` attribute. */
   int getNumMethods() { result = attr("methods") }
 
+  /** Gets the value of the `coveredmethods` attribute. */
   int getNumCoveredMethods() { result = attr("coveredmethods") }
 
+  /** Gets the value of the `loc` attribute. */
   int getNumLoC() { result = attr("loc") }
 
+  /** Gets the value of the `ncloc` attribute. */
   int getNumNonCommentedLoC() { result = attr("ncloc") }
 
+  /** Gets the value of the `packages` attribute. */
   int getNumPackages() { result = attr("packages") }
 
+  /** Gets the value of the `files` attribute. */
   int getNumFiles() { result = attr("files") }
 
+  /** Gets the value of the `classes` attribute. */
   int getNumClasses() { result = attr("classes") }
 
+  /** Gets the value of the `complexity` attribute. */
   int getCloverComplexity() { result = attr("complexity") }
 
+  /** Gets the ratio of the `coveredconditionals` attribute over the `conditionals` attribute. */
   float getConditionalCoverage() { result = ratio("conditionals") }
 
+  /** Gets the ratio of the `coveredstatements` attribute over the `statements` attribute. */
   float getStatementCoverage() { result = ratio("statements") }
 
+  /** Gets the ratio of the `coveredelements` attribute over the `elements` attribute. */
   float getElementCoverage() { result = ratio("elements") }
 
+  /** Gets the ratio of the `coveredmethods` attribute over the `methods` attribute. */
   float getMethodCoverage() { result = ratio("methods") }
 
+  /** Gets the ratio of the `ncloc` attribute over the `loc` attribute. */
   float getNonCommentedLoCRatio() { result = attr("ncloc") / attr("loc") }
 }
 
@@ -100,6 +123,7 @@ class CloverPackage extends CloverMetricsContainer {
     this.getName() = "package"
   }
 
+  /** Gets the Java package for this Clover package. */
   Package getRealPackage() { result.hasName(getAttribute("name").getValue()) }
 }
 
@@ -122,8 +146,10 @@ class CloverClass extends CloverMetricsContainer {
     this.getName() = "class"
   }
 
+  /** Gets the Clover package for this Clover class. */
   CloverPackage getPackage() { result = getParent().(CloverFile).getParent() }
 
+  /** Gets the Java type for this Clover class. */
   RefType getRealClass() {
     result
         .hasQualifiedName(getPackage().getAttribute("name").getValue(),

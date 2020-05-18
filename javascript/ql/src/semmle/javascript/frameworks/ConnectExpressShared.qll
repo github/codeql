@@ -8,23 +8,103 @@ import javascript
 
 module ConnectExpressShared {
   /**
+   * String representing the signature of a route handler, that is,
+   * the list of parameters taken by the route handler.
+   *
+   * Concretely this is a comma-separated list of parameter kinds, which can be either
+   * `request`, `response`, `next`, `error`, or `parameter`, but this is considered an
+   * implementation detail.
+   */
+  private class RouteHandlerSignature extends string {
+    RouteHandlerSignature() {
+      this = "request,response" or
+      this = "request,response,next" or
+      this = "request,response,next,parameter" or
+      this = "error,request,response,next"
+    }
+
+    /** Gets the index of the parameter corresonding to the given `kind`, if any. */
+    pragma[noinline]
+    int getParameterIndex(string kind) { this.splitAt(",", result) = kind }
+
+    /** Gets the number of parameters taken by this signature. */
+    pragma[noinline]
+    int getArity() { result = count(getParameterIndex(_)) }
+
+    /** Holds if this signature takes a parameter of the given kind. */
+    predicate has(string kind) { exists(getParameterIndex(kind)) }
+  }
+
+  private module RouteHandlerSignature {
+    /** Gets the signature corresonding to `(req, res, next, param) => {...}`. */
+    RouteHandlerSignature requestResponseNextParameter() {
+      result = "request,response,next,parameter"
+    }
+
+    /** Gets the signature corresonding to `(req, res, next) => {...}`. */
+    RouteHandlerSignature requestResponseNext() { result = "request,response,next" }
+
+    /** Gets the signature corresonding to `(err, req, res, next) => {...}`. */
+    RouteHandlerSignature errorRequestResponseNext() { result = "error,request,response,next" }
+  }
+
+  /**
+   * Holds if `fun` appears to match the given signature based on parameter naming.
+   */
+  private predicate matchesSignature(Function function, RouteHandlerSignature sig) {
+    function.getNumParameter() = sig.getArity() and
+    function.getParameter(sig.getParameterIndex("request")).getName() = ["req", "request"] and
+    function.getParameter(sig.getParameterIndex("response")).getName() = ["res", "response"] and
+    (
+      sig.has("next")
+      implies
+      function.getParameter(sig.getParameterIndex("next")).getName() = ["next", "cb"]
+    )
+  }
+
+  /**
+   * Gets the parameter corresonding to the given `kind`, where `routeHandler` is interpreted as a
+   * route handler with the signature `sig`.
+   *
+   * This does not check if the function is actually a route handler or matches the signature in any way,
+   * so the caller should restrict the function accordingly.
+   */
+  pragma[inline]
+  private Parameter getRouteHandlerParameter(
+    Function routeHandler, RouteHandlerSignature sig, string kind
+  ) {
+    result = routeHandler.getParameter(sig.getParameterIndex(kind))
+  }
+
+  /**
+   * Gets the parameter of kind `kind` of a Connect/Express route parameter handler function.
+   *
+   * `kind` is one of: "error", "request", "response", "next".
+   */
+  pragma[inline]
+  Parameter getRouteParameterHandlerParameter(Function routeHandler, string kind) {
+    result =
+      getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNextParameter(),
+        kind)
+  }
+
+  /**
    * Gets the parameter of kind `kind` of a Connect/Express route handler function.
    *
    * `kind` is one of: "error", "request", "response", "next".
    */
-  SimpleParameter getRouteHandlerParameter(Function routeHandler, string kind) {
-    exists(int index, int offset |
-      result = routeHandler.getParameter(index + offset) and
-      (if routeHandler.getNumParameter() = 4 then offset = 0 else offset = -1)
-    |
-      kind = "error" and index = 0
-      or
-      kind = "request" and index = 1
-      or
-      kind = "response" and index = 2
-      or
-      kind = "next" and index = 3
-    )
+  pragma[inline]
+  Parameter getRouteHandlerParameter(Function routeHandler, string kind) {
+    if routeHandler.getNumParameter() = 4
+    then
+      // For arity 4 there is ambiguity between (err, req, res, next) and (req, res, next, param)
+      // This predicate favors the 'err' signature whereas getRouteParameterHandlerParameter favors the other.
+      result =
+        getRouteHandlerParameter(routeHandler, RouteHandlerSignature::errorRequestResponseNext(),
+          kind)
+    else
+      result =
+        getRouteHandlerParameter(routeHandler, RouteHandlerSignature::requestResponseNext(), kind)
   }
 
   /**
@@ -34,39 +114,16 @@ module ConnectExpressShared {
    */
   class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
     RouteHandlerCandidate() {
-      exists(string request, string response, string next, string error |
-        (request = "request" or request = "req") and
-        (response = "response" or response = "res") and
-        next = "next" and
-        (error = "error" or error = "err")
-      |
-        // heuristic: parameter names match the documentation
-        astNode.getNumParameter() >= 2 and
-        getRouteHandlerParameter(astNode, "request").getName() = request and
-        getRouteHandlerParameter(astNode, "response").getName() = response and
-        (
-          astNode.getNumParameter() >= 3
-          implies
-          getRouteHandlerParameter(astNode, "next").getName() = next
-        ) and
-        (
-          astNode.getNumParameter() = 4
-          implies
-          getRouteHandlerParameter(astNode, "error").getName() = error
-        ) and
-        not (
-          // heuristic: max four parameters (the server will only supply four arguments)
-          astNode.getNumParameter() > 4
-          or
-          // heuristic: not a class method (the server invokes this with a function call)
-          astNode = any(MethodDefinition def).getBody()
-          or
-          // heuristic: does not return anything (the server will not use the return value)
-          exists(astNode.getAReturnStmt().getExpr())
-          or
-          // heuristic: is not invoked (the server invokes this at a call site we cannot reason precisely about)
-          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
-        )
+      matchesSignature(astNode, _) and
+      not (
+        // heuristic: not a class method (the server invokes this with a function call)
+        astNode = any(MethodDefinition def).getBody()
+        or
+        // heuristic: does not return anything (the server will not use the return value)
+        exists(astNode.getAReturnStmt().getExpr())
+        or
+        // heuristic: is not invoked (the server invokes this at a call site we cannot reason precisely about)
+        exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
       )
     }
   }

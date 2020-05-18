@@ -89,20 +89,24 @@
 | format.cpp:110:18:110:23 | ref arg buffer | format.cpp:111:8:111:13 | buffer |  |
 | format.cpp:115:10:115:11 | 0 | format.cpp:116:29:116:29 | i |  |
 | format.cpp:115:10:115:11 | 0 | format.cpp:117:8:117:8 | i |  |
+| format.cpp:116:28:116:29 | ref arg & ... | format.cpp:116:29:116:29 | i [inner post update] |  |
 | format.cpp:116:28:116:29 | ref arg & ... | format.cpp:117:8:117:8 | i |  |
 | format.cpp:116:29:116:29 | i | format.cpp:116:28:116:29 | & ... |  |
 | format.cpp:120:10:120:11 | 0 | format.cpp:121:40:121:40 | i |  |
 | format.cpp:120:10:120:11 | 0 | format.cpp:122:8:122:8 | i |  |
+| format.cpp:121:39:121:40 | ref arg & ... | format.cpp:121:40:121:40 | i [inner post update] |  |
 | format.cpp:121:39:121:40 | ref arg & ... | format.cpp:122:8:122:8 | i |  |
 | format.cpp:121:40:121:40 | i | format.cpp:121:39:121:40 | & ... |  |
 | format.cpp:125:21:125:24 | {...} | format.cpp:126:32:126:37 | buffer |  |
 | format.cpp:125:21:125:24 | {...} | format.cpp:127:8:127:13 | buffer |  |
 | format.cpp:125:23:125:23 | 0 | format.cpp:125:21:125:24 | {...} | TAINT |
+| format.cpp:126:31:126:37 | ref arg & ... | format.cpp:126:32:126:37 | buffer [inner post update] |  |
 | format.cpp:126:31:126:37 | ref arg & ... | format.cpp:127:8:127:13 | buffer |  |
 | format.cpp:126:32:126:37 | buffer | format.cpp:126:31:126:37 | & ... |  |
 | format.cpp:130:21:130:24 | {...} | format.cpp:131:40:131:45 | buffer |  |
 | format.cpp:130:21:130:24 | {...} | format.cpp:132:8:132:13 | buffer |  |
 | format.cpp:130:23:130:23 | 0 | format.cpp:130:21:130:24 | {...} | TAINT |
+| format.cpp:131:39:131:45 | ref arg & ... | format.cpp:131:40:131:45 | buffer [inner post update] |  |
 | format.cpp:131:39:131:45 | ref arg & ... | format.cpp:132:8:132:13 | buffer |  |
 | format.cpp:131:40:131:45 | buffer | format.cpp:131:39:131:45 | & ... |  |
 | stl.cpp:67:12:67:17 | call to source | stl.cpp:71:7:71:7 | a |  |
@@ -148,10 +152,10 @@
 | stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:106:2:106:4 | ss2 |  |
 | stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:109:7:109:9 | ss2 |  |
 | stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:111:7:111:9 | ss2 |  |
-| stl.cpp:105:2:105:4 | ss1 [post update] | stl.cpp:108:7:108:9 | ss1 |  |
-| stl.cpp:105:2:105:4 | ss1 [post update] | stl.cpp:110:7:110:9 | ss1 |  |
-| stl.cpp:106:2:106:4 | ss2 [post update] | stl.cpp:109:7:109:9 | ss2 |  |
-| stl.cpp:106:2:106:4 | ss2 [post update] | stl.cpp:111:7:111:9 | ss2 |  |
+| stl.cpp:105:2:105:4 | ref arg ss1 | stl.cpp:108:7:108:9 | ss1 |  |
+| stl.cpp:105:2:105:4 | ref arg ss1 | stl.cpp:110:7:110:9 | ss1 |  |
+| stl.cpp:106:2:106:4 | ref arg ss2 | stl.cpp:109:7:109:9 | ss2 |  |
+| stl.cpp:106:2:106:4 | ref arg ss2 | stl.cpp:111:7:111:9 | ss2 |  |
 | stl.cpp:124:16:124:28 | call to basic_string | stl.cpp:125:7:125:11 | path1 |  |
 | stl.cpp:124:17:124:26 | call to user_input | stl.cpp:124:16:124:28 | call to basic_string | TAINT |
 | stl.cpp:125:7:125:11 | path1 | stl.cpp:125:13:125:17 | call to c_str | TAINT |
@@ -226,10 +230,10 @@
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:93:7:93:9 | mc2 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:94:7:94:9 | mc2 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:95:7:95:9 | mc2 |  |
-| taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:88:7:88:9 | mc1 |  |
-| taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:89:7:89:9 | mc1 |  |
-| taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:90:7:90:9 | mc1 |  |
-| taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:91:7:91:9 | mc1 |  |
+| taint.cpp:86:2:86:4 | ref arg mc1 | taint.cpp:88:7:88:9 | mc1 |  |
+| taint.cpp:86:2:86:4 | ref arg mc1 | taint.cpp:89:7:89:9 | mc1 |  |
+| taint.cpp:86:2:86:4 | ref arg mc1 | taint.cpp:90:7:90:9 | mc1 |  |
+| taint.cpp:86:2:86:4 | ref arg mc1 | taint.cpp:91:7:91:9 | mc1 |  |
 | taint.cpp:100:21:100:21 | i | taint.cpp:106:7:106:7 | i |  |
 | taint.cpp:100:21:100:21 | i | taint.cpp:110:12:110:12 | i |  |
 | taint.cpp:100:21:100:21 | i | taint.cpp:112:12:112:12 | i |  |
@@ -313,11 +317,13 @@
 | taint.cpp:180:19:180:19 | p | taint.cpp:181:9:181:9 | p |  |
 | taint.cpp:181:9:181:9 | p | taint.cpp:181:8:181:9 | * ... | TAINT |
 | taint.cpp:185:11:185:16 | call to source | taint.cpp:186:11:186:11 | x |  |
+| taint.cpp:186:10:186:11 | ref arg & ... | taint.cpp:186:11:186:11 | x [inner post update] |  |
 | taint.cpp:186:11:186:11 | x | taint.cpp:186:10:186:11 | & ... |  |
 | taint.cpp:192:23:192:28 | source | taint.cpp:194:13:194:18 | source |  |
 | taint.cpp:193:6:193:6 | x | taint.cpp:194:10:194:10 | x |  |
 | taint.cpp:193:6:193:6 | x | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:9:194:10 | & ... | taint.cpp:194:2:194:7 | call to memcpy |  |
+| taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:194:10:194:10 | x [inner post update] |  |
 | taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... |  |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
@@ -477,8 +483,10 @@
 | taint.cpp:344:15:344:15 | ref arg t | taint.cpp:348:17:348:17 | t |  |
 | taint.cpp:344:15:344:15 | ref arg t | taint.cpp:350:7:350:7 | t |  |
 | taint.cpp:345:12:345:12 | ref arg b | taint.cpp:352:7:352:7 | b |  |
+| taint.cpp:346:12:346:13 | ref arg & ... | taint.cpp:346:13:346:13 | c [inner post update] |  |
 | taint.cpp:346:12:346:13 | ref arg & ... | taint.cpp:353:7:353:7 | c |  |
 | taint.cpp:346:13:346:13 | c | taint.cpp:346:12:346:13 | & ... |  |
+| taint.cpp:347:12:347:13 | ref arg & ... | taint.cpp:347:13:347:13 | d [inner post update] |  |
 | taint.cpp:347:12:347:13 | ref arg & ... | taint.cpp:354:7:354:7 | d |  |
 | taint.cpp:347:13:347:13 | d | taint.cpp:347:12:347:13 | & ... |  |
 | taint.cpp:348:14:348:14 | ref arg e | taint.cpp:355:7:355:7 | e |  |
@@ -523,15 +531,15 @@
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:445:2:445:2 | d |  |
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:446:7:446:7 | d |  |
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:447:7:447:7 | d |  |
-| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:422:2:422:2 | a |  |
-| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:423:7:423:7 | a |  |
-| taint.cpp:421:7:421:7 | a [post update] | taint.cpp:424:7:424:7 | a |  |
-| taint.cpp:422:2:422:2 | a [post update] | taint.cpp:423:7:423:7 | a |  |
-| taint.cpp:422:2:422:2 | a [post update] | taint.cpp:424:7:424:7 | a |  |
-| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:428:2:428:2 | b |  |
-| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:429:7:429:7 | b |  |
-| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:430:7:430:7 | b |  |
-| taint.cpp:427:7:427:7 | b [post update] | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:421:7:421:7 | ref arg a | taint.cpp:422:2:422:2 | a |  |
+| taint.cpp:421:7:421:7 | ref arg a | taint.cpp:423:7:423:7 | a |  |
+| taint.cpp:421:7:421:7 | ref arg a | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:422:2:422:2 | ref arg a | taint.cpp:423:7:423:7 | a |  |
+| taint.cpp:422:2:422:2 | ref arg a | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:427:7:427:7 | ref arg b | taint.cpp:428:2:428:2 | b |  |
+| taint.cpp:427:7:427:7 | ref arg b | taint.cpp:429:7:429:7 | b |  |
+| taint.cpp:427:7:427:7 | ref arg b | taint.cpp:430:7:430:7 | b |  |
+| taint.cpp:427:7:427:7 | ref arg b | taint.cpp:431:7:431:7 | b |  |
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:429:7:429:7 | b |  |
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:430:7:430:7 | b |  |
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:431:7:431:7 | b |  |
@@ -550,22 +558,22 @@
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:438:7:438:7 | c |  |
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:439:7:439:7 | c |  |
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
-| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:437:2:437:2 | c |  |
-| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:438:7:438:7 | c |  |
-| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:439:7:439:7 | c |  |
-| taint.cpp:436:7:436:7 | c [post update] | taint.cpp:441:9:441:9 | c |  |
-| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:438:7:438:7 | c |  |
-| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:439:7:439:7 | c |  |
-| taint.cpp:437:2:437:2 | c [post update] | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:436:7:436:7 | ref arg c | taint.cpp:437:2:437:2 | c |  |
+| taint.cpp:436:7:436:7 | ref arg c | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:436:7:436:7 | ref arg c | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:436:7:436:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:437:2:437:2 | ref arg c | taint.cpp:438:7:438:7 | c |  |
+| taint.cpp:437:2:437:2 | ref arg c | taint.cpp:439:7:439:7 | c |  |
+| taint.cpp:437:2:437:2 | ref arg c | taint.cpp:441:9:441:9 | c |  |
 | taint.cpp:438:7:438:7 | ref arg c | taint.cpp:439:7:439:7 | c |  |
 | taint.cpp:438:7:438:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
-| taint.cpp:439:7:439:7 | c [post update] | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:439:7:439:7 | ref arg c | taint.cpp:441:9:441:9 | c |  |
 | taint.cpp:441:9:441:9 | c | taint.cpp:441:2:441:9 | delete | TAINT |
-| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:445:2:445:2 | d |  |
-| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:446:7:446:7 | d |  |
-| taint.cpp:444:7:444:7 | d [post update] | taint.cpp:447:7:447:7 | d |  |
-| taint.cpp:445:2:445:2 | d [post update] | taint.cpp:446:7:446:7 | d |  |
-| taint.cpp:445:2:445:2 | d [post update] | taint.cpp:447:7:447:7 | d |  |
+| taint.cpp:444:7:444:7 | ref arg d | taint.cpp:445:2:445:2 | d |  |
+| taint.cpp:444:7:444:7 | ref arg d | taint.cpp:446:7:446:7 | d |  |
+| taint.cpp:444:7:444:7 | ref arg d | taint.cpp:447:7:447:7 | d |  |
+| taint.cpp:445:2:445:2 | ref arg d | taint.cpp:446:7:446:7 | d |  |
+| taint.cpp:445:2:445:2 | ref arg d | taint.cpp:447:7:447:7 | d |  |
 | taint.cpp:452:16:452:16 | a | taint.cpp:454:10:454:10 | a |  |
 | taint.cpp:452:24:452:24 | b | taint.cpp:455:6:455:6 | b |  |
 | taint.cpp:454:10:454:10 | a | taint.cpp:456:6:456:6 | c |  |
@@ -583,3 +591,13 @@
 | taint.cpp:463:6:463:6 | 0 | taint.cpp:471:7:471:7 | y |  |
 | taint.cpp:468:7:468:7 | ref arg x | taint.cpp:470:7:470:7 | x |  |
 | taint.cpp:468:10:468:10 | ref arg y | taint.cpp:471:7:471:7 | y |  |
+| taint.cpp:480:26:480:32 | source1 | taint.cpp:483:28:483:34 | source1 |  |
+| taint.cpp:481:15:481:21 | 0 | taint.cpp:483:12:483:15 | line |  |
+| taint.cpp:481:15:481:21 | 0 | taint.cpp:485:7:485:10 | line |  |
+| taint.cpp:482:9:482:9 | n | taint.cpp:483:19:483:19 | n |  |
+| taint.cpp:483:11:483:15 | ref arg & ... | taint.cpp:483:12:483:15 | line [inner post update] |  |
+| taint.cpp:483:11:483:15 | ref arg & ... | taint.cpp:485:7:485:10 | line |  |
+| taint.cpp:483:12:483:15 | line | taint.cpp:483:11:483:15 | & ... |  |
+| taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
+| taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
+| taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |

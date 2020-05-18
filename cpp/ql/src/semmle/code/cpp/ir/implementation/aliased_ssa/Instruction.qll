@@ -320,8 +320,7 @@ class Instruction extends Construction::TInstruction {
   /**
    * Holds if the result of this instruction is precisely modeled in SSA. Always
    * holds for a register result. For a memory result, a modeled result is
-   * connected to its actual uses. An unmodeled result is connected to the
-   * `UnmodeledUse` instruction.
+   * connected to its actual uses. An unmodeled result has no uses.
    *
    * For example:
    * ```
@@ -585,9 +584,9 @@ class ConditionalBranchInstruction extends Instruction {
 
   final Instruction getCondition() { result = getConditionOperand().getDef() }
 
-  final Instruction getTrueSuccessor() { result = getSuccessor(trueEdge()) }
+  final Instruction getTrueSuccessor() { result = getSuccessor(EdgeKind::trueEdge()) }
 
-  final Instruction getFalseSuccessor() { result = getSuccessor(falseEdge()) }
+  final Instruction getFalseSuccessor() { result = getSuccessor(EdgeKind::falseEdge()) }
 }
 
 class ExitFunctionInstruction extends Instruction {
@@ -907,7 +906,7 @@ class SwitchInstruction extends Instruction {
 
   final Instruction getACaseSuccessor() { exists(CaseEdge edge | result = getSuccessor(edge)) }
 
-  final Instruction getDefaultSuccessor() { result = getSuccessor(defaultEdge()) }
+  final Instruction getDefaultSuccessor() { result = getSuccessor(EdgeKind::defaultEdge()) }
 }
 
 /**
@@ -1246,12 +1245,6 @@ class AliasedDefinitionInstruction extends Instruction {
  */
 class AliasedUseInstruction extends Instruction {
   AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
-}
-
-class UnmodeledUseInstruction extends Instruction {
-  UnmodeledUseInstruction() { getOpcode() instanceof Opcode::UnmodeledUse }
-
-  override string getOperandsString() { result = "mu*" }
 }
 
 /**

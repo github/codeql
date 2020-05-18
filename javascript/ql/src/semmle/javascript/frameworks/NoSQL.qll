@@ -6,7 +6,17 @@ import javascript
 
 module NoSQL {
   /** An expression that is interpreted as a NoSQL query. */
-  abstract class Query extends Expr { }
+  abstract class Query extends Expr {
+    /** Gets an expression that is interpreted as a code operator in this query. */
+    DataFlow::Node getACodeOperator() { none() }
+  }
+}
+
+/**
+ * Gets the value of a `$where` property of an object that flows to `n`.
+ */
+private DataFlow::Node getADollarWherePropertyValue(DataFlow::Node n) {
+  result = n.getALocalSource().getAPropertyWrite("$where").getRhs()
 }
 
 /**
@@ -190,6 +200,10 @@ private module MongoDB {
    */
   class Query extends NoSQL::Query {
     Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 }
 
@@ -678,6 +692,10 @@ private module Mongoose {
    */
   class MongoDBQueryPart extends NoSQL::Query {
     MongoDBQueryPart() { any(InvokeNode call).interpretsArgumentAsQuery(this.flow()) }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
   }
 
   /**
@@ -710,6 +728,119 @@ private module Mongoose {
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
       none()
+    }
+  }
+}
+
+/**
+ * Provides classes modeling the Minimongo library.
+ */
+private module Minimongo {
+  /**
+   * Gets an expression that may refer to a Minimongo database.
+   */
+  private DataFlow::SourceNode getADb(DataFlow::TypeTracker t) {
+    t.start() and
+    // new (require('minimongo')[DBKINDNAME])()
+    result = DataFlow::moduleImport("minimongo").getAPropertyRead().getAnInvocation()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getADb(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to a Minimongo collection. */
+  private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
+    t.start() and
+    // db[COLLECTIONNAME]
+    result = getADb(DataFlow::TypeTracker::end()).getAPropertyRead()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
+  }
+
+  /**
+   * Provides signatures for the Collection methods.
+   */
+  module CollectionMethodSignatures {
+    /**
+     * Holds if Collection method `name` interprets parameter `n` as a query.
+     */
+    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
+      // implements most of the MongoDB interface
+      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+    }
+  }
+
+  /** A call to a Minimongo query method. */
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+    int queryArgIdx;
+
+    QueryCall() {
+      exists(string m | this = getACollection(DataFlow::TypeTracker::end()).getAMethodCall(m) |
+        CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+  }
+
+  /**
+   * An expression that is interpreted as a Minimongo query.
+   */
+  class Query extends NoSQL::Query {
+    Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
+    }
+  }
+}
+
+/**
+ * Provides classes modeling the MarsDB library.
+ */
+private module MarsDB {
+  /**
+   * Gets an expression that may refer to a MarsDB database.
+   */
+  private DataFlow::SourceNode getADb(DataFlow::TypeTracker t) {
+    t.start() and
+    // Collection = require('marsdb')
+    result = DataFlow::moduleImport("marsdb")
+    or
+    exists(DataFlow::TypeTracker t2 | result = getADb(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to a MarsDB collection. */
+  private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
+    t.start() and
+    // new Collection(...)
+    result =
+      getADb(DataFlow::TypeTracker::end()).getAPropertyRead("Collection").getAnInstantiation()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getACollection(t2).track(t2, t))
+  }
+
+  /** A call to a MarsDB query method. */
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+    int queryArgIdx;
+
+    QueryCall() {
+      exists(string m | this = getACollection(DataFlow::TypeTracker::end()).getAMethodCall(m) |
+        // implements parts of the Minimongo interface
+        Minimongo::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() { result = getArgument(queryArgIdx) }
+  }
+
+  /**
+   * An expression that is interpreted as a MarsDB query.
+   */
+  class Query extends NoSQL::Query {
+    Query() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+
+    override DataFlow::Node getACodeOperator() {
+      result = getADollarWherePropertyValue(this.flow())
     }
   }
 }

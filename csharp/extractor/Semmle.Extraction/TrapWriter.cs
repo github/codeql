@@ -30,7 +30,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The location of the src_archive directory.
         /// </summary>
-        private readonly string archive;
+        private readonly string? archive;
         private static readonly Encoding UTF8 = new UTF8Encoding(false);
 
         private readonly bool discardDuplicates;
@@ -45,7 +45,7 @@ namespace Semmle.Extraction
 
         readonly CompressionMode TrapCompression;
 
-        public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates, CompressionMode trapCompression)
+        public TrapWriter(ILogger logger, string outputfile, string? trap, string? archive, bool discardDuplicates, CompressionMode trapCompression)
         {
             Logger = logger;
             TrapCompression = trapCompression;
@@ -101,7 +101,7 @@ namespace Semmle.Extraction
         /// The output filename of the trap.
         /// </summary>
         public readonly string TrapFile;
-        string tmpFile;     // The temporary file which is moved to trapFile once written.
+        string tmpFile = "";     // The temporary file which is moved to trapFile once written.
 
         /// <summary>
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
@@ -236,7 +236,7 @@ namespace Semmle.Extraction
             }
         }
 
-        public static string NestPaths(ILogger logger, string outerpath, string innerpath, InnerPathComputation innerPathComputation)
+        public static string NestPaths(ILogger logger, string? outerpath, string innerpath, InnerPathComputation innerPathComputation)
         {
             string nested = innerpath;
             if (!string.IsNullOrEmpty(outerpath))
@@ -276,7 +276,7 @@ namespace Semmle.Extraction
             }
         }
 
-        public static string TrapPath(ILogger logger, string folder, string filename, TrapWriter.CompressionMode trapCompression)
+        public static string TrapPath(ILogger logger, string? folder, string filename, TrapWriter.CompressionMode trapCompression)
         {
             filename = $"{Path.GetFullPath(filename)}.trap{TrapExtension(trapCompression)}";
             if (string.IsNullOrEmpty(folder))

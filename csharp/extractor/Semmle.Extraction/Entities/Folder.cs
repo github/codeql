@@ -45,7 +45,7 @@ namespace Semmle.Extraction.Entities
         public static Folder Create(Context cx, DirectoryInfo folder) =>
             FolderFactory.Instance.CreateEntity2(cx, folder);
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         class FolderFactory : ICachedEntityFactory<DirectoryInfo, Folder>
         {
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.Entities
 
         public override int GetHashCode() => Path.GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Folder folder && folder.Path == Path;
         }

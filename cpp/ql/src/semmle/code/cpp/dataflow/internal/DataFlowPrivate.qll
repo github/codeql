@@ -311,9 +311,6 @@ predicate isImmutableOrUnobservable(Node n) {
     or
     dt.getBaseType() instanceof RoutineType
   )
-  or
-  // Isn't something we can track
-  n.asExpr() instanceof Call
   // The above list of cases isn't exhaustive, but it narrows down the
   // consistency alerts enough that most of them are interesting.
 }

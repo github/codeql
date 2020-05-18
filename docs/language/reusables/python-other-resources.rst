@@ -1,3 +1,0 @@
-- "`QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__"
-- `Python cookbook queries <https://help.semmle.com/wiki/display/CBPYTHON>`__ in the Semmle wiki
-- `Python queries in action <https://lgtm.com/search?q=language%3Apython&t=rules>`__ on LGTM.com

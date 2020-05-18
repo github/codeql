@@ -91,17 +91,25 @@ private module Cached {
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
     result =
       getInstructionTranslatedElement(instruction)
-          .getInstructionOperand(getInstructionTag(instruction), tag)
+          .getInstructionRegisterOperand(getInstructionTag(instruction), tag)
   }
 
   cached
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionOperand(getInstructionTag(instruction), tag) and
-    overlap instanceof MustTotallyOverlap
+    exists(TranslatedElement translatedElement, TranslatedFunction translatedFunc |
+      translatedElement = getInstructionTranslatedElement(instruction) and
+      exists(getInstructionOperandType(instruction, tag)) and
+      translatedFunc = getTranslatedFunction(instruction.getEnclosingFunction()) and
+      result = translatedFunc.getUnmodeledDefinitionInstruction() and
+      overlap instanceof MustTotallyOverlap
+    )
+    or
+    // Without the code below, the optimizer will realize that raw IR never contains Chi operands,
+    // and report an error that `ChiTotalOperand` and `ChiPartialOperand` are infeasible.
+    (tag instanceof ChiTotalOperandTag or tag instanceof ChiPartialOperandTag) and
+    none()
   }
 
   /** Gets a non-phi instruction that defines an operand of `instr`. */
@@ -144,12 +152,13 @@ private module Cached {
   CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
     // the result type of the load.
+    tag instanceof LoadOperandTag and
     result = instruction.(LoadInstruction).getResultLanguageType()
     or
     not instruction instanceof LoadInstruction and
     result =
       getInstructionTranslatedElement(instruction)
-          .getInstructionOperandType(getInstructionTag(instruction), tag)
+          .getInstructionMemoryOperandType(getInstructionTag(instruction), tag)
   }
 
   cached

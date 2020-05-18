@@ -368,7 +368,7 @@ CSharpPRValueType getCanonicalOpaqueType(Type tag, int byteSize) {
   getTypeSize(tag) = byteSize
 }
 
-module LanguageTypeSanity {
+module LanguageTypeConsistency {
   // Nothing interesting here for C# yet, but the module still has to exist because it is imported
-  // by `IRTypeSanity`.
+  // by `IRTypeConsistency`.
 }

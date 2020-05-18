@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with `*.gwt.xml` files. */
+
 import semmle.code.xml.XML
 
 /**

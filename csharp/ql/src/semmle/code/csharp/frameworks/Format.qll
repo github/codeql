@@ -173,7 +173,7 @@ class InvalidFormatString extends StringLiteral {
 }
 
 /** Provides a dataflow configuration for format strings. */
-private module FormatFlow {
+module FormatFlow {
   private import semmle.code.csharp.dataflow.DataFlow
 
   private class FormatConfiguration extends DataFlow2::Configuration {
@@ -186,12 +186,21 @@ private module FormatFlow {
     }
   }
 
-  predicate hasFlow(StringLiteral lit, Expr format) {
-    exists(DataFlow::Node n1, DataFlow::Node n2, FormatConfiguration conf |
-      n1.asExpr() = lit and n2.asExpr() = format
-    |
-      conf.hasFlow(n1, n2)
-    )
+  query predicate nodes = DataFlow2::PathGraph::nodes/3;
+
+  query predicate edges = DataFlow2::PathGraph::edges/2;
+
+  class PathNode = DataFlow2::PathNode;
+
+  /**
+   * Holds if there is flow from string literal `lit` to the format string in
+   * `call`. `litNode` and `formatNode` are the corresponding data-flow path
+   * nodes.
+   */
+  predicate hasFlowPath(StringLiteral lit, PathNode litNode, FormatCall call, PathNode formatNode) {
+    litNode.getNode().asExpr() = lit and
+    formatNode.getNode().asExpr() = call.getFormatExpr() and
+    any(FormatConfiguration conf).hasFlowPath(litNode, formatNode)
   }
 }
 
@@ -218,10 +227,12 @@ class FormatCall extends MethodCall {
   }
 
   /**
+   * DEPRECATED: Use `FormatFlow::hasFlowPath()` instead.
+   *
    * Gets a format string. Global data flow analysis is applied to retrieve all
    * sources that can reach this method call.
    */
-  StringLiteral getAFormatSource() { FormatFlow::hasFlow(result, this.getFormatExpr()) }
+  deprecated StringLiteral getAFormatSource() { FormatFlow::hasFlowPath(result, _, this, _) }
 
   /**
    * Gets the number of supplied arguments (excluding the format string and format
@@ -245,7 +256,7 @@ class FormatCall extends MethodCall {
   /** Gets a supplied argument that is not used in the format string `src`. */
   int getAnUnusedArgument(ValidFormatString src) {
     result = this.getASuppliedArgument() and
-    src = this.getAFormatSource() and
+    FormatFlow::hasFlowPath(src, _, this, _) and
     not result = src.getAnInsert()
   }
 }

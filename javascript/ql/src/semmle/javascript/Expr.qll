@@ -2614,7 +2614,7 @@ class DynamicImportExpr extends @dynamicimport, Expr, Import {
 }
 
 /** A literal path expression appearing in a dynamic import. */
-private class LiteralDynamicImportPath extends PathExprInModule, ConstantString {
+private class LiteralDynamicImportPath extends PathExpr, ConstantString {
   LiteralDynamicImportPath() {
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }

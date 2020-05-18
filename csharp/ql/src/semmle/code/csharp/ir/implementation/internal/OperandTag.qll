@@ -1,3 +1,8 @@
+/**
+ * Defines the set of possible `OperandTag`s, which are used to identify the role each `Operand`
+ * plays in the evaluation of its `Instruction`.
+ */
+
 private import OperandTagInternal
 
 private newtype TOperandTag =
@@ -10,7 +15,6 @@ private newtype TOperandTag =
   TLeftOperand() or
   TRightOperand() or
   TConditionOperand() or
-  TUnmodeledUseOperand() or
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) { Language::hasPositionalArgIndex(argIndex) } or
@@ -24,10 +28,18 @@ private newtype TOperandTag =
  * an `Instruction` is determined by the instruction's opcode.
  */
 abstract class OperandTag extends TOperandTag {
+  /** Gets a textual representation of this operand tag */
   abstract string toString();
 
+  /**
+   * Gets an integer that represents where this this operand will appear in the operand list of an
+   * instruction when the IR is printed.
+   */
   abstract int getSortOrder();
 
+  /**
+   * Gets a label that will appear before the operand when the IR is printed.
+   */
   string getLabel() { result = "" }
 }
 
@@ -47,7 +59,7 @@ abstract class RegisterOperandTag extends OperandTag { }
 abstract class TypedOperandTag extends MemoryOperandTag { }
 
 // Note: individual subtypes are listed in the order that the operands should
-// appear in the operand list of the instruction when printing.
+// appear in the operand list of the instruction when the IR is printed.
 /**
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`, `InitializeParameter`, `IndirectReadSideEffect`).
@@ -153,18 +165,6 @@ class ConditionOperandTag extends RegisterOperandTag, TConditionOperand {
 ConditionOperandTag conditionOperand() { result = TConditionOperand() }
 
 /**
- * An operand of the special `UnmodeledUse` instruction, representing a value
- * whose set of uses is unknown.
- */
-class UnmodeledUseOperandTag extends MemoryOperandTag, TUnmodeledUseOperand {
-  final override string toString() { result = "UnmodeledUse" }
-
-  final override int getSortOrder() { result = 9 }
-}
-
-UnmodeledUseOperandTag unmodeledUseOperand() { result = TUnmodeledUseOperand() }
-
-/**
  * The operand representing the target function of an `Call` instruction.
  */
 class CallTargetOperandTag extends RegisterOperandTag, TCallTargetOperand {
@@ -221,7 +221,9 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
+abstract class ChiOperandTag extends MemoryOperandTag { }
+
+class ChiTotalOperandTag extends ChiOperandTag, TChiTotalOperand {
   final override string toString() { result = "ChiTotal" }
 
   final override int getSortOrder() { result = 13 }
@@ -231,7 +233,7 @@ class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
 
 ChiTotalOperandTag chiTotalOperand() { result = TChiTotalOperand() }
 
-class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
+class ChiPartialOperandTag extends ChiOperandTag, TChiPartialOperand {
   final override string toString() { result = "ChiPartial" }
 
   final override int getSortOrder() { result = 14 }

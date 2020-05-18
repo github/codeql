@@ -213,7 +213,7 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
 }
 
 /** A literal path expression appearing in an external module reference. */
-private class LiteralExternalModulePath extends PathExprInModule, ConstantString {
+private class LiteralExternalModulePath extends PathExpr, ConstantString {
   LiteralExternalModulePath() {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }

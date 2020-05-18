@@ -21,11 +21,10 @@ import semmle.javascript.DynamicPropertyAccess
  *
  * We restrict this to parameter nodes to focus on "deep assignment" functions.
  */
-class SplitCall extends MethodCallNode {
+class SplitCall extends StringSplitCall {
   SplitCall() {
-    getMethodName() = "split" and
-    getArgument(0).mayHaveStringValue(".") and
-    getReceiver().getALocalSource() instanceof ParameterNode
+    getSeparator() = "." and
+    getBaseString().getALocalSource() instanceof ParameterNode
   }
 }
 
