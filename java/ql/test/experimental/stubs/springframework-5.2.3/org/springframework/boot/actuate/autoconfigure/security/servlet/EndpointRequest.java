@@ -7,6 +7,10 @@ public final class EndpointRequest {
 	public static EndpointRequestMatcher toAnyEndpoint() {
 		return null;
   }
+
+  public static EndpointRequestMatcher to(String... endpoints) {
+		return null;
+	}
   
   public static final class EndpointRequestMatcher extends AbstractRequestMatcher {}
 

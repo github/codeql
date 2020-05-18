@@ -22,8 +22,7 @@ class TypeAuthorizedUrl extends Class {
 }
 
 /**
- * The class
- * `org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry`.
+ * The class `org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry`.
  */
 class TypeAbstractRequestMatcherRegistry extends Class {
   TypeAbstractRequestMatcherRegistry() {
@@ -34,38 +33,44 @@ class TypeAbstractRequestMatcherRegistry extends Class {
 }
 
 /**
- * The class
- * `org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest.EndpointRequestMatcher`.
+ * The class `org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest`.
  */
-class TypeEndpointRequestMatcher extends Class {
-  TypeEndpointRequestMatcher() {
+class TypeEndpointRequest extends Class {
+  TypeEndpointRequest() {
     this
         .hasQualifiedName("org.springframework.boot.actuate.autoconfigure.security.servlet",
-          "EndpointRequest$EndpointRequestMatcher")
+          "EndpointRequest")
+  }
+}
+
+/** A call to `EndpointRequest.toAnyEndpoint` method. */
+class ToAnyEndpointCall extends MethodAccess {
+  ToAnyEndpointCall() {
+    getMethod().hasName("toAnyEndpoint") and
+    getMethod().getDeclaringType() instanceof TypeEndpointRequest
   }
 }
 
 /**
- * A call to `HttpSecurity.requestMatcher` method with argument of type
- * `EndpointRequestMatcher`.
+ * A call to `HttpSecurity.requestMatcher` method with argument `RequestMatcher.toAnyEndpoint()`.
  */
 class RequestMatcherCall extends MethodAccess {
   RequestMatcherCall() {
     getMethod().hasName("requestMatcher") and
     getMethod().getDeclaringType() instanceof TypeHttpSecurity and
-    getArgument(0).getType() instanceof TypeEndpointRequestMatcher
+    getArgument(0) instanceof ToAnyEndpointCall
   }
 }
 
 /**
- * A call to `HttpSecurity.requestMatchers` method with lambda argument resolving to
- * `EndpointRequestMatcher` type.
+ * A call to `HttpSecurity.requestMatchers` method with lambda argument
+ * `RequestMatcher.toAnyEndpoint()`.
  */
 class RequestMatchersCall extends MethodAccess {
   RequestMatchersCall() {
     getMethod().hasName("requestMatchers") and
     getMethod().getDeclaringType() instanceof TypeHttpSecurity and
-    getArgument(0).(LambdaExpr).getExprBody().getType() instanceof TypeEndpointRequestMatcher
+    getArgument(0).(LambdaExpr).getExprBody() instanceof ToAnyEndpointCall
   }
 }
 
@@ -92,9 +97,6 @@ class PermitAllCall extends MethodAccess {
       or
       // .requestMatchers(matcher -> EndpointRequest).authorizeRequests([...]).[...]
       authorizeRequestsCall.getQualifier() instanceof RequestMatchersCall
-      or
-      // http.authorizeRequests([...]).[...]
-      authorizeRequestsCall.getQualifier() instanceof VarAccess
     |
       // [...].authorizeRequests(r -> r.anyRequest().permitAll()) or
       // [...].authorizeRequests(r -> r.requestMatchers(EndpointRequest).permitAll())
@@ -117,6 +119,22 @@ class PermitAllCall extends MethodAccess {
         this.getQualifier() = anyRequestCall
       )
     )
+    or
+    exists(AuthorizeRequestsCall authorizeRequestsCall |
+      // http.authorizeRequests([...]).[...]
+      authorizeRequestsCall.getQualifier() instanceof VarAccess
+    |
+      // [...].authorizeRequests(r -> r.requestMatchers(EndpointRequest).permitAll())
+      authorizeRequestsCall.getArgument(0).(LambdaExpr).getExprBody() = this and
+      this.getQualifier() instanceof RegistryRequestMatchersCall
+      or
+      // [...].authorizeRequests().requestMatchers(EndpointRequest).permitAll() or
+      authorizeRequestsCall.getNumArgument() = 0 and
+      exists(RegistryRequestMatchersCall registryRequestMatchersCall |
+        registryRequestMatchersCall.getQualifier() = authorizeRequestsCall and
+        this.getQualifier() = registryRequestMatchersCall
+      )
+    )
   }
 }
 
@@ -129,13 +147,13 @@ class AnyRequestCall extends MethodAccess {
 }
 
 /**
- * A call to `AbstractRequestMatcherRegistry.requestMatchers` method with an argument of type
- * `EndpointRequestMatcher`.
+ * A call to `AbstractRequestMatcherRegistry.requestMatchers` method with an argument
+ * `RequestMatcher.toAnyEndpoint()`.
  */
 class RegistryRequestMatchersCall extends MethodAccess {
   RegistryRequestMatchersCall() {
     getMethod().hasName("requestMatchers") and
     getMethod().getDeclaringType() instanceof TypeAbstractRequestMatcherRegistry and
-    getAnArgument().getType() instanceof TypeEndpointRequestMatcher
+    getAnArgument() instanceof ToAnyEndpointCall
   }
 }
