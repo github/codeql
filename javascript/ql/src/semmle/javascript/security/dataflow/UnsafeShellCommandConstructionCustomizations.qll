@@ -48,11 +48,7 @@ module UnsafeShellCommandConstruction {
    * Gets the number of occurrences of "/" in `path`.
    */
   bindingset[path]
-  private int countSlashes(string path) {
-    not exists(path.indexOf("/")) and result = 0
-    or
-    result = max(int n | exists(path.indexOf("/", n, 0)) | n)
-  }
+  private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
 
   /**
    * Gets the topmost package.json that appears in the project.
@@ -63,7 +59,7 @@ module UnsafeShellCommandConstruction {
   private PackageJSON getTopmostPackageJSON() {
     result =
       min(PackageJSON j |
-        countSlashes(j.getFile().getRelativePath()) <= 2
+        countSlashes(j.getFile().getRelativePath()) <= 3
       |
         j order by countSlashes(j.getFile().getRelativePath())
       )
