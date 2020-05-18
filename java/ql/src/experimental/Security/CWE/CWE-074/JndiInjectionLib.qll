@@ -49,8 +49,8 @@ class TypeSpringLdapOperations extends Interface {
 /** The interface `org.springframework.ldap.core.ContextMapper`. */
 class TypeSpringContextMapper extends Interface {
   TypeSpringContextMapper() {
-    this.hasQualifiedName("org.springframework.ldap.core", "ContextMapper<T>") or
-    this.hasQualifiedName("org.springframework.ldap", "ContextMapper<T>")
+    this.getSourceDeclaration().hasQualifiedName("org.springframework.ldap.core", "ContextMapper") or
+    this.getSourceDeclaration().hasQualifiedName("org.springframework.ldap", "ContextMapper")
   }
 }
 
