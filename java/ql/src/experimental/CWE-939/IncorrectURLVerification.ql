@@ -63,9 +63,11 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getRepresentedString()
           .charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
       or
-      exists(MethodAccess ma |
+      exists(MethodAccess ma, Method m |
         this.getArgument(0) = ma and
-        ma.getMethod().hasName("getString") and
+        ma.getMethod() = m and
+        m.hasName("getString") and
+        m.getDeclaringType().getQualifiedName() = "android.content.res.Resources" and
         ma.getArgument(0).toString().indexOf("R.string") = 0
       ) //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)
       or
