@@ -315,25 +315,22 @@ private module MsSql {
  * Provides classes modelling the `sequelize` package.
  */
 private module Sequelize {
-  /** Gets an import of the `sequelize` module. */
-  DataFlow::SourceNode sequelize() { result = DataFlow::moduleImport("sequelize") }
-
   /** Gets a node referring to an instance of the `Sequelize` class. */
-  private DataFlow::SourceNode newSequelize(DataFlow::TypeTracker t) {
+  private DataFlow::SourceNode sequelize(DataFlow::TypeTracker t) {
     t.start() and
-    result = sequelize().getAnInstantiation()
+    result = DataFlow::moduleImport("sequelize").getAnInstantiation()
     or
-    exists(DataFlow::TypeTracker t2 | result = newSequelize(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = sequelize(t2).track(t2, t))
   }
 
   /** Gets a node referring to an instance of the `Sequelize` class. */
-  DataFlow::SourceNode newSequelize() { result = newSequelize(DataFlow::TypeTracker::end()) }
+  DataFlow::SourceNode sequelize() { result = sequelize(DataFlow::TypeTracker::end()) }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
-    QueryCall() { this = newSequelize().getAMethodCall("query") }
+    QueryCall() { this = sequelize().getAMethodCall("query") }
 
     override DataFlow::Node getAQueryArgument() {
       result = DataFlow::valueNode(astNode.getArgument(0))
@@ -354,7 +351,7 @@ private module Sequelize {
 
     Credentials() {
       exists(NewExpr ne, string prop |
-        ne = newSequelize().asExpr() and
+        ne = sequelize().asExpr() and
         (
           this = ne.getArgument(1) and prop = "username"
           or
