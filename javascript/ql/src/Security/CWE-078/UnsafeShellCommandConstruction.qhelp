@@ -21,9 +21,9 @@
 <recommendation>
 
 	<p>
-		If possible, use hard-coded string literals to specify the
-		shell command to run, and provide the dynamic arguments to the shell
-		command separately to avoid interpretation by the shell.
+		If possible, provide the dynamic arguments to the shell as an array 
+		using e.g. the <code>child_process.execFile</code> API to avoid
+		interpretation by the shell.
 	</p>
 
 	<p>
