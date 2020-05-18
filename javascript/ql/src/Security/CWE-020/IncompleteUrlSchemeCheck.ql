@@ -27,11 +27,10 @@ class DangerousScheme extends string {
 /** Returns a node that refers to the scheme of `url`. */
 DataFlow::SourceNode schemeOf(DataFlow::Node url) {
   // url.split(":")[0]
-  exists(DataFlow::MethodCallNode split |
-    split.getMethodName() = "split" and
-    split.getArgument(0).getStringValue() = ":" and
-    result = split.getAPropertyRead("0") and
-    url = split.getReceiver()
+  exists(StringSplitCall split |
+    split.getSeparator() = ":" and
+    result = split.getASubstringRead(0) and
+    url = split.getBaseString()
   )
   or
   // url.getScheme(), url.getProtocol(), getScheme(url), getProtocol(url)

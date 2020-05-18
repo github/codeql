@@ -60,3 +60,13 @@ function assignToPathWithHelper(target, path, value, sep) {
     }
     target[keys[i]] = value; // NOT OK
 }
+
+function spltOnRegexp(target, path, value) {
+    let keys = path.split(/\./);
+    let i;
+    for (i = 0; i < keys.length - 1; ++i) {
+        let key = keys[i];
+        target = target[key] = target[key] || {};
+    }
+    target[keys[i]] = value; // NOT OK
+}
