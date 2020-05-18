@@ -25,8 +25,8 @@ void assignGlobals() {
 };
 
 void testStruct() {
-  globalStruct.sinkPtr(atoi(getenv("TAINTED"))); // should reach sinkParam [NOT DETECTED in AST]
-  globalStruct.notSinkPtr(atoi(getenv("TAINTED"))); // shouldn't reach sinkParam [FALSE POSITIVE in IR]
+  globalStruct.sinkPtr(atoi(getenv("TAINTED"))); // should reach sinkParam [NOT DETECTED]
+  globalStruct.notSinkPtr(atoi(getenv("TAINTED"))); // shouldn't reach sinkParam
 
   globalUnion.sinkPtr(atoi(getenv("TAINTED"))); // should reach sinkParam
   globalUnion.notSinkPtr(atoi(getenv("TAINTED"))); // should reach sinkParam

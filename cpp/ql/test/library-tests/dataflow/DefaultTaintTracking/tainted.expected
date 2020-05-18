@@ -98,19 +98,13 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam |
-| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
-| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:24:28:27 | call to atoi |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:34 | call to getenv |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:45 | (const char *)... |
-| dispatch.cpp:28:29:28:34 | call to getenv | shared.h:6:15:6:23 | sinkparam |
 | dispatch.cpp:28:29:28:34 | call to getenv | shared.h:8:22:8:25 | nptr |
-| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
-| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
 | dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:27:29:30 | call to atoi |
 | dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:32:29:37 | call to getenv |
 | dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:32:29:48 | (const char *)... |
-| dispatch.cpp:29:32:29:37 | call to getenv | shared.h:6:15:6:23 | sinkparam |
 | dispatch.cpp:29:32:29:37 | call to getenv | shared.h:8:22:8:25 | nptr |
 | dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
 | dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
