@@ -38,7 +38,10 @@ class TypeSearchControls extends Class {
   TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
 }
 
-/** The interface `org.springframework.ldap.core.LdapOperations`. */
+/**
+ * The interface `org.springframework.ldap.core.LdapOperations` (spring-ldap 1.2.x and newer) or
+ * `org.springframework.ldap.LdapOperations` (spring-ldap 1.1.x).
+ */
 class TypeSpringLdapOperations extends Interface {
   TypeSpringLdapOperations() {
     this.hasQualifiedName("org.springframework.ldap.core", "LdapOperations") or
@@ -46,7 +49,10 @@ class TypeSpringLdapOperations extends Interface {
   }
 }
 
-/** The interface `org.springframework.ldap.core.ContextMapper`. */
+/**
+ * The interface `org.springframework.ldap.core.ContextMapper` (spring-ldap 1.2.x and newer) or
+ * `org.springframework.ldap.ContextMapper` (spring-ldap 1.1.x).
+ */
 class TypeSpringContextMapper extends Interface {
   TypeSpringContextMapper() {
     this.getSourceDeclaration().hasQualifiedName("org.springframework.ldap.core", "ContextMapper") or
