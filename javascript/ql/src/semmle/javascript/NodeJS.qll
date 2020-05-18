@@ -266,14 +266,14 @@ private class RequirePath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in a call to `require` or `require.resolve`. */
-private class ConstantRequirePathElement extends PathExprInModule, ConstantString {
+private class ConstantRequirePathElement extends PathExpr, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
   override string getValue() { result = getStringValue() }
 }
 
 /** A `__dirname` path expression. */
-private class DirNamePath extends PathExprInModule, VarAccess {
+private class DirNamePath extends PathExpr, VarAccess {
   DirNamePath() {
     getName() = "__dirname" and
     getVariable().getScope() instanceof ModuleScope
@@ -283,7 +283,7 @@ private class DirNamePath extends PathExprInModule, VarAccess {
 }
 
 /** A `__filename` path expression. */
-private class FileNamePath extends PathExprInModule, VarAccess {
+private class FileNamePath extends PathExpr, VarAccess {
   FileNamePath() {
     getName() = "__filename" and
     getVariable().getScope() instanceof ModuleScope
@@ -296,7 +296,7 @@ private class FileNamePath extends PathExprInModule, VarAccess {
  * A path expression of the form `path.join(p, "...")` where
  * `p` is also a path expression.
  */
-private class JoinedPath extends PathExprInModule, @callexpr {
+private class JoinedPath extends PathExpr, @callexpr {
   JoinedPath() {
     exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and

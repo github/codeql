@@ -248,8 +248,7 @@ private predicate formatStringFragment(Expr fmt) {
     e.(VarAccess).getVariable().getAnAssignedValue() = fmt or
     e.(AddExpr).getLeftOperand() = fmt or
     e.(AddExpr).getRightOperand() = fmt or
-    e.(ConditionalExpr).getTrueExpr() = fmt or
-    e.(ConditionalExpr).getFalseExpr() = fmt
+    e.(ChooseExpr).getAResultExpr() = fmt
   )
 }
 
@@ -293,9 +292,7 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
       fmtvalue = left + right
     )
     or
-    formatStringValue(e.(ConditionalExpr).getTrueExpr(), fmtvalue)
-    or
-    formatStringValue(e.(ConditionalExpr).getFalseExpr(), fmtvalue)
+    formatStringValue(e.(ChooseExpr).getAResultExpr(), fmtvalue)
     or
     exists(Method getprop, MethodAccess ma, string prop |
       e = ma and

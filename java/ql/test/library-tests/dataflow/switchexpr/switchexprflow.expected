@@ -1,0 +1,9 @@
+| TestSwitchExpr.java:4:15:4:22 | o |
+| TestSwitchExpr.java:7:21:7:28 | source(...) |
+| TestSwitchExpr.java:8:21:8:30 | switch (...) |
+| TestSwitchExpr.java:10:24:10:25 | x1 |
+| TestSwitchExpr.java:12:21:12:30 | switch (...) |
+| TestSwitchExpr.java:13:38:13:39 | x2 |
+| TestSwitchExpr.java:16:21:16:30 | switch (...) |
+| TestSwitchExpr.java:19:23:19:24 | x3 |
+| TestSwitchExpr.java:23:14:23:15 | x4 |

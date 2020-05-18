@@ -1,2 +1,7 @@
-const libxml = require('libxmljs');
-var doc = libxml.parseXml(xmlSrc);
+const app = require("express")(),
+  libxml = require("libxmljs");
+
+app.post("upload", (req, res) => {
+  let xmlSrc = req.body,
+    doc = libxml.parseXml(xmlSrc);
+});

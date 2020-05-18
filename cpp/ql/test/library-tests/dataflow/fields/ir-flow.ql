@@ -1,17 +1,13 @@
 /**
- * @kind path-problem
+ * @kind problem
  */
 
+import TestUtilities.InlineExpectationsTest
 import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
-import semmle.code.cpp.ir.dataflow.internal.DataFlowImpl
-import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
-import semmle.code.cpp.ir.IR
-import DataFlow::PathGraph
+import DataFlow
 import cpp
 
-class Conf extends DataFlow::Configuration {
+class Conf extends Configuration {
   Conf() { this = "FieldFlowConf" }
 
   override predicate isSource(Node src) {
@@ -41,6 +37,28 @@ class Conf extends DataFlow::Configuration {
   }
 }
 
-from DataFlow::PathNode src, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(src, sink)
-select sink, src, sink, sink + " flows from $@", src, src.toString()
+class IRFieldFlowTest extends InlineExpectationsTest {
+  IRFieldFlowTest() { this = "IRFieldFlowTest" }
+
+  override string getARelevantTag() { result = "ir" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Node source, Node sink, Conf conf, int n |
+      tag = "ir" and
+      conf.hasFlow(source, sink) and
+      n = strictcount(Node otherSource | conf.hasFlow(otherSource, sink)) and
+      (
+        n = 1 and value = ""
+        or
+        // If there is more than one source for this sink
+        // we specify the source location explicitly.
+        n > 1 and
+        value =
+          source.getLocation().getStartLine().toString() + ":" +
+            source.getLocation().getStartColumn()
+      ) and
+      location = sink.getLocation() and
+      element = sink.toString()
+    )
+  }
+}

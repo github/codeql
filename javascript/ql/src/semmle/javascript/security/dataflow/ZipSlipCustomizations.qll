@@ -47,11 +47,13 @@ module ZipSlip {
     )
   }
 
-  /** Gets a property that is used to get the filename part of an archive entry. */
+  /** Gets a property that is used to get a filename part of an archive entry. */
   private string getAFilenameProperty() {
     result = "path" // Used by library 'unzip'.
     or
     result = "name" // Used by library 'tar-stream'.
+    or
+    result = "linkname" // linked file name, used by 'tar-stream'.
   }
 
   /** An archive entry path access, as a source for unsafe archive extraction. */
@@ -105,7 +107,14 @@ module ZipSlip {
       // However, we want to consider even the bare `createWriteStream`
       // to be a zipslip vulnerability since it may truncate an
       // existing file.
-      this = DataFlow::moduleImport("fs").getAMemberCall("createWriteStream").getArgument(0)
+      this = NodeJSLib::FS::moduleMember("createWriteStream").getACall().getArgument(0)
+      or
+      // Not covered by `FileSystemWriteSink` because a later call
+      // to `fs.write` is required for a write to take place.
+      exists(DataFlow::CallNode call | this = call.getArgument(0) |
+        call = NodeJSLib::FS::moduleMember(["open", "openSync"]).getACall() and
+        call.getArgument(1).getStringValue().regexpMatch("(?i)w.{0,2}")
+      )
     }
   }
 
@@ -117,6 +126,20 @@ module ZipSlip {
   /** An expression that sanitizes by calling path.basename */
   class BasenameSanitizer extends Sanitizer {
     BasenameSanitizer() { this = DataFlow::moduleImport("path").getAMemberCall("basename") }
+  }
+
+  /**
+   * An expression that forces the output path to be in the current working folder.
+   * Recognizes the pattern: `path.join(cwd, path.join('/', orgPath))`.
+   */
+  class PathSanitizer extends Sanitizer, DataFlow::CallNode {
+    PathSanitizer() {
+      this = NodeJSLib::Path::moduleMember("join").getACall() and
+      exists(DataFlow::CallNode inner | inner = getArgument(1) |
+        inner = NodeJSLib::Path::moduleMember("join").getACall() and
+        inner.getArgument(0).mayHaveStringValue("/")
+      )
+    }
   }
 
   /**

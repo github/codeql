@@ -184,17 +184,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * For example: for a function `int Foo(int p1, int p2)` this would
    * return `int p1, int p2`.
    */
-  string getParameterString() { result = getParameterStringFrom(0) }
-
-  private string getParameterStringFrom(int index) {
-    index = getNumberOfParameters() and
-    result = ""
-    or
-    index = getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName()
-    or
-    index < getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+  string getParameterString() {
+    result = concat(int i | | min(getParameter(i).getTypedName()), ", " order by i)
   }
 
   /** Gets a call to this function. */
@@ -616,18 +607,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * For example: for a function 'int Foo(int p1, int p2)' this would
    * return 'int p1, int p2'.
    */
-  string getParameterString() { result = getParameterStringFrom(0) }
-
-  private string getParameterStringFrom(int index) {
-    index = getNumberOfParameters() and
-    result = ""
-    or
-    index = getNumberOfParameters() - 1 and
-    result = getParameterDeclarationEntry(index).getTypedName()
-    or
-    index < getNumberOfParameters() - 1 and
-    result =
-      getParameterDeclarationEntry(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+  string getParameterString() {
+    result = concat(int i | | min(getParameterDeclarationEntry(i).getTypedName()), ", " order by i)
   }
 
   /**

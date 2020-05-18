@@ -1051,6 +1051,18 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
   override string toString() { result = "...::..." }
 }
 
+/** A conditional expression or a `switch` expression. */
+class ChooseExpr extends Expr {
+  ChooseExpr() { this instanceof ConditionalExpr or this instanceof SwitchExpr }
+
+  /** Gets a result expression of this `switch` or conditional expression. */
+  Expr getAResultExpr() {
+    result = this.(ConditionalExpr).getTrueExpr() or
+    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(SwitchExpr).getAResult()
+  }
+}
+
 /**
  * A conditional expression of the form `a ? b : c`, where `a` is the condition,
  * `b` is the expression that is evaluated if the condition evaluates to `true`,

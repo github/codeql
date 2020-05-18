@@ -1,6 +1,22 @@
-| FormatMissingArgument.cs:11:9:11:31 | call to method Format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:11:23:11:27 | "{1}" | this |
-| FormatMissingArgument.cs:14:9:14:38 | call to method Format | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this |
-| FormatMissingArgument.cs:14:9:14:38 | call to method Format | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this |
-| FormatMissingArgument.cs:28:9:28:32 | call to method Format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this |
-| FormatMissingArgumentBad.cs:7:9:7:49 | call to method WriteLine | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this |
-| FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this |
+nodes
+| FormatMissingArgument.cs:8:23:8:27 | "{0}" | semmle.label | "{0}" |
+| FormatMissingArgument.cs:11:23:11:27 | "{1}" | semmle.label | "{1}" |
+| FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | semmle.label | "{2} {3}" |
+| FormatMissingArgument.cs:17:23:17:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
+| FormatMissingArgument.cs:20:23:20:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
+| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | semmle.label | "{1}" : String |
+| FormatMissingArgument.cs:25:24:25:29 | format : String | semmle.label | format : String |
+| FormatMissingArgument.cs:28:23:28:28 | access to parameter format | semmle.label | access to parameter format |
+| FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
+| FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | semmle.label | "Hello {1} {2}" |
+| FormatMissingArgumentGood.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
+edges
+| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:25:24:25:29 | format : String |
+| FormatMissingArgument.cs:25:24:25:29 | format : String | FormatMissingArgument.cs:28:23:28:28 | access to parameter format |
+#select
+| FormatMissingArgument.cs:11:9:11:31 | call to method Format | FormatMissingArgument.cs:11:23:11:27 | "{1}" | FormatMissingArgument.cs:11:23:11:27 | "{1}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:11:23:11:27 | "{1}" | this |
+| FormatMissingArgument.cs:14:9:14:38 | call to method Format | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this |
+| FormatMissingArgument.cs:14:9:14:38 | call to method Format | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:14:23:14:31 | "{2} {3}" | this |
+| FormatMissingArgument.cs:28:9:28:32 | call to method Format | FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:23:28:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:22:16:22:20 | "{1}" | this |
+| FormatMissingArgumentBad.cs:7:9:7:49 | call to method WriteLine | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this |
+| FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this |

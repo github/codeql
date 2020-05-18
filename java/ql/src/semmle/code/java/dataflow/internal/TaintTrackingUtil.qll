@@ -296,6 +296,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   (
     m.getName() = "concat" or
     m.getName() = "endsWith" or
+    m.getName() = "formatted" or
     m.getName() = "getBytes" or
     m.getName() = "split" or
     m.getName() = "substring" or
@@ -395,7 +396,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
-  (method.hasName("format") or method.hasName("join"))
+  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
 }
 
 /**
