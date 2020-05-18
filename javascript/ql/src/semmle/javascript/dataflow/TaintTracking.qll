@@ -835,12 +835,12 @@ module TaintTracking {
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
    */
   class MembershipTestSanitizer extends AdditionalSanitizerGuardNode {
-    MembershipTest test;
+    MembershipCandidate candidate;
 
-    MembershipTestSanitizer() { this = test }
+    MembershipTestSanitizer() { this = candidate.getTest() }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      test.getCandidate() = e.flow() and test.getPolarity() = outcome
+      candidate = e.flow() and candidate.getTestPolarity() = outcome
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
@@ -878,7 +878,7 @@ module TaintTracking {
   /**
    * A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch.
    *
-   * DEPRECATED: use `MembershipTests::MembershipTest` instead.
+   * DEPRECATED: use `MembershipTestSanitizer` instead.
    */
   deprecated class ConstantComparison extends SanitizerGuardNode, DataFlow::ValueNode {
     Expr x;

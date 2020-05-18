@@ -61,9 +61,12 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
     sw.getSubstring().mayHaveStringValue(scheme)
   )
   or
-  exists(DataFlow::Node candidate, MembershipTest t |
-    result = t and
-    t.getCandidate() = candidate and
+  exists(MembershipCandidate candidate |
+    result = candidate.getTest()
+    or
+    // fall back to the candidate if the test itself is implicit
+    not exists(candidate.getTest()) and result = candidate
+  |
     t.getAMemberString() = scheme.getWithOrWithoutColon() and
     schemeOf(nd).flowsTo(candidate)
   )

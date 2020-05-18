@@ -44,7 +44,7 @@ function UndefinedCheckSanitizer () {
     var v = SOURCE();
     SINK(v);
 
-    if (o[v] == undefined) {
+	if (o[v] == undefined) {
         SINK(v);
     } else {
         SINK(v);

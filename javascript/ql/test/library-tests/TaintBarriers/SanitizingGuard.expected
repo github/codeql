@@ -11,24 +11,15 @@
 | tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | false | tst.js:59:9:59:12 | o[v] |
 | tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | false | tst.js:59:18:59:26 | undefined |
 | tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | true | tst.js:59:11:59:11 | v |
-| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | false | tst.js:71:9:71:20 | o.indexOf(v) |
 | tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | false | tst.js:71:19:71:19 | v |
-| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | false | tst.js:71:25:71:26 | -1 |
 | tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:9:71:20 | o.indexOf(v) |
-| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:19:71:19 | v |
 | tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:25:71:26 | -1 |
-| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | false | tst.js:77:9:77:10 | -1 |
-| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | false | tst.js:77:16:77:27 | o.indexOf(v) |
 | tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | false | tst.js:77:26:77:26 | v |
 | tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:9:77:10 | -1 |
 | tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:16:77:27 | o.indexOf(v) |
-| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:26:77:26 | v |
 | tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:9:83:20 | o.indexOf(v) |
-| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:19:83:19 | v |
 | tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:26:83:27 | -1 |
-| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | true | tst.js:83:9:83:20 | o.indexOf(v) |
 | tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | true | tst.js:83:19:83:19 | v |
-| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | true | tst.js:83:26:83:27 | -1 |
 | tst.js:95:9:95:21 | o.contains(v) | ExampleConfiguration | true | tst.js:95:20:95:20 | v |
 | tst.js:107:9:107:16 | o.has(v) | ExampleConfiguration | true | tst.js:107:15:107:15 | v |
 | tst.js:119:9:119:21 | o.includes(v) | ExampleConfiguration | true | tst.js:119:20:119:20 | v |
