@@ -28,7 +28,7 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.Accept`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
     */
-    class Accept extends ExternalStringSequenceKind {
+    class AcceptKind extends ExternalStringSequenceKind {
         override TaintKind getTaintOfAttribute(string name) {
             result = super.getTaintOfAttribute(name)
             or
@@ -45,13 +45,13 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.HeaderSet`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
     */
-    class HeaderSet extends ExternalStringSequenceKind {
+    class HeaderSetKind extends ExternalStringSequenceKind {
     }
 
     /** TaintKind for instances of `werkzeug.datastructures.MultiDict`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
     */
-    class MultiDict extends DictKind {
+    class MultiDictKind extends DictKind {
         override TaintKind getTaintOfMethodResult(string name) {
             result = super.getTaintOfMethodResult(name)
             or
@@ -62,8 +62,8 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.RequestCacheControl`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
     */
-    class RequestCacheControl extends TaintKind {
-        RequestCacheControl() { this = "Werkzeug::RequestCacheControl" }
+    class RequestCacheControlKind extends TaintKind {
+        RequestCacheControlKind() { this = "Werkzeug::RequestCacheControlKind" }
 
         override TaintKind getTaintOfAttribute(string name) {
             result = super.getTaintOfAttribute(name)
@@ -76,7 +76,7 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.Headers`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
     */
-    class Headers extends ExternalStringDictKind {
+    class HeadersKind extends ExternalStringDictKind {
         override TaintKind getTaintOfMethodResult(string name) {
             result = super.getTaintOfMethodResult(name)
             or
@@ -98,7 +98,7 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.Authorization`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization
     */
-    class Authorization extends ExternalStringDictKind {
+    class AuthorizationKind extends ExternalStringDictKind {
         bindingset[name]
         override TaintKind getTaintOfAttribute(string name) {
             result = super.getTaintOfAttribute(name)
@@ -111,8 +111,8 @@ module Werkzeug {
     /** TaintKind for instances of `werkzeug.datastructures.FileStorage`.
     * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
     */
-    class FileStorage extends TaintKind {
-        FileStorage() {this = "Werkzeug::FileStorage"}
+    class FileStorageKind extends TaintKind {
+        FileStorageKind() {this = "Werkzeug::FileStorageKind"}
 
         override TaintKind getTaintOfAttribute(string name) {
             result = super.getTaintOfAttribute(name)
@@ -124,7 +124,7 @@ module Werkzeug {
             result instanceof ExternalFileObject
             or
             name = "headers" and
-            result instanceof Werkzeug::Headers
+            result instanceof Werkzeug::HeadersKind
             or
             name = "mimetype_params" and
             result instanceof ExternalStringDictKind

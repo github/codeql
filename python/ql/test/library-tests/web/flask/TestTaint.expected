@@ -23,7 +23,7 @@
 | taint.py:44 | ok   | test_taint | Attribute | {externally controlled string} |
 | taint.py:45 | ok   | test_taint | Subscript | externally controlled string |
 | taint.py:46 | ok   | test_taint | Attribute | externally controlled string |
-| taint.py:49 | ok   | test_taint | Attribute | Werkzeug::RequestCacheControl |
+| taint.py:49 | ok   | test_taint | Attribute | Werkzeug::RequestCacheControlKind |
 | taint.py:51 | ok   | test_taint | Attribute | externally controlled string |
 | taint.py:52 | ok   | test_taint | Attribute | externally controlled string |
 | taint.py:53 | ok   | test_taint | Attribute | externally controlled string |
@@ -33,11 +33,11 @@
 | taint.py:62 | ok   | test_taint | Attribute | {externally controlled string} |
 | taint.py:63 | ok   | test_taint | Subscript | externally controlled string |
 | taint.py:65 | ok   | test_taint | Attribute | externally controlled string |
-| taint.py:68 | ok   | test_taint | Attribute | {Werkzeug::FileStorage} |
-| taint.py:69 | ok   | test_taint | Subscript | Werkzeug::FileStorage |
+| taint.py:68 | ok   | test_taint | Attribute | {Werkzeug::FileStorageKind} |
+| taint.py:69 | ok   | test_taint | Subscript | Werkzeug::FileStorageKind |
 | taint.py:70 | ok   | test_taint | Attribute | externally controlled string |
 | taint.py:71 | ok   | test_taint | Attribute | file[externally controlled string] |
-| taint.py:72 | ok   | test_taint | Attribute() | [Werkzeug::FileStorage] |
+| taint.py:72 | ok   | test_taint | Attribute() | [Werkzeug::FileStorageKind] |
 | taint.py:75 | ok   | test_taint | Attribute | {externally controlled string} |
 | taint.py:76 | ok   | test_taint | Subscript | externally controlled string |
 | taint.py:77 | ok   | test_taint | Attribute() | [externally controlled string] |

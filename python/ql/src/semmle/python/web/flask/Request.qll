@@ -57,25 +57,25 @@ class FlaskRequestKind extends TaintKind {
         result.(SequenceKind).getItem() instanceof ExternalStringKind
         or
         name in ["accept_charsets", "accept_encodings", "accept_languages", "accept_mimetypes"] and
-        result instanceof Werkzeug::Accept
+        result instanceof Werkzeug::AcceptKind
         or
         name in ["access_control_request_headers", "pragma"] and
-        result.(Werkzeug::HeaderSet).getItem() instanceof ExternalStringKind
+        result.(Werkzeug::HeaderSetKind).getItem() instanceof ExternalStringKind
         or
         name in ["args", "values", "form"] and
-        result.(Werkzeug::MultiDict).getValue() instanceof ExternalStringKind
+        result.(Werkzeug::MultiDictKind).getValue() instanceof ExternalStringKind
         or
         name = "authorization" and
-        result instanceof Werkzeug::Authorization
+        result instanceof Werkzeug::AuthorizationKind
         or
         name = "cache_control" and
-        result instanceof Werkzeug::RequestCacheControl
+        result instanceof Werkzeug::RequestCacheControlKind
         or
         name = "files" and
-        result.(Werkzeug::MultiDict).getValue() instanceof Werkzeug::FileStorage
+        result.(Werkzeug::MultiDictKind).getValue() instanceof Werkzeug::FileStorageKind
         or
         name = "headers" and
-        result instanceof Werkzeug::Headers
+        result instanceof Werkzeug::HeadersKind
         or
         name in ["stream", "input_stream"] and
         result instanceof ExternalFileObject
