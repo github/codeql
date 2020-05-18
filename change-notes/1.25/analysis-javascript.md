@@ -9,6 +9,8 @@
   - [jQuery](https://jquery.com/)
   - [marsdb](https://www.npmjs.com/package/marsdb)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
+  - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
 
 ## New queries
 
