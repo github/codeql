@@ -74,10 +74,10 @@ private module MySql {
   }
 
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
-  class EscapingSanitizer extends SQL::SqlSanitizer, @callexpr {
+  class EscapingSanitizer extends SQL::SqlSanitizer, MethodCallExpr {
     EscapingSanitizer() {
-      this = [mysql(), pool(), connection()].getAMemberCall(["escape", "escapeId"]).asExpr() and
-      input = this.(MethodCallExpr).getArgument(0) and
+      this = [mysql(), pool(), connection()].getAMethodCall(["escape", "escapeId"]).asExpr() and
+      input = this.getArgument(0) and
       output = this
     }
   }
