@@ -98,6 +98,41 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam |
+| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
+| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
+| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:24:28:27 | call to atoi |
+| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:34 | call to getenv |
+| dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:45 | (const char *)... |
+| dispatch.cpp:28:29:28:34 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| dispatch.cpp:28:29:28:34 | call to getenv | shared.h:8:22:8:25 | nptr |
+| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
+| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
+| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:27:29:30 | call to atoi |
+| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:32:29:37 | call to getenv |
+| dispatch.cpp:29:32:29:37 | call to getenv | dispatch.cpp:29:32:29:48 | (const char *)... |
+| dispatch.cpp:29:32:29:37 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| dispatch.cpp:29:32:29:37 | call to getenv | shared.h:8:22:8:25 | nptr |
+| dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
+| dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
+| dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:31:23:31:26 | call to atoi |
+| dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:31:28:31:33 | call to getenv |
+| dispatch.cpp:31:28:31:33 | call to getenv | dispatch.cpp:31:28:31:44 | (const char *)... |
+| dispatch.cpp:31:28:31:33 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| dispatch.cpp:31:28:31:33 | call to getenv | shared.h:8:22:8:25 | nptr |
+| dispatch.cpp:32:31:32:36 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
+| dispatch.cpp:32:31:32:36 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
+| dispatch.cpp:32:31:32:36 | call to getenv | dispatch.cpp:32:26:32:29 | call to atoi |
+| dispatch.cpp:32:31:32:36 | call to getenv | dispatch.cpp:32:31:32:36 | call to getenv |
+| dispatch.cpp:32:31:32:36 | call to getenv | dispatch.cpp:32:31:32:47 | (const char *)... |
+| dispatch.cpp:32:31:32:36 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| dispatch.cpp:32:31:32:36 | call to getenv | shared.h:8:22:8:25 | nptr |
+| dispatch.cpp:34:22:34:27 | call to getenv | dispatch.cpp:7:20:7:28 | sinkParam |
+| dispatch.cpp:34:22:34:27 | call to getenv | dispatch.cpp:8:8:8:16 | sinkParam |
+| dispatch.cpp:34:22:34:27 | call to getenv | dispatch.cpp:34:17:34:20 | call to atoi |
+| dispatch.cpp:34:22:34:27 | call to getenv | dispatch.cpp:34:22:34:27 | call to getenv |
+| dispatch.cpp:34:22:34:27 | call to getenv | dispatch.cpp:34:22:34:38 | (const char *)... |
+| dispatch.cpp:34:22:34:27 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| dispatch.cpp:34:22:34:27 | call to getenv | shared.h:8:22:8:25 | nptr |
 | globals.cpp:5:20:5:25 | call to getenv | globals.cpp:5:12:5:16 | local |
 | globals.cpp:5:20:5:25 | call to getenv | globals.cpp:5:20:5:25 | call to getenv |
 | globals.cpp:5:20:5:25 | call to getenv | globals.cpp:6:10:6:14 | (const char *)... |
