@@ -30,3 +30,6 @@
 | Test.java:20:14:20:14 | y | Test.java:31:14:31:14 | y |
 | Test.java:27:19:27:19 | i | Test.java:28:9:28:9 | i |
 | Test.java:28:9:28:9 | i | Test.java:27:25:27:25 | i |
+| TestInstanceOfPattern.java:18:34:18:34 | s | TestInstanceOfPattern.java:19:8:19:8 | s |
+| TestInstanceOfPattern.java:25:34:25:34 | s | TestInstanceOfPattern.java:26:8:26:8 | s |
+| TestInstanceOfPattern.java:25:34:25:34 | s | TestInstanceOfPattern.java:28:8:28:8 | s |
