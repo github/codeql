@@ -67,7 +67,7 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
     // fall back to the candidate if the test itself is implicit
     not exists(candidate.getTest()) and result = candidate
   |
-    t.getAMemberString() = scheme.getWithOrWithoutColon() and
+    candidate.getAMemberString() = scheme.getWithOrWithoutColon() and
     schemeOf(nd).flowsTo(candidate)
   )
   or

@@ -46,7 +46,6 @@ class MembershipCandidate extends DataFlow::Node {
 module MembershipCandidate {
   /**
    * An expression that is tested for membership of a collection.
-   *
    */
   abstract class Range extends DataFlow::Node {
     /**
