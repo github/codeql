@@ -1,6 +1,6 @@
 """testing views for Django 2.x and 3.x"""
 from django.urls import path, re_path
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.views import View
 
 
@@ -99,24 +99,26 @@ urlpatterns = [
 ]
 
 
-################################################################################
+# Not an XSS sink, since the Content-Type is not "text/html"
+# FP reported in https://github.com/github/codeql-python-team/issues/38
+def fp_json_response(request):
+    # implicitly sets Content-Type to "application/json"
+    return JsonResponse({"foo": request.GET.get("foo")}) # TODO
 
+# Not an XSS sink, since the Content-Type is not "text/html"
+def fp_manual_json_response(request):
+    json_data = '{"json": "{}"}'.format(request.GET.get("foo"))
+    return HttpResponse(json_data, content_type="application/json") # TODO
 
-# We should abort if a decorator is used. As demonstrated below, anything might happen
+# Not an XSS sink, since the Content-Type is not "text/html"
+def fp_manual_content_type(reuqest):
+    return HttpResponse('<img src="0" onerror="alert(1)">', content_type="text/plain") # TODO
 
-# def reverse_kwargs(f):
-#     @wraps(f)
-#     def f_(*args, **kwargs):
-#         new_kwargs = dict()
-#         for key, value in kwargs.items():
-#             new_kwargs[key[::-1]] = value
-#         return f(*args, **new_kwargs)
-#     return f_
+# XSS FP reported in https://github.com/github/codeql/issues/3466
+# Note: This should be a open-redirect sink, but not a XSS sink.
+def fp_redirect(request):
+    return HttpResponseRedirect(request.GET.get("next")) # TODO
 
-# @reverse_kwargs
-# def decorators_can_do_anything(request, oof, foo=None):
-#     return HttpResponse('This is a mess'[::-1])
-
-# urlpatterns = [
-#     path('rev/<foo>', decorators_can_do_anything),
-# ]
+# Ensure that subclasses are still vuln to XSS
+def tp_not_found(request):
+    return HttpResponseNotFound(request.GET.get("name"))
