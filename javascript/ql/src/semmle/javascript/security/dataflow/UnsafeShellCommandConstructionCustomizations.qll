@@ -34,7 +34,7 @@ module UnsafeShellCommandConstruction {
 
     /**
      * Gets the node that should be highlighted for this sink.
-     * E.g. for a string concatenation, the sink is one of the leafs and the highlight is the concatenation root.
+     * E.g. for a string concatenation, the sink is one of the leaves and the highlight is the concatenation root.
      */
     abstract DataFlow::Node getHighLight();
   }

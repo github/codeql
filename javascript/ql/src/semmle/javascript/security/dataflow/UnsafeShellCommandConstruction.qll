@@ -19,7 +19,7 @@ module UnsafeShellCommandConstruction {
    * A taint-tracking configuration for reasoning about shell command constructed from library input vulnerabilities.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "UnsafeLibaryCommandInjection" }
+    Configuration() { this = "UnsafeShellCommandConstruction" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 

@@ -8,7 +8,7 @@
 		Dynamically constructing a shell command with inputs from exported 
 		functions, may inadvertently change the meaning of the shell command.
 		
-		Clients using the exported function may use inputs that contains
+		Clients using the exported function may use inputs containing
 		characters that the shell interprets in a special way, for instance
 		quotes and spaces.
 
