@@ -28,7 +28,8 @@ which then calls <code>recover</code>:
 </p>
 <sample src="RedundantRecover1.go" />
 <p>
-This problem can be deferring the call to the function which calls<code>recover</code>:
+This problem can be fixed by deferring the call to the function which calls
+<code>recover</code>:
 </p>
 <sample src="RedundantRecover1Good.go" />
 

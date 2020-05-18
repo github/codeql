@@ -23,11 +23,11 @@ where
   f = recoverCall.getEnclosingCallable() and
   (
     isDeferred(recoverCall) and
-    msg = "Deferred calls to 'recover' have no effect"
+    msg = "Deferred calls to 'recover' have no effect."
     or
     not isDeferred(recoverCall) and
     exists(f.getACall()) and
     not isDeferred(f.getACall()) and
     msg = "This call to 'recover' has no effect because $@ is never called using a defer statement."
   )
-select recoverCall, msg, f, f.getName()
+select recoverCall, msg, f, "the enclosing function"
