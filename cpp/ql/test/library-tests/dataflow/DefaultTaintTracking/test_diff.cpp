@@ -1,5 +1,5 @@
-void sink(const char *);
-void sink(int);
+#include "shared.h"
+
 
 struct S {
     void(*f)(const char*);

@@ -1,5 +1,5 @@
-char * getenv(const char *);
-void sink(char *sinkParam);
+#include "shared.h"
+
 
 void throughLocal() {
     char * local = getenv("VAR");
