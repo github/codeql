@@ -18,3 +18,5 @@ db.runTransaction((err, tx) => {
   tx.runUpdate("SQL code");
   tx.runUpdate({ sql: "SQL code" });
 });
+
+exports.instance = instance;
