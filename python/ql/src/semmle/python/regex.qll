@@ -472,7 +472,11 @@ abstract class RegexString extends Expr {
             this.getChar(endin) = "}" and
             end > start and
             exists(string multiples | multiples = this.getText().substring(start + 1, endin) |
+                multiples.regexpMatch("0+") and maybe_empty = true
+                or
                 multiples.regexpMatch("0*,[0-9]*") and maybe_empty = true
+                or
+                multiples.regexpMatch("0*[1-9][0-9]*") and maybe_empty = false
                 or
                 multiples.regexpMatch("0*[1-9][0-9]*,[0-9]*") and maybe_empty = false
             ) and

@@ -35,6 +35,9 @@ re.compile(b"[$]  ")
 re.compile(b"\$  ")
 re.compile(b"abc$(?m)")
 re.compile(b"abc$()")
+re.compile(b"((a$)|b)*")
+re.compile(b"((a$)|b){4}")
+re.compile(b"((a$).*)")
 
 
 #Duplicate character in set
