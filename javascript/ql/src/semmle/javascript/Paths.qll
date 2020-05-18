@@ -145,11 +145,7 @@ abstract class PathString extends string {
     n = 0 and result.getContainer() = root and root = getARootFolder()
     or
     exists(Path base | base = resolveUpTo(n - 1, root) |
-      exists(string next |
-        next = getComponent(n - 1)
-        or
-        next = getOriginalTypeScriptFolder(getComponent(n - 1), base.getContainer())
-      |
+      exists(string next | next = getComponent(n - 1) |
         // handle empty components and the special "." folder
         (next = "" or next = ".") and
         result = base
@@ -176,42 +172,6 @@ abstract class PathString extends string {
    * `root`.
    */
   Path resolve(Folder root) { result = resolveUpTo(getNumComponent(), root) }
-}
-
-/**
- * Gets the first folder from `path`.
- */
-bindingset[path]
-private string getRootFolderFromPath(string path) {
-  not exists(path.indexOf("/")) and result = path
-  or
-  result = path.substring(0, path.indexOf("/", 0, 0))
-}
-
-/**
- * Gets a folder of TypeScript files that is compiled into JavaScript files in `outdir` relative to a `parent`.
- */
-private string getOriginalTypeScriptFolder(string outdir, Folder parent) {
-  exists(JSONObject tsconfig |
-    tsconfig.getFile().getBaseName() = "tsconfig.json" and
-    tsconfig.isTopLevel() and
-    tsconfig.getFile().getParentContainer() = parent
-  |
-    outdir =
-      tsconfig
-          .getPropValue("compilerOptions")
-          .(JSONObject)
-          .getPropValue("outDir")
-          .(JSONString)
-          .getValue() and
-    result =
-      getRootFolderFromPath(tsconfig
-            .getPropValue("include")
-            .(JSONArray)
-            .getElementValue(_)
-            .(JSONString)
-            .getValue())
-  )
 }
 
 /**

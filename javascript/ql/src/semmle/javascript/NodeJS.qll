@@ -175,9 +175,6 @@ class Require extends CallExpr, Import {
 
   override Module resolveImportedPath() {
     moduleInFile(result, load(min(int prio | moduleInFile(_, load(prio)))))
-    or
-    not exists(Module mod | moduleInFile(mod, load(_))) and
-    result = Import.super.resolveImportedPath()
   }
 
   /**
