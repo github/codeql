@@ -12,6 +12,8 @@ private predicate isEscape(DataFlow::Node escape, string cause) {
   or
   escape = any(DataFlow::FunctionNode fun).getAReturn() and cause = "return"
   or
+  escape = any(YieldExpr yield).getOperand().flow() and cause = "yield"
+  or
   escape = any(ThrowStmt t).getExpr().flow() and cause = "throw"
   or
   escape = any(GlobalVariable v).getAnAssignedExpr().flow() and cause = "global"
