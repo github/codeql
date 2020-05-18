@@ -48,7 +48,9 @@ module CodeInjection {
    * `vm` module.
    */
   class NodeJSVmSink extends Sink, DataFlow::ValueNode {
-    NodeJSVmSink() { exists(NodeJSLib::VmModuleMethodCall call | this = call.getACodeArgument()) }
+    NodeJSVmSink() {
+      exists(NodeJSLib::VmModuleMemberInvocation inv | this = inv.getACodeArgument())
+    }
   }
 
   /**
