@@ -147,7 +147,18 @@ class Operand extends TOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getInexactSpecifier() + getAnyDef().getResultId()
+    result = getDumpLabel() + getInexactSpecifier() + getDefinitionId()
+  }
+
+  /**
+   * Gets a string containing the identifier of the definition of this use, or `m?` if the
+   * definition is not modeled in SSA.
+   */
+  private string getDefinitionId() {
+    exists(Instruction def |
+      def = getAnyDef() and
+      if def.isResultModeled() then result = def.getResultId() else result = "m?"
+    )
   }
 
   /**
