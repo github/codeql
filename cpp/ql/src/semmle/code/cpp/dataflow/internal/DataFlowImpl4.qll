@@ -2564,7 +2564,7 @@ private module FlowExploration {
 
   private newtype TPartialAccessPath =
     TPartialNil(DataFlowType t) or
-    TPartialCons(TypedContent tc, int len) { len in [1 .. 5] }
+    TPartialCons(TypedContent tc, int len) { len in [1 .. accessPathLimit()] }
 
   /**
    * Conceptually a list of `TypedContent`s followed by a `Type`, but only the first
