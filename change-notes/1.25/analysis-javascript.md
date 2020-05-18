@@ -11,6 +11,8 @@
   - [marsdb](https://www.npmjs.com/package/marsdb)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
   - [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+  - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
 
 ## New queries
 
