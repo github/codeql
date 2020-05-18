@@ -155,10 +155,9 @@ class Operand extends TOperand {
    * definition is not modeled in SSA.
    */
   private string getDefinitionId() {
-    exists(Instruction def |
-      def = getAnyDef() and
-      if def.isResultModeled() then result = def.getResultId() else result = "m?"
-    )
+    result = getAnyDef().getResultId()
+    or
+    not exists(getAnyDef()) and result = "m?"
   }
 
   /**

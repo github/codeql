@@ -14,8 +14,4 @@ abstract class TranslatedCompilerGeneratedCall extends TranslatedCallBase,
   final override string toString() {
     result = "compiler generated call (" + generatedBy.toString() + ")"
   }
-
-  override Instruction getUnmodeledDefinitionInstruction() {
-    result = getTranslatedFunction(this.getFunction()).getUnmodeledDefinitionInstruction()
-  }
 }
