@@ -64,4 +64,3 @@ from LoggerConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Outputting $@ to log.", source.getNode(),
   "sensitive information"
-
