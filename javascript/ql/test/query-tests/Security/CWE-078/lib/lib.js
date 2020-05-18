@@ -271,3 +271,13 @@ module.exports.sanitizerProperty = function (obj) {
 
 	cp.exec("rm -rf " + obj.version); // OK - but FP
 }
+
+module.exports.Foo = class Foo {
+	start(opts) {
+		cp.exec("rm -rf " + opts.bla); // NOT OK
+		this.opts = {};
+		this.opts.bla = opts.bla
+
+		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN
+	}
+}
