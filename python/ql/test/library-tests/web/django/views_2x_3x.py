@@ -117,7 +117,7 @@ def fp_manual_content_type(reuqest):
 # XSS FP reported in https://github.com/github/codeql/issues/3466
 # Note: This should be a open-redirect sink, but not a XSS sink.
 def fp_redirect(request):
-    return HttpResponseRedirect(request.GET.get("next")) # TODO
+    return HttpResponseRedirect(request.GET.get("next"))
 
 # Ensure that subclasses are still vuln to XSS
 def tp_not_found(request):

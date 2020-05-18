@@ -4,38 +4,20 @@ import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
 
-/**
- * A django.http.response.Response object
- * This isn't really a "taint", but we use the value tracking machinery to
- * track the flow of response objects.
- */
-class DjangoResponse extends TaintKind {
-    DjangoResponse() { this = "django.response.HttpResponse" }
+/** INTERNAL class used for tracking a django response object. */
+private class DjangoResponseKind extends TaintKind {
+    DjangoResponseKind() { this = "django.response.HttpResponse" }
 }
 
-private ClassValue theDjangoHttpResponseClass() {
-    (
-        // version 1.x
-        result = Value::named("django.http.response.HttpResponse")
-        or
-        // version 2.x
-        // https://docs.djangoproject.com/en/2.2/ref/request-response/#httpresponse-objects
-        result = Value::named("django.http.HttpResponse")
-    ) and
-    // TODO: does this do anything? when could they be the same???
-    not result = theDjangoHttpRedirectClass()
-}
-
-/** internal class used for tracking a django response. */
+/** INTENRAL taint-source used for tracking a django response. */
 private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
-        exists(ClassValue cls |
-            cls.getASuperType() = theDjangoHttpResponseClass() and
+        exists(DjangoXSSVulnResponse cls |
             cls.getACall() = this
         )
     }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponse }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponseKind }
 
     override string toString() { result = "django.http.response.HttpResponse" }
 }
@@ -45,7 +27,7 @@ class DjangoResponseWrite extends HttpResponseTaintSink {
     DjangoResponseWrite() {
         exists(AttrNode meth, CallNode call |
             call.getFunction() = meth and
-            any(DjangoResponse response).taints(meth.getObject("write")) and
+            any(DjangoResponseKind response).taints(meth.getObject("write")) and
             this = call.getArg(0)
         )
     }
@@ -58,9 +40,8 @@ class DjangoResponseWrite extends HttpResponseTaintSink {
 /** An argument to initialization of a django response, which is vulnerable to external data (xss) */
 class DjangoResponseContent extends HttpResponseTaintSink {
     DjangoResponseContent() {
-        exists(CallNode call, ClassValue cls |
-            cls.getASuperType() = theDjangoHttpResponseClass() and
-            call.getFunction().pointsTo(cls)
+        exists(CallNode call, DjangoXSSVulnResponse cls |
+            call = cls.getACall()
         |
             call.getArg(0) = this
             or
@@ -75,7 +56,7 @@ class DjangoResponseContent extends HttpResponseTaintSink {
 
 class DjangoCookieSet extends CookieSet, CallNode {
     DjangoCookieSet() {
-        any(DjangoResponse r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
+        any(DjangoResponseKind r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
     }
 
     override string toString() { result = CallNode.super.toString() }
