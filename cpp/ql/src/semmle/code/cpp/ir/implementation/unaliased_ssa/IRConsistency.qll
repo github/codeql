@@ -158,8 +158,7 @@ module InstructionConsistency {
       operand = instr.getAnOperand() and
       def = operand.getAnyDef() and
       not def.isResultModeled() and
-      message =
-        "Memory operand definition has unmodeled result in function '$@'" and
+      message = "Memory operand definition has unmodeled result in function '$@'" and
       func = instr.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
     )
