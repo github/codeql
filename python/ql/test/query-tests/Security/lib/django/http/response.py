@@ -1,13 +1,21 @@
 class HttpResponseBase(object):
     status_code = 200
 
+    def __init__(self, content_type=None, status=None, reason=None, charset=None):
+        pass
+
 
 class HttpResponse(HttpResponseBase):
-    pass
+    def __init__(self, content=b"", *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Content is a bytestring. See the `content` property methods.
+        self.content = content
 
 
 class HttpResponseRedirectBase(HttpResponse):
-    pass
+    def __init__(self, redirect_to, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        ...
 
 
 class HttpResponsePermanentRedirect(HttpResponseRedirectBase):

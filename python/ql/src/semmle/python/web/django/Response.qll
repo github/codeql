@@ -12,7 +12,7 @@ private class DjangoResponseKind extends TaintKind {
 /** INTENRAL taint-source used for tracking a django response. */
 private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
-        exists(DjangoXSSVulnResponse cls |
+        exists(DjangoXSSVulnerableResponse cls |
             cls.getACall() = this
         )
     }
@@ -40,12 +40,17 @@ class DjangoResponseWrite extends HttpResponseTaintSink {
 /** An argument to initialization of a django response, which is vulnerable to external data (xss) */
 class DjangoResponseContent extends HttpResponseTaintSink {
     DjangoResponseContent() {
-        exists(CallNode call, DjangoXSSVulnResponse cls |
-            call = cls.getACall()
-        |
-            call.getArg(0) = this
-            or
-            call.getArgByName("content") = this
+        exists(CallNode call, DjangoXSSVulnerableResponse cls |
+            call = cls.getACall() and
+            this = cls.getContentArg(call) and
+            (
+                not exists(cls.getContentTypeArg(call))
+                or
+                exists(StringValue s |
+                    cls.getContentTypeArg(call).pointsTo(s) and
+                    s.getText().indexOf("text/html") = 0
+                )
+            )
         )
     }
 

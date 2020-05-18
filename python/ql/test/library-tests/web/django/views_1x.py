@@ -98,6 +98,10 @@ def fp_manual_content_type(reuqest):
 def fp_redirect(request):
     return HttpResponseRedirect(request.GET.get("next"))
 
-# Ensure that subclasses are still vuln to XSS
+# Ensure that simple subclasses are still vuln to XSS
 def tp_not_found(request):
     return HttpResponseNotFound(request.GET.get("name"))
+
+# Ensure we still have a XSS sink when manually setting the content_type to HTML
+def tp_manual_response_type(request):
+    return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")
