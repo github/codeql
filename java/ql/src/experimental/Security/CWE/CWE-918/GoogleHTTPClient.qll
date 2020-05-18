@@ -6,12 +6,24 @@ class TypeHttpRequestFactory extends RefType {
   TypeHttpRequestFactory() { hasQualifiedName("com.google.api.client.http", "HttpRequestFactory") }
 }
 
+class MethodAccessHttpRequestFactory extends MethodAccess {
+  MethodAccessHttpRequestFactory() { this.getMethod().getDeclaringType() instanceof TypeHttpRequestFactory }
+}
+
 class TypeHttpRequest extends RefType {
   TypeHttpRequest() { hasQualifiedName("com.google.api.client.http", "HttpRequest") }
 }
 
+class MethodAccessHttpRequest extends MethodAccess {
+  MethodAccessHttpRequest() { this.getMethod().getDeclaringType() instanceof TypeHttpRequest }
+}
+
 class TypeGenericUrl extends RefType {
   TypeGenericUrl() { hasQualifiedName("com.google.api.client.http", "GenericUrl") }
+}
+
+class MethodAccessGenericUrl extends MethodAccess {
+  MethodAccessGenericUrl() { this.getMethod().getDeclaringType() instanceof TypeGenericUrl }
 }
 
 class GenericUrlConstructor extends ClassInstanceExpr {
@@ -57,23 +69,20 @@ private predicate taintStepCommon(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr() = c
   )
   or
-  exists(MethodAccess m |
-    m.getQualifier().getType() instanceof TypeHttpRequestFactory and
+  exists(MethodAccessHttpRequestFactory m |
     m.getMethod().getName() in ["buildDeleteRequest", "buildGetRequest", "buildPostRequest",
           "buildPutRequest", "buildPatchRequest", "buildHeadRequest"] and
     node1.asExpr() = m.getArgument(0) and
     node2.asExpr() = m
   )
   or
-  exists(MethodAccess m |
-    m.getQualifier().getType() instanceof TypeHttpRequestFactory and
+  exists(MethodAccessHttpRequestFactory m |
     m.getMethod().getName() = "buildRequest" and
     node1.asExpr() = m.getArgument(1) and
     node2.asExpr() = m
   )
   or
-  exists(MethodAccess m |
-    m.getQualifier().getType() instanceof TypeHttpRequest and
+  exists(MethodAccessHttpRequest m |
     m.getMethod().getName() = "setUrl" and
     node1.asExpr() = m.getArgument(0) and
     node2.asExpr() = m.getQualifier()
@@ -83,8 +92,7 @@ private predicate taintStepCommon(DataFlow::Node node1, DataFlow::Node node2) {
 predicate unsafeURLHostFlowTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   taintStepCommon(node1, node2)
   or
-  exists(MethodAccess m |
-    m.getQualifier().getType() instanceof TypeGenericUrl and
+  exists(MethodAccessGenericUrl m |
     m.getMethod().getName() = "setHost" and
     node1.asExpr() = m.getArgument(0) and
     node2.asExpr() = m.getQualifier()
@@ -101,9 +109,8 @@ predicate unsafeURLSpecFlowTaintStep(DataFlow::Node node1, DataFlow::Node node2)
 }
 
 predicate isUnsafeURLFlowSink(DataFlow::Node node) {
-  exists(MethodAccess m |
+  exists(MethodAccessHttpRequest m |
     node.asExpr() = m.getQualifier() and
-    m.getQualifier().getType() instanceof TypeHttpRequest and
     m.getMethod().getName() in ["execute", "executeAsync"]
   )
 }
