@@ -1,9 +1,6 @@
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:8:16:8:20 | xs[i] |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:12:16:12:16 | x |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
-| missing | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:4:7:4:19 | tainted |
-| missing | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:4:8:4:14 | tainted |
-| missing | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:5:14:5:20 | tainted |
 | missing | promises.js:1:2:1:2 | source | promises.js:6:26:6:28 | val |
 | missing | promises.js:1:2:1:2 | source | promises.js:7:16:7:18 | val |
 | missing | promises.js:1:2:1:2 | source | promises.js:37:11:37:11 | v |
