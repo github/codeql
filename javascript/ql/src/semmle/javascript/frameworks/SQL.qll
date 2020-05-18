@@ -145,11 +145,9 @@ private module Postgres {
   /** Gets a data flow node referring to a Postgres client. */
   DataFlow::SourceNode client() { result = client(DataFlow::TypeTracker::end()) }
 
-  private DataFlow::SourceNode clientOrPool() { result = client() or result = pool() }
-
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = clientOrPool().getAMethodCall("query") }
+    QueryCall() { this = [client(), pool()].getAMethodCall("query") }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
