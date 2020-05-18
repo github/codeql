@@ -36,7 +36,7 @@ module UnsafeShellCommandConstruction {
      * Gets the node that should be highlighted for this sink.
      * E.g. for a string concatenation, the sink is one of the leaves and the highlight is the concatenation root.
      */
-    abstract DataFlow::Node getHighLight();
+    abstract DataFlow::Node getAlertLocation();
   }
 
   /**
@@ -156,7 +156,7 @@ module UnsafeShellCommandConstruction {
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
-    override DataFlow::Node getHighLight() { result = root }
+    override DataFlow::Node getAlertLocation() { result = root }
   }
 
   /**
@@ -181,7 +181,7 @@ module UnsafeShellCommandConstruction {
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
-    override DataFlow::Node getHighLight() { result = this }
+    override DataFlow::Node getAlertLocation() { result = this }
   }
 
   /**
@@ -203,7 +203,7 @@ module UnsafeShellCommandConstruction {
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 
-    override DataFlow::Node getHighLight() { result = this }
+    override DataFlow::Node getAlertLocation() { result = this }
   }
 
   /**
