@@ -155,11 +155,11 @@ module TaintedPath {
       input = getAnArgument() and
       output = this
       or
-      this = DataFlow::moduleMember("fs", "realpathSync").getACall() and
+      this = NodeJSLib::FS::moduleMember("realpathSync").getACall() and
       input = getArgument(0) and
       output = this
       or
-      this = DataFlow::moduleMember("fs", "realpath").getACall() and
+      this = NodeJSLib::FS::moduleMember("realpath").getACall() and
       input = getArgument(0) and
       output = getCallback(1).getParameter(1)
     }

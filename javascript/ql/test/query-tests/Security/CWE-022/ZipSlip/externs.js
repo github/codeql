@@ -16,3 +16,11 @@ fs.writeFileSync = function(filename, data) {};
  * @return {void}
  */
 fs.linkSync = function(srcpath, dstpath) {};
+
+/**
+ * @param {(string|Buffer)} path
+ * @param {(string|number)} flags
+ * @param {number=} mode
+ * @return {number}
+ */
+fs.openSync = function(path, flags, mode) {};

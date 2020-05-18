@@ -591,3 +591,13 @@
 | taint.cpp:463:6:463:6 | 0 | taint.cpp:471:7:471:7 | y |  |
 | taint.cpp:468:7:468:7 | ref arg x | taint.cpp:470:7:470:7 | x |  |
 | taint.cpp:468:10:468:10 | ref arg y | taint.cpp:471:7:471:7 | y |  |
+| taint.cpp:480:26:480:32 | source1 | taint.cpp:483:28:483:34 | source1 |  |
+| taint.cpp:481:15:481:21 | 0 | taint.cpp:483:12:483:15 | line |  |
+| taint.cpp:481:15:481:21 | 0 | taint.cpp:485:7:485:10 | line |  |
+| taint.cpp:482:9:482:9 | n | taint.cpp:483:19:483:19 | n |  |
+| taint.cpp:483:11:483:15 | ref arg & ... | taint.cpp:483:12:483:15 | line [inner post update] |  |
+| taint.cpp:483:11:483:15 | ref arg & ... | taint.cpp:485:7:485:10 | line |  |
+| taint.cpp:483:12:483:15 | line | taint.cpp:483:11:483:15 | & ... |  |
+| taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
+| taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
+| taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |

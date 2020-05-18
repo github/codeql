@@ -552,9 +552,7 @@ private Sign exprSign(Expr e) {
       result = s1.urshift(s2)
     )
     or
-    result = exprSign(e.(ConditionalExpr).getTrueExpr())
-    or
-    result = exprSign(e.(ConditionalExpr).getFalseExpr())
+    result = exprSign(e.(ChooseExpr).getAResultExpr())
     or
     result = exprSign(e.(CastExpr).getExpr())
   )

@@ -17,4 +17,11 @@ var server = http.createServer(function(req, res) {
     require("exec-async")(cmd); // NOT OK
     require("execa")(cmd); // NOT OK
     require("remote-exec")(target, cmd); // NOT OK
+
+    const ssh2 = require("ssh2");
+    new ssh2().exec(cmd); // NOT OK
+    new ssh2.Client().exec(cmd); // NOT OK
+
+    const SSH2Stream = require("ssh2-streams").SSH2Stream;
+    new SSH2Stream().exec(false, cmd); // NOT OK
 });
