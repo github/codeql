@@ -5,7 +5,8 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
+private import semmle.javascript.security.dataflow.RemoteFlowSources
+private import semmle.javascript.PackageExports as Exports
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -45,75 +46,14 @@ module UnsafeShellCommandConstruction {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * Gets the number of occurrences of "/" in `path`.
-   */
-  bindingset[path]
-  private int countSlashes(string path) { result = count(path.splitAt("/")) - 1 }
-
-  /**
-   * Gets the topmost package.json that appears in the project.
-   *
-   * There can be multiple results if the there exists multiple package.json that are equally deeply nested in the folder structure.
-   * Results are limited to package.json files that are at most nested 2 directories deep.
-   */
-  private PackageJSON getTopmostPackageJSON() {
-    result =
-      min(PackageJSON j |
-        countSlashes(j.getFile().getRelativePath()) <= 3
-      |
-        j order by countSlashes(j.getFile().getRelativePath())
-      )
-  }
-
-  /**
-   * Gets a value exported by the main module from a package.json.
-   * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
-   */
-  private DataFlow::Node getAnExportedValue() {
-    exists(PackageJSON pack | pack = getTopmostPackageJSON() |
-      result = getAnExportFromModule(pack.getMainModule())
-    )
-    or
-    result = getAnExportedValue().(DataFlow::PropWrite).getRhs()
-    or
-    exists(DataFlow::SourceNode callee |
-      callee = getAnExportedValue().(DataFlow::NewNode).getCalleeNode().getALocalSource()
-    |
-      result = callee.getAPropertyRead("prototype").getAPropertyWrite()
-      or
-      result = callee.(DataFlow::ClassNode).getAnInstanceMethod()
-    )
-    or
-    result = getAnExportedValue().getALocalSource()
-    or
-    result = getAnExportedValue().(DataFlow::SourceNode).getAPropertyReference()
-    or
-    exists(Module mod | mod = getAnExportedValue().getEnclosingExpr().(Import).getImportedModule() |
-      result = getAnExportFromModule(mod)
-    )
-    or
-    exists(DataFlow::ClassNode cla | cla = getAnExportedValue() |
-      result = cla.getAnInstanceMethod() or
-      result = cla.getAStaticMethod() or
-      result = cla.getConstructor()
-    )
-  }
-
-  /**
-   * Gets an exported node from the module `mod`.
-   */
-  private DataFlow::Node getAnExportFromModule(Module mod) {
-    result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
-    or
-    exists(ASTNode export | result.getEnclosingExpr() = export | mod.exports(_, export))
-  }
-
-  /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
-      this = getAnExportedValue().(DataFlow::FunctionNode).getAParameter() and
+      this =
+        Exports::getAValueExportedBy(Exports::getTopmostPackageJSON())
+            .(DataFlow::FunctionNode)
+            .getAParameter() and
       not this.getName() = ["cmd", "command"] // looks to be on purpose.
     }
   }
