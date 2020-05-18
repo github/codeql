@@ -32,7 +32,7 @@ private module MySql {
 
   private DataFlow::CallNode createPool() { result = mysql().getAMemberCall("createPool") }
 
-  /** Gets a call to `mysql.createPool`. */
+  /** Gets a reference to a MySQL pool. */
   private DataFlow::SourceNode pool(DataFlow::TypeTracker t) {
     t.start() and
     result = createPool()
@@ -40,13 +40,13 @@ private module MySql {
     exists(DataFlow::TypeTracker t2 | result = pool(t2).track(t2, t))
   }
 
-  /** Gets a call to `mysql.createPool`. */
+  /** Gets a reference to a MySQL pool. */
   private DataFlow::SourceNode pool() { result = pool(DataFlow::TypeTracker::end()) }
 
   /** Gets a call to `mysql.createConnection`. */
   DataFlow::CallNode createConnection() { result = mysql().getAMemberCall("createConnection") }
 
-  /** Gets a data flow node that contains a freshly created MySQL connection instance. */
+  /** Gets a reference to a MySQL connection instance. */
   private DataFlow::SourceNode connection(DataFlow::TypeTracker t) {
     t.start() and
     (
@@ -58,7 +58,7 @@ private module MySql {
     exists(DataFlow::TypeTracker t2 | result = connection(t2).track(t2, t))
   }
 
-  /** Gets a data flow node that contains a freshly created MySQL connection instance. */
+  /** Gets a reference to a MySQL connection instance. */
   DataFlow::SourceNode connection() { result = connection(DataFlow::TypeTracker::end()) }
 
   /** A call to the MySql `query` method. */
@@ -318,7 +318,7 @@ private module Sequelize {
   /** Gets an import of the `sequelize` module. */
   DataFlow::SourceNode sequelize() { result = DataFlow::moduleImport("sequelize") }
 
-  /** Gets an expression that creates an instance of the `Sequelize` class. */
+  /** Gets a node referring to an instance of the `Sequelize` class. */
   private DataFlow::SourceNode newSequelize(DataFlow::TypeTracker t) {
     t.start() and
     result = sequelize().getAnInstantiation()
@@ -326,7 +326,7 @@ private module Sequelize {
     exists(DataFlow::TypeTracker t2 | result = newSequelize(t2).track(t2, t))
   }
 
-  /** Gets an expression that creates an instance of the `Sequelize` class. */
+  /** Gets a node referring to an instance of the `Sequelize` class. */
   DataFlow::SourceNode newSequelize() { result = newSequelize(DataFlow::TypeTracker::end()) }
 
   /** A call to `Sequelize.query`. */
