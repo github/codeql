@@ -180,7 +180,7 @@ async function awaitFlow(){
 (function() {
     function outer(x) {
         addEventListener("click", () => {
-            if (!x && something()) { // NOT OK
+            if (!x && something()) { // NOT OK, but whitelisted
                 something();
             }
         });

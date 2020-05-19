@@ -28,7 +28,6 @@
 | UselessConditional.js:151:6:151:6 | v | This use of variable 'v' always evaluates to true. |
 | UselessConditional.js:163:5:163:17 | findOrThrow() | This call to findOrThrow always evaluates to true. |
 | UselessConditional.js:166:6:166:6 | v | This use of variable 'v' always evaluates to true. |
-| UselessConditional.js:183:17:183:18 | !x | This negation always evaluates to true. |
 | UselessConditionalGood.js:58:12:58:13 | x2 | This use of variable 'x2' always evaluates to false. |
 | UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
