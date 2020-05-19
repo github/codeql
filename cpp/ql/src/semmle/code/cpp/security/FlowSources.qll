@@ -13,25 +13,35 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
-private class TaintedReturnSource extends RemoteFlowSource {
+/** A data flow source of local user input. */
+abstract class LocalFlowSource extends DataFlow::Node {
+  /** Gets a string that describes the type of this local flow source. */
+  abstract string getSourceType();
+}
+
+private class RemoteReturnSource extends RemoteFlowSource {
   string sourceType;
 
-  TaintedReturnSource() {
+  RemoteReturnSource() {
     exists(RemoteFlowFunction func, CallInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
-      output.isReturnValue()
+      (
+        output.isReturnValue()
+        or
+        output.isReturnValueDeref()
+      )
     )
   }
 
   override string getSourceType() { result = sourceType }
 }
 
-private class TaintedParameterSource extends RemoteFlowSource {
+private class RemoteParameterSource extends RemoteFlowSource {
   string sourceType;
 
-  TaintedParameterSource() {
+  RemoteParameterSource() {
     exists(RemoteFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
       asInstruction() = instr and
       instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
@@ -41,4 +51,50 @@ private class TaintedParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = sourceType }
+}
+
+private class LocalReturnSource extends LocalFlowSource {
+  string sourceType;
+
+  LocalReturnSource() {
+    exists(LocalFlowFunction func, CallInstruction instr, FunctionOutput output |
+      asInstruction() = instr and
+      instr.getStaticCallTarget() = func and
+      func.hasLocalFlowSource(output, sourceType) and
+      (
+        output.isReturnValue()
+        or
+        output.isReturnValueDeref()
+      )
+    )
+  }
+
+  override string getSourceType() { result = sourceType }
+}
+
+private class LocalParameterSource extends LocalFlowSource {
+  string sourceType;
+
+  LocalParameterSource() {
+    exists(LocalFlowFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
+      asInstruction() = instr and
+      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
+      func.hasLocalFlowSource(output, sourceType) and
+      output.isParameterDeref(instr.getIndex())
+    )
+  }
+
+  override string getSourceType() { result = sourceType }
+}
+
+private class ArgvSource extends LocalFlowSource {
+  ArgvSource() {
+    exists(Parameter argv |
+      argv.hasName("argv") and
+      argv.getFunction().hasGlobalName("main") and
+      this.asExpr() = argv.getAnAccess()
+    )
+  }
+
+  override string getSourceType() { result = "a command line argument" }
 }
