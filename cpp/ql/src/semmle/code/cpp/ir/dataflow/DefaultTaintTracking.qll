@@ -171,13 +171,18 @@ private predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
+private predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
+  readsVariable(node.asInstruction(), checkedVar) and
+  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+}
+
 private predicate nodeIsBarrier(DataFlow::Node node) {
   exists(Variable checkedVar |
     readsVariable(node.asInstruction(), checkedVar) and
     hasUpperBoundsCheck(checkedVar)
   )
   or
-  exists(Variable checkedVar, IRGuardCondition guard, Operand access, Operand other |
+  exists(Variable checkedVar, Operand access |
     /*
      * This node is guarded by a condition that forces the accessed variable
      * to equal something else.  For example:
@@ -189,9 +194,8 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
      * ```
      */
 
-    readsVariable(node.asInstruction(), checkedVar) and
-    readsVariable(access.getDef(), checkedVar) and
-    guard.ensuresEq(access, other, _, node.asInstruction().getBlock(), true)
+    nodeIsBarrierEqualityCandidate(node, access, checkedVar) and
+    readsVariable(access.getDef(), checkedVar)
   )
 }
 
