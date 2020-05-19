@@ -119,7 +119,7 @@ class XMLFile extends XMLParent, File {
   override string toString() { result = XMLParent.super.toString() }
 
   /** Gets the name of this XML file. */
-  override string getName() { result = File.super.getAbsolutePath() }
+  deprecated override string getName() { result = File.super.getAbsolutePath() }
 
   /**
    * DEPRECATED: Use `getAbsolutePath()` instead.
