@@ -66,9 +66,6 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(Node node) { none() }
 
-  /** DEPRECATED: override `isBarrierIn` and `isBarrierOut` instead. */
-  deprecated predicate isBarrierEdge(Node node1, Node node2) { none() }
-
   /** Holds if data flow into `node` is prohibited. */
   predicate isBarrierIn(Node node) { none() }
 

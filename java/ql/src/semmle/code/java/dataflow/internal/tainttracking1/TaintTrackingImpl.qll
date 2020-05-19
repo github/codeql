@@ -79,13 +79,6 @@ abstract class Configuration extends DataFlow::Configuration {
     defaultTaintBarrier(node)
   }
 
-  /** DEPRECATED: override `isSanitizerIn` and `isSanitizerOut` instead. */
-  deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
-
-  deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
-    isSanitizerEdge(node1, node2)
-  }
-
   /** Holds if data flow into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
