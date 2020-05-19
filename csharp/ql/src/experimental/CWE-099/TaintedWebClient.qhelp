@@ -53,11 +53,6 @@ system's passwords.</p>
 OWASP:
 <a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.
 </li>
-<li>
-CWE-099:
-<a href="https://cwe.mitre.org/data/definitions/99.html">Resource
-Injection</a>.
-</li>
 
 </references>
 </qhelp>
