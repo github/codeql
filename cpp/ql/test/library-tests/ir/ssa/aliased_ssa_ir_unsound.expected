@@ -1480,7 +1480,7 @@ ssa.cpp:
 #  304|     r304_5(char)           = Load                             : &:r304_4, ~m303_8
 #  304|     r304_6(int)            = Convert                          : r304_5
 #  304|     m304_7(int)            = Store                            : &:r304_1, r304_6
-#  301|     v301_12(void)          = ReturnIndirection[argv]          : &:r301_10, ~m303_11, m303_11
+#  301|     v301_12(void)          = ReturnIndirection[argv]          : &:r301_10, m303_11
 #  301|     r301_13(glval<int>)    = VariableAddress[#return]         : 
 #  301|     v301_14(void)          = ReturnValue                      : &:r301_13, m304_7
 #  301|     v301_15(void)          = AliasedUse                       : ~m303_8

@@ -306,7 +306,7 @@ module NodeJSLib {
 
     FsFlowTarget() {
       exists(DataFlow::CallNode call, string methodName |
-        call = DataFlow::moduleMember("fs", methodName).getACall()
+        call = FS::moduleMember(methodName).getACall()
       |
         methodName = "realpathSync" and
         tainted = call.getArgument(0) and
@@ -430,27 +430,32 @@ module NodeJSLib {
   }
 
   /**
-   * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+   * Provides predicates for working with the "fs" module and its variants as a single module.
    */
-  private DataFlow::SourceNode fsModuleMember(string member) {
-    result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
-  }
+  module FS {
+    /**
+     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     */
+    DataFlow::SourceNode moduleMember(string member) {
+      result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
+    }
 
-  private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
-    exists(string moduleName |
-      moduleName = "fs" or
-      moduleName = "graceful-fs" or
-      moduleName = "fs-extra" or
-      moduleName = "original-fs"
-    |
-      result = DataFlow::moduleImport(moduleName)
+    private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
+      exists(string moduleName |
+        moduleName = "fs" or
+        moduleName = "graceful-fs" or
+        moduleName = "fs-extra" or
+        moduleName = "original-fs"
+      |
+        result = DataFlow::moduleImport(moduleName)
+        or
+        // extra support for flexible names
+        result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
+      ) and
+      t.start()
       or
-      // extra support for flexible names
-      result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
-    ) and
-    t.start()
-    or
-    exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+    }
   }
 
   /**
@@ -459,7 +464,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = maybePromisified(fsModuleMember(methodName)).getACall() }
+    NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
 
     /**
      * Gets the name of the called method.
@@ -582,8 +587,8 @@ module NodeJSLib {
         name = "readdir" or
         name = "realpath"
       |
-        this = fsModuleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
-        this = fsModuleMember(name + "Sync").getACall()
+        this = FS::moduleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
+        this = FS::moduleMember(name + "Sync").getACall()
       )
     }
   }
