@@ -16,7 +16,7 @@ import PathGraph
  * Gets a regular expression for matching names of variables that indicate the value being held is a credential
  */
 private string getACredentialRegex() {
-  result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
+  result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
   result = "(?i)(.*username|url).*"
 }
 
@@ -31,14 +31,19 @@ class CredentialExpr extends Expr {
 class LoggerType extends RefType {
   LoggerType() {
     this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
-    this.hasQualifiedName("org.slf4j", "Logger") //SLF4j and Gradle Logging
+    this.hasQualifiedName("org.slf4j", "Logger") or //SLF4j and Gradle Logging
+    this.hasQualifiedName("org.jboss.logging", "BasicLogger") //JBoss Logging
   }
 }
 
 predicate isSensitiveLoggingSink(DataFlow::Node sink) {
   exists(MethodAccess ma |
     ma.getMethod().getDeclaringType() instanceof LoggerType and
-    (ma.getMethod().hasName("debug") or ma.getMethod().hasName("trace")) and //Check low priority log levels which are more likely to be real issues to reduce false positives
+    (
+      ma.getMethod().hasName("debug") or
+      ma.getMethod().hasName("trace") or
+      ma.getMethod().hasName("debugf")
+    ) and //Check low priority log levels which are more likely to be real issues to reduce false positives
     sink.asExpr() = ma.getAnArgument()
   )
 }
