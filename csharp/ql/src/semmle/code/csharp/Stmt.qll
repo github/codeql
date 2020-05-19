@@ -1160,26 +1160,6 @@ class UsingStmt extends Stmt, @using_stmt {
    * ```
    */
   Expr getAnExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
-   * Gets the expression directly used by this `using` statement, if any. For
-   * example, `f` on line 2 in
-   *
-   * ```
-   * var f = File.Open("settings.xml");
-   * using (f) {
-   *   ...
-   * }
-   * ```
-   */
-  deprecated Expr getExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getBody() instead.
-   * Gets the body of this `using` statement.
-   */
-  deprecated Stmt getBody() { none() }
 }
 
 /**
@@ -1212,7 +1192,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
    * }
    * ```
    */
-  override Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
@@ -1221,7 +1201,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
   }
 
   /** Gets the body of this `using` statement. */
-  override Stmt getBody() { result.getParent() = this }
+  Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
 }
