@@ -1,4 +1,10 @@
 edges
+| field_conflation.c:29:22:29:27 | call to getenv | field_conflation.c:30:10:30:25 | Chi |
+| field_conflation.c:30:10:30:25 | Chi | field_conflation.c:36:15:36:17 | taint_array output argument |
+| field_conflation.c:36:15:36:17 | taint_array output argument | field_conflation.c:37:10:37:13 | (unsigned long)... |
+| field_conflation.c:36:15:36:17 | taint_array output argument | field_conflation.c:37:13:37:13 | x |
+| field_conflation.c:36:15:36:17 | taint_array output argument | field_conflation.c:37:13:37:13 | x |
+| field_conflation.c:37:13:37:13 | x | field_conflation.c:37:10:37:13 | (unsigned long)... |
 | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | (size_t)... |
 | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | tainted |
 | test.cpp:39:21:39:24 | argv | test.cpp:43:38:43:63 | ... * ... |
@@ -36,6 +42,12 @@ edges
 | test.cpp:235:11:235:20 | (size_t)... | test.cpp:214:23:214:23 | s |
 | test.cpp:237:10:237:19 | (size_t)... | test.cpp:220:21:220:21 | s |
 nodes
+| field_conflation.c:29:22:29:27 | call to getenv | semmle.label | call to getenv |
+| field_conflation.c:30:10:30:25 | Chi | semmle.label | Chi |
+| field_conflation.c:36:15:36:17 | taint_array output argument | semmle.label | taint_array output argument |
+| field_conflation.c:37:10:37:13 | (unsigned long)... | semmle.label | (unsigned long)... |
+| field_conflation.c:37:13:37:13 | x | semmle.label | x |
+| field_conflation.c:37:13:37:13 | x | semmle.label | x |
 | test.cpp:39:21:39:24 | argv | semmle.label | argv |
 | test.cpp:42:38:42:44 | (size_t)... | semmle.label | (size_t)... |
 | test.cpp:42:38:42:44 | tainted | semmle.label | tainted |
@@ -78,6 +90,7 @@ nodes
 | test.cpp:235:11:235:20 | (size_t)... | semmle.label | (size_t)... |
 | test.cpp:237:10:237:19 | (size_t)... | semmle.label | (size_t)... |
 #select
+| field_conflation.c:37:3:37:8 | call to malloc | field_conflation.c:29:22:29:27 | call to getenv | field_conflation.c:37:13:37:13 | x | This allocation size is derived from $@ and might overflow | field_conflation.c:29:22:29:27 | call to getenv | user input (an environment variable) |
 | test.cpp:42:31:42:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | tainted | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (a command line argument) |
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:43:38:43:63 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (a command line argument) |
 | test.cpp:45:31:45:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:45:38:45:63 | ... + ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (a command line argument) |
