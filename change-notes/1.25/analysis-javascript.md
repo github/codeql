@@ -5,6 +5,7 @@
 * Support for the following frameworks and libraries has been improved:
   - [bluebird](http://bluebirdjs.com/)
   - [express](https://www.npmjs.com/package/express)
+  - [fastify](https://www.npmjs.com/package/fastify)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
