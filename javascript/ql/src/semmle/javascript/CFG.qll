@@ -300,7 +300,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
   predicate isStart() { this = any(StmtContainer sc).getStart() }
 
   /**
-   * Holds if this is a final node of the given container, that is, a CFG node where execution
+   * Holds if this is a final node of `container`, that is, a CFG node where execution
    * of that toplevel or function terminates.
    */
   predicate isAFinalNodeOfContainer(StmtContainer container) {
