@@ -41,7 +41,7 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
 class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "TaintedPath" }
+  TaintTrackingConfiguration() { this = "TaintedWebClientLib" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -56,7 +56,7 @@ class RemoteSource extends Source {
 }
 
 /**
- * A path argument to a `WebClient` method call that have an address argument.
+ * A path argument to a `WebClient` method call that has an address argument.
  */
 class WebClientSink extends Sink {
   WebClientSink() {
