@@ -13,6 +13,7 @@ private import semmle.javascript.PackageExports as Exports
  */
 module UnsafeShellCommandConstruction {
   import IndirectCommandArgument
+  import semmle.javascript.security.IncompleteBlacklistSanitizer as IncompleteBlacklistSanitizer
 
   /**
    * A data flow source for shell command constructed from library input.
@@ -152,6 +153,19 @@ module UnsafeShellCommandConstruction {
       this.getAReplacedString() = "'" and
       this.isGlobal() and
       this.getRawReplacement().mayHaveStringValue(["'\\''", ""])
+    }
+  }
+
+  /**
+   * A chain of replace calls that replaces all unsafe chars for shell-commands.
+   */
+  class ChainSanitizer extends Sanitizer, IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+    ChainSanitizer() {
+      forall(string char |
+        char = ["&", "`", "$", "|", ">", "<", "#", ";", "(", ")", "[", "]", "\n"]
+      |
+        this.getAMember().getAReplacedString() = char
+      )
     }
   }
 

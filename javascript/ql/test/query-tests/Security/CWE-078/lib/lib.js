@@ -281,3 +281,32 @@ module.exports.Foo = class Foo {
 		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN
 	}
 }
+
+function sanitizeShellString(str) {
+  let result = str;
+  result = result.replace(/>/g, "");
+  result = result.replace(/</g, "");
+  result = result.replace(/\*/g, "");
+  result = result.replace(/\?/g, "");
+  result = result.replace(/\[/g, "");
+  result = result.replace(/\]/g, "");
+  result = result.replace(/\|/g, "");
+  result = result.replace(/\`/g, "");
+  result = result.replace(/$/g, "");
+  result = result.replace(/;/g, "");
+  result = result.replace(/&/g, "");
+  result = result.replace(/\)/g, "");
+  result = result.replace(/\(/g, "");
+  result = result.replace(/\$/g, "");
+  result = result.replace(/#/g, "");
+  result = result.replace(/\\/g, "");
+  result = result.replace(/\n/g, "");
+  return result
+}
+
+module.exports.sanitizer2 = function (name) {
+  cp.exec("rm -rf " + name); // NOT OK
+
+  var sanitized = sanitizeShellString(name);
+  cp.exec("rm -rf " + sanitized); // OK
+}
