@@ -6,6 +6,14 @@ import go
 
 /**
  * A code comment.
+ *
+ * Examples:
+ *
+ * <pre>
+ * // a line comment
+ * /* a block
+ *   comment *&#47
+ * </pre>
  */
 class Comment extends @comment, AstNode {
   /**
@@ -24,6 +32,21 @@ class Comment extends @comment, AstNode {
 /**
  * A comment group, that is, a sequence of comments without any intervening tokens or
  * empty lines.
+ *
+ * Examples:
+ *
+ * <pre>
+ * // a line comment
+ * // another line comment
+ *
+ * // a line comment
+ * /* a block
+ *   comment *&#47
+* 
+ * /* a block
+ * comment *&#47
+ * /* another block comment *&#47
+ * </pre>
  */
 class CommentGroup extends @comment_group, AstNode {
   /** Gets the `i`th comment in this group (0-based indexing). */
@@ -39,7 +62,20 @@ class CommentGroup extends @comment_group, AstNode {
 }
 
 /**
- * A program element to which a documentation comment group may be attached.
+ * A program element to which a documentation comment group may be attached,
+ * i.e. a file, a field, a specifier, a generic declaration, a function declaration
+ * or a go.mod expression
+ *
+ * Examples:
+ *
+ * ```go
+ * func double (x int) int { return 2 * x }
+ * 
+ * const (
+ *   size int64 = 1024
+ *   eof        = -1
+ * )
+ * ```
  */
 class Documentable extends AstNode, @documentable {
   /** Gets the documentation comment group attached to this element, if any. */
@@ -48,6 +84,20 @@ class Documentable extends AstNode, @documentable {
 
 /**
  * A comment group that is attached to a program element as documentation.
+ *
+ * Examples:
+ *
+ * ```go
+ * // function documentation
+ * func double (x int) int { return 2 * x }
+ * 
+ *  // generic declaration documentation
+ * const (
+ *   // specifier documentation
+ * 	 size int64 = 1024
+ * 	 eof        = -1  // not specifier documentation
+ * )
+ * ```
  */
 class DocComment extends CommentGroup {
   Documentable node;
@@ -60,21 +110,47 @@ class DocComment extends CommentGroup {
 
 /**
  * A single-line comment starting with `//`.
+ *
+ * Examples:
+ *
+ * ```go
+ * // Single line comment
+ * ```
  */
 class SlashSlashComment extends @slashslashcomment, Comment { }
 
 /**
  * A block comment starting with `/*` and ending with <code>*&#47;</code>.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /* a block
+ *   comment *&#47
+ * </pre>
  */
 class SlashStarComment extends @slashstarcomment, Comment { }
 
 /**
  * A single-line comment starting with `//`.
+ *
+ * Examples:
+ *
+ * ```go
+ * // Single line comment
+ * ```
  */
 class LineComment = SlashSlashComment;
 
 /**
  * A block comment starting with `/*` and ending with <code>*&#47;</code>.
+ *
+ * Examples:
+ *
+ * <pre>
+ * /* a block
+ *   comment *&#47
+ * </pre>
  */
 class BlockComment = SlashStarComment;
 
@@ -96,6 +172,13 @@ private Comment getInitialComment(File f, int i) {
 
 /**
  * A build constraint comment of the form `// +build ...`.
+ *
+ * Examples:
+ *
+ * ```go
+ * // +build darwin freebsd netbsd openbsd
+ * // +build !linux
+ * ```
  */
 class BuildConstraintComment extends LineComment {
   BuildConstraintComment() {

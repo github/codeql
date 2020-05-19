@@ -6,6 +6,18 @@ import go
 
 /**
  * A statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * a = 0
+ *
+ * if x := f(); x < y {
+ *   return y - x
+ * } else {
+ *   return x - y
+ * }
+ * ```
  */
 class Stmt extends @stmt, ExprParent, StmtParent {
   /**
@@ -30,6 +42,13 @@ class Stmt extends @stmt, ExprParent, StmtParent {
 
 /**
  * A bad statement, that is, a statement that could not be parsed.
+ *
+ * Examples:
+ *
+ * ```go
+ * go fmt.Println
+ * defer int
+ * ```
  */
 class BadStmt extends @badstmt, Stmt {
   override string toString() { result = "bad statement" }
@@ -37,6 +56,14 @@ class BadStmt extends @badstmt, Stmt {
 
 /**
  * A declaration statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * var i int
+ * const pi = 3.14159
+ * type Printer interface{ Print() }
+ * ```
  */
 class DeclStmt extends @declstmt, Stmt, DeclParent {
   /** Gets the declaration in this statement. */
@@ -49,6 +76,13 @@ class DeclStmt extends @declstmt, Stmt, DeclParent {
 
 /**
  * An empty statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * ;
+ * {}
+ * ```
  */
 class EmptyStmt extends @emptystmt, Stmt {
   override string toString() { result = "empty statement" }
@@ -56,6 +90,12 @@ class EmptyStmt extends @emptystmt, Stmt {
 
 /**
  * A labeled statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * Error: log.Panic("error encountered")
+ * ```
  */
 class LabeledStmt extends @labeledstmt, Stmt {
   /** Gets the identifier representing the label. */
@@ -74,6 +114,15 @@ class LabeledStmt extends @labeledstmt, Stmt {
 
 /**
  * An expression statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * h(x+y)
+ * f.Close()
+ * <-ch
+ * (<-ch)
+ * ```
  */
 class ExprStmt extends @exprstmt, Stmt {
   /** Gets the expression. */
@@ -86,6 +135,12 @@ class ExprStmt extends @exprstmt, Stmt {
 
 /**
  * A send statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * ch <- 3
+ * ```
  */
 class SendStmt extends @sendstmt, Stmt {
   /** Gets the expression representing the channel. */
@@ -101,6 +156,13 @@ class SendStmt extends @sendstmt, Stmt {
 
 /**
  * An increment or decrement statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * a++
+ * b--
+ * ```
  */
 class IncDecStmt extends @incdecstmt, Stmt {
   /** Gets the expression being incremented or decremented. */
@@ -114,6 +176,12 @@ class IncDecStmt extends @incdecstmt, Stmt {
 
 /**
  * An increment statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * a++
+ * ```
  */
 class IncStmt extends @incstmt, IncDecStmt {
   override string getOperator() { result = "++" }
@@ -123,6 +191,12 @@ class IncStmt extends @incstmt, IncDecStmt {
 
 /**
  * A decrement statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * b--
+ * ```
  */
 class DecStmt extends @decstmt, IncDecStmt {
   override string getOperator() { result = "--" }
@@ -132,6 +206,16 @@ class DecStmt extends @decstmt, IncDecStmt {
 
 /**
  * A (simple or compound) assignment statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * x := 1
+ * *p = f()
+ * a[i] = 23
+ * (k) = <-ch  // same as: k = <-ch
+ * a += 2
+ * ```
  */
 class Assignment extends @assignment, Stmt {
   /** Gets the `i`th left-hand side of this assignment (0-based). */
@@ -177,11 +261,28 @@ class Assignment extends @assignment, Stmt {
 
 /**
  * A simple assignment statement, that is, an assignment without a compound operator.
+ *
+ * Examples:
+ *
+ * ```go
+ * x := 1
+ * *p = f()
+ * a[i] = 23
+ * (k) = <-ch  // same as: k = <-ch
+ * ```
  */
 class SimpleAssignStmt extends @simpleassignstmt, Assignment { }
 
 /**
  * A plain assignment statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * *p = f()
+ * a[i] = 23
+ * (k) = <-ch  // same as: k = <-ch
+ * ```
  */
 class AssignStmt extends @assignstmt, SimpleAssignStmt {
   override string getOperator() { result = "=" }
@@ -189,6 +290,12 @@ class AssignStmt extends @assignstmt, SimpleAssignStmt {
 
 /**
  * A define statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * x := 1
+ * ```
  */
 class DefineStmt extends @definestmt, SimpleAssignStmt {
   override string getOperator() { result = ":=" }
@@ -196,11 +303,24 @@ class DefineStmt extends @definestmt, SimpleAssignStmt {
 
 /**
  * A compound assignment statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * a += 2
+ * a /= 2
+ * ```
  */
 class CompoundAssignStmt extends @compoundassignstmt, Assignment { }
 
 /**
  * An add-assign statement using `+=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a += 2
+ * ```
  */
 class AddAssignStmt extends @addassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "+=" }
@@ -208,6 +328,12 @@ class AddAssignStmt extends @addassignstmt, CompoundAssignStmt {
 
 /**
  * A subtract-assign statement using `-=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a -= 2
+ * ```
  */
 class SubAssignStmt extends @subassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "-=" }
@@ -215,6 +341,12 @@ class SubAssignStmt extends @subassignstmt, CompoundAssignStmt {
 
 /**
  * A multiply-assign statement using `*=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a *= 2
+ * ```
  */
 class MulAssignStmt extends @mulassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "*=" }
@@ -222,6 +354,12 @@ class MulAssignStmt extends @mulassignstmt, CompoundAssignStmt {
 
 /**
  * A divide-assign statement using `/=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a /= 2
+ * ```
  */
 class QuoAssignStmt extends @quoassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "/=" }
@@ -231,6 +369,12 @@ class DivAssignStmt = QuoAssignStmt;
 
 /**
  * A modulo-assign statement using `%=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a %= 2
+ * ```
  */
 class RemAssignStmt extends @remassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "%=" }
@@ -240,6 +384,12 @@ class ModAssignStmt = RemAssignStmt;
 
 /**
  * An and-assign statement using `&=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a &= 2
+ * ```
  */
 class AndAssignStmt extends @andassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "&=" }
@@ -247,6 +397,12 @@ class AndAssignStmt extends @andassignstmt, CompoundAssignStmt {
 
 /**
  * An or-assign statement using `|=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a |= 2
+ * ```
  */
 class OrAssignStmt extends @orassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "|=" }
@@ -254,6 +410,12 @@ class OrAssignStmt extends @orassignstmt, CompoundAssignStmt {
 
 /**
  * An xor-assign statement using `^=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a ^= 2
+ * ```
  */
 class XorAssignStmt extends @xorassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "^=" }
@@ -261,6 +423,12 @@ class XorAssignStmt extends @xorassignstmt, CompoundAssignStmt {
 
 /**
  * A left-shift-assign statement using `<<=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a <<= 2
+ * ```
  */
 class ShlAssignStmt extends @shlassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "<<=" }
@@ -270,6 +438,12 @@ class LShiftAssignStmt = ShlAssignStmt;
 
 /**
  * A right-shift-assign statement using `>>=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a >>= 2
+ * ```
  */
 class ShrAssignStmt extends @shrassignstmt, CompoundAssignStmt {
   override string getOperator() { result = ">>=" }
@@ -279,6 +453,12 @@ class RShiftAssignStmt = ShrAssignStmt;
 
 /**
  * An and-not-assign statement using `&^=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a &^= 2
+ * ```
  */
 class AndNotAssignStmt extends @andnotassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "&^=" }
@@ -286,6 +466,12 @@ class AndNotAssignStmt extends @andnotassignstmt, CompoundAssignStmt {
 
 /**
  * A `go` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * go fillPixels(row)
+ * ```
  */
 class GoStmt extends @gostmt, Stmt {
   /** Gets the call. */
@@ -298,6 +484,12 @@ class GoStmt extends @gostmt, Stmt {
 
 /**
  * A `defer` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * defer mutex.Unlock()
+ * ```
  */
 class DeferStmt extends @deferstmt, Stmt {
   /** Gets the call being deferred. */
@@ -310,6 +502,12 @@ class DeferStmt extends @deferstmt, Stmt {
 
 /**
  * A `return` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * return x
+ * ```
  */
 class ReturnStmt extends @returnstmt, Stmt {
   /** Gets the `i`th returned expression (0-based) */
@@ -331,6 +529,17 @@ class ReturnStmt extends @returnstmt, Stmt {
 
 /**
  * A branch statement, for example a `break` or `goto`.
+ *
+ * Examples:
+ *
+ * ```go
+ * break
+ * break OuterLoop
+ * continue
+ * continue RowLoop
+ * goto Error
+ * fallthrough
+ * ```
  */
 class BranchStmt extends @branchstmt, Stmt {
   /** Gets the expression denoting the target label of the branch, if any. */
@@ -340,27 +549,72 @@ class BranchStmt extends @branchstmt, Stmt {
   string getLabel() { result = getLabelExpr().getName() }
 }
 
-/** A `break` statement. */
+/**
+ * A `break` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * break
+ * break OuterLoop
+ * ```
+ */
 class BreakStmt extends @breakstmt, BranchStmt {
   override string toString() { result = "break statement" }
 }
 
-/** A `continue` statement. */
+/**
+ * A `continue` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * continue
+ * continue RowLoop
+ * ```
+ */
 class ContinueStmt extends @continuestmt, BranchStmt {
   override string toString() { result = "continue statement" }
 }
 
-/** A `goto` statement. */
+/**
+ * A `goto` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * goto Error
+ * ```
+ */
 class GotoStmt extends @gotostmt, BranchStmt {
   override string toString() { result = "goto statement" }
 }
 
-/** A `fallthrough` statement. */
+/**
+ * A `fallthrough` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * fallthrough
+ * ```
+ */
 class FallthroughStmt extends @fallthroughstmt, BranchStmt {
   override string toString() { result = "fallthrough statement" }
 }
 
-/** A block statement. */
+/**
+ * A block statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * {
+ *   fmt.Printf("iteration %d\n", i)
+ *   f(i)
+ * }
+ * ```
+ */
 class BlockStmt extends @blockstmt, Stmt, ScopeNode {
   /** Gets the `i`th statement in this block (0-based). */
   Stmt getStmt(int i) { result = getChildStmt(i) }
@@ -376,7 +630,19 @@ class BlockStmt extends @blockstmt, Stmt, ScopeNode {
   override string toString() { result = "block statement" }
 }
 
-/** An `if` statement. */
+/**
+ * An `if` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * if x := f(); x < y {
+ *   return y - x
+ * } else {
+ *   return x - y
+ * }
+ * ```
+ */
 class IfStmt extends @ifstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `if` statement, if any. */
   Stmt getInit() { result = getChildStmt(0) }
@@ -400,7 +666,23 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
   override string toString() { result = "if statement" }
 }
 
-/** A `case` or `default` clause in a `switch` statement. */
+/**
+ * A `case` or `default` clause in a `switch` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * case 0, 1:
+ *   a = 1
+ *   fallthrough
+ *
+ * default:
+ *   b = 2
+ *
+ * case func(int) float64:
+ *   printFunction(i)
+ * ```
+ */
 class CaseClause extends @caseclause, Stmt, ScopeNode {
   /** Gets the `i`th expression of this `case` clause (0-based). */
   Expr getExpr(int i) { result = getChildExpr(-(i + 1)) }
@@ -430,6 +712,29 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
 
 /**
  * A `switch` statement, that is, either an expression switch or a type switch.
+ *
+ * Examples:
+ *
+ * ```go
+ * switch x := f(); x {
+ * case 0, 1:
+ *   a = 1
+ *   fallthrough
+ * default:
+ *   b = 2
+ * }
+ *
+ * switch i := x.(type) {
+ * default:
+ *   printString("don't know the type")
+ * case nil:
+ *   printString("x is nil")
+ * case int:
+ *   printInt(i)
+ * case func(int) float64:
+ *   printFunction(i)
+ * }
+ * ```
  */
 class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `switch` statement, if any. */
@@ -465,6 +770,18 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
 
 /**
  * An expression-switch statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * switch x := f(); x {
+ * case 0, 1:
+ *   a = 1
+ *   fallthrough
+ * default:
+ *   b = 2
+ * }
+ * ```
  */
 class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
   /** Gets the switch expression of this `switch` statement. */
@@ -480,6 +797,21 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
 
 /**
  * A type-switch statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * switch i := x.(type) {
+ * default:
+ *   printString("don't know the type")     // type of i is type of x (interface{})
+ * case nil:
+ *   printString("x is nil")                // type of i is type of x (interface{})
+ * case int:
+ *   printInt(i)                            // type of i is int
+ * case func(int) float64:
+ *   printFunction(i)                       // type of i is func(int) float64
+ * }
+ * ```
  */
 class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
   /** Gets the assign statement of this type-switch statement. */
@@ -495,6 +827,26 @@ class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
 
 /**
  * A comm clause, that is, a `case` or `default` clause in a `select` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * case i1 = <-c1:
+ *   print("received ", i1, " from c1\n")
+ * 
+ * case c2 <- i2:
+ *   print("sent ", i2, " to c2\n")
+ * 
+ * case i3, ok := (<-c3):  // same as: i3, ok := <-c3
+ *   if ok {
+ *     print("received ", i3, " from c3\n")
+ *   } else {
+ *     print("c3 is closed\n")
+ *   }
+ * 
+ * default:
+ *   print("no communication\n")
+ * ```
  */
 class CommClause extends @commclause, Stmt, ScopeNode {
   /** Gets the comm statement of this clause, if any. */
@@ -516,6 +868,14 @@ class CommClause extends @commclause, Stmt, ScopeNode {
 
 /**
  * A receive statement in a comm clause.
+ *
+ * Examples:
+ *
+ * ```go
+ * i1 = <-c1
+ * i3, ok := <-c3
+ * i3, ok := (<-c3)
+ * ```
  */
 class RecvStmt extends Stmt {
   RecvStmt() { this = any(CommClause cc).getComm() and not this instanceof SendStmt }
@@ -535,6 +895,25 @@ class RecvStmt extends Stmt {
 
 /**
  * A `select` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * select {
+ * case i1 = <-c1:
+ *   print("received ", i1, " from c1\n")
+ * case c2 <- i2:
+ *   print("sent ", i2, " to c2\n")
+ * case i3, ok := (<-c3):  // same as: i3, ok := <-c3
+ *   if ok {
+ *     print("received ", i3, " from c3\n")
+ *   } else {
+ *     print("c3 is closed\n")
+ *   }
+ * default:
+ *   print("no communication\n")
+ * }
+ * ```
  */
 class SelectStmt extends @selectstmt, Stmt {
   /** Gets the body of this `select` statement. */
@@ -576,6 +955,22 @@ class SelectStmt extends @selectstmt, Stmt {
 
 /**
  * A loop, that is, either a `for` statement or a `range` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * for a < b {
+ *   a *= 2
+ * }
+ * 
+ * for i := 0; i < 10; i++ {
+ *   f(i)
+ * }
+ *
+ * for key, value := range mymap {
+ *   fmt.Printf("mymap[%s] = %d\n", key, value)
+ * }
+ * ```
  */
 class LoopStmt extends @loopstmt, Stmt, ScopeNode {
   /** Gets the body of this loop. */
@@ -584,6 +979,18 @@ class LoopStmt extends @loopstmt, Stmt, ScopeNode {
 
 /**
  * A `for` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * for a < b {
+ *   a *= 2
+ * }
+ * 
+ * for i := 0; i < 10; i++ {
+ *   f(i)
+ * }
+ * ```
  */
 class ForStmt extends @forstmt, LoopStmt {
   /** Gets the init statement of this `for` statement, if any. */
@@ -609,6 +1016,26 @@ class ForStmt extends @forstmt, LoopStmt {
 
 /**
  * A `range` statement.
+ *
+ * Examples:
+ *
+ * ```go
+ * for key, value := range mymap {
+ *   fmt.Printf("mymap[%s] = %d\n", key, value)
+ * }
+ *
+ * for _, value = range array {
+ *   fmt.Printf("array contains: %d\n", value)
+ * }
+ *
+ * for index, _ := range str {
+ *   fmt.Printf("str[%d] = ?\n", index)
+ * }
+ *
+ * for value = range ch {
+ *   fmt.Printf("value from channel: %d\n", value)
+ * }
+ * ```
  */
 class RangeStmt extends @rangestmt, LoopStmt {
   /** Gets the expression denoting the key of this `range` statement. */
