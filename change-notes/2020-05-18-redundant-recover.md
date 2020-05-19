@@ -1,2 +1,2 @@
 lgtm,codescanning
-* A new query go/redundant-recover has been added to detect redundant calls to recover.
+* A new query "Redundant call to recover" (`go/redundant-recover`) has been added. The query detects calls to `recover` that have no effect.
