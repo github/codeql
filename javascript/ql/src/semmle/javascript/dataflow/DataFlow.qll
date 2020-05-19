@@ -258,8 +258,8 @@ module DataFlow {
   }
 
   /**
-   * An expression or a declaration of a function, class, namespace or enum,
-   * viewed as a node in the data flow graph.
+   * A node in the data flow graph which corresponds to an expression,
+   * destructuring pattern, or declaration of a function, class, namespace, or enum.
    *
    * Examples:
    * ```js
