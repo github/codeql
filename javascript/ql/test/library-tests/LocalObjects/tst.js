@@ -89,3 +89,9 @@
 	let bound = {};
 	bound::unknown();
 });
+
+(async function* f() {
+  yield* {
+    get p() { }
+  };
+});
