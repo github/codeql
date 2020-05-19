@@ -6,7 +6,7 @@
  * @id js/json-in-javascript-file
  * @tags maintainability
  *       language-features
- * @precision high
+ * @precision low
  */
 
 import javascript

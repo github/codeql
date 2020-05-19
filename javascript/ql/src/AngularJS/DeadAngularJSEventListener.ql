@@ -3,7 +3,7 @@
  * @description An AngularJS event listener that listens for a non-existent event has no effect.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision low
  * @id js/angular/dead-event-listener
  * @tags correctness
  *       frameworks/angularjs

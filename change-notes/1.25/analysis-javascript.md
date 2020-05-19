@@ -43,6 +43,29 @@
 | Zip Slip (`js/zipslip`) | More results | This query now recognizes additional vulnerabilities. |
 | Unused property (`js/unused-property`) | Less results | This query no longer flags properties of objects that are operands of `yield` expressions. |
 
+The following low-precision queries are no longer run by default on LGTM (their results already were not displayed):
+
+  - `js/angular/dead-event-listener`
+  - `js/angular/unused-dependency`
+  - `js/conflicting-html-attribute`
+  - `js/useless-assignment-to-global`
+  - `js/too-many-parameters`
+  - `js/unused-property`
+  - `js/bitwise-sign-check`
+  - `js/comparison-of-identical-expressions`
+  - `js/misspelled-identifier`
+  - `js/jsdoc/malformed-param-tag`
+  - `js/jsdoc/unknown-parameter`
+  - `js/jsdoc/missing-parameter`
+  - `js/omitted-array-element`
+  - `js/ignored-setter-parameter`
+  - `js/json-in-javascript-file`
+  - `js/node/cyclic-import`
+  - `js/node/unused-npm-dependency`
+  - `js/single-run-loop`
+  - `js/nested-loops-with-same-variable`
+  - `js/return-outside-function`
+
 ## Changes to libraries
 
 * A library `semmle.javascript.explore.CallGraph` has been added to help write queries for exploring the call graph.
