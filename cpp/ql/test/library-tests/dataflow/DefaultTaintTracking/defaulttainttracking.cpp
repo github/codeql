@@ -1,13 +1,13 @@
-int atoi(const char *nptr);
-char *getenv(const char *name);
-char *strcat(char * s1, const char * s2);
+#include "shared.h"
 
-char *strdup(const char *);
-char *_strdup(const char *);
-char *unmodeled_function(const char *);
 
-void sink(const char *);
-void sink(int);
+
+
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
 
