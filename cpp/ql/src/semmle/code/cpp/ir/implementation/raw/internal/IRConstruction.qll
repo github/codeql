@@ -96,9 +96,6 @@ private module Cached {
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
-    // Without the code below, the optimizer will realize that raw IR never contains Chi operands,
-    // and report an error that `ChiTotalOperand` and `ChiPartialOperand` are infeasible.
-//    (tag instanceof ChiTotalOperandTag or tag instanceof ChiPartialOperandTag) and
     none()
   }
 
