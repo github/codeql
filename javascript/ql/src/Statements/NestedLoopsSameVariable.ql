@@ -7,7 +7,7 @@
  * @id js/nested-loops-with-same-variable
  * @tags maintainability
  *       correctness
- * @precision medium
+ * @precision low
  */
 
 import javascript

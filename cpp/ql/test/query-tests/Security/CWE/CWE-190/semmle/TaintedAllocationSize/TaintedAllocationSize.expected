@@ -1,7 +1,7 @@
 edges
-| field_conflation.c:12:22:12:27 | call to getenv | field_conflation.c:13:10:13:25 | Chi |
-| field_conflation.c:12:22:12:34 | (const char *)... | field_conflation.c:13:10:13:25 | Chi |
-| field_conflation.c:13:10:13:25 | Chi | field_conflation.c:19:15:19:17 | taint_array output argument |
+| field_conflation.c:12:22:12:27 | call to getenv | field_conflation.c:13:3:13:18 | Chi |
+| field_conflation.c:12:22:12:34 | (const char *)... | field_conflation.c:13:3:13:18 | Chi |
+| field_conflation.c:13:3:13:18 | Chi | field_conflation.c:19:15:19:17 | taint_array output argument |
 | field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:10:20:13 | (unsigned long)... |
 | field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:13:20:13 | x |
 | field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:13:20:13 | x |
@@ -71,7 +71,7 @@ edges
 nodes
 | field_conflation.c:12:22:12:27 | call to getenv | semmle.label | call to getenv |
 | field_conflation.c:12:22:12:34 | (const char *)... | semmle.label | (const char *)... |
-| field_conflation.c:13:10:13:25 | Chi | semmle.label | Chi |
+| field_conflation.c:13:3:13:18 | Chi | semmle.label | Chi |
 | field_conflation.c:19:15:19:17 | taint_array output argument | semmle.label | taint_array output argument |
 | field_conflation.c:20:10:20:13 | (unsigned long)... | semmle.label | (unsigned long)... |
 | field_conflation.c:20:10:20:13 | (unsigned long)... | semmle.label | (unsigned long)... |

@@ -6,7 +6,7 @@
  * @id js/misspelled-identifier
  * @tags maintainability
  *       readability
- * @precision high
+ * @precision low
  */
 
 import Misspelling
