@@ -1,6 +1,7 @@
 private import implementations.Allocation
 private import implementations.Deallocation
 private import implementations.Fread
+private import implementations.Getenv
 private import implementations.Gets
 private import implementations.IdentityFunction
 private import implementations.Inet
