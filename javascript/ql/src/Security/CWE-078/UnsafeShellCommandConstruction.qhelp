@@ -22,7 +22,7 @@
 
 	<p>
 		If possible, provide the dynamic arguments to the shell as an array 
-		using e.g. the <code>child_process.execFile</code> API to avoid
+		using a safe API such as <code>child_process.execFile</code> to avoid
 		interpretation by the shell.
 	</p>
 
@@ -49,7 +49,7 @@
 	</p>
 
 	<p>
-		Even worse, although less likely, a client might pass in user-controlled
+		Even worse, a client might pass in user-controlled
 		data not knowing that the input is interpreted as a shell command. 
 		This could allow a malicious user to provide the input <code>http://example.org; cat /etc/passwd</code>
 		in order to execute the command <code>cat /etc/passwd</code>.

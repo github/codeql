@@ -1,1 +1,1 @@
-module.exports = function notExporterAnyWhere() {} 
+module.exports = function notExportedAnyWhere() {} 
