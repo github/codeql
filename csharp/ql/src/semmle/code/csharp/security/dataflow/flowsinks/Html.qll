@@ -185,7 +185,7 @@ class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
       c.getTarget() = target and
       target.hasName("Raw") and
       target.getDeclaringType().getABaseType*() instanceof
-        MicrosoftAspNetCoreMvcRenderingHtmlHelperInterface and
+        MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface and
       this.getExpr() = c.getAnArgument()
     )
   }

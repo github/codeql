@@ -200,8 +200,8 @@ class MicrosoftAspNetCoreMvcController extends Class {
 }
 
 /** The `Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper` interface. */
-class MicrosoftAspNetCoreMvcRenderingHtmlHelperInterface extends Interface {
-  MicrosoftAspNetCoreMvcRenderingHtmlHelperInterface() {
+class MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface extends Interface {
+  MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface() {
     getNamespace() instanceof MicrosoftAspNetCoreMvcRendering and
     hasName("IHtmlHelper")
   }
