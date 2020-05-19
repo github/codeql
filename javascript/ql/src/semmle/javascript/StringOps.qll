@@ -64,10 +64,8 @@ module StringOps {
       Function callee;
 
       IndirectStartsWith() {
-        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
-        this.getACallee() = callee and
-        count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and
+        inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+        callee = unique(Function f | f = this.getACallee()) and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
@@ -295,10 +293,8 @@ module StringOps {
       Function callee;
 
       IndirectEndsWith() {
-        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
-        this.getACallee() = callee and
-        count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and
+        inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+        callee = unique(Function f | f = this.getACallee()) and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()

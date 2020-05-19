@@ -100,7 +100,7 @@ class AnalyzedNode extends DataFlow::Node {
   boolean getTheBooleanValue() { forex(boolean bv | bv = getABooleanValue() | result = bv) }
 
   /** Gets the unique type inferred for this node, if any. */
-  InferredType getTheType() { count(getAType()) = 1 and result = getAType() }
+  InferredType getTheType() { result = unique(InferredType t | t = getAType()) }
 
   /**
    * Gets a pretty-printed representation of all types inferred for this node
