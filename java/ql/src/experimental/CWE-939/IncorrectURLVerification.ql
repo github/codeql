@@ -10,6 +10,14 @@
 import java
 
 /**
+ * The Java class `android.R.string` specific to Android applications, which contains references to application specific resources defined in /res/values/strings.xml.
+ * For example, <resources>...<string name="host">example.com</string>...</resources> in the application com.example.android.web can be referred as R.string.host with the type com.example.android.web.R$string
+ */
+class AndroidRString extends RefType {
+  AndroidRString() { this.hasQualifiedName(_, "R$string") }
+}
+
+/**
  * The Java class `android.net.Uri` and `java.net.URL`.
  */
 class Uri extends RefType {
@@ -63,12 +71,13 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getRepresentedString()
           .charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
       or
-      exists(MethodAccess ma, Method m |
+      exists(MethodAccess ma, Method m, Field f |
         this.getArgument(0) = ma and
         ma.getMethod() = m and
         m.hasName("getString") and
         m.getDeclaringType().getQualifiedName() = "android.content.res.Resources" and
-        ma.getArgument(0).toString().indexOf("R.string") = 0
+        ma.getArgument(0).(FieldRead).getField() = f and
+        f.getDeclaringType() instanceof AndroidRString
       ) //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)
       or
       this
