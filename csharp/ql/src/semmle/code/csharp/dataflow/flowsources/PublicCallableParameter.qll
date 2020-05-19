@@ -1,6 +1,4 @@
 /**
- * DEPRECATED.
- *
  * Provides classes representing data flow sources for parameters of public callables.
  */
 

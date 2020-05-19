@@ -769,12 +769,6 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
-
-  /** Holds if this delegate returns a `ref`. */
-  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
-
-  /** Holds if this delegate returns a `ref readonly`. */
-  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 }
 
 /**

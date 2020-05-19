@@ -441,65 +441,6 @@ class IsExpr extends Expr, PatternMatch, @is_expr {
   override string toString() { result = "... is ..." }
 }
 
-/** An `is` type expression, for example, `x is string` or `x is string s`. */
-deprecated class IsTypeExpr extends IsExpr {
-  TypeAccess typeAccess;
-
-  IsTypeExpr() { typeAccess = this.getChild(1) }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = typeAccess.getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = typeAccess }
-}
-
-/** An `is` pattern expression, for example `x is string s`. */
-deprecated class IsPatternExpr extends IsExpr {
-  LocalVariableDeclExpr typeDecl;
-
-  IsPatternExpr() { typeDecl = this.getChild(2) }
-
-  /**
-   * Gets the local variable declaration in this `is` pattern expression.
-   * For example `string s` in `x is string s`.
-   */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = getTypeAccess().getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = this.getChild(1) }
-}
-
-/**
- * An `is` constant expression, for example `x is 5`.
- */
-deprecated class IsConstantExpr extends IsExpr {
-  ConstantPatternExpr constant;
-
-  IsConstantExpr() { constant = this.getPattern() }
-
-  /** Gets the constant expression, for example `5` in `x is 5`. */
-  Expr getConstant() { result = constant }
-
-  /** Gets the value of the constant, for example 5 in `x is 5`. */
-  string getConstantValue() { result = constant.getValue() }
-}
-
 /** A `switch` expression or statement. */
 class Switch extends ControlFlowElement, @switch {
   /** Gets the `i`th case of this `switch`. */
