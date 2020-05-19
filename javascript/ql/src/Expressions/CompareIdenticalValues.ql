@@ -11,7 +11,7 @@
  *       convention
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
- * @precision medium
+ * @precision low
  */
 
 import Clones

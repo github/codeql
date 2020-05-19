@@ -8,7 +8,7 @@
  * @tags maintainability
  *       readability
  *       documentation
- * @precision high
+ * @precision low
  */
 
 import javascript

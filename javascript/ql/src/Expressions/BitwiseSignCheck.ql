@@ -6,7 +6,7 @@
  * @id js/bitwise-sign-check
  * @tags reliability
  *       correctness
- * @precision medium
+ * @precision low
  */
 
 import javascript

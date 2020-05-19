@@ -5,7 +5,7 @@
  * @problem.severity recommendation
  * @id js/unused-property
  * @tags maintainability
- * @precision high
+ * @precision low
  */
 
 import javascript
