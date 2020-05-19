@@ -263,9 +263,7 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
    * of functions that cannot actually complete normally, since it does not
    * account for `finally` blocks and does not check reachability.
    */
-  private predicate mayReturnImplicitly() {
-    terminalNode(astNode, any(ExprOrStmt st))
-  }
+  private predicate mayReturnImplicitly() { terminalNode(astNode, any(ExprOrStmt st)) }
 }
 
 pragma[noinline]

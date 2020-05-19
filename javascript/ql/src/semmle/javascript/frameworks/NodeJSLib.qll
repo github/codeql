@@ -7,9 +7,7 @@ import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
 
 module NodeJSLib {
-  private GlobalVariable processVariable() {
-    variables(result, "process", any(GlobalScope sc))
-  }
+  private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
 
   pragma[nomagic]
   private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
@@ -27,9 +25,7 @@ module NodeJSLib {
    * an import of the `process` module.
    */
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
-    ImplicitProcessImport() {
-      this = DataFlow::exprNode(processExprInNodeModule())
-    }
+    ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
     override string getPath() { result = "process" }
   }

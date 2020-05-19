@@ -311,9 +311,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
    * Holds if this is a final node, that is, a CFG node where execution of a
    * toplevel or function terminates.
    */
-  final predicate isAFinalNode() {
-    isAFinalNodeOfContainer(_)
-  }
+  final predicate isAFinalNode() { isAFinalNodeOfContainer(_) }
 
   /**
    * Holds if this node is unreachable, that is, it has no predecessors in the CFG.
@@ -371,7 +369,9 @@ class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {
 
 /** A synthetic CFG node marking the exit of a function or toplevel script. */
 class ControlFlowExitNode extends SyntheticControlFlowNode, @exit_node {
-  override predicate isAFinalNodeOfContainer(StmtContainer container) { exit_cfg_node(this, container) }
+  override predicate isAFinalNodeOfContainer(StmtContainer container) {
+    exit_cfg_node(this, container)
+  }
 
   override string toString() { result = "exit node of " + getContainer().toString() }
 }

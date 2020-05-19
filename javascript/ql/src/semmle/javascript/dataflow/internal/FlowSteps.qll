@@ -92,8 +92,11 @@ private module CachedSteps {
   cached
   predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
-  private predicate callsBoundInternal(DataFlow::InvokeNode invk, Function f, int boundArgs, boolean contextDependent) {
-    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, contextDependent).flowsTo(invk.getCalleeNode())
+  private predicate callsBoundInternal(
+    DataFlow::InvokeNode invk, Function f, int boundArgs, boolean contextDependent
+  ) {
+    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, contextDependent)
+        .flowsTo(invk.getCalleeNode())
   }
 
   /**

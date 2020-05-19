@@ -265,9 +265,7 @@ private PrimitiveType getAnAddOperandPrimitiveType(Expr e, int n) {
  * Holds if `e` is a `+` or `+=` expression that could be interpreted as a string append
  * (as opposed to a numeric addition) at runtime.
  */
-private predicate isStringAppend(Expr e) {
-  getAnAddOperandPrimitiveType(e, _) = TTString()
-}
+private predicate isStringAppend(Expr e) { getAnAddOperandPrimitiveType(e, _) = TTString() }
 
 /**
  * Holds if `e` is a `+` or `+=` expression that could be interpreted as a numeric addition

@@ -3,6 +3,7 @@
  *
  * Contains the raw data type underlying `DataFlow::Node`.
  */
+
 private import javascript
 
 /**

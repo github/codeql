@@ -1225,9 +1225,7 @@ module DataFlow {
   /**
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
-  predicate parameterNode(DataFlow::Node nd, Parameter p) {
-    nd = valueNode(p)
-  }
+  predicate parameterNode(DataFlow::Node nd, Parameter p) { nd = valueNode(p) }
 
   /**
    * INTERNAL: Use `thisNode(StmtContainer container)` instead.
