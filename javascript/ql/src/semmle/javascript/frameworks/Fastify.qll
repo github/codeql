@@ -26,7 +26,7 @@ module Fastify {
   /**
    * A function used as a Fastify route handler.
    *
-   * By default, only handlers installed by an Fastify route setup are recognized,
+   * By default, only handlers installed by a Fastify route setup are recognized,
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
@@ -34,12 +34,12 @@ module Fastify {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    abstract SimpleParameter getRequestParameter();
+    abstract DataFlow::ParameterNode getRequestParameter();
 
     /**
      * Gets the parameter of the route handler that contains the reply object.
      */
-    abstract SimpleParameter getReplyParameter();
+    abstract DataFlow::ParameterNode getReplyParameter();
   }
 
   /**
@@ -48,9 +48,9 @@ module Fastify {
   class StandardRouteHandler extends RouteHandler, DataFlow::FunctionNode {
     StandardRouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-    override SimpleParameter getRequestParameter() { result = this.getParameter(0).getParameter() }
+    override DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
-    override SimpleParameter getReplyParameter() { result = this.getParameter(1).getParameter() }
+    override DataFlow::ParameterNode getReplyParameter() { result = this.getParameter(1) }
   }
 
   /**
@@ -60,7 +60,7 @@ module Fastify {
   private class ReplySource extends HTTP::Servers::ResponseSource {
     RouteHandler rh;
 
-    ReplySource() { this = DataFlow::parameterNode(rh.getReplyParameter()) }
+    ReplySource() { this = rh.getReplyParameter() }
 
     /**
      * Gets the route handler that provides this response.
@@ -75,7 +75,7 @@ module Fastify {
   private class RequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    RequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
@@ -132,7 +132,9 @@ module Fastify {
     string kind;
 
     RequestInputAccess() {
-      exists(string name | this.(DataFlow::PropRead).accesses(rh.getARequestExpr().flow(), name) |
+      exists(DataFlow::PropRead read, string name |
+        this = read and read = rh.getARequestSource().ref().getAPropertyRead(name)
+      |
         kind = "parameter" and
         name = ["params", "query"]
         or
@@ -153,10 +155,7 @@ module Fastify {
     RouteHandler rh;
 
     RequestHeaderAccess() {
-      exists(DataFlow::PropRead headers |
-        headers.accesses(rh.getARequestExpr().flow(), "headers") and
-        this = headers.getAPropertyRead()
-      )
+      this = rh.getARequestSource().ref().getAPropertyRead("headers").getAPropertyRead()
     }
 
     override string getAHeaderName() {
@@ -175,16 +174,9 @@ module Fastify {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce |
-        mce.calls(rh.getAResponseExpr(), "send") and
-        this = mce.getArgument(0)
-      )
+      this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0).asExpr()
       or
-      exists(Function f |
-        f = rh.(DataFlow::FunctionNode).getFunction() and
-        f.isAsync() and
-        f.getAReturnedExpr() = this
-      )
+      this = rh.(DataFlow::FunctionNode).getAReturn().asExpr()
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -196,7 +188,9 @@ module Fastify {
   private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
     RouteHandler rh;
 
-    RedirectInvocation() { this.calls(rh.getAResponseExpr(), "redirect") }
+    RedirectInvocation() {
+      this = rh.getAResponseSource().ref().getAMethodCall("redirect").asExpr()
+    }
 
     override Expr getUrlArgument() { result = this.getLastArgument() }
 
@@ -206,12 +200,13 @@ module Fastify {
   /**
    * An invocation that sets a single header of the HTTP response.
    */
-  private class SetOneHeader extends HTTP::Servers::StandardHeaderDefinition {
+  private class SetOneHeader extends HTTP::Servers::StandardHeaderDefinition,
+    DataFlow::MethodCallNode {
     RouteHandler rh;
 
     SetOneHeader() {
-      astNode.calls(rh.getAResponseExpr(), "header") and
-      astNode.getNumArgument() = 2
+      this = rh.getAResponseSource().ref().getAMethodCall("header") and
+      this.getNumArgument() = 2
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -224,7 +219,7 @@ module Fastify {
     RouteHandler rh;
 
     SetMultipleHeaders() {
-      this.calls(rh.getAResponseExpr().flow(), "headers") and
+      this = rh.getAResponseSource().ref().getAMethodCall("headers") and
       this.getNumArgument() = 1
     }
 
