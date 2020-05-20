@@ -1,5 +1,5 @@
 /**
- * @id java/leak-without-hsts
+ * @id java/insecure-hsts
  * @name Unprotected transport of credentials without HTTP Strict Transport Security (HSTS)
  * @description HSTS is a web security policy mechanism that helps to protect websites against man-in-the-middle attacks such as protocol downgrade attacks and cookie hijacking.  HSTS is specified in RFC 6797 and is supported by all major browsers and web servers. Missing or incorrect configuration allows unprotected transport of credentials.
  *     This query covers three scenarios of insecure Tomcat configuration:

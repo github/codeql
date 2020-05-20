@@ -16,7 +16,7 @@
 <example>
 <p>The following two examples show two ways of HSTS configuration. In the 'BAD' case, HSTS is not enabled or is incorrectly configured. In the 'GOOD' case, HSTS is enabled for all requests.</p>
 <sample src="insecure-hsts-web.xml" />
-<sample src="secure-hsts-web.xml" />
+<sample src="secure-hsts-web.xml.good" />
 </example>
 
 <references>
