@@ -621,8 +621,7 @@ module TaintedPath {
   }
 
   /**
-   * Holds if there is a flow step from `src` with flow-label `srclabel` to
-   * `dst` with flow-label `dstlabel` for a tainted-path vulnerability.
+  * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
