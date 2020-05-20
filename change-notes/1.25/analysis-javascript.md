@@ -3,6 +3,7 @@
 ## General improvements
 
 * Support for the following frameworks and libraries has been improved:
+  - [bluebird](http://bluebirdjs.com/)
   - [express](https://www.npmjs.com/package/express)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
@@ -12,6 +13,7 @@
   - [mssql](https://www.npmjs.com/package/mssql)
   - [mysql](https://www.npmjs.com/package/mysql)
   - [pg](https://www.npmjs.com/package/pg)
+  - [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
   - [sequelize](https://www.npmjs.com/package/sequelize)
   - [spanner](https://www.npmjs.com/package/spanner)
   - [sqlite](https://www.npmjs.com/package/sqlite)
