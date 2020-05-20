@@ -33,7 +33,7 @@ module NoSQL {
      * [go.mongodb.org/mongo-driver/mongo](https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo)
      * interprets parameter `n` as a query.
      */
-    private predicate collectionMethods(string name, int n) {
+    private predicate mongoDbCollectionMethod(string name, int n) {
       // func (coll *Collection) CountDocuments(ctx context.Context, filter interface{},
       //                                        opts ...*options.CountOptions) (int64, error)
       name = "CountDocuments" and n = 1
@@ -98,7 +98,7 @@ module NoSQL {
     private class MongoDbCollectionQuery extends Range {
       MongoDbCollectionQuery() {
         exists(Method meth, string methodName, int n |
-          collectionMethods(methodName, n) and
+          mongoDbCollectionMethod(methodName, n) and
           meth.hasQualifiedName("go.mongodb.org/mongo-driver/mongo", "Collection", methodName) and
           this = meth.getACall().getArgument(n)
         )
