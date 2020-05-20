@@ -146,6 +146,51 @@ module Fastify {
     override RouteHandler getRouteHandler() { result = rh }
 
     override string getKind() { result = kind }
+
+    override predicate isUserControlledObject() {
+      kind = "body" and
+      (
+        usesFastifyPlugin(rh, DataFlow::moduleImport(["fastify-xml-body-parser", "fastify-formbody"]))
+        or
+        usesMiddleware(rh,
+          any(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects()))
+      )
+      or
+      kind = "parameter" and
+      usesFastifyPlugin(rh, DataFlow::moduleImport("fastify-qs"))
+    }
+  }
+
+  /**
+   * Holds if `rh` uses `plugin`.
+   */
+  private predicate usesFastifyPlugin(RouteHandler rh, DataFlow::SourceNode plugin) {
+    exists(RouteSetup setup |
+      plugin
+          .flowsTo(setup
+                .getServer()
+                .flow()
+                .(DataFlow::SourceNode)
+                .getAMethodCall("register")
+                .getArgument(0)) and // only matches the plugins that apply to all routes
+      rh = setup.getARouteHandler()
+    )
+  }
+
+  /**
+   * Holds if `rh` uses `plugin`.
+   */
+  private predicate usesMiddleware(RouteHandler rh, DataFlow::SourceNode middleware) {
+    exists(RouteSetup setup |
+      middleware
+          .flowsTo(setup
+                .getServer()
+                .flow()
+                .(DataFlow::SourceNode)
+                .getAMethodCall("use")
+                .getArgument(0)) and // only matches the middlewares that apply to all routes
+      rh = setup.getARouteHandler()
+    )
   }
 
   /**

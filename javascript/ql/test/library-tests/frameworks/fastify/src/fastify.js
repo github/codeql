@@ -46,3 +46,47 @@ fastify.post(
   }
 );
 fastify.listen(3000);
+
+var fastifyWithObjects1 = require("fastify")();
+fastifyWithObjects1.register(require("fastify-xml-body-parser"));
+fastifyWithObjects1.post(
+  "/:params",
+  /* handler */ function(request, reply) {
+    request.query;
+    request.body;
+    request.params;
+  }
+);
+
+var fastifyWithObjects2 = require("fastify")();
+fastifyWithObjects2.register(require("fastify-formbody"));
+fastifyWithObjects2.post(
+  "/:params",
+  /* handler */ function(request, reply) {
+    request.query;
+    request.body;
+    request.params;
+  }
+);
+
+var fastifyWithObjects3 = require("fastify")();
+fastifyWithObjects3.register(require("fastify-qs"));
+fastifyWithObjects3.post(
+  "/:params",
+  /* handler */ function(request, reply) {
+    request.query;
+    request.body;
+    request.params;
+  }
+);
+
+var fastifyWithObjects4 = require("fastify")();
+fastifyWithObjects4.use(require("body-parser").urlencoded({ extended: true }));
+fastifyWithObjects4.post(
+  "/:params",
+  /* handler */ function(request, reply) {
+    request.query;
+    request.body;
+    request.params;
+  }
+);
