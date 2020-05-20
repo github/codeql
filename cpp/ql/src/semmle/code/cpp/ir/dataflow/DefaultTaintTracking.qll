@@ -171,7 +171,9 @@ private predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-private predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
+private predicate nodeIsBarrierEqualityCandidate(
+  DataFlow::Node node, Operand access, Variable checkedVar
+) {
   readsVariable(node.asInstruction(), checkedVar) and
   any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
 }
