@@ -203,7 +203,7 @@ public class TypeScriptParser {
             getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
     b.expectFailure(); // We want to do our own logging in case of an error.
 
-    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
+    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 0); // Default to no timeout.
     try {
       int r = b.execute(timeout);
       String stdout = new String(out.toByteArray());
