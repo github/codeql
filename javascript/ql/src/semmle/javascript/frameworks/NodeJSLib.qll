@@ -272,7 +272,7 @@ module NodeJSLib {
     DataFlow::Node tainted;
 
     PathFlowTarget() {
-      exists(string methodName | this = DataFlow::moduleMember("path", methodName).getACall() |
+      exists(string methodName | this = NodeJSLib::Path::moduleMember(methodName).getACall() |
         // getters
         methodName = "basename" and tainted = getArgument(0)
         or
