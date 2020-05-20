@@ -81,7 +81,7 @@ class FlaskRoutedParameter extends HttpRequestTaintSource {
 }
 
 private string werkzeug_rule_re() {
-    // since flask uses werkzeug internally, we are using it's routing rules from
+    // since flask uses werkzeug internally, we are using its routing rules from
     // https://github.com/pallets/werkzeug/blob/4dc8d6ab840d4b78cbd5789cef91b01e3bde01d5/src/werkzeug/routing.py#L138-L151
     result =
         "(?<static>[^<]*)<(?:(?<converter>[a-zA-Z_][a-zA-Z0-9_]*)(?:\\((?<args>.*?)\\))?\\:)?(?<variable>[a-zA-Z_][a-zA-Z0-9_]*)>"
