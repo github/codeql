@@ -31,5 +31,6 @@
 | C.java:188:9:188:11 | obj | Variable $@ may be null here because of $@ assignment. | C.java:181:5:181:22 | Object obj | obj | C.java:181:12:181:21 | obj | this |
 | C.java:207:9:207:11 | obj | Variable $@ may be null here because of $@ assignment. | C.java:201:5:201:22 | Object obj | obj | C.java:201:12:201:21 | obj | this |
 | C.java:219:9:219:10 | o1 | Variable $@ may be null here as suggested by $@ null guard. | C.java:212:20:212:28 | o1 | o1 | C.java:213:9:213:18 | ... == ... | this |
+| C.java:233:7:233:8 | xs | Variable $@ may be null here because of $@ assignment. | C.java:231:5:231:56 | int[] xs | xs | C.java:231:11:231:55 | xs | this |
 | F.java:11:5:11:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | F.java:8:18:8:27 | obj | obj | F.java:9:9:9:19 | ... == ... | this |
 | F.java:17:5:17:7 | obj | Variable $@ may be null here as suggested by $@ null guard. | F.java:14:18:14:27 | obj | obj | F.java:15:9:15:19 | ... == ... | this |

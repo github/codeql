@@ -175,4 +175,23 @@ public class A {
       }
     }
   }
+
+  void m14(int[] xs) {
+    for (int i = 0; i < xs.length + 1; i++) {
+      if (i == 0 && xs.length > 0) {
+        xs[i]++; // OK - FP
+      }
+    }
+  }
+
+  void m15(int[] xs) {
+    for (int i = 0; i < xs.length; i++) {
+      int x = ++i;
+      int y = ++i;
+      if (y < xs.length) {
+        xs[x]++; // OK - FP
+        xs[y]++; // OK
+      }
+    }
+  }
 }
