@@ -132,3 +132,150 @@ module WebSocketRequestCall {
     override DataFlow::Node getRequestUrl() { result = this.getArgument(0) }
   }
 }
+
+/*
+ * A message written to a WebSocket, considered as a flow sink for reflected XSS.
+ */
+
+class WebsocketReaderAsSource extends UntrustedFlowSource::Range {
+  WebsocketReaderAsSource() {
+    exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
+  }
+}
+
+/**
+ * A function or a method which reads a message from a WebSocket connection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `WebSocketReader::Range` instead.
+ */
+class WebSocketReader extends Function {
+  WebSocketReader::Range self;
+
+  WebSocketReader() { this = self }
+
+  /** Gets an output of this function that is read from a WebSocket connection. */
+  FunctionOutput getAnOutput() { result = self.getAnOutput() }
+}
+
+/** Provides classes for working with messages read from a WebSocket. */
+module WebSocketReader {
+  /**
+   * A function or a method which reads a message from a WebSocket connection
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `WebSocketReader` instead.
+   */
+  abstract class Range extends Function {
+    /**Returns the parameter in which the function stores the message read. */
+    abstract FunctionOutput getAnOutput();
+  }
+
+  /**
+   * Models the `Receive` method of the `golang.org/x/net/websocket` package.
+   */
+  private class GolangXNetCodecRecv extends Range, Method {
+    GolangXNetCodecRecv() {
+      // func (cd Codec) Receive(ws *Conn, v interface{}) (err error)
+      this.hasQualifiedName("golang.org/x/net/websocket", "Codec", "Receive")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(1) }
+  }
+
+  /**
+   * Models the `Read` method of the `golang.org/x/net/websocket` package.
+   */
+  private class GolangXNetConnRead extends Range, Method {
+    GolangXNetConnRead() {
+      // func (ws *Conn) Read(msg []byte) (n int, err error)
+      this.hasQualifiedName("golang.org/x/net/websocket", "Conn", "Read")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(0) }
+  }
+
+  /**
+   * Models the `Read` method of the `nhooyr.io/websocket` package.
+   */
+  private class NhooyrWebsocketRead extends Range, Method {
+    NhooyrWebsocketRead() {
+      // func (c *Conn) Read(ctx context.Context) (MessageType, []byte, error)
+      this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Read")
+    }
+
+    override FunctionOutput getAnOutput() { result.isResult(1) }
+  }
+
+  /**
+   * Models the `Reader` method of the `nhooyr.io/websocket` package.
+   */
+  private class NhooyrWebsocketReader extends Range, Method {
+    NhooyrWebsocketReader() {
+      // func (c *Conn) Reader(ctx context.Context) (MessageType, io.Reader, error)
+      this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Reader")
+    }
+
+    override FunctionOutput getAnOutput() { result.isResult(1) }
+  }
+
+  /**
+   * Models the `ReadFrame`function of the `github.com/gobwas/ws` package.
+   */
+  private class GobwasWsReadFrame extends Range {
+    GobwasWsReadFrame() {
+      // func ReadFrame(r io.Reader) (f Frame, err error)
+      this.hasQualifiedName("github.com/gobwas/ws", "ReadFrame")
+    }
+
+    override FunctionOutput getAnOutput() { result.isResult(0) }
+  }
+
+  /**
+   * Models the `ReadHeader`function of the `github.com/gobwas/ws` package.
+   */
+  private class GobwasWsReadHeader extends Range {
+    GobwasWsReadHeader() {
+      // func ReadHeader(r io.Reader) (h Header, err error)
+      this.hasQualifiedName("github.com/gobwas/ws", "ReadHeader")
+    }
+
+    override FunctionOutput getAnOutput() { result.isResult(0) }
+  }
+
+  /**
+   * Models the `ReadJson` function of the `github.com/gorilla/websocket` package.
+   */
+  private class GorillaWebsocketReadJson extends Range {
+    GorillaWebsocketReadJson() {
+      // func ReadJSON(c *Conn, v interface{}) error
+      this.hasQualifiedName("github.com/gorilla/websocket", "ReadJSON")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(1) }
+  }
+
+  /**
+   * Models the `ReadJson` method of the `github.com/gorilla/websocket` package.
+   */
+  private class GorillaWebsocketConnReadJson extends Range, Method {
+    GorillaWebsocketConnReadJson() {
+      // func (c *Conn) ReadJSON(v interface{}) error
+      this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadJSON")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(0) }
+  }
+
+  /**
+   * Models the `ReadMessage` method of the `github.com/gorilla/websocket` package.
+   */
+  private class GorillaWebsocketReadMessage extends Range, Method {
+    GorillaWebsocketReadMessage() {
+      // func (c *Conn) ReadMessage() (messageType int, p []byte, err error)
+      this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadMessage")
+    }
+
+    override FunctionOutput getAnOutput() { result.isResult(1) }
+  }
+}

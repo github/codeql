@@ -4,9 +4,6 @@ github.com/gobwas/ws
 # github.com/gorilla/websocket v1.4.2
 ## explicit
 github.com/gorilla/websocket
-# github.com/sacOO7/gowebsocket v0.0.0-20180719182212-1436bb906a4e
-## explicit
-github.com/sacOO7/gowebsocket
 # golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
 ## explicit
 golang.org/x/net
