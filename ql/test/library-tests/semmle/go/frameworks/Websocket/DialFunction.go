@@ -1,10 +1,6 @@
 package main
 
-//go:generate depstubber -vendor github.com/gobwas/ws Dialer Dial
-//go:generate depstubber -vendor github.com/gorilla/websocket Dialer
 //go:generate depstubber -vendor github.com/sacOO7/gowebsocket "" New,BuildProxy
-//go:generate depstubber -vendor golang.org/x/net/websocket "" Dial,NewConfig,DialConfig
-//go:generate depstubber -vendor nhooyr.io/websocket "" Dial
 
 import (
 	"context"

@@ -1,8 +1,8 @@
 package main
 
-//go:generate depstubber -vendor github.com/gobwas/ws "" ReadFrame,WriteFrame,NewTextFrame,Dial
+//go:generate depstubber -vendor github.com/gobwas/ws Dialer ReadFrame,WriteFrame,NewTextFrame,Dial
 //go:generate depstubber -vendor github.com/gorilla/websocket Dialer ReadJSON,WriteJSON,NewPreparedMessage
-//go:generate depstubber -vendor golang.org/x/net/websocket Codec Dial
+//go:generate depstubber -vendor golang.org/x/net/websocket Codec Dial,NewConfig,DialConfig
 //go:generate depstubber -vendor nhooyr.io/websocket "" Dial
 
 import (
