@@ -65,7 +65,7 @@ func serve9(log io.Writer) {
 		r.ParseForm()
 		username := r.Form.Get("username")
 		// OK: not a ResponseWriter
-		log.Write(username)
+		log.Write([]byte(username))
 	})
 	http.ListenAndServe(":80", nil)
 }

@@ -17,22 +17,22 @@ import (
 )
 
 func main() {
-	untrustedInput := r.Referer()
+	untrustedInput := "referrer"
 
 	origin := "http://localhost/"
 
 	// bad as input is directly passed to dial function
-	ws, _ := websocket.Dial(untrustedInput, "", origin)
+	websocket.Dial(untrustedInput, "", origin)
 
 	config, _ := websocket.NewConfig(untrustedInput, origin) // good
-	ws2, _ := websocket.DialConfig(config)
+	websocket.DialConfig(config)
 
 	nhooyr.Dial(context.TODO(), untrustedInput, nil)
 
 	dialer := gorilla.Dialer{}
-	dialer.Dial(untrustedInput, r.Header)
+	dialer.Dial(untrustedInput, nil)
 
-	dialer.DialContext(context.TODO(), untrustedInput, r.Header)
+	dialer.DialContext(context.TODO(), untrustedInput, nil)
 
 	gobwas.Dial(context.TODO(), untrustedInput)
 
@@ -41,5 +41,4 @@ func main() {
 
 	sac.BuildProxy(untrustedInput)
 	sac.New(untrustedInput)
-
 }
