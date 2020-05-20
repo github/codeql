@@ -1,0 +1,9 @@
+| DialFunction.go:25:11:25:52 | call to Dial | DialFunction.go:25:26:25:39 | untrustedInput |
+| DialFunction.go:28:12:28:39 | call to DialConfig | DialFunction.go:27:35:27:48 | untrustedInput |
+| DialFunction.go:30:2:30:49 | call to Dial | DialFunction.go:30:30:30:43 | untrustedInput |
+| DialFunction.go:33:2:33:38 | call to Dial | DialFunction.go:33:14:33:27 | untrustedInput |
+| DialFunction.go:35:2:35:61 | call to DialContext | DialFunction.go:35:37:35:50 | untrustedInput |
+| DialFunction.go:37:2:37:44 | call to Dial | DialFunction.go:37:30:37:43 | untrustedInput |
+| DialFunction.go:40:2:40:45 | call to Dial | DialFunction.go:40:31:40:44 | untrustedInput |
+| DialFunction.go:42:2:42:31 | call to BuildProxy | DialFunction.go:42:17:42:30 | untrustedInput |
+| DialFunction.go:43:2:43:24 | call to New | DialFunction.go:43:10:43:23 | untrustedInput |

@@ -24,3 +24,12 @@ class Package extends @package {
   /** Gets a textual representation of this element. */
   string toString() { result = "package " + getPath() }
 }
+
+/**
+ * Gets the Go import string that may identify a package in module `mod` with the given path,
+ * possibly modulo semantic import versioning.
+ */
+bindingset[result, mod, path]
+string package(string mod, string path) {
+  result.regexpMatch("\\Q" + mod + "\\E([/.]v[^/]+)?/\\Q" + path + "\\E")
+}

@@ -34,5 +34,6 @@ import semmle.go.frameworks.SQL
 import semmle.go.frameworks.XPath
 import semmle.go.frameworks.Stdlib
 import semmle.go.frameworks.Testing
+import semmle.go.frameworks.Websocket
 import semmle.go.security.FlowSources
 import semmle.go.Util
