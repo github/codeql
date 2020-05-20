@@ -142,6 +142,11 @@
 | globals.html:26:52:26:53 | x2 | globals.html:26:57:26:66 | someGlobal | file://:0:0:0:0 | non-zero value |
 | globals.html:26:52:26:53 | x2 | globals.html:26:57:26:66 | someGlobal | file://:0:0:0:0 | true |
 | h_import.js:2:5:2:6 | ff | h_import.js:2:10:2:10 | f | h.js:1:8:1:22 | function f |
+| implicit-returns.js:4:9:4:9 | i | implicit-returns.js:4:13:4:13 | 0 | file://:0:0:0:0 | 0 |
+| implicit-returns.js:15:9:15:9 | x | implicit-returns.js:15:13:15:25 | endWithLoop() | file://:0:0:0:0 | true |
+| implicit-returns.js:15:9:15:9 | x | implicit-returns.js:15:13:15:25 | endWithLoop() | file://:0:0:0:0 | undefined |
+| implicit-returns.js:25:9:25:9 | x | implicit-returns.js:25:13:25:28 | endWithShortIf() | file://:0:0:0:0 | true |
+| implicit-returns.js:25:9:25:9 | x | implicit-returns.js:25:13:25:28 | endWithShortIf() | file://:0:0:0:0 | undefined |
 | import.js:2:5:2:5 | m | import.js:2:9:2:13 | mixin | mixins.js:1:16:1:32 | anonymous function |
 | import.js:5:5:5:7 | myf | import.js:5:11:5:11 | f | n.js:1:1:1:15 | function f |
 | import.js:8:5:8:11 | someVar | import.js:8:15:8:23 | someStuff | file://:0:0:0:0 | indefinite value (call) |

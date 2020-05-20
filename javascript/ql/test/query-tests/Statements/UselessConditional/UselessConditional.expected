@@ -14,7 +14,6 @@
 | UselessConditional.js:60:9:60:15 | unknown | This use of variable 'unknown' always evaluates to false. |
 | UselessConditional.js:65:5:65:5 | x | This use of variable 'x' always evaluates to true. |
 | UselessConditional.js:76:13:76:13 | x | This use of variable 'x' always evaluates to true. |
-| UselessConditional.js:82:13:82:13 | x | This use of variable 'x' always evaluates to true. |
 | UselessConditional.js:89:10:89:16 | x, true | This expression always evaluates to true. |
 | UselessConditional.js:94:16:94:16 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:100:13:100:24 | true && true | This expression always evaluates to true. |

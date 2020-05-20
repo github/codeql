@@ -70,3 +70,7 @@ The following low-precision queries are no longer run by default on LGTM (their 
 
 * A library `semmle.javascript.explore.CallGraph` has been added to help write queries for exploring the call graph.
 * Added data flow for `Map` and `Set`, and added matching type-tracking steps that can accessed using the `CollectionsTypeTracking` module.
+* The data-flow node representing a parameter or destructuring pattern is now always the `ValueNode` corresponding to that AST node. This has a few consequences:
+  - `Parameter.flow()` now gets the correct data flow node for a parameter. Previously this had a result, but the node was disconnected from the data flow graph.
+  - `ParameterNode.asExpr()` and `.getAstNode()` now gets the parameter's AST node, whereas previously it had no result.
+  - `Expr.flow()` now has a more meaningful result for destructuring patterns. Previously this node was disconnected from the data flow graph. Now it represents the values being destructured by the pattern.

@@ -6,6 +6,7 @@
 
 private import javascript
 private import AbstractValuesImpl
+private import AnalyzedParameters
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.Refinements
 
@@ -120,7 +121,7 @@ class AnalyzedVarDef extends VarDef {
    * due to the given `cause`.
    */
   predicate isIncomplete(DataFlow::Incompleteness cause) {
-    this instanceof Parameter and cause = "call"
+    this instanceof Parameter and DataFlow::valueNode(this).(AnalyzedValueNode).isIncomplete(cause)
     or
     this instanceof ImportSpecifier and cause = "import"
     or
@@ -143,47 +144,21 @@ class AnalyzedVarDef extends VarDef {
 /**
  * Flow analysis for simple parameters of selected functions.
  */
-private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
-  AnalyzedParameter() {
-    exists(FunctionWithAnalyzedParameters f, int parmIdx | this = f.getParameter(parmIdx) |
-      // we cannot track flow into rest parameters
-      not this.(Parameter).isRestParameter()
-    )
-  }
-
-  /** Gets the function this is a parameter of. */
-  FunctionWithAnalyzedParameters getFunction() { this = result.getAParameter() }
-
-  override DataFlow::AnalyzedNode getRhs() {
-    getFunction().argumentPassing(this, result.asExpr()) or
-    result = AnalyzedVarDef.super.getRhs()
-  }
+private class AnalyzedParameterAsVarDef extends AnalyzedVarDef, @vardecl {
+  AnalyzedParameterAsVarDef() { this instanceof Parameter }
 
   override AbstractValue getAnRhsValue() {
-    result = AnalyzedVarDef.super.getAnRhsValue()
-    or
-    not getFunction().mayReceiveArgument(this) and
-    result = TAbstractUndefined()
-  }
-
-  override predicate isIncomplete(DataFlow::Incompleteness cause) {
-    getFunction().isIncomplete(cause)
-    or
-    not getFunction().argumentPassing(this, _) and
-    getFunction().mayReceiveArgument(this) and
-    cause = "call"
+    result = DataFlow::valueNode(this).(AnalyzedValueNode).getALocalValue()
   }
 }
 
 /**
  * Flow analysis for simple rest parameters.
  */
-private class AnalyzedRestParameter extends AnalyzedVarDef, @vardecl {
-  AnalyzedRestParameter() { this.(Parameter).isRestParameter() }
+private class AnalyzedRestParameter extends AnalyzedValueNode {
+  AnalyzedRestParameter() { astNode.(Parameter).isRestParameter() }
 
-  override AbstractValue getAnRhsValue() { result = TAbstractOtherObject() }
-
-  override predicate isIncomplete(DataFlow::Incompleteness cause) { none() }
+  override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 }
 
 /**
@@ -412,9 +387,7 @@ private class AnalyzedGlobalVarUse extends DataFlow::AnalyzedValueNode {
     result.getBase().analyze().getALocalValue() instanceof AbstractGlobalObject
   }
 
-  override predicate isIncomplete(DataFlow::Incompleteness reason) {
-    super.isIncomplete(reason)
-    or
+  override predicate hasAdditionalIncompleteness(DataFlow::Incompleteness reason) {
     clobberedProp(gv, reason)
   }
 
@@ -448,7 +421,7 @@ private AnalyzedVarDef defIn(GlobalVariable gv, TopLevel tl) {
  * Holds if there is a write to a property with the same name as `gv` on an object
  * for which the analysis is incomplete due to the given `reason`.
  */
-pragma[noinline]
+cached
 private predicate clobberedProp(GlobalVariable gv, DataFlow::Incompleteness reason) {
   exists(AnalyzedNode base |
     potentialPropWriteOfGlobal(base, gv) and
@@ -456,13 +429,13 @@ private predicate clobberedProp(GlobalVariable gv, DataFlow::Incompleteness reas
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate indefiniteObjectValue(AbstractValue val, DataFlow::Incompleteness reason) {
   val.isIndefinite(reason) and
   val.getType() = TTObject()
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate potentialPropWriteOfGlobal(AnalyzedNode base, GlobalVariable gv) {
   exists(DataFlow::PropWrite pwn |
     pwn.getPropertyName() = gv.getName() and
@@ -668,7 +641,7 @@ abstract class FunctionWithAnalyzedParameters extends Function {
    * Holds if `p` is a parameter of this function and `arg` is
    * the corresponding argument.
    */
-  abstract predicate argumentPassing(SimpleParameter p, Expr arg);
+  abstract predicate argumentPassing(Parameter p, Expr arg);
 
   /**
    * Holds if `p` is a parameter of this function that may receive a value from an argument.
@@ -688,7 +661,7 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
    */
   abstract DataFlow::InvokeNode getAnInvocation();
 
-  override predicate argumentPassing(SimpleParameter p, Expr arg) {
+  override predicate argumentPassing(Parameter p, Expr arg) {
     exists(DataFlow::InvokeNode invk, int argIdx | invk = getAnInvocation() |
       p = getParameter(argIdx) and
       not p.isRestParameter() and
