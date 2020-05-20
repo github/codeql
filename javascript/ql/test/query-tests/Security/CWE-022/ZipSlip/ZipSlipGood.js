@@ -29,3 +29,11 @@ fs.createReadStream('archive.zip')
       entry.pipe(fs.createWriteStream(fileName)); // OK.
     }
   });
+
+fs.createReadStream('archive.zip')
+  .pipe(unzip.Parse())
+  .on('entry', entry => {
+    const fileName = path.normalize(entry.path);
+
+    entry.pipe(fs.createWriteStream(path.basename(fileName))); // OK.
+  });

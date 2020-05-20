@@ -7,25 +7,23 @@
 import javascript
 
 module ZipSlip {
+  import TaintedPathCustomizations::TaintedPath as TaintedPath
+
   /**
    * A data flow source for unsafe archive extraction.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a source. */
+    TaintedPath::Label::PosixPath getAFlowLabel() { result.isRelative() }
+  }
 
   /**
    * A data flow sink for unsafe archive extraction.
    */
-  abstract class Sink extends DataFlow::Node { }
-
-  /**
-   * A sanitizer for unsafe archive extraction.
-   */
-  abstract class Sanitizer extends DataFlow::Node { }
-
-  /**
-   * A sanitizer guard for unsafe archive extraction.
-   */
-  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
+  abstract class Sink extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a sink. */
+    TaintedPath::Label::PosixPath getAFlowLabel() { any() }
+  }
 
   /**
    * Gets a node that can be a parsed archive.
@@ -121,43 +119,5 @@ module ZipSlip {
   /** A file path of a file write, as a sink for unsafe archive extraction. */
   class FileSystemWriteSink extends Sink {
     FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
-  }
-
-  /** An expression that sanitizes by calling path.basename */
-  class BasenameSanitizer extends Sanitizer {
-    BasenameSanitizer() { this = DataFlow::moduleImport("path").getAMemberCall("basename") }
-  }
-
-  /**
-   * An expression that forces the output path to be in the current working folder.
-   * Recognizes the pattern: `path.join(cwd, path.join('/', orgPath))`.
-   */
-  class PathSanitizer extends Sanitizer, DataFlow::CallNode {
-    PathSanitizer() {
-      this = NodeJSLib::Path::moduleMember("join").getACall() and
-      exists(DataFlow::CallNode inner | inner = getArgument(1) |
-        inner = NodeJSLib::Path::moduleMember("join").getACall() and
-        inner.getArgument(0).mayHaveStringValue("/")
-      )
-    }
-  }
-
-  /**
-   * Gets a string which is sufficient to exclude to make
-   * a filepath definitely not refer to parent directories.
-   */
-  private string getAParentDirName() { result = ".." or result = "../" }
-
-  /** A check that a path string does not include '..' */
-  class NoParentDirSanitizerGuard extends SanitizerGuard {
-    StringOps::Includes incl;
-
-    NoParentDirSanitizerGuard() { this = incl }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      incl.getPolarity().booleanNot() = outcome and
-      incl.getBaseString().asExpr() = e and
-      incl.getSubstring().mayHaveStringValue(getAParentDirName())
-    }
   }
 }
