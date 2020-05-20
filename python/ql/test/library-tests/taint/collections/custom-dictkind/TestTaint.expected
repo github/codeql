@@ -10,3 +10,7 @@
 | test.py:23 | test_custom_kind | Attribute() | externally controlled string |
 | test.py:24 | test_custom_kind | Attribute | NO TAINT |
 | test.py:25 | test_custom_kind | Attribute | file[externally controlled string] |
+| test.py:34 | test_attr_based | Subscript | file[externally controlled string] |
+| test.py:35 | test_attr_based | Attribute | NO TAINT |
+| test.py:39 | test_attr_based | Subscript | externally controlled string |
+| test.py:40 | test_attr_based | Attribute | NO TAINT |

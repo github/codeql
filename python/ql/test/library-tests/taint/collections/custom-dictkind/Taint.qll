@@ -56,3 +56,41 @@ class BarDictSource extends TaintSource {
         kind.(DictKind).getValue() instanceof ExternalStringKind
     }
 }
+
+
+/**
+ * Kind for a custom dictionary class where `dict.key` is the same as `dict['key']`.
+ * A real example is `bottle.FormsDict`.
+*/
+class AttrBasedDictKind extends TaintKind {
+
+    // we _could_ add a `TaintKind valueKind` field, but then we need a way to disallow
+    // infinite recursion since `valueKind` could be `AttrBasedDictKind`. Essentially the
+    // same problem that CollectionKind, SequenceKind, and DictKind is dealing with :\
+
+    AttrBasedDictKind() { this = "AttrBasedDictKind" }
+
+    // bindingset[name]
+    // override TaintKind getTaintOfAttribute(string name) {
+    //     result instanceof <TODO>
+    // }
+}
+
+class AttrBasedDictSource extends TaintSource {
+
+    TaintKind valueKind;
+
+    AttrBasedDictSource() {
+        this.(NameNode).getId() = "ATTR_BASED_FILES" and
+        valueKind instanceof ExternalFileObject
+        or
+        this.(NameNode).getId() = "ATTR_BASED_STRINGS" and
+        valueKind instanceof ExternalStringKind
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof AttrBasedDictKind
+        or
+        kind.(DictKind).getValue() = valueKind
+    }
+}
