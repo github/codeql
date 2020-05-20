@@ -71,8 +71,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal

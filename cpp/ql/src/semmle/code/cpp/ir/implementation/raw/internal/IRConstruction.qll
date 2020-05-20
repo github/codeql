@@ -63,8 +63,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
@@ -98,17 +96,6 @@ private module Cached {
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
-    exists(TranslatedElement translatedElement, TranslatedFunction translatedFunc |
-      translatedElement = getInstructionTranslatedElement(instruction) and
-      exists(getInstructionOperandType(instruction, tag)) and
-      translatedFunc = getTranslatedFunction(instruction.getEnclosingFunction()) and
-      result = translatedFunc.getUnmodeledDefinitionInstruction() and
-      overlap instanceof MustTotallyOverlap
-    )
-    or
-    // Without the code below, the optimizer will realize that raw IR never contains Chi operands,
-    // and report an error that `ChiTotalOperand` and `ChiPartialOperand` are infeasible.
-    (tag instanceof ChiTotalOperandTag or tag instanceof ChiPartialOperandTag) and
     none()
   }
 

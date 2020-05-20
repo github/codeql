@@ -67,8 +67,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
@@ -127,14 +125,7 @@ private module Cached {
       oldInstruction = getOldInstruction(instruction) and
       oldOperand = oldInstruction.getAnOperand() and
       tag = oldOperand.getOperandTag() and
-      (
-        if exists(Alias::getOperandMemoryLocation(oldOperand))
-        then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
-        else (
-          result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
-          overlap instanceof MustTotallyOverlap
-        )
-      )
+      hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
     )
     or
     instruction = Chi(getOldInstruction(result)) and
