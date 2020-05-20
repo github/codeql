@@ -207,9 +207,9 @@
 | ax{3,} | sequence | 0 | 6 |
 | ax{3} | char | 0 | 1 |
 | ax{3} | char | 1 | 2 |
-| ax{3} | char | 2 | 3 |
 | ax{3} | char | 3 | 4 |
 | ax{3} | char | 4 | 5 |
+| ax{3} | qualified | 1 | 5 |
 | ax{3} | sequence | 0 | 5 |
 | ax{,3} | char | 0 | 1 |
 | ax{,3} | char | 1 | 2 |

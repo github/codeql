@@ -11,4 +11,5 @@
 | ^[A-Z_]+$(?<!not-this) | 1 | 8 | false |
 | ax{01,3} | 1 | 8 | false |
 | ax{3,} | 1 | 6 | false |
+| ax{3} | 1 | 5 | false |
 | ax{,3} | 1 | 6 | true |
