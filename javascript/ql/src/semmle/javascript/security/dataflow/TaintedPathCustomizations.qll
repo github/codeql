@@ -627,7 +627,7 @@ module TaintedPath {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    isTaintedPathStep(src, dst, srclabel, dstlabel)
+    isPosixPathStep(src, dst, srclabel, dstlabel)
     or
     // Ignore all preliminary sanitization after decoding URI components
     srclabel instanceof Label::PosixPath and
@@ -741,7 +741,7 @@ module TaintedPath {
    * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
    * standard taint step `src -> dst` should be suppresesd.
    */
-  private predicate isTaintedPathStep(
+  private predicate isPosixPathStep(
     DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
   ) {
     // path.normalize() and similar
