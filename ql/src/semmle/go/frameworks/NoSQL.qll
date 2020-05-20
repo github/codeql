@@ -7,24 +7,24 @@ import go
 /** Provides classes for working with NoSQL-related APIs. */
 module NoSQL {
   /**
-   * A data-flow node whose string value is interpreted as (part of) a NoSQL query.
+   * A data-flow node whose value is interpreted as (part of) a NoSQL query.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `NoSQL::QueryString::Range` instead.
+   * extend `NoSQL::Query::Range` instead.
    */
-  class NoSQLQueryString extends DataFlow::Node {
-    NoSQLQueryString::Range self;
+  class Query extends DataFlow::Node {
+    Query::Range self;
 
-    NoSQLQueryString() { this = self }
+    Query() { this = self }
   }
 
-  /** Provides classes for working with SQL query strings. */
-  module NoSQLQueryString {
+  /** Provides classes for working with NoSQL queries. */
+  module Query {
     /**
-     * A data-flow node whose string value is interpreted as (part of) a NoSQL query.
+     * A data-flow node whose value is interpreted as (part of) a NoSQL query.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `NoSQL::QueryString` instead.
+     * extend `NoSQL::Query` instead.
      */
     abstract class Range extends DataFlow::Node { }
 
@@ -33,7 +33,8 @@ module NoSQL {
      * package interprets parameter `n` as a query.
      */
     private predicate collectionMethods(string name, int n) {
-      // func (coll *Collection) CountDocuments(ctx context.Context, filter interface{}, opts ...*options.CountOptions) (int64, error)
+      // func (coll *Collection) CountDocuments(ctx context.Context, filter interface{},
+      //                                        opts ...*options.CountOptions) (int64, error)
       name = "CountDocuments" and n = 1
       or
       // func (coll *Collection) DeleteMany(ctx context.Context, filter interface{}, opts ...*options.DeleteOptions) (*DeleteResult, error)
@@ -77,11 +78,11 @@ module NoSQL {
     }
 
     /**
-     * A query string used in an API function acting on a `Collection` struct of
-     * `go.mongodb.org/mongo-driver/mongo` package
+     * A query used in an API function acting on a `Collection` struct of package
+     * [go.mongodb.org/mongo-driver/mongo](https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo).
      */
-    private class MongoDbCollectionQueryString extends Range {
-      MongoDbCollectionQueryString() {
+    private class MongoDbCollectionQuery extends Range {
+      MongoDbCollectionQuery() {
         exists(Method meth, string methodName, int n |
           collectionMethods(methodName, n) and
           meth.hasQualifiedName("go.mongodb.org/mongo-driver/mongo", "Collection", methodName) and
