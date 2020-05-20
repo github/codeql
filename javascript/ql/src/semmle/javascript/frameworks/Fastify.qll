@@ -5,6 +5,9 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 
+/**
+ * Provides classes for working with [Fastify](https://www.fastify.io/) applications.
+ */
 module Fastify {
   /**
    * An expression that creates a new Fastify server.
