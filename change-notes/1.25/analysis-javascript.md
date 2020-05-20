@@ -20,6 +20,8 @@
   - [ssh2](https://www.npmjs.com/package/ssh2)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
 
+* TypeScript 3.9 is now supported.
+
 ## New queries
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
