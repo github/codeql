@@ -132,9 +132,7 @@ module Fastify {
     string kind;
 
     RequestInputAccess() {
-      exists(DataFlow::PropRead read, string name |
-        this = read and read = rh.getARequestSource().ref().getAPropertyRead(name)
-      |
+      exists(string name | this = rh.getARequestSource().ref().getAPropertyRead(name) |
         kind = "parameter" and
         name = ["params", "query"]
         or
@@ -150,7 +148,8 @@ module Fastify {
     override predicate isUserControlledObject() {
       kind = "body" and
       (
-        usesFastifyPlugin(rh, DataFlow::moduleImport(["fastify-xml-body-parser", "fastify-formbody"]))
+        usesFastifyPlugin(rh,
+          DataFlow::moduleImport(["fastify-xml-body-parser", "fastify-formbody"]))
         or
         usesMiddleware(rh,
           any(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects()))
