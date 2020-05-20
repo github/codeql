@@ -1,8 +1,8 @@
-| test.py:3:20:3:31 | TAINTED_DICT | DictPart | {externally controlled string} |
+| test.py:3:20:3:31 | TAINTED_DICT | ExternalStringDictKind | {externally controlled string} |
 | test.py:3:20:3:31 | TAINTED_DICT | StringDictKind | {externally controlled string} |
-| test.py:4:16:4:23 | FOO_DICT | DictPart | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | ExternalStringDictKind | {externally controlled string} |
+| test.py:4:16:4:23 | FOO_DICT | FooDictKind | FooDictKind |
 | test.py:4:16:4:23 | FOO_DICT | StringDictKind | {externally controlled string} |
-| test.py:4:16:4:23 | FOO_DICT | SubclassSpecific | FooDictKind::SubclassSpecific |
 | test.py:5:16:5:23 | BAR_DICT | BarDictKind | BarDictKind |
-| test.py:5:16:5:23 | BAR_DICT | DictPart | {externally controlled string} |
+| test.py:5:16:5:23 | BAR_DICT | ExternalStringDictKind | {externally controlled string} |
 | test.py:5:16:5:23 | BAR_DICT | StringDictKind | {externally controlled string} |

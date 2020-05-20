@@ -21,27 +21,22 @@ class DictSource extends TaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringDictKind }
 }
 
-abstract class FooDictKind extends TaintKind {
-    bindingset[this]
-    FooDictKind() { any() }
-}
+class FooDictKind extends TaintKind {
+    FooDictKind() { this = "FooDictKind" }
 
-private module FooDictKind {
-    class SubclassSpecific extends FooDictKind {
-        SubclassSpecific() { this = "FooDictKind::SubclassSpecific" }
-
-        override TaintKind getTaintOfAttribute(string name) {
-            name = "foo" and result instanceof ExternalFileObject
-        }
+    override TaintKind getTaintOfAttribute(string name) {
+        name = "foo" and result instanceof ExternalFileObject
     }
-
-    class DictPart extends FooDictKind, ExternalStringDictKind { }
 }
 
 class FooDictSource extends TaintSource {
     FooDictSource() { this.(NameNode).getId() = "FOO_DICT" }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof FooDictKind }
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof FooDictKind
+        or
+        kind.(DictKind).getValue() instanceof ExternalStringKind
+    }
 }
 
 class BarDictKind extends TaintKind {
@@ -58,6 +53,6 @@ class BarDictSource extends TaintSource {
     override predicate isSourceOf(TaintKind kind) {
         kind instanceof BarDictKind
         or
-        kind instanceof ExternalStringDictKind
+        kind.(DictKind).getValue() instanceof ExternalStringKind
     }
 }
