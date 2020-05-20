@@ -112,7 +112,7 @@ module NoSQL {
   predicate isAdditionalMongoTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Taint an entry if the `Value` is tainted
     exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, pred) |
-      base = succ.getASuccessor*() and
+      base = succ.(DataFlow::PostUpdateNode).getPreUpdateNode() and
       base.getType().hasQualifiedName("go.mongodb.org/mongo-driver/bson/primitive", "E") and
       f.getName() = "Value"
     )
