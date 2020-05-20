@@ -1,13 +1,24 @@
+| format.cpp:52:8:52:15 | call to snprintf | format.cpp:52:36:52:49 | call to source |
 | format.cpp:53:8:53:13 | buffer | format.cpp:52:36:52:49 | call to source |
+| format.cpp:57:8:57:15 | call to snprintf | format.cpp:57:30:57:43 | call to source |
 | format.cpp:58:8:58:13 | buffer | format.cpp:57:30:57:43 | call to source |
+| format.cpp:62:8:62:15 | call to snprintf | format.cpp:62:52:62:65 | call to source |
 | format.cpp:63:8:63:13 | buffer | format.cpp:62:52:62:65 | call to source |
+| format.cpp:67:8:67:15 | call to snprintf | format.cpp:67:42:67:55 | call to source |
 | format.cpp:68:8:68:13 | buffer | format.cpp:67:42:67:55 | call to source |
+| format.cpp:78:8:78:15 | call to snprintf | format.cpp:78:36:78:41 | call to source |
 | format.cpp:79:8:79:13 | buffer | format.cpp:78:36:78:41 | call to source |
+| format.cpp:83:8:83:15 | call to snprintf | format.cpp:83:38:83:43 | call to source |
 | format.cpp:84:8:84:13 | buffer | format.cpp:83:38:83:43 | call to source |
+| format.cpp:89:8:89:15 | call to snprintf | format.cpp:89:36:89:49 | call to source |
 | format.cpp:90:8:90:13 | buffer | format.cpp:89:36:89:49 | call to source |
+| format.cpp:95:8:95:14 | call to sprintf | format.cpp:95:30:95:43 | call to source |
 | format.cpp:96:8:96:13 | buffer | format.cpp:95:30:95:43 | call to source |
+| format.cpp:100:8:100:14 | call to sprintf | format.cpp:100:31:100:45 | call to source |
 | format.cpp:101:8:101:13 | buffer | format.cpp:100:31:100:45 | call to source |
+| format.cpp:105:8:105:15 | call to swprintf | format.cpp:105:38:105:52 | call to source |
 | format.cpp:106:8:106:14 | wbuffer | format.cpp:105:38:105:52 | call to source |
+| format.cpp:110:8:110:16 | call to mysprintf | format.cpp:110:37:110:50 | call to source |
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:73:7:73:7 | c | stl.cpp:69:16:69:21 | call to source |
 | stl.cpp:75:9:75:13 | call to c_str | stl.cpp:69:16:69:21 | call to source |

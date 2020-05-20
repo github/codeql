@@ -11,82 +11,112 @@
 | format.cpp:46:21:46:24 | {...} | format.cpp:48:8:48:13 | buffer |  |
 | format.cpp:46:23:46:23 | 0 | format.cpp:46:21:46:24 | {...} | TAINT |
 | format.cpp:47:17:47:22 | ref arg buffer | format.cpp:48:8:48:13 | buffer |  |
+| format.cpp:47:30:47:33 | %s | format.cpp:47:8:47:15 | call to snprintf | TAINT |
 | format.cpp:47:30:47:33 | %s | format.cpp:47:17:47:22 | ref arg buffer | TAINT |
+| format.cpp:47:36:47:43 | Hello. | format.cpp:47:8:47:15 | call to snprintf | TAINT |
 | format.cpp:47:36:47:43 | Hello. | format.cpp:47:17:47:22 | ref arg buffer | TAINT |
 | format.cpp:51:21:51:24 | {...} | format.cpp:52:17:52:22 | buffer |  |
 | format.cpp:51:21:51:24 | {...} | format.cpp:53:8:53:13 | buffer |  |
 | format.cpp:51:23:51:23 | 0 | format.cpp:51:21:51:24 | {...} | TAINT |
 | format.cpp:52:17:52:22 | ref arg buffer | format.cpp:53:8:53:13 | buffer |  |
+| format.cpp:52:30:52:33 | %s | format.cpp:52:8:52:15 | call to snprintf | TAINT |
 | format.cpp:52:30:52:33 | %s | format.cpp:52:17:52:22 | ref arg buffer | TAINT |
+| format.cpp:52:36:52:49 | call to source | format.cpp:52:8:52:15 | call to snprintf | TAINT |
 | format.cpp:52:36:52:49 | call to source | format.cpp:52:17:52:22 | ref arg buffer | TAINT |
 | format.cpp:56:21:56:24 | {...} | format.cpp:57:17:57:22 | buffer |  |
 | format.cpp:56:21:56:24 | {...} | format.cpp:58:8:58:13 | buffer |  |
 | format.cpp:56:23:56:23 | 0 | format.cpp:56:21:56:24 | {...} | TAINT |
 | format.cpp:57:17:57:22 | ref arg buffer | format.cpp:58:8:58:13 | buffer |  |
+| format.cpp:57:30:57:43 | call to source | format.cpp:57:8:57:15 | call to snprintf | TAINT |
 | format.cpp:57:30:57:43 | call to source | format.cpp:57:17:57:22 | ref arg buffer | TAINT |
+| format.cpp:57:48:57:55 | Hello. | format.cpp:57:8:57:15 | call to snprintf | TAINT |
 | format.cpp:57:48:57:55 | Hello. | format.cpp:57:17:57:22 | ref arg buffer | TAINT |
 | format.cpp:61:21:61:24 | {...} | format.cpp:62:17:62:22 | buffer |  |
 | format.cpp:61:21:61:24 | {...} | format.cpp:63:8:63:13 | buffer |  |
 | format.cpp:61:23:61:23 | 0 | format.cpp:61:21:61:24 | {...} | TAINT |
 | format.cpp:62:17:62:22 | ref arg buffer | format.cpp:63:8:63:13 | buffer |  |
+| format.cpp:62:30:62:39 | %s %s %s | format.cpp:62:8:62:15 | call to snprintf | TAINT |
 | format.cpp:62:30:62:39 | %s %s %s | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
+| format.cpp:62:42:62:44 | a | format.cpp:62:8:62:15 | call to snprintf | TAINT |
 | format.cpp:62:42:62:44 | a | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
+| format.cpp:62:47:62:49 | b | format.cpp:62:8:62:15 | call to snprintf | TAINT |
 | format.cpp:62:47:62:49 | b | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
+| format.cpp:62:52:62:65 | call to source | format.cpp:62:8:62:15 | call to snprintf | TAINT |
 | format.cpp:62:52:62:65 | call to source | format.cpp:62:17:62:22 | ref arg buffer | TAINT |
 | format.cpp:66:21:66:24 | {...} | format.cpp:67:17:67:22 | buffer |  |
 | format.cpp:66:21:66:24 | {...} | format.cpp:68:8:68:13 | buffer |  |
 | format.cpp:66:23:66:23 | 0 | format.cpp:66:21:66:24 | {...} | TAINT |
 | format.cpp:67:17:67:22 | ref arg buffer | format.cpp:68:8:68:13 | buffer |  |
+| format.cpp:67:30:67:35 | %.*s | format.cpp:67:8:67:15 | call to snprintf | TAINT |
 | format.cpp:67:30:67:35 | %.*s | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
+| format.cpp:67:38:67:39 | 10 | format.cpp:67:8:67:15 | call to snprintf | TAINT |
 | format.cpp:67:38:67:39 | 10 | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
+| format.cpp:67:42:67:55 | call to source | format.cpp:67:8:67:15 | call to snprintf | TAINT |
 | format.cpp:67:42:67:55 | call to source | format.cpp:67:17:67:22 | ref arg buffer | TAINT |
 | format.cpp:72:21:72:24 | {...} | format.cpp:73:17:73:22 | buffer |  |
 | format.cpp:72:21:72:24 | {...} | format.cpp:74:8:74:13 | buffer |  |
 | format.cpp:72:23:72:23 | 0 | format.cpp:72:21:72:24 | {...} | TAINT |
 | format.cpp:73:17:73:22 | ref arg buffer | format.cpp:74:8:74:13 | buffer |  |
+| format.cpp:73:30:73:33 | %i | format.cpp:73:8:73:15 | call to snprintf | TAINT |
 | format.cpp:73:30:73:33 | %i | format.cpp:73:17:73:22 | ref arg buffer | TAINT |
+| format.cpp:73:36:73:36 | 0 | format.cpp:73:8:73:15 | call to snprintf | TAINT |
 | format.cpp:73:36:73:36 | 0 | format.cpp:73:17:73:22 | ref arg buffer | TAINT |
 | format.cpp:77:21:77:24 | {...} | format.cpp:78:17:78:22 | buffer |  |
 | format.cpp:77:21:77:24 | {...} | format.cpp:79:8:79:13 | buffer |  |
 | format.cpp:77:23:77:23 | 0 | format.cpp:77:21:77:24 | {...} | TAINT |
 | format.cpp:78:17:78:22 | ref arg buffer | format.cpp:79:8:79:13 | buffer |  |
+| format.cpp:78:30:78:33 | %i | format.cpp:78:8:78:15 | call to snprintf | TAINT |
 | format.cpp:78:30:78:33 | %i | format.cpp:78:17:78:22 | ref arg buffer | TAINT |
+| format.cpp:78:36:78:41 | call to source | format.cpp:78:8:78:15 | call to snprintf | TAINT |
 | format.cpp:78:36:78:41 | call to source | format.cpp:78:17:78:22 | ref arg buffer | TAINT |
 | format.cpp:82:21:82:24 | {...} | format.cpp:83:17:83:22 | buffer |  |
 | format.cpp:82:21:82:24 | {...} | format.cpp:84:8:84:13 | buffer |  |
 | format.cpp:82:23:82:23 | 0 | format.cpp:82:21:82:24 | {...} | TAINT |
 | format.cpp:83:17:83:22 | ref arg buffer | format.cpp:84:8:84:13 | buffer |  |
+| format.cpp:83:30:83:35 | %.*s | format.cpp:83:8:83:15 | call to snprintf | TAINT |
 | format.cpp:83:30:83:35 | %.*s | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
+| format.cpp:83:38:83:43 | call to source | format.cpp:83:8:83:15 | call to snprintf | TAINT |
 | format.cpp:83:38:83:43 | call to source | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
+| format.cpp:83:48:83:55 | Hello. | format.cpp:83:8:83:15 | call to snprintf | TAINT |
 | format.cpp:83:48:83:55 | Hello. | format.cpp:83:17:83:22 | ref arg buffer | TAINT |
 | format.cpp:88:21:88:24 | {...} | format.cpp:89:17:89:22 | buffer |  |
 | format.cpp:88:21:88:24 | {...} | format.cpp:90:8:90:13 | buffer |  |
 | format.cpp:88:23:88:23 | 0 | format.cpp:88:21:88:24 | {...} | TAINT |
 | format.cpp:89:17:89:22 | ref arg buffer | format.cpp:90:8:90:13 | buffer |  |
+| format.cpp:89:30:89:33 | %p | format.cpp:89:8:89:15 | call to snprintf | TAINT |
 | format.cpp:89:30:89:33 | %p | format.cpp:89:17:89:22 | ref arg buffer | TAINT |
+| format.cpp:89:36:89:49 | call to source | format.cpp:89:8:89:15 | call to snprintf | TAINT |
 | format.cpp:89:36:89:49 | call to source | format.cpp:89:17:89:22 | ref arg buffer | TAINT |
 | format.cpp:94:21:94:24 | {...} | format.cpp:95:16:95:21 | buffer |  |
 | format.cpp:94:21:94:24 | {...} | format.cpp:96:8:96:13 | buffer |  |
 | format.cpp:94:23:94:23 | 0 | format.cpp:94:21:94:24 | {...} | TAINT |
 | format.cpp:95:16:95:21 | ref arg buffer | format.cpp:96:8:96:13 | buffer |  |
+| format.cpp:95:24:95:27 | %s | format.cpp:95:8:95:14 | call to sprintf | TAINT |
 | format.cpp:95:24:95:27 | %s | format.cpp:95:16:95:21 | ref arg buffer | TAINT |
+| format.cpp:95:30:95:43 | call to source | format.cpp:95:8:95:14 | call to sprintf | TAINT |
 | format.cpp:95:30:95:43 | call to source | format.cpp:95:16:95:21 | ref arg buffer | TAINT |
 | format.cpp:99:21:99:24 | {...} | format.cpp:100:16:100:21 | buffer |  |
 | format.cpp:99:21:99:24 | {...} | format.cpp:101:8:101:13 | buffer |  |
 | format.cpp:99:23:99:23 | 0 | format.cpp:99:21:99:24 | {...} | TAINT |
 | format.cpp:100:16:100:21 | ref arg buffer | format.cpp:101:8:101:13 | buffer |  |
+| format.cpp:100:24:100:28 | %ls | format.cpp:100:8:100:14 | call to sprintf | TAINT |
 | format.cpp:100:24:100:28 | %ls | format.cpp:100:16:100:21 | ref arg buffer | TAINT |
+| format.cpp:100:31:100:45 | call to source | format.cpp:100:8:100:14 | call to sprintf | TAINT |
 | format.cpp:100:31:100:45 | call to source | format.cpp:100:16:100:21 | ref arg buffer | TAINT |
 | format.cpp:104:25:104:28 | {...} | format.cpp:105:17:105:23 | wbuffer |  |
 | format.cpp:104:25:104:28 | {...} | format.cpp:106:8:106:14 | wbuffer |  |
 | format.cpp:104:27:104:27 | 0 | format.cpp:104:25:104:28 | {...} | TAINT |
 | format.cpp:105:17:105:23 | ref arg wbuffer | format.cpp:106:8:106:14 | wbuffer |  |
+| format.cpp:105:31:105:35 | %s | format.cpp:105:8:105:15 | call to swprintf | TAINT |
 | format.cpp:105:31:105:35 | %s | format.cpp:105:17:105:23 | ref arg wbuffer | TAINT |
+| format.cpp:105:38:105:52 | call to source | format.cpp:105:8:105:15 | call to swprintf | TAINT |
 | format.cpp:105:38:105:52 | call to source | format.cpp:105:17:105:23 | ref arg wbuffer | TAINT |
 | format.cpp:109:21:109:24 | {...} | format.cpp:110:18:110:23 | buffer |  |
 | format.cpp:109:21:109:24 | {...} | format.cpp:111:8:111:13 | buffer |  |
 | format.cpp:109:23:109:23 | 0 | format.cpp:109:21:109:24 | {...} | TAINT |
 | format.cpp:110:18:110:23 | ref arg buffer | format.cpp:111:8:111:13 | buffer |  |
+| format.cpp:110:31:110:34 | %s | format.cpp:110:8:110:16 | call to mysprintf | TAINT |
+| format.cpp:110:37:110:50 | call to source | format.cpp:110:8:110:16 | call to mysprintf | TAINT |
 | format.cpp:115:10:115:11 | 0 | format.cpp:116:29:116:29 | i |  |
 | format.cpp:115:10:115:11 | 0 | format.cpp:117:8:117:8 | i |  |
 | format.cpp:116:28:116:29 | ref arg & ... | format.cpp:116:29:116:29 | i [inner post update] |  |

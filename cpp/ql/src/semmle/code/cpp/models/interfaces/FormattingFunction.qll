@@ -161,7 +161,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
         arg >= getFirstFormatArgumentIndex()
       ) and
       input.isParameterDeref(arg) and
-      output.isParameterDeref(getOutputParameterIndex())
+      (
+        output.isParameterDeref(getOutputParameterIndex()) or
+        output.isReturnValue()
+      )
     )
   }
 }
