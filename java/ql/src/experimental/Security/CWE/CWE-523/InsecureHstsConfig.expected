@@ -1,0 +1,1 @@
+| insecure-hsts-web.xml:0:0:0:0 | insecure-hsts-web.xml | HSTS shall be enabled in web.xml to help mitigate MITM and protocol downgrade attacks |

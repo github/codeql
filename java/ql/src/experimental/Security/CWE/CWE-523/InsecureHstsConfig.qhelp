@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>HSTS is a web security policy mechanism that helps to protect websites against man-in-the-middle attacks such as protocol downgrade attacks and cookie hijacking. HSTS is specified in RFC 6797 and is supported by all major browsers and web servers.</p>
+<p> Missing or incorrect configuration allows unprotected transport of credentials.</p>
+<p>The query detects insecure configuration by checking web.xml. To reduce false positives, application source code and server configuration can be further analyzed to check whether it allows both HTTP/HTTPS URLs and processes sensitive information.</p>
+</overview>
+
+<recommendation>
+<p>Enable HSTS when a website handles sensitive information, especially when the website allows both HTTP and HTTPS protocols.</p>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of HSTS configuration. In the 'BAD' case, HSTS is not enabled or is incorrectly configured. In the 'GOOD' case, HSTS is enabled for all requests.</p>
+<sample src="insecure-hsts-web.xml" />
+<sample src="secure-hsts-web.xml" />
+</example>
+
+<references>
+<li>
+<a href="https://cwe.mitre.org/data/definitions/523.html">CWE-523: Unprotected Transport of Credentials</a>
+<a href="https://portswigger.net/kb/issues/01000300_strict-transport-security-not-enforced">Strict transport security not enforced</a>
+</li>
+</references>
+</qhelp>
