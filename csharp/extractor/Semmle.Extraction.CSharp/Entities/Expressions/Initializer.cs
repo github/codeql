@@ -74,14 +74,22 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0));
 
                     var target = cx.GetSymbolInfo(assignment.Left);
-                    if (target.Symbol == null)
-                    {
-                        cx.ModelError(assignment, "Unknown object initializer");
-                        new Unknown(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1));
-                    }
-                    else
-                    {
+
+                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
+
+                    Expression access = target.Symbol is null ?
+                        new Expression(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
                         Access.Create(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, cx.CreateEntity(target.Symbol));
+
+                    if (assignment.Left is ImplicitElementAccessSyntax iea)
+                    {
+                        // An array/indexer initializer of the form `[...] = ...`
+
+                        int indexChild = 0;
+                        foreach (var arg in iea.ArgumentList.Arguments)
+                        {
+                            Expression.Create(cx, arg.Expression, access, indexChild++);
+                        }
                     }
                 }
                 else
