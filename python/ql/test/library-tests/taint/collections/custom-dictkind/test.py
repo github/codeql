@@ -4,25 +4,31 @@ def test_custom_kind():
     foo_dict = FOO_DICT
     bar_dict = BAR_DICT
 
-    test(
+    ensure_tainted(
         tainted_dict['key'],
         tainted_dict.get('key'),
+    )
+    ensure_not_tainted(
         tainted_dict.foo,
         tainted_dict.bar,
     )
 
-    test(
+    ensure_tainted(
         foo_dict['key'],
         foo_dict.get('key'),
         foo_dict.foo,
+    )
+    ensure_not_tainted(
         foo_dict.bar,
     )
 
-    test(
+    ensure_tainted(
         bar_dict['key'],
         bar_dict.get('key'),
-        bar_dict.foo,
         bar_dict.bar,
+    )
+    ensure_not_tainted(
+        bar_dict.foo,
     )
 
 def test_attr_based():
@@ -30,12 +36,12 @@ def test_attr_based():
     attr_files = ATTR_BASED_FILES
     attr_strings = ATTR_BASED_STRINGS
 
-    test(
+    ensure_tainted(
         attr_files['key'],
         attr_files.key,
     )
 
-    test(
+    ensure_tainted(
         attr_strings['key'],
         attr_strings.key,
     )
