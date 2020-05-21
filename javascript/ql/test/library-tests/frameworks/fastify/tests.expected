@@ -86,19 +86,34 @@ test_RouteHandler
 | src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:72:27:72:46 | require("fastify")() |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:83:27:83:46 | require("fastify")() |
 test_RouteHandler_getARequestExpr
+| src/fastify.js:5:17:7:3 | async ( ... nse\\n  } | src/fastify.js:5:24:5:30 | request |
+| src/fastify.js:13:28:13:55 | (reques ... ) => {} | src/fastify.js:13:29:13:35 | request |
+| src/fastify.js:14:29:14:56 | (reques ... ) => {} | src/fastify.js:14:30:14:36 | request |
+| src/fastify.js:15:32:15:59 | (reques ... ) => {} | src/fastify.js:15:33:15:39 | request |
+| src/fastify.js:16:29:16:56 | (reques ... ) => {} | src/fastify.js:16:30:16:36 | request |
+| src/fastify.js:17:35:17:71 | (reques ... ) => {} | src/fastify.js:17:36:17:42 | request |
+| src/fastify.js:18:25:18:61 | (reques ... ) => {} | src/fastify.js:18:26:18:32 | request |
+| src/fastify.js:19:29:19:56 | (reques ... ) => {} | src/fastify.js:19:30:19:36 | request |
+| src/fastify.js:20:26:20:47 | (reques ... ) => {} | src/fastify.js:20:27:20:33 | request |
+| src/fastify.js:26:17:28:3 | (reques ... nse\\n  } | src/fastify.js:26:18:26:24 | request |
+| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:34:26:34:32 | request |
 | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:36:5:36:11 | request |
 | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:37:5:37:11 | request |
 | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:38:5:38:11 | request |
 | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:39:5:39:11 | request |
+| src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:54:26:54:32 | request |
 | src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:55:5:55:11 | request |
 | src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:56:5:56:11 | request |
 | src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:57:5:57:11 | request |
+| src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:65:26:65:32 | request |
 | src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:66:5:66:11 | request |
 | src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:67:5:67:11 | request |
 | src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:68:5:68:11 | request |
+| src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:76:26:76:32 | request |
 | src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:77:5:77:11 | request |
 | src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:78:5:78:11 | request |
 | src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:79:5:79:11 | request |
+| src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:87:26:87:32 | request |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:88:5:88:11 | request |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:89:5:89:11 | request |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:90:5:90:11 | request |
