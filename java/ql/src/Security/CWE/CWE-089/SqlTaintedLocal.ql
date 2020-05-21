@@ -25,6 +25,10 @@ class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configurat
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    mongoJsonStep(node1, node2)
+  }
 }
 
 from
