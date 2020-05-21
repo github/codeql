@@ -2,7 +2,7 @@
  * @id java/insecure-hsts
  * @name Unprotected transport of credentials without HTTP Strict Transport Security (HSTS)
  * @description HSTS is a web security policy mechanism that helps to protect websites against man-in-the-middle attacks such as protocol downgrade attacks and cookie hijacking.  HSTS is specified in RFC 6797 and is supported by all major browsers and web servers. Missing or incorrect configuration allows unprotected transport of credentials.
- *     This query covers three scenarios of insecure Tomcat configuration:
+ *     This query covers three scenarios of insecure configuration with Tomcat servlet container:
  *     1. HttpHeaderSecurityFilter not configured
  *     2. Filter is configured but is explicitly disabled
  *     3. Filter is not mapped to all resources
@@ -13,6 +13,15 @@
 
 import java
 import semmle.code.xml.WebXML
+
+/**
+ * The default `<servlet-class>` element in a `web.xml` file.
+ */
+private class DefaultTomcatServlet extends WebServletClass {
+  DefaultTomcatServlet() {
+    this.getTextValue() = "org.apache.catalina.servlets.DefaultServlet" //Default servlet of Tomcat and other servlet containers derived from Tomcat like Glassfish
+  }
+}
 
 /**
  * A `<filter>` element in a `web.xml` file configured for HSTS.
@@ -63,13 +72,14 @@ class WebFilterMapping extends WebXMLElement {
 
 from WebXMLFile webXml
 where
-  not exists(HstsFilter filter)
+  not exists(HstsFilter filter) and
+  exists(DefaultTomcatServlet tomcat) //Tomcat servlet container without HSTS filter configured
   or
   exists(HstsFilter filter, WebFilterMapping filterMapping |
     filter.getFilterName() = filterMapping.getFilterName() and
     (
       exists(HstsFilterInitParam initparam |
-        initparam.getParamName() = "hstsEnabled" and initparam.getParamValue() = "false" //hstsEnabled is default to true for the HSTS filter
+        initparam.getParamName() = "hstsEnabled" and initparam.getParamValue() = "false" //hstsEnabled is set to false for the HSTS filter (default value is true)
       )
       or
       filterMapping.getUrlPattern() != "/*" //Filter is not applied to all URLs
