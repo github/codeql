@@ -42,13 +42,9 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
 }
 
 class UpperBoundGuard extends DataFlow::BarrierGuard {
-  UpperBoundGuard() {
-    this.comparesLt(_, _, _, _, _)
-  }
+  UpperBoundGuard() { this.comparesLt(_, _, _, _, _) }
 
-  override predicate checks(Instruction i, boolean b) {
-    this.comparesLt(i.getAUse(), _, _, _, b)
-  }
+  override predicate checks(Instruction i, boolean b) { this.comparesLt(i.getAUse(), _, _, _, b) }
 }
 
 /*
