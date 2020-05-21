@@ -6,7 +6,7 @@
 	<p>
 		
 		Dynamically constructing a shell command with inputs from exported 
-		functions, may inadvertently change the meaning of the shell command.
+		functions may inadvertently change the meaning of the shell command.
 		
 		Clients using the exported function may use inputs containing
 		characters that the shell interprets in a special way, for instance
@@ -37,7 +37,7 @@
 
 	<p>
 		The following example shows a dynamically constructed shell
-		command that downloads a file from a remote url.
+		command that downloads a file from a remote URL.
 	</p>
 
 	<sample src="examples/unsafe-shell-command-construction.js" />
@@ -50,7 +50,7 @@
 
 	<p>
 		Even worse, a client might pass in user-controlled
-		data not knowing that the input is interpreted as a shell command. 
+		data, not knowing that the input is interpreted as a shell command. 
 		This could allow a malicious user to provide the input <code>http://example.org; cat /etc/passwd</code>
 		in order to execute the command <code>cat /etc/passwd</code>.
 	</p>
