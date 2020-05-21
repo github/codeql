@@ -12,6 +12,8 @@ It contains two major components:
 
 The goal of this project is to provide comprehensive static analysis support for Go in CodeQL.
 
+For the queries and libraries that power CodeQL support for other languages, visit [the CodeQL repository](https://github.com/github/codeql).
+
 ## Installation
 
 Simply clone this repository. There are no external dependencies.
