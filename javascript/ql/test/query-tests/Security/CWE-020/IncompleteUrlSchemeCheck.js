@@ -92,7 +92,7 @@ function test12(url) {
 function test13(url) {
 	let scheme = goog.uri.utils.getScheme(url);
 	switch (scheme) {
-    	case "javascript": // NOT OK - but not detected due to lack of `switch` support
+    	case "javascript": // NOT OK
 	    case "data":
 		    return "about:blank";
 	    default:
