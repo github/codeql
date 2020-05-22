@@ -62,18 +62,21 @@ class CommentGroup extends @comment_group, AstNode {
 }
 
 /**
- * A program element to which a documentation comment group may be attached,
- * i.e. a file, a field, a specifier, a generic declaration, a function declaration
- * or a go.mod expression
+ * A program element to which a documentation comment group may be attached:
+ * a file, a field, a specifier, a generic declaration, a function declaration
+ * or a go.mod expression.
  *
  * Examples:
  *
  * ```go
- * func double (x int) int { return 2 * x }
+ * // function documentation
+ * func double(x int) int { return 2 * x }
  * 
+ * // generic declaration documentation
  * const (
+ *   // specifier documentation
  *   size int64 = 1024
- *   eof        = -1
+ *   eof        = -1 // not specifier documentation
  * )
  * ```
  */
@@ -89,13 +92,13 @@ class Documentable extends AstNode, @documentable {
  *
  * ```go
  * // function documentation
- * func double (x int) int { return 2 * x }
+ * func double(x int) int { return 2 * x }
  * 
- *  // generic declaration documentation
+ * // generic declaration documentation
  * const (
  *   // specifier documentation
- * 	 size int64 = 1024
- * 	 eof        = -1  // not specifier documentation
+ *   size int64 = 1024
+ *   eof        = -1 // not specifier documentation
  * )
  * ```
  */

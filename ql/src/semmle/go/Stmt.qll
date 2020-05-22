@@ -81,7 +81,6 @@ class DeclStmt extends @declstmt, Stmt, DeclParent {
  *
  * ```go
  * ;
- * {}
  * ```
  */
 class EmptyStmt extends @emptystmt, Stmt {
