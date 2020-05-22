@@ -449,10 +449,7 @@ module NodeJSLib {
 
     private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
       exists(string moduleName |
-        moduleName = "fs" or
-        moduleName = "graceful-fs" or
-        moduleName = "fs-extra" or
-        moduleName = "original-fs"
+        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
       |
         result = DataFlow::moduleImport(moduleName)
         or
@@ -621,6 +618,8 @@ module NodeJSLib {
 
     ChildProcessMethodCall() {
       this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
+      or
+      this = DataFlow::moduleMember("mz/child_process", methodName).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
