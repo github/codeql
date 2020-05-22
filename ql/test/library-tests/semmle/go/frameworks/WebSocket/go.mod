@@ -1,4 +1,4 @@
-module codeql-go-tests/frameworks/Websocket
+module codeql-go-tests/frameworks/WebSocket
 
 go 1.14
 

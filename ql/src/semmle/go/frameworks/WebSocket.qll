@@ -67,10 +67,10 @@ module WebSocketRequestCall {
    * A WebSocket request expression string used in an API function
    * of the `github.com/gorilla/websocket` package.
    */
-  private class GorillaWebsocketDialFunc extends Range {
+  private class GorillaWebSocketDialFunc extends Range {
     DataFlow::Node url;
 
-    GorillaWebsocketDialFunc() {
+    GorillaWebSocketDialFunc() {
       // func (d *Dialer) Dial(urlStr string, requestHeader http.Header) (*Conn, *http.Response, error)
       // func (d *Dialer) DialContext(ctx context.Context, urlStr string, requestHeader http.Header) (*Conn, *http.Response, error)
       exists(string name, Method f |
@@ -109,8 +109,8 @@ module WebSocketRequestCall {
    * A WebSocket request expression string used in an API function
    * of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebsocketDialFunc extends Range {
-    NhooyrWebsocketDialFunc() {
+  private class NhooyrWebSocketDialFunc extends Range {
+    NhooyrWebSocketDialFunc() {
       // func Dial(ctx context.Context, u string, opts *DialOptions) (*Conn, *http.Response, error)
       this.getTarget().hasQualifiedName(package("nhooyr.io", "websocket"), "Dial")
     }
@@ -137,8 +137,8 @@ module WebSocketRequestCall {
  * A message written to a WebSocket, considered as a flow sink for reflected XSS.
  */
 
-class WebsocketReaderAsSource extends UntrustedFlowSource::Range {
-  WebsocketReaderAsSource() {
+class WebSocketReaderAsSource extends UntrustedFlowSource::Range {
+  WebSocketReaderAsSource() {
     exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
   }
 }
@@ -198,8 +198,8 @@ module WebSocketReader {
   /**
    * Models the `Read` method of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebsocketRead extends Range, Method {
-    NhooyrWebsocketRead() {
+  private class NhooyrWebSocketRead extends Range, Method {
+    NhooyrWebSocketRead() {
       // func (c *Conn) Read(ctx context.Context) (MessageType, []byte, error)
       this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Read")
     }
@@ -210,8 +210,8 @@ module WebSocketReader {
   /**
    * Models the `Reader` method of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebsocketReader extends Range, Method {
-    NhooyrWebsocketReader() {
+  private class NhooyrWebSocketReader extends Range, Method {
+    NhooyrWebSocketReader() {
       // func (c *Conn) Reader(ctx context.Context) (MessageType, io.Reader, error)
       this.hasQualifiedName("nhooyr.io/websocket", "Conn", "Reader")
     }
@@ -246,8 +246,8 @@ module WebSocketReader {
   /**
    * Models the `ReadJson` function of the `github.com/gorilla/websocket` package.
    */
-  private class GorillaWebsocketReadJson extends Range {
-    GorillaWebsocketReadJson() {
+  private class GorillaWebSocketReadJson extends Range {
+    GorillaWebSocketReadJson() {
       // func ReadJSON(c *Conn, v interface{}) error
       this.hasQualifiedName("github.com/gorilla/websocket", "ReadJSON")
     }
@@ -258,8 +258,8 @@ module WebSocketReader {
   /**
    * Models the `ReadJson` method of the `github.com/gorilla/websocket` package.
    */
-  private class GorillaWebsocketConnReadJson extends Range, Method {
-    GorillaWebsocketConnReadJson() {
+  private class GorillaWebSocketConnReadJson extends Range, Method {
+    GorillaWebSocketConnReadJson() {
       // func (c *Conn) ReadJSON(v interface{}) error
       this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadJSON")
     }
@@ -270,8 +270,8 @@ module WebSocketReader {
   /**
    * Models the `ReadMessage` method of the `github.com/gorilla/websocket` package.
    */
-  private class GorillaWebsocketReadMessage extends Range, Method {
-    GorillaWebsocketReadMessage() {
+  private class GorillaWebSocketReadMessage extends Range, Method {
+    GorillaWebSocketReadMessage() {
       // func (c *Conn) ReadMessage() (messageType int, p []byte, err error)
       this.hasQualifiedName("github.com/gorilla/websocket", "Conn", "ReadMessage")
     }
