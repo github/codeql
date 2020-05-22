@@ -3,7 +3,7 @@
 import go
 
 /**
- * A data-flow node that establishes a new WebSocket connection.
+ * A function call that establishes a new WebSocket connection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `WebSocketRequestCall::Range` instead.
@@ -20,7 +20,7 @@ class WebSocketRequestCall extends DataFlow::CallNode {
 /** Provides classes for working with WebSocket request functions. */
 module WebSocketRequestCall {
   /**
-   * A data-flow node that establishes a new WebSocket connection.
+   * A function call that establishes a new WebSocket connection.
    *
    * Extend this class to model new APIs. If you want to refine existing
    * API models, extend `WebSocketRequestCall` instead.
@@ -31,8 +31,7 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket request expression string used in an API function of the
-   * `golang.org/x/net/websocket` package.
+   * A call to the `Dial` function of the `golang.org/x/net/websocket` package.
    */
   private class GolangXNetDialFunc extends Range {
     GolangXNetDialFunc() {
@@ -44,8 +43,7 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket DialConfig expression string used in an API function
-   * of the `golang.org/x/net/websocket` package.
+   * A call to the `DialConfig` function of the `golang.org/x/net/websocket` package.
    */
   private class GolangXNetDialConfigFunc extends Range {
     GolangXNetDialConfigFunc() {
@@ -64,8 +62,7 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket request expression string used in an API function
-   * of the `github.com/gorilla/websocket` package.
+   * A call to the `Dialer` or `DialContext` function of the `github.com/gorilla/websocket` package.
    */
   private class GorillaWebSocketDialFunc extends Range {
     DataFlow::Node url;
@@ -87,8 +84,7 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket request expression string used in an API function
-   * of the `github.com/gobwas/ws` package.
+   * A call to the `Dialer.Dial` method of the `github.com/gobwas/ws` package.
    */
   private class GobwasWsDialFunc extends Range {
     GobwasWsDialFunc() {
@@ -106,8 +102,7 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket request expression string used in an API function
-   * of the `nhooyr.io/websocket` package.
+   * A call to the `Dial` function of the `nhooyr.io/websocket` package.
    */
   private class NhooyrWebSocketDialFunc extends Range {
     NhooyrWebSocketDialFunc() {
@@ -119,24 +114,22 @@ module WebSocketRequestCall {
   }
 
   /**
-   * A WebSocket request expression string used in an API function
-   * of the `github.com/sacOO7/gowebsocket` package.
+   * A call to the `BuildProxy` or `New` function of the `github.com/sacOO7/gowebsocket` package.
    */
   private class SacOO7DialFunc extends Range {
     SacOO7DialFunc() {
       // func BuildProxy(Url string) func(*http.Request) (*url.URL, error)
       // func New(url string) Socket
-      this.getTarget().hasQualifiedName("github.com/sacOO7/gowebsocket", ["New", "BuildProxy"])
+      this.getTarget().hasQualifiedName("github.com/sacOO7/gowebsocket", ["BuildProxy", "New"])
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(0) }
   }
 }
 
-/*
+/**
  * A message written to a WebSocket, considered as a flow sink for reflected XSS.
  */
-
 class WebSocketReaderAsSource extends UntrustedFlowSource::Range {
   WebSocketReaderAsSource() {
     exists(WebSocketReader r | this = r.getAnOutput().getNode(r.getACall()))
@@ -154,7 +147,7 @@ class WebSocketReader extends Function {
 
   WebSocketReader() { this = self }
 
-  /** Gets an output of this function that is read from a WebSocket connection. */
+  /** Gets an output of this function containing data that is read from a WebSocket connection. */
   FunctionOutput getAnOutput() { result = self.getAnOutput() }
 }
 
@@ -167,12 +160,12 @@ module WebSocketReader {
    * extend `WebSocketReader` instead.
    */
   abstract class Range extends Function {
-    /**Returns the parameter in which the function stores the message read. */
+    /** Gets an output of this function containing data that is read from a WebSocket connection. */
     abstract FunctionOutput getAnOutput();
   }
 
   /**
-   * Models the `Receive` method of the `golang.org/x/net/websocket` package.
+   * The `Codec.Receive` method of the `golang.org/x/net/websocket` package.
    */
   private class GolangXNetCodecRecv extends Range, Method {
     GolangXNetCodecRecv() {
@@ -184,7 +177,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `Read` method of the `golang.org/x/net/websocket` package.
+   * The `Conn.Read` method of the `golang.org/x/net/websocket` package.
    */
   private class GolangXNetConnRead extends Range, Method {
     GolangXNetConnRead() {
@@ -196,7 +189,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `Read` method of the `nhooyr.io/websocket` package.
+   * The `Conn.Read` method of the `nhooyr.io/websocket` package.
    */
   private class NhooyrWebSocketRead extends Range, Method {
     NhooyrWebSocketRead() {
@@ -208,7 +201,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `Reader` method of the `nhooyr.io/websocket` package.
+   * The `Conn.Reader` method of the `nhooyr.io/websocket` package.
    */
   private class NhooyrWebSocketReader extends Range, Method {
     NhooyrWebSocketReader() {
@@ -220,7 +213,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `ReadFrame`function of the `github.com/gobwas/ws` package.
+   * The `ReadFrame` function of the `github.com/gobwas/ws` package.
    */
   private class GobwasWsReadFrame extends Range {
     GobwasWsReadFrame() {
@@ -232,7 +225,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `ReadHeader`function of the `github.com/gobwas/ws` package.
+   * The `ReadHeader` function of the `github.com/gobwas/ws` package.
    */
   private class GobwasWsReadHeader extends Range {
     GobwasWsReadHeader() {
@@ -244,7 +237,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `ReadJson` function of the `github.com/gorilla/websocket` package.
+   * The `ReadJson` function of the `github.com/gorilla/websocket` package.
    */
   private class GorillaWebSocketReadJson extends Range {
     GorillaWebSocketReadJson() {
@@ -256,7 +249,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `ReadJson` method of the `github.com/gorilla/websocket` package.
+   * The `Conn.ReadJson` method of the `github.com/gorilla/websocket` package.
    */
   private class GorillaWebSocketConnReadJson extends Range, Method {
     GorillaWebSocketConnReadJson() {
@@ -268,7 +261,7 @@ module WebSocketReader {
   }
 
   /**
-   * Models the `ReadMessage` method of the `github.com/gorilla/websocket` package.
+   * The `Conn.ReadMessage` method of the `github.com/gorilla/websocket` package.
    */
   private class GorillaWebSocketReadMessage extends Range, Method {
     GorillaWebSocketReadMessage() {

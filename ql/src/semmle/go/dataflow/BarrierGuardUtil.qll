@@ -1,6 +1,5 @@
 /**
- * Contains implementations of some commonly used barrier
- * guards for sanitizing untrusted URLs.
+ * Provides implementations of some commonly used barrier guards for sanitizing untrusted URLs.
  */
 
 import go
