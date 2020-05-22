@@ -52,12 +52,42 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	extractUniverseScope()
 
+	// a map of package path to package root directory (currently the module root or the source directory)
+	pkgRoots := make(map[string]string)
+	// a map of package path to source code directory
+	pkgDirs := make(map[string]string)
+	// root directories of packages that we want to extract
+	wantedRoots := make(map[string]bool)
+	for _, pkg := range pkgs {
+		mdir := util.GetModDir(pkg.PkgPath)
+		pdir := util.GetPkgDir(pkg.PkgPath)
+		if mdir == "" {
+			mdir = pdir
+		}
+		if mdir == "" {
+			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
+		}
+		pkgRoots[pkg.PkgPath] = mdir
+		pkgDirs[pkg.PkgPath] = pdir
+		wantedRoots[mdir] = true
+	}
+
 	// recursively visit all packages in depth-first order;
 	// on the way down, associate each package scope with its corresponding package,
 	// and on the way up extract the package's scope
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
+		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
+			mdir := util.GetModDir(pkg.PkgPath)
+			pdir := util.GetPkgDir(pkg.PkgPath)
+			if mdir == "" {
+				mdir = pdir
+			}
+			pkgRoots[pkg.PkgPath] = mdir
+			pkgDirs[pkg.PkgPath] = pdir
+		}
+
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
 			log.Fatal(err)
@@ -101,22 +131,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		log.Printf("Max goroutines set to %d", maxgoroutines)
 	}
 
-	var wg sync.WaitGroup
-	// this semaphore is used to limit the number of files that are open at once;
-	// this is to prevent the extractor from running into issues with caps on the
-	// number of open files that can be held by one process
-	fdSem := newSemaphore(100)
-	// this semaphore is used to limit the number of goroutines spawned, so we
-	// don't run into memory issues
-	goroutineSem := newSemaphore(maxgoroutines)
-
-	// extract AST information for all packages
-	for _, pkg := range pkgs {
-		extractPackage(pkg, &wg, goroutineSem, fdSem)
-	}
-
-	wg.Wait()
-
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Printf("Warning: unable to get working directory: %s", err.Error())
@@ -153,6 +167,47 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		end := time.Since(start)
 		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
 	}
+
+	var wg sync.WaitGroup
+	// this semaphore is used to limit the number of files that are open at once;
+	// this is to prevent the extractor from running into issues with caps on the
+	// number of open files that can be held by one process
+	fdSem := newSemaphore(100)
+	// this semaphore is used to limit the number of goroutines spawned, so we
+	// don't run into memory issues
+	goroutineSem := newSemaphore(maxgoroutines)
+
+	// extract AST information for all packages
+	packages.Visit(pkgs, func(pkg *packages.Package) bool {
+		return wantedRoots[pkgRoots[pkg.PkgPath]]
+	}, func(pkg *packages.Package) {
+	rootLoop:
+		for root, _ := range wantedRoots {
+			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
+			if err != nil {
+				// if the paths can't be made relative, skip it
+				continue
+			}
+			dirList := strings.Split(relDir, string(filepath.Separator))
+			if len(dirList) == 0 || dirList[0] != ".." {
+				// if dirList is empty, root is the same as	the source dir
+				// if dirList starts with `".."`, it is not inside the root dir
+				for _, dir := range dirList {
+					if dir == "vendor" {
+						// if the path relative to the root contains vendor, continue
+						//
+						// we may want to extract the package if it's been explicitly included
+						// (i.e. it has been passed directly), but we shouldn't include it for
+						// this root
+						continue rootLoop
+					}
+				}
+				extractPackage(pkg, &wg, goroutineSem, fdSem)
+			}
+		}
+	})
+
+	wg.Wait()
 
 	return nil
 }
