@@ -10,7 +10,41 @@
 | test.py:27 | ok   | test_custom_kind | Attribute() | externally controlled string |
 | test.py:28 | ok   | test_custom_kind | Attribute | file[externally controlled string] |
 | test.py:31 | ok   | test_custom_kind | Attribute | <NO TAINT> |
-| test.py:40 | ok   | test_attr_based | Subscript | file[externally controlled string] |
-| test.py:41 | fail | test_attr_based | Attribute | <NO TAINT> |
-| test.py:45 | ok   | test_attr_based | Subscript | externally controlled string |
-| test.py:46 | fail | test_attr_based | Attribute | <NO TAINT> |
+| test.py:40 | fail | test_attr_based | Subscript | <NO TAINT> |
+| test.py:41 | ok   | test_attr_based | Attribute | AttrBasedDictKind |
+| test.py:41 | ok   | test_attr_based | Attribute | BarDictKind |
+| test.py:41 | ok   | test_attr_based | Attribute | FooDictKind |
+| test.py:41 | ok   | test_attr_based | Attribute | [AttrBasedDictKind] |
+| test.py:41 | ok   | test_attr_based | Attribute | [BarDictKind] |
+| test.py:41 | ok   | test_attr_based | Attribute | [FooDictKind] |
+| test.py:41 | ok   | test_attr_based | Attribute | [externally controlled string] |
+| test.py:41 | ok   | test_attr_based | Attribute | [file[externally controlled string]] |
+| test.py:41 | ok   | test_attr_based | Attribute | [json[externally controlled string]] |
+| test.py:41 | ok   | test_attr_based | Attribute | externally controlled string |
+| test.py:41 | ok   | test_attr_based | Attribute | file[externally controlled string] |
+| test.py:41 | ok   | test_attr_based | Attribute | json[externally controlled string] |
+| test.py:41 | ok   | test_attr_based | Attribute | {AttrBasedDictKind} |
+| test.py:41 | ok   | test_attr_based | Attribute | {BarDictKind} |
+| test.py:41 | ok   | test_attr_based | Attribute | {FooDictKind} |
+| test.py:41 | ok   | test_attr_based | Attribute | {externally controlled string} |
+| test.py:41 | ok   | test_attr_based | Attribute | {file[externally controlled string]} |
+| test.py:41 | ok   | test_attr_based | Attribute | {json[externally controlled string]} |
+| test.py:45 | fail | test_attr_based | Subscript | <NO TAINT> |
+| test.py:46 | ok   | test_attr_based | Attribute | AttrBasedDictKind |
+| test.py:46 | ok   | test_attr_based | Attribute | BarDictKind |
+| test.py:46 | ok   | test_attr_based | Attribute | FooDictKind |
+| test.py:46 | ok   | test_attr_based | Attribute | [AttrBasedDictKind] |
+| test.py:46 | ok   | test_attr_based | Attribute | [BarDictKind] |
+| test.py:46 | ok   | test_attr_based | Attribute | [FooDictKind] |
+| test.py:46 | ok   | test_attr_based | Attribute | [externally controlled string] |
+| test.py:46 | ok   | test_attr_based | Attribute | [file[externally controlled string]] |
+| test.py:46 | ok   | test_attr_based | Attribute | [json[externally controlled string]] |
+| test.py:46 | ok   | test_attr_based | Attribute | externally controlled string |
+| test.py:46 | ok   | test_attr_based | Attribute | file[externally controlled string] |
+| test.py:46 | ok   | test_attr_based | Attribute | json[externally controlled string] |
+| test.py:46 | ok   | test_attr_based | Attribute | {AttrBasedDictKind} |
+| test.py:46 | ok   | test_attr_based | Attribute | {BarDictKind} |
+| test.py:46 | ok   | test_attr_based | Attribute | {FooDictKind} |
+| test.py:46 | ok   | test_attr_based | Attribute | {externally controlled string} |
+| test.py:46 | ok   | test_attr_based | Attribute | {file[externally controlled string]} |
+| test.py:46 | ok   | test_attr_based | Attribute | {json[externally controlled string]} |

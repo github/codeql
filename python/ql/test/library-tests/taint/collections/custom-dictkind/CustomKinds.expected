@@ -7,7 +7,4 @@
 | test.py:5:16:5:23 | BAR_DICT | ExternalStringDictKind | {externally controlled string} |
 | test.py:5:16:5:23 | BAR_DICT | StringDictKind | {externally controlled string} |
 | test.py:36:18:36:33 | ATTR_BASED_FILES | AttrBasedDictKind | AttrBasedDictKind |
-| test.py:36:18:36:33 | ATTR_BASED_FILES | DictKind | {file[externally controlled string]} |
 | test.py:37:20:37:37 | ATTR_BASED_STRINGS | AttrBasedDictKind | AttrBasedDictKind |
-| test.py:37:20:37:37 | ATTR_BASED_STRINGS | ExternalStringDictKind | {externally controlled string} |
-| test.py:37:20:37:37 | ATTR_BASED_STRINGS | StringDictKind | {externally controlled string} |

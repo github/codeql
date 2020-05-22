@@ -57,23 +57,44 @@ class BarDictSource extends TaintSource {
     }
 }
 
-
 /**
  * Kind for a custom dictionary class where `dict.key` is the same as `dict['key']`.
  * A real example is `bottle.FormsDict`.
 */
 class AttrBasedDictKind extends TaintKind {
 
-    // we _could_ add a `TaintKind valueKind` field, but then we need a way to disallow
-    // infinite recursion since `valueKind` could be `AttrBasedDictKind`. Essentially the
-    // same problem that CollectionKind, SequenceKind, and DictKind is dealing with :\
+    DictKind dict;
 
-    AttrBasedDictKind() { this = "AttrBasedDictKind" }
+    TaintKind getValue() { result = dict.(DictKind).getValue() }
 
-    // bindingset[name]
-    // override TaintKind getTaintOfAttribute(string name) {
-    //     result instanceof <TODO>
-    // }
+    AttrBasedDictKind() {
+        this = "AttrBasedDictKind"
+    }
+
+    bindingset[name]
+    override TaintKind getTaintOfAttribute(string name) {
+        result = getValue()
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        result = dict.getTaintOfMethodResult(name)
+    }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        result = dict.getTaintForFlowStep(fromnode, tonode)
+    }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
+        result = dict.getTaintForFlowStep(fromnode, tonode, edgeLabel)
+    }
+
+    override TaintKind getTaintForIteration() {
+        result = dict.getTaintForIteration()
+    }
+
+    override predicate flowStep(DataFlow::Node fromnode, DataFlow::Node tonode, string edgeLabel) {
+        dict.flowStep(fromnode, tonode, edgeLabel)
+    }
 }
 
 class AttrBasedDictSource extends TaintSource {
@@ -89,8 +110,6 @@ class AttrBasedDictSource extends TaintSource {
     }
 
     override predicate isSourceOf(TaintKind kind) {
-        kind instanceof AttrBasedDictKind
-        or
-        kind.(DictKind).getValue() = valueKind
+        kind.(AttrBasedDictKind).getValue() = valueKind
     }
 }
