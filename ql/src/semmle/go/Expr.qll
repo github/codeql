@@ -6,6 +6,13 @@ import go
 
 /**
  * An expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * x + 1
+ * y < 0
+ * ```
  */
 class Expr extends @expr, ExprParent {
   /**
@@ -138,6 +145,13 @@ class Expr extends @expr, ExprParent {
 
 /**
  * A bad expression, that is, an expression that could not be parsed.
+ *
+ * Examples:
+ *
+ * ```go
+ * x +
+ * y <
+ * ```
  */
 class BadExpr extends @badexpr, Expr {
   override string toString() { result = "bad expression" }
@@ -145,6 +159,12 @@ class BadExpr extends @badexpr, Expr {
 
 /**
  * An identifier.
+ *
+ * Examples:
+ *
+ * ```go
+ * x
+ * ```
  */
 class Ident extends @ident, Expr {
   /** Gets the name of this identifier. */
@@ -164,6 +184,12 @@ class Ident extends @ident, Expr {
 
 /**
  * The blank identifier `_`.
+ *
+ * Examples:
+ *
+ * ```go
+ * _
+ * ```
  */
 class BlankIdent extends Ident {
   BlankIdent() { getName() = "_" }
@@ -172,6 +198,12 @@ class BlankIdent extends Ident {
 /**
  * An ellipsis expression, representing either the `...` type in a parameter list or
  * the `...` length in an array type.
+ *
+ * Examples:
+ *
+ * ```go
+ * ...
+ * ```
  */
 class Ellipsis extends @ellipsis, Expr {
   /** Gets the operand of this ellipsis expression. */
@@ -182,6 +214,13 @@ class Ellipsis extends @ellipsis, Expr {
 
 /**
  * A literal expression of basic type.
+ *
+ * Examples:
+ *
+ * ```go
+ * 1
+ * "hello"
+ * ```
  */
 class BasicLit extends @basiclit, Expr {
   /** Gets the value of this literal expressed as a string. */
@@ -204,21 +243,53 @@ class BasicLit extends @basiclit, Expr {
 
 /**
  * An integer literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * 256
+ * ```
  */
 class IntLit extends @intlit, BasicLit { }
 
 /**
  * A floating-point literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * 2.71828
+ * ```
  */
 class FloatLit extends @floatlit, BasicLit { }
 
 /**
  * An imaginary literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * 2i
+ * 2.7i
+ * ```
  */
 class ImagLit extends @imaglit, BasicLit { }
 
 /**
  * A rune literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * 'a'
+ * 'ä'
+ * '本'
+ * '\377'
+ * '\xff'
+ * '\u12e4'
+ * '\U00101234'
+ * '\n'
+ * ```
  */
 class CharLit extends @charlit, BasicLit {
   // use the constant value of the literal as the string value, as the value we get from the
@@ -230,11 +301,23 @@ class RuneLit = CharLit;
 
 /**
  * A string literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * "hello world"
+ * ```
  */
 class StringLit extends @stringlit, BasicLit { }
 
 /**
  * A function literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * func(x, y int) int { return x + y }
+ * ```
  */
 class FuncLit extends @funclit, Expr, StmtParent, FuncDef {
   override FuncTypeExpr getTypeExpr() { result = getChildExpr(0) }
@@ -251,6 +334,13 @@ class FuncLit extends @funclit, Expr, StmtParent, FuncDef {
 
 /**
  * A composite literal
+ *
+ * Examples:
+ *
+ * ```go
+ * Point3D{0.5, -0.5, 0.5}
+ * map[string]int{"A": 1, "B": 2}
+ * ```
  */
 class CompositeLit extends @compositelit, Expr {
   /** Gets the expression representing the type of this composite literal. */
@@ -291,6 +381,12 @@ class CompositeLit extends @compositelit, Expr {
 
 /**
  * A map literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * map[string]int{"A": 1, "B": 2}
+ * ```
  */
 class MapLit extends CompositeLit {
   MapType mt;
@@ -306,6 +402,14 @@ class MapLit extends CompositeLit {
 
 /**
  * A struct literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * Point3D{0.5, -0.5, 0.5}
+ * Point3D{y: 1}
+ * Point3D{}
+ * ```
  */
 class StructLit extends CompositeLit {
   StructType st;
@@ -318,6 +422,12 @@ class StructLit extends CompositeLit {
 
 /**
  * A parenthesized expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * (x + y)
+ * ```
  */
 class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
@@ -332,6 +442,12 @@ class ParenExpr extends @parenexpr, Expr {
 
 /**
  * A selector expression, that is, a base expression followed by a selector.
+ *
+ * Examples:
+ *
+ * ```go
+ * x.f
+ * ```
  */
 class SelectorExpr extends @selectorexpr, Expr {
   /** Gets the base of this selector expression. */
@@ -356,6 +472,12 @@ class SelectorExpr extends @selectorexpr, Expr {
 
 /**
  * An index expression, that is, a base expression followed by an index.
+ *
+ * Examples:
+ *
+ * ```go
+ * a[i]
+ * ```
  */
 class IndexExpr extends @indexexpr, Expr {
   /** Gets the base of this index expression. */
@@ -371,6 +493,13 @@ class IndexExpr extends @indexexpr, Expr {
 
 /**
  * A slice expression, that is, a base expression followed by slice indices.
+ *
+ * Examples:
+ *
+ * ```go
+ * a[1:3]
+ * a[1:3:5]
+ * ```
  */
 class SliceExpr extends @sliceexpr, Expr {
   /** Gets the base of this slice expression. */
@@ -390,6 +519,12 @@ class SliceExpr extends @sliceexpr, Expr {
 
 /**
  * A type assertion expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * x.(T)
+ * ```
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
@@ -411,11 +546,25 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
  *
  * In most cases, the subclasses `CallExpr` and `ConversionExpr` should be used
  * instead.
+ *
+ * Examples:
+ *
+ * ```go
+ * f(x)
+ * g(a, b...)
+ * []byte("x")
+ * ```
  */
 class CallOrConversionExpr extends @callorconversionexpr, Expr { }
 
 /**
  * A type conversion expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * []byte("x")
+ * ```
  */
 class ConversionExpr extends CallOrConversionExpr {
   ConversionExpr() { isTypeExprBottomUp(getChildExpr(0)) }
@@ -438,6 +587,13 @@ class ConversionExpr extends CallOrConversionExpr {
  *
  * On snapshots with incomplete type information, type conversions may be misclassified
  * as function call expressions.
+ *
+ * Examples:
+ *
+ * ```go
+ * f(x)
+ * g(a, b...)
+ * ```
  */
 class CallExpr extends CallOrConversionExpr {
   CallExpr() { exists(Expr callee | callee = getChildExpr(0) | not isTypeExprBottomUp(callee)) }
@@ -484,6 +640,12 @@ class CallExpr extends CallOrConversionExpr {
 
 /**
  * A star expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * *x
+ * ```
  */
 class StarExpr extends @starexpr, Expr {
   /** Gets the base expression of this star expression. */
@@ -496,6 +658,12 @@ class StarExpr extends @starexpr, Expr {
 
 /**
  * A key-value pair in a composite literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * "A": 1
+ * ```
  */
 class KeyValueExpr extends @keyvalueexpr, Expr {
   /** Gets the key expression of this key-value pair. */
@@ -512,6 +680,12 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
 
 /**
  * An expression representing an array type.
+ *
+ * Examples:
+ *
+ * ```go
+ * [5]int
+ * ```
  */
 class ArrayTypeExpr extends @arraytypeexpr, Expr {
   /** Gets the length expression of this array type. */
@@ -525,6 +699,12 @@ class ArrayTypeExpr extends @arraytypeexpr, Expr {
 
 /**
  * An expression representing a struct type.
+ *
+ * Examples:
+ *
+ * ```go
+ * struct {x, y int; z float32}
+ * ```
  */
 class StructTypeExpr extends @structtypeexpr, Expr {
   /** Gets the `i`th field declared in this struct type expression (0-based). */
@@ -541,6 +721,12 @@ class StructTypeExpr extends @structtypeexpr, Expr {
 
 /**
  * An expression representing a function type.
+ *
+ * Examples:
+ *
+ * ```go
+ * func(a, b int, c float32) (float32, bool)
+ * ```
  */
 class FuncTypeExpr extends @functypeexpr, Expr, ScopeNode {
   /** Gets the `i`th parameter of this function type (0-based). */
@@ -575,6 +761,12 @@ class FuncTypeExpr extends @functypeexpr, Expr, ScopeNode {
 
 /**
  * An expression representing an interface type.
+ *
+ * Examples:
+ *
+ * ```go
+ * interface { Read(p []byte) (n int, err error); Close() error}
+ * ```
  */
 class InterfaceTypeExpr extends @interfacetypeexpr, Expr {
   /** Gets the `i`th method specification of this interface type. */
@@ -594,6 +786,12 @@ class InterfaceTypeExpr extends @interfacetypeexpr, Expr {
 
 /**
  * An expression representing a map type.
+ *
+ * Examples:
+ *
+ * ```go
+ * map[string]int
+ * ```
  */
 class MapTypeExpr extends @maptypeexpr, Expr {
   /** Gets the expression representing the key type of this map type. */
@@ -613,6 +811,13 @@ class MapTypeExpr extends @maptypeexpr, Expr {
 
 /**
  * An expression with a (unary or binary) operator.
+ *
+ * Examples:
+ *
+ * ```go
+ * a * b
+ * -c
+ * ```
  */
 class OperatorExpr extends @operatorexpr, Expr {
   /** Gets the operator of this expression. */
@@ -624,21 +829,50 @@ class OperatorExpr extends @operatorexpr, Expr {
 
 /**
  * An expression with an arithmetic operator like `-` or `/`.
+ *
+ * Examples:
+ *
+ * ```go
+ * x - y
+ * u / v
+ * ```
  */
 class ArithmeticExpr extends @arithmeticexpr, OperatorExpr { }
 
 /**
  * An expression with a logical operator like `!` or `&&`.
+ *
+ * Examples:
+ *
+ * ```go
+ * !a
+ * b && c
+ * ```
  */
 class LogicalExpr extends @logicalexpr, OperatorExpr { }
 
 /**
  * An expression with a bitwise operator such as `^` or `|`.
+ *
+ * Examples:
+ *
+ * ```go
+ * x ^ y
+ * a | b
+ * ```
  */
 class BitwiseExpr extends @bitwiseexpr, OperatorExpr { }
 
 /**
  * An expression with a unary operator.
+ *
+ * Examples:
+ *
+ * ```go
+ * +7
+ * -2.5i
+ * !x
+ * ```
  */
 class UnaryExpr extends @unaryexpr, OperatorExpr {
   /** Gets the operand of this unary expression. */
@@ -655,21 +889,46 @@ class UnaryExpr extends @unaryexpr, OperatorExpr {
 
 /**
  * An expression with a unary arithmetic operator, that is, unary `-` or `+`.
+ *
+ * Examples:
+ *
+ * ```go
+ * +7
+ * -2.5i
+ * ```
  */
 class ArithmeticUnaryExpr extends @arithmeticunaryexpr, ArithmeticExpr, UnaryExpr { }
 
 /**
  * An expression with a unary logical operator, that is, `!`.
+ *
+ * Examples:
+ *
+ * ```go
+ * !x
+ * ```
  */
 class LogicalUnaryExpr extends @logicalunaryexpr, LogicalExpr, UnaryExpr { }
 
 /**
  * An expression with a unary bitwise operator, that is, `^`.
+ *
+ * Examples:
+ *
+ * ```go
+ * ^x
+ * ```
  */
 class BitwiseUnaryExpr extends @bitwiseunaryexpr, BitwiseExpr, UnaryExpr { }
 
 /**
  * A unary plus expression using `+`.
+ *
+ * Examples:
+ *
+ * ```go
+ * +7
+ * ```
  */
 class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "+" }
@@ -677,6 +936,12 @@ class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
 
 /**
  * A unary minus expression using `-`.
+ *
+ * Examples:
+ *
+ * ```go
+ * -2.5i
+ * ```
  */
 class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "-" }
@@ -684,6 +949,12 @@ class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
 
 /**
  * A unary "not" expression using `!`.
+ *
+ * Examples:
+ *
+ * ```go
+ * !x
+ * ```
  */
 class NotExpr extends @notexpr, LogicalUnaryExpr {
   override string getOperator() { result = "!" }
@@ -691,6 +962,12 @@ class NotExpr extends @notexpr, LogicalUnaryExpr {
 
 /**
  * A unary complement expression using `^`.
+ *
+ * Examples:
+ *
+ * ```go
+ * ^x
+ * ```
  */
 class ComplementExpr extends @complementexpr, BitwiseUnaryExpr {
   override string getOperator() { result = "^" }
@@ -698,6 +975,12 @@ class ComplementExpr extends @complementexpr, BitwiseUnaryExpr {
 
 /**
  * A unary pointer-dereference expression using `*`.
+ *
+ * Examples:
+ *
+ * ```go
+ * *p
+ * ```
  */
 class DerefExpr extends @derefexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
@@ -707,6 +990,12 @@ class DerefExpr extends @derefexpr, UnaryExpr {
 
 /**
  * A unary address-of expression using `&`.
+ *
+ * Examples:
+ *
+ * ```go
+ * &x
+ * ```
  */
 class AddressExpr extends @addressexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
@@ -716,6 +1005,12 @@ class AddressExpr extends @addressexpr, UnaryExpr {
 
 /**
  * A unary receive expression using `<-`.
+ *
+ * Examples:
+ *
+ * ```go
+ * <-chan
+ * ```
  */
 class RecvExpr extends @arrowexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
@@ -725,6 +1020,14 @@ class RecvExpr extends @arrowexpr, UnaryExpr {
 
 /**
  * A binary expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * a * b
+ * a || b
+ * b != c
+ * ```
  */
 class BinaryExpr extends @binaryexpr, OperatorExpr {
   /** Gets the left operand of this binary expression. */
@@ -752,31 +1055,69 @@ class BinaryExpr extends @binaryexpr, OperatorExpr {
 
 /**
  * A binary arithmetic expression, that is, `+`, `-`, `*`, `/` or `%`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a * b
+ * ```
  */
 class ArithmeticBinaryExpr extends @arithmeticbinaryexpr, ArithmeticExpr, BinaryExpr { }
 
 /**
  * A binary logical expression, that is, `&&` or `||`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a || b
+ * ```
  */
 class LogicalBinaryExpr extends @logicalbinaryexpr, LogicalExpr, BinaryExpr { }
 
 /**
  * A binary bitwise expression, that is, `<<`, `>>`, `|`, `^`, `&` or `&^`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a << i
+ * b ^ c
+ * ```
  */
 class BitwiseBinaryExpr extends @bitwisebinaryexpr, BitwiseExpr, BinaryExpr { }
 
 /**
  * A shift expression, that is, `<<` or `>>`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a << i
+ * ```
  */
 class ShiftExpr extends @shiftexpr, BitwiseBinaryExpr { }
 
 /**
  * A comparison expression, that is, `==`, `!=`, `<`, `<=`, `>=` or `>`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a != b
+ * c > d
+ * ```
  */
 class ComparisonExpr extends @comparison, BinaryExpr { }
 
 /**
  * An equality test, that is, `==` or `!=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a != b
+ * ```
  */
 class EqualityTestExpr extends @equalitytest, ComparisonExpr {
   /** Gets the polarity of this equality test, that is, `true` for `==` and `false` for `!=`. */
@@ -785,6 +1126,12 @@ class EqualityTestExpr extends @equalitytest, ComparisonExpr {
 
 /**
  * A relational comparison, that is, `<`, `<=`, `>=` or `>`.
+ *
+ * Examples:
+ *
+ * ```go
+ * c > d
+ * ```
  */
 class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
   /** Holds if this comparison is strict, that is, it implies inequality. */
@@ -805,6 +1152,12 @@ class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
 
 /**
  * A logical-or expression using `||`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a || b
+ * ```
  */
 class LorExpr extends @lorexpr, LogicalBinaryExpr {
   override string getOperator() { result = "||" }
@@ -814,6 +1167,12 @@ class LogOrExpr = LorExpr;
 
 /**
  * A logical-and expression using `&&`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a && b
+ * ```
  */
 class LandExpr extends @landexpr, LogicalBinaryExpr {
   override string getOperator() { result = "&&" }
@@ -823,6 +1182,12 @@ class LogAndExpr = LandExpr;
 
 /**
  * An equality test using `==`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a == b
+ * ```
  */
 class EqlExpr extends @eqlexpr, EqualityTestExpr {
   override string getOperator() { result = "==" }
@@ -834,6 +1199,12 @@ class EqExpr = EqlExpr;
 
 /**
  * An inequality test using `!=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a != b
+ * ```
  */
 class NeqExpr extends @neqexpr, EqualityTestExpr {
   override string getOperator() { result = "!=" }
@@ -843,6 +1214,12 @@ class NeqExpr extends @neqexpr, EqualityTestExpr {
 
 /**
  * A less-than test using `<`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a < b
+ * ```
  */
 class LssExpr extends @lssexpr, RelationalComparisonExpr {
   override string getOperator() { result = "<" }
@@ -858,6 +1235,12 @@ class LTExpr = LssExpr;
 
 /**
  * A less-than-or-equal test using `<=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a <= b
+ * ```
  */
 class LeqExpr extends @leqexpr, RelationalComparisonExpr {
   override string getOperator() { result = "<=" }
@@ -871,6 +1254,12 @@ class LEExpr = LeqExpr;
 
 /**
  * A greater-than test using `>`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a > b
+ * ```
  */
 class GtrExpr extends @gtrexpr, RelationalComparisonExpr {
   override string getOperator() { result = ">" }
@@ -886,6 +1275,12 @@ class GTExpr = GtrExpr;
 
 /**
  * A greater-than-or-equal test using `>=`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a >= b
+ * ```
  */
 class GeqExpr extends @geqexpr, RelationalComparisonExpr {
   override string getOperator() { result = ">=" }
@@ -899,6 +1294,12 @@ class GEExpr = GeqExpr;
 
 /**
  * An addition expression using `+`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a + b
+ * ```
  */
 class AddExpr extends @addexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "+" }
@@ -906,6 +1307,12 @@ class AddExpr extends @addexpr, ArithmeticBinaryExpr {
 
 /**
  * A subtraction expression using `-`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a - b
+ * ```
  */
 class SubExpr extends @subexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "-" }
@@ -913,6 +1320,12 @@ class SubExpr extends @subexpr, ArithmeticBinaryExpr {
 
 /**
  * A bitwise or expression using `|`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a | b
+ * ```
  */
 class OrExpr extends @orexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "|" }
@@ -922,6 +1335,12 @@ class BitOrExpr = OrExpr;
 
 /**
  * An exclusive-or expression using `^`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a ^ b
+ * ```
  */
 class XorExpr extends @xorexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "^" }
@@ -929,6 +1348,12 @@ class XorExpr extends @xorexpr, BitwiseBinaryExpr {
 
 /**
  * A multiplication expression using `*`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a * b
+ * ```
  */
 class MulExpr extends @mulexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "*" }
@@ -936,6 +1361,12 @@ class MulExpr extends @mulexpr, ArithmeticBinaryExpr {
 
 /**
  * A divison or quotient expression using `/`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a / b
+ * ```
  */
 class QuoExpr extends @quoexpr, ArithmeticBinaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
@@ -947,6 +1378,12 @@ class DivExpr = QuoExpr;
 
 /**
  * A remainder or modulo expression using `%`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a % b
+ * ```
  */
 class RemExpr extends @remexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "%" }
@@ -956,6 +1393,12 @@ class ModExpr = RemExpr;
 
 /**
  * A left-shift expression using `<<`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a << i
+ * ```
  */
 class ShlExpr extends @shlexpr, ShiftExpr {
   override string getOperator() { result = "<<" }
@@ -965,6 +1408,12 @@ class LShiftExpr = ShlExpr;
 
 /**
  * A right-shift expression using `>>`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a >> i
+ * ```
  */
 class ShrExpr extends @shrexpr, ShiftExpr {
   override string getOperator() { result = ">>" }
@@ -974,6 +1423,12 @@ class RShiftExpr = ShrExpr;
 
 /**
  * A bitwise and-expression using `&`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a & b
+ * ```
  */
 class AndExpr extends @andexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&" }
@@ -983,6 +1438,12 @@ class BitAndExpr = AndExpr;
 
 /**
  * A bitwise and-not expression using `&^`.
+ *
+ * Examples:
+ *
+ * ```go
+ * a &^ b
+ * ```
  */
 class AndNotExpr extends @andnotexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&^" }
@@ -990,6 +1451,14 @@ class AndNotExpr extends @andnotexpr, BitwiseBinaryExpr {
 
 /**
  * An expression representing a channel type.
+ *
+ * Examples:
+ *
+ * ```go
+ * chan float64
+ * chan<- bool
+ * <-chan int
+ * ```
  */
 class ChanTypeExpr extends @chantypeexpr, Expr {
   /**
@@ -1008,6 +1477,12 @@ class ChanTypeExpr extends @chantypeexpr, Expr {
 
 /**
  * An expression representing a send-only channel type.
+ *
+ * Examples:
+ *
+ * ```go
+ * chan<- bool
+ * ```
  */
 class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
   override predicate canSend() { any() }
@@ -1015,6 +1490,12 @@ class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
 
 /**
  * An expression representing a receive-only channel type.
+ *
+ * Examples:
+ *
+ * ```go
+ * <-chan int
+ * ```
  */
 class RecvChanTypeExpr extends @recvchantypeexpr, ChanTypeExpr {
   override predicate canReceive() { any() }
@@ -1022,6 +1503,12 @@ class RecvChanTypeExpr extends @recvchantypeexpr, ChanTypeExpr {
 
 /**
  * An expression representing a duplex channel type that can both send and receive data.
+ *
+ * Examples:
+ *
+ * ```go
+ * chan float64
+ * ```
  */
 class SendRecvChanTypeExpr extends @sendrcvchantypeexpr, ChanTypeExpr {
   override predicate canSend() { any() }
@@ -1031,6 +1518,18 @@ class SendRecvChanTypeExpr extends @sendrcvchantypeexpr, ChanTypeExpr {
 
 /**
  * A (possibly qualified) name referring to a package, type, constant, variable, function or label.
+ *
+ * Examples:
+ *
+ * ```go
+ * Println
+ * fmt.Println
+ * fmt
+ * int
+ * T
+ * x
+ * Outerloop
+ * ```
  */
 class Name extends Expr {
   Entity target;
@@ -1041,13 +1540,37 @@ class Name extends Expr {
   Entity getTarget() { result = target }
 }
 
-/** A simple (that is, unqualified) name. */
+/**
+ * A simple (that is, unqualified) name.
+ *
+ * Examples:
+ *
+ * ```go
+ * Println
+ * ```
+ */
 class SimpleName extends Name, Ident { }
 
-/** A qualified name. */
+/**
+ * A qualified name.
+ *
+ * Examples:
+ *
+ * ```go
+ * fmt.Println
+ * ```
+*/
 class QualifiedName extends Name, SelectorExpr { }
 
-/** A name referring to an imported package. */
+/**
+ * A name referring to an imported package.
+ *
+ * Examples:
+ *
+ * ```go
+ * fmt
+ * ```
+ */
 class PackageName extends Name {
   override PackageEntity target;
 
@@ -1055,7 +1578,16 @@ class PackageName extends Name {
   override PackageEntity getTarget() { result = target }
 }
 
-/** A name referring to a type. */
+/**
+ * A name referring to a type.
+ *
+ * Examples:
+ *
+ * ```go
+ * int
+ * T
+ * ```
+ */
 class TypeName extends Name {
   override TypeEntity target;
 
@@ -1063,7 +1595,17 @@ class TypeName extends Name {
   override TypeEntity getTarget() { result = target }
 }
 
-/** A name referring to a value, that is, a constant, variable or function. */
+/**
+ * A name referring to a value, that is, a constant, variable or function.
+ *
+ * Examples:
+ *
+ * ```go
+ * c
+ * f
+ * x
+ * ```
+ */
 class ValueName extends Name {
   override ValueEntity target;
 
@@ -1071,7 +1613,15 @@ class ValueName extends Name {
   override ValueEntity getTarget() { result = target }
 }
 
-/** A name referring to a constant. */
+/**
+ * A name referring to a constant.
+ *
+ * Examples:
+ *
+ * ```go
+ * c
+ * ```
+ */
 class ConstantName extends ValueName {
   override Constant target;
 
@@ -1092,7 +1642,15 @@ class ConstantName extends ValueName {
   }
 }
 
-/** A name referring to a variable. */
+/**
+ * A name referring to a variable.
+ *
+ * Examples:
+ *
+ * ```go
+ * x
+ * ```
+ */
 class VariableName extends ValueName {
   override Variable target;
 
@@ -1100,7 +1658,15 @@ class VariableName extends ValueName {
   override Variable getTarget() { result = target }
 }
 
-/** A name referring to a function. */
+/**
+ * A name referring to a function.
+ *
+ * Examples:
+ *
+ * ```go
+ * f
+ * ```
+ */
 class FunctionName extends ValueName {
   override Function target;
 
@@ -1108,7 +1674,15 @@ class FunctionName extends ValueName {
   override Function getTarget() { result = target }
 }
 
-/** A name referring to a statement label. */
+/**
+ * A name referring to a statement label.
+ *
+ * Examples:
+ *
+ * ```go
+ * Outerloop
+ * ```
+ */
 class LabelName extends Name {
   override Label target;
 
@@ -1188,7 +1762,16 @@ private predicate isTypeExprTopDown(Expr e) {
   e = any(Ellipsis ell | isTypeExprTopDown(ell)).getOperand()
 }
 
-/** An expression referring to a type. */
+/**
+ * An expression referring to a type.
+ *
+ * Examples:
+ *
+ * ```go
+ * int
+ * func 
+ * ```
+ */
 class TypeExpr extends Expr {
   TypeExpr() {
     isTypeExprBottomUp(this) or
@@ -1196,7 +1779,16 @@ class TypeExpr extends Expr {
   }
 }
 
-/** An expression referring to a memory location. */
+/**
+ * An expression referring to a memory location.
+ *
+ * Examples:
+ *
+ * ```go
+ * a[i]
+ * *p
+ * ```
+ */
 class ReferenceExpr extends Expr {
   ReferenceExpr() {
     (this instanceof Ident or this instanceof SelectorExpr) and
@@ -1248,7 +1840,16 @@ class ReferenceExpr extends Expr {
   }
 }
 
-/** An expression that refers to a value (as opposed to a package, a type or a statement label). */
+/**
+ * An expression that refers to a value (as opposed to a package, a type or a statement label).
+ *
+ * Examples:
+ *
+ * ```go
+ * x + y
+ * f(x)
+ * ```
+ */
 class ValueExpr extends Expr {
   ValueExpr() {
     this.(ReferenceExpr).isRvalue() or
