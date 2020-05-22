@@ -2,7 +2,10 @@ private import cpp
 
 newtype TInstructionTag =
   OnlyInstructionTag() or // Single instruction (not including implicit Load)
+  InitializeThisAddressTag() or
   InitializeThisTag() or
+  InitializeThisIndirectionAddressTag() or
+  InitializeThisIndirectionTag() or
   InitializerVariableAddressTag() or
   InitializerLoadStringTag() or
   InitializerStoreTag() or
@@ -70,7 +73,9 @@ newtype TInstructionTag =
   VarArgsMoveNextTag() or
   VarArgsVAListStoreTag() or
   AsmTag() or
-  AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) }
+  AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) } or
+  ThisAddressTag() or
+  ThisLoadTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = "Tag" }

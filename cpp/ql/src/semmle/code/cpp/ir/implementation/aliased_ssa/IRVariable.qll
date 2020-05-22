@@ -224,6 +224,16 @@ class IREllipsisVariable extends IRTempVariable {
 }
 
 /**
+ * A temporary variable generated to hold the contents of all arguments passed to the `...` of a
+ * function that accepts a variable number of arguments.
+ */
+class IRThisVariable extends IRTempVariable {
+  IRThisVariable() { tag = ThisTempVar() }
+
+  final override string toString() { result = "#this" }
+}
+
+/**
  * A variable generated to represent the contents of a string literal. This variable acts much like
  * a read-only global variable.
  */

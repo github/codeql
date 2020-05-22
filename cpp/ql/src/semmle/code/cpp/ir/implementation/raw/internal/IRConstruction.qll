@@ -36,6 +36,11 @@ private module Cached {
   }
 
   cached
+  predicate hasThisVariable(Function func, CppType type) {
+    type = getTypeForGLValue(getTranslatedFunction(func).getThisType())
+  }
+
+  cached
   predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, CppType type) {
     exists(TranslatedElement element |
       element.getAST() = ast and

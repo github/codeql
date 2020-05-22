@@ -117,15 +117,24 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       (
         tag = InitializeNonLocalTag() and
         if exists(getThisType())
-        then result = getInstruction(InitializeThisTag())
+        then result = getInstruction(InitializeThisAddressTag())
         else
           if exists(getParameter(0))
           then result = getParameter(0).getFirstInstruction()
           else result = getBody().getFirstInstruction()
       )
       or
+      tag = InitializeThisAddressTag() and
+      result = getInstruction(InitializeThisTag())
+      or
+      tag = InitializeThisTag() and
+      result = getInstruction(InitializeThisIndirectionAddressTag())
+      or
+      tag = InitializeThisIndirectionAddressTag() and
+      result = getInstruction(InitializeThisIndirectionTag())
+      or
       (
-        tag = InitializeThisTag() and
+        tag = InitializeThisIndirectionTag() and
         if exists(getParameter(0))
         then result = getParameter(0).getFirstInstruction()
         else result = getConstructorInitList().getFirstInstruction()
@@ -184,9 +193,22 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       opcode instanceof Opcode::InitializeNonLocal and
       resultType = getUnknownType()
       or
+      tag = InitializeThisAddressTag() and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = getTypeForGLValue(any(UnknownType t)) and
+      exists(getThisType())
+      or
       tag = InitializeThisTag() and
-      opcode instanceof Opcode::InitializeThis and
+      opcode instanceof Opcode::InitializeParameter and
       resultType = getTypeForGLValue(getThisType())
+      or
+      tag = InitializeThisIndirectionAddressTag() and
+      opcode instanceof Opcode::Load and
+      resultType = getTypeForGLValue(getThisType())
+      or
+      tag = InitializeThisIndirectionTag() and
+      opcode instanceof Opcode::InitializeIndirection and
+      resultType = getTypeForPRValue(getThisType())
       or
       tag = ReturnValueAddressTag() and
       opcode instanceof Opcode::VariableAddress and
@@ -228,10 +250,23 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ReturnTag() and
     hasReturnValue() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getInstruction(ReturnValueAddressTag())
-    )
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(ReturnValueAddressTag())
+    or
+    tag = InitializeThisTag() and
+    exists(getThisType()) and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializeThisAddressTag())
+    or
+    tag = InitializeThisIndirectionAddressTag() and
+    exists(getThisType()) and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializeThisAddressTag())
+    or
+    tag = InitializeThisIndirectionTag() and
+    exists(getThisType()) and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializeThisIndirectionAddressTag())
   }
 
   final override CppType getInstructionMemoryOperandType(
@@ -245,9 +280,23 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     tag = AliasedUseTag() and
     operandTag instanceof SideEffectOperandTag and
     result = getUnknownType()
+    or
+    tag = InitializeThisIndirectionAddressTag() and
+    exists(getThisType()) and
+    operandTag instanceof LoadOperandTag and
+    result = getTypeForGLValue(getThisType())
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = InitializeThisAddressTag() and
+    result = getThisVariable()
+    or
+    tag = InitializeThisTag() and
+    result = getThisVariable()
+    or
+    tag = InitializeThisIndirectionTag() and
+    result = getThisVariable()
+    or
     tag = ReturnValueAddressTag() and
     result = getReturnVariable()
   }
@@ -264,6 +313,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     tag = EllipsisTempVar() and
     func.isVarargs() and
     type = getEllipsisVariablePRValueType()
+    or
+    tag = ThisTempVar() and
+    type = getTypeForGLValue(getThisType())
   }
 
   /**
@@ -285,6 +337,13 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
    * Get the variable that represents the `...` parameter, if any.
    */
   final IREllipsisVariable getEllipsisVariable() { result.getEnclosingFunction() = func }
+
+  /**
+   * Gets the variable that represents the `this` pointer for this function, if any.
+   */
+  final IRThisVariable getThisVariable() {
+    result = getIRTempVariable(func, ThisTempVar())
+  }
 
   /**
    * Holds if the function has a non-`void` return type.
