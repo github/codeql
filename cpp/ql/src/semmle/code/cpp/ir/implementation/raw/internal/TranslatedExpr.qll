@@ -694,6 +694,11 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
     operandTag instanceof AddressOperandTag and
     result = getInstruction(ThisAddressTag())
   }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = ThisAddressTag() and
+    result = this.getEnclosingFunction().getThisVariable()
+  }
 }
 
 abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {

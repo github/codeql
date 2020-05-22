@@ -12,7 +12,7 @@ bad_asts.cpp:
 #    9|     mu9_9(int)           = InitializeParameter[y]       : &:r9_8
 #   10|     r10_1(glval<int>)    = VariableAddress[#return]     : 
 #   10|     r10_2(int)           = Constant[6]                  : 
-#-----|     r0_1(glval<unknown>) = VariableAddress              : 
+#-----|     r0_1(glval<unknown>) = VariableAddress[#this]       : 
 #-----|     r0_2(S *)            = Load                         : &:r0_1, ~m?
 #   10|     r10_3(glval<int>)    = FieldAddress[x]              : r0_2
 #   10|     r10_4(int)           = Load                         : &:r10_3, ~m?
@@ -3518,37 +3518,37 @@ ir.cpp:
 #  642|     r642_6(glval<C>)       = Load                         : &:r642_4, ~m?
 #  642|     mu642_7(C)             = InitializeIndirection[#this] : &:r642_6
 #  643|     r643_1(int)            = Constant[0]                  : 
-#  643|     r643_2(glval<unknown>) = VariableAddress              : 
+#  643|     r643_2(glval<unknown>) = VariableAddress[#this]       : 
 #  643|     r643_3(C *)            = Load                         : &:r643_2, ~m?
 #  643|     r643_4(glval<int>)     = FieldAddress[m_a]            : r643_3
 #  643|     mu643_5(int)           = Store                        : &:r643_4, r643_1
 #  644|     r644_1(int)            = Constant[1]                  : 
-#  644|     r644_2(glval<unknown>) = VariableAddress              : 
+#  644|     r644_2(glval<unknown>) = VariableAddress[#this]       : 
 #  644|     r644_3(C *)            = Load                         : &:r644_2, ~m?
 #  644|     r644_4(glval<C>)       = CopyValue                    : r644_3
 #  644|     r644_5(glval<int>)     = FieldAddress[m_a]            : r644_4
 #  644|     mu644_6(int)           = Store                        : &:r644_5, r644_1
 #  645|     r645_1(int)            = Constant[2]                  : 
-#-----|     r0_1(glval<unknown>)   = VariableAddress              : 
+#-----|     r0_1(glval<unknown>)   = VariableAddress[#this]       : 
 #-----|     r0_2(C *)              = Load                         : &:r0_1, ~m?
 #  645|     r645_2(glval<int>)     = FieldAddress[m_a]            : r0_2
 #  645|     mu645_3(int)           = Store                        : &:r645_2, r645_1
 #  646|     r646_1(glval<int>)     = VariableAddress[x]           : 
 #  646|     mu646_2(int)           = Uninitialized[x]             : &:r646_1
-#  647|     r647_1(glval<unknown>) = VariableAddress              : 
+#  647|     r647_1(glval<unknown>) = VariableAddress[#this]       : 
 #  647|     r647_2(C *)            = Load                         : &:r647_1, ~m?
 #  647|     r647_3(glval<int>)     = FieldAddress[m_a]            : r647_2
 #  647|     r647_4(int)            = Load                         : &:r647_3, ~m?
 #  647|     r647_5(glval<int>)     = VariableAddress[x]           : 
 #  647|     mu647_6(int)           = Store                        : &:r647_5, r647_4
-#  648|     r648_1(glval<unknown>) = VariableAddress              : 
+#  648|     r648_1(glval<unknown>) = VariableAddress[#this]       : 
 #  648|     r648_2(C *)            = Load                         : &:r648_1, ~m?
 #  648|     r648_3(glval<C>)       = CopyValue                    : r648_2
 #  648|     r648_4(glval<int>)     = FieldAddress[m_a]            : r648_3
 #  648|     r648_5(int)            = Load                         : &:r648_4, ~m?
 #  648|     r648_6(glval<int>)     = VariableAddress[x]           : 
 #  648|     mu648_7(int)           = Store                        : &:r648_6, r648_5
-#-----|     r0_3(glval<unknown>)   = VariableAddress              : 
+#-----|     r0_3(glval<unknown>)   = VariableAddress[#this]       : 
 #-----|     r0_4(C *)              = Load                         : &:r0_3, ~m?
 #  649|     r649_1(glval<int>)     = FieldAddress[m_a]            : r0_4
 #  649|     r649_2(int)            = Load                         : &:r649_1, ~m?
@@ -3568,7 +3568,7 @@ ir.cpp:
 #  652|     mu652_5(glval<C>)      = InitializeParameter[#this]              : &:r652_4
 #  652|     r652_6(glval<C>)       = Load                                    : &:r652_4, ~m?
 #  652|     mu652_7(C)             = InitializeIndirection[#this]            : &:r652_6
-#  653|     r653_1(glval<unknown>) = VariableAddress                         : 
+#  653|     r653_1(glval<unknown>) = VariableAddress[#this]                  : 
 #  653|     r653_2(C *)            = Load                                    : &:r653_1, ~m?
 #  653|     r653_3(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
 #  653|     r653_4(int)            = Constant[0]                             : 
@@ -3576,7 +3576,7 @@ ir.cpp:
 #  653|     mu653_6(unknown)       = ^CallSideEffect                         : ~m?
 #  653|     v653_7(void)           = ^BufferReadSideEffect[-1]               : &:r653_2, ~m?
 #  653|     mu653_8(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r653_2
-#  654|     r654_1(glval<unknown>) = VariableAddress                         : 
+#  654|     r654_1(glval<unknown>) = VariableAddress[#this]                  : 
 #  654|     r654_2(C *)            = Load                                    : &:r654_1, ~m?
 #  654|     r654_3(glval<C>)       = CopyValue                               : r654_2
 #  654|     r654_4(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
@@ -3585,7 +3585,7 @@ ir.cpp:
 #  654|     mu654_7(unknown)       = ^CallSideEffect                         : ~m?
 #  654|     v654_8(void)           = ^BufferReadSideEffect[-1]               : &:r654_3, ~m?
 #  654|     mu654_9(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r654_3
-#-----|     r0_1(glval<unknown>)   = VariableAddress                         : 
+#-----|     r0_1(glval<unknown>)   = VariableAddress[#this]                  : 
 #-----|     r0_2(C *)              = Load                                    : &:r0_1, ~m?
 #  655|     r655_1(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
 #  655|     r655_2(int)            = Constant[2]                             : 
@@ -3991,7 +3991,7 @@ ir.cpp:
 #-----|     mu0_2(Base &)          = InitializeParameter[p#0]        : &:r0_1
 #-----|     r0_3(Base &)           = Load                            : &:r0_1, ~m?
 #-----|     mu0_4(unknown)         = InitializeIndirection[p#0]      : &:r0_3
-#-----|     r0_5(glval<unknown>)   = VariableAddress                 : 
+#-----|     r0_5(glval<unknown>)   = VariableAddress[#this]          : 
 #-----|     r0_6(Base *)           = Load                            : &:r0_5, ~m?
 #-----|     r0_7(glval<String>)    = FieldAddress[base_s]            : r0_6
 #-----|     r0_8(String *)         = CopyValue                       : r0_7
@@ -4009,7 +4009,7 @@ ir.cpp:
 #-----|     mu0_17(unknown)        = ^BufferMayWriteSideEffect[0]    : &:r0_13
 #-----|     r0_18(glval<String>)   = CopyValue                       : r745_9
 #-----|     r0_19(glval<Base &>)   = VariableAddress[#return]        : 
-#-----|     r0_20(glval<unknown>)  = VariableAddress                 : 
+#-----|     r0_20(glval<unknown>)  = VariableAddress[#this]          : 
 #-----|     r0_21(Base *)          = Load                            : &:r0_20, ~m?
 #-----|     r0_22(glval<Base>)     = CopyValue                       : r0_21
 #-----|     r0_23(Base &)          = CopyValue                       : r0_22
@@ -4094,7 +4094,7 @@ ir.cpp:
 #-----|     mu0_2(Middle &)          = InitializeParameter[p#0]               : &:r0_1
 #-----|     r0_3(Middle &)           = Load                                   : &:r0_1, ~m?
 #-----|     mu0_4(unknown)           = InitializeIndirection[p#0]             : &:r0_3
-#-----|     r0_5(glval<unknown>)     = VariableAddress                        : 
+#-----|     r0_5(glval<unknown>)     = VariableAddress[#this]                 : 
 #-----|     r0_6(Middle *)           = Load                                   : &:r0_5, ~m?
 #-----|     r0_7(Base *)             = ConvertToNonVirtualBase[Middle : Base] : r0_6
 #  754|     r754_8(glval<unknown>)   = FunctionAddress[operator=]             : 
@@ -4112,7 +4112,7 @@ ir.cpp:
 #-----|     mu0_17(Base)             = ^IndirectMayWriteSideEffect[-1]        : &:r0_7
 #-----|     mu0_18(unknown)          = ^BufferMayWriteSideEffect[0]           : &:r0_14
 #-----|     r0_19(glval<Base>)       = CopyValue                              : r754_9
-#-----|     r0_20(glval<unknown>)    = VariableAddress                        : 
+#-----|     r0_20(glval<unknown>)    = VariableAddress[#this]                 : 
 #-----|     r0_21(Middle *)          = Load                                   : &:r0_20, ~m?
 #-----|     r0_22(glval<String>)     = FieldAddress[middle_s]                 : r0_21
 #-----|     r0_23(String *)          = CopyValue                              : r0_22
@@ -4130,7 +4130,7 @@ ir.cpp:
 #-----|     mu0_32(unknown)          = ^BufferMayWriteSideEffect[0]           : &:r0_28
 #-----|     r0_33(glval<String>)     = CopyValue                              : r754_12
 #-----|     r0_34(glval<Middle &>)   = VariableAddress[#return]               : 
-#-----|     r0_35(glval<unknown>)    = VariableAddress                        : 
+#-----|     r0_35(glval<unknown>)    = VariableAddress[#this]                 : 
 #-----|     r0_36(Middle *)          = Load                                   : &:r0_35, ~m?
 #-----|     r0_37(glval<Middle>)     = CopyValue                              : r0_36
 #-----|     r0_38(Middle &)          = CopyValue                              : r0_37
@@ -4200,7 +4200,7 @@ ir.cpp:
 #-----|     mu0_2(Derived &)          = InitializeParameter[p#0]                  : &:r0_1
 #-----|     r0_3(Derived &)           = Load                                      : &:r0_1, ~m?
 #-----|     mu0_4(unknown)            = InitializeIndirection[p#0]                : &:r0_3
-#-----|     r0_5(glval<unknown>)      = VariableAddress                           : 
+#-----|     r0_5(glval<unknown>)      = VariableAddress[#this]                    : 
 #-----|     r0_6(Derived *)           = Load                                      : &:r0_5, ~m?
 #-----|     r0_7(Middle *)            = ConvertToNonVirtualBase[Derived : Middle] : r0_6
 #  763|     r763_8(glval<unknown>)    = FunctionAddress[operator=]                : 
@@ -4218,7 +4218,7 @@ ir.cpp:
 #-----|     mu0_17(Middle)            = ^IndirectMayWriteSideEffect[-1]           : &:r0_7
 #-----|     mu0_18(unknown)           = ^BufferMayWriteSideEffect[0]              : &:r0_14
 #-----|     r0_19(glval<Middle>)      = CopyValue                                 : r763_9
-#-----|     r0_20(glval<unknown>)     = VariableAddress                           : 
+#-----|     r0_20(glval<unknown>)     = VariableAddress[#this]                    : 
 #-----|     r0_21(Derived *)          = Load                                      : &:r0_20, ~m?
 #-----|     r0_22(glval<String>)      = FieldAddress[derived_s]                   : r0_21
 #-----|     r0_23(String *)           = CopyValue                                 : r0_22
@@ -4236,7 +4236,7 @@ ir.cpp:
 #-----|     mu0_32(unknown)           = ^BufferMayWriteSideEffect[0]              : &:r0_28
 #-----|     r0_33(glval<String>)      = CopyValue                                 : r763_12
 #-----|     r0_34(glval<Derived &>)   = VariableAddress[#return]                  : 
-#-----|     r0_35(glval<unknown>)     = VariableAddress                           : 
+#-----|     r0_35(glval<unknown>)     = VariableAddress[#this]                    : 
 #-----|     r0_36(Derived *)          = Load                                      : &:r0_35, ~m?
 #-----|     r0_37(glval<Derived>)     = CopyValue                                 : r0_36
 #-----|     r0_38(Derived &)          = CopyValue                                 : r0_37
@@ -5853,7 +5853,7 @@ ir.cpp:
 # 1043|     r1043_8(glval<float>)                        = VariableAddress[f]              : 
 # 1043|     mu1043_9(float)                              = InitializeParameter[f]          : &:r1043_8
 # 1043|     r1043_10(glval<char>)                        = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1043, col. 21 *) = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String &>)                        = FieldAddress[s]                 : r0_2
 #-----|     r0_4(String &)                               = Load                            : &:r0_3, ~m?
@@ -5863,7 +5863,7 @@ ir.cpp:
 # 1043|     mu1043_14(unknown)                           = ^CallSideEffect                 : ~m?
 # 1043|     v1043_15(void)                               = ^BufferReadSideEffect[-1]       : &:r1043_11, ~m?
 # 1043|     mu1043_16(String)                            = ^IndirectMayWriteSideEffect[-1] : &:r1043_11
-#-----|     r0_5(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_5(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_6(lambda [] type at line 1043, col. 21 *) = Load                            : &:r0_5, ~m?
 #-----|     r0_7(glval<int &>)                           = FieldAddress[x]                 : r0_6
 #-----|     r0_8(int &)                                  = Load                            : &:r0_7, ~m?
@@ -5906,7 +5906,7 @@ ir.cpp:
 # 1045|     r1045_8(glval<float>)                        = VariableAddress[f]              : 
 # 1045|     mu1045_9(float)                              = InitializeParameter[f]          : &:r1045_8
 # 1045|     r1045_10(glval<char>)                        = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1045, col. 21 *) = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String>)                          = FieldAddress[s]                 : r0_2
 # 1045|     r1045_11(glval<unknown>)                     = FunctionAddress[c_str]          : 
@@ -5914,7 +5914,7 @@ ir.cpp:
 # 1045|     mu1045_13(unknown)                           = ^CallSideEffect                 : ~m?
 #-----|     v0_4(void)                                   = ^BufferReadSideEffect[-1]       : &:r0_3, ~m?
 #-----|     mu0_5(String)                                = ^IndirectMayWriteSideEffect[-1] : &:r0_3
-#-----|     r0_6(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_6(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_7(lambda [] type at line 1045, col. 21 *) = Load                            : &:r0_6, ~m?
 #-----|     r0_8(glval<int>)                             = FieldAddress[x]                 : r0_7
 #-----|     r0_9(int)                                    = Load                            : &:r0_8, ~m?
@@ -5938,7 +5938,7 @@ ir.cpp:
 # 1047|     r1047_8(glval<float>)                        = VariableAddress[f]              : 
 # 1047|     mu1047_9(float)                              = InitializeParameter[f]          : &:r1047_8
 # 1047|     r1047_10(glval<char>)                        = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1047, col. 30 *) = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String &>)                        = FieldAddress[s]                 : r0_2
 #-----|     r0_4(String &)                               = Load                            : &:r0_3, ~m?
@@ -5987,7 +5987,7 @@ ir.cpp:
 # 1049|     r1049_8(glval<float>)                        = VariableAddress[f]              : 
 # 1049|     mu1049_9(float)                              = InitializeParameter[f]          : &:r1049_8
 # 1049|     r1049_10(glval<char>)                        = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1049, col. 30 *) = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String>)                          = FieldAddress[s]                 : r0_2
 # 1049|     r1049_11(glval<unknown>)                     = FunctionAddress[c_str]          : 
@@ -6016,7 +6016,7 @@ ir.cpp:
 # 1051|     r1051_8(glval<float>)                        = VariableAddress[f]              : 
 # 1051|     mu1051_9(float)                              = InitializeParameter[f]          : &:r1051_8
 # 1051|     r1051_10(glval<char>)                        = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1051, col. 32 *) = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String &>)                        = FieldAddress[s]                 : r0_2
 #-----|     r0_4(String &)                               = Load                            : &:r0_3, ~m?
@@ -6026,7 +6026,7 @@ ir.cpp:
 # 1051|     mu1051_14(unknown)                           = ^CallSideEffect                 : ~m?
 # 1051|     v1051_15(void)                               = ^BufferReadSideEffect[-1]       : &:r1051_11, ~m?
 # 1051|     mu1051_16(String)                            = ^IndirectMayWriteSideEffect[-1] : &:r1051_11
-#-----|     r0_5(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_5(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_6(lambda [] type at line 1051, col. 32 *) = Load                            : &:r0_5, ~m?
 #-----|     r0_7(glval<int>)                             = FieldAddress[x]                 : r0_6
 #-----|     r0_8(int)                                    = Load                            : &:r0_7, ~m?
@@ -6050,7 +6050,7 @@ ir.cpp:
 # 1054|     r1054_8(glval<float>)                         = VariableAddress[f]              : 
 # 1054|     mu1054_9(float)                               = InitializeParameter[f]          : &:r1054_8
 # 1054|     r1054_10(glval<char>)                         = VariableAddress[#return]        : 
-#-----|     r0_1(glval<unknown>)                          = VariableAddress                 : 
+#-----|     r0_1(glval<unknown>)                          = VariableAddress[#this]          : 
 #-----|     r0_2(lambda [] type at line 1054, col. 23 *)  = Load                            : &:r0_1, ~m?
 #-----|     r0_3(glval<String &>)                         = FieldAddress[s]                 : r0_2
 #-----|     r0_4(String &)                                = Load                            : &:r0_3, ~m?
@@ -6060,16 +6060,16 @@ ir.cpp:
 # 1054|     mu1054_14(unknown)                            = ^CallSideEffect                 : ~m?
 # 1054|     v1054_15(void)                                = ^BufferReadSideEffect[-1]       : &:r1054_11, ~m?
 # 1054|     mu1054_16(String)                             = ^IndirectMayWriteSideEffect[-1] : &:r1054_11
-#-----|     r0_5(glval<unknown>)                          = VariableAddress                 : 
+#-----|     r0_5(glval<unknown>)                          = VariableAddress[#this]          : 
 #-----|     r0_6(lambda [] type at line 1054, col. 23 *)  = Load                            : &:r0_5, ~m?
 #-----|     r0_7(glval<int>)                              = FieldAddress[x]                 : r0_6
 #-----|     r0_8(int)                                     = Load                            : &:r0_7, ~m?
-#-----|     r0_9(glval<unknown>)                          = VariableAddress                 : 
+#-----|     r0_9(glval<unknown>)                          = VariableAddress[#this]          : 
 #-----|     r0_10(lambda [] type at line 1054, col. 23 *) = Load                            : &:r0_9, ~m?
 # 1054|     r1054_17(glval<int>)                          = FieldAddress[i]                 : r0_10
 # 1054|     r1054_18(int)                                 = Load                            : &:r1054_17, ~m?
 # 1054|     r1054_19(int)                                 = Add                             : r0_8, r1054_18
-#-----|     r0_11(glval<unknown>)                         = VariableAddress                 : 
+#-----|     r0_11(glval<unknown>)                         = VariableAddress[#this]          : 
 #-----|     r0_12(lambda [] type at line 1054, col. 23 *) = Load                            : &:r0_11, ~m?
 # 1054|     r1054_20(glval<int &>)                        = FieldAddress[j]                 : r0_12
 # 1054|     r1054_21(int &)                               = Load                            : &:r1054_20, ~m?
