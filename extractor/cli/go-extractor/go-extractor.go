@@ -8,8 +8,6 @@ import (
 	"runtime/pprof"
 	"strings"
 
-	"github.com/github/codeql-go/extractor/dbscheme"
-
 	"github.com/github/codeql-go/extractor"
 )
 
@@ -20,12 +18,10 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s [<flag>...] [<buildflag>...] [--] <file>...\n\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "Flags:\n\n")
 	fmt.Fprintf(os.Stderr, "--help                Print this help.\n")
-	fmt.Fprintf(os.Stderr, "--dbscheme string     Write dbscheme to this file.\n")
 }
 
-func parseFlags(args []string) ([]string, []string, string) {
+func parseFlags(args []string) ([]string, []string) {
 	i := 0
-	var dumpDbscheme string
 	buildFlags := []string{}
 	for i < len(args) && strings.HasPrefix(args[i], "-") {
 		if args[i] == "--" {
@@ -33,12 +29,7 @@ func parseFlags(args []string) ([]string, []string, string) {
 			break
 		}
 
-		if strings.HasPrefix(args[i], "--dbscheme=") {
-			dumpDbscheme = strings.TrimPrefix(args[i], "--dbscheme=")
-		} else if args[i] == "--dbscheme" {
-			i++
-			dumpDbscheme = args[i]
-		} else if args[i] == "--help" {
+		if args[i] == "--help" {
 			usage()
 			os.Exit(0)
 		} else {
@@ -51,21 +42,11 @@ func parseFlags(args []string) ([]string, []string, string) {
 	cpuprofile = os.Getenv("CODEQL_EXTRACTOR_GO_CPU_PROFILE")
 	memprofile = os.Getenv("CODEQL_EXTRACTOR_GO_MEM_PROFILE")
 
-	return buildFlags, args[i:], dumpDbscheme
+	return buildFlags, args[i:]
 }
 
 func main() {
-	buildFlags, patterns, dumpDbscheme := parseFlags(os.Args[1:])
-
-	if dumpDbscheme != "" {
-		f, err := os.Create(dumpDbscheme)
-		if err != nil {
-			log.Fatalf("Unable to open file %s for writing.", dumpDbscheme)
-		}
-		dbscheme.PrintDbScheme(f)
-		f.Close()
-		log.Printf("Dbscheme written to file %s.", dumpDbscheme)
-	}
+	buildFlags, patterns := parseFlags(os.Args[1:])
 
 	if cpuprofile != "" {
 		f, err := os.Create(cpuprofile)
