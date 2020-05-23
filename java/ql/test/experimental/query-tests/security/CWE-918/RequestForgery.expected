@@ -25,6 +25,155 @@ edges
 | JavaURLBad.java:43:26:43:56 | getParameter(...) : String | JavaURLBad.java:44:16:44:18 | url |
 | JavaURLBad.java:47:39:47:69 | getParameter(...) : String | JavaURLBad.java:48:16:48:18 | url |
 | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | JavaURLBad.java:56:16:56:18 | url |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:31:3:31:36 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:32:9:32:58 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:33:9:33:54 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:33:9:33:54 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:34:9:34:63 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:35:9:35:65 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:36:9:36:59 | invocation(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:38:9:38:63 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:39:9:39:62 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:40:9:40:74 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:40:9:40:74 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:41:9:41:86 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:42:9:42:95 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:43:9:43:79 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:44:9:44:94 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:45:9:45:106 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:45:9:45:106 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:46:9:46:70 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:47:9:47:81 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:48:9:48:99 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:49:9:49:92 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:50:9:50:98 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:52:9:52:65 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:53:9:53:64 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:54:9:54:76 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:54:9:54:76 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:55:9:55:92 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:56:9:56:88 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:57:9:57:96 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:58:9:58:108 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:58:9:58:108 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:59:9:59:120 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:60:9:60:97 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:61:9:61:124 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:62:9:62:100 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:63:9:63:112 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:63:9:63:112 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:64:9:64:113 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:64:9:64:113 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:65:9:65:93 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:67:9:67:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:68:9:68:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:69:9:69:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:70:9:70:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:71:9:71:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:72:9:72:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:73:9:73:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:74:9:74:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:75:9:75:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:76:9:76:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:77:9:77:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:78:9:78:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:79:9:79:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:80:9:80:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:81:9:81:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:82:9:82:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:83:9:83:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:84:9:84:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:85:9:85:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:86:9:86:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:87:9:87:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:88:9:88:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:89:9:89:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:90:9:90:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:91:9:91:42 | request(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:99:9:99:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:100:9:100:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:101:9:101:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:102:9:102:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:103:9:103:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:104:9:104:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:105:9:105:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:106:9:106:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:107:9:107:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:108:9:108:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:109:9:109:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:110:9:110:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:111:9:111:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:112:9:112:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:113:9:113:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:114:9:114:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:115:9:115:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:116:9:116:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:117:9:117:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:118:9:118:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:119:9:119:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:120:9:120:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:121:9:121:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:122:9:122:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:123:9:123:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:124:9:124:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:125:9:125:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:126:9:126:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:127:9:127:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:128:9:128:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:129:9:129:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:130:9:130:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:131:9:131:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:132:9:132:50 | async(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:134:9:134:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:135:9:135:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:136:9:136:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:137:9:137:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:138:9:138:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:139:9:139:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:140:9:140:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:141:9:141:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:142:9:142:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:143:9:143:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:144:9:144:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:145:9:145:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:146:9:146:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:147:9:147:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:148:9:148:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:149:9:149:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:150:9:150:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:151:9:151:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:152:9:152:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:153:9:153:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:154:9:154:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:155:9:155:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:156:9:156:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:157:9:157:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:158:9:158:47 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:160:9:160:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:161:9:161:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:162:9:162:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:163:9:163:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:164:9:164:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:165:9:165:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:166:9:166:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:167:9:167:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:168:9:168:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:169:9:169:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:170:9:170:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:171:9:171:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:172:9:172:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:173:9:173:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:174:9:174:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:175:9:175:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:176:9:176:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:177:9:177:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:178:9:178:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:179:9:179:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:180:9:180:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:181:9:181:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:182:9:182:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:183:9:183:77 | rx(...) |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:184:9:184:77 | rx(...) |
 nodes
 | GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | semmle.label | httpRequest |
@@ -69,6 +218,157 @@ nodes
 | JavaURLBad.java:48:16:48:18 | url | semmle.label | url |
 | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JavaURLBad.java:56:16:56:18 | url | semmle.label | url |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JxRsBad.java:29:22:29:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JxRsBad.java:31:3:31:36 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:32:9:32:58 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:33:9:33:54 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:33:9:33:54 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:34:9:34:63 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:35:9:35:65 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:36:9:36:59 | invocation(...) | semmle.label | invocation(...) |
+| JxRsBad.java:38:9:38:63 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:39:9:39:62 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:40:9:40:74 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:40:9:40:74 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:41:9:41:86 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:42:9:42:95 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:43:9:43:79 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:44:9:44:94 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:45:9:45:106 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:45:9:45:106 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:46:9:46:70 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:47:9:47:81 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:48:9:48:99 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:49:9:49:92 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:50:9:50:98 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:52:9:52:65 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:53:9:53:64 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:54:9:54:76 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:54:9:54:76 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:55:9:55:92 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:56:9:56:88 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:57:9:57:96 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:58:9:58:108 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:58:9:58:108 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:59:9:59:120 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:60:9:60:97 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:61:9:61:124 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:62:9:62:100 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:63:9:63:112 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:63:9:63:112 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:64:9:64:113 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:64:9:64:113 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:65:9:65:93 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:67:9:67:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:68:9:68:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:69:9:69:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:70:9:70:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:71:9:71:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:72:9:72:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:73:9:73:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:74:9:74:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:75:9:75:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:76:9:76:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:77:9:77:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:78:9:78:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:79:9:79:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:80:9:80:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:81:9:81:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:82:9:82:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:83:9:83:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:84:9:84:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:85:9:85:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:86:9:86:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:87:9:87:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:88:9:88:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:89:9:89:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:90:9:90:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:91:9:91:42 | request(...) | semmle.label | request(...) |
+| JxRsBad.java:99:9:99:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:100:9:100:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:101:9:101:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:102:9:102:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:103:9:103:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:104:9:104:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:105:9:105:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:106:9:106:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:107:9:107:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:108:9:108:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:109:9:109:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:110:9:110:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:111:9:111:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:112:9:112:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:113:9:113:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:114:9:114:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:115:9:115:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:116:9:116:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:117:9:117:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:118:9:118:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:119:9:119:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:120:9:120:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:121:9:121:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:122:9:122:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:123:9:123:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:124:9:124:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:125:9:125:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:126:9:126:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:127:9:127:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:128:9:128:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:129:9:129:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:130:9:130:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:131:9:131:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:132:9:132:50 | async(...) | semmle.label | async(...) |
+| JxRsBad.java:134:9:134:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:135:9:135:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:136:9:136:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:137:9:137:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:138:9:138:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:139:9:139:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:140:9:140:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:141:9:141:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:142:9:142:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:143:9:143:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:144:9:144:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:145:9:145:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:146:9:146:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:147:9:147:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:148:9:148:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:149:9:149:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:150:9:150:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:151:9:151:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:152:9:152:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:153:9:153:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:154:9:154:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:155:9:155:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:156:9:156:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:157:9:157:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:158:9:158:47 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:160:9:160:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:161:9:161:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:162:9:162:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:163:9:163:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:164:9:164:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:165:9:165:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:166:9:166:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:167:9:167:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:168:9:168:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:169:9:169:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:170:9:170:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:171:9:171:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:172:9:172:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:173:9:173:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:174:9:174:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:175:9:175:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:176:9:176:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:177:9:177:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:178:9:178:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:179:9:179:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:180:9:180:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:181:9:181:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:182:9:182:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:183:9:183:77 | rx(...) | semmle.label | rx(...) |
+| JxRsBad.java:184:9:184:77 | rx(...) | semmle.label | rx(...) |
 #select
 | GoogleHTTPClientBad.java:31:9:31:29 | execute(...) | GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
 | GoogleHTTPClientBad.java:35:9:35:29 | execute(...) | GoogleHTTPClientBad.java:33:37:33:67 | getParameter(...) : String | GoogleHTTPClientBad.java:35:9:35:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
@@ -96,3 +396,152 @@ nodes
 | JavaURLBad.java:44:16:44:35 | openConnection(...) | JavaURLBad.java:43:26:43:56 | getParameter(...) : String | JavaURLBad.java:44:16:44:18 | url | The URL used for this network request may have been constructed from user-provided value |
 | JavaURLBad.java:48:16:48:35 | openConnection(...) | JavaURLBad.java:47:39:47:69 | getParameter(...) : String | JavaURLBad.java:48:16:48:18 | url | The URL used for this network request may have been constructed from user-provided value |
 | JavaURLBad.java:56:16:56:35 | openConnection(...) | JavaURLBad.java:55:26:55:56 | getParameter(...) : String | JavaURLBad.java:56:16:56:18 | url | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:31:3:31:42 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:31:3:31:36 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:32:9:32:64 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:32:9:32:58 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:33:9:33:60 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:33:9:33:54 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:33:9:33:60 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:33:9:33:54 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:34:9:34:69 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:34:9:34:63 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:35:9:35:71 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:35:9:35:65 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:36:9:36:65 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:36:9:36:59 | invocation(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:38:9:38:69 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:38:9:38:63 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:39:9:39:68 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:39:9:39:62 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:40:9:40:80 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:40:9:40:74 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:40:9:40:80 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:40:9:40:74 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:41:9:41:92 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:41:9:41:86 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:42:9:42:101 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:42:9:42:95 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:43:9:43:85 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:43:9:43:79 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:44:9:44:100 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:44:9:44:94 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:45:9:45:112 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:45:9:45:106 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:45:9:45:112 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:45:9:45:106 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:46:9:46:76 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:46:9:46:70 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:47:9:47:87 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:47:9:47:81 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:48:9:48:105 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:48:9:48:99 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:49:9:49:98 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:49:9:49:92 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:50:9:50:104 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:50:9:50:98 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:52:9:52:71 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:52:9:52:65 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:53:9:53:70 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:53:9:53:64 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:54:9:54:82 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:54:9:54:76 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:54:9:54:82 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:54:9:54:76 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:55:9:55:98 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:55:9:55:92 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:56:9:56:94 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:56:9:56:88 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:57:9:57:102 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:57:9:57:96 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:58:9:58:114 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:58:9:58:108 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:58:9:58:114 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:58:9:58:108 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:59:9:59:126 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:59:9:59:120 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:60:9:60:103 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:60:9:60:97 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:61:9:61:130 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:61:9:61:124 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:62:9:62:106 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:62:9:62:100 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:63:9:63:118 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:63:9:63:112 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:63:9:63:118 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:63:9:63:112 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:64:9:64:119 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:64:9:64:113 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:64:9:64:119 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:64:9:64:113 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:65:9:65:99 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:65:9:65:93 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:67:9:67:48 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:67:9:67:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:68:9:68:63 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:68:9:68:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:69:9:69:88 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:69:9:69:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:70:9:70:53 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:70:9:70:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:71:9:71:70 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:71:9:71:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:72:9:72:95 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:72:9:72:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:73:9:73:51 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:73:9:73:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:74:9:74:66 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:74:9:74:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:75:9:75:91 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:75:9:75:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:76:9:76:52 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:76:9:76:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:77:9:77:69 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:77:9:77:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:78:9:78:94 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:78:9:78:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:79:9:79:52 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:79:9:79:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:80:9:80:67 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:80:9:80:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:81:9:81:92 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:81:9:81:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:82:9:82:49 | head(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:82:9:82:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:83:9:83:50 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:83:9:83:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:84:9:84:65 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:84:9:84:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:85:9:85:90 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:85:9:85:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:86:9:86:56 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:86:9:86:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:87:9:87:73 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:87:9:87:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:88:9:88:98 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:88:9:88:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:89:9:89:57 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:89:9:89:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:90:9:90:80 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:90:9:90:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:91:9:91:105 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:91:9:91:42 | request(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:99:9:99:56 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:99:9:99:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:100:9:100:71 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:100:9:100:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:101:9:101:96 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:101:9:101:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:102:9:102:58 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:102:9:102:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:103:9:103:61 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:103:9:103:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:104:9:104:78 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:104:9:104:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:105:9:105:103 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:105:9:105:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:106:9:106:65 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:106:9:106:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:107:9:107:59 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:107:9:107:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:108:9:108:74 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:108:9:108:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:109:9:109:99 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:109:9:109:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:110:9:110:61 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:110:9:110:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:111:9:111:60 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:111:9:111:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:112:9:112:77 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:112:9:112:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:113:9:113:102 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:113:9:113:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:114:9:114:64 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:114:9:114:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:115:9:115:60 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:115:9:115:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:116:9:116:75 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:116:9:116:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:117:9:117:100 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:117:9:117:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:118:9:118:62 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:118:9:118:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:119:9:119:57 | head(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:119:9:119:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:120:9:120:59 | head(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:120:9:120:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:121:9:121:58 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:121:9:121:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:122:9:122:73 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:122:9:122:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:123:9:123:98 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:123:9:123:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:124:9:124:60 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:124:9:124:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:125:9:125:64 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:125:9:125:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:126:9:126:81 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:126:9:126:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:127:9:127:106 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:127:9:127:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:128:9:128:68 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:128:9:128:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:129:9:129:65 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:129:9:129:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:130:9:130:88 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:130:9:130:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:131:9:131:113 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:131:9:131:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:132:9:132:75 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:132:9:132:50 | async(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:134:9:134:53 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:134:9:134:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:135:9:135:68 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:135:9:135:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:136:9:136:93 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:136:9:136:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:137:9:137:58 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:137:9:137:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:138:9:138:75 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:138:9:138:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:139:9:139:100 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:139:9:139:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:140:9:140:56 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:140:9:140:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:141:9:141:71 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:141:9:141:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:142:9:142:96 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:142:9:142:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:143:9:143:57 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:143:9:143:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:144:9:144:74 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:144:9:144:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:145:9:145:99 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:145:9:145:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:146:9:146:57 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:146:9:146:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:147:9:147:72 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:147:9:147:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:148:9:148:97 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:148:9:148:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:149:9:149:54 | head(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:149:9:149:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:150:9:150:55 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:150:9:150:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:151:9:151:70 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:151:9:151:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:152:9:152:95 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:152:9:152:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:153:9:153:61 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:153:9:153:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:154:9:154:78 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:154:9:154:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:155:9:155:103 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:155:9:155:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:156:9:156:62 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:156:9:156:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:157:9:157:85 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:157:9:157:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:158:9:158:110 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:158:9:158:47 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:160:9:160:83 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:160:9:160:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:161:9:161:98 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:161:9:161:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:162:9:162:123 | get(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:162:9:162:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:163:9:163:88 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:163:9:163:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:164:9:164:105 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:164:9:164:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:165:9:165:130 | post(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:165:9:165:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:166:9:166:86 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:166:9:166:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:167:9:167:101 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:167:9:167:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:168:9:168:126 | delete(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:168:9:168:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:169:9:169:87 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:169:9:169:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:170:9:170:104 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:170:9:170:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:171:9:171:129 | put(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:171:9:171:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:172:9:172:87 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:172:9:172:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:173:9:173:102 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:173:9:173:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:174:9:174:127 | options(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:174:9:174:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:175:9:175:84 | head(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:175:9:175:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:176:9:176:85 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:176:9:176:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:177:9:177:100 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:177:9:177:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:178:9:178:125 | trace(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:178:9:178:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:179:9:179:91 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:179:9:179:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:180:9:180:108 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:180:9:180:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:181:9:181:133 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:181:9:181:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:182:9:182:92 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:182:9:182:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:183:9:183:115 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:183:9:183:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
+| JxRsBad.java:184:9:184:140 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:184:9:184:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
