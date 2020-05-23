@@ -174,84 +174,84 @@ edges
 | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:182:9:182:77 | rx(...) |
 | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:183:9:183:77 | rx(...) |
 | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:184:9:184:77 | rx(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:26:31:26:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:26:31:26:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:27:31:27:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:27:31:27:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:28:31:28:51 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:28:31:28:51 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:30:31:30:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:30:31:30:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:31:31:31:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:31:31:31:39 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:32:31:32:51 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:32:31:32:51 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:34:33:34:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:34:33:34:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:35:33:35:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:35:33:35:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:36:33:36:53 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:36:33:36:53 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:38:34:38:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:38:34:38:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:39:34:39:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:39:34:39:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:40:34:40:54 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:40:34:40:54 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:42:32:42:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:42:32:42:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:43:32:43:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:43:32:43:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:44:32:44:52 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:44:32:44:52 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:46:32:46:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:46:32:46:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:47:32:47:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:47:32:47:40 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:48:32:48:52 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:48:32:48:52 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:50:22:50:30 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:50:22:50:30 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:51:22:51:30 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:51:22:51:30 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:52:22:52:42 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:52:22:52:42 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:54:33:54:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:54:33:54:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:55:33:55:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:55:33:55:41 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:56:33:56:53 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:56:33:56:53 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:58:25:58:33 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:58:25:58:33 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:59:25:59:33 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:59:25:59:33 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:60:25:60:45 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:60:25:60:45 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:62:34:62:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:62:34:62:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:63:34:63:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:63:34:63:42 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:64:34:64:54 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:64:34:64:54 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:66:27:66:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:66:27:66:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:67:27:67:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:67:27:67:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:68:27:68:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:68:27:68:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:69:27:69:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:69:27:69:35 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:70:27:70:47 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:70:27:70:47 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:71:27:71:47 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:71:27:71:47 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:75:26:75:34 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:75:26:75:34 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:76:26:76:34 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:76:26:76:34 | userInput |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:77:26:77:46 | create(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:77:26:77:46 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:20:31:20:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:20:31:20:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:21:31:21:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:21:31:21:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:22:31:22:51 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:22:31:22:51 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:24:31:24:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:24:31:24:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:25:31:25:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:25:31:25:39 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:26:31:26:51 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:26:31:26:51 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:28:33:28:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:28:33:28:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:29:33:29:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:29:33:29:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:30:33:30:53 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:30:33:30:53 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:32:34:32:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:32:34:32:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:33:34:33:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:33:34:33:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:34:34:34:54 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:34:34:34:54 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:36:32:36:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:36:32:36:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:37:32:37:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:37:32:37:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:38:32:38:52 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:38:32:38:52 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:40:32:40:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:40:32:40:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:41:32:41:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:41:32:41:40 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:42:32:42:52 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:42:32:42:52 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:44:22:44:30 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:44:22:44:30 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:45:22:45:30 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:45:22:45:30 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:46:22:46:42 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:46:22:46:42 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:48:33:48:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:48:33:48:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:49:33:49:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:49:33:49:41 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:50:33:50:53 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:50:33:50:53 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:52:25:52:33 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:52:25:52:33 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:53:25:53:33 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:53:25:53:33 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:54:25:54:45 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:54:25:54:45 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:56:34:56:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:56:34:56:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:57:34:57:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:57:34:57:42 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:58:34:58:54 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:58:34:58:54 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:60:27:60:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:60:27:60:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:61:27:61:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:61:27:61:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:62:27:62:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:62:27:62:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:63:27:63:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:63:27:63:35 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:64:27:64:47 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:64:27:64:47 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:65:27:65:47 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:65:27:65:47 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:69:26:69:34 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:69:26:69:34 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:70:26:70:34 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:70:26:70:34 | userInput |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:71:26:71:46 | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:71:26:71:46 | create(...) |
 nodes
 | GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | semmle.label | httpRequest |
@@ -447,86 +447,86 @@ nodes
 | JxRsBad.java:182:9:182:77 | rx(...) | semmle.label | rx(...) |
 | JxRsBad.java:183:9:183:77 | rx(...) | semmle.label | rx(...) |
 | JxRsBad.java:184:9:184:77 | rx(...) | semmle.label | rx(...) |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SpringRestTemplateBad.java:26:31:26:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:26:31:26:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:27:31:27:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:27:31:27:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:28:31:28:51 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:28:31:28:51 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:30:31:30:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:30:31:30:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:31:31:31:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:31:31:31:39 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:32:31:32:51 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:32:31:32:51 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:34:33:34:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:34:33:34:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:35:33:35:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:35:33:35:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:36:33:36:53 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:36:33:36:53 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:38:34:38:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:38:34:38:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:39:34:39:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:39:34:39:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:40:34:40:54 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:40:34:40:54 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:42:32:42:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:42:32:42:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:43:32:43:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:43:32:43:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:44:32:44:52 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:44:32:44:52 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:46:32:46:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:46:32:46:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:47:32:47:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:47:32:47:40 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:48:32:48:52 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:48:32:48:52 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:50:22:50:30 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:50:22:50:30 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:51:22:51:30 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:51:22:51:30 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:52:22:52:42 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:52:22:52:42 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:54:33:54:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:54:33:54:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:55:33:55:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:55:33:55:41 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:56:33:56:53 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:56:33:56:53 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:58:25:58:33 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:58:25:58:33 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:59:25:59:33 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:59:25:59:33 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:60:25:60:45 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:60:25:60:45 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:62:34:62:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:62:34:62:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:63:34:63:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:63:34:63:42 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:64:34:64:54 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:64:34:64:54 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:66:27:66:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:66:27:66:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:67:27:67:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:67:27:67:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:68:27:68:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:68:27:68:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:69:27:69:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:69:27:69:35 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:70:27:70:47 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:70:27:70:47 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:71:27:71:47 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:71:27:71:47 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:75:26:75:34 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:75:26:75:34 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:76:26:76:34 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:76:26:76:34 | userInput | semmle.label | userInput |
-| SpringRestTemplateBad.java:77:26:77:46 | create(...) | semmle.label | create(...) |
-| SpringRestTemplateBad.java:77:26:77:46 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | semmle.label | userInput : String |
+| SpringRestTemplateBad.java:17:31:17:60 | userInput : String | semmle.label | userInput : String |
+| SpringRestTemplateBad.java:20:31:20:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:20:31:20:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:21:31:21:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:21:31:21:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:22:31:22:51 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:22:31:22:51 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:24:31:24:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:24:31:24:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:25:31:25:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:25:31:25:39 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:26:31:26:51 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:26:31:26:51 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:28:33:28:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:28:33:28:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:29:33:29:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:29:33:29:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:30:33:30:53 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:30:33:30:53 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:32:34:32:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:32:34:32:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:33:34:33:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:33:34:33:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:34:34:34:54 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:34:34:34:54 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:36:32:36:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:36:32:36:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:37:32:37:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:37:32:37:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:38:32:38:52 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:38:32:38:52 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:40:32:40:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:40:32:40:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:41:32:41:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:41:32:41:40 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:42:32:42:52 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:42:32:42:52 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:44:22:44:30 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:44:22:44:30 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:45:22:45:30 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:45:22:45:30 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:46:22:46:42 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:46:22:46:42 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:48:33:48:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:48:33:48:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:49:33:49:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:49:33:49:41 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:50:33:50:53 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:50:33:50:53 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:52:25:52:33 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:52:25:52:33 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:53:25:53:33 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:53:25:53:33 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:54:25:54:45 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:54:25:54:45 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:56:34:56:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:56:34:56:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:57:34:57:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:57:34:57:42 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:58:34:58:54 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:58:34:58:54 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:60:27:60:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:60:27:60:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:61:27:61:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:61:27:61:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:62:27:62:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:62:27:62:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:63:27:63:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:63:27:63:35 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:64:27:64:47 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:64:27:64:47 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:65:27:65:47 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:65:27:65:47 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:69:26:69:34 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:69:26:69:34 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:70:26:70:34 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:70:26:70:34 | userInput | semmle.label | userInput |
+| SpringRestTemplateBad.java:71:26:71:46 | create(...) | semmle.label | create(...) |
+| SpringRestTemplateBad.java:71:26:71:46 | create(...) | semmle.label | create(...) |
 #select
 | GoogleHTTPClientBad.java:31:9:31:29 | execute(...) | GoogleHTTPClientBad.java:29:48:29:78 | getParameter(...) : String | GoogleHTTPClientBad.java:31:9:31:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
 | GoogleHTTPClientBad.java:35:9:35:29 | execute(...) | GoogleHTTPClientBad.java:33:37:33:67 | getParameter(...) : String | GoogleHTTPClientBad.java:35:9:35:19 | httpRequest | The URL used for this network request may have been constructed from user-provided value |
@@ -703,81 +703,81 @@ nodes
 | JxRsBad.java:182:9:182:92 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:182:9:182:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
 | JxRsBad.java:183:9:183:115 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:183:9:183:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
 | JxRsBad.java:184:9:184:140 | method(...) | JxRsBad.java:29:22:29:52 | getParameter(...) : String | JxRsBad.java:184:9:184:77 | rx(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:26:9:26:65 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:26:31:26:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:26:9:26:65 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:26:31:26:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:27:9:27:71 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:27:31:27:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:27:9:27:71 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:27:31:27:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:28:9:28:66 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:28:31:28:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:28:9:28:66 | getForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:28:31:28:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:30:9:30:65 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:30:31:30:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:30:9:30:65 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:30:31:30:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:31:9:31:71 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:31:31:31:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:31:9:31:71 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:31:31:31:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:32:9:32:66 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:32:31:32:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:32:9:32:66 | getForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:32:31:32:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:34:9:34:53 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:34:33:34:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:34:9:34:53 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:34:33:34:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:35:9:35:59 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:35:33:35:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:35:9:35:59 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:35:33:35:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:36:9:36:54 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:36:33:36:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:36:9:36:54 | headForHeaders(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:36:33:36:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:38:9:38:60 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:38:34:38:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:38:9:38:60 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:38:34:38:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:39:9:39:66 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:39:34:39:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:39:9:39:66 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:39:34:39:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:40:9:40:61 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:40:34:40:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:40:9:40:61 | postForLocation(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:40:34:40:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:42:9:42:72 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:42:32:42:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:42:9:42:72 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:42:32:42:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:43:9:43:78 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:43:32:43:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:43:9:43:78 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:43:32:43:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:44:9:44:73 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:44:32:44:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:44:9:44:73 | postForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:44:32:44:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:46:9:46:72 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:46:32:46:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:46:9:46:72 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:46:32:46:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:47:9:47:78 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:47:32:47:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:47:9:47:78 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:47:32:47:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:48:9:48:73 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:48:32:48:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:48:9:48:73 | postForEntity(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:48:32:48:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:50:9:50:48 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:50:22:50:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:50:9:50:48 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:50:22:50:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:51:9:51:54 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:51:22:51:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:51:9:51:54 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:51:22:51:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:52:9:52:49 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:52:22:52:42 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:52:9:52:49 | put(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:52:22:52:42 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:54:9:54:73 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:54:33:54:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:54:9:54:73 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:54:33:54:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:55:9:55:79 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:55:33:55:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:55:9:55:79 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:55:33:55:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:56:9:56:74 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:56:33:56:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:56:9:56:74 | patchForObject(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:56:33:56:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:58:9:58:45 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:58:25:58:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:58:9:58:45 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:58:25:58:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:59:9:59:51 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:59:25:59:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:59:9:59:51 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:59:25:59:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:60:9:60:46 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:60:25:60:45 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:60:9:60:46 | delete(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:60:25:60:45 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:62:9:62:54 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:62:34:62:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:62:9:62:54 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:62:34:62:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:63:9:63:60 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:63:34:63:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:63:9:63:60 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:63:34:63:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:64:9:64:55 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:64:34:64:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:64:9:64:55 | optionsForAllow(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:64:34:64:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:66:9:66:80 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:66:27:66:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:66:9:66:80 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:66:27:66:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:67:9:67:89 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:67:27:67:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:67:9:67:89 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:67:27:67:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:68:9:68:92 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:68:27:68:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:68:9:68:92 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:68:27:68:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:69:9:69:101 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:69:27:69:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:69:9:69:101 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:69:27:69:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:70:9:70:84 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:70:27:70:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:70:9:70:84 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:70:27:70:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:71:9:71:96 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:71:27:71:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:71:9:71:96 | exchange(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:71:27:71:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:75:9:75:71 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:75:26:75:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:75:9:75:71 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:75:26:75:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:76:9:76:80 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:76:26:76:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:76:9:76:80 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:76:26:76:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:77:9:77:75 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:77:26:77:46 | create(...) | The URL used for this network request may have been constructed from user-provided value |
-| SpringRestTemplateBad.java:77:9:77:75 | execute(...) | SpringRestTemplateBad.java:24:28:24:58 | getParameter(...) : String | SpringRestTemplateBad.java:77:26:77:46 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:20:9:20:65 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:20:31:20:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:20:9:20:65 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:20:31:20:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:21:9:21:71 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:21:31:21:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:21:9:21:71 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:21:31:21:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:22:9:22:66 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:22:31:22:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:22:9:22:66 | getForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:22:31:22:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:24:9:24:65 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:24:31:24:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:24:9:24:65 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:24:31:24:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:25:9:25:71 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:25:31:25:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:25:9:25:71 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:25:31:25:39 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:26:9:26:66 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:26:31:26:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:26:9:26:66 | getForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:26:31:26:51 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:28:9:28:53 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:28:33:28:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:28:9:28:53 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:28:33:28:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:29:9:29:59 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:29:33:29:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:29:9:29:59 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:29:33:29:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:30:9:30:54 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:30:33:30:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:30:9:30:54 | headForHeaders(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:30:33:30:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:32:9:32:60 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:32:34:32:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:32:9:32:60 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:32:34:32:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:33:9:33:66 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:33:34:33:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:33:9:33:66 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:33:34:33:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:34:9:34:61 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:34:34:34:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:34:9:34:61 | postForLocation(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:34:34:34:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:36:9:36:72 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:36:32:36:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:36:9:36:72 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:36:32:36:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:37:9:37:78 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:37:32:37:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:37:9:37:78 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:37:32:37:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:38:9:38:73 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:38:32:38:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:38:9:38:73 | postForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:38:32:38:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:40:9:40:72 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:40:32:40:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:40:9:40:72 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:40:32:40:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:41:9:41:78 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:41:32:41:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:41:9:41:78 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:41:32:41:40 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:42:9:42:73 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:42:32:42:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:42:9:42:73 | postForEntity(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:42:32:42:52 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:44:9:44:48 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:44:22:44:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:44:9:44:48 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:44:22:44:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:45:9:45:54 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:45:22:45:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:45:9:45:54 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:45:22:45:30 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:46:9:46:49 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:46:22:46:42 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:46:9:46:49 | put(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:46:22:46:42 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:48:9:48:73 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:48:33:48:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:48:9:48:73 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:48:33:48:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:49:9:49:79 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:49:33:49:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:49:9:49:79 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:49:33:49:41 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:50:9:50:74 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:50:33:50:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:50:9:50:74 | patchForObject(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:50:33:50:53 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:52:9:52:45 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:52:25:52:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:52:9:52:45 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:52:25:52:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:53:9:53:51 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:53:25:53:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:53:9:53:51 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:53:25:53:33 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:54:9:54:46 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:54:25:54:45 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:54:9:54:46 | delete(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:54:25:54:45 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:56:9:56:54 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:56:34:56:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:56:9:56:54 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:56:34:56:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:57:9:57:60 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:57:34:57:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:57:9:57:60 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:57:34:57:42 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:58:9:58:55 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:58:34:58:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:58:9:58:55 | optionsForAllow(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:58:34:58:54 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:60:9:60:80 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:60:27:60:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:60:9:60:80 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:60:27:60:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:61:9:61:89 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:61:27:61:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:61:9:61:89 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:61:27:61:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:62:9:62:92 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:62:27:62:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:62:9:62:92 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:62:27:62:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:63:9:63:101 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:63:27:63:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:63:9:63:101 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:63:27:63:35 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:64:9:64:84 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:64:27:64:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:64:9:64:84 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:64:27:64:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:65:9:65:96 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:65:27:65:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:65:9:65:96 | exchange(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:65:27:65:47 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:69:9:69:71 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:69:26:69:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:69:9:69:71 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:69:26:69:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:70:9:70:80 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:70:26:70:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:70:9:70:80 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:70:26:70:34 | userInput | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:71:9:71:75 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:71:26:71:46 | create(...) | The URL used for this network request may have been constructed from user-provided value |
+| SpringRestTemplateBad.java:71:9:71:75 | execute(...) | SpringRestTemplateBad.java:17:31:17:60 | userInput : String | SpringRestTemplateBad.java:71:26:71:46 | create(...) | The URL used for this network request may have been constructed from user-provided value |
