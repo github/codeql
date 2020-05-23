@@ -13,7 +13,10 @@ import RequestForgery
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess call
 where
-  sink.getNode().asExpr() = call.getQualifier() and
+  (
+    sink.getNode().asExpr() = call.getQualifier() or
+    sink.getNode().asExpr() = call.getArgument(0)
+  ) and
   (
     any(UnsafeURLSpecFlowConfiguration c).hasFlowPath(source, sink) or
     any(UnsafeURLHostFlowConfiguration c).hasFlowPath(source, sink)

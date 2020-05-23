@@ -16,5 +16,19 @@
 
 package org.springframework.http;
 
+import java.lang.reflect.Type;
+import java.net.URI;
+
+import org.springframework.util.MultiValueMap;
+
 public class RequestEntity<T> extends HttpEntity<T> {
+    public RequestEntity(HttpMethod method, URI url) {}
+	public RequestEntity(T body, HttpMethod method, URI url) {}
+	public RequestEntity(T body, HttpMethod method, URI url, Type type) {}
+	public RequestEntity(MultiValueMap<String, String> headers, HttpMethod method, URI url) {}
+	public RequestEntity(T body, MultiValueMap<String, String> headers,
+			HttpMethod method, URI url) {}
+	public RequestEntity(T body, MultiValueMap<String, String> headers,
+			HttpMethod method, URI url, Type type) {}
+    public URI getUrl() { return null; }
 }

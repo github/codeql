@@ -6,6 +6,7 @@ import DataFlow::PathGraph
 import JavaURL as JavaURL
 import GoogleHTTPClient as GoogleHTTPClient
 import JxRs as JxRs
+import SpringRestTemplate as SpringRestTemplate
 
 abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
   bindingset[this]
@@ -19,6 +20,8 @@ abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
     GoogleHTTPClient::isUnsafeURLFlowSink(node)
     or
     JxRs::isUnsafeURLFlowSink(node)
+    or
+    SpringRestTemplate::isUnsafeURLFlowSink(node)
   }
 
   override predicate isBarrier(DataFlow::Node node) { TaintTracking::defaultTaintBarrier(node) }
@@ -52,6 +55,8 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
     GoogleHTTPClient::unsafeURLSpecFlowTaintStep(node1, node2)
     or
     JxRs::unsafeURLSpecFlowTaintStep(node1, node2)
+    or
+    SpringRestTemplate::unsafeURLSpecFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -74,6 +79,8 @@ class UnsafeURLHostFlowConfiguration extends UnsafeURLFlowConfiguration {
     GoogleHTTPClient::unsafeURLHostFlowTaintStep(node1, node2)
     or
     JxRs::unsafeURLHostFlowTaintStep(node1, node2)
+    or
+    SpringRestTemplate::unsafeURLHostFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {

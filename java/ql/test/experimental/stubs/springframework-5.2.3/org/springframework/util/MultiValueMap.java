@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package org.springframework.http;
+package org.springframework.util;
 
-public enum HttpMethod {
-    GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE;
+import java.util.List;
+import java.util.Map;
+
+public interface MultiValueMap<K, V> extends Map<K, List<V>> {
 }
