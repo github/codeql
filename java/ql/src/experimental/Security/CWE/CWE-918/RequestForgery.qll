@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 import JavaURL as JavaURL
 import GoogleHTTPClient as GoogleHTTPClient
+import JxRs as JxRs
 
 abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
   bindingset[this]
@@ -16,6 +17,8 @@ abstract class UnsafeURLFlowConfiguration extends DataFlow::Configuration {
     JavaURL::isUnsafeURLFlowSink(node)
     or
     GoogleHTTPClient::isUnsafeURLFlowSink(node)
+    or
+    JxRs::isUnsafeURLFlowSink(node)
   }
 
   override predicate isBarrier(DataFlow::Node node) { TaintTracking::defaultTaintBarrier(node) }
@@ -47,6 +50,8 @@ class UnsafeURLSpecFlowConfiguration extends UnsafeURLFlowConfiguration {
     JavaURL::unsafeURLSpecFlowTaintStep(node1, node2)
     or
     GoogleHTTPClient::unsafeURLSpecFlowTaintStep(node1, node2)
+    or
+    JxRs::unsafeURLSpecFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -67,6 +72,8 @@ class UnsafeURLHostFlowConfiguration extends UnsafeURLFlowConfiguration {
     JavaURL::unsafeURLHostFlowTaintStep(node1, node2)
     or
     GoogleHTTPClient::unsafeURLHostFlowTaintStep(node1, node2)
+    or
+    JxRs::unsafeURLHostFlowTaintStep(node1, node2)
   }
 
   override predicate blockAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {

@@ -17,4 +17,5 @@
 package javax.ws.rs.core;
 
 public class GenericType<T> {
+    public static GenericType forInstance(final Object instance) { return null; }
 }
