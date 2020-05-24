@@ -1,0 +1,4 @@
+| UnsafeCertTrustTest.java:19:4:19:74 | init(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:34:4:34:38 | init(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:47:3:52:4 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:65:3:65:57 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
