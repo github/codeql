@@ -198,3 +198,37 @@ def tuple_default(x=(1,2)):
 
 def safe_method(x=[]):
     return x.count(42)
+
+# Modification of parameter with default (sanitised)
+from copy import copy, deepcopy
+def copy_before_modify(x=[]):
+    x = copy(x)
+    return x.append(42)
+
+def deepcopy_before_modify(x=[]):
+    x = deepcopy(x)
+    return x.append(42)
+
+def call_copy_before_modify(x=[]):
+    x = x.copy()
+    return x.append(42)
+
+def unsuccessfully_call_copy_before_modify(x=[]):
+    x = x.reverse().copy() # Unintentially modifies here
+    return x.append(42)
+
+def successfully_call_copy_before_modify(x=[]):
+    x = x.copy().reverse()
+    return x.append(42)
+
+def tupple_copy_before_modify(x=[], y=[]):
+    t = (x.copy(), y.copy())
+    return t[0].append(42)
+
+def unsuccessfully_copy_before_modify(x=[], y=[]):
+    t = (x.copy(), y.reverse().copy()) # Unintentially modifies here
+    return t[0].append(42)
+
+def successfully_copy_before_modify(x=[], y=[]):
+    t = (x.copy(), y.copy().reverse())
+    return t[0].append(42)
