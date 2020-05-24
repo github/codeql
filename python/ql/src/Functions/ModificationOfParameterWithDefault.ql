@@ -93,7 +93,30 @@ class Mutation extends TaintSink {
     }
 }
 
-from TaintedPathSource src, TaintedPathSink sink
+/** copying prevents modification of the default value */
+class Copying extends Sanitizer {
+    Copying() { this = "Copy sanitizer"}
+
+    override predicate sanitizingDefinition(TaintKind kind, EssaDefinition def) {
+        (kind instanceof EmptyMutableValue
+        or
+        kind instanceof NonEmptyMutableValue) and
+        isCopied(def.(AssignmentDefinition).getValue())
+    }
+
+    predicate isCopied(ControlFlowNode value) {
+        value = Value::named("copy.copy").getACall()
+        or
+        value = Value::named("copy.deepcopy").getACall()
+        or
+        value.(AttrNode).getName() = "copy"
+        or
+        value.(CallNode).getNode().getFunc().(Attribute).getName() = "copy"
+    }
+}
+
+from
+  TaintedPathSource src, TaintedPathSink sink
 where src.flowsTo(sink)
 select sink.getSink(), src, sink, "$@ flows to here and is mutated.", src.getSource(),
     "Default value"
