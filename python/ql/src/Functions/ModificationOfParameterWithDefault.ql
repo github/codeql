@@ -115,8 +115,25 @@ class Copying extends Sanitizer {
     }
 }
 
+class ModifyingDefaultConfiguration extends TaintTracking::Configuration {
+    ModifyingDefaultConfiguration() { this = "Copying configuration" }
+
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof MutableDefaultValue
+    }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof Mutation
+    }
+
+    override predicate isSanitizer(Sanitizer sanitizer) {
+        sanitizer instanceof Copying
+    }
+}
+
 from
+  ModifyingDefaultConfiguration config,
   TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ flows to here and is mutated.", src.getSource(),
     "Default value"
