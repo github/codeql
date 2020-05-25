@@ -1,6 +1,6 @@
 import python
 import Loop
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 /** Marker for "uninitialized". */
 class Uninitialized extends TaintKind {
