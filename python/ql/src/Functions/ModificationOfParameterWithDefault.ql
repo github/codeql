@@ -101,17 +101,15 @@ class Copying extends Sanitizer {
         (kind instanceof EmptyMutableValue
         or
         kind instanceof NonEmptyMutableValue) and
-        isCopied(def.(AssignmentDefinition).getValue())
+        creates_a_copy(def.(AssignmentDefinition).getValue())
     }
 
-    predicate isCopied(ControlFlowNode value) {
+    private predicate creates_a_copy(ControlFlowNode value) {
         value = Value::named("copy.copy").getACall()
         or
         value = Value::named("copy.deepcopy").getACall()
         or
-        value.(AttrNode).getName() = "copy"
-        or
-        value.(CallNode).getNode().getFunc().(Attribute).getName() = "copy"
+        value.(CallNode).getFunction().(AttrNode).getName() = "copy"
     }
 }
 
