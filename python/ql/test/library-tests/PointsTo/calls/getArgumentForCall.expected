@@ -28,3 +28,7 @@
 | 42 | ControlFlowNode for Attribute() | Method(Function C.n, C()) | 0 | ControlFlowNode for IntegerLiteral |
 | 45 | ControlFlowNode for open() | Builtin-function open | 0 | ControlFlowNode for Str |
 | 45 | ControlFlowNode for open() | Builtin-function open | 1 | ControlFlowNode for Str |
+| 51 | ControlFlowNode for foo() | Function foo | 0 | ControlFlowNode for IntegerLiteral |
+| 51 | ControlFlowNode for foo() | Function foo | 1 | ControlFlowNode for IntegerLiteral |
+| 51 | ControlFlowNode for foo() | Function foo | 2 | ControlFlowNode for IntegerLiteral |
+| 55 | ControlFlowNode for bar() | Function bar | 0 | ControlFlowNode for IntegerLiteral |
