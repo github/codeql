@@ -47,6 +47,7 @@
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving NoSQL code operators are now recognized. |
 | Zip Slip (`js/zipslip`) | More results | This query now recognizes additional vulnerabilities. |
 | Unused property (`js/unused-property`) | Less results | This query no longer flags properties of objects that are operands of `yield` expressions. |
+| Client-side cross-site scripting (`js/xss`) | Less results | This query no longer flags optionally sanitized values. |
 
 The following low-precision queries are no longer run by default on LGTM (their results already were not displayed):
 
