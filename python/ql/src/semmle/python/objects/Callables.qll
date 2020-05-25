@@ -27,8 +27,10 @@ abstract class CallableObjectInternal extends ObjectInternal {
         none()
     }
 
+    /** Gets the `n`th parameter node of this callable. */
     abstract NameNode getParameter(int n);
 
+    /** Gets the `name`d parameter node of this callable. */
     abstract NameNode getParameterByName(string name);
 
     abstract predicate neverReturns();
@@ -438,16 +440,30 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
     }
 
-    override NameNode getParameter(int n) { result = this.getFunction().getParameter(n + 1) }
+    /** Gets the parameter node that will be used for `self`. */
+    NameNode getSelfParameter() { result = this.getFunction().getParameter(0) }
 
+    override NameNode getParameter(int n) {
+        result = this.getFunction().getParameter(n + 1) and
+        // don't return the parameter for `self` at `n = -1`
+        n >= 0
+    }
+
+    /**
+     * Gets the `name`d parameter node of this callable.
+     * Will not return the parameter node for `self`, instead use `getSelfParameter`.
+     */
     override NameNode getParameterByName(string name) {
-        result = this.getFunction().getParameterByName(name)
+        result = this.getFunction().getParameterByName(name) and
+        not result = this.getSelfParameter()
     }
 
     override predicate neverReturns() { this.getFunction().neverReturns() }
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         function = this.getFunction() and offset = 1
+        or
+        function = this and offset = 0
     }
 
     override predicate useOriginAsLegacyObject() { any() }
