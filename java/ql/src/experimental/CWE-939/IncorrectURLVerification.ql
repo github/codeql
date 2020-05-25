@@ -94,5 +94,4 @@ class HostVerificationMethodAccess extends MethodAccess {
 
 from UriGetHostMethod um, MethodAccess uma, HostVerificationMethodAccess hma
 where hma.getQualifier() = uma and uma.getMethod() = um
-select "Potentially improper URL verification at ", hma, "having $@ ", hma.getFile(),
-  hma.getArgument(0), "user-provided value"
+select hma, "Method has potentially $@ ", hma.getArgument(0), "improper URL verification"
