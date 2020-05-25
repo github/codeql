@@ -27,8 +27,10 @@ abstract class CallableObjectInternal extends ObjectInternal {
         none()
     }
 
+    /** Gets the `n`th parameter node of this callable. */
     abstract NameNode getParameter(int n);
 
+    /** Gets the `name`d parameter node of this callable. */
     abstract NameNode getParameterByName(string name);
 
     abstract predicate neverReturns();
@@ -447,6 +449,10 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         n >= 0
     }
 
+    /**
+     * Gets the `name`d parameter node of this callable.
+     * Will not return the parameter node for `self`, instead use `getSelfParameter`.
+     */
     override NameNode getParameterByName(string name) {
         result = this.getFunction().getParameterByName(name) and
         not result = this.getSelfParameter()
