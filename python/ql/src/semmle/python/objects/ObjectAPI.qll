@@ -397,7 +397,6 @@ class CallableValue extends Value {
 
     /**
      * Gets the argument in `call` corresponding to the `name`d keyword parameter of this callable.
-     * ONLY WORKS FOR NON-BUILTINS.
      *
      * This method also gives results when the argument is passed as a positional argument in `call`, as long
      * as `this` is not a builtin function or a builtin method.
@@ -420,8 +419,7 @@ class CallableValue extends Value {
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
             called.functionAndOffset(this, offset)
         |
-            call.getArgByName(name) = result and
-            exists(this.getParameterByName(name))
+            call.getArgByName(name) = result
             or
             exists(int n |
                 call.getArg(n) = result and

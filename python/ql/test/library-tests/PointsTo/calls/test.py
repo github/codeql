@@ -43,7 +43,7 @@ c.n(arg1=1)
 
 # positional/keyword arguments for a builtin function
 open("foo.txt", "rb") # TODO: Not handled by getNamedArgumentForCall
-open(file="foo.txt", mode="rb") # TODO: Not handled by either getNamedArgumentForCall or getArgumentForCall
+open(file="foo.txt", mode="rb")
 
 # Testing how arguments to *args and **kwargs are handled
 def foo(a, *args):
@@ -52,4 +52,4 @@ foo(1, 2, 3)
 
 def bar(a, **kwargs):
     pass
-bar(a=1, b=2, c=3) # TODO: no result for `b` or `c` with getNamedArgumentForCall
+bar(a=1, b=2, c=3)
