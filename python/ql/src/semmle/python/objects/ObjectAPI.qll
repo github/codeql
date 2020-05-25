@@ -444,7 +444,7 @@ class BoundMethodValue extends CallableValue {
     BoundMethodValue() { this instanceof BoundMethodObjectInternal }
 
     /**
-     * Gets the callable that will be used when `this` called.
+     * Gets the callable that will be used when `this` is called.
      * The actual callable for `func` in `o.func`.
      */
     CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
