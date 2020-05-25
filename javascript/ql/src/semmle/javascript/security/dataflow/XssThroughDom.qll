@@ -33,6 +33,10 @@ module XssThroughDom {
       guard instanceof TypeTestGuard or
       guard instanceof UnsafeJQuery::PropertyPresenceSanitizer
     }
+
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      DomBasedXss::isOptionallySanitizedEdge(pred, succ)
+    }
   }
 
   /**
