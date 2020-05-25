@@ -19,20 +19,21 @@ private predicate hasDefiniteNumberOfParameters(FunctionDeclarationEntry fde) {
   fde.isDefinition()
 }
 
-// True if function was ()-declared, but not (void)-declared or K&R-defined
+/* Holds if function was ()-declared, but not (void)-declared or K&R-defined. */
 private predicate hasZeroParamDecl(Function f) {
   exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
     not hasDefiniteNumberOfParameters(fde)
   )
 }
 
-// True if this file (or header) was compiled as a C file
+/* Holds if this file (or header) was compiled as a C file. */
 private predicate isCompiledAsC(File f) {
   f.compiledAsC()
   or
   exists(File src | isCompiledAsC(src) | src.getAnIncludedFile() = f)
 }
 
+/** Holds if `fc` is a call to `f` with too few arguments. */
 predicate tooFewArguments(FunctionCall fc, Function f) {
   f = fc.getTarget() and
   not f.isVarargs() and
