@@ -3,10 +3,12 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| format.cpp:16:21:16:21 | s | format.cpp:22:13:22:13 | s |  |
-| format.cpp:16:31:16:31 | n | format.cpp:22:16:22:16 | n |  |
-| format.cpp:16:46:16:51 | format | format.cpp:22:19:22:24 | format |  |
-| format.cpp:20:10:20:13 | args | format.cpp:22:27:22:30 | args |  |
+| format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
+| format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
+| format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
+| format.cpp:20:10:20:13 | args | format.cpp:22:36:22:39 | args |  |
+| format.cpp:22:12:22:20 | call to vsnprintf | format.cpp:22:3:22:40 | ... = ... |  |
+| format.cpp:22:12:22:20 | call to vsnprintf | format.cpp:25:9:25:14 | result |  |
 | format.cpp:50:21:50:24 | {...} | format.cpp:51:17:51:22 | buffer |  |
 | format.cpp:50:21:50:24 | {...} | format.cpp:52:8:52:13 | buffer |  |
 | format.cpp:50:23:50:23 | 0 | format.cpp:50:21:50:24 | {...} | TAINT |
