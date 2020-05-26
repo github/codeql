@@ -304,12 +304,10 @@ module DomBasedXss {
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
   /**
-   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`. 
+   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
    */
   predicate isOptionallySanitizedEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode sanitizer |
-      sanitizer.getCalleeName().regexpMatch("(?i).*sanitize.*")
-    |
+    exists(HtmlSanitizerCall sanitizer |
       // sanitized = sanitize ? sanitizer(source) : source;
       exists(ConditionalExpr branch, Variable var, VarAccess access |
         branch = succ.asExpr() and access = var.getAnAccess()
