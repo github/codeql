@@ -224,8 +224,7 @@ class IREllipsisVariable extends IRTempVariable {
 }
 
 /**
- * A temporary variable generated to hold the contents of all arguments passed to the `...` of a
- * function that accepts a variable number of arguments.
+ * A temporary variable generated to hold the `this` pointer.
  */
 class IRThisVariable extends IRTempVariable {
   IRThisVariable() { tag = ThisTempVar() }
