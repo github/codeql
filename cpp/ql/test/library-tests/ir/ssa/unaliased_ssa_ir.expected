@@ -1348,3 +1348,25 @@ ssa.cpp:
 #  301|     v301_12(void)          = ReturnValue                      : &:r301_11, m304_7
 #  301|     v301_13(void)          = AliasedUse                       : ~m?
 #  301|     v301_14(void)          = ExitFunction                     : 
+
+#  310| void ThisAliasTest::setX(int)
+#  310|   Block 0
+#  310|     v310_1(void)                 = EnterFunction                : 
+#  310|     mu310_2(unknown)             = AliasedDefinition            : 
+#  310|     mu310_3(unknown)             = InitializeNonLocal           : 
+#  310|     r310_4(glval<unknown>)       = VariableAddress[#this]       : 
+#  310|     m310_5(glval<ThisAliasTest>) = InitializeParameter[#this]   : &:r310_4
+#  310|     r310_6(glval<ThisAliasTest>) = Load                         : &:r310_4, m310_5
+#  310|     mu310_7(ThisAliasTest)       = InitializeIndirection[#this] : &:r310_6
+#  310|     r310_8(glval<int>)           = VariableAddress[arg]         : 
+#  310|     m310_9(int)                  = InitializeParameter[arg]     : &:r310_8
+#  311|     r311_1(glval<int>)           = VariableAddress[arg]         : 
+#  311|     r311_2(int)                  = Load                         : &:r311_1, m310_9
+#  311|     r311_3(glval<unknown>)       = VariableAddress[#this]       : 
+#  311|     r311_4(ThisAliasTest *)      = Load                         : &:r311_3, m310_5
+#  311|     r311_5(glval<int>)           = FieldAddress[x]              : r311_4
+#  311|     mu311_6(int)                 = Store                        : &:r311_5, r311_2
+#  312|     v312_1(void)                 = NoOp                         : 
+#  310|     v310_10(void)                = ReturnVoid                   : 
+#  310|     v310_11(void)                = AliasedUse                   : ~m?
+#  310|     v310_12(void)                = ExitFunction                 : 

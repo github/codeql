@@ -1478,3 +1478,27 @@ ssa.cpp:
 #  301|     v301_14(void)          = ReturnValue                      : &:r301_13, m304_7
 #  301|     v301_15(void)          = AliasedUse                       : ~m303_11
 #  301|     v301_16(void)          = ExitFunction                     : 
+
+#  310| void ThisAliasTest::setX(int)
+#  310|   Block 0
+#  310|     v310_1(void)                 = EnterFunction                : 
+#  310|     m310_2(unknown)              = AliasedDefinition            : 
+#  310|     m310_3(unknown)              = InitializeNonLocal           : 
+#  310|     m310_4(unknown)              = Chi                          : total:m310_2, partial:m310_3
+#  310|     r310_5(glval<unknown>)       = VariableAddress[#this]       : 
+#  310|     m310_6(glval<ThisAliasTest>) = InitializeParameter[#this]   : &:r310_5
+#  310|     r310_7(glval<ThisAliasTest>) = Load                         : &:r310_5, m310_6
+#  310|     m310_8(ThisAliasTest)        = InitializeIndirection[#this] : &:r310_7
+#  310|     r310_9(glval<int>)           = VariableAddress[arg]         : 
+#  310|     m310_10(int)                 = InitializeParameter[arg]     : &:r310_9
+#  311|     r311_1(glval<int>)           = VariableAddress[arg]         : 
+#  311|     r311_2(int)                  = Load                         : &:r311_1, m310_10
+#  311|     r311_3(glval<unknown>)       = VariableAddress[#this]       : 
+#  311|     r311_4(ThisAliasTest *)      = Load                         : &:r311_3, m310_6
+#  311|     r311_5(glval<int>)           = FieldAddress[x]              : r311_4
+#  311|     m311_6(int)                  = Store                        : &:r311_5, r311_2
+#  311|     m311_7(unknown)              = Chi                          : total:m310_8, partial:m311_6
+#  312|     v312_1(void)                 = NoOp                         : 
+#  310|     v310_11(void)                = ReturnVoid                   : 
+#  310|     v310_12(void)                = AliasedUse                   : m310_3
+#  310|     v310_13(void)                = ExitFunction                 : 
