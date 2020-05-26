@@ -139,11 +139,15 @@ where
             newidx = oldidx + count(callable.getInnerScope().getArg(_)) - count(args.getDefault(_))
         )
         or
-        // expr is a default for a keyword-only parameter
+        // expr is a default for a keyword-only parameter.
+        // before this upgrade, we would not always attach the default value to the correct keyword-only parameter,
+        // to fix this, we calculate the new index based on the source location of the default value (a default value
+        // must belong to the parameter that was defined immediately before the default value).
         exists(Arguments_ args, CallableExprAdjusted callable |
             callable.getArgs() = args and
             args.getKwDefault(oldidx) = expr and
             newidx =
+                // the last parameter to be defined before this default value
                 max(int i |
                     exists(Parameter_ param | param = callable.getInnerScope().getKwonlyarg(i) |
                         param.getLocation().getStartLine() < expr.getLocation().getStartLine()
