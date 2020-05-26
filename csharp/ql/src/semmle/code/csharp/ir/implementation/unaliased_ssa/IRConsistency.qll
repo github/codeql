@@ -149,8 +149,7 @@ module InstructionConsistency {
   }
 
   /**
-   * Holds if a memory operand is connected to a definition with an unmodeled result, other than
-   * `UnmodeledDefinition` itself.
+   * Holds if a memory operand is connected to a definition with an unmodeled result.
    */
   query predicate memoryOperandDefinitionIsUnmodeled(
     Instruction instr, string message, IRFunction func, string funcText
@@ -159,9 +158,7 @@ module InstructionConsistency {
       operand = instr.getAnOperand() and
       def = operand.getAnyDef() and
       not def.isResultModeled() and
-      not def instanceof UnmodeledDefinitionInstruction and
-      message =
-        "Memory operand definition has unmodeled result, but is not the `UnmodeledDefinition` instruction in function '$@'" and
+      message = "Memory operand definition has unmodeled result in function '$@'" and
       func = instr.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction())
     )
@@ -257,7 +254,6 @@ module InstructionConsistency {
     Operand useOperand, string message, IRFunction func, string funcText
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
-      not defInstr instanceof UnmodeledDefinitionInstruction and
       pointOfEvaluation(useOperand, useBlock, useIndex) and
       defInstr = useOperand.getAnyDef() and
       (
@@ -305,8 +301,6 @@ module InstructionConsistency {
 
   private predicate shouldBeConflated(Instruction instr) {
     isOnAliasedDefinitionChain(instr)
-    or
-    instr instanceof UnmodeledDefinitionInstruction
     or
     instr.getOpcode() instanceof Opcode::InitializeNonLocal
   }

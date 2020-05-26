@@ -278,8 +278,6 @@ private predicate unknownSign(Instruction i) {
   // non-positive, non-zero}, which would mean that the representation of the sign of an unknown
   // value would be the empty set.
   (
-    i instanceof UnmodeledDefinitionInstruction
-    or
     i instanceof UninitializedInstruction
     or
     i instanceof InitializeParameterInstruction

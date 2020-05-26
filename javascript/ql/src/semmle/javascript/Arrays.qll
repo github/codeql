@@ -251,13 +251,15 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
-    ArrayCreationStep() { this instanceof DataFlow::ArrayCreationNode }
-
+  private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::ArrayCreationNode {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
-      prop = arrayElement() and
-      element = this.(DataFlow::ArrayCreationNode).getAnElement() and
-      obj = this
+      exists(int i |
+        element = this.getElement(i) and
+        obj = this and
+        if this = any(PromiseAllCreation c).getArrayNode()
+        then prop = arrayElement(i)
+        else prop = arrayElement()
+      )
     }
   }
 

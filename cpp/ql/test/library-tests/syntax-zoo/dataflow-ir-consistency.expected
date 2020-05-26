@@ -10,7 +10,6 @@ uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | aggregateinitializer.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | aggregateinitializer.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| aggregateinitializer.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | aggregateinitializer.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | allocators.cpp:14:5:14:8 | AliasedDefinition | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | AliasedUse | Node should have one location but has 4. |
@@ -21,7 +20,6 @@ uniqueNodeLocation
 | allocators.cpp:14:5:14:8 | Phi | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | Phi | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | ReturnValue | Node should have one location but has 4. |
-| allocators.cpp:14:5:14:8 | UnmodeledDefinition | Node should have one location but has 4. |
 | allocators.cpp:14:5:14:8 | VariableAddress | Node should have one location but has 4. |
 | array_delete.cpp:5:6:5:6 | AliasedDefinition | Node should have one location but has 14. |
 | array_delete.cpp:5:6:5:6 | AliasedUse | Node should have one location but has 14. |
@@ -31,7 +29,6 @@ uniqueNodeLocation
 | array_delete.cpp:5:6:5:6 | InitializeNonLocal | Node should have one location but has 14. |
 | array_delete.cpp:5:6:5:6 | Phi | Node should have one location but has 14. |
 | array_delete.cpp:5:6:5:6 | ReturnVoid | Node should have one location but has 14. |
-| array_delete.cpp:5:6:5:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | assignexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
 | assignexpr.cpp:6:6:6:6 | AliasedUse | Node should have one location but has 14. |
 | assignexpr.cpp:6:6:6:6 | Chi | Node should have one location but has 14. |
@@ -40,7 +37,6 @@ uniqueNodeLocation
 | assignexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | assignexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | assignexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| assignexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | break_labels.c:2:5:2:5 | AliasedDefinition | Node should have one location but has 20. |
 | break_labels.c:2:5:2:5 | AliasedUse | Node should have one location but has 20. |
 | break_labels.c:2:5:2:5 | Chi | Node should have one location but has 20. |
@@ -49,7 +45,6 @@ uniqueNodeLocation
 | break_labels.c:2:5:2:5 | InitializeNonLocal | Node should have one location but has 20. |
 | break_labels.c:2:5:2:5 | Phi | Node should have one location but has 20. |
 | break_labels.c:2:5:2:5 | ReturnVoid | Node should have one location but has 20. |
-| break_labels.c:2:5:2:5 | UnmodeledDefinition | Node should have one location but has 20. |
 | break_labels.c:2:5:2:5 | Unreached | Node should have one location but has 20. |
 | break_labels.c:2:11:2:11 | VariableAddress | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
@@ -64,7 +59,6 @@ uniqueNodeLocation
 | conditional_destructors.cpp:29:6:29:7 | InitializeNonLocal | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | Phi | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | ReturnVoid | Node should have one location but has 2. |
-| conditional_destructors.cpp:29:6:29:7 | UnmodeledDefinition | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | AliasedDefinition | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | AliasedUse | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | Chi | Node should have one location but has 2. |
@@ -73,7 +67,6 @@ uniqueNodeLocation
 | conditional_destructors.cpp:38:6:38:7 | InitializeNonLocal | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | Phi | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | ReturnVoid | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | UnmodeledDefinition | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | Unreached | Node should have one location but has 2. |
 | constmemberaccess.cpp:3:7:3:7 | x | Node should have one location but has 2. |
 | constmemberaccess.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
@@ -84,7 +77,6 @@ uniqueNodeLocation
 | constmemberaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | constmemberaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | constmemberaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| constmemberaccess.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | constructorinitializer.cpp:3:9:3:9 | i | Node should have one location but has 2. |
 | constructorinitializer.cpp:3:9:3:9 | x | Node should have one location but has 2. |
 | constructorinitializer.cpp:3:16:3:16 | j | Node should have one location but has 2. |
@@ -97,7 +89,6 @@ uniqueNodeLocation
 | constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | constructorinitializer.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | constructorinitializer.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| constructorinitializer.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | defconstructornewexpr.cpp:3:6:3:6 | AliasedDefinition | Node should have one location but has 14. |
 | defconstructornewexpr.cpp:3:6:3:6 | AliasedUse | Node should have one location but has 14. |
 | defconstructornewexpr.cpp:3:6:3:6 | Chi | Node should have one location but has 14. |
@@ -106,7 +97,6 @@ uniqueNodeLocation
 | defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal | Node should have one location but has 14. |
 | defconstructornewexpr.cpp:3:6:3:6 | Phi | Node should have one location but has 14. |
 | defconstructornewexpr.cpp:3:6:3:6 | ReturnVoid | Node should have one location but has 14. |
-| defconstructornewexpr.cpp:3:6:3:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | defdestructordeleteexpr.cpp:3:6:3:6 | AliasedDefinition | Node should have one location but has 14. |
 | defdestructordeleteexpr.cpp:3:6:3:6 | AliasedUse | Node should have one location but has 14. |
 | defdestructordeleteexpr.cpp:3:6:3:6 | Chi | Node should have one location but has 14. |
@@ -115,7 +105,6 @@ uniqueNodeLocation
 | defdestructordeleteexpr.cpp:3:6:3:6 | InitializeNonLocal | Node should have one location but has 14. |
 | defdestructordeleteexpr.cpp:3:6:3:6 | Phi | Node should have one location but has 14. |
 | defdestructordeleteexpr.cpp:3:6:3:6 | ReturnVoid | Node should have one location but has 14. |
-| defdestructordeleteexpr.cpp:3:6:3:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | deleteexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
 | deleteexpr.cpp:6:6:6:6 | AliasedUse | Node should have one location but has 14. |
 | deleteexpr.cpp:6:6:6:6 | Chi | Node should have one location but has 14. |
@@ -124,7 +113,6 @@ uniqueNodeLocation
 | deleteexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | deleteexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | deleteexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| deleteexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | dostmt.c:8:6:8:18 | AliasedDefinition | Node should have one location but has 4. |
 | dostmt.c:8:6:8:18 | AliasedUse | Node should have one location but has 4. |
 | dostmt.c:8:6:8:18 | Chi | Node should have one location but has 4. |
@@ -132,7 +120,6 @@ uniqueNodeLocation
 | dostmt.c:8:6:8:18 | ExitFunction | Node should have one location but has 4. |
 | dostmt.c:8:6:8:18 | InitializeNonLocal | Node should have one location but has 4. |
 | dostmt.c:8:6:8:18 | ReturnVoid | Node should have one location but has 4. |
-| dostmt.c:8:6:8:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | dostmt.c:8:6:8:18 | Unreached | Node should have one location but has 4. |
 | dostmt.c:16:6:16:18 | AliasedDefinition | Node should have one location but has 4. |
 | dostmt.c:16:6:16:18 | AliasedUse | Node should have one location but has 4. |
@@ -141,13 +128,11 @@ uniqueNodeLocation
 | dostmt.c:16:6:16:18 | ExitFunction | Node should have one location but has 4. |
 | dostmt.c:16:6:16:18 | InitializeNonLocal | Node should have one location but has 4. |
 | dostmt.c:16:6:16:18 | ReturnVoid | Node should have one location but has 4. |
-| dostmt.c:16:6:16:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | dostmt.c:16:6:16:18 | Unreached | Node should have one location but has 4. |
 | dostmt.c:25:6:25:18 | AliasedDefinition | Node should have one location but has 2. |
 | dostmt.c:25:6:25:18 | Chi | Node should have one location but has 2. |
 | dostmt.c:25:6:25:18 | EnterFunction | Node should have one location but has 2. |
 | dostmt.c:25:6:25:18 | InitializeNonLocal | Node should have one location but has 2. |
-| dostmt.c:25:6:25:18 | UnmodeledDefinition | Node should have one location but has 2. |
 | dostmt.c:25:6:25:18 | Unreached | Node should have one location but has 2. |
 | dostmt.c:32:6:32:11 | AliasedDefinition | Node should have one location but has 4. |
 | dostmt.c:32:6:32:11 | AliasedUse | Node should have one location but has 4. |
@@ -156,7 +141,6 @@ uniqueNodeLocation
 | dostmt.c:32:6:32:11 | ExitFunction | Node should have one location but has 4. |
 | dostmt.c:32:6:32:11 | InitializeNonLocal | Node should have one location but has 4. |
 | dostmt.c:32:6:32:11 | ReturnVoid | Node should have one location but has 4. |
-| dostmt.c:32:6:32:11 | UnmodeledDefinition | Node should have one location but has 4. |
 | duff.c:2:6:2:6 | AliasedDefinition | Node should have one location but has 20. |
 | duff.c:2:6:2:6 | AliasedUse | Node should have one location but has 20. |
 | duff.c:2:6:2:6 | Chi | Node should have one location but has 20. |
@@ -165,7 +149,6 @@ uniqueNodeLocation
 | duff.c:2:6:2:6 | InitializeNonLocal | Node should have one location but has 20. |
 | duff.c:2:6:2:6 | Phi | Node should have one location but has 20. |
 | duff.c:2:6:2:6 | ReturnVoid | Node should have one location but has 20. |
-| duff.c:2:6:2:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | duff.c:2:6:2:6 | Unreached | Node should have one location but has 20. |
 | duff.c:2:12:2:12 | VariableAddress | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | i | Node should have one location but has 4. |
@@ -180,7 +163,6 @@ uniqueNodeLocation
 | dummyblock.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | dummyblock.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | dummyblock.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| dummyblock.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | dummyblock.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | emptyblock.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | emptyblock.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -190,7 +172,6 @@ uniqueNodeLocation
 | emptyblock.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | emptyblock.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | emptyblock.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| emptyblock.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | emptyblock.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | enum.c:5:5:5:5 | AliasedDefinition | Node should have one location but has 20. |
 | enum.c:5:5:5:5 | AliasedUse | Node should have one location but has 20. |
@@ -200,7 +181,6 @@ uniqueNodeLocation
 | enum.c:5:5:5:5 | InitializeNonLocal | Node should have one location but has 20. |
 | enum.c:5:5:5:5 | Phi | Node should have one location but has 20. |
 | enum.c:5:5:5:5 | ReturnVoid | Node should have one location but has 20. |
-| enum.c:5:5:5:5 | UnmodeledDefinition | Node should have one location but has 20. |
 | enum.c:5:5:5:5 | Unreached | Node should have one location but has 20. |
 | exprstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | exprstmt.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -210,7 +190,6 @@ uniqueNodeLocation
 | exprstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | exprstmt.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | exprstmt.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| exprstmt.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | exprstmt.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | fieldaccess.cpp:3:7:3:7 | x | Node should have one location but has 2. |
 | fieldaccess.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
@@ -221,7 +200,6 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| fieldaccess.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | file://:0:0:0:0 | InitializeIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | Load | Node should have one location but has 0. |
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
@@ -260,7 +238,6 @@ uniqueNodeLocation
 | forstmt.cpp:1:6:1:7 | InitializeNonLocal | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | Phi | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | ReturnVoid | Node should have one location but has 2. |
-| forstmt.cpp:1:6:1:7 | UnmodeledDefinition | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | AliasedDefinition | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | AliasedUse | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | Chi | Node should have one location but has 2. |
@@ -269,7 +246,6 @@ uniqueNodeLocation
 | forstmt.cpp:8:6:8:7 | InitializeNonLocal | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | Phi | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | ReturnVoid | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | UnmodeledDefinition | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | Unreached | Node should have one location but has 2. |
 | ifelsestmt.c:1:6:1:19 | AliasedDefinition | Node should have one location but has 3. |
 | ifelsestmt.c:1:6:1:19 | AliasedUse | Node should have one location but has 3. |
@@ -278,7 +254,6 @@ uniqueNodeLocation
 | ifelsestmt.c:1:6:1:19 | ExitFunction | Node should have one location but has 3. |
 | ifelsestmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
 | ifelsestmt.c:1:6:1:19 | ReturnVoid | Node should have one location but has 3. |
-| ifelsestmt.c:1:6:1:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | ifelsestmt.c:1:6:1:19 | Unreached | Node should have one location but has 3. |
 | ifelsestmt.c:11:6:11:19 | AliasedDefinition | Node should have one location but has 3. |
 | ifelsestmt.c:11:6:11:19 | AliasedUse | Node should have one location but has 3. |
@@ -287,7 +262,6 @@ uniqueNodeLocation
 | ifelsestmt.c:11:6:11:19 | ExitFunction | Node should have one location but has 3. |
 | ifelsestmt.c:11:6:11:19 | InitializeNonLocal | Node should have one location but has 3. |
 | ifelsestmt.c:11:6:11:19 | ReturnVoid | Node should have one location but has 3. |
-| ifelsestmt.c:11:6:11:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | ifelsestmt.c:11:6:11:19 | Unreached | Node should have one location but has 3. |
 | ifelsestmt.c:19:6:19:18 | AliasedDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:19:6:19:18 | AliasedUse | Node should have one location but has 4. |
@@ -296,7 +270,6 @@ uniqueNodeLocation
 | ifelsestmt.c:19:6:19:18 | ExitFunction | Node should have one location but has 4. |
 | ifelsestmt.c:19:6:19:18 | InitializeNonLocal | Node should have one location but has 4. |
 | ifelsestmt.c:19:6:19:18 | ReturnVoid | Node should have one location but has 4. |
-| ifelsestmt.c:19:6:19:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:19:6:19:18 | Unreached | Node should have one location but has 4. |
 | ifelsestmt.c:29:6:29:18 | AliasedDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:29:6:29:18 | AliasedUse | Node should have one location but has 4. |
@@ -305,7 +278,6 @@ uniqueNodeLocation
 | ifelsestmt.c:29:6:29:18 | ExitFunction | Node should have one location but has 4. |
 | ifelsestmt.c:29:6:29:18 | InitializeNonLocal | Node should have one location but has 4. |
 | ifelsestmt.c:29:6:29:18 | ReturnVoid | Node should have one location but has 4. |
-| ifelsestmt.c:29:6:29:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:29:6:29:18 | Unreached | Node should have one location but has 4. |
 | ifelsestmt.c:37:6:37:11 | AliasedDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:37:6:37:11 | AliasedUse | Node should have one location but has 4. |
@@ -314,7 +286,6 @@ uniqueNodeLocation
 | ifelsestmt.c:37:6:37:11 | ExitFunction | Node should have one location but has 4. |
 | ifelsestmt.c:37:6:37:11 | InitializeNonLocal | Node should have one location but has 4. |
 | ifelsestmt.c:37:6:37:11 | ReturnVoid | Node should have one location but has 4. |
-| ifelsestmt.c:37:6:37:11 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifelsestmt.c:37:17:37:17 | VariableAddress | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
 | ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
@@ -328,7 +299,6 @@ uniqueNodeLocation
 | ifstmt.c:1:6:1:19 | ExitFunction | Node should have one location but has 3. |
 | ifstmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
 | ifstmt.c:1:6:1:19 | ReturnVoid | Node should have one location but has 3. |
-| ifstmt.c:1:6:1:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | ifstmt.c:1:6:1:19 | Unreached | Node should have one location but has 3. |
 | ifstmt.c:8:6:8:19 | AliasedDefinition | Node should have one location but has 3. |
 | ifstmt.c:8:6:8:19 | AliasedUse | Node should have one location but has 3. |
@@ -337,7 +307,6 @@ uniqueNodeLocation
 | ifstmt.c:8:6:8:19 | ExitFunction | Node should have one location but has 3. |
 | ifstmt.c:8:6:8:19 | InitializeNonLocal | Node should have one location but has 3. |
 | ifstmt.c:8:6:8:19 | ReturnVoid | Node should have one location but has 3. |
-| ifstmt.c:8:6:8:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | ifstmt.c:8:6:8:19 | Unreached | Node should have one location but has 3. |
 | ifstmt.c:14:6:14:18 | AliasedDefinition | Node should have one location but has 4. |
 | ifstmt.c:14:6:14:18 | AliasedUse | Node should have one location but has 4. |
@@ -346,7 +315,6 @@ uniqueNodeLocation
 | ifstmt.c:14:6:14:18 | ExitFunction | Node should have one location but has 4. |
 | ifstmt.c:14:6:14:18 | InitializeNonLocal | Node should have one location but has 4. |
 | ifstmt.c:14:6:14:18 | ReturnVoid | Node should have one location but has 4. |
-| ifstmt.c:14:6:14:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifstmt.c:14:6:14:18 | Unreached | Node should have one location but has 4. |
 | ifstmt.c:21:6:21:18 | AliasedDefinition | Node should have one location but has 4. |
 | ifstmt.c:21:6:21:18 | AliasedUse | Node should have one location but has 4. |
@@ -355,7 +323,6 @@ uniqueNodeLocation
 | ifstmt.c:21:6:21:18 | ExitFunction | Node should have one location but has 4. |
 | ifstmt.c:21:6:21:18 | InitializeNonLocal | Node should have one location but has 4. |
 | ifstmt.c:21:6:21:18 | ReturnVoid | Node should have one location but has 4. |
-| ifstmt.c:21:6:21:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifstmt.c:21:6:21:18 | Unreached | Node should have one location but has 4. |
 | ifstmt.c:27:6:27:11 | AliasedDefinition | Node should have one location but has 4. |
 | ifstmt.c:27:6:27:11 | AliasedUse | Node should have one location but has 4. |
@@ -364,7 +331,6 @@ uniqueNodeLocation
 | ifstmt.c:27:6:27:11 | ExitFunction | Node should have one location but has 4. |
 | ifstmt.c:27:6:27:11 | InitializeNonLocal | Node should have one location but has 4. |
 | ifstmt.c:27:6:27:11 | ReturnVoid | Node should have one location but has 4. |
-| ifstmt.c:27:6:27:11 | UnmodeledDefinition | Node should have one location but has 4. |
 | ifstmt.c:27:17:27:17 | VariableAddress | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
@@ -379,7 +345,6 @@ uniqueNodeLocation
 | initializer.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | initializer.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | initializer.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| initializer.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | initializer.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | landexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | landexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -389,7 +354,6 @@ uniqueNodeLocation
 | landexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | landexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | landexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| landexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | landexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | lorexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | lorexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -399,7 +363,6 @@ uniqueNodeLocation
 | lorexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | lorexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | lorexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| lorexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | lorexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | ltrbinopexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | ltrbinopexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -409,7 +372,6 @@ uniqueNodeLocation
 | ltrbinopexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | ltrbinopexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | ltrbinopexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| ltrbinopexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | ltrbinopexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | membercallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
 | membercallexpr.cpp:6:6:6:6 | AliasedUse | Node should have one location but has 14. |
@@ -419,7 +381,6 @@ uniqueNodeLocation
 | membercallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | membercallexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | membercallexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| membercallexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | membercallexpr_args.cpp:3:6:3:6 | d | Node should have one location but has 2. |
 | membercallexpr_args.cpp:4:14:4:14 | x | Node should have one location but has 2. |
 | membercallexpr_args.cpp:4:21:4:21 | y | Node should have one location but has 2. |
@@ -431,7 +392,6 @@ uniqueNodeLocation
 | membercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal | Node should have one location but has 14. |
 | membercallexpr_args.cpp:7:6:7:6 | Phi | Node should have one location but has 14. |
 | membercallexpr_args.cpp:7:6:7:6 | ReturnVoid | Node should have one location but has 14. |
-| membercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one location but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one location but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one location but has 2. |
@@ -444,7 +404,6 @@ uniqueNodeLocation
 | newexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | newexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | newexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| newexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | no_dynamic_init.cpp:9:5:9:8 | AliasedDefinition | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | AliasedUse | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | Chi | Node should have one location but has 4. |
@@ -454,7 +413,6 @@ uniqueNodeLocation
 | no_dynamic_init.cpp:9:5:9:8 | Phi | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | Phi | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | ReturnValue | Node should have one location but has 4. |
-| no_dynamic_init.cpp:9:5:9:8 | UnmodeledDefinition | Node should have one location but has 4. |
 | no_dynamic_init.cpp:9:5:9:8 | VariableAddress | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -464,7 +422,6 @@ uniqueNodeLocation
 | nodefaultswitchstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| nodefaultswitchstmt.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | nodefaultswitchstmt.c:1:12:1:12 | VariableAddress | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
@@ -478,7 +435,6 @@ uniqueNodeLocation
 | nonmembercallexpr.c:1:6:1:6 | ExitFunction | Node should have one location but has 2. |
 | nonmembercallexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 2. |
 | nonmembercallexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 2. |
-| nonmembercallexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 2. |
 | nonmembercallexpr.c:3:6:3:6 | AliasedDefinition | Node should have one location but has 20. |
 | nonmembercallexpr.c:3:6:3:6 | AliasedUse | Node should have one location but has 20. |
 | nonmembercallexpr.c:3:6:3:6 | Chi | Node should have one location but has 20. |
@@ -487,7 +443,6 @@ uniqueNodeLocation
 | nonmembercallexpr.c:3:6:3:6 | InitializeNonLocal | Node should have one location but has 20. |
 | nonmembercallexpr.c:3:6:3:6 | Phi | Node should have one location but has 20. |
 | nonmembercallexpr.c:3:6:3:6 | ReturnVoid | Node should have one location but has 20. |
-| nonmembercallexpr.c:3:6:3:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | nonmembercallexpr.c:3:6:3:6 | Unreached | Node should have one location but has 20. |
 | nonmemberfp2callexpr.c:3:6:3:6 | AliasedDefinition | Node should have one location but has 20. |
 | nonmemberfp2callexpr.c:3:6:3:6 | AliasedUse | Node should have one location but has 20. |
@@ -497,7 +452,6 @@ uniqueNodeLocation
 | nonmemberfp2callexpr.c:3:6:3:6 | InitializeNonLocal | Node should have one location but has 20. |
 | nonmemberfp2callexpr.c:3:6:3:6 | Phi | Node should have one location but has 20. |
 | nonmemberfp2callexpr.c:3:6:3:6 | ReturnVoid | Node should have one location but has 20. |
-| nonmemberfp2callexpr.c:3:6:3:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | nonmemberfp2callexpr.c:3:6:3:6 | Unreached | Node should have one location but has 20. |
 | nonmemberfpcallexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | nonmemberfpcallexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -507,7 +461,6 @@ uniqueNodeLocation
 | nonmemberfpcallexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | nonmemberfpcallexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | nonmemberfpcallexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| nonmemberfpcallexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | nonmemberfpcallexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | parameterinitializer.cpp:18:5:18:8 | AliasedDefinition | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | AliasedUse | Node should have one location but has 4. |
@@ -518,7 +471,6 @@ uniqueNodeLocation
 | parameterinitializer.cpp:18:5:18:8 | Phi | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | Phi | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | ReturnValue | Node should have one location but has 4. |
-| parameterinitializer.cpp:18:5:18:8 | UnmodeledDefinition | Node should have one location but has 4. |
 | parameterinitializer.cpp:18:5:18:8 | VariableAddress | Node should have one location but has 4. |
 | pmcallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
 | pmcallexpr.cpp:6:6:6:6 | AliasedUse | Node should have one location but has 14. |
@@ -528,7 +480,6 @@ uniqueNodeLocation
 | pmcallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | pmcallexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | pmcallexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| pmcallexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | questionexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | questionexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
 | questionexpr.c:1:6:1:6 | Chi | Node should have one location but has 20. |
@@ -537,7 +488,6 @@ uniqueNodeLocation
 | questionexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | questionexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | questionexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| questionexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | questionexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | revsubscriptexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 2. |
 | revsubscriptexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 2. |
@@ -546,7 +496,6 @@ uniqueNodeLocation
 | revsubscriptexpr.c:1:6:1:6 | ExitFunction | Node should have one location but has 2. |
 | revsubscriptexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 2. |
 | revsubscriptexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 2. |
-| revsubscriptexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 2. |
 | staticmembercallexpr.cpp:6:6:6:6 | AliasedDefinition | Node should have one location but has 14. |
 | staticmembercallexpr.cpp:6:6:6:6 | AliasedUse | Node should have one location but has 14. |
 | staticmembercallexpr.cpp:6:6:6:6 | Chi | Node should have one location but has 14. |
@@ -555,7 +504,6 @@ uniqueNodeLocation
 | staticmembercallexpr.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | staticmembercallexpr.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | staticmembercallexpr.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| staticmembercallexpr.cpp:6:6:6:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | staticmembercallexpr_args.cpp:3:6:3:6 | d | Node should have one location but has 2. |
 | staticmembercallexpr_args.cpp:4:21:4:21 | x | Node should have one location but has 2. |
 | staticmembercallexpr_args.cpp:4:28:4:28 | y | Node should have one location but has 2. |
@@ -567,7 +515,6 @@ uniqueNodeLocation
 | staticmembercallexpr_args.cpp:7:6:7:6 | InitializeNonLocal | Node should have one location but has 14. |
 | staticmembercallexpr_args.cpp:7:6:7:6 | Phi | Node should have one location but has 14. |
 | staticmembercallexpr_args.cpp:7:6:7:6 | ReturnVoid | Node should have one location but has 14. |
-| staticmembercallexpr_args.cpp:7:6:7:6 | UnmodeledDefinition | Node should have one location but has 14. |
 | stream_it.cpp:16:5:16:8 | AliasedDefinition | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | AliasedUse | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | Chi | Node should have one location but has 4. |
@@ -577,7 +524,6 @@ uniqueNodeLocation
 | stream_it.cpp:16:5:16:8 | Phi | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | Phi | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | ReturnValue | Node should have one location but has 4. |
-| stream_it.cpp:16:5:16:8 | UnmodeledDefinition | Node should have one location but has 4. |
 | stream_it.cpp:16:5:16:8 | VariableAddress | Node should have one location but has 4. |
 | subscriptexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | subscriptexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -587,7 +533,6 @@ uniqueNodeLocation
 | subscriptexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | subscriptexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | subscriptexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| subscriptexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | subscriptexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | switchstmt.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | switchstmt.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -597,7 +542,6 @@ uniqueNodeLocation
 | switchstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | switchstmt.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | switchstmt.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| switchstmt.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | switchstmt.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | switchstmt.c:1:12:1:12 | VariableAddress | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
@@ -612,7 +556,6 @@ uniqueNodeLocation
 | tinyforstmt.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | tinyforstmt.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | tinyforstmt.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| tinyforstmt.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | tinyforstmt.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | unaryopexpr.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | unaryopexpr.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -622,7 +565,6 @@ uniqueNodeLocation
 | unaryopexpr.c:1:6:1:6 | InitializeNonLocal | Node should have one location but has 20. |
 | unaryopexpr.c:1:6:1:6 | Phi | Node should have one location but has 20. |
 | unaryopexpr.c:1:6:1:6 | ReturnVoid | Node should have one location but has 20. |
-| unaryopexpr.c:1:6:1:6 | UnmodeledDefinition | Node should have one location but has 20. |
 | unaryopexpr.c:1:6:1:6 | Unreached | Node should have one location but has 20. |
 | whilestmt.c:1:6:1:19 | AliasedDefinition | Node should have one location but has 3. |
 | whilestmt.c:1:6:1:19 | AliasedUse | Node should have one location but has 3. |
@@ -631,7 +573,6 @@ uniqueNodeLocation
 | whilestmt.c:1:6:1:19 | ExitFunction | Node should have one location but has 3. |
 | whilestmt.c:1:6:1:19 | InitializeNonLocal | Node should have one location but has 3. |
 | whilestmt.c:1:6:1:19 | ReturnVoid | Node should have one location but has 3. |
-| whilestmt.c:1:6:1:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | whilestmt.c:1:6:1:19 | Unreached | Node should have one location but has 3. |
 | whilestmt.c:8:6:8:19 | AliasedDefinition | Node should have one location but has 3. |
 | whilestmt.c:8:6:8:19 | AliasedUse | Node should have one location but has 3. |
@@ -640,7 +581,6 @@ uniqueNodeLocation
 | whilestmt.c:8:6:8:19 | ExitFunction | Node should have one location but has 3. |
 | whilestmt.c:8:6:8:19 | InitializeNonLocal | Node should have one location but has 3. |
 | whilestmt.c:8:6:8:19 | ReturnVoid | Node should have one location but has 3. |
-| whilestmt.c:8:6:8:19 | UnmodeledDefinition | Node should have one location but has 3. |
 | whilestmt.c:8:6:8:19 | Unreached | Node should have one location but has 3. |
 | whilestmt.c:15:6:15:18 | AliasedDefinition | Node should have one location but has 4. |
 | whilestmt.c:15:6:15:18 | AliasedUse | Node should have one location but has 4. |
@@ -649,7 +589,6 @@ uniqueNodeLocation
 | whilestmt.c:15:6:15:18 | ExitFunction | Node should have one location but has 4. |
 | whilestmt.c:15:6:15:18 | InitializeNonLocal | Node should have one location but has 4. |
 | whilestmt.c:15:6:15:18 | ReturnVoid | Node should have one location but has 4. |
-| whilestmt.c:15:6:15:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | whilestmt.c:15:6:15:18 | Unreached | Node should have one location but has 4. |
 | whilestmt.c:23:6:23:18 | AliasedDefinition | Node should have one location but has 4. |
 | whilestmt.c:23:6:23:18 | AliasedUse | Node should have one location but has 4. |
@@ -658,13 +597,11 @@ uniqueNodeLocation
 | whilestmt.c:23:6:23:18 | ExitFunction | Node should have one location but has 4. |
 | whilestmt.c:23:6:23:18 | InitializeNonLocal | Node should have one location but has 4. |
 | whilestmt.c:23:6:23:18 | ReturnVoid | Node should have one location but has 4. |
-| whilestmt.c:23:6:23:18 | UnmodeledDefinition | Node should have one location but has 4. |
 | whilestmt.c:23:6:23:18 | Unreached | Node should have one location but has 4. |
 | whilestmt.c:32:6:32:18 | AliasedDefinition | Node should have one location but has 2. |
 | whilestmt.c:32:6:32:18 | Chi | Node should have one location but has 2. |
 | whilestmt.c:32:6:32:18 | EnterFunction | Node should have one location but has 2. |
 | whilestmt.c:32:6:32:18 | InitializeNonLocal | Node should have one location but has 2. |
-| whilestmt.c:32:6:32:18 | UnmodeledDefinition | Node should have one location but has 2. |
 | whilestmt.c:32:6:32:18 | Unreached | Node should have one location but has 2. |
 | whilestmt.c:39:6:39:11 | AliasedDefinition | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | AliasedUse | Node should have one location but has 4. |
@@ -673,7 +610,6 @@ uniqueNodeLocation
 | whilestmt.c:39:6:39:11 | ExitFunction | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | InitializeNonLocal | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | ReturnVoid | Node should have one location but has 4. |
-| whilestmt.c:39:6:39:11 | UnmodeledDefinition | Node should have one location but has 4. |
 missingLocation
 | Nodes without location: 30 |
 uniqueNodeToString

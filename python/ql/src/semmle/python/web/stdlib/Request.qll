@@ -4,7 +4,7 @@
  * (or subclasses) and form parsing using `cgi.FieldStorage`.
  */
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
 /** Source of BaseHTTPRequestHandler instances. */

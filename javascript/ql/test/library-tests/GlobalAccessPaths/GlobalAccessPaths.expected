@@ -1,5 +1,6 @@
 test_getAReferenceTo
 | other_ns.js:2:11:2:12 | ns | NS |
+| other_ns.js:2:11:2:12 | ns | NS |
 | other_ns.js:3:3:3:4 | ns | NS |
 | other_ns.js:3:3:3:8 | ns.foo | NS.foo |
 | other_ns.js:3:3:3:12 | ns.foo.bar | NS.foo.bar |
@@ -42,6 +43,7 @@ test_getAReferenceTo
 | test.js:14:5:14:23 | notUnique = bar.baz | bar.baz |
 | test.js:14:17:14:19 | bar | bar |
 | test.js:14:17:14:23 | bar.baz | bar.baz |
+| test.js:22:11:22:12 | ns | NS |
 | test.js:22:11:22:12 | ns | NS |
 | test.js:23:3:23:4 | ns | NS |
 | test.js:23:3:23:8 | ns.foo | NS.foo |

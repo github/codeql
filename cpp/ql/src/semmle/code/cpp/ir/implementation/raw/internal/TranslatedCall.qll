@@ -108,11 +108,6 @@ abstract class TranslatedCall extends TranslatedExpr {
         result = getArgument(argTag.getArgIndex()).getResult()
       )
     )
-    or
-    tag = CallSideEffectTag() and
-    hasSideEffect() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
   }
 
   final override CppType getInstructionMemoryOperandType(

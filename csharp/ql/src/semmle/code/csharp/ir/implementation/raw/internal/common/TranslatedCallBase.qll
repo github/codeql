@@ -104,11 +104,6 @@ abstract class TranslatedCallBase extends TranslatedElement {
         result = getArgument(argTag.getArgIndex()).getResult()
       )
     )
-    or
-    tag = CallSideEffectTag() and
-    hasSideEffect() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getUnmodeledDefinitionInstruction()
   }
 
   final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
@@ -124,12 +119,6 @@ abstract class TranslatedCallBase extends TranslatedElement {
    * Gets the result type of the call.
    */
   abstract Type getCallResultType();
-
-  /**
-   * Gets the unmodeled definition instruction of the enclosing
-   * function (of the element this call is attached to).
-   */
-  abstract Instruction getUnmodeledDefinitionInstruction();
 
   /**
    * Holds if the call has a `this` argument.

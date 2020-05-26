@@ -108,8 +108,7 @@ edges
 | tst.js:72:18:72:48 | ts.toSt ... tring() | tst.js:72:9:72:48 | concat |
 | tst.js:72:34:72:37 | rand | tst.js:72:34:72:48 | rand.toString() |
 | tst.js:72:34:72:48 | rand.toString() | tst.js:72:18:72:48 | ts.toSt ... tring() |
-| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
-| tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
+| tst.js:77:16:77:21 | secret | tst.js:77:16:77:21 | secret |
 | tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
 | tst.js:80:7:80:19 | Math.random() | tst.js:77:16:77:21 | secret |
 | tst.js:84:19:84:31 | Math.random() | tst.js:84:19:84:31 | Math.random() |

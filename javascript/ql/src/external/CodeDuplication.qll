@@ -261,6 +261,11 @@ predicate similarContainers(StmtContainer sc, StmtContainer other, float percent
   )
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * Holds if `line` in `f` is similar to a line somewhere else.
+ */
 predicate similarLines(File f, int line) {
   exists(SimilarBlock b | b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()])
 }
@@ -275,6 +280,7 @@ private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, Fil
     )
 }
 
+/** Holds if `coveredLines` lines of `f` are similar to lines in `otherFile`. */
 pragma[noopt]
 private predicate similarLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
@@ -296,6 +302,11 @@ private predicate similarLinesCovered(File f, int coveredLines, File otherFile) 
   )
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * Holds if `line` in `f` is duplicated by a line somewhere else.
+ */
 predicate duplicateLines(File f, int line) {
   exists(DuplicateBlock b |
     b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
@@ -312,6 +323,7 @@ private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, F
     )
 }
 
+/** Holds if `coveredLines` lines of `f` are duplicates of lines in `otherFile`. */
 pragma[noopt]
 private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile) {
   exists(int numLines | numLines = f.getNumberOfLines() |
@@ -333,6 +345,7 @@ private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile
   )
 }
 
+/** Holds if most of `f` (`percent`%) is similar to `other`. */
 predicate similarFiles(File f, File other, int percent) {
   exists(int covered, int total |
     similarLinesCovered(f, covered, other) and
@@ -343,6 +356,7 @@ predicate similarFiles(File f, File other, int percent) {
   not duplicateFiles(f, other, _)
 }
 
+/** Holds if most of `f` (`percent`%) is duplicated by `other`. */
 predicate duplicateFiles(File f, File other, int percent) {
   exists(int covered, int total |
     duplicateLinesCovered(f, covered, other) and

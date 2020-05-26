@@ -165,8 +165,8 @@ Add an additional taint step that (heuristically) taints a local variable if it 
 .. code-block:: ql
 
   class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isAdditionalTaintStep(DataFlow::Node pred,
-                                             DataFlow::Node succ) {
+    override predicate isAdditionalTaintStep(DataFlow::Node node1,
+                                             DataFlow::Node node2) {
       exists(Field f, RefType t |
         node1.asExpr() = f.getAnAssignedValue() and
         node2.asExpr() = f.getAnAccess() and
