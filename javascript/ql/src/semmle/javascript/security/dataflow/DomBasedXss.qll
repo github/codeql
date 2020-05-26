@@ -24,6 +24,10 @@ module DomBasedXss {
       node instanceof Sanitizer
     }
 
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof SanitizerGuard
+    }
+
     override predicate isAdditionalLoadStoreStep(
       DataFlow::Node pred, DataFlow::Node succ, string predProp, string succProp
     ) {
