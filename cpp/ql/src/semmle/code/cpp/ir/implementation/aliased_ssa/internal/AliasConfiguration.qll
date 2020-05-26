@@ -5,7 +5,7 @@ private import AliasAnalysis
 
 private newtype TAllocation =
   TVariableAllocation(IRVariable var) or
-  TIndirectParameterAllocation(IRVariable var) {
+  TIndirectParameterAllocation(IRAutomaticVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)
   } or
   TDynamicAllocation(CallInstruction call) {
@@ -74,7 +74,7 @@ class VariableAllocation extends Allocation, TVariableAllocation {
 }
 
 class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocation {
-  IRVariable var;
+  IRAutomaticVariable var;
 
   IndirectParameterAllocation() { this = TIndirectParameterAllocation(var) }
 
