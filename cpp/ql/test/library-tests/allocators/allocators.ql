@@ -1,4 +1,4 @@
-import cpp
+import default
 import semmle.code.cpp.models.implementations.Allocation
 
 query predicate newExprs(

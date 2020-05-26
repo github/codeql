@@ -1,4 +1,4 @@
-import cpp
+import default
 import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
 import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
