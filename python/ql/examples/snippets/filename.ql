@@ -8,5 +8,5 @@
 import python
 
 from File f
-where f.getName() = "spam.py"
+where f.getShortName() = "spam.py"
 select f

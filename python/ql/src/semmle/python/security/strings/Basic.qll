@@ -1,6 +1,6 @@
 import python
 private import Common
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 /** An extensible kind of taint representing any kind of string. */
 abstract class StringKind extends TaintKind {

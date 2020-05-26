@@ -259,8 +259,7 @@ private class AmdDependencyImport extends Import {
    * Gets the module whose absolute path matches this import, if there is only a single such module.
    */
   private Module resolveByAbsolutePath() {
-    count(guessTarget()) = 1 and
-    result.getFile() = guessTarget()
+    result.getFile() = unique(File file | file = guessTarget())
   }
 
   override Module getImportedModule() {
@@ -291,7 +290,7 @@ private class AmdDependencyImport extends Import {
  */
 class AmdModule extends Module {
   cached
-  AmdModule() { strictcount(AmdModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }
+  AmdModule() { exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this))) }
 
   /** Gets the definition of this module. */
   AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }

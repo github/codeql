@@ -92,6 +92,13 @@ private module CachedSteps {
   cached
   predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
+  private predicate callsBoundInternal(
+    DataFlow::InvokeNode invk, Function f, int boundArgs, boolean contextDependent
+  ) {
+    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, contextDependent)
+        .flowsTo(invk.getCalleeNode())
+  }
+
   /**
    * Holds if `invk` may invoke a bound version of `f` with `boundArgs` already bound.
    *
@@ -101,7 +108,7 @@ private module CachedSteps {
    */
   cached
   predicate callsBound(DataFlow::InvokeNode invk, Function f, int boundArgs) {
-    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, false).flowsTo(invk.getCalleeNode())
+    callsBoundInternal(invk, f, boundArgs, false)
   }
 
   /**
@@ -111,10 +118,10 @@ private module CachedSteps {
    */
   cached
   predicate exploratoryBoundInvokeStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::InvokeNode invk, DataFlow::FunctionNode f, int i, int boundArgs |
-      CallGraph::getABoundFunctionReference(f, boundArgs, _).flowsTo(invk.getCalleeNode()) and
+    exists(DataFlow::InvokeNode invk, Function f, int i, int boundArgs |
+      callsBoundInternal(invk, f, boundArgs, _) and
       pred = invk.getArgument(i) and
-      succ = f.getParameter(i + boundArgs)
+      succ = DataFlow::parameterNode(f.getParameter(i + boundArgs))
     )
   }
 

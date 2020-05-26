@@ -1229,10 +1229,6 @@ class CatchAnyInstruction extends CatchInstruction {
   CatchAnyInstruction() { getOpcode() instanceof Opcode::CatchAny }
 }
 
-class UnmodeledDefinitionInstruction extends Instruction {
-  UnmodeledDefinitionInstruction() { getOpcode() instanceof Opcode::UnmodeledDefinition }
-}
-
 /**
  * An instruction that initializes all escaped memory.
  */

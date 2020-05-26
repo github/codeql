@@ -151,33 +151,6 @@ class Container extends @container, Top {
    * This is the absolute path of the container.
    */
   override string toString() { result = getAbsolutePath() }
-
-  /**
-   * DEPRECATED: use `getAbsolutePath()`, `getBaseName()` or `getStem()` instead.
-   *
-   * Gets the name of this container.
-   */
-  deprecated string getName() { result = getAbsolutePath() }
-
-  /**
-   * DEPRECATED: use `getBaseName()` or `getStem()` instead.
-   *
-   * The short name of this container, excluding its path and (for files) extension.
-   *
-   * For folders, the short name includes the extension (if any), so the short name
-   * of the folder with absolute path `/home/user/.m2` is `.m2`.
-   */
-  deprecated string getShortName() {
-    folders(this, _, result) or
-    files(this, _, result, _, _)
-  }
-
-  /**
-   * DEPRECATED: use `getAbsolutePath()` instead.
-   *
-   * Gets the full name of this container, including its path and extension (if any).
-   */
-  deprecated string getFullName() { result = getAbsolutePath() }
 }
 
 /** A folder. */
@@ -198,13 +171,6 @@ class File extends Container, @file {
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
-
-  /**
-   * DEPRECATED: use `getAbsolutePath()`, `getBaseName()` or `getStem()` instead.
-   *
-   * Holds if this file has the specified `name`.
-   */
-  deprecated predicate hasName(string name) { name = this.getAbsolutePath() }
 }
 
 /**

@@ -114,11 +114,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       tag = AliasedDefinitionTag() and
       result = getInstruction(InitializeNonLocalTag())
       or
-      tag = InitializeNonLocalTag() and
-      result = getInstruction(UnmodeledDefinitionTag())
-      or
       (
-        tag = UnmodeledDefinitionTag() and
+        tag = InitializeNonLocalTag() and
         if exists(getThisType())
         then result = getInstruction(InitializeThisTag())
         else
@@ -178,10 +175,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       tag = EnterFunctionTag() and
       opcode instanceof Opcode::EnterFunction and
       resultType = getVoidType()
-      or
-      tag = UnmodeledDefinitionTag() and
-      opcode instanceof Opcode::UnmodeledDefinition and
-      resultType = getUnknownType()
       or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
@@ -297,13 +290,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
    * Holds if the function has a non-`void` return type.
    */
   final predicate hasReturnValue() { hasReturnValue(func) }
-
-  /**
-   * Gets the single `UnmodeledDefinition` instruction for this function.
-   */
-  final Instruction getUnmodeledDefinitionInstruction() {
-    result = getInstruction(UnmodeledDefinitionTag())
-  }
 
   /**
    * Gets the single `InitializeThis` instruction for this function. Holds only

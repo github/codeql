@@ -5,6 +5,7 @@ private import semmle.code.cpp.ir.dataflow.DataFlow2
 private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.Taint
 private import semmle.code.cpp.models.interfaces.DataFlow
 
@@ -170,10 +171,33 @@ private predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
+private predicate nodeIsBarrierEqualityCandidate(
+  DataFlow::Node node, Operand access, Variable checkedVar
+) {
+  readsVariable(node.asInstruction(), checkedVar) and
+  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+}
+
 private predicate nodeIsBarrier(DataFlow::Node node) {
   exists(Variable checkedVar |
     readsVariable(node.asInstruction(), checkedVar) and
     hasUpperBoundsCheck(checkedVar)
+  )
+  or
+  exists(Variable checkedVar, Operand access |
+    /*
+     * This node is guarded by a condition that forces the accessed variable
+     * to equal something else.  For example:
+     * ```
+     * x = taintsource()
+     * if (x == 10) {
+     *   taintsink(x); // not considered tainted
+     * }
+     * ```
+     */
+
+    nodeIsBarrierEqualityCandidate(node, access, checkedVar) and
+    readsVariable(access.getDef(), checkedVar)
   )
 }
 
