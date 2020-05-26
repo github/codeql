@@ -80,7 +80,7 @@ class Function_ extends @py_Function {
 }
 
 /**
- * This class servers the same purpose as CallableExpr. CallableExpr is defined in Function.qll
+ * This class serves the same purpose as CallableExpr. CallableExpr is defined in Function.qll
  * To ease the burden of number of classes that needs to be implemented here, I make the class
  * hierarchy slightly different (that's why it's called Adjusted)
  */
