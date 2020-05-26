@@ -12,7 +12,7 @@ private class DjangoResponseKind extends TaintKind {
 /** INTENRAL taint-source used for tracking a django response. */
 private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
-        exists(DjangoXSSVulnerableResponse cls |
+        exists(DjangoContentResponseClass cls |
             cls.getACall() = this
         )
     }
@@ -37,26 +37,37 @@ class DjangoResponseWrite extends HttpResponseTaintSink {
     override string toString() { result = "django.Response.write(...)" }
 }
 
-/** An argument to initialization of a django response, which is vulnerable to external data (xss) */
+/**
+ * An argument to initialization of a django response.
+ */
 class DjangoResponseContent extends HttpResponseTaintSink {
+    DjangoContentResponseClass cls;
+    CallNode call;
+
     DjangoResponseContent() {
-        exists(CallNode call, DjangoXSSVulnerableResponse cls |
-            call = cls.getACall() and
-            this = cls.getContentArg(call) and
-            (
-                not exists(cls.getContentTypeArg(call))
-                or
-                exists(StringValue s |
-                    cls.getContentTypeArg(call).pointsTo(s) and
-                    s.getText().indexOf("text/html") = 0
-                )
-            )
-        )
+        call = cls.getACall() and
+        this = cls.getContentArg(call)
     }
 
     override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 
     override string toString() { result = "django.Response(...)" }
+}
+
+/**
+ * An argument to initialization of a django response, which is vulnerable to external data (XSS).
+ */
+class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
+    override DjangoXSSVulnerableResponseClass cls;
+
+    DjangoResponseContentXSSVulnerable() {
+        not exists(cls.getContentTypeArg(call))
+        or
+        exists(StringValue s |
+            cls.getContentTypeArg(call).pointsTo(s) and
+            s.getText().indexOf("text/html") = 0
+        )
+    }
 }
 
 class DjangoCookieSet extends CookieSet, CallNode {

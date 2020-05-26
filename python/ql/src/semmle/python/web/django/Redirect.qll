@@ -27,7 +27,7 @@ class DjangoShortcutsRedirectSink extends HttpRedirectTaintSink {
 class DjangoRedirectResponseSink extends HttpRedirectTaintSink {
     DjangoRedirectResponseSink() {
         exists(CallNode call |
-            call = any(DjangoRedirectResponse rr).getACall()
+            call = any(DjangoRedirectResponseClass cls).getACall()
         |
             this = call.getArg(0)
             or
