@@ -19,6 +19,7 @@ For examples of query files for the languages supported by CodeQL, visit the fol
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Go queries](https://help.semmle.com/wiki/display/GO/)
 *   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
@@ -133,6 +134,7 @@ There are also more specific `@tags` that can be added. See, the following pages
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Go queries](https://help.semmle.com/wiki/display/GO/)
 *   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
@@ -172,6 +174,7 @@ For examples of select clauses and alert messages, see the query source files at
 
 *   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
 *   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Go queries](https://help.semmle.com/wiki/display/GO/)
 *   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
