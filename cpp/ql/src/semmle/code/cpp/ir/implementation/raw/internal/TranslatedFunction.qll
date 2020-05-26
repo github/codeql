@@ -341,9 +341,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   /**
    * Gets the variable that represents the `this` pointer for this function, if any.
    */
-  final IRThisVariable getThisVariable() {
-    result = getIRTempVariable(func, ThisTempVar())
-  }
+  final IRThisVariable getThisVariable() { result = getIRTempVariable(func, ThisTempVar()) }
 
   /**
    * Holds if the function has a non-`void` return type.
