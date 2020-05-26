@@ -71,9 +71,7 @@ class Node extends TIRDataFlowNode {
    * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
    * a partial definition of `&x`).
    */
-  Expr asPartialDefinition() {
-    result = this.(PartialDefinitionNode).getInstruction().getUnconvertedResultExpression()
-  }
+  Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -251,14 +249,17 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+  abstract Expr getDefinedExpr();
+}
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
+  FieldAddressInstruction field;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
-    exists(StoreInstruction store, FieldInstruction field |
+    exists(StoreInstruction store |
       instr.getPartial() = store and field = store.getDestinationAddress()
     )
   }
@@ -268,6 +269,10 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
   // this consistency failure has.
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
@@ -278,15 +283,18 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
+  FieldAddressInstruction field;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    exists(FieldAddressInstruction field |
-      field = instr.getDestinationAddress() and
-      not exists(ChiInstruction chi | chi.getPartial() = instr)
-    )
+    field = instr.getDestinationAddress() and
+    not exists(ChiInstruction chi | chi.getPartial() = instr)
   }
 
   override Node getPreUpdateNode() { none() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
