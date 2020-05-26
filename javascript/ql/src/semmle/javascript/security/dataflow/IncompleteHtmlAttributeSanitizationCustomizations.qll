@@ -51,8 +51,11 @@ module IncompleteHtmlAttributeSanitization {
     string lhs;
 
     HtmlAttributeConcatenation() {
-      lhs = this.getPreviousLeaf().getStringValue().regexpCapture("(.*)=\"[^\"]*", 1) and
-      this.getNextLeaf().getStringValue().regexpMatch(".*\".*")
+      lhs = this.getPreviousLeaf().getStringValue().regexpCapture("((?:[\n\r]|.)*)=\"[^\"]*", 1) and
+      (
+        this.getNextLeaf().getStringValue().regexpMatch(".*\".*") or
+        this.getRoot().getConstantStringParts().regexpMatch("(?:[\n\r]|.)*</.*")
+      )
     }
 
     /**
