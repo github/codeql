@@ -93,7 +93,10 @@ class Mutation extends TaintSink {
     }
 }
 
-/** copying prevents modification of the default value */
+/** Copying prevents modification of the default value.
+  * We are using taint tracking to flag if a default value has been modified.
+  * Thus, while copying usually preserves taint, in this case it actually sanitizes,
+  * since modifying a copy of a default value is not a problem. */
 class Copying extends Sanitizer {
     Copying() { this = "Copy sanitizer"}
 
