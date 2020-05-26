@@ -249,11 +249,11 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
   abstract Expr getDefinedExpr();
 }
 
-class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
   FieldAddressInstruction field;
 
