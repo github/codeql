@@ -162,11 +162,7 @@ class ExprNode extends InstructionNode {
  * as `x` in `f(x)` and implicit parameters such as `this` in `x.f()`
  */
 class ParameterNode extends InstructionNode {
-  ParameterNode() {
-    instr instanceof InitializeParameterInstruction
-    or
-    instr instanceof InitializeThisInstruction
-  }
+  override InitializeParameterInstruction instr;
 
   /**
    * Holds if this node is the parameter of `c` at the specified (zero-based)
@@ -180,7 +176,9 @@ class ParameterNode extends InstructionNode {
  * flow graph.
  */
 private class ExplicitParameterNode extends ParameterNode {
-  override InitializeParameterInstruction instr;
+  ExplicitParameterNode() {
+    exists(instr.getParameter())
+  }
 
   override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
@@ -191,7 +189,9 @@ private class ExplicitParameterNode extends ParameterNode {
 }
 
 private class ThisParameterNode extends ParameterNode {
-  override InitializeThisInstruction instr;
+  ThisParameterNode() {
+    instr.getIRVariable() instanceof IRThisVariable
+  }
 
   override predicate isParameterOf(Function f, int i) {
     i = -1 and instr.getEnclosingFunction() = f

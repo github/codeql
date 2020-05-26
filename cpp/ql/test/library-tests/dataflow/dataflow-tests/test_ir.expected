@@ -65,6 +65,7 @@
 | test.cpp:266:12:266:12 | x | test.cpp:265:22:265:27 | call to source |
 | test.cpp:289:14:289:14 | x | test.cpp:305:17:305:22 | call to source |
 | test.cpp:318:7:318:7 | x | test.cpp:314:4:314:9 | call to source |
+| test.cpp:375:10:375:14 | field | test.cpp:373:13:373:18 | call to source |
 | test.cpp:385:8:385:10 | tmp | test.cpp:382:48:382:54 | source1 |
 | test.cpp:392:8:392:10 | tmp | test.cpp:388:53:388:59 | source1 |
 | test.cpp:394:10:394:12 | tmp | test.cpp:388:53:388:59 | source1 |
