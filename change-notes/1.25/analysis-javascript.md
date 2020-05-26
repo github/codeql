@@ -36,7 +36,7 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
-| Client-side cross-site scripting (`js/xss`) | Less results | This query no longer flags optionally sanitized values. |
+| Client-side cross-site scripting (`js/xss`) | Fewer results | This query no longer flags optionally sanitized values. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Fewer results | This query now recognizes additional safe patterns of doing URL redirects. |
 | Client-side cross-site scripting (`js/xss`) | Fewer results | This query now recognizes additional safe strings based on URLs. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving NoSQL code operators are now recognized. |
