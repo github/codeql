@@ -216,7 +216,7 @@ class Type extends ... {
 
 General requirements:
 
-1. Documentation *must* adhere to the [QLDoc specification](https://help.semmle.com/QL/QLDocSpecification.html).
+1. Documentation *must* adhere to the [QLDoc specification](https://help.semmle.com/QL/ql-handbook/qldoc.html).
 1. Use `/** ... */` for documentation, even for single line comments.
 1. For single-line documentation, the `/**` and `*/` are written on the same line as the comment.
 1. For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
@@ -417,16 +417,16 @@ deprecated Expr getInitializer()
 
 | Phrase      | Meaning  |
 |-------------|----------|
-| *[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
+| *[annotation](https://help.semmle.com/QL/ql-handbook/language.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
 | *body* | The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`. |
 | *binary operator* | An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators. |
 | *call* | A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`. |
-| *[conjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#conjunctions)* | A formula that is an operand to an `and`. |
+| *[conjunct](https://help.semmle.com/QL/ql-handbook/language.html#conjunctions)* | A formula that is an operand to an `and`. |
 | *declaration* | A class, module, predicate, field or newtype. |
-| *[disjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#disjunctions)* | A formula that is an operand to an `or`. |
-| *[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
+| *[disjunct](https://help.semmle.com/QL/ql-handbook/language.html#disjunctions)* | A formula that is an operand to an `or`. |
+| *[formula](https://help.semmle.com/QL/ql-handbook/language.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
 | *should/should not/avoid/prefer* | Adhere to this rule wherever possible, where it makes sense. |
 | *may/can* | This is a reasonable alternative, to be used with discretion. |
 | *must/always/do not* | Always adhere to this rule. |
-| *[quantifier/aggregation](https://help.semmle.com/QL/QLLanguageSpecification.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
+| *[quantifier/aggregation](https://help.semmle.com/QL/ql-handbook/language.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
 | *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |

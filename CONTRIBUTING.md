@@ -2,7 +2,7 @@
 
 We welcome contributions to our CodeQL libraries and queries. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Contributions to this project are [released](https://help.github.com/articles/github-terms-of-service/#6-contributions-under-repository-license) to the public under the [project's open source license](LICENSE).
 
-There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
 
 ## Submitting a new experimental query
@@ -32,7 +32,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     For details, see the [guide on query metadata](docs/query-metadata-style-guide.md).
 
-    Make sure the `select` statement is compatible with the query `@kind`. See [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+    Make sure the `select` statement is compatible with the query `@kind`. See [About CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
 3. **Formatting**
 
