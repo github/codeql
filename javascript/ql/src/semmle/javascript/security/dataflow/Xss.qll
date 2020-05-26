@@ -77,7 +77,6 @@ module Shared {
 
 /** Provides classes and predicates for the DOM-based XSS query. */
 module DomBasedXss {
-  // StringReplaceCallSequence
   /** A data flow source for DOM-based XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
 
