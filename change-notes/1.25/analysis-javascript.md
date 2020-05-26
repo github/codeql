@@ -47,6 +47,7 @@
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving NoSQL code operators are now recognized. |
 | Zip Slip (`js/zipslip`) | More results | This query now recognizes additional vulnerabilities. |
 | Unused property (`js/unused-property`) | Less results | This query no longer flags properties of objects that are operands of `yield` expressions. |
+| Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes more coding patterns that are vulnerable to prototype pollution. |
 
 The following low-precision queries are no longer run by default on LGTM (their results already were not displayed):
 
@@ -79,3 +80,4 @@ The following low-precision queries are no longer run by default on LGTM (their 
   - `Parameter.flow()` now gets the correct data flow node for a parameter. Previously this had a result, but the node was disconnected from the data flow graph.
   - `ParameterNode.asExpr()` and `.getAstNode()` now gets the parameter's AST node, whereas previously it had no result.
   - `Expr.flow()` now has a more meaningful result for destructuring patterns. Previously this node was disconnected from the data flow graph. Now it represents the values being destructured by the pattern.
+* The global data-flow and taint-tracking libraries now model indirect parameter accesses through the `arguments` object in some cases, which may lead to additional results from some of the security queries, particularly "Prototype pollution in utility function".
