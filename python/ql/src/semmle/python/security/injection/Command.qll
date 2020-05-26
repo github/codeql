@@ -7,7 +7,7 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 /** Abstract taint sink that is potentially vulnerable to malicious shell commands. */

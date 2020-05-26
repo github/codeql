@@ -352,7 +352,29 @@ class CallableValue extends Value {
         result = this.(CallableObjectInternal).getParameterByName(name)
     }
 
-    /** Gets the argument corresponding to the `n'th parameter node of this callable. */
+    /**
+     * Gets the argument in `call` corresponding to the `n`'th positional parameter of this callable.
+     *
+     * Use this method instead of `call.getArg(n)` to handle the fact that this function might be used as
+     * a bound-method, such that argument `n` of the call corresponds to the `n+1` parameter of the callable.
+     *
+     * This method also gives results when the argument is passed as a keyword argument in `call`, as long
+     * as `this` is not a builtin function or a builtin method.
+     *
+     * Examples:
+     *
+     * - if `this` represents the `PythonFunctionValue` for `def func(a, b):`, and `call` represents
+     *   `func(10, 20)`, then `getArgumentForCall(call, 0)` will give the `ControlFlowNode` for `10`.
+     *
+     * - with `call` representing `func(b=20, a=10)`, `getArgumentForCall(call, 0)` will give
+     *   the `ControlFlowNode` for `10`.
+     *
+     * - if `this` represents the `PythonFunctionValue` for `def func(self, a, b):`, and `call`
+     *   represents `foo.func(10, 20)`, then `getArgumentForCall(call, 1)` will give the
+     *   `ControlFlowNode` for `10`.
+     *   Note: There will also exist a `BoundMethodValue bm` where `bm.getArgumentForCall(call, 0)`
+     *   will give the `ControlFlowNode` for `10` (notice the shift in index used).
+     */
     cached
     ControlFlowNode getArgumentForCall(CallNode call, int n) {
         exists(ObjectInternal called, int offset |
@@ -363,7 +385,7 @@ class CallableValue extends Value {
             or
             exists(string name |
                 call.getArgByName(name) = result and
-                this.(PythonFunctionObjectInternal).getScope().getArg(n + offset).getName() = name
+                this.getParameter(n).getId() = name
             )
             or
             called instanceof BoundMethodObjectInternal and
@@ -373,20 +395,36 @@ class CallableValue extends Value {
         )
     }
 
-    /** Gets the argument corresponding to the `name`d parameter node of this callable. */
+    /**
+     * Gets the argument in `call` corresponding to the `name`d keyword parameter of this callable.
+     *
+     * This method also gives results when the argument is passed as a positional argument in `call`, as long
+     * as `this` is not a builtin function or a builtin method.
+     *
+     * Examples:
+     *
+     * - if `this` represents the `PythonFunctionValue` for `def func(a, b):`, and `call` represents
+     *   `func(10, 20)`, then `getNamedArgumentForCall(call, "a")` will give the `ControlFlowNode` for `10`.
+     *
+     * - with `call` representing `func(b=20, a=10)`, `getNamedArgumentForCall(call, "a")` will give
+     *   the `ControlFlowNode` for `10`.
+     *
+     * - if `this` represents the `PythonFunctionValue` for `def func(self, a, b):`, and `call`
+     *   represents `foo.func(10, 20)`, then `getNamedArgumentForCall(call, "a")` will give the
+     *   `ControlFlowNode` for `10`.
+     */
     cached
     ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
         exists(CallableObjectInternal called, int offset |
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
             called.functionAndOffset(this, offset)
         |
+            call.getArgByName(name) = result
+            or
             exists(int n |
                 call.getArg(n) = result and
-                this.(PythonFunctionObjectInternal).getScope().getArg(n + offset).getName() = name
+                this.getParameter(n + offset).getId() = name
             )
-            or
-            call.getArgByName(name) = result and
-            exists(this.(PythonFunctionObjectInternal).getScope().getArgByName(name))
             or
             called instanceof BoundMethodObjectInternal and
             offset = 1 and
@@ -394,6 +432,29 @@ class CallableValue extends Value {
             result = call.getFunction().(AttrNode).getObject()
         )
     }
+}
+
+/**
+ * Class representing bound-methods, such as `o.func`, where `o` is an instance
+ * of a class that has a callable attribute `func`.
+ */
+class BoundMethodValue extends CallableValue {
+    BoundMethodValue() { this instanceof BoundMethodObjectInternal }
+
+    /**
+     * Gets the callable that will be used when `this` is called.
+     * The actual callable for `func` in `o.func`.
+     */
+    CallableValue getFunction() { result = this.(BoundMethodObjectInternal).getFunction() }
+
+    /**
+     * Gets the value that will be used for the `self` parameter when `this` is called.
+     * The value for `o` in `o.func`.
+     */
+    Value getSelf() { result = this.(BoundMethodObjectInternal).getSelf() }
+
+    /** Gets the parameter node that will be used for `self`. */
+    NameNode getSelfParameter() { result = this.(BoundMethodObjectInternal).getSelfParameter() }
 }
 
 /**
@@ -663,11 +724,13 @@ class PythonFunctionValue extends FunctionValue {
     ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
 
     override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
-    
+
     override ClassValue getAnInferredReturnType() {
-        /* We have to do a special version of this because builtin functions have no
+        /*
+         * We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
          */
+
         result = this.getAReturnedNode().pointsTo().getClass()
     }
 }
@@ -690,9 +753,11 @@ class BuiltinFunctionValue extends FunctionValue {
     }
 
     override ClassValue getAnInferredReturnType() {
-        /* We have to do a special version of this because builtin functions have no
+        /*
+         * We have to do a special version of this because builtin functions have no
          * explicit return nodes that we can query and get the class of.
          */
+
         result = TBuiltinClassObject(this.(BuiltinFunctionObjectInternal).getReturnType())
     }
 }
@@ -719,7 +784,7 @@ class BuiltinMethodValue extends FunctionValue {
         /* Information is unavailable for C code in general */
         none()
     }
-    
+
     override ClassValue getAnInferredReturnType() {
         result = TBuiltinClassObject(this.(BuiltinMethodObjectInternal).getReturnType())
     }

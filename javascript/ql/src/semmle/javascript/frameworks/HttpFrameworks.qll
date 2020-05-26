@@ -4,3 +4,4 @@ import semmle.javascript.frameworks.Koa
 import semmle.javascript.frameworks.NodeJSLib
 import semmle.javascript.frameworks.Restify
 import semmle.javascript.frameworks.Connect
+import semmle.javascript.frameworks.Fastify

@@ -597,7 +597,7 @@ class StrConst extends Str_, ImmutableLiteral {
         this.getEnclosingModule().hasFromFuture("unicode_literals")
     }
 
-    override string strValue() { result = this.getS() }
+    deprecated override string strValue() { result = this.getS() }
 
     override Expr getASubExpression() { none() }
 
