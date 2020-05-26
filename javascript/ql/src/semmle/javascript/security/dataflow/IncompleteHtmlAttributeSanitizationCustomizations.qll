@@ -54,7 +54,7 @@ module IncompleteHtmlAttributeSanitization {
       lhs = this.getPreviousLeaf().getStringValue().regexpCapture("(?s)(.*)=\"[^\"]*", 1) and
       (
         this.getNextLeaf().getStringValue().regexpMatch(".*\".*") or
-        this.getRoot().getConstantStringParts().regexpMatch("(?s).*</.*")
+        this instanceof StringOps::HtmlConcatenationLeaf
       )
     }
 
