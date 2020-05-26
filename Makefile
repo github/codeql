@@ -109,3 +109,10 @@ build/testdb/go.dbscheme: upgrades/initial/go.dbscheme
 	rm -rf build/testdb
 	echo >build/empty.trap
 	codeql dataset import -S upgrades/initial/go.dbscheme build/testdb build/empty.trap
+
+.PHONY: sync-dataflow-libraries
+sync-dataflow-libraries:
+	for f in DataFlowImpl.qll DataFlowImplCommon.qll tainttracking1/TaintTrackingImpl.qll;\
+	do\
+		curl -s -o ./ql/src/semmle/go/dataflow/internal/$$f https://raw.githubusercontent.com/github/codeql/master/java/ql/src/semmle/code/java/dataflow/internal/$$f;\
+	done
