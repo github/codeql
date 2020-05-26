@@ -229,7 +229,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   // Flow from an element to an array or union that contains it.
   i2.(ChiInstruction).getPartial() = i1 and
   not i2.isResultConflated() and
-  not exists(PartialDefinitionNode n | n.asInstruction() = i2) and
   exists(Type t | i2.getResultLanguageType().hasType(t, false) |
     t instanceof Union
     or

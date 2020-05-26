@@ -239,8 +239,6 @@ abstract class PostUpdateNode extends InstructionNode {
 }
 
 /**
- * INTERNAL: do not use.
- *
  * The base class for nodes that perform "partial definitions".
  *
  * In contrast to a normal "definition", which provides a new value for
@@ -253,7 +251,7 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
@@ -269,17 +267,6 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   // the total operand - so this definition gives consistency errors in
   // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
   // this consistency failure has.
-  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
-}
-
-private class FieldStoreWriteSideEffectNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-
-  FieldStoreWriteSideEffectNode() {
-    not instr.isResultConflated() and
-    exists(WriteSideEffectInstruction sideEffect | instr.getPartial() = sideEffect)
-  }
-
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 }
 
@@ -434,32 +421,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
-  or
-  // The next two rules allow flow from partial definitions in setters to succeeding loads in the caller.
-  // First, we add flow from write side-effects to non-conflated chi instructions through their
-  // partial operands. Consider the following example:
-  // ```
-  // void setX(Point* p, int new_x) {
-  //   p->x = new_x;
-  // }
-  // ...
-  // setX(&p, taint());
-  // ```
-  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
-  // `setX`, which will be melded into `p` through a chi instruction.
-  nodeTo instanceof FieldStoreWriteSideEffectNode and
-  exists(ChiInstruction chi | chi = nodeTo.asInstruction() |
-    chi.getPartialOperand().getDef() = nodeFrom.asInstruction().(WriteSideEffectInstruction) and
-    not chi.isResultConflated()
-  )
-  or
-  // Next, we add flow from non-conflated chi instructions to loads (even when they are not precise).
-  // This ensures that loads of `p->x` gets data flow from the `WriteSideEffectInstruction` above.
-  nodeFrom instanceof FieldStoreWriteSideEffectNode and
-  exists(ChiInstruction chi | chi = nodeFrom.asInstruction() |
-    not chi.isResultConflated() and
-    nodeTo.asInstruction().(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
-  )
 }
 
 pragma[noinline]
@@ -496,6 +457,23 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  // Add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. From there, a `readStep` will find subsequent reads of that field.
+  // Consider the following example:
+  // ```
+  // void setX(Point* p, int new_x) {
+  //   p->x = new_x;
+  // }
+  // ...
+  // setX(&p, taint());
+  // ```
+  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
+  // `setX`, which will be melded into `p` through a chi instruction.
+  exists(ChiInstruction chi | chi = iTo |
+    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
+    not chi.isResultConflated()
+  )
   or
   // Flow from stores to structs with a single field to a load of that field.
   iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
