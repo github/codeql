@@ -76,6 +76,7 @@ nodes
 | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:45:51:45:56 | target |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -473,12 +474,15 @@ edges
 | optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:31:18:31:23 | target |
 | optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:38:18:38:23 | target |
 | optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:51:45:56 | target |
 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
 | optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:26:7:26:39 | target |
 | optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
 | optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
 | optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:34:28:34:35 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
 | optionalSanitizer.js:31:18:31:23 | target | optionalSanitizer.js:31:7:31:23 | tainted2 |
 | optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
 | optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
@@ -487,6 +491,8 @@ edges
 | optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
 | optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
 | optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:41:28:41:35 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
 | optionalSanitizer.js:38:18:38:23 | target | optionalSanitizer.js:38:7:38:23 | tainted3 |
 | optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
 | optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
@@ -495,6 +501,8 @@ edges
 | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
