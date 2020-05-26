@@ -11,8 +11,7 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 *   Metadata area–displayed at the top of the file, contains the metadata that defines how results for the query are interpreted and gives a brief description of the purpose of the query.
 *   Query definition–defined using QL. The query includes a select statement, which defines the content and format of the results. For further information about writing QL, see the following topics:
     *   [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
-    *   [QL language handbook](https://help.semmle.com/QL/ql-handbook/index.html)
-    *   [QL language specification](https://help.semmle.com/QL/ql-spec/language.html)
+    *   [QL language reference](https://help.semmle.com/QL/ql-handbook/index.html)
     *   [CodeQL style guide](https://github.com/github/codeql/blob/master/docs/ql-style-guide.md) 
 
 
@@ -26,7 +25,7 @@ For examples of query files for the languages supported by CodeQL, visit the fol
 
 ## Metadata area
 
-Query file metadata contains important information that defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-spec/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
+Query file metadata contains important information that defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-handbook/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
 
 ```
 /**
@@ -158,7 +157,7 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](http:/
 
 ## QL area
 
-### Alert  messages
+### Alert messages
 
 The select clause of each alert query defines the alert message that is displayed for each result found by the query. Alert messages are strings that concisely describe the problem that the alert is highlighting and, if possible, also provide some context. For consistency, alert messages should adhere to the following guidelines:
 
@@ -167,7 +166,7 @@ The select clause of each alert query defines the alert message that is displaye
 *   Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions ($@).
 *   Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
 *   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions. 
-*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html).
+*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining the results of a query](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html).
 
 For examples of select clauses and alert messages, see the query source files at the following pages:
 
@@ -177,4 +176,4 @@ For examples of select clauses and alert messages, see the query source files at
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
-For further information on query writing, see  [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning CodeQL, see [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html).
+For further information on query writing, see [CodeQL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning CodeQL, see [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html).
