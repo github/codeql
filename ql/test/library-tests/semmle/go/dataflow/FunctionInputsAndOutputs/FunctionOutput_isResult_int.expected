@@ -1,8 +1,12 @@
 | main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op | 0 | result |
+| main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op | 0 | result 0 |
 | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 | 0 | result |
+| main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 | 0 | result 0 |
 | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump | 0 | result |
+| main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump | 0 | result 0 |
 | main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[0] | 0 | result 0 |
 | main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[1] | 1 | result 1 |
 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[0] | 0 | result 0 |
 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[1] | 1 | result 1 |
 | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new | 0 | result |
+| tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new | 0 | result 0 |

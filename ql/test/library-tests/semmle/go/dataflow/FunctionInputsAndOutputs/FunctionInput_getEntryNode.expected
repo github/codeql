@@ -14,3 +14,4 @@
 | receiver | main.go:53:14:53:21 | call to bump | main.go:53:14:53:14 | c |
 | receiver | tst.go:10:2:10:29 | call to ReadFrom | tst.go:10:2:10:12 | bytesBuffer |
 | result | tst.go:9:17:9:33 | call to new | tst.go:9:2:9:12 | definition of bytesBuffer |
+| result 0 | tst.go:9:17:9:33 | call to new | tst.go:9:2:9:12 | definition of bytesBuffer |
