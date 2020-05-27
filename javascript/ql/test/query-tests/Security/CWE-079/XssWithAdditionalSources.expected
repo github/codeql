@@ -94,6 +94,11 @@ nodes
 | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:8:20:8:48 | localSt ... local') |
 | stored-xss.js:8:20:8:48 | localSt ... local') |
+| stored-xss.js:10:9:10:44 | href |
+| stored-xss.js:10:16:10:44 | localSt ... local') |
+| stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:35:12:38 | href |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:3:16:3:32 | document.location |
@@ -521,6 +526,11 @@ edges
 | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:3:35:3:58 | documen ... .search |
 | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
 | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
+| stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:10:16:10:44 | localSt ... local') |
+| stored-xss.js:10:9:10:44 | href | stored-xss.js:12:35:12:38 | href |
+| stored-xss.js:10:16:10:44 | localSt ... local') | stored-xss.js:10:9:10:44 | href |
+| stored-xss.js:12:35:12:38 | href | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:35:12:38 | href | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
 | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
