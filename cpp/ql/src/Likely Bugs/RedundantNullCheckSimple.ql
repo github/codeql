@@ -50,22 +50,38 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
 }
 
 pragma[noinline]
-predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator) {
+predicate candidateResultChecked(LoadInstruction checked, ValueNumber value) {
   explicitNullTestOfInstruction(checked, _) and
-  not checked.getAST().isInMacroExpansion() and
-  value.getAnInstruction() = checked and
-  dominator.dominates(checked.getBlock())
+  value.getAnInstruction() = checked
 }
 
-from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue, IRBlock dominator
+predicate derefInstruction(Instruction checked, Instruction bool) {
+  bool =
+    any(CopyValueInstruction str |
+      checked = str.getSourceValue()
+    )
+}
+
+predicate isCheckedInstruction(Instruction unchecked, Instruction checked, ValueNumber value) {
+  checked =
+    any(LoadInstruction li |
+      li = value.getAnInstruction()
+  ) and
+  explicitNullTestOfInstruction(checked, _) and
+  checked.getBlock().dominates(unchecked.getBlock())
+}
+
+pragma[noinline]
+predicate candidateResultDeref(LoadInstruction unchecked, ValueNumber value, IRBlock dominator) {
+  value.getAnInstruction() = unchecked and
+  derefInstruction(unchecked, _) and
+  not isCheckedInstruction(unchecked, _, value) and
+  not dominator.dominates(unchecked.getBlock())
+}
+
+from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue
 where
-  candidateResult(checked, sourceValue, dominator) and
-  sourceValue.getAnInstruction() = deref.getSourceAddress() and
-  // This also holds if the blocks are equal, meaning that the check could come
-  // before the deref. That's still not okay because when they're in the same
-  // basic block then the deref is unavoidable even if the check concluded that
-  // the pointer was null. To follow this idea to its full generality, we
-  // should also give an alert when `check` post-dominates `deref`.
-  deref.getBlock() = dominator
+  candidateResultChecked(checked, sourceValue) and
+  candidateResultDeref(deref, sourceValue, checked.getBlock())
 select checked, "This null check is redundant because the value is $@ in any case", deref,
   "dereferenced here"
