@@ -458,9 +458,9 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
-  // The next two rules allow flow from partial definitions in setters to succeeding loads in the caller.
-  // First, we add flow from write side-effects to non-conflated chi instructions through their
-  // partial operands. Consider the following example:
+  // Add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. From there, a `readStep` will find subsequent reads of that field.
+  // Consider the following example:
   // ```
   // void setX(Point* p, int new_x) {
   //   p->x = new_x;
@@ -470,14 +470,9 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // ```
   // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
   // `setX`, which will be melded into `p` through a chi instruction.
-  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
-  not iTo.isResultConflated()
-  or
-  // Next, we add flow from non-conflated chi instructions to loads (even when they are not precise).
-  // This ensures that loads of `p->x` gets data flow from the `WriteSideEffectInstruction` above.
-  exists(ChiInstruction chi | iFrom = chi |
-    not chi.isResultConflated() and
-    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  exists(ChiInstruction chi | chi = iTo |
+    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
+    not chi.isResultConflated()
   )
   or
   // Flow from stores to structs with a single field to a load of that field.

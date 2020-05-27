@@ -21,8 +21,6 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
 | defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:111:8:111:8 | y | AST only |
-| defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:118:11:118:11 | x | IR only |
-| defaulttainttracking.cpp:110:17:110:22 | call to getenv | shared.h:6:15:6:23 | sinkparam | IR only |
 | globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
 | test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:11:104:20 | (...) | IR only |

@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.DataFlow2
 private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
