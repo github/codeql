@@ -123,7 +123,7 @@ void open_file_bounded () {
 	int size = atoi(getenv("USER"));
 	int bounded_size = bounded(size, MAX_SIZE);
 	
-	int* a = (int*)malloc(bounded_size * sizeof(int)); // GOOD [FALSE POSITIVE]
+	int* a = (int*)malloc(bounded_size * sizeof(int)); // GOOD
 	int* b = (int*)malloc(size * sizeof(int)); // BAD
 }
 
@@ -229,7 +229,7 @@ void more_cases() {
 	malloc(local_size); // BAD
 	malloc(get_untainted_size()); // GOOD
 	malloc(get_tainted_size()); // BAD
-	malloc(get_bounded_size()); // GOOD [FALSE POSITIVE]
+	malloc(get_bounded_size()); // GOOD
 
 	my_alloc(100); // GOOD
 	my_alloc(local_size); // BAD [NOT DETECTED IN CORRECT LOCATION]

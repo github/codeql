@@ -39,16 +39,59 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof UpperBoundGuard
   }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asInstruction() instanceof BoundedVariableRead
+  }
 }
 
 class UpperBoundGuard extends DataFlow::BarrierGuard {
-  UpperBoundGuard() {
-    this.comparesLt(_, _, _, _, _)
-  }
+  UpperBoundGuard() { this.comparesLt(_, _, _, _, _) }
 
-  override predicate checks(Instruction i, boolean b) {
-    this.comparesLt(i.getAUse(), _, _, _, b)
-  }
+  override predicate checks(Instruction i, boolean b) { this.comparesLt(i.getAUse(), _, _, _, b) }
+}
+
+private predicate readsVariable(LoadInstruction load, Variable var) {
+  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+}
+
+/**
+ * A variable that has any kind of upper-bound check anywhere in the program.  This is
+ * biased towards being inclusive because there are a lot of valid ways of doing an
+ * upper bounds checks if we don't consider where it occurs, for example:
+ * ```
+ *   if (x < 10) { sink(x); }
+ *
+ *   if (10 > y) { sink(y); }
+ *
+ *   if (z > 10) { z = 10; }
+ *   sink(z);
+ * ```
+ */
+// TODO: This coarse overapproximation, ported from the old taint tracking
+// library, could be replaced with an actual semantic check that a particular
+// variable _access_ is guarded by an upper-bound check. We probably don't want
+// to do this right away since it could expose a lot of FPs that were
+// previously suppressed by this predicate by coincidence.
+private predicate hasUpperBoundsCheck(Variable var) {
+  exists(RelationalOperation oper, VariableAccess access |
+    oper.getAnOperand() = access and
+    access.getTarget() = var and
+    // Comparing to 0 is not an upper bound check
+    not oper.getAnOperand().getValue() = "0"
+  )
+}
+
+/**
+ * A read of a variable that has an upper-bound check somewhere in the
+ * program.
+ */
+class BoundedVariableRead extends LoadInstruction {
+  BoundedVariableRead() {
+    exists(Variable checkedVar |
+      readsVariable(this, checkedVar) and
+      hasUpperBoundsCheck(checkedVar)
+    )
 }
 
 /*
