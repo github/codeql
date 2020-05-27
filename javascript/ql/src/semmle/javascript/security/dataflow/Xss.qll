@@ -93,6 +93,53 @@ module Shared {
     }
   }
 
+  /**
+   * Holds if `str` is used in a switch-case that has cases matching HTML escaping.
+   */
+  private predicate isUsedInHTMLEscapingSwitch(Expr str) {
+    exists(SwitchStmt switch |
+      // "\"".charCodeAt(0) == 34, "&".charCodeAt(0) == 38, "<".charCodeAt(0) == 60
+      forall(int c | c = [34, 38, 60] | c = switch.getACase().getExpr().getIntValue()) and
+      exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charCodeAt" |
+        mcn.flowsToExpr(switch.getExpr()) and
+        str = mcn.getReceiver().asExpr()
+      )
+      or
+      forall(string c | c = ["\"", "&", "<"] | c = switch.getACase().getExpr().getStringValue()) and
+      (
+        exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charAt" |
+          mcn.flowsToExpr(switch.getExpr()) and
+          str = mcn.getReceiver().asExpr()
+        )
+        or
+        exists(DataFlow::PropRead read | exists(read.getPropertyNameExpr()) |
+          read.flowsToExpr(switch.getExpr()) and
+          str = read.getBase().asExpr()
+        )
+      )
+    )
+  }
+
+  private import semmle.javascript.dataflow.internal.AccessPaths as Paths
+
+  /**
+   * Gets an access-path that is used in a sanitizing switch statement.
+   * The `pragma[noinline]` is to avoid materializing a cartesian product of all access-paths.
+   */
+  pragma[noinline]
+  private Paths::AccessPath getAPathEscapedInSwitch() {
+    exists(Expr str |
+      isUsedInHTMLEscapingSwitch(str) and
+      result.getAnInstance() = str
+    )
+  }
+
+  /**
+   * An expression that is sanitized by a switch-case.
+   */
+  class IsEscapedInSwitchSanitizer extends Sanitizer {
+    IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAnInstance() }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -348,6 +395,8 @@ module DomBasedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
   /**
@@ -484,6 +533,8 @@ module ReflectedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
   private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
@@ -518,6 +569,8 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
