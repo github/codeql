@@ -21,6 +21,12 @@ private ModuleValue the_pyOpenSSL_module() { result = Value::named("pyOpenSSL.SS
 
 ClassValue the_pyOpenSSL_Context_class() { result = Value::named("pyOpenSSL.SSL.Context") }
 
+// Since version 3.6, it is fine to call `ssl.SSLContext(protocol=PROTOCOL_TLS)`
+// if one also specifies either OP_NO_TLSv1 (introduced in 3.2)
+// or SSLContext.minimum_version other than TLSVersion.TLSv1 (introduced in 3.7)
+// See https://docs.python.org/3/library/ssl.html?highlight=ssl#ssl.SSLContext
+// and https://docs.python.org/3/library/ssl.html?highlight=ssl#protocol-versions
+// FP reported here: https://github.com/github/codeql/issues/2554
 string insecure_version_name() {
     // For `pyOpenSSL.SSL`
     result = "SSLv2_METHOD" or
@@ -31,7 +37,7 @@ string insecure_version_name() {
     result = "PROTOCOL_SSLv2" or
     result = "PROTOCOL_SSLv3" or
     result = "PROTOCOL_SSLv23" or
-    result = "PROTOCOL_TLS" or
+    result = "PROTOCOL_TLS" or // could be fine since 3.6
     result = "PROTOCOL_TLSv1"
 }
 
