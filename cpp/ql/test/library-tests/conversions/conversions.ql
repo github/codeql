@@ -1,4 +1,4 @@
-import default
+import cpp
 
 string getValueCategoryString(Expr expr) {
   if expr.isLValueCategory()

@@ -2,7 +2,7 @@ import cpp
 
 class FunctionMonkeyPatch extends Function {
   language[monotonicAggregates]
-  override string toString() {
+  override string getDescription() {
     exists(string name, string templateArgs, string args |
       result = name + templateArgs + args and
       name = this.getQualifiedName() and
@@ -30,7 +30,9 @@ class FunctionMonkeyPatch extends Function {
 }
 
 class ParameterMonkeyPatch extends Parameter {
-  override string toString() { result = super.getType().getName() + " " + super.toString() }
+  override string getDescription() {
+    result = super.getType().getName() + " " + super.getDescription()
+  }
 }
 
 from Element e, Element ti

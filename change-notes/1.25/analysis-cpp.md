@@ -16,6 +16,7 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The library `VCS.qll` and all queries that imported it have been removed.
 * The data-flow library has been improved, which affects most security queries by potentially
   adding more results. Flow through functions now takes nested field reads/writes into account.
   For example, the library is able to track flow from `taint()` to `sink()` via the method
@@ -39,3 +40,5 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
       }
   };
   ```
+* The security pack taint tracking library (`semmle.code.cpp.security.TaintTracking`) now considers that equality checks may block the flow of taint.  This results in fewer false positive results from queries that use this library.
+

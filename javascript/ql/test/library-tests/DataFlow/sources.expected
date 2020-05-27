@@ -1,3 +1,16 @@
+| arguments.js:1:1:1:0 | this |
+| arguments.js:1:1:12:4 | (functi ... );\\n})() |
+| arguments.js:1:2:1:1 | this |
+| arguments.js:1:2:12:1 | functio ... , 3);\\n} |
+| arguments.js:2:5:2:4 | this |
+| arguments.js:2:5:10:5 | functio ... ;\\n    } |
+| arguments.js:2:16:2:16 | x |
+| arguments.js:4:28:4:39 | arguments[0] |
+| arguments.js:5:25:5:36 | arguments[1] |
+| arguments.js:7:24:7:30 | args[2] |
+| arguments.js:8:21:8:22 | {} |
+| arguments.js:9:27:9:38 | arguments[0] |
+| arguments.js:11:5:11:14 | f(1, 2, 3) |
 | eval.js:1:1:1:0 | this |
 | eval.js:1:1:1:0 | this |
 | eval.js:1:1:5:1 | functio ... eval`\\n} |

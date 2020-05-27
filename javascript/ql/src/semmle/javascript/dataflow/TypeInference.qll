@@ -156,6 +156,14 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Holds if the flow analysis can infer at least one abstract value for this node. */
   predicate hasFlow() { exists(getAValue()) }
+
+  /**
+   * INTERNAL. Use `isIncomplete()` instead.
+   *
+   * Subclasses may override this to contribute additional incompleteness to this node
+   * without overriding `isIncomplete()`.
+   */
+  predicate hasAdditionalIncompleteness(DataFlow::Incompleteness cause) { none() }
 }
 
 /**
@@ -255,14 +263,14 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
    * of functions that cannot actually complete normally, since it does not
    * account for `finally` blocks and does not check reachability.
    */
-  private predicate mayReturnImplicitly() {
-    exists(ConcreteControlFlowNode final |
-      final.getContainer() = astNode and
-      final.isAFinalNode() and
-      not final instanceof ReturnStmt and
-      not final instanceof ThrowStmt
-    )
-  }
+  private predicate mayReturnImplicitly() { terminalNode(astNode, any(ExprOrStmt st)) }
+}
+
+pragma[noinline]
+private predicate terminalNode(Function f, ControlFlowNode final) {
+  final.isAFinalNodeOfContainer(f) and
+  not final instanceof ReturnStmt and
+  not final instanceof ThrowStmt
 }
 
 /**

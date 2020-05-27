@@ -362,7 +362,7 @@ CppType getTypeForPRValueOrUnknown(Type type) {
 /**
  * Gets the `CppType` that represents a glvalue of type `type`.
  */
-CppType getTypeForGLValue(Type type) { result.hasType(type, true) }
+CppGLValueAddressType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `int`.
