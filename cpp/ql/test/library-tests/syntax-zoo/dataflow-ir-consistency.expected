@@ -635,8 +635,6 @@ uniqueNodeToString
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
-| ir.cpp:888:6:888:16 | (no string representation) | Node should have one toString but has 0. |
-| misc.c:197:6:197:9 | (no string representation) | Node should have one toString but has 0. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one toString but has 2. |
@@ -654,7 +652,6 @@ uniqueNodeToString
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 missingToString
-| Nodes without toString: 2 |
 parameterCallable
 localFlowIsLocal
 compatibleTypesReflexive
