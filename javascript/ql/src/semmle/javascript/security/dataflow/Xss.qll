@@ -73,6 +73,26 @@ module Shared {
       e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
     }
   }
+
+  /**
+   * A sanitizer guard that checks for the existence of HTML chars in a string.
+   * E.g. `/["'&<>]/.exec(str)`.
+   */
+  class ContainsHTMLGuard extends SanitizerGuard, DataFlow::MethodCallNode {
+    DataFlow::RegExpCreationNode regExp;
+
+    ContainsHTMLGuard() {
+      this.getMethodName() = ["test", "exec"] and
+      this.getReceiver().getALocalSource() = regExp and
+      regExp.getRoot() instanceof RegExpCharacterClass and
+      forall(string s | s = ["\"", "&", "<", ">"] | regExp.getRoot().getAMatchedString() = s)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = false and e = this.getArgument(0).asExpr()
+    }
+  }
+
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -359,6 +379,8 @@ module DomBasedXss {
       )
     )
   }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -463,6 +485,8 @@ module ReflectedXss {
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -496,6 +520,8 @@ module StoredXss {
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the XSS through DOM query. */
