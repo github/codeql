@@ -68,3 +68,20 @@ app.get('/user/:id', function(req, res) {
 
   res.send(escapeHtml1(url)); // OK
 });
+
+const matchHtmlRegExp = /["'&<>]/;
+function escapeHtml2 (string) {
+    const str = '' + string;
+    const match = matchHtmlRegExp.exec(str);
+
+    if (!match) {
+        return str;
+    }
+}
+
+app.get('/user/:id', function(req, res) {
+  const url = req.params.id;
+
+  res.send(escapeHtml2(url)); // OK
+});
+
