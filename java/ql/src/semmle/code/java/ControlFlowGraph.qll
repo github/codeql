@@ -711,7 +711,8 @@ private module ControlFlowGraphImpl {
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
-      last = n and completion = basicBooleanCompletion(false) or
+      last = n and completion = basicBooleanCompletion(false)
+      or
       last = ioe.getLocalVariableDeclExpr() and completion = basicBooleanCompletion(true)
     )
     or
