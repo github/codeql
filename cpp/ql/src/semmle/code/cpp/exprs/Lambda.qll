@@ -86,7 +86,7 @@ class Closure extends Class {
     result.getName() = "operator()"
   }
 
-  override string toString() { result = "decltype([...](...){...})" }
+  override string getDescription() { result = "decltype([...](...){...})" }
 }
 
 /**
@@ -99,7 +99,7 @@ class Closure extends Class {
  * ```
  */
 class LambdaCapture extends Locatable, @lambdacapture {
-  override string toString() { result = getField().toString() }
+  override string toString() { result = getField().getName() }
 
   override string getCanonicalQLClass() { result = "LambdaCapture" }
 
