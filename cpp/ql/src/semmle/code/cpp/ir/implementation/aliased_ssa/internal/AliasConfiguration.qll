@@ -90,7 +90,7 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
 
   final override string getUniqueId() { result = var.getUniqueId() }
 
-  final override IRType getIRType() { result = var.getIRType() }
+  final override IRType getIRType() { result instanceof IRUnknownType }
 
   final override predicate isReadOnly() { none() }
 
