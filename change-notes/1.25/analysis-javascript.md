@@ -39,7 +39,7 @@
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional file system calls. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional command execution calls. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Less results | This query now recognizes additional safe patterns of doing URL redirects. |
-| Client-side cross-site scripting (`js/xss`) | Less results | This query now recognizes additional safe strings based on URLs. |
+| Client-side cross-site scripting (`js/xss`) | Less results | This query now recognizes additional safe patterns of constructing HTML. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional url scheme checks. |
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes additional utility functions as vulnerable to prototype polution. |
 | Expression has no effect (`js/useless-expression`) | Less results | This query no longer flags an expression when that expression is the only content of the containing file. |
