@@ -51,6 +51,10 @@ module DomBasedXss {
         prop = urlSuffixPseudoProperty()
       )
     }
+
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      DomBasedXss::isOptionallySanitizedEdge(pred, succ)
+    }
   }
 
   private string urlSuffixPseudoProperty() { result = "$UrlSuffix$" }
