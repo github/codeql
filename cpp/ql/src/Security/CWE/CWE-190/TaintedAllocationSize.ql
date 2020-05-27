@@ -92,13 +92,8 @@ class BoundedVariableRead extends LoadInstruction {
       readsVariable(this, checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
+  }
 }
-
-/*
- * class TaintedAllocationSizeConfiguration extends TaintTrackingConfiguration {
- *  override predicate isSink(Element tainted) { allocSink(_, tainted) }
- * }
- */
 
 predicate taintedAllocSize(
   Expr source, Expr alloc, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
