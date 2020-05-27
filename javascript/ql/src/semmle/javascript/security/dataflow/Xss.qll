@@ -302,6 +302,36 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  /**
+   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
+   */
+  predicate isOptionallySanitizedEdge(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(HtmlSanitizerCall sanitizer |
+      // sanitized = sanitize ? sanitizer(source) : source;
+      exists(ConditionalExpr branch, Variable var, VarAccess access |
+        branch = succ.asExpr() and access = var.getAnAccess()
+      |
+        branch.getABranch() = access and
+        pred.getEnclosingExpr() = access and
+        sanitizer = branch.getABranch().flow() and
+        sanitizer.getAnArgument().getEnclosingExpr() = var.getAnAccess()
+      )
+      or
+      // sanitized = source; if (sanitize) {sanitized = sanitizer(source)};
+      exists(SsaPhiNode phi, SsaExplicitDefinition a, SsaDefinition b |
+        a = phi.getAnInput().getDefinition() and
+        b = phi.getAnInput().getDefinition() and
+        count(phi.getAnInput()) = 2 and
+        not a = b and
+        sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
+        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+      |
+        pred = DataFlow::ssaDefinitionNode(b) and
+        succ = DataFlow::ssaDefinitionNode(phi)
+      )
+    )
+  }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */

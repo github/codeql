@@ -827,6 +827,28 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
+  /**
+   * A test of form `x.length === "0"`, preventing `x` from being tainted.
+   */
+  class IsEmptyGuard extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    boolean polarity;
+    Expr operand;
+
+    IsEmptyGuard() {
+      astNode.getPolarity() = polarity and
+      astNode.getAnOperand().(ConstantExpr).getIntValue() = 0 and
+      exists(DataFlow::PropRead read | read.asExpr() = astNode.getAnOperand() |
+        read.getBase().asExpr() = operand and
+        read.getPropertyName() = "length"
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) { polarity = outcome and e = operand }
+
+    override predicate appliesTo(Configuration cfg) { any() }
+  }
+
   /** DEPRECATED. This class has been renamed to `InclusionSanitizer`. */
   deprecated class StringInclusionSanitizer = InclusionSanitizer;
 

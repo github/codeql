@@ -36,6 +36,47 @@ nodes
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
 | nodemailer.js:13:50:13:66 | req.query.message |
+| optionalSanitizer.js:2:7:2:39 | target |
+| optionalSanitizer.js:2:16:2:32 | document.location |
+| optionalSanitizer.js:2:16:2:32 | document.location |
+| optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:8:7:8:22 | tainted |
+| optionalSanitizer.js:8:17:8:22 | target |
+| optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:15:9:15:14 | target |
+| optionalSanitizer.js:16:18:16:18 | x |
+| optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:26:7:26:39 | target |
+| optionalSanitizer.js:26:16:26:32 | document.location |
+| optionalSanitizer.js:26:16:26:32 | document.location |
+| optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:31:7:31:23 | tainted2 |
+| optionalSanitizer.js:31:18:31:23 | target |
+| optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 |
+| optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) |
+| optionalSanitizer.js:34:28:34:35 | tainted2 |
+| optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 |
+| optionalSanitizer.js:38:18:38:23 | target |
+| optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 |
+| optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) |
+| optionalSanitizer.js:41:28:41:35 | tainted3 |
+| optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
+| optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:45:51:45:56 | target |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -421,6 +462,51 @@ edges
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:8:17:8:22 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:15:9:15:14 | target |
+| optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:2:7:2:39 | target |
+| optionalSanitizer.js:8:7:8:22 | tainted | optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:8:7:8:22 | tainted | optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:8:17:8:22 | target | optionalSanitizer.js:8:7:8:22 | tainted |
+| optionalSanitizer.js:15:9:15:14 | target | optionalSanitizer.js:16:18:16:18 | x |
+| optionalSanitizer.js:16:18:16:18 | x | optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:16:18:16:18 | x | optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:31:18:31:23 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:38:18:38:23 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:51:45:56 | target |
+| optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:26:7:26:39 | target |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:34:28:34:35 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:31:18:31:23 | target | optionalSanitizer.js:31:7:31:23 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) | optionalSanitizer.js:34:5:34:36 | tainted2 |
+| optionalSanitizer.js:34:28:34:35 | tainted2 | optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:41:28:41:35 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:38:18:38:23 | target | optionalSanitizer.js:38:7:38:23 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) | optionalSanitizer.js:41:5:41:36 | tainted3 |
+| optionalSanitizer.js:41:28:41:35 | tainted3 | optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
