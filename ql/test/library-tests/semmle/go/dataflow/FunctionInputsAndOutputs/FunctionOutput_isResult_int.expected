@@ -1,0 +1,4 @@
+| main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[0] | 0 | result 0 |
+| main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[1] | 1 | result 1 |
+| main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[0] | 0 | result 0 |
+| main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[1] | 1 | result 1 |
