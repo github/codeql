@@ -485,38 +485,41 @@ program, so it's helpful to extend a new type (namely ``TTaintType``)::
 Type Unions
 ***********
 
-.. note:: The syntax for type unions is considered experimental and is subject to change.
-   However, they appear in the `standard QL libraries <https://github.com/github/codeql>`.
-   The following sections should help you understand those examples
+.. note::
+    The syntax for type unions is considered experimental and is subject to change.
+    However, they appear in the `standard QL libraries <https://github.com/github/codeql>`.
+    The following sections should help you understand those examples
 
-   Type unions are user-defined types that are declared with the keyword ``class``.
-   The syntax resembles type aliases, but with two or more type expressions on the right-hand side.
+Type unions are user-defined types that are declared with the keyword ``class``.
+The syntax resembles type aliases, but with two or more type expressions on the right-hand side.
 
-   Type unions are used for creating restricted versions of existing algebraic datatypes, by explicitly
-   selecting a subset of the branches of said datatype and binding them to a new type.
-   In addition to this, type unions of database types are also supported.
+Type unions are used for creating restricted versions of existing algebraic datatypes, by explicitly
+selecting a subset of the branches of said datatype and binding them to a new type.
+In addition to this, type unions of database types are also supported.
 
-   Using a type union to explicitly restrict the permitted branches from an algebraic datatype
-   can resolve spurious recursion in predicates.
-   For example, the following construction is legal::
+Using a type union to explicitly restrict the permitted branches from an algebraic datatype
+can resolve spurious recursion in predicates.
+For example, the following construction is legal::
 
-       newtype T =
-          T1(T t) { not exists(T2orT3 s | t = s) } or
-          T2(int x) { x = 1 or x = 2 } or
-          T3(int x) { x = 3 or x = 4 or x = 5 }
+    newtype T =
+       T1(T t) { not exists(T2orT3 s | t = s) } or
+       T2(int x) { x = 1 or x = 2 } or
+       T3(int x) { x = 3 or x = 4 or x = 5 }
 
-       class T2orT3 = T2 or T3;
+    class T2orT3 = T2 or T3;
 
-   However, a similar implementation that restricts ``T`` in a class extension is not valid.
-   The class ``T2orT3`` triggers a type test for ``T``, which results in an illegal recursion
-   ``T2orT3->T->T1->¬T2orT2`` due to the reliance of ``T1`` on ``T2orT3``::
+However, a similar implementation that restricts ``T`` in a class extension is not valid.
+The class ``T2orT3`` triggers a type test for ``T``, which results in an illegal recursion
+``T2orT3->T->T1->¬T2orT2`` due to the reliance of ``T1`` on ``T2orT3``::
 
-       class T2orT3 extends T {
-         T2orT3() {
-           this instanceof T2 or this instanceof T3
-         }
-         // ...
-       }
+    class T2orT3 extends T {
+      T2orT3() {
+        this instanceof T2 or this instanceof T3
+      }
+      // ...
+    }
+
+Type unions are supported from release 2.2.0 of the CodeQL CLI.
 
 .. _database-types:
 
