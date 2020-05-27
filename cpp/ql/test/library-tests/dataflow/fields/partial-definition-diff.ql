@@ -16,6 +16,8 @@ class Node extends TNode {
   IR::Node asIR() { none() }
 
   AST::Node asAST() { none() }
+
+  Location getLocation() { none() }
 }
 
 class ASTNode extends Node, TASTNode {
@@ -26,6 +28,8 @@ class ASTNode extends Node, TASTNode {
   override string toString() { result = n.asPartialDefinition().toString() }
 
   override AST::Node asAST() { result = n }
+
+  override Location getLocation() { result = n.getLocation() }
 }
 
 class IRNode extends Node, TIRNode {
@@ -36,6 +40,8 @@ class IRNode extends Node, TIRNode {
   override string toString() { result = n.asPartialDefinition().toString() }
 
   override IR::Node asIR() { result = n }
+
+  override Location getLocation() { result = n.getLocation() }
 }
 
 from Node node, AST::Node astNode, IR::Node irNode, string msg
