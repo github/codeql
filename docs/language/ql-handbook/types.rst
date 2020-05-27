@@ -493,8 +493,8 @@ Type unions
 Type unions are user-defined types that are declared with the keyword ``class``.
 The syntax resembles :ref:`type aliases <type-aliases>`, but with two or more type expressions on the right-hand side.
 
-Type unions are used for creating restricted versions of existing :ref:`algebraic datatypes <algebraic-datatypes>`, by explicitly
-selecting a subset of the branches of those datatypes and binding them to a new type.
+Type unions are used for creating restricted versions of an existing :ref:`algebraic datatype <algebraic-datatypes>`, by explicitly
+selecting a subset of the branches of that datatype and binding them to a new type.
 Type unions of :ref:`database types <database-types>` are also supported.
 
 You can use a type union to explicitly restrict the permitted branches from an algebraic datatype
