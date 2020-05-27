@@ -1,11 +1,8 @@
 package com.semmle.js.extractor;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,8 +35,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.semmle.js.dependencies.DependencyResolver;
+import com.semmle.js.dependencies.packument.PackageJson;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.DefaultTrapCache;
@@ -213,11 +211,10 @@ public class AutoBuild {
   private volatile boolean seenCode = false;
   private volatile boolean seenFiles = false;
   private boolean installDependencies = false;
-  private int installDependenciesTimeout;
   private final VirtualSourceRoot virtualSourceRoot;
   private ExtractorState state;
 
-  /** The default timeout when running <code>yarn</code>, in milliseconds. */
+  /** The default timeout when installing dependencies, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
 
   public AutoBuild() {
@@ -229,10 +226,6 @@ public class AutoBuild {
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
-    this.installDependenciesTimeout =
-        Env.systemEnv()
-            .getInt(
-                "LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
     this.virtualSourceRoot = makeVirtualSourceRoot();
     setupFileTypes();
     setupXmlMode();
@@ -690,28 +683,6 @@ public class AutoBuild {
     return false;
   }
 
-  /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
-  private boolean verifyYarnInstallation() {
-    ProcessBuilder pb = new ProcessBuilder(Arrays.asList("yarn", "-v"));
-    try {
-      Process process = pb.start();
-      boolean completed = process.waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-      if (!completed) {
-        System.err.println("Yarn could not be launched. Timeout during 'yarn -v'.");
-        return false;
-      }
-      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      String version = reader.readLine();
-      System.out.println("Found yarn version: " + version);
-      return true;
-    } catch (IOException | InterruptedException ex) {
-      System.err.println(
-          "Yarn not found. Please put 'yarn' on the PATH for automatic dependency installation.");
-      Exceptions.ignore(ex, "Continue without dependency installation");
-      return false;
-    }
-  }
-
   /**
    * Returns an existing file named <code>dir/stem.ext</code> where <code>.ext</code> is any
    * of the given extensions, or <code>null</code> if no such file exists.
@@ -737,17 +708,6 @@ public class AutoBuild {
   }
 
   /**
-   * Gets a child of a JSON object as a string, or <code>null</code>.
-   */
-  private String getChildAsString(JsonObject obj, String name) {
-     JsonElement child = obj.get(name);
-     if (child instanceof JsonPrimitive && ((JsonPrimitive)child).isString()) {
-       return child.getAsString();
-     }
-     return null;
-  }
-
-  /**
    * Gets a relative path from <code>from</code> to <code>to</code> provided
    * the latter is contained in the former. Otherwise returns <code>null</code>.
    * @return a path or null
@@ -769,11 +729,8 @@ public class AutoBuild {
    * <p>
    * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
    * we call the "virtual source root".
-   * Each <tt>package.json</tt> file is rewritten and copied to the virtual source root,
-   * where <tt>yarn install</tt> is invoked.
    * <p>
-   * Packages that exists within the repo are stripped from the dependencies
-   * before installation, so they are not downloaded. Since they are part of the main source tree,
+   * Packages that exists within the repo are not downloaded. Since they are part of the main source tree,
    * these packages are not mirrored under the virtual source root.
    * Instead, an explicit package location mapping is passed to the TypeScript parser wrapper.
    * <p>
@@ -784,23 +741,20 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     final Path sourceRoot = LGTM_SRC;
 
     // Read all package.json files and index them by name.
-    Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
+    Map<Path, PackageJson> packageJsonFiles = new LinkedHashMap<>();
     Map<String, Path> packagesInRepo = new LinkedHashMap<>();
     Map<String, Path> packageMainFile = new LinkedHashMap<>();
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
         try {
-          String text = new WholeIO().read(file);
-          JsonElement json = new JsonParser().parse(text);
-          if (!(json instanceof JsonObject)) continue;
-          JsonObject jsonObject = (JsonObject) json;
+          PackageJson packageJson = new Gson().fromJson(new WholeIO().read(file), PackageJson.class);
           file = file.toAbsolutePath();
           if (tryRelativize(sourceRoot, file) == null) {
             continue; // Ignore package.json files outside the source root.
           }
-          packageJsonFiles.put(file, jsonObject);
+          packageJsonFiles.put(file, packageJson);
 
-          String name = getChildAsString(jsonObject, "name");
+          String name = packageJson.getName();
           if (name != null) {
             packagesInRepo.put(name, file);
           }
@@ -812,45 +766,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       }
     }
 
-    // Process all package.json files now that we know the names of all local packages.
-    // - remove dependencies on local packages
-    // - guess the main file for each package
-    // Note that we ignore optional dependencies during installation, so "optionalDependencies"
-    // is ignored here as well.
-    final List<String> dependencyFields =
-        Arrays.asList("dependencies", "devDependencies", "peerDependencies");
+    // Guess the main file for each package.
     packageJsonFiles.forEach(
-        (path, packageJson) -> {
+      (path, packageJson) -> {
           Path relativePath = sourceRoot.relativize(path);
-          for (String dependencyField : dependencyFields) {
-            JsonElement dependencyElm = packageJson.get(dependencyField);
-            if (!(dependencyElm instanceof JsonObject)) continue;
-            JsonObject dependencyObj = (JsonObject) dependencyElm;
-            List<String> propsToRemove = new ArrayList<>();
-            for (String packageName : dependencyObj.keySet()) {
-              if (packagesInRepo.containsKey(packageName)) {
-                // Remove dependency on local package
-                propsToRemove.add(packageName);
-              } else {
-                // Remove file dependency on a package that doesn't exist in the checkout.
-                String dependency = getChildAsString(dependencyObj, packageName);
-                if (dependency != null && (dependency.startsWith("file:") || dependency.startsWith("./") || dependency.startsWith("../"))) {
-                    if (dependency.startsWith("file:")) {
-                      dependency = dependency.substring("file:".length());
-                    }
-                    Path resolvedPackage = path.getParent().resolve(dependency + "/package.json");
-                    if (!Files.exists(resolvedPackage)) {
-                      propsToRemove.add(packageName);
-                    }
-                }
-              }
-            }
-            for (String prop : propsToRemove) {
-              dependencyObj.remove(prop);
-            }
-          }
           // For named packages, find the main file.
-          String name = getChildAsString(packageJson, "name");
+          String name = packageJson.getName();
           if (name != null) {
             Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
             if (entryPoint == null) {
@@ -866,45 +787,24 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           }
         });
 
-    // Write the new package.json files to disk
-    for (Path file : packageJsonFiles.keySet()) {
-      Path virtualFile = virtualSourceRoot.toVirtualFile(file);
-
+    if (installDependencies) {
+      // Use more threads for dependency installation than for extraction, as this is mainly I/O bound and we want
+      // many concurrent HTTP requests.
+      ExecutorService installationThreadPool = Executors.newFixedThreadPool(50);
       try {
-        Files.createDirectories(virtualFile.getParent());
-        try (Writer writer = Files.newBufferedWriter(virtualFile)) {
-          new Gson().toJson(packageJsonFiles.get(file), writer);
-        }
-      } catch (IOException e) {
-        throw new ResourceError("Could not rewrite package.json file: " + virtualFile, e);
-      }
-    }
-
-    // Install dependencies
-    if (this.installDependencies && verifyYarnInstallation()) {
-      for (Path file : packageJsonFiles.keySet()) {
-        Path virtualFile = virtualSourceRoot.toVirtualFile(file);
-        System.out.println("Installing dependencies from " + virtualFile);
-        ProcessBuilder pb =
-            new ProcessBuilder(
-                Arrays.asList(
-                    "yarn",
-                    "install",
-                    "--non-interactive",
-                    "--ignore-scripts",
-                    "--ignore-platform",
-                    "--ignore-engines",
-                    "--ignore-optional",
-                    "--no-default-rc",
-                    "--no-bin-links",
-                    "--pure-lockfile"));
-        pb.directory(virtualFile.getParent().toFile());
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        packageJsonFiles.forEach((file, packageJson) -> {
+          Path virtualFile = virtualSourceRoot.toVirtualFile(file);
+          Path nodeModulesDir = virtualFile.getParent().resolve("node_modules");
+          futures.add(new DependencyResolver(installationThreadPool, packagesInRepo.keySet()).installDependencies(packageJson, nodeModulesDir));
+        });
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+      } finally {
+        installationThreadPool.shutdown();
         try {
-          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-        } catch (IOException | InterruptedException ex) {
-          throw new ResourceError("Could not install dependencies from " + file, ex);
+          installationThreadPool.awaitTermination(1, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+          Exceptions.ignore(e, "Awaiting termination is not essential.");
         }
       }
     }
@@ -917,7 +817,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
    * given package - that is, the file you get when importing the package by name
    * without any path suffix.
    */
-  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
+  private Path guessPackageMainFile(Path packageJsonFile, PackageJson packageJson, Iterable<String> extensions) {
     Path packageDir = packageJsonFile.getParent();
 
     // Try <package_dir>/index.ts.
@@ -929,7 +829,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     // Get the "main" property from the package.json
     // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
     // the name of main file ("foo" in this case).
-    String mainStr = getChildAsString(packageJson, "main");
+    String mainStr = packageJson.getMain();
 
     // Look for source files `./src` if it exists
     Path sourceDir = packageDir.resolve("src");
