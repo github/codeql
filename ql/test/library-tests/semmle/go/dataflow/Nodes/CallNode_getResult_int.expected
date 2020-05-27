@@ -1,0 +1,2 @@
+| main.go:9:9:9:14 | call to test | 0 | main.go:9:2:9:14 | ... = ...[0] |
+| main.go:9:9:9:14 | call to test | 1 | main.go:9:2:9:14 | ... = ...[1] |
