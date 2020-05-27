@@ -50,9 +50,11 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
 }
 
 pragma[noinline]
-predicate candidateResultChecked(LoadInstruction checked, ValueNumber value) {
+predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator) {
   explicitNullTestOfInstruction(checked, _) and
-  value.getAnInstruction() = checked
+  not checked.getAST().isInMacroExpansion() and
+  value.getAnInstruction() = checked and
+  checked.getBlock() = dominator
 }
 
 predicate derefInstruction(Instruction checked, Instruction bool) {
@@ -79,9 +81,9 @@ predicate candidateResultDeref(LoadInstruction unchecked, ValueNumber value, IRB
   not dominator.dominates(unchecked.getBlock())
 }
 
-from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue
+from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue, IRBlock dominator
 where
-  candidateResultChecked(checked, sourceValue) and
-  candidateResultDeref(deref, sourceValue, checked.getBlock())
+  candidateResult(checked, sourceValue, dominator) and
+  candidateResultDeref(deref, sourceValue, dominator)
 select checked, "This null check is redundant because the value is $@ in any case", deref,
   "dereferenced here"
