@@ -632,6 +632,10 @@ class ClassValue extends Value {
  * Note that this does not include other callables such as bound-methods.
  */
 abstract class FunctionValue extends CallableValue {
+    /**
+     * Gets the qualified name for this function.
+     * Should return the same name as the `__qualname__` attribute on functions in Python 3.
+     */
     abstract string getQualifiedName();
 
     /** Gets a longer, more descriptive version of toString() */
