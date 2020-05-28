@@ -1,5 +1,5 @@
 /**
- * Provides a library for reasoning about control-flow at the granularity of
+ * Provides a library for reasoning about control flow at the granularity of
  * individual nodes in the control-flow graph.
  */
 

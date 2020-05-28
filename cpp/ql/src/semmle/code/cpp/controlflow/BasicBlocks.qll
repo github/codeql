@@ -1,5 +1,5 @@
 /**
- * Provides a library for reasoning about control-flow at the granularity of basic blocks.
+ * Provides a library for reasoning about control flow at the granularity of basic blocks.
  * This is usually much more efficient than reasoning directly at the level of `ControlFlowNode`s.
  */
 
@@ -159,13 +159,13 @@ class BasicBlock extends ControlFlowNodeBase {
   /** Gets the `ControlFlowNode` at position `pos` in this basic block. */
   ControlFlowNode getNode(int pos) { basic_block_member(result, this, pos) }
 
-  /** Gets all `ControlFlowNode`s in this basic block. */
+  /** Gets a `ControlFlowNode` in this basic block. */
   ControlFlowNode getANode() { basic_block_member(result, this, _) }
 
-  /** Gets all `BasicBlock`s that are direct successors of this basic block. */
+  /** Gets a `BasicBlock` that is a direct successor of this basic block. */
   BasicBlock getASuccessor() { bb_successor(this, result) }
 
-  /** Gets all `BasicBlock`s that are direct predecessors of this basic block. */
+  /** Gets a `BasicBlock` that is a direct predecessor of this basic block. */
   BasicBlock getAPredecessor() { bb_successor(result, this) }
 
   /**
