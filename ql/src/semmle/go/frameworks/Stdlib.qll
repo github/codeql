@@ -684,8 +684,7 @@ module URL {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp.isReceiver() and
-      if getName() = "Password" then outp.isResult(0) else outp.isResult()
+      inp.isReceiver() and outp.isResult(0)
     }
   }
 
