@@ -1,9 +1,10 @@
 /**
+ * DEPRECATED.
+ *
  * Provides classes representing data flow sources for parameters of public callables.
  */
 
 import csharp
-private import semmle.code.csharp.frameworks.WCF
 
 /**
  * A parameter of a public callable, for example `p` in

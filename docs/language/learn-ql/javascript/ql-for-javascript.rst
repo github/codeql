@@ -1,8 +1,9 @@
 CodeQL for JavaScript
 =====================
 
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript codebases.
+
 .. toctree::
-   :glob:
    :hidden:
 
    introduce-libraries-js
@@ -13,25 +14,18 @@ CodeQL for JavaScript
    ast-class-reference
    dataflow-cheat-sheet
 
-These documents provide an overview of the CodeQL libraries for JavaScript and TypeScript and show examples of how to use them.
+-  `Basic JavaScript query <https://lgtm.com/help/lgtm/console/ql-javascript-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
 
--  `Basic JavaScript query <https://lgtm.com/help/lgtm/console/ql-javascript-basic-example>`__ describes how to write and run queries using LGTM.
+-  :doc:`CodeQL library for JavaScript <introduce-libraries-js>`: When you're analyzing a JavaScript program, you can make use of the large collection of classes in the CodeQL library for JavaScript.
 
--  :doc:`Introducing the CodeQL libraries for JavaScript <introduce-libraries-js>` introduces the standard libraries used to write queries for JavaScript code. There is an extensive CodeQL library for analyzing JavaScript code. This tutorial briefly summarizes the most important classes and predicates provided by this library.
+-  :doc:`CodeQL library for TypeScript <introduce-libraries-ts>`: When you're analyzing a TypeScript program, you can make use of the large collection of classes in the CodeQL library for TypeScript.
 
--  :doc:`Introducing the CodeQL libraries for TypeScript <introduce-libraries-ts>` introduces the standard libraries used to write queries for TypeScript code.
+-  :doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>`: This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
 
--  :doc:`Analyzing data flow in JavaScript/TypeScript <dataflow>` demonstrates how to write queries using the standard data flow and taint tracking libraries for JavaScript/TypeScript.
+-  :doc:`Using flow labels for precise data flow analysis <flow-labels>`: You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
 
--  :doc:`Advanced data-flow analysis using flow labels <flow-labels>` shows a more advanced example of data flow analysis using flow labels.
+-  :doc:`Using type tracking for API modeling <type-tracking>`: You can track data through an API by creating a model using the CodeQL type-tracking library for JavaScript.
 
--  :doc:`AST class reference <ast-class-reference>` gives an overview of all AST classes in the standard CodeQL library for JavaScript.
+-  :doc:`Abstract syntax tree classes for JavaScript and TypeScript <ast-class-reference>`: CodeQL has a large selection of classes for working with JavaScript and TypeScript statements and expressions.
 
--  :doc:`Data flow cheat sheet <dataflow-cheat-sheet>` lists parts of the CodeQL libraries that are commonly used for variant analysis and in data flow queries.
-
-Other resources
----------------
-
--  For examples of how to query common JavaScript elements, see the `JavaScript cookbook <https://help.semmle.com/wiki/display/CBJS>`__.
--  For the queries used in LGTM, display a `JavaScript query <https://lgtm.com/search?q=language%3Ajavascript&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
--  For more information about the library for JavaScript see the `CodeQL library for JavaScript <https://help.semmle.com/qldoc/javascript/>`__.
+-  :doc:`Data flow cheat sheet for JavaScript <dataflow-cheat-sheet>`: This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.

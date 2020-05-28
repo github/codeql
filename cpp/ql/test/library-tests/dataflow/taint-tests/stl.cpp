@@ -110,3 +110,24 @@ void test_stringstream_int(int source)
 	sink(ss1.str());
 	sink(ss2.str()); // tainted [NOT DETECTED]
 }
+
+using namespace std;
+
+char *user_input() {
+  return source();
+}
+
+void sink(const char *filename, const char *mode);
+
+void test_strings2()
+{
+	string path1 = user_input();
+	sink(path1.c_str(), "r"); // tainted
+
+	string path2;
+	path2 = user_input();
+	sink(path2.c_str(), "r"); // tainted
+
+	string path3(user_input());
+	sink(path3.c_str(), "r"); // tainted
+}

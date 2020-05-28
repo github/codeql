@@ -50,6 +50,11 @@ CppType getEllipsisVariablePRValueType() {
 CppType getEllipsisVariableGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
 
 /**
+ * Holds if the function returns a value, as opposed to returning `void`.
+ */
+predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instanceof VoidType }
+
+/**
  * Represents the IR translation of a function. This is the root elements for
  * all other elements associated with this function.
  */
@@ -109,11 +114,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       tag = AliasedDefinitionTag() and
       result = getInstruction(InitializeNonLocalTag())
       or
-      tag = InitializeNonLocalTag() and
-      result = getInstruction(UnmodeledDefinitionTag())
-      or
       (
-        tag = UnmodeledDefinitionTag() and
+        tag = InitializeNonLocalTag() and
         if exists(getThisType())
         then result = getInstruction(InitializeThisTag())
         else
@@ -133,12 +135,9 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = getInstruction(ReturnTag())
       or
       tag = ReturnTag() and
-      result = getInstruction(UnmodeledUseTag())
+      result = getInstruction(AliasedUseTag())
       or
       tag = UnwindTag() and
-      result = getInstruction(UnmodeledUseTag())
-      or
-      tag = UnmodeledUseTag() and
       result = getInstruction(AliasedUseTag())
       or
       tag = AliasedUseTag() and
@@ -177,10 +176,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       opcode instanceof Opcode::EnterFunction and
       resultType = getVoidType()
       or
-      tag = UnmodeledDefinitionTag() and
-      opcode instanceof Opcode::UnmodeledDefinition and
-      resultType = getUnknownType()
-      or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
       resultType = getUnknownType()
@@ -216,10 +211,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
       )
       or
-      tag = UnmodeledUseTag() and
-      opcode instanceof Opcode::UnmodeledUse and
-      resultType = getVoidType()
-      or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and
       resultType = getVoidType()
@@ -234,32 +225,18 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = getInstruction(UnwindTag())
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result.getEnclosingFunction() = func and
-    result.hasMemoryResult()
-    or
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
-    tag = AliasedUseTag() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ReturnTag() and
     hasReturnValue() and
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(ReturnValueAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getUnmodeledDefinitionInstruction()
     )
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = ReturnTag() and
     hasReturnValue() and
     operandTag instanceof LoadOperandTag and
@@ -312,14 +289,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   /**
    * Holds if the function has a non-`void` return type.
    */
-  final predicate hasReturnValue() { not func.getUnspecifiedType() instanceof VoidType }
-
-  /**
-   * Gets the single `UnmodeledDefinition` instruction for this function.
-   */
-  final Instruction getUnmodeledDefinitionInstruction() {
-    result = getInstruction(UnmodeledDefinitionTag())
-  }
+  final predicate hasReturnValue() { hasReturnValue(func) }
 
   /**
    * Gets the single `InitializeThis` instruction for this function. Holds only
@@ -440,7 +410,7 @@ abstract class TranslatedParameter extends TranslatedElement {
     result = getIRVariable()
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
@@ -452,9 +422,6 @@ abstract class TranslatedParameter extends TranslatedElement {
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(InitializerVariableAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getInstruction(InitializerStoreTag())
     )
     or
     tag = InitializerIndirectStoreTag() and
@@ -715,7 +682,7 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind edge) {
     tag = OnlyInstructionTag() and
-    edge = gotoEdge() and
+    edge = EdgeKind::gotoEdge() and
     result = getParent().getChildSuccessor(this)
   }
 
@@ -729,19 +696,22 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
     resultType = getVoidType()
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag = sideEffectOperand() and
-    result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
-    or
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag = addressOperand() and
     result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = OnlyInstructionTag() and
     operandTag = sideEffectOperand() and
     result = getUnknownType()
+  }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getIRUserVariable(getFunction(), param)
   }
 }

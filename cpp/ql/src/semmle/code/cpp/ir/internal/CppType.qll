@@ -86,9 +86,15 @@ predicate hasUnsignedIntegerType(int byteSize) {
 }
 
 /**
- * Holds if an `IRFloatingPointType` with the specified `byteSize` should exist.
+ * Holds if an `IRFloatingPointType` with the specified size, base, and type domain should exist.
  */
-predicate hasFloatingPointType(int byteSize) { byteSize = any(FloatingPointType type).getSize() }
+predicate hasFloatingPointType(int byteSize, int base, TypeDomain domain) {
+  exists(FloatingPointType type |
+    byteSize = type.getSize() and
+    base = type.getBase() and
+    domain = type.getDomain()
+  )
+}
 
 private predicate isPointerIshType(Type type) {
   type instanceof PointerType
@@ -159,8 +165,13 @@ private IRType getIRTypeForPRValue(Type type) {
     isUnsignedIntegerType(unspecifiedType) and
     result.(IRUnsignedIntegerType).getByteSize() = type.getSize()
     or
-    unspecifiedType instanceof FloatingPointType and
-    result.(IRFloatingPointType).getByteSize() = type.getSize()
+    exists(FloatingPointType floatType, IRFloatingPointType irFloatType |
+      floatType = unspecifiedType and
+      irFloatType = result and
+      irFloatType.getByteSize() = floatType.getSize() and
+      irFloatType.getBase() = floatType.getBase() and
+      irFloatType.getDomain() = floatType.getDomain()
+    )
     or
     isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type)
     or
@@ -192,6 +203,7 @@ private newtype TCppType =
  *   of a `VariableAddress` where the variable is of reference type)
  */
 class CppType extends TCppType {
+  /** Gets a textual representation of this type. */
   string toString() { none() }
 
   /** Gets a string used in IR dumps */
@@ -213,6 +225,10 @@ class CppType extends TCppType {
    */
   predicate hasType(Type type, boolean isGLValue) { none() }
 
+  /**
+   * Holds if this type represents the C++ type `type`. If `isGLValue` is `true`, then this type
+   * represents a glvalue of type `type`. Otherwise, it represents a prvalue of type `type`.
+   */
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
       hasType(specifiedType, isGLValue) and
@@ -346,7 +362,7 @@ CppType getTypeForPRValueOrUnknown(Type type) {
 /**
  * Gets the `CppType` that represents a glvalue of type `type`.
  */
-CppType getTypeForGLValue(Type type) { result.hasType(type, true) }
+CppGLValueAddressType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `int`.
@@ -438,15 +454,37 @@ CppPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
 }
 
 /**
- * Gets the `CppType` that is the canonical type for an `IRFloatingPointType` with the specified
- * `byteSize`.
+ * Gets the sort priority of a `RealNumberType` base on its precision.
  */
-CppPRValueType getCanonicalFloatingPointType(int byteSize) {
+private int getPrecisionPriority(RealNumberType type) {
+  // Prefer `double`, `float`, `long double` in that order.
+  if type instanceof DoubleType
+  then result = 4
+  else
+    if type instanceof FloatType
+    then result = 3
+    else
+      if type instanceof LongDoubleType
+      then result = 2
+      else
+        // If we get this far, prefer non-extended-precision types.
+        if not type.isExtendedPrecision()
+        then result = 1
+        else result = 0
+}
+
+/**
+ * Gets the `CppType` that is the canonical type for an `IRFloatingPointType` with the specified
+ * size, base, and type domain.
+ */
+CppPRValueType getCanonicalFloatingPointType(int byteSize, int base, TypeDomain domain) {
   result =
     TPRValueType(max(FloatingPointType type |
-        type.getSize() = byteSize
+        type.getSize() = byteSize and
+        type.getBase() = base and
+        type.getDomain() = domain
       |
-        type order by type.toString() desc
+        type order by getPrecisionPriority(type.getRealType()), type.toString() desc
       ))
 }
 
@@ -506,7 +544,10 @@ string getOpaqueTagIdentityString(Type tag) {
   result = getTypeIdentityString(tag)
 }
 
-module LanguageTypeSanity {
+module LanguageTypeConsistency {
+  /**
+   * Consistency query to detect C++ `Type` objects which have no corresponding `CppType` object.
+   */
   query predicate missingCppType(Type type, string message) {
     not exists(getTypeForPRValue(type)) and
     exists(type.getSize()) and

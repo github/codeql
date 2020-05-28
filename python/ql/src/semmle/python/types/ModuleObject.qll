@@ -118,7 +118,7 @@ class BuiltinModuleObject extends ModuleObject {
 
     override predicate hasAttribute(string name) { exists(this.asBuiltin().getMember(name)) }
 
-    override predicate exportsComplete() { any() }
+    deprecated override predicate exportsComplete() { any() }
 }
 
 class PythonModuleObject extends ModuleObject {
@@ -132,7 +132,7 @@ class PythonModuleObject extends ModuleObject {
 
     override Container getPath() { result = this.getModule().getFile() }
 
-    override predicate exportsComplete() {
+    deprecated override predicate exportsComplete() {
         exists(Module m | m = this.getModule() |
             not exists(Call modify, Attribute attr, GlobalVariable all |
                 modify.getScope() = m and
@@ -196,7 +196,7 @@ class PackageObject extends ModuleObject {
         )
     }
 
-    override predicate exportsComplete() {
+    deprecated override predicate exportsComplete() {
         not exists(this.getInitModule())
         or
         this.getInitModule().exportsComplete()

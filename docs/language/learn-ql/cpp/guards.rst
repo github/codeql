@@ -1,8 +1,10 @@
 Using the guards library in C and C++
 =====================================
 
-Overview
---------
+You can use the CodeQL guards library to identify conditional expressions that control the execution of other parts of a program in C and C++ codebases. 
+
+About the guards library
+------------------------
 
 The guards library (defined in ``semmle.code.cpp.controlflow.Guards``) provides a class `GuardCondition <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/controlflow/Guards.qll/type.Guards$GuardCondition.html>`__ representing Boolean values that are used to make control flow decisions.
 A ``GuardCondition`` is considered to guard a basic block if the block can only be reached if the ``GuardCondition`` is evaluated a certain way. For instance, in the following code, ``x < 10`` is a ``GuardCondition``, and it guards all the code before the return statement.
@@ -20,7 +22,7 @@ A ``GuardCondition`` is considered to guard a basic block if the block can only 
 
 
 The ``controls`` predicate
-------------------------------------------------
+--------------------------
 
 The ``controls`` predicate helps determine which blocks are only run when the ``GuardCondition`` evaluates a certain way. ``guard.controls(block, testIsTrue)`` holds if ``block`` is only entered if the value of this condition is ``testIsTrue``.
 
@@ -90,4 +92,10 @@ The ``comparesLt`` predicate
 ****************************
 
 ``comparesLt(left, right, k, isLessThan, testIsTrue)`` holds if ``left < right + k`` evaluates to ``isLessThan`` when the expression evaluates to ``testIsTrue``.
+
+Further reading
+---------------
+
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
 

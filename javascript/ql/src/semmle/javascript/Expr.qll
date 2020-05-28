@@ -22,12 +22,6 @@ class ExprOrType extends @exprortype, Documentable {
   Function getEnclosingFunction() { result = getContainer() }
 
   /**
-   * Gets the statement container (function or toplevel) in which
-   * this expression or type appears.
-   */
-  StmtContainer getContainer() { exprContainers(this, result) }
-
-  /**
    * Gets the JSDoc comment associated with this expression or type or its parent statement, if any.
    */
   override JSDoc getDocumentation() {
@@ -107,12 +101,6 @@ class ExprOrType extends @exprortype, Documentable {
  * ```
  */
 class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
-  /**
-   * Gets the statement container (function or toplevel) in which
-   * this expression appears.
-   */
-  override StmtContainer getContainer() { exprContainers(this, result) }
-
   /** Gets this expression, with any surrounding parentheses removed. */
   override Expr stripParens() { result = this }
 
@@ -246,23 +234,30 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
     )
   }
 
+  pragma[inline]
+  private Stmt getRawEnclosingStmt(Expr e) {
+    // For performance reasons, we need the enclosing statement without overrides
+    enclosingStmt(e, result)
+  }
+
   /**
    * Gets the data-flow node where exceptions thrown by this expression will
    * propagate if this expression causes an exception to be thrown.
    */
+  pragma[inline]
   DataFlow::Node getExceptionTarget() {
-    if exists(this.getEnclosingStmt().getEnclosingTryCatchStmt())
-    then
-      result =
-        DataFlow::parameterNode(this
-              .getEnclosingStmt()
-              .getEnclosingTryCatchStmt()
-              .getACatchClause()
-              .getAParameter())
-    else
-      result =
-        any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
+    result = getCatchParameterFromStmt(getRawEnclosingStmt(this))
+    or
+    not exists(getCatchParameterFromStmt(getRawEnclosingStmt(this))) and
+    result =
+      any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
   }
+}
+
+cached
+private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
+  result =
+    DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
 }
 
 /**
@@ -308,6 +303,7 @@ class Label extends @label, Identifier, Expr {
  * 3n        // BigInt literal
  * "hello"   // string literal
  * /jsx?/    // regular-expression literal
+ * ```
  */
 class Literal extends @literal, Expr {
   /** Gets the value of this literal, as a string. */
@@ -632,9 +628,6 @@ class Property extends @property, Documentable {
 
   /** Gets the (0-based) index at which this property appears in its enclosing literal. */
   int getIndex() { this = getObjectExpr().getProperty(result) }
-
-  /** Gets the function or toplevel in which this property occurs. */
-  StmtContainer getContainer() { result = getObjectExpr().getContainer() }
 
   /**
    * Holds if this property is impure, that is, the evaluation of its name or
@@ -2621,7 +2614,7 @@ class DynamicImportExpr extends @dynamicimport, Expr, Import {
 }
 
 /** A literal path expression appearing in a dynamic import. */
-private class LiteralDynamicImportPath extends PathExprInModule, ConstantString {
+private class LiteralDynamicImportPath extends PathExpr, ConstantString {
   LiteralDynamicImportPath() {
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }

@@ -15,10 +15,10 @@
 
 import python
 
-from FunctionObject method
+from FunctionValue method
 where
-    exists(ClassObject c |
+    exists(ClassValue c |
         c.declaredAttribute("__del__") = method and
-        method.getFunction().getMetrics().getCyclomaticComplexity() > 3
+        method.getScope().getMetrics().getCyclomaticComplexity() > 3
     )
 select method, "Overly complex '__del__' method."

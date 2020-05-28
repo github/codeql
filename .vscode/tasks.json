@@ -1,0 +1,27 @@
+{
+    // To run a task, select the `Terminal | Run Task...` menu option, and then select the task from
+    // the list in the dropdown, or invoke the `Tasks: Run Task` command from the command palette/
+    // To bind a keyboard shortcut to invoke a task, see https://code.visualstudio.com/docs/editor/tasks#_binding-keyboard-shortcuts-to-tasks.
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Sync Identical Files",
+            "type": "process",
+            // Non-Windows OS will usually have Python 3 already installed at /usr/bin/python3.
+            "command": "python3",
+            "args": [
+                "config/sync-files.py",
+                "--latest"
+            ],
+            "group": "build",
+            "windows": {
+                // On Windows, use whatever Python interpreter is configured for this workspace. The default is
+                // just `python`, so if Python is already on the path, this will find it.
+                "command": "${config:python.pythonPath}",
+            },
+            "problemMatcher": []
+        }
+    ]
+}

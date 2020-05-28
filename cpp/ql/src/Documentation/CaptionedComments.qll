@@ -4,6 +4,10 @@
 
 import cpp
 
+/**
+ * Gets a string representation of the comment `c` containing the caption 'TODO' or 'FIXME'.
+ * If `c` spans multiple lines, all lines after the first are abbreviated as [...].
+ */
 string getCommentTextCaptioned(Comment c, string caption) {
   (caption = "TODO" or caption = "FIXME") and
   exists(

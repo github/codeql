@@ -1,4 +1,4 @@
-import default
+import cpp
 import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.AliasAnalysis
 import semmle.code.cpp.ir.implementation.raw.IR
 import semmle.code.cpp.ir.implementation.UseSoundEscapeAnalysis

@@ -1,0 +1,11 @@
+digraph dfg {
+    graph [dpi=300];
+    rankdir=LR;
+
+    "x" [shape=diamond];
+    "return x" [label=<return <u>x</u>>];
+
+    "0" -> "x";
+    "p.f" -> "x";
+    "x" -> "return x";
+}

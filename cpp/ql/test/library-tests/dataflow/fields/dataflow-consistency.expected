@@ -4,9 +4,13 @@ uniqueEnclosingCallable
 uniqueTypeBound
 | complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type bound but has 0. |
 | complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type bound but has 0. |
+| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type bound but has 0. |
+| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type bound but has 0. |
 uniqueTypeRepr
 | complex.cpp:22:11:22:17 | constructor init of field f [post-this] | Node should have one type representation but has 0. |
 | complex.cpp:22:11:22:17 | constructor init of field f [pre-this] | Node should have one type representation but has 0. |
+| complex.cpp:25:7:25:7 | constructor init of field inner [post-this] | Node should have one type representation but has 0. |
+| complex.cpp:25:7:25:7 | constructor init of field inner [pre-this] | Node should have one type representation but has 0. |
 uniqueNodeLocation
 | A.cpp:38:7:38:8 | call to C | Node should have one location but has 2. |
 | A.cpp:39:7:39:8 | call to C | Node should have one location but has 2. |
@@ -43,6 +47,7 @@ storeIsPostUpdate
 argHasPostUpdate
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |
+| A.cpp:57:11:57:24 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:57:17:57:23 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:64:21:64:28 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:73:25:73:32 | new | ArgumentNode is missing PostUpdateNode. |

@@ -23,14 +23,33 @@ DataFlow::SourceNode angular() {
   result = DataFlow::moduleImport("angular")
 }
 
-pragma[noopt]
+/**
+ * Holds if `tl` appears to be a top-level using the AngularJS library.
+ *
+ * Should not depend on the `SourceNode` class.
+ */
+pragma[nomagic]
+private predicate isAngularTopLevel(TopLevel tl) {
+  exists(Import imprt |
+    imprt.getTopLevel() = tl and
+    imprt.getImportedPath().getValue() = "angular"
+  )
+  or
+  exists(GlobalVarAccess global |
+    global.getName() = "angular" and
+    global.getTopLevel() = tl
+  )
+}
+
+/**
+ * Holds if `s` is a string in a top-level using the AngularJS library.
+ *
+ * Should not depend on the `SourceNode` class.
+ */
+pragma[nomagic]
 private predicate isAngularString(Expr s) {
-  exists(DataFlow::SourceNode angular, StmtContainer sc, TopLevel tl |
-    angular = angular() and
-    sc = angular.getContainer() and
-    tl = sc.getTopLevel() and
-    tl = s.getTopLevel()
-  |
+  isAngularTopLevel(s.getTopLevel()) and
+  (
     s instanceof StringLiteral or
     s instanceof TemplateLiteral
   )
@@ -442,6 +461,7 @@ class ComponentDirective extends CustomDirective, MkCustomComponent {
 
   override DataFlow::Node getDefinition() { result = comp }
 
+  pragma[nomagic]
   override DataFlow::ValueNode getMemberInit(string name) {
     comp.getConfig().hasPropertyWrite(name, result)
   }

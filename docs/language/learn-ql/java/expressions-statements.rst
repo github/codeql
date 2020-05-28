@@ -1,12 +1,14 @@
-Tutorial: Expressions and statements
-====================================
+Overflow-prone comparisons in Java
+==================================
 
-Overview
---------
+You can use CodeQL to check for comparisons in Java code where one side of the comparison is prone to overflow.
 
-This tutorial develops a query for finding comparisons between integers and long integers in loops that may lead to non-termination due to overflow.
+About this article
+------------------
 
-Specifically, consider the following code snippet:
+In this tutorial article you'll write a query for finding comparisons between integers and long integers in loops that may lead to non-termination due to overflow.
+
+To begin, consider this code snippet:
 
 .. code-block:: java
 
@@ -24,12 +26,12 @@ If ``l`` is bigger than 2\ :sup:`31`\ - 1 (the largest positive value of type ``
 
    All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an "overflow"). For ``int``, this maximum value is 2\ :sup:`31`\ - 1. Type ``long`` can accommodate larger values up to a maximum of 2\ :sup:`63`\ - 1. In this example, this means that ``l`` can take on a value that is higher than the maximum for type ``int``; ``i`` will never be able to reach this value, instead overflowing and returning to a low value.
 
-We will develop a query that finds code that looks like it might exhibit this kind of behavior. We will be using several of the standard library classes for representing statements and functions, a full list of which can be found in the :doc:`AST class reference <ast-class-reference>`.
+We're going to develop a query that finds code that looks like it might exhibit this kind of behavior. We'll be using several of the standard library classes for representing statements and functions. For a full list, see :doc:`Classes for working with Java code <ast-class-reference>`.
 
 Initial query
 -------------
 
-We start out by writing a query that finds less-than expressions (CodeQL class ``LTExpr``) where the left operand is of type ``int`` and the right operand is of type ``long``:
+We'll start by writing a query that finds less-than expressions (CodeQL class ``LTExpr``) where the left operand is of type ``int`` and the right operand is of type ``long``:
 
 .. code-block:: ql
 
@@ -40,9 +42,9 @@ We start out by writing a query that finds less-than expressions (CodeQL class `
        expr.getRightOperand().getType().hasName("long")
    select expr
 
-➤ `See this in the query console <https://lgtm.com/query/672320008/>`__. This query usually finds results on most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672320008/>`__. This query usually finds results on most projects.
 
-Notice that we use the predicate ``getType`` (available on all subclasses of ``Expr``) to determine the type of the operands. Types, in turn, define the ``hasName`` predicate, which allows us to identify the primitive types ``int`` and ``long``. As it stands, this query finds *all* less-than expressions comparing ``int`` and ``long``, but in fact we are only interested in comparisons that are part of a loop condition. Also, we want to filter out comparisons where either operand is constant, since these are less likely to be real bugs. The revised query looks as follows:
+Notice that we use the predicate ``getType`` (available on all subclasses of ``Expr``) to determine the type of the operands. Types, in turn, define the ``hasName`` predicate, which allows us to identify the primitive types ``int`` and ``long``. As it stands, this query finds *all* less-than expressions comparing ``int`` and ``long``, but in fact we are only interested in comparisons that are part of a loop condition. Also, we want to filter out comparisons where either operand is constant, since these are less likely to be real bugs. The revised query looks like this:
 
 .. code-block:: ql
 
@@ -55,7 +57,7 @@ Notice that we use the predicate ``getType`` (available on all subclasses of ``E
        not expr.getAnOperand().isCompileTimeConstant()
    select expr
 
-➤ `See this in the query console <https://lgtm.com/query/690010001/>`__. Notice that fewer results are found.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010001/>`__. Notice that fewer results are found.
 
 The class ``LoopStmt`` is a common superclass of all loops, including, in particular, ``for`` loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate ``getCondition``. We use the reflexive transitive closure operator ``*`` applied to the ``getAChildExpr`` predicate to express the requirement that ``expr`` should be nested inside the loop condition. In particular, it can be the loop condition itself.
 
@@ -78,7 +80,7 @@ In order to compare the ranges of types, we define a predicate that returns the 
        (pt.hasName("long") and result=64)
    }
 
-We now want to generalize our query to apply to any comparison where the width of the type on the smaller end of the comparison is less than the width of the type on the greater end. Let us call such a comparison *overflow prone*, and introduce an abstract class to model it:
+We now want to generalize our query to apply to any comparison where the width of the type on the smaller end of the comparison is less than the width of the type on the greater end. Let's call such a comparison *overflow prone*, and introduce an abstract class to model it:
 
 .. code-block:: ql
 
@@ -118,11 +120,10 @@ Now we rewrite our query to make use of these new classes:
    not expr.getAnOperand().isCompileTimeConstant()
    select expr
 
-➤ `See the full query in the query console <https://lgtm.com/query/1951710018/lang:java/>`__.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1951710018/lang:java/>`__.
 
-What next?
-----------
+Further reading
+---------------
 
--  Have a look at some of the other tutorials: :doc:`Tutorial: Types and the class hierarchy <types-class-hierarchy>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

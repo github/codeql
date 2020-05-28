@@ -61,9 +61,13 @@ predicate hasUnsignedIntegerType(int byteSize) {
 }
 
 /**
- * Holds if an `IRFloatingPointType` with the specified `byteSize` should exist.
+ * Holds if an `IRFloatingPointType` with the specified size, base, and type domain should exist.
  */
-predicate hasFloatingPointType(int byteSize) { byteSize = any(FloatingPointType type).getSize() }
+predicate hasFloatingPointType(int byteSize, int base, Language::TypeDomain domain) {
+  byteSize = any(FloatingPointType type).getSize() and
+  base = 2 and
+  domain instanceof Language::RealDomain
+}
 
 private predicate isPointerIshType(Type type) {
   type instanceof PointerType or
@@ -314,9 +318,11 @@ CSharpPRValueType getCanonicalUnsignedIntegerType(int byteSize) {
 
 /**
  * Gets the `CSharpType` that is the canonical type for an `IRFloatingPointType` with the specified
- * `byteSize`.
+ * size, base, and type domain.
  */
-CSharpPRValueType getCanonicalFloatingPointType(int byteSize) {
+CSharpPRValueType getCanonicalFloatingPointType(int byteSize, int base, Language::TypeDomain domain) {
+  base = 2 and
+  domain instanceof Language::RealDomain and
   result = TPRValueType(any(FloatingPointType type | type.getSize() = byteSize))
 }
 
@@ -362,7 +368,7 @@ CSharpPRValueType getCanonicalOpaqueType(Type tag, int byteSize) {
   getTypeSize(tag) = byteSize
 }
 
-module LanguageTypeSanity {
+module LanguageTypeConsistency {
   // Nothing interesting here for C# yet, but the module still has to exist because it is imported
-  // by `IRTypeSanity`.
+  // by `IRTypeConsistency`.
 }

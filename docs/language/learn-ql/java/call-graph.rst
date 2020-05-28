@@ -1,8 +1,10 @@
-Tutorial: Navigating the call graph
-===================================
+Navigating the call graph
+=========================
 
-Call graph API
---------------
+CodeQL has classes for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
+
+Call graph classes
+------------------
 
 The CodeQL library for Java provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
 
@@ -56,7 +58,7 @@ Class ``Call`` provides two call graph navigation predicates:
 
 For instance, in our example ``getCallee`` of the second call in ``Client.main`` would return ``Super.getX``. At runtime, though, this call would actually invoke ``Sub.getX``.
 
-Class ``Callable`` defines a large number of member predicates; for our purposes, the two most important ones are as follows:
+Class ``Callable`` defines a large number of member predicates; for our purposes, the two most important ones are:
 
 -  ``calls(Callable target)`` succeeds if this callable contains a call whose callee is ``target``.
 -  ``polyCalls(Callable target)`` succeeds if this callable may call ``target`` at runtime; this is the case if it contains a call whose callee is either ``target`` or a method that ``target`` overrides.
@@ -66,7 +68,7 @@ In our example, ``Client.main`` calls the constructor ``Sub(int)`` and the metho
 Example: Finding unused methods
 -------------------------------
 
-Given this API, we can easily write a query that finds methods that are not called by any other method:
+We can use the ``Callable`` class to write a query that finds methods that are not called by any other method:
 
 .. code-block:: ql
 
@@ -76,7 +78,7 @@ Given this API, we can easily write a query that finds methods that are not call
    where not exists(Callable caller | caller.polyCalls(callee))
    select callee
 
-➤ `See this in the query console <https://lgtm.com/query/665280012/>`__. This simple query typically returns a large number of results.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665280012/>`__. This simple query typically returns a large number of results.
 
 .. pull-quote::
 
@@ -84,7 +86,7 @@ Given this API, we can easily write a query that finds methods that are not call
 
    We have to use ``polyCalls`` instead of ``calls`` here: we want to be reasonably sure that ``callee`` is not called, either directly or via overriding.
 
-Running this query on a typical Java project results in lots of hits in the Java standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query as follows:
+Running this query on a typical Java project results in lots of hits in the Java standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate ``fromSource`` to check whether a compilation unit is a source file, and refine our query:
 
 .. code-block:: ql
 
@@ -95,7 +97,7 @@ Running this query on a typical Java project results in lots of hits in the Java
        callee.getCompilationUnit().fromSource()
    select callee, "Not called."
 
-➤ `See this in the query console <https://lgtm.com/query/668510015/>`__. This change reduces the number of results returned for most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668510015/>`__. This change reduces the number of results returned for most projects.
 
 We might also notice several unused methods with the somewhat strange name ``<clinit>``: these are class initializers; while they are not explicitly called anywhere in the code, they are called implicitly whenever the surrounding class is loaded. Hence it makes sense to exclude them from our query. While we are at it, we can also exclude finalizers, which are similarly invoked implicitly:
 
@@ -109,7 +111,7 @@ We might also notice several unused methods with the somewhat strange name ``<cl
        not callee.hasName("<clinit>") and not callee.hasName("finalize")
    select callee, "Not called."
 
-➤ `See this in the query console <https://lgtm.com/query/672230002/>`__. This also reduces the number of results returned by most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672230002/>`__. This also reduces the number of results returned by most projects.
 
 We may also want to exclude public methods from our query, since they may be external API entry points:
 
@@ -124,7 +126,7 @@ We may also want to exclude public methods from our query, since they may be ext
        not callee.isPublic()
    select callee, "Not called."
 
-➤ `See this in the query console <https://lgtm.com/query/667290016/>`__. This should have a more noticeable effect on the number of results returned.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/667290016/>`__. This should have a more noticeable effect on the number of results returned.
 
 A further special case is non-public default constructors: in the singleton pattern, for example, a class is provided with private empty default constructor to prevent it from being instantiated. Since the very purpose of such constructors is their not being called, they should not be flagged up:
 
@@ -140,9 +142,9 @@ A further special case is non-public default constructors: in the singleton patt
        not callee.(Constructor).getNumberOfParameters() = 0
    select callee, "Not called."
 
-➤ `See this in the query console <https://lgtm.com/query/673060008/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/673060008/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
 
-Finally, on many Java projects there are methods that are invoked indirectly by reflection. Thus, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
+Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
 
 .. code-block:: ql
 
@@ -157,11 +159,10 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
        not callee.getDeclaringType() instanceof TestClass
    select callee, "Not called."
 
-➤ `See this in the query console <https://lgtm.com/query/665760002/>`__. This should give a further reduction in the number of results returned.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665760002/>`__. This should give a further reduction in the number of results returned.
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out how to query metadata and white space: :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

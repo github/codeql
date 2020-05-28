@@ -1,4 +1,3 @@
-WARNING: Predicate points_to has been deprecated and may be removed in future (PointsToWithContext.ql:7,7-26)
 | a_simple.py:2 | ControlFlowNode for FloatLiteral | float 1.0 | builtin-class float | 2 | import |
 | a_simple.py:2 | ControlFlowNode for f1 | float 1.0 | builtin-class float | 2 | import |
 | a_simple.py:3 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 3 | import |

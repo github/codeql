@@ -3,6 +3,8 @@
 Name resolution
 ###############
 
+The QL compiler resolves names to program elements.
+
 As in other programming languages, there is a distinction between the names used in QL code, 
 and the underlying QL entities they refer to.
 
@@ -240,7 +242,7 @@ and the global namespaces. (You can think of global namespaces as the enclosing 
 Let's see what the module, type, and predicate namespaces look like in a concrete example:
 
 For example, you could define a library module ``Villagers`` containing some of the classes and predicates that 
-were defined in the `QL detective tutorials <https://help.semmle.com/QL/learn-ql/beginner/ql-tutorials.html>`_:
+were defined in the `QL tutorials <https://help.semmle.com/QL/learn-ql/beginner/ql-tutorials.html>`_:
     
 **Villagers.qll**
 

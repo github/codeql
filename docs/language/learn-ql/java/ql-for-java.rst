@@ -1,8 +1,9 @@
 CodeQL for Java
 ===============
 
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java codebases.
+
 .. toctree::
-   :glob:
    :hidden:
 
    introduce-libraries-java
@@ -15,31 +16,23 @@ CodeQL for Java
    source-locations
    ast-class-reference
 
-These topics provide an overview of the CodeQL libraries for Java and show examples of how to use them.
+-  `Basic Java query <https://lgtm.com/help/lgtm/console/ql-java-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
 
--  `Basic Java query <https://lgtm.com/help/lgtm/console/ql-java-basic-example>`__ describes how to write and run queries using LGTM.
+-  :doc:`CodeQL library for Java <introduce-libraries-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 
--  :doc:`Introducing the CodeQL libraries for Java <introduce-libraries-java>` introduces the standard libraries used to write queries for Java code.
+-  :doc:`Analyzing data flow in Java <dataflow>`: You can use CodeQL to track the flow of data through a Java program to its use. 
 
--  :doc:`Tutorial: Analyzing data flow in Java <dataflow>` demonstrates how to write queries using the standard data flow and taint tracking libraries for Java.
+-  :doc:`Java types <types-class-hierarchy>`: You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
 
--  :doc:`Tutorial: Types and the class hierarchy <types-class-hierarchy>` introduces the classes for representing a program's class hierarchy by means of examples.
+-  :doc:`Overflow-prone comparisons in Java <expressions-statements>`: You can use CodeQL to check for comparisons in Java code where one side of the comparison is prone to overflow.
 
--  :doc:`Tutorial: Expressions and statements <expressions-statements>` introduces the classes for representing a program's syntactic structure by means of examples.
+-  :doc:`Navigating the call graph <call-graph>`: CodeQL has classes for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
 
--  :doc:`Tutorial: Navigating the call graph <call-graph>` is a worked example of how to write a query that navigates a program's call graph to find unused methods.
+-  :doc:`Annotations in Java <annotations>`: CodeQL databases of Java projects contain information about all annotations attached to program elements.
 
--  :doc:`Tutorial: Annotations <annotations>` introduces the classes for representing annotations by means of examples.
+-  :doc:`Javadoc <javadoc>`: You can use CodeQL to find errors in Javadoc comments in Java code.
 
--  :doc:`Tutorial: Javadoc <javadoc>` introduces the classes for representing Javadoc comments by means of examples.
+-  :doc:`Working with source locations <source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
--  :doc:`Tutorial: Working with source locations <source-locations>` is a worked example of how to write a query that uses the location information provided in the database for finding likely bugs.
+-  :doc:`Classes for working with Java code <ast-class-reference>`: CodeQL has a large selection of classes for working with Java statements and expressions.
 
--  :doc:`AST class reference <ast-class-reference>` gives an overview of all AST classes in the standard CodeQL library for Java.
-
-Other resources
----------------
-
--  For examples of how to query common Java elements, see the `Java cookbook <https://help.semmle.com/wiki/display/CBJAVA>`__.
--  For the queries used in LGTM, display a `Java query <https://lgtm.com/search?q=language%3Ajava&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
--  For more information about the library for Java see the `CodeQL library for Java <https://help.semmle.com/qldoc/java>`__.

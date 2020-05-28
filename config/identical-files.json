@@ -111,12 +111,12 @@
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IR.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IR.qll"
   ],
-  "IR IRSanity": [
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRSanity.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRSanity.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRSanity.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRSanity.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRSanity.qll"
+  "IR IRConsistency": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRConsistency.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRConsistency.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRConsistency.qll"
   ],
   "IR PrintIR": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/PrintIR.qll",
@@ -157,10 +157,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/Opcode.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/Opcode.qll"
   ],
-  "IR SSASanity": [
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSASanity.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSASanity.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSASanity.qll"
+  "IR SSAConsistency": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConsistency.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll"
   ],
   "C++ IR InstructionImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",

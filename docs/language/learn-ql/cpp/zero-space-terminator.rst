@@ -1,10 +1,7 @@
-Example: Checking for allocations equal to ``strlen(string)`` without space for a null terminator
-=================================================================================================
+Detecting a potential buffer overflow
+=====================================
 
-Overview
---------
-
-This topic describes how a C/C++ query for detecting a potential buffer overflow was developed. For a full overview of the topics available for learning to write queries for C/C++ code, see :doc:`CodeQL for C/C++ <ql-for-cpp>`.
+You can use CodeQL to detect potential buffer overflows by checking for allocations equal to ``strlen`` in C and C++. This topic describes how a C/C++ query for detecting a potential buffer overflow was developed.
 
 Problem—detecting memory allocation that omits space for a null termination character
 -------------------------------------------------------------------------------------
@@ -98,7 +95,7 @@ When you have defined the basic query then you can refine the query to include f
 Improving the query using the 'SSA' library
 -------------------------------------------
 
-The ``SSA`` library represents variables in `static single assignment <http://en.wikipedia.org/wiki/Static_single_assignment_form>`__ (SSA) form. In this form, each variable is assigned exactly once and every variable is defined before it is used. The use of SSA variables simplifies queries considerably as much of the local data flow analysis has been done for us.
+The ``SSA`` library represents variables in static single assignment (SSA) form. In this form, each variable is assigned exactly once and every variable is defined before it is used. The use of SSA variables simplifies queries considerably as much of the local data flow analysis has been done for us. For more information, see `Static single assignment <http://en.wikipedia.org/wiki/Static_single_assignment_form>`__ on Wikipedia.
 
 Including examples where the string size is stored before use
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,8 +221,8 @@ The completed query will now identify cases where the result of ``strlen`` is st
    where malloc.getAllocatedSize() instanceof StrlenCall
    select malloc, "This allocation does not include space to null-terminate the string."
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -1,4 +1,3 @@
-WARNING: Predicate points_to has been deprecated and may be removed in future (Extend.ql:50,32-51)
 WARNING: Type CustomPointsToAttribute has been deprecated and may be removed in future (Extend.ql:22,34-57)
 WARNING: Type CustomPointsToObjectFact has been deprecated and may be removed in future (Extend.ql:38,32-56)
 WARNING: Type CustomPointsToOriginFact has been deprecated and may be removed in future (Extend.ql:5,28-52)

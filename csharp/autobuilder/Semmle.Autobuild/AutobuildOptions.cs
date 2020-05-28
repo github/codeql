@@ -10,40 +10,40 @@ namespace Semmle.Autobuild
     public class AutobuildOptions
     {
         public readonly int SearchDepth = 3;
-        public string RootDirectory = null;
-        static readonly string prefix = "LGTM_INDEX_";
+        public readonly string RootDirectory;
+        private const string prefix = "LGTM_INDEX_";
 
-        public string VsToolsVersion;
-        public string MsBuildArguments;
-        public string MsBuildPlatform;
-        public string MsBuildConfiguration;
-        public string MsBuildTarget;
-        public string DotNetArguments;
-        public string DotNetVersion;
-        public string BuildCommand;
-        public string[] Solution;
+        public readonly string? VsToolsVersion;
+        public readonly string? MsBuildArguments;
+        public readonly string? MsBuildPlatform;
+        public readonly string? MsBuildConfiguration;
+        public readonly string? MsBuildTarget;
+        public readonly string? DotNetArguments;
+        public readonly string? DotNetVersion;
+        public readonly string? BuildCommand;
+        public readonly string[] Solution;
 
-        public bool IgnoreErrors;
-        public bool Buildless;
-        public bool AllSolutions;
-        public bool NugetRestore;
+        public readonly bool IgnoreErrors;
+        public readonly bool Buildless;
+        public readonly bool AllSolutions;
+        public readonly bool NugetRestore;
 
-        public Language Language;
-        public bool Indexing;
+        public readonly Language Language;
+        public readonly bool Indexing;
 
         /// <summary>
         /// Reads options from environment variables.
         /// Throws ArgumentOutOfRangeException for invalid arguments.
         /// </summary>
-        public void ReadEnvironment(IBuildActions actions)
+        public AutobuildOptions(IBuildActions actions)
         {
             RootDirectory = actions.GetCurrentDirectory();
             VsToolsVersion = actions.GetEnvironmentVariable(prefix + "VSTOOLS_VERSION");
-            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS").AsStringWithExpandedEnvVars(actions);
+            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             MsBuildPlatform = actions.GetEnvironmentVariable(prefix + "MSBUILD_PLATFORM");
             MsBuildConfiguration = actions.GetEnvironmentVariable(prefix + "MSBUILD_CONFIGURATION");
             MsBuildTarget = actions.GetEnvironmentVariable(prefix + "MSBUILD_TARGET");
-            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS").AsStringWithExpandedEnvVars(actions);
+            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
             DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
             BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
             Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, new string[0]);
@@ -60,7 +60,7 @@ namespace Semmle.Autobuild
 
     public static class OptionsExtensions
     {
-        public static bool AsBool(this string value, string param, bool defaultValue)
+        public static bool AsBool(this string? value, string param, bool defaultValue)
         {
             if (value == null) return defaultValue;
             switch (value.ToLower())
@@ -80,7 +80,7 @@ namespace Semmle.Autobuild
             }
         }
 
-        public static Language AsLanguage(this string key)
+        public static Language AsLanguage(this string? key)
         {
             switch (key)
             {
@@ -95,7 +95,7 @@ namespace Semmle.Autobuild
             }
         }
 
-        public static string[] AsListWithExpandedEnvVars(this string value, IBuildActions actions, string[] defaultValue)
+        public static string[] AsListWithExpandedEnvVars(this string? value, IBuildActions actions, string[] defaultValue)
         {
             if (value == null)
                 return defaultValue;

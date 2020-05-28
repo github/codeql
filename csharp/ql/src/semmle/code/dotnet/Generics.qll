@@ -13,7 +13,7 @@ abstract class UnboundGeneric extends Generic {
   /** Gets the `i`th type parameter, if any. */
   abstract TypeParameter getTypeParameter(int i);
 
-  /** Gets a type parameter, if any. */
+  /** Gets a type parameter. */
   TypeParameter getATypeParameter() { result = getTypeParameter(_) }
 
   /**
@@ -42,10 +42,13 @@ abstract class ConstructedGeneric extends Generic {
   /** Gets the `i`th type argument, if any. */
   abstract Type getTypeArgument(int i);
 
-  /** Gets a type argument, if any. */
+  /** Gets a type argument. */
   Type getATypeArgument() { result = getTypeArgument(_) }
 
-  /** Gets the unbound generic declaration from which this declaration was constructed. */
+  /**
+   * Gets the unbound generic declaration from which this declaration was
+   * constructed.
+   */
   UnboundGeneric getUnboundGeneric() { none() }
 
   /** Gets the total number of type arguments. */

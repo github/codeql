@@ -25,6 +25,8 @@ namespace Semmle.Extraction
         bool InFileScope(string path);
 
         bool IsGlobalScope { get; }
+
+        bool FromSource { get; }
     }
 
     /// <summary>
@@ -49,6 +51,8 @@ namespace Semmle.Extraction
         public bool InScope(ISymbol symbol) =>
             SymbolEqualityComparer.Default.Equals(symbol.ContainingAssembly, assembly) ||
             SymbolEqualityComparer.Default.Equals(symbol, assembly);
+
+        public bool FromSource => false;
     }
 
     /// <summary>
@@ -68,5 +72,7 @@ namespace Semmle.Extraction
         public bool InFileScope(string path) => path == sourceTree.FilePath;
 
         public bool InScope(ISymbol symbol) => symbol.Locations.Any(loc => loc.SourceTree == sourceTree);
+
+        public bool FromSource => true;
     }
 }

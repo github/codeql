@@ -36,6 +36,47 @@ nodes
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message |
 | nodemailer.js:13:50:13:66 | req.query.message |
+| optionalSanitizer.js:2:7:2:39 | target |
+| optionalSanitizer.js:2:16:2:32 | document.location |
+| optionalSanitizer.js:2:16:2:32 | document.location |
+| optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:8:7:8:22 | tainted |
+| optionalSanitizer.js:8:17:8:22 | target |
+| optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:15:9:15:14 | target |
+| optionalSanitizer.js:16:18:16:18 | x |
+| optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:26:7:26:39 | target |
+| optionalSanitizer.js:26:16:26:32 | document.location |
+| optionalSanitizer.js:26:16:26:32 | document.location |
+| optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:31:7:31:23 | tainted2 |
+| optionalSanitizer.js:31:18:31:23 | target |
+| optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 |
+| optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) |
+| optionalSanitizer.js:34:28:34:35 | tainted2 |
+| optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 |
+| optionalSanitizer.js:38:18:38:23 | target |
+| optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 |
+| optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) |
+| optionalSanitizer.js:41:28:41:35 | tainted3 |
+| optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
+| optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:45:51:45:56 | target |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -53,6 +94,11 @@ nodes
 | stored-xss.js:5:20:5:52 | session ... ssion') |
 | stored-xss.js:8:20:8:48 | localSt ... local') |
 | stored-xss.js:8:20:8:48 | localSt ... local') |
+| stored-xss.js:10:9:10:44 | href |
+| stored-xss.js:10:16:10:44 | localSt ... local') |
+| stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:35:12:38 | href |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:3:16:3:32 | document.location |
@@ -341,6 +387,28 @@ nodes
 | tst.js:347:20:347:36 | document.location |
 | tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:354:7:354:39 | target |
+| tst.js:354:16:354:32 | document.location |
+| tst.js:354:16:354:32 | document.location |
+| tst.js:354:16:354:39 | documen ... .search |
+| tst.js:355:12:355:17 | target |
+| tst.js:355:12:355:17 | target |
+| tst.js:361:10:361:42 | target |
+| tst.js:361:19:361:35 | document.location |
+| tst.js:361:19:361:35 | document.location |
+| tst.js:361:19:361:42 | documen ... .search |
+| tst.js:362:16:362:21 | target |
+| tst.js:362:16:362:21 | target |
+| tst.js:366:21:366:26 | target |
+| tst.js:366:21:366:26 | target |
+| tst.js:369:18:369:23 | target |
+| tst.js:369:18:369:23 | target |
+| tst.js:377:7:377:39 | target |
+| tst.js:377:16:377:32 | document.location |
+| tst.js:377:16:377:32 | document.location |
+| tst.js:377:16:377:39 | documen ... .search |
+| tst.js:380:18:380:23 | target |
+| tst.js:380:18:380:23 | target |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:38 | document.location |
 | typeahead.js:20:22:20:38 | document.location |
@@ -395,6 +463,51 @@ edges
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:8:17:8:22 | target |
+| optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:15:9:15:14 | target |
+| optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:2:16:2:39 | documen ... .search |
+| optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:2:7:2:39 | target |
+| optionalSanitizer.js:8:7:8:22 | tainted | optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:8:7:8:22 | tainted | optionalSanitizer.js:9:18:9:24 | tainted |
+| optionalSanitizer.js:8:17:8:22 | target | optionalSanitizer.js:8:7:8:22 | tainted |
+| optionalSanitizer.js:15:9:15:14 | target | optionalSanitizer.js:16:18:16:18 | x |
+| optionalSanitizer.js:16:18:16:18 | x | optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:16:18:16:18 | x | optionalSanitizer.js:17:20:17:20 | x |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:31:18:31:23 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:38:18:38:23 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:41:45:46 | target |
+| optionalSanitizer.js:26:7:26:39 | target | optionalSanitizer.js:45:51:45:56 | target |
+| optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:26:16:26:39 | documen ... .search |
+| optionalSanitizer.js:26:16:26:39 | documen ... .search | optionalSanitizer.js:26:7:26:39 | target |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:32:18:32:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:34:28:34:35 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:31:7:31:23 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:31:18:31:23 | target | optionalSanitizer.js:31:7:31:23 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:34:5:34:36 | tainted2 | optionalSanitizer.js:36:18:36:25 | tainted2 |
+| optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) | optionalSanitizer.js:34:5:34:36 | tainted2 |
+| optionalSanitizer.js:34:28:34:35 | tainted2 | optionalSanitizer.js:34:16:34:36 | sanitiz ... inted2) |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:39:18:39:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:41:28:41:35 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:38:7:38:23 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:38:18:38:23 | target | optionalSanitizer.js:38:7:38:23 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:41:5:41:36 | tainted3 | optionalSanitizer.js:43:18:43:25 | tainted3 |
+| optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) | optionalSanitizer.js:41:5:41:36 | tainted3 |
+| optionalSanitizer.js:41:28:41:35 | tainted3 | optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
+| optionalSanitizer.js:45:51:45:56 | target | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
@@ -409,6 +522,11 @@ edges
 | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:3:35:3:58 | documen ... .search |
 | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
 | stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
+| stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:10:16:10:44 | localSt ... local') |
+| stored-xss.js:10:9:10:44 | href | stored-xss.js:12:35:12:38 | href |
+| stored-xss.js:10:16:10:44 | localSt ... local') | stored-xss.js:10:9:10:44 | href |
+| stored-xss.js:12:35:12:38 | href | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
+| stored-xss.js:12:35:12:38 | href | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" |
 | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
@@ -659,6 +777,25 @@ edges
 | tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
 | tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) |
+| tst.js:354:7:354:39 | target | tst.js:355:12:355:17 | target |
+| tst.js:354:7:354:39 | target | tst.js:355:12:355:17 | target |
+| tst.js:354:16:354:32 | document.location | tst.js:354:16:354:39 | documen ... .search |
+| tst.js:354:16:354:32 | document.location | tst.js:354:16:354:39 | documen ... .search |
+| tst.js:354:16:354:39 | documen ... .search | tst.js:354:7:354:39 | target |
+| tst.js:361:10:361:42 | target | tst.js:362:16:362:21 | target |
+| tst.js:361:10:361:42 | target | tst.js:362:16:362:21 | target |
+| tst.js:361:10:361:42 | target | tst.js:366:21:366:26 | target |
+| tst.js:361:10:361:42 | target | tst.js:366:21:366:26 | target |
+| tst.js:361:10:361:42 | target | tst.js:369:18:369:23 | target |
+| tst.js:361:10:361:42 | target | tst.js:369:18:369:23 | target |
+| tst.js:361:19:361:35 | document.location | tst.js:361:19:361:42 | documen ... .search |
+| tst.js:361:19:361:35 | document.location | tst.js:361:19:361:42 | documen ... .search |
+| tst.js:361:19:361:42 | documen ... .search | tst.js:361:10:361:42 | target |
+| tst.js:377:7:377:39 | target | tst.js:380:18:380:23 | target |
+| tst.js:377:7:377:39 | target | tst.js:380:18:380:23 | target |
+| tst.js:377:16:377:32 | document.location | tst.js:377:16:377:39 | documen ... .search |
+| tst.js:377:16:377:32 | document.location | tst.js:377:16:377:39 | documen ... .search |
+| tst.js:377:16:377:39 | documen ... .search | tst.js:377:7:377:39 | target |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:38 | document.location | typeahead.js:20:22:20:45 | documen ... .search |
@@ -687,10 +824,19 @@ edges
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:33 | document.location | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:33 | document.location | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
+| optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
+| optionalSanitizer.js:9:18:9:24 | tainted | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:9:18:9:24 | tainted | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
+| optionalSanitizer.js:17:20:17:20 | x | optionalSanitizer.js:2:16:2:32 | document.location | optionalSanitizer.js:17:20:17:20 | x | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:32 | document.location | user-provided value |
+| optionalSanitizer.js:32:18:32:25 | tainted2 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:32:18:32:25 | tainted2 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
+| optionalSanitizer.js:36:18:36:25 | tainted2 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:36:18:36:25 | tainted2 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
+| optionalSanitizer.js:39:18:39:25 | tainted3 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:39:18:39:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
+| optionalSanitizer.js:43:18:43:25 | tainted3 | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:43:18:43:25 | tainted3 | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
+| optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | stored-xss.js:5:20:5:52 | session ... ssion') | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:5:20:5:52 | session ... ssion') | Cross-site scripting vulnerability due to $@. | stored-xss.js:2:39:2:55 | document.location | user-provided value |
 | stored-xss.js:8:20:8:48 | localSt ... local') | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:8:20:8:48 | localSt ... local') | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:51 | document.location | user-provided value |
+| stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:51 | document.location | user-provided value |
 | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location | Cross-site scripting vulnerability due to $@. | string-manipulations.js:3:16:3:32 | document.location | user-provided value |
 | string-manipulations.js:4:16:4:37 | documen ... on.href | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href | Cross-site scripting vulnerability due to $@. | string-manipulations.js:4:16:4:32 | document.location | user-provided value |
 | string-manipulations.js:5:16:5:47 | documen ... lueOf() | string-manipulations.js:5:16:5:32 | document.location | string-manipulations.js:5:16:5:47 | documen ... lueOf() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:5:16:5:32 | document.location | user-provided value |
@@ -760,6 +906,11 @@ edges
 | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location | tst.js:319:35:319:42 | location | Cross-site scripting vulnerability due to $@. | tst.js:319:35:319:42 | location | user-provided value |
 | tst.js:336:18:336:35 | params.get('name') | tst.js:330:18:330:34 | document.location | tst.js:336:18:336:35 | params.get('name') | Cross-site scripting vulnerability due to $@. | tst.js:330:18:330:34 | document.location | user-provided value |
 | tst.js:349:5:349:30 | getUrl( ... ring(1) | tst.js:347:20:347:36 | document.location | tst.js:349:5:349:30 | getUrl( ... ring(1) | Cross-site scripting vulnerability due to $@. | tst.js:347:20:347:36 | document.location | user-provided value |
+| tst.js:355:12:355:17 | target | tst.js:354:16:354:32 | document.location | tst.js:355:12:355:17 | target | Cross-site scripting vulnerability due to $@. | tst.js:354:16:354:32 | document.location | user-provided value |
+| tst.js:362:16:362:21 | target | tst.js:361:19:361:35 | document.location | tst.js:362:16:362:21 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
+| tst.js:366:21:366:26 | target | tst.js:361:19:361:35 | document.location | tst.js:366:21:366:26 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
+| tst.js:369:18:369:23 | target | tst.js:361:19:361:35 | document.location | tst.js:369:18:369:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:361:19:361:35 | document.location | user-provided value |
+| tst.js:380:18:380:23 | target | tst.js:377:16:377:32 | document.location | tst.js:380:18:380:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:377:16:377:32 | document.location | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:38 | document.location | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:38 | document.location | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |

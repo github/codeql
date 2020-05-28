@@ -1,8 +1,10 @@
-Tutorial: Types and the class hierarchy
-=======================================
+Java types
+==========
 
-Overview
---------
+You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
+
+About working with Java types
+-----------------------------
 
 The standard CodeQL library represents Java types by means of the ``Type`` class and its various subclasses.
 
@@ -30,7 +32,7 @@ To determine ancestor types (including immediate super types, and also *their* s
    where B.hasName("B")
    select B.getASupertype+()
 
-➤ `See this in the query console <https://lgtm.com/query/674620010/>`__. If this query were run on the example snippet above, the query would return ``A``, ``I``, and ``java.lang.Object``.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/674620010/>`__. If this query were run on the example snippet above, the query would return ``A``, ``I``, and ``java.lang.Object``.
 
 .. pull-quote::
 
@@ -59,7 +61,7 @@ If the expression ``e`` happens to actually evaluate to a ``B[]`` array, on the 
    Object[] o = new String[] { "Hello", "world" };
    String[] s = (String[])o;
 
-In this tutorial, we do not try to distinguish these two cases. Our query should simply look for cast expressions ``ce`` that cast from some type ``source`` to another type ``target``, such that:
+In this tutorial, we don't try to distinguish these two cases. Our query should simply look for cast expressions ``ce`` that cast from some type ``source`` to another type ``target``, such that:
 
 -  Both ``source`` and ``target`` are array types.
 -  The element type of ``source`` is a transitive super type of the element type of ``target``.
@@ -76,7 +78,7 @@ This recipe is not too difficult to translate into a query:
        target.getElementType().(RefType).getASupertype+() = source.getElementType()
    select ce, "Potentially problematic array downcast."
 
-➤ `See this in the query console <https://lgtm.com/query/666680038/>`__. Many projects return results for this query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666680038/>`__. Many projects return results for this query.
 
 Note that by casting ``target.getElementType()`` to a ``RefType``, we eliminate all cases where the element type is a primitive type, that is, ``target`` is an array of primitive type: the problem we are looking for cannot arise in that case. Unlike in Java, a cast in QL never fails: if an expression cannot be cast to the desired type, it is simply excluded from the query results, which is exactly what we want.
 
@@ -139,12 +141,12 @@ Using these new classes we can extend our query to exclude calls to ``toArray`` 
        not ce.getExpr().(CollectionToArrayCall).getActualReturnType() = target
    select ce, "Potentially problematic array downcast."
 
-➤ `See this in the query console <https://lgtm.com/query/668700471/>`__. Notice that fewer results are found by this improved query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668700471/>`__. Notice that fewer results are found by this improved query.
 
 Example: Finding mismatched contains checks
 -------------------------------------------
 
-As another example, we develop a query that finds uses of ``Collection.contains`` where the type of the queried element is unrelated to the element type of the collection, thus guaranteeing that the test will always return ``false``.
+We'll now develop a query that finds uses of ``Collection.contains`` where the type of the queried element is unrelated to the element type of the collection, which guarantees that the test will always return ``false``.
 
 For example, `Apache Zookeeper <http://zookeeper.apache.org/>`__ used to have a snippet of code similar to the following in class ``QuorumPeerConfig``:
 
@@ -265,14 +267,14 @@ Now we are ready to write a first version of our query:
        not haveCommonDescendant(collEltType, argType)
    select juccc, "Element type " + collEltType + " is incompatible with argument type " + argType
 
-➤ `See this in the query console <https://lgtm.com/query/1505750556420/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505750556420/>`__.
 
 Improvements
 ~~~~~~~~~~~~
 
 For many programs, this query yields a large number of false positive results due to type variables and wild cards: if the collection element type is some type variable ``E`` and the argument type is ``String``, for example, CodeQL will consider that the two have no common subtype, and our query will flag the call. An easy way to exclude such false positive results is to simply require that neither ``collEltType`` nor ``argType`` are instances of ``TypeVariable``.
 
-Another source of false positives is autoboxing of primitive types: if, for example, the collection's element type is ``Integer`` and the argument is of type ``int``, predicate ``haveCommonDescendant`` will fail, since ``int`` is not a ``RefType``. Thus, our query should check that ``collEltType`` is not the boxed type of ``argType``.
+Another source of false positives is autoboxing of primitive types: if, for example, the collection's element type is ``Integer`` and the argument is of type ``int``, predicate ``haveCommonDescendant`` will fail, since ``int`` is not a ``RefType``. To account for this, our query should check that ``collEltType`` is not the boxed type of ``argType``.
 
 Finally, ``null`` is special because its type (known as ``<nulltype>`` in the CodeQL library) is compatible with every reference type, so we should exclude it from consideration.
 
@@ -292,11 +294,10 @@ Adding these three improvements, our final query becomes:
        not argType.hasName("<nulltype>")
    select juccc, "Element type " + collEltType + " is incompatible with argument type " + argType
 
-➤ `See the full query in the query console <https://lgtm.com/query/1505753056300/>`__.
+➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1505753056300/>`__.
 
-What next?
-----------
+Further reading
+---------------
 
--  Take a look at some of the other tutorials: :doc:`Tutorial: Expressions and statements <expressions-statements>`, :doc:`Tutorial: Navigating the call graph <call-graph>`, :doc:`Tutorial: Annotations <annotations>`, :doc:`Tutorial: Javadoc <javadoc>`, and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

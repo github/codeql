@@ -103,6 +103,9 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   /**
    * Holds if this function is declared to be `constexpr`.
+   *
+   * Note that this does not hold if the function has been declared
+   * `consteval`.
    */
   predicate isDeclaredConstexpr() { this.hasSpecifier("declared_constexpr") }
 
@@ -115,8 +118,15 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * template <typename T> constexpr int g(T x) { return f(x); }
    * ```
    * `g<int>` is declared constexpr, but is not constexpr.
+   *
+   * Will also hold if this function is `consteval`.
    */
   predicate isConstexpr() { this.hasSpecifier("is_constexpr") }
+
+  /**
+   * Holds if this function is declared to be `consteval`.
+   */
+  predicate isConsteval() { this.hasSpecifier("is_consteval") }
 
   /**
    * Holds if this function is declared with `__attribute__((naked))` or
@@ -174,17 +184,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * For example: for a function `int Foo(int p1, int p2)` this would
    * return `int p1, int p2`.
    */
-  string getParameterString() { result = getParameterStringFrom(0) }
-
-  private string getParameterStringFrom(int index) {
-    index = getNumberOfParameters() and
-    result = ""
-    or
-    index = getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName()
-    or
-    index < getNumberOfParameters() - 1 and
-    result = getParameter(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+  string getParameterString() {
+    result = concat(int i | | min(getParameter(i).getTypedName()), ", " order by i)
   }
 
   /** Gets a call to this function. */
@@ -606,18 +607,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * For example: for a function 'int Foo(int p1, int p2)' this would
    * return 'int p1, int p2'.
    */
-  string getParameterString() { result = getParameterStringFrom(0) }
-
-  private string getParameterStringFrom(int index) {
-    index = getNumberOfParameters() and
-    result = ""
-    or
-    index = getNumberOfParameters() - 1 and
-    result = getParameterDeclarationEntry(index).getTypedName()
-    or
-    index < getNumberOfParameters() - 1 and
-    result =
-      getParameterDeclarationEntry(index).getTypedName() + ", " + getParameterStringFrom(index + 1)
+  string getParameterString() {
+    result = concat(int i | | min(getParameterDeclarationEntry(i).getTypedName()), ", " order by i)
   }
 
   /**

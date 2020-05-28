@@ -1,18 +1,20 @@
-Introducing the CodeQL libraries for C#
-=======================================
+CodeQL library for C#
+=====================
 
-Overview
---------
+When you're analyzing a C# program, you can make use of the large collection of classes in the CodeQL library for C#.
 
-There is an extensive library for analyzing CodeQL databases extracted from C# projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``csharp.qll`` imports all the core C# library modules, so you can include the complete library by beginning your query with:
+About the CodeQL libraries for C#
+---------------------------------
+
+There is an extensive core library for analyzing CodeQL databases extracted from C# projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks. The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``csharp.qll`` imports all the core C# library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
    import csharp
 
-Since this is required for all C# queries, it is omitted from code snippets below.
+Since this is required for all C# queries, it's omitted from code snippets below.
 
-The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. See :doc:`CodeQL for C# <ql-for-csharp>` for information about these additional libraries.
+The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. For information about these additional libraries, see :doc:`CodeQL for C# <ql-for-csharp>`. 
 
 Class hierarchies
 ~~~~~~~~~~~~~~~~~
@@ -42,7 +44,7 @@ Each section contains a class hierarchy, showing the inheritance structure betwe
 
             -  ``AddExpr``, ``SubExpr``, ``MulExpr``, ``DivExpr``, ``RemExpr``
 
-This means that the class ``AddExpr`` extends class ``BinaryArithmeticOperation``, which in turn extends class ``ArithmeticOperation`` and so on. If you want to query any arithmetic operation, then use the class ``ArithmeticOperation``, but if you specifically want to limit the query to addition operations, then use the class ``AddExpr``.
+This means that the class ``AddExpr`` extends class ``BinaryArithmeticOperation``, which in turn extends class ``ArithmeticOperation`` and so on. If you want to query any arithmetic operation, use the class ``ArithmeticOperation``, but if you specifically want to limit the query to addition operations, use the class ``AddExpr``.
 
 Classes can also be considered to be *sets*, and the ``extends`` relation between classes defines a subset. Every member of class ``AddExpr`` is also in the class ``BinaryArithmeticOperation``. In general, classes overlap and an entity can be a member of several classes.
 
@@ -50,14 +52,14 @@ This overview omits some of the less important or intermediate classes from the 
 
 Each class has predicates, which are logical propositions about that class. They also define navigable relationships between classes. Predicates are inherited, so for example the ``AddExpr`` class inherits the predicates ``getLeftOperand()`` and ``getRightOperand()`` from ``BinaryArithmeticOperation``, and ``getType()`` from class ``Expr``. This is similar to how methods are inherited in object-oriented programming languages.
 
-In this overview, we present the most common and useful predicates. Consult the `reference <https://help.semmle.com/qldoc/csharp>`__, the CodeQL source code, and autocomplete in the editor for the complete list of predicates available on each class.
+In this overview, we present the most common and useful predicates. For the complete list of predicates available on each class, you can look in the CodeQL source code, use autocomplete in the editor, or see the `C# reference <https://help.semmle.com/qldoc/csharp>`__.
 
 Exercises
 ~~~~~~~~~
 
 Each section in this topic contains exercises to check your understanding.
 
-Exercise 1: Simplify the following query:
+Exercise 1: Simplify this query:
 
 .. code-block:: ql
 
@@ -84,11 +86,11 @@ Class hierarchy
 Predicates
 ~~~~~~~~~~
 
--  ``getName()`` - gets the full path of the file (for example, ``C:\Temp\test.cs``)
--  ``getNumberOfLines()`` - gets the number of lines (for source files only)
--  ``getShortName()`` - gets the name of the file without the extension (for example, ``test``)
--  ``getBaseName()`` - gets the name and extension of the file (for example, ``test.cs``)
--  ``getParent()`` - gets the parent directory
+-  ``getName()`` - gets the full path of the file (for example, ``C:\Temp\test.cs``).
+-  ``getNumberOfLines()`` - gets the number of lines (for source files only).
+-  ``getShortName()`` - gets the name of the file without the extension (for example, ``test``).
+-  ``getBaseName()`` - gets the name and extension of the file (for example, ``test.cs``).
+-  ``getParent()`` - gets the parent directory.
 
 Examples
 ~~~~~~~~
@@ -116,7 +118,7 @@ Exercise 2: Write a query to find the source file with the largest number of lin
 Elements
 --------
 
-The class `Element <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it is the root of the element class hierarchy. All program elements (such as types, methods, statements, and expressions) ultimately derive from this common base class.
+The class `Element <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it's the root of the element class hierarchy. All program elements (such as types, methods, statements, and expressions) ultimately derive from this common base class.
 
 ``Element`` forms a hierarchical structure of the program, which can be navigated using the ``getParent()`` and ``getChild()`` predicates. This is much like an abstract syntax tree, and also applies to elements in assemblies.
 
@@ -125,10 +127,10 @@ Predicates
 
 The ``Element`` class provides common functionality for all program elements, including:
 
--  ``getLocation()`` - gets the text span in the source code
--  ``getFile()`` - gets the ``File`` containing the ``Element``
--  ``getParent()`` - gets the parent ``Element``, if any
--  ``getAChild()`` - gets a child ``Element`` of this element, if any
+-  ``getLocation()`` - gets the text span in the source code.
+-  ``getFile()`` - gets the ``File`` containing the ``Element``.
+-  ``getParent()`` - gets the parent ``Element``, if any.
+-  ``getAChild()`` - gets a child ``Element`` of this element, if any.
 
 Examples
 ~~~~~~~~
@@ -163,11 +165,11 @@ Predicates
 
 Some predicates of ``Location`` include:
 
--  ``getFile()`` - gets the ``File``
--  ``getStartLine()`` - gets the first line of the text
--  ``getEndLine()`` - gets the last line of the text
--  ``getStartColumn()`` - gets the column of the start of the text
--  ``getEndColumn()`` - gets the column of the end of the text
+-  ``getFile()`` - gets the ``File``.
+-  ``getStartLine()`` - gets the first line of the text.
+-  ``getEndLine()`` - gets the last line of the text.
+-  ``getStartColumn()`` - gets the column of the start of the text.
+-  ``getEndColumn()`` - gets the column of the end of the text.
 
 Examples
 ~~~~~~~~
@@ -213,10 +215,10 @@ Predicates
 
 Useful member predicates on ``Declaration`` include:
 
--  ``getDeclaringType()`` - gets the type containing the declaration, if any
--  ``getName()``/``hasName(string)`` - gets the name of the declared entity
--  ``isSourceDeclaration()`` - whether the declaration is source code and is not a constructed type/method
--  ``getSourceDeclaration()`` - gets the original (unconstructed) declaration
+-  ``getDeclaringType()`` - gets the type containing the declaration, if any.
+-  ``getName()``/``hasName(string)`` - gets the name of the declared entity.
+-  ``isSourceDeclaration()`` - whether the declaration is source code and is not a constructed type/method.
+-  ``getSourceDeclaration()`` - gets the original (unconstructed) declaration.
 
 Examples
 ~~~~~~~~
@@ -262,10 +264,10 @@ Predicates
 
 Some common predicates on ``Variable`` are:
 
--  ``getType()`` - gets the ``Type`` of this variable
--  ``getAnAccess()`` - gets an expression that accesses (reads or writes) this variable, if any
--  ``getAnAssignedValue()`` - gets an expression that is assigned to this variable, if any
--  ``getInitializer()`` - gets the expression used to initialize the variable, if any
+-  ``getType()`` - gets the ``Type`` of this variable.
+-  ``getAnAccess()`` - gets an expression that accesses (reads or writes) this variable, if any.
+-  ``getAnAssignedValue()`` - gets an expression that is assigned to this variable, if any.
+-  ``getInitializer()`` - gets the expression used to initialize the variable, if any.
 
 Examples
 ~~~~~~~~
@@ -309,7 +311,7 @@ Class hierarchy
                -  ``VoidType`` - ``void``
                -  ``PointerType`` - a pointer type
 
-The ``ValueType`` class extends further as follows:
+The ``ValueType`` class extends further:
 
 -  ``ValueType`` - a value type
 
@@ -345,7 +347,7 @@ The ``ValueType`` class extends further as follows:
       -  ``NullableType``
       -  ``ArrayType``
 
-The ``RefType`` class extends further as follows:
+The ``RefType`` class extends further:
 
 -  ``RefType``
 
@@ -369,19 +371,19 @@ Predicates
 
 Useful members of ``ValueOrRefType`` include:
 
--  ``getQualifiedName()/hasQualifiedName(string)`` - gets the qualified name of the type (for example, ``"System.String"``)
--  ``getABaseInterface()`` - gets an immediate interface of this type, if any
--  ``getABaseType()`` - gets an immediate base class or interface of this type, if any
--  ``getBaseClass()`` - gets the immediate base class of this type, if any
--  ``getASubType()`` - gets an immediate subtype, a type which directly inherits from this type, if any
--  ``getAMember()`` - gets any member (field/method/property etc), if any
--  ``getAMethod()`` - gets a method, if any
--  ``getAProperty()`` - gets a property, if any
--  ``getAnIndexer()`` - gets an indexer, if any
--  ``getAnEvent()`` - gets an event, if any
--  ``getAnOperator()`` - gets an operator, if any
--  ``getANestedType()`` - gets a nested type
--  ``getNamespace()`` - gets the enclosing namespace
+-  ``getQualifiedName()/hasQualifiedName(string)`` - gets the qualified name of the type (for example, ``"System.String"``).
+-  ``getABaseInterface()`` - gets an immediate interface of this type, if any.
+-  ``getABaseType()`` - gets an immediate base class or interface of this type, if any.
+-  ``getBaseClass()`` - gets the immediate base class of this type, if any.
+-  ``getASubType()`` - gets an immediate subtype, a type which directly inherits from this type, if any.
+-  ``getAMember()`` - gets any member (field/method/property etc), if any.
+-  ``getAMethod()`` - gets a method, if any.
+-  ``getAProperty()`` - gets a property, if any.
+-  ``getAnIndexer()`` - gets an indexer, if any.
+-  ``getAnEvent()`` - gets an event, if any.
+-  ``getAnOperator()`` - gets an operator, if any.
+-  ``getANestedType()`` - gets a nested type.
+-  ``getNamespace()`` - gets the enclosing namespace.
 
 Examples
 ~~~~~~~~
@@ -492,12 +494,12 @@ Predicates
 
 Here are a few useful predicates on the ``Callable`` class:
 
--  ``getParameter(int)``/``getAParameter()`` - gets a parameter
--  ``calls(Callable)`` - whether there's a direct call from one callable to another
--  ``getReturnType()`` - gets the return type
--  ``getBody()``/``getExpressionBody()`` - gets the body of the callable
+-  ``getParameter(int)``/``getAParameter()`` - gets a parameter.
+-  ``calls(Callable)`` - whether there's a direct call from one callable to another.
+-  ``getReturnType()`` - gets the return type.
+-  ``getBody()``/``getExpressionBody()`` - gets the body of the callable.
 
-Since ``Callable`` extends ``Declaration``, it also has predicates from ``Declaration``, such as
+Since ``Callable`` extends ``Declaration``, it also has predicates from ``Declaration``, such as:
 
 -  ``getName()``/``hasName(string)``
 -  ``getSourceDeclaration()``
@@ -506,10 +508,10 @@ Since ``Callable`` extends ``Declaration``, it also has predicates from ``Declar
 
 Methods have additional predicates, including:
 
--  ``getAnOverridee()`` - gets a method that is immediately overridden by this method
--  ``getAnOverrider()`` - gets a method that immediately overrides this method
--  ``getAnImplementee()`` - gets an interface method that is immediately implemented by this method
--  ``getAnImplementor()`` - gets a method that immediately implements this interface method
+-  ``getAnOverridee()`` - gets a method that is immediately overridden by this method.
+-  ``getAnOverrider()`` - gets a method that immediately overrides this method.
+-  ``getAnImplementee()`` - gets an interface method that is immediately implemented by this method.
+-  ``getAnImplementor()`` - gets a method that immediately implements this interface method.
 
 Examples
 ~~~~~~~~
@@ -665,7 +667,7 @@ Find an ``if`` statement with a constant condition:
    where ifStmt.getCondition().hasValue()
    select ifStmt, "This 'if' statement is constant."
 
-Find an ``if`` statement with an empty "then" clause:
+Find an ``if`` statement with an empty "then" block:
 
 .. code-block:: ql
 
@@ -680,7 +682,7 @@ Exercises
 
 Exercise 6: Write a query to list all empty methods. (`Answer <#exercise-6>`__)
 
-Exercise 7: Modify the last example to also detect empty statements (``;``) in the then block. (`Answer <#exercise-7>`__)
+Exercise 7: Modify the last example to also detect empty statements (``;``) in the "then" block. (`Answer <#exercise-7>`__)
 
 Exercise 8: Modify the last example to exclude chains of ``if`` statements, where the ``else`` part is another ``if`` statement. (`Answer <#exercise-8>`__)
 
@@ -874,13 +876,13 @@ Predicates
 
 Useful predicates on ``Expr`` include:
 
--  ``getType()`` - gets the ``Type`` of the expression
--  ``getValue()`` - gets the compile-time constant, if any
--  ``hasValue()`` - whether the expression has a compile-time constant
--  ``getEnclosingStmt()`` - gets the statement containing the expression, if any
--  ``getEnclosingCallable()`` - gets the callable containing the expression, if any
--  ``stripCasts()`` - remove all explicit or implicit casts
--  ``isImplicit()`` - whether the expression was implicit, such as an implicit ``this`` qualifier (``ThisAccess``)
+-  ``getType()`` - gets the ``Type`` of the expression.
+-  ``getValue()`` - gets the compile-time constant, if any.
+-  ``hasValue()`` - whether the expression has a compile-time constant.
+-  ``getEnclosingStmt()`` - gets the statement containing the expression, if any.
+-  ``getEnclosingCallable()`` - gets the callable containing the expression, if any.
+-  ``stripCasts()`` - remove all explicit or implicit casts.
+-  ``isImplicit()`` - whether the expression was implicit, such as an implicit ``this`` qualifier (``ThisAccess``).
 
 Examples
 ~~~~~~~~
@@ -922,7 +924,7 @@ Attributes
 
 C# attributes are represented by the class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
 
-The attribute of any ``Element`` can be obtained via ``getAnAttribute()``, whereas if you have an attribute, you can find its element via ``getTarget()``. The following two query fragments are identical:
+The attribute of any ``Element`` can be obtained via ``getAnAttribute()``, whereas if you have an attribute, you can find its element via ``getTarget()``. These two query fragments are identical:
 
 .. code-block:: ql
 
@@ -939,8 +941,8 @@ Class hierarchy
 Predicates
 ~~~~~~~~~~
 
--  ``getTarget()`` - gets the ``Element`` to which this attribute applies
--  ``getArgument(int)`` - gets the given argument of the attribute
+-  ``getTarget()`` - gets the ``Element`` to which this attribute applies.
+-  ``getArgument(int)`` - gets the given argument of the attribute.
 -  ``getType()`` - gets the type of this attribute. Note that the class name must end in ``"Attribute"``.
 
 Examples
@@ -1117,9 +1119,8 @@ Here is the fixed version:
        else reason = "(not given)"
    select e, "This is obsolete because " + reason
 
-What next?
-----------
+Further reading
+---------------
 
--  Visit :doc:`Tutorial: Analyzing data flow in C# <dataflow>` to learn more about writing queries using the standard data flow and taint tracking libraries.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+.. include:: ../../reusables/csharp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

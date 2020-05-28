@@ -53,7 +53,7 @@ class ES2015Module extends Module {
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
-  override PathExprInModule getImportedPath() { result = getChildExpr(-1) }
+  override PathExpr getImportedPath() { result = getChildExpr(-1) }
 
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
@@ -79,15 +79,10 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { hasTypeKeyword(this) }
-
-  override predicate isAmbient() {
-    Stmt.super.isAmbient() or
-    isTypeOnly()
-  }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
-private class LiteralImportPath extends PathExprInModule, ConstantString {
+private class LiteralImportPath extends PathExpr, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
   override string getValue() { result = getStringValue() }
@@ -267,11 +262,6 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
   predicate isTypeOnly() { hasTypeKeyword(this) }
-
-  override predicate isAmbient() {
-    Stmt.super.isAmbient() or
-    isTypeOnly()
-  }
 }
 
 /**
@@ -422,11 +412,6 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
 
   /** Gets an export specifier of this declaration. */
   ExportSpecifier getASpecifier() { result = getSpecifier(_) }
-
-  override predicate isAmbient() {
-    // An export such as `export declare function f()` should be seen as ambient.
-    hasDeclareKeyword(getOperand()) or getParent().isAmbient()
-  }
 }
 
 /**
@@ -637,7 +622,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
 }
 
 /** A literal path expression appearing in a re-export declaration. */
-private class LiteralReExportPath extends PathExprInModule, ConstantString {
+private class LiteralReExportPath extends PathExpr, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
   override string getValue() { result = getStringValue() }

@@ -67,8 +67,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
@@ -127,39 +125,12 @@ private module Cached {
       oldInstruction = getOldInstruction(instruction) and
       oldOperand = oldInstruction.getAnOperand() and
       tag = oldOperand.getOperandTag() and
-      (
-        (
-          if exists(Alias::getOperandMemoryLocation(oldOperand))
-          then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
-          else (
-            result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
-            overlap instanceof MustTotallyOverlap
-          )
-        )
-        or
-        // Connect any definitions that are not being modeled in SSA to the
-        // `UnmodeledUse` instruction.
-        exists(OldInstruction oldDefinition |
-          instruction instanceof UnmodeledUseInstruction and
-          tag instanceof UnmodeledUseOperandTag and
-          oldDefinition = oldOperand.getAnyDef() and
-          not exists(Alias::getResultMemoryLocation(oldDefinition)) and
-          result = getNewInstruction(oldDefinition) and
-          overlap instanceof MustTotallyOverlap
-        )
-      )
+      hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
     )
     or
     instruction = Chi(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag and
     overlap instanceof MustExactlyOverlap
-    or
-    exists(IRFunction f |
-      tag instanceof UnmodeledUseOperandTag and
-      result = f.getUnmodeledDefinitionInstruction() and
-      instruction = f.getUnmodeledUseInstruction() and
-      overlap instanceof MustTotallyOverlap
-    )
     or
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction) and
@@ -941,7 +912,7 @@ private module CachedForDebugging {
   }
 }
 
-module SSASanity {
+module SSAConsistency {
   query predicate multipleOperandMemoryLocations(
     OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
   ) {

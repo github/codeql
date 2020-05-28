@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 /* Standard library sink */
 import semmle.python.security.injection.Command
 

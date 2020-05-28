@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with Java Server Faces. */
+
 import default
 import semmle.code.java.frameworks.javaee.jsf.JSFAnnotations
 import semmle.code.java.frameworks.javaee.jsf.JSFFacesContextXML
@@ -42,6 +44,7 @@ class FacesAccessibleType extends RefType {
     )
   }
 
+  /** Gets a method declared on this type that is visible to JSF. */
   FacesVisibleMethod getAnAccessibleMethod() { result = getAMethod() }
 }
 

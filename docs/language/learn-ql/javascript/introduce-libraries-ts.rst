@@ -1,5 +1,7 @@
-Introducing the CodeQL libraries for TypeScript
-===============================================
+CodeQL library for TypeScript
+=============================
+
+When you're analyzing a TypeScript program, you can make use of the large collection of classes in the CodeQL library for TypeScript.
 
 Overview
 --------
@@ -10,7 +12,7 @@ Support for analyzing TypeScript code is bundled with the CodeQL libraries for J
 
    import javascript
 
-The :doc:`CodeQL library introduction for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript documentation with the TypeScript-specific classes and predicates.
+:doc:`CodeQL libraries for JavaScript <introduce-libraries-js>` covers most of this library, and is also relevant for TypeScript analysis. This document supplements the JavaScript documentation with the TypeScript-specific classes and predicates.
 
 Syntax
 ------
@@ -119,7 +121,7 @@ Select expressions that cast a value to a type parameter:
    where assertion.getTypeAnnotation() = param.getLocalTypeName().getAnAccess()
    select assertion, "Cast to type parameter."
 
-➤ `See this in the query console <https://lgtm.com/query/1505979606441/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505979606441/>`__.
 
 Classes and interfaces
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -134,7 +136,7 @@ The CodeQL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/sem
 
 Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
 
-Also see the documentation for classes in the `Introduction to the CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__.
+Also see the documentation for classes in the `CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__.
 
 To select the type references to a class or an interface, use ``getTypeName()``.
 
@@ -405,7 +407,7 @@ It is best to use `TypeName <https://help.semmle.com/qldoc/javascript/semmle/jav
      and not access.hasTypeArguments()
    select access, "Type arguments are omitted"
 
-➤ `See this in the query console <https://lgtm.com/query/1505985316500/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505985316500/>`__.
 
 Find imported names that are used as both a type and a value:
 
@@ -418,7 +420,7 @@ Find imported names that are used as both a type and a value:
      and exists (VarAccess access | access.getVariable().getADeclaration() = spec.getLocal())
    select spec, "Used as both variable and type"
 
-➤ `See this in the query console <https://lgtm.com/query/1505975787348/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505975787348/>`__.
 
 Namespace names
 ~~~~~~~~~~~~~~~
@@ -444,9 +446,8 @@ A `LocalNamespaceName <https://help.semmle.com/qldoc/javascript/semmle/javascrip
 -  ``LocalNamespaceName.getADeclaration()`` gets an identifier that declares this local name.
 -  ``LocalNamespaceName.getNamespace()`` gets the namespace to which this name refers.
 
-What next?
-----------
+Further reading
+---------------
 
--  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

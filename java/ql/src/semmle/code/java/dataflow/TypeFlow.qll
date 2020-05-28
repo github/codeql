@@ -72,9 +72,7 @@ private predicate privateParamArg(Parameter p, Argument arg) {
  * necessarily functionally determined by `n2`.
  */
 private predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   exists(Field f, Expr e |
     f = n2.asField() and
@@ -226,9 +224,8 @@ private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) 
     or
     exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
     or
-    exists(ConditionalExpr cond |
-      cond.getTrueExpr() = n.asExpr() or cond.getFalseExpr() = n.asExpr()
-    |
+    exists(ChooseExpr cond |
+      cond.getAResultExpr() = n.asExpr() and
       t2 = cond.getType().getErasure()
     )
   )
@@ -365,12 +362,12 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
 }
 
 pragma[nomagic]
-predicate erasedTypeBound(RefType t) {
+private predicate erasedTypeBound(RefType t) {
   exists(RefType t0 | typeFlow(_, t0) and t = t0.getErasure())
 }
 
 pragma[nomagic]
-predicate typeBound(RefType t) { typeFlow(_, t) }
+private predicate typeBound(RefType t) { typeFlow(_, t) }
 
 /**
  * Holds if we have a bound for `n` that is better than `t`, taking only erased

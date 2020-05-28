@@ -14,7 +14,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.security.dataflow.XSS
+import semmle.code.csharp.security.dataflow.flowsinks.Remote
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
@@ -46,7 +46,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XSS::Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     // Do not flow through Message

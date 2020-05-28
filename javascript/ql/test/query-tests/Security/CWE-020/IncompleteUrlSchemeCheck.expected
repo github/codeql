@@ -1,1 +1,6 @@
-| IncompleteUrlSchemeCheck.js:3:9:3:35 | u.start ... ript:") | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:5:9:5:35 | u.start ... ript:") | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:16:9:16:39 | badProt ... otocol) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:23:9:23:43 | badProt ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:30:9:30:43 | badProt ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:37:9:37:31 | scheme  ... script" | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:51:9:51:31 | scheme  ... script" | This check does not consider data: and vbscript:. |

@@ -66,11 +66,8 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       tag = EnterFunctionTag() and
       result = this.getInstruction(AliasedDefinitionTag())
       or
-      tag = AliasedDefinitionTag() and
-      result = this.getInstruction(UnmodeledDefinitionTag())
-      or
       (
-        tag = UnmodeledDefinitionTag() and
+        tag = AliasedDefinitionTag() and
         if exists(getThisType())
         then result = this.getInstruction(InitializeThisTag())
         else
@@ -93,13 +90,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       result = this.getInstruction(ReturnTag())
       or
       tag = ReturnTag() and
-      result = this.getInstruction(UnmodeledUseTag())
+      result = this.getInstruction(AliasedUseTag())
       or
       tag = UnwindTag() and
-      result = this.getInstruction(UnmodeledUseTag())
-      or
-      tag = UnmodeledUseTag() and
-      result = getInstruction(AliasedUseTag())
+      result = this.getInstruction(AliasedUseTag())
       or
       tag = AliasedUseTag() and
       result = this.getInstruction(ExitFunctionTag())
@@ -136,10 +130,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       opcode instanceof Opcode::EnterFunction and
       resultType = getVoidType()
       or
-      tag = UnmodeledDefinitionTag() and
-      opcode instanceof Opcode::UnmodeledDefinition and
-      resultType = getUnknownType()
-      or
       tag = AliasedDefinitionTag() and
       opcode instanceof Opcode::AliasedDefinition and
       resultType = getUnknownType()
@@ -171,10 +161,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
         exists(ThrowStmt throw | throw.getEnclosingCallable() = callable)
       )
       or
-      tag = UnmodeledUseTag() and
-      opcode instanceof Opcode::UnmodeledUse and
-      resultType = getVoidType()
-      or
       tag = AliasedUseTag() and
       opcode instanceof Opcode::AliasedUse and
       resultType = getVoidType()
@@ -190,28 +176,10 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
   }
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result.getEnclosingFunction() = callable and
-    result.hasMemoryResult()
-    or
-    tag = UnmodeledUseTag() and
-    operandTag instanceof UnmodeledUseOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
-    tag = AliasedUseTag() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getUnmodeledDefinitionInstruction()
-    or
     tag = ReturnTag() and
     not this.getReturnType() instanceof VoidType and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(ReturnValueAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(ReturnValueAddressTag())
   }
 
   final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
@@ -251,13 +219,6 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
    */
   final IRReturnVariable getReturnVariable() {
     result = getIRTempVariable(callable, ReturnValueTempVar())
-  }
-
-  /**
-   * Gets the single `UnmodeledDefinition` instruction for this function.
-   */
-  final Instruction getUnmodeledDefinitionInstruction() {
-    result = this.getInstruction(UnmodeledDefinitionTag())
   }
 
   /**

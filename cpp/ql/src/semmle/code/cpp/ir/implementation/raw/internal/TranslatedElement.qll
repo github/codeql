@@ -200,7 +200,11 @@ private predicate usedAsCondition(Expr expr) {
   or
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
-  exists(ConditionalExpr condExpr | condExpr.getCondition().getFullyConverted() = expr)
+  exists(ConditionalExpr condExpr |
+    // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
+    // be reused as a value if the condition is true.
+    condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
+  )
   or
   exists(NotExpr notExpr |
     notExpr.getOperand().getFullyConverted() = expr and
@@ -463,7 +467,9 @@ newtype TTranslatedElement =
       expr = call.getArgument(n).getFullyConverted()
       or
       expr = call.getQualifier().getFullyConverted() and
-      n = -1
+      n = -1 and
+      // Exclude calls to static member functions. They don't modify the qualifier
+      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
     ) and
     (
       call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
@@ -730,12 +736,12 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the instruction whose result is consumed as an operand of the
    * instruction specified by `tag`, with the operand specified by `operandTag`.
    */
-  Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+  Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
+  CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.

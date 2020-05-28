@@ -7,14 +7,8 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
-
-private FunctionObject exec_or_eval() {
-    result = Object::builtin("exec")
-    or
-    result = Object::builtin("eval")
-}
 
 /**
  * A taint sink that represents an argument to exec or eval that is vulnerable to malicious input.
@@ -26,10 +20,9 @@ class StringEvaluationNode extends TaintSink {
     StringEvaluationNode() {
         exists(Exec exec | exec.getASubExpression().getAFlowNode() = this)
         or
-        exists(CallNode call |
-            exec_or_eval().getACall() = call and
-            call.getAnArg() = this
-        )
+        Value::named("exec").getACall().getAnArg() = this
+        or
+        Value::named("eval").getACall().getAnArg() = this
     }
 
     override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }

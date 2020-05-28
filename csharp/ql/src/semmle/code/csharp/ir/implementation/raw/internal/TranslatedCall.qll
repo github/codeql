@@ -17,10 +17,6 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  */
 abstract class TranslatedCall extends TranslatedExpr, TranslatedCallBase {
   final override Instruction getResult() { result = TranslatedCallBase.super.getResult() }
-
-  override Instruction getUnmodeledDefinitionInstruction() {
-    result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-  }
 }
 
 /**

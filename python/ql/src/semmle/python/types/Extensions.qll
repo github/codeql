@@ -37,8 +37,8 @@ abstract deprecated class CustomPointsToFact extends @py_flow_node {
     abstract predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin);
 }
 
-/* For backwards compatibility */
-class FinalCustomPointsToFact = CustomPointsToFact;
+/** DEPRECATED -- Use PointsToExtension instead */
+deprecated class FinalCustomPointsToFact = CustomPointsToFact;
 
 abstract deprecated class CustomPointsToOriginFact extends CustomPointsToFact {
     abstract predicate pointsTo(Object value, ClassObject cls);
@@ -151,7 +151,7 @@ class ReModulePointToExtension extends PointsToExtension {
     private predicate pointsTo_helper(Context context) { context.appliesTo(this) }
 }
 
-private class BackwardCompatiblePointToExtension extends PointsToExtension {
+deprecated private class BackwardCompatiblePointToExtension extends PointsToExtension {
     BackwardCompatiblePointToExtension() { this instanceof CustomPointsToFact }
 
     override predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin) {
@@ -174,7 +174,7 @@ private class BackwardCompatiblePointToExtension extends PointsToExtension {
     }
 }
 
-private predicate additionalAttribute(
+deprecated private predicate additionalAttribute(
     ObjectInternal owner, string name, ObjectInternal value, ControlFlowNode origin
 ) {
     exists(Object obj, ClassObject cls |

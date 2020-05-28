@@ -346,11 +346,14 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
   /** Gets the number of parameters of the supplied delegate. */
   int getNumberOfDelegateParameters() { result = arg.getDelegateType().getNumberOfParameters() }
 
+  /** Gets the type of the `i`th parameter of the supplied delegate. */
+  Type getDelegateParameterType(int i) { result = arg.getDelegateType().getParameter(i).getType() }
+
   /** Gets the return type of the supplied delegate. */
   Type getDelegateReturnType() { result = arg.getDelegateType().getReturnType() }
 
   override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
-    result = cfn.getElement().(DelegateArgumentToLibraryCallable).getARuntimeTarget(cc)
+    result = arg.getARuntimeTarget(cc)
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

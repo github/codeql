@@ -460,3 +460,13 @@ void throughStmtExpr(int source1, int clean1) {
   });
   sink(local); // tainted
 }
+
+void intOutparamSource(int *p) {
+  *p = source();
+}
+
+void viaOutparam() {
+  int x = 0;
+  intOutparamSource(&x);
+  sink(x); // tainted [FALSE NEGATIVE]
+}

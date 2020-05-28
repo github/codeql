@@ -3,8 +3,8 @@
  * @description Each SSA definition should have at least one use.
  * @kind problem
  * @problem.severity error
- * @id js/sanity/dead-ssa-definition
- * @tags sanity
+ * @id js/consistency/dead-ssa-definition
+ * @tags consistency
  */
 
 import javascript

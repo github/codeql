@@ -113,6 +113,7 @@ class ControlFlowNode extends Top, @exprparent {
     result = succ(this, NormalCompletion())
   }
 
+  /** Gets the basic block that contains this node. */
   BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
@@ -578,6 +579,8 @@ private module ControlFlowGraphImpl {
     n instanceof Stmt and
     not n instanceof PostOrderNode and
     not n instanceof SynchronizedStmt
+    or
+    result = n and n instanceof SwitchExpr
   }
 
   /**

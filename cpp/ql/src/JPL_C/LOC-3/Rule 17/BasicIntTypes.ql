@@ -30,7 +30,7 @@ predicate allowedTypedefs(TypedefType t) {
  * Gets a type which appears literally in the declaration of `d`.
  */
 Type getAnImmediateUsedType(Declaration d) {
-  d.isDefined() and
+  d.hasDefinition() and
   (
     result = d.(Function).getType() or
     result = d.(Variable).getType()

@@ -3,7 +3,7 @@
  * @description Including user-supplied data in a SQL query without
  *              neutralizing special elements can make code vulnerable
  *              to SQL Injection.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cpp/sql-injection
@@ -15,6 +15,7 @@ import cpp
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.TaintTracking
+import TaintedWithPath
 
 class SQLLikeFunction extends FunctionWithWrappers {
   SQLLikeFunction() { sqlArgument(this.getName(), _) }
@@ -22,11 +23,19 @@ class SQLLikeFunction extends FunctionWithWrappers {
   override predicate interestingArg(int arg) { sqlArgument(this.getName(), arg) }
 }
 
-from SQLLikeFunction runSql, Expr taintedArg, Expr taintSource, string taintCause, string callChain
+class Configuration extends TaintTrackingConfiguration {
+  override predicate isSink(Element tainted) {
+    exists(SQLLikeFunction runSql | runSql.outermostWrapperFunctionCall(tainted, _))
+  }
+}
+
+from
+  SQLLikeFunction runSql, Expr taintedArg, Expr taintSource, PathNode sourceNode, PathNode sinkNode,
+  string taintCause, string callChain
 where
   runSql.outermostWrapperFunctionCall(taintedArg, callChain) and
-  tainted(taintSource, taintedArg) and
+  taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
   isUserInput(taintSource, taintCause)
-select taintedArg,
+select taintedArg, sourceNode, sinkNode,
   "This argument to a SQL query function is derived from $@ and then passed to " + callChain,
   taintSource, "user input (" + taintCause + ")"

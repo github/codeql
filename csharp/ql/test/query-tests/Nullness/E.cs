@@ -376,6 +376,15 @@ public class E
         }
         return -1;
     }
+
+    static bool Ex37(E e1, E e2)
+    {
+        if ((e1 == null && e2 != null) || (e1 != null && e2 == null))
+            return false;
+        if (e1 == null && e2 == null)
+            return true;
+        return e1.Long == e2.Long; // GOOD (false positive)
+    }
 }
 
 public static class Extensions

@@ -6,7 +6,7 @@
  * @problem.severity recommendation
  * @id js/single-run-loop
  * @tags readability
- * @precision high
+ * @precision low
  */
 
 import javascript

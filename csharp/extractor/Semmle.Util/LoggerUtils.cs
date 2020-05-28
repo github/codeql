@@ -21,7 +21,7 @@ namespace Semmle.Util
 
         private readonly string prefix = "[" + Process.GetCurrentProcess().Id + "] ";
 
-        public override void WriteLine(string value)
+        public override void WriteLine(string? value)
         {
             lock (mutex)
             {
@@ -29,9 +29,9 @@ namespace Semmle.Util
             }
         }
 
-        public override void WriteLine(string value, object[] args)
+        public override void WriteLine(string? value, object?[] args)
         {
-            WriteLine(String.Format(value, args));
+            WriteLine(value is null ? value : String.Format(value, args));
         }
 
         readonly object mutex = new object();

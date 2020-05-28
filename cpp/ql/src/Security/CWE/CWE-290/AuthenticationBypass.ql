@@ -3,7 +3,7 @@
  * @description Authentication by checking that the peer's address
  *              matches a known IP or web address is unsafe as it is
  *              vulnerable to spoofing attacks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id cpp/user-controlled-bypass
@@ -12,6 +12,7 @@
  */
 
 import semmle.code.cpp.security.TaintTracking
+import TaintedWithPath
 
 predicate hardCodedAddressOrIP(StringLiteral txt) {
   exists(string s | s = txt.getValueText() |
@@ -102,16 +103,21 @@ predicate useOfHardCodedAddressOrIP(Expr use) {
  * untrusted input then it might be vulnerable to a spoofing
  * attack.
  */
-predicate hardCodedAddressInCondition(Expr source, Expr condition) {
-  // One of the sub-expressions of the condition is tainted.
-  exists(Expr taintedExpr | taintedExpr.getParent+() = condition | tainted(source, taintedExpr)) and
+predicate hardCodedAddressInCondition(Expr subexpression, Expr condition) {
+  subexpression = condition.getAChild+() and
   // One of the sub-expressions of the condition is a hard-coded
   // IP or web-address.
-  exists(Expr use | use.getParent+() = condition | useOfHardCodedAddressOrIP(use)) and
+  exists(Expr use | use = condition.getAChild+() | useOfHardCodedAddressOrIP(use)) and
   condition = any(IfStmt ifStmt).getCondition()
 }
 
-from Expr source, Expr condition
-where hardCodedAddressInCondition(source, condition)
-select condition, "Untrusted input $@ might be vulnerable to a spoofing attack.", source,
-  source.toString()
+class Configuration extends TaintTrackingConfiguration {
+  override predicate isSink(Element sink) { hardCodedAddressInCondition(sink, _) }
+}
+
+from Expr subexpression, Expr source, Expr condition, PathNode sourceNode, PathNode sinkNode
+where
+  hardCodedAddressInCondition(subexpression, condition) and
+  taintedWithPath(source, subexpression, sourceNode, sinkNode)
+select condition, sourceNode, sinkNode,
+  "Untrusted input $@ might be vulnerable to a spoofing attack.", source, source.toString()

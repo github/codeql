@@ -6,17 +6,14 @@
 import csharp
 
 module XSS {
-  import semmle.code.csharp.dataflow.flowsources.Remote
-  import semmle.code.csharp.frameworks.microsoft.AspNetCore
+  import semmle.code.asp.AspNet
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.frameworks.system.Web
-  import semmle.code.csharp.frameworks.system.web.Mvc
-  import semmle.code.csharp.frameworks.system.web.WebPages
   import semmle.code.csharp.frameworks.system.web.UI
-  import semmle.code.csharp.frameworks.system.web.ui.WebControls
-  import semmle.code.csharp.frameworks.system.windows.Forms
   import semmle.code.csharp.security.Sanitizers
-  import semmle.code.asp.AspNet
+  import semmle.code.csharp.security.dataflow.flowsinks.Html
+  import semmle.code.csharp.security.dataflow.flowsinks.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
 
   /**
    * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -112,8 +109,11 @@ module XSS {
 
   /**
    * A data flow sink for cross-site scripting (XSS) vulnerabilities.
+   *
+   * Any XSS sink is also a remote flow sink, so this class contributes
+   * to the abstract class `RemoteFlowSink`.
    */
-  abstract class Sink extends DataFlow::ExprNode {
+  abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
     string explanation() { none() }
   }
 
@@ -166,78 +166,21 @@ module XSS {
     UrlEncodeSanitizer() { this.getExpr() instanceof UrlSanitizedExpr }
   }
 
-  /** A sink where the value of the expression may be rendered as HTML. */
-  abstract class HtmlSink extends DataFlow::Node { }
+  private class HtmlSinkSink extends Sink {
+    HtmlSinkSink() { this instanceof HtmlSink }
 
-  /**
-   * An expression that is used as an argument to an XSS sink method on
-   * `HttpResponse`.
-   */
-  private class HttpResponseSink extends Sink, HtmlSink {
-    HttpResponseSink() {
-      exists(Method m, SystemWebHttpResponseClass responseClass |
-        m = responseClass.getAWriteMethod() or
-        m = responseClass.getAWriteFileMethod() or
-        m = responseClass.getATransmitFileMethod() or
-        m = responseClass.getABinaryWriteMethod()
-      |
-        // Calls to these methods, or overrides of them
-        this.getExpr() = m.getAnOverrider*().getParameter(0).getAnAssignedArgument()
-      )
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to an XSS sink method on
-   * `HtmlTextWriter`.
-   */
-  private class HtmlTextWriterSink extends Sink, HtmlSink {
-    HtmlTextWriterSink() {
-      exists(SystemWebUIHtmlTextWriterClass writeClass, Method m, Call c, int paramPos |
-        paramPos = 0 and
-        (
-          m = writeClass.getAWriteMethod() or
-          m = writeClass.getAWriteLineMethod() or
-          m = writeClass.getAWriteLineNoTabsMethod() or
-          m = writeClass.getAWriteBeginTagMethod() or
-          m = writeClass.getAWriteAttributeMethod()
-        )
-        or
-        // The second parameter to the `WriteAttribute` method is the attribute value, which we
-        // should only consider as tainted if the call does not ask for the attribute value to be
-        // encoded using the final parameter.
-        m = writeClass.getAWriteAttributeMethod() and
-        paramPos = 1 and
-        not c.getArgumentForParameter(m.getParameter(2)).(BoolLiteral).getBoolValue() = true
-      |
-        c = m.getACall() and
-        this.getExpr() = c.getArgumentForParameter(m.getParameter(paramPos))
-      )
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to an XSS sink method on
-   * `AttributeCollection`.
-   */
-  private class AttributeCollectionSink extends Sink, HtmlSink {
-    AttributeCollectionSink() {
-      exists(SystemWebUIAttributeCollectionClass ac, Parameter p |
-        p = ac.getAddMethod().getParameter(1) or
-        p = ac.getItemProperty().getSetter().getParameter(0)
-      |
-        this.getExpr() = p.getAnAssignedArgument()
-      )
-    }
-  }
-
-  /**
-   * An expression that is used as the second argument `HtmlElement.SetAttribute`.
-   */
-  private class SetAttributeSink extends Sink, HtmlSink {
-    SetAttributeSink() {
-      this.getExpr() =
-        any(SystemWindowsFormsHtmlElement c).getSetAttributeMethod().getACall().getArgument(1)
+    override string explanation() {
+      this instanceof WebPageWriteLiteralSink and
+      result = "System.Web.WebPages.WebPage.WriteLiteral() method"
+      or
+      this instanceof WebPageWriteLiteralToSink and
+      result = "System.Web.WebPages.WebPage.WriteLiteralTo() method"
+      or
+      this instanceof MicrosoftAspNetCoreMvcHtmlHelperRawSink and
+      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method"
+      or
+      this instanceof MicrosoftAspNetRazorPageWriteLiteralSink and
+      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method"
     }
   }
 
@@ -289,31 +232,6 @@ module XSS {
    * An expression that is used as an argument to an XSS sink setter, on
    * a class within the `System.Web.UI` namespace.
    */
-  private class SystemWebSetterHtmlSink extends Sink, HtmlSink {
-    SystemWebSetterHtmlSink() {
-      exists(Property p, string name, ValueOrRefType declaringType |
-        declaringType = p.getDeclaringType() and
-        any(SystemWebUINamespace n).getAChildNamespace*() = declaringType.getNamespace() and
-        this.getExpr() = p.getSetter().getParameter(0).getAnAssignedArgument() and
-        p.hasName(name)
-      |
-        name = "Caption" and
-        (declaringType.hasName("Calendar") or declaringType.hasName("Table"))
-        or
-        name = "InnerHtml"
-      )
-      or
-      exists(SystemWebUIWebControlsLabelClass c |
-        // Unlike `Text` properties of other web controls, `Label.Text` is not automatically HTML encoded
-        this.getExpr() = c.getTextProperty().getSetter().getParameter(0).getAnAssignedArgument()
-      )
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to an XSS sink setter, on
-   * a class within the `System.Web.UI` namespace.
-   */
   private class SystemWebSetterNonHtmlSink extends Sink {
     SystemWebSetterNonHtmlSink() {
       exists(Property p, string name |
@@ -342,16 +260,6 @@ module XSS {
         m.hasName("Parse") and
         this.getExpr().(Call).getTarget() = m
       )
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to `HtmlHelper.Raw`, typically in
-   * a `.cshtml` file.
-   */
-  private class SystemWebMvcHtmlHelperRawSink extends Sink, HtmlSink {
-    SystemWebMvcHtmlHelperRawSink() {
-      this.getExpr() = any(SystemWebMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
     }
   }
 
@@ -493,31 +401,6 @@ module XSS {
     }
   }
 
-  /** An expression that is returned from a `ToHtmlString` method. */
-  private class ToHtmlString extends Sink, HtmlSink {
-    ToHtmlString() {
-      exists(Method toHtmlString |
-        toHtmlString =
-          any(SystemWebIHtmlString i).getToHtmlStringMethod().getAnUltimateImplementor() and
-        toHtmlString.canReturn(this.getExpr())
-      )
-    }
-  }
-
-  /**
-   * An expression passed to the constructor of an `HtmlString` or a `MvcHtmlString`.
-   */
-  private class HtmlString extends Sink, HtmlSink {
-    HtmlString() {
-      exists(Class c |
-        c = any(SystemWebMvcMvcHtmlString m) or
-        c = any(SystemWebHtmlString m)
-      |
-        this.getExpr() = c.getAConstructor().getACall().getAnArgument()
-      )
-    }
-  }
-
   /**
    * An expression passed as the `content` argument to the constructor of `StringContent`.
    */
@@ -527,75 +410,6 @@ module XSS {
         any(ObjectCreation oc |
           oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")
         ).getArgumentForName("content")
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to `Page.WriteLiteral`, typically in
-   * a `.cshtml` file.
-   */
-  class WebPageWriteLiteralSink extends Sink, HtmlSink {
-    WebPageWriteLiteralSink() {
-      this.getExpr() = any(WebPageClass h).getWriteLiteralMethod().getACall().getAnArgument()
-    }
-
-    override string explanation() { result = "System.Web.WebPages.WebPage.WriteLiteral() method" }
-  }
-
-  /**
-   * An expression that is used as an argument to `Page.WriteLiteralTo`, typically in
-   * a `.cshtml` file.
-   */
-  class WebPageWriteLiteralToSink extends Sink, HtmlSink {
-    WebPageWriteLiteralToSink() {
-      this.getExpr() = any(WebPageClass h).getWriteLiteralToMethod().getACall().getAnArgument()
-    }
-
-    override string explanation() { result = "System.Web.WebPages.WebPage.WriteLiteralTo() method" }
-  }
-
-  abstract class AspNetCoreSink extends Sink, HtmlSink { }
-
-  /**
-   * An expression that is used as an argument to `HtmlHelper.Raw`, typically in
-   * a `.cshtml` file.
-   */
-  class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreSink {
-    MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
-      this.getExpr() =
-        any(MicrosoftAspNetCoreMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
-    }
-
-    override string explanation() {
-      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method"
-    }
-  }
-
-  /**
-   * An expression that is used as an argument to `Page.WriteLiteral` in ASP.NET 6.0 razor page, typically in
-   * a `.cshtml` file.
-   */
-  class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreSink {
-    MicrosoftAspNetRazorPageWriteLiteralSink() {
-      this.getExpr() =
-        any(MicrosoftAspNetCoreMvcRazorPageBase h)
-            .getWriteLiteralMethod()
-            .getACall()
-            .getAnArgument()
-    }
-
-    override string explanation() {
-      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method"
-    }
-  }
-
-  /** `HtmlString` that may be rendered as is need to have sanitized value. */
-  class MicrosoftAspNetHtmlStringSink extends AspNetCoreSink {
-    MicrosoftAspNetHtmlStringSink() {
-      exists(ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s |
-        c.getTarget() = s.getAConstructor() and
-        this.asExpr() = c.getAnArgument()
-      )
     }
   }
 }

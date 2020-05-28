@@ -3,6 +3,10 @@
 | arrays.js:2:16:2:23 | "source" | arrays.js:15:27:15:27 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:16:23:16:23 | e |
 | arrays.js:2:16:2:23 | "source" | arrays.js:20:8:20:16 | arr.pop() |
+| arrays.js:2:16:2:23 | "source" | arrays.js:52:10:52:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:56:10:56:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:60:10:60:10 | x |
+| arrays.js:2:16:2:23 | "source" | arrays.js:66:10:66:10 | x |
 | arrays.js:18:22:18:29 | "source" | arrays.js:18:50:18:50 | e |
 | arrays.js:22:15:22:22 | "source" | arrays.js:23:8:23:17 | arr2.pop() |
 | arrays.js:25:15:25:22 | "source" | arrays.js:26:8:26:17 | arr3.pop() |

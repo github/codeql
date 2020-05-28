@@ -56,8 +56,14 @@ class AmdModuleDefinition extends CallExpr {
    */
   pragma[nomagic]
   DataFlow::SourceNode getFactoryNode() {
-    result.flowsToExpr(getLastArgument()) and
+    result = getFactoryNodeInternal() and
     result instanceof DataFlow::ValueNode
+  }
+
+  private DataFlow::Node getFactoryNodeInternal() {
+    // To avoid recursion, this should not depend on `SourceNode`.
+    result = DataFlow::valueNode(getLastArgument()) or
+    result = getFactoryNodeInternal().getAPredecessor()
   }
 
   /** Gets the expression defining this module. */
@@ -108,7 +114,7 @@ class AmdModuleDefinition extends CallExpr {
    * Gets the `i`th parameter of the factory function of this module.
    */
   private SimpleParameter getFactoryParameter(int i) {
-    getFactoryNode().(DataFlow::FunctionNode).getParameter(i) = DataFlow::parameterNode(result)
+    getFactoryNodeInternal().asExpr().(Function).getParameter(i) = result
   }
 
   /**
@@ -186,7 +192,7 @@ private class AmdDependencyPath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in an AMD dependency expression. */
-private class ConstantAmdDependencyPathElement extends PathExprInModule, ConstantString {
+private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString {
   ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
 
   override string getValue() { result = getStringValue() }
@@ -253,8 +259,7 @@ private class AmdDependencyImport extends Import {
    * Gets the module whose absolute path matches this import, if there is only a single such module.
    */
   private Module resolveByAbsolutePath() {
-    count(guessTarget()) = 1 and
-    result.getFile() = guessTarget()
+    result.getFile() = unique(File file | file = guessTarget())
   }
 
   override Module getImportedModule() {
@@ -284,7 +289,8 @@ private class AmdDependencyImport extends Import {
  * ```
  */
 class AmdModule extends Module {
-  AmdModule() { strictcount(AmdModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }
+  cached
+  AmdModule() { exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this))) }
 
   /** Gets the definition of this module. */
   AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }

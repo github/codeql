@@ -39,6 +39,10 @@
 | globals.cpp:12:10:12:24 | flowTestGlobal1 | globals.cpp:13:23:13:28 | call to source |
 | globals.cpp:19:10:19:24 | flowTestGlobal2 | globals.cpp:23:23:23:28 | call to source |
 | lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
+| ref.cpp:123:13:123:15 | val | ref.cpp:122:23:122:28 | call to source |
+| ref.cpp:126:13:126:15 | val | ref.cpp:125:19:125:24 | call to source |
+| ref.cpp:129:13:129:15 | val | ref.cpp:94:15:94:20 | call to source |
+| ref.cpp:132:13:132:15 | val | ref.cpp:109:15:109:20 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:10:8:10:9 | t2 | test.cpp:6:12:6:17 | call to source |
@@ -61,6 +65,9 @@
 | test.cpp:266:12:266:12 | x | test.cpp:265:22:265:27 | call to source |
 | test.cpp:289:14:289:14 | x | test.cpp:305:17:305:22 | call to source |
 | test.cpp:318:7:318:7 | x | test.cpp:314:4:314:9 | call to source |
+| test.cpp:385:8:385:10 | tmp | test.cpp:382:48:382:54 | source1 |
+| test.cpp:392:8:392:10 | tmp | test.cpp:388:53:388:59 | source1 |
+| test.cpp:394:10:394:12 | tmp | test.cpp:388:53:388:59 | source1 |
 | test.cpp:450:9:450:22 | (statement expression) | test.cpp:449:26:449:32 | source1 |
 | test.cpp:461:8:461:12 | local | test.cpp:449:26:449:32 | source1 |
 | true_upon_entry.cpp:13:8:13:8 | x | true_upon_entry.cpp:9:11:9:16 | call to source |

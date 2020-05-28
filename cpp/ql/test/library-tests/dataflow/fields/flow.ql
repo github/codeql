@@ -1,9 +1,9 @@
 /**
- * @kind path-problem
+ * @kind problem
  */
 
+import TestUtilities.InlineExpectationsTest
 import semmle.code.cpp.dataflow.DataFlow
-import DataFlow::PathGraph
 import DataFlow
 import cpp
 
@@ -37,6 +37,28 @@ class Conf extends Configuration {
   }
 }
 
-from DataFlow::PathNode src, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(src, sink)
-select sink, src, sink, sink + " flows from $@", src, src.toString()
+class ASTFieldFlowTest extends InlineExpectationsTest {
+  ASTFieldFlowTest() { this = "ASTFieldFlowTest" }
+
+  override string getARelevantTag() { result = "ast" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(Node source, Node sink, Conf conf, int n |
+      tag = "ast" and
+      conf.hasFlow(source, sink) and
+      n = strictcount(Node otherSource | conf.hasFlow(otherSource, sink)) and
+      (
+        n = 1 and value = ""
+        or
+        // If there is more than one source for this sink
+        // we specify the source location explicitly.
+        n > 1 and
+        value =
+          source.getLocation().getStartLine().toString() + ":" +
+            source.getLocation().getStartColumn()
+      ) and
+      location = sink.getLocation() and
+      element = sink.toString()
+    )
+  }
+}

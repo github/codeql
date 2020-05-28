@@ -212,4 +212,21 @@ public class Finally
         }
         this.Field = "1";
     }
+
+    void M11()
+    {
+        try
+        {
+            Console.WriteLine("Try");
+        }
+        catch
+        {
+            Console.WriteLine("Catch");
+        }
+        finally
+        {
+            Console.WriteLine("Finally");
+        }
+        Console.WriteLine("Done");
+    }
 }

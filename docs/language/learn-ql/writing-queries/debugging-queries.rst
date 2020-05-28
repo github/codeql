@@ -1,12 +1,17 @@
-Query writing: common performance issues
-========================================
+Troubleshooting query performance
+=================================
+
+Improve the performance of your CodeQL queries by following a few simple guidelines.
+
+About query performance
+-----------------------
 
 This topic offers some simple tips on how to avoid common problems that can affect the performance of your queries.
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
-- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For further information about query languages and databases, see :doc:`About QL <../about-ql>`.
-- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__ in the QL handbook. 
+- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For further information about query languages and databases, see `About the QL language <https://help.semmle.com/QL/learn-ql/about-ql.html>`__.
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__. 
 
 Performance tips
 ----------------
@@ -19,9 +24,7 @@ Eliminate cartesian products
 The performance of a predicate can often be judged by considering roughly how many results it has. 
 One way of creating badly performing predicates is by using two variables without relating them in any way, or only relating them using a negation.
 This leads to computing the `Cartesian product <https://en.wikipedia.org/wiki/Cartesian_product>`__ between the sets of possible values for each variable, potentially generating a huge table of results.
-
 This can occur if you don't specify restrictions on your variables. 
-
 For instance, consider the following predicate that checks whether a Java method ``m`` may access a field ``f``::
 
    predicate mayAccess(Method m, Field f) {
@@ -145,7 +148,7 @@ However, as written it is difficult for the optimizer to pick out the best order
 
 Now the structure we want is clearer. We've separated out the easy part into its own predicate ``locInfo``, and the main predicate ``sameLoc`` is just a larger join.
 
-Further information
--------------------
+Further reading
+---------------
 
-- Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

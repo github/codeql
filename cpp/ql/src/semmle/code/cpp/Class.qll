@@ -458,6 +458,15 @@ class Class extends UserType {
     exists(ClassDerivation d | d.getDerivedClass() = this and d = result)
   }
 
+  /**
+   * Gets class derivation number `index` of this class/struct, for example the
+   * `public B` is derivation 1 in the following code:
+   * ```
+   * class D : public A, public B, public C {
+   *   ...
+   * };
+   * ```
+   */
   ClassDerivation getDerivation(int index) {
     exists(ClassDerivation d | d.getDerivedClass() = this and d.getIndex() = index and d = result)
   }
@@ -900,6 +909,22 @@ class AbstractClass extends Class {
 class TemplateClass extends Class {
   TemplateClass() { usertypes(underlyingElement(this), _, 6) }
 
+  /**
+   * Gets a class instantiated from this template.
+   *
+   * For example for `MyTemplateClass<T>` in the following code, the results are
+   * `MyTemplateClass<int>` and `MyTemplateClass<long>`:
+   * ```
+   * template<class T>
+   * class MyTemplateClass {
+   *   ...
+   * };
+   *
+   * MyTemplateClass<int> instance;
+   *
+   * MyTemplateClass<long> instance;
+   * ```
+   */
   Class getAnInstantiation() {
     result.isConstructedFrom(this) and
     exists(result.getATemplateArgument())

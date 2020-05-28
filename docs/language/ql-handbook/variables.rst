@@ -5,11 +5,11 @@ Variables
 #########
 
 Variables in QL are used in a similar way to variables in algebra or logic. They represent sets
-of values, and those values are usually restricted by a :ref:`formula <formulas>`.
+of values, and those values are usually restricted by a formula.
 
 This is different from variables in some other programming languages, where variables represent
 memory locations that may contain data. That data can also change over time. For example, in
-QL, ``n = n + 1`` is an equality formula that holds only
+QL, ``n = n + 1`` is an equality :ref:`formula <formulas>` that holds only
 if ``n`` is equal to ``n + 1`` (so in fact it does not hold for any numeric value).
 In Java, ``n = n + 1`` is not an equality, but an assignment that changes the value of ``n`` by
 adding ``1`` to the current value.

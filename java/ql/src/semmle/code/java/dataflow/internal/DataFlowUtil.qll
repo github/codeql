@@ -397,9 +397,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
   or
-  node2.asExpr().(ConditionalExpr).getTrueExpr() = node1.asExpr()
-  or
-  node2.asExpr().(ConditionalExpr).getFalseExpr() = node1.asExpr()
+  node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
 }

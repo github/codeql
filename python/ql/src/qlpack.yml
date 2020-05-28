@@ -2,3 +2,4 @@ name: codeql-python
 version: 0.0.0
 dbscheme: semmlecode.python.dbscheme
 suites: codeql-suites
+extractor: python

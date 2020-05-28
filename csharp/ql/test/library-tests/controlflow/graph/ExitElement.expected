@@ -1652,6 +1652,31 @@
 | Finally.cs:213:9:213:24 | ... = ... | Finally.cs:213:9:213:24 | ... = ... | normal |
 | Finally.cs:213:9:213:25 | ...; | Finally.cs:213:9:213:24 | ... = ... | normal |
 | Finally.cs:213:22:213:24 | "1" | Finally.cs:213:22:213:24 | "1" | normal |
+| Finally.cs:217:5:231:5 | {...} | Finally.cs:230:9:230:33 | call to method WriteLine | normal |
+| Finally.cs:218:9:229:9 | try {...} ... | Finally.cs:228:13:228:40 | call to method WriteLine | normal |
+| Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
+| Finally.cs:219:9:221:9 | {...} | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
+| Finally.cs:219:9:221:9 | {...} | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
+| Finally.cs:220:13:220:37 | ...; | Finally.cs:220:13:220:36 | call to method WriteLine | normal |
+| Finally.cs:220:13:220:37 | ...; | Finally.cs:220:13:220:36 | call to method WriteLine | throw(Exception) |
+| Finally.cs:220:13:220:37 | ...; | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
+| Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:31:220:35 | "Try" | normal |
+| Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:31:220:35 | "Try" | throw(OutOfMemoryException) |
+| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
+| Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
+| Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
+| Finally.cs:224:13:224:39 | ...; | Finally.cs:224:13:224:38 | call to method WriteLine | normal |
+| Finally.cs:224:31:224:37 | "Catch" | Finally.cs:224:31:224:37 | "Catch" | normal |
+| Finally.cs:227:9:229:9 | {...} | Finally.cs:228:13:228:40 | call to method WriteLine | normal |
+| Finally.cs:228:13:228:40 | call to method WriteLine | Finally.cs:228:13:228:40 | call to method WriteLine | normal |
+| Finally.cs:228:13:228:41 | ...; | Finally.cs:228:13:228:40 | call to method WriteLine | normal |
+| Finally.cs:228:31:228:39 | "Finally" | Finally.cs:228:31:228:39 | "Finally" | normal |
+| Finally.cs:230:9:230:33 | call to method WriteLine | Finally.cs:230:9:230:33 | call to method WriteLine | normal |
+| Finally.cs:230:9:230:34 | ...; | Finally.cs:230:9:230:33 | call to method WriteLine | normal |
+| Finally.cs:230:27:230:32 | "Done" | Finally.cs:230:27:230:32 | "Done" | normal |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:22:8:24 | String arg | Foreach.cs:8:22:8:24 | String arg | normal |

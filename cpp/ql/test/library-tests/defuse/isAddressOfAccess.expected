@@ -11,9 +11,9 @@
 | addressOf.cpp:38:20:38:20 | i | non-const address |
 | addressOf.cpp:40:15:40:15 | i | non-const address |
 | addressOf.cpp:42:19:42:22 | iref | non-const address |
-| addressOf.cpp:48:3:48:4 | f1 |  |
+| addressOf.cpp:48:3:48:4 | f1 | const address |
 | addressOf.cpp:49:15:49:22 | captured | non-const address |
-| addressOf.cpp:50:3:50:4 | f2 |  |
+| addressOf.cpp:50:3:50:4 | f2 | const address |
 | addressOf.cpp:51:10:51:17 | captured |  |
 | addressOf.cpp:56:16:56:16 | i |  |
 | addressOf.cpp:56:19:56:19 | i |  |
@@ -25,6 +25,10 @@
 | addressOf.cpp:62:11:62:13 | ptr |  |
 | addressOf.cpp:63:19:63:21 | ptr |  |
 | addressOf.cpp:63:24:63:26 | ref | non-const address |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:77:27:77:27 | x | non-const address |
+| addressOf.cpp:77:48:77:48 | x |  |
 | file://:0:0:0:0 | captured |  |
 | file://:0:0:0:0 | captured |  |
 | file://:0:0:0:0 | captured | non-const address |

@@ -19,5 +19,5 @@
 
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
-.vscode/settings.json
+
 csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json

@@ -6,6 +6,8 @@
 | addressOf.cpp:61:23:61:25 | ptr | addressOf.cpp:62:11:62:13 | ptr |
 | addressOf.cpp:61:23:61:25 | ptr | addressOf.cpp:63:19:63:21 | ptr |
 | addressOf.cpp:61:33:61:35 | ref | addressOf.cpp:63:24:63:26 | ref |
+| addressOf.cpp:70:29:70:31 | obj | addressOf.cpp:71:32:71:34 | obj |
+| addressOf.cpp:70:29:70:31 | obj | addressOf.cpp:71:32:71:34 | obj |
 | indirect_use.cpp:19:31:19:32 | ip | indirect_use.cpp:20:14:20:15 | ip |
 | indirect_use.cpp:24:31:24:32 | ip | indirect_use.cpp:25:14:25:15 | ip |
 | indirect_use.cpp:30:28:30:30 | ppp | indirect_use.cpp:31:19:31:21 | ppp |

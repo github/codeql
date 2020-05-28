@@ -710,6 +710,7 @@ entryPoint
 | Finally.cs:147:10:147:11 | M8 | Finally.cs:148:5:170:5 | {...} |
 | Finally.cs:176:10:176:11 | M9 | Finally.cs:177:5:193:5 | {...} |
 | Finally.cs:195:10:195:12 | M10 | Finally.cs:196:5:214:5 | {...} |
+| Finally.cs:216:10:216:12 | M11 | Finally.cs:217:5:231:5 | {...} |
 | Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |

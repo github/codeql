@@ -155,8 +155,6 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @externalmoduledecl
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
-
-  override predicate isAmbient() { any() }
 }
 
 /**
@@ -176,8 +174,6 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmenta
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
-
-  override predicate isAmbient() { any() }
 }
 
 /** A TypeScript "import-equals" declaration. */
@@ -217,7 +213,7 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
 }
 
 /** A literal path expression appearing in an external module reference. */
-private class LiteralExternalModulePath extends PathExprInModule, ConstantString {
+private class LiteralExternalModulePath extends PathExpr, ConstantString {
   LiteralExternalModulePath() {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
@@ -237,8 +233,6 @@ class ExportAsNamespaceDeclaration extends Stmt, @exportasnamespacedeclaration {
    * Gets the `X` in `export as namespace X`.
    */
   Identifier getIdentifier() { result = getChildExpr(0) }
-
-  override predicate isAmbient() { any() }
 }
 
 /**
@@ -258,8 +252,6 @@ class TypeAliasDeclaration extends @typealiasdeclaration, TypeParameterized, Stm
   TypeExpr getDefinition() { result = getChildTypeExpr(1) }
 
   override string describe() { result = "type alias " + getName() }
-
-  override predicate isAmbient() { any() }
 
   /**
    * Gets the canonical name of the type being defined.
@@ -284,10 +276,6 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
     )
   }
 
-  override StmtContainer getContainer() { result = Stmt.super.getContainer() }
-
-  override predicate isAmbient() { any() }
-
   override string describe() { result = "interface " + getName() }
 
   /**
@@ -308,8 +296,6 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
 /** An inline TypeScript interface type, such as `{x: number; y: number}`. */
 class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interfacetypeexpr {
   override Identifier getIdentifier() { none() }
-
-  override StmtContainer getContainer() { result = TypeExpr.super.getContainer() }
 
   override string describe() { result = "anonymous interface" }
 }
@@ -533,8 +519,6 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
 class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override string toString() { typeexprs(this, _, _, _, result) }
 
-  override predicate isAmbient() { any() }
-
   /**
    * Gets the static type expressed by this type annotation.
    *
@@ -546,8 +530,6 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
 
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
-
-  override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 
@@ -1409,8 +1391,6 @@ class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueN
 
   /** Holds if this enumeration is declared with the `const` keyword. */
   predicate isConst() { isConstEnum(this) }
-
-  override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
 
   override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
 }

@@ -21,7 +21,7 @@ where
   destBase = baseType(destType) and
   destBase.getSize() != sourceBase.getSize() and
   not dest.isInMacroExpansion() and
-  // If the source type is a char* or void* then don't
+  // If the source type is a `char*` or `void*` then don't
   // produce a result, because it is likely to be a false
   // positive.
   not sourceBase instanceof CharType and

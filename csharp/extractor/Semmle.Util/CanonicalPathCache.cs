@@ -127,8 +127,8 @@ namespace Semmle.Util
 
             if (parent != null)
             {
-                string name = Path.GetFileName(path);
-                string parentPath = cache.GetCanonicalPath(parent.FullName);
+                var name = Path.GetFileName(path);
+                var parentPath = cache.GetCanonicalPath(parent.FullName);
                 try
                 {
                     string[] entries = Directory.GetFileSystemEntries(parentPath, name);
@@ -313,14 +313,15 @@ namespace Semmle.Util
         /// <returns>The canonical path.</returns>
         public string GetCanonicalPath(string path)
         {
-            string canonicalPath;
             lock (cache)
-                if (!cache.TryGetValue(path, out canonicalPath))
+            {
+                if (!cache.TryGetValue(path, out var canonicalPath))
                 {
                     canonicalPath = pathStrategy.GetCanonicalPath(path, this);
                     AddToCache(path, canonicalPath);
                 }
-            return canonicalPath;
+                return canonicalPath;
+            }
         }
     }
 }

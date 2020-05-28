@@ -190,7 +190,7 @@ class BugTrackerInfo extends JSONValue {
   }
 
   /** Gets the bug tracker URL. */
-  string getURL() {
+  string getUrl() {
     result = this.(JSONObject).getPropStringValue("url") or
     result = this.(JSONString).getValue()
   }
@@ -233,7 +233,7 @@ class ContributorInfo extends JSONValue {
   }
 
   /** Gets the contributor's homepage URL. */
-  string getURL() {
+  string getUrl() {
     result = this.(JSONObject).getPropStringValue("url") or
     result = parseInfo(3)
   }
@@ -249,7 +249,7 @@ class RepositoryInfo extends JSONObject {
   string getType() { result = getPropStringValue("type") }
 
   /** Gets the repository URL. */
-  string getURL() { result = getPropStringValue("url") }
+  string getUrl() { result = getPropStringValue("url") }
 }
 
 /**

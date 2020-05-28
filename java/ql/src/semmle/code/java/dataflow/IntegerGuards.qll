@@ -10,8 +10,7 @@ private import RangeAnalysis
 /** Gets an expression that might have the value `i`. */
 private Expr exprWithIntValue(int i) {
   result.(ConstantIntegerExpr).getIntValue() = i or
-  result.(ConditionalExpr).getTrueExpr() = exprWithIntValue(i) or
-  result.(ConditionalExpr).getFalseExpr() = exprWithIntValue(i)
+  result.(ChooseExpr).getAResultExpr() = exprWithIntValue(i)
 }
 
 /**

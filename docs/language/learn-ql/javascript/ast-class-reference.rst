@@ -1,5 +1,7 @@
-AST class reference
-===================
+Abstract syntax tree classes for JavaScript and TypeScript
+==========================================================
+
+CodeQL has a large selection of classes for working with JavaScript and TypeScript statements and expressions.
 
 Statement classes
 -----------------
@@ -354,3 +356,9 @@ All classes in this table are subclasses of `Expr <https://help.semmle.com/qldoc
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
 | ``yield`` `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__                                                                                                                                                                                                         | `YieldExpr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$YieldExpr.html>`__             |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------+
+
+Further reading
+---------------
+
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

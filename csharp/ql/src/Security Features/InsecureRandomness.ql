@@ -16,7 +16,7 @@ import semmle.code.csharp.frameworks.Test
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 module Random {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.security.SensitiveActions
 
   /**

@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with the GWT framework. */
+
 import java
 import GwtXml
 import GwtUiBinder

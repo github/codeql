@@ -3,11 +3,10 @@
 Expressions
 ###########
 
-An expression evaluates to a set of values in QL. For example, the expression ``1 + 2`` 
-evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string ``"QL"``.
+An expression evaluates to a set of values and has a type.
 
-A valid expression also has a :ref:`type <types>`. 
-In the above examples, ``1 + 2`` has type ``int`` and ``"QL"`` has type ``string``.
+For example, the expression ``1 + 2`` 
+evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string ``"QL"``. ``1 + 2`` has :ref:`type <types>` ``int`` and ``"QL"`` has type ``string``.
 
 The following sections describe the expressions that are available in QL.
 

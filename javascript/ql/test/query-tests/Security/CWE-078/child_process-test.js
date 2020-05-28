@@ -63,3 +63,12 @@ var server = http.createServer(function(req, res) {
 function run(cmd, args) {
   cp.spawn(cmd, args); // NOT OK
 }
+
+var util = require("util")
+
+http.createServer(function(req, res) {
+    let cmd = url.parse(req.url, true).query.path;
+
+    util.promisify(cp.exec)(cmd); // NOT OK
+});
+

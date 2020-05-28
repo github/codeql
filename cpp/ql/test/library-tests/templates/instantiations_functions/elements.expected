@@ -51,6 +51,7 @@
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | bool |
 | file://:0:0:0:0 | char |
+| file://:0:0:0:0 | char8_t |
 | file://:0:0:0:0 | char16_t |
 | file://:0:0:0:0 | char32_t |
 | file://:0:0:0:0 | composite<int> & |
@@ -109,6 +110,7 @@
 | file://:0:0:0:0 | int |
 | file://:0:0:0:0 | int & |
 | file://:0:0:0:0 | int * |
+| file://:0:0:0:0 | is_consteval |
 | file://:0:0:0:0 | is_constexpr |
 | file://:0:0:0:0 | is_thread_local |
 | file://:0:0:0:0 | long |

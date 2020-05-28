@@ -5,11 +5,11 @@
 import csharp
 
 module LogForging {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.System
   import semmle.code.csharp.frameworks.system.text.RegularExpressions
   import semmle.code.csharp.security.Sanitizers
-  import semmle.code.csharp.security.sinks.ExternalLocationSink
+  import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 
   /**
    * A data flow source for untrusted user input used in log entries.

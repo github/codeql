@@ -43,7 +43,7 @@ namespace Semmle.Autobuild
     /// </summary>
     class Solution : ProjectOrSolution, ISolution
     {
-        readonly SolutionFile solution;
+        readonly SolutionFile? solution;
 
         readonly IEnumerable<Project> includedProjects;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
@@ -81,7 +81,7 @@ namespace Semmle.Autobuild
             includedProjects =
                 solution.ProjectsInOrder.
                 Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
-                Select(p => builder.Actions.PathCombine(Path.GetDirectoryName(path), builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries)))).
+                Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries)))).
                 Select(p => new Project(builder, p)).
                 ToArray();
         }

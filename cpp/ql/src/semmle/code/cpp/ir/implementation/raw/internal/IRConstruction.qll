@@ -63,8 +63,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
@@ -91,17 +89,14 @@ private module Cached {
   Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
     result =
       getInstructionTranslatedElement(instruction)
-          .getInstructionOperand(getInstructionTag(instruction), tag)
+          .getInstructionRegisterOperand(getInstructionTag(instruction), tag)
   }
 
   cached
   Instruction getMemoryOperandDefinition(
     Instruction instruction, MemoryOperandTag tag, Overlap overlap
   ) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionOperand(getInstructionTag(instruction), tag) and
-    overlap instanceof MustTotallyOverlap
+    none()
   }
 
   /** Gets a non-phi instruction that defines an operand of `instr`. */
@@ -144,12 +139,13 @@ private module Cached {
   CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
     // the result type of the load.
+    tag instanceof LoadOperandTag and
     result = instruction.(LoadInstruction).getResultLanguageType()
     or
     not instruction instanceof LoadInstruction and
     result =
       getInstructionTranslatedElement(instruction)
-          .getInstructionOperandType(getInstructionTag(instruction), tag)
+          .getInstructionMemoryOperandType(getInstructionTag(instruction), tag)
   }
 
   cached

@@ -296,6 +296,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   (
     m.getName() = "concat" or
     m.getName() = "endsWith" or
+    m.getName() = "formatted" or
     m.getName() = "getBytes" or
     m.getName() = "split" or
     m.getName() = "substring" or
@@ -395,7 +396,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
-  (method.hasName("format") or method.hasName("join"))
+  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
 }
 
 /**
@@ -434,7 +435,15 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   (
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
-    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
+    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Encoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Decoder")
   ) and
   (
     method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1

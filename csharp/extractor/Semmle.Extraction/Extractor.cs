@@ -50,13 +50,15 @@ namespace Semmle.Extraction
         /// Record a new error type.
         /// </summary>
         /// <param name="fqn">The display name of the type, qualified where possible.</param>
-        void MissingType(string fqn);
+        /// <param name="fromSource">If the missing type was referenced from a source file.</param>
+        void MissingType(string fqn, bool fromSource);
 
         /// <summary>
         /// Record an unresolved `using namespace` directive.
         /// </summary>
         /// <param name="fqn">The full name of the namespace.</param>
-        void MissingNamespace(string fqn);
+        /// <param name="fromSource">If the missing namespace was referenced from a source file.</param>
+        void MissingNamespace(string fqn, bool fromSource);
 
         /// <summary>
         /// The list of missing types.
@@ -167,16 +169,22 @@ namespace Semmle.Extraction
         readonly ISet<string> missingTypes = new SortedSet<string>();
         readonly ISet<string> missingNamespaces = new SortedSet<string>();
 
-        public void MissingType(string fqn)
+        public void MissingType(string fqn, bool fromSource)
         {
-            lock (mutex)
-                missingTypes.Add(fqn);
+            if (fromSource)
+            {
+                lock (mutex)
+                    missingTypes.Add(fqn);
+            }
         }
 
-        public void MissingNamespace(string fqdn)
+        public void MissingNamespace(string fqdn, bool fromSource)
         {
-            lock (mutex)
-                missingNamespaces.Add(fqdn);
+            if (fromSource)
+            {
+                lock (mutex)
+                    missingNamespaces.Add(fqdn);
+            }
         }
 
         public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope)

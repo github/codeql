@@ -9,9 +9,8 @@ private import semmle.code.cpp.dataflow.EscapesTree
  */
 abstract class Call extends Expr, NameQualifiableElement {
   /**
-   * Gets the number of actual parameters in this call; use
-   * `getArgument(i)` with `i` between `0` and `result - 1` to
-   * retrieve actuals.
+   * Gets the number of arguments (actual parameters) of this call. The count
+   * does _not_ include the qualifier of the call, if any.
    */
   int getNumberOfArguments() { result = count(this.getAnArgument()) }
 
@@ -32,21 +31,24 @@ abstract class Call extends Expr, NameQualifiableElement {
   Expr getQualifier() { result = this.getChild(-1) }
 
   /**
-   * Gets an argument for this call.
+   * Gets an argument for this call. To get the qualifier of this call, if
+   * any, use `getQualifier()`.
    */
   Expr getAnArgument() { exists(int i | result = this.getChild(i) and i >= 0) }
 
   /**
    * Gets the nth argument for this call.
    *
-   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
+   * The range of `n` is from `0` to `getNumberOfArguments() - 1`. To get the
+   * qualifier of this call, if any, use `getQualifier()`.
    */
   Expr getArgument(int n) { result = this.getChild(n) and n >= 0 }
 
   /**
-   * Gets a sub expression of the argument at position `index`. If the
+   * Gets a subexpression of the argument at position `index`. If the
    * argument itself contains calls, such calls will be considered
-   * leafs in the expression tree.
+   * leaves in the expression tree. The qualifier of the call, if any, is not
+   * considered to be an argument.
    *
    * Example: the call `f(2, 3 + 4, g(4 + 5))` has sub expression(s)
    * `2` at index 0; `3`, `4`, and `3 + 4` at index 1; and `g(4 + 5)`
@@ -80,7 +82,8 @@ abstract class Call extends Expr, NameQualifiableElement {
 
   /**
    * Holds if this call passes the variable accessed by `va` by
-   * reference as the `i`th argument.
+   * reference as the `i`th argument. The qualifier of a call to a member
+   * function is `i = -1`.
    *
    * A variable is passed by reference if the `i`th parameter of the function
    * receives an address that points within the object denoted by `va`. For a
@@ -99,11 +102,15 @@ abstract class Call extends Expr, NameQualifiableElement {
    */
   predicate passesByReference(int i, VariableAccess va) {
     variableAddressEscapesTree(va, this.getArgument(i).getFullyConverted())
+    or
+    variableAddressEscapesTree(va, this.getQualifier().getFullyConverted()) and
+    i = -1
   }
 
   /**
    * Holds if this call passes the variable accessed by `va` by
-   * reference to non-const data as the `i`th argument.
+   * reference to non-const data as the `i`th argument. The qualifier of a
+   * call to a member function is `i = -1`.
    *
    * A variable is passed by reference if the `i`th parameter of the function
    * receives an address that points within the object denoted by `va`. For a
@@ -122,6 +129,9 @@ abstract class Call extends Expr, NameQualifiableElement {
    */
   predicate passesByReferenceNonConst(int i, VariableAccess va) {
     variableAddressEscapesTreeNonConst(va, this.getArgument(i).getFullyConverted())
+    or
+    variableAddressEscapesTreeNonConst(va, this.getQualifier().getFullyConverted()) and
+    i = -1
   }
 }
 

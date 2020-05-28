@@ -14,7 +14,7 @@ namespace Semmle.Util
             stdout = new List<string>();
             using (var process = Process.Start(pi))
             {
-                string s;
+                string? s;
                 do
                 {
                     s = process.StandardOutput.ReadLine();

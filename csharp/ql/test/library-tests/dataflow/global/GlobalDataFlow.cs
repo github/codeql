@@ -77,17 +77,17 @@ public class DataFlow
         var sink3 = "";
         ReturnRef(sink2, ref sink3, ref sink3);
         Check(sink3);
-        var sink13 = ((IEnumerable<string>)new string[] { sink3 }).SelectEven(x => x);
+        var sink13 = ((IEnumerable<string>)new string[] { sink3 }).SelectEven(x => x).First();
         Check(sink13);
-        var sink14 = ((IEnumerable<string>)new string[] { sink13.First() }).Select(ReturnCheck);
+        var sink14 = ((IEnumerable<string>)new string[] { sink13 }).Select(ReturnCheck).First();
         Check(sink14);
-        var sink15 = ((IEnumerable<string>)new string[] { sink14.First() }).Zip(((IEnumerable<string>)new string[] { "" }), (x, y) => x);
+        var sink15 = ((IEnumerable<string>)new string[] { sink14 }).Zip(((IEnumerable<string>)new string[] { "" }), (x, y) => x).First();
         Check(sink15);
-        var sink16 = ((IEnumerable<string>)new string[] { "" }).Zip(((IEnumerable<string>)new string[] { sink15.First() }), (x, y) => y);
+        var sink16 = ((IEnumerable<string>)new string[] { "" }).Zip(((IEnumerable<string>)new string[] { sink15 }), (x, y) => y).First();
         Check(sink16);
-        var sink17 = sink14.Aggregate("", (acc, s) => acc + s, x => x);
+        var sink17 = ((IEnumerable<string>)new string[] { sink14 }).Aggregate("", (acc, s) => acc + s, x => x);
         Check(sink17);
-        var sink18 = ((IEnumerable<string>)new string[] { "" }).Aggregate(sink14.First(), (acc, s) => acc + s, x => x);
+        var sink18 = ((IEnumerable<string>)new string[] { "" }).Aggregate(sink14, (acc, s) => acc + s, x => x);
         Check(sink18);
         int sink21;
         Int32.TryParse(sink18, out sink21);
@@ -109,19 +109,19 @@ public class DataFlow
         Check(nonSink0);
         ReturnRef(sink1, ref sink1, ref nonSink0);
         Check(nonSink0);
-        var nonSink1 = ((IEnumerable<string>)new string[] { nonSink0 }).SelectEven(x => x);
-        Check(nonSink1);
-        nonSink1 = ((IEnumerable<string>)new string[] { nonSink0 }).Select(x => x);
-        Check(nonSink1);
-        nonSink1 = ((IEnumerable<string>)new string[] { sink14.First() }).Zip(((IEnumerable<string>)new string[] { "" }), (x, y) => y);
-        Check(nonSink1);
-        nonSink1 = ((IEnumerable<string>)new string[] { "" }).Zip(((IEnumerable<string>)new string[] { sink15.First() }), (x, y) => x);
-        Check(nonSink1);
-        nonSink0 = sink14.Aggregate("", (acc, s) => acc, x => x);
+        nonSink0 = ((IEnumerable<string>)new string[] { nonSink0 }).SelectEven(x => x).First();
         Check(nonSink0);
-        nonSink0 = sink14.Aggregate("", (acc, s) => acc + s, x => "");
+        nonSink0 = ((IEnumerable<string>)new string[] { nonSink0 }).Select(x => x).First();
         Check(nonSink0);
-        nonSink0 = nonSink1.Aggregate(sink1, (acc, s) => s, x => x);
+        nonSink0 = ((IEnumerable<string>)new string[] { sink14 }).Zip(((IEnumerable<string>)new string[] { "" }), (x, y) => y).First();
+        Check(nonSink0);
+        nonSink0 = ((IEnumerable<string>)new string[] { "" }).Zip(((IEnumerable<string>)new string[] { sink15 }), (x, y) => x).First();
+        Check(nonSink0);
+        nonSink0 = ((IEnumerable<string>)new string[] { sink14 }).Aggregate("", (acc, s) => acc, x => x);
+        Check(nonSink0);
+        nonSink0 = ((IEnumerable<string>)new string[] { sink14 }).Aggregate("", (acc, s) => acc + s, x => "");
+        Check(nonSink0);
+        nonSink0 = ((IEnumerable<string>)new string[] { nonSink0 }).Aggregate(sink1, (acc, s) => s, x => x);
         Check(nonSink0);
         int nonSink2;
         Int32.TryParse(nonSink0, out nonSink2);
@@ -158,7 +158,7 @@ public class DataFlow
         var sink8 = "";
         OutRef(ref sink8);
         Check(sink8);
-        var sink12 = OutYield();
+        var sink12 = OutYield().First();
         Check(sink12);
         var sink23 = TaintedParam(nonSink0); // even though the argument is not tainted, the parameter is considered tainted
         Check(sink23);
@@ -202,30 +202,32 @@ public class DataFlow
         Check(nonSink0);
     }
 
-    public void M2(IQueryable<string> tainted, IQueryable<string> notTainted)
+    public void M2()
     {
+        IQueryable<string> tainted = new[] { "taint source" }.AsQueryable();
+        IQueryable<string> notTainted = new[] { "not tainted" }.AsQueryable();
         // Flow into a callable via library call, tainted
         Func<string, string> f1 = sinkParam10 => { Check(sinkParam10); return sinkParam10; };
         System.Linq.Expressions.Expression<Func<string, string>> f2 = x => ReturnCheck2(x);
-        var sink24 = tainted.Select(f1);
+        var sink24 = tainted.Select(f1).First();
         Check(sink24);
-        var sink25 = tainted.Select(f2);
+        var sink25 = tainted.Select(f2).First();
         Check(sink25);
-        var sink26 = tainted.Select(ReturnCheck3);
+        var sink26 = tainted.Select(ReturnCheck3).First();
         Check(sink26);
 
         // Flow into a callable via library call, not tainted
         Func<string, string> f3 = nonSinkParam => { Check(nonSinkParam); return nonSinkParam; };
         System.Linq.Expressions.Expression<Func<string, string>> f4 = x => NonReturnCheck(x);
-        var nonSink = notTainted.Select(f1);
+        var nonSink = notTainted.Select(f1).First();
         Check(nonSink);
-        nonSink = notTainted.Select(f2);
+        nonSink = notTainted.Select(f2).First();
         Check(nonSink);
-        nonSink = notTainted.Select(f3);
+        nonSink = notTainted.Select(f3).First();
         Check(nonSink);
-        nonSink = notTainted.Select(f4);
+        nonSink = notTainted.Select(f4).First();
         Check(nonSink);
-        nonSink = notTainted.Select(ReturnCheck3);
+        nonSink = notTainted.Select(ReturnCheck3).First();
         Check(nonSink);
     }
 

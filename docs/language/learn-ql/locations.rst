@@ -1,10 +1,13 @@
-Locations and strings for QL entities
+Providing locations in CodeQL queries
 =====================================
 
 .. Not sure how much of this topic needs to change, and what the title should be
 
-Providing locations
--------------------
+CodeQL includes mechanisms for extracting the location of elements in a codebase. Use these mechanisms when writing custom CodeQL queries and libraries to help display information to users.
+
+
+About locations
+---------------
 
 When displaying information to the user, LGTM needs to be able to extract location information from the results of a query. In order to do this, all QL classes which can provide location information should do this by using one of the following mechanisms:
 
@@ -112,3 +115,8 @@ The ``toString()`` predicate
 ----------------------------
 
 All classes except those that extend primitive types, must provide a ``string toString()`` member predicate. The query compiler will complain if you don't. The uniqueness warning, noted above for locations, applies here too.
+
+Further reading
+---------------
+
+- `CodeQL repository <https://github.com/github/codeql>`__

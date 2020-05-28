@@ -187,8 +187,7 @@ private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
  */
 private VarAccess getOnlyAccess(FunctionDeclStmt fn, LocalVariable v) {
   v = fn.getVariable() and
-  result = v.getAnAccess() and
-  strictcount(v.getAnAccess()) = 1
+  result = unique(VarAccess acc | acc = v.getAnAccess())
 }
 
 /** A function that only is used locally, making it amenable to type inference. */

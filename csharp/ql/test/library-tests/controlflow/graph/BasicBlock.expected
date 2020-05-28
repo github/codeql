@@ -370,6 +370,10 @@
 | Finally.cs:211:13:211:29 | ...; | Finally.cs:213:9:213:24 | ... = ... | 8 |
 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | Finally.cs:211:13:211:28 | [finally: exception(Exception)] ... = ... | 4 |
 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:211:13:211:28 | [finally: exception(ExceptionA)] ... = ... | 4 |
+| Finally.cs:216:10:216:12 | enter M11 | Finally.cs:220:31:220:35 | "Try" | 6 |
+| Finally.cs:220:13:220:36 | call to method WriteLine | Finally.cs:220:13:220:36 | call to method WriteLine | 1 |
+| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:224:13:224:38 | call to method WriteLine | 5 |
+| Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | exit M11 | 8 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:8:29:8:32 | access to parameter args | 3 |
 | Foreach.cs:6:10:6:11 | exit M1 | Foreach.cs:6:10:6:11 | exit M1 | 1 |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | 1 |

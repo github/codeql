@@ -615,6 +615,15 @@ class Class extends RefType, @class {
   }
 }
 
+/**
+ * PREVIEW FEATURE in Java 14. Subject to removal in a future release.
+ *
+ * A record declaration.
+ */
+class Record extends Class {
+  Record() { isRecord(this) }
+}
+
 /** An intersection type. */
 class IntersectionType extends RefType, @class {
   IntersectionType() {
@@ -628,10 +637,12 @@ class IntersectionType extends RefType, @class {
 
   private RefType superInterface() { implInterface(this, result) }
 
+  /** Gets a textual representation of this type that includes all the intersected types. */
   string getLongName() {
     result = superType().toString() + concat(" & " + superInterface().toString())
   }
 
+  /** Gets the first bound of this intersection type. */
   RefType getFirstBound() { extendsReftype(this, result) }
 }
 

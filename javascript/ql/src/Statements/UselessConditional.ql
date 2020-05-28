@@ -62,6 +62,14 @@ predicate isInitialParameterUse(Expr e) {
     not p.isRestParameter()
   )
   or
+  // same as above, but for captured variables
+  exists(SimpleParameter p, LocalVariable var |
+    var = p.getVariable() and
+    var.isCaptured() and
+    e = var.getAnAccess() and
+    not p.isRestParameter()
+  )
+  or
   isInitialParameterUse(e.(LogNotExpr).getOperand())
 }
 
