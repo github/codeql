@@ -62,7 +62,7 @@ module PathFilePath {
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and
-      (outp.isResult() or outp.isResult(_))
+      outp.isResult(_)
     }
   }
 }
@@ -472,7 +472,7 @@ module Path {
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and
-      (outp.isResult() or outp.isResult(_))
+      outp.isResult(_)
     }
   }
 }

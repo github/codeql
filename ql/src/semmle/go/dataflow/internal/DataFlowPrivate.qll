@@ -3,8 +3,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 
 private newtype TReturnKind =
-  TSingleReturn() or
-  TMultiReturn(int i) { exists(SignatureType st | exists(st.getResultType(i))) }
+  MkReturnKind(int i) { exists(SignatureType st | exists(st.getResultType(i))) }
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -13,23 +12,14 @@ private newtype TReturnKind =
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() {
-    this = TSingleReturn() and
-    result = "return"
-    or
-    exists(int i | this = TMultiReturn(i) | result = "return[" + i + "]")
-  }
+  string toString() { exists(int i | this = MkReturnKind(i) | result = "return[" + i + "]") }
 }
 
 /** A data flow node that represents returning a value from a function. */
 class ReturnNode extends ResultNode {
   ReturnKind kind;
 
-  ReturnNode() {
-    exists(int nr | nr = fd.getType().getNumResult() |
-      if nr = 1 then kind = TSingleReturn() else kind = TMultiReturn(i)
-    )
-  }
+  ReturnNode() { exists(int nr | nr = fd.getType().getNumResult() | kind = MkReturnKind(i)) }
 
   /** Gets the kind of this returned value. */
   ReturnKind getKind() { result = kind }
@@ -40,12 +30,7 @@ class OutNode extends DataFlow::Node {
   DataFlow::CallNode call;
   int i;
 
-  OutNode() {
-    this = call.getResult() and
-    i = -1
-    or
-    this = call.getResult(i)
-  }
+  OutNode() { this = call.getResult(i) }
 
   /** Gets the underlying call. */
   DataFlowCall getCall() { result = call.asExpr() }
@@ -56,11 +41,8 @@ class OutNode extends DataFlow::Node {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  exists(DataFlow::CallNode c | c.asExpr() = call |
-    kind = TSingleReturn() and
-    result = c.getResult()
-    or
-    exists(int i | kind = TMultiReturn(i) | result = c.getResult(i))
+  exists(DataFlow::CallNode c, int i | c.asExpr() = call and kind = MkReturnKind(i) |
+    result = c.getResult(i)
   )
 }
 
