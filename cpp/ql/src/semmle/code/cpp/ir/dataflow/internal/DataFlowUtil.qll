@@ -176,9 +176,7 @@ class ParameterNode extends InstructionNode {
  * flow graph.
  */
 private class ExplicitParameterNode extends ParameterNode {
-  ExplicitParameterNode() {
-    exists(instr.getParameter())
-  }
+  ExplicitParameterNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
 
@@ -189,9 +187,7 @@ private class ExplicitParameterNode extends ParameterNode {
 }
 
 private class ThisParameterNode extends ParameterNode {
-  ThisParameterNode() {
-    instr.getIRVariable() instanceof IRThisVariable
-  }
+  ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(Function f, int i) {
     i = -1 and instr.getEnclosingFunction() = f
