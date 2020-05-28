@@ -1,3 +1,8 @@
+/**
+ * Provides a library for reasoning about control-flow at the granularity of
+ * individual nodes in the control-flow graph.
+ */
+
 import cpp
 import BasicBlocks
 private import semmle.code.cpp.controlflow.internal.ConstantExprs
@@ -29,8 +34,10 @@ private import semmle.code.cpp.controlflow.internal.CFG
  * `Handler`. There are no edges from function calls to `Handler`s.
  */
 class ControlFlowNode extends Locatable, ControlFlowNodeBase {
+  /** Gets a direct successor of this control-flow node, if any. */
   ControlFlowNode getASuccessor() { successors_adapted(this, result) }
 
+  /** Gets a direct predecessor of this control-flow node, if any. */
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
   /** Gets the function containing this control-flow node. */
@@ -71,6 +78,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
     result = getASuccessor()
   }
 
+  /** Gets the `BasicBlock` containing this control-flow node. */
   BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
@@ -86,10 +94,18 @@ import ControlFlowGraphPublic
  */
 class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
+/**
+ * Holds when `n2` is a control-flow node such that the control-flow
+ * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
+ */
 predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   qlCFGTrueSuccessor(n1, n2)
 }
 
+/**
+ * Holds when `n2` is a control-flow node such that the control-flow
+ * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
+ */
 predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   qlCFGFalseSuccessor(n1, n2)
 }

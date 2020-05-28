@@ -1,3 +1,8 @@
+/**
+ * Provides a library for reasoning about control-flow at the granularity of basic blocks.
+ * This is usually much more efficient than reasoning directly at the level of `ControlFlowNode`s.
+ */
+
 import cpp
 private import internal.PrimitiveBasicBlocks
 private import internal.ConstantExprs
@@ -148,22 +153,37 @@ predicate bb_successor = bb_successor_cached/2;
 class BasicBlock extends ControlFlowNodeBase {
   BasicBlock() { basic_block_entry_node(this) }
 
+  /** Holds if this basic block contains `node`. */
   predicate contains(ControlFlowNode node) { basic_block_member(node, this, _) }
 
+  /** Gets the `ControlFlowNode` at position `pos` in this basic block. */
   ControlFlowNode getNode(int pos) { basic_block_member(result, this, pos) }
 
+  /** Gets all `ControlFlowNode`s in this basic block. */
   ControlFlowNode getANode() { basic_block_member(result, this, _) }
 
+  /** Gets all `BasicBlock`s that are direct successors of this basic block. */
   BasicBlock getASuccessor() { bb_successor(this, result) }
 
+  /** Gets all `BasicBlock`s that are direct predecessors of this basic block. */
   BasicBlock getAPredecessor() { bb_successor(result, this) }
 
+  /**
+   * Gets a `BasicBlock` such that the control-flow edge `(this, result)` may be taken
+   * when the outgoing edge of this basic block is an expression that is true.
+   */
   BasicBlock getATrueSuccessor() { result.getStart() = this.getEnd().getATrueSuccessor() }
 
+  /**
+   * Gets a `BasicBlock` such that the control-flow edge `(this, result)` may be taken
+   * when the outgoing edge of this basic block is an expression that is false.
+   */
   BasicBlock getAFalseSuccessor() { result.getStart() = this.getEnd().getAFalseSuccessor() }
 
+  /** Gets the final `ControlFlowNode` of this basic block. */
   ControlFlowNode getEnd() { basic_block_member(result, this, bb_length(this) - 1) }
 
+  /** Gets the first `ControlFlowNode` of this basic block. */
   ControlFlowNode getStart() { result = this }
 
   /** Gets the number of `ControlFlowNode`s in this basic block. */
@@ -192,6 +212,7 @@ class BasicBlock extends ControlFlowNodeBase {
     this.getEnd().getLocation().hasLocationInfo(endf, _, _, endl, endc)
   }
 
+  /** Gets the function containing this basic block. */
   Function getEnclosingFunction() { result = this.getStart().getControlFlowScope() }
 
   /**
