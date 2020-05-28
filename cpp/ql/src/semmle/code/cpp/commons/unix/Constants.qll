@@ -20,10 +20,10 @@ int parseOctal(string input) {
     )
 }
 
-/** Gets the number corresponding to the set-user-ID on execute bit in Unix. */
+/** Gets the number corresponding to the "set-user-ID on execute bit" in Unix. */
 int s_isuid() { result = parseOctal("04000") }
 
-/** Gets the number corresponding to the set-group-ID on execute bit in Unix. */
+/** Gets the number corresponding to the "set-group-ID on execute bit" in Unix. */
 int s_isgid() { result = parseOctal("02000") }
 
 /** Gets the number corresponding to the sticky bit in Unix. */
