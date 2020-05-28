@@ -74,16 +74,16 @@ predicate isCheckedInstruction(Instruction unchecked, Instruction checked, Value
 }
 
 pragma[noinline]
-predicate candidateResultDeref(LoadInstruction unchecked, ValueNumber value, IRBlock dominator) {
+predicate candidateResultDeref(LoadInstruction unchecked, ValueNumber value) {
   value.getAnInstruction() = unchecked and
   derefInstruction(unchecked, _) and
-  not isCheckedInstruction(unchecked, _, value) and
-  not dominator.dominates(unchecked.getBlock())
+  not isCheckedInstruction(unchecked, _, value)
 }
 
 from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue, IRBlock dominator
 where
   candidateResult(checked, sourceValue, dominator) and
-  candidateResultDeref(deref, sourceValue, dominator)
+  candidateResultDeref(deref, sourceValue) and
+  not dominator.dominates(deref.getBlock())
 select checked, "This null check is redundant because the value is $@ in any case", deref,
   "dereferenced here"
