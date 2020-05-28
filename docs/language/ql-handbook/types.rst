@@ -501,20 +501,26 @@ You can use a type union to explicitly restrict the permitted branches from an a
 and resolve spurious :ref:`recursion <recursion>` in predicates.
 For example, the following construction is legal::
 
-    newtype T =
-      T1(T t) { not exists(T2orT3 s | t = s) } or
-      T2(int x) { x = 1 or x = 2 } or
-      T3(int x) { x = 3 or x = 4 or x = 5 }
+    newtype InitialValueSource =
+        ExplicitInitialization(VarDecl v) { exists(v.getInitializer()) } or
+        ParameterPassing(Call c, int pos) { exists(c.getParameter(pos)) } or
+        UnknownInitialGarbage(VarDecl v) { not exists(DefiniteInitialization di | v = target(di)) }
 
-    class T2orT3 = T2 or T3;
+    class DefiniteInitialization = ParameterPassing or ExplicitInitialization;
 
-However, a similar implementation that restricts ``T`` in a class extension is not valid.
-The class ``T2orT3`` triggers a type test for ``T``, which results in an illegal recursion
-``T2orT3 -> T -> T1 -> ¬T2orT3`` since ``T1`` relies on ``T2orT3``::
+    VarDecl target(DefiniteInitialization di) {
+       di = ExplicitInitialization(result) or
+       exists(Call c, int pos | di = ParameterPassing(c, pos) and
+                                result = c.getCallee().getFormalArg(pos))
+    }
 
-    class T2orT3 extends T {
-      T2orT3() {
-        this instanceof T2 or this instanceof T3
+However, a similar implementation that restricts ``InitialValueSource`` in a class extension is not valid.
+The class ``DefiniteInitialization`` triggers a type test for ``InitialValueSource``, which results in an illegal recursion
+``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
+
+    class DefiniteInitialization extends InitialValueSource {
+      DefiniteInitialization() {
+        this instanceof ParameterPassing or this instanceof ExplicitInitialization
       }
       // ...
     }
