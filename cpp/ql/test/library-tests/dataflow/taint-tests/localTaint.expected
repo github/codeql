@@ -367,7 +367,7 @@
 | taint.cpp:228:11:228:11 | this | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] |  |
 | taint.cpp:228:17:228:17 | this | taint.cpp:229:3:229:6 | this |  |
 | taint.cpp:229:3:229:6 | this | taint.cpp:230:3:230:6 | this |  |
-| taint.cpp:230:3:230:6 | this | taint.cpp:231:3:231:11 | this |  |
+| taint.cpp:230:3:230:6 | this | file://:0:0:0:0 | this |  |
 | taint.cpp:235:10:239:2 | [...](...){...} | taint.cpp:240:2:240:2 | b |  |
 | taint.cpp:235:10:239:2 | {...} | taint.cpp:235:10:239:2 | [...](...){...} |  |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field t | TAINT |
