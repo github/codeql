@@ -153,6 +153,18 @@ private class RequireVariable extends Variable {
 private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
 /**
+ * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
+ */
+cached
+private predicate isRequire(DataFlow::Node nd) {
+  nd.asExpr() = any(RequireVariable req).getAnAccess() and
+  // `mjs` files explicitly disallow `require`
+  not nd.getFile().getExtension() = "mjs"
+  or
+  isRequire(nd.getAPredecessor())
+}
+
+/**
  * A `require` import.
  *
  * Example:
@@ -162,12 +174,7 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
  * ```
  */
 class Require extends CallExpr, Import {
-  cached
-  Require() {
-    any(RequireVariable req).getAnAccess() = getCallee() and
-    // `mjs` files explicitly disallow `require`
-    not getFile().getExtension() = "mjs"
-  }
+  Require() { isRequire(getCallee().flow()) }
 
   override PathExpr getImportedPath() { result = getArgument(0) }
 
@@ -257,8 +264,8 @@ private class RequirePath extends PathExprCandidate {
   RequirePath() {
     this = any(Require req).getArgument(0)
     or
-    exists(RequireVariable req, MethodCallExpr reqres |
-      reqres.getReceiver() = req.getAnAccess() and
+    exists(MethodCallExpr reqres |
+      isRequire(reqres.getReceiver().flow()) and
       reqres.getMethodName() = "resolve" and
       this = reqres.getArgument(0)
     )

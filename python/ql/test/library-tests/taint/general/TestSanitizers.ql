@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import TaintLib
 
 from Sanitizer s, TaintKind taint, PyEdgeRefinement test

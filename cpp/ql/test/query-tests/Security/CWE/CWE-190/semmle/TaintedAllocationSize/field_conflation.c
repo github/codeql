@@ -17,5 +17,5 @@ void test_conflated_fields3(void) {
   struct XY xy;
   xy.x = 4;
   taint_array(&xy);
-  malloc(xy.x); // not tainted [FALSE POSITIVE]
+  malloc(xy.x); // not tainted
 }

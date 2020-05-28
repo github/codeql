@@ -115,5 +115,5 @@ void test_conflated_fields3() {
   XY xy;
   xy.x = 0;
   taint_y(&xy);
-  sink(xy.x); // not tainted [FALSE POSITIVE]
+  sink(xy.x); // not tainted
 }

@@ -111,7 +111,7 @@ void test_guards3(int cond) {
 
 	if (x != 0) return;
 
-	return x + 1; // GOOD [FALSE POSITIVE]
+	return x + 1; // GOOD
 }
 
 void test_guards4(int cond) {

@@ -236,3 +236,81 @@ void more_cases() {
 	my_func(100); // GOOD
 	my_func(local_size); // GOOD
 }
+
+bool get_size(int &out_size) {
+	out_size = atoi(getenv("USER"));
+	
+	return true;
+}
+
+void equality_cases() {
+	{
+		int size1 = atoi(getenv("USER"));
+		int size2 = atoi(getenv("USER"));
+
+		if (size1 == 100)
+		{
+			malloc(size2 * sizeof(int)); // BAD
+		}
+		if (size2 == 100)
+		{
+			malloc(size2 * sizeof(int)); // GOOD
+		}
+	}
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size != 100)
+			return;
+
+		malloc(size * sizeof(int)); // GOOD
+	}
+	{
+		int size;
+
+		if ((get_size(size)) && (size == 100))
+		{
+			malloc(size * sizeof(int)); // GOOD
+		}
+	}
+	{
+		int size;
+
+		if ((get_size(size)) && (size != 100))
+		{
+			malloc(size * sizeof(int)); // BAD
+		}
+	}
+	{
+		int size;
+
+		if ((!get_size(size)) || (size != 100))
+			return;
+
+		malloc(size * sizeof(int)); // GOOD
+	}
+	{
+		int size;
+
+		if ((!get_size(size)) || (size == 100))
+			return;
+
+		malloc(size * sizeof(int)); // BAD
+	}
+	{
+		int size = atoi(getenv("USER"));
+
+		if ((size == 50) || (size == 100))
+		{
+			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		}
+	}
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size != 50 && size != 100)
+			return;
+
+		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+	}
+}

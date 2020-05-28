@@ -59,7 +59,7 @@ predicate contains_unknown_import_star(ModuleValue m) {
 from ModuleValue m, StrConst name, string exported_name
 where
     declaredInAll(m.getScope(), name) and
-    exported_name = name.strValue() and
+    exported_name = name.getText() and
     not m.hasAttribute(exported_name) and
     not is_exported_submodule_name(m, exported_name) and
     not contains_unknown_import_star(m) and

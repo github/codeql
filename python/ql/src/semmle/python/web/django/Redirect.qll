@@ -5,7 +5,7 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
