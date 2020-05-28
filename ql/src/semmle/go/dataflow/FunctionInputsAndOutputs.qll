@@ -101,7 +101,7 @@ private class ResultInput extends FunctionInput, TInResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    index = -1 and i = 0
+    i = 0 and isResult()
     or
     i = index and i >= 0
   }
@@ -186,7 +186,7 @@ private class OutResult extends FunctionOutput, TOutResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    index = -1 and i = 0
+    i = 0 and isResult()
     or
     i = index and i >= 0
   }
