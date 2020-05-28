@@ -1,3 +1,7 @@
+/**
+ * Provides predicates for detecting whether an expression dereferences a pointer.
+ */
+
 import cpp
 import Nullness
 

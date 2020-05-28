@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for working with null values and checks for nullness.
+ */
+
 import cpp
 import DefinitionsAndUses
 

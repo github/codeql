@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about guards and the control
+ * flow elements controlled by those guards.
+ */
+
 import cpp
 import semmle.code.cpp.ir.IR
 
@@ -32,7 +37,7 @@ class GuardCondition extends Expr {
   }
 
   /**
-   * Holds if this condition controls `block`, meaning that `block` is only
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `testIsTrue`.
    *
    * Illustration:
@@ -253,7 +258,7 @@ class IRGuardCondition extends Instruction {
   IRGuardCondition() { branch = get_branch_for_condition(this) }
 
   /**
-   * Holds if this condition controls `block`, meaning that `block` is only
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `testIsTrue`.
    *
    * Illustration:
@@ -290,6 +295,10 @@ class IRGuardCondition extends Instruction {
     )
   }
 
+  /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `testIsTrue`.
+   */
   cached
   predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
     pred.getASuccessor() = succ and
