@@ -22,3 +22,7 @@ query predicate arrayQualifiers(ElementAccess access, Expr qualifier) {
 query predicate initializers(ObjectInitializer init, int item, Expr expr) {
   expr = init.getMemberInitializer(item)
 }
+
+query predicate initializerType(ObjectInitializer init, string type) {
+  type = init.getType().toStringWithTypes()
+}
