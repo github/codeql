@@ -79,7 +79,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
   }
 }
 
-class StrLenFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
   StrLenFunction() {
     exists(string name |
       hasGlobalOrStdName(name) and
@@ -107,30 +107,12 @@ class StrLenFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEf
     getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    exists(ParameterIndex i |
-      input.isParameter(i) and
-      exists(getParameter(i))
-      or
-      input.isParameterDeref(i) and
-      getParameter(i).getUnspecifiedType() instanceof PointerType
-    ) and
-    (
-      output.isReturnValueDeref() and
-      getUnspecifiedType() instanceof PointerType
-      or
-      output.isReturnValue()
-    )
-  }
-
   override predicate parameterNeverEscapes(int i) {
-    getParameter(i).getUnspecifiedType() instanceof PointerType and
-    not parameterEscapesOnlyViaReturn(i)
+    getParameter(i).getUnspecifiedType() instanceof PointerType
   }
 
   override predicate parameterEscapesOnlyViaReturn(int i) {
-    i = 0 and
-    getUnspecifiedType() instanceof PointerType
+    none()
   }
 
   override predicate parameterIsAlwaysReturned(int i) { none() }

@@ -8,6 +8,3 @@
 | test.c:14:15:14:28 | maxConnections | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:11:29:11:32 | argv | User-provided value |
 | test.c:44:7:44:10 | len2 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:41:17:41:20 | argv | User-provided value |
 | test.c:54:7:54:10 | len3 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:51:17:51:20 | argv | User-provided value |
-| test.c:74:7:74:10 | len5 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:71:19:71:22 | argv | User-provided value |
-| test.c:84:7:84:10 | len6 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:81:19:81:22 | argv | User-provided value |
-| test.c:94:7:94:10 | len7 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:91:19:91:22 | argv | User-provided value |

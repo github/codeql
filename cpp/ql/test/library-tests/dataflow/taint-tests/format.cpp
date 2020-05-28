@@ -148,11 +148,11 @@ void test2()
 	wchar_t *ws = wstring::source();
 	int i;
 
-	sink(strlen(s)); // [FALSE POSITIVE]
-	sink(wcslen(ws)); // [FALSE POSITIVE]
+	sink(strlen(s));
+	sink(wcslen(ws));
 
 	i = strlen(s) + 1;
-	sink(i); // [FALSE POSITIVE]
+	sink(i);
 
 	sink(s[strlen(s) - 1]); // tainted
 	sink(ws + (wcslen(ws) / 2)); // tainted

@@ -3,10 +3,6 @@
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:50:29:50:40 | envStrGlobal | AST only |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:52:2:52:12 | * ... | AST only |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:52:3:52:12 | envStr_ptr | AST only |
-| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:10:64:14 | bytes | IR only |
-| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:23 | call to strlen | IR only |
-| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:37 | (int)... | IR only |
-| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:37 | ... + ... | IR only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:67:7:67:13 | copying | AST only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:69:10:69:13 | copy | AST only |
