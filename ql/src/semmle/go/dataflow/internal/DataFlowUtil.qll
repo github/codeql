@@ -345,6 +345,9 @@ class CallNode extends ExprNode {
    */
   Node getResult() { not getType() instanceof TupleType and result = this }
 
+  /** Gets a result of this call. */
+  Node getAResult() { result = this.getResult(_) }
+
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }
 }
