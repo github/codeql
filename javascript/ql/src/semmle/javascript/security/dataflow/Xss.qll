@@ -23,6 +23,9 @@ module Shared {
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /** A sanitizer guard for XSS vulnerabilities. */
+  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode { }
+
   /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
@@ -51,6 +54,25 @@ module Shared {
       )
     }
   }
+
+  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
+
+  /**
+   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
+   */
+  class QuoteGuard extends SanitizerGuard, StringOps::Includes {
+    QuoteGuard() {
+      this.getSubstring().mayHaveStringValue("\"") and
+      this
+          .getBaseString()
+          .getALocalSource()
+          .flowsTo(any(IncompleteHTML::HtmlAttributeConcatenation attributeConcat))
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
+    }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -63,6 +85,9 @@ module DomBasedXss {
 
   /** A sanitizer for DOM-based XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for DOM-based XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
   /**
    * An expression whose value is interpreted as HTML
@@ -302,6 +327,38 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  /**
+   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
+   */
+  predicate isOptionallySanitizedEdge(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(HtmlSanitizerCall sanitizer |
+      // sanitized = sanitize ? sanitizer(source) : source;
+      exists(ConditionalExpr branch, Variable var, VarAccess access |
+        branch = succ.asExpr() and access = var.getAnAccess()
+      |
+        branch.getABranch() = access and
+        pred.getEnclosingExpr() = access and
+        sanitizer = branch.getABranch().flow() and
+        sanitizer.getAnArgument().getEnclosingExpr() = var.getAnAccess()
+      )
+      or
+      // sanitized = source; if (sanitize) {sanitized = sanitizer(source)};
+      exists(SsaPhiNode phi, SsaExplicitDefinition a, SsaDefinition b |
+        a = phi.getAnInput().getDefinition() and
+        b = phi.getAnInput().getDefinition() and
+        count(phi.getAnInput()) = 2 and
+        not a = b and
+        sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
+        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+      |
+        pred = DataFlow::ssaDefinitionNode(b) and
+        succ = DataFlow::ssaDefinitionNode(phi)
+      )
+    )
+  }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -314,6 +371,9 @@ module ReflectedXss {
 
   /** A sanitizer for reflected XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for reflected XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
   /**
    * An expression that is sent as part of an HTTP response, considered as an XSS sink.
@@ -401,6 +461,8 @@ module ReflectedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -413,6 +475,9 @@ module StoredXss {
 
   /** A sanitizer for stored XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for stored XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink {
@@ -429,6 +494,8 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 }
 
 /** Provides classes and predicates for the XSS through DOM query. */

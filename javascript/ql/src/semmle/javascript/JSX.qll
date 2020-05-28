@@ -196,7 +196,7 @@ class JSXName extends Expr {
     )
     or
     exists(JSXQualifiedName qual | qual = this |
-      result = qual.getNamespace() + ":" + qual.getName()
+      result = qual.getNamespace().getName() + ":" + qual.getName().getName()
     )
   }
 }

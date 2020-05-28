@@ -87,6 +87,12 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_TIMEOUT_VAR = "SEMMLE_TYPESCRIPT_TIMEOUT";
 
   /**
+   * An environment variable that can be set to specify a number of retries when verifying
+   * the TypeScript installation. Default is 3.
+   */
+  public static final String TYPESCRIPT_RETRIES_VAR = "SEMMLE_TYPESCRIPT_RETRIES";
+
+  /**
    * An environment variable (without the <tt>SEMMLE_</tt> or <tt>LGTM_</tt> prefix), that can be
    * set to indicate the maximum heap space usable by the Node.js process, in addition to its
    * "reserve memory".
@@ -179,9 +185,6 @@ public class TypeScriptParser {
   public String verifyNodeInstallation() {
     if (nodeJsVersionString != null) return nodeJsVersionString;
 
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    ByteArrayOutputStream err = new ByteArrayOutputStream();
-
     // Determine where to find the Node.js runtime.
     String explicitNodeJsRuntime = Env.systemEnv().get(TYPESCRIPT_NODE_RUNTIME_VAR);
     if (explicitNodeJsRuntime != null) {
@@ -198,12 +201,41 @@ public class TypeScriptParser {
       nodeJsRuntimeExtraArgs = Arrays.asList(extraArgs.split("\\s+"));
     }
 
+    // Run 'node --version' with a timeout, and retry a few times if it times out.
+    // If the Java process is suspended we may get a spurious timeout, and we want to
+    // support long suspensions in cloud environments. Instead of setting a huge timeout,
+    // retrying guarantees we can survive arbitrary suspensions as long as they don't happen
+    // too many times in rapid succession.
+    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
+    int numRetries = Env.systemEnv().getInt(TYPESCRIPT_RETRIES_VAR, 3);
+    for (int i = 0; i < numRetries - 1; ++i) {
+      try {
+        return startNodeAndGetVersion(timeout);
+      } catch (InterruptedError e) {
+        Exceptions.ignore(e, "We will retry the call that caused this exception.");
+        System.err.println("Starting Node.js seems to take a long time. Retrying.");
+      }
+    }
+    try {
+      return startNodeAndGetVersion(timeout);
+    } catch (InterruptedError e) {
+      Exceptions.ignore(e, "Exception details are not important.");
+      throw new CatastrophicError(
+          "Could not start Node.js (timed out after " + (timeout / 1000) + "s and " + numRetries + " attempts");
+    }
+  }
+
+  /**
+   * Checks that Node.js is installed and can be run and returns its version string.
+   */
+  private String startNodeAndGetVersion(int timeout) throws InterruptedError {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
     Builder b =
         new Builder(
             getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
     b.expectFailure(); // We want to do our own logging in case of an error.
 
-    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
     try {
       int r = b.execute(timeout);
       String stdout = new String(out.toByteArray());
@@ -213,10 +245,6 @@ public class TypeScriptParser {
             "Could not start Node.js. It is required for TypeScript extraction.\n" + stderr);
       }
       return nodeJsVersionString = stdout;
-    } catch (InterruptedError e) {
-      Exceptions.ignore(e, "Exception details are not important.");
-      throw new CatastrophicError(
-          "Could not start Node.js (timed out after " + (timeout / 1000) + "s).");
     } catch (ResourceError e) {
       // In case 'node' is not found, the process builder converts the IOException
       // into a ResourceError.
