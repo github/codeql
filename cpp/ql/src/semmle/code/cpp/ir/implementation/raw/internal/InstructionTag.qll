@@ -2,10 +2,6 @@ private import cpp
 
 newtype TInstructionTag =
   OnlyInstructionTag() or // Single instruction (not including implicit Load)
-  InitializeThisAddressTag() or
-  InitializeThisTag() or
-  InitializeThisIndirectionAddressTag() or
-  InitializeThisIndirectionTag() or
   InitializerVariableAddressTag() or
   InitializerLoadStringTag() or
   InitializerStoreTag() or
