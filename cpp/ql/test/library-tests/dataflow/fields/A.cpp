@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // $ast $f-:ir
+    sink(b->c); // $ast,ir
   }
 
   class D
@@ -149,7 +149,7 @@ public:
   {
     B *b = new B();
     D *d = new D(b, r());
-    sink(d->b);    // $ast=143:25 $ast=150:12 $f-:ir
+    sink(d->b);    // $ast,ir=143:25 $ast,ir=150:12
     sink(d->b->c); // $ast $f-:ir
     sink(b->c);    // $ast,ir
   }
