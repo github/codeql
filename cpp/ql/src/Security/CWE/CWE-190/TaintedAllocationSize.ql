@@ -14,6 +14,8 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.controlflow.IRGuards
+import semmle.code.cpp.ir.ValueNumbering
 import DataFlow::PathGraph
 import semmle.code.cpp.ir.IR
 
@@ -38,6 +40,8 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof UpperBoundGuard
+    or
+    guard instanceof EqualityGuard
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -49,6 +53,12 @@ class UpperBoundGuard extends DataFlow::BarrierGuard {
   UpperBoundGuard() { this.comparesLt(_, _, _, _, _) }
 
   override predicate checks(Instruction i, boolean b) { this.comparesLt(i.getAUse(), _, _, _, b) }
+}
+
+class EqualityGuard extends DataFlow::BarrierGuard {
+  EqualityGuard() { this.comparesEq(_, _, _, _, _) }
+
+  override predicate checks(Instruction i, boolean b) { this.comparesEq(i.getAUse(), _, _, true, b) }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
