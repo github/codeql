@@ -40,7 +40,6 @@
 | test.cpp:347:17:347:22 | test.cpp:349:10:349:18 | AST only |
 | test.cpp:359:13:359:18 | test.cpp:365:10:365:14 | AST only |
 | test.cpp:373:13:373:18 | test.cpp:369:10:369:14 | AST only |
-| test.cpp:373:13:373:18 | test.cpp:375:10:375:14 | AST only |
 | test.cpp:399:7:399:9 | test.cpp:401:8:401:10 | AST only |
 | test.cpp:405:7:405:9 | test.cpp:408:8:408:10 | AST only |
 | test.cpp:416:7:416:11 | test.cpp:418:8:418:12 | AST only |

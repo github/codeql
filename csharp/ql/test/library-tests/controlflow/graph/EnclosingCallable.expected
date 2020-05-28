@@ -1813,99 +1813,203 @@ nodeEnclosing
 | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:39:11:39:11 | ; | Foreach.cs:36:10:36:11 | M6 |
-| Initializers.cs:3:9:3:9 | this access | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:3:9:3:9 | this access | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:3:9:3:17 | ... = ... | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:3:9:3:17 | ... = ... | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:3:17:3:17 | 1 | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:3:17:3:17 | 1 | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:9:4:9 | this access | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:9:4:9 | this access | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:25:4:31 | ... = ... | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:25:4:31 | ... = ... | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:4:31:4:31 | 2 | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:4:31:4:31 | 2 | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:6:5:6:16 | exit Initializers | Initializers.cs:6:5:6:16 | Initializers |
-| Initializers.cs:6:20:6:22 | {...} | Initializers.cs:6:5:6:16 | Initializers |
+| Initializers.cs:5:9:5:9 | this access | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:5:9:5:9 | this access | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:5:13:5:13 | access to field H | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:5:13:5:13 | access to field H | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:5:17:5:17 | 1 | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:5:17:5:17 | 1 | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:9:6:9 | access to property G | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:9:6:9 | access to property G | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:9:6:9 | this access | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:9:6:9 | this access | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:25:6:31 | ... = ... | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:25:6:31 | ... = ... | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:27:6:27 | access to field H | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:27:6:27 | access to field H | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:6:31:6:31 | 2 | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:6:31:6:31 | 2 | Initializers.cs:10:5:10:16 | Initializers |
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | Initializers |
 | Initializers.cs:8:5:8:16 | exit Initializers | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:8:28:8:30 | {...} | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:10:10:10:10 | exit M | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:11:5:14:5 | {...} | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:9:12:54 | ... ...; | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:13:12:53 | Initializers i = ... | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:17:12:53 | object creation of type Initializers | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:34:12:35 | "" | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:38:12:53 | { ..., ... } | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:40:12:44 | ... = ... | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:44:12:44 | 0 | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:47:12:47 | access to property G | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:47:12:51 | ... = ... | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:12:51:12:51 | 1 | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:9:13:64 | ... ...; | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:13:13:63 | Initializers[] iz = ... | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:18:13:63 | array creation of type Initializers[] | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:37:13:63 | { ..., ... } | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:39:13:39 | access to local variable i | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:42:13:61 | object creation of type Initializers | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:13:59:13:60 | "" | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:18:11:18:23 | exit NoConstructor | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:20:23:20:23 | this access | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:20:23:20:23 | this access | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:20:27:20:27 | 0 | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:20:27:20:27 | 0 | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:21:23:21:23 | this access | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:21:23:21:23 | this access | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:21:27:21:27 | 1 | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:21:27:21:27 | 1 | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:26:13:26:13 | this access | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:26:13:26:13 | this access | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:26:17:26:17 | 2 | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:26:17:26:17 | 2 | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:9:29:11 | exit Sub | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:17:29:20 | call to constructor NoConstructor | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:24:29:33 | {...} | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:26:29:26 | this access | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:26:29:30 | ... = ... | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:26:29:31 | ...; | Initializers.cs:29:9:29:11 | Sub |
-| Initializers.cs:29:30:29:30 | 3 | Initializers.cs:29:9:29:11 | Sub |
+| Initializers.cs:8:20:8:22 | {...} | Initializers.cs:8:5:8:16 | Initializers |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:10:5:10:16 | exit Initializers | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:10:28:10:30 | {...} | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:12:10:12:10 | exit M | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:13:5:16:5 | {...} | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:9:14:54 | ... ...; | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:13:14:53 | Initializers i = ... | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:17:14:53 | object creation of type Initializers | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:34:14:35 | "" | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:38:14:53 | { ..., ... } | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:40:14:44 | ... = ... | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:44:14:44 | 0 | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:47:14:47 | access to property G | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:47:14:51 | ... = ... | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:14:51:14:51 | 1 | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:9:15:64 | ... ...; | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:13:15:63 | Initializers[] iz = ... | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:18:15:63 | array creation of type Initializers[] | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:37:15:63 | { ..., ... } | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:39:15:39 | access to local variable i | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:42:15:61 | object creation of type Initializers | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:15:59:15:60 | "" | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:20:11:20:23 | exit NoConstructor | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:22:23:22:23 | this access | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:22:23:22:23 | this access | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:22:27:22:27 | 0 | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:22:27:22:27 | 0 | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:23:23:23:23 | this access | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:23:23:23:23 | this access | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:23:27:23:27 | 1 | Initializers.cs:20:11:20:23 | NoConstructor |
+| Initializers.cs:23:27:23:27 | 1 | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:28:13:28:13 | this access | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:28:13:28:13 | this access | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:28:17:28:17 | 2 | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:28:17:28:17 | 2 | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | Sub |
 | Initializers.cs:31:9:31:11 | exit Sub | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:22:31:25 | call to constructor Sub | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:29:31:38 | {...} | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:31:31:31 | this access | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:31:31:35 | ... = ... | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:31:31:36 | ...; | Initializers.cs:31:9:31:11 | Sub |
-| Initializers.cs:31:35:31:35 | access to parameter i | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:17:31:20 | call to constructor NoConstructor | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:24:31:33 | {...} | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:26:31:26 | this access | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:26:31:30 | ... = ... | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:26:31:31 | ...; | Initializers.cs:31:9:31:11 | Sub |
+| Initializers.cs:31:30:31:30 | 3 | Initializers.cs:31:9:31:11 | Sub |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:9:33:11 | exit Sub | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:27:33:40 | {...} | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:29:33:29 | this access | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:29:33:37 | ... = ... | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:29:33:38 | ...; | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:33:33:33 | access to parameter i | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:33:33:37 | ... + ... | Initializers.cs:33:9:33:11 | Sub |
-| Initializers.cs:33:37:33:37 | access to parameter j | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:22:33:25 | call to constructor Sub | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:29:33:38 | {...} | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:31:33:31 | this access | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:31:33:35 | ... = ... | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:31:33:36 | ...; | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:9:35:11 | exit Sub | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:29:35:29 | this access | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:29:35:37 | ... = ... | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:29:35:38 | ...; | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:33:35:33 | access to parameter i | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:33:35:37 | ... + ... | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:37:35:37 | access to parameter j | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:51:10:51:13 | exit Test | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:52:5:66:5 | {...} | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:9:54:96 | ... ...; | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:13:54:95 | Dictionary<Int32,String> dict = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:20:54:95 | object creation of type Dictionary<Int32,String> | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:50:54:95 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:52:54:54 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:52:54:63 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:53:54:53 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:58:54:63 | "Zero" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:66:54:68 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:66:54:76 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:67:54:67 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:72:54:76 | "One" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:79:54:85 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:79:54:93 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:80:54:80 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:80:54:84 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:84:54:84 | 2 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:54:89:54:93 | "Two" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:57:9:65:10 | ... ...; | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:57:13:65:9 | Compound compound = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:57:24:65:9 | object creation of type Compound | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:58:9:65:9 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:13:59:76 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:31:59:76 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:33:59:35 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:33:59:44 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:34:59:34 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:39:59:44 | "Zero" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:47:59:49 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:47:59:57 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:48:59:48 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:53:59:57 | "One" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:60:59:66 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:60:59:74 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:61:59:61 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:61:59:65 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:65:59:65 | 2 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:59:70:59:74 | "Two" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:13:60:30 | access to property DictionaryProperty | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:13:60:80 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:34:60:80 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:36:60:38 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:36:60:48 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:37:60:37 | 3 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:42:60:48 | "Three" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:51:60:53 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:51:60:61 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:52:60:52 | 2 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:57:60:61 | "Two" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:64:60:70 | access to indexer | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:64:60:78 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:65:60:65 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:65:60:69 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:69:60:69 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:60:74:60:78 | "One" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:13:61:58 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:26:61:58 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:28:61:39 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:29:61:29 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:34:61:39 | "Zero" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:42:61:56 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:43:61:43 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:43:61:47 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:47:61:47 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:61:52:61:56 | "One" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:13:62:60 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:27:62:60 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:29:62:40 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:30:62:30 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:33:62:33 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:38:62:40 | "i" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:43:62:58 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:44:62:44 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:47:62:47 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:47:62:51 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:51:62:51 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:62:56:62:58 | "1" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:13:63:25 | access to property ArrayProperty | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:13:63:60 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:29:63:60 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:31:63:41 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:32:63:32 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:37:63:41 | "One" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:44:63:58 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:45:63:45 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:45:63:49 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:49:63:49 | 2 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:63:54:63:58 | "Two" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:13:64:26 | access to property ArrayProperty2 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:13:64:63 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:30:64:63 | { ..., ... } | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:32:64:43 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:33:64:33 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:36:64:36 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:41:64:43 | "i" | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:46:64:61 | ... = ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:47:64:47 | 1 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:50:64:50 | access to parameter i | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:50:64:54 | ... + ... | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:54:64:54 | 0 | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:64:59:64:61 | "1" | Initializers.cs:51:10:51:13 | Test |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:8:5:13:5 | {...} | LoopUnrolling.cs:7:10:7:11 | M1 |
@@ -3598,13 +3702,14 @@ blockEnclosing
 | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:36:10:36:11 | M6 |
-| Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | Initializers |
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | Initializers |
-| Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | M |
-| Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | NoConstructor |
-| Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | Sub |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | M |
+| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | NoConstructor |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | Sub |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | Test |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:7:10:7:11 | M1 |
