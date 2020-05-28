@@ -19,7 +19,7 @@ class ReturnKind extends TReturnKind {
 class ReturnNode extends ResultNode {
   ReturnKind kind;
 
-  ReturnNode() { exists(int nr | nr = fd.getType().getNumResult() | kind = MkReturnKind(i)) }
+  ReturnNode() { kind = MkReturnKind(i) }
 
   /** Gets the kind of this returned value. */
   ReturnKind getKind() { result = kind }
