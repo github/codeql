@@ -10,10 +10,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:1322:8:1322:8 | Convert: (void *)... |
 ambiguousSuccessors
-| ir.cpp:1322:8:1322:8 | Load: p | Goto | 2 | ir.cpp:1322:3:1322:13 | Call: new |
-| ir.cpp:1322:8:1322:8 | Load: p | Goto | 2 | ir.cpp:1322:8:1322:8 | Convert: (void *)... |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
