@@ -464,11 +464,10 @@ class ArgumentNode extends Node {
  */
 predicate mutableType(Type tp) {
   exists(Type underlying | underlying = tp.getUnderlyingType() |
-    underlying instanceof ArrayType or
-    underlying instanceof SliceType or
-    underlying instanceof MapType or
-    underlying instanceof PointerType or
-    underlying instanceof InterfaceType
+    not underlying instanceof BoolType and
+    not underlying instanceof NumericType and
+    not underlying instanceof StringType and
+    not underlying instanceof LiteralType
   )
 }
 
