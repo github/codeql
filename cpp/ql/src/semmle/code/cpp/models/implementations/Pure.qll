@@ -20,9 +20,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
         name = "strpbrk" or
         name = "strcmp" or
         name = "strcspn" or
-        name = "strlen" or
         name = "strncmp" or
-        name = "strnlen" or
         name = "strrchr" or
         name = "strspn" or
         name = "strtod" or
@@ -30,7 +28,64 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction, SideE
         name = "strtol" or
         name = "strtoll" or
         name = "strtoq" or
-        name = "strtoul" or
+        name = "strtoul"
+      )
+    )
+  }
+
+  override predicate hasArrayInput(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate hasArrayWithNullTerminator(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists(ParameterIndex i |
+      input.isParameter(i) and
+      exists(getParameter(i))
+      or
+      input.isParameterDeref(i) and
+      getParameter(i).getUnspecifiedType() instanceof PointerType
+    ) and
+    (
+      output.isReturnValueDeref() and
+      getUnspecifiedType() instanceof PointerType
+      or
+      output.isReturnValue()
+    )
+  }
+
+  override predicate parameterNeverEscapes(int i) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    not parameterEscapesOnlyViaReturn(i)
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int i) {
+    i = 0 and
+    getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate parameterIsAlwaysReturned(int i) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
+  }
+}
+
+class StrLenFunction extends AliasFunction, ArrayFunction, TaintFunction, SideEffectFunction {
+  StrLenFunction() {
+    exists(string name |
+      hasGlobalOrStdName(name) and
+      (
+        name = "strlen" or
+        name = "strnlen" or
         name = "wcslen"
       )
       or
