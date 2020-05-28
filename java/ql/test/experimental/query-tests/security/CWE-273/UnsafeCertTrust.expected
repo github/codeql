@@ -1,4 +1,7 @@
-| UnsafeCertTrustTest.java:19:4:19:74 | init(...) | Unsafe configuration of trusted certificates |
-| UnsafeCertTrustTest.java:34:4:34:38 | init(...) | Unsafe configuration of trusted certificates |
-| UnsafeCertTrustTest.java:47:3:52:4 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
-| UnsafeCertTrustTest.java:65:3:65:57 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:26:4:26:74 | init(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:41:4:41:38 | init(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:54:3:59:4 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:72:3:72:57 | setDefaultHostnameVerifier(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:123:25:123:52 | createSSLEngine(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:134:25:134:52 | createSSLEngine(...) | Unsafe configuration of trusted certificates |
+| UnsafeCertTrustTest.java:143:34:143:83 | createSocket(...) | Unsafe configuration of trusted certificates |

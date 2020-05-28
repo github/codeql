@@ -1,7 +1,7 @@
 /**
  * @id java/unsafe-cert-trust
- * @name Unsafe implementation of trusting any certificate in SSL configuration
- * @description Unsafe implementation of the interface X509TrustManager and HostnameVerifier ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
+ * @name Unsafe implementation of trusting any certificate or missing hostname verification in SSL configuration
+ * @description Unsafe implementation of the interface X509TrustManager, HostnameVerifier, and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
  * @kind problem
  * @tags security
  *       external/cwe-273
@@ -9,8 +9,6 @@
 
 import java
 import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.DataFlow
-import DataFlow
 
 /**
  * X509TrustManager class that blindly trusts all certificates in server SSL authentication
@@ -79,7 +77,7 @@ class TrustAllHostnameVerify extends MethodAccess {
     (
       exists(NestedClass nc |
         nc.getASupertype*() instanceof TrustAllHostnameVerifier and
-        this.getArgument(0).getType() = nc  //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {...});
+        this.getArgument(0).getType() = nc //Scenario of HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {...});
       )
       or
       exists(Variable v |
@@ -90,6 +88,141 @@ class TrustAllHostnameVerify extends MethodAccess {
   }
 }
 
+class SSLEngine extends RefType {
+  SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
+}
+
+class Socket extends RefType {
+  Socket() { this.hasQualifiedName("java.net", "Socket") }
+}
+
+class SSLSocket extends RefType {
+  SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+}
+
+/**
+ * has setEndpointIdentificationAlgorithm set correctly
+ */
+predicate setEndpointIdentificationAlgorithm(MethodAccess createSSL) {
+  exists(
+    Variable sslo, MethodAccess ma, Variable sslparams //setSSLParameters with valid setEndpointIdentificationAlgorithm set
+  |
+    createSSL = sslo.getAnAssignedValue() and
+    ma.getQualifier() = sslo.getAnAccess() and
+    ma.getMethod().hasName("setSSLParameters") and
+    ma.getArgument(0).(VarAccess) = sslparams.getAnAccess() and
+    exists(MethodAccess setepa |
+      setepa.getQualifier().(VarAccess) = sslparams.getAnAccess() and
+      setepa.getMethod().hasName("setEndpointIdentificationAlgorithm") and
+      not setepa.getArgument(0) instanceof NullLiteral
+    )
+  )
+}
+
+/**
+ * has setEndpointIdentificationAlgorithm set correctly
+ */
+predicate hasEndpointIdentificationAlgorithm(Variable ssl) {
+  exists(
+    MethodAccess ma, Variable sslparams //setSSLParameters with valid setEndpointIdentificationAlgorithm set
+  |
+    ma.getQualifier() = ssl.getAnAccess() and
+    ma.getMethod().hasName("setSSLParameters") and
+    ma.getArgument(0).(VarAccess) = sslparams.getAnAccess() and
+    exists(MethodAccess setepa |
+      setepa.getQualifier().(VarAccess) = sslparams.getAnAccess() and
+      setepa.getMethod().hasName("setEndpointIdentificationAlgorithm") and
+      not setepa.getArgument(0) instanceof NullLiteral
+    )
+  )
+}
+
+/**
+ * SSL object is created in a separate method call or in the same method
+ */
+predicate hasFlowPath(MethodAccess createSSL, Variable ssl) {
+  (
+    createSSL = ssl.getAnAssignedValue()
+    or
+    exists(CastExpr ce |
+      ce.getExpr().(MethodAccess) = createSSL and
+      ce.getControlFlowNode().getASuccessor().(VariableAssign).getDestVar() = ssl //With a type cast like SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443);
+    )
+  )
+  or
+  exists(MethodAccess tranm |
+    createSSL.getEnclosingCallable().(Method) = tranm.getMethod() and
+    tranm.getControlFlowNode().getASuccessor().(VariableAssign).getDestVar() = ssl and
+    not setEndpointIdentificationAlgorithm(createSSL) //Check the scenario of invocation before used in the current method
+  )
+}
+
+/**
+ * Not have the SSLParameter set
+ */
+predicate hasNoEndpointIdentificationSet(MethodAccess createSSL, Variable ssl) {
+  //No setSSLParameters set
+  hasFlowPath(createSSL, ssl) and
+  not exists(MethodAccess ma |
+    ma.getQualifier() = ssl.getAnAccess() and
+    ma.getMethod().hasName("setSSLParameters")
+  )
+  or
+  //No endpointIdentificationAlgorithm set with setSSLParameters
+  hasFlowPath(createSSL, ssl) and
+  not setEndpointIdentificationAlgorithm(createSSL)
+}
+
+/**
+ * The setEndpointIdentificationAlgorithm method of SSLParameters with the ssl engine or socket
+ */
+class SSLEndpointIdentificationNotSet extends MethodAccess {
+  SSLEndpointIdentificationNotSet() {
+    (
+      this.getMethod().hasName("createSSLEngine") and
+      this.getMethod().getDeclaringType() instanceof SSLContext //createEngine method of SSLContext
+      or
+      this.getMethod().hasName("createSocket") and
+      this.getMethod().getReturnType() instanceof Socket //createSocket method of SSLSocketFactory
+    ) and
+    exists(Variable ssl |
+      hasNoEndpointIdentificationSet(this, ssl) and //Not set in itself
+      not exists(VariableAssign ar, Variable newSsl |
+        ar.getSource() = this.getCaller().getAReference() and
+        ar.getDestVar() = newSsl and
+        hasEndpointIdentificationAlgorithm(newSsl) //Not set in its caller either
+      )
+    ) and
+    not exists(MethodAccess ma | ma.getMethod() instanceof HostnameVerifierVerify) //Reduce false positives since this method access set default hostname verifier
+  }
+}
+
+class RabbitMQConnectionFactory extends RefType {
+  RabbitMQConnectionFactory() { this.hasQualifiedName("com.rabbitmq.client", "ConnectionFactory") }
+}
+
+/**
+ * The com.rabbitmq.client.ConnectionFactory useSslProtocol method access without enableHostnameVerification
+ */
+class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
+  RabbitMQEnableHostnameVerificationNotSet() {
+    this.getMethod().hasName("useSslProtocol") and
+    this.getMethod().getDeclaringType() instanceof RabbitMQConnectionFactory and
+    exists(VarAccess va |
+      va.getVariable().getType() instanceof RabbitMQConnectionFactory and
+      this.getQualifier() = va.getVariable().getAnAccess() and
+      not exists(MethodAccess ma |
+        ma.getMethod().hasName("enableHostnameVerification") and
+        ma.getQualifier() = va.getVariable().getAnAccess()
+      )
+    )
+  }
+}
+
 from MethodAccess aa
-where aa instanceof TrustAllHostnameVerify or aa instanceof X509TrustAllManagerInit
+where
+  aa instanceof TrustAllHostnameVerify or
+  aa instanceof X509TrustAllManagerInit or
+  aa instanceof SSLEndpointIdentificationNotSet or
+  aa instanceof RabbitMQEnableHostnameVerificationNotSet
 select aa, "Unsafe configuration of trusted certificates"
