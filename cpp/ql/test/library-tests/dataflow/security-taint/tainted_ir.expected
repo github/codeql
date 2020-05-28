@@ -29,6 +29,10 @@
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:18:60:25 | userName |  |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:29:60:34 | call to getenv |  |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:29:60:47 | (const char *)... |  |
+| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:10:64:14 | bytes |  |
+| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:23 | call to strlen |  |
+| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:37 | (int)... |  |
+| test.cpp:60:29:60:34 | call to getenv | test.cpp:64:18:64:37 | ... + ... |  |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:64:25:64:32 | userName |  |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:11:36:11:37 | s2 |  |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:68:17:68:24 | userName |  |
