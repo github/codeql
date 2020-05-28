@@ -92,6 +92,13 @@ private module CachedSteps {
   cached
   predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
+  private predicate callsBoundInternal(
+    DataFlow::InvokeNode invk, Function f, int boundArgs, boolean contextDependent
+  ) {
+    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, contextDependent)
+        .flowsTo(invk.getCalleeNode())
+  }
+
   /**
    * Holds if `invk` may invoke a bound version of `f` with `boundArgs` already bound.
    *
@@ -101,7 +108,7 @@ private module CachedSteps {
    */
   cached
   predicate callsBound(DataFlow::InvokeNode invk, Function f, int boundArgs) {
-    CallGraph::getABoundFunctionReference(f.flow(), boundArgs, false).flowsTo(invk.getCalleeNode())
+    callsBoundInternal(invk, f, boundArgs, false)
   }
 
   /**
@@ -111,10 +118,10 @@ private module CachedSteps {
    */
   cached
   predicate exploratoryBoundInvokeStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::InvokeNode invk, DataFlow::FunctionNode f, int i, int boundArgs |
-      CallGraph::getABoundFunctionReference(f, boundArgs, _).flowsTo(invk.getCalleeNode()) and
+    exists(DataFlow::InvokeNode invk, Function f, int i, int boundArgs |
+      callsBoundInternal(invk, f, boundArgs, _) and
       pred = invk.getArgument(i) and
-      succ = f.getParameter(i + boundArgs)
+      succ = DataFlow::parameterNode(f.getParameter(i + boundArgs))
     )
   }
 
@@ -144,11 +151,14 @@ private module CachedSteps {
   ) {
     calls(invk, f) and
     (
-      exists(int i, Parameter p |
-        f.getParameter(i) = p and
-        not p.isRestParameter() and
-        arg = invk.getArgument(i) and
-        parm = DataFlow::parameterNode(p)
+      exists(int i | arg = invk.getArgument(i) |
+        exists(Parameter p |
+          f.getParameter(i) = p and
+          not p.isRestParameter() and
+          parm = DataFlow::parameterNode(p)
+        )
+        or
+        parm = reflectiveParameterAccess(f, i)
       )
       or
       arg = invk.(DataFlow::CallNode).getReceiver() and
@@ -176,6 +186,22 @@ private module CachedSteps {
       arg = invk.getArgument(i) and
       parm = DataFlow::parameterNode(p)
     )
+  }
+
+  /**
+   * Gets a data-flow node inside `f` that refers to the `arguments` object of `f`.
+   */
+  private DataFlow::Node argumentsAccess(Function f) {
+    result.getContainer().getEnclosingContainer*() = f and
+    result.analyze().getAValue().(AbstractArguments).getFunction() = f
+  }
+
+  /**
+   * Gets a data-flow node that refers to the `i`th parameter of `f` through its `arguments`
+   * object.
+   */
+  private DataFlow::SourceNode reflectiveParameterAccess(Function f, int i) {
+    result.(DataFlow::PropRead).accesses(argumentsAccess(f), any(string p | i = p.toInt()))
   }
 
   /**

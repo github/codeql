@@ -13,7 +13,7 @@
 
 import python
 import semmle.python.security.Paths
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.filters.Tests
 
 class HardcodedValue extends TaintKind {

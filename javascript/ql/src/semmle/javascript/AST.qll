@@ -447,9 +447,9 @@ class StmtContainer extends @stmt_container, ASTNode {
  */
 module AST {
   /**
-   * A program element that evaluates to a value at runtime. This includes expressions,
-   * but also function and class declaration statements, as well as TypeScript
-   * namespace and enum declarations.
+   * A program element that evaluates to a value or destructures a value at runtime.
+   * This includes expressions and destructuring patterns, but also function and
+   * class declaration statements, as well as TypeScript namespace and enum declarations.
    *
    * Examples:
    *

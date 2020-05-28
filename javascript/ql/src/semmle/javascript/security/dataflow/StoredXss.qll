@@ -22,6 +22,10 @@ module StoredXss {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
+
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 
   /** A file name, considered as a flow source for stored XSS. */
