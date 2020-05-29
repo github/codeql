@@ -438,7 +438,7 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
   barrierGuardIsRelevant(guard) and
   exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
     nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-    (guard.getEnclosingExpr() = cond.getTest() or guard = cond.getTest().flow().getALocalSource()) and
+    (guard.getEnclosingExpr() = cond.getTest() or guard = cond.getTest().flow().getImmediatePredecessor+()) and
     outcome = cond.getOutcome() and
     barrierGuardBlocksAccessPath(guard, outcome, p, label) and
     cond.dominates(bb)
