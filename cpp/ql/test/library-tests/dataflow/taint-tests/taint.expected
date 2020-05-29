@@ -8,6 +8,11 @@
 | format.cpp:100:8:100:13 | buffer | format.cpp:99:30:99:43 | call to source |
 | format.cpp:105:8:105:13 | buffer | format.cpp:104:31:104:45 | call to source |
 | format.cpp:110:8:110:14 | wbuffer | format.cpp:109:38:109:52 | call to source |
+| format.cpp:151:7:151:12 | call to strlen | format.cpp:147:12:147:25 | call to source |
+| format.cpp:152:7:152:12 | call to wcslen | format.cpp:148:16:148:30 | call to source |
+| format.cpp:155:7:155:7 | i | format.cpp:147:12:147:25 | call to source |
+| format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
+| format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:73:7:73:7 | c | stl.cpp:69:16:69:21 | call to source |
 | stl.cpp:75:9:75:13 | call to c_str | stl.cpp:69:16:69:21 | call to source |
