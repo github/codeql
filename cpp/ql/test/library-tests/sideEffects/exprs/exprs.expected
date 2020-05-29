@@ -34,6 +34,7 @@
 | exprs.cpp:7:10:7:16 | (reference to) | isPure |  |  |
 | exprs.cpp:7:11:7:15 | * ... | isPure |  |  |
 | exprs.cpp:7:12:7:15 | this | isPure |  |  |
+| exprs.cpp:12:3:12:3 | this | isPure |  |  |
 | exprs.cpp:12:3:12:3 | v | isPure |  |  |
 | exprs.cpp:12:3:12:5 | ... -- |  | mayBeImpure | mayBeGloballyImpure |
 | exprs.cpp:13:10:13:16 | (...) | isPure |  |  |
@@ -70,4 +71,3 @@
 | exprs.cpp:34:4:34:4 | t | isPure |  |  |
 | exprs.cpp:38:2:38:31 | call to myTemplateFunction |  | mayBeImpure | mayBeGloballyImpure |
 | exprs.cpp:39:2:39:24 | call to myTemplateFunction |  | mayBeImpure | mayBeGloballyImpure |
-| file://:0:0:0:0 | this | isPure |  |  |

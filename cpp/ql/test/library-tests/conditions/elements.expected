@@ -1,7 +1,6 @@
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | <error expr> |
-| file://:0:0:0:0 | <error expr> |
 | file://:0:0:0:0 | <error> |
 | file://:0:0:0:0 | There was an error during this compilation |
 | file://:0:0:0:0 | _Complex __float128 |
@@ -125,6 +124,7 @@
 | test.cpp:2:10:4:1 | { ... } |
 | test.cpp:3:5:3:15 | if (...) ...  |
 | test.cpp:3:9:3:12 | (condition decl) |
+| test.cpp:3:9:3:12 | <error expr> |
 | test.cpp:3:12:3:12 | <error> |
 | test.cpp:3:12:3:12 | a condition declaration must include an initializer |
 | test.cpp:3:12:3:12 | declaration of <error> |

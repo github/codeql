@@ -430,28 +430,28 @@ DynamicCast.cpp:
 #-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Base *
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ThisExpr] this
-#-----|                 Type = [PointerType] Derived *
-#-----|                 ValueCategory = prvalue(load)
+#    4|             expr: [ThisExpr] this
+#    4|                 Type = [PointerType] Derived *
+#    4|                 ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const Base &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [PointerDereferenceExpr] * ...
-#-----|                 Type = [SpecifiedType] const Base
-#-----|                 ValueCategory = lvalue
+#    4|             expr: [PointerDereferenceExpr] * ...
+#    4|                 Type = [SpecifiedType] const Base
+#    4|                 ValueCategory = lvalue
 #-----|               0: [CStyleCast] (const Base *)...
 #-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Base *
 #-----|                   ValueCategory = prvalue
-#-----|                 expr: [AddressOfExpr] & ...
-#-----|                     Type = [PointerType] const Derived *
-#-----|                     ValueCategory = prvalue
+#    4|                 expr: [AddressOfExpr] & ...
+#    4|                     Type = [PointerType] const Derived *
+#    4|                     ValueCategory = prvalue
 #-----|                   0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                       Type = [SpecifiedType] const Derived
 #-----|                       ValueCategory = lvalue
-#-----|                     expr: [VariableAccess] p#0
-#-----|                         Type = [LValueReferenceType] const Derived &
-#-----|                         ValueCategory = prvalue(load)
+#    4|                     expr: [VariableAccess] p#0
+#    4|                         Type = [LValueReferenceType] const Derived &
+#    4|                         ValueCategory = prvalue(load)
 #-----|     1: [ReturnStmt] return ...
 #-----|       0: [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Derived &
@@ -1248,9 +1248,9 @@ union_etc.cpp:
 #    6|         0: [PointerFieldAccess] x
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] S *
-#-----|               ValueCategory = prvalue(load)
+#    6|           -1: [ThisExpr] this
+#    6|               Type = [PointerType] S *
+#    6|               ValueCategory = prvalue(load)
 #    6|         1: [VariableAccess] val
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = prvalue(load)
@@ -1431,9 +1431,9 @@ union_etc.cpp:
 #   33|         0: [PointerFieldAccess] q
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] T *
-#-----|               ValueCategory = prvalue(load)
+#   33|           -1: [ThisExpr] this
+#   33|               Type = [PointerType] T *
+#   33|               ValueCategory = prvalue(load)
 #   33|         1: [VariableAccess] val
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = prvalue(load)
