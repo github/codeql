@@ -716,7 +716,9 @@ private TranslatedThisReadEffect getTranslatedThisReadEffect(Function func) {
   result.getAST() = func
 }
 
-private TranslatedParameterReadEffect getTranslatedParameterReadEffect(Parameter param) { result.getAST() = param }
+private TranslatedParameterReadEffect getTranslatedParameterReadEffect(Parameter param) {
+  result.getAST() = param
+}
 
 abstract class TranslatedReadEffect extends TranslatedElement {
   override TranslatedElement getChild(int id) { none() }
@@ -746,7 +748,6 @@ abstract class TranslatedReadEffect extends TranslatedElement {
   }
 }
 
-
 class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisReadEffect {
   Function func;
 
@@ -769,6 +770,7 @@ class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisRead
     result = getTranslatedFunction(func).getThisVariable()
   }
 }
+
 class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedParameterReadEffect {
   Parameter param;
 

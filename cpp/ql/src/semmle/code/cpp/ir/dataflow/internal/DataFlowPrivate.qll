@@ -74,13 +74,12 @@ class ReturnValueNode extends ReturnNode {
 class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
-  override ReturnKind getKind() { 
+  override ReturnKind getKind() {
     result = TIndirectReturnKind(-1) and
     primary.isThisIndirection()
     or
     result = TIndirectReturnKind(primary.getParameter().getIndex())
   }
-
 }
 
 /** A data flow node that represents the output of a call. */
