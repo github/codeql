@@ -1,6 +1,8 @@
 private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.IRFunctionBase
+private import semmle.code.cpp.ir.implementation.internal.TInstruction
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.TempVariableTag
@@ -12,32 +14,39 @@ private import TranslatedStmt
 private import TranslatedFunction
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
-  instruction = MkInstruction(result, _)
+  instruction = TRawInstruction(_, _, _, _, result, _)
 }
 
-InstructionTag getInstructionTag(Instruction instruction) { instruction = MkInstruction(_, result) }
+InstructionTag getInstructionTag(Instruction instruction) {
+  instruction = TRawInstruction(_, _, _, _, _, result)
+}
 
-import Cached
-
+/**
+ * Provides the portion of the parameterized IR interface that is used to construct the initial
+ * "raw" stage of the IR. The other stages of the IR do not expose these predicates.
+ */
 cached
-private module Cached {
+module Raw {
+  class InstructionTag1 = TranslatedElement;
+
+  class InstructionTag2 = InstructionTag;
+
   cached
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
 
   cached
-  newtype TInstruction =
-    MkInstruction(TranslatedElement element, InstructionTag tag) {
-      element.hasInstruction(_, tag, _)
-    }
+  predicate hasInstruction(
+    Function func, Opcode opcode, Element ast, CppType resultType, TranslatedElement element,
+    InstructionTag tag
+  ) {
+    element.hasInstruction(opcode, tag, resultType) and
+    ast = element.getAST() and
+    func = element.getFunction()
+  }
 
   cached
   predicate hasUserVariable(Function func, Variable var, CppType type) {
     getTranslatedFunction(func).hasUserVariable(var, type)
-  }
-
-  cached
-  predicate hasThisVariable(Function func, CppType type) {
-    type = getTypeForGLValue(getTranslatedFunction(func).getThisType())
   }
 
   cached
@@ -62,6 +71,16 @@ private module Cached {
     var.hasDynamicInitialization() and
     type = getBoolType()
   }
+}
+
+import Cached
+
+cached
+private module Cached {
+  class TStageInstruction = TRawInstruction;
+
+  cached
+  predicate hasInstruction(TRawInstruction instr) { any() }
 
   cached
   predicate hasModeledMemoryResult(Instruction instruction) { none() }
@@ -267,25 +286,23 @@ private module Cached {
   }
 
   cached
-  Locatable getInstructionAST(Instruction instruction) {
-    result = getInstructionTranslatedElement(instruction).getAST()
+  Locatable getInstructionAST(TStageInstruction instr) {
+    instr = TRawInstruction(_, _, result, _, _, _)
   }
 
   cached
-  CppType getInstructionResultType(Instruction instruction) {
-    getInstructionTranslatedElement(instruction)
-        .hasInstruction(_, getInstructionTag(instruction), result)
+  CppType getInstructionResultType(TStageInstruction instr) {
+    instr = TRawInstruction(_, _, _, result, _, _)
   }
 
   cached
-  Opcode getInstructionOpcode(Instruction instruction) {
-    getInstructionTranslatedElement(instruction)
-        .hasInstruction(result, getInstructionTag(instruction), _)
+  Opcode getInstructionOpcode(TStageInstruction instr) {
+    instr = TRawInstruction(_, result, _, _, _, _)
   }
 
   cached
-  IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
-    result.getFunction() = getInstructionTranslatedElement(instruction).getFunction()
+  IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
+    instr = TRawInstruction(result, _, _, _, _, _)
   }
 
   cached

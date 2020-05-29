@@ -29,7 +29,13 @@ private Instruction getAnInstructionAtLine(IRFunction irFunc, Language::File fil
 /**
  * Represents a single operation in the IR.
  */
-class Instruction extends Construction::TInstruction {
+class Instruction extends Construction::TStageInstruction {
+  Instruction() {
+    // The base `TStageInstruction` type is a superset of the actual instructions appearing in this
+    // stage. This call lets the stage filter out the ones that are not reused from raw IR.
+    Construction::hasInstruction(this)
+  }
+
   final string toString() { result = getOpcode().toString() + ": " + getAST().toString() }
 
   /**
@@ -250,7 +256,7 @@ class Instruction extends Construction::TInstruction {
    * result of the `Load` instruction is a prvalue of type `int`, representing
    * the integer value loaded from variable `x`.
    */
-  final predicate isGLValue() { Construction::getInstructionResultType(this).hasType(_, true) }
+  final predicate isGLValue() { getResultLanguageType().hasType(_, true) }
 
   /**
    * Gets the size of the result produced by this instruction, in bytes. If the
@@ -259,7 +265,7 @@ class Instruction extends Construction::TInstruction {
    * If `this.isGLValue()` holds for this instruction, the value of
    * `getResultSize()` will always be the size of a pointer.
    */
-  final int getResultSize() { result = Construction::getInstructionResultType(this).getByteSize() }
+  final int getResultSize() { result = getResultLanguageType().getByteSize() }
 
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
