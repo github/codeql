@@ -1,6 +1,4 @@
-| A.cpp:25:7:25:10 | this | AST only |
 | A.cpp:25:13:25:13 | c | AST only |
-| A.cpp:27:22:27:25 | this | AST only |
 | A.cpp:27:28:27:28 | c | AST only |
 | A.cpp:31:20:31:20 | c | AST only |
 | A.cpp:40:5:40:6 | cc | AST only |
@@ -46,7 +44,6 @@
 | A.cpp:132:10:132:10 | b | AST only |
 | A.cpp:132:13:132:13 | c | AST only |
 | A.cpp:142:10:142:10 | c | AST only |
-| A.cpp:143:7:143:10 | this | AST only |
 | A.cpp:143:13:143:13 | b | AST only |
 | A.cpp:151:18:151:18 | b | AST only |
 | A.cpp:151:21:151:21 | this | AST only |
@@ -77,8 +74,6 @@
 | A.cpp:169:12:169:12 | l | AST only |
 | A.cpp:169:15:169:18 | head | AST only |
 | A.cpp:183:7:183:10 | head | AST only |
-| A.cpp:183:7:183:10 | this | AST only |
-| A.cpp:184:7:184:10 | this | AST only |
 | A.cpp:184:13:184:16 | next | AST only |
 | B.cpp:7:25:7:25 | e | AST only |
 | B.cpp:8:25:8:26 | b1 | AST only |
@@ -96,23 +91,15 @@
 | B.cpp:19:10:19:11 | b2 | AST only |
 | B.cpp:19:14:19:17 | box1 | AST only |
 | B.cpp:19:20:19:24 | elem2 | AST only |
-| B.cpp:35:7:35:10 | this | AST only |
 | B.cpp:35:13:35:17 | elem1 | AST only |
-| B.cpp:36:7:36:10 | this | AST only |
 | B.cpp:36:13:36:17 | elem2 | AST only |
-| B.cpp:46:7:46:10 | this | AST only |
 | B.cpp:46:13:46:16 | box1 | AST only |
 | C.cpp:19:5:19:5 | c | AST only |
-| C.cpp:24:5:24:8 | this | AST only |
 | C.cpp:24:11:24:12 | s3 | AST only |
 | D.cpp:9:21:9:24 | elem | AST only |
-| D.cpp:9:21:9:24 | this | AST only |
 | D.cpp:11:29:11:32 | elem | AST only |
-| D.cpp:11:29:11:32 | this | AST only |
 | D.cpp:16:21:16:23 | box | AST only |
-| D.cpp:16:21:16:23 | this | AST only |
 | D.cpp:18:29:18:31 | box | AST only |
-| D.cpp:18:29:18:31 | this | AST only |
 | D.cpp:22:10:22:11 | b2 | AST only |
 | D.cpp:22:14:22:20 | call to getBox1 | AST only |
 | D.cpp:22:25:22:31 | call to getElem | AST only |
@@ -133,7 +120,6 @@
 | D.cpp:51:27:51:27 | e | AST only |
 | D.cpp:52:14:52:14 | b | AST only |
 | D.cpp:57:5:57:12 | boxfield | AST only |
-| D.cpp:57:5:57:12 | this | AST only |
 | D.cpp:58:5:58:12 | boxfield | AST only |
 | D.cpp:58:5:58:12 | this | AST only |
 | D.cpp:58:15:58:17 | box | AST only |
@@ -172,7 +158,6 @@
 | aliasing.cpp:92:3:92:3 | w | AST only |
 | aliasing.cpp:92:7:92:8 | m1 | AST only |
 | by_reference.cpp:12:8:12:8 | a | AST only |
-| by_reference.cpp:16:5:16:8 | this | AST only |
 | by_reference.cpp:16:11:16:11 | a | AST only |
 | by_reference.cpp:20:5:20:8 | this | AST only |
 | by_reference.cpp:20:23:20:27 | value | AST only |
@@ -249,9 +234,7 @@
 | by_reference.cpp:136:8:136:13 | pouter | AST only |
 | by_reference.cpp:136:16:136:16 | a | AST only |
 | complex.cpp:11:22:11:23 | a_ | AST only |
-| complex.cpp:11:22:11:23 | this | AST only |
 | complex.cpp:12:22:12:23 | b_ | AST only |
-| complex.cpp:12:22:12:23 | this | AST only |
 | complex.cpp:51:8:51:8 | b | AST only |
 | complex.cpp:51:10:51:14 | inner | AST only |
 | complex.cpp:51:16:51:16 | f | AST only |
@@ -275,16 +258,13 @@
 | complex.cpp:74:7:74:8 | b3 | AST only |
 | complex.cpp:77:7:77:8 | b4 | AST only |
 | constructors.cpp:20:24:20:25 | a_ | AST only |
-| constructors.cpp:20:24:20:25 | this | AST only |
 | constructors.cpp:21:24:21:25 | b_ | AST only |
-| constructors.cpp:21:24:21:25 | this | AST only |
 | constructors.cpp:28:10:28:10 | f | AST only |
 | constructors.cpp:29:10:29:10 | f | AST only |
 | constructors.cpp:40:9:40:9 | f | AST only |
 | constructors.cpp:43:9:43:9 | g | AST only |
 | constructors.cpp:46:9:46:9 | h | AST only |
 | constructors.cpp:49:9:49:9 | i | AST only |
-| qualifiers.cpp:9:30:9:33 | this | AST only |
 | qualifiers.cpp:9:36:9:36 | a | AST only |
 | qualifiers.cpp:12:56:12:56 | a | AST only |
 | qualifiers.cpp:13:57:13:57 | a | AST only |
@@ -325,9 +305,7 @@
 | qualifiers.cpp:48:16:48:20 | inner | AST only |
 | qualifiers.cpp:48:23:48:23 | a | AST only |
 | simple.cpp:20:24:20:25 | a_ | AST only |
-| simple.cpp:20:24:20:25 | this | AST only |
 | simple.cpp:21:24:21:25 | b_ | AST only |
-| simple.cpp:21:24:21:25 | this | AST only |
 | simple.cpp:28:10:28:10 | f | AST only |
 | simple.cpp:29:10:29:10 | f | AST only |
 | simple.cpp:39:5:39:5 | f | AST only |
@@ -339,7 +317,6 @@
 | simple.cpp:51:9:51:9 | h | AST only |
 | simple.cpp:54:9:54:9 | i | AST only |
 | simple.cpp:65:7:65:7 | i | AST only |
-| simple.cpp:83:9:83:10 | f2 | AST only |
 | simple.cpp:83:9:83:10 | this | AST only |
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:84:14:84:20 | this | AST only |
