@@ -211,17 +211,22 @@ def deepcopy_before_modify(x=[]):
     x.append(42)
     return x
 
+def tuple_unsuccessfully_copy_before_modify(x=[]):
+    t = (copy(x), 3) # Tuple wrongly tainted here
+    t[0].append(42) # FP here
+    return t[0]
+
 def call_copy_before_modify(x=[]):
     x = x.copy()
     x.append(42)
     return x
 
-def tuple_copy_before_modify(x=[], y=[]):
+def tuple_call_copy_before_modify(x=[], y=[]):
     t = (x.copy(), y.copy())
     t[0].append(42)
     return t[0]
 
-def tuple_unsuccessfully_copy_before_modify(x=[], y=[]):
+def tuple_unsuccessfully_call_copy_before_modify(x=[], y=[]):
     t = (x.copy(), y) # Whole tuple tainted here
     t[0].append(42) # FP here, since we taint both t[0] and t[1]
     return t[0]
