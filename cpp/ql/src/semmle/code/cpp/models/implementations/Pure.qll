@@ -111,9 +111,7 @@ class StrLenFunction extends AliasFunction, ArrayFunction, SideEffectFunction {
     getParameter(i).getUnspecifiedType() instanceof PointerType
   }
 
-  override predicate parameterEscapesOnlyViaReturn(int i) {
-    none()
-  }
+  override predicate parameterEscapesOnlyViaReturn(int i) { none() }
 
   override predicate parameterIsAlwaysReturned(int i) { none() }
 
