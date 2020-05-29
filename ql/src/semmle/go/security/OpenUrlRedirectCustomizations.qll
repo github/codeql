@@ -58,7 +58,6 @@ module OpenUrlRedirect {
       |
         methName = "Cookie" or
         methName = "Cookies" or
-        methName = "FormValue" or
         methName = "MultipartReader" or
         methName = "PostFormValues" or
         methName = "Referer" or
