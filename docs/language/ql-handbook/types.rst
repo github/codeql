@@ -497,8 +497,9 @@ Type unions are used for creating restricted subsets of an existing :ref:`algebr
 selecting a subset of the branches of that datatype and binding them to a new type.
 Type unions of :ref:`database types <database-types>` are also supported.
 
-You can use a type union to explicitly restrict the permitted branches from an algebraic datatype
-and resolve spurious :ref:`recursion <recursion>` in predicates.
+You can use a type union to give a name to a subset of the branches from an algebraic datatype.
+In some cases, using the type union over the whole algebraic datatype can avoid spurious
+:ref:`recursion <recursion>` in predicates.
 For example, the following construction is legal::
 
     newtype InitialValueSource =
