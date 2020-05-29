@@ -89,8 +89,8 @@ int o_wronly() { result = parseOctal("01") }
 /** Gets the number corresponding to the read-and-write file access mode. */
 int o_rdwr() { result = parseOctal("02") }
 
-/** Gets the number corresponding to the file creation flag O_CREAT. */
+/** Gets the number corresponding to the file creation flag O_CREAT on Linux. */
 int o_creat() { result = parseOctal("0100") }
 
-/** Gets the number corresponding to the file creation flag O_EXCL. */
+/** Gets the number corresponding to the file creation flag O_EXCL on Linux. */
 int o_excl() { result = parseOctal("0200") }
