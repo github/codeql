@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing files and folders.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.metrics.MetricFile
