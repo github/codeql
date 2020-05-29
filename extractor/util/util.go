@@ -85,9 +85,9 @@ func GetPkgDir(pkgpath string) string {
 
 // FileExists tests whether the file at `filename` exists.
 func FileExists(filename string) bool {
-	_, err := os.Stat(filename)
+	info, err := os.Stat(filename)
 	if err != nil && !os.IsNotExist(err) {
 		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
 	}
-	return err == nil
+	return err == nil && !info.IsDir()
 }
