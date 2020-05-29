@@ -13,7 +13,9 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
-  TVariableNode(Variable var)
+  TVariableNode(Variable var) or
+  TStoreNode(StoreChain chain) or
+  TLoadNode(LoadChain load)
 
 /**
  * A node in a data flow graph.
@@ -225,7 +227,7 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends InstructionNode {
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
@@ -240,57 +242,13 @@ abstract class PostUpdateNode extends InstructionNode {
  * value, but does not necessarily replace it entirely. For example:
  * ```
  * x.y = 1; // a partial definition of the object `x`.
- * x.y.z = 1; // a partial definition of the object `x.y`.
+ * x.y.z = 1; // a partial definition of the objects `x.y` and `x`.
  * x.setY(1); // a partial definition of the object `x`.
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
-}
-
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  FieldAddressInstruction field;
-
-  ExplicitFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and field = store.getDestinationAddress()
-    )
-  }
-
-  // There might be multiple `ChiInstructions` that has a particular instruction as
-  // the total operand - so this definition gives consistency errors in
-  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
-  // this consistency failure has.
-  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
-  }
-}
-
-/**
- * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
- */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-  FieldAddressInstruction field;
-
-  ExplicitSingleFieldStoreQualifierNode() {
-    field = instr.getDestinationAddress() and
-    not exists(ChiInstruction chi | chi.getPartial() = instr)
-  }
-
-  override Node getPreUpdateNode() { none() }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
-  }
 }
 
 /**
@@ -372,6 +330,352 @@ class VariableNode extends Node, TVariableNode {
   override string toString() { result = v.toString() }
 }
 
+/** The target node of a `readStep`. */
+abstract class ReadStepNode extends Node {
+  /** Get the field that is read. */
+  abstract Field getAField();
+
+  /** Get the node representing the value that is read. */
+  abstract Node getReadValue();
+}
+
+/** The target node of a `storeStep`. */
+abstract class StoreStepNode extends PostUpdateNode {
+  /** Get the field that is stored into. */
+  abstract Field getAField();
+
+  /** Get the node representing the value that is stored. */
+  abstract Node getStoredValue();
+}
+
+/**
+ * Sometimes a sequence of `FieldAddressInstruction`s does not end with a `StoreInstruction`.
+ * This class abstracts out the information needed to end a `StoreChain`.
+ */
+abstract private class StoreChainEndInstruction extends Instruction {
+  abstract FieldAddressInstruction getFieldInstruction();
+
+  abstract Instruction getBeginInstruction();
+
+  abstract Node getPreUpdateNode();
+}
+
+/**
+ * A `StoreInstruction` that ends a sequence of `FieldAddressInstruction`s.
+ */
+private class StoreChainEndInstructionStoreWithChi extends StoreChainEndInstruction, ChiInstruction {
+  StoreInstruction store;
+  FieldAddressInstruction fi;
+
+  StoreChainEndInstructionStoreWithChi() {
+    not this.isResultConflated() and
+    this.getPartial() = store and
+    fi = skipConversion*(store.getDestinationAddress())
+  }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Node getPreUpdateNode() { result.asInstruction() = this.getTotal() }
+
+  override Instruction getBeginInstruction() { result = store }
+}
+
+/**
+ * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
+ * For instance, an update to a field of a struct containing only one field. For these cases we
+ * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
+ * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ */
+private class StoreChainEndInstructionStoreWithoutChi extends StoreChainEndInstruction,
+  StoreInstruction {
+  FieldAddressInstruction fi;
+
+  StoreChainEndInstructionStoreWithoutChi() {
+    not exists(ChiInstruction chi | chi.getPartial() = this) and
+    fi = skipConversion*(this.getDestinationAddress())
+  }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Node getPreUpdateNode() { none() }
+
+  override Instruction getBeginInstruction() { result = this.getSourceValue() }
+}
+
+/**
+ * When traversing dependencies between an instruction and its operands
+ * it is sometimes convenient to ignore certain instructions. For instance,
+ * the `LoadChain` for `((B&)a.b).c` inserts a `CopyValueInstruction`
+ * between the computed address for `b` and the `FieldAddressInstruction`
+ * for `c`.
+ */
+private Instruction skipConversion(Instruction instr) {
+  result = instr.(CopyInstruction).getSourceValue()
+  or
+  result = instr.(ConvertInstruction).getUnary()
+  or
+  result = instr.(CheckedConvertOrNullInstruction).getUnary()
+  or
+  result = instr.(InheritanceConversionInstruction).getUnary()
+}
+
+/**
+ * Ends a `StoreChain` with a `WriteSideEffectInstruction` such that we build up
+ * the correct access paths. For example in:
+ * ```
+ * void setter(B *b, int data) {
+ *   b->c = data;
+ * }
+ * ...
+ * setter(&a.b, source());
+ * sink(a.b.c)
+ * ```
+ * In order to register `a.b.c` as a `readStep`, the access path must
+ * contain `[a, b, c]`, and thus the access path must be `[a, b]`
+ * before entering `setter`.
+ */
+private class StoreChainEndInstructionSideEffect extends StoreChainEndInstruction, ChiInstruction {
+  SideEffectInstruction sideEffect;
+  FieldAddressInstruction fi;
+
+  StoreChainEndInstructionSideEffect() {
+    not this.isResultConflated() and
+    this.getPartial() = sideEffect and
+    fi = skipConversion*(sideEffect.getAnOperand().getDef())
+  }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Node getPreUpdateNode() { result.asInstruction() = this.getTotal() }
+
+  override Instruction getBeginInstruction() { result = sideEffect }
+}
+
+private newtype TStoreChain =
+  TStoreChainConsNil(FieldAddressInstruction f, StoreChainEndInstruction end) {
+    end.getFieldInstruction() = f
+  } or
+  TStoreChainConsCons(FieldAddressInstruction f, TStoreChain next) {
+    exists(FieldAddressInstruction g | skipConversion*(g.getObjectAddress()) = f |
+      next = TStoreChainConsCons(g, _) or
+      next = TStoreChainConsNil(g, _)
+    )
+  }
+
+private class StoreChain extends TStoreChain {
+  string toString() { none() }
+
+  StoreChainConsCons getParent() { none() }
+
+  StoreChain getChild() { none() }
+
+  StoreChainEndInstruction getEndInstruction() { none() }
+
+  Instruction getBeginInstruction() { none() }
+
+  FieldAddressInstruction getFieldInstruction() { none() }
+
+  FieldAddressInstruction getAFieldInstruction() { none() }
+}
+
+private class StoreChainConsNil extends StoreChain, TStoreChainConsNil {
+  FieldAddressInstruction fi;
+  StoreChainEndInstruction end;
+
+  StoreChainConsNil() { this = TStoreChainConsNil(fi, end) }
+
+  override string toString() { result = fi.getField().toString() }
+
+  override StoreChainConsCons getParent() { result = TStoreChainConsCons(_, this) }
+
+  override StoreChainEndInstruction getEndInstruction() { result = end }
+
+  override Instruction getBeginInstruction() { result = end.getBeginInstruction() }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override FieldAddressInstruction getAFieldInstruction() { result = fi }
+}
+
+private class StoreChainConsCons extends StoreChain, TStoreChainConsCons {
+  FieldAddressInstruction fi;
+  StoreChain next;
+
+  StoreChainConsCons() { this = TStoreChainConsCons(fi, next) }
+
+  override string toString() { result = fi.getField().toString() + "." + next.toString() }
+
+  override StoreChainConsCons getParent() { result.getChild() = this }
+
+  override StoreChain getChild() { result = next }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override FieldAddressInstruction getAFieldInstruction() {
+    result = [fi, next.getAFieldInstruction()]
+  }
+
+  override StoreChainEndInstruction getEndInstruction() { result = next.getEndInstruction() }
+
+  override Instruction getBeginInstruction() { result = next.getBeginInstruction() }
+}
+
+private newtype TLoadChain =
+  TLoadChainConsNil(FieldAddressInstruction fi, LoadChainEndInstruction end) {
+    end.getFieldInstruction() = fi
+  } or
+  TLoadChainConsCons(FieldAddressInstruction fi, TLoadChain next) {
+    exists(FieldAddressInstruction nextFi | skipConversion*(nextFi.getObjectAddress()) = fi |
+      next = TLoadChainConsCons(nextFi, _) or
+      next = TLoadChainConsNil(nextFi, _)
+    )
+  }
+
+/**
+ * This class abstracts out the information needed to end a `LoadChain`. For now the only
+ * implementation is `LoadChainEndInstructionLoad`, but we may need another implementation similar
+ * to `StoreChainEndInstructionSideEffect` to handle cases like:
+ * ```
+ * void read_f(Inner* inner) {
+ *   sink(inner->f);
+ * }
+ * ...
+ * outer.inner.f = taint();
+ * read_f(&outer.inner);
+ * ```
+ */
+abstract private class LoadChainEndInstruction extends Instruction {
+  abstract FieldAddressInstruction getFieldInstruction();
+
+  abstract Instruction getReadValue();
+}
+
+/**
+ * A `LoadInstruction` that ends a sequence of `FieldAddressInstruction`s.
+ */
+private class LoadChainEndInstructionLoad extends LoadChainEndInstruction, LoadInstruction {
+  FieldAddressInstruction fi;
+
+  LoadChainEndInstructionLoad() { fi = skipConversion*(this.getSourceAddress()) }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Instruction getReadValue() { result = getSourceValueOperand().getAnyDef() }
+}
+
+private class LoadChain extends TLoadChain {
+  string toString() { none() }
+
+  LoadChainEndInstruction getEndInstruction() { none() }
+
+  final LoadChainConsCons getParent() { result.getChild() = this }
+
+  LoadChain getChild() { none() }
+
+  FieldAddressInstruction getFieldInstruction() { none() }
+
+  Location getLocation() { none() }
+}
+
+private class LoadChainConsNil extends LoadChain, TLoadChainConsNil {
+  FieldAddressInstruction fi;
+  LoadChainEndInstruction end;
+
+  LoadChainConsNil() { this = TLoadChainConsNil(fi, end) }
+
+  override string toString() { result = fi.getField().toString() }
+
+  override LoadChainEndInstruction getEndInstruction() { result = end }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Location getLocation() { result = fi.getLocation() }
+}
+
+private class LoadChainConsCons extends LoadChain, TLoadChainConsCons {
+  FieldAddressInstruction fi;
+  LoadChain next;
+
+  LoadChainConsCons() { this = TLoadChainConsCons(fi, next) }
+
+  override string toString() { result = fi.getField().toString() + "." + next.toString() }
+
+  override LoadChainEndInstruction getEndInstruction() { result = next.getEndInstruction() }
+
+  override LoadChain getChild() { result = next }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Location getLocation() { result = fi.getLocation() }
+}
+
+/** `StoreNode` also extends `ReadStepNode` to participate in reverse read steps. */
+private class StoreNode extends TStoreNode, StoreStepNode, ReadStepNode, PartialDefinitionNode {
+  StoreChain storeChain;
+
+  StoreNode() { this = TStoreNode(storeChain) }
+
+  override string toString() { result = storeChain.toString() }
+
+  StoreChain getStoreChain() { result = storeChain }
+
+  override Node getPreUpdateNode() {
+    result.(StoreNode).getStoreChain() = storeChain.getParent()
+    or
+    not exists(storeChain.getParent()) and
+    result = storeChain.getEndInstruction().getPreUpdateNode()
+  }
+
+  override Field getAField() { result = storeChain.getFieldInstruction().getField() }
+
+  override Node getStoredValue() {
+    // Only the `StoreNode` attached to the end of the `StoreChain` has a `getStoredValue()`, so
+    // this is the only `StoreNode` that matches storeStep.
+    not exists(storeChain.getChild()) and result.asInstruction() = storeChain.getBeginInstruction()
+  }
+
+  override Node getReadValue() { result = getPreUpdateNode() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = storeChain.getEndInstruction().getEnclosingFunction() }
+
+  override Type getType() { result = storeChain.getEndInstruction().getResultType() }
+
+  override Location getLocation() { result = storeChain.getEndInstruction().getLocation() }
+
+  override Expr getDefinedExpr() {
+    result = storeChain.getAFieldInstruction().getObjectAddress().getUnconvertedResultExpression()
+  }
+}
+
+private class LoadNode extends TLoadNode, ReadStepNode {
+  LoadChain loadChain;
+
+  LoadNode() { this = TLoadNode(loadChain) }
+
+  override Field getAField() { result = loadChain.getFieldInstruction().getField() }
+
+  override Node getReadValue() {
+    result.(LoadNode).getLoadChain() = loadChain.getParent()
+    or
+    not exists(loadChain.getParent()) and
+    result.asInstruction() = loadChain.getEndInstruction().getReadValue()
+  }
+
+  LoadChain getLoadChain() { result = loadChain }
+
+  override string toString() { result = loadChain.toString() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = loadChain.getEndInstruction().getEnclosingFunction() }
+
+  override Type getType() { result = loadChain.getEndInstruction().getResultType() }
+
+  override Location getLocation() { result = loadChain.getEndInstruction().getLocation() }
+}
+
 /**
  * Gets the node corresponding to `instr`.
  */
@@ -425,6 +729,22 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  or
+  // When flow has gone all the way through the chain of field accesses
+  // `[f1,f2, ..., fn]` (from right to left) we add flow from f1 to the end instruction.
+  exists(StoreNode synthFrom |
+    synthFrom = nodeFrom and
+    not exists(synthFrom.getStoreChain().getParent()) and
+    synthFrom.getStoreChain().getEndInstruction() = nodeTo.asInstruction()
+  )
+  or
+  // When flow has gone all the way through the chain of field accesses
+  // `[f1, f2, ..., fn]` (from left to right) we add flow from fn to the end instruction.
+  exists(LoadNode synthFrom |
+    synthFrom = nodeFrom and
+    not exists(synthFrom.getLoadChain().getChild()) and
+    synthFrom.getLoadChain().getEndInstruction() = nodeTo.asInstruction()
+  )
 }
 
 pragma[noinline]
