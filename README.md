@@ -12,7 +12,8 @@ It contains two major components:
 
 The goal of this project is to provide comprehensive static analysis support for Go in CodeQL.
 
-For the queries and libraries that power CodeQL support for other languages, visit [the CodeQL repository](https://github.com/github/codeql).
+For the queries and libraries that power CodeQL support for other languages, visit [the CodeQL
+repository](https://github.com/github/codeql).
 
 ## Installation
 
@@ -23,9 +24,10 @@ Code workspace.
 
 ## Usage
 
-To analyze a Go codebase, either use the CodeQL command-line interface to create a database
-yourself, or download a pre-built database from LGTM.com. You can then run any of the queries
-contained in this repository either on the command line or using the VS Code extension.
+To analyze a Go codebase, either use the [CodeQL command-line
+interface](https://help.semmle.com/codeql/codeql-cli.html) to create a database yourself, or
+download a pre-built database from [LGTM.com](https://lgtm.com/). You can then run any of the
+queries contained in this repository either on the command line or using the VS Code extension.
 
 Note that the [lgtm.com](https://github.com/github/codeql-go/tree/lgtm.com) branch of this
 repository corresponds to the version of the queries that is currently deployed on LGTM.com.
