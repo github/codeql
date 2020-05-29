@@ -166,10 +166,6 @@
 | file://:0:0:0:0 | signed long long |
 | file://:0:0:0:0 | signed short |
 | file://:0:0:0:0 | static |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
 | file://:0:0:0:0 | thread |
 | file://:0:0:0:0 | unaligned |
 | file://:0:0:0:0 | unknown |
@@ -230,6 +226,8 @@
 | header.h:10:9:10:24 | composite<int>:: |
 | header.h:10:9:10:28 | call to eval |
 | header.h:10:9:10:28 | call to eval |
+| header.h:10:9:10:28 | this |
+| header.h:10:9:10:28 | this |
 | header.h:10:9:10:32 | ExprStmt |
 | header.h:10:9:10:32 | ExprStmt |
 | header.h:10:30:10:30 | i |
@@ -313,6 +311,8 @@
 | test.cpp:18:13:18:16 | valx |
 | test.cpp:19:9:19:13 | actor |
 | test.cpp:19:9:19:13 | actor |
+| test.cpp:19:9:19:13 | this |
+| test.cpp:19:9:19:13 | this |
 | test.cpp:19:9:19:24 | call to expression |
 | test.cpp:19:9:19:25 | ExprStmt |
 | test.cpp:19:9:19:25 | ExprStmt |

@@ -2,12 +2,6 @@ uniqueEnclosingCallable
 uniqueTypeBound
 uniqueTypeRepr
 uniqueNodeLocation
-| dispatch.cpp:60:18:60:29 | call to Bottom | Node should have one location but has 2. |
-| dispatch.cpp:61:18:61:29 | call to Middle | Node should have one location but has 2. |
-| dispatch.cpp:65:10:65:21 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Middle | Node should have one location but has 2. |
 missingLocation
 uniqueNodeToString
 missingToString

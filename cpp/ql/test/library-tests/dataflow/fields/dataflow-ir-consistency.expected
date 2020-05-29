@@ -1,8 +1,5 @@
 uniqueEnclosingCallable
 uniqueTypeBound
-| by_reference.cpp:106:21:106:41 | Chi | Node should have one type bound but has 2. |
-| by_reference.cpp:126:21:126:40 | Chi | Node should have one type bound but has 2. |
-| file://:0:0:0:0 | Chi | Node should have one type bound but has 2. |
 uniqueTypeRepr
 uniqueNodeLocation
 | D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
