@@ -110,7 +110,7 @@ private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
 /**
  * A kind of "taint", representing a dictionary mapping str->"taint"
  *
- * DEPRECATED: Use `ExternalStringKind` instead.
+ * DEPRECATED: Use `ExternalStringDictKind` instead.
  */
 deprecated class StringDictKind extends DictKind {
     StringDictKind() { this.getValue() instanceof StringKind }
