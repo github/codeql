@@ -327,8 +327,15 @@ class CallNode extends ExprNode {
   /** Gets a function passed as the `i`th argument of this call. */
   FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
 
-  /** Gets the data-flow node corresponding to the `i`th result of this call. */
-  Node getResult(int i) { result = extractTupleElement(this, i) }
+  /**
+   * Gets the data-flow node corresponding to the `i`th result of this call.
+   *
+   * If there is a single result then it is considered to be the 0th result. */
+  Node getResult(int i) {
+    i = 0 and result = getResult()
+    or
+    result = extractTupleElement(this, i)
+  }
 
   /**
    * Gets the data-flow node corresponding to the result of this call.
@@ -337,6 +344,9 @@ class CallNode extends ExprNode {
    * variant `getResult(i)` for such calls.
    */
   Node getResult() { not getType() instanceof TupleType and result = this }
+
+  /** Gets a result of this call. */
+  Node getAResult() { result = this.getResult(_) }
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }

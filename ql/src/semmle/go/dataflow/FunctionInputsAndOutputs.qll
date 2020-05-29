@@ -100,7 +100,11 @@ private class ResultInput extends FunctionInput, TInResult {
 
   override predicate isResult() { index = -1 }
 
-  override predicate isResult(int i) { i = index and i >= 0 }
+  override predicate isResult(int i) {
+    i = 0 and isResult()
+    or
+    i = index and i >= 0
+  }
 
   override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
     exists(DataFlow::PostUpdateNode pun, DataFlow::Node init |
@@ -181,7 +185,11 @@ private class OutResult extends FunctionOutput, TOutResult {
 
   override predicate isResult() { index = -1 }
 
-  override predicate isResult(int i) { i = index and i >= 0 }
+  override predicate isResult(int i) {
+    i = 0 and isResult()
+    or
+    i = index and i >= 0
+  }
 
   override DataFlow::Node getEntryNode(FuncDef f) {
     // return expressions

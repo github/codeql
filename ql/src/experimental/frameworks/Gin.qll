@@ -72,8 +72,6 @@ private module Gin {
           )
         |
           this = call.getResult(0)
-          or
-          this = call.getResult()
         )
         or
         // Field reads:
@@ -104,8 +102,6 @@ private module Gin {
           call.getTarget().hasQualifiedName(packagePath, typeName, ["ByName", "Get"])
         |
           this = call.getResult(0)
-          or
-          this = call.getResult()
         )
       )
     }

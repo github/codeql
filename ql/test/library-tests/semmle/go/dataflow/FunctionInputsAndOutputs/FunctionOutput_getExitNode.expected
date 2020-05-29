@@ -7,7 +7,11 @@
 | result | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 |
 | result | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump |
 | result | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new |
+| result 0 | main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op |
+| result 0 | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 |
+| result 0 | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump |
 | result 0 | main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[0] |
 | result 0 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[0] |
+| result 0 | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new |
 | result 1 | main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[1] |
 | result 1 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[1] |

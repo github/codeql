@@ -75,7 +75,7 @@ module ReflectedXss {
         pred.getStringValue().regexpMatch("^[^<].*")
         or
         // json data cannot begin with `<`
-        pred = any(EncodingJson::MarshalFunction mf).getOutput().getExitNode(_)
+        exists(EncodingJson::MarshalFunction mf | pred = mf.getOutput().getNode(mf.getACall()))
       )
     )
   }
