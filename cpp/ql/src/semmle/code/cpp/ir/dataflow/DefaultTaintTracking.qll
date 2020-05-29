@@ -33,8 +33,7 @@ private predicate predictableInstruction(Instruction instr) {
  * Note that the list itself is not very principled; it consists of all the
  * functions listed in the old security library's [default] `isPureFunction`
  * that have more than one argument, but are not in the old taint tracking
- * library's `returnArgument` predicate.  In addition, `strlen` is included
- * because it's also a special case in flow to return values.
+ * library's `returnArgument` predicate.
  */
 predicate predictableOnlyFlow(string name) {
   name = "strcasestr" or
@@ -43,7 +42,6 @@ predicate predictableOnlyFlow(string name) {
   name = "strchrnul" or
   name = "strcmp" or
   name = "strcspn" or
-  name = "strlen" or // special case
   name = "strncmp" or
   name = "strndup" or
   name = "strnlen" or

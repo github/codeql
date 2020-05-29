@@ -1,3 +1,8 @@
+/**
+ * Provides a library for working with local (intra-procedural) control-flow
+ * reachability involving stack variables.
+ */
+
 import cpp
 
 /**

@@ -5,7 +5,7 @@ private import AliasAnalysis
 
 private newtype TAllocation =
   TVariableAllocation(IRVariable var) or
-  TIndirectParameterAllocation(IRAutomaticUserVariable var) {
+  TIndirectParameterAllocation(IRAutomaticVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)
   } or
   TDynamicAllocation(CallInstruction call) {
@@ -74,7 +74,7 @@ class VariableAllocation extends Allocation, TVariableAllocation {
 }
 
 class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocation {
-  IRAutomaticUserVariable var;
+  IRAutomaticVariable var;
 
   IndirectParameterAllocation() { this = TIndirectParameterAllocation(var) }
 
@@ -90,7 +90,7 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
 
   final override string getUniqueId() { result = var.getUniqueId() }
 
-  final override IRType getIRType() { result = var.getIRType() }
+  final override IRType getIRType() { result instanceof IRUnknownType }
 
   final override predicate isReadOnly() { none() }
 

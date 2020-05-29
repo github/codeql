@@ -1,7 +1,15 @@
+/**
+ * Provides classes and predicates for SSA representation (Static Single Assignment form).
+ */
+
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 import SSAUtils
 
+/**
+ * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
+ * This class provides the standard SSA logic.
+ */
 library class StandardSSA extends SSAHelper {
   StandardSSA() { this = 0 }
 }
@@ -50,11 +58,13 @@ class SsaDefinition extends ControlFlowNodeBase {
    */
   ControlFlowNode getDefinition() { result = this }
 
+  /** Gets the `BasicBlock` containing this definition. */
   BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
   /** Holds if this definition is a phi node for variable `v`. */
   predicate isPhiNode(StackVariable v) { exists(StandardSSA x | x.phi_node(v, this.(BasicBlock))) }
 
+  /** Gets the location of this definition. */
   Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
   /** Holds if the SSA variable `(this, p)` is defined by parameter `p`. */

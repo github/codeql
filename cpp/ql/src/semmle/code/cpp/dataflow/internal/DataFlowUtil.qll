@@ -116,31 +116,10 @@ class ExprNode extends Node, TExprNode {
 
   override string toString() { result = expr.toString() }
 
-  override Location getLocation() {
-    result = getExprLocationOverride(expr)
-    or
-    not exists(getExprLocationOverride(expr)) and
-    result = expr.getLocation()
-  }
+  override Location getLocation() { result = expr.getLocation() }
 
   /** Gets the expression corresponding to this node. */
   Expr getExpr() { result = expr }
-}
-
-/**
- * Gets a location for `e` that's more accurate than `e.getLocation()`, if any.
- */
-private Location getExprLocationOverride(Expr e) {
-  // Base case: the parent has a better location than `e`.
-  e.getLocation() instanceof UnknownExprLocation and
-  result = e.getParent().getLocation() and
-  not result instanceof UnknownLocation
-  or
-  // Recursive case: the parent has a location override that's better than what
-  // `e` has.
-  e.getLocation() instanceof UnknownExprLocation and
-  result = getExprLocationOverride(e.getParent()) and
-  not result instanceof UnknownLocation
 }
 
 abstract class ParameterNode extends Node, TNode {
