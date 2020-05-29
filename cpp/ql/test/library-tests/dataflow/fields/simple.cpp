@@ -85,4 +85,63 @@ struct C2
     }
 };
 
+struct DeepStruct1 {
+    int x;
+    int y;
+};
+
+struct DeepStruct2 {
+    DeepStruct1 d1_1;
+    DeepStruct1 d1_2;
+};
+
+struct DeepStruct3 {
+    DeepStruct2 d2_1;
+    DeepStruct2 d2_2;
+    DeepStruct1 d1_1;
+};
+
+void write_to_d1_2_y(DeepStruct2* d2, int val) {
+    d2->d1_2.y = val;
+}
+
+void read_from_y(DeepStruct2 d2) {
+    sink(d2.d1_1.y);
+    // Hopefully we will catch this flow when we merge #3123
+    sink(d2.d1_2.y); //$ast $f-:ir
+}
+
+void read_from_y_deref(DeepStruct2* d2) {
+    sink(d2->d1_1.y);
+    // Hopefully we will catch this flow when we merge #3123
+    sink(d2->d1_2.y); //$ast $f-:ir
+}
+
+void test_deep_structs() {
+    DeepStruct3 d3;
+    d3.d2_1.d1_1.x = user_input();
+    DeepStruct2 d2_1 = d3.d2_1;
+    sink(d2_1.d1_1.x); //$ast $f-:ir
+    sink(d2_1.d1_1.y);
+
+    sink(d2_1.d1_2.x);
+
+    DeepStruct1* pd1 = &d2_1.d1_1;
+    sink(pd1->x); //$ast $f-:ir
+}
+
+void test_deep_structs_setter() {
+    DeepStruct3 d3;
+
+    write_to_d1_2_y(&d3.d2_1, user_input());
+
+    sink(d3.d2_1.d1_1.y); //$f+:ir
+    sink(d3.d2_1.d1_2.y); //$ast $ir
+
+    read_from_y(d3.d2_1);
+    read_from_y(d3.d2_2);
+    read_from_y_deref(&d3.d2_1);
+    read_from_y_deref(&d3.d2_2);
+}
+
 } // namespace Simple

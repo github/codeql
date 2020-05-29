@@ -41,3 +41,5 @@
 | simple.cpp:21:24:21:25 | this |
 | simple.cpp:65:5:65:5 | a |
 | simple.cpp:83:9:83:10 | f2 |
+| simple.cpp:105:9:105:12 | d1_2 |
+| simple.cpp:122:13:122:16 | d1_1 |
