@@ -120,25 +120,18 @@ module Shared {
     )
   }
 
-  private import semmle.javascript.dataflow.internal.AccessPaths as Paths
-
   /**
-   * Gets an access-path that is used in a sanitizing switch statement.
-   * The `pragma[noinline]` is to avoid materializing a cartesian product of all access-paths.
+   * Gets an Ssa variable that is used in a sanitizing switch statement.
+   * The `pragma[noinline]` is to avoid materializing a cartesian product.
    */
   pragma[noinline]
-  private Paths::AccessPath getAPathEscapedInSwitch() {
-    exists(Expr str |
-      isUsedInHTMLEscapingSwitch(str) and
-      result.getAnInstance() = str
-    )
-  }
+  private SsaVariable getAPathEscapedInSwitch() { isUsedInHTMLEscapingSwitch(result.getAUse()) }
 
   /**
    * An expression that is sanitized by a switch-case.
    */
   class IsEscapedInSwitchSanitizer extends Sanitizer {
-    IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAnInstance() }
+    IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAUse() }
   }
 }
 
