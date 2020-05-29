@@ -485,11 +485,6 @@ program, so it's helpful to extend a new type (namely ``TTaintType``)::
 Type unions
 ***********
 
-.. note::
-    The syntax for type unions is considered experimental and is subject to change.
-    However, type unions appear in the `standard QL libraries <https://github.com/github/codeql>`__.
-    The following sections should help you understand those examples.
-
 Type unions are user-defined types that are declared with the keyword ``class``.
 The syntax resembles :ref:`type aliases <type-aliases>`, but with two or more type expressions on the right-hand side.
 
