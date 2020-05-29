@@ -27,5 +27,5 @@ class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringDictKind }
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringDictKind }
 }
