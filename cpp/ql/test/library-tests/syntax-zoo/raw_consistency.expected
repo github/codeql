@@ -569,6 +569,7 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
 | misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | IR: assign_designated_init | int assign_designated_init(someStruct*) |
+| static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | IR: MyClass | void MyClass::MyClass() |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | IR: throw_from_nonstmt | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | IR: main | int main(int, char**) |
 switchInstructionWithoutDefaultEdge
