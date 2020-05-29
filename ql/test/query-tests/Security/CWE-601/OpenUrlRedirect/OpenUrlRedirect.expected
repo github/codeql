@@ -15,6 +15,7 @@ edges
 | stdlib.go:146:11:146:15 | selection of URL : pointer type | stdlib.go:149:24:149:35 | call to String |
 | stdlib.go:160:35:160:39 | selection of URL : pointer type | stdlib.go:160:24:160:52 | ...+... |
 | stdlib.go:160:35:160:39 | selection of URL : pointer type | stdlib.go:160:24:160:52 | ...+... |
+| stdlib.go:169:13:169:33 | call to FormValue : string | stdlib.go:171:23:171:28 | target |
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form : Values | semmle.label | selection of Form : Values |
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | semmle.label | call to Get |
@@ -44,6 +45,8 @@ nodes
 | stdlib.go:160:24:160:52 | ...+... | semmle.label | ...+... |
 | stdlib.go:160:35:160:39 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | stdlib.go:160:35:160:39 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| stdlib.go:169:13:169:33 | call to FormValue : string | semmle.label | call to FormValue : string |
+| stdlib.go:171:23:171:28 | target | semmle.label | target |
 #select
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form : Values | OpenUrlRedirect.go:10:23:10:42 | call to Get | Untrusted URL redirection due to $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
 | stdlib.go:14:30:14:35 | target | stdlib.go:12:13:12:18 | selection of Form : Values | stdlib.go:14:30:14:35 | target | Untrusted URL redirection due to $@. | stdlib.go:12:13:12:18 | selection of Form | user-provided value |
@@ -53,3 +56,4 @@ nodes
 | stdlib.go:66:23:66:40 | ...+... | stdlib.go:63:13:63:18 | selection of Form : Values | stdlib.go:66:23:66:40 | ...+... | Untrusted URL redirection due to $@. | stdlib.go:63:13:63:18 | selection of Form | user-provided value |
 | stdlib.go:91:23:91:28 | target | stdlib.go:88:13:88:18 | selection of Form : Values | stdlib.go:91:23:91:28 | target | Untrusted URL redirection due to $@. | stdlib.go:88:13:88:18 | selection of Form | user-provided value |
 | stdlib.go:139:23:139:28 | target | stdlib.go:133:13:133:18 | selection of Form : Values | stdlib.go:139:23:139:28 | target | Untrusted URL redirection due to $@. | stdlib.go:133:13:133:18 | selection of Form | user-provided value |
+| stdlib.go:171:23:171:28 | target | stdlib.go:169:13:169:33 | call to FormValue : string | stdlib.go:171:23:171:28 | target | Untrusted URL redirection due to $@. | stdlib.go:169:13:169:33 | call to FormValue | user-provided value |
