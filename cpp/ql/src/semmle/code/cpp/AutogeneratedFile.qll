@@ -1,3 +1,8 @@
+/**
+ * Provides a class and predicate for recognizing files that are likely to have been generated 
+ * automatically.
+ */
+
 import semmle.code.cpp.Comments
 import semmle.code.cpp.File
 import semmle.code.cpp.Preprocessor
