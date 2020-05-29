@@ -1,7 +1,15 @@
 import go
 
 class BytesReadFrom extends TaintTracking::FunctionModel, Method {
-  BytesReadFrom() { this.(Method).hasQualifiedName("bytes", "Buffer", "ReadFrom") }
+  BytesReadFrom() { this.hasQualifiedName("bytes", "Buffer", "ReadFrom") }
+
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+    inp.isParameter(0) and outp.isReceiver()
+  }
+}
+
+class ReaderReset extends TaintTracking::FunctionModel, Method {
+  ReaderReset() { this.hasQualifiedName("bufio", "Reader", "Reset") }
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(0) and outp.isReceiver()

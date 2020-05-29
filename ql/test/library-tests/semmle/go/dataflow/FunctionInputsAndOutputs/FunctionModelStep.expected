@@ -1,1 +1,2 @@
 | file://:0:0:0:0 | ReadFrom | tst.go:10:23:10:28 | reader | tst.go:9:2:9:12 | definition of bytesBuffer |
+| file://:0:0:0:0 | Reset | reset.go:12:15:12:20 | source | reset.go:11:6:11:11 | definition of reader |

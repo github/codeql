@@ -4,6 +4,7 @@
 | result | main.go:13:1:20:1 | function declaration | main.go:15:9:15:13 | ...+... |
 | result | main.go:13:1:20:1 | function declaration | main.go:17:10:17:14 | ...-... |
 | result | main.go:26:1:29:1 | function declaration | main.go:28:9:28:15 | selection of count |
+| result | reset.go:8:1:16:1 | function declaration | reset.go:15:9:15:12 | sink |
 | result 0 | main.go:31:1:33:1 | function declaration | main.go:32:9:32:10 | 23 |
 | result 0 | main.go:35:1:38:1 | function declaration | main.go:35:15:35:15 | zero value for x |
 | result 0 | main.go:35:1:38:1 | function declaration | main.go:36:13:36:14 | 23 |
