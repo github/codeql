@@ -511,8 +511,7 @@ For example, the following construction is legal::
     }
 
 However, a similar implementation that restricts ``InitialValueSource`` in a class extension is not valid.
-The class ``DefiniteInitialization`` triggers a type test for ``InitialValueSource``, which results in an illegal recursion
-``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
+If we had implemented ``DefiniteInitialization`` as a class extension instead, it would trigger a type test for ``InitialValueSource``. This results in an illegal recursion ``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
 
     class DefiniteInitialization extends InitialValueSource {
       DefiniteInitialization() {
