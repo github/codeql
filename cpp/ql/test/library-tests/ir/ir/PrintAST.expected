@@ -10483,6 +10483,35 @@ ir.cpp:
 # 1315|         2: [VariableAccess] y
 # 1315|             Type = [IntType] int
 # 1315|             ValueCategory = prvalue(load)
+# 1318| [Operator,TopLevelFunction] void* operator new(size_t, void*)
+# 1318|   params: 
+# 1318|     0: [Parameter] p#0
+# 1318|         Type = [CTypedefType,Size_t] size_t
+# 1318|     1: [Parameter] p#1
+# 1318|         Type = [VoidPointerType] void *
+# 1320| [TopLevelFunction] void f(int*)
+# 1320|   params: 
+# 1320|     0: [Parameter] p
+# 1320|         Type = [IntPointerType] int *
+# 1321|   body: [Block] { ... }
+# 1322|     0: [ExprStmt] ExprStmt
+# 1322|       0: [NewExpr] new
+# 1322|           Type = [IntPointerType] int *
+# 1322|           ValueCategory = prvalue
+# 1322|         0: [FunctionCall] call to operator new
+# 1322|             Type = [VoidPointerType] void *
+# 1322|             ValueCategory = prvalue
+# 1322|           0: [ErrorExpr] <error expr>
+# 1322|               Type = [LongType] unsigned long
+# 1322|               ValueCategory = prvalue
+# 1322|           1: [CStyleCast] (void *)...
+# 1322|               Conversion = [PointerConversion] pointer conversion
+# 1322|               Type = [VoidPointerType] void *
+# 1322|               ValueCategory = prvalue
+# 1322|             expr: [VariableAccess] p
+# 1322|                 Type = [IntPointerType] int *
+# 1322|                 ValueCategory = prvalue(load)
+# 1323|     1: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
