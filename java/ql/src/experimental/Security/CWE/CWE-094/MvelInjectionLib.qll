@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -54,7 +53,7 @@ class MvelEvaluationSink extends DataFlow::ExprNode {
         m instanceof CompiledScriptEvaluationMethod or
         m instanceof MvelCompiledScriptEvaluationMethod
       ) and
-      (ma = asExpr() or ma.getQualifier() = asExpr())
+      ma.getQualifier() = asExpr()
     )
     or
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
@@ -73,7 +72,7 @@ predicate expressionCompilationStep(DataFlow::Node node1, DataFlow::Node node2) 
     m.getDeclaringType() instanceof MVEL and
     m.hasName("compileExpression") and
     ma.getAnArgument() = node1.asExpr() and
-    (node2.asExpr() = ma.getQualifier() or node2.asExpr() = ma)
+    node2.asExpr() = ma
   )
 }
 
@@ -84,7 +83,7 @@ predicate expressionCompilationStep(DataFlow::Node node1, DataFlow::Node node2) 
 predicate createExpressionCompilerStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
     cc.getConstructedType() instanceof ExpressionCompiler and
-    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc = node2.asExpr() and
     cc.getArgument(0) = node1.asExpr()
   )
 }
@@ -96,7 +95,7 @@ predicate createExpressionCompilerStep(DataFlow::Node node1, DataFlow::Node node
 predicate createCompiledAccExpressionStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
     cc.getConstructedType() instanceof CompiledAccExpression and
-    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc = node2.asExpr() and
     cc.getArgument(0) = node1.asExpr()
   )
 }
@@ -125,7 +124,7 @@ predicate expressionCompilerCompileStep(DataFlow::Node node1, DataFlow::Node nod
 predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
     m instanceof MvelScriptEngineCompilationMethod and
-    (ma = node2.asExpr() or ma.getQualifier() = node2.asExpr()) and
+    ma = node2.asExpr() and
     ma.getArgument(0) = node1.asExpr()
   )
 }
@@ -137,7 +136,7 @@ predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
 predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
     cc.getConstructedType() instanceof MvelCompiledScript and
-    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc = node2.asExpr() and
     cc.getArgument(1) = node1.asExpr()
   )
 }
@@ -149,7 +148,7 @@ predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::Node node
 predicate createTemplateCompilerStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
     cc.getConstructedType() instanceof TemplateCompiler and
-    (cc = node2.asExpr() or cc.getQualifier() = node2.asExpr()) and
+    cc = node2.asExpr() and
     cc.getArgument(0) = node1.asExpr()
   )
 }
@@ -167,7 +166,7 @@ predicate templateCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
   or
   exists(StaticMethodAccess ma, Method m | ma.getMethod() = m |
     m instanceof TemplateCompilerCompileTemplateMethod and
-    (ma = node2.asExpr() or ma.getQualifier() = node2.asExpr()) and
+    ma = node2.asExpr() and
     ma.getArgument(0) = node1.asExpr()
   )
 }
