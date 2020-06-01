@@ -51,13 +51,9 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
         )
         or
         shell = true and
-        (
-          mod = "exec" and
-          optionsArg = -2 and
-          cmdArg = 0
-          or
-          mod = "remote-exec" and cmdArg = 1 and optionsArg = -1
-        )
+        mod = "exec" and
+        optionsArg = -2 and
+        cmdArg = 0
       ) and
       callee = DataFlow::moduleImport(mod)
     |
@@ -96,4 +92,34 @@ private boolean getSync(string name) {
   if name.suffix(name.length() - 4) = "Sync" or name.suffix(name.length() - 4) = "sync"
   then result = true
   else result = false
+}
+
+private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::InvokeNode {
+  int cmdArg;
+
+  RemoteCommandExecutor() {
+    this = DataFlow::moduleImport("remote-exec").getACall() and
+    cmdArg = 1
+    or
+    exists(DataFlow::SourceNode ssh2, DataFlow::SourceNode client |
+      ssh2 = DataFlow::moduleImport("ssh2") and
+      (client = ssh2 or client = ssh2.getAPropertyRead("Client")) and
+      this = client.getAnInstantiation().getAMethodCall("exec") and
+      cmdArg = 0
+    )
+    or
+    exists(DataFlow::SourceNode ssh2stream |
+      ssh2stream = DataFlow::moduleMember("ssh2-streams", "SSH2Stream") and
+      this = ssh2stream.getAnInstantiation().getAMethodCall("exec") and
+      cmdArg = 1
+    )
+  }
+
+  override DataFlow::Node getACommandArgument() { result = getArgument(cmdArg) }
+
+  override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
+
+  override predicate isSync() { none() }
+
+  override DataFlow::Node getOptionsArg() { none() }
 }

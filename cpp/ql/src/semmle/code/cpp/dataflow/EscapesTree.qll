@@ -4,6 +4,14 @@
  * passed to a function, or similar.
  */
 
+/*
+ * Maintainer note: this file is one of several files that are similar but not
+ * identical. Many changes to this file will also apply to the others:
+ * - AddressConstantExpression.qll
+ * - AddressFlow.qll
+ * - EscapesTree.qll
+ */
+
 private import cpp
 
 /**
@@ -11,15 +19,13 @@ private import cpp
  * template functions, these functions are essentially casts, so we treat them
  * as such.
  */
-private predicate stdIdentityFunction(Function f) {
-  f.getNamespace().getParentNamespace() instanceof GlobalNamespace and
-  f.getNamespace().getName() = "std" and
-  (
-    f.getName() = "move"
-    or
-    f.getName() = "forward"
-  )
-}
+private predicate stdIdentityFunction(Function f) { f.hasQualifiedName("std", ["move", "forward"]) }
+
+/**
+ * Holds if `f` is an instantiation of `std::addressof`, which effectively
+ * converts a reference to a pointer.
+ */
+private predicate stdAddressOf(Function f) { f.hasQualifiedName("std", "addressof") }
 
 private predicate lvalueToLvalueStepPure(Expr lvalueIn, Expr lvalueOut) {
   lvalueIn = lvalueOut.(DotFieldAccess).getQualifier().getFullyConverted()
@@ -91,10 +97,15 @@ private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
 }
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
-  // This probably cannot happen. It would require an expression to be
-  // converted to a reference and back again without an intermediate variable
-  // assignment.
   referenceIn.getConversion() = lvalueOut.(ReferenceDereferenceExpr)
+}
+
+private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
+  pointerOut =
+    any(FunctionCall call |
+      stdAddressOf(call.getTarget()) and
+      referenceIn = call.getArgument(0).getFullyConverted()
+    )
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
@@ -145,6 +156,12 @@ private predicate pointerFromVariableAccess(VariableAccess va, Expr pointer) {
     pointerToPointerStep(prev, pointer)
   )
   or
+  // reference -> pointer
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToPointerStep(prev, pointer)
+  )
+  or
   // lvalue -> pointer
   exists(Expr prev |
     lvalueFromVariableAccess(va, prev) and
@@ -166,10 +183,14 @@ private predicate referenceFromVariableAccess(VariableAccess va, Expr reference)
   )
 }
 
-private predicate valueMayEscapeAt(Expr e) {
+private predicate addressMayEscapeAt(Expr e) {
   exists(Call call |
     e = call.getAnArgument().getFullyConverted() and
-    not stdIdentityFunction(call.getTarget())
+    not stdIdentityFunction(call.getTarget()) and
+    not stdAddressOf(call.getTarget())
+    or
+    e = call.getQualifier().getFullyConverted() and
+    e.getUnderlyingType() instanceof PointerType
   )
   or
   exists(AssignExpr assign | e = assign.getRValue().getFullyConverted())
@@ -187,8 +208,8 @@ private predicate valueMayEscapeAt(Expr e) {
   exists(AsmStmt asm | e = asm.getAChild().(Expr).getFullyConverted())
 }
 
-private predicate valueMayEscapeMutablyAt(Expr e) {
-  valueMayEscapeAt(e) and
+private predicate addressMayEscapeMutablyAt(Expr e) {
+  addressMayEscapeAt(e) and
   exists(Type t | t = e.getType().getUnderlyingType() |
     exists(PointerType pt |
       pt = t
@@ -205,6 +226,22 @@ private predicate valueMayEscapeMutablyAt(Expr e) {
     // pointer to non-const type.
     t instanceof IntegralType
   )
+}
+
+private predicate lvalueMayEscapeAt(Expr e) {
+  // A call qualifier, like `q` in `q.f()`, is special in that the address of
+  // `q` escapes even though `q` is not a pointer or a reference.
+  exists(Call call |
+    e = call.getQualifier().getFullyConverted() and
+    e.getType().getUnspecifiedType() instanceof Class
+  )
+}
+
+private predicate lvalueMayEscapeMutablyAt(Expr e) {
+  lvalueMayEscapeAt(e) and
+  // A qualifier of a call to a const member function is converted to a const
+  // class type.
+  not e.getType().isConst()
 }
 
 private predicate addressFromVariableAccess(VariableAccess va, Expr e) {
@@ -253,8 +290,11 @@ private module EscapesTree_Cached {
    */
   cached
   predicate variableAddressEscapesTree(VariableAccess va, Expr e) {
-    valueMayEscapeAt(e) and
+    addressMayEscapeAt(e) and
     addressFromVariableAccess(va, e)
+    or
+    lvalueMayEscapeAt(e) and
+    lvalueFromVariableAccess(va, e)
   }
 
   /**
@@ -283,8 +323,11 @@ private module EscapesTree_Cached {
    */
   cached
   predicate variableAddressEscapesTreeNonConst(VariableAccess va, Expr e) {
-    valueMayEscapeMutablyAt(e) and
+    addressMayEscapeMutablyAt(e) and
     addressFromVariableAccess(va, e)
+    or
+    lvalueMayEscapeMutablyAt(e) and
+    lvalueFromVariableAccess(va, e)
   }
 
   /**

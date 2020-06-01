@@ -118,6 +118,24 @@ namespace Semmle.Autobuild
         /// </summary>
         public IBuildActions Actions { get; }
 
+        IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
+        {
+            var matchingFiles = GetExtensions(extension).
+                Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
+                Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
+                ToArray();
+
+            if (matchingFiles.Length == 0)
+               return null;
+
+            if (Options.AllSolutions)
+               return matchingFiles.Select(p => p.ProjectOrSolution);
+
+            return matchingFiles.
+                Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
+                Select(f => f.ProjectOrSolution);
+        }
+
         /// <summary>
         /// Find all the relevant files and picks the best
         /// solution file and tools.
@@ -149,24 +167,6 @@ namespace Semmle.Autobuild
                             Log(Severity.Error, $"The specified project or solution file {solution} was not found");
                     }
                     return ret;
-                }
-
-                IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
-                {
-                    var matchingFiles = GetExtensions(extension).
-                        Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
-                        Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
-                        ToArray();
-
-                    if (matchingFiles.Length == 0)
-                        return null;
-
-                    if (options.AllSolutions)
-                        return matchingFiles.Select(p => p.ProjectOrSolution);
-
-                    return matchingFiles.
-                        Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
-                        Select(f => f.ProjectOrSolution);
                 }
 
                 // First look for `.proj` files

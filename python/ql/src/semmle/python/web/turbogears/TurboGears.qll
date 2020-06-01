@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 private ClassValue theTurboGearsControllerClass() { result = Value::named("tg.TGController") }
 

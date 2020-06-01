@@ -173,7 +173,7 @@ module PrettyPrintCatCall {
         callback = "" and not exists(cat.getCallback())
       ) and
       fileArg = createFileArgument(cat).trim() and
-      // sanity check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
+      // consistency check in case of surprising `toString` results, other uses of `containsNonTrivialBashChar` should ensure that this conjunct will hold most of the time
       not containsNonTrivialShellChar(fileArg.regexpReplaceAll("\\$|\\`| ", "")) // string concat might contain " ", template strings might contain "$" or `, and that is OK.
     |
       result = "fs.readFile" + sync + "(" + fileArg + extraArg + callback + ")"

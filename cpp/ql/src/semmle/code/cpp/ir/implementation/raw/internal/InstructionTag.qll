@@ -2,7 +2,6 @@ private import cpp
 
 newtype TInstructionTag =
   OnlyInstructionTag() or // Single instruction (not including implicit Load)
-  InitializeThisTag() or
   InitializerVariableAddressTag() or
   InitializerLoadStringTag() or
   InitializerStoreTag() or
@@ -28,8 +27,6 @@ newtype TInstructionTag =
   ReturnValueAddressTag() or
   ReturnTag() or
   ExitFunctionTag() or
-  UnmodeledDefinitionTag() or
-  UnmodeledUseTag() or
   AliasedDefinitionTag() or
   InitializeNonLocalTag() or
   AliasedUseTag() or
@@ -72,7 +69,9 @@ newtype TInstructionTag =
   VarArgsMoveNextTag() or
   VarArgsVAListStoreTag() or
   AsmTag() or
-  AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) }
+  AsmInputTag(int elementIndex) { exists(AsmStmt asm | exists(asm.getChild(elementIndex))) } or
+  ThisAddressTag() or
+  ThisLoadTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = "Tag" }
@@ -126,10 +125,6 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ReturnTag() and result = "Ret"
   or
   tag = ExitFunctionTag() and result = "ExitFunc"
-  or
-  tag = UnmodeledDefinitionTag() and result = "UnmodeledDef"
-  or
-  tag = UnmodeledUseTag() and result = "UnmodeledUse"
   or
   tag = AliasedDefinitionTag() and result = "AliasedDef"
   or

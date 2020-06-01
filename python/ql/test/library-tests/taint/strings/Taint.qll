@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.Exceptions
 
@@ -33,4 +33,12 @@ class ExceptionInfoSource extends TaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfo }
 
     override string toString() { result = "Exception info source" }
+}
+
+class ExternalFileObjectSource extends TaintSource {
+    ExternalFileObjectSource() { this.(NameNode).getId() = "TAINTED_FILE" }
+
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalFileObject }
+
+    override string toString() { result = "Tainted file source" }
 }

@@ -41,3 +41,9 @@ This query uses ``upperBound`` to determine whether the result of ``snprintf`` i
       convSink = call.getArgument(1).getFullyConverted()
 
     select call, upperBound(call.getArgument(1).getFullyConverted())
+
+Further reading
+---------------
+
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

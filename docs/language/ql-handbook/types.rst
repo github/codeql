@@ -385,7 +385,7 @@ Algebraic datatypes
 *******************
 
 .. note:: The syntax for algebraic datatypes is considered experimental and is subject to
-   change. However, they appear in the `standard QL libraries <https://github.com/Semmle/ql>`_
+   change. However, they appear in the `standard QL libraries <https://github.com/github/codeql>`_
    so the following sections should help you understand those examples.
 
 An algebraic datatype is another form of user-defined type, declared with the keyword ``newtype``.

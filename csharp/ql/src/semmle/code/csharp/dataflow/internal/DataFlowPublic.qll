@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.Unification
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -40,8 +41,17 @@ class Node extends TNode {
   cached
   DotNet::Type getType() { none() }
 
-  /** Gets an upper bound on the type of this node. */
-  DotNet::Type getTypeBound() { result = this.getType() } // stub implementation
+  /** INTERNAL: Do not use. Gets an upper bound on the type of this node. */
+  cached
+  DataFlowType getTypeBound() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(this.getType())
+      or
+      not exists(getCSharpType(this.getType())) and
+      t0 instanceof ObjectType
+    )
+  }
 
   /** Gets the enclosing callable of this node. */
   cached
@@ -136,8 +146,7 @@ class ParameterNode extends Node {
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
     this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_) or
-    this = TTaintedParameterNode(_)
+    this = TCilParameterNode(_)
   }
 
   /** Gets the parameter corresponding to this node, if any. */
@@ -230,4 +239,61 @@ class BarrierGuard extends Guard {
       this.controlsNode(result.getControlFlowNode(), e, v)
     )
   }
+}
+
+/**
+ * A reference contained in an object. This is either a field or a property.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this content. */
+  string toString() { none() }
+
+  /** Gets the location of this content. */
+  Location getLocation() { none() }
+
+  /** Gets the type of the object containing this content. */
+  DataFlowType getContainerType() { none() }
+
+  /** Gets the type of this content. */
+  DataFlowType getType() { none() }
+}
+
+/** A reference to a field. */
+class FieldContent extends Content, TFieldContent {
+  private Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  /** Gets the field that is referenced. */
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override Location getLocation() { result = f.getLocation() }
+
+  override DataFlowType getContainerType() {
+    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
+  }
+
+  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+}
+
+/** A reference to a property. */
+class PropertyContent extends Content, TPropertyContent {
+  private Property p;
+
+  PropertyContent() { this = TPropertyContent(p) }
+
+  /** Gets the property that is referenced. */
+  Property getProperty() { result = p }
+
+  override string toString() { result = p.toString() }
+
+  override Location getLocation() { result = p.getLocation() }
+
+  override DataFlowType getContainerType() {
+    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
+  }
+
+  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }

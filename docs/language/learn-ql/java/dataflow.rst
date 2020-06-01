@@ -147,6 +147,10 @@ Global data flow
 
 Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.
 
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
+   
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -253,13 +257,6 @@ Exercise 3: Write a class that represents flow sources from ``java.lang.System.g
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
 
-Further reading
----------------
-
--  Try the worked examples in these articles: :doc:`Navigating the call graph <call-graph>` and :doc:`Working with source locations <source-locations>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
-
 Answers
 -------
 
@@ -357,3 +354,11 @@ Exercise 4
    from DataFlow::Node src, DataFlow::Node sink, GetenvToURLConfiguration config
    where config.hasFlow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
+
+Further reading
+---------------
+
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -140,6 +140,22 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   }
 }
 
+/**
+ * Gets the floor of `v`, with additional logic to work around issues with
+ * large numbers.
+ */
+bindingset[v]
+float safeFloor(float v) {
+  // return the floor of v
+  v.abs() < 2.pow(31) and
+  result = v.floor()
+  or
+  // `floor()` doesn't work correctly on large numbers (since it returns an integer),
+  // so fall back to unrounded numbers at this scale.
+  not v.abs() < 2.pow(31) and
+  result = v
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
@@ -709,7 +725,7 @@ private float getLowerBoundsImpl(Expr expr) {
     rsExpr = expr and
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getValue().toInt() and
-    result = left / 2.pow(right)
+    result = safeFloor(left / 2.pow(right))
   )
 }
 
@@ -878,7 +894,7 @@ private float getUpperBoundsImpl(Expr expr) {
     rsExpr = expr and
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getValue().toInt() and
-    result = left / 2.pow(right)
+    result = safeFloor(left / 2.pow(right))
   )
 }
 

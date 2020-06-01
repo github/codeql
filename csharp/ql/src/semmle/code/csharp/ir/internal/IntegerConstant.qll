@@ -1,3 +1,15 @@
+/**
+ * Provides predicates for manipulating integer constants that are tracked by constant folding and
+ * similar analyses.
+ */
+
+/**
+ * An alias used to represent the constant value of an integer, if one can be determined. If no
+ * single constant value can be determined, or if the constant value is out of the representable
+ * range, it will be represented as the special value `unknown()`. This allows `IntValue` to be used
+ * in contexts where there must always be a value for the `IntValue`, even if no constant value is
+ * known.
+ */
 class IntValue = int;
 
 /**

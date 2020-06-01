@@ -77,49 +77,48 @@ private module VirtualDispatch {
         // Local flow
         DataFlow::localFlowStep(src, other) and
         allowFromArg = allowOtherFromArg
-      )
-      or
-      // Flow through global variable
-      exists(StoreInstruction store |
-        store = src.asInstruction() and
-        (
-          exists(Variable var |
-            var = store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() and
-            this.flowsFromGlobal(var)
-          )
+        or
+        // Flow from global variable to load.
+        exists(LoadInstruction load, GlobalOrNamespaceVariable var |
+          var = src.asVariable() and
+          other.asInstruction() = load and
+          // The `allowFromArg` concept doesn't play a role when `src` is a
+          // global variable, so we just set it to a single arbitrary value for
+          // performance.
+          allowFromArg = true
+        |
+          // Load directly from the global variable
+          load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
           or
-          exists(Variable var, FieldAccess a |
-            var =
-              store
-                  .getDestinationAddress()
-                  .(FieldAddressInstruction)
-                  .getObjectAddress()
-                  .(VariableAddressInstruction)
-                  .getASTVariable() and
-            this.flowsFromGlobalUnionField(var, a)
+          // Load from a field on a global union
+          exists(FieldAddressInstruction fa |
+            fa = load.getSourceAddress() and
+            fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+            fa.getField().getDeclaringType() instanceof Union
           )
-        ) and
-        allowFromArg = true
-      )
-    }
-
-    private predicate flowsFromGlobal(GlobalOrNamespaceVariable var) {
-      exists(LoadInstruction load |
-        this.flowsFrom(DataFlow::instructionNode(load), _) and
-        load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
-      )
-    }
-
-    private predicate flowsFromGlobalUnionField(Variable var, FieldAccess a) {
-      a.getTarget().getDeclaringType() instanceof Union and
-      exists(LoadInstruction load |
-        this.flowsFrom(DataFlow::instructionNode(load), _) and
-        load
-            .getSourceAddress()
-            .(FieldAddressInstruction)
-            .getObjectAddress()
-            .(VariableAddressInstruction)
-            .getASTVariable() = var
+        )
+        or
+        // Flow from store to global variable. These cases are similar to the
+        // above but have `StoreInstruction` instead of `LoadInstruction` and
+        // have the roles swapped between `other` and `src`.
+        exists(StoreInstruction store, GlobalOrNamespaceVariable var |
+          var = other.asVariable() and
+          store = src.asInstruction() and
+          // Setting `allowFromArg` to `true` like in the base case means we
+          // treat a store to a global variable like the dispatch itself: flow
+          // may come from anywhere.
+          allowFromArg = true
+        |
+          // Store directly to the global variable
+          store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
+          or
+          // Store to a field on a global union
+          exists(FieldAddressInstruction fa |
+            fa = store.getDestinationAddress() and
+            fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+            fa.getField().getDeclaringType() instanceof Union
+          )
+        )
       )
     }
   }

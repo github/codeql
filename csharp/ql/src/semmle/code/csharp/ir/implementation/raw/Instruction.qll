@@ -190,14 +190,15 @@ class Instruction extends Construction::TInstruction {
   final Language::Location getLocation() { result = getAST().getLocation() }
 
   /**
-   * Gets the `Expr` whose result is computed by this instruction, if any.
+   * Gets the  `Expr` whose result is computed by this instruction, if any. The `Expr` may be a
+   * conversion.
    */
   final Language::Expr getConvertedResultExpression() {
     result = Construction::getInstructionConvertedResultExpression(this)
   }
 
   /**
-   * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
+   * Gets the unconverted form of the `Expr` whose result is computed by this instruction, if any.
    */
   final Language::Expr getUnconvertedResultExpression() {
     result = Construction::getInstructionUnconvertedResultExpression(this)
@@ -319,8 +320,7 @@ class Instruction extends Construction::TInstruction {
   /**
    * Holds if the result of this instruction is precisely modeled in SSA. Always
    * holds for a register result. For a memory result, a modeled result is
-   * connected to its actual uses. An unmodeled result is connected to the
-   * `UnmodeledUse` instruction.
+   * connected to its actual uses. An unmodeled result has no uses.
    *
    * For example:
    * ```
@@ -584,9 +584,9 @@ class ConditionalBranchInstruction extends Instruction {
 
   final Instruction getCondition() { result = getConditionOperand().getDef() }
 
-  final Instruction getTrueSuccessor() { result = getSuccessor(trueEdge()) }
+  final Instruction getTrueSuccessor() { result = getSuccessor(EdgeKind::trueEdge()) }
 
-  final Instruction getFalseSuccessor() { result = getSuccessor(falseEdge()) }
+  final Instruction getFalseSuccessor() { result = getSuccessor(EdgeKind::falseEdge()) }
 }
 
 class ExitFunctionInstruction extends Instruction {
@@ -906,7 +906,7 @@ class SwitchInstruction extends Instruction {
 
   final Instruction getACaseSuccessor() { exists(CaseEdge edge | result = getSuccessor(edge)) }
 
-  final Instruction getDefaultSuccessor() { result = getSuccessor(defaultEdge()) }
+  final Instruction getDefaultSuccessor() { result = getSuccessor(EdgeKind::defaultEdge()) }
 }
 
 /**
@@ -1229,10 +1229,6 @@ class CatchAnyInstruction extends CatchInstruction {
   CatchAnyInstruction() { getOpcode() instanceof Opcode::CatchAny }
 }
 
-class UnmodeledDefinitionInstruction extends Instruction {
-  UnmodeledDefinitionInstruction() { getOpcode() instanceof Opcode::UnmodeledDefinition }
-}
-
 /**
  * An instruction that initializes all escaped memory.
  */
@@ -1245,12 +1241,6 @@ class AliasedDefinitionInstruction extends Instruction {
  */
 class AliasedUseInstruction extends Instruction {
   AliasedUseInstruction() { getOpcode() instanceof Opcode::AliasedUse }
-}
-
-class UnmodeledUseInstruction extends Instruction {
-  UnmodeledUseInstruction() { getOpcode() instanceof Opcode::UnmodeledUse }
-
-  override string getOperandsString() { result = "mu*" }
 }
 
 /**

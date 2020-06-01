@@ -2,3 +2,8 @@
 - qlpack: codeql-javascript
 - apply: lgtm-selectors.yml
   from: codeql-suite-helpers
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references

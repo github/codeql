@@ -274,12 +274,13 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * A node in the control flow graph, which is an expression, a statement,
  * or a synthetic node.
  */
-class ControlFlowNode extends @cfg_node, Locatable {
+class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
   /** Gets a node succeeding this node in the CFG. */
   ControlFlowNode getASuccessor() { successor(this, result) }
 
@@ -299,10 +300,18 @@ class ControlFlowNode extends @cfg_node, Locatable {
   predicate isStart() { this = any(StmtContainer sc).getStart() }
 
   /**
+   * Holds if this is a final node of `container`, that is, a CFG node where execution
+   * of that toplevel or function terminates.
+   */
+  predicate isAFinalNodeOfContainer(StmtContainer container) {
+    getASuccessor().(SyntheticControlFlowNode).isAFinalNodeOfContainer(container)
+  }
+
+  /**
    * Holds if this is a final node, that is, a CFG node where execution of a
    * toplevel or function terminates.
    */
-  predicate isAFinalNode() { getASuccessor().(SyntheticControlFlowNode).isAFinalNode() }
+  final predicate isAFinalNode() { isAFinalNodeOfContainer(_) }
 
   /**
    * Holds if this node is unreachable, that is, it has no predecessors in the CFG.
@@ -322,17 +331,6 @@ class ControlFlowNode extends @cfg_node, Locatable {
       pred.(SyntheticControlFlowNode).isUnreachable()
     )
     // note the override in ControlFlowEntryNode below
-  }
-
-  /** Gets the function or toplevel whose CFG this node belongs to. */
-  cached
-  StmtContainer getContainer() {
-    result = this.(Expr).getContainer() or
-    result = this.(Stmt).getContainer() or
-    result = this.(Property).getContainer() or
-    result = this.(PropertyPattern).getContainer() or
-    result = this.(ClassDefinition).getContainer() or
-    result = this.(MemberDeclaration).getContainer()
   }
 
   /** Gets the basic block this node belongs to. */
@@ -364,8 +362,6 @@ class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode {
 
 /** A synthetic CFG node marking the entry point of a function or toplevel script. */
 class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {
-  override StmtContainer getContainer() { entry_cfg_node(this, result) }
-
   override predicate isUnreachable() { none() }
 
   override string toString() { result = "entry node of " + getContainer().toString() }
@@ -373,9 +369,9 @@ class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {
 
 /** A synthetic CFG node marking the exit of a function or toplevel script. */
 class ControlFlowExitNode extends SyntheticControlFlowNode, @exit_node {
-  override StmtContainer getContainer() { exit_cfg_node(this, result) }
-
-  override predicate isAFinalNode() { any() }
+  override predicate isAFinalNodeOfContainer(StmtContainer container) {
+    exit_cfg_node(this, container)
+  }
 
   override string toString() { result = "exit node of " + getContainer().toString() }
 }
@@ -393,11 +389,10 @@ class GuardControlFlowNode extends SyntheticControlFlowNode, @guard_node {
    * is known to hold at `bb`.
    */
   predicate dominates(ReachableBasicBlock bb) {
-    this = bb.getANode() or
-    dominates(bb.getImmediateDominator())
+    this = bb.getANode()
+    or
+    exists(ReachableBasicBlock prev | prev.strictlyDominates(bb) | this = prev.getANode())
   }
-
-  override StmtContainer getContainer() { result = getTest().getContainer() }
 }
 
 /**

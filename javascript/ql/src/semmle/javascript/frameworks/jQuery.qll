@@ -37,10 +37,48 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
     exists(JQuery::MethodCall jq |
       this.flow().getALocalSource() = jq and
-      // `jQuery.val()` does _not_ return a jQuery object
-      jq.getMethodName() != "val"
+      returnsAJQueryObject(jq, jq.getMethodName())
     )
   }
+}
+
+/**
+ * Holds if the jQuery method call `call`, with name `methodName`, returns a JQuery object.
+ *
+ * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion.
+ * The not is placed inside the predicate to avoid non-monotonic recursion.
+ */
+bindingset[methodName, call]
+private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodName) {
+  not (
+    neverReturnsJQuery(methodName)
+    or
+    methodName = "val" and call.getNumArgument() = 0 // `jQuery.val()`
+    or
+    methodName = ["html", "text"] and call.getNumArgument() = 0 // `jQuery.html()`/`jQuery.text()`
+    or
+    // `jQuery.attr(key)`/`jQuery.prop(key)`
+    methodName = ["attr", "prop"] and
+    call.getNumArgument() = 1 and
+    call.getArgument(0).mayHaveStringValue(_)
+  )
+}
+
+/**
+ * Holds if a jQuery method named `name` never returns a JQuery object.
+ */
+private predicate neverReturnsJQuery(string name) {
+  forex(ExternalMemberDecl decl |
+    decl.getBaseName() = "jQuery" and
+    decl.getName() = name
+  |
+    not decl
+        .getDocumentation()
+        .getATagByTitle("return")
+        .getType()
+        .getAnUnderlyingType()
+        .hasQualifiedName("jQuery")
+  )
 }
 
 /**
@@ -496,6 +534,15 @@ module JQuery {
         hasUnderlyingType("jQuery")
       }
     }
+
+    /**
+     * A `this` node in a JQuery plugin function, which is a JQuery object.
+     */
+    private class JQueryPluginThisObject extends Range {
+      JQueryPluginThisObject() {
+        this = DataFlow::thisNode(any(JQueryPluginMethod method).getFunction())
+      }
+    }
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
@@ -543,7 +590,7 @@ module JQuery {
       // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
       exists(DataFlow::PropRead read | read = this.getCalleeNode() |
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
-        read.getPropertyNameExpr().flow().mayHaveStringValue(name)
+        read.mayHavePropertyName(name)
       )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
@@ -589,5 +636,62 @@ module JQuery {
       name = "$" and
       node = getArgument(0)
     }
+  }
+
+  /**
+   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or `$.extend($.fn, {<pluginName>, <plugin>})`.
+   */
+  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
+    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
+      fn = jquery().getAPropertyRead("fn") and
+      (
+        write = fn.getAPropertyWrite()
+        or
+        exists(ExtendCall extend, DataFlow::SourceNode source |
+          fn.flowsTo(extend.getDestinationOperand()) and
+          source = extend.getASourceOperand() and
+          write = source.getAPropertyWrite()
+        )
+      ) and
+      plugin = write.getRhs() and
+      write.mayHavePropertyName(pluginName)
+    )
+  }
+
+  /**
+   * Gets a node that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::SourceNode getAJQueryPluginMethod(
+    DataFlow::TypeBackTracker t, DataFlow::Node def
+  ) {
+    t.start() and jQueryPluginDefinition(_, def) and result.flowsTo(def)
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
+    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
+  }
+
+  /**
+   * A function that is registered as a jQuery plugin method.
+   */
+  class JQueryPluginMethod extends DataFlow::FunctionNode {
+    string pluginName;
+
+    JQueryPluginMethod() {
+      exists(DataFlow::Node def |
+        jQueryPluginDefinition(pluginName, def) and
+        this = getAJQueryPluginMethod(def)
+      )
+    }
+
+    /**
+     * Gets the name of this plugin.
+     */
+    string getPluginName() { result = pluginName }
   }
 }

@@ -137,6 +137,10 @@ Global data flow
 
 Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.
 
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -549,6 +553,7 @@ This can be adapted from the ``SystemUriFlow`` class:
 Further reading
 ---------------
 
--  Learn about the standard libraries used to write queries for C# in :doc:`Introducing the C# libraries <introduce-libraries-csharp>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/csharp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

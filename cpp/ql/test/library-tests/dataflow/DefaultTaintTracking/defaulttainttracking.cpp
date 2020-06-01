@@ -1,13 +1,13 @@
-int atoi(const char *nptr);
-char *getenv(const char *name);
-char *strcat(char * s1, const char * s2);
+#include "shared.h"
 
-char *strdup(const char *);
-char *_strdup(const char *);
-char *unmodeled_function(const char *);
 
-void sink(const char *);
-void sink(int);
+
+
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -96,4 +96,24 @@ void test_outparams() {
     char *p2 = nullptr;
     flow_to_outparam(&p2, getenv("VAR"));
     sink(p2); // tainted
+}
+
+
+
+
+struct XY {
+  int x;
+  int y;
+};
+
+void taint_y(XY *xyp) {
+  int tainted = getenv("VAR")[0];
+  xyp->y = tainted;
+}
+
+void test_conflated_fields3() {
+  XY xy;
+  xy.x = 0;
+  taint_y(&xy);
+  sink(xy.x); // not tainted
 }

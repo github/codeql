@@ -1,7 +1,7 @@
 CodeQL library for Java
 =======================
 
-When you're analyzing a Java program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL library for Java.
+When you're analyzing a Java program, you can make use of the large collection of classes in the CodeQL library for Java.
 
 About the CodeQL library for Java
 ---------------------------------
@@ -386,6 +386,5 @@ For more information about callables and calls, see the :doc:`article on the cal
 Further reading
 ---------------
 
--  Experiment with the worked examples in the CodeQL for Java articles: :doc:`Java types <types-class-hierarchy>`, :doc:`Overflow-prone comparisons in Java <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

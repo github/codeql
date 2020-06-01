@@ -224,6 +224,15 @@ class IREllipsisVariable extends IRTempVariable {
 }
 
 /**
+ * A temporary variable generated to hold the `this` pointer.
+ */
+class IRThisVariable extends IRTempVariable {
+  IRThisVariable() { tag = ThisTempVar() }
+
+  final override string toString() { result = "#this" }
+}
+
+/**
  * A variable generated to represent the contents of a string literal. This variable acts much like
  * a read-only global variable.
  */

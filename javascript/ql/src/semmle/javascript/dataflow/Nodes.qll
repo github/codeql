@@ -156,6 +156,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * Holds if the `i`th argument of this invocation is an object literal whose property
    * `name` is set to `result`.
    */
+  pragma[nomagic]
   DataFlow::ValueNode getOptionArgument(int i, string name) {
     getOptionsArgument(i).hasPropertyWrite(name, result)
   }
@@ -696,6 +697,7 @@ module ModuleImportNode {
  *
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
+cached
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
 /**
@@ -1195,6 +1197,14 @@ module ClassNode {
       exists(DataFlow::NewNode newCall |
         getAPropertySource("prototype") = newCall and
         result = newCall.getCalleeNode()
+      )
+      or
+      // util.inherits(C, D);
+      exists(DataFlow::CallNode inheritsCall |
+        inheritsCall = DataFlow::moduleMember("util", "inherits").getACall()
+      |
+        this = inheritsCall.getArgument(0).getALocalSource() and
+        result = inheritsCall.getArgument(1)
       )
     }
   }

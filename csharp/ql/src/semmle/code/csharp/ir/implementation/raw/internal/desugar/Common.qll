@@ -217,13 +217,8 @@ abstract class TranslatedCompilerGeneratedVariableAccess extends TranslatedCompi
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     needsLoad() and
     tag = LoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = getInstruction(AddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getTranslatedFunction(getFunction()).getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(AddressTag())
   }
 
   /**

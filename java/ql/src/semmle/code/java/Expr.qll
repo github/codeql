@@ -413,7 +413,7 @@ class ArrayAccess extends Expr, @arrayaccess {
 /**
  * An array creation expression.
  *
- * For example, an expression such as `new String[3][2]` or
+ * For example, an expression such as `new String[2][3]` or
  * `new String[][] { { "a", "b", "c" } , { "d", "e", "f" } }`.
  *
  * In both examples, `String` is the type name. In the first
@@ -844,6 +844,7 @@ class EqualityTest extends BinaryExpr {
     this instanceof NEExpr
   }
 
+  /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
   boolean polarity() {
     result = true and this instanceof EQExpr
     or
@@ -1048,6 +1049,18 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...::..." }
+}
+
+/** A conditional expression or a `switch` expression. */
+class ChooseExpr extends Expr {
+  ChooseExpr() { this instanceof ConditionalExpr or this instanceof SwitchExpr }
+
+  /** Gets a result expression of this `switch` or conditional expression. */
+  Expr getAResultExpr() {
+    result = this.(ConditionalExpr).getTrueExpr() or
+    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(SwitchExpr).getAResult()
+  }
 }
 
 /**

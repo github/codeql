@@ -6,8 +6,6 @@ isFromUninstantiatedTemplate
 | file://:0:0:0:0 | initializer for MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | file://:0:0:0:0 | p#0 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | p#0 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| file://:0:0:0:0 | this | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
-| file://:0:0:0:0 | this | load.cpp:22:10:22:13 | load |
 | isfromtemplateinstantiation.cpp:12:24:12:46 | definition of inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
 | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
 | isfromtemplateinstantiation.cpp:13:1:17:1 | { ... } | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
@@ -222,6 +220,8 @@ isFromUninstantiatedTemplate
 | load.cpp:24:9:24:10 | (reference dereference) | load.cpp:22:10:22:13 | load |
 | load.cpp:24:9:24:10 | is | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
 | load.cpp:24:9:24:10 | is | load.cpp:22:10:22:13 | load |
+| load.cpp:24:9:24:10 | this | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
+| load.cpp:24:9:24:10 | this | load.cpp:22:10:22:13 | load |
 | load.cpp:24:9:24:15 | ... >> ... | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
 | load.cpp:24:9:24:15 | ... >> ... | load.cpp:22:10:22:13 | load |
 | load.cpp:24:9:24:16 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |
@@ -506,6 +506,7 @@ isFromUninstantiatedTemplate
 | load.cpp:22:19:22:19 | t | I | T | Declaration |  |
 | load.cpp:24:9:24:10 | (reference dereference) |  | T | Expr |  |
 | load.cpp:24:9:24:10 | is |  | T | Expr | Not ref |
+| load.cpp:24:9:24:10 | this |  | T | Expr |  |
 | load.cpp:24:15:24:15 | (reference dereference) |  | T | Expr |  |
 | load.cpp:24:15:24:15 | t |  | T | Expr | Not ref |
 | load.cpp:27:10:27:13 | load |  | T | Declaration |  |

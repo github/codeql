@@ -22,5 +22,9 @@ module ReflectedXss {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
+
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof SanitizerGuard
+    }
   }
 }

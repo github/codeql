@@ -149,7 +149,10 @@ edges
 | GlobalDataFlow.cs:163:22:163:43 | call to method TaintedParam : String | GlobalDataFlow.cs:164:15:164:20 | access to local variable sink23 |
 | GlobalDataFlow.cs:179:35:179:48 | "taint source" : String | GlobalDataFlow.cs:180:21:180:26 | delegate call : String |
 | GlobalDataFlow.cs:180:21:180:26 | delegate call : String | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 |
-| GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 |
+| GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String | GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String |
+| GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String | GlobalDataFlow.cs:189:22:189:48 | access to property Value : String |
+| GlobalDataFlow.cs:189:22:189:48 | access to property Value : String | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 |
+| GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String | GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String |
 | GlobalDataFlow.cs:197:22:197:32 | access to property OutProperty : String | GlobalDataFlow.cs:198:15:198:20 | access to local variable sink19 |
 | GlobalDataFlow.cs:236:26:236:35 | sinkParam0 : String | GlobalDataFlow.cs:238:16:238:25 | access to parameter sinkParam0 : String |
 | GlobalDataFlow.cs:236:26:236:35 | sinkParam0 : String | GlobalDataFlow.cs:239:15:239:24 | access to parameter sinkParam0 |
@@ -300,6 +303,9 @@ nodes
 | GlobalDataFlow.cs:179:35:179:48 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:180:21:180:26 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 | semmle.label | access to local variable sink9 |
+| GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String | semmle.label | [library code] object creation of type Lazy<String> : String |
+| GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String | semmle.label | object creation of type Lazy<String> [Value] : String |
+| GlobalDataFlow.cs:189:22:189:48 | access to property Value : String | semmle.label | access to property Value : String |
 | GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String | semmle.label | [output] delegate creation of type Func<String> : String |
 | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 | semmle.label | access to local variable sink10 |
 | GlobalDataFlow.cs:197:22:197:32 | access to property OutProperty : String | semmle.label | access to property OutProperty : String |

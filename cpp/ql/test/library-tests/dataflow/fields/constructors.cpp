@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); // flow (through `f` and `h`)
-    sink(f.b()); // flow (through `g` and `h`)
+    sink(f.a()); //$ast=34:11 $ast=36:11 $f-:ir
+    sink(f.b()); //$ast=35:14 $ast=36:25 $f-:ir
 }
 
 void foo()

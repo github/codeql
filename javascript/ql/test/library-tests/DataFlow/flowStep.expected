@@ -1,12 +1,28 @@
+| arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
+| arguments.js:2:5:2:5 | arguments | arguments.js:4:28:4:36 | arguments |
+| arguments.js:2:5:2:5 | arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:2:5:2:5 | arguments | arguments.js:6:20:6:28 | arguments |
+| arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:2:14:2:14 | f |
+| arguments.js:2:14:2:14 | f | arguments.js:11:5:11:5 | f |
+| arguments.js:2:16:2:16 | x | arguments.js:2:16:2:16 | x |
+| arguments.js:2:16:2:16 | x | arguments.js:3:24:3:24 | x |
+| arguments.js:6:13:6:28 | args | arguments.js:7:24:7:27 | args |
+| arguments.js:6:20:6:28 | arguments | arguments.js:6:13:6:28 | args |
+| arguments.js:8:9:8:22 | arguments | arguments.js:9:27:9:35 | arguments |
+| arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments |
+| arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments = {} |
 | eval.js:2:7:2:12 | x | eval.js:4:3:4:3 | x |
 | eval.js:2:11:2:12 | 42 | eval.js:2:7:2:12 | x |
+| sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |
 | sources.js:1:6:1:6 | x | sources.js:1:11:1:11 | x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:5:1:12 | (x => x) |
 | sources.js:1:11:1:11 | x | sources.js:1:1:1:12 | new (x => x) |
 | sources.js:3:2:5:1 | functio ... x+19;\\n} | sources.js:3:1:5:2 | (functi ... +19;\\n}) |
+| sources.js:3:11:3:11 | x | sources.js:3:11:3:11 | x |
 | sources.js:3:11:3:11 | x | sources.js:4:10:4:10 | x |
 | sources.js:4:10:4:13 | x+19 | sources.js:3:1:5:6 | (functi ... \\n})(23) |
 | sources.js:5:4:5:5 | 23 | sources.js:3:11:3:11 | x |
+| sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
 | sources.js:9:14:9:18 | array | sources.js:10:19:10:23 | array |
 | sources.js:9:14:9:18 | array | sources.js:11:23:11:27 | array |
 | sources.js:10:12:10:14 | key | sources.js:10:28:10:30 | key |
@@ -26,6 +42,7 @@
 | tst2.ts:8:9:8:10 | 23 | tst2.ts:8:3:8:10 | A.x = 23 |
 | tst2.ts:11:11:11:13 | A.x | tst2.ts:11:11:11:23 | A.x as number |
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
+| tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst.js:1:1:1:1 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -69,6 +86,7 @@
 | tst.js:14:5:14:5 | x | tst.js:14:1:14:9 | z ? x : y |
 | tst.js:14:9:14:9 | y | tst.js:14:1:14:9 | z ? x : y |
 | tst.js:16:2:20:1 | functio ... n "";\\n} | tst.js:16:1:20:2 | (functi ...  "";\\n}) |
+| tst.js:16:13:16:13 | a | tst.js:16:13:16:13 | a |
 | tst.js:16:13:16:13 | a | tst.js:18:12:18:12 | a |
 | tst.js:18:12:18:12 | a | tst.js:16:1:20:9 | (functi ... ("arg") |
 | tst.js:19:10:19:11 | "" | tst.js:16:1:20:9 | (functi ... ("arg") |

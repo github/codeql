@@ -305,6 +305,13 @@ module DOM {
           call.getNumArgument() = 1 and
           forex(InferredType t | t = call.getArgument(0).analyze().getAType() | t = TTNumber())
         )
+        or
+        // A `this` node from a callback given to a `$().each(callback)` call.
+        // purposely not using JQuery::MethodCall to avoid `jquery.each()`.
+        exists(DataFlow::CallNode eachCall | eachCall = JQuery::objectRef().getAMethodCall("each") |
+          this = DataFlow::thisNode(eachCall.getCallback(0).getFunction()) or
+          this = eachCall.getABoundCallbackParameter(0, 1)
+        )
       }
     }
   }

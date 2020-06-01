@@ -600,9 +600,6 @@ class PropertyPattern extends @property, ASTNode {
   /** Gets the object pattern this property pattern belongs to. */
   ObjectPattern getObjectPattern() { properties(this, result, _, _, _) }
 
-  /** Gets the nearest enclosing function or toplevel in which this property pattern occurs. */
-  StmtContainer getContainer() { result = getObjectPattern().getContainer() }
-
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
   predicate isImpure() {
     isComputed() and getNameExpr().isImpure()

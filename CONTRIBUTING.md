@@ -20,7 +20,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
       * Python: `python/ql/src`
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
-    - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/Semmle/ql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
+    - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/github/codeql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
     - The structure of an `experimental` subdirectory mirrors the structure of its parent directory.
     - Select or create an appropriate directory in `experimental` based on the existing directory structure of `experimental` or its parent directory.
 
@@ -36,7 +36,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 3. **Formatting**
 
-    - The queries and libraries must be [autoformatted](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
+    - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html).
 
 4. **Compilation**
 

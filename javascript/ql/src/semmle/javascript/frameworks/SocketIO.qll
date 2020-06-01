@@ -82,6 +82,11 @@ module SocketIO {
     }
 
     override DataFlow::SourceNode ref() { result = server(DataFlow::TypeTracker::end()) }
+
+    /**
+     * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
+     */
+    deprecated DataFlow::SourceNode getOrigin() { result = this }
   }
 
   /** A data flow node that may produce (that is, create or return) a socket.io server. */
@@ -270,6 +275,18 @@ module SocketIO {
     }
 
     override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
+
+    /** Gets a parameter through which data is received from a client. */
+    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
+
+    /** Gets a client-side node that may be sending the data received here. */
+    SendNode getASender() { result.getAReceiver() = this }
+
+    /** Gets the acknowledgment callback, if any. */
+    ReceiveCallback getAck() { result.getReceiveNode() = this }
+
+    /** DEPRECATED. Use `getChannel()` instead. */
+    deprecated string getEventName() { result = getChannel() }
   }
 
   /** An acknowledgment callback when receiving a message. */
@@ -289,6 +306,9 @@ module SocketIO {
     override SocketIOClient::SendCallback getAReceiver() {
       result.getSendNode().getAReceiver() = rcv
     }
+
+    /** Gets the API call to which this is a callback. */
+    ReceiveNode getReceiveNode() { result = rcv }
   }
 
   /**
@@ -350,6 +370,12 @@ module SocketIO {
     override SocketIOClient::ReceiveNode getAReceiver() {
       result.getSocket().getATargetNamespace() = getNamespace()
     }
+
+    /** Gets the acknowledgment callback, if any. */
+    SendCallback getAck() { result.getSendNode() = this }
+
+    /** DEPRECATED. Use `getChannel()` instead. */
+    deprecated string getEventName() { result = getChannel() }
   }
 
   /** A socket.io namespace, identified by its server and its path. */
@@ -538,14 +564,26 @@ module SocketIOClient {
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
     }
+
+    /** Gets a data flow node representing data received from the server. */
+    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
+
+    /** Gets the acknowledgment callback, if any. */
+    DataFlow::SourceNode getAck() { result.(ReceiveCallback).getReceiveNode() = this }
+
+    /** Gets a server-side node that may be sending the data received here. */
+    SocketIO::SendNode getASender() {
+      result.getNamespace() = getSocket().getATargetNamespace() and
+      not result.getChannel() != getChannel()
+    }
   }
 
   /** An acknowledgment callback from a receive node. */
-  class RecieveCallback extends EventDispatch::Range, DataFlow::SourceNode {
+  class ReceiveCallback extends EventDispatch::Range, DataFlow::SourceNode {
     override SocketObject emitter;
     ReceiveNode rcv;
 
-    RecieveCallback() {
+    ReceiveCallback() {
       this = rcv.getListener().getLastParameter() and
       exists(this.getAnInvocation()) and
       emitter = rcv.getEmitter()
@@ -607,10 +645,19 @@ module SocketIOClient {
       )
     }
 
+    /** Gets a data flow node representing data sent to the client. */
+    DataFlow::Node getASentItem() { result = getSentItem(_) }
+
     /** Gets a server-side node that may be receiving the data sent here. */
     override SocketIO::ReceiveNode getAReceiver() {
       result.getSocket().getNamespace() = getSocket().getATargetNamespace()
     }
+
+    /** Gets the acknowledgment callback, if any. */
+    DataFlow::FunctionNode getAck() { result.(SendCallback).getSendNode() = this }
+
+    /** DEPRECATED. Use `getChannel()` instead. */
+    deprecated string getEventName() { result = getChannel() }
   }
 
   /**

@@ -45,3 +45,10 @@ function test6(url) {
         return "about:blank";
     return url;
 }
+
+function test7(url) {
+    let scheme = url.split(/:/)[0];
+    if (scheme === "javascript") // NOT OK
+        return "about:blank";
+    return url;
+}

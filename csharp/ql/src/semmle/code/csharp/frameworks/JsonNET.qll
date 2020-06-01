@@ -3,7 +3,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 
 /** Definitions relating to the `Json.NET` package. */
 module JsonNET {

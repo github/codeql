@@ -31,28 +31,18 @@ uniqueTypeRepr
 uniqueNodeLocation
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
-| cpp11.cpp:82:17:82:55 | call to Val | Node should have one location but has 2. |
-| cpp11.cpp:82:17:82:55 | call to Val | Node should have one location but has 2. |
 | duff.c:2:12:2:12 | i | Node should have one location but has 4. |
 | duff.c:2:12:2:12 | x | Node should have one location but has 4. |
-| file://:0:0:0:0 | call to PolymorphicBase | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to PolymorphicDerived | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Val | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Val | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to exn1 | Node should have one location but has 2. |
 | file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
 | ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
 | ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
 | ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
 | ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
-| ir.cpp:850:19:850:19 | call to PolymorphicBase | Node should have one location but has 2. |
-| ir.cpp:851:22:851:22 | call to PolymorphicDerived | Node should have one location but has 2. |
 | nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
 | switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
-| try_catch.cpp:13:5:13:16 | call to exn1 | Node should have one location but has 2. |
 missingLocation
 | Nodes without location: 2 |
 uniqueNodeToString
@@ -92,6 +82,10 @@ reverseRead
 storeIsPostUpdate
 argHasPostUpdate
 | builtin.cpp:15:31:15:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:9:30:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:9:33:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:9:39:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:9:42:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
 | cpp11.cpp:77:5:77:17 | unaryFunction | ArgumentNode is missing PostUpdateNode. |
 | destructors.cpp:52:14:52:16 | ref | ArgumentNode is missing PostUpdateNode. |
 | ir.cpp:623:5:623:5 | r | ArgumentNode is missing PostUpdateNode. |

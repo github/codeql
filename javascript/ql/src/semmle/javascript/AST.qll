@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -20,7 +21,7 @@ import javascript
  * abs(-42);
  * ```
  */
-class ASTNode extends @ast_node, Locatable {
+class ASTNode extends @ast_node, NodeInStmtContainer {
   override Location getLocation() { hasLocation(this, result) }
 
   override File getFile() {
@@ -446,9 +447,9 @@ class StmtContainer extends @stmt_container, ASTNode {
  */
 module AST {
   /**
-   * A program element that evaluates to a value at runtime. This includes expressions,
-   * but also function and class declaration statements, as well as TypeScript
-   * namespace and enum declarations.
+   * A program element that evaluates to a value or destructures a value at runtime.
+   * This includes expressions and destructuring patterns, but also function and
+   * class declaration statements, as well as TypeScript namespace and enum declarations.
    *
    * Examples:
    *

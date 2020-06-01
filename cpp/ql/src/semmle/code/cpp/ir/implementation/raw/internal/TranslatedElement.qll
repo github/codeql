@@ -400,6 +400,9 @@ newtype TTranslatedElement =
   TTranslatedConstructorInitList(Function func) { translateFunction(func) } or
   // A destructor destruction list
   TTranslatedDestructorDestructionList(Function func) { translateFunction(func) } or
+  TTranslatedThisParameter(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
     exists(Function func |
@@ -736,12 +739,12 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the instruction whose result is consumed as an operand of the
    * instruction specified by `tag`, with the operand specified by `operandTag`.
    */
-  Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+  Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
+  CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.

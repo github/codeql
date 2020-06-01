@@ -29,10 +29,3 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Abstract syntax tree classes for JavaScript and TypeScript <ast-class-reference>`: CodeQL has a large selection of classes for working with JavaScript and TypeScript statements and expressions.
 
 -  :doc:`Data flow cheat sheet for JavaScript <dataflow-cheat-sheet>`: This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
-
-Further reading
----------------
-
--  For examples of how to query common JavaScript elements, see the `JavaScript cookbook <https://help.semmle.com/wiki/display/CBJS>`__.
--  For the queries used in LGTM, display a `JavaScript query <https://lgtm.com/search?q=language%3Ajavascript&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
--  For more information about the library for JavaScript see the `CodeQL library for JavaScript <https://help.semmle.com/qldoc/javascript/>`__.

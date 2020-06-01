@@ -79,8 +79,7 @@ However, since ``y`` is derived from ``x``, it is influenced by the untrusted or
 In QL, taint tracking extends data flow analysis by including steps in which the data values are not necessarily preserved, but the potentially insecure object is still propagated. 
 These flow steps are modeled in the taint-tracking library using predicates that hold if taint is propagated between nodes.
 
-What next?
-**********
+Further reading
+***************
 
-- Search for ``DataFlow`` and ``TaintTracking`` in the `standard CodeQL libraries <https://help.semmle.com/QL/ql-libraries.html>`__ to learn more about the technical implementation of data flow analysis for specific programming languages.
-- Visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__ to find language-specific tutorials on data flow and other topics.
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__

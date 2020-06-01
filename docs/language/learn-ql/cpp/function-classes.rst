@@ -92,7 +92,5 @@ The LGTM version of this query is considerably more complicated, but if you look
 Further reading
 ---------------
 
--  Explore other ways of finding functions using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/function>`__.
--  Take a look at some other tutorials: :doc:`Expressions, types and statements in C and C++ <introduce-libraries-cpp>`, :doc:`Conversions and classes in C and C++ <conversions-classes>`, and :doc:`Analyzing data flow in C and C++ <dataflow>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

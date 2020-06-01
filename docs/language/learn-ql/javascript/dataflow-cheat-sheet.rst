@@ -216,3 +216,11 @@ Troubleshooting
 -  Compilation fails due to incompatible types? Make sure AST nodes and
    DataFlow nodes are not mixed up. Use `asExpr() <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$asExpr.0.html>`__ or
    `flow() <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/predicate.AST$AST$ValueNode$flow.0.html>`__ to convert.
+
+Further reading
+---------------
+
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

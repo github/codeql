@@ -213,7 +213,7 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
 }
 
 /** A literal path expression appearing in an external module reference. */
-private class LiteralExternalModulePath extends PathExprInModule, ConstantString {
+private class LiteralExternalModulePath extends PathExpr, ConstantString {
   LiteralExternalModulePath() {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
@@ -276,8 +276,6 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
     )
   }
 
-  override StmtContainer getContainer() { result = Stmt.super.getContainer() }
-
   override string describe() { result = "interface " + getName() }
 
   /**
@@ -298,8 +296,6 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
 /** An inline TypeScript interface type, such as `{x: number; y: number}`. */
 class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interfacetypeexpr {
   override Identifier getIdentifier() { none() }
-
-  override StmtContainer getContainer() { result = TypeExpr.super.getContainer() }
 
   override string describe() { result = "anonymous interface" }
 }
@@ -534,8 +530,6 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
 
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
-
-  override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 

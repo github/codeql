@@ -25,7 +25,7 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * `DeclarationEntry`, because they always have a unique source location.
  * `EnumConstant` and `FriendDecl` are both examples of this.
  */
-abstract class Declaration extends Locatable, @declaration {
+class Declaration extends Locatable, @declaration {
   /**
    * Gets the innermost namespace which contains this declaration.
    *
@@ -98,7 +98,12 @@ abstract class Declaration extends Locatable, @declaration {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
 
-  override string toString() { result = this.getName() }
+  /**
+   * Gets a description of this `Declaration` for display purposes.
+   */
+  string getDescription() { result = this.getName() }
+
+  final override string toString() { result = this.getDescription() }
 
   /**
    * Gets the name of this declaration.
