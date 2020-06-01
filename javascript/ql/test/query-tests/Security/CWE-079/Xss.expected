@@ -84,6 +84,24 @@ nodes
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| sanitiser.js:20:7:20:27 | tainted |
+| sanitiser.js:20:17:20:27 | window.name |
+| sanitiser.js:20:17:20:27 | window.name |
+| sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:27:29:27:35 | tainted |
+| sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:34:29:34:35 | tainted |
+| sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:37:29:37:35 | tainted |
+| sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:42:29:42:35 | tainted |
+| sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:49:29:49:35 | tainted |
 | stored-xss.js:2:39:2:55 | document.location |
 | stored-xss.js:2:39:2:55 | document.location |
 | stored-xss.js:2:39:2:62 | documen ... .search |
@@ -514,6 +532,23 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| sanitiser.js:20:7:20:27 | tainted | sanitiser.js:27:29:27:35 | tainted |
+| sanitiser.js:20:7:20:27 | tainted | sanitiser.js:34:29:34:35 | tainted |
+| sanitiser.js:20:7:20:27 | tainted | sanitiser.js:37:29:37:35 | tainted |
+| sanitiser.js:20:7:20:27 | tainted | sanitiser.js:42:29:42:35 | tainted |
+| sanitiser.js:20:7:20:27 | tainted | sanitiser.js:49:29:49:35 | tainted |
+| sanitiser.js:20:17:20:27 | window.name | sanitiser.js:20:7:20:27 | tainted |
+| sanitiser.js:20:17:20:27 | window.name | sanitiser.js:20:7:20:27 | tainted |
+| sanitiser.js:27:29:27:35 | tainted | sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:27:29:27:35 | tainted | sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:34:29:34:35 | tainted | sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:34:29:34:35 | tainted | sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:37:29:37:35 | tainted | sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:37:29:37:35 | tainted | sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:42:29:42:35 | tainted | sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:42:29:42:35 | tainted | sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:49:29:49:35 | tainted | sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:49:29:49:35 | tainted | sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' |
 | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
@@ -834,6 +869,11 @@ edges
 | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | optionalSanitizer.js:26:16:26:32 | document.location | optionalSanitizer.js:45:18:45:56 | sanitiz ...  target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:26:16:26:32 | document.location | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' | sanitiser.js:20:17:20:27 | window.name | sanitiser.js:27:21:27:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:20:17:20:27 | window.name | user-provided value |
+| sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' | sanitiser.js:20:17:20:27 | window.name | sanitiser.js:34:21:34:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:20:17:20:27 | window.name | user-provided value |
+| sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' | sanitiser.js:20:17:20:27 | window.name | sanitiser.js:37:21:37:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:20:17:20:27 | window.name | user-provided value |
+| sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' | sanitiser.js:20:17:20:27 | window.name | sanitiser.js:42:21:42:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:20:17:20:27 | window.name | user-provided value |
+| sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' | sanitiser.js:20:17:20:27 | window.name | sanitiser.js:49:21:49:44 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | sanitiser.js:20:17:20:27 | window.name | user-provided value |
 | stored-xss.js:5:20:5:52 | session ... ssion') | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:5:20:5:52 | session ... ssion') | Cross-site scripting vulnerability due to $@. | stored-xss.js:2:39:2:55 | document.location | user-provided value |
 | stored-xss.js:8:20:8:48 | localSt ... local') | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:8:20:8:48 | localSt ... local') | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:51 | document.location | user-provided value |
 | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:12:20:12:54 | "<a hre ... ar</a>" | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:51 | document.location | user-provided value |
