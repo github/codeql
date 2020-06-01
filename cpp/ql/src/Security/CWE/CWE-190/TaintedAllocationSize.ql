@@ -58,7 +58,9 @@ class UpperBoundGuard extends DataFlow::BarrierGuard {
 class EqualityGuard extends DataFlow::BarrierGuard {
   EqualityGuard() { this.comparesEq(_, _, _, _, _) }
 
-  override predicate checks(Instruction i, boolean b) { this.comparesEq(i.getAUse(), _, _, true, b) }
+  override predicate checks(Instruction i, boolean b) {
+    this.comparesEq(i.getAUse(), _, _, true, b)
+  }
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
