@@ -513,6 +513,8 @@ For example, the following construction is legal::
 However, a similar implementation that restricts ``InitialValueSource`` in a class extension is not valid.
 If we had implemented ``DefiniteInitialization`` as a class extension instead, it would trigger a type test for ``InitialValueSource``. This results in an illegal recursion ``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
 
+    // THIS WON'T WORK: The implicit type check for InitialValueSource involves an illegal recursion 
+    // DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization!
     class DefiniteInitialization extends InitialValueSource {
       DefiniteInitialization() {
         this instanceof ParameterPassing or this instanceof ExplicitInitialization
