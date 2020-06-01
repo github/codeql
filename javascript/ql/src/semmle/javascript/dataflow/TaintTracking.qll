@@ -255,6 +255,17 @@ module TaintTracking {
   }
 
   /**
+   * A class of taint-propagating data flow edges through file path manipulation,
+   * such as `path.join`.
+   *
+   * Does not include string operations that aren't specific to paths, such
+   * as concatenation and substring operations.
+   */
+  class FilePathStep extends SharedTaintStep {
+    FilePathStep() { this = "FilePathStep" }
+  }
+
+  /**
    * A class of taint-propagating data flow edges contributed by the heuristics library.
    *
    * Such steps are provided by the `semmle.javascript.heuristics` libraries
@@ -371,6 +382,14 @@ module TaintTracking {
    */
   predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
     sharedTaintStepInternal(pred, succ, any(UriStep step))
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through a library function manipulating file paths.
+   */
+  predicate filePathStep(DataFlow::Node pred, DataFlow::Node succ) {
+    sharedTaintStepInternal(pred, succ, any(FilePathStep step))
   }
 
   /**

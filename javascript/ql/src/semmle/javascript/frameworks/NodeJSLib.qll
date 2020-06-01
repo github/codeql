@@ -275,7 +275,7 @@ module NodeJSLib {
   /**
    * A call to a path-module method that preserves taint.
    */
-  private class PathFlowStep extends TaintTracking::GenericStep {
+  private class PathFlowStep extends TaintTracking::FilePathStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string methodName |
         call = NodeJSLib::Path::moduleMember(methodName).getACall() and
@@ -305,7 +305,7 @@ module NodeJSLib {
   /**
    * A call to a fs-module method that preserves taint.
    */
-  private class FsFlowStep extends TaintTracking::GenericStep {
+  private class FsFlowStep extends TaintTracking::FilePathStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string methodName |
         call = FS::moduleMember(methodName).getACall()
