@@ -498,15 +498,15 @@ In some cases, using the type union over the whole algebraic datatype can avoid 
 For example, the following construction is legal::
 
     newtype InitialValueSource =
-        ExplicitInitialization(VarDecl v) { exists(v.getInitializer()) } or
-        ParameterPassing(Call c, int pos) { exists(c.getParameter(pos)) } or
-        UnknownInitialGarbage(VarDecl v) { not exists(DefiniteInitialization di | v = target(di)) }
+      ExplicitInitialization(VarDecl v) { exists(v.getInitializer()) } or
+      ParameterPassing(Call c, int pos) { exists(c.getParameter(pos)) } or
+      UnknownInitialGarbage(VarDecl v) { not exists(DefiniteInitialization di | v = target(di)) }
 
     class DefiniteInitialization = ParameterPassing or ExplicitInitialization;
 
     VarDecl target(DefiniteInitialization di) {
-       di = ExplicitInitialization(result) or
-       exists(Call c, int pos | di = ParameterPassing(c, pos) and
+      di = ExplicitInitialization(result) or
+      exists(Call c, int pos | di = ParameterPassing(c, pos) and
                                 result = c.getCallee().getFormalArg(pos))
     }
 
