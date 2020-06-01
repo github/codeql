@@ -319,7 +319,7 @@ module TaintTracking {
   }
 
   /**
-   * A class of taint-propagating data flow edges through through data serialization, such as `JSON.stringify`.
+   * A class of taint-propagating data flow edges through data serialization, such as `JSON.stringify`.
    */
   class SerializeStep extends SharedTaintStep {
     SerializeStep() { this = "SerializeStep" }
