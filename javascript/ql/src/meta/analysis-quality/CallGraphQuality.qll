@@ -10,12 +10,7 @@ private import semmle.javascript.dependencies.FrameworkLibraries
 private import semmle.javascript.frameworks.Testing
 private import DataFlow
 
-/**
- * Gets the root folder of the snapshot.
- *
- * This is selected as the location for project-wide metrics.
- */
-Folder projectRoot() { result.getRelativePath() = "" }
+import meta.MetaMetrics
 
 /** A file we ignore because it is a test file or compiled/generated/bundled code. */
 class IgnoredFile extends File {
