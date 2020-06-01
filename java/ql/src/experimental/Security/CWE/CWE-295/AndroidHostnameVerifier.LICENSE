@@ -1,0 +1,38 @@
+// Licensed under Apache 2.0 per https://developer.android.com/license
+/*
+Copyright 2020 Android/Android
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
+// Create an HostnameVerifier that hardwires the expected hostname.
+// Note that is different than the URL's hostname:
+// example.com versus example.org
+HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+    @Override
+    public boolean verify(String hostname, SSLSession session) {
+        HostnameVerifier hv =
+            HttpsURLConnection.getDefaultHostnameVerifier();
+        return hv.verify("example.com", session); // OKAY-ISH: verify that the certificate matches
+        // example.com and only accept example.com as an alternative to example.org
+        // BETTER: fix the underlying configuration problem that causes example.org to present the certificate for the wrong domain.
+    }
+};
+
+// Tell the URLConnection to use our HostnameVerifier
+URL url = new URL("https://example.org/");
+HttpsURLConnection urlConnection =
+    (HttpsURLConnection)url.openConnection();
+urlConnection.setHostnameVerifier(hostnameVerifier);
+InputStream in = urlConnection.getInputStream();

@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a HostnameVerifier always returns <code>true</code> it will not verify the hostname at all.
+This allows an attacker to perform a man-in-the-middle attack on the application therefore breaking any security Transport Layer Security (TLS) gives.
+
+An Attack would look like this:
+1. The program connects to <code>https://example.com</code>.
+2. The attacker intercepts this connection and presents one of their valid certificates they control, for example one from Let's Encrypt.
+3. Java verifies that the certificate has been issued by a trusted certificate authority.
+4. Java verifies that the certificate has been issued for the host <code>example.com</code>, which will fail because the certificate has been issued for <code>malicious.domain</code>.
+5. Java wants to reject the certificate because the hostname does not match. Before doing this it checks whether there exists a <code>HostnameVerifier</code>.
+6. Your <code>HostnameVerifier</code> is called which returns <code>true</code> for any certificate so also for this one.
+7. Java proceeds with the connection since your <code>HostnameVerifier</code> accepted it.
+8. The attacker can now read the data (Man-in-the-middle) your program sends to <code>https://example.com</code> while the program thinks the connection is secure.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do NOT use an unverifying HostnameVerifier!
+<li>If you use an unverifying verifier to solve a configuration problem with TLS/HTTPS you should solve the configuration problem instead.
+</li>
+<li>If you use an unverifying verifier to connect to a local host you should instead create a self-signed certificate for your local host and import that certificate to the java key store</li>
+If you do not verify the hostname, you allow any attacker to perform a man-in-the-middle attack.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first example, the <code>HostnameVerifier</code> always returns <code>true</code>.
+This allows an attacker to perform a man-in-the-middle attack, because any certificate is accepted despite an incorrect hostname.
+</p>
+<sample src="AlwaysTrueHostnameVerifier.java" />
+</example>
+
+<references>
+<li><a href="https://developer.android.com/training/articles/security-ssl">Android Security Guide for TLS/HTTPS</a>.</li>
+<li><a href="https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/">Further Information on Hostname Verification</a>.</li>
+<li>OWASP: <a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295</a>.</li>
+</references>
+</qhelp>

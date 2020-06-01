@@ -1,0 +1,80 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a <code>HostnameVerifier</code> incorrectly verifies the hostname it might not verify the hostname at all.
+This allows an attacker to perform a man-in-the-middle attack on the application therefore breaking any security Transport Layer Security (TLS) gives.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do NOT use an incorrect <code>HostnameVerifier</code>!
+A <code>HostnameVerifier</code> is typically used for either an <code>URL</code>/<code>HttpsURLConnection</code> or a raw <code>SSLSocket</code>.
+A raw <code>SSLSocket</code> does not do any hostname verification so a working hostname verification is important.
+When you use an <code>URL</code>/<code>HttpsURLConnection</code>:
+<p>
+<li>If you use a verifier to solve a configuration problem with TLS/HTTPS you should solve the configuration problem instead.
+</li>
+<li>If you use a verifier to connect to a local host you should instead create a self-signed certificate for your local host and import that certificate to the java key store</li>
+</p>
+
+When you use a raw <code>SSLSocket</code>:
+<p>
+<li>Use <code>SSLParameters.setEndpointIdentificationAlgorithm("HTTPS")</code> to enable hostname verification. This is available starting with Java 7 and Android Api Level 24.</li>
+<li>Before Android Api Level 24 you should use the <code>HostnameVerifier</code> from <code>HttpsURLConnection.getDefaultHostnameVerifier()</code> to verify the hostname.</li>
+If you do not verify the hostname, you allow any attacker to perform a man-in-the-middle attack.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first example, the <code>HostnameVerifier</code> verifies the <code>hostname</code> against <code>session.getPeerHost()</code>.
+This allows an attacker to perform a man-in-the-middle attack, because <code>getPeerHost() is not authenticated and will always be equal to the hostname.
+</p>
+<sample src="PeerHostHostnameVerifier.java" />
+
+<p>
+In the second example, the <code>HostnameVerifier</code> verifies the <code>hostname</code> against different local hosts.
+Comparing <code>hostname</code> against <code>localhost</code> does not verify the certificate. In theory traffic to <code>localhost</code>
+should never leave the host. In practice this may not always be the case due to misconfigurations.
+Comparing <code>hostname</code> against <code>127.0.0.1</code> or <code>::1</code> does not verify the certificate. These adresses are loopback adresses and traffic
+MUST never leave the host. So this SHOULD be safe, but nevertheless it would be better to use a proper self-signed certificate.
+</p>
+<sample src="LocalhostHostnameverifier.java" />
+
+<p>
+In the third example, we want to connect to the <code>example.org</code> host, but the host presents a certificate for example.com.
+Assuming that <code>example.org</code> and <code>example.com</code> are under our control (and only then this is ok) we can use the default <code>HostnameVerifier</code>
+to verify that the certificate belongs to <code>example.com</code>.
+Note that you should really fix the configuration problem that causes <code>example.org</code> to present the certificate for <code>example.com</code> instead of using this method.
+This method **only** works on Android, on (OpenJDK) Java the default <code>HostnameVerifier</code> will always return <code>false</code>.
+On (OpenJDK) Java you can use <a href="https://github.com/AsyncHttpClient/async-http-client/commit/3c9152e">this implementation</a> of a working
+hostname verifier instead of the default <code>HostnameVerifier</code>.
+</p>
+<sample src="AndroidHostnameVerifier.java" />
+
+<p>
+In the fourth example, we properly use a raw <code>SSLSocket</code> with enabled <code>SSLParameters.setEndpointIdentificationAlgorithm("HTTPS")</code>, thus verifying hostnames correctly.
+Note that this method is only available with Java 7 and Android Api Level 24.
+The next example shows an alternative for Android Api Levels before 24.
+</p>
+<sample src="RawSSLSocketHostnameEndpointIdentification.java" />
+
+<p>
+In the fifth example, we properly use a raw <code>SSLSocket</code> and verify the hostname using the <code>HostnameVerifier</code> from <code>HttpsURLConnection.getDefaultHostnameVerifier()</code>.
+Note that this is also works on Android Api Levels before 24.
+But also note that this will **not** work on (OpenJDK) Java, because the default <code>HostnameVerifier</code> will always return <code>false</code>.
+</p>
+<sample src="RawSSLSocketHostnameEndpointIdentification.java" />
+</example>
+
+<references>
+<li><a href="https://developer.android.com/training/articles/security-ssl">Android Security Guide for TLS/HTTPS</a>.</li>
+<li><a href="https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/">Further Information on Hostname Verification</a>.</li>
+<li>OWASP: <a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295</a>.</li>
+</references>
+</qhelp>

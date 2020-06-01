@@ -1,0 +1,1 @@
+| EverythingAcceptingHostnameVerifier.java:7:18:7:23 | verify | $@ accepts any certificate as valid for a host. | EverythingAcceptingHostnameVerifier.java:7:18:7:23 | verify | This method |

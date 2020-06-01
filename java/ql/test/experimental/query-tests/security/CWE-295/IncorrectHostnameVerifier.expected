@@ -1,0 +1,7 @@
+| EverythingAcceptingHostnameVerifier.java:15:4:15:36 | stmt | $@ incorrectly verifies the hostname. | EverythingAcceptingHostnameVerifier.java:15:4:15:36 | stmt | This statement |
+| IncorrectHostnameVerifier.java:9:4:9:49 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:9:4:9:49 | stmt | This statement |
+| IncorrectHostnameVerifier.java:18:4:18:40 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:18:4:18:40 | stmt | This statement |
+| IncorrectHostnameVerifier.java:26:4:26:36 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:26:4:26:36 | stmt | This statement |
+| IncorrectHostnameVerifier.java:30:11:30:43 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:30:11:30:43 | stmt | This statement |
+| IncorrectHostnameVerifier.java:36:11:36:37 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:36:11:36:37 | stmt | This statement |
+| IncorrectHostnameVerifier.java:97:4:97:46 | stmt | $@ incorrectly verifies the hostname. | IncorrectHostnameVerifier.java:97:4:97:46 | stmt | This statement |
