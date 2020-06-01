@@ -3,6 +3,7 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.implementation.internal.IRFunctionBase
 private import semmle.code.cpp.ir.implementation.internal.TInstruction
+private import semmle.code.cpp.ir.implementation.internal.TIRVariable
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.TempVariableTag
@@ -19,6 +20,14 @@ TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
 
 InstructionTag getInstructionTag(Instruction instruction) {
   instruction = TRawInstruction(_, _, _, _, _, result)
+}
+
+pragma[noinline]
+private predicate instructionOrigin(
+  Instruction instruction, TranslatedElement element, InstructionTag tag
+) {
+  element = getInstructionTranslatedElement(instruction) and
+  tag = getInstructionTag(instruction)
 }
 
 /**
@@ -71,6 +80,98 @@ module Raw {
     var.hasDynamicInitialization() and
     type = getBoolType()
   }
+
+  cached
+  TIRVariable getInstructionVariable(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
+  }
+
+  cached
+  Field getInstructionField(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionField(tag)
+    )
+  }
+
+  cached
+  Function getInstructionFunction(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionFunction(getInstructionTag(instruction))
+  }
+
+  cached
+  string getInstructionConstantValue(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionConstantValue(getInstructionTag(instruction))
+  }
+
+  cached
+  int getInstructionIndex(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionIndex(tag)
+    )
+  }
+
+  cached
+  BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionBuiltInOperation(getInstructionTag(instruction))
+  }
+
+  cached
+  CppType getInstructionExceptionType(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionExceptionType(getInstructionTag(instruction))
+  }
+
+  cached
+  predicate getInstructionInheritance(Instruction instruction, Class baseClass, Class derivedClass) {
+    getInstructionTranslatedElement(instruction)
+        .getInstructionInheritance(getInstructionTag(instruction), baseClass, derivedClass)
+  }
+
+  cached
+  int getInstructionElementSize(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionElementSize(tag)
+    )
+  }
+
+  cached
+  predicate needsUnknownOpaqueType(int byteSize) {
+    exists(TranslatedElement element | element.needsUnknownOpaqueType(byteSize))
+  }
+
+  cached
+  Expr getInstructionConvertedResultExpression(Instruction instruction) {
+    exists(TranslatedExpr translatedExpr |
+      translatedExpr = getTranslatedExpr(result) and
+      instruction = translatedExpr.getResult() and
+      // Only associate `instruction` with this expression if the translated
+      // expression actually produced the instruction; not if it merely
+      // forwarded the result of another translated expression.
+      instruction = translatedExpr.getInstruction(_)
+    )
+  }
+
+  cached
+  Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+    result = getInstructionConvertedResultExpression(instruction).getUnconverted()
+  }
 }
 
 import Cached
@@ -90,23 +191,6 @@ private module Cached {
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
-  }
-
-  cached
-  Expr getInstructionConvertedResultExpression(Instruction instruction) {
-    exists(TranslatedExpr translatedExpr |
-      translatedExpr = getTranslatedExpr(result) and
-      instruction = translatedExpr.getResult() and
-      // Only associate `instruction` with this expression if the translated
-      // expression actually produced the instruction; not if it merely
-      // forwarded the result of another translated expression.
-      instruction = translatedExpr.getInstruction(_)
-    )
-  }
-
-  cached
-  Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    result = getInstructionConvertedResultExpression(instruction).getUnconverted()
   }
 
   cached
@@ -303,97 +387,6 @@ private module Cached {
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
     instr = TRawInstruction(result, _, _, _, _, _)
-  }
-
-  cached
-  IRVariable getInstructionVariable(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      element = getInstructionTranslatedElement(instruction) and
-      tag = getInstructionTag(instruction) and
-      (
-        result = element.getInstructionVariable(tag) or
-        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
-      )
-    )
-  }
-
-  cached
-  Field getInstructionField(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionField(tag)
-    )
-  }
-
-  cached
-  Function getInstructionFunction(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionFunction(getInstructionTag(instruction))
-  }
-
-  cached
-  string getInstructionConstantValue(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionConstantValue(getInstructionTag(instruction))
-  }
-
-  cached
-  int getInstructionIndex(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionIndex(tag)
-    )
-  }
-
-  cached
-  BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionBuiltInOperation(getInstructionTag(instruction))
-  }
-
-  cached
-  CppType getInstructionExceptionType(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionExceptionType(getInstructionTag(instruction))
-  }
-
-  cached
-  predicate getInstructionInheritance(Instruction instruction, Class baseClass, Class derivedClass) {
-    getInstructionTranslatedElement(instruction)
-        .getInstructionInheritance(getInstructionTag(instruction), baseClass, derivedClass)
-  }
-
-  pragma[noinline]
-  private predicate instructionOrigin(
-    Instruction instruction, TranslatedElement element, InstructionTag tag
-  ) {
-    element = getInstructionTranslatedElement(instruction) and
-    tag = getInstructionTag(instruction)
-  }
-
-  cached
-  int getInstructionElementSize(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionElementSize(tag)
-    )
-  }
-
-  cached
-  predicate needsUnknownOpaqueType(int byteSize) {
-    exists(TranslatedElement element | element.needsUnknownOpaqueType(byteSize))
-  }
-
-  cached
-  int getInstructionResultSize(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionResultSize(tag)
-    )
   }
 
   cached

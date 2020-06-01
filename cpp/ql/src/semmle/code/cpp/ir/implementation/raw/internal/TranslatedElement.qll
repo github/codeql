@@ -702,12 +702,8 @@ abstract class TranslatedElement extends TTranslatedElement {
   int getInstructionElementSize(InstructionTag tag) { none() }
 
   /**
-   * If the instruction specified by `tag` has a result of type `UnknownType`,
-   * gets the size of the result in bytes. If the result does not have a knonwn
-   * constant size, this predicate does not hold.
+   * Holds if the generated IR refers to an opaque type with size `byteSize`.
    */
-  int getInstructionResultSize(InstructionTag tag) { none() }
-
   predicate needsUnknownOpaqueType(int byteSize) { none() }
 
   /**

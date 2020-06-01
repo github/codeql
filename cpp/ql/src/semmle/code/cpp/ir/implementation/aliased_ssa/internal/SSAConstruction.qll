@@ -197,16 +197,6 @@ private module Cached {
     )
   }
 
-  cached
-  Language::Expr getInstructionConvertedResultExpression(Instruction instruction) {
-    result = getOldInstruction(instruction).getConvertedResultExpression()
-  }
-
-  cached
-  Language::Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
-    result = getOldInstruction(instruction).getUnconvertedResultExpression()
-  }
-
   /*
    * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
    * that node is its successor in the new successor relation, and the Chi node's successors are
@@ -304,59 +294,6 @@ private module Cached {
     instr = chiInstruction(result, _, _)
     or
     instr = unreachedInstruction(result)
-  }
-
-  cached
-  IRVariable getInstructionVariable(Instruction instruction) {
-    result =
-      getNewIRVariable(getOldInstruction(instruction).(OldIR::VariableInstruction).getIRVariable())
-  }
-
-  cached
-  Language::Field getInstructionField(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::FieldInstruction).getField()
-  }
-
-  cached
-  int getInstructionIndex(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::IndexedInstruction).getIndex()
-  }
-
-  cached
-  Language::Function getInstructionFunction(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::FunctionInstruction).getFunctionSymbol()
-  }
-
-  cached
-  string getInstructionConstantValue(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::ConstantValueInstruction).getValue()
-  }
-
-  cached
-  Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
-    result =
-      getOldInstruction(instruction).(OldIR::BuiltInOperationInstruction).getBuiltInOperation()
-  }
-
-  cached
-  Language::LanguageType getInstructionExceptionType(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::CatchByTypeInstruction).getExceptionType()
-  }
-
-  cached
-  int getInstructionElementSize(Instruction instruction) {
-    result = getOldInstruction(instruction).(OldIR::PointerArithmeticInstruction).getElementSize()
-  }
-
-  cached
-  predicate getInstructionInheritance(
-    Instruction instruction, Language::Class baseClass, Language::Class derivedClass
-  ) {
-    exists(OldIR::InheritanceConversionInstruction oldInstr |
-      oldInstr = getOldInstruction(instruction) and
-      baseClass = oldInstr.getBaseClass() and
-      derivedClass = oldInstr.getDerivedClass()
-    )
   }
 
   cached
