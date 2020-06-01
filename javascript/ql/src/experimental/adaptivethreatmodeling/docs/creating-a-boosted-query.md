@@ -27,7 +27,7 @@ To create a boosted query, you supply an ATM configuration that provides the fol
 
 For more information about how adaptive threat modeling works, see "[About adaptive threat modeling](./about-adaptive-threat-modeling.md)."
 
-## Example boosting the standard NoSQL injection JavaScript query
+## Example: boosting the standard NoSQL injection JavaScript query
 
 Before working through this example, ensure that you have correctly set up adaptive threat modeling and can run a boosted query.
 For more information, see "[Setting up adaptive threat modeling](https://github.com/github/vscode-codeql-starter/tree/experimental/atm#readme)."
