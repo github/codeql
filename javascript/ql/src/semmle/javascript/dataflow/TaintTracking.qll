@@ -219,7 +219,9 @@ module TaintTracking {
   }
 
   cached
-  private predicate sharedTaintStepInternal(DataFlow::Node pred, DataFlow::Node succ, SharedTaintStep kind) {
+  private predicate sharedTaintStepInternal(
+    DataFlow::Node pred, DataFlow::Node succ, SharedTaintStep kind
+  ) {
     kind.step(pred, succ)
   }
 
