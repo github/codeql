@@ -21,6 +21,10 @@ class SSLSocketFactory extends RefType {
   SSLSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
+class SSLSession extends RefType {
+  SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
+}
+
 class SSLContext extends RefType {
   SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
