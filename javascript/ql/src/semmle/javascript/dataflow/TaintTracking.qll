@@ -207,6 +207,17 @@ module TaintTracking {
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 
+  /**
+   * A class of taint-propagating data flow edges that should be added to all taint tracking
+   * configurations in addition to standard data flow edges.
+   *
+   * This class should rarely be subclassed directly; prefer one of the specific subclasses
+   * such as `TaintTracking::HeapStep`.
+   *
+   * Note: For performance reasons, all subclasses of this class should be part
+   * of the standard library. Override `Configuration::isAdditionalTaintStep`
+   * for analysis-specific taint steps.
+   */
   abstract class SharedTaintStep extends string {
     bindingset[this]
     SharedTaintStep() { any() }
@@ -226,26 +237,15 @@ module TaintTracking {
   }
 
   /**
-   * A taint-propagating data flow edge that should be added to all taint tracking
-   * configurations in addition to standard data flow edges.
-   *
-   * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
-   *
-   * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isAdditionalTaintStep`
-   * for analysis-specific taint steps.
-   *
-   * This class has multiple kinds of `step` predicates; these all have the same
-   * effect on taint-tracking configurations. However, the categorization of steps
-   * allows some data-flow configurations to opt in to specific kinds of taint steps.
+   * A class of taint-propagating data flow edges that don't belong to any of the more
+   * specific categories such as `TaintTracking::HeapStep`.
    */
   class GenericStep extends SharedTaintStep {
     GenericStep() { this = "GenericStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through URI manipulation.
+   * A class of taint-propagating data flow edges through URI manipulation.
    *
    * Does not include string operations that aren't specific to URIs, such
    * as concatenation and substring operations.
@@ -255,8 +255,7 @@ module TaintTracking {
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge contributed by the heuristics library.
+   * A class of taint-propagating data flow edges contributed by the heuristics library.
    *
    * Such steps are provided by the `semmle.javascript.heuristics` libraries
    * and will default to be being empty if those libraries are not imported.
@@ -266,77 +265,78 @@ module TaintTracking {
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through persistent storage.
+   * A class of taint-propagating data flow edges through persistent storage,
+   * such as cookies.
    */
   class PersistentStorageStep extends SharedTaintStep {
     PersistentStorageStep() { this = "PersistentStorageStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through the heap.
+   * A class of taint-propagating data flow edges through the heap.
+   *
+   * The general assumption made by these steps are:
+   * - A tainted object has tainted properties.
+   * - An object with a tainted property name is tainted.
+   *   - However, a tainted property _value_ is not generally enough to
+   *     consider the whole object tainted.
    */
   class HeapStep extends SharedTaintStep {
     HeapStep() { this = "HeapStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through arrays.
+   * A class of taint-propagating data flow edges through arrays.
    *
-   * These steps considers an array to be tainted if it contains tainted elements.
+   * The general assumption made by these steps are:
+   * - A tainted array has tainted array elements.
+   * - An array with a tainted element is tainted.
    */
   class ArrayStep extends SharedTaintStep {
     ArrayStep() { this = "ArrayStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through the `state` or `props` or a React component.
+   * A class of taint-propagating data flow edges through a view component,
+   * such as the `state` or `props` or a React component.
    */
   class ViewComponentStep extends SharedTaintStep {
     ViewComponentStep() { this = "ViewComponentStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through string concatenation.
+   * A class of taint-propagating data flow edges through string concatenation.
    */
   class StringConcatenationStep extends SharedTaintStep {
     StringConcatenationStep() { this = "StringConcatenationStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through string manipulation (other than concatenation).
+   * A class of taint-propagating data flow edges through string manipulation (other than concatenation).
    */
   class StringManipulationStep extends SharedTaintStep {
     StringManipulationStep() { this = "StringManipulationStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through data serialization, such as `JSON.stringify`.
+   * A class of taint-propagating data flow edges through through data serialization, such as `JSON.stringify`.
    */
   class SerializeStep extends SharedTaintStep {
     SerializeStep() { this = "SerializeStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through data deserialization, such as `JSON.parse`.
+   * A class of taint-propagating data flow edges through data deserialization, such as `JSON.parse`.
    */
   class DeserializeStep extends SharedTaintStep {
     DeserializeStep() { this = "DeserializeStep" }
   }
 
   /**
-   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-   * data flow edge through a promise.
+   * A class of taint-propagating data flow edges through a promise.
    *
-   * These steps consider a promise object to tainted if it can resolve to
-   * a tainted value.
+   * The general assumption made by these steps are:
+   * - A promise object is tainted iff it can succeed with a tainted value.
    */
   class PromiseStep extends SharedTaintStep {
     PromiseStep() { this = "PromiseStep" }
