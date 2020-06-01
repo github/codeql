@@ -1,6 +1,6 @@
-- description: Standard Code Scanning queries for C and C++
+- description: Security-and-quality queries for C and C++
 - qlpack: codeql-cpp
-- apply: code-scanning-selectors.yml
+- apply: security-and-quality-selectors.yml
   from: codeql-suite-helpers
 - apply: codeql-suites/slow-queries.yml
   from: codeql-cpp
