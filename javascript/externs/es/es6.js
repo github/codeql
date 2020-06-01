@@ -1090,7 +1090,7 @@ function IThenable() {}
  *              V)))))
  * =:
  */
-IThenable.prototype.then = function(opt_onFulfilled, opt_onRejected) {};
+IThenable.prototype.then = function(opt_onFulfilled, opt_onRejected) { if(opt_onFulfilled) opt_onFulfilled(); if(opt_onRejected) opt_onRejected(); };
 
 
 /**
@@ -1102,7 +1102,7 @@ IThenable.prototype.then = function(opt_onFulfilled, opt_onRejected) {};
  * @implements {IThenable<TYPE>}
  * @template TYPE
  */
-function Promise(resolver) {}
+function Promise(resolver) { if(resolver) resolver(); }
 
 
 /**
@@ -1181,7 +1181,7 @@ Promise.race = function(iterable) {};
  * =:
  * @override
  */
-Promise.prototype.then = function(opt_onFulfilled, opt_onRejected) {};
+Promise.prototype.then = function(opt_onFulfilled, opt_onRejected) { if(opt_onFulfilled) opt_onFulfilled(); if(opt_onRejected) opt_onRejected(); };
 
 
 /**
@@ -1189,7 +1189,7 @@ Promise.prototype.then = function(opt_onFulfilled, opt_onRejected) {};
  * @return {!Promise<RESULT>}
  * @template RESULT
  */
-Promise.prototype.catch = function(onRejected) {};
+Promise.prototype.catch = function(onRejected) { if(onRejected) onRejected(); };
 
 
 /**
