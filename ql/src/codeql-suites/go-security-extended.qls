@@ -1,0 +1,4 @@
+- description: Security-extended queries for Go
+- qlpack: codeql-go
+- apply: security-extended-selectors.yml
+  from: codeql-suite-helpers
