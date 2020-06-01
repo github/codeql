@@ -2,6 +2,7 @@
  * Provides classes for working with functions, including C++ constructors, destructors,
  * user-defined operators, and template functions.
  */
+
 import semmle.code.cpp.Location
 import semmle.code.cpp.Member
 import semmle.code.cpp.Class

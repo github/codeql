@@ -1,5 +1,5 @@
 /**
- * Provides a class and predicate for recognizing files that are likely to have been generated 
+ * Provides a class and predicate for recognizing files that are likely to have been generated
  * automatically.
  */
 
