@@ -73,6 +73,66 @@ module Shared {
       e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
     }
   }
+
+  /**
+   * A sanitizer guard that checks for the existence of HTML chars in a string.
+   * E.g. `/["'&<>]/.exec(str)`.
+   */
+  class ContainsHTMLGuard extends SanitizerGuard, DataFlow::MethodCallNode {
+    DataFlow::RegExpCreationNode regExp;
+
+    ContainsHTMLGuard() {
+      this.getMethodName() = ["test", "exec"] and
+      this.getReceiver().getALocalSource() = regExp and
+      regExp.getRoot() instanceof RegExpCharacterClass and
+      forall(string s | s = ["\"", "&", "<", ">"] | regExp.getRoot().getAMatchedString() = s)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = false and e = this.getArgument(0).asExpr()
+    }
+  }
+
+  /**
+   * Holds if `str` is used in a switch-case that has cases matching HTML escaping.
+   */
+  private predicate isUsedInHTMLEscapingSwitch(Expr str) {
+    exists(SwitchStmt switch |
+      // "\"".charCodeAt(0) == 34, "&".charCodeAt(0) == 38, "<".charCodeAt(0) == 60
+      forall(int c | c = [34, 38, 60] | c = switch.getACase().getExpr().getIntValue()) and
+      exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charCodeAt" |
+        mcn.flowsToExpr(switch.getExpr()) and
+        str = mcn.getReceiver().asExpr()
+      )
+      or
+      forall(string c | c = ["\"", "&", "<"] | c = switch.getACase().getExpr().getStringValue()) and
+      (
+        exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charAt" |
+          mcn.flowsToExpr(switch.getExpr()) and
+          str = mcn.getReceiver().asExpr()
+        )
+        or
+        exists(DataFlow::PropRead read | exists(read.getPropertyNameExpr()) |
+          read.flowsToExpr(switch.getExpr()) and
+          str = read.getBase().asExpr()
+        )
+      )
+    )
+  }
+
+  /**
+   * Gets an Ssa variable that is used in a sanitizing switch statement.
+   * The `pragma[noinline]` is to avoid materializing a cartesian product.
+   */
+  pragma[noinline]
+  private SsaVariable getAPathEscapedInSwitch() { isUsedInHTMLEscapingSwitch(result.getAUse()) }
+
+  /**
+   * An expression that is sanitized by a switch-case.
+   */
+  class IsEscapedInSwitchSanitizer extends Sanitizer {
+    IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAUse() }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -328,6 +388,8 @@ module DomBasedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
 
   /**
@@ -359,6 +421,8 @@ module DomBasedXss {
       )
     )
   }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -462,7 +526,11 @@ module ReflectedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -495,7 +563,11 @@ module StoredXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the XSS through DOM query. */
