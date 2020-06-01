@@ -131,8 +131,8 @@ public class AutoBuildTests {
         }
 
         @Override
-        protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
-          // never install dependencies during testing
+        protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
+          // currently disabled in tests
           return DependencyInstallationResult.empty;
         }
 

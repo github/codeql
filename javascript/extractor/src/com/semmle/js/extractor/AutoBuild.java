@@ -596,8 +596,8 @@ public class AutoBuild {
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
-    if (!tsconfigFiles.isEmpty() && this.installDependencies) {
-      dependencyInstallationResult = this.installDependencies(filesToExtract);
+    if (!tsconfigFiles.isEmpty()) {
+      dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
 
     // extract TypeScript projects and files
@@ -712,7 +712,8 @@ public class AutoBuild {
   }
 
   /**
-   * Installs dependencies for use by the TypeScript type checker.
+   * Prepares <tt>package.json</tt> files in a virtual source root, and, if enabled,
+   * installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
@@ -730,10 +731,7 @@ public class AutoBuild {
    * The TypeScript parser wrapper then overrides module resolution so packages can be found
    * under the virtual source root and via that package location mapping.
    */
-  protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
-    if (!verifyYarnInstallation()) {
-      return DependencyInstallationResult.empty;
-    }
+protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
     final Path sourceRoot = LGTM_SRC;
     final Path virtualSourceRoot = toRealPath(Paths.get(EnvironmentVariables.getScratchDir()));
 
@@ -836,29 +834,31 @@ public class AutoBuild {
     }
 
     // Install dependencies
-    for (Path file : packageJsonFiles.keySet()) {
-      Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
-      System.out.println("Installing dependencies from " + virtualFile);
-      ProcessBuilder pb =
-          new ProcessBuilder(
-              Arrays.asList(
-                  "yarn",
-                  "install",
-                  "--non-interactive",
-                  "--ignore-scripts",
-                  "--ignore-platform",
-                  "--ignore-engines",
-                  "--ignore-optional",
-                  "--no-default-rc",
-                  "--no-bin-links",
-                  "--pure-lockfile"));
-      pb.directory(virtualFile.getParent().toFile());
-      pb.redirectOutput(Redirect.INHERIT);
-      pb.redirectError(Redirect.INHERIT);
-      try {
-        pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-      } catch (IOException | InterruptedException ex) {
-        throw new ResourceError("Could not install dependencies from " + file, ex);
+    if (this.installDependencies && verifyYarnInstallation()) {
+      for (Path file : packageJsonFiles.keySet()) {
+        Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
+        System.out.println("Installing dependencies from " + virtualFile);
+        ProcessBuilder pb =
+            new ProcessBuilder(
+                Arrays.asList(
+                    "yarn",
+                    "install",
+                    "--non-interactive",
+                    "--ignore-scripts",
+                    "--ignore-platform",
+                    "--ignore-engines",
+                    "--ignore-optional",
+                    "--no-default-rc",
+                    "--no-bin-links",
+                    "--pure-lockfile"));
+        pb.directory(virtualFile.getParent().toFile());
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        try {
+          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+        } catch (IOException | InterruptedException ex) {
+          throw new ResourceError("Could not install dependencies from " + file, ex);
+        }
       }
     }
 
