@@ -395,7 +395,7 @@ module Vue {
   /**
    * A taint propagating data flow edge through a Vue instance property.
    */
-  class InstanceHeapStep extends TaintTracking::GenericStep {
+  class InstanceHeapStep extends TaintTracking::ViewComponentStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Instance i, string name, DataFlow::FunctionNode bound |
         bound.flowsTo(i.getABoundFunction()) and
@@ -430,7 +430,7 @@ module Vue {
    * of `inst = new Vue({ ..., data: { prop: source } })`, if the
    * `div` element is part of the template for `inst`.
    */
-  class VHtmlSourceWrite extends TaintTracking::GenericStep {
+  class VHtmlSourceWrite extends TaintTracking::ViewComponentStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Vue::Instance instance, string expr, VHtmlAttribute attr |
         attr.getAttr().getRoot() =

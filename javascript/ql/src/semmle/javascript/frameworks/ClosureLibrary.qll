@@ -7,7 +7,7 @@ import javascript
 module ClosureLibrary {
   private import DataFlow
 
-  private class StringStep extends TaintTracking::GenericStep {
+  private class StringStep extends TaintTracking::StringManipulationStep {
     override predicate step(Node pred, Node succ) {
       exists(string name, CallNode call |
         call = Closure::moduleImport("goog.string." + name).getACall() and succ = call

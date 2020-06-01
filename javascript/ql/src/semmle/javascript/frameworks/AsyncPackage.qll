@@ -150,7 +150,7 @@ module AsyncPackage {
    *
    * For example: `data -> item` in `async.each(data, (item, cb) => {})`.
    */
-  private class IterationInputTaintStep extends TaintTracking::GenericStep {
+  private class IterationInputTaintStep extends TaintTracking::ArrayStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::FunctionNode iteratee, IterationCall call |
         iteratee = call.getIteratorCallback() and // Require a closure to avoid spurious call/return mismatch.
@@ -166,7 +166,7 @@ module AsyncPackage {
    *
    * For example: `item + taint()` -> result` in `async.map(data, (item, cb) => cb(null, item + taint()), (err, result) => {})`.
    */
-  private class IterationOutputTaintStep extends TaintTracking::GenericStep {
+  private class IterationOutputTaintStep extends TaintTracking::ArrayStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(
         DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i, IterationCall call
@@ -190,7 +190,7 @@ module AsyncPackage {
    *
    * For example: `data -> result` in `async.sortBy(data, orderingFn, (err, result) => {})`.
    */
-  private class IterationPreserveTaintStep extends TaintTracking::GenericStep {
+  private class IterationPreserveTaintStep extends TaintTracking::ArrayStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::FunctionNode final, IterationCall call |
         final = call.getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.

@@ -607,7 +607,7 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::GenericStep {
+  private class ClosurePromiseTaintStep extends TaintTracking::PromiseStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
