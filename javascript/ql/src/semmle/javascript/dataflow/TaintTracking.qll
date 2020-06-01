@@ -333,6 +333,29 @@ module TaintTracking {
   }
 
   /**
+   * A class of taint-propagating data flow edges through string encoding, such as `encodeURIComponent`
+   * or `Buffer.from` (creating a binary encoding of a string).
+   *
+   * Encoding a string can have the effect of neutralizing meta-characters. For this reason, not all string-encoding
+   * operations are included in this category; only those deemed useful for general-purpose taint tracking.
+   * In particular, base64 encoding is not included.
+   */
+  class EncodingStep extends SharedTaintStep {
+    EncodingStep() { this = "EncodingStep" }
+  }
+
+  /**
+   * A class of taint-propagating data flow edges through string decoding, such as `decodeURIComponent`
+   * or base64 decoding.
+   *
+   * For practical reasons this category does not include `toString` calls,
+   * even though `Buffer.toString` could be seen as a decoding step.
+   */
+  class DecodingStep extends SharedTaintStep {
+    DecodingStep() { this = "DecodingStep" }
+  }
+
+  /**
    * A class of taint-propagating data flow edges through a promise.
    *
    * The general assumption made by these steps are:
@@ -346,7 +369,9 @@ module TaintTracking {
    * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
    * data flow edge through a URI library function.
    */
-  predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) { any(UriStep step).step(pred, succ) }
+  predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    sharedTaintStepInternal(pred, succ, any(UriStep step))
+  }
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through persistent storage.
@@ -407,6 +432,22 @@ module TaintTracking {
    */
   predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
     sharedTaintStepInternal(pred, succ, any(DeserializeStep step))
+  }
+
+  /**
+   *  Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through string encoding, such as `encodeURIComponent`.
+   */
+  predicate encodingStep(DataFlow::Node pred, DataFlow::Node succ) {
+    sharedTaintStepInternal(pred, succ, any(EncodingStep step))
+  }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
+   * data flow edge through data decoding, such as `decodeURIComponent`.
+   */
+  predicate decodingStep(DataFlow::Node pred, DataFlow::Node succ) {
+    sharedTaintStepInternal(pred, succ, any(DecodingStep step))
   }
 
   /**
@@ -597,25 +638,45 @@ module TaintTracking {
           invk = DataFlow::globalVarRef(gv).getAnInvocation() and
           pred = invk.getArgument(0)
         )
-        or
-        // String.fromCharCode and String.fromCodePoint
-        exists(int i, MethodCallExpr mce |
-          mce = succ.getAstNode() and
-          pred.asExpr() = mce.getArgument(i) and
-          (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
-        )
-        or
-        // `(encode|decode)URI(Component)?` propagate taint
-        exists(DataFlow::CallNode c, string name |
-          succ = c and
-          c = DataFlow::globalVarRef(name).getACall() and
-          pred = c.getArgument(0)
-        |
-          name = "encodeURI" or
-          name = "decodeURI" or
-          name = "encodeURIComponent" or
-          name = "decodeURIComponent"
-        )
+      )
+    }
+  }
+
+  /**
+   * Taint step through `String.fromCharCode` and `String.fromCodePoint`.
+   */
+  private class StringDecodingStep extends DecodingStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["fromCharCode", "fromCodePoint"] and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * Taint step through `decodeURI` and `decodeURIComponent`.
+   */
+  private class UriDecodingStep extends DecodingStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::globalVarRef(["decodeURI", "decodeURIComponent"]).getACall() and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * Taint step through `encodeURI` and `encodeURIComponent`.
+   */
+  private class UriEncodingStep extends EncodingStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = DataFlow::globalVarRef(["encodeURI", "encodeURIComponent"]).getACall() and
+        pred = call.getArgument(0) and
+        succ = call
       )
     }
   }

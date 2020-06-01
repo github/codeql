@@ -324,7 +324,7 @@ module NodeJSLib {
   /**
    * A model of taint propagation through `new Buffer` and `Buffer.from`.
    */
-  private class BufferTaintStep extends TaintTracking::GenericStep {
+  private class BufferTaintStep extends TaintTracking::EncodingStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::InvokeNode invoke |
         invoke = DataFlow::globalVarRef("Buffer").getAnInstantiation()
