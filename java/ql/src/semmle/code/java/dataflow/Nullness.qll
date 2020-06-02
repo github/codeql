@@ -45,8 +45,7 @@ private import semmle.code.java.frameworks.Assertions
 /** Gets an expression that may be `null`. */
 Expr nullExpr() {
   result instanceof NullLiteral or
-  result.(ConditionalExpr).getTrueExpr() = nullExpr() or
-  result.(ConditionalExpr).getFalseExpr() = nullExpr() or
+  result.(ChooseExpr).getAResultExpr() = nullExpr() or
   result.(AssignExpr).getSource() = nullExpr() or
   result.(CastExpr).getExpr() = nullExpr()
 }
@@ -81,9 +80,7 @@ private predicate unboxed(Expr e) {
     or
     exists(UnaryExpr un | un.getExpr() = e)
     or
-    exists(ConditionalExpr cond | cond.getType() instanceof PrimitiveType |
-      cond.getTrueExpr() = e or cond.getFalseExpr() = e
-    )
+    exists(ChooseExpr cond | cond.getType() instanceof PrimitiveType | cond.getAResultExpr() = e)
     or
     exists(ConditionNode cond | cond.getCondition() = e)
     or

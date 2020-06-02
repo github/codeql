@@ -1,3 +1,6 @@
+| format.cpp:157:7:157:22 | (int)... | format.cpp:147:12:147:25 | call to source |
+| format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
+| format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | stl.cpp:71:7:71:7 | (const char *)... | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
@@ -17,6 +20,9 @@
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
+| taint.cpp:229:3:229:6 | t | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:233:8:233:8 | call to operator() | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:244:3:244:6 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:250:8:250:8 | a | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:256:8:256:8 | (reference dereference) | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:280:7:280:7 | t | taint.cpp:275:6:275:11 | call to source |
@@ -30,3 +36,4 @@
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |

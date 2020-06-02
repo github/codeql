@@ -372,3 +372,13 @@ function thisNodes() {
 	$.fn[pluginName] = myPlugin; 
 
 }
+
+function test() {
+  var target = document.location.search
+
+  // NOT OK
+  $('myId').html(target)
+
+  // OK
+  $('myid').html(document.location.href.split("?")[0]);
+}

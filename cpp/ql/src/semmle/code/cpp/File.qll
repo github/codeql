@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing files and folders.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.metrics.MetricFile
@@ -262,18 +266,6 @@ class File extends Container, @file {
   predicate compiledAsCpp() { fileannotations(underlyingElement(this), 1, "compiled as c++", "1") }
 
   /**
-   * DEPRECATED: Objective-C is no longer supported.
-   * Holds if this file was compiled as Objective C (at any point).
-   */
-  deprecated predicate compiledAsObjC() { none() }
-
-  /**
-   * DEPRECATED: Objective-C is no longer supported.
-   * Holds if this file was compiled as Objective C++ (at any point).
-   */
-  deprecated predicate compiledAsObjCpp() { none() }
-
-  /**
    * Holds if this file was compiled by a Microsoft compiler (at any point).
    *
    * Note: currently unreliable - on some projects only some of the files that
@@ -317,14 +309,6 @@ class File extends Container, @file {
   }
 
   /**
-   * DEPRECATED: use `getParentContainer` instead.
-   * Gets the folder which contains this file.
-   */
-  deprecated Folder getParent() {
-    containerparent(unresolveElement(result), underlyingElement(this))
-  }
-
-  /**
    * Holds if this file may be from source. This predicate holds for all files
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
@@ -342,28 +326,6 @@ class File extends Container, @file {
   MetricFile getMetrics() { result = this }
 
   /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Gets the full name of this file, for example:
-   * "/usr/home/me/myprogram.c".
-   */
-  deprecated string getName() { files(underlyingElement(this), result, _, _, _) }
-
-  /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Holds if this file has the specified full name.
-   *
-   * Example usage: `f.hasName("/usr/home/me/myprogram.c")`.
-   */
-  deprecated predicate hasName(string name) { name = this.getName() }
-
-  /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Gets the full name of this file, for example
-   * "/usr/home/me/myprogram.c".
-   */
-  deprecated string getFullName() { result = this.getName() }
-
-  /**
    * Gets the remainder of the base name after the first dot character. Note
    * that the name of this predicate is in plural form, unlike `getExtension`,
    * which gets the remainder of the base name after the _last_ dot character.
@@ -376,22 +338,6 @@ class File extends Container, @file {
    * "tar.gz", while `getExtension` will have the result "gz".
    */
   string getExtensions() { files(underlyingElement(this), _, _, result, _) }
-
-  /**
-   * DEPRECATED: Use `getBaseName` instead.
-   * Gets the name and extension(s), but not path, of a file. For example,
-   * if the full name is "/path/to/filename.a.bcd" then the filename is
-   * "filename.a.bcd".
-   */
-  deprecated string getFileName() {
-    // [a/b.c/d/]fileName
-    //         ^ beginAfter
-    exists(string fullName, int beginAfter |
-      fullName = this.getName() and
-      beginAfter = max(int i | i = -1 or fullName.charAt(i) = "/" | i) and
-      result = fullName.suffix(beginAfter + 1)
-    )
-  }
 
   /**
    * Gets the short name of this file, that is, the prefix of its base name up

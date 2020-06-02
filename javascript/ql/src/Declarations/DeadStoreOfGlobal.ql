@@ -7,7 +7,7 @@
  * @tags maintainability
  *       correctness
  *       external/cwe/cwe-563
- * @precision medium
+ * @precision low
  */
 
 import javascript

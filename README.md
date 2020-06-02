@@ -1,6 +1,6 @@
 # CodeQL
 
-This open source repository contains the standard CodeQL libraries and queries that power [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com) makes available to its customers worldwide.
+This open source repository contains the standard CodeQL libraries and queries that power [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com) makes available to its customers worldwide. For the queries, libraries, and extractor that power Go analysis, visit the [CodeQL for Go repository](https://github.com/github/codeql-go).
 
 ## How do I learn CodeQL and run queries?
 

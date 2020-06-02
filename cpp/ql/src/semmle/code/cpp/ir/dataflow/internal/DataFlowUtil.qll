@@ -71,9 +71,7 @@ class Node extends TIRDataFlowNode {
    * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
    * a partial definition of `&x`).
    */
-  Expr asPartialDefinition() {
-    result = this.(PartialDefinitionNode).getInstruction().getUnconvertedResultExpression()
-  }
+  Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -184,8 +182,6 @@ class ParameterNode extends InstructionNode {
     // To avoid making this class abstract, we enumerate its values here
     instr instanceof InitializeParameterInstruction
     or
-    instr instanceof InitializeThisInstruction
-    or
     instr instanceof InitializeIndirectionInstruction
   }
 
@@ -198,8 +194,10 @@ class ParameterNode extends InstructionNode {
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
-class ExplicitParameterNode extends ParameterNode {
+private class ExplicitParameterNode extends ParameterNode {
   override InitializeParameterInstruction instr;
+
+  ExplicitParameterNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(Function f, int pos) {
     f.getParameter(pos) = instr.getParameter()
@@ -213,7 +211,9 @@ class ExplicitParameterNode extends ParameterNode {
 
 /** An implicit `this` parameter. */
 class ThisParameterNode extends ParameterNode {
-  override InitializeThisInstruction instr;
+  override InitializeParameterInstruction instr;
+
+  ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(Function f, int pos) {
     pos = -1 and instr.getEnclosingFunction() = f
@@ -228,15 +228,16 @@ class ParameterIndirectionNode extends ParameterNode {
 
   override predicate isParameterOf(Function f, int pos) {
     exists(int index |
-      f.getParameter(index) = instr.getParameter() and
+      f.getParameter(index) = instr.getParameter()
+      or
+      index = -1 and
+      instr.getIRVariable().(IRThisVariable).getEnclosingFunction() = f
+    |
       pos = getArgumentPosOfSideEffect(index)
     )
   }
 
-  /** Gets the `Parameter` associated with this node. */
-  Parameter getParameter() { result = instr.getParameter() }
-
-  override string toString() { result = "*" + this.getParameter().toString() }
+  override string toString() { result = "*" + instr.getIRVariable().toString() }
 }
 
 /**
@@ -290,14 +291,17 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode { }
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+  abstract Expr getDefinedExpr();
+}
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
+  FieldAddressInstruction field;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
-    exists(StoreInstruction store, FieldInstruction field |
+    exists(StoreInstruction store |
       instr.getPartial() = store and field = store.getDestinationAddress()
     )
   }
@@ -307,6 +311,10 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
   // this consistency failure has.
   override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
@@ -317,15 +325,18 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
+  FieldAddressInstruction field;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    exists(FieldAddressInstruction field |
-      field = instr.getDestinationAddress() and
-      not exists(ChiInstruction chi | chi.getPartial() = instr)
-    )
+    field = instr.getDestinationAddress() and
+    not exists(ChiInstruction chi | chi.getPartial() = instr)
   }
 
   override Node getPreUpdateNode() { none() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
@@ -522,9 +533,9 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
   or
-  // The next two rules allow flow from partial definitions in setters to succeeding loads in the caller.
-  // First, we add flow from write side-effects to non-conflated chi instructions through their
-  // partial operands. Consider the following example:
+  // Add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. From there, a `readStep` will find subsequent reads of that field.
+  // Consider the following example:
   // ```
   // void setX(Point* p, int new_x) {
   //   p->x = new_x;
@@ -534,14 +545,9 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // ```
   // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
   // `setX`, which will be melded into `p` through a chi instruction.
-  iTo.getAnOperand().(ChiPartialOperand).getDef() = iFrom.(WriteSideEffectInstruction) and
-  not iTo.isResultConflated()
-  or
-  // Next, we add flow from non-conflated chi instructions to loads (even when they are not precise).
-  // This ensures that loads of `p->x` gets data flow from the `WriteSideEffectInstruction` above.
-  exists(ChiInstruction chi | iFrom = chi |
-    not chi.isResultConflated() and
-    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = chi
+  exists(ChiInstruction chi | chi = iTo |
+    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
+    not chi.isResultConflated()
   )
   or
   // Flow from stores to structs with a single field to a load of that field.

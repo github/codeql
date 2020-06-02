@@ -15,7 +15,6 @@ private newtype TOperandTag =
   TLeftOperand() or
   TRightOperand() or
   TConditionOperand() or
-  TUnmodeledUseOperand() or
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) { Language::hasPositionalArgIndex(argIndex) } or
@@ -166,18 +165,6 @@ class ConditionOperandTag extends RegisterOperandTag, TConditionOperand {
 ConditionOperandTag conditionOperand() { result = TConditionOperand() }
 
 /**
- * An operand of the special `UnmodeledUse` instruction, representing a value
- * whose set of uses is unknown.
- */
-class UnmodeledUseOperandTag extends MemoryOperandTag, TUnmodeledUseOperand {
-  final override string toString() { result = "UnmodeledUse" }
-
-  final override int getSortOrder() { result = 9 }
-}
-
-UnmodeledUseOperandTag unmodeledUseOperand() { result = TUnmodeledUseOperand() }
-
-/**
  * The operand representing the target function of an `Call` instruction.
  */
 class CallTargetOperandTag extends RegisterOperandTag, TCallTargetOperand {
@@ -234,7 +221,9 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
+abstract class ChiOperandTag extends MemoryOperandTag { }
+
+class ChiTotalOperandTag extends ChiOperandTag, TChiTotalOperand {
   final override string toString() { result = "ChiTotal" }
 
   final override int getSortOrder() { result = 13 }
@@ -244,7 +233,7 @@ class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
 
 ChiTotalOperandTag chiTotalOperand() { result = TChiTotalOperand() }
 
-class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
+class ChiPartialOperandTag extends ChiOperandTag, TChiPartialOperand {
   final override string toString() { result = "ChiPartial" }
 
   final override int getSortOrder() { result = 14 }

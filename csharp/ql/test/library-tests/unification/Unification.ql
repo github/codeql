@@ -1,10 +1,19 @@
 import semmle.code.csharp.Unification
 
-class InterestingType extends Type {
+class InterestingType extends @type {
   InterestingType() {
-    this.fromSource() or
+    this.(Type).fromSource() or
     this.(TupleType).getAChild() instanceof InterestingType
   }
+
+  string toString() {
+    result = this.(Type).getQualifiedNameWithTypes()
+    or
+    not exists(this.(Type).getQualifiedNameWithTypes()) and
+    result = this.(Type).toStringWithTypes()
+  }
+
+  Location getLocation() { result = this.(Type).getLocation() }
 }
 
 query predicate constrainedTypeParameterSubsumes(InterestingType tp, InterestingType t) {
@@ -12,9 +21,7 @@ query predicate constrainedTypeParameterSubsumes(InterestingType tp, Interesting
 }
 
 // Should be empty
-query predicate constrainedTypeParameterSubsumptionImpliesUnification(
-  InterestingType tp, InterestingType t
-) {
+query predicate constrainedTypeParameterSubsumptionImpliesUnification(Type tp, Type t) {
   tp.(Unification::ConstrainedTypeParameter).subsumes(t) and
   not tp.(Unification::ConstrainedTypeParameter).unifiable(t)
 }

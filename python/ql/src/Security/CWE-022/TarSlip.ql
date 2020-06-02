@@ -13,7 +13,7 @@
 
 import python
 import semmle.python.security.Paths
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 
 /** A TaintKind to represent open tarfile objects. That is, the result of calling `tarfile.open(...)` */

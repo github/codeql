@@ -168,6 +168,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
   /** Gets the first control-flow node in this `SubBasicBlock`. */
   ControlFlowNode getStart() { result = this }
 
+  /** Gets the function that contains this `SubBasicBlock`. */
   pragma[noinline]
   Function getEnclosingFunction() { result = this.getStart().getControlFlowScope() }
 }

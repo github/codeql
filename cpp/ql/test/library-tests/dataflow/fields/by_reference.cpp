@@ -48,25 +48,25 @@ struct S {
 void test_setDirectly() {
   S s;
   s.setDirectly(user_input());
-  sink(s.getDirectly()); // flow
+  sink(s.getDirectly()); // $ast $f-:ir
 }
 
 void test_setIndirectly() {
   S s;
   s.setIndirectly(user_input());
-  sink(s.getIndirectly()); // flow
+  sink(s.getIndirectly()); // $ast $f-:ir
 }
 
 void test_setThroughNonMember() {
   S s;
   s.setThroughNonMember(user_input());
-  sink(s.getThroughNonMember()); // flow
+  sink(s.getThroughNonMember()); // $ast $f-:ir
 }
 
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // flow
+  sink(nonMemberGetA(&s)); // $ast,ir
 }
 
 ////////////////////
@@ -107,13 +107,13 @@ void test_outer_with_ptr(Outer *pouter) {
   taint_inner_a_ptr(pouter->inner_ptr);
   taint_a_ptr(&pouter->a);
 
-  sink(outer.inner_nested.a); // flow
-  sink(outer.inner_ptr->a); // flow [NOT DETECTED by IR]
-  sink(outer.a); // flow [NOT DETECTED]
+  sink(outer.inner_nested.a); // $ast,ir
+  sink(outer.inner_ptr->a); // $ast $f-:ir
+  sink(outer.a); // $f-:ast $f-:ir
 
-  sink(pouter->inner_nested.a); // flow
-  sink(pouter->inner_ptr->a); // flow [NOT DETECTED by IR]
-  sink(pouter->a); // flow [NOT DETECTED]
+  sink(pouter->inner_nested.a); // $ast,ir
+  sink(pouter->inner_ptr->a); // $ast $f-:ir
+  sink(pouter->a); // $f-:ast $f-:ir
 }
 
 void test_outer_with_ref(Outer *pouter) {
@@ -127,11 +127,11 @@ void test_outer_with_ref(Outer *pouter) {
   taint_inner_a_ref(*pouter->inner_ptr);
   taint_a_ref(pouter->a);
 
-  sink(outer.inner_nested.a); // flow
-  sink(outer.inner_ptr->a); // flow [NOT DETECTED by IR]
-  sink(outer.a); // flow [NOT DETECTED by IR]
+  sink(outer.inner_nested.a); // $ast,ir
+  sink(outer.inner_ptr->a); // $ast $f-:ir
+  sink(outer.a); // $ast $f-:ir
 
-  sink(pouter->inner_nested.a); // flow
-  sink(pouter->inner_ptr->a); // flow [NOT DETECTED by IR]
-  sink(pouter->a); // flow [NOT DETECTED by IR]
+  sink(pouter->inner_nested.a); // $ast,ir
+  sink(pouter->inner_ptr->a); // $ast $f-:ir
+  sink(pouter->a); // $ast $f-:ir
 }

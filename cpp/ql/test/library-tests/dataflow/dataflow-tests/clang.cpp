@@ -27,7 +27,7 @@ void following_pointers(
 
   sourceStruct1_ptr->m1 = source();
   sink(sourceStruct1_ptr->m1); // flow
-  sink(sourceStruct1_ptr->getFirst()); // flow [NOT DETECTED with IR]
+  sink(sourceStruct1_ptr->getFirst()); // flow
   sink(sourceStruct1_ptr->m2); // no flow
   sink(sourceStruct1.m1); // no flow
 

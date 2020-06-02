@@ -30,6 +30,10 @@
 | globals.html:22:7:22:21 | instance of function x | globals.html:22:7:22:21 | instance of function x |
 | globals.html:26:23:26:69 | instance of anonymous function | globals.html:26:23:26:69 | instance of anonymous function |
 | h.js:1:8:1:22 | instance of function f | h.js:1:8:1:22 | instance of function f |
+| implicit-returns.js:3:1:12:1 | instance of function endWithLoop | implicit-returns.js:3:1:12:1 | instance of function endWithLoop |
+| implicit-returns.js:14:1:16:1 | instance of function useLoop | implicit-returns.js:14:1:16:1 | instance of function useLoop |
+| implicit-returns.js:18:1:22:1 | instance of function endWithShortIf | implicit-returns.js:18:1:22:1 | instance of function endWithShortIf |
+| implicit-returns.js:24:1:26:1 | instance of function useShortIf | implicit-returns.js:24:1:26:1 | instance of function useShortIf |
 | instances.js:1:1:4:1 | instance of function A | instances.js:1:1:4:1 | instance of function A |
 | instances.js:3:14:3:26 | instance of anonymous function | instances.js:3:14:3:26 | instance of anonymous function |
 | instances.js:6:19:6:31 | instance of anonymous function | instances.js:6:19:6:31 | instance of anonymous function |

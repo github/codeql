@@ -32,17 +32,17 @@ edges
 | Types.cs:74:9:74:9 | access to local variable d : D | Types.cs:16:30:16:30 | this : D |
 | Types.cs:77:22:77:22 | a : C | Types.cs:79:18:79:25 | SSA def(b) : C |
 | Types.cs:79:18:79:25 | SSA def(b) : C | Types.cs:80:18:80:18 | access to local variable b |
-| Types.cs:90:22:90:22 | e : E2 | Types.cs:92:26:92:26 | access to parameter e : E2 |
-| Types.cs:92:13:92:16 | [post] this access [Field] : E2 | Types.cs:93:13:93:16 | this access [Field] : E2 |
-| Types.cs:92:26:92:26 | access to parameter e : E2 | Types.cs:92:13:92:16 | [post] this access [Field] : E2 |
-| Types.cs:93:13:93:16 | this access [Field] : E2 | Types.cs:113:34:113:34 | this [Field] : E2 |
-| Types.cs:110:25:110:32 | object creation of type E2 : E2 | Types.cs:90:22:90:22 | e : E2 |
-| Types.cs:113:34:113:34 | this [Field] : E2 | Types.cs:115:22:115:25 | this access [Field] : E2 |
-| Types.cs:115:22:115:25 | this access [Field] : E2 | Types.cs:115:22:115:31 | access to field Field |
+| Types.cs:90:22:90:22 | e : Types.E<D>.E2 | Types.cs:92:26:92:26 | access to parameter e : Types.E<D>.E2 |
+| Types.cs:92:13:92:16 | [post] this access [Field] : Types.E<D>.E2 | Types.cs:93:13:93:16 | this access [Field] : Types.E<D>.E2 |
+| Types.cs:92:26:92:26 | access to parameter e : Types.E<D>.E2 | Types.cs:92:13:92:16 | [post] this access [Field] : Types.E<D>.E2 |
+| Types.cs:93:13:93:16 | this access [Field] : Types.E<D>.E2 | Types.cs:113:34:113:34 | this [Field] : Types.E<D>.E2 |
+| Types.cs:110:25:110:32 | object creation of type E2 : Types.E<D>.E2 | Types.cs:90:22:90:22 | e : Types.E<D>.E2 |
+| Types.cs:113:34:113:34 | this [Field] : Types.E<D>.E2 | Types.cs:115:22:115:25 | this access [Field] : Types.E<D>.E2 |
+| Types.cs:115:22:115:25 | this access [Field] : Types.E<D>.E2 | Types.cs:115:22:115:31 | access to field Field |
 | Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:122:30:122:30 | access to local variable a : A |
-| Types.cs:121:26:121:33 | object creation of type E2 : E2 | Types.cs:123:30:123:31 | access to local variable e2 : E2 |
+| Types.cs:121:26:121:33 | object creation of type E2 : Types.E<D>.E2 | Types.cs:123:30:123:31 | access to local variable e2 : Types.E<D>.E2 |
 | Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:122:22:122:31 | call to method Through |
-| Types.cs:123:30:123:31 | access to local variable e2 : E2 | Types.cs:123:22:123:32 | call to method Through |
+| Types.cs:123:30:123:31 | access to local variable e2 : Types.E<D>.E2 | Types.cs:123:22:123:32 | call to method Through |
 nodes
 | Types.cs:7:21:7:25 | this : D | semmle.label | this : D |
 | Types.cs:7:32:7:35 | this access : D | semmle.label | this access : D |
@@ -86,20 +86,20 @@ nodes
 | Types.cs:77:22:77:22 | a : C | semmle.label | a : C |
 | Types.cs:79:18:79:25 | SSA def(b) : C | semmle.label | SSA def(b) : C |
 | Types.cs:80:18:80:18 | access to local variable b | semmle.label | access to local variable b |
-| Types.cs:90:22:90:22 | e : E2 | semmle.label | e : E2 |
-| Types.cs:92:13:92:16 | [post] this access [Field] : E2 | semmle.label | [post] this access [Field] : E2 |
-| Types.cs:92:26:92:26 | access to parameter e : E2 | semmle.label | access to parameter e : E2 |
-| Types.cs:93:13:93:16 | this access [Field] : E2 | semmle.label | this access [Field] : E2 |
-| Types.cs:110:25:110:32 | object creation of type E2 : E2 | semmle.label | object creation of type E2 : E2 |
-| Types.cs:113:34:113:34 | this [Field] : E2 | semmle.label | this [Field] : E2 |
-| Types.cs:115:22:115:25 | this access [Field] : E2 | semmle.label | this access [Field] : E2 |
+| Types.cs:90:22:90:22 | e : Types.E<D>.E2 | semmle.label | e : Types.E<D>.E2 |
+| Types.cs:92:13:92:16 | [post] this access [Field] : Types.E<D>.E2 | semmle.label | [post] this access [Field] : Types.E<D>.E2 |
+| Types.cs:92:26:92:26 | access to parameter e : Types.E<D>.E2 | semmle.label | access to parameter e : Types.E<D>.E2 |
+| Types.cs:93:13:93:16 | this access [Field] : Types.E<D>.E2 | semmle.label | this access [Field] : Types.E<D>.E2 |
+| Types.cs:110:25:110:32 | object creation of type E2 : Types.E<D>.E2 | semmle.label | object creation of type E2 : Types.E<D>.E2 |
+| Types.cs:113:34:113:34 | this [Field] : Types.E<D>.E2 | semmle.label | this [Field] : Types.E<D>.E2 |
+| Types.cs:115:22:115:25 | this access [Field] : Types.E<D>.E2 | semmle.label | this access [Field] : Types.E<D>.E2 |
 | Types.cs:115:22:115:31 | access to field Field | semmle.label | access to field Field |
 | Types.cs:120:25:120:31 | object creation of type A : A | semmle.label | object creation of type A : A |
-| Types.cs:121:26:121:33 | object creation of type E2 : E2 | semmle.label | object creation of type E2 : E2 |
+| Types.cs:121:26:121:33 | object creation of type E2 : Types.E<D>.E2 | semmle.label | object creation of type E2 : Types.E<D>.E2 |
 | Types.cs:122:22:122:31 | call to method Through | semmle.label | call to method Through |
 | Types.cs:122:30:122:30 | access to local variable a : A | semmle.label | access to local variable a : A |
 | Types.cs:123:22:123:32 | call to method Through | semmle.label | call to method Through |
-| Types.cs:123:30:123:31 | access to local variable e2 : E2 | semmle.label | access to local variable e2 : E2 |
+| Types.cs:123:30:123:31 | access to local variable e2 : Types.E<D>.E2 | semmle.label | access to local variable e2 : Types.E<D>.E2 |
 #select
 | Types.cs:23:12:23:18 | object creation of type C : C | Types.cs:50:18:50:18 | access to local variable c | Types.cs:50:18:50:18 | access to local variable c | $@ | Types.cs:50:18:50:18 | access to local variable c | access to local variable c |
 | Types.cs:25:12:25:18 | object creation of type C : C | Types.cs:63:33:63:36 | (...) ... | Types.cs:63:33:63:36 | (...) ... | $@ | Types.cs:63:33:63:36 | (...) ... | (...) ... |
@@ -115,6 +115,6 @@ nodes
 | Types.cs:39:12:39:18 | object creation of type D : D | Types.cs:69:52:69:52 | access to parameter x | Types.cs:69:52:69:52 | access to parameter x | $@ | Types.cs:69:52:69:52 | access to parameter x | access to parameter x |
 | Types.cs:40:12:40:18 | object creation of type D : D | Types.cs:16:42:16:45 | this access | Types.cs:16:42:16:45 | this access | $@ | Types.cs:16:42:16:45 | this access | this access |
 | Types.cs:43:20:43:23 | null : null | Types.cs:44:14:44:14 | access to local variable o | Types.cs:44:14:44:14 | access to local variable o | $@ | Types.cs:44:14:44:14 | access to local variable o | access to local variable o |
-| Types.cs:110:25:110:32 | object creation of type E2 : E2 | Types.cs:115:22:115:31 | access to field Field | Types.cs:115:22:115:31 | access to field Field | $@ | Types.cs:115:22:115:31 | access to field Field | access to field Field |
+| Types.cs:110:25:110:32 | object creation of type E2 : Types.E<D>.E2 | Types.cs:115:22:115:31 | access to field Field | Types.cs:115:22:115:31 | access to field Field | $@ | Types.cs:115:22:115:31 | access to field Field | access to field Field |
 | Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:122:22:122:31 | call to method Through | Types.cs:122:22:122:31 | call to method Through | $@ | Types.cs:122:22:122:31 | call to method Through | call to method Through |
-| Types.cs:121:26:121:33 | object creation of type E2 : E2 | Types.cs:123:22:123:32 | call to method Through | Types.cs:123:22:123:32 | call to method Through | $@ | Types.cs:123:22:123:32 | call to method Through | call to method Through |
+| Types.cs:121:26:121:33 | object creation of type E2 : Types.E<D>.E2 | Types.cs:123:22:123:32 | call to method Through | Types.cs:123:22:123:32 | call to method Through | $@ | Types.cs:123:22:123:32 | call to method Through | call to method Through |

@@ -108,6 +108,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   int getIntValue() { none() }
 
   /** Gets the constant string value this expression evaluates to, if any. */
+  cached
   string getStringValue() { none() }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
@@ -2614,7 +2615,7 @@ class DynamicImportExpr extends @dynamicimport, Expr, Import {
 }
 
 /** A literal path expression appearing in a dynamic import. */
-private class LiteralDynamicImportPath extends PathExprInModule, ConstantString {
+private class LiteralDynamicImportPath extends PathExpr, ConstantString {
   LiteralDynamicImportPath() {
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
   }

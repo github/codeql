@@ -69,19 +69,36 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (assignment != null)
                 {
-                    var assignmentEntity = new Expression(new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN));
-
-                    CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0));
+                    var assignmentInfo = new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
+                    var assignmentEntity = new Expression(assignmentInfo);
+                    var typeInfoRight = cx.GetTypeInfo(assignment.Right);
+                    if (typeInfoRight.Type is null)
+                        // The type may be null for nested initializers such as
+                        // ```
+                        // new ClassWithArrayField() { As = { [0] = a } }
+                        // ```
+                        // In this case we take the type from the assignment
+                        // `As = { [0] = a }` instead
+                        typeInfoRight = assignmentInfo.TypeInfo;
+                    CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0, typeInfoRight));
 
                     var target = cx.GetSymbolInfo(assignment.Left);
-                    if (target.Symbol == null)
-                    {
-                        cx.ModelError(assignment, "Unknown object initializer");
-                        new Unknown(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1));
-                    }
-                    else
-                    {
+
+                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
+
+                    Expression access = target.Symbol is null ?
+                        new Expression(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
                         Access.Create(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, cx.CreateEntity(target.Symbol));
+
+                    if (assignment.Left is ImplicitElementAccessSyntax iea)
+                    {
+                        // An array/indexer initializer of the form `[...] = ...`
+
+                        int indexChild = 0;
+                        foreach (var arg in iea.ArgumentList.Arguments)
+                        {
+                            Expression.Create(cx, arg.Expression, access, indexChild++);
+                        }
                     }
                 }
                 else

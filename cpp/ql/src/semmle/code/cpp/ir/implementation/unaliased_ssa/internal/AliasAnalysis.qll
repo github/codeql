@@ -204,7 +204,7 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
       init.(InitializeParameterInstruction).getParameter() =
         f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
-      init instanceof InitializeThisInstruction and
+      init.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable and
       init.getEnclosingFunction() = f and
       operand instanceof ThisArgumentOperand
     ) and
@@ -247,6 +247,10 @@ private predicate resultMayReachReturn(Instruction instr) { operandMayReachRetur
 private predicate resultEscapesNonReturn(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
   operandEscapesNonReturn(instr.getAUse())
+  or
+  // The result also escapes if it is not modeled in SSA, because we do not know where it might be
+  // used.
+  not instr.isResultModeled()
 }
 
 /**

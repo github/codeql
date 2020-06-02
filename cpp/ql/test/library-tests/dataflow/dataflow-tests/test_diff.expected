@@ -1,7 +1,6 @@
 | BarrierGuard.cpp:49:10:49:15 | BarrierGuard.cpp:51:13:51:13 | AST only |
 | BarrierGuard.cpp:60:11:60:16 | BarrierGuard.cpp:62:14:62:14 | AST only |
 | clang.cpp:12:9:12:20 | clang.cpp:22:8:22:20 | AST only |
-| clang.cpp:28:27:28:32 | clang.cpp:30:27:30:34 | AST only |
 | clang.cpp:39:42:39:47 | clang.cpp:41:18:41:19 | IR only |
 | dispatch.cpp:16:37:16:42 | dispatch.cpp:32:16:32:24 | IR only |
 | dispatch.cpp:16:37:16:42 | dispatch.cpp:40:15:40:23 | IR only |
@@ -19,10 +18,7 @@
 | dispatch.cpp:144:8:144:13 | dispatch.cpp:96:8:96:8 | IR only |
 | globals.cpp:13:23:13:28 | globals.cpp:12:10:12:24 | IR only |
 | globals.cpp:23:23:23:28 | globals.cpp:19:10:19:24 | IR only |
-| lambdas.cpp:8:10:8:15 | lambdas.cpp:14:3:14:6 | AST only |
-| lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |
-| lambdas.cpp:8:10:8:15 | lambdas.cpp:29:3:29:6 | AST only |
 | lambdas.cpp:43:7:43:12 | lambdas.cpp:46:7:46:7 | AST only |
 | ref.cpp:29:11:29:16 | ref.cpp:62:10:62:11 | AST only |
 | ref.cpp:53:9:53:10 | ref.cpp:56:10:56:11 | AST only |
@@ -38,8 +34,6 @@
 | test.cpp:109:9:109:14 | test.cpp:110:10:110:12 | IR only |
 | test.cpp:347:17:347:22 | test.cpp:349:10:349:18 | AST only |
 | test.cpp:359:13:359:18 | test.cpp:365:10:365:14 | AST only |
-| test.cpp:373:13:373:18 | test.cpp:369:10:369:14 | AST only |
-| test.cpp:373:13:373:18 | test.cpp:375:10:375:14 | AST only |
 | test.cpp:399:7:399:9 | test.cpp:401:8:401:10 | AST only |
 | test.cpp:405:7:405:9 | test.cpp:408:8:408:10 | AST only |
 | test.cpp:416:7:416:11 | test.cpp:418:8:418:12 | AST only |

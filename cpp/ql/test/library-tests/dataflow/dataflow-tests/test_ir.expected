@@ -12,6 +12,7 @@
 | clang.cpp:18:8:18:19 | (const int *)... | clang.cpp:12:9:12:20 | sourceArray1 |
 | clang.cpp:18:8:18:19 | sourceArray1 | clang.cpp:12:9:12:20 | sourceArray1 |
 | clang.cpp:29:27:29:28 | m1 | clang.cpp:28:27:28:32 | call to source |
+| clang.cpp:30:27:30:34 | call to getFirst | clang.cpp:28:27:28:32 | call to source |
 | clang.cpp:37:10:37:11 | m2 | clang.cpp:34:32:34:37 | call to source |
 | clang.cpp:41:18:41:19 | m2 | clang.cpp:39:42:39:47 | call to source |
 | clang.cpp:45:17:45:18 | m2 | clang.cpp:43:35:43:40 | call to source |
@@ -38,6 +39,9 @@
 | globals.cpp:6:10:6:14 | local | globals.cpp:5:17:5:22 | call to source |
 | globals.cpp:12:10:12:24 | flowTestGlobal1 | globals.cpp:13:23:13:28 | call to source |
 | globals.cpp:19:10:19:24 | flowTestGlobal2 | globals.cpp:23:23:23:28 | call to source |
+| lambdas.cpp:14:3:14:6 | t | lambdas.cpp:8:10:8:15 | call to source |
+| lambdas.cpp:18:8:18:8 | call to operator() | lambdas.cpp:8:10:8:15 | call to source |
+| lambdas.cpp:29:3:29:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:41:8:41:8 | (reference dereference) | lambdas.cpp:8:10:8:15 | call to source |
 | ref.cpp:123:13:123:15 | val | ref.cpp:122:23:122:28 | call to source |
@@ -66,6 +70,8 @@
 | test.cpp:266:12:266:12 | x | test.cpp:265:22:265:27 | call to source |
 | test.cpp:289:14:289:14 | x | test.cpp:305:17:305:22 | call to source |
 | test.cpp:318:7:318:7 | x | test.cpp:314:4:314:9 | call to source |
+| test.cpp:369:10:369:14 | field | test.cpp:373:13:373:18 | call to source |
+| test.cpp:375:10:375:14 | field | test.cpp:373:13:373:18 | call to source |
 | test.cpp:385:8:385:10 | tmp | test.cpp:382:48:382:54 | source1 |
 | test.cpp:392:8:392:10 | tmp | test.cpp:388:53:388:59 | source1 |
 | test.cpp:394:10:394:12 | tmp | test.cpp:388:53:388:59 | source1 |

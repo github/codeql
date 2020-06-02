@@ -1,4 +1,4 @@
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 

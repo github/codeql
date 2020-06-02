@@ -213,7 +213,7 @@ private predicate hasPossibleUnknownValue(SsaVariable v) {
 
 /**
  * Gets a sub-expression of `e` whose value can flow to `e` through
- * `ConditionalExpr`s. Parentheses are also removed.
+ * `ConditionalExpr`s.
  */
 private Expr possibleValue(Expr e) {
   result = possibleValue(e.(ConditionalExpr).getTrueExpr())

@@ -438,7 +438,10 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
   barrierGuardIsRelevant(guard) and
   exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
     nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-    guard.getEnclosingExpr() = cond.getTest() and
+    (
+      guard.getEnclosingExpr() = cond.getTest() or
+      guard = cond.getTest().flow().getImmediatePredecessor+()
+    ) and
     outcome = cond.getOutcome() and
     barrierGuardBlocksAccessPath(guard, outcome, p, label) and
     cond.dominates(bb)
@@ -606,6 +609,16 @@ module PseudoProperties {
    * Gets a pseudo-property for the location of elements in an `Array`.
    */
   string arrayElement() { result = pseudoProperty("arrayElement") }
+
+  /**
+   * Gets a pseudo-property for the location of the `i`th element in an `Array`.
+   */
+  bindingset[i]
+  string arrayElement(int i) {
+    i < 5 and result = i.toString()
+    or
+    result = arrayElement()
+  }
 
   /**
    * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
@@ -1600,6 +1613,9 @@ class MidPathNode extends PathNode, MkMidNode {
     // Skip phi, refinement, and capture nodes
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
       SsaImplicitDefinition
+    or
+    // Skip SSA definition of parameter as its location coincides with the parameter node
+    nd = DataFlow::ssaDefinitionNode(SSA::definition(any(SimpleParameter p)))
     or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and

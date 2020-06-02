@@ -67,8 +67,6 @@ private module Cached {
 
   cached
   predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof UnmodeledDefinitionInstruction
-    or
     instruction instanceof AliasedDefinitionInstruction
     or
     instruction.getOpcode() instanceof Opcode::InitializeNonLocal
@@ -127,39 +125,12 @@ private module Cached {
       oldInstruction = getOldInstruction(instruction) and
       oldOperand = oldInstruction.getAnOperand() and
       tag = oldOperand.getOperandTag() and
-      (
-        (
-          if exists(Alias::getOperandMemoryLocation(oldOperand))
-          then hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
-          else (
-            result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
-            overlap instanceof MustTotallyOverlap
-          )
-        )
-        or
-        // Connect any definitions that are not being modeled in SSA to the
-        // `UnmodeledUse` instruction.
-        exists(OldInstruction oldDefinition |
-          instruction instanceof UnmodeledUseInstruction and
-          tag instanceof UnmodeledUseOperandTag and
-          oldDefinition = oldOperand.getAnyDef() and
-          not exists(Alias::getResultMemoryLocation(oldDefinition)) and
-          result = getNewInstruction(oldDefinition) and
-          overlap instanceof MustTotallyOverlap
-        )
-      )
+      hasMemoryOperandDefinition(oldInstruction, oldOperand, overlap, result)
     )
     or
     instruction = Chi(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag and
     overlap instanceof MustExactlyOverlap
-    or
-    exists(IRFunction f |
-      tag instanceof UnmodeledUseOperandTag and
-      result = f.getUnmodeledDefinitionInstruction() and
-      instruction = f.getUnmodeledUseInstruction() and
-      overlap instanceof MustTotallyOverlap
-    )
     or
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction) and
@@ -942,6 +913,9 @@ private module CachedForDebugging {
 }
 
 module SSAConsistency {
+  /**
+   * Holds if a `MemoryOperand` has more than one `MemoryLocation` assigned by alias analysis.
+   */
   query predicate multipleOperandMemoryLocations(
     OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
   ) {
@@ -954,6 +928,9 @@ module SSAConsistency {
     )
   }
 
+  /**
+   * Holds if a `MemoryLocation` does not have an associated `VirtualVariable`.
+   */
   query predicate missingVirtualVariableForMemoryLocation(
     Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
   ) {
@@ -961,5 +938,26 @@ module SSAConsistency {
     func = location.getIRFunction() and
     funcText = Language::getIdentityString(func.getFunction()) and
     message = "Memory location has no virtual variable in function '$@'."
+  }
+
+  /**
+   * Holds if a `MemoryLocation` is a member of more than one `VirtualVariable`.
+   */
+  query predicate multipleVirtualVariablesForMemoryLocation(
+    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
+  ) {
+    exists(int vvarCount |
+      vvarCount = strictcount(location.getVirtualVariable()) and
+      vvarCount > 1 and
+      func = location.getIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction()) and
+      message =
+        "Memory location has " + vvarCount.toString() + " virtual variables in function '$@': (" +
+          concat(Alias::VirtualVariable vvar |
+            vvar = location.getVirtualVariable()
+          |
+            vvar.toString(), ", "
+          ) + ")."
+    )
   }
 }

@@ -697,6 +697,7 @@ module ModuleImportNode {
  *
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
+cached
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
 /**

@@ -6,9 +6,13 @@ private import semmle.code.cpp.dataflow.EscapesTree
 /**
  * A C/C++ access expression. This refers to a function, variable, or enum constant.
  */
-abstract class Access extends Expr, NameQualifiableElement {
+class Access extends Expr, NameQualifiableElement, @access {
+  // As `@access` is a union type containing `@routineexpr` (which describes function accesses
+  // that are called), we need to exclude function calls.
+  Access() { this instanceof @routineexpr implies not iscall(underlyingElement(this), _) }
+
   /** Gets the accessed function, variable, or enum constant. */
-  abstract Declaration getTarget();
+  Declaration getTarget() { none() } // overridden in subclasses
 
   override predicate mayBeImpure() { none() }
 

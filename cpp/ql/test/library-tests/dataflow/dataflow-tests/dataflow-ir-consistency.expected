@@ -19,10 +19,7 @@ uniqueNodeLocation
 missingLocation
 | Nodes without location: 4 |
 uniqueNodeToString
-| lambdas.cpp:2:6:2:9 | (no string representation) | Node should have one toString but has 0. |
-| lambdas.cpp:2:6:2:9 | (no string representation) | Node should have one toString but has 0. |
 missingToString
-| Nodes without toString: 2 |
 parameterCallable
 localFlowIsLocal
 compatibleTypesReflexive

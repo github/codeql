@@ -7,18 +7,25 @@ import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
 
 module NodeJSLib {
+  private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
+    result = processVariable().getAnAccess() and
+    tl = result.getTopLevel()
+  }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInNodeModule() {
+    result = processExprInTopLevel(any(NodeModule m))
+  }
+
   /**
    * An access to the global `process` variable in a Node.js module, interpreted as
    * an import of the `process` module.
    */
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
-    ImplicitProcessImport() {
-      exists(GlobalVariable process |
-        process.getName() = "process" and
-        this = DataFlow::exprNode(process.getAnAccess())
-      ) and
-      getTopLevel() instanceof NodeModule
-    }
+    ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
     override string getPath() { result = "process" }
   }
@@ -272,7 +279,7 @@ module NodeJSLib {
     DataFlow::Node tainted;
 
     PathFlowTarget() {
-      exists(string methodName | this = DataFlow::moduleMember("path", methodName).getACall() |
+      exists(string methodName | this = NodeJSLib::Path::moduleMember(methodName).getACall() |
         // getters
         methodName = "basename" and tainted = getArgument(0)
         or
@@ -306,7 +313,7 @@ module NodeJSLib {
 
     FsFlowTarget() {
       exists(DataFlow::CallNode call, string methodName |
-        call = DataFlow::moduleMember("fs", methodName).getACall()
+        call = FS::moduleMember(methodName).getACall()
       |
         methodName = "realpathSync" and
         tainted = call.getArgument(0) and
@@ -430,27 +437,29 @@ module NodeJSLib {
   }
 
   /**
-   * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+   * Provides predicates for working with the "fs" module and its variants as a single module.
    */
-  private DataFlow::SourceNode fsModuleMember(string member) {
-    result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
-  }
+  module FS {
+    /**
+     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     */
+    DataFlow::SourceNode moduleMember(string member) {
+      result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
+    }
 
-  private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
-    exists(string moduleName |
-      moduleName = "fs" or
-      moduleName = "graceful-fs" or
-      moduleName = "fs-extra" or
-      moduleName = "original-fs"
-    |
-      result = DataFlow::moduleImport(moduleName)
+    private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
+      exists(string moduleName |
+        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
+      |
+        result = DataFlow::moduleImport(moduleName)
+        or
+        // extra support for flexible names
+        result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
+      ) and
+      t.start()
       or
-      // extra support for flexible names
-      result.asExpr().(Require).getArgument(0).mayHaveStringValue(moduleName)
-    ) and
-    t.start()
-    or
-    exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+    }
   }
 
   /**
@@ -459,7 +468,7 @@ module NodeJSLib {
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccess() { this = maybePromisified(fsModuleMember(methodName)).getACall() }
+    NodeJSFileSystemAccess() { this = maybePromisified(FS::moduleMember(methodName)).getACall() }
 
     /**
      * Gets the name of the called method.
@@ -479,7 +488,9 @@ module NodeJSLib {
       methodName = "write" or
       methodName = "writeFile" or
       methodName = "writeFileSync" or
-      methodName = "writeSync"
+      methodName = "writeSync" or
+      methodName = "link" or
+      methodName = "linkSync"
     }
 
     override DataFlow::Node getADataNode() {
@@ -580,8 +591,8 @@ module NodeJSLib {
         name = "readdir" or
         name = "realpath"
       |
-        this = fsModuleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
-        this = fsModuleMember(name + "Sync").getACall()
+        this = FS::moduleMember(name).getACall().getCallback([1 .. 2]).getParameter(1) or
+        this = FS::moduleMember(name + "Sync").getACall()
       )
     }
   }
@@ -607,6 +618,8 @@ module NodeJSLib {
 
     ChildProcessMethodCall() {
       this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
+      or
+      this = DataFlow::moduleMember("mz/child_process", methodName).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
@@ -703,23 +716,25 @@ module NodeJSLib {
   }
 
   /**
-   * A call to a method from module `vm`
+   * DEPRECATED Use `VmModuleMemberInvocation` instead.
    */
-  class VmModuleMethodCall extends DataFlow::CallNode {
-    string methodName;
+  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
 
-    VmModuleMethodCall() { this = DataFlow::moduleMember("vm", methodName).getACall() }
+  /**
+   * An invocation of a member from module `vm`
+   */
+  class VmModuleMemberInvocation extends DataFlow::InvokeNode {
+    string memberName;
+
+    VmModuleMemberInvocation() { this = DataFlow::moduleMember("vm", memberName).getAnInvocation() }
 
     /**
-     * Gets the code to be executed as part of this call.
+     * Gets the code to be executed as part of this invocation.
      */
     DataFlow::Node getACodeArgument() {
-      (
-        methodName = "runInContext" or
-        methodName = "runInNewContext" or
-        methodName = "runInThisContext"
-      ) and
-      // all of the above methods take the command as their first argument
+      memberName in ["Script", "SourceTextModule", "compileFunction", "runInContext",
+            "runInNewContext", "runInThisContext"] and
+      // all of the above methods/constructors take the command as their first argument
       result = getArgument(0)
     }
   }

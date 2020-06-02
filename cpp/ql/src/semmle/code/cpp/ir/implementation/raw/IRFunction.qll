@@ -40,16 +40,6 @@ class IRFunction extends TIRFunction {
     result.getEnclosingIRFunction() = this
   }
 
-  pragma[noinline]
-  final UnmodeledDefinitionInstruction getUnmodeledDefinitionInstruction() {
-    result.getEnclosingIRFunction() = this
-  }
-
-  pragma[noinline]
-  final UnmodeledUseInstruction getUnmodeledUseInstruction() {
-    result.getEnclosingIRFunction() = this
-  }
-
   /**
    * Gets the single return instruction for this function.
    */

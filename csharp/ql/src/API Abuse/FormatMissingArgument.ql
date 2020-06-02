@@ -1,7 +1,7 @@
 /**
  * @name Missing format argument
  * @description Supplying too few arguments to a format string causes a 'System.FormatException'.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/format-argument-missing
@@ -11,11 +11,14 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Format
+import FormatFlow
 
-from FormatCall format, ValidFormatString src, int used, int supplied
+from
+  FormatCall format, ValidFormatString src, int used, int supplied, PathNode source, PathNode sink
 where
-  src = format.getAFormatSource() and
+  hasFlowPath(src, source, format, sink) and
   used = src.getAnInsert() and
   supplied = format.getSuppliedArguments() and
   used >= supplied
-select format, "Argument '{" + used + "}' has not been supplied to $@ format string.", src, "this"
+select format, source, sink, "Argument '{" + used + "}' has not been supplied to $@ format string.",
+  src, "this"

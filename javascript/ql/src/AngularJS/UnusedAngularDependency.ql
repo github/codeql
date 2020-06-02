@@ -3,7 +3,7 @@
  * @description Unused dependencies are confusing, and should be removed.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision low
  * @id js/angular/unused-dependency
  * @tags maintainability
  *       frameworks/angularjs

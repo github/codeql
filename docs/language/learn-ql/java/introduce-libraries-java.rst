@@ -1,7 +1,7 @@
 CodeQL library for Java
 =======================
 
-When you're analyzing a Java program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL library for Java.
+When you're analyzing a Java program, you can make use of the large collection of classes in the CodeQL library for Java.
 
 About the CodeQL library for Java
 ---------------------------------

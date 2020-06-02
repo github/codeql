@@ -60,8 +60,6 @@ private newtype TOpcode =
   TThrowValue() or
   TReThrow() or
   TUnwind() or
-  TUnmodeledDefinition() or
-  TUnmodeledUse() or
   TAliasedDefinition() or
   TInitializeNonLocal() or
   TAliasedUse() or
@@ -577,22 +575,6 @@ module Opcode {
 
   class Unwind extends Opcode, TUnwind {
     final override string toString() { result = "Unwind" }
-  }
-
-  class UnmodeledDefinition extends Opcode, TUnmodeledDefinition {
-    final override string toString() { result = "UnmodeledDefinition" }
-
-    final override MemoryAccessKind getWriteMemoryAccess() {
-      result instanceof UnmodeledMemoryAccess
-    }
-  }
-
-  class UnmodeledUse extends Opcode, TUnmodeledUse {
-    final override string toString() { result = "UnmodeledUse" }
-
-    final override predicate hasOperandInternal(OperandTag tag) {
-      tag instanceof UnmodeledUseOperandTag
-    }
   }
 
   class AliasedDefinition extends Opcode, TAliasedDefinition {
