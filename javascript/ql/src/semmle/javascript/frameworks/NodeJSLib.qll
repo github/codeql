@@ -1134,4 +1134,18 @@ module NodeJSLib {
       result = moduleImport().getAPropertyRead(member)
     }
   }
+
+  /**
+   * Provides predicates for working with the "node-fetch" module and its platform-specific instances as a single module.
+   */
+  module Fetch {
+    /**
+     *  Gets a node that imports the "node-fetch" module, or one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleImport() {
+      result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+      or
+      result = DataFlow::globalVarRef("fetch")
+    }
+  }
 }

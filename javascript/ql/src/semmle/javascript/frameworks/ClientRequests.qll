@@ -267,17 +267,7 @@ module ClientRequest {
     DataFlow::Node url;
 
     FetchUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          moduleName = "node-fetch" or
-          moduleName = "cross-fetch" or
-          moduleName = "isomorphic-fetch"
-        ) and
-        callee = DataFlow::moduleImport(moduleName) and
-        url = getArgument(0)
-      )
-      or
-      this = DataFlow::globalVarRef("fetch").getACall() and
+      this = NodeJSLib::Fetch::moduleImport() and
       url = getArgument(0)
     }
 
