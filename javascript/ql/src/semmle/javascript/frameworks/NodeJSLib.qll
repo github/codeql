@@ -1147,5 +1147,21 @@ module NodeJSLib {
       or
       result = DataFlow::globalVarRef("fetch")
     }
+
+    /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
+    class FetchAuthorization extends CredentialsExpr {
+      FetchAuthorization() {
+        this =
+          moduleImport()
+              .getAConstructorInvocation("Headers")
+              .getArgument(0)
+              .getALocalSource()
+              .getAPropertyWrite("Authorization")
+              .getRhs()
+              .asExpr()
+      }
+
+      override string getCredentialsKind() { result = "authorization headers" }
+    }
   }
 }

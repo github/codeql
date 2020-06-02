@@ -163,3 +163,17 @@
 	var basicAuth = require('express-basic-auth');
 	basicAuth({users: { [adminName]: 'change_me' }});  // OK
 })();
+
+(async function () {
+    const fetch = require("node-fetch");
+
+    const PASS = 'sdsdag';
+
+    const rsp = await fetch(ENDPOINT, {
+        method: 'get',
+        headers: new fetch.Headers({
+            'Authorization': PASS,
+            'Content-Type': 'application/json'
+        })
+    });
+});
