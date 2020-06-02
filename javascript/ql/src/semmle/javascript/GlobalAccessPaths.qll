@@ -419,4 +419,79 @@ module AccessPath {
     or
     result = node.getALocalSource()
   }
+
+  /**
+   * A module for reasoning dominating reads and writes to access-paths. 
+   */
+  module DominatingPaths {
+    /**
+     * A classification of acccess paths into reads and writes.
+     */
+    cached
+    private newtype AccessPathKind =
+      AccessPathRead() or
+      AccessPathWrite()
+
+    /**
+     * Gets the `ranking`th access-path with `root` and `path` within `bb`.
+     * And the access-path has type `type`.
+     */
+    private DataFlow::Node rankedAccessPath(
+      ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
+    ) {
+      result =
+        rank[ranking](DataFlow::Node ref |
+          ref = getAccessTo(root, path, _) and
+          ref.getBasicBlock() = bb
+        |
+          ref order by any(int i | ref.asExpr() = bb.getNode(i))
+        ) and
+      result = getAccessTo(root, path, type)
+    }
+
+    /**
+     * Gets an access to `path` from `root` with type `type`.
+     *
+     * This predicate uses both the AccessPath API, and the SourceNode API.
+     * This ensures that we have basic support for access-paths with ambiguous roots.
+     */
+    pragma[nomagic]
+    private DataFlow::Node getAccessTo(Root root, string path, AccessPathKind type) {
+      (path = fromReference(result, root) or result = root.getAPropertyRead(path)) and
+      type = AccessPathRead()
+      or
+      (path = fromRhs(result, root) or result = root.getAPropertyWrite(path)) and
+      type = AccessPathWrite()
+    }
+
+    /**
+     * Gets a basicblock that is domminated by a assignment to an access-path identified by `root` and `path`.
+     */
+    private ReachableBasicBlock getADominatedBlock(Root root, string path) {
+      getAccessTo(root, path, AccessPathWrite())
+          .getBasicBlock()
+          .(ReachableBasicBlock)
+          .strictlyDominates(result)
+    }
+
+    /**
+     * EXPERIMENTAL. This API may change in the future.
+     *
+     * Holds for `read` if there exists a previous write to the same access-path that dominates this read.
+     */
+    cached
+    predicate hasDominatingWrite(DataFlow::PropRead read) {
+      // within the same basic block.
+      exists(ReachableBasicBlock bb, Root root, string path, int ranking |
+        read = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and
+        exists(rankedAccessPath(bb, root, path, any(int prev | prev < ranking), AccessPathWrite()))
+      )
+      or
+      // across basic blocks.
+      exists(Root root, string path |
+        read = getAccessTo(root, path, AccessPathRead()) and
+        read.getBasicBlock() = getADominatedBlock(root, path)
+      )
+    }
+  }
 }
