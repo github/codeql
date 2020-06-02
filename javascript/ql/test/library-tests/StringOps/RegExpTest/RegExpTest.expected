@@ -16,6 +16,7 @@ regexpTest
 | tst.js:25:23:25:27 | match |
 | tst.js:29:21:29:36 | regexp.test(str) |
 | tst.js:33:21:33:39 | str.matches(regexp) |
+| tst.js:40:9:40:37 | regexp. ... defined |
 #select
 | tst.js:6:9:6:28 | /^[a-z]+$/.test(str) | tst.js:6:10:6:17 | ^[a-z]+$ | tst.js:6:9:6:18 | /^[a-z]+$/ | tst.js:6:25:6:27 | str | true |
 | tst.js:7:9:7:36 | /^[a-z] ... != null | tst.js:7:10:7:17 | ^[a-z]+$ | tst.js:7:9:7:18 | /^[a-z]+$/ | tst.js:7:25:7:27 | str | true |
@@ -34,3 +35,4 @@ regexpTest
 | tst.js:25:23:25:27 | match | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:17:17:17:22 | regexp | tst.js:17:29:17:31 | str | true |
 | tst.js:29:21:29:36 | regexp.test(str) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:29:21:29:26 | regexp | tst.js:29:33:29:35 | str | true |
 | tst.js:33:21:33:39 | str.matches(regexp) | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:33:33:33:38 | regexp | tst.js:33:21:33:23 | str | true |
+| tst.js:40:9:40:37 | regexp. ... defined | tst.js:3:17:3:24 | ^[a-z]+$ | tst.js:40:9:40:14 | regexp | tst.js:40:21:40:23 | str | false |

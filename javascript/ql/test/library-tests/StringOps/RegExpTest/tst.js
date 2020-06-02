@@ -36,4 +36,7 @@ function f(str) {
     something({
         someOption: regexp.exec(str) // not recognized as RegExpTest
     })
+
+    if (regexp.exec(str) == undefined) {}
+    if (regexp.exec(str) === undefined) {} // not recognized as RegExpTest
 }

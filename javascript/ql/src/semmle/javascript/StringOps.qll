@@ -744,10 +744,16 @@ module StringOps {
      * Holds if `e` evaluating to `polarity` implies that `operand` is not null.
      */
     private predicate impliesNotNull(Expr e, Expr operand, boolean polarity) {
-      exists(EqualityTest test |
+      exists(EqualityTest test, Expr other |
         e = test and
         polarity = test.getPolarity().booleanNot() and
-        test.hasOperands(any(NullLiteral n), operand)
+        test.hasOperands(other, operand) and
+        SyntacticConstants::isNullOrUndefined(other) and
+        not (
+          // 'exec() === undefined' doesn't work
+          other instanceof SyntacticConstants::UndefinedConstant and
+          test.isStrict()
+        )
       )
       or
       isCoercedToBoolean(e) and
