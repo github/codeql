@@ -222,7 +222,7 @@ class ThisParameterNode extends ParameterNode {
   override string toString() { result = "this" }
 }
 
-/** A virtual parameter to model the pointed-to object of a pointer parameter. */
+/** A synthetic parameter to model the pointed-to object of a pointer parameter. */
 class ParameterIndirectionNode extends ParameterNode {
   override InitializeIndirectionInstruction instr;
 
