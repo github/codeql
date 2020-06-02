@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C++ classes, including structs, unions, and template classes.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.UserType
 import semmle.code.cpp.metrics.MetricClass
