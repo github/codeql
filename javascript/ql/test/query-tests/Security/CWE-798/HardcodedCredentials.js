@@ -165,14 +165,17 @@
 })();
 
 (async function () {
+    const base64 = require('base-64');
     const fetch = require("node-fetch");
 
+    const USER = 'sdsdag';
     const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
 
     const rsp = await fetch(ENDPOINT, {
         method: 'get',
         headers: new fetch.Headers({
-            'Authorization': PASS,
+            Authorization: `Basic ${AUTH}`,
             'Content-Type': 'application/json'
         })
     });

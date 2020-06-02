@@ -20,5 +20,12 @@ module HardcodedCredentials {
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) { 
+      exists(Base64::Encode encode | src = encode.getInput() and trg = encode.getOutput())
+      or
+      trg.(StringOps::ConcatenationRoot).getALeaf() = src and
+      not exists(src.(StringOps::ConcatenationLeaf).getStringValue()) // to avoid e.g. the ":" in `user + ":" + pass` being flagged as a constant credential.
+    }
   }
 }
