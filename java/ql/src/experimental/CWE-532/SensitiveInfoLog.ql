@@ -17,7 +17,7 @@ import PathGraph
  */
 private string getACredentialRegex() {
   result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i)(.*username|url).*"
+  result = "(?i)(.*username|.*secret|url).*"
 }
 
 /** Variable keeps sensitive information judging by its name * */
@@ -31,6 +31,7 @@ class CredentialExpr extends Expr {
 class LoggerType extends RefType {
   LoggerType() {
     this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
+    this.hasQualifiedName("org.apache.logging.log4j", "Logger") or //Log4J 2
     this.hasQualifiedName("org.slf4j", "Logger") or //SLF4j and Gradle Logging
     this.hasQualifiedName("org.jboss.logging", "BasicLogger") //JBoss Logging
   }
