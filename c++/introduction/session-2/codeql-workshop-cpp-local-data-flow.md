@@ -248,7 +248,7 @@ One of the problems with our first query was that it did not exclude cases where
 ```ql
 predicate isSourceNode(DataFlow::Node sourceNode) {
     not DataFlow::localFlowStep(_, sourceNode)
-    // explicit version: not exists(DataFlow::Node nodeFrom | DataFlow::localFlowStep(nodeFrom, this))
+    // explicit version: not exists(DataFlow::Node nodeFrom | DataFlow::localFlowStep(nodeFrom, sourceNode))
 }
 ```
 </details>
