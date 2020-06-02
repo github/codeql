@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.web.Http
 import semmle.python.web.cherrypy.General

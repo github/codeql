@@ -1,4 +1,4 @@
-import default
+import cpp
 
 query predicate classUuids(Class cls, string uuid) {
   if exists(cls.getUuid()) then uuid = cls.getUuid() else uuid = ""

@@ -453,14 +453,8 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ThrowTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(InitializerVariableAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result =
-        getTranslatedFunction(stmt.getEnclosingCallable()).getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {

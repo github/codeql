@@ -260,24 +260,33 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
    */
   int getIndex() { param_decl_bind(underlyingElement(this), result, _) }
 
+  private string getAnonymousParameterDescription() {
+    not exists(getName()) and
+    exists(string idx |
+      idx =
+        ((getIndex() + 1).toString() + "th")
+            .replaceAll("1th", "1st")
+            .replaceAll("2th", "2nd")
+            .replaceAll("3th", "3rd")
+            .replaceAll("11st", "11th")
+            .replaceAll("12nd", "12th")
+            .replaceAll("13rd", "13th") and
+      if exists(getCanonicalName())
+      then result = "declaration of " + getCanonicalName() + " as anonymous " + idx + " parameter"
+      else result = "declaration of " + idx + " parameter"
+    )
+  }
+
   override string toString() {
-    if exists(getName())
-    then result = super.toString()
-    else
-      exists(string idx |
-        idx =
-          ((getIndex() + 1).toString() + "th")
-              .replaceAll("1th", "1st")
-              .replaceAll("2th", "2nd")
-              .replaceAll("3th", "3rd")
-              .replaceAll("11st", "11th")
-              .replaceAll("12nd", "12th")
-              .replaceAll("13rd", "13th")
-      |
-        if exists(getCanonicalName())
-        then result = "declaration of " + getCanonicalName() + " as anonymous " + idx + " parameter"
-        else result = "declaration of " + idx + " parameter"
-      )
+    isDefinition() and
+    result = "definition of " + getName()
+    or
+    not isDefinition() and
+    if getName() = getCanonicalName()
+    then result = "declaration of " + getName()
+    else result = "declaration of " + getCanonicalName() + " as " + getName()
+    or
+    result = getAnonymousParameterDescription()
   }
 
   /**

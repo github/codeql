@@ -1,13 +1,4 @@
 edges
-| field_conflation.c:12:22:12:27 | call to getenv | field_conflation.c:13:10:13:25 | Chi |
-| field_conflation.c:12:22:12:34 | (const char *)... | field_conflation.c:13:10:13:25 | Chi |
-| field_conflation.c:13:10:13:25 | Chi | field_conflation.c:19:15:19:17 | taint_array output argument |
-| field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:10:20:13 | (unsigned long)... |
-| field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:13:20:13 | x |
-| field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:13:20:13 | x |
-| field_conflation.c:19:15:19:17 | taint_array output argument | field_conflation.c:20:13:20:13 | x |
-| field_conflation.c:20:13:20:13 | x | field_conflation.c:20:10:20:13 | (unsigned long)... |
-| field_conflation.c:20:13:20:13 | x | field_conflation.c:20:13:20:13 | x |
 | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | (size_t)... |
 | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | (size_t)... |
 | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | tainted |
@@ -68,16 +59,27 @@ edges
 | test.cpp:227:24:227:37 | (const char *)... | test.cpp:237:10:237:19 | (size_t)... |
 | test.cpp:235:11:235:20 | (size_t)... | test.cpp:214:23:214:23 | s |
 | test.cpp:237:10:237:19 | (size_t)... | test.cpp:220:21:220:21 | s |
+| test.cpp:241:2:241:32 | Chi | test.cpp:279:17:279:20 | get_size output argument |
+| test.cpp:241:2:241:32 | Chi | test.cpp:295:18:295:21 | get_size output argument |
+| test.cpp:241:18:241:23 | call to getenv | test.cpp:241:2:241:32 | Chi |
+| test.cpp:241:18:241:31 | (const char *)... | test.cpp:241:2:241:32 | Chi |
+| test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
+| test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... |
+| test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
+| test.cpp:249:20:249:33 | (const char *)... | test.cpp:253:11:253:29 | ... * ... |
+| test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
+| test.cpp:279:17:279:20 | get_size output argument | test.cpp:281:11:281:28 | ... * ... |
+| test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
+| test.cpp:295:18:295:21 | get_size output argument | test.cpp:298:10:298:27 | ... * ... |
+| test.cpp:301:19:301:24 | call to getenv | test.cpp:305:11:305:28 | ... * ... |
+| test.cpp:301:19:301:24 | call to getenv | test.cpp:305:11:305:28 | ... * ... |
+| test.cpp:301:19:301:32 | (const char *)... | test.cpp:305:11:305:28 | ... * ... |
+| test.cpp:301:19:301:32 | (const char *)... | test.cpp:305:11:305:28 | ... * ... |
+| test.cpp:309:19:309:24 | call to getenv | test.cpp:314:10:314:27 | ... * ... |
+| test.cpp:309:19:309:24 | call to getenv | test.cpp:314:10:314:27 | ... * ... |
+| test.cpp:309:19:309:32 | (const char *)... | test.cpp:314:10:314:27 | ... * ... |
+| test.cpp:309:19:309:32 | (const char *)... | test.cpp:314:10:314:27 | ... * ... |
 nodes
-| field_conflation.c:12:22:12:27 | call to getenv | semmle.label | call to getenv |
-| field_conflation.c:12:22:12:34 | (const char *)... | semmle.label | (const char *)... |
-| field_conflation.c:13:10:13:25 | Chi | semmle.label | Chi |
-| field_conflation.c:19:15:19:17 | taint_array output argument | semmle.label | taint_array output argument |
-| field_conflation.c:20:10:20:13 | (unsigned long)... | semmle.label | (unsigned long)... |
-| field_conflation.c:20:10:20:13 | (unsigned long)... | semmle.label | (unsigned long)... |
-| field_conflation.c:20:13:20:13 | x | semmle.label | x |
-| field_conflation.c:20:13:20:13 | x | semmle.label | x |
-| field_conflation.c:20:13:20:13 | x | semmle.label | x |
 | test.cpp:39:21:39:24 | argv | semmle.label | argv |
 | test.cpp:39:21:39:24 | argv | semmle.label | argv |
 | test.cpp:42:38:42:44 | (size_t)... | semmle.label | (size_t)... |
@@ -140,8 +142,33 @@ nodes
 | test.cpp:231:9:231:24 | call to get_tainted_size | semmle.label | call to get_tainted_size |
 | test.cpp:235:11:235:20 | (size_t)... | semmle.label | (size_t)... |
 | test.cpp:237:10:237:19 | (size_t)... | semmle.label | (size_t)... |
+| test.cpp:241:2:241:32 | Chi | semmle.label | Chi |
+| test.cpp:241:18:241:23 | call to getenv | semmle.label | call to getenv |
+| test.cpp:241:18:241:31 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:249:20:249:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:249:20:249:33 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
+| test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
+| test.cpp:253:11:253:29 | ... * ... | semmle.label | ... * ... |
+| test.cpp:279:17:279:20 | get_size output argument | semmle.label | get_size output argument |
+| test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:281:11:281:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:295:18:295:21 | get_size output argument | semmle.label | get_size output argument |
+| test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:301:19:301:24 | call to getenv | semmle.label | call to getenv |
+| test.cpp:301:19:301:32 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:305:11:305:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:305:11:305:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:305:11:305:28 | ... * ... | semmle.label | ... * ... |
+| test.cpp:309:19:309:24 | call to getenv | semmle.label | call to getenv |
+| test.cpp:309:19:309:32 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:314:10:314:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:314:10:314:27 | ... * ... | semmle.label | ... * ... |
+| test.cpp:314:10:314:27 | ... * ... | semmle.label | ... * ... |
 #select
-| field_conflation.c:20:3:20:8 | call to malloc | field_conflation.c:12:22:12:27 | call to getenv | field_conflation.c:20:13:20:13 | x | This allocation size is derived from $@ and might overflow | field_conflation.c:12:22:12:27 | call to getenv | user input (getenv) |
 | test.cpp:42:31:42:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | tainted | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:43:38:43:63 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:45:31:45:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:45:38:45:63 | ... + ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
@@ -155,3 +182,8 @@ nodes
 | test.cpp:221:14:221:19 | call to malloc | test.cpp:227:24:227:29 | call to getenv | test.cpp:221:21:221:21 | s | This allocation size is derived from $@ and might overflow | test.cpp:227:24:227:29 | call to getenv | user input (getenv) |
 | test.cpp:229:2:229:7 | call to malloc | test.cpp:227:24:227:29 | call to getenv | test.cpp:229:9:229:18 | local_size | This allocation size is derived from $@ and might overflow | test.cpp:227:24:227:29 | call to getenv | user input (getenv) |
 | test.cpp:231:2:231:7 | call to malloc | test.cpp:201:14:201:19 | call to getenv | test.cpp:231:9:231:24 | call to get_tainted_size | This allocation size is derived from $@ and might overflow | test.cpp:201:14:201:19 | call to getenv | user input (getenv) |
+| test.cpp:253:4:253:9 | call to malloc | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:249:20:249:25 | call to getenv | user input (getenv) |
+| test.cpp:281:4:281:9 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:281:11:281:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
+| test.cpp:298:3:298:8 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:298:10:298:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
+| test.cpp:305:4:305:9 | call to malloc | test.cpp:301:19:301:24 | call to getenv | test.cpp:305:11:305:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:301:19:301:24 | call to getenv | user input (getenv) |
+| test.cpp:314:3:314:8 | call to malloc | test.cpp:309:19:309:24 | call to getenv | test.cpp:314:10:314:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:309:19:309:24 | call to getenv | user input (getenv) |

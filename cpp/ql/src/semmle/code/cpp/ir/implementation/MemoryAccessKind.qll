@@ -92,11 +92,3 @@ class ChiTotalMemoryAccess extends MemoryAccessKind, TChiTotalMemoryAccess {
 class ChiPartialMemoryAccess extends MemoryAccessKind, TChiPartialMemoryAccess {
   override string toString() { result = "chi(partial)" }
 }
-
-/**
- * The operand accesses memory not modeled in SSA. Used only on the result of
- * `UnmodeledDefinition` and on the operands of `UnmodeledUse`.
- */
-class UnmodeledMemoryAccess extends MemoryAccessKind, TUnmodeledMemoryAccess {
-  override string toString() { result = "unmodeled" }
-}

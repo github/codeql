@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The Java Naming and Directory Interface (JNDI) is a Java API for a directory service that allows
+Java software clients to discover and look up data and resources (in the form of Java objects) via
+a name. If the name being used to look up the data is controlled by the user, it can point to a
+malicious server, which can return an arbitrary object. In the worst case, this can allow remote
+code execution.</p>
+</overview>
+
+<recommendation>
+<p>The general recommendation is to not pass untrusted data to the <code>InitialContext.lookup
+</code> method. If the name being used to look up the object must be provided by the user, make
+sure that it's not in the form of an absolute URL or that it's the URL pointing to a trused server.
+</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code accepts a name from the user, which it uses to look up an
+object.</p>
+
+<p>In the first example, the user provided name is used to look up an object.</p>
+
+<p>The second example validates the name before using it to look up an object.</p>
+
+<sample src="JndiInjection.java" />
+</example>
+
+<references>
+<li>Oracle: <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jndi/">Java Naming and Directory Interface (JNDI)</a>.</li>
+<li>Black Hat materials: <a href="https://www.blackhat.com/docs/us-16/materials/us-16-Munoz-A-Journey-From-JNDI-LDAP-Manipulation-To-RCE-wp.pdf">A Journey from JNDI/LDAP Manipulation to Remote Code Execution Dream Land</a>.</li>
+<li>Veracode: <a href="https://www.veracode.com/blog/research/exploiting-jndi-injections-java">Exploiting JNDI Injections in Java</a>.</li>
+</references>
+</qhelp>

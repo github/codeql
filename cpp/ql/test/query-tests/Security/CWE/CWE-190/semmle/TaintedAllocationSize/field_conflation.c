@@ -1,21 +1,21 @@
 int atoi(const char *nptr);
 void *malloc(unsigned long size);
 char *getenv(const char *name);
-void *memcpy(void *dst, void *src, unsigned long size);
 
-struct ContainsArray {
-  int arr[16];
+
+struct XY {
   int x;
+  int y;
 };
 
-void taint_array(struct ContainsArray *ca, int offset) {
+void taint_array(struct XY *xyp) {
   int tainted = atoi(getenv("VAR"));
-  memcpy(ca->arr + offset, &tainted, sizeof(int));
+  xyp->y = tainted;
 }
 
-void test_conflated_fields3(int arbitrary) {
-  struct ContainsArray ca;
-  ca.x = 4;
-  taint_array(&ca, arbitrary);
-  malloc(ca.x); // not tainted [FALSE POSITIVE]
+void test_conflated_fields3(void) {
+  struct XY xy;
+  xy.x = 4;
+  taint_array(&xy);
+  malloc(xy.x); // not tainted
 }

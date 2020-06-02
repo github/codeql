@@ -7,18 +7,25 @@ import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
 
 module NodeJSLib {
+  private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
+    result = processVariable().getAnAccess() and
+    tl = result.getTopLevel()
+  }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInNodeModule() {
+    result = processExprInTopLevel(any(NodeModule m))
+  }
+
   /**
    * An access to the global `process` variable in a Node.js module, interpreted as
    * an import of the `process` module.
    */
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
-    ImplicitProcessImport() {
-      exists(GlobalVariable process |
-        process.getName() = "process" and
-        this = DataFlow::exprNode(process.getAnAccess())
-      ) and
-      getTopLevel() instanceof NodeModule
-    }
+    ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
     override string getPath() { result = "process" }
   }
@@ -272,7 +279,7 @@ module NodeJSLib {
     DataFlow::Node tainted;
 
     PathFlowTarget() {
-      exists(string methodName | this = DataFlow::moduleMember("path", methodName).getACall() |
+      exists(string methodName | this = NodeJSLib::Path::moduleMember(methodName).getACall() |
         // getters
         methodName = "basename" and tainted = getArgument(0)
         or
@@ -442,10 +449,7 @@ module NodeJSLib {
 
     private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
       exists(string moduleName |
-        moduleName = "fs" or
-        moduleName = "graceful-fs" or
-        moduleName = "fs-extra" or
-        moduleName = "original-fs"
+        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
       |
         result = DataFlow::moduleImport(moduleName)
         or
@@ -614,6 +618,8 @@ module NodeJSLib {
 
     ChildProcessMethodCall() {
       this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
+      or
+      this = DataFlow::moduleMember("mz/child_process", methodName).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {
@@ -710,23 +716,25 @@ module NodeJSLib {
   }
 
   /**
-   * A call to a method from module `vm`
+   * DEPRECATED Use `VmModuleMemberInvocation` instead.
    */
-  class VmModuleMethodCall extends DataFlow::CallNode {
-    string methodName;
+  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
 
-    VmModuleMethodCall() { this = DataFlow::moduleMember("vm", methodName).getACall() }
+  /**
+   * An invocation of a member from module `vm`
+   */
+  class VmModuleMemberInvocation extends DataFlow::InvokeNode {
+    string memberName;
+
+    VmModuleMemberInvocation() { this = DataFlow::moduleMember("vm", memberName).getAnInvocation() }
 
     /**
-     * Gets the code to be executed as part of this call.
+     * Gets the code to be executed as part of this invocation.
      */
     DataFlow::Node getACodeArgument() {
-      (
-        methodName = "runInContext" or
-        methodName = "runInNewContext" or
-        methodName = "runInThisContext"
-      ) and
-      // all of the above methods take the command as their first argument
+      memberName in ["Script", "SourceTextModule", "compileFunction", "runInContext",
+            "runInNewContext", "runInThisContext"] and
+      // all of the above methods/constructors take the command as their first argument
       result = getArgument(0)
     }
   }

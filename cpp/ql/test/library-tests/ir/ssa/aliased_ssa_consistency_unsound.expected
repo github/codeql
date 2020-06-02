@@ -20,7 +20,6 @@ switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
-| ssa.cpp:301:27:301:30 | SideEffect | MemoryOperand 'SideEffect' has a `getDefinitionOverlap()` of 'MayPartiallyOverlap'. | ssa.cpp:301:5:301:8 | IR: main | int main(int, char**) |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

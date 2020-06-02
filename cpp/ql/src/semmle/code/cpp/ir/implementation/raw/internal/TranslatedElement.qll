@@ -400,6 +400,9 @@ newtype TTranslatedElement =
   TTranslatedConstructorInitList(Function func) { translateFunction(func) } or
   // A destructor destruction list
   TTranslatedDestructorDestructionList(Function func) { translateFunction(func) } or
+  TTranslatedThisParameter(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
     exists(Function func |

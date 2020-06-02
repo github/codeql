@@ -400,14 +400,15 @@
 | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | exit M6 | 1 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
-| Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | exit Initializers | 14 |
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 14 |
-| Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | exit M | 20 |
-| Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:16:16:20 | ... = ... | 2 |
-| Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | exit NoConstructor | 8 |
-| Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | exit Sub | 11 |
-| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 8 |
-| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 18 |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 14 |
+| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 20 |
+| Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | 2 |
+| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 8 |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 11 |
+| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 8 |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 18 |
+| Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | exit Test | 104 |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:9:13:9:28 | ... == ... | 7 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 | LoopUnrolling.cs:7:10:7:11 | exit M1 | 1 |
 | LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; | 1 |

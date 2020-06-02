@@ -108,6 +108,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   int getIntValue() { none() }
 
   /** Gets the constant string value this expression evaluates to, if any. */
+  cached
   string getStringValue() { none() }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */

@@ -201,13 +201,8 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
     )
     or
     tag = ConditionValueResultLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(ConditionValueResultTempAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(ConditionValueResultTempAddressTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
@@ -282,13 +277,8 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = LoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getOperand().getResult()
   }
 
   final override predicate producesExprResult() {
@@ -351,13 +341,8 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
 
   final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CrementLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getOperand().getResult()
     or
     tag = CrementOpTag() and
     (
@@ -784,13 +769,8 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     this.needsExtraLoad() and
     tag = LoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(AddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(AddressTag())
   }
 
   final override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1477,13 +1457,8 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = AssignOperationLoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getLeftOperand().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getLeftOperand().getResult()
     or
     this.leftOperandNeedsConversion() and
     tag = AssignOperationConvertLeftTag() and
@@ -1626,13 +1601,8 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr, ConditionCont
       )
       or
       tag = ConditionValueResultLoadTag() and
-      (
-        operandTag instanceof AddressOperandTag and
-        result = this.getInstruction(ConditionValueResultTempAddressTag())
-        or
-        operandTag instanceof LoadOperandTag and
-        result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-      )
+      operandTag instanceof AddressOperandTag and
+      result = this.getInstruction(ConditionValueResultTempAddressTag())
     )
   }
 
@@ -1902,13 +1872,8 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
     result = this.getInstruction(InitializerVariableAddressTag())
     or
     tag = LoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(InitializerVariableAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -2024,13 +1989,8 @@ abstract class TranslatedCreation extends TranslatedCoreExpr, TTranslatedCreatio
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     this.needsLoad() and
     tag = LoadTag() and
-    (
-      operandTag instanceof AddressOperandTag and
-      result = this.getInstruction(NewObjTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
-    )
+    operandTag instanceof AddressOperandTag and
+    result = this.getInstruction(NewObjTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

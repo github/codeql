@@ -474,7 +474,8 @@ module Gvn {
         sourceDecl = any(GenericType t).getSourceDeclaration() and
         not sourceDecl instanceof PointerType and
         not sourceDecl instanceof NullableType and
-        not sourceDecl instanceof ArrayType
+        not sourceDecl instanceof ArrayType and
+        not sourceDecl instanceof TupleType
       }
 
     cached
