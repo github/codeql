@@ -1,4 +1,4 @@
-- description: C/C++ queries are infeasible to compute on large projects
+- description: C/C++ queries which are infeasible to compute on large projects
 # These queries are infeasible to compute on large projects:
 - exclude:
     query path:
