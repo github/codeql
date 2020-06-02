@@ -2,17 +2,23 @@
 | tst.js:11:9:11:25 | v.match(/[^a-z]/) | ExampleConfiguration | false | tst.js:11:9:11:9 | v |
 | tst.js:23:9:23:27 | o.hasOwnProperty(v) | ExampleConfiguration | true | tst.js:23:26:23:26 | v |
 | tst.js:35:9:35:14 | v in o | ExampleConfiguration | true | tst.js:35:9:35:9 | v |
-| tst.js:47:9:47:25 | o[v] == undefined | ExampleConfiguration | false | tst.js:47:11:47:11 | v |
-| tst.js:47:9:47:25 | o[v] == undefined | ExampleConfiguration | true | tst.js:47:9:47:12 | o[v] |
+| tst.js:47:6:47:22 | o[v] == undefined | ExampleConfiguration | false | tst.js:47:8:47:8 | v |
+| tst.js:47:6:47:22 | o[v] == undefined | ExampleConfiguration | true | tst.js:47:6:47:9 | o[v] |
+| tst.js:47:6:47:22 | o[v] == undefined | ExampleConfiguration | true | tst.js:47:14:47:22 | undefined |
 | tst.js:53:9:53:26 | undefined === o[v] | ExampleConfiguration | false | tst.js:53:25:53:25 | v |
+| tst.js:53:9:53:26 | undefined === o[v] | ExampleConfiguration | true | tst.js:53:9:53:17 | undefined |
 | tst.js:53:9:53:26 | undefined === o[v] | ExampleConfiguration | true | tst.js:53:23:53:26 | o[v] |
 | tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | false | tst.js:59:9:59:12 | o[v] |
+| tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | false | tst.js:59:18:59:26 | undefined |
 | tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | true | tst.js:59:11:59:11 | v |
 | tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | false | tst.js:71:19:71:19 | v |
 | tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:9:71:20 | o.indexOf(v) |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:25:71:26 | -1 |
 | tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | false | tst.js:77:26:77:26 | v |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:9:77:10 | -1 |
 | tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:16:77:27 | o.indexOf(v) |
 | tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:9:83:20 | o.indexOf(v) |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:26:83:27 | -1 |
 | tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | true | tst.js:83:19:83:19 | v |
 | tst.js:95:9:95:21 | o.contains(v) | ExampleConfiguration | true | tst.js:95:20:95:20 | v |
 | tst.js:107:9:107:16 | o.has(v) | ExampleConfiguration | true | tst.js:107:15:107:15 | v |
@@ -65,4 +71,6 @@
 | tst.js:356:32:356:48 | x10 !== undefined | ExampleConfiguration | false | tst.js:356:32:356:34 | x10 |
 | tst.js:356:32:356:48 | x10 !== undefined | ExampleConfiguration | false | tst.js:356:40:356:48 | undefined |
 | tst.js:370:9:370:29 | o.p ==  ... listed" | ExampleConfiguration | true | tst.js:370:9:370:11 | o.p |
+| tst.js:370:9:370:29 | o.p ==  ... listed" | ExampleConfiguration | true | tst.js:370:16:370:29 | "white-listed" |
 | tst.js:377:11:377:32 | o[p] == ... listed" | ExampleConfiguration | true | tst.js:377:11:377:14 | o[p] |
+| tst.js:377:11:377:32 | o[p] == ... listed" | ExampleConfiguration | true | tst.js:377:19:377:32 | "white-listed" |
