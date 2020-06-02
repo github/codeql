@@ -713,7 +713,9 @@ module StringOps {
     private class TestCall extends Range, DataFlow::MethodCallNode {
       TestCall() { getMethodName() = "test" }
 
-      override DataFlow::Node getRegExpOperand(boolean coerced) { result = getReceiver() and coerced = false }
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = getReceiver() and coerced = false
+      }
 
       override DataFlow::Node getStringOperand() { result = getArgument(0) }
     }
@@ -721,7 +723,9 @@ module StringOps {
     private class MatchesCall extends Range, DataFlow::MethodCallNode {
       MatchesCall() { getMethodName() = "matches" }
 
-      override DataFlow::Node getRegExpOperand(boolean coerced) { result = getArgument(0) and coerced = true }
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = getArgument(0) and coerced = true
+      }
 
       override DataFlow::Node getStringOperand() { result = getReceiver() }
     }
@@ -756,12 +760,12 @@ module StringOps {
       boolean polarity;
 
       ExecTest() {
-        exists(Expr use | exec.flowsToExpr(use) |
-          impliesNotNull(astNode, use, polarity)
-        )
+        exists(Expr use | exec.flowsToExpr(use) | impliesNotNull(astNode, use, polarity))
       }
 
-      override DataFlow::Node getRegExpOperand(boolean coerced) { result = exec.getReceiver() and coerced = false }
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = exec.getReceiver() and coerced = false
+      }
 
       override DataFlow::Node getStringOperand() { result = exec.getArgument(0) }
 
