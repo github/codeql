@@ -734,7 +734,7 @@ module StringOps {
       ExecCall() { getMethodName() = "exec" }
     }
 
-    predicate isCoercedToBoolean(Expr e) {
+    private predicate isCoercedToBoolean(Expr e) {
       e = any(ConditionGuardNode guard).getTest()
       or
       e = any(LogNotExpr n).getOperand()
