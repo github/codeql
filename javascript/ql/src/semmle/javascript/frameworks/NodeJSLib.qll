@@ -1136,11 +1136,11 @@ module NodeJSLib {
   }
 
   /**
-   * Provides predicates for working with the "node-fetch" module and its platform-specific instances as a single module.
+   * Provides predicates for working with `fetch` and its platform-specific instances as a single module.
    */
   module Fetch {
     /**
-     *  Gets a node that imports the "node-fetch" module, or one of its platform-specific instances.
+     *  Gets a node that refers to `fetch`, or an import of one of its platform-specific instances.
      */
     DataFlow::SourceNode moduleImport() {
       result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
