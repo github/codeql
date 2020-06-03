@@ -224,3 +224,17 @@
         headers: headers
     });
 });
+
+(async function () {
+    import fetch from 'node-fetch';
+
+    const username = 'sdsdag';
+    const password = config.get('some_actually_secrect_password');
+    const response = await fetch(ENDPOINT, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
+      },
+    });
+})
