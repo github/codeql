@@ -282,7 +282,7 @@ module ClientRequest {
       result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
     }
 
-    /** An expression that is used as a credential in fetch-request. */
+    /** An expression that is used as a credential in a fetch-request. */
     private class FetchAuthorization extends CredentialsExpr {
       FetchAuthorization() {
         exists(DataFlow::Node headerObject |
