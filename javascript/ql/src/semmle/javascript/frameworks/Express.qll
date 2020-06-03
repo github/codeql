@@ -122,7 +122,9 @@ module Express {
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
         result = succ.backtrack(t2, t)
         or
-        exists(HTTP::RouteHandlerCandidateContainer container | result = container.getRouteHandler(succ)) and
+        exists(HTTP::RouteHandlerCandidateContainer container |
+          result = container.getRouteHandler(succ)
+        ) and
         t = t2
       )
     }
