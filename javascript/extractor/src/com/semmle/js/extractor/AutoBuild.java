@@ -20,6 +20,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
@@ -536,6 +538,27 @@ public class AutoBuild {
     Files.walkFileTree(externs, visitor);
   }
 
+  /**
+   * Compares files in the order they should be extracted.
+   * <p>
+   * The ordering of tsconfig.json files can affect extraction results. Since we
+   * extract any given source file at most once, and a source file can be included from
+   * multiple tsconfig.json files, we sometimes have to choose arbitrarily which tsconfig.json
+   * to use for a given file (which is based on this ordering).
+   * <p>
+   * We sort them to help ensure reproducible extraction. Additionally, deeply nested files are
+   * preferred over shallow ones to help ensure files are extracted with the most specific
+   * tsconfig.json file.
+   */
+  public static final Comparator<Path> PATH_ORDERING = new Comparator<Path>() {
+    public int compare(Path f1, Path f2) {
+      if (f1.getNameCount() != f2.getNameCount()) {
+        return f2.getNameCount() - f1.getNameCount();
+      }
+      return f1.compareTo(f2);
+    }
+  };
+
   /** Extract all supported candidate files that pass the filters. */
   private void extractSource() throws IOException {
     // default extractor
@@ -554,6 +577,14 @@ public class AutoBuild {
     Set<Path> filesToExtract = new LinkedHashSet<>();
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
+    
+    tsconfigFiles = tsconfigFiles.stream()
+         .sorted(PATH_ORDERING)
+         .collect(Collectors.toList());
+    
+    filesToExtract = filesToExtract.stream()
+        .sorted(PATH_ORDERING)
+        .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty() && this.installDependencies) {
@@ -902,7 +933,7 @@ public class AutoBuild {
         logEndProcess(start, "Done opening project " + projectFile);
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.
-        List<File> typeScriptFiles = new ArrayList<File>();
+        List<Path> typeScriptFiles = new ArrayList<Path>();
         for (File sourceFile : project.getSourceFiles()) {
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
@@ -912,9 +943,10 @@ public class AutoBuild {
             continue;
           }
           if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath.toFile());
+            typeScriptFiles.add(sourcePath);
           }
         }
+        typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
         tsParser.closeProject(projectFile);
       }
@@ -926,11 +958,11 @@ public class AutoBuild {
       }
 
       // Extract remaining TypeScript files.
-      List<File> remainingTypeScriptFiles = new ArrayList<File>();
+      List<Path> remainingTypeScriptFiles = new ArrayList<>();
       for (Path f : files) {
         if (!extractedFiles.contains(f)
             && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
-          remainingTypeScriptFiles.add(f.toFile());
+          remainingTypeScriptFiles.add(f);
         }
       }
       if (!remainingTypeScriptFiles.isEmpty()) {
@@ -1018,15 +1050,18 @@ public class AutoBuild {
   }
 
   public void extractTypeScriptFiles(
-      List<File> files,
+      List<Path> files,
       Set<Path> extractedFiles,
       FileExtractor extractor,
       ExtractorState extractorState) {
-    extractorState.getTypeScriptParser().prepareFiles(files);
-    for (File f : files) {
-      Path path = f.toPath();
+    List<File> list = files
+        .stream()
+        .sorted(PATH_ORDERING)
+        .map(p -> p.toFile()).collect(Collectors.toList());
+    extractorState.getTypeScriptParser().prepareFiles(list);
+    for (Path path : files) {
       extractedFiles.add(path);
-      extract(extractor, f.toPath(), extractorState);
+      extract(extractor, path, extractorState);
     }
   }
 
