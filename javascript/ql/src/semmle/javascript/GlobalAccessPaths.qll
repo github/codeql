@@ -421,7 +421,7 @@ module AccessPath {
   }
 
   /**
-   * A module for reasoning dominating reads and writes to access-paths. 
+   * A module for reasoning dominating reads and writes to access-paths.
    */
   module DominatingPaths {
     /**
@@ -463,15 +463,14 @@ module AccessPath {
       (path = fromRhs(result, root) or result = root.getAPropertyWrite(path)) and
       type = AccessPathWrite()
     }
-
+    
     /**
-     * Gets a basicblock that is domminated by a assignment to an access-path identified by `root` and `path`.
+     * Gets a basic-block where the access path defined by `root` and `path` is written to. 
+     * And a read to the same access path exists.
      */
-    private ReachableBasicBlock getADominatedBlock(Root root, string path) {
-      getAccessTo(root, path, AccessPathWrite())
-          .getBasicBlock()
-          .(ReachableBasicBlock)
-          .strictlyDominates(result)
+    private ReachableBasicBlock getAWriteBlock(Root root, string path) {
+      result = getAccessTo(root, path, AccessPathWrite()).getBasicBlock() and
+      exists(getAccessTo(root, path, AccessPathRead())) // helps performance
     }
 
     /**
@@ -490,7 +489,7 @@ module AccessPath {
       // across basic blocks.
       exists(Root root, string path |
         read = getAccessTo(root, path, AccessPathRead()) and
-        read.getBasicBlock() = getADominatedBlock(root, path)
+        getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
       )
     }
   }
