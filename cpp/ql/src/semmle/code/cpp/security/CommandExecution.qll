@@ -6,7 +6,7 @@ import semmle.code.cpp.security.FunctionWithWrappers
 /**
  * A function for running a command using a command interpreter.
  */
-class SystemFunction extends FunctionWithWrappers, ArrayFunction {
+class SystemFunction extends FunctionWithWrappers, ArrayFunction, AliasFunction {
   SystemFunction() {
     hasGlobalOrStdName("system") or // system(command)
     hasGlobalName("popen") or // popen(command, mode)
@@ -21,6 +21,12 @@ class SystemFunction extends FunctionWithWrappers, ArrayFunction {
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 or bufParam = 1 }
 
   override predicate hasArrayInput(int bufParam) { bufParam = 0 or bufParam = 1 }
+
+  override predicate parameterNeverEscapes(int index) { index = 0 or index = 1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate parameterIsAlwaysReturned(int index) { none() }
 }
 
 /**
