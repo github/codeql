@@ -19,6 +19,8 @@ public class DependencyInstallationResult {
       Path virtualSourceRoot,
       Map<String, Path> packageEntryPoints,
       Map<String, Path> packageJsonFiles) {
+    this.sourceRoot = sourceRoot;
+    this.virtualSourceRoot = virtualSourceRoot;
     this.packageEntryPoints = packageEntryPoints;
     this.packageJsonFiles = packageJsonFiles;
   }
