@@ -444,7 +444,7 @@ module AccessPath {
           ref = getAccessTo(root, path, _) and
           ref.getBasicBlock() = bb
         |
-          ref order by any(int i | ref.asExpr() = bb.getNode(i))
+          ref order by any(int i | ref.asExpr().getEnclosingStmt() = bb.getNode(i))
         ) and
       result = getAccessTo(root, path, type)
     }
