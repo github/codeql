@@ -261,28 +261,74 @@ module ClientRequest {
   }
 
   /**
-   * A model of a URL request made using an implementation of the `fetch` API.
+   * Provides predicates for working with `fetch` and its platform-specific instances as a single module.
    */
-  class FetchUrlRequest extends ClientRequest::Range {
-    DataFlow::Node url;
-
-    FetchUrlRequest() {
-      this = NodeJSLib::Fetch::moduleImport() and
-      url = getArgument(0)
+  module Fetch {
+    /**
+     *  Gets a node that refers to `fetch`, or an import of one of its platform-specific instances.
+     */
+    DataFlow::SourceNode moduleImport() {
+      result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+      or
+      result = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
     }
 
-    override DataFlow::Node getUrl() { result = url }
-
-    override DataFlow::Node getHost() { none() }
-
-    override DataFlow::Node getADataNode() {
-      exists(string name | name = "headers" or name = "body" | result = getOptionArgument(1, name))
+    /**
+     * Gets an instance of the `Headers` class.
+     */
+    private DataFlow::NewNode header() {
+      result = moduleImport().getAConstructorInvocation("Headers")
+      or
+      result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
     }
 
-    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-      responseType = "fetch.response" and
-      promise = true and
-      result = this
+    /** An expression that is used as a credential in fetch-request. */
+    private class FetchAuthorization extends CredentialsExpr {
+      FetchAuthorization() {
+        exists(DataFlow::Node headerObject |
+          headerObject = header().getArgument(0)
+          or
+          headerObject = moduleImport().getACall().getOptionArgument(1, "headers")
+        |
+          this = headerObject.getALocalSource().getAPropertyWrite("Authorization").getRhs().asExpr()
+        )
+        or
+        exists(DataFlow::MethodCallNode appendCall |
+          appendCall = header().getAMethodCall(["append", "set"]) and
+          appendCall.getArgument(0).mayHaveStringValue("Authorization") and
+          this = appendCall.getArgument(1).asExpr()
+        )
+      }
+
+      override string getCredentialsKind() { result = "authorization headers" }
+    }
+
+    /**
+     * A model of a URL request made using an implementation of the `fetch` API.
+     */
+    class FetchUrlRequest extends ClientRequest::Range {
+      DataFlow::Node url;
+
+      FetchUrlRequest() {
+        this = moduleImport().getACall() and
+        url = getArgument(0)
+      }
+
+      override DataFlow::Node getUrl() { result = url }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        exists(string name | name = "headers" or name = "body" |
+          result = getOptionArgument(1, name)
+        )
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        responseType = "fetch.response" and
+        promise = true and
+        result = this
+      }
     }
   }
 

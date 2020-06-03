@@ -1134,48 +1134,4 @@ module NodeJSLib {
       result = moduleImport().getAPropertyRead(member)
     }
   }
-
-  /**
-   * Provides predicates for working with `fetch` and its platform-specific instances as a single module.
-   */
-  module Fetch {
-    /**
-     *  Gets a node that refers to `fetch`, or an import of one of its platform-specific instances.
-     */
-    DataFlow::SourceNode moduleImport() {
-      result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
-      or
-      result = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
-    }
-
-    /**
-     * Gets an instance of the `Headers` class.
-     */
-    private DataFlow::NewNode header() {
-      result = moduleImport().getAConstructorInvocation("Headers")
-      or
-      result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
-    }
-
-    /** An expression that is used as a credential in fetch-request. */
-    private class FetchAuthorization extends CredentialsExpr {
-      FetchAuthorization() {
-        exists(DataFlow::Node headers |
-          headers = header().getArgument(0)
-          or
-          headers = moduleImport().getACall().getOptionArgument(1, "headers")
-        |
-          this = headers.getALocalSource().getAPropertyWrite("Authorization").getRhs().asExpr()
-        )
-        or
-        exists(DataFlow::MethodCallNode appendCall |
-          appendCall = header().getAMethodCall(["append", "set"]) and
-          appendCall.getArgument(0).mayHaveStringValue("Authorization") and
-          this = appendCall.getArgument(1).asExpr()
-        )
-      }
-
-      override string getCredentialsKind() { result = "authorization headers" }
-    }
-  }
 }
