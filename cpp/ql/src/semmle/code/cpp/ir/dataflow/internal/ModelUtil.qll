@@ -18,7 +18,7 @@ Instruction callInput(CallInstruction call, FunctionInput input) {
   or
   // A value pointed to by a positional argument
   exists(ReadSideEffectInstruction read |
-    result = read and
+    result = read.getSideEffectOperand().getAnyDef() and
     read.getPrimaryInstruction() = call and
     input.isParameterDeref(read.getIndex())
   )

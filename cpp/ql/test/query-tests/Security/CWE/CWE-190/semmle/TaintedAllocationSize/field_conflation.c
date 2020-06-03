@@ -8,7 +8,7 @@ struct XY {
   int y;
 };
 
-void taint_array(struct XY *xyp) {
+void taint_field(struct XY *xyp) {
   int tainted = atoi(getenv("VAR"));
   xyp->y = tainted;
 }
@@ -16,6 +16,23 @@ void taint_array(struct XY *xyp) {
 void test_conflated_fields3(void) {
   struct XY xy;
   xy.x = 4;
-  taint_array(&xy);
+  taint_field(&xy);
   malloc(xy.x); // not tainted
+}
+
+struct ContainsArray {
+  int arr[16];
+  int x;
+};
+
+void taint_array(struct ContainsArray *ca, int offset) {
+  int tainted = atoi(getenv("VAR"));
+  memcpy(ca->arr + offset, &tainted, sizeof(int));
+}
+
+void test_conflated_fields4(int arbitrary) {
+  struct ContainsArray ca;
+  ca.x = 4;
+  taint_array(&ca, arbitrary);
+  malloc(ca.x); // not tainted [FALSE POSITIVE]
 }

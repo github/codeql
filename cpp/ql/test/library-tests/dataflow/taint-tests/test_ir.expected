@@ -16,17 +16,25 @@
 | taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
 | taint.cpp:167:8:167:13 | call to source | taint.cpp:167:8:167:13 | call to source |
 | taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
+| taint.cpp:173:8:173:13 | array to pointer conversion | taint.cpp:164:19:164:24 | call to source |
+| taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |
+| taint.cpp:195:7:195:7 | x | taint.cpp:192:23:192:28 | source |
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:250:8:250:8 | a | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:256:8:256:8 | (reference dereference) | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:256:8:256:8 | a | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:280:7:280:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:289:7:289:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:290:7:290:7 | x | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:291:7:291:7 | y | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:337:7:337:7 | t | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:350:7:350:7 | t | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
+| taint.cpp:374:7:374:7 | c | taint.cpp:365:24:365:29 | source |
 | taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
+| taint.cpp:391:7:391:7 | a | taint.cpp:385:27:385:32 | source |
 | taint.cpp:429:7:429:7 | b | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
