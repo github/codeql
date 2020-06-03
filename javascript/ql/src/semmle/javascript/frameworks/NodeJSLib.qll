@@ -1157,7 +1157,7 @@ module NodeJSLib {
       result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
     }
 
-    /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
+    /** An expression that is used as a credential in fetch-request. */
     private class FetchAuthorization extends CredentialsExpr {
       FetchAuthorization() {
         exists(DataFlow::Node headers |
