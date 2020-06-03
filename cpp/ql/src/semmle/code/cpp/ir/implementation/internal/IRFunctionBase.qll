@@ -1,3 +1,6 @@
+/**
+ * Provides a base class, `IRFunctionBase`, for the stage-independent portions of `IRFunction`.
+ */
 private import IRFunctionBaseInternal
 
 private newtype TIRFunction =
