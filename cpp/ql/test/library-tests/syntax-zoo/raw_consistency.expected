@@ -42,7 +42,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] |
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
@@ -51,7 +50,6 @@ instructionWithoutSuccessor
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
-| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new |
 | enum.c:6:9:6:9 | Constant: (int)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |

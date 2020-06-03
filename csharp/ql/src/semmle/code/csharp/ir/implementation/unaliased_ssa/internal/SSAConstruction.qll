@@ -19,10 +19,8 @@ private module Cached {
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
-  private TRawInstruction rawInstruction(
-    IRFunctionBase irFunc, Opcode opcode, Language::AST ast, Language::LanguageType resultType
-  ) {
-    result = TRawInstruction(irFunc, opcode, ast, resultType, _, _) and
+  private TRawInstruction rawInstruction(IRFunctionBase irFunc, Opcode opcode, Language::AST ast) {
+    result = TRawInstruction(irFunc, opcode, ast, _, _) and
     result instanceof OldInstruction
   }
 
@@ -246,15 +244,15 @@ private module Cached {
 
   cached
   Language::AST getInstructionAST(TStageInstruction instr) {
-    instr = rawInstruction(_, _, result, _)
+    instr = rawInstruction(_, _, result)
     or
     exists(RawIR::Instruction blockStartInstr |
-      instr = phiInstruction(_, _, blockStartInstr, _) and
+      instr = phiInstruction(_, blockStartInstr, _) and
       result = blockStartInstr.getAST()
     )
     or
     exists(RawIR::Instruction primaryInstr |
-      instr = chiInstruction(_, _, primaryInstr) and
+      instr = chiInstruction(_, primaryInstr) and
       result = primaryInstr.getAST()
     )
     or
@@ -265,33 +263,40 @@ private module Cached {
 
   cached
   Language::LanguageType getInstructionResultType(TStageInstruction instr) {
-    instr = rawInstruction(_, _, _, result)
+    result = instr.(RawIR::Instruction).getResultLanguageType()
     or
-    instr = phiInstruction(_, result, _, _)
+    exists(Alias::MemoryLocation defLocation |
+      instr = phiInstruction(_, _, defLocation) and
+      result = defLocation.getType()
+    )
     or
-    instr = chiInstruction(_, result, _)
+    exists(Instruction primaryInstr, Alias::VirtualVariable vvar |
+      instr = chiInstruction(_, primaryInstr) and
+      hasChiNode(vvar, primaryInstr) and
+      result = vvar.getType()
+    )
     or
     instr = unreachedInstruction(_) and result = Language::getVoidType()
   }
 
   cached
   Opcode getInstructionOpcode(TStageInstruction instr) {
-    instr = rawInstruction(_, result, _, _)
+    instr = rawInstruction(_, result, _)
     or
-    instr = phiInstruction(_, _, _, _) and result instanceof Opcode::Phi
+    instr = phiInstruction(_, _, _) and result instanceof Opcode::Phi
     or
-    instr = chiInstruction(_, _, _) and result instanceof Opcode::Chi
+    instr = chiInstruction(_, _) and result instanceof Opcode::Chi
     or
     instr = unreachedInstruction(_) and result instanceof Opcode::Unreached
   }
 
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
-    instr = rawInstruction(result, _, _, _)
+    instr = rawInstruction(result, _, _)
     or
-    instr = phiInstruction(result, _, _, _)
+    instr = phiInstruction(result, _, _)
     or
-    instr = chiInstruction(result, _, _)
+    instr = chiInstruction(result, _)
     or
     instr = unreachedInstruction(result)
   }
@@ -313,11 +318,11 @@ private module Cached {
 private Instruction getNewInstruction(OldInstruction instr) { getOldInstruction(result) = instr }
 
 private ChiInstruction getChi(OldInstruction primaryInstr) {
-  result = chiInstruction(_, _, primaryInstr)
+  result = chiInstruction(_, primaryInstr)
 }
 
 private PhiInstruction getPhi(OldBlock defBlock, Alias::MemoryLocation defLocation) {
-  result = phiInstruction(_, _, defBlock.getFirstInstruction(), defLocation)
+  result = phiInstruction(_, defBlock.getFirstInstruction(), defLocation)
 }
 
 /**
@@ -883,26 +888,19 @@ module SSA {
 
   cached
   predicate hasPhiInstruction(
-    IRFunction irFunc, Language::LanguageType resultType, OldInstruction blockStartInstr,
-    Alias::MemoryLocation defLocation
+    IRFunction irFunc, OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
   ) {
     exists(OldBlock oldBlock |
       definitionHasPhiNode(defLocation, oldBlock) and
       irFunc = oldBlock.getEnclosingIRFunction() and
-      blockStartInstr = oldBlock.getFirstInstruction() and
-      resultType = defLocation.getType()
+      blockStartInstr = oldBlock.getFirstInstruction()
     )
   }
 
   cached
-  predicate hasChiInstruction(
-    IRFunctionBase irFunc, Language::LanguageType resultType, OldInstruction primaryInstruction
-  ) {
-    exists(Alias::VirtualVariable vvar |
-      hasChiNode(vvar, primaryInstruction) and
-      irFunc = primaryInstruction.getEnclosingIRFunction() and
-      resultType = vvar.getType()
-    )
+  predicate hasChiInstruction(IRFunctionBase irFunc, OldInstruction primaryInstruction) {
+    hasChiNode(_, primaryInstruction) and
+    irFunc = primaryInstruction.getEnclosingIRFunction()
   }
 
   cached
