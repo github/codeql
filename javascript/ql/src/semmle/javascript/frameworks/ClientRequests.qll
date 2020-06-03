@@ -274,7 +274,7 @@ module ClientRequest {
       )
     }
 
-    override string getCredentialsKind() { result = "authorization headers" }
+    override string getCredentialsKind() { result = "authorization header" }
   }
 
   /**
