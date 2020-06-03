@@ -837,7 +837,7 @@ public class AutoBuild {
       }
     }
 
-    return new DependencyInstallationResult(virtualSourceRoot, packageMainFile, packagesInRepo);
+    return new DependencyInstallationResult(sourceRoot, virtualSourceRoot, packageMainFile, packagesInRepo);
   }
 
   /**

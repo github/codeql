@@ -48,6 +48,7 @@ interface ParseCommand {
 interface OpenProjectCommand {
     command: "open-project";
     tsConfig: string;
+    sourceRoot: string | null;
     virtualSourceRoot: string | null;
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
@@ -370,7 +371,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
 
     let packageEntryPoints = new Map(command.packageEntryPoints);
     let packageJsonFiles = new Map(command.packageJsonFiles);
-    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), command.virtualSourceRoot);
+    let virtualSourceRoot = new VirtualSourceRoot(command.sourceRoot, command.virtualSourceRoot);
 
     /**
      * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
@@ -720,6 +721,7 @@ if (process.argv.length > 2) {
             tsConfig: argument,
             packageEntryPoints: [],
             packageJsonFiles: [],
+            sourceRoot: null,
             virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {

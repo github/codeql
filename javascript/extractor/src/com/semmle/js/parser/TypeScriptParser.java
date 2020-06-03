@@ -502,6 +502,9 @@ public class TypeScriptParser {
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
     request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
     request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
+    request.add("sourceRoot", deps.getSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(deps.getSourceRoot().toString()));
     request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
         ? JsonNull.INSTANCE
         : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
