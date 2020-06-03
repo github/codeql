@@ -7,7 +7,6 @@
   - [bluebird](http://bluebirdjs.com/)
   - [express](https://www.npmjs.com/package/express)
   - [fastify](https://www.npmjs.com/package/fastify)
-  - [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
