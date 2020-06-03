@@ -7,6 +7,7 @@
   - [bluebird](http://bluebirdjs.com/)
   - [express](https://www.npmjs.com/package/express)
   - [fastify](https://www.npmjs.com/package/fastify)
+  - [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
@@ -43,6 +44,7 @@
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Fewer results | This query now recognizes additional safe patterns of doing URL redirects. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving NoSQL code operators are now recognized. |
 | Expression has no effect (`js/useless-expression`) | Fewer results | This query no longer flags an expression when that expression is the only content of the containing file. |
+| Hard-coded credentials (`js/hardcoded-credentials`) | More results | This query now recognizes base64 encoded credentials and simple string concatenations. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional url scheme checks. |
 | Misspelled variable name (`js/misspelled-variable-name`) | Message changed | The message for this query now correctly identifies the misspelled variable in additional cases. |
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes additional utility functions as vulnerable to prototype polution. |
