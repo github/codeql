@@ -163,7 +163,7 @@ public class A2
 
     public virtual void M(object o)
     {
-        Sink(o); // no flow here [FALSE POSITIVE]
+        Sink(o); // no flow here
     }
 
     public void Callsite(InterfaceB intF)
