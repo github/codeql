@@ -161,9 +161,9 @@ public class A2
     {
     }
 
-    public void M()
+    public virtual void M(object o)
     {
-
+        Sink(o); // no flow here [FALSE POSITIVE]
     }
 
     public void Callsite(InterfaceB intF)
@@ -175,25 +175,25 @@ public class A2
         intF.Foo(b, new object(), false);
     }
 
-    private class B : A2
+    public class B : A2
     {
-        public void M()
+        public override void M(object o)
         {
 
         }
     }
 
-    private class IntA : InterfaceB
+    public class IntA : InterfaceB
     {
 
         public void Foo(A2 obj, object o, bool cond)
         {
-            obj.M();
+            obj.M(o);
             Sink(o);
         }
     }
 
-    private class IntB : InterfaceB
+    public class IntB : InterfaceB
     {
 
         public void Foo(A2 obj, object o, bool cond)
