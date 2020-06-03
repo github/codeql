@@ -263,13 +263,13 @@ module ClientRequest {
   /** An expression that is used as a credential in a request. */
   private class AuthorizationHeader extends CredentialsExpr {
     AuthorizationHeader() {
-      exists(DataFlow::PropWrite write | write.getPropertyName() = "Authorization" |
+      exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
         this = write.getRhs().asExpr()
       )
       or
       exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
         call.getNumArgument() = 2 and
-        call.getArgument(0).mayHaveStringValue("Authorization") and
+        call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
         this = call.getArgument(1).asExpr()
       )
     }
