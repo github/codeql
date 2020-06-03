@@ -690,6 +690,19 @@ public class AutoBuild {
   }
 
   /**
+   * Gets a relative path from <code>from</code> to <code>to</code> provided
+   * the latter is contained in the former. Otherwise returns <code>null</code>.
+   * @return a path or null
+   */
+  public static Path tryRelativize(Path from, Path to) {
+    Path relative = from.relativize(to);      
+    if (relative.startsWith("..") || relative.isAbsolute()) {
+      return null;
+    }
+    return relative;
+  }
+
+  /**
    * Installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
@@ -727,6 +740,9 @@ public class AutoBuild {
           if (!(json instanceof JsonObject)) continue;
           JsonObject jsonObject = (JsonObject) json;
           file = file.toAbsolutePath();
+          if (tryRelativize(sourceRoot, file) == null) {
+            continue; // Ignore package.json files outside the source root.
+          }
           packageJsonFiles.put(file, jsonObject);
 
           String name = getChildAsString(jsonObject, "name");
