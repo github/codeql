@@ -197,24 +197,6 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  * ```
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
-  /**
-   * DEPRECATED: Use `getATypeConstraint()` instead.
-   * Gets a specific interface constraint, if any.
-   */
-  deprecated Interface getAnInterfaceConstraint() { result = getATypeConstraint() }
-
-  /**
-   * DEPRECATED: Use `getATypeConstraint()` instead.
-   * Gets a specific type parameter constraint, if any.
-   */
-  deprecated TypeParameter getATypeParameterConstraint() { result = getATypeConstraint() }
-
-  /**
-   * DEPRECATED: Use `getATypeConstraint()` instead.
-   * Gets the specific class constraint, if any.
-   */
-  deprecated Class getClassConstraint() { result = getATypeConstraint() }
-
   /** Gets a specific type constraint, if any. */
   Type getATypeConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
 

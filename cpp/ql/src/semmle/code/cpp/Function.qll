@@ -1,3 +1,8 @@
+/**
+ * Provides classes for working with functions, including C++ constructors, destructors,
+ * user-defined operators, and template functions.
+ */
+
 import semmle.code.cpp.Location
 import semmle.code.cpp.Member
 import semmle.code.cpp.Class
@@ -891,8 +896,10 @@ class Constructor extends MemberFunction {
  * A function that defines an implicit conversion.
  */
 abstract class ImplicitConversionFunction extends MemberFunction {
+  /** Gets the type this `ImplicitConversionFunction` takes as input. */
   abstract Type getSourceType();
 
+  /** Gets the type this `ImplicitConversionFunction` converts to. */
   abstract Type getDestType();
 }
 

@@ -61,18 +61,14 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
     sw.getSubstring().mayHaveStringValue(scheme)
   )
   or
-  // check of the form `array.includes(getScheme(nd))`
-  exists(InclusionTest test, DataFlow::ArrayCreationNode array | test = result |
-    schemeOf(nd).flowsTo(test.getContainedNode()) and
-    array.flowsTo(test.getContainerNode()) and
-    array.getAnElement().mayHaveStringValue(scheme.getWithOrWithoutColon())
-  )
-  or
-  // check of the form `getScheme(nd) === scheme`
-  exists(EqualityTest test, Expr op1, Expr op2 | test.flow() = result |
-    test.hasOperands(op1, op2) and
-    schemeOf(nd).flowsToExpr(op1) and
-    op2.mayHaveStringValue(scheme.getWithOrWithoutColon())
+  exists(MembershipCandidate candidate |
+    result = candidate.getTest()
+    or
+    // fall back to the candidate if the test itself is implicit
+    not exists(candidate.getTest()) and result = candidate
+  |
+    candidate.getAMemberString() = scheme.getWithOrWithoutColon() and
+    schemeOf(nd).flowsTo(candidate)
   )
   or
   // propagate through trimming, case conversion, and regexp replace

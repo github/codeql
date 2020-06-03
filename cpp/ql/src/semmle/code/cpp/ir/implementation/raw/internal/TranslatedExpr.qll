@@ -1698,7 +1698,8 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
     else
       if index = 1 and expr.hasAlignedAllocation()
       then result = getTranslatedExpr(expr.getAlignmentArgument())
-      else result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index))
+      else
+        result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 }
 

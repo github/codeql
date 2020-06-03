@@ -14,7 +14,8 @@ than one type.
 
 The kinds of types in QL are :ref:`primitive types <primitive-types>`, :ref:`classes <classes>`,
 :ref:`character types <character-types>`, :ref:`class domain types <domain-types>`, 
-:ref:`algebraic datatypes <algebraic-datatypes>`, and :ref:`database types <database-types>`.
+:ref:`algebraic datatypes <algebraic-datatypes>`, :ref:`type unions <type-unions>`,
+and :ref:`database types <database-types>`.
 
 .. index:: boolean, float, int, string, date
 .. _primitive-types:
@@ -479,6 +480,50 @@ program, so it's helpful to extend a new type (namely ``TTaintType``)::
     class Tainted extends TaintType, TTaintedValue {
     }
     
+.. _type-unions:
+
+Type unions
+***********
+
+Type unions are user-defined types that are declared with the keyword ``class``.
+The syntax resembles :ref:`type aliases <type-aliases>`, but with two or more type expressions on the right-hand side.
+
+Type unions are used for creating restricted subsets of an existing :ref:`algebraic datatype <algebraic-datatypes>`, by explicitly
+selecting a subset of the branches of that datatype and binding them to a new type.
+Type unions of :ref:`database types <database-types>` are also supported.
+
+You can use a type union to give a name to a subset of the branches from an algebraic datatype.
+In some cases, using the type union over the whole algebraic datatype can avoid spurious
+:ref:`recursion <recursion>` in predicates.
+For example, the following construction is legal::
+
+    newtype InitialValueSource =
+      ExplicitInitialization(VarDecl v) { exists(v.getInitializer()) } or
+      ParameterPassing(Call c, int pos) { exists(c.getParameter(pos)) } or
+      UnknownInitialGarbage(VarDecl v) { not exists(DefiniteInitialization di | v = target(di)) }
+
+    class DefiniteInitialization = ParameterPassing or ExplicitInitialization;
+
+    VarDecl target(DefiniteInitialization di) {
+      di = ExplicitInitialization(result) or
+      exists(Call c, int pos | di = ParameterPassing(c, pos) and
+                                result = c.getCallee().getFormalArg(pos))
+    }
+
+However, a similar implementation that restricts ``InitialValueSource`` in a class extension is not valid.
+If we had implemented ``DefiniteInitialization`` as a class extension instead, it would trigger a type test for ``InitialValueSource``. This results in an illegal recursion ``DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization`` since ``UnknownInitialGarbage`` relies on ``DefiniteInitialization``::
+
+    // THIS WON'T WORK: The implicit type check for InitialValueSource involves an illegal recursion 
+    // DefiniteInitialization -> InitialValueSource -> UnknownInitialGarbage -> ¬DefiniteInitialization!
+    class DefiniteInitialization extends InitialValueSource {
+      DefiniteInitialization() {
+        this instanceof ParameterPassing or this instanceof ExplicitInitialization
+      }
+      // ...
+    }
+
+Type unions are supported from release 2.2.0 of the CodeQL CLI.
+
 .. _database-types:
 
 Database types
