@@ -435,13 +435,13 @@ private Instruction skipConversion(Instruction instr) {
  * before entering `setter`.
  */
 private class StoreChainEndInstructionSideEffect extends StoreChainEndInstruction, ChiInstruction {
-  SideEffectInstruction sideEffect;
+  WriteSideEffectInstruction sideEffect;
   FieldAddressInstruction fi;
 
   StoreChainEndInstructionSideEffect() {
     not this.isResultConflated() and
     this.getPartial() = sideEffect and
-    fi = skipConversion*(sideEffect.getAnOperand().getDef())
+    fi = skipConversion*(sideEffect.getArgumentDef())
   }
 
   override FieldAddressInstruction getFieldInstruction() { result = fi }
