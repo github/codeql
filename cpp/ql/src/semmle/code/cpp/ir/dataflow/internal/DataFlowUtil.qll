@@ -396,9 +396,7 @@ class DefinitionByReferenceNode extends InstructionNode {
 private class ArgumentIndirectionNode extends InstructionNode {
   override ReadSideEffectInstruction instr;
 
-  override string toString() {
-    result = "Argument " + instr.getIndex() + " indirection"
-  }
+  override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
 }
 
 /**
