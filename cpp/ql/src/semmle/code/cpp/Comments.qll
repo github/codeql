@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C and C++ comments.
+ */
+
 import semmle.code.cpp.Location
 import semmle.code.cpp.Element
 
