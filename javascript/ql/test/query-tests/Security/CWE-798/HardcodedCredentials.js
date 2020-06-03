@@ -207,3 +207,20 @@
         headers: headers2
     });
 });
+
+(function () {
+    const base64 = require('base-64');
+
+    const USER = 'sdsdag';
+    const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
+
+    // browser API
+    var headers = new Headers();
+    headers.append("Content-Type", 'application/json');
+    headers.append("Authorization", `Basic ${AUTH}`);
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+});

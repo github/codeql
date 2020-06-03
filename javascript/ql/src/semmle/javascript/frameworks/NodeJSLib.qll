@@ -1145,14 +1145,23 @@ module NodeJSLib {
     DataFlow::SourceNode moduleImport() {
       result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
       or
-      result = DataFlow::globalVarRef("fetch")
+      result = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+    }
+
+    /**
+     * Gets an instance of the `Headers` class.
+     */
+    private DataFlow::NewNode header() {
+      result = moduleImport().getAConstructorInvocation("Headers")
+      or
+      result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
     }
 
     /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
-    class FetchAuthorization extends CredentialsExpr {
+    private class FetchAuthorization extends CredentialsExpr {
       FetchAuthorization() {
         exists(DataFlow::Node headers |
-          headers = moduleImport().getAConstructorInvocation("Headers").getArgument(0)
+          headers = header().getArgument(0)
           or
           headers = moduleImport().getACall().getOptionArgument(1, "headers")
         |
@@ -1160,7 +1169,7 @@ module NodeJSLib {
         )
         or
         exists(DataFlow::MethodCallNode appendCall |
-          appendCall = moduleImport().getAConstructorInvocation("Headers").getAMethodCall(["append", "set"]) and
+          appendCall = header().getAMethodCall(["append", "set"]) and
           appendCall.getArgument(0).mayHaveStringValue("Authorization") and
           this = appendCall.getArgument(1).asExpr()
         )
