@@ -278,44 +278,34 @@ module ClientRequest {
   }
 
   /**
-   * Provides predicates for working with `fetch` and its platform-specific instances as a single module.
+   * A model of a URL request made using an implementation of the `fetch` API.
    */
-  module Fetch {
-    /**
-     *  Gets a node that refers to `fetch`, or an import of one of its platform-specific instances.
-     */
-    DataFlow::SourceNode moduleImport() {
-      result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
-      or
-      result = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+  class FetchUrlRequest extends ClientRequest::Range {
+    DataFlow::Node url;
+
+    FetchUrlRequest() {
+      exists(DataFlow::SourceNode fetch |
+        fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+        or
+        fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+      |
+        this = fetch.getACall() and
+        url = getArgument(0)
+      )
     }
 
-    /**
-     * A model of a URL request made using an implementation of the `fetch` API.
-     */
-    class FetchUrlRequest extends ClientRequest::Range {
-      DataFlow::Node url;
+    override DataFlow::Node getUrl() { result = url }
 
-      FetchUrlRequest() {
-        this = moduleImport().getACall() and
-        url = getArgument(0)
-      }
+    override DataFlow::Node getHost() { none() }
 
-      override DataFlow::Node getUrl() { result = url }
+    override DataFlow::Node getADataNode() {
+      exists(string name | name = "headers" or name = "body" | result = getOptionArgument(1, name))
+    }
 
-      override DataFlow::Node getHost() { none() }
-
-      override DataFlow::Node getADataNode() {
-        exists(string name | name = "headers" or name = "body" |
-          result = getOptionArgument(1, name)
-        )
-      }
-
-      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-        responseType = "fetch.response" and
-        promise = true and
-        result = this
-      }
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "fetch.response" and
+      promise = true and
+      result = this
     }
   }
 
