@@ -175,8 +175,35 @@
     const rsp = await fetch(ENDPOINT, {
         method: 'get',
         headers: new fetch.Headers({
-            Authorization: `Basic ${AUTH}`,
-            'Content-Type': 'application/json'
+            "Authorization": `Basic ${AUTH}`,
+            "Content-Type": 'application/json'
         })
+    });
+
+    fetch(ENDPOINT, {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Basic ${AUTH}`
+        },
+    })
+
+    var headers = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers.append("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+
+    var headers2 = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers2.set("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers2
     });
 });

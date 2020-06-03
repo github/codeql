@@ -1151,14 +1151,19 @@ module NodeJSLib {
     /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
     class FetchAuthorization extends CredentialsExpr {
       FetchAuthorization() {
-        this =
-          moduleImport()
-              .getAConstructorInvocation("Headers")
-              .getArgument(0)
-              .getALocalSource()
-              .getAPropertyWrite("Authorization")
-              .getRhs()
-              .asExpr()
+        exists(DataFlow::Node headers |
+          headers = moduleImport().getAConstructorInvocation("Headers").getArgument(0)
+          or
+          headers = moduleImport().getACall().getOptionArgument(1, "headers")
+        |
+          this = headers.getALocalSource().getAPropertyWrite("Authorization").getRhs().asExpr()
+        )
+        or
+        exists(DataFlow::MethodCallNode appendCall |
+          appendCall = moduleImport().getAConstructorInvocation("Headers").getAMethodCall(["append", "set"]) and
+          appendCall.getArgument(0).mayHaveStringValue("Authorization") and
+          this = appendCall.getArgument(1).asExpr()
+        )
       }
 
       override string getCredentialsKind() { result = "authorization headers" }
