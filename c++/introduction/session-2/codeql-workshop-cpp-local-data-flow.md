@@ -253,7 +253,7 @@ predicate isSourceNode(DataFlow::Node sourceNode) {
 ```
 </details>
 
-**Exercise 5**: For this query it will be more convenient if we define a CodeQL class for "source nodes". Define a bew subclass of `DataFlow::Node` called `SourceNode`, and convert your predicate into the characteristic predicate.
+**Exercise 5**: For this query it will be more convenient if we define a CodeQL class for "source nodes". Define a new subclass of `DataFlow::Node` called `SourceNode`, and convert your predicate into the characteristic predicate.
 
 <details>
 <summary>Hint</summary>
