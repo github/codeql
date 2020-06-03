@@ -2,11 +2,12 @@
 
 import cpp
 import semmle.code.cpp.security.FunctionWithWrappers
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * A function for running a command using a command interpreter.
  */
-class SystemFunction extends FunctionWithWrappers, ArrayFunction, AliasFunction {
+class SystemFunction extends FunctionWithWrappers, ArrayFunction, AliasFunction, SideEffectFunction {
   SystemFunction() {
     hasGlobalOrStdName("system") or // system(command)
     hasGlobalName("popen") or // popen(command, mode)
@@ -27,6 +28,18 @@ class SystemFunction extends FunctionWithWrappers, ArrayFunction, AliasFunction 
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 
   override predicate parameterIsAlwaysReturned(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() {
+    hasGlobalOrStdName("system") or
+    hasGlobalName("_wsystem")
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    (i = 0 or i = 1) and
+    buffer = true
+  }
 }
 
 /**
