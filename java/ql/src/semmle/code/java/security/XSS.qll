@@ -2,6 +2,7 @@ import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.frameworks.spring.SpringController
 
 /*
  * Definitions for XSS sinks
@@ -29,6 +30,11 @@ class XssSink extends DataFlow::ExprNode {
         or
         m.getAReference().getArgument(1) = this.getExpr() and m.getName() = "loadDataWithBaseURL"
       )
+    )
+    or
+    exists(ReturnStmt rs |
+      rs.getEnclosingCallable() instanceof SpringRequestMappingMethod and
+      this.getExpr() = rs.getResult()
     )
   }
 }
