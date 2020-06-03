@@ -3,4 +3,5 @@ import semmle.code.csharp.ir.implementation.raw.internal.reachability.ReachableB
 import semmle.code.csharp.ir.implementation.raw.internal.reachability.Dominance as Dominance
 import semmle.code.csharp.ir.implementation.unaliased_ssa.IR as NewIR
 import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+import semmle.code.csharp.ir.implementation.internal.TInstruction::UnaliasedSSAInstructions as SSAInstructions
 import SimpleSSA as Alias
