@@ -260,6 +260,23 @@ module ClientRequest {
     }
   }
 
+  /** An expression that is used as a credential in a request. */
+  private class AuthorizationHeader extends CredentialsExpr {
+    AuthorizationHeader() {
+      exists(DataFlow::PropWrite write | write.getPropertyName() = "Authorization" |
+        this = write.getRhs().asExpr()
+      )
+      or
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
+        call.getNumArgument() = 2 and
+        call.getArgument(0).mayHaveStringValue("Authorization") and
+        this = call.getArgument(1).asExpr()
+      )
+    }
+
+    override string getCredentialsKind() { result = "authorization headers" }
+  }
+
   /**
    * Provides predicates for working with `fetch` and its platform-specific instances as a single module.
    */
@@ -271,36 +288,6 @@ module ClientRequest {
       result = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
       or
       result = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
-    }
-
-    /**
-     * Gets an instance of the `Headers` class.
-     */
-    private DataFlow::NewNode header() {
-      result = moduleImport().getAConstructorInvocation("Headers")
-      or
-      result = DataFlow::globalVarRef("Headers").getAnInstantiation() // https://fetch.spec.whatwg.org/#headers-class
-    }
-
-    /** An expression that is used as a credential in a fetch-request. */
-    private class FetchAuthorization extends CredentialsExpr {
-      FetchAuthorization() {
-        exists(DataFlow::Node headerObject |
-          headerObject = header().getArgument(0)
-          or
-          headerObject = moduleImport().getACall().getOptionArgument(1, "headers")
-        |
-          this = headerObject.getALocalSource().getAPropertyWrite("Authorization").getRhs().asExpr()
-        )
-        or
-        exists(DataFlow::MethodCallNode appendCall |
-          appendCall = header().getAMethodCall(["append", "set"]) and
-          appendCall.getArgument(0).mayHaveStringValue("Authorization") and
-          this = appendCall.getArgument(1).asExpr()
-        )
-      }
-
-      override string getCredentialsKind() { result = "authorization headers" }
     }
 
     /**
