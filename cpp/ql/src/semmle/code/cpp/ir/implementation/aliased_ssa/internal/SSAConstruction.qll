@@ -38,11 +38,6 @@ private module Cached {
   cached
   OldInstruction getOldInstruction(Instruction instr) { instr = result }
 
-  private IRVariable getNewIRVariable(OldIR::IRVariable var) {
-    // This is just a type cast. Both classes derive from the same newtype.
-    result = var
-  }
-
   cached
   predicate hasModeledMemoryResult(Instruction instruction) {
     exists(Alias::getResultMemoryLocation(getOldInstruction(instruction))) or
