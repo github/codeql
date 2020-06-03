@@ -712,9 +712,8 @@ public class AutoBuild {
     if (!verifyYarnInstallation()) {
       return DependencyInstallationResult.empty;
     }
-
-    final Path sourceRoot = Paths.get(".").toAbsolutePath();
-    final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
+    final Path sourceRoot = LGTM_SRC;
+    final Path virtualSourceRoot = toRealPath(Paths.get(EnvironmentVariables.getScratchDir()));
 
     // Read all package.json files and index them by name.
     Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
