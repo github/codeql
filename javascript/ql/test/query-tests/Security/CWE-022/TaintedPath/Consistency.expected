@@ -1,2 +1,0 @@
-| query-tests/Security/CWE-022/TaintedPath/tainted-array-steps.js:10 | expected an alert, but found none | BAD: taint is preserved |
-| query-tests/Security/CWE-022/TaintedPath/tainted-array-steps.js:14 | expected an alert, but found none | BAD: taint is preserved |
