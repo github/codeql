@@ -463,9 +463,9 @@ module AccessPath {
       (path = fromRhs(result, root) or result = root.getAPropertyWrite(path)) and
       type = AccessPathWrite()
     }
-    
+
     /**
-     * Gets a basic-block where the access path defined by `root` and `path` is written to. 
+     * Gets a basic-block where the access path defined by `root` and `path` is written to.
      * And a read to the same access path exists.
      */
     private ReachableBasicBlock getAWriteBlock(Root root, string path) {
