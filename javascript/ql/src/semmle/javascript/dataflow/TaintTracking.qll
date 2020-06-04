@@ -827,7 +827,7 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** A check of the form `type x === "undefined`, which sanitized `x` in its "then" branch. */
+  /** A check of the form `type x === "undefined"`, which sanitized `x` in its "then" branch. */
   class TypeOfCheck extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
