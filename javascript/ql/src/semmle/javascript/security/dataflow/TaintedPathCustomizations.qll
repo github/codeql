@@ -373,9 +373,14 @@ module TaintedPath {
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
    */
-  class MembershipTestBarrierGuard extends BarrierGuardNode, DataFlow::MembershipTestBarrierGuard {
+  class MembershipTestBarrierGuard extends BarrierGuardNode {
+    MembershipCandidate candidate;
+
+    MembershipTestBarrierGuard() { this = candidate.getTest() }
+
     override predicate blocks(boolean outcome, Expr e) {
-      DataFlow::MembershipTestBarrierGuard.super.blocks(outcome, e)
+      candidate = e.flow() and
+      candidate.getTestPolarity() = outcome
     }
   }
 
