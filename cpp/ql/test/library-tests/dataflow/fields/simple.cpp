@@ -113,8 +113,8 @@ void read_from_y(DeepStruct2 d2) {
 
 void read_from_y_deref(DeepStruct2* d2) {
     sink(d2->d1_1.y);
-    // Hopefully we will catch this flow when we merge #3123
-    sink(d2->d1_2.y); //$ast $f-:ir
+
+    sink(d2->d1_2.y); //$ast,ir
 }
 
 void test_deep_structs() {
