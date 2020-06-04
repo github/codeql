@@ -24,6 +24,11 @@ var server = http.createServer(function(req, res) {
     obj.sub3 = "safe"
   }
   fs.readFileSync(obj.sub3); // NOT OK
+
+  obj.sub4 = 
+    fs.readFileSync(obj.sub4) ? // NOT OK
+      fs.readFileSync(obj.sub4) : // NOT OK
+      fs.readFileSync(obj.sub4); // NOT OK
 });
 
 server.listen();

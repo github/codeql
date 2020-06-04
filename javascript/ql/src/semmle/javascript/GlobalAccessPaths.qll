@@ -444,7 +444,7 @@ module AccessPath {
           ref = getAccessTo(root, path, _) and
           ref.getBasicBlock() = bb
         |
-          ref order by any(int i | ref.asExpr() = bb.getNode(i))
+          ref order by any(int i | ref.asExpr().getEnclosingStmt() = bb.getNode(i))
         ) and
       result = getAccessTo(root, path, type)
     }
@@ -489,7 +489,7 @@ module AccessPath {
       // across basic blocks.
       exists(Root root, string path |
         read = getAccessTo(root, path, AccessPathRead()) and
-        getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
+        getAWriteBlock(root, path).strictlyDominates(read.asExpr().getEnclosingStmt().getBasicBlock())
       )
     }
   }
