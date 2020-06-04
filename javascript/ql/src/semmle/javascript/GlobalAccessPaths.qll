@@ -463,9 +463,9 @@ module AccessPath {
       type = AccessPathWrite() and
       result = getAWriteNode(root, path)
     }
-    
+
     /**
-     * Gets a `ControlFlowNode` for a read to `path` from `root`. 
+     * Gets a `ControlFlowNode` for a read to `path` from `root`.
      */
     private ControlFlowNode getAReadNode(Root root, string path) {
       exists(DataFlow::PropRead read | read.asExpr() = result |
@@ -475,7 +475,7 @@ module AccessPath {
     }
 
     /**
-     * Gets a `ControlFlowNode` for a write to `path` from `root`. 
+     * Gets a `ControlFlowNode` for a write to `path` from `root`.
      */
     private ControlFlowNode getAWriteNode(Root root, string path) {
       result = root.getAPropertyWrite(path).getWriteNode()
