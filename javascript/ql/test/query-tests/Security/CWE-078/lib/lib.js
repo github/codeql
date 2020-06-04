@@ -310,3 +310,13 @@ module.exports.sanitizer2 = function (name) {
   var sanitized = sanitizeShellString(name);
   cp.exec("rm -rf " + sanitized); // OK
 }
+
+module.exports.typeofcheck = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+	
+	if (typeof name === "undefined") {
+		cp.exec("rm -rf " + name); // OK
+	} else {
+		cp.exec("rm -rf " + name); // NOT OK
+	}
+}

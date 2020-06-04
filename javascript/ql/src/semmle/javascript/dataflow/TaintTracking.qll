@@ -827,6 +827,28 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
+  /** A check of the form `type x === "undefined`, which sanitized `x` in its "then" branch. */
+  class TypeOfCheck extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    Expr x;
+    override EqualityTest astNode;
+
+    TypeOfCheck() {
+      exists(StringLiteral str, TypeofExpr typeof |
+        astNode.hasOperands(str, typeof)
+      |
+        str.getValue() = "undefined" and
+        typeof.getOperand() = x
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = astNode.getPolarity() and
+      e = x
+    }
+
+    override predicate appliesTo(Configuration cfg) { any() }
+  }
+
   /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
   deprecated class StringInclusionSanitizer = MembershipTestSanitizer;
 
