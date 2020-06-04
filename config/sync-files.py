@@ -61,7 +61,7 @@ def file_checksum(filename):
 def check_group(group_name, files, master_file_picker, emit_error):
     extant_files = [f for f in files if path.isfile(f)]
     if len(extant_files) == 0:
-        emit_error(__file__, 0, f"No files found from group '{group_name}'.")
+        emit_error(__file__, 0, "No files found from group '" + group_name + "'.")
         emit_error(__file__, 0,
                 "Create one of the following files, and then run this script with "
                 "the --latest switch to sync it to the other file locations.")
