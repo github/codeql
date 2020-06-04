@@ -58,4 +58,7 @@ function dominatingWrite() {
   }
 
   obj.prop4 = obj.prop4; // no
+
+  var foo = (obj.prop5 = 2, obj.prop5); // yes
+  var bar = (obj.prop6, obj.prop6 = 3); // no
 }

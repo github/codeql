@@ -75,7 +75,7 @@ test_getAnAssignmentTo
 | test.js:30:1:30:28 | functio ... on() {} | globalFunction |
 | test.js:32:1:35:1 | functio ... .baz'\\n} | destruct |
 | test.js:37:1:41:1 | functio ... Init;\\n} | lazy |
-| test.js:43:1:61:1 | functio ... // no\\n} | dominatingWrite |
+| test.js:43:1:64:1 | functio ... // no\\n} | dominatingWrite |
 test_assignedUnique
 | GlobalClass |
 | destruct |
@@ -86,3 +86,4 @@ test_assignedUnique
 hasDominatingWrite
 | test.js:48:3:48:11 | obj.prop1 |
 | test.js:57:5:57:13 | obj.prop3 |
+| test.js:62:29:62:37 | obj.prop5 |
