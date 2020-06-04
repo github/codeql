@@ -79,11 +79,8 @@ If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
 directory, the latter takes precedence (and the former is assumed to
 exist for compatibility with older tooling).
 
-The query directory itself becomes the first element of the library
-path.
-
 In legacy QL tools that don't recognize ``qlpack.yml`` files, the default
-value of the rest of the library path for
+value of the library path for
 each supported language is hard-coded. The tools contain directories within the ODASA
 distribution that define the default CodeQL libraries for the selected
 language. Which language to use depends on the ``language`` attribute
@@ -92,7 +89,7 @@ option to the ODASA CLI.
 
 On the other hand, the CodeQL CLI and newer tools based on it (such as
 GitHub Code Scanning and the CodeQL extension for Visual Studio Code)
-construct a default library path using QL packs. For each QL pack
+construct a library path using QL packs. For each QL pack
 added to the library path, the QL packs named in its
 ``libraryPathDependencies`` will be subsequently added to the library
 path, and the process continues until all packs have been
@@ -236,7 +233,8 @@ For selection identifiers (``a::b``):
 For qualified identifiers (``a.b``):
 
 -  Build up a list of *candidate search paths*, consisting of the
-   current file's directory, and each of the directories on the
+   current file's directory, then the *query directory* of the current
+   file, and finally each of the directories on the
    `library path <#library-path>`__ (in order).
 
 -  Determine the first candidate search path that has a *matching* QLL file for the import directive's qualified name. A QLL file in a candidate search path is said to match a qualified name if, starting from the candidate search path, there is a subdirectory for each successive qualifier in the qualified name, and the directory named by the final qualifier contains a file whose base name matches the qualified name's base name, with the addition of the file extension ``.qll``. The file and directory names are matched case-sensitively, regardless of whether the filesystem is case-sensitive or not.
