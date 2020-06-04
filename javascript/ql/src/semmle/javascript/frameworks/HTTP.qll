@@ -4,6 +4,7 @@
 
 import javascript
 private import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.internal.StepSummary
 
 module HTTP {
   /**
@@ -575,36 +576,32 @@ module HTTP {
     }
 
     /**
-     * A map that contains one or more route potential handlers.
+     * A collection that contains one or more route potential handlers.
      */
-    private class ContainerMap extends Range {
-      ContainerMap() {
-        this = DataFlow::globalVarRef("Map").getAnInstantiation() and
-        exists(RouteHandlerCandidate candidate |
-          candidate.flowsTo(this.getAMethodCall("set").getArgument(1))
-        )
-      }
-
-      DataFlow::SourceNode trackRouteHandler(
-        DataFlow::TypeTracker t, RouteHandlerCandidate candidate
-      ) {
-        exists(DataFlow::MethodCallNode set, DataFlow::Node setKey |
-          setKey = set.getArgument(0) and
-          this.getAMethodCall("set") = set and
-          candidate.flowsTo(set.getArgument(1)) and
-          result = this and // start type tracking on the Map object, because the route-handler is contained inside the Map.
-          t.startInProp(DataFlow::PseudoProperties::mapValue(setKey))
-        )
-        or
-        exists(DataFlow::TypeTracker t2 | result = trackRouteHandler(t2, candidate).track(t2, t))
-        or
-        exists(DataFlow::TypeTracker t2 |
-          result = CollectionsTypeTracking::collectionStep(trackRouteHandler(t2, candidate), t, t2)
+    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range {
+      ContainerCollection() {
+        this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
+        exists(
+          CollectionFlowStep store, DataFlow::Node storeTo, DataFlow::Node input,
+          RouteHandlerCandidate candidate
+        |
+          this.flowsTo(storeTo) and
+          store.store(input, storeTo, _) and
+          candidate.flowsTo(input)
         )
       }
 
       override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-        access = trackRouteHandler(DataFlow::TypeTracker::end(), result)
+        exists(
+          DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
+          CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
+        |
+          this.flowsTo(storeTo) and
+          store.store(input, storeTo, key) and
+          result.(RouteHandlerCandidate).flowsTo(input) and
+          ref(this).flowsTo(loadFrom) and
+          load.load(loadFrom, access, key)
+        )
       }
     }
   }
