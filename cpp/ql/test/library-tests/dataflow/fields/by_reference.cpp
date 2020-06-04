@@ -66,7 +66,7 @@ void test_setThroughNonMember() {
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // $ast $f-:ir
+  sink(nonMemberGetA(&s)); // $ast,ir
 }
 
 ////////////////////

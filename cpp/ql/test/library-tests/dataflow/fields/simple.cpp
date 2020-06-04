@@ -81,7 +81,7 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); //$ast $f-:ir
+        sink(getf2f1()); //$ast,ir
     }
 };
 

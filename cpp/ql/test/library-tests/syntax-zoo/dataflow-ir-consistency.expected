@@ -200,7 +200,7 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| file://:0:0:0:0 | InitializeIndirection | Node should have one location but has 0. |
+| file://:0:0:0:0 | *p#2 | Node should have one location but has 0. |
 | file://:0:0:0:0 | Load | Node should have one location but has 0. |
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |

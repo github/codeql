@@ -84,6 +84,24 @@ nodes
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| sanitiser.js:16:7:16:27 | tainted |
+| sanitiser.js:16:17:16:27 | window.name |
+| sanitiser.js:16:17:16:27 | window.name |
+| sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:23:29:23:35 | tainted |
+| sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:30:29:30:35 | tainted |
+| sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:33:29:33:35 | tainted |
+| sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:38:29:38:35 | tainted |
+| sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:45:29:45:35 | tainted |
 | stored-xss.js:2:39:2:55 | document.location |
 | stored-xss.js:2:39:2:55 | document.location |
 | stored-xss.js:2:39:2:62 | documen ... .search |
@@ -518,6 +536,23 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:23:29:23:35 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:30:29:30:35 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:33:29:33:35 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:38:29:38:35 | tainted |
+| sanitiser.js:16:7:16:27 | tainted | sanitiser.js:45:29:45:35 | tainted |
+| sanitiser.js:16:17:16:27 | window.name | sanitiser.js:16:7:16:27 | tainted |
+| sanitiser.js:16:17:16:27 | window.name | sanitiser.js:16:7:16:27 | tainted |
+| sanitiser.js:23:29:23:35 | tainted | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:23:29:23:35 | tainted | sanitiser.js:23:21:23:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:30:29:30:35 | tainted | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:30:29:30:35 | tainted | sanitiser.js:30:21:30:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:33:29:33:35 | tainted | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:33:29:33:35 | tainted | sanitiser.js:33:21:33:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:38:29:38:35 | tainted | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:38:29:38:35 | tainted | sanitiser.js:38:21:38:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:45:29:45:35 | tainted | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
+| sanitiser.js:45:29:45:35 | tainted | sanitiser.js:45:21:45:44 | '<b>' + ...  '</b>' |
 | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
 | stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |

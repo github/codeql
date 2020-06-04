@@ -306,6 +306,21 @@ private predicate instanceOfGuarded(VarAccess va, RefType t) {
 }
 
 /**
+ * Holds if `aa` is an access to a value that is guarded by `instanceof t`.
+ */
+predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
+  exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    ioe.getExpr() = aa1 and
+    t = ioe.getTypeName().getType() and
+    aa1.getArray() = v1.getAUse() and
+    aa1.getIndexExpr() = v2.getAUse() and
+    aa.getArray() = v1.getAUse() and
+    aa.getIndexExpr() = v2.getAUse() and
+    guardControls_v1(ioe, aa.getBasicBlock(), true)
+  )
+}
+
+/**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
  * might be a better type bound for nodes where `n` flows to.
  */
@@ -315,6 +330,7 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
     upcastEnhancedForStmt(n.asSsa(), srctype) or
     downcastSuccessor(n.asExpr(), srctype) or
     instanceOfGuarded(n.asExpr(), srctype) or
+    arrayInstanceOfGuarded(n.asExpr(), srctype) or
     n.asExpr().(FunctionalExpr).getConstructedType() = srctype
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
