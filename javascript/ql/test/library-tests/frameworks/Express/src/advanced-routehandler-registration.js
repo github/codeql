@@ -147,7 +147,17 @@ let handlers = { handlerA: (req, res) => undefined};
 app.use(handlers.handlerA.bind(data));
 
 for ([k, v] of routesMap) {
-	app.get(k, v)
+	app.get(k, v) // not supported - requires one too many heap steps
 }
 
-app.get("b", routesMap.get("NOT_A_KEY!")); // no.
+app.get("b", routesMap.get("NOT_A_KEY!")); // unknown route handler
+
+let routesMap2 = new Map();
+routesMap2.set("c", (req, res) => console.log(req));
+routesMap2.set(unknown(), (req, res) => console.log(req));
+routesMap2.set("e", (req, res) => console.log(req));
+
+app.get("c", routesMap2.get("c"));
+app.get("d", routesMap2.get(unknown()));
+app.get("e", unknown());
+app.get("d", routesMap2.get("f"));
