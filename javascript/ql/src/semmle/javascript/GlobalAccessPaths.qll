@@ -460,7 +460,7 @@ module AccessPath {
       (path = fromReference(result, root) or result = root.getAPropertyRead(path)) and
       type = AccessPathRead()
       or
-      (path = fromRhs(result, root) or result = root.getAPropertyWrite(path)) and
+      (path = fromRhs(result, root) or result = root.getAPropertyWrite(path).getRhs()) and
       type = AccessPathWrite()
     }
 
