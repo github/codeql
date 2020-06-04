@@ -211,40 +211,6 @@ nodes
 | TaintedPath.js:24:33:24:36 | path |
 | TaintedPath.js:24:33:24:36 | path |
 | TaintedPath.js:24:33:24:36 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:30:31:30:34 | path |
 | TaintedPath.js:33:31:33:34 | path |
 | TaintedPath.js:33:31:33:34 | path |
 | TaintedPath.js:33:31:33:34 | path |
@@ -2968,70 +2934,6 @@ edges
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:24:33:24:36 | path |
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:24:33:24:36 | path |
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:24:33:24:36 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:27:31:27:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:30:31:30:34 | path |
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:33:31:33:34 | path |
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:33:31:33:34 | path |
 | TaintedPath.js:9:7:9:48 | path | TaintedPath.js:33:31:33:34 | path |
@@ -6671,8 +6573,6 @@ edges
 | TaintedPath.js:18:33:18:36 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:18:33:18:36 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:21:33:21:36 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:21:33:21:36 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:24:33:24:36 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:24:33:24:36 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
-| TaintedPath.js:27:31:27:34 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:27:31:27:34 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
-| TaintedPath.js:30:31:30:34 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:30:31:30:34 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:33:31:33:34 | path | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:33:31:33:34 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:42:29:42:52 | pathMod ... e(path) | TaintedPath.js:38:20:38:26 | req.url | TaintedPath.js:42:29:42:52 | pathMod ... e(path) | This path depends on $@. | TaintedPath.js:38:20:38:26 | req.url | a user-provided value |
 | TaintedPath.js:46:29:46:49 | pathMod ... n(path) | TaintedPath.js:38:20:38:26 | req.url | TaintedPath.js:46:29:46:49 | pathMod ... n(path) | This path depends on $@. | TaintedPath.js:38:20:38:26 | req.url | a user-provided value |

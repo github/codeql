@@ -24,10 +24,10 @@ var server = http.createServer(function(req, res) {
       res.write(fs.readFileSync(path)); // BAD: Insufficient sanitisation
 
   if (path === 'foo.txt')
-    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list [INCONSISTENCY]
+    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list
 
   if (path === 'foo.txt' || path === 'bar.txt')
-    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list [INCONSISTENCY]
+    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list
 
   if (path === 'foo.txt' || path === 'bar.txt' || someOpaqueCondition())
     res.write(fs.readFileSync(path)); // BAD: Path is incompletely compared to white-list

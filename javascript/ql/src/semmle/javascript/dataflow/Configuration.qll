@@ -1814,3 +1814,19 @@ class VarAccessBarrier extends DataFlow::Node {
     )
   }
 }
+
+/**
+ * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
+ * 
+ * Can be added to `isBarrierGuard` in a data-flow configuration to block flow through such checks.
+ */
+class MembershipTestBarrierGuard extends BarrierGuardNode {
+  MembershipCandidate candidate;
+
+  MembershipTestBarrierGuard() { this = candidate.getTest() }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    candidate = e.flow() and
+    candidate.getTestPolarity() = outcome
+  }
+}
