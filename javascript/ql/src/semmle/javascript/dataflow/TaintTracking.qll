@@ -833,9 +833,7 @@ module TaintTracking {
     override EqualityTest astNode;
 
     TypeOfCheck() {
-      exists(StringLiteral str, TypeofExpr typeof |
-        astNode.hasOperands(str, typeof)
-      |
+      exists(StringLiteral str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
         str.getValue() = "undefined" and
         typeof.getOperand() = x
       )
