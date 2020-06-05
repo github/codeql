@@ -449,8 +449,10 @@ class BlacklistInclusionGuard extends DataFlow::LabeledBarrierGuardNode, Inclusi
  */
 class WhitelistInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
   WhitelistInclusionGuard() {
-    this instanceof TaintTracking::PositiveIndexOfSanitizer or
-    this instanceof TaintTracking::InclusionSanitizer
+    this instanceof TaintTracking::PositiveIndexOfSanitizer
+    or
+    this instanceof TaintTracking::MembershipTestSanitizer and
+    not this = any(MembershipCandidate::ObjectPropertyNameMembershipCandidate c).getTest() // handled with more precision in `HasOwnPropertyGuard`
   }
 
   override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {

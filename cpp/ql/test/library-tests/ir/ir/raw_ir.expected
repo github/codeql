@@ -7409,6 +7409,30 @@ ir.cpp:
 # 1314|     v1314_10(void)       = AliasedUse                    : ~m?
 # 1314|     v1314_11(void)       = ExitFunction                  : 
 
+# 1320| void f(int*)
+# 1320|   Block 0
+# 1320|     v1320_1(void)           = EnterFunction                 : 
+# 1320|     mu1320_2(unknown)       = AliasedDefinition             : 
+# 1320|     mu1320_3(unknown)       = InitializeNonLocal            : 
+# 1320|     r1320_4(glval<int *>)   = VariableAddress[p]            : 
+# 1320|     mu1320_5(int *)         = InitializeParameter[p]        : &:r1320_4
+# 1320|     r1320_6(int *)          = Load                          : &:r1320_4, ~m?
+# 1320|     mu1320_7(unknown)       = InitializeIndirection[p]      : &:r1320_6
+# 1322|     r1322_1(glval<unknown>) = FunctionAddress[operator new] : 
+# 1322|     r1322_2(unsigned long)  = Constant[4]                   : 
+# 1322|     r1322_3(glval<int *>)   = VariableAddress[p]            : 
+# 1322|     r1322_4(int *)          = Load                          : &:r1322_3, ~m?
+# 1322|     r1322_5(void *)         = Convert                       : r1322_4
+# 1322|     r1322_6(void *)         = Call                          : func:r1322_1, 0:r1322_2, 1:r1322_5
+# 1322|     mu1322_7(unknown)       = ^CallSideEffect               : ~m?
+# 1322|     mu1322_8(unknown)       = ^InitializeDynamicAllocation  : &:r1322_6
+# 1322|     r1322_9(int *)          = Convert                       : r1322_6
+# 1323|     v1323_1(void)           = NoOp                          : 
+# 1320|     v1320_8(void)           = ReturnIndirection[p]          : &:r1320_6, ~m?
+# 1320|     v1320_9(void)           = ReturnVoid                    : 
+# 1320|     v1320_10(void)          = AliasedUse                    : ~m?
+# 1320|     v1320_11(void)          = ExitFunction                  : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

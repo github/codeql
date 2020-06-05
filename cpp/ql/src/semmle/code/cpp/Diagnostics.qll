@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing warnings generated during compilation.
+ */
+
 import semmle.code.cpp.Location
 
 /** A compiler-generated error, warning or remark. */

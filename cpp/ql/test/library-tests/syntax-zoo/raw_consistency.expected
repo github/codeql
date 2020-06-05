@@ -52,7 +52,6 @@ instructionWithoutSuccessor
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt |
 | cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new |
-| cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | enum.c:6:9:6:9 | Constant: (int)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
@@ -208,8 +207,6 @@ ambiguousSuccessors
 | constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
 | constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | constructorinitializer.cpp:6:6:6:6 | InitializeNonLocal: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| cpp17.cpp:15:19:15:21 | Load: ptr | Goto | 2 | cpp17.cpp:15:5:15:45 | Call: new |
-| cpp17.cpp:15:19:15:21 | Load: ptr | Goto | 2 | cpp17.cpp:15:11:15:21 | Convert: (void *)... |
 | defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
 | defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
 | defconstructornewexpr.cpp:3:6:3:6 | InitializeNonLocal: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
