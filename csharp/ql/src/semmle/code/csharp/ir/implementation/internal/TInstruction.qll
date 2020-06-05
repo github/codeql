@@ -12,7 +12,7 @@ private import Imports::Opcode
  * all of the branches that can appear in that particular stage. The public `Instruction` class for
  * each phase extends the `TStageInstruction` type for that stage.
  */
-newtype TInstruction =
+cached newtype TInstruction =
   TRawInstruction(
     IRFunctionBase irFunc, Opcode opcode, Language::AST ast,
     IRConstruction::Raw::InstructionTag1 tag1, IRConstruction::Raw::InstructionTag2 tag2

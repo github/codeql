@@ -16,6 +16,31 @@ import Cached
 
 cached
 private module Cached {
+  cached
+  predicate hasPhiInstructionCached(
+    IRFunction irFunc, OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
+  ) {
+    exists(OldBlock oldBlock |
+      definitionHasPhiNode(defLocation, oldBlock) and
+      irFunc = oldBlock.getEnclosingIRFunction() and
+      blockStartInstr = oldBlock.getFirstInstruction()
+    )
+  }
+
+  cached
+  predicate hasChiInstructionCached(IRFunctionBase irFunc, OldInstruction primaryInstruction) {
+    hasChiNode(_, primaryInstruction) and
+    irFunc = primaryInstruction.getEnclosingIRFunction()
+  }
+
+  cached
+  predicate hasUnreachedInstructionCached(IRFunction irFunc) {
+    exists(OldInstruction oldInstruction |
+      irFunc = oldInstruction.getEnclosingIRFunction() and
+      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+    )
+  }
+
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
@@ -876,33 +901,15 @@ module SSAConsistency {
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the SSA stages
  * of the IR. The raw stage of the IR does not expose these predicates.
+ * These predicates are all just aliases for predicates defined in the `Cached` module. This ensures
+ * that all of SSA construction will be evaluated in the same stage.
  */
-cached
 module SSA {
   class MemoryLocation = Alias::MemoryLocation;
 
-  cached
-  predicate hasPhiInstruction(
-    IRFunction irFunc, OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
-  ) {
-    exists(OldBlock oldBlock |
-      definitionHasPhiNode(defLocation, oldBlock) and
-      irFunc = oldBlock.getEnclosingIRFunction() and
-      blockStartInstr = oldBlock.getFirstInstruction()
-    )
-  }
+  predicate hasPhiInstruction = Cached::hasPhiInstructionCached/3;
 
-  cached
-  predicate hasChiInstruction(IRFunctionBase irFunc, OldInstruction primaryInstruction) {
-    hasChiNode(_, primaryInstruction) and
-    irFunc = primaryInstruction.getEnclosingIRFunction()
-  }
+  predicate hasChiInstruction = Cached::hasChiInstructionCached/2;
 
-  cached
-  predicate hasUnreachedInstruction(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
-      irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
-    )
-  }
+  predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
