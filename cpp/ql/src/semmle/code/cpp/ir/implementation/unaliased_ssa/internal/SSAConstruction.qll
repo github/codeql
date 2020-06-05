@@ -263,7 +263,7 @@ private module Cached {
   }
 
   cached
-  Language::AST getInstructionAST(TStageInstruction instr) {
+  Language::AST getInstructionAST(Instruction instr) {
     instr = rawInstruction(_, _, result)
     or
     exists(RawIR::Instruction blockStartInstr |
@@ -282,7 +282,7 @@ private module Cached {
   }
 
   cached
-  Language::LanguageType getInstructionResultType(TStageInstruction instr) {
+  Language::LanguageType getInstructionResultType(Instruction instr) {
     result = instr.(RawIR::Instruction).getResultLanguageType()
     or
     exists(Alias::MemoryLocation defLocation |
@@ -300,7 +300,7 @@ private module Cached {
   }
 
   cached
-  Opcode getInstructionOpcode(TStageInstruction instr) {
+  Opcode getInstructionOpcode(Instruction instr) {
     instr = rawInstruction(_, result, _)
     or
     instr = phiInstruction(_, _, _) and result instanceof Opcode::Phi
@@ -311,7 +311,7 @@ private module Cached {
   }
 
   cached
-  IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
+  IRFunctionBase getInstructionEnclosingIRFunction(Instruction instr) {
     instr = rawInstruction(result, _, _)
     or
     instr = phiInstruction(result, _, _)
