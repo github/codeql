@@ -53,8 +53,8 @@ public:
   {
     B *b = new B();
     b->set(new C1());
-    sink(b->get());                // $ast $f-:ir
-    sink((new B(new C()))->get()); // $ast $f-:ir
+    sink(b->get());                // $ast $ir=55:12
+    sink((new B(new C()))->get()); // $ast $ir
   }
 
   void f3()
