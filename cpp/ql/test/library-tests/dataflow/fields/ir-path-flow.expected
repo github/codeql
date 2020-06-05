@@ -3,27 +3,19 @@ edges
 | A.cpp:55:12:55:19 | (C *)... | A.cpp:55:5:55:5 | set output argument [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:55:12:55:19 | (C *)... |
 | A.cpp:56:10:56:10 | Argument -1 indirection [c] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:56:10:56:10 | Argument -1 indirection [c] | A.cpp:56:13:56:15 | call to get |
-| A.cpp:56:13:56:15 | call to get | A.cpp:56:10:56:17 | (void *)... |
-| A.cpp:57:10:57:25 | Argument -1 indirection [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:10:57:25 | Argument -1 indirection [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:11:57:24 | B output argument [c] | A.cpp:57:10:57:25 | Argument -1 indirection [c] |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | B output argument [c] |
-| A.cpp:57:28:57:30 | call to get | A.cpp:57:10:57:32 | (void *)... |
 | A.cpp:98:12:98:18 | new | A.cpp:100:5:100:13 | Store |
 | A.cpp:100:5:100:13 | Chi [a] | A.cpp:101:8:101:9 | Argument 0 indirection [a] |
 | A.cpp:100:5:100:13 | Store | A.cpp:100:5:100:13 | Chi [a] |
 | A.cpp:101:8:101:9 | Argument 0 indirection [a] | A.cpp:103:14:103:14 | *c [a] |
 | A.cpp:103:14:103:14 | *c [a] | A.cpp:107:16:107:16 | a |
-| A.cpp:103:14:103:14 | *c [a] | A.cpp:107:16:107:16 | a |
-| A.cpp:107:16:107:16 | a | A.cpp:107:12:107:16 | (void *)... |
 | A.cpp:126:5:126:5 | Chi [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:126:5:126:5 | Chi [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
 | A.cpp:131:8:131:8 | Chi [c] | A.cpp:132:13:132:13 | c |
-| A.cpp:131:8:131:8 | Chi [c] | A.cpp:132:13:132:13 | c |
 | A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:131:8:131:8 | Chi [c] |
-| A.cpp:132:13:132:13 | c | A.cpp:132:10:132:13 | (void *)... |
 | A.cpp:142:7:142:20 | Chi [c] | A.cpp:151:18:151:18 | D output argument [c] |
 | A.cpp:142:7:142:20 | Store | A.cpp:142:7:142:20 | Chi [c] |
 | A.cpp:142:14:142:20 | new | A.cpp:142:7:142:20 | Store |
@@ -32,14 +24,10 @@ edges
 | A.cpp:143:25:143:31 | new | A.cpp:143:7:143:31 | Store |
 | A.cpp:150:12:150:18 | new | A.cpp:151:18:151:18 | b |
 | A.cpp:151:12:151:24 | Chi [b] | A.cpp:152:13:152:13 | b |
-| A.cpp:151:12:151:24 | Chi [b] | A.cpp:152:13:152:13 | b |
 | A.cpp:151:12:151:24 | D output argument [b] | A.cpp:151:12:151:24 | Chi [b] |
-| A.cpp:151:18:151:18 | Chi [c] | A.cpp:154:13:154:13 | c |
 | A.cpp:151:18:151:18 | Chi [c] | A.cpp:154:13:154:13 | c |
 | A.cpp:151:18:151:18 | D output argument [c] | A.cpp:151:18:151:18 | Chi [c] |
 | A.cpp:151:18:151:18 | b | A.cpp:151:12:151:24 | D output argument [b] |
-| A.cpp:152:13:152:13 | b | A.cpp:152:10:152:13 | (void *)... |
-| A.cpp:154:13:154:13 | c | A.cpp:154:10:154:13 | (void *)... |
 | C.cpp:18:12:18:18 | C output argument [s1] | C.cpp:19:5:19:5 | Argument -1 indirection [s1] |
 | C.cpp:18:12:18:18 | C output argument [s3] | C.cpp:19:5:19:5 | Argument -1 indirection [s3] |
 | C.cpp:19:5:19:5 | Argument -1 indirection [s1] | C.cpp:27:8:27:11 | *#this [s1] |
@@ -52,11 +40,7 @@ edges
 | C.cpp:24:5:24:25 | Store | C.cpp:24:5:24:25 | Chi [s3] |
 | C.cpp:24:16:24:25 | new | C.cpp:24:5:24:25 | Store |
 | C.cpp:27:8:27:11 | *#this [s1] | C.cpp:29:10:29:11 | s1 |
-| C.cpp:27:8:27:11 | *#this [s1] | C.cpp:29:10:29:11 | s1 |
 | C.cpp:27:8:27:11 | *#this [s3] | C.cpp:31:10:31:11 | s3 |
-| C.cpp:27:8:27:11 | *#this [s3] | C.cpp:31:10:31:11 | s3 |
-| C.cpp:29:10:29:11 | s1 | file://:0:0:0:0 | (const void *)... |
-| C.cpp:31:10:31:11 | s3 | file://:0:0:0:0 | (const void *)... |
 | aliasing.cpp:9:3:9:22 | Chi [m1] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] |
 | aliasing.cpp:9:3:9:22 | Store | aliasing.cpp:9:3:9:22 | Chi [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | Store |
@@ -190,30 +174,22 @@ nodes
 | A.cpp:55:12:55:19 | (C *)... | semmle.label | (C *)... |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:56:10:56:10 | Argument -1 indirection [c] | semmle.label | Argument -1 indirection [c] |
-| A.cpp:56:10:56:17 | (void *)... | semmle.label | (void *)... |
-| A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
 | A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
 | A.cpp:57:10:57:25 | Argument -1 indirection [c] | semmle.label | Argument -1 indirection [c] |
-| A.cpp:57:10:57:32 | (void *)... | semmle.label | (void *)... |
 | A.cpp:57:11:57:24 | B output argument [c] | semmle.label | B output argument [c] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
-| A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
 | A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
 | A.cpp:98:12:98:18 | new | semmle.label | new |
 | A.cpp:100:5:100:13 | Chi [a] | semmle.label | Chi [a] |
 | A.cpp:100:5:100:13 | Store | semmle.label | Store |
 | A.cpp:101:8:101:9 | Argument 0 indirection [a] | semmle.label | Argument 0 indirection [a] |
 | A.cpp:103:14:103:14 | *c [a] | semmle.label | *c [a] |
-| A.cpp:107:12:107:16 | (void *)... | semmle.label | (void *)... |
-| A.cpp:107:16:107:16 | a | semmle.label | a |
 | A.cpp:107:16:107:16 | a | semmle.label | a |
 | A.cpp:126:5:126:5 | Chi [c] | semmle.label | Chi [c] |
 | A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:131:8:131:8 | Chi [c] | semmle.label | Chi [c] |
 | A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
-| A.cpp:132:10:132:13 | (void *)... | semmle.label | (void *)... |
-| A.cpp:132:13:132:13 | c | semmle.label | c |
 | A.cpp:132:13:132:13 | c | semmle.label | c |
 | A.cpp:142:7:142:20 | Chi [c] | semmle.label | Chi [c] |
 | A.cpp:142:7:142:20 | Store | semmle.label | Store |
@@ -227,11 +203,7 @@ nodes
 | A.cpp:151:18:151:18 | Chi [c] | semmle.label | Chi [c] |
 | A.cpp:151:18:151:18 | D output argument [c] | semmle.label | D output argument [c] |
 | A.cpp:151:18:151:18 | b | semmle.label | b |
-| A.cpp:152:10:152:13 | (void *)... | semmle.label | (void *)... |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
-| A.cpp:152:13:152:13 | b | semmle.label | b |
-| A.cpp:154:10:154:13 | (void *)... | semmle.label | (void *)... |
-| A.cpp:154:13:154:13 | c | semmle.label | c |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
 | C.cpp:18:12:18:18 | C output argument [s1] | semmle.label | C output argument [s1] |
 | C.cpp:18:12:18:18 | C output argument [s3] | semmle.label | C output argument [s3] |
@@ -247,8 +219,6 @@ nodes
 | C.cpp:27:8:27:11 | *#this [s1] | semmle.label | *#this [s1] |
 | C.cpp:27:8:27:11 | *#this [s3] | semmle.label | *#this [s3] |
 | C.cpp:29:10:29:11 | s1 | semmle.label | s1 |
-| C.cpp:29:10:29:11 | s1 | semmle.label | s1 |
-| C.cpp:31:10:31:11 | s3 | semmle.label | s3 |
 | C.cpp:31:10:31:11 | s3 | semmle.label | s3 |
 | aliasing.cpp:9:3:9:22 | Chi [m1] | semmle.label | Chi [m1] |
 | aliasing.cpp:9:3:9:22 | Store | semmle.label | Store |
@@ -353,8 +323,6 @@ nodes
 | constructors.cpp:43:9:43:9 | Argument 0 indirection [b_] | semmle.label | Argument 0 indirection [b_] |
 | constructors.cpp:46:9:46:9 | Argument 0 indirection [a_] | semmle.label | Argument 0 indirection [a_] |
 | constructors.cpp:46:9:46:9 | Argument 0 indirection [b_] | semmle.label | Argument 0 indirection [b_] |
-| file://:0:0:0:0 | (const void *)... | semmle.label | (const void *)... |
-| file://:0:0:0:0 | (const void *)... | semmle.label | (const void *)... |
 | simple.cpp:26:15:26:15 | *f [a_] | semmle.label | *f [a_] |
 | simple.cpp:26:15:26:15 | *f [b_] | semmle.label | *f [b_] |
 | simple.cpp:28:10:28:10 | Argument -1 indirection [a_] | semmle.label | Argument -1 indirection [a_] |
@@ -399,21 +367,13 @@ nodes
 | struct_init.c:31:23:31:23 | a | semmle.label | a |
 | struct_init.c:36:10:36:24 | Argument 0 indirection [a] | semmle.label | Argument 0 indirection [a] |
 #select
-| A.cpp:56:10:56:17 | (void *)... | A.cpp:55:12:55:19 | (C *)... | A.cpp:56:10:56:17 | (void *)... | (void *)... flows from $@ | A.cpp:55:12:55:19 | (C *)... | (C *)... |
-| A.cpp:56:10:56:17 | (void *)... | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | (void *)... | (void *)... flows from $@ | A.cpp:55:12:55:19 | new | new |
 | A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | (C *)... | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | (C *)... | (C *)... |
 | A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
-| A.cpp:57:10:57:32 | (void *)... | A.cpp:57:17:57:23 | new | A.cpp:57:10:57:32 | (void *)... | (void *)... flows from $@ | A.cpp:57:17:57:23 | new | new |
 | A.cpp:57:28:57:30 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:28:57:30 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
-| A.cpp:107:12:107:16 | (void *)... | A.cpp:98:12:98:18 | new | A.cpp:107:12:107:16 | (void *)... | (void *)... flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
-| A.cpp:132:10:132:13 | (void *)... | A.cpp:126:12:126:18 | new | A.cpp:132:10:132:13 | (void *)... | (void *)... flows from $@ | A.cpp:126:12:126:18 | new | new |
 | A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
-| A.cpp:152:10:152:13 | (void *)... | A.cpp:143:25:143:31 | new | A.cpp:152:10:152:13 | (void *)... | (void *)... flows from $@ | A.cpp:143:25:143:31 | new | new |
-| A.cpp:152:10:152:13 | (void *)... | A.cpp:150:12:150:18 | new | A.cpp:152:10:152:13 | (void *)... | (void *)... flows from $@ | A.cpp:150:12:150:18 | new | new |
 | A.cpp:152:13:152:13 | b | A.cpp:143:25:143:31 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new | new |
 | A.cpp:152:13:152:13 | b | A.cpp:150:12:150:18 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new | new |
-| A.cpp:154:10:154:13 | (void *)... | A.cpp:142:14:142:20 | new | A.cpp:154:10:154:13 | (void *)... | (void *)... flows from $@ | A.cpp:142:14:142:20 | new | new |
 | A.cpp:154:13:154:13 | c | A.cpp:142:14:142:20 | new | A.cpp:154:13:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
 | C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new | new |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new | new |
@@ -441,8 +401,6 @@ nodes
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input | call to user_input |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:36:25:36:34 | call to user_input | call to user_input |
-| file://:0:0:0:0 | (const void *)... | C.cpp:22:12:22:21 | new | file://:0:0:0:0 | (const void *)... | (const void *)... flows from $@ | C.cpp:22:12:22:21 | new | new |
-| file://:0:0:0:0 | (const void *)... | C.cpp:24:16:24:25 | new | file://:0:0:0:0 | (const void *)... | (const void *)... flows from $@ | C.cpp:24:16:24:25 | new | new |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input | call to user_input |
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input | call to user_input |
