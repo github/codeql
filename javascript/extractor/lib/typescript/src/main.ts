@@ -590,7 +590,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
 
     console.log(JSON.stringify({
         type: "project-opened",
-        files: program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName)),
+        files: config.fileNames.map(file => pathlib.resolve(file)),
     }));
 }
 
