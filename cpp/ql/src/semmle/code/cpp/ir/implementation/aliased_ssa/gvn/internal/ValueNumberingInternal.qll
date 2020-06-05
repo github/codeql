@@ -7,7 +7,6 @@ newtype TValueNumber =
   TInitializeParameterValueNumber(IRFunction irFunc, Language::AST var) {
     initializeParameterValueNumber(_, irFunc, var)
   } or
-  TInitializeThisValueNumber(IRFunction irFunc) { initializeThisValueNumber(_, irFunc) } or
   TConstantValueNumber(IRFunction irFunc, IRType type, string value) {
     constantValueNumber(_, irFunc, type, value)
   } or
@@ -79,8 +78,6 @@ private predicate numberableInstruction(Instruction instr) {
   or
   instr instanceof InitializeParameterInstruction
   or
-  instr instanceof InitializeThisInstruction
-  or
   instr instanceof ConstantInstruction
   or
   instr instanceof StringConstantInstruction
@@ -130,10 +127,6 @@ private predicate initializeParameterValueNumber(
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
   instr.getIRVariable().getAST() = var
-}
-
-private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRFunction irFunc) {
-  instr.getEnclosingIRFunction() = irFunc
 }
 
 private predicate constantValueNumber(
@@ -267,9 +260,6 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
         initializeParameterValueNumber(instr, irFunc, var) and
         result = TInitializeParameterValueNumber(irFunc, var)
       )
-      or
-      initializeThisValueNumber(instr, irFunc) and
-      result = TInitializeThisValueNumber(irFunc)
       or
       exists(string value, IRType type |
         constantValueNumber(instr, irFunc, type, value) and
