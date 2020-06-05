@@ -1,3 +1,7 @@
+/**
+ * Proivdes the `LinkTarget` class representing linker invocations at compile time.
+ */
+
 import semmle.code.cpp.Class
 import semmle.code.cpp.File
 import semmle.code.cpp.Function
