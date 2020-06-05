@@ -100,10 +100,6 @@ predicate createCompiledAccExpressionStep(DataFlow::Node node1, DataFlow::Node n
   )
 }
 
-predicate test() {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof CompiledAccExpression)
-}
-
 /**
  * Holds if `node1` to `node2` is a dataflow step that compiles a MVEL expression
  * by calling `ExpressionCompiler.compile()`.

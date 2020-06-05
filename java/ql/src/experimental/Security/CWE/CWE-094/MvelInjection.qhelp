@@ -23,6 +23,7 @@ The following example uses untrusted data to build a MVEL expression
 and then runs it in the default powerfull context.
 </p>
 <sample src="UnsafeMvelExpressionEvaluation.java" />
+</example>
 
 <references>
 <li>
