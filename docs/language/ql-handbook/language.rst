@@ -50,7 +50,7 @@ for resolving module imports (see `Module resolution <#module-resolution>`__). T
 speaking a core part of the QL language, since different
 implementations of QL construct it in slightly different ways. Most QL
 tools also allow you to explicitly specify the library path on the command line for a
-particular invocation, though that is that is rarely done, and only
+particular invocation, though that is rarely done, and only
 useful in very special situations. This section describes the default
 construction of the library path.
 
