@@ -828,11 +828,11 @@ module TaintTracking {
   }
 
   /** A check of the form `type x === "undefined"`, which sanitized `x` in its "then" branch. */
-  class TypeOfCheck extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class TypeOfUndefinedSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
-    TypeOfCheck() {
+    TypeOfUndefinedSanitizer() {
       exists(StringLiteral str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
         str.getValue() = "undefined" and
         typeof.getOperand() = x
