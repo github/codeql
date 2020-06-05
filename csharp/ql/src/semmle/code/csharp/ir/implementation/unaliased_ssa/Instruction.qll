@@ -604,11 +604,16 @@ class ConstantInstruction extends ConstantValueInstruction {
 }
 
 class IntegerConstantInstruction extends ConstantInstruction {
-  IntegerConstantInstruction() { getResultType() instanceof Language::IntegralType }
+  IntegerConstantInstruction() {
+    exists(IRType resultType |
+      resultType = getResultIRType() and
+      (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
+    )
+  }
 }
 
 class FloatConstantInstruction extends ConstantInstruction {
-  FloatConstantInstruction() { getResultType() instanceof Language::FloatingPointType }
+  FloatConstantInstruction() { getResultIRType() instanceof IRFloatingPointType }
 }
 
 class StringConstantInstruction extends VariableInstruction {
