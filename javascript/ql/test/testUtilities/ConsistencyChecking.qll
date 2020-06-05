@@ -126,9 +126,7 @@ bindingset[file, line]
 private string getSinkDescription(File file, int line) {
   not exists(DataFlow::Configuration c | c.hasFlow(_, getAlert(file, line))) and result = ""
   or
-  exists(DataFlow::Configuration c | c.hasFlow(_, getAlert(file, line)) |
-    result = " for " + c
-  )
+  exists(DataFlow::Configuration c | c.hasFlow(_, getAlert(file, line)) | result = " for " + c)
 }
 
 /**
