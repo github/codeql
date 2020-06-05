@@ -60,14 +60,14 @@ class ExternalJsonKind extends TaintKind {
     }
 }
 
-/** A kind of "taint", representing a dictionary mapping str->"taint" */
+/** A kind of "taint", representing a dictionary mapping keys to tainted strings. */
 class ExternalStringDictKind extends DictKind {
     ExternalStringDictKind() { this.getValue() instanceof ExternalStringKind }
 }
 
 /**
- * A kind of "taint", representing a dictionary mapping strings to sequences of
- *  tainted strings
+ * A kind of "taint", representing a dictionary mapping keys to sequences of
+ *  tainted strings.
  */
 class ExternalStringSequenceDictKind extends DictKind {
     ExternalStringSequenceDictKind() { this.getValue() instanceof ExternalStringSequenceKind }
