@@ -1,6 +1,6 @@
-| tst.html:2:1:13:7 | <html>...</> | 0 | tst.html:3:5:9:11 | <head>...</> |
-| tst.html:2:1:13:7 | <html>...</> | 1 | tst.html:10:5:12:11 | <body>...</> |
-| tst.html:3:5:9:11 | <head>...</> | 0 | tst.html:4:9:4:32 | <title>...</> |
-| tst.html:3:5:9:11 | <head>...</> | 1 | tst.html:5:9:5:43 | <script>...</> |
-| tst.html:3:5:9:11 | <head>...</> | 2 | tst.html:6:9:8:17 | <script>...</> |
-| tst.html:10:5:12:11 | <body>...</> | 0 | tst.html:11:9:11:64 | <a>...</> |
+| tst.html:2:1:13:7 | <html>...</> | 1 | tst.html:3:5:9:11 | <head>...</> |
+| tst.html:2:1:13:7 | <html>...</> | 3 | tst.html:10:5:12:11 | <body>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 1 | tst.html:4:9:4:32 | <title>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 3 | tst.html:5:9:5:43 | <script>...</> |
+| tst.html:3:5:9:11 | <head>...</> | 5 | tst.html:6:9:8:17 | <script>...</> |
+| tst.html:10:5:12:11 | <body>...</> | 1 | tst.html:11:9:11:64 | <a>...</> |
