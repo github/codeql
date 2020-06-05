@@ -42,6 +42,76 @@ A QL program can be *evaluated* (see `Evaluation <#evaluation>`__) to produce a 
 
 For a QL program to be *valid*, it must conform to a variety of conditions that are described throughout this specification; otherwise the program is said to be *invalid*. An implementation of QL must detect all invalid programs and refuse to evaluate them.
 
+Library path
+------------
+
+The library path is an ordered list of directory locations. It is used
+for resolving module imports (see `Module resolution <#module-resolution>`__). The library path is not strictly
+speaking a core part of the QL language, since different
+implementations of QL construct it in slightly different ways. Most QL
+tools also allow you to explicitly specify the library path on the command line for a
+particular invocation, though that is rarely done, and only
+useful in very special situations. This section describes the default
+construction of the library path.
+
+First, determine the *query directory* of the ``.ql`` file being
+compiled. Starting with the directory containing the ``.ql`` file, and
+walking up the directory structure, each directory is checked for a
+file called ``queries.xml`` or ``qlpack.yml``. The first directory
+where such a file is found is the query directory. If there is no such
+directory, the directory of the ``.ql`` file itself is the query
+directory.
+
+A ``queries.xml`` file that defines a query directory must always
+contain a single top-level tag named
+``queries``, which has a ``language`` attribute set to the identifier
+of the active database schema (for example, ``<queries
+language="java"/>``).
+
+A ``qlpack.yml`` file defines a `QL pack
+<https://help.semmle.com/codeql/codeql-cli/reference/qlpack-overview.html>`__.
+The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
+will not be recognized when using legacy tools that are not based
+on the CodeQL CLI (that is, LGTM.com, LGTM Enterprise, ODASA, CodeQL for
+Eclipse, and CodeQL for Visual Studio).
+
+If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
+directory, the latter takes precedence (and the former is assumed to
+exist for compatibility with older tooling).
+
+In legacy QL tools that don't recognize ``qlpack.yml`` files, the default
+value of the library path for
+each supported language is hard-coded. The tools contain directories within the ODASA
+distribution that define the default CodeQL libraries for the selected
+language. Which language to use depends on the ``language`` attribute
+of the ``queries.xml`` file if not overridden with a ``--language``
+option to the ODASA CLI.
+
+On the other hand, the CodeQL CLI and newer tools based on it (such as
+GitHub Code Scanning and the CodeQL extension for Visual Studio Code)
+construct a library path using QL packs. For each QL pack
+added to the library path, the QL packs named in its
+``libraryPathDependencies`` will be subsequently added to the library
+path, and the process continues until all packs have been
+resolved. The actual library path consists of the root directories of
+the selected QL packs. This process depends on a mechanism for finding
+QL packs by pack name, as described in the `CodeQL CLI documentation <https://help.semmle.com/codeql/codeql-cli.html>`__.
+
+When the query directory contains a ``queries.xml`` file but no
+``qlpack.yml``, the QL pack resolution behaves as if it defines a QL
+pack with no name and a single library path dependency named
+``legacy-libraries-LANGUAGE`` where ``LANGUAGE`` is taken from
+``queries.xml``. The ``github/codeql`` repository provides packs with
+names following this pattern, which themselves depend on the actual
+CodeQL libraries for each language.
+
+When the query directory contains neither a ``queries.xml`` nor
+``qlpack.yml`` file, it is considered to be a QL pack with no name and
+no library dependencies. This causes the library path to consist of
+*only* the query directory itself. This is not generally useful,
+but it suffices for running toy examples of QL code that don't
+use information from the database.
+
 Name resolution
 ---------------
 
@@ -162,11 +232,10 @@ For selection identifiers (``a::b``):
 
 For qualified identifiers (``a.b``):
 
--  Define the *current file* as the file the import directive occurs in.
-
--  Determine the current file's *query directory*, if any. Starting with the directory containing the current file, and walking up the directory structure, each directory is checked for a file called ``queries.xml``, containing a single top-level tag named ``queries``, which has a ``language`` attribute set to the identifier of the active database scheme (for example, ``<queries language="java"/>``). The closest enclosing directory is taken as the current file's query directory.
-
--  Build up a list of *candidate search paths*, consisting of the current file's directory, the current file's query directory (if one was determined in the previous step), and the list of directories making up the library path (in order).
+-  Build up a list of *candidate search paths*, consisting of the
+   current file's directory, then the *query directory* of the current
+   file, and finally each of the directories on the
+   `library path <#library-path>`__ (in order).
 
 -  Determine the first candidate search path that has a *matching* QLL file for the import directive's qualified name. A QLL file in a candidate search path is said to match a qualified name if, starting from the candidate search path, there is a subdirectory for each successive qualifier in the qualified name, and the directory named by the final qualifier contains a file whose base name matches the qualified name's base name, with the addition of the file extension ``.qll``. The file and directory names are matched case-sensitively, regardless of whether the filesystem is case-sensitive or not.
 
