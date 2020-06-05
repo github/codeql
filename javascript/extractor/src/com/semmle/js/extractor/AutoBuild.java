@@ -559,6 +559,15 @@ public class AutoBuild {
     }
   };
 
+  /**
+   * Like {@link #PATH_ORDERING} but for {@link File} objects.
+   */
+  public static final Comparator<File> FILE_ORDERING = new Comparator<File>() {
+    public int compare(File f1, File f2) {
+      return PATH_ORDERING.compare(f1.toPath(), f2.toPath());
+    }
+  };
+
   /** Extract all supported candidate files that pass the filters. */
   private void extractSource() throws IOException {
     // default extractor
@@ -577,11 +586,11 @@ public class AutoBuild {
     Set<Path> filesToExtract = new LinkedHashSet<>();
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
-    
+
     tsconfigFiles = tsconfigFiles.stream()
          .sorted(PATH_ORDERING)
          .collect(Collectors.toList());
-    
+
     filesToExtract = filesToExtract.stream()
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
@@ -695,7 +704,7 @@ public class AutoBuild {
    * @return a path or null
    */
   public static Path tryRelativize(Path from, Path to) {
-    Path relative = from.relativize(to);      
+    Path relative = from.relativize(to);
     if (relative.startsWith("..") || relative.isAbsolute()) {
       return null;
     }

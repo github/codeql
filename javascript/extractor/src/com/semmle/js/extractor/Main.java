@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.semmle.js.extractor.ExtractorConfig.HTMLHandling;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
@@ -77,8 +78,8 @@ public class Main {
   private PathMatcher includeMatcher, excludeMatcher;
   private FileExtractor fileExtractor;
   private ExtractorState extractorState;
-  private final Set<File> projectFiles = new LinkedHashSet<>();
-  private final Set<File> files = new LinkedHashSet<>();
+  private Set<File> projectFiles = new LinkedHashSet<>();
+  private Set<File> files = new LinkedHashSet<>();
   private final Set<File> extractedFiles = new LinkedHashSet<>();
 
   /* used to detect cyclic directory hierarchies */
@@ -138,6 +139,16 @@ public class Main {
     if (containsTypeScriptFiles()) {
       tsParser.verifyInstallation(!ap.has(P_QUIET));
     }
+
+    // Sort files for determinism
+    projectFiles = projectFiles.stream()
+          .sorted(AutoBuild.FILE_ORDERING)
+          .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+
+    files = files.stream()
+        .sorted(AutoBuild.FILE_ORDERING)
+        .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+
     for (File projectFile : projectFiles) {
 
       long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
