@@ -33,17 +33,17 @@ predicate isInsecureMailPropertyConfig(VarAccess propertiesVarAccess) {
     ma.getMethod() instanceof SetPropertyMethod and
     ma.getQualifier() = propertiesVarAccess.getVariable().getAnAccess() and
     (
-      getStringValue(ma.getArgument(0)).indexOf(".auth") != -1 and //mail.smtp.auth
+      getStringValue(ma.getArgument(0)).matches("%.auth%") and //mail.smtp.auth
       getStringValue(ma.getArgument(1)) = "true"
       or
-      getStringValue(ma.getArgument(0)).indexOf(".socketFactory") != -1 //mail.smtp.socketFactory or mail.smtp.socketFactory.class
+      getStringValue(ma.getArgument(0)).matches("%.socketFactory%") //mail.smtp.socketFactory or mail.smtp.socketFactory.class
     )
   ) and
   not exists(MethodAccess ma |
     ma.getMethod() instanceof SetPropertyMethod and
     ma.getQualifier() = propertiesVarAccess.getVariable().getAnAccess() and
     (
-      getStringValue(ma.getArgument(0)).indexOf(".ssl.checkserveridentity") != -1 and //mail.smtp.ssl.checkserveridentity
+      getStringValue(ma.getArgument(0)).matches("%.ssl.checkserveridentity%") and //mail.smtp.ssl.checkserveridentity
       getStringValue(ma.getArgument(1)) = "true"
     )
   )
@@ -53,11 +53,7 @@ predicate isInsecureMailPropertyConfig(VarAccess propertiesVarAccess) {
  * Helper method to get string value of an argument
  */
 string getStringValue(Expr expr) {
-  result = expr.(StringLiteral).getRepresentedString()
-  or
-  exists(Variable v | expr = v.getAnAccess() |
-    result = getStringValue(v.getInitializer().(CompileTimeConstantExpr))
-  )
+  result = expr.(CompileTimeConstantExpr).getStringValue()
   or
   result = getStringValue(expr.(AddExpr).getLeftOperand())
   or
@@ -68,14 +64,14 @@ string getStringValue(Expr expr) {
  * The JavaMail session class `javax.mail.Session`
  */
 class MailSession extends RefType {
-  MailSession() { this.getQualifiedName() = "javax.mail.Session" }
+  MailSession() { this.hasQualifiedName("javax.mail", "Session") }
 }
 
 /**
  * The class of Apache SimpleMail
  */
 class SimpleMail extends RefType {
-  SimpleMail() { this.getQualifiedName() = "org.apache.commons.mail.SimpleEmail" }
+  SimpleMail() { this.hasQualifiedName("org.apache.commons.mail", "SimpleEmail") }
 }
 
 /**
@@ -101,7 +97,7 @@ from MethodAccess ma
 where
   ma.getMethod().getDeclaringType() instanceof MailSession and
   ma.getMethod().getName() = "getInstance" and
-  isInsecureMailPropertyConfig(ma.getArgument(0).(VarAccess))
+  isInsecureMailPropertyConfig(ma.getArgument(0))
   or
-  enableTLSWithSimpleMail(ma) and hasNoCertCheckWithSimpleMail(ma.getQualifier().(VarAccess))
+  enableTLSWithSimpleMail(ma) and hasNoCertCheckWithSimpleMail(ma.getQualifier())
 select ma, "Java mailing has insecure SSL configuration"
