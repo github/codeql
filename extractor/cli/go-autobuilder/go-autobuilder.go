@@ -33,7 +33,7 @@ This behavior can be further customized using environment variables: setting LGT
 to 'false' disables the GOPATH set-up, CODEQL_EXTRACTOR_GO_BUILD_COMMAND (or alternatively
 LGTM_INDEX_BUILD_COMMAND), can be set to a newline-separated list of commands to run in order to
 install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path,
-which is otherwise inferred from the SEMMLE_REPO_URL environment variable.
+which is otherwise inferred from the SEMMLE_REPO_URL or GITHUB_REPOSITORY environment variables.
 
 In resource-constrained environments, the environment variable CODEQL_EXTRACTOR_GO_MAX_GOROUTINES
 (or its legacy alias SEMMLE_MAX_GOROUTINES) can be used to limit the number of parallel goroutines
@@ -92,9 +92,15 @@ func getImportPath() (importpath string) {
 	if importpath == "" {
 		repourl := os.Getenv("SEMMLE_REPO_URL")
 		if repourl == "" {
-			return ""
+			githubrepo := os.Getenv("GITHUB_REPOSITORY")
+			if githubrepo == "" {
+				return ""
+			} else {
+				importpath = "github.com/" + githubrepo
+			}
+		} else {
+			importpath = getImportPathFromRepoURL(repourl)
 		}
-		importpath = getImportPathFromRepoURL(repourl)
 	}
 	log.Printf("Import path is %s\n", importpath)
 	return
