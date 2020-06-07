@@ -7,10 +7,10 @@ from django.template import Template, Context, Engine, engines
 
 
 def a(request):
-    xpathQuery = request.GET['xpath']
+    value = request.GET['xpath']
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    r = tree.xpath(xpathQuery)
+    r = tree.xpath("/tag[@id=$tagid]", tagid=value)
 
 
 urlpatterns = [

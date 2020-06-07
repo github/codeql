@@ -7,7 +7,7 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.HttpRequest
 
 /** Models Xpath Injection related classes and functions */
@@ -29,11 +29,7 @@ module XpathInjection {
     override string toString() { result = "lxml.etree.Xpath" }
 
     EtreeXpathArgument() {
-      exists(CallNode call, AttrNode atr |
-        atr = etree().getAReference().getASuccessor() and
-        atr.getName() = "XPath" and
-        atr = call.getFunction()
-      |
+      exists(CallNode call | call.getFunction().(AttrNode).getObject("XPath").pointsTo(etree()) |
         call.getArg(0) = this
       )
     }
@@ -52,11 +48,7 @@ module XpathInjection {
     override string toString() { result = "lxml.etree.ETXpath" }
 
     EtreeETXpathArgument() {
-      exists(CallNode call, AttrNode atr |
-        atr = etree().getAReference().getASuccessor() and
-        atr.getName() = "ETXPath" and
-        atr = call.getFunction()
-      |
+      exists(CallNode call | call.getFunction().(AttrNode).getObject("ETXPath").pointsTo(etree()) |
         call.getArg(0) = this
       )
     }
@@ -77,17 +69,15 @@ module XpathInjection {
     override string toString() { result = "lxml.etree.parse.xpath" }
 
     ParseXpathArgument() {
-      exists(CallNode parseCall, AttrNode parse, string s |
-        parse = etree().getAReference().getASuccessor() and
-        parse.getName() = "parse" and
-        parse = parseCall.getFunction() and
-        exists(CallNode xpathCall, AttrNode xpath |
-          xpath = parseCall.getASuccessor*() and
-          xpath.getName() = "xpath" and
-          xpath = xpathCall.getFunction() and
-          s = xpath.getName() and
-          this = xpathCall.getArg(0)
-        )
+      exists(
+        CallNode parseCall, CallNode xpathCall, ControlFlowNode obj, Variable var, AssignStmt assign
+      |
+        parseCall.getFunction().(AttrNode).getObject("parse").pointsTo(etree()) and
+        assign.getValue().(Call).getAFlowNode() = parseCall and
+        xpathCall.getFunction().(AttrNode).getObject("xpath") = obj and
+        var.getAUse() = obj and
+        assign.getATarget() = var.getAStore() and
+        xpathCall.getArg(0) = this
       )
     }
 

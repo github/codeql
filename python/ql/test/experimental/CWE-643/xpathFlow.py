@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 @app.route("/xpath1")
-def a():
+def xpath1():
     xpathQuery = request.args.get('xml', '')
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
@@ -14,7 +14,7 @@ def a():
 
 
 @app.route("/xpath2")
-def b():
+def xpath2():
     xpathQuery = request.args.get('xml', '')
 
     root = etree.XML("<root><a>TEXT</a></root>")
@@ -23,7 +23,7 @@ def b():
 
 
 @app.route("/xpath3")
-def c():
+def xpath3():
     xpathQuery = request.args.get('xml', '')
     root = etree.XML("<root><a>TEXT</a></root>")
     find_text = etree.XPath(xpathQuery, smart_strings=False)
@@ -31,8 +31,8 @@ def c():
 
 
 @app.route("/xpath4")
-def d():
+def xpath4():
     xpathQuery = request.args.get('xml', '')
     root = etree.XML("<root><a>TEXT</a></root>")
-    find_text = find = etree.ETXPath(xpathQuery)
+    find_text = etree.ETXPath(xpathQuery)
     text = find_text(root)[0]

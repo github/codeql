@@ -1,4 +1,0 @@
-| xpath.py:8:20:8:29 | lxml.etree.parse.xpath | externally controlled string |
-| xpath.py:13:29:13:38 | lxml.etree.Xpath | externally controlled string |
-| xpath.py:19:29:19:38 | lxml.etree.Xpath | externally controlled string |
-| xpath.py:25:38:25:46 | lxml.etree.ETXpath | externally controlled string |
