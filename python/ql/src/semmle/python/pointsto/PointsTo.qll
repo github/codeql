@@ -694,7 +694,7 @@ module PointsToInternal {
 
     /* Holds if `import name` will import the module `m`. */
     cached
-    predicate module_imported_as(ModuleObjectInternal m, string name) {
+    deprecated predicate module_imported_as(ModuleObjectInternal m, string name) {
         /* Normal imports */
         m.getName() = name
         or
@@ -711,17 +711,40 @@ module PointsToInternal {
             )
         )
     }
+
+    /* Holds if `import name` inside module `src` will import the module `m`. */
+    cached
+    predicate module_imported_as_with_context(ModuleObjectInternal m, string name, Module src) {
+        src.importsFrom(m.getSourceModule()) and
+        (
+            /* Normal imports */
+            m.getName() = name
+            or
+            /* sys.modules['name'] = m */
+            exists(ControlFlowNode sys_modules_flow, ControlFlowNode n, ControlFlowNode mod |
+                /* Use previous points-to here to avoid slowing down the recursion too much */
+                exists(SubscriptNode sub |
+                    sub.getObject() = sys_modules_flow and
+                    pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
+                    sub.getIndex() = n and
+                    n.getNode().(StrConst).getText() = name and
+                    sub.(DefinitionNode).getValue() = mod and
+                    pointsTo(mod, _, m, _)
+                )
+            )
+        )
+    }
 }
 
 private module InterModulePointsTo {
     pragma[noinline]
     predicate import_points_to(
-        ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin
+        ControlFlowNode f, PointsToContext context, ModuleObjectInternal value, ControlFlowNode origin
     ) {
         exists(string name, ImportExpr i |
             i.getAFlowNode() = f and
             i.getImportedModuleName() = name and
-            PointsToInternal::module_imported_as(value, name) and
+            PointsToInternal::module_imported_as_with_context(value, name, f.getEnclosingModule()) and
             origin = f and
             context.appliesTo(f)
         )
@@ -754,7 +777,8 @@ private module InterModulePointsTo {
             from_import_imports(f, context, mod, name) and
             (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
             mod.attribute(name, value, orig) and
-            origin = orig.asCfgNodeOrHere(f)
+            origin = orig.asCfgNodeOrHere(f) and
+            f.getEnclosingModule().importsFrom(mod.getSourceModule())
         )
         or
         PointsToInternal::pointsTo(f.getModule(_), context, ObjectInternal::unknown(), _) and

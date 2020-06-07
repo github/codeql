@@ -86,13 +86,28 @@ class Module extends Module_, Scope, AstNode {
     /** Gets the package containing this module (or parent package if this is a package) */
     Module getPackage() {
         this.getName().matches("%.%") and
-        result.getName() = getName().regexpReplaceAll("\\.[^.]*$", "")
+        result.getPath() = this.getPath().getParent() and
+        result.getName() = this.getName().regexpReplaceAll("\\.[^.]*$", "")
     }
 
     /** Gets the name of the package containing this module */
-    string getPackageName() {
-        this.getName().matches("%.%") and
-        result = getName().regexpReplaceAll("\\.[^.]*$", "")
+    string getPackageName() { result = this.getPackage().getName() }
+
+    /**
+     * Holds if `this` contains a statement importing parts or all of `mod`.
+     * If there are multiple modules with the same name, we attempt to disambiguate based
+     * on the relative paths of `this` and `mod`. If there is no shared path where `mod`
+     * is uniquely determined by its name, the predicate fails.
+     */
+    predicate importsFrom(Module mod) {
+        exists(Container c, ImportingStmt imp |
+            exists(c.getRelativePath()) and
+            c = this.getPath().getParent*() and
+            c = mod.getPath().getParent*() and
+            imp.getEnclosingModule() = this and
+            imp.getAnImportedModuleName() = mod.getName() and
+            count(Module other | other.getName() = mod.getName() and other.getPath().getParent*() = c) = 1
+        )
     }
 
     /** Gets the metrics for this module */

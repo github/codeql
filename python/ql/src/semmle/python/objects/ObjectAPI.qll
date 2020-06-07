@@ -162,7 +162,7 @@ class ModuleValue extends Value {
      * Whether this module is imported by 'import name'. For example on a linux system,
      * the module 'posixpath' is imported as 'os.path' or as 'posixpath'
      */
-    predicate importedAs(string name) { PointsToInternal::module_imported_as(this, name) }
+    predicate importedAs(string name) { PointsToInternal::module_imported_as_with_context(this, name, _) }
 
     /** Whether this module is a package. */
     predicate isPackage() { this instanceof PackageObjectInternal }

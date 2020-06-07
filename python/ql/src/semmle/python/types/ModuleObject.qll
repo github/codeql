@@ -92,7 +92,7 @@ abstract class ModuleObject extends Object {
      * Whether this module is imported by 'import name'. For example on a linux system,
      * the module 'posixpath' is imported as 'os.path' or as 'posixpath'
      */
-    predicate importedAs(string name) { PointsToInternal::module_imported_as(theModule(), name) }
+    predicate importedAs(string name) { PointsToInternal::module_imported_as_with_context(theModule(), name, _) }
 
     ModuleObject getAnImportedModule() {
         result.importedAs(this.getModule().getAnImportedModuleName())

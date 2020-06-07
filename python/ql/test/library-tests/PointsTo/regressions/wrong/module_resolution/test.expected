@@ -1,4 +1,2 @@
 | copy-1/test1.py:1:25:1:29 | ControlFlowNode for ImportMember | value | copy-1/module/test.py:0:0:0:0 | Module module.test |
-| copy-1/test1.py:1:25:1:29 | ControlFlowNode for ImportMember | value | copy-2/module/test.py:0:0:0:0 | Module module.test |
-| copy-2/test2.py:1:25:1:29 | ControlFlowNode for ImportMember | value | copy-1/module/test.py:0:0:0:0 | Module module.test |
 | copy-2/test2.py:1:25:1:29 | ControlFlowNode for ImportMember | value | copy-2/module/test.py:0:0:0:0 | Module module.test |
