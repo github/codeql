@@ -144,4 +144,28 @@ void test_deep_structs_setter() {
     read_from_y_deref(&d3.d2_2);
 }
 
+struct Inner
+{
+    int f;
+    int g;
+};
+
+struct Outer
+{
+    Inner inner;
+    int h;
+};
+
+void read_f(Inner *inner)
+{
+    sink(inner->f); //$ast $f-:ir
+}
+
+void test()
+{
+    Outer outer;
+    outer.inner.f = user_input();
+    read_f(&outer.inner);
+}
+
 } // namespace Simple
