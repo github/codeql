@@ -62,20 +62,16 @@ module IndirectCommandInjection {
   private DataFlow::SourceNode yargs() {
     result = DataFlow::moduleImport("yargs")
     or
-    result =
-      // script used to generate list of chained methods: https://gist.github.com/erik-krogh/f8afe952c0577f4b563a993e613269ba
-      yargs()
-          .getAMethodCall(["middleware", "scriptName", "reset", "resetOptions", "boolean", "array",
-                "number", "normalize", "count", "string", "requiresArg", "skipValidation", "nargs",
-                "choices", "alias", "defaults", "default", "describe", "demandOption", "coerce",
-                "config", "example", "require", "required", "demand", "demandCommand",
-                "deprecateOption", "implies", "conflicts", "usage", "epilog", "epilogue", "fail",
-                "onFinishCommand", "check", "global", "pkgConf", "options", "option", "positional",
-                "group", "env", "wrap", "strict", "strictCommands", "parserConfiguration",
-                "version", "help", "addHelpOpt", "showHidden", "addShowHiddenOpt", "hide",
-                "showHelpOnFail", "exitProcess", "completion", "updateLocale", "updateStrings",
-                "detectLocale", "recommendCommands", "getValidationInstance", "command",
-                "commandDir", "showHelp", "showCompletionScript"])
+    // script used to generate list of chained methods: https://gist.github.com/erik-krogh/f8afe952c0577f4b563a993e613269ba
+    exists(string method |
+      not method =
+        // the methods that does not return a chained `yargs` object.
+        ["getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
+            "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
+            "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"]
+    |
+      result = yargs().getAMethodCall(method)
+    )
   }
 
   /**
