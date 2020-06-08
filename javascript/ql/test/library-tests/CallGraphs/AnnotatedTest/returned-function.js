@@ -21,3 +21,12 @@ let r2 = r1();
 
 /** calls:curry3 */
 r2();
+
+function callback(f) {
+    // Call graph should not include callback invocations.
+    /** calls:NONE */
+    f();
+}
+
+let w1 = callback(curry1);
+callback(() => {});

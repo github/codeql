@@ -80,7 +80,8 @@ module CallGraph {
     imprecision = 0 and
     shouldTrackFunction(function) and
     exists(DataFlow::TypeTracker t2 |
-      result = getAFunctionReference(function, imprecision, t2).track(t2, t)
+      result = getAFunctionReference(function, imprecision, t2).track(t2, t) and
+      t.hasCall() = false
     )
   }
 
