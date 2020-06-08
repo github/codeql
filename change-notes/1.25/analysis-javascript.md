@@ -42,6 +42,7 @@
 | Storage of sensitive information in build artifact (`js/build-artifact-leak`) | security, external/cwe/cwe-312 | Highlights storage of sensitive information in build artifacts. Results are shown on LGTM by default. |
 | Improper code sanitization (`js/bad-code-sanitization`) | security, external/cwe/cwe-094, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights string concatenation where code is constructed without proper sanitization. Results are shown on LGTM by default. |
 | Resource exhaustion (`js/resource-exhaustion`) | security, external/cwe/cwe-770 | Highlights operations that may cause the resources of the application to be exhausted. Results are shown on LGTM by default. |
+| Incomplete multi-character sanitization (`js/incomplete-multi-character-sanitization`) | correctness, security, external/cwe/cwe-20, external/cwe/cwe-116 | Highlights sanitizers that removes dangerous substrings incompletely. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
