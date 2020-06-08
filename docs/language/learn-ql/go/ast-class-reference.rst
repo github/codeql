@@ -376,8 +376,8 @@ All classes in this subsection are subclasses of
 Type expressions
 ~~~~~~~~~~~~~~~~
 
-These classes represent different expressions for types. They do
-not have a common superclass.
+All classes in this subsection are subclasses of
+`TypeExpr <https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$TypeExpr.html>`__.
 
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 | Expression syntax                                                                                                                                                                                       | CodeQL class                                                                                                       | Superclasses                                                                                       |
