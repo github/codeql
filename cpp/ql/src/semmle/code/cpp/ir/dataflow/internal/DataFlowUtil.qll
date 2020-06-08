@@ -646,11 +646,11 @@ private class LoadChainEndInstructionLoad extends LoadChainEndInstruction, LoadI
  * be `f`, and thus reading `&outer.inner` must pop `inner` from the access path
  * before entering `read_f`.
  */
-private class LoadChainInstructionSideEffect extends LoadChainEndInstruction,
+private class LoadChainEndInstructionSideEffect extends LoadChainEndInstruction,
   ReadSideEffectInstruction {
   FieldAddressInstruction fi;
 
-  LoadChainInstructionSideEffect() { fi = skipConversion*(this.getArgumentDef()) }
+  LoadChainEndInstructionSideEffect() { fi = skipConversion*(this.getArgumentDef()) }
 
   override FieldAddressInstruction getFieldInstruction() { result = fi }
 
