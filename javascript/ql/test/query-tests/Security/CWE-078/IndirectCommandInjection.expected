@@ -68,6 +68,17 @@ nodes
 | command-line-parameter-command-injection.js:33:21:33:44 | require ... ").argv |
 | command-line-parameter-command-injection.js:33:21:33:44 | require ... ").argv |
 | command-line-parameter-command-injection.js:33:21:33:48 | require ... rgv.foo |
+| command-line-parameter-command-injection.js:36:6:39:7 | args |
+| command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv |
+| command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv |
+| command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args |
+| command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args |
+| command-line-parameter-command-injection.js:41:22:41:25 | args |
+| command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
+| command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
+| command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() |
+| command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() |
+| command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo |
 edges
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:22:8:36 | process.argv[2] |
@@ -129,6 +140,15 @@ edges
 | command-line-parameter-command-injection.js:33:21:33:44 | require ... ").argv | command-line-parameter-command-injection.js:33:21:33:48 | require ... rgv.foo |
 | command-line-parameter-command-injection.js:33:21:33:48 | require ... rgv.foo | command-line-parameter-command-injection.js:33:9:33:48 | "cmd.sh ... rgv.foo |
 | command-line-parameter-command-injection.js:33:21:33:48 | require ... rgv.foo | command-line-parameter-command-injection.js:33:9:33:48 | "cmd.sh ... rgv.foo |
+| command-line-parameter-command-injection.js:36:6:39:7 | args | command-line-parameter-command-injection.js:41:22:41:25 | args |
+| command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv | command-line-parameter-command-injection.js:36:6:39:7 | args |
+| command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv | command-line-parameter-command-injection.js:36:6:39:7 | args |
+| command-line-parameter-command-injection.js:41:22:41:25 | args | command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args |
+| command-line-parameter-command-injection.js:41:22:41:25 | args | command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args |
+| command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo |
+| command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo |
+| command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
+| command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
 #select
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line argument |
@@ -144,3 +164,5 @@ edges
 | command-line-parameter-command-injection.js:31:9:31:45 | "cmd.sh ... )().foo | command-line-parameter-command-injection.js:31:21:31:41 | require ... ist")() | command-line-parameter-command-injection.js:31:9:31:45 | "cmd.sh ... )().foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:31:21:31:41 | require ... ist")() | command-line argument |
 | command-line-parameter-command-injection.js:32:9:32:45 | "cmd.sh ... rgv.foo | command-line-parameter-command-injection.js:32:21:32:41 | require ... ").argv | command-line-parameter-command-injection.js:32:9:32:45 | "cmd.sh ... rgv.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:32:21:32:41 | require ... ").argv | command-line argument |
 | command-line-parameter-command-injection.js:33:9:33:48 | "cmd.sh ... rgv.foo | command-line-parameter-command-injection.js:33:21:33:44 | require ... ").argv | command-line-parameter-command-injection.js:33:9:33:48 | "cmd.sh ... rgv.foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:33:21:33:44 | require ... ").argv | command-line argument |
+| command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args | command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv | command-line-parameter-command-injection.js:41:10:41:25 | "cmd.sh " + args | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:36:13:39:7 | require ... \\t\\t.argv | command-line argument |
+| command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line argument |

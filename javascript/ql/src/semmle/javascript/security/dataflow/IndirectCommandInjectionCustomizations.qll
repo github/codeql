@@ -50,11 +50,43 @@ module IndirectCommandInjection {
       // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleImport("minimist").getACall()
       or
-      // `require('yargs').argv` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleMember("yargs", "argv")
-      or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
+    }
+  }
+
+  /**
+   * Gets an instance of `yargs`.
+   * Either directly imported as a module, or through some chained method call.
+   */
+  private DataFlow::SourceNode yargs() {
+    result = DataFlow::moduleImport("yargs")
+    or
+    result =
+      // script used to generate list of chained methods: https://gist.github.com/erik-krogh/f8afe952c0577f4b563a993e613269ba
+      yargs()
+          .getAMethodCall(["middleware", "scriptName", "reset", "resetOptions", "boolean", "array",
+                "number", "normalize", "count", "string", "requiresArg", "skipValidation", "nargs",
+                "choices", "alias", "defaults", "default", "describe", "demandOption", "coerce",
+                "config", "example", "require", "required", "demand", "demandCommand",
+                "deprecateOption", "implies", "conflicts", "usage", "epilog", "epilogue", "fail",
+                "onFinishCommand", "check", "global", "pkgConf", "options", "option", "positional",
+                "group", "env", "wrap", "strict", "strictCommands", "parserConfiguration",
+                "version", "help", "addHelpOpt", "showHidden", "addShowHiddenOpt", "hide",
+                "showHelpOnFail", "exitProcess", "completion", "updateLocale", "updateStrings",
+                "detectLocale", "recommendCommands", "getValidationInstance", "command",
+                "commandDir", "showHelp", "showCompletionScript"])
+  }
+
+  /**
+   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
+   */
+  class YargsArgv extends Source {
+    YargsArgv() {
+      this = yargs().getAPropertyRead("argv")
+      or
+      this = yargs().getAMethodCall("parse") and
+      this.(DataFlow::MethodCallNode).getNumArgument() = 0
     }
   }
 
