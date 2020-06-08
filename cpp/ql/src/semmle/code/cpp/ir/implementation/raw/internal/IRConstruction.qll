@@ -392,7 +392,7 @@ private module Cached {
   }
 
   cached
-  Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+  Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
       instructionOrigin(instruction, element, tag) and
       result = element.getPrimaryInstructionForSideEffect(tag)
