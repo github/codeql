@@ -1,2 +1,2 @@
-| InsecureJavaMail.java:33:28:33:73 | getInstance(...) | Java mailing has insecure SSL configuration |
-| InsecureJavaMail.java:41:3:41:29 | setSSLOnConnect(...) | Java mailing has insecure SSL configuration |
+| InsecureJavaMail.java:32:27:32:72 | getInstance(...) | Java mailing has insecure SSL configuration |
+| InsecureJavaMail.java:40:3:40:29 | setSSLOnConnect(...) | Java mailing has insecure SSL configuration |
