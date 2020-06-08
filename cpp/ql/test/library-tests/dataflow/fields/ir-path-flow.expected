@@ -102,6 +102,7 @@ edges
 | simple.cpp:136:21:136:28 | Chi [d2_1, d1_2, ... (3)] | simple.cpp:139:23:139:23 | d2_1.d1_2.y [d1_2, y] |
 | simple.cpp:136:21:136:28 | Chi [d2_1, d1_2, ... (3)] | simple.cpp:141:20:141:23 | d2_1 [d1_2, y] |
 | simple.cpp:136:21:136:28 | Chi [d2_1, d1_2, ... (3)] | simple.cpp:143:23:143:30 | d2_1 [d1_2, y] |
+| simple.cpp:136:21:136:28 | Chi [d2_1, d1_2, ... (3)] | simple.cpp:143:23:143:30 | d2_1 [d1_2, y] |
 | simple.cpp:136:21:136:28 | d2_1 [d2_1, d1_2, ... (3)] | simple.cpp:136:21:136:28 | Chi [d2_1, d1_2, ... (3)] |
 | simple.cpp:136:21:136:28 | write_to_d1_2_y output argument [d1_2, y] | simple.cpp:136:21:136:28 | d2_1 [d2_1, d1_2, ... (3)] |
 | simple.cpp:136:21:136:28 | write_to_d1_2_y output argument [d1_2, y] | simple.cpp:143:23:143:30 | Argument 0 indirection [d1_2, y] |
@@ -114,9 +115,19 @@ edges
 | simple.cpp:141:20:141:23 | d2_1 [d1_2, y] | simple.cpp:141:20:141:23 | d2_1 [d1_2, y] |
 | simple.cpp:143:23:143:30 | Argument 0 indirection [d1_2, y] | simple.cpp:114:37:114:38 | *d2 [d1_2, y] |
 | simple.cpp:143:23:143:30 | Argument 0 indirection [d1_2, y] | simple.cpp:143:23:143:30 | read_from_y_deref output argument [d1_2, y] |
+| simple.cpp:143:23:143:30 | d2_1 [d1_2, y] | simple.cpp:143:23:143:30 | Argument 0 indirection [d1_2, y] |
 | simple.cpp:143:23:143:30 | d2_1 [d1_2, y] | simple.cpp:144:23:144:30 | Argument 0 indirection [d1_2, y] |
 | simple.cpp:143:23:143:30 | read_from_y_deref output argument [d1_2, y] | simple.cpp:144:23:144:30 | Argument 0 indirection [d1_2, y] |
 | simple.cpp:144:23:144:30 | Argument 0 indirection [d1_2, y] | simple.cpp:114:37:114:38 | *d2 [d1_2, y] |
+| simple.cpp:159:20:159:24 | *inner [f] | simple.cpp:161:17:161:17 | f |
+| simple.cpp:161:17:161:17 | f | simple.cpp:161:17:161:17 | f |
+| simple.cpp:167:5:167:32 | Chi [inner, f] | simple.cpp:168:12:168:23 | inner [f] |
+| simple.cpp:167:5:167:32 | Store | simple.cpp:167:5:167:32 | f [f] |
+| simple.cpp:167:5:167:32 | f [f] | simple.cpp:167:5:167:32 | inner.f [inner, f] |
+| simple.cpp:167:5:167:32 | inner.f [inner, f] | simple.cpp:167:5:167:32 | Chi [inner, f] |
+| simple.cpp:167:21:167:30 | call to user_input | simple.cpp:167:5:167:32 | Store |
+| simple.cpp:168:12:168:23 | Argument 0 indirection [f] | simple.cpp:159:20:159:24 | *inner [f] |
+| simple.cpp:168:12:168:23 | inner [f] | simple.cpp:168:12:168:23 | Argument 0 indirection [f] |
 | struct_init.c:14:24:14:25 | *ab [a] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:15:12:15:12 | a | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:20:20:29 | Store | struct_init.c:20:20:20:29 | a [a] |
@@ -130,8 +141,11 @@ edges
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:27:7:27:16 | Store |
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:31:23:31:23 | a |
 | struct_init.c:27:7:27:16 | nestedAB.a [nestedAB, a] | struct_init.c:27:7:27:16 | Chi [nestedAB, a] |
+| struct_init.c:27:7:27:16 | nestedAB.a [nestedAB, a] | struct_init.c:28:5:28:7 | Chi [nestedAB, a] |
 | struct_init.c:27:21:27:21 | nestedAB.b [a] | struct_init.c:36:10:36:24 | Argument 0 indirection [a] |
+| struct_init.c:28:5:28:7 | Chi [nestedAB, a] | struct_init.c:36:10:36:24 | nestedAB [a] |
 | struct_init.c:36:10:36:24 | Argument 0 indirection [a] | struct_init.c:14:24:14:25 | *ab [a] |
+| struct_init.c:36:10:36:24 | nestedAB [a] | struct_init.c:36:10:36:24 | Argument 0 indirection [a] |
 nodes
 | A.cpp:98:12:98:18 | new | semmle.label | new |
 | A.cpp:100:5:100:13 | Store | semmle.label | Store |
@@ -263,8 +277,19 @@ nodes
 | simple.cpp:141:20:141:23 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
 | simple.cpp:143:23:143:30 | Argument 0 indirection [d1_2, y] | semmle.label | Argument 0 indirection [d1_2, y] |
 | simple.cpp:143:23:143:30 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
+| simple.cpp:143:23:143:30 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
 | simple.cpp:143:23:143:30 | read_from_y_deref output argument [d1_2, y] | semmle.label | read_from_y_deref output argument [d1_2, y] |
 | simple.cpp:144:23:144:30 | Argument 0 indirection [d1_2, y] | semmle.label | Argument 0 indirection [d1_2, y] |
+| simple.cpp:159:20:159:24 | *inner [f] | semmle.label | *inner [f] |
+| simple.cpp:161:17:161:17 | f | semmle.label | f |
+| simple.cpp:161:17:161:17 | f | semmle.label | f |
+| simple.cpp:167:5:167:32 | Chi [inner, f] | semmle.label | Chi [inner, f] |
+| simple.cpp:167:5:167:32 | Store | semmle.label | Store |
+| simple.cpp:167:5:167:32 | f [f] | semmle.label | f [f] |
+| simple.cpp:167:5:167:32 | inner.f [inner, f] | semmle.label | inner.f [inner, f] |
+| simple.cpp:167:21:167:30 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:168:12:168:23 | Argument 0 indirection [f] | semmle.label | Argument 0 indirection [f] |
+| simple.cpp:168:12:168:23 | inner [f] | semmle.label | inner [f] |
 | struct_init.c:14:24:14:25 | *ab [a] | semmle.label | *ab [a] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
@@ -279,8 +304,10 @@ nodes
 | struct_init.c:27:7:27:16 | call to user_input | semmle.label | call to user_input |
 | struct_init.c:27:7:27:16 | nestedAB.a [nestedAB, a] | semmle.label | nestedAB.a [nestedAB, a] |
 | struct_init.c:27:21:27:21 | nestedAB.b [a] | semmle.label | nestedAB.b [a] |
+| struct_init.c:28:5:28:7 | Chi [nestedAB, a] | semmle.label | Chi [nestedAB, a] |
 | struct_init.c:31:23:31:23 | a | semmle.label | a |
 | struct_init.c:36:10:36:24 | Argument 0 indirection [a] | semmle.label | Argument 0 indirection [a] |
+| struct_init.c:36:10:36:24 | nestedAB [a] | semmle.label | nestedAB [a] |
 #select
 | A.cpp:107:12:107:16 | (void *)... | A.cpp:98:12:98:18 | new | A.cpp:107:12:107:16 | (void *)... | (void *)... flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
@@ -306,6 +333,7 @@ nodes
 | simple.cpp:124:20:124:20 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:124:20:124:20 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
 | simple.cpp:130:15:130:15 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:130:15:130:15 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
 | simple.cpp:139:23:139:23 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:139:23:139:23 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
+| simple.cpp:161:17:161:17 | f | simple.cpp:167:21:167:30 | call to user_input | simple.cpp:161:17:161:17 | f | f flows from $@ | simple.cpp:167:21:167:30 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
 | struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |

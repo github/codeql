@@ -73,4 +73,7 @@
 | simple.cpp:136:22:136:23 | d3 |
 | simple.cpp:143:24:143:25 | d3 |
 | simple.cpp:144:24:144:25 | d3 |
+| simple.cpp:167:5:167:9 | outer |
+| simple.cpp:167:11:167:15 | inner |
+| simple.cpp:168:13:168:17 | outer |
 | struct_init.c:36:11:36:15 | outer |
