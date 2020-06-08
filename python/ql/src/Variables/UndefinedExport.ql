@@ -33,12 +33,27 @@ predicate mutates_globals(ModuleValue m) {
         exists(SubscriptNode sub | sub.getObject() = globals and sub.isStore())
     )
     or
-    exists(Value enum_convert, ClassValue enum_class |
+    // Enum (added in 3.4) has method `_convert_` that alters globals
+    // This was called `_convert` until 3.8, but that name will be removed in 3.9
+    exists(ClassValue enum_class |
         enum_class.getASuperType() = Value::named("enum.Enum") and
-        enum_convert = enum_class.attr("_convert") and
-        exists(CallNode call | call.getScope() = m.getScope() |
-            enum_convert.getACall() = call or
-            call.getFunction().pointsTo(enum_convert)
+        (
+            // In Python < 3.8, Enum._convert can be found with points-to
+            exists(Value enum_convert |
+                enum_convert = enum_class.attr(["_convert"]) and
+                exists(CallNode call | call.getScope() = m.getScope() |
+                    enum_convert.getACall() = call or
+                    call.getFunction().pointsTo(enum_convert)
+                )
+            )
+            or
+            // In Python 3.8, Enum._convert_ is implemented using a metaclass, and our points-to
+            // analysis doesn't handle that good enough. So we need special case for this
+            not exists(Value enum_convert | enum_convert = enum_class.attr("_convert")) and
+            exists(CallNode call | call.getScope() = m.getScope() |
+                call.getFunction().(AttrNode).getObject(["_convert", "_convert_"]).pointsTo() =
+                    enum_class
+            )
         )
     )
 }
