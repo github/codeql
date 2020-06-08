@@ -298,6 +298,9 @@ class IRParameter extends IRAutomaticVariable {
   int getIndex() { none() }
 }
 
+/**
+ * An IR variable representing a positional parameter.
+ */
 class IRPositionalParameter extends IRParameter, IRAutomaticUserVariable {
   final override int getIndex() { result = getVariable().(Language::Parameter).getIndex() }
 }
