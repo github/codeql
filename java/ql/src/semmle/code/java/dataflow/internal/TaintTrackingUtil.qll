@@ -511,7 +511,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method instanceof JacksonWriteValueMethod and
   method.getNumberOfParameters() = 1 and
   arg = 0
-  or 
+  or
   method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
   method.hasName("append") and
   arg = 0
