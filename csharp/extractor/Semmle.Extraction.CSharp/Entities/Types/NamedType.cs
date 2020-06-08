@@ -29,7 +29,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
+            if (UsesTypeRef)
+                trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
@@ -148,7 +149,14 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
         }
 
-        public override Type TypeRef => NamedTypeRef.Create(Context, symbol);
+        // Do not create typerefs of constructed generics as they are always in the current trap file, and there is a possibility
+        // that a generic could make the typedef ambiguous which leads to performance problems in QL.
+        // Create typerefs for constructed error types in case they are fully defined elsewhere.
+        // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
+        // the assembly that was being extracted at the time.
+        bool UsesTypeRef => symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol);
+
+        public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, symbol) : this;
     }
 
     class NamedTypeRef : Type<INamedTypeSymbol>
