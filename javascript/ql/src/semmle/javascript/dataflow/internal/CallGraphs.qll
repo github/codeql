@@ -20,6 +20,21 @@ module CallGraph {
   }
 
   /**
+   * Holds if we should track the flow of `f` using type tracking.
+   */
+  private predicate shouldTrackFunction(DataFlow::FunctionNode f) {
+    // Don't track class members independently as the class itself is tracked instead.
+    not exists(DataFlow::ClassNode cls |
+      f = cls.getAnInstanceMember()
+      or
+      f = cls.getAStaticMethod()
+      or
+      f = cls.getConstructor()
+    ) and
+    not f.getTopLevel().isExterns()
+  }
+
+  /**
    * Gets a data flow node that refers to the given function.
    *
    * Note that functions are not currently type-tracked, but this exposes the type-tracker `t`
@@ -60,6 +75,12 @@ module CallGraph {
       or
       function = cls.getConstructor() and
       cls.getAClassReference(t.continue()).flowsTo(result)
+    )
+    or
+    imprecision = 0 and
+    shouldTrackFunction(function) and
+    exists(DataFlow::TypeTracker t2 |
+      result = getAFunctionReference(function, imprecision, t2).track(t2, t)
     )
   }
 
