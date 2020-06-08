@@ -158,7 +158,7 @@ struct Outer
 
 void read_f(Inner *inner)
 {
-    sink(inner->f); //$ast $f-:ir
+    sink(inner->f); //$ast,ir
 }
 
 void test()

@@ -611,19 +611,7 @@ private newtype TLoadChain =
     )
   }
 
-/**
- * This class abstracts out the information needed to end a `LoadChain`. For now the only
- * implementation is `LoadChainEndInstructionLoad`, but we may need another implementation similar
- * to `StoreChainEndInstructionSideEffect` to handle cases like:
- * ```
- * void read_f(Inner* inner) {
- *   sink(inner->f);
- * }
- * ...
- * outer.inner.f = taint();
- * read_f(&outer.inner);
- * ```
- */
+/** This class abstracts out the information needed to end a `LoadChain`. */
 abstract private class LoadChainEndInstruction extends Instruction {
   abstract FieldAddressInstruction getFieldInstruction();
 
@@ -641,6 +629,32 @@ private class LoadChainEndInstructionLoad extends LoadChainEndInstruction, LoadI
   override FieldAddressInstruction getFieldInstruction() { result = fi }
 
   override Instruction getReadValue() { result = getSourceValueOperand().getAnyDef() }
+}
+
+/**
+ * Ends a `LoadChain` with a `ReadSideEffectInstruction`. This ensures that we pop content from the
+ * access path when passing an argument that reads a field. For example in:
+ * ```
+ * void read_f(Inner* inner) {
+ *   sink(inner->f);
+ * }
+ * ...
+ * outer.inner.f = taint();
+ * read_f(&outer.inner);
+ * ```
+ * In order to register `inner->f` as a `readStep`, the head of the access path must
+ * be `f`, and thus reading `&outer.inner` must pop `inner` from the access path
+ * before entering `read_f`.
+ */
+private class LoadChainInstructionSideEffect extends LoadChainEndInstruction,
+  ReadSideEffectInstruction {
+  FieldAddressInstruction fi;
+
+  LoadChainInstructionSideEffect() { fi = skipConversion*(this.getArgumentDef()) }
+
+  override FieldAddressInstruction getFieldInstruction() { result = fi }
+
+  override Instruction getReadValue() { result = getSideEffectOperand().getAnyDef() }
 }
 
 /**
