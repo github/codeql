@@ -103,6 +103,18 @@
 | defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:110:17:110:32 | (int)... |
 | defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:110:17:110:32 | access to array |
 | defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:111:12:111:18 | tainted |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:126:16:126:16 | x |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:133:9:133:14 | call to getenv |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:133:9:133:24 | (int)... |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:133:9:133:24 | access to array |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:134:10:134:10 | x |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | shared.h:6:15:6:23 | sinkparam |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:140:11:140:16 | call to getenv |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:140:11:140:26 | (int)... |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:140:11:140:26 | access to array |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:143:23:143:24 | pp |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:144:8:144:9 | pp |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:150:13:150:14 | & ... |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:24:28:27 | call to atoi |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:34 | call to getenv |
 | dispatch.cpp:28:29:28:34 | call to getenv | dispatch.cpp:28:29:28:45 | (const char *)... |

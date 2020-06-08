@@ -142,7 +142,7 @@ Files
 AST nodes
 ---------
 
-See also: :doc:`Abstract syntax tree classes for JavaScript and TypeScript <ast-class-reference>`.
+See also: :doc:`Abstract syntax tree classes for working with JavaScript and TypeScript programs <ast-class-reference>`.
 
 Conversion between DataFlow and AST nodes:
 
