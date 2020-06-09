@@ -564,10 +564,11 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   or
   // Flow from stores to structs with a single field to a load of that field.
   iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
-  exists(int size, Type type |
+  exists(int size, Type type, Class cTo |
     type = iFrom.getResultType() and
-    iTo.getResultType().getSize() = size and
-    getFieldSizeOfClass(iTo.getResultType(), type, size)
+    cTo = iTo.getResultType() and
+    cTo.getSize() = size and
+    getFieldSizeOfClass(cTo, type, size)
   )
   or
   // Flow through modeled functions
