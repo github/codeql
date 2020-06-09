@@ -48,7 +48,7 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 		argv: {
 			...args
 		},
-	} = yargs
+	} = require('yargs')
 		.usage('Usage: foo bar')
 		.command();
 
