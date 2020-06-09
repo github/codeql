@@ -176,18 +176,7 @@ module CleartextLogging {
 
     override string describe() { result = "process environment" }
 
-    override DataFlow::FlowLabel getLabel() {
-      result.isTaint() or
-      result instanceof PartiallySensitiveMap
-    }
-  }
-
-  /**
-   * A flow label describing a map that might contain sensitive information in some properties.
-   * Property reads on such maps where the property name is fixed is unlikely to leak sensitive information.
-   */
-  class PartiallySensitiveMap extends DataFlow::FlowLabel {
-    PartiallySensitiveMap() { this = "PartiallySensitiveMap" }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
