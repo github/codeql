@@ -37,4 +37,7 @@ import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing
 import semmle.go.frameworks.WebSocket
 import semmle.go.frameworks.XPath
+import semmle.go.frameworks.thirdpartlib.HTTP
+import semmle.go.frameworks.thirdpartlib.SQL
+import semmle.go.frameworks.thirdpartlib.Encoding
 import semmle.go.security.FlowSources
