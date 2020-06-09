@@ -21,12 +21,7 @@ module BuildArtifactLeak {
    */
   class WebpackDefinePluginSink extends Sink {
     WebpackDefinePluginSink() {
-      this =
-        DataFlow::moduleMember("webpack", "DefinePlugin")
-            .getAnInstantiation()
-            .getAnArgument()
-            .getALocalSource()
-            .getAPropertySource()
+      this = DataFlow::moduleMember("webpack", "DefinePlugin").getAnInstantiation().getAnArgument()
     }
   }
 }
