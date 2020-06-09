@@ -13,6 +13,7 @@ import semmle.code.cpp.ir.IR
  * has the AST for the `Function` itself, which tends to confuse mapping between the AST `BasicBlock`
  * and the `IRBlock`.
  */
+pragma[noinline]
 private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
@@ -405,16 +406,37 @@ class IRGuardCondition extends Instruction {
    */
   private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
     not isUnreachedBlock(controlled) and
-    exists(IRBlock branchBlock | branchBlock.getAnInstruction() = branch |
-      exists(IRBlock succ |
-        this.hasBranchEdge(succ, testIsTrue) and
-        succ.dominates(controlled) and
-        forall(IRBlock pred | pred.getASuccessor() = succ |
-          pred = branchBlock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry()
-        )
+    // The following implementation is ported from `controls` in Java's
+    // `Guards.qll`. See that file (at 398678a28) for further explanation and
+    // correctness arguments.
+    exists(IRBlock succ |
+      this.hasBranchEdge(succ, testIsTrue) and
+      this.hasDominatingEdgeTo(succ) and
+      succ.dominates(controlled)
+    )
+  }
+
+  /**
+   * Holds if `(this, succ)` is an edge that dominates `succ`, that is, all other
+   * predecessors of `succ` are dominated by `succ`. This implies that `this` is the
+   * immediate dominator of `succ`.
+   *
+   * This is a necessary and sufficient condition for an edge to dominate anything,
+   * and in particular `bb1.hasDominatingEdgeTo(bb2) and bb2.dominates(bb3)` means
+   * that the edge `(bb1, bb2)` dominates `bb3`.
+   */
+  private predicate hasDominatingEdgeTo(IRBlock succ) {
+    exists(IRBlock branchBlock | branchBlock = this.getBranchBlock() |
+      branchBlock.immediatelyDominates(succ) and
+      branchBlock.getASuccessor() = succ and
+      forall(IRBlock pred | pred = succ.getAPredecessor() and pred != branchBlock |
+        succ.dominates(pred)
       )
     )
   }
+
+  pragma[noinline]
+  private IRBlock getBranchBlock() { result = branch.getBlock() }
 }
 
 private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
