@@ -4,15 +4,35 @@ import collections.abc
 def test(*args):
     pass
 
+class MySequenceABC(collections.abc.Sequence):
+    pass
+
+class MyMappingABC(collections.abc.Mapping):
+    pass
+
+class MySequenceImpl(object):
+    def __getitem__(self, key):
+        pass
+
+    def __len__(self):
+        pass
+
+class MyDictSubclass(dict):
+    pass
+
 test(
     list,
     tuple,
     str,
     bytes,
+    MySequenceABC,
+    MySequenceImpl,
     set,
     dict,
     OrderedDict,
     defaultdict,
+    MyMappingABC,
+    MyDictSubclass,
 )
 
 for seq_cls in (list, tuple, str, bytes):
