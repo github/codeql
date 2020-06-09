@@ -20,7 +20,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.1.1/codeql.zip -L -o codeql.zip
+        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.2.0/codeql.zip -L -o codeql.zip
         echo "Done"
         echo "Unpacking CodeQL CLI..."
         unzip -q codeql.zip
@@ -32,6 +32,9 @@ jobs:
 
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
+
+    - name: Check that all QL code is autoformatted
+      run: env PATH=$PATH:$HOME/codeql make AUTOFORMAT=--check-only autoformat
 
     - name: Test
       run: env PATH=$PATH:$HOME/codeql make test
@@ -53,7 +56,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.1.1/codeql.zip -L -o codeql.zip
+        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.2.0/codeql.zip -L -o codeql.zip
         echo "Done"
         echo "Unpacking CodeQL CLI..."
         unzip -q codeql.zip
@@ -86,7 +89,7 @@ jobs:
         echo "Done"
         cd "$HOME"
         echo "Downloading CodeQL CLI..."
-        Invoke-WebRequest -Uri https://github.com/github/codeql-cli-binaries/releases/download/v2.1.1/codeql.zip -OutFile codeql.zip
+        Invoke-WebRequest -Uri https://github.com/github/codeql-cli-binaries/releases/download/v2.2.0/codeql.zip -OutFile codeql.zip
         echo "Done"
         echo "Unpacking CodeQL CLI..."
         Expand-Archive codeql.zip -DestinationPath $HOME

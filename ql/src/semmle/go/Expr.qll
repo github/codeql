@@ -1559,7 +1559,7 @@ class SimpleName extends Name, Ident { }
  * ```go
  * fmt.Println
  * ```
-*/
+ */
 class QualifiedName extends Name, SelectorExpr { }
 
 /**
@@ -1769,7 +1769,7 @@ private predicate isTypeExprTopDown(Expr e) {
  *
  * ```go
  * int
- * func 
+ * func
  * ```
  */
 class TypeExpr extends Expr {

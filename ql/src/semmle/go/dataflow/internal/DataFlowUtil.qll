@@ -330,7 +330,8 @@ class CallNode extends ExprNode {
   /**
    * Gets the data-flow node corresponding to the `i`th result of this call.
    *
-   * If there is a single result then it is considered to be the 0th result. */
+   * If there is a single result then it is considered to be the 0th result.
+   */
   Node getResult(int i) {
     i = 0 and result = getResult()
     or
