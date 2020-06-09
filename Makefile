@@ -20,12 +20,17 @@ EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 
 BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap go-gen-dbscheme
 
-.PHONY: tools tools-codeql tools-codeql-full clean \
+.PHONY: tools tools-codeql tools-codeql-full clean autoformat \
 	tools-linux64 tools-osx64 tools-win64
 
 clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
+
+AUTOFORMAT=-qq -i
+
+autoformat:
+	find ql/src -name *.ql -or -name *.qll | xargs codeql query format $(AUTOFORMAT)
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
