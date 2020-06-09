@@ -31,3 +31,27 @@ cp.exec("cmd.sh " + require("get-them-args")().foo); // NOT OK
 cp.exec("cmd.sh " + require("minimist")().foo); // NOT OK
 cp.exec("cmd.sh " + require("yargs").argv.foo); // NOT OK
 cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
+
+(function () {
+	var args = require('yargs') // eslint-disable-line
+		.command('serve [port]', 'start the server', (yargs) => { })
+		.option('verbose', { foo: "bar" })
+		.argv
+
+	cp.exec("cmd.sh " + args); // NOT OK
+
+	cp.exec("cmd.sh " + require("yargs").array("foo").parse().foo); // NOT OK
+});
+
+(function () {
+	const {
+		argv: {
+			...args
+		},
+	} = require('yargs')
+		.usage('Usage: foo bar')
+		.command();
+
+	cp.exec("cmd.sh " + args); // NOT OK - but not flagged yet. 
+});
+
