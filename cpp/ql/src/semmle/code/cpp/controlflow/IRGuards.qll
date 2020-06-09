@@ -407,11 +407,7 @@ class IRGuardCondition extends Instruction {
     not isUnreachedBlock(controlled) and
     exists(IRBlock branchBlock | branchBlock.getAnInstruction() = branch |
       exists(IRBlock succ |
-        testIsTrue = true and succ.getFirstInstruction() = branch.getTrueSuccessor()
-        or
-        testIsTrue = false and succ.getFirstInstruction() = branch.getFalseSuccessor()
-      |
-        branch.getCondition() = this and
+        this.hasBranchEdge(succ, testIsTrue) and
         succ.dominates(controlled) and
         forall(IRBlock pred | pred.getASuccessor() = succ |
           pred = branchBlock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry()
