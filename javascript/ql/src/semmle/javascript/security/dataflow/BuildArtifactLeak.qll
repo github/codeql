@@ -9,6 +9,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for storage of sensitive information in build artifact query.
+ */
 module BuildArtifactLeak {
   import BuildArtifactLeakCustomizations::BuildArtifactLeak
   import CleartextLoggingCustomizations::CleartextLogging as CleartextLogging
@@ -27,7 +30,9 @@ module BuildArtifactLeak {
       sink.(Sink).getLabel() = lbl
     }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof CleartextLogging::Barrier }
+    override predicate isSanitizer(DataFlow::Node node) {
+      node instanceof CleartextLogging::Barrier
+    }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       CleartextLogging::isSanitizerEdge(pred, succ)
