@@ -82,20 +82,19 @@ File tryExtensions(Folder dir, string basename, int priority) {
  * Gets the main module described by `pkg` with the given `priority`.
  */
 File resolveMainModule(PackageJSON pkg, int priority) {
-  if exists(MainModulePath::of(pkg))
-  then
-    exists(PathExpr main | main = MainModulePath::of(pkg) |
-      result = main.resolve() and priority = 0
-      or
-      result = tryExtensions(main.resolve(), "index", priority)
-      or
-      not exists(main.resolve()) and
-      not exists(main.getExtension()) and
-      exists(int n | n = main.getNumComponent() |
-        result = tryExtensions(main.resolveUpTo(n - 1), main.getComponent(n - 1), priority)
-      )
+  exists(PathExpr main | main = MainModulePath::of(pkg) |
+    result = main.resolve() and priority = 0
+    or
+    result = tryExtensions(main.resolve(), "index", priority)
+    or
+    not exists(main.resolve()) and
+    not exists(main.getExtension()) and
+    exists(int n | n = main.getNumComponent() |
+      result = tryExtensions(main.resolveUpTo(n - 1), main.getComponent(n - 1), priority)
     )
-  else result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority)
+  )
+  or
+  result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority - prioritiesPerCandidate())
 }
 
 /**
