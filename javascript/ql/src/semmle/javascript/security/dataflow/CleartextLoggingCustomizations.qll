@@ -196,6 +196,22 @@ module CleartextLogging {
       trg.(DataFlow::SourceNode).flowsTo(write.getBase())
     )
     or
+    // A property-copy step,
+    exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+      read = write.getRhs()
+      or
+      exists(DataFlow::MethodCallNode stringify |
+        stringify = write.getRhs() and
+        stringify = DataFlow::globalVarRef("JSON").getAMethodCall("stringify") and
+        stringify.getArgument(0) = read
+      )
+    |
+      exists(write.getPropertyNameExpr()) and
+      exists(read.getPropertyNameExpr()) and
+      src = read.getBase() and
+      trg = write.getBase().getALocalSource()
+    )
+    or
     // Taint through the arguments object.
     exists(DataFlow::CallNode call, Function f |
       src = call.getAnArgument() and
