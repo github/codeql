@@ -1,0 +1,7 @@
+| bad-random.js:3:11:3:61 | crypto. ... s(1)[0] | Using addition on cryptographically random numbers produces biased results. |
+| bad-random.js:4:11:4:61 | crypto. ... s(1)[0] | Using multiplication on cryptographically random numbers produces biased results. |
+| bad-random.js:9:28:9:43 | buffer[i] / 25.6 | Using division on cryptographically random numbers produces biased results. |
+| bad-random.js:11:17:11:31 | buffer[i] % 100 | Using modulo on cryptographically random numbers produces biased results. |
+| bad-random.js:14:11:14:63 | Number( ... (0, 3)) | Using string concatenation on cryptographically random numbers produces biased results. |
+| bad-random.js:73:32:73:42 | byte / 25.6 | Using division on cryptographically random numbers produces biased results. |
+| bad-random.js:75:21:75:30 | byte % 100 | Using modulo on cryptographically random numbers produces biased results. |
