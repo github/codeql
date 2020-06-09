@@ -318,7 +318,7 @@ module DataFlow {
   /**
    * A node in the data flow graph which corresponds to a `@property`.
    */
-  private class PropNode extends Node, TPropNode {
+  class PropNode extends Node, TPropNode {
     @property prop;
 
     PropNode() { this = TPropNode(prop) }
@@ -1345,11 +1345,6 @@ module DataFlow {
     exists(PropertyPattern pattern |
       pred = TPropNode(pattern) and
       succ = lvalueNode(pattern.getValuePattern())
-    )
-    or
-    exists(PropertyPattern pattern | 
-      pred = TPropNode(pattern) and
-      succ = lvalueNode(pattern.getValuePattern().(ObjectPattern).getRest())
     )
     or
     exists(Expr element |

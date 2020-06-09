@@ -267,6 +267,12 @@ module TaintTracking {
       pred = DataFlow::valueNode(fos.getIterationDomain()) and
       succ = DataFlow::lvalueNode(fos.getLValue())
     )
+    or
+    // rest-pattern inside a propety pattern. E.g. from `foo:..` to `args` in `const {foo: {...args}} = something()`.
+    exists(PropertyPattern pattern |
+      pred.(DataFlow::PropNode).getAstNode() = pattern and
+      succ = DataFlow::lvalueNode(pattern.getValuePattern().(ObjectPattern).getRest())
+    )
   }
 
   /**
