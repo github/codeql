@@ -1,8 +1,8 @@
-| mapping | builtin-class collections.defaultdict |
-| mapping | builtin-class dict |
 | neither sequence nor mapping | builtin-class set |
 | sequence | builtin-class bytes |
 | sequence | builtin-class collections.OrderedDict |
+| sequence | builtin-class collections.defaultdict |
+| sequence | builtin-class dict |
 | sequence | builtin-class list |
 | sequence | builtin-class str |
 | sequence | builtin-class tuple |
