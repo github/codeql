@@ -42,7 +42,7 @@ class Comment extends @comment, AstNode {
  * // a line comment
  * /* a block
  *   comment *&#47
-* 
+ *
  * /* a block
  * comment *&#47
  * /* another block comment *&#47
@@ -71,7 +71,7 @@ class CommentGroup extends @comment_group, AstNode {
  * ```go
  * // function documentation
  * func double(x int) int { return 2 * x }
- * 
+ *
  * // generic declaration documentation
  * const (
  *   // specifier documentation
@@ -93,7 +93,7 @@ class Documentable extends AstNode, @documentable {
  * ```go
  * // function documentation
  * func double(x int) int { return 2 * x }
- * 
+ *
  * // generic declaration documentation
  * const (
  *   // specifier documentation
