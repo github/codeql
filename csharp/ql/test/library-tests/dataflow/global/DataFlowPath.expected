@@ -1,46 +1,26 @@
 edges
-| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:14:9:14:20 | [implicit argument] tainted : String |
-| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:25:9:25:20 | [implicit argument] tainted : String |
-| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:33:9:33:40 | [implicit argument] tainted : String |
+| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:12:19:12:24 | access to local variable sink27 |
+| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:21:23:21:28 | access to local variable sink28 |
+| Capture.cs:7:20:7:26 | tainted : String | Capture.cs:30:19:30:24 | access to local variable sink29 |
 | Capture.cs:7:20:7:26 | tainted : String | Capture.cs:61:36:61:42 | access to parameter tainted : String |
-| Capture.cs:9:9:13:9 | SSA capture def(tainted) : String | Capture.cs:12:19:12:24 | access to local variable sink27 |
-| Capture.cs:14:9:14:20 | [implicit argument] tainted : String | Capture.cs:9:9:13:9 | SSA capture def(tainted) : String |
-| Capture.cs:18:13:22:13 | SSA capture def(tainted) : String | Capture.cs:21:23:21:28 | access to local variable sink28 |
-| Capture.cs:25:9:25:20 | [implicit argument] tainted : String | Capture.cs:18:13:22:13 | SSA capture def(tainted) : String |
-| Capture.cs:27:43:32:9 | SSA capture def(tainted) : String | Capture.cs:30:19:30:24 | access to local variable sink29 |
-| Capture.cs:33:9:33:40 | [implicit argument] tainted : String | Capture.cs:27:43:32:9 | SSA capture def(tainted) : String |
-| Capture.cs:50:50:50:55 | sink39 : String | Capture.cs:52:13:59:14 | [implicit argument] sink39 : String |
-| Capture.cs:52:13:59:14 | [implicit argument] sink39 : String | Capture.cs:55:27:58:17 | SSA capture def(sink39) : String |
-| Capture.cs:55:27:58:17 | SSA capture def(sink39) : String | Capture.cs:57:27:57:32 | access to parameter sink39 |
+| Capture.cs:50:50:50:55 | sink39 : String | Capture.cs:57:27:57:32 | access to parameter sink39 |
 | Capture.cs:61:36:61:42 | access to parameter tainted : String | Capture.cs:50:50:50:55 | sink39 : String |
-| Capture.cs:69:13:69:35 | SSA def(sink30) : String | Capture.cs:71:9:71:21 | SSA call def(sink30) : String |
+| Capture.cs:69:13:69:35 | SSA def(sink30) : String | Capture.cs:72:15:72:20 | access to local variable sink30 |
 | Capture.cs:69:22:69:35 | "taint source" : String | Capture.cs:69:13:69:35 | SSA def(sink30) : String |
-| Capture.cs:71:9:71:21 | SSA call def(sink30) : String | Capture.cs:72:15:72:20 | access to local variable sink30 |
-| Capture.cs:79:17:79:39 | SSA def(sink31) : String | Capture.cs:83:9:83:21 | SSA call def(sink31) : String |
+| Capture.cs:79:17:79:39 | SSA def(sink31) : String | Capture.cs:84:15:84:20 | access to local variable sink31 |
 | Capture.cs:79:26:79:39 | "taint source" : String | Capture.cs:79:17:79:39 | SSA def(sink31) : String |
-| Capture.cs:83:9:83:21 | SSA call def(sink31) : String | Capture.cs:84:15:84:20 | access to local variable sink31 |
-| Capture.cs:89:13:89:35 | SSA def(sink32) : String | Capture.cs:92:9:92:41 | SSA call def(sink32) : String |
+| Capture.cs:89:13:89:35 | SSA def(sink32) : String | Capture.cs:93:15:93:20 | access to local variable sink32 |
 | Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:89:13:89:35 | SSA def(sink32) : String |
-| Capture.cs:92:9:92:41 | SSA call def(sink32) : String | Capture.cs:93:15:93:20 | access to local variable sink32 |
-| Capture.cs:115:17:115:39 | SSA def(sink40) : String | Capture.cs:121:9:121:35 | SSA call def(sink40) : String |
+| Capture.cs:115:17:115:39 | SSA def(sink40) : String | Capture.cs:122:15:122:20 | access to local variable sink40 |
 | Capture.cs:115:26:115:39 | "taint source" : String | Capture.cs:115:17:115:39 | SSA def(sink40) : String |
-| Capture.cs:121:9:121:35 | SSA call def(sink40) : String | Capture.cs:122:15:122:20 | access to local variable sink40 |
-| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:132:9:132:25 | [implicit argument] tainted : String |
-| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:144:9:144:25 | [implicit argument] tainted : String |
-| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:153:9:153:45 | [implicit argument] tainted : String |
-| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:160:22:160:38 | [implicit argument] tainted : String |
+| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:133:15:133:20 | access to local variable sink33 |
+| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:145:15:145:20 | access to local variable sink34 |
+| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:154:15:154:20 | access to local variable sink35 |
+| Capture.cs:125:25:125:31 | tainted : String | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 : String |
 | Capture.cs:125:25:125:31 | tainted : String | Capture.cs:168:25:168:31 | access to parameter tainted : String |
 | Capture.cs:125:25:125:31 | tainted : String | Capture.cs:194:25:194:31 | access to parameter tainted : String |
-| Capture.cs:132:9:132:25 | SSA call def(sink33) : String | Capture.cs:133:15:133:20 | access to local variable sink33 |
-| Capture.cs:132:9:132:25 | [implicit argument] tainted : String | Capture.cs:132:9:132:25 | SSA call def(sink33) : String |
-| Capture.cs:144:9:144:25 | SSA call def(sink34) : String | Capture.cs:145:15:145:20 | access to local variable sink34 |
-| Capture.cs:144:9:144:25 | [implicit argument] tainted : String | Capture.cs:144:9:144:25 | SSA call def(sink34) : String |
-| Capture.cs:153:9:153:45 | SSA call def(sink35) : String | Capture.cs:154:15:154:20 | access to local variable sink35 |
-| Capture.cs:153:9:153:45 | [implicit argument] tainted : String | Capture.cs:153:9:153:45 | SSA call def(sink35) : String |
-| Capture.cs:160:22:160:38 | [implicit argument] tainted : String | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 : String |
 | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 : String | Capture.cs:161:15:161:20 | access to local variable sink36 |
-| Capture.cs:168:9:168:32 | SSA call def(sink37) : String | Capture.cs:169:15:169:20 | access to local variable sink37 |
-| Capture.cs:168:25:168:31 | access to parameter tainted : String | Capture.cs:168:9:168:32 | SSA call def(sink37) : String |
+| Capture.cs:168:25:168:31 | access to parameter tainted : String | Capture.cs:169:15:169:20 | access to local variable sink37 |
 | Capture.cs:194:22:194:32 | call to local function Id : String | Capture.cs:195:15:195:20 | access to local variable sink38 |
 | Capture.cs:194:25:194:31 | access to parameter tainted : String | Capture.cs:194:22:194:32 | call to local function Id : String |
 | GlobalDataFlow.cs:17:27:17:40 | "taint source" : String | GlobalDataFlow.cs:18:15:18:29 | access to field SinkField0 |
@@ -149,10 +129,8 @@ edges
 | GlobalDataFlow.cs:163:22:163:43 | call to method TaintedParam : String | GlobalDataFlow.cs:164:15:164:20 | access to local variable sink23 |
 | GlobalDataFlow.cs:179:35:179:48 | "taint source" : String | GlobalDataFlow.cs:180:21:180:26 | delegate call : String |
 | GlobalDataFlow.cs:180:21:180:26 | delegate call : String | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 |
-| GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String | GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String |
 | GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String | GlobalDataFlow.cs:189:22:189:48 | access to property Value : String |
 | GlobalDataFlow.cs:189:22:189:48 | access to property Value : String | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 |
-| GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String | GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String |
 | GlobalDataFlow.cs:197:22:197:32 | access to property OutProperty : String | GlobalDataFlow.cs:198:15:198:20 | access to local variable sink19 |
 | GlobalDataFlow.cs:236:26:236:35 | sinkParam0 : String | GlobalDataFlow.cs:238:16:238:25 | access to parameter sinkParam0 : String |
 | GlobalDataFlow.cs:236:26:236:35 | sinkParam0 : String | GlobalDataFlow.cs:239:15:239:24 | access to parameter sinkParam0 |
@@ -164,7 +142,7 @@ edges
 | GlobalDataFlow.cs:262:26:262:35 | sinkParam6 : String | GlobalDataFlow.cs:264:15:264:24 | access to parameter sinkParam6 |
 | GlobalDataFlow.cs:267:26:267:35 | sinkParam7 : String | GlobalDataFlow.cs:269:15:269:24 | access to parameter sinkParam7 |
 | GlobalDataFlow.cs:320:16:320:29 | "taint source" : String | GlobalDataFlow.cs:153:21:153:25 | call to method Out : String |
-| GlobalDataFlow.cs:320:16:320:29 | "taint source" : String | GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String |
+| GlobalDataFlow.cs:320:16:320:29 | "taint source" : String | GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String |
 | GlobalDataFlow.cs:325:9:325:26 | SSA def(x) : String | GlobalDataFlow.cs:156:20:156:24 | SSA def(sink7) : String |
 | GlobalDataFlow.cs:325:13:325:26 | "taint source" : String | GlobalDataFlow.cs:325:9:325:26 | SSA def(x) : String |
 | GlobalDataFlow.cs:330:9:330:26 | SSA def(x) : String | GlobalDataFlow.cs:159:20:159:24 | SSA def(sink8) : String |
@@ -205,50 +183,30 @@ edges
 | Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String |
 nodes
 | Capture.cs:7:20:7:26 | tainted : String | semmle.label | tainted : String |
-| Capture.cs:9:9:13:9 | SSA capture def(tainted) : String | semmle.label | SSA capture def(tainted) : String |
 | Capture.cs:12:19:12:24 | access to local variable sink27 | semmle.label | access to local variable sink27 |
-| Capture.cs:14:9:14:20 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
-| Capture.cs:18:13:22:13 | SSA capture def(tainted) : String | semmle.label | SSA capture def(tainted) : String |
 | Capture.cs:21:23:21:28 | access to local variable sink28 | semmle.label | access to local variable sink28 |
-| Capture.cs:25:9:25:20 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
-| Capture.cs:27:43:32:9 | SSA capture def(tainted) : String | semmle.label | SSA capture def(tainted) : String |
 | Capture.cs:30:19:30:24 | access to local variable sink29 | semmle.label | access to local variable sink29 |
-| Capture.cs:33:9:33:40 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
 | Capture.cs:50:50:50:55 | sink39 : String | semmle.label | sink39 : String |
-| Capture.cs:52:13:59:14 | [implicit argument] sink39 : String | semmle.label | [implicit argument] sink39 : String |
-| Capture.cs:55:27:58:17 | SSA capture def(sink39) : String | semmle.label | SSA capture def(sink39) : String |
 | Capture.cs:57:27:57:32 | access to parameter sink39 | semmle.label | access to parameter sink39 |
 | Capture.cs:61:36:61:42 | access to parameter tainted : String | semmle.label | access to parameter tainted : String |
 | Capture.cs:69:13:69:35 | SSA def(sink30) : String | semmle.label | SSA def(sink30) : String |
 | Capture.cs:69:22:69:35 | "taint source" : String | semmle.label | "taint source" : String |
-| Capture.cs:71:9:71:21 | SSA call def(sink30) : String | semmle.label | SSA call def(sink30) : String |
 | Capture.cs:72:15:72:20 | access to local variable sink30 | semmle.label | access to local variable sink30 |
 | Capture.cs:79:17:79:39 | SSA def(sink31) : String | semmle.label | SSA def(sink31) : String |
 | Capture.cs:79:26:79:39 | "taint source" : String | semmle.label | "taint source" : String |
-| Capture.cs:83:9:83:21 | SSA call def(sink31) : String | semmle.label | SSA call def(sink31) : String |
 | Capture.cs:84:15:84:20 | access to local variable sink31 | semmle.label | access to local variable sink31 |
 | Capture.cs:89:13:89:35 | SSA def(sink32) : String | semmle.label | SSA def(sink32) : String |
 | Capture.cs:89:22:89:35 | "taint source" : String | semmle.label | "taint source" : String |
-| Capture.cs:92:9:92:41 | SSA call def(sink32) : String | semmle.label | SSA call def(sink32) : String |
 | Capture.cs:93:15:93:20 | access to local variable sink32 | semmle.label | access to local variable sink32 |
 | Capture.cs:115:17:115:39 | SSA def(sink40) : String | semmle.label | SSA def(sink40) : String |
 | Capture.cs:115:26:115:39 | "taint source" : String | semmle.label | "taint source" : String |
-| Capture.cs:121:9:121:35 | SSA call def(sink40) : String | semmle.label | SSA call def(sink40) : String |
 | Capture.cs:122:15:122:20 | access to local variable sink40 | semmle.label | access to local variable sink40 |
 | Capture.cs:125:25:125:31 | tainted : String | semmle.label | tainted : String |
-| Capture.cs:132:9:132:25 | SSA call def(sink33) : String | semmle.label | SSA call def(sink33) : String |
-| Capture.cs:132:9:132:25 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
 | Capture.cs:133:15:133:20 | access to local variable sink33 | semmle.label | access to local variable sink33 |
-| Capture.cs:144:9:144:25 | SSA call def(sink34) : String | semmle.label | SSA call def(sink34) : String |
-| Capture.cs:144:9:144:25 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
 | Capture.cs:145:15:145:20 | access to local variable sink34 | semmle.label | access to local variable sink34 |
-| Capture.cs:153:9:153:45 | SSA call def(sink35) : String | semmle.label | SSA call def(sink35) : String |
-| Capture.cs:153:9:153:45 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
 | Capture.cs:154:15:154:20 | access to local variable sink35 | semmle.label | access to local variable sink35 |
-| Capture.cs:160:22:160:38 | [implicit argument] tainted : String | semmle.label | [implicit argument] tainted : String |
 | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 : String | semmle.label | call to local function CaptureThrough4 : String |
 | Capture.cs:161:15:161:20 | access to local variable sink36 | semmle.label | access to local variable sink36 |
-| Capture.cs:168:9:168:32 | SSA call def(sink37) : String | semmle.label | SSA call def(sink37) : String |
 | Capture.cs:168:25:168:31 | access to parameter tainted : String | semmle.label | access to parameter tainted : String |
 | Capture.cs:169:15:169:20 | access to local variable sink37 | semmle.label | access to local variable sink37 |
 | Capture.cs:194:22:194:32 | call to local function Id : String | semmle.label | call to local function Id : String |
@@ -303,10 +261,8 @@ nodes
 | GlobalDataFlow.cs:179:35:179:48 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:180:21:180:26 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:181:15:181:19 | access to local variable sink9 | semmle.label | access to local variable sink9 |
-| GlobalDataFlow.cs:189:22:189:42 | [library code] object creation of type Lazy<String> : String | semmle.label | [library code] object creation of type Lazy<String> : String |
 | GlobalDataFlow.cs:189:22:189:42 | object creation of type Lazy<String> [Value] : String | semmle.label | object creation of type Lazy<String> [Value] : String |
 | GlobalDataFlow.cs:189:22:189:48 | access to property Value : String | semmle.label | access to property Value : String |
-| GlobalDataFlow.cs:189:39:189:41 | [output] delegate creation of type Func<String> : String | semmle.label | [output] delegate creation of type Func<String> : String |
 | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 | semmle.label | access to local variable sink10 |
 | GlobalDataFlow.cs:197:22:197:32 | access to property OutProperty : String | semmle.label | access to property OutProperty : String |
 | GlobalDataFlow.cs:198:15:198:20 | access to local variable sink19 | semmle.label | access to local variable sink19 |

@@ -1679,3 +1679,26 @@ predicate isImmutableOrUnobservable(Node n) { none() }
 
 pragma[inline]
 DataFlowType getErasedRepr(DataFlowType t) { result = t }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) {
+  exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
+    def instanceof Ssa::PseudoDefinition
+    or
+    def instanceof Ssa::ImplicitEntryDefinition
+    or
+    def instanceof Ssa::ImplicitCallDefinition
+  )
+  or
+  n instanceof YieldReturnNode
+  or
+  n instanceof ImplicitCapturedArgumentNode
+  or
+  n instanceof ImplicitDelegateOutNode
+  or
+  n instanceof ImplicitDelegateArgumentNode
+  or
+  n instanceof MallocNode
+  or
+  n instanceof LibraryCodeNode
+}

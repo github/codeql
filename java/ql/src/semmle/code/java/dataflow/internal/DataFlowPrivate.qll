@@ -338,3 +338,6 @@ int accessPathLimit() { result = 5 }
 predicate isImmutableOrUnobservable(Node n) {
   n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
