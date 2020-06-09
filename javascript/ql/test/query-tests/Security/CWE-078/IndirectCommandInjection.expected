@@ -79,7 +79,7 @@ nodes
 | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() |
 | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() |
 | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo |
-| command-line-parameter-command-injection.js:48:3:50:3 | args |
+| command-line-parameter-command-injection.js:47:8:53:12 | args |
 | command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} |
 | command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} |
 | command-line-parameter-command-injection.js:55:10:55:25 | "cmd.sh " + args |
@@ -155,9 +155,9 @@ edges
 | command-line-parameter-command-injection.js:43:22:43:58 | require ... parse() | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo |
 | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
 | command-line-parameter-command-injection.js:43:22:43:62 | require ... e().foo | command-line-parameter-command-injection.js:43:10:43:62 | "cmd.sh ... e().foo |
-| command-line-parameter-command-injection.js:48:3:50:3 | args | command-line-parameter-command-injection.js:55:22:55:25 | args |
-| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:48:3:50:3 | args |
-| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:48:3:50:3 | args |
+| command-line-parameter-command-injection.js:47:8:53:12 | args | command-line-parameter-command-injection.js:55:22:55:25 | args |
+| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:47:8:53:12 | args |
+| command-line-parameter-command-injection.js:48:3:50:3 | argv: { ... rgs\\n\\t\\t} | command-line-parameter-command-injection.js:47:8:53:12 | args |
 | command-line-parameter-command-injection.js:55:22:55:25 | args | command-line-parameter-command-injection.js:55:10:55:25 | "cmd.sh " + args |
 | command-line-parameter-command-injection.js:55:22:55:25 | args | command-line-parameter-command-injection.js:55:10:55:25 | "cmd.sh " + args |
 #select

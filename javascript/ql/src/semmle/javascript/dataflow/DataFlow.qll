@@ -1347,6 +1347,11 @@ module DataFlow {
       succ = lvalueNode(pattern.getValuePattern())
     )
     or
+    exists(PropertyPattern pattern | 
+      pred = TPropNode(pattern) and
+      succ = lvalueNode(pattern.getValuePattern().(ObjectPattern).getRest())
+    )
+    or
     exists(Expr element |
       pred = TElementPatternNode(_, element) and
       succ = lvalueNode(element)
@@ -1384,11 +1389,6 @@ module DataFlow {
     exists(SsaVariable v |
       pred = TSsaDefNode(v.getDefinition()) and
       succ = valueNode(v.getAUse())
-    )
-    or
-    exists(SsaExplicitDefinition def |
-      pred.getAstNode() = def.getDef() and
-      succ = TSsaDefNode(def)
     )
     or
     exists(Expr predExpr, Expr succExpr |
