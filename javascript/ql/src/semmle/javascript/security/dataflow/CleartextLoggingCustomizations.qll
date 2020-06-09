@@ -197,6 +197,8 @@ module CleartextLogging {
     )
     or
     // A property-copy step,
+    // dst[x] = src[x]
+    // dst[x] = JSON.stringify(src[x])
     exists(DataFlow::PropWrite write, DataFlow::PropRead read |
       read = write.getRhs()
       or

@@ -40,7 +40,7 @@ module ArrayTaintTracking {
       succ = call
     )
     or
-    // `arary.reduce` with tainted value in callback
+    // `array.reduce` with tainted value in callback
     call.(DataFlow::MethodCallNode).getMethodName() = "reduce" and
     pred = call.getArgument(0).(DataFlow::FunctionNode).getAReturn() and // Require the argument to be a closure to avoid spurious call/return flow
     succ = call
