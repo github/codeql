@@ -85,6 +85,12 @@ private predicate defn(ControlFlowNode def, Expr lhs) {
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and not exists(member.getInitializer())
   )
+  or
+  exists(PropertyPattern prop, ObjectPattern obj, Expr rest |
+    prop.getValuePattern() = obj and obj.getRest() = rest
+  |
+    lhs = rest and def = prop
+  )
 }
 
 /**

@@ -52,6 +52,6 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 		.usage('Usage: foo bar')
 		.command();
 
-	cp.exec("cmd.sh " + args); // NOT OK - but not flagged yet. 
+	cp.exec("cmd.sh " + args); // NOT OK
 });
 

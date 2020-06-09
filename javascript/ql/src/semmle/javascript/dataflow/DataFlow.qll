@@ -1386,6 +1386,11 @@ module DataFlow {
       succ = valueNode(v.getAUse())
     )
     or
+    exists(SsaExplicitDefinition def |
+      pred.getAstNode() = def.getDef() and
+      succ = TSsaDefNode(def)
+    )
+    or
     exists(Expr predExpr, Expr succExpr |
       pred = valueNode(predExpr) and succ = valueNode(succExpr)
     |
