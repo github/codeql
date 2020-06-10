@@ -498,7 +498,7 @@ namespace IntWrapper
 		int data;
 
 		Class() = default;
-
+		Class(Class&&) = default;
 		Class(const Class &that) : data(that.data) {}
 
 		Class &operator=(const Class &that)
@@ -526,7 +526,7 @@ namespace IntWrapper
 	}
 } // namespace IntWrapper
 
-// using std::swap;
+
 
 void test_copy_assignment_operator() {
 	IntWrapper::Class x;
