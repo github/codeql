@@ -94,7 +94,8 @@ File resolveMainModule(PackageJSON pkg, int priority) {
     )
   )
   or
-  result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority - prioritiesPerCandidate())
+  result =
+    tryExtensions(pkg.getFile().getParentContainer(), "index", priority - prioritiesPerCandidate())
 }
 
 /**
