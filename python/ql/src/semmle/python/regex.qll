@@ -124,16 +124,40 @@ abstract class RegexString extends Expr {
         )
     }
 
+    /** Named unicode characters, eg \N{degree sign} */
+    private predicate escapedName(int start, int end) {
+        this.escapingChar(start) and
+        this.getChar(start + 1) = "N" and
+        this.getChar(start + 2) = "{" and
+        this.getChar(end - 1) = "}" and
+        end > start and
+        not exists(int i | start + 2 < i and i < end - 1 |
+            this.getChar(i) = "}"
+        )
+    }
+
     private predicate escapedCharacter(int start, int end) {
         this.escapingChar(start) and
         not exists(this.getText().substring(start + 1, end + 1).toInt()) and
         (
+            // hex value \xhh
             this.getChar(start + 1) = "x" and end = start + 4
             or
+            // octal value \ooo
             end in [start + 2 .. start + 4] and
             exists(this.getText().substring(start + 1, end).toInt())
             or
-            this.getChar(start + 1) != "x" and end = start + 2
+            // 16-bit hex value \uhhhh
+            this.getChar(start + 1) = "u" and end = start + 6
+            or
+            // 32-bit hex value \Uhhhhhhhh
+            this.getChar(start + 1) = "U" and end = start + 10
+            or
+            escapedName(start, end)
+            or
+            // escape not handled above, update when adding a new case
+            not this.getChar(start + 1) in ["x", "u", "U", "N"] and
+            end = start + 2
         )
     }
 
