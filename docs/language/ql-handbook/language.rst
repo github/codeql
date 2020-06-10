@@ -1760,7 +1760,7 @@ The following built-in predicates are members of type ``string``:
 | ``trim``             | string      |                  | The result is the receiver with all whitespace removed from the beginning and end of the string.                                                                                                                                                                                                                                                                                       |
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-Regular expressions are as defined by ``java.util.Pattern`` in Java.
+Regular expressions are as defined by ``java.util.regex.Pattern`` in Java.
 
 Evaluation
 ----------
