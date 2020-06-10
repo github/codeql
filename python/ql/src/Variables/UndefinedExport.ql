@@ -40,7 +40,7 @@ predicate mutates_globals(ModuleValue m) {
         (
             // In Python < 3.8, Enum._convert can be found with points-to
             exists(Value enum_convert |
-                enum_convert = enum_class.attr(["_convert"]) and
+                enum_convert = enum_class.attr("_convert") and
                 exists(CallNode call | call.getScope() = m.getScope() |
                     enum_convert.getACall() = call or
                     call.getFunction().pointsTo(enum_convert)
@@ -48,7 +48,7 @@ predicate mutates_globals(ModuleValue m) {
             )
             or
             // In Python 3.8, Enum._convert_ is implemented using a metaclass, and our points-to
-            // analysis doesn't handle that good enough. So we need special case for this
+            // analysis doesn't handle that well enough. So we need a special case for this
             not exists(Value enum_convert | enum_convert = enum_class.attr("_convert")) and
             exists(CallNode call | call.getScope() = m.getScope() |
                 call.getFunction().(AttrNode).getObject(["_convert", "_convert_"]).pointsTo() =
