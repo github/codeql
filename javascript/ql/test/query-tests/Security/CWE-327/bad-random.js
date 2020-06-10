@@ -75,3 +75,7 @@ function setSteps() {
         digits.push(byte % 100); // NOT OK
     }
 }
+
+const secureRandom = require("secure-random");
+
+var bad = secureRandom(10)[0] + secureRandom(10)[0]; // NOT OK

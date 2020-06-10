@@ -26,6 +26,10 @@ private DataFlow::SourceNode randomBufferSource() {
   )
   or
   result = DataFlow::globalVarRef("crypto").getAMethodCall("getRandomValues")
+  or
+  result = DataFlow::moduleImport("secure-random").getACall()
+  or
+  result = DataFlow::moduleImport("secure-random").getAMethodCall(["randomArray", "randomUint8Array", "randomBuffer"])
 }
 
 /**
