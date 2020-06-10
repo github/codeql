@@ -21,9 +21,9 @@
     <example>
         <p>In the example below, the xpath query is controlled by the user and hence leads to a vulnerability.</p>
         <sample src="xpathBad.py" />
-    </example>
         <p> This can be fixed by using a parameterized query as shown below.</p>
         <sample src="xpathGood.py" />
+    </example>
     <references>
         <li>OWASP XPath injection : <a href="https://owasp.org/www-community/attacks/XPATH_Injection"></a>/>> </li>
     </references>
