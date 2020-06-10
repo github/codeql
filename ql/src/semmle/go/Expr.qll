@@ -697,7 +697,9 @@ class ComplementExpr extends @complementexpr, BitwiseUnaryExpr {
 }
 
 /**
- * A unary pointer-dereference expression using `*`.
+ * A unary pointer-dereference expression.
+ *
+ * This class exists for compatibility reasons only and should not normally be used directly. Use `StarExpr` instead.
  */
 class DerefExpr extends @derefexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
