@@ -13,7 +13,10 @@
 | D.cpp:11:29:11:32 | this |
 | D.cpp:16:21:16:23 | this |
 | D.cpp:18:29:18:31 | this |
+| D.cpp:30:8:30:10 | box |
+| D.cpp:44:8:44:14 | call to getBox1 |
 | D.cpp:57:5:57:12 | this |
+| D.cpp:58:15:58:17 | box |
 | aliasing.cpp:9:3:9:3 | s |
 | aliasing.cpp:13:3:13:3 | s |
 | aliasing.cpp:17:3:17:3 | s |
@@ -37,7 +40,11 @@
 | qualifiers.cpp:9:30:9:33 | this |
 | qualifiers.cpp:12:49:12:53 | inner |
 | qualifiers.cpp:13:51:13:55 | inner |
+| qualifiers.cpp:22:11:22:18 | call to getInner |
+| qualifiers.cpp:42:6:42:22 | * ... |
+| qualifiers.cpp:47:15:47:22 | call to getInner |
 | simple.cpp:20:24:20:25 | this |
 | simple.cpp:21:24:21:25 | this |
 | simple.cpp:65:5:65:5 | a |
 | simple.cpp:83:9:83:10 | f2 |
+| simple.cpp:90:6:90:9 | * ... |

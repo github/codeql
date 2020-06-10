@@ -104,7 +104,6 @@
 | D.cpp:22:14:22:20 | call to getBox1 | AST only |
 | D.cpp:22:25:22:31 | call to getElem | AST only |
 | D.cpp:30:5:30:5 | b | AST only |
-| D.cpp:30:8:30:10 | box | AST only |
 | D.cpp:30:13:30:16 | elem | AST only |
 | D.cpp:31:14:31:14 | b | AST only |
 | D.cpp:37:5:37:5 | b | AST only |
@@ -112,7 +111,6 @@
 | D.cpp:37:21:37:21 | e | AST only |
 | D.cpp:38:14:38:14 | b | AST only |
 | D.cpp:44:5:44:5 | b | AST only |
-| D.cpp:44:8:44:14 | call to getBox1 | AST only |
 | D.cpp:44:19:44:22 | elem | AST only |
 | D.cpp:45:14:45:14 | b | AST only |
 | D.cpp:51:5:51:5 | b | AST only |
@@ -122,7 +120,6 @@
 | D.cpp:57:5:57:12 | boxfield | AST only |
 | D.cpp:58:5:58:12 | boxfield | AST only |
 | D.cpp:58:5:58:12 | this | AST only |
-| D.cpp:58:15:58:17 | box | AST only |
 | D.cpp:58:20:58:23 | elem | AST only |
 | D.cpp:59:5:59:7 | this | AST only |
 | D.cpp:64:10:64:17 | boxfield | AST only |
@@ -269,7 +266,6 @@
 | qualifiers.cpp:12:56:12:56 | a | AST only |
 | qualifiers.cpp:13:57:13:57 | a | AST only |
 | qualifiers.cpp:22:5:22:9 | outer | AST only |
-| qualifiers.cpp:22:11:22:18 | call to getInner | AST only |
 | qualifiers.cpp:22:23:22:23 | a | AST only |
 | qualifiers.cpp:23:10:23:14 | outer | AST only |
 | qualifiers.cpp:23:16:23:20 | inner | AST only |
@@ -292,14 +288,12 @@
 | qualifiers.cpp:38:10:38:14 | outer | AST only |
 | qualifiers.cpp:38:16:38:20 | inner | AST only |
 | qualifiers.cpp:38:23:38:23 | a | AST only |
-| qualifiers.cpp:42:6:42:22 | * ... | AST only |
 | qualifiers.cpp:42:7:42:11 | outer | AST only |
 | qualifiers.cpp:42:25:42:25 | a | AST only |
 | qualifiers.cpp:43:10:43:14 | outer | AST only |
 | qualifiers.cpp:43:16:43:20 | inner | AST only |
 | qualifiers.cpp:43:23:43:23 | a | AST only |
 | qualifiers.cpp:47:6:47:11 | & ... | AST only |
-| qualifiers.cpp:47:15:47:22 | call to getInner | AST only |
 | qualifiers.cpp:47:27:47:27 | a | AST only |
 | qualifiers.cpp:48:10:48:14 | outer | AST only |
 | qualifiers.cpp:48:16:48:20 | inner | AST only |
@@ -320,6 +314,8 @@
 | simple.cpp:83:9:83:10 | this | AST only |
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:84:14:84:20 | this | AST only |
+| simple.cpp:90:5:90:29 | * ... | IR only |
+| simple.cpp:90:13:90:14 | a_ | AST only |
 | struct_init.c:15:8:15:9 | ab | AST only |
 | struct_init.c:15:12:15:12 | a | AST only |
 | struct_init.c:16:8:16:9 | ab | AST only |
