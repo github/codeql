@@ -14,7 +14,7 @@
 // TODO: Proper customizations module, Source class Sink class etc.
 import javascript
 import DataFlow::PathGraph
-private import semmle.javascript.heuristics.AdditionalSinks
+private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 /**
@@ -58,7 +58,7 @@ private StringOps::ConcatenationLeaf sink() {
 
 private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
   t.start() and
-  result instanceof CodeInjection::Sink and
+  (result instanceof CodeInjection::Sink or result instanceof HeuristicCodeInjectionSink) and
   not result instanceof StringOps::ConcatenationRoot // the heuristic CodeInjection sink looks for string-concats, we are not interrested in those here.
   or
   exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, endsInCodeInjectionSink(t2)))
