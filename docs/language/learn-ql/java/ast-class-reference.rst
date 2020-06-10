@@ -5,14 +5,6 @@ CodeQL has a large selection of classes for representing the abstract syntax tre
 
 .. include:: ../../reusables/abstract-syntax-tree.rst
 
-.. _Expr: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Expr.html
-.. _Stmt: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$Stmt.html
-.. _VarAccess: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$VarAccess.html
-.. _SwitchCase: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$SwitchCase.html
-.. _TypeAccess: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$TypeAccess.html
-.. _Member: https://help.semmle.com/qldoc/java/semmle/code/java/Member.qll/type.Member$Member.html
-.. _Literal: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Literal.html
-
 Statement classes
 -----------------
 
@@ -282,3 +274,11 @@ Further reading
 
 .. include:: ../../reusables/java-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst
+
+.. _Expr: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Expr.html
+.. _Stmt: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$Stmt.html
+.. _VarAccess: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$VarAccess.html
+.. _SwitchCase: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$SwitchCase.html
+.. _TypeAccess: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$TypeAccess.html
+.. _Member: https://help.semmle.com/qldoc/java/semmle/code/java/Member.qll/type.Member$Member.html
+.. _Literal: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Literal.html
