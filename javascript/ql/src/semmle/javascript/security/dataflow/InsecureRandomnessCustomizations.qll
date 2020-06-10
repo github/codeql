@@ -80,7 +80,7 @@ module InsecureRandomness {
   }
 
   /**
-   * Holds if the step `pred` -> `succ` is an additional taint-step for random values that are not cryptographically secure. 
+   * Holds if the step `pred` -> `succ` is an additional taint-step for random values that are not cryptographically secure.
    */
   predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Assume that all operations on tainted values preserve taint: crypto is hard

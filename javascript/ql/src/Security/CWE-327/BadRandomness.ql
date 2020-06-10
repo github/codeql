@@ -79,7 +79,9 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
 /**
  * Gets a reference to a cryptographically random number produced by `source`.
  */
-DataFlow::Node goodRandom(DataFlow::SourceNode source) { result = goodRandom(DataFlow::TypeTracker::end(), source) }
+DataFlow::Node goodRandom(DataFlow::SourceNode source) {
+  result = goodRandom(DataFlow::TypeTracker::end(), source)
+}
 
 /**
  * Gets a node that that produces a biased result from otherwise cryptographically secure random numbers produced by `source`.
@@ -89,7 +91,7 @@ DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
   exists(BinaryExpr binop | result.asExpr() = binop |
     goodRandom(_).asExpr() = binop.getLeftOperand() and
     goodRandom(_).asExpr() = binop.getRightOperand() and
-    (goodRandom(source).asExpr() = binop.getAnOperand()) and
+    goodRandom(source).asExpr() = binop.getAnOperand() and
     (
       binop.getOperator() = "+" and description = "addition"
       or
@@ -135,5 +137,5 @@ DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
 
 from DataFlow::Node node, string description, DataFlow::SourceNode source
 where node = badCrypto(description, source)
-select node,
-  "Using " + description + " on a $@ produces biased results.", source, "cryptographically random number"
+select node, "Using " + description + " on a $@ produces biased results.", source,
+  "cryptographically random number"
