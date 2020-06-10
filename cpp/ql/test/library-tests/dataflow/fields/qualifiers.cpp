@@ -20,7 +20,7 @@ namespace qualifiers {
 
   void assignToGetter(Outer outer) {
     outer.getInner()->a = user_input();
-    sink(outer.inner->a); // $ast $f-:ir
+    sink(outer.inner->a); // $ast,ir
   }
 
   void getterArgument1(Outer outer) {
@@ -30,21 +30,21 @@ namespace qualifiers {
 
   void getterArgument2(Outer outer) {
     pointerSetA(outer.getInner(), user_input());
-    sink(outer.inner->a); // $ast $f-:ir
+    sink(outer.inner->a); // $ast,ir
   }
 
   void getterArgument2Ref(Outer outer) {
     referenceSetA(*outer.getInner(), user_input());
-    sink(outer.inner->a); // $ast $f-:ir
+    sink(outer.inner->a); // $ast,ir
   }
 
   void assignToGetterStar(Outer outer) {
     (*outer.getInner()).a = user_input();
-    sink(outer.inner->a); // $ast $f-:ir
+    sink(outer.inner->a); // $ast,ir
   }
 
   void assignToGetterAmp(Outer outer) {
     (&outer)->getInner()->a = user_input();
-    sink(outer.inner->a); // $ast $f-:ir
+    sink(outer.inner->a); // $ast,ir
   }
 }

@@ -11,10 +11,10 @@ void sink(int x)
 
 class Foo
 {
+public:
     int a_;
     int b_;
 
-public:
     int a() { return a_; }
     int b() { return b_; }
     void setA(int a) { a_ = a; }
@@ -84,5 +84,11 @@ struct C2
         sink(getf2f1()); //$ast,ir
     }
 };
+
+void false_positive_flow_through_conflated_chi(Foo **pp1, Foo **pp2)
+{
+    (*pp1)->a_ = user_input();
+    sink((*pp2)->a_); //$f+:ir
+}
 
 } // namespace Simple
