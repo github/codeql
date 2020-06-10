@@ -42,52 +42,54 @@ private DataFlow::SourceNode randomBufferSource() {
 private string prop() { result = DataFlow::PseudoProperties::setElement() }
 
 /**
- * Gets a reference to a cryptographically secure random number, type tracked using `t`.
+ * Gets a reference to a cryptographically secure random number produced by `source` and type tracked using `t`.
  */
-private DataFlow::Node goodRandom(DataFlow::TypeTracker t) {
+private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode source) {
   t.startInProp(prop()) and
-  result = randomBufferSource()
+  result = randomBufferSource() and
+  result = source
   or
   // Loading a number from a `Buffer`.
   exists(DataFlow::TypeTracker t2 | t = t2.append(LoadStep(prop())) |
     // the random generators return arrays/Buffers of random numbers, we therefore track through an indexed read.
     exists(DataFlow::PropRead read | result = read |
-      read.getBase() = goodRandom(t2) and
+      read.getBase() = goodRandom(t2, source) and
       not read.getPropertyNameExpr() instanceof Label
     )
     or
     // reading a number from a Buffer.
     exists(DataFlow::MethodCallNode call | result = call |
-      call.getReceiver() = goodRandom(t2) and
+      call.getReceiver() = goodRandom(t2, source) and
       call
           .getMethodName()
           .regexpMatch("read(BigInt|BigUInt|Double|Float|Int|UInt)(8|16|32|64)?(BE|LE)?")
     )
   )
   or
-  exists(DataFlow::TypeTracker t2 | t = t2.smallstep(goodRandom(t2), result))
+  exists(DataFlow::TypeTracker t2 | t = t2.smallstep(goodRandom(t2, source), result))
   or
   // re-using the collection steps for `Set`.
   exists(DataFlow::TypeTracker t2 |
-    result = CollectionsTypeTracking::collectionStep(goodRandom(t2), t, t2)
+    result = CollectionsTypeTracking::collectionStep(goodRandom(t2, source), t, t2)
   )
   or
-  InsecureRandomness::isAdditionalTaintStep(goodRandom(t.continue()), result)
+  InsecureRandomness::isAdditionalTaintStep(goodRandom(t.continue(), source), result)
 }
 
 /**
- * Gets a reference to a cryptographically random number.
+ * Gets a reference to a cryptographically random number produced by `source`.
  */
-DataFlow::Node goodRandom() { result = goodRandom(DataFlow::TypeTracker::end()) }
+DataFlow::Node goodRandom(DataFlow::SourceNode source) { result = goodRandom(DataFlow::TypeTracker::end(), source) }
 
 /**
- * Gets a node that that produces a biased result from otherwise cryptographically secure random numbers.
+ * Gets a node that that produces a biased result from otherwise cryptographically secure random numbers produced by `source`.
  */
-DataFlow::Node badCrypto(string description) {
+DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
   // addition and multiplication - always bad when both the lhs and rhs are random.
   exists(BinaryExpr binop | result.asExpr() = binop |
-    goodRandom().asExpr() = binop.getLeftOperand() and
-    goodRandom().asExpr() = binop.getRightOperand() and
+    goodRandom(_).asExpr() = binop.getLeftOperand() and
+    goodRandom(_).asExpr() = binop.getRightOperand() and
+    (goodRandom(source).asExpr() = binop.getAnOperand()) and
     (
       binop.getOperator() = "+" and description = "addition"
       or
@@ -97,14 +99,14 @@ DataFlow::Node badCrypto(string description) {
   or
   // division - always bad
   exists(DivExpr div | result.asExpr() = div |
-    goodRandom().asExpr() = div.getLeftOperand() and
+    goodRandom(source).asExpr() = div.getLeftOperand() and
     description = "division"
   )
   or
   // modulo - only bad if not by a power of 2 - and the result is not checked for bias
   exists(ModExpr mod, DataFlow::Node random | result.asExpr() = mod and mod.getOperator() = "%" |
     description = "modulo" and
-    goodRandom() = random and
+    goodRandom(source) = random and
     random.asExpr() = mod.getLeftOperand() and
     // division by a power of 2 is OK. E.g. if `x` is uniformly random is in the range [0..255] then `x % 32` is uniformly random in the range [0..31].
     not mod.getRightOperand().getIntValue() = [2, 4, 8, 16, 32, 64, 128] and
@@ -125,13 +127,13 @@ DataFlow::Node badCrypto(string description) {
   exists(DataFlow::CallNode number, StringOps::ConcatenationRoot root | result = number |
     number = DataFlow::globalVarRef(["Number", "parseInt", "parseFloat"]).getACall() and
     root = number.getArgument(0) and
-    goodRandom() = root.getALeaf() and
+    goodRandom(source) = root.getALeaf() and
     exists(root.getALeaf().getStringValue()) and
     description = "string concatenation"
   )
 }
 
-from DataFlow::Node node, string description
-where node = badCrypto(description)
+from DataFlow::Node node, string description, DataFlow::SourceNode source
+where node = badCrypto(description, source)
 select node,
-  "Using " + description + " on cryptographically random numbers produces biased results."
+  "Using " + description + " on a $@ produces biased results.", source, "cryptographically random number"
