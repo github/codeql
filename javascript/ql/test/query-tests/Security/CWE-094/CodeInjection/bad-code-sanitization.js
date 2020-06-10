@@ -28,7 +28,7 @@ function test4(input) {
 }
 
 function test4(input) {
-    var foo = `(function(){${JSON.stringify(input)}))` // OK - for this query - we can type-track to a code-injection sink.
+    var foo = `(function(){${JSON.stringify(input)}))` // NOT OK - we can type-track to a code-injection sink, the source is not remote flow.
     setTimeout(foo);
 }
 
@@ -43,3 +43,13 @@ function test6(input) {
 function test7(input) {
     return `() => {${JSON.stringify(input)}` // NOT OK
 }
+
+var express = require('express');
+
+var app = express();
+
+app.get('/some/path', function(req, res) {
+  var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // NOT - the source is remote-flow, but we know of no sink.
+
+  setTimeout(`(function(){${JSON.stringify(req.param("wobble"))}))`); // OK - the source is remote-flow, and the sink is code-injection.
+});

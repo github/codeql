@@ -11,7 +11,7 @@
  *       external/cwe/cwe-116
  */
 
-// TODO: Proper customizations module, Source class Sink class etc.
+// TODO: Proper customizations module, Source class Sink class etc. and qldoc.
 import javascript
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
@@ -33,7 +33,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private DataFlow::Node source() {
+private DataFlow::CallNode source() {
   result instanceof HtmlSanitizerCall
   or
   result = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
@@ -42,8 +42,7 @@ private DataFlow::Node source() {
 private StringOps::ConcatenationLeaf sink() {
   exists(StringOps::ConcatenationRoot root, int i |
     root.getOperand(i) = result and
-    not exists(result.getStringValue()) and
-    not root = endsInCodeInjectionSink()
+    not exists(result.getStringValue())
   |
     exists(StringOps::ConcatenationLeaf functionLeaf |
       functionLeaf = root.getOperand(any(int j | j < i))
@@ -56,19 +55,39 @@ private StringOps::ConcatenationLeaf sink() {
   )
 }
 
+DataFlow::SourceNode remoteFlow(DataFlow::TypeTracker t) {
+  t.start() and
+  result instanceof RemoteFlowSource
+  or
+  exists(DataFlow::TypeTracker t2 | result = remoteFlow(t2).track(t2, t))
+}
+
+DataFlow::SourceNode remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
+
 private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
   t.start() and
-  (result instanceof CodeInjection::Sink or result instanceof HeuristicCodeInjectionSink) and
-  not result instanceof StringOps::ConcatenationRoot // the heuristic CodeInjection sink looks for string-concats, we are not interrested in those here.
+  (
+    result instanceof CodeInjection::Sink
+    or
+    result instanceof HeuristicCodeInjectionSink and
+    not result instanceof StringOps::ConcatenationRoot // the heuristic CodeInjection sink looks for string-concats, we are not interrested in those here.
+  )
   or
   exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, endsInCodeInjectionSink(t2)))
 }
 
-private DataFlow::Node endsInCodeInjectionSink() {
-  result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end())
+DataFlow::Node endsInCodeInjectionSink() {
+  result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end()) and
+  result.getFile().getBaseName() = "bad-code-sanitization.js" // TODO: TMp
 }
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+where
+  cfg.hasFlowPath(source, sink) and
+  // Basic detection of duplicate results with `js/code-injection`.
+  not (
+    sink.getNode().(StringOps::ConcatenationLeaf).getRoot() = endsInCodeInjectionSink() and
+    remoteFlow().flowsTo(source.getNode().(DataFlow::InvokeNode).getAnArgument())
+  )
 select sink.getNode(), source, sink, "$@ flows to here and is used to construct code.",
   source.getNode(), "Improperly sanitized value"
