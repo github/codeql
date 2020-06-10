@@ -2,7 +2,7 @@ import java
 
 
 /**
- * The class `com.alibaba.fastjson.JSON`.
+ * The class `com.alibaba.fastjson.JSON` or `com.alibaba.fastjson.JSONObject`.
  */
 class FastJson extends RefType {
     FastJson() { 
@@ -12,7 +12,7 @@ class FastJson extends RefType {
 }
 
 /** 
- * A call to a parse method of `JSON`. 
+ * Call the parsing method of `JSON` or `JSONObject`. 
  * sink
  * */
 class FastJsonParse extends MethodAccess {
