@@ -2,7 +2,7 @@
 - qlpack: codeql-cpp
 - apply: lgtm-selectors.yml
   from: codeql-suite-helpers
-- apply: codeql-suites/slow-queries.yml
+- apply: codeql-suites/exclude-slow-queries.yml
   from: codeql-cpp 
 # These are only for IDE use.
 - exclude:
