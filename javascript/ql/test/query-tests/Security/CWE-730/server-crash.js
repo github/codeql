@@ -65,7 +65,7 @@ app.get("/async-throw", (req, res) => {
   });
 
   fs.readFile("/WHATEVER", (err, x) => {
-    req.query.foo.bar; // NOT OK
+    req.query.foo.bar; // NOT OK [INCONSISTENCY]: need to add property reads as sinks
   });
   fs.readFile("/WHATEVER", (err, x) => {
     res.setHeader("reflected", unknown); // OK

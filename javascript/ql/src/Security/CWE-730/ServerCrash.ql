@@ -36,15 +36,6 @@ predicate isHeaderValue(HTTP::ExplicitHeaderDefinition def, DataFlow::Node node)
   def.definesExplicitly(_, node.asExpr())
 }
 
-predicate isDangerousPropertyRead(DataFlow::PropRead read) {
-  // TODO use flow labels
-  exists(DataFlow::PropRead base |
-    base = read.getBase() and
-    not read instanceof RemoteFlowSource and
-    not exists(read.getACall())
-  )
-}
-
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Configuration" }
 
@@ -53,18 +44,11 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     // using control characters in a header value will cause an exception
     isHeaderValue(_, node)
-    or
-    // accessing a property of undefined will cause an exception
-    isDangerousPropertyRead(node)
   }
 }
 
 predicate isLikelyToThrow(DataFlow::Node crash) {
-  exists(Configuration cfg, DataFlow::Node sink | cfg.hasFlow(_, sink) |
-    isHeaderValue(crash, sink)
-    or
-    isDangerousPropertyRead(sink) and sink = crash
-  )
+  exists(Configuration cfg, DataFlow::Node sink | cfg.hasFlow(_, sink) | isHeaderValue(crash, sink))
 }
 
 /**
