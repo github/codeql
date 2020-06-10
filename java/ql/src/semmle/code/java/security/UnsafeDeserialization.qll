@@ -1,6 +1,7 @@
 import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
+import semmle.code.java.frameworks.FastJson
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -72,6 +73,9 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     not exists(SafeKryo sk | sk.hasFlowToExpr(ma.getQualifier()))
     or
     ma instanceof UnsafeSnakeYamlParse and
+    sink = ma.getArgument(0)
+    or
+    ma instanceof FastJsonParse and
     sink = ma.getArgument(0)
   )
 }

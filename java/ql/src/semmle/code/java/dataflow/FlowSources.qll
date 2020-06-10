@@ -20,6 +20,7 @@ import semmle.code.java.frameworks.SpringWeb
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
+import semmle.code.java.frameworks.SpringMVC
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
@@ -122,6 +123,12 @@ private class SpringServletInputParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Spring servlet input parameter" }
+}
+
+private class SpringMVC extends RemoteFlowSource {
+  SpringMVC() { this.asParameter().getCallable().getAnAnnotation() instanceof SpringMvcAnnotation }
+
+  override string getSourceType() { result = "SpringMVC input parameter" }
 }
 
 private class GuiceRequestParameterSource extends RemoteFlowSource {
