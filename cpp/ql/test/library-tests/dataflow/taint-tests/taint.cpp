@@ -524,7 +524,7 @@ namespace IntWrapper
 	void swap(Class &x, Class &y) {
 		x.swap(y);
 	}
-} // namespace ImplementationDetails
+} // namespace IntWrapper
 
 // using std::swap;
 
