@@ -79,3 +79,9 @@ function setSteps() {
 const secureRandom = require("secure-random");
 
 var bad = secureRandom(10)[0] + secureRandom(10)[0]; // NOT OK
+
+var goodRandom1 = 5 + secureRandom(10)[0];
+var goodRandom2 = 5 + secureRandom(10)[0];
+var bad = goodRandom1 + goodRandom2; // NOT OK
+
+var dontFlag = bad + bad; // OK - the operands have already been flagged - but flagged anyway due to us not detecting that [INCONSISTENCY].
