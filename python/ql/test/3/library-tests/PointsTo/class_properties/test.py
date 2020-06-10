@@ -1,13 +1,15 @@
 from collections import OrderedDict, defaultdict
-import collections.abc
+
+# Python 3 specific
+from collections.abc import Sequence, Mapping
 
 def test(*args):
     pass
 
-class MySequenceABC(collections.abc.Sequence):
+class MySequenceABC(Sequence):
     pass
 
-class MyMappingABC(collections.abc.Mapping):
+class MyMappingABC(Mapping):
     pass
 
 class MySequenceImpl(object):
@@ -24,6 +26,7 @@ test(
     list,
     tuple,
     str,
+    unicode,
     bytes,
     MySequenceABC,
     MySequenceImpl,
