@@ -300,7 +300,6 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   FieldAddressInstruction field;
 
   ExplicitFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
     exists(StoreInstruction store |
       instr.getPartial() = store and field = store.getDestinationAddress()
     )
@@ -558,8 +557,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
   // `setX`, which will be melded into `p` through a chi instruction.
   exists(ChiInstruction chi | chi = iTo |
-    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
-    not chi.isResultConflated()
+    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction)
   )
   or
   // Flow from stores to structs with a single field to a load of that field.
