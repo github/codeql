@@ -1,6 +1,6 @@
 private import csharp
-import semmle.code.csharp.ir.implementation.IRConfiguration
-import semmle.code.csharp.ir.internal.IntegerConstant as Ints
+import experimental.ir.implementation.IRConfiguration
+import experimental.ir.internal.IntegerConstant as Ints
 
 module AliasModels {
   /**

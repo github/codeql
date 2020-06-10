@@ -1,1 +1,1 @@
-semmle/code/csharp/ir/implementation/raw/PrintIR.ql
+experimental/ir/implementation/raw/PrintIR.ql

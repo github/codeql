@@ -3,11 +3,11 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedFunction
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedCallBase
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedFunction
+private import experimental.ir.implementation.raw.internal.common.TranslatedCallBase
 private import TranslatedCompilerGeneratedElement
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedCall extends TranslatedCallBase,
   TranslatedCompilerGeneratedElement {

@@ -4,15 +4,15 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.internal.IRUtilities
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedInitialization
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.internal.IRUtilities
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.implementation.raw.internal.InstructionTag
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedExpr
+private import experimental.ir.implementation.raw.internal.TranslatedInitialization
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class LocalVariableDeclarationBase extends TranslatedElement {
   override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }

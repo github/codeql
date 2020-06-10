@@ -3,10 +3,10 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBase
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.common.TranslatedConditionBase
 private import TranslatedCompilerGeneratedElement
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedValueCondition extends TranslatedCompilerGeneratedElement,
   ValueConditionBase {

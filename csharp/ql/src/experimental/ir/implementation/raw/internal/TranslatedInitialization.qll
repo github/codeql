@@ -4,14 +4,14 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.CSharpType
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
-private import semmle.code.csharp.ir.Util
+private import experimental.ir.Util
 private import IRInternal
 private import desugar.Delegate
 

@@ -5,9 +5,9 @@
 
 import csharp
 private import TranslatedCompilerGeneratedElement
-private import semmle.code.csharp.ir.implementation.raw.Instruction
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedExprBase
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.raw.Instruction
+private import experimental.ir.implementation.raw.internal.common.TranslatedExprBase
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedExpr extends TranslatedCompilerGeneratedElement,
   TranslatedExprBase {

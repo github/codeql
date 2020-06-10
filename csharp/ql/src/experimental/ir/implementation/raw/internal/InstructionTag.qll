@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.ir.Util
+import experimental.ir.Util
 
 private predicate elementIsInitialized(int elementIndex) {
   exists(ArrayInitWithMod initList | initList.isInitialized(elementIndex))

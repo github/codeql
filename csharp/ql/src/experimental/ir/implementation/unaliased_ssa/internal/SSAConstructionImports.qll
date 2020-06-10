@@ -1,3 +1,3 @@
-import semmle.code.csharp.ir.implementation.Opcode
-import semmle.code.csharp.ir.implementation.internal.OperandTag
-import semmle.code.csharp.ir.internal.Overlap
+import experimental.ir.implementation.Opcode
+import experimental.ir.implementation.internal.OperandTag
+import experimental.ir.internal.Overlap

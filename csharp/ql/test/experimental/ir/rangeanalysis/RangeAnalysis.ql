@@ -1,7 +1,7 @@
-import semmle.code.csharp.ir.rangeanalysis.RangeAnalysis
-import semmle.code.csharp.ir.IR
-import semmle.code.csharp.ir.internal.IRGuards
-import semmle.code.csharp.ir.ValueNumbering
+import experimental.ir.rangeanalysis.RangeAnalysis
+import experimental.ir.IR
+import experimental.ir.internal.IRGuards
+import experimental.ir.ValueNumbering
 
 query predicate instructionBounds(
   Instruction i, Bound b, int delta, boolean upper, Reason reason, Location reasonLoc

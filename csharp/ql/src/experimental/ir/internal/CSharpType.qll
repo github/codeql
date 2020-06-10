@@ -1,5 +1,5 @@
 private import csharp
-private import semmle.code.csharp.ir.implementation.IRType
+private import experimental.ir.implementation.IRType
 private import IRCSharpLanguage as Language
 
 int getTypeSize(Type type) {

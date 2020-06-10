@@ -3,8 +3,8 @@
  * (both AST generated and compiler generated).
  */
 
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedExprBase extends TranslatedElement {
   /**

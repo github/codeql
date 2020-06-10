@@ -1,7 +1,7 @@
 import csharp
-import semmle.code.csharp.ir.IR
-import semmle.code.csharp.ir.rangeanalysis.RangeAnalysis
-import semmle.code.csharp.ir.rangeanalysis.RangeUtils
+import experimental.ir.IR
+import experimental.ir.rangeanalysis.RangeAnalysis
+import experimental.ir.rangeanalysis.RangeUtils
 
 /**
  * Holds if the index expression of `aa` is less than or equal to the array length plus `k`.

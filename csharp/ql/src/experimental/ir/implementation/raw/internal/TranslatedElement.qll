@@ -1,17 +1,17 @@
 import csharp
-import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.ir.IRConfiguration
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.TempVariableTag
+import experimental.ir.implementation.raw.IR
+private import experimental.ir.IRConfiguration
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
 private import IRConstruction
-private import semmle.code.csharp.ir.Util
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.Util
+private import experimental.ir.internal.IRCSharpLanguage as Language
 private import desugar.Foreach
 private import desugar.Delegate
 private import desugar.Lock

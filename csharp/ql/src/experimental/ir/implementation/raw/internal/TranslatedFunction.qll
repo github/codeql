@@ -1,16 +1,16 @@
 import csharp
-import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.IRUtilities
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.TempVariableTag
+import experimental.ir.implementation.raw.IR
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.IRUtilities
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Gets the `TranslatedFunction` that represents function `callable`.

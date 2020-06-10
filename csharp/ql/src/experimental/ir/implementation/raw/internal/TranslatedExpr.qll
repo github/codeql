@@ -1,9 +1,9 @@
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.TempVariableTag
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.IRUtilities
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.TempVariableTag
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.IRUtilities
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedDeclaration
@@ -16,8 +16,8 @@ private import common.TranslatedExprBase
 private import desugar.Delegate
 private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
-private import semmle.code.csharp.ir.Util
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.Util
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Gets the TranslatedExpr for the specified expression. If `expr` is a load,

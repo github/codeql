@@ -1,6 +1,6 @@
 import csharp
 import semmle.code.csharp.controlflow.BasicBlocks
-import semmle.code.csharp.ir.IR
+import experimental.ir.IR
 
 /**
  * Holds if `block` consists of an `UnreachedInstruction`.

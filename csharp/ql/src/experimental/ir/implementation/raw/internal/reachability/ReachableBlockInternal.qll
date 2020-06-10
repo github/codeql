@@ -1,2 +1,2 @@
-import semmle.code.csharp.ir.implementation.raw.IR as IR
-import semmle.code.csharp.ir.implementation.raw.constant.ConstantAnalysis as ConstantAnalysis
+import experimental.ir.implementation.raw.IR as IR
+import experimental.ir.implementation.raw.constant.ConstantAnalysis as ConstantAnalysis

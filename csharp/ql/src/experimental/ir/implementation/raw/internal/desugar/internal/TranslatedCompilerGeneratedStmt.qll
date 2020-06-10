@@ -5,7 +5,7 @@
 
 import csharp
 private import TranslatedCompilerGeneratedElement
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedStmt extends TranslatedCompilerGeneratedElement {
   final override string toString() {

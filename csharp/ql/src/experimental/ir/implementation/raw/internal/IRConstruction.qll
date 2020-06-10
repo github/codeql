@@ -1,9 +1,9 @@
 import csharp
-import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.Overlap
-private import semmle.code.csharp.ir.internal.TempVariableTag
+import experimental.ir.implementation.raw.IR
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.Overlap
+private import experimental.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedElement
@@ -11,8 +11,8 @@ private import TranslatedExpr
 private import TranslatedStmt
 private import desugar.Foreach
 private import TranslatedFunction
-private import semmle.code.csharp.ir.Util
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.Util
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = MkInstruction(result, _)

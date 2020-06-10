@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.implementation.raw.IR
+import experimental.ir.implementation.raw.IR

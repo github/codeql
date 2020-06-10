@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+import experimental.ir.internal.IRCSharpLanguage as Language

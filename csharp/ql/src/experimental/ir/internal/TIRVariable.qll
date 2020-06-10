@@ -1,7 +1,7 @@
 private import csharp
-private import semmle.code.csharp.ir.implementation.TempVariableTag
-private import semmle.code.csharp.ir.implementation.raw.internal.IRConstruction as Construction
-private import semmle.code.csharp.ir.Util
+private import experimental.ir.implementation.TempVariableTag
+private import experimental.ir.implementation.raw.internal.IRConstruction as Construction
+private import experimental.ir.Util
 private import IRCSharpLanguage as Language
 
 newtype TIRVariable =
