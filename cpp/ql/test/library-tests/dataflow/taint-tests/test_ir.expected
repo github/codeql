@@ -3,6 +3,20 @@
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | stl.cpp:71:7:71:7 | (const char *)... | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
+| swap1.cpp:60:12:60:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:66:12:66:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:70:13:70:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:84:12:84:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:90:12:90:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:98:20:98:24 | data1 | swap1.cpp:96:23:96:28 | call to source |
+| swap2.cpp:60:12:60:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:66:12:66:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:70:13:70:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:84:12:84:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:90:12:90:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:98:20:98:24 | data1 | swap2.cpp:96:23:96:28 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -37,11 +51,3 @@
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
-| taint.cpp:536:9:536:12 | data | taint.cpp:534:11:534:16 | call to source |
-| taint.cpp:542:9:542:12 | data | taint.cpp:534:11:534:16 | call to source |
-| taint.cpp:546:10:546:13 | data | taint.cpp:545:12:545:17 | call to source |
-| taint.cpp:550:10:550:13 | data | taint.cpp:545:12:545:17 | call to source |
-| taint.cpp:551:10:551:13 | data | taint.cpp:545:12:545:17 | call to source |
-| taint.cpp:560:9:560:12 | data | taint.cpp:558:11:558:16 | call to source |
-| taint.cpp:566:9:566:12 | data | taint.cpp:558:11:558:16 | call to source |
-| taint.cpp:574:17:574:20 | data | taint.cpp:572:19:572:24 | call to source |
