@@ -12,59 +12,60 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.DOM
 
 /**
- * A call to a `window` event listener
+ * A method call for the insecure functions used to verify the `MessageEvent.origin`.
  */
-class WindowListeners extends DataFlow::CallNode {
-  WindowListeners() {
-    exists(DataFlow::SourceNode source |
-      source = DataFlow::globalVarRef("window") and
-      this = source.getAMethodCall("addEventListener")
+class InsufficientOriginChecks extends DataFlow::MethodCallNode {
+  InsufficientOriginChecks() {
+    exists(string name | name = getMethodName() |
+      name = "indexOf" or
+      name = "includes" or
+      name = "endsWith" or
+      name = "startsWith" or
+      name = "lastIndexOf"
     )
   }
 }
 
 /**
- * A call to a `window` event listener for the `MessageEvent`
- */
-class PostMessageListeners extends DataFlow::CallNode {
-  PostMessageListeners() {
-    exists(WindowListeners listener |
-      listener.getArgument(0).mayHaveStringValue("message") and
-      this = listener
-    )
-  }
-}
-
-/**
- * A function handler for the `MessageEvent`. It is the second argument of a `MessageEvent` listener
+ * A function handler for the `MessageEvent`.
  */
 class PostMessageHandler extends DataFlow::FunctionNode {
-  PostMessageHandler() {
-    exists(PostMessageListeners listener | this = listener.getArgument(1).getAFunctionValue())
-  }
+  PostMessageHandler() { exists(PostMessageEventHandler handler | this.getFunction() = handler) }
 }
 
 /**
- * The `MessageEvent` received by the handler
+ * The `MessageEvent` parameter received by the handler
  */
 class PostMessageEvent extends DataFlow::SourceNode {
   PostMessageEvent() { exists(PostMessageHandler handler | this = handler.getParameter(0)) }
 
+  VarAccess event;
+  EqualityTest astNode;
+
   /**
-   * Holds if a call to a method on `MessageEvent.origin` or a read of `MessageEvent.origin` is in an `if` statement
+   * Holds if an access on `MessageEvent.origin` is in an `EqualityTest` and there is no call of an insufficient verification method on `MessageEvent.origin`
    */
-  predicate isOriginChecked() {
-    exists(IfStmt ifStmt |
-      ifStmt = this.getAPropertyRead("origin").getAMethodCall*().asExpr().getEnclosingStmt() or
-      ifStmt = this.getAPropertyRead("origin").asExpr().getEnclosingStmt()
+  predicate hasOriginChecked() {
+    exists(string prop | prop = "origin" or prop = "source" |
+      astNode.getAnOperand().(PropAccess).accesses(event, prop) and
+      event.mayReferToParameter*(this.asExpr()) and
+      not this.hasOriginInsufficientlyChecked()
+    )
+  }
+
+  /**
+   * Holds if there is an insufficient method call (i.e indexOf) used to verify `MessageEvent.origin`
+   */
+  predicate hasOriginInsufficientlyChecked() {
+    exists(InsufficientOriginChecks insufficientChecks |
+      this.getAPropertyRead("origin").getAMethodCall*() = insufficientChecks
     )
   }
 }
 
-from PostMessageEvent event, PostMessageHandler handler
-where
-  event = handler.getParameter(0) and
-  not event.isOriginChecked()
-select "The `MessageEvent.origin` property is not checked.", event, handler
+from PostMessageEvent event
+where not event.hasOriginChecked()
+select event, "Missing or unsafe origin verification"
