@@ -99,6 +99,7 @@ DataFlow::Node badCrypto(string description) {
     description = "modulo" and
     goodRandom() = random and
     random.flowsToExpr(mod.getLeftOperand()) and
+    // division by a power of 2 is OK. E.g. if `x` is uniformly random is in the range [0..255] then `x % 32` is uniformly random in the range [0..31]. 
     not mod.getRightOperand().getIntValue() = [2, 4, 8, 16, 32, 64, 128] and
     // not exists a comparison that checks if the result is potentially biased.
     not exists(BinaryExpr comparison | comparison.getOperator() = [">", "<", "<=", ">="] |

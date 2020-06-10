@@ -7,7 +7,7 @@ const buffer = crypto.randomBytes(bytes);
 const digits = [];
 for (let i = 0; i < buffer.length; ++i) {
     digits.push(Math.floor(buffer[i] / 25.6)); // NOT OK
-    digits.push(buffer[i] % 8); // OK - 8 is a power of 2, so the result is unbiased.
+    digits.push(buffer[i] % 8); // OK - input is a random byte, so the output is a uniformly random number between 0 and 7. 
     digits.push(buffer[i] % 100); // NOT OK
 }
 
