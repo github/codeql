@@ -4,3 +4,9 @@ test_locationRef
 | customization.js:3:3:3:14 | doc.location |
 test_domValueRef
 | customization.js:4:3:4:28 | doc.get ... 'test') |
+| tst.js:45:8:45:7 | this |
+| tst.js:46:7:46:12 | this.x |
+| tst.js:49:3:49:8 | window |
+| tst.js:50:3:50:8 | window |
+| tst.js:50:3:50:14 | window.myApp |
+| tst.js:50:3:50:18 | window.myApp.foo |
