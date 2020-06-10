@@ -306,3 +306,6 @@ predicate isImmutableOrUnobservable(Node n) {
   // complex to model here.
   any()
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
