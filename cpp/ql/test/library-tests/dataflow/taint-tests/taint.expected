@@ -70,3 +70,14 @@
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:471:7:471:7 | y | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| taint.cpp:536:9:536:12 | data | taint.cpp:534:11:534:16 | call to source |
+| taint.cpp:541:9:541:12 | data | taint.cpp:534:11:534:16 | call to source |
+| taint.cpp:542:9:542:12 | data | taint.cpp:534:11:534:16 | call to source |
+| taint.cpp:546:10:546:13 | data | taint.cpp:545:12:545:17 | call to source |
+| taint.cpp:550:10:550:13 | data | taint.cpp:545:12:545:17 | call to source |
+| taint.cpp:551:10:551:13 | data | taint.cpp:544:24:544:25 | z2 |
+| taint.cpp:551:10:551:13 | data | taint.cpp:545:12:545:17 | call to source |
+| taint.cpp:560:9:560:12 | data | taint.cpp:558:11:558:16 | call to source |
+| taint.cpp:565:9:565:12 | data | taint.cpp:556:20:556:20 | x |
+| taint.cpp:565:9:565:12 | data | taint.cpp:558:11:558:16 | call to source |
+| taint.cpp:566:9:566:12 | data | taint.cpp:558:11:558:16 | call to source |

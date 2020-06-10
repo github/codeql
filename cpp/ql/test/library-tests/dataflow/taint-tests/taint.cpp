@@ -484,3 +484,84 @@ void test_getdelim(FILE* source1) {
 
 	sink(line);
 }
+
+namespace std
+{
+	template <class T>
+	T &&move(T &t) noexcept; // simplified signature
+}
+
+namespace IntWrapper
+{
+	struct Class
+	{
+		int data;
+
+		Class() = default;
+
+		Class(const Class &that) : data(that.data) {}
+
+		Class &operator=(const Class &that)
+		{
+			auto tmp = that;
+			swap(tmp);
+			return *this;
+		}
+
+		Class& operator=(Class&& that) {
+			swap(that);
+			return *this;
+		}
+
+		void swap(Class &that) noexcept
+		{
+			using std::swap;
+			swap(data, that.data);
+		}
+	};
+
+	// For ADL
+	void swap(Class &x, Class &y) {
+		x.swap(y);
+	}
+} // namespace ImplementationDetails
+
+// using std::swap;
+
+void test_copy_assignment_operator() {
+	IntWrapper::Class x;
+	IntWrapper::Class y;
+	x.data = source();
+	
+	sink(x.data); // tainted
+	sink(y.data); // clean
+
+	y = x;
+	
+	sink(y.data); // tainted [FALSE NEGATIVE in IR]
+	sink(x.data); // tainted
+
+	IntWrapper::Class z1, z2;
+	z1.data = source();
+	sink(z1.data); // tainted
+	
+	swap(z1, z2);
+
+	sink(z2.data); // tainted
+	sink(z1.data); // clean [FALSE POSITIVE]
+}
+
+void test_move_assignment_operator()
+{
+	IntWrapper::Class x;
+	IntWrapper::Class y;
+	x.data = source();
+
+	sink(x.data); // tainted
+	sink(y.data); // clean
+
+	y = std::move(x);
+
+	sink(y.data); // tainted [FALSE NEGATIVE in IR]
+	sink(x.data); // tainted
+}
