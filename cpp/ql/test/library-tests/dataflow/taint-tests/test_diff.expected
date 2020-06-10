@@ -49,3 +49,5 @@
 | taint.cpp:551:10:551:13 | taint.cpp:544:24:544:25 | AST only |
 | taint.cpp:565:9:565:12 | taint.cpp:556:20:556:20 | AST only |
 | taint.cpp:565:9:565:12 | taint.cpp:558:11:558:16 | AST only |
+| taint.cpp:578:15:578:18 | taint.cpp:571:20:571:28 | AST only |
+| taint.cpp:578:15:578:18 | taint.cpp:572:19:572:24 | AST only |

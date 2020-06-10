@@ -488,7 +488,7 @@ void test_getdelim(FILE* source1) {
 namespace std
 {
 	template <class T>
-	T &&move(T &t) noexcept; // simplified signature
+	T &&move(T &t) noexcept { return static_cast<T&&>(t); } // simplified signature (and implementation)
 }
 
 namespace IntWrapper
@@ -498,7 +498,7 @@ namespace IntWrapper
 		int data;
 
 		Class() = default;
-		Class(Class&&) = default;
+		Class(Class&& that) { swap(that); }
 		Class(const Class &that) : data(that.data) {}
 
 		Class &operator=(const Class &that)
@@ -564,4 +564,16 @@ void test_move_assignment_operator()
 
 	sink(y.data); // tainted [FALSE NEGATIVE in IR]
 	sink(x.data); // tainted
+}
+
+void test_move_constructor()
+{
+	IntWrapper::Class move_from;
+	move_from.data = source();
+
+	sink(move_from.data); // tainted
+
+	IntWrapper::Class move_to(std::move(move_from));
+
+	sink(move_to.data); // tainted [FALSE NEGATIVE in IR]
 }

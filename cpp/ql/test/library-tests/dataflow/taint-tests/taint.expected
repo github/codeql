@@ -81,3 +81,6 @@
 | taint.cpp:565:9:565:12 | data | taint.cpp:556:20:556:20 | x |
 | taint.cpp:565:9:565:12 | data | taint.cpp:558:11:558:16 | call to source |
 | taint.cpp:566:9:566:12 | data | taint.cpp:558:11:558:16 | call to source |
+| taint.cpp:574:17:574:20 | data | taint.cpp:572:19:572:24 | call to source |
+| taint.cpp:578:15:578:18 | data | taint.cpp:571:20:571:28 | move_from |
+| taint.cpp:578:15:578:18 | data | taint.cpp:572:19:572:24 | call to source |

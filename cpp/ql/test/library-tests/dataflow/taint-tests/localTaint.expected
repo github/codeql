@@ -623,6 +623,14 @@
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
 | taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
+| taint.cpp:491:14:491:14 | t | taint.cpp:491:14:491:14 | t |  |
+| taint.cpp:491:14:491:14 | t | taint.cpp:491:14:491:14 | t |  |
+| taint.cpp:491:14:491:14 | t | taint.cpp:491:52:491:52 | t |  |
+| taint.cpp:491:14:491:14 | t | taint.cpp:491:52:491:52 | t |  |
+| taint.cpp:501:3:501:7 | this | taint.cpp:501:25:501:28 | this |  |
+| taint.cpp:501:17:501:20 | that | taint.cpp:501:17:501:20 | that |  |
+| taint.cpp:501:17:501:20 | that | taint.cpp:501:30:501:33 | that |  |
+| taint.cpp:501:30:501:33 | ref arg that | taint.cpp:501:17:501:20 | that |  |
 | taint.cpp:502:3:502:7 | this | taint.cpp:502:30:502:44 | constructor init of field data [pre-this] |  |
 | taint.cpp:502:22:502:25 | that | taint.cpp:502:35:502:38 | that |  |
 | taint.cpp:502:40:502:43 | data | taint.cpp:502:30:502:44 | constructor init of field data | TAINT |
@@ -698,3 +706,13 @@
 | taint.cpp:563:6:563:14 | ref arg call to move | taint.cpp:563:16:563:16 | x [inner post update] |  |
 | taint.cpp:563:6:563:14 | ref arg call to move | taint.cpp:566:7:566:7 | x |  |
 | taint.cpp:563:16:563:16 | x | taint.cpp:563:6:563:14 | call to move |  |
+| taint.cpp:571:20:571:28 | move_from | taint.cpp:572:2:572:10 | move_from |  |
+| taint.cpp:571:20:571:28 | move_from | taint.cpp:574:7:574:15 | move_from |  |
+| taint.cpp:571:20:571:28 | move_from | taint.cpp:576:38:576:46 | move_from |  |
+| taint.cpp:572:2:572:10 | move_from [post update] | taint.cpp:574:7:574:15 | move_from |  |
+| taint.cpp:572:2:572:10 | move_from [post update] | taint.cpp:576:38:576:46 | move_from |  |
+| taint.cpp:572:2:572:26 | ... = ... | taint.cpp:574:17:574:20 | data |  |
+| taint.cpp:572:19:572:24 | call to source | taint.cpp:572:2:572:26 | ... = ... |  |
+| taint.cpp:576:28:576:36 | ref arg call to move | taint.cpp:576:38:576:46 | move_from [inner post update] |  |
+| taint.cpp:576:28:576:48 | call to Class | taint.cpp:578:7:578:13 | move_to |  |
+| taint.cpp:576:38:576:46 | move_from | taint.cpp:576:28:576:36 | call to move |  |
