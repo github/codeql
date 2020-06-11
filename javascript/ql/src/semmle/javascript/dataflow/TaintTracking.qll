@@ -268,10 +268,10 @@ module TaintTracking {
       succ = DataFlow::lvalueNode(fos.getLValue())
     )
     or
-    // rest-pattern inside a propety pattern. E.g. from `foo:..` to `args` in `const {foo: {...args}} = something()`.
-    exists(PropertyPattern pattern |
-      pred.(DataFlow::PropNode).getAstNode() = pattern and
-      succ = DataFlow::lvalueNode(pattern.getValuePattern().(ObjectPattern).getRest())
+    // taint-tracking rest patterns in l-values. E.g. `const {...spread} = foo()` or `const [...spread] = foo()`.
+    exists(DestructuringPattern pattern |
+      pred = DataFlow::lvalueNode(pattern) and
+      succ = DataFlow::lvalueNode(pattern.getRest())
     )
   }
 
