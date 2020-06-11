@@ -1,4 +1,0 @@
-| complex.cpp:51:18:51:18 | call to a | Unexpected result: ir=63:19 |
-| complex.cpp:51:18:51:18 | call to a | Unexpected result: ir=65:19 |
-| complex.cpp:52:18:52:18 | call to b | Unexpected result: ir=62:19 |
-| complex.cpp:52:18:52:18 | call to b | Unexpected result: ir=64:19 |
