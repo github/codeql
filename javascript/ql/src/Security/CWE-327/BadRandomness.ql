@@ -13,6 +13,7 @@
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * Gets a number that is a power of 2.
@@ -119,7 +120,8 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
     or
     binop.getOperator() = "*" and isPowerOfTwo().asExpr() = binop.getAnOperand()
     or
-    binop.getOperator() = "+" and exists(binop.getAnOperand().getStringValue()) // string concat does not produce a number
+    // string concat does not produce a number
+    unique(InferredType type | type = binop.flow().analyze().getAType()) = TTString()
   )
 }
 
