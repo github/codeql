@@ -8,9 +8,9 @@
             This vulnerability can be prevented by not allowing untrusted user input to be passed as a XSL stylesheet.
             If the application logic necessiates processing untrusted XSL stylesheets, the input should be properly filtered and sanitized before use.
         </p>
-        <example>
-            <p>In the example below, the XSL stylesheet is controlled by the user and hence leads to a vulnerability.</p>
-            <sample src="xslt.py" />
-        </example>
     </recommendation>
+    <example>
+        <p>In the example below, the XSL stylesheet is controlled by the user and hence leads to a vulnerability.</p>
+        <sample src="xslt.py" />
+    </example>
 </qhelp>
