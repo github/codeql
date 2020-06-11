@@ -85,4 +85,87 @@ struct C2
     }
 };
 
+struct DeepStruct1 {
+    int x;
+    int y;
+};
+
+struct DeepStruct2 {
+    DeepStruct1 d1_1;
+    DeepStruct1 d1_2;
+};
+
+struct DeepStruct3 {
+    DeepStruct2 d2_1;
+    DeepStruct2 d2_2;
+    DeepStruct1 d1_1;
+};
+
+void write_to_d1_2_y(DeepStruct2* d2, int val) {
+    d2->d1_2.y = val;
+}
+
+void read_from_y(DeepStruct2 d2) {
+    sink(d2.d1_1.y);
+    
+    sink(d2.d1_2.y); //$ast,ir
+}
+
+void read_from_y_deref(DeepStruct2* d2) {
+    sink(d2->d1_1.y);
+
+    sink(d2->d1_2.y); //$ast,ir
+}
+
+void test_deep_structs() {
+    DeepStruct3 d3;
+    d3.d2_1.d1_1.x = user_input();
+    DeepStruct2 d2_1 = d3.d2_1;
+    sink(d2_1.d1_1.x); //$ast,ir
+    sink(d2_1.d1_1.y);
+
+    sink(d2_1.d1_2.x);
+
+    DeepStruct1* pd1 = &d2_1.d1_1;
+    sink(pd1->x); //$ast,ir
+}
+
+void test_deep_structs_setter() {
+    DeepStruct3 d3;
+
+    write_to_d1_2_y(&d3.d2_1, user_input());
+
+    sink(d3.d2_1.d1_1.y);
+    sink(d3.d2_1.d1_2.y); //$ast,ir
+
+    read_from_y(d3.d2_1);
+    read_from_y(d3.d2_2);
+    read_from_y_deref(&d3.d2_1);
+    read_from_y_deref(&d3.d2_2);
+}
+
+struct Inner
+{
+    int f;
+    int g;
+};
+
+struct Outer
+{
+    Inner inner;
+    int h;
+};
+
+void read_f(Inner *inner)
+{
+    sink(inner->f); //$ast,ir
+}
+
+void test()
+{
+    Outer outer;
+    outer.inner.f = user_input();
+    read_f(&outer.inner);
+}
+
 } // namespace Simple

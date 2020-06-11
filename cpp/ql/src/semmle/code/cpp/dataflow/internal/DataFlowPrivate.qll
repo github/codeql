@@ -314,3 +314,6 @@ predicate isImmutableOrUnobservable(Node n) {
   // The above list of cases isn't exhaustive, but it narrows down the
   // consistency alerts enough that most of them are interesting.
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
