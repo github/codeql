@@ -1761,6 +1761,7 @@ The following built-in predicates are members of type ``string``:
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Regular expressions are as defined by ``java.util.regex.Pattern`` in Java.
+For more information, see the `Java API Documentation <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
 
 Evaluation
 ----------
