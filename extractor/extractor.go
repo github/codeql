@@ -42,6 +42,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 
+	var modFlag string
+	for _, flag := range buildFlags {
+		if strings.HasPrefix(flag, "-mod=") {
+			modFlag = flag
+		}
+	}
+
 	if err != nil {
 		return err
 	}
@@ -59,8 +66,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 	for _, pkg := range pkgs {
-		mdir := util.GetModDir(pkg.PkgPath)
-		pdir := util.GetPkgDir(pkg.PkgPath)
+		mdir := util.GetModDir(pkg.PkgPath, modFlag)
+		pdir := util.GetPkgDir(pkg.PkgPath, modFlag)
 		if mdir == "" {
 			mdir = pdir
 		}
@@ -79,8 +86,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		return true
 	}, func(pkg *packages.Package) {
 		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
-			mdir := util.GetModDir(pkg.PkgPath)
-			pdir := util.GetPkgDir(pkg.PkgPath)
+			mdir := util.GetModDir(pkg.PkgPath, modFlag)
+			pdir := util.GetPkgDir(pkg.PkgPath, modFlag)
 			if mdir == "" {
 				mdir = pdir
 			}
