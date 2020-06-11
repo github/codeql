@@ -5,15 +5,15 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedFunction
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedDeclarationBase
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.implementation.raw.internal.InstructionTag
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedFunction
+private import experimental.ir.implementation.raw.internal.common.TranslatedDeclarationBase
 private import TranslatedCompilerGeneratedElement
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDeclarationBase,
   TranslatedCompilerGeneratedElement {

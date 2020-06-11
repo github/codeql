@@ -3,14 +3,14 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedCondition
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.implementation.raw.internal.InstructionTag
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedExpr
+private import experimental.ir.implementation.raw.internal.TranslatedCondition
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Represents the context of the condition, ie. provides

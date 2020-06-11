@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.IRConfiguration as IRConfiguration
+import experimental.ir.IRConfiguration as IRConfiguration

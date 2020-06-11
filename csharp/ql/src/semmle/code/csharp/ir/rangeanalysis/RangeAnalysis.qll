@@ -68,9 +68,9 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.IR
-private import semmle.code.csharp.ir.internal.IRGuards
-private import semmle.code.csharp.ir.ValueNumbering
+private import experimental.ir.IR
+private import experimental.ir.internal.IRGuards
+private import experimental.ir.ValueNumbering
 private import RangeUtils
 private import SignAnalysis
 import Bound

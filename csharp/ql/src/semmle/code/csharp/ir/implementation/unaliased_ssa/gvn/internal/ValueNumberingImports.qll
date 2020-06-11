@@ -1,3 +1,3 @@
-import semmle.code.csharp.ir.internal.Overlap
-import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-import semmle.code.csharp.ir.implementation.unaliased_ssa.IR
+import experimental.ir.internal.Overlap
+import experimental.ir.internal.IRCSharpLanguage as Language
+import experimental.ir.implementation.unaliased_ssa.IR

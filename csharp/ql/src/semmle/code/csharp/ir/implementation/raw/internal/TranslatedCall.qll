@@ -1,13 +1,13 @@
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
-private import semmle.code.csharp.ir.Util
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedCallBase
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.Util
+private import experimental.ir.implementation.raw.internal.common.TranslatedCallBase
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
  * The IR translation of a call to a function. The function can be a normal function

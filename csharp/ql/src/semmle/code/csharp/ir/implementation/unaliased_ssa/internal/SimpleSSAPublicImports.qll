@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.internal.Overlap
+import experimental.ir.internal.Overlap

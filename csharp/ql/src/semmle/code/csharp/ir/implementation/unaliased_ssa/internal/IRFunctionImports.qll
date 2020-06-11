@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.implementation.internal.IRFunctionBase as IRFunctionBase
+import experimental.ir.implementation.internal.IRFunctionBase as IRFunctionBase

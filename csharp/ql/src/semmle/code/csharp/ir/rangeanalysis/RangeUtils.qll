@@ -1,7 +1,7 @@
 import csharp
-private import semmle.code.csharp.ir.IR
+private import experimental.ir.IR
 // TODO: move this dependency
-import semmle.code.csharp.ir.internal.IntegerConstant
+import experimental.ir.internal.IntegerConstant
 
 // TODO: move this out of test code
 language[monotonicAggregates]

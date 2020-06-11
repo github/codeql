@@ -9,18 +9,18 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.TempVariableTag
-private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedStmt
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedCondition
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.TempVariableTag
+private import experimental.ir.implementation.raw.internal.InstructionTag
+private import experimental.ir.implementation.raw.internal.TranslatedExpr
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedStmt
+private import experimental.ir.implementation.raw.internal.TranslatedCondition
+private import experimental.ir.internal.IRCSharpLanguage as Language
 private import Common
 private import internal.TranslatedCompilerGeneratedCall
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedExprBase
+private import experimental.ir.implementation.raw.internal.common.TranslatedExprBase
 
 /**
  * Module that exposes the functions needed for the translation of the delegate creation and call expressions.

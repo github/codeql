@@ -1,12 +1,12 @@
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.CSharpType
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import common.TranslatedConditionBase
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedCondition getTranslatedCondition(Expr expr) { result.getExpr() = expr }
 

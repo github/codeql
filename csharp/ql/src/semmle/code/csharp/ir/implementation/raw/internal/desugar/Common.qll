@@ -6,22 +6,22 @@
  */
 
 import csharp
-private import semmle.code.csharp.ir.implementation.Opcode
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.TempVariableTag
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedFunction
-private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
+private import experimental.ir.implementation.Opcode
+private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.TempVariableTag
+private import experimental.ir.implementation.raw.internal.TranslatedElement
+private import experimental.ir.implementation.raw.internal.TranslatedFunction
+private import experimental.ir.implementation.raw.internal.InstructionTag
 private import internal.TranslatedCompilerGeneratedStmt
 private import internal.TranslatedCompilerGeneratedExpr
 private import internal.TranslatedCompilerGeneratedCondition
 private import internal.TranslatedCompilerGeneratedCall
 private import internal.TranslatedCompilerGeneratedElement
 private import internal.TranslatedCompilerGeneratedDeclaration
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBase
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedExprBase
-private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
+private import experimental.ir.implementation.raw.internal.common.TranslatedConditionBase
+private import experimental.ir.implementation.raw.internal.common.TranslatedExprBase
+private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**
  * The general form of a compiler generated try stmt.

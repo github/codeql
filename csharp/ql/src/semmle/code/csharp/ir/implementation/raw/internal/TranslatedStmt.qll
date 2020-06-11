@@ -1,7 +1,7 @@
 import csharp
-private import semmle.code.csharp.ir.internal.CSharpType
-private import semmle.code.csharp.ir.internal.TempVariableTag
-private import semmle.code.csharp.ir.implementation.internal.OperandTag
+private import experimental.ir.internal.CSharpType
+private import experimental.ir.internal.TempVariableTag
+private import experimental.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedDeclaration
@@ -11,7 +11,7 @@ private import TranslatedFunction
 private import TranslatedInitialization
 private import common.TranslatedConditionBase
 private import IRInternal
-private import semmle.code.csharp.ir.internal.IRUtilities
+private import experimental.ir.internal.IRUtilities
 private import desugar.Foreach
 private import desugar.Lock
 

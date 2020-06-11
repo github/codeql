@@ -1,1 +1,1 @@
-import semmle.code.csharp.ir.implementation.MemoryAccessKind as MemoryAccessKind
+import experimental.ir.implementation.MemoryAccessKind as MemoryAccessKind

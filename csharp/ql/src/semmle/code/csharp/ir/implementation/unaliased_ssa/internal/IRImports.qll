@@ -1,3 +1,3 @@
-import semmle.code.csharp.ir.implementation.EdgeKind as EdgeKind
-import semmle.code.csharp.ir.implementation.IRType as IRType
-import semmle.code.csharp.ir.implementation.MemoryAccessKind as MemoryAccessKind
+import experimental.ir.implementation.EdgeKind as EdgeKind
+import experimental.ir.implementation.IRType as IRType
+import experimental.ir.implementation.MemoryAccessKind as MemoryAccessKind

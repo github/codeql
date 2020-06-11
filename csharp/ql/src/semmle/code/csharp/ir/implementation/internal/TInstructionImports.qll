@@ -1,2 +1,2 @@
-import semmle.code.csharp.ir.implementation.IRType as IRType
-import semmle.code.csharp.ir.implementation.Opcode as Opcode
+import experimental.ir.implementation.IRType as IRType
+import experimental.ir.implementation.Opcode as Opcode

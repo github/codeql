@@ -1,6 +1,6 @@
 import csharp
-private import semmle.code.csharp.ir.IR
-private import semmle.code.csharp.ir.ValueNumbering
+private import experimental.ir.IR
+private import experimental.ir.ValueNumbering
 
 private newtype TBound =
   TBoundZero() or
