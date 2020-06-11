@@ -211,9 +211,9 @@ def deepcopy_before_modify(x=[]):
     x.append(42)
     return x
 
-def tuple_unsuccessfully_copy_before_modify(x=[]):
-    t = (copy(x), 3) # Tuple wrongly tainted here
-    t[0].append(42) # FP here
+def tuple_copy_before_modify(x=[]):
+    t = (copy(x), 3)
+    t[0].append(42)
     return t[0]
 
 def call_copy_before_modify(x=[]):

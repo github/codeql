@@ -100,19 +100,28 @@ class Mutation extends TaintSink {
 class Copying extends Sanitizer {
     Copying() { this = "Copy sanitizer"}
 
-    override predicate sanitizingDefinition(TaintKind kind, EssaDefinition def) {
-        (kind instanceof EmptyMutableValue
-        or
-        kind instanceof NonEmptyMutableValue) and
+    override predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) {
+        sanitizesKind(taint) and
         creates_a_copy(def.(AssignmentDefinition).getValue())
     }
 
-    private predicate creates_a_copy(ControlFlowNode value) {
-        value = Value::named("copy.copy").getACall()
+    override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) {
+        sanitizesKind(taint) and
+        creates_a_copy(node)
+    }
+    
+    private predicate creates_a_copy(ControlFlowNode node) {
+        node = Value::named("copy.copy").getACall()
         or
-        value = Value::named("copy.deepcopy").getACall()
+        node = Value::named("copy.deepcopy").getACall()
         or
-        value.(CallNode).getFunction().(AttrNode).getName() = "copy"
+        node.(CallNode).getFunction().(AttrNode).getName() = "copy"
+    }
+
+    private predicate sanitizesKind(TaintKind taint) {
+        taint instanceof EmptyMutableValue
+        or
+        taint instanceof NonEmptyMutableValue
     }
 }
 
