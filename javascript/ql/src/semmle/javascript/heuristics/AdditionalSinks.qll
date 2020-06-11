@@ -19,7 +19,7 @@ private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomiz
 private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
 private import HeuristicSinks as Sinks
 
-private class HeuristicSink = Sinks::HeuristicSink;
+class HeuristicSink = Sinks::HeuristicSink;
 
 private class HeuristicCodeInjectionSink extends Sinks::HeuristicCodeInjectionSink,
   CodeInjection::Sink { }
