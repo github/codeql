@@ -620,4 +620,17 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /**
+   * A call to `nugget` that downloads one of more files to a destination determined by an options object given as the second argument.
+   */
+  class Nugget extends ClientRequest::Range, DataFlow::CallNode {
+    Nugget() { this = DataFlow::moduleImport("nugget").getACall() }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
 }
