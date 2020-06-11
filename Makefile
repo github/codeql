@@ -18,7 +18,7 @@ CODEQL_TOOLS = $(addprefix codeql-tools/,autobuild.cmd autobuild.sh index.cmd in
 
 EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 
-BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap
+BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap go-gen-dbscheme
 
 .PHONY: tools tools-codeql tools-codeql-full clean \
 	tools-linux64 tools-osx64 tools-win64
@@ -81,8 +81,8 @@ tools/net/sourceforge/pmd/cpd/GoLanguage.class: extractor/net/sourceforge/pmd/cp
 	rm tools/net/sourceforge/pmd/cpd/TokenEntry.class
 	rm tools/net/sourceforge/pmd/cpd/Tokenizer.class
 
-ql/src/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-extractor$(EXE)
-	env TRAP_FOLDER=/tmp $< --dbscheme $@
+ql/src/go.dbscheme: tools/$(CODEQL_PLATFORM)/go-gen-dbscheme$(EXE)
+	$< $@
 
 build/stats/src.stamp:
 	mkdir -p $(@D)/src
@@ -109,3 +109,10 @@ build/testdb/go.dbscheme: upgrades/initial/go.dbscheme
 	rm -rf build/testdb
 	echo >build/empty.trap
 	codeql dataset import -S upgrades/initial/go.dbscheme build/testdb build/empty.trap
+
+.PHONY: sync-dataflow-libraries
+sync-dataflow-libraries:
+	for f in DataFlowImpl.qll DataFlowImplCommon.qll tainttracking1/TaintTrackingImpl.qll;\
+	do\
+		curl -s -o ./ql/src/semmle/go/dataflow/internal/$$f https://raw.githubusercontent.com/github/codeql/master/java/ql/src/semmle/code/java/dataflow/internal/$$f;\
+	done

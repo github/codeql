@@ -2,6 +2,8 @@ package p
 
 import "fmt"
 
+// codeql test: expect frontend errors
+
 func test() {
 	if false {
 		x := deadStore() // OK

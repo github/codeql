@@ -1,10 +1,16 @@
+| * starImpl | meth1 | * starImpl | meth1 |
+| * starImpl | meth1 | meth1Iface | meth1 |
+| * starImpl | meth1 | twoMethods | meth1 |
+| * t | bump | * t | bump |
+| * t | meth | * t | meth |
+| * t | meth | iHaveAMethod | meth |
+| * t | meth | iHaveARedeclaredMethod | meth |
 | iHaveAMethod | meth | iHaveAMethod | meth |
+| iHaveARedeclaredMethod | meth | iHaveARedeclaredMethod | meth |
 | meth1Iface | meth1 | meth1Iface | meth1 |
-| meth1Iface | meth1 | twoMethods | meth1 |
-| pointer type | meth | iHaveAMethod | meth |
-| pointer type | meth1 | meth1Iface | meth1 |
-| pointer type | meth1 | twoMethods | meth1 |
+| notImpl | meth1 | notImpl | meth1 |
+| notImpl | meth2 | notImpl | meth2 |
+| starImpl | meth2 | starImpl | meth2 |
 | starImpl | meth2 | twoMethods | meth2 |
-| twoMethods | meth1 | meth1Iface | meth1 |
 | twoMethods | meth1 | twoMethods | meth1 |
 | twoMethods | meth2 | twoMethods | meth2 |

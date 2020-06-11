@@ -1,4 +1,6 @@
 | main.go:7:2:7:25 | call to Println |
 | main.go:8:5:8:7 | call to f |
-| main.go:12:8:12:24 | call to make |
-| main.go:14:2:14:26 | call to Println |
+| main.go:9:9:9:14 | call to test |
+| main.go:10:2:10:19 | call to Println |
+| main.go:14:8:14:24 | call to make |
+| main.go:16:2:16:26 | call to Println |

@@ -1,15 +1,6 @@
 # github.com/Masterminds/squirrel v1.1.0
 ## explicit
 github.com/Masterminds/squirrel
-# github.com/github/depstubber v0.0.0-20200414023404-c355b630c381
+# go.mongodb.org/mongo-driver v1.3.3
 ## explicit
-github.com/github/depstubber
-# github.com/go-sql-driver/mysql v1.5.0
-## explicit
-github.com/go-sql-driver/mysql
-# github.com/lib/pq v1.3.0
-## explicit
-github.com/lib/pq
-# github.com/mattn/go-sqlite3 v2.0.3+incompatible
-## explicit
-github.com/mattn/go-sqlite3
+go.mongodb.org/mongo-driver

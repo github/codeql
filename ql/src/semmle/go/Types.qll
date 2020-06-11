@@ -25,11 +25,17 @@ class Type extends @type {
 
   /**
    * Gets the qualified name of this type, if any.
+   *
+   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   string getQualifiedName() { result = getEntity().getQualifiedName() }
 
   /**
    * Holds if this type is declared in a package with path `pkg` and has name `name`.
+   *
+   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   predicate hasQualifiedName(string pkg, string name) { getEntity().hasQualifiedName(pkg, name) }
 

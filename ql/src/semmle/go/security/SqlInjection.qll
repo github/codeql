@@ -23,6 +23,10 @@ module SqlInjection {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      NoSQL::isAdditionalMongoTaintStep(pred, succ)
+    }
+
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer

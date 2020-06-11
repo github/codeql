@@ -23,3 +23,5 @@
 | types.go:33:16:33:20 | meth1 | func(int) bool |
 | types.go:33:22:33:22 | a | int |
 | types.go:37:16:37:20 | meth2 | func() int |
+| types.go:41:6:41:27 | iHaveARedeclaredMethod | iHaveARedeclaredMethod |
+| types.go:43:2:43:5 | meth | func() int |

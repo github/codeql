@@ -11,8 +11,20 @@ func isValidRedirect(url string) bool {
 	return len(url) >= 2 && url[0] == '/' && url[1] != '/' // NOT OK
 }
 
-func isValidRedirect1(url string) bool {
+func alsoABadRedirect(url string, rw http.ResponseWriter, req *http.Request) {
+	if isValidRedirect(url) {
+		http.Redirect(rw, req, url, 302)
+	}
+}
+
+func isValidRedirectGood(url string) bool {
 	return len(url) >= 2 && url[0] == '/' && url[1] != '/' && url[1] != '\\' // OK
+}
+
+func alsoAGoodRedirect(url string, rw http.ResponseWriter, req *http.Request) {
+	if isValidRedirectGood(url) {
+		http.Redirect(rw, req, url, 302)
+	}
 }
 
 // CVE-2017-1000070 (both vulnerable!)
@@ -22,6 +34,7 @@ func OAuthCallback(rw http.ResponseWriter, req *http.Request) {
 	if !strings.HasPrefix(redirect, "/") { // NOT OK
 		redirect = "/"
 	}
+	http.Redirect(rw, req, redirect, 302)
 }
 
 func OAuthCallback1(rw http.ResponseWriter, req *http.Request) {
@@ -29,4 +42,5 @@ func OAuthCallback1(rw http.ResponseWriter, req *http.Request) {
 	if !strings.HasPrefix(redirect, "/") || strings.HasPrefix(redirect, "//") { // NOT OK
 		redirect = "/"
 	}
+	http.Redirect(rw, req, redirect, 302)
 }

@@ -11,7 +11,7 @@ import semmle.go.dataflow.FunctionInputsAndOutputs
  * A data-flow node that executes an operating system command,
  * for instance by spawning a new process.
  *
- * Extends this class to refine existing API models. If you want to model new APIs,
+ * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node {
@@ -366,8 +366,8 @@ module HTTP {
      * extend `HTTP::ResponseWriter` instead.
      */
     abstract class Range extends Variable {
-      /** Gets a data-flow node that represents this response writer. */
-      DataFlow::Node getANode() { result = this.getARead().getASuccessor*() }
+      /** Gets a data-flow node that is a use of this response writer. */
+      abstract DataFlow::Node getANode();
     }
   }
 
@@ -391,7 +391,7 @@ module HTTP {
     /** Gets a redirect that is sent in this HTTP response. */
     Redirect getARedirect() { result.getResponseWriter() = this }
 
-    /** Gets a data-flow node that represents this response writer. */
+    /** Gets a data-flow node that is a use of this response writer. */
     DataFlow::Node getANode() { result = self.getANode() }
   }
 

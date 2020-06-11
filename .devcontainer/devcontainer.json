@@ -1,0 +1,11 @@
+{
+    "extensions": [
+        "github.vscode-codeql",
+        "slevesque.vscode-zipexplorer"
+    ],
+    "settings": {
+        "codeQL.experimentalBqrsParsing": true,
+        "codeQL.experimentalFeatures": true,
+        "codeQL.runningQueries.debug": true
+    }
+}

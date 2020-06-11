@@ -51,9 +51,7 @@ module AllocationSizeOverflow {
       exists(MarshalingFunction marshal, DataFlow::CallNode call |
         call = marshal.getACall() and
         // rule out cases where we can tell that the result will always be small
-        not forall(FunctionInput inp | inp = marshal.getAnInput() |
-          isSmall(inp.getNode(call).asExpr())
-        ) and
+        exists(FunctionInput inp | inp = marshal.getAnInput() | isBig(inp.getNode(call).asExpr())) and
         this = marshal.getOutput().getNode(call)
       )
     }
@@ -152,26 +150,17 @@ module AllocationSizeOverflow {
     exists(StructType st | st = t | forall(Field f | f = st.getField(_) | isSmallType(f.getType())))
   }
 
-  /** Holds if `e` is an expression whose values are likely to marshal to relatively small blobs. */
-  private predicate isSmall(Expr e) {
-    isSmallType(e.getType())
-    or
-    e.isConst()
+  /** Holds if `e` is an expression whose values might marshal to relatively large blobs. */
+  private predicate isBig(Expr e) {
+    not isSmallType(e.getType()) and
+    not e.isConst()
     or
     exists(KeyValueExpr kv | kv = e |
-      isSmall(kv.getKey()) and
-      isSmall(kv.getValue())
+      isBig(kv.getKey()) or
+      isBig(kv.getValue())
     )
     or
-    isSmallCompositeLit(e, 0)
-  }
-
-  /** Holds if elements `n` and above of `lit` are small. */
-  private predicate isSmallCompositeLit(CompositeLit lit, int n) {
-    n = lit.getNumElement()
-    or
-    isSmall(lit.getElement(n)) and
-    isSmallCompositeLit(lit, n + 1)
+    isBig(e.(CompositeLit).getAnElement())
   }
 
   /**

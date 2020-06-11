@@ -4,6 +4,7 @@
 
 import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
+private import DataFlowPrivate
 
 cached
 private newtype TNode =
@@ -326,8 +327,15 @@ class CallNode extends ExprNode {
   /** Gets a function passed as the `i`th argument of this call. */
   FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
 
-  /** Gets the data-flow node corresponding to the `i`th result of this call. */
-  Node getResult(int i) { result = extractTupleElement(this, i) }
+  /**
+   * Gets the data-flow node corresponding to the `i`th result of this call.
+   *
+   * If there is a single result then it is considered to be the 0th result. */
+  Node getResult(int i) {
+    i = 0 and result = getResult()
+    or
+    result = extractTupleElement(this, i)
+  }
 
   /**
    * Gets the data-flow node corresponding to the result of this call.
@@ -336,6 +344,9 @@ class CallNode extends ExprNode {
    * variant `getResult(i)` for such calls.
    */
   Node getResult() { not getType() instanceof TupleType and result = this }
+
+  /** Gets a result of this call. */
+  Node getAResult() { result = this.getResult(_) }
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }
@@ -424,17 +435,6 @@ class PostUpdateNode extends Node {
 }
 
 /**
- * Gets the `i`th argument of call `c`, where the receiver of a method call
- * counts as argument -1.
- */
-private Node getArgument(CallNode c, int i) {
-  result = c.getArgument(i)
-  or
-  result = c.(MethodCallNode).getReceiver() and
-  i = -1
-}
-
-/**
  * A data-flow node that occurs as an argument in a call, including receiver arguments.
  */
 class ArgumentNode extends Node {
@@ -473,11 +473,12 @@ class ArgumentNode extends Node {
  * mutate it or something it points to.
  */
 predicate mutableType(Type tp) {
-  tp instanceof ArrayType or
-  tp instanceof SliceType or
-  tp instanceof MapType or
-  tp instanceof PointerType or
-  tp instanceof InterfaceType
+  exists(Type underlying | underlying = tp.getUnderlyingType() |
+    not underlying instanceof BoolType and
+    not underlying instanceof NumericType and
+    not underlying instanceof StringType and
+    not underlying instanceof LiteralType
+  )
 }
 
 /**
@@ -766,6 +767,9 @@ class EqualityTestNode extends BinaryOperationNode, ExprNode {
     outcome = expr.getPolarity() and
     expr.hasOperands(lhs.asExpr(), rhs.asExpr())
   }
+
+  /** Gets the polarity of this equality test, that is, `true` for `==` and `false` for `!=`. */
+  boolean getPolarity() { result = expr.getPolarity() }
 }
 
 /**

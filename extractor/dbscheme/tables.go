@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/token"
 	gotypes "go/types"
+	"golang.org/x/tools/go/packages"
 )
 
 var defaultSnippet = AddDefaultSnippet(`
@@ -642,6 +643,20 @@ var ModLParenType = ModExprKind.NewBranch("@modlparen")
 // ModRParenType is the type of go.mod line block end AST nodes
 var ModRParenType = ModExprKind.NewBranch("@modrparen")
 
+// ErrorType is the type of frontend errors
+var ErrorType = NewPrimaryKeyType("@error")
+
+// ErrorKind is a case type for distinguishing different kinds of frontend errors
+var ErrorKind = NewCaseType(ErrorType, "kind")
+
+// ErrorTypes is a map from error kinds to the corresponding type
+var ErrorTypes = map[packages.ErrorKind]*BranchType{
+	packages.UnknownError: ErrorKind.NewBranch("@unknownerror"),
+	packages.ListError:    ErrorKind.NewBranch("@listerror"),
+	packages.ParseError:   ErrorKind.NewBranch("@parseerror"),
+	packages.TypeError:    ErrorKind.NewBranch("@typeerror"),
+}
+
 // LocationsDefaultTable is the table defining location objects
 var LocationsDefaultTable = NewTable("locations_default",
 	EntityColumn(LocationDefaultType, "id").Key(),
@@ -915,3 +930,16 @@ var ModTokensTable = NewTable("modtokens",
 	EntityColumn(ModExprType, "parent"),
 	IntColumn("idx"),
 ).KeySet("parent", "idx")
+
+// ErrorsTable is the table describing frontend errors
+var ErrorsTable = NewTable("errors",
+	EntityColumn(ErrorType, "id").Key(),
+	IntColumn("kind"),
+	StringColumn("msg"),
+	StringColumn("rawpos"),
+	StringColumn("file"),
+	IntColumn("line"),
+	IntColumn("col"),
+	EntityColumn(PackageType, "package"),
+	IntColumn("idx"),
+).KeySet("package", "idx")

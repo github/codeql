@@ -5,6 +5,7 @@
 import go
 import UrlConcatenation
 import SafeUrlFlowCustomizations
+import semmle.go.dataflow.BarrierGuardUtil
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {
@@ -53,12 +54,48 @@ module RequestForgery {
   }
 
   /**
+   * The URL of a WebSocket request, viewed as a sink for request forgery.
+   */
+  class WebSocketCallAsSink extends Sink {
+    WebSocketRequestCall request;
+
+    WebSocketCallAsSink() { this = request.getRequestUrl() }
+
+    override DataFlow::Node getARequest() { result = request }
+
+    override string getKind() { result = "WebSocket URL" }
+  }
+
+  /**
    * A value that is the result of prepending a string that prevents any value from controlling the
    * host of a URL.
    */
   private class HostnameSanitizer extends SanitizerEdge {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
   }
+
+  /**
+   * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
+   * considered a barrier guard.
+   */
+  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrierGuard, SanitizerGuard {
+  }
+
+  /**
+   * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
+   *
+   * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+   */
+  class RegexpCheckAsBarrierGuard extends RegexpCheck, SanitizerGuard { }
+
+  /**
+   * An equality check comparing a data-flow node against a constant string, considered as
+   * a barrier guard for sanitizing untrusted URLs.
+   *
+   * Additionally, a check comparing `url.Hostname()` against a constant string is also
+   * considered a barrier guard for `url`.
+   */
+  class UrlCheckAsBarrierGuard extends UrlCheck, SanitizerGuard { }
 }
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */

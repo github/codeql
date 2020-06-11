@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -57,13 +58,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
-		if len(pkg.Errors) != 0 {
-			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
-			for _, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
-			}
-		}
-
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
 			log.Fatal(err)
@@ -74,6 +68,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		tw.ForEachObject(extractObjectType)
 		lbl := tw.Labeler.GlobalID(pkg.PkgPath + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
+
+		if len(pkg.Errors) != 0 {
+			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
+			for i, err := range pkg.Errors {
+				log.Printf("  %s", err.Error())
+				extractError(tw, err, lbl, i)
+			}
+		}
 	})
 
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -251,6 +253,50 @@ func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		dbscheme.ObjectTypesTable.Emit(tw, lbl, extractType(tw, tp))
 	}
+}
+
+var (
+	// file:line:col
+	threePartPos = regexp.MustCompile(`^(.+):(\d+):(\d+)$`)
+	// file:line
+	twoPartPos = regexp.MustCompile(`^(.+):(\d+)$`)
+)
+
+// extractError extracts the message and location of a frontend error
+func extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
+	var (
+		lbl  = tw.Labeler.FreshID()
+		kind = dbscheme.ErrorTypes[err.Kind].Index()
+		pos  = err.Pos
+		file = ""
+		line = 0
+		col  = 0
+		e    error
+	)
+
+	if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
+		// "file:line:col"
+		col, e = strconv.Atoi(parts[3])
+		if e != nil {
+			log.Printf("Warning: malformed column number `%s`: %v", parts[3], e)
+		}
+		line, e = strconv.Atoi(parts[2])
+		if e != nil {
+			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+		}
+		file = parts[1]
+	} else if parts := twoPartPos.FindStringSubmatch(pos); parts != nil {
+		// "file:line"
+		line, e = strconv.Atoi(parts[2])
+		if e != nil {
+			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+		}
+		file = parts[1]
+	} else if pos != "" && pos != "-" {
+		log.Printf("Warning: malformed error position `%s`", pos)
+	}
+	file = filepath.ToSlash(srcarchive.TransformPath(file))
+	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, file, line, col, pkglbl, idx)
 }
 
 // extractPackage extracts AST information for all files in the given package

@@ -37,3 +37,8 @@ func (notImpl) meth1(a int) bool {
 func (notImpl) meth2() int {
 	return -42
 }
+
+type iHaveARedeclaredMethod interface {
+	iHaveAMethod
+	meth() int
+}

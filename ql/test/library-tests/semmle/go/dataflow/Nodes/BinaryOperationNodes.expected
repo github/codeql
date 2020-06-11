@@ -1,3 +1,4 @@
 | main.go:7:14:7:24 | ...+... | + | main.go:7:14:7:14 | x | main.go:7:19:7:23 | ...+... |
 | main.go:7:19:7:23 | ...+... | + | main.go:7:19:7:19 | y | main.go:7:23:7:23 | z |
-| main.go:15:2:15:13 | ... += ... | + | main.go:15:2:15:6 | index expression | main.go:15:11:15:13 | "!" |
+| main.go:10:14:10:18 | ...+... | + | main.go:10:14:10:14 | x | main.go:10:18:10:18 | y |
+| main.go:17:2:17:13 | ... += ... | + | main.go:17:2:17:6 | index expression | main.go:17:11:17:13 | "!" |

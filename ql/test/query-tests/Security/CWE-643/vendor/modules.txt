@@ -13,30 +13,12 @@ github.com/antchfx/xmlquery
 # github.com/antchfx/xpath v1.1.5
 ## explicit
 github.com/antchfx/xpath
-# github.com/github/depstubber v0.0.0-20200413231600-392d5a70208e
-## explicit
-github.com/github/depstubber
 # github.com/go-xmlpath/xmlpath v0.0.0-20150820204837-860cbeca3ebc
 ## explicit
 github.com/go-xmlpath/xmlpath
-# github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
-## explicit
-github.com/golang/groupcache
 # github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
 ## explicit
 github.com/jbowtie/gokogiri
-# github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
-## explicit
-github.com/niemeyer/pretty
 # github.com/santhosh-tekuri/xpathparser v1.0.0
 ## explicit
 github.com/santhosh-tekuri/xpathparser
-# golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
-## explicit
-golang.org/x/net
-# gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f
-## explicit
-gopkg.in/check.v1
-# gopkg.in/xmlpath.v2 v2.0.0-20150820204837-860cbeca3ebc
-## explicit
-gopkg.in/xmlpath.v2

@@ -2,8 +2,8 @@ edges
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q |
 | issue48.go:17:25:17:32 | selection of Body : ReadCloser | issue48.go:22:11:22:12 | q3 |
 | issue48.go:27:26:27:33 | selection of Body : ReadCloser | issue48.go:32:11:32:12 | q4 |
-| issue48.go:37:17:37:50 | type conversion : slice type | issue48.go:41:11:41:12 | q5 |
-| issue48.go:37:24:37:30 | selection of URL : pointer type | issue48.go:37:17:37:50 | type conversion : slice type |
+| issue48.go:37:17:37:50 | type conversion : string | issue48.go:41:11:41:12 | q5 |
+| issue48.go:37:24:37:30 | selection of URL : pointer type | issue48.go:37:17:37:50 | type conversion : string |
 | main.go:10:11:10:16 | selection of Form : Values | main.go:10:11:10:28 | index expression |
 | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf |
@@ -41,6 +41,20 @@ edges
 | main.go:60:3:60:25 | selection of Category : slice type | main.go:61:11:61:11 | q |
 | main.go:60:4:60:15 | star expression [Category] : slice type | main.go:60:3:60:25 | selection of Category : slice type |
 | main.go:60:5:60:15 | RequestData [pointer, Category] | main.go:60:4:60:15 | star expression [Category] : slice type |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:57:22:57:29 | pipeline |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:61:27:61:32 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:63:23:63:28 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:64:22:64:27 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:66:32:66:37 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:69:17:69:22 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:70:20:70:25 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:71:29:71:34 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:72:30:72:35 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:73:29:73:34 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:78:23:78:28 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:79:23:79:28 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:80:22:80:27 | filter |
+| mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:81:18:81:25 | pipeline |
 nodes
 | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
@@ -48,7 +62,7 @@ nodes
 | issue48.go:22:11:22:12 | q3 | semmle.label | q3 |
 | issue48.go:27:26:27:33 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
 | issue48.go:32:11:32:12 | q4 | semmle.label | q4 |
-| issue48.go:37:17:37:50 | type conversion : slice type | semmle.label | type conversion : slice type |
+| issue48.go:37:17:37:50 | type conversion : string | semmle.label | type conversion : string |
 | issue48.go:37:24:37:30 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | issue48.go:41:11:41:12 | q5 | semmle.label | q5 |
 | main.go:10:11:10:16 | selection of Form : Values | semmle.label | selection of Form : Values |
@@ -92,6 +106,21 @@ nodes
 | main.go:60:4:60:15 | star expression [Category] : slice type | semmle.label | star expression [Category] : slice type |
 | main.go:60:5:60:15 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
 | main.go:61:11:61:11 | q | semmle.label | q |
+| mongoDB.go:40:20:40:30 | call to Referer : string | semmle.label | call to Referer : string |
+| mongoDB.go:57:22:57:29 | pipeline | semmle.label | pipeline |
+| mongoDB.go:61:27:61:32 | filter | semmle.label | filter |
+| mongoDB.go:63:23:63:28 | filter | semmle.label | filter |
+| mongoDB.go:64:22:64:27 | filter | semmle.label | filter |
+| mongoDB.go:66:32:66:37 | filter | semmle.label | filter |
+| mongoDB.go:69:17:69:22 | filter | semmle.label | filter |
+| mongoDB.go:70:20:70:25 | filter | semmle.label | filter |
+| mongoDB.go:71:29:71:34 | filter | semmle.label | filter |
+| mongoDB.go:72:30:72:35 | filter | semmle.label | filter |
+| mongoDB.go:73:29:73:34 | filter | semmle.label | filter |
+| mongoDB.go:78:23:78:28 | filter | semmle.label | filter |
+| mongoDB.go:79:23:79:28 | filter | semmle.label | filter |
+| mongoDB.go:80:22:80:27 | filter | semmle.label | filter |
+| mongoDB.go:81:18:81:25 | pipeline | semmle.label | pipeline |
 #select
 | SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL : pointer type | SqlInjection.go:12:11:12:11 | q | This query depends on $@. | SqlInjection.go:11:3:11:9 | selection of URL | a user-provided value |
 | issue48.go:22:11:22:12 | q3 | issue48.go:17:25:17:32 | selection of Body : ReadCloser | issue48.go:22:11:22:12 | q3 | This query depends on $@. | issue48.go:17:25:17:32 | selection of Body | a user-provided value |
@@ -104,3 +133,17 @@ nodes
 | main.go:43:11:43:11 | q | main.go:39:25:39:31 | selection of URL : pointer type | main.go:43:11:43:11 | q | This query depends on $@. | main.go:39:25:39:31 | selection of URL | a user-provided value |
 | main.go:52:11:52:11 | q | main.go:48:28:48:34 | selection of URL : pointer type | main.go:52:11:52:11 | q | This query depends on $@. | main.go:48:28:48:34 | selection of URL | a user-provided value |
 | main.go:61:11:61:11 | q | main.go:57:28:57:34 | selection of URL : pointer type | main.go:61:11:61:11 | q | This query depends on $@. | main.go:57:28:57:34 | selection of URL | a user-provided value |
+| mongoDB.go:57:22:57:29 | pipeline | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:57:22:57:29 | pipeline | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:61:27:61:32 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:61:27:61:32 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:63:23:63:28 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:63:23:63:28 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:64:22:64:27 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:64:22:64:27 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:66:32:66:37 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:66:32:66:37 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:69:17:69:22 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:69:17:69:22 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:70:20:70:25 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:70:20:70:25 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:71:29:71:34 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:71:29:71:34 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:72:30:72:35 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:72:30:72:35 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:73:29:73:34 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:73:29:73:34 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:78:23:78:28 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:78:23:78:28 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:79:23:79:28 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:79:23:79:28 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:80:22:80:27 | filter | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:80:22:80:27 | filter | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |
+| mongoDB.go:81:18:81:25 | pipeline | mongoDB.go:40:20:40:30 | call to Referer : string | mongoDB.go:81:18:81:25 | pipeline | This query depends on $@. | mongoDB.go:40:20:40:30 | call to Referer | a user-provided value |

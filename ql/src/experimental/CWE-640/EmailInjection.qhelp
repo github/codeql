@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using untrusted input to construct an email can cause multiple security
+      vulnerabilities. For instance, inclusion of an untrusted input in an email body
+      may allow an attacker to conduct Cross Site Scripting (XSS) attacks, while
+      inclusion of an HTTP header may allow a full account compromise as shown in the
+      example below.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Any data which is passed to an email subject or body must be sanitized before use.
+    </p>
+  </recommendation>
+  <example>
+    <p>
+      In the following example snippet, the <code>host</code> field is user controlled.
+    </p>
+    <p>
+      A malicious user can send an HTTP request to the targeted web site,
+      but with a Host header that refers to their own web site. This means the
+      emails will be sent out to potential victims, originating from a server
+      they trust, but with links leading to a malicious web site.
+    </p>
+    <p>
+      If the email contains a password reset link, and should the victim click
+      the link, the secret reset token will be leaked to the attacker. Using the
+      leaked token, the attacker can then construct the real reset link and use it to
+      change the victim's password.
+    </p>
+    <sample src="EmailBad.go" />
+    <p>
+      One way to prevent this is to load the host name from a trusted configuration file instead.
+    </p>
+    <sample src="EmailGood.go" />
+  </example>
+  <references>
+    <li>
+      OWASP
+      <a href="https://owasp.org/www-community/attacks/Content_Spoofing">Content Spoofing</a>
+      .
+    </li>
+  </references>
+</qhelp>

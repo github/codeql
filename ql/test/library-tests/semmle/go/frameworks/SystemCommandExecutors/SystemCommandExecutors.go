@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"syscall"
 
 	sh "github.com/codeskyblue/go-sh"
 	"golang.org/x/crypto/ssh"
@@ -93,6 +94,13 @@ func handler(w http.ResponseWriter, req *http.Request) {
 		sh.Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
 		sh.InteractiveSession().Call(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
 		sh.InteractiveSession().Command(shell, toInterfaceArray(append([]string{assumedNonShell}, source))...)
+	}
+	// syscall
+	{
+		syscall.Exec(source, []string{"arg1", "arg2"}, []string{})
+		syscall.StartProcess(source, []string{"arg1", "arg2"}, &syscall.ProcAttr{})
+
+		syscall.StartProcess(shell, []string{source, "arg2"}, &syscall.ProcAttr{})
 	}
 }
 func toInterfaceArray(strs []string) []interface{} {

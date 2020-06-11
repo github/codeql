@@ -1,0 +1,3 @@
+# gopkg.in/macaron.v1 v1.3.5
+## explicit
+gopkg.in/macaron.v1

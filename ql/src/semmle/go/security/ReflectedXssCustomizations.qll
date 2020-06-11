@@ -59,7 +59,7 @@ module ReflectedXss {
     not htmlTypeSpecified(body) and
     (
       exists(HTTP::HeaderWrite hw | hw = body.getResponseWriter().getAHeaderWrite() |
-        hw.definesHeader("content-type", _)
+        hw.getName().getStringValue().toLowerCase() = "content-type"
       )
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
@@ -68,6 +68,14 @@ module ReflectedXss {
         //  - '<', which could lead to an HTML content type being detected, or
         //  - '%', which could be a format string.
         call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
+      )
+      or
+      exists(DataFlow::Node pred | body = pred.getASuccessor*() |
+        // data starting with a character other than `<` cannot cause an HTML content type to be detected.
+        pred.getStringValue().regexpMatch("^[^<].*")
+        or
+        // json data cannot begin with `<`
+        exists(EncodingJson::MarshalFunction mf | pred = mf.getOutput().getNode(mf.getACall()))
       )
     )
   }
@@ -93,6 +101,17 @@ module ReflectedXss {
         or
         f instanceof JsEscapeFunction
       )
+    }
+  }
+
+  /**
+   * A check against a constant value, considered a barrier for reflected XSS.
+   */
+  class EqualityTestGuard extends SanitizerGuard, DataFlow::EqualityTestNode {
+    override predicate checks(Expr e, boolean outcome) {
+      this.getAnOperand().isConst() and
+      e = this.getAnOperand().asExpr() and
+      outcome = this.getPolarity()
     }
   }
 }

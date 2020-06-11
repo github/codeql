@@ -13,12 +13,8 @@ import (
 )
 
 type BaseRunner interface {
-	Exec(_ string, _ ...interface{}) (sql.Result, interface {
-		Error() string
-	})
-	Query(_ string, _ ...interface{}) (*sql.Rows, interface {
-		Error() string
-	})
+	Exec(_ string, _ ...interface{}) (sql.Result, error)
+	Query(_ string, _ ...interface{}) (*sql.Rows, error)
 }
 
 func Expr(_ string, _ ...interface{}) interface{} {
@@ -26,15 +22,11 @@ func Expr(_ string, _ ...interface{}) interface{} {
 }
 
 type PlaceholderFormat interface {
-	ReplacePlaceholders(_ string) (string, interface {
-		Error() string
-	})
+	ReplacePlaceholders(_ string) (string, error)
 }
 
 type RowScanner interface {
-	Scan(_ ...interface{}) interface {
-		Error() string
-	}
+	Scan(_ ...interface{}) error
 }
 
 func Select(_ ...string) SelectBuilder {
@@ -55,15 +47,11 @@ func (_ SelectBuilder) Distinct() SelectBuilder {
 	return SelectBuilder{}
 }
 
-func (_ SelectBuilder) Exec() (sql.Result, interface {
-	Error() string
-}) {
+func (_ SelectBuilder) Exec() (sql.Result, error) {
 	return nil, nil
 }
 
-func (_ SelectBuilder) ExecContext(_ context.Context) (sql.Result, interface {
-	Error() string
-}) {
+func (_ SelectBuilder) ExecContext(_ context.Context) (sql.Result, error) {
 	return nil, nil
 }
 
@@ -123,15 +111,11 @@ func (_ SelectBuilder) Prefix(_ string, _ ...interface{}) SelectBuilder {
 	return SelectBuilder{}
 }
 
-func (_ SelectBuilder) Query() (*sql.Rows, interface {
-	Error() string
-}) {
+func (_ SelectBuilder) Query() (*sql.Rows, error) {
 	return nil, nil
 }
 
-func (_ SelectBuilder) QueryContext(_ context.Context) (*sql.Rows, interface {
-	Error() string
-}) {
+func (_ SelectBuilder) QueryContext(_ context.Context) (*sql.Rows, error) {
 	return nil, nil
 }
 
@@ -155,15 +139,11 @@ func (_ SelectBuilder) RunWith(_ BaseRunner) SelectBuilder {
 	return SelectBuilder{}
 }
 
-func (_ SelectBuilder) Scan(_ ...interface{}) interface {
-	Error() string
-} {
+func (_ SelectBuilder) Scan(_ ...interface{}) error {
 	return nil
 }
 
-func (_ SelectBuilder) ScanContext(_ context.Context, _ ...interface{}) interface {
-	Error() string
-} {
+func (_ SelectBuilder) ScanContext(_ context.Context, _ ...interface{}) error {
 	return nil
 }
 
@@ -171,9 +151,7 @@ func (_ SelectBuilder) Suffix(_ string, _ ...interface{}) SelectBuilder {
 	return SelectBuilder{}
 }
 
-func (_ SelectBuilder) ToSql() (string, []interface{}, interface {
-	Error() string
-}) {
+func (_ SelectBuilder) ToSql() (string, []interface{}, error) {
 	return "", nil, nil
 }
 

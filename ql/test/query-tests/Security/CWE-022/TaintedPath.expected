@@ -1,10 +1,18 @@
 edges
 | TaintedPath.go:10:10:10:14 | selection of URL : pointer type | TaintedPath.go:13:29:13:32 | path |
 | TaintedPath.go:10:10:10:14 | selection of URL : pointer type | TaintedPath.go:17:28:17:61 | call to Join |
+| tst.go:14:22:14:39 | call to FormFile : tuple type | tst.go:17:41:17:47 | implicit dereference : FileHeader |
+| tst.go:14:22:14:39 | call to FormFile : tuple type | tst.go:17:41:17:56 | selection of Filename |
+| tst.go:17:41:17:47 | implicit dereference : FileHeader | tst.go:17:41:17:47 | implicit dereference : FileHeader |
+| tst.go:17:41:17:47 | implicit dereference : FileHeader | tst.go:17:41:17:56 | selection of Filename |
 nodes
 | TaintedPath.go:10:10:10:14 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | TaintedPath.go:13:29:13:32 | path | semmle.label | path |
 | TaintedPath.go:17:28:17:61 | call to Join | semmle.label | call to Join |
+| tst.go:14:22:14:39 | call to FormFile : tuple type | semmle.label | call to FormFile : tuple type |
+| tst.go:17:41:17:47 | implicit dereference : FileHeader | semmle.label | implicit dereference : FileHeader |
+| tst.go:17:41:17:56 | selection of Filename | semmle.label | selection of Filename |
 #select
 | TaintedPath.go:13:29:13:32 | path | TaintedPath.go:10:10:10:14 | selection of URL : pointer type | TaintedPath.go:13:29:13:32 | path | This path depends on $@. | TaintedPath.go:10:10:10:14 | selection of URL | a user-provided value |
 | TaintedPath.go:17:28:17:61 | call to Join | TaintedPath.go:10:10:10:14 | selection of URL : pointer type | TaintedPath.go:17:28:17:61 | call to Join | This path depends on $@. | TaintedPath.go:10:10:10:14 | selection of URL | a user-provided value |
+| tst.go:17:41:17:56 | selection of Filename | tst.go:14:22:14:39 | call to FormFile : tuple type | tst.go:17:41:17:56 | selection of Filename | This path depends on $@. | tst.go:14:22:14:39 | call to FormFile | a user-provided value |

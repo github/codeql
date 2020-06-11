@@ -23,3 +23,5 @@
 | types.go:33:16:33:20 | meth1 | types.go:33:16:33:20 | meth1 |
 | types.go:33:22:33:22 | a | types.go:33:22:33:22 | a |
 | types.go:37:16:37:20 | meth2 | types.go:37:16:37:20 | meth2 |
+| types.go:41:6:41:27 | iHaveARedeclaredMethod | types.go:41:6:41:27 | iHaveARedeclaredMethod |
+| types.go:43:2:43:5 | meth | types.go:43:2:43:5 | meth |

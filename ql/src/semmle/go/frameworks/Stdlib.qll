@@ -62,7 +62,18 @@ module PathFilePath {
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and
-      (outp.isResult() or outp.isResult(_))
+      outp.isResult(_)
+    }
+  }
+}
+
+/** Provides models of commonly used functions in the `bytes` package. */
+private module Bytes {
+  private class BufferBytes extends TaintTracking::FunctionModel, Method {
+    BufferBytes() { this.hasQualifiedName("bytes", "Buffer", ["Bytes", "String"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isResult()
     }
   }
 }
@@ -71,39 +82,272 @@ module PathFilePath {
 module Fmt {
   /** The `Sprint` function or one of its variants. */
   class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() {
-      exists(string sprint | sprint.matches("Sprint%") | hasQualifiedName("fmt", sprint))
-    }
+    Sprinter() { this.hasQualifiedName("fmt", ["Sprint", "Sprintf", "Sprintln"]) }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
 
+  /** The `Print` function or one of its variants. */
+  private class Printer extends Function {
+    Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
+  }
+
+  /** A call to `Print`, `Fprint`, or similar. */
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    PrintCall() {
-      exists(string fn |
-        fn = "Print%"
-        or
-        fn = "Fprint%"
-      |
-        this.getTarget().hasQualifiedName("fmt", fn)
-      )
-    }
+    PrintCall() { this.getTarget() instanceof Printer or this.getTarget() instanceof Fprinter }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+  }
+
+  /** The `Fprint` function or one of its variants. */
+  private class Fprinter extends TaintTracking::FunctionModel {
+    Fprinter() { this.hasQualifiedName("fmt", ["Fprint", "Fprintf", "Fprintln"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(any(int i | i > 0)) and output.isParameter(0)
+    }
+  }
+
+  /** The `Sscan` function or one of its variants. */
+  private class Sscanner extends TaintTracking::FunctionModel {
+    Sscanner() { this.hasQualifiedName("fmt", ["Sscan", "Sscanf", "Sscanln"]) }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and
+      exists(int i | if getName() = "Sscanf" then i > 1 else i > 0 | output.isParameter(i))
+    }
   }
 }
 
 /** Provides models of commonly used functions in the `io` package. */
 module Io {
-  private class ReaderRead extends TaintTracking::FunctionModel, Method {
-    ReaderRead() {
-      exists(Method im | im.hasQualifiedName("io", "Reader", "Read") | this.implements(im))
+  private class Copy extends TaintTracking::FunctionModel {
+    Copy() {
+      // func Copy(dst Writer, src Reader) (written int64, err error)
+      // func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
+      // func CopyN(dst Writer, src Reader, n int64) (written int64, err error)
+      hasQualifiedName("io", "Copy") or
+      hasQualifiedName("io", "CopyBuffer") or
+      hasQualifiedName("io", "CopyN")
     }
 
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isParameter(0)
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and output.isParameter(0)
+    }
+  }
+
+  private class Pipe extends TaintTracking::FunctionModel {
+    Pipe() {
+      // func Pipe() (*PipeReader, *PipeWriter)
+      hasQualifiedName("io", "Pipe")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isResult(0) and output.isResult(1)
+    }
+  }
+
+  private class ReadAtLeast extends TaintTracking::FunctionModel {
+    ReadAtLeast() {
+      // func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
+      // func ReadFull(r Reader, buf []byte) (n int, err error)
+      hasQualifiedName("io", "ReadAtLeast") or
+      hasQualifiedName("io", "ReadFull")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isParameter(1)
+    }
+  }
+
+  private class WriteString extends TaintTracking::FunctionModel {
+    WriteString() {
+      // func WriteString(w Writer, s string) (n int, err error)
+      this.hasQualifiedName("io", "WriteString")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(1) and output.isParameter(0)
+    }
+  }
+
+  private class ByteReaderReadByte extends TaintTracking::FunctionModel, Method {
+    ByteReaderReadByte() {
+      // func ReadByte() (byte, error)
+      this.implements("io", "ByteReader", "ReadByte")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isResult(0)
+    }
+  }
+
+  private class ByteWriterWriteByte extends TaintTracking::FunctionModel, Method {
+    ByteWriterWriteByte() {
+      // func WriteByte(c byte) error
+      this.implements("io", "ByteWriter", "WriteByte")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class ReaderRead extends TaintTracking::FunctionModel, Method {
+    ReaderRead() {
+      // func Read(p []byte) (n int, err error)
+      this.implements("io", "Reader", "Read")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isParameter(0)
+    }
+  }
+
+  private class LimitReader extends TaintTracking::FunctionModel {
+    LimitReader() {
+      // func LimitReader(r Reader, n int64) Reader
+      this.hasQualifiedName("io", "LimitReader")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isResult()
+    }
+  }
+
+  private class MultiReader extends TaintTracking::FunctionModel {
+    MultiReader() {
+      // func MultiReader(readers ...Reader) Reader
+      this.hasQualifiedName("io", "MultiReader")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(_) and output.isResult()
+    }
+  }
+
+  private class TeeReader extends TaintTracking::FunctionModel {
+    TeeReader() {
+      // func TeeReader(r Reader, w Writer) Reader
+      this.hasQualifiedName("io", "TeeReader")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isResult()
+      or
+      input.isParameter(0) and output.isParameter(1)
+    }
+  }
+
+  private class ReaderAtReadAt extends TaintTracking::FunctionModel, Method {
+    ReaderAtReadAt() {
+      // func ReadAt(p []byte, off int64) (n int, err error)
+      this.implements("io", "ReaderAt", "ReadAt")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isParameter(0)
+    }
+  }
+
+  private class ReaderFromReadFrom extends TaintTracking::FunctionModel, Method {
+    ReaderFromReadFrom() {
+      // func ReadFrom(r Reader) (n int64, err error)
+      this.implements("io", "ReaderFrom", "ReadFrom")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class RuneReaderReadRune extends TaintTracking::FunctionModel, Method {
+    RuneReaderReadRune() {
+      // func ReadRune() (r rune, size int, err error)
+      this.implements("io", "RuneReader", "ReadRune")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isResult(0)
+    }
+  }
+
+  private class NewSectionReader extends TaintTracking::FunctionModel {
+    NewSectionReader() {
+      // func NewSectionReader(r ReaderAt, off int64, n int64) *SectionReader
+      this.hasQualifiedName("io", "NewSectionReader")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isResult()
+    }
+  }
+
+  private class StringWriterWriteString extends TaintTracking::FunctionModel, Method {
+    StringWriterWriteString() {
+      // func WriteString(s string) (n int, err error)
+      this.implements("io", "StringWriter", "WriteString")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class WriterWrite extends TaintTracking::FunctionModel, Method {
+    WriterWrite() {
+      // func Write(p []byte) (n int, err error)
+      this.implements("io", "Writer", "Write")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class MultiWriter extends TaintTracking::FunctionModel {
+    MultiWriter() {
+      // func MultiWriter(writers ...Writer) Writer
+      hasQualifiedName("io", "MultiWriter")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isResult() and output.isParameter(_)
+    }
+  }
+
+  private class WriterAtWriteAt extends TaintTracking::FunctionModel, Method {
+    WriterAtWriteAt() {
+      // func WriteAt(p []byte, off int64) (n int, err error)
+      this.implements("io", "WriterAt", "WriteAt")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isParameter(0) and output.isReceiver()
+    }
+  }
+
+  private class WriterToWriteTo extends TaintTracking::FunctionModel, Method {
+    WriterToWriteTo() {
+      // func WriteTo(w Writer) (n int64, err error)
+      this.implements("io", "WriterTo", "WriteTo")
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isReceiver() and output.isParameter(0)
+    }
+  }
+}
+
+/** Provides models of commonly used functions in the `bufio` package. */
+module Bufio {
+  private class NewWriter extends TaintTracking::FunctionModel {
+    NewWriter() { this.hasQualifiedName("bufio", "NewWriter") }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input.isResult() and output.isParameter(0)
     }
   }
 }
@@ -115,11 +359,13 @@ module IoUtil {
       exists(string fn | getTarget().hasQualifiedName("io/ioutil", fn) |
         fn = "ReadDir" or
         fn = "ReadFile" or
+        fn = "TempDir" or
+        fn = "TempFile" or
         fn = "WriteFile"
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = getAnArgument() }
   }
 
   /**
@@ -226,7 +472,7 @@ module Path {
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(_) and
-      (outp.isResult() or outp.isResult(_))
+      outp.isResult(_)
     }
   }
 }
@@ -438,8 +684,7 @@ module URL {
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp.isReceiver() and
-      if getName() = "Password" then outp.isResult(0) else outp.isResult()
+      inp.isReceiver() and outp.isResult(0)
     }
   }
 
@@ -545,7 +790,8 @@ module Log {
 
 /** Provides models of some functions in the `encoding/json` package. */
 module EncodingJson {
-  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
+  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/json", "Marshal") or
       this.hasQualifiedName("encoding/json", "MarshalIndent")

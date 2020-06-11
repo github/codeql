@@ -2,7 +2,14 @@ edges
 | ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username |
 | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data |
-| tst.go:11:15:11:20 | selection of Form : Values | tst.go:15:12:15:39 | type conversion |
+| tst.go:14:15:14:20 | selection of Form : Values | tst.go:18:12:18:39 | type conversion |
+| tst.go:48:14:48:19 | selection of Form : Values | tst.go:53:12:53:26 | type conversion |
+| websocketXss.go:30:7:30:10 | definition of xnet : slice type | websocketXss.go:32:24:32:27 | xnet |
+| websocketXss.go:34:3:34:7 | definition of xnet2 : slice type | websocketXss.go:36:24:36:28 | xnet2 |
+| websocketXss.go:40:3:40:40 | ... := ...[1] : slice type | websocketXss.go:41:24:41:29 | nhooyr |
+| websocketXss.go:46:7:46:16 | definition of gorillaMsg : slice type | websocketXss.go:48:24:48:33 | gorillaMsg |
+| websocketXss.go:50:3:50:10 | definition of gorilla2 : slice type | websocketXss.go:52:24:52:31 | gorilla2 |
+| websocketXss.go:54:3:54:38 | ... := ...[1] : slice type | websocketXss.go:55:24:55:31 | gorilla3 |
 nodes
 | ReflectedXss.go:11:15:11:20 | selection of Form : Values | semmle.label | selection of Form : Values |
 | ReflectedXss.go:14:44:14:51 | username | semmle.label | username |
@@ -10,10 +17,31 @@ nodes
 | contenttype.go:17:11:17:22 | type conversion | semmle.label | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | semmle.label | selection of Form : Values |
 | contenttype.go:53:34:53:37 | data | semmle.label | data |
-| tst.go:11:15:11:20 | selection of Form : Values | semmle.label | selection of Form : Values |
-| tst.go:15:12:15:39 | type conversion | semmle.label | type conversion |
+| tst.go:14:15:14:20 | selection of Form : Values | semmle.label | selection of Form : Values |
+| tst.go:18:12:18:39 | type conversion | semmle.label | type conversion |
+| tst.go:48:14:48:19 | selection of Form : Values | semmle.label | selection of Form : Values |
+| tst.go:53:12:53:26 | type conversion | semmle.label | type conversion |
+| websocketXss.go:30:7:30:10 | definition of xnet : slice type | semmle.label | definition of xnet : slice type |
+| websocketXss.go:32:24:32:27 | xnet | semmle.label | xnet |
+| websocketXss.go:34:3:34:7 | definition of xnet2 : slice type | semmle.label | definition of xnet2 : slice type |
+| websocketXss.go:36:24:36:28 | xnet2 | semmle.label | xnet2 |
+| websocketXss.go:40:3:40:40 | ... := ...[1] : slice type | semmle.label | ... := ...[1] : slice type |
+| websocketXss.go:41:24:41:29 | nhooyr | semmle.label | nhooyr |
+| websocketXss.go:46:7:46:16 | definition of gorillaMsg : slice type | semmle.label | definition of gorillaMsg : slice type |
+| websocketXss.go:48:24:48:33 | gorillaMsg | semmle.label | gorillaMsg |
+| websocketXss.go:50:3:50:10 | definition of gorilla2 : slice type | semmle.label | definition of gorilla2 : slice type |
+| websocketXss.go:52:24:52:31 | gorilla2 | semmle.label | gorilla2 |
+| websocketXss.go:54:3:54:38 | ... := ...[1] : slice type | semmle.label | ... := ...[1] : slice type |
+| websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 #select
 | ReflectedXss.go:14:44:14:51 | username | ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value |
 | contenttype.go:17:11:17:22 | type conversion | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion | Cross-site scripting vulnerability due to $@. | contenttype.go:11:11:11:16 | selection of Form | user-provided value |
 | contenttype.go:53:34:53:37 | data | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:49:11:49:16 | selection of Form | user-provided value |
-| tst.go:15:12:15:39 | type conversion | tst.go:11:15:11:20 | selection of Form : Values | tst.go:15:12:15:39 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:11:15:11:20 | selection of Form | user-provided value |
+| tst.go:18:12:18:39 | type conversion | tst.go:14:15:14:20 | selection of Form : Values | tst.go:18:12:18:39 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:14:15:14:20 | selection of Form | user-provided value |
+| tst.go:53:12:53:26 | type conversion | tst.go:48:14:48:19 | selection of Form : Values | tst.go:53:12:53:26 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
+| websocketXss.go:32:24:32:27 | xnet | websocketXss.go:30:7:30:10 | definition of xnet : slice type | websocketXss.go:32:24:32:27 | xnet | Cross-site scripting vulnerability due to $@. | websocketXss.go:30:7:30:10 | definition of xnet | user-provided value |
+| websocketXss.go:36:24:36:28 | xnet2 | websocketXss.go:34:3:34:7 | definition of xnet2 : slice type | websocketXss.go:36:24:36:28 | xnet2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:34:3:34:7 | definition of xnet2 | user-provided value |
+| websocketXss.go:41:24:41:29 | nhooyr | websocketXss.go:40:3:40:40 | ... := ...[1] : slice type | websocketXss.go:41:24:41:29 | nhooyr | Cross-site scripting vulnerability due to $@. | websocketXss.go:40:3:40:40 | ... := ...[1] | user-provided value |
+| websocketXss.go:48:24:48:33 | gorillaMsg | websocketXss.go:46:7:46:16 | definition of gorillaMsg : slice type | websocketXss.go:48:24:48:33 | gorillaMsg | Cross-site scripting vulnerability due to $@. | websocketXss.go:46:7:46:16 | definition of gorillaMsg | user-provided value |
+| websocketXss.go:52:24:52:31 | gorilla2 | websocketXss.go:50:3:50:10 | definition of gorilla2 : slice type | websocketXss.go:52:24:52:31 | gorilla2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:50:3:50:10 | definition of gorilla2 | user-provided value |
+| websocketXss.go:55:24:55:31 | gorilla3 | websocketXss.go:54:3:54:38 | ... := ...[1] : slice type | websocketXss.go:55:24:55:31 | gorilla3 | Cross-site scripting vulnerability due to $@. | websocketXss.go:54:3:54:38 | ... := ...[1] | user-provided value |

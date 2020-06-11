@@ -1,4 +1,4 @@
-| main.go:25:2:25:2 | assignment to x | This definition of x is never used. |
+| main.go:27:2:27:2 | assignment to x | This definition of x is never used. |
 | testdata.go:32:2:32:2 | assignment to x | This definition of x is never used. |
 | testdata.go:37:2:37:2 | assignment to x | This definition of x is never used. |
 | testdata.go:61:2:61:2 | assignment to x | This definition of x is never used. |

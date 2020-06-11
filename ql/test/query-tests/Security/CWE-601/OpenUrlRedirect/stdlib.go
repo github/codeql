@@ -163,5 +163,13 @@ func serveStdlib() {
 		}
 	})
 
+	http.HandleFunc("/ex9", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		target := r.FormValue("target")
+		// BAD: a request parameter is incorporated without validation into a URL redirect
+		http.Redirect(w, r, target, 301)
+	})
+
 	http.ListenAndServe(":80", nil)
 }
