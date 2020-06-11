@@ -117,11 +117,7 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
   not exists(BinaryExpr binop | binop = result.asExpr() |
     binop.getOperator().regexpMatch(".*(<|>).*")
     or
-    binop.getOperator() = "*" and
-    (
-      isPowerOfTwo().asExpr() = binop.getAnOperand() or
-      binop.getAnOperand().(NumberLiteral).getValue().regexpMatch("0x0*10*")
-    )
+    binop.getOperator() = "*" and isPowerOfTwo().asExpr() = binop.getAnOperand()
     or
     binop.getOperator() = "+" and exists(binop.getAnOperand().getStringValue()) // string concat does not produce a number
   )
