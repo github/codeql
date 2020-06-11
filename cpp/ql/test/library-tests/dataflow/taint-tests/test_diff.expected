@@ -13,6 +13,10 @@
 | stl.cpp:125:13:125:17 | stl.cpp:117:10:117:15 | AST only |
 | stl.cpp:129:13:129:17 | stl.cpp:117:10:117:15 | AST only |
 | stl.cpp:132:13:132:17 | stl.cpp:117:10:117:15 | AST only |
+| stl.cpp:142:7:142:8 | stl.cpp:137:19:137:26 | IR only |
+| stl.cpp:143:7:143:8 | stl.cpp:137:19:137:24 | AST only |
+| stl.cpp:156:7:156:8 | stl.cpp:148:19:148:24 | AST only |
+| stl.cpp:157:7:157:8 | stl.cpp:148:19:148:24 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
