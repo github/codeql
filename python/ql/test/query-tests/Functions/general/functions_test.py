@@ -199,7 +199,7 @@ def tuple_default(x=(1,2)):
 def safe_method(x=[]):
     return x.count(42)
 
-# Modification of parameter with default (sanitised)
+# Modification of parameter with default (sanitized)
 from copy import copy, deepcopy
 def copy_before_modify(x=[]):
     x = copy(x)
