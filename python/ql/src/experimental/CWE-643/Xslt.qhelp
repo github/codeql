@@ -1,7 +1,9 @@
 <!DOCTYPE qhelp SYSTEM "qhelp.dtd">
 <qhelp>
     <overview>
-        Processing an unvalidated XSL stylesheet can allow an attacker to change the structure and contents of the resultant XML, include arbitrary files from the file system, or execute arbitrary code.
+        <p>
+            Processing an unvalidated XSL stylesheet can allow an attacker to change the structure and contents of the resultant XML, include arbitrary files from the file system, or execute arbitrary code.
+        </p>
     </overview>
     <recommendation>
         <p>
