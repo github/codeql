@@ -213,6 +213,23 @@ class Ellipsis extends @ellipsis, Expr {
 }
 
 /**
+ * A literal expression.
+ *
+ * Examples:
+ *
+ * ```go
+ * "hello"
+ * func(x, y int) int { return x + y }
+ * map[string]int{"A": 1, "B": 2}
+ * ```
+ */
+class Literal extends Expr {
+  Literal() {
+    this instanceof @basiclit or this instanceof @funclit or this instanceof @compositelit
+  }
+}
+
+/**
  * A literal expression of basic type.
  *
  * Examples:
@@ -222,7 +239,7 @@ class Ellipsis extends @ellipsis, Expr {
  * "hello"
  * ```
  */
-class BasicLit extends @basiclit, Expr {
+class BasicLit extends @basiclit, Literal {
   /** Gets the value of this literal expressed as a string. */
   string getValue() { literals(this, result, _) }
 
@@ -319,10 +336,10 @@ class StringLit extends @stringlit, BasicLit { }
  * func(x, y int) int { return x + y }
  * ```
  */
-class FuncLit extends @funclit, Expr, StmtParent, FuncDef {
+class FuncLit extends @funclit, Literal, StmtParent, FuncDef {
   override FuncTypeExpr getTypeExpr() { result = getChildExpr(0) }
 
-  override SignatureType getType() { result = Expr.super.getType() }
+  override SignatureType getType() { result = Literal.super.getType() }
 
   /** Gets the body of this function literal. */
   override BlockStmt getBody() { result = getChildStmt(1) }
@@ -342,7 +359,7 @@ class FuncLit extends @funclit, Expr, StmtParent, FuncDef {
  * map[string]int{"A": 1, "B": 2}
  * ```
  */
-class CompositeLit extends @compositelit, Expr {
+class CompositeLit extends @compositelit, Literal {
   /** Gets the expression representing the type of this composite literal. */
   Expr getTypeExpr() { result = getChildExpr(0) }
 
