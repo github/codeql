@@ -687,7 +687,7 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
  * [5]int
  * ```
  */
-class ArrayTypeExpr extends @arraytypeexpr, Expr {
+class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
   /** Gets the length expression of this array type. */
   Expr getLength() { result = getChildExpr(0) }
 
@@ -706,7 +706,7 @@ class ArrayTypeExpr extends @arraytypeexpr, Expr {
  * struct {x, y int; z float32}
  * ```
  */
-class StructTypeExpr extends @structtypeexpr, Expr {
+class StructTypeExpr extends @structtypeexpr, TypeExpr {
   /** Gets the `i`th field declared in this struct type expression (0-based). */
   FieldDecl getField(int i) { fields(result, this, i) }
 
@@ -728,7 +728,7 @@ class StructTypeExpr extends @structtypeexpr, Expr {
  * func(a, b int, c float32) (float32, bool)
  * ```
  */
-class FuncTypeExpr extends @functypeexpr, Expr, ScopeNode {
+class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode {
   /** Gets the `i`th parameter of this function type (0-based). */
   ParameterDecl getParameterDecl(int i) {
     result.getFunctionTypeExpr() = this and
@@ -768,7 +768,7 @@ class FuncTypeExpr extends @functypeexpr, Expr, ScopeNode {
  * interface { Read(p []byte) (n int, err error); Close() error}
  * ```
  */
-class InterfaceTypeExpr extends @interfacetypeexpr, Expr {
+class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr {
   /** Gets the `i`th method specification of this interface type. */
   MethodSpec getMethod(int i) {
     result.getInterfaceTypeExpr() = this and
@@ -793,7 +793,7 @@ class InterfaceTypeExpr extends @interfacetypeexpr, Expr {
  * map[string]int
  * ```
  */
-class MapTypeExpr extends @maptypeexpr, Expr {
+class MapTypeExpr extends @maptypeexpr, TypeExpr {
   /** Gets the expression representing the key type of this map type. */
   Expr getKeyTypeExpr() { result = getChildExpr(0) }
 
@@ -1456,7 +1456,7 @@ class AndNotExpr extends @andnotexpr, BitwiseBinaryExpr {
  * <-chan int
  * ```
  */
-class ChanTypeExpr extends @chantypeexpr, Expr {
+class ChanTypeExpr extends @chantypeexpr, TypeExpr {
   /**
    * Gets the expression representing the type of values flowing through the channel.
    */
@@ -1697,12 +1697,12 @@ class LabelName extends Name {
  */
 private predicate isTypeExprBottomUp(Expr e) {
   e instanceof TypeName or
-  e instanceof ArrayTypeExpr or
-  e instanceof StructTypeExpr or
-  e instanceof FuncTypeExpr or
-  e instanceof InterfaceTypeExpr or
-  e instanceof MapTypeExpr or
-  e instanceof ChanTypeExpr or
+  e instanceof @arraytypeexpr or
+  e instanceof @structtypeexpr or
+  e instanceof @functypeexpr or
+  e instanceof @interfacetypeexpr or
+  e instanceof @maptypeexpr or
+  e instanceof @chantypeexpr or
   isTypeExprBottomUp(e.(ParenExpr).getExpr()) or
   isTypeExprBottomUp(e.(StarExpr).getBase()) or
   isTypeExprBottomUp(e.(Ellipsis).getOperand())
