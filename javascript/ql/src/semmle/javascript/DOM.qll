@@ -309,6 +309,8 @@ module DOM {
           not read.mayHavePropertyName(_)
           or
           read.mayHavePropertyName(getADomPropertyName())
+          or
+          read.mayHavePropertyName(any(string s | exists(s.toInt())))
         )
         or
         this = domElementCreationOrQuery()
