@@ -68,40 +68,33 @@ class AsyncCall extends DataFlow::CallNode {
 }
 
 /**
- * A node that will crash a server if it throws an exception.
- *
- * The crash happens because a route handler invokes an asynchronous function that in turn throws an exception produced by this node.
+ * Gets a function that is invoked by `asyncCallback` without any try-block wrapping, `asyncCallback` is in turn is called indirectly by `routeHandler`.
+ * 
+ * If the result throws an excection, the server of `routeHandler` will crash.
  */
-class ServerCrasher extends ExprOrStmt {
-  HTTP::RouteHandler routeHandler;
-  DataFlow::FunctionNode asyncFunction;
-
-  ServerCrasher() {
-    exists(AsyncCall asyncCall, Function throwingFunction |
-      // the route handler transitively calls an async function
-      asyncCall.getEnclosingFunction() =
-        getACallee*(routeHandler.(DataFlow::FunctionNode).getFunction()) and
-      asyncFunction = asyncCall.getCallback() and
-      // the async function transitively calls a function that may throw an exception out of the the async function
-      throwingFunction = getAnUnguardedCallee*(asyncFunction.getFunction()) and
-      this.getContainer() = throwingFunction and
-      not exists([this.(Expr).getEnclosingStmt(), this.(Stmt)].getEnclosingTryCatchStmt())
-    )
-  }
-
-  /**
-   * Gets the asynchronous function from which a server-crashing exception escapes.
-   */
-  DataFlow::FunctionNode getAsyncFunction() { result = asyncFunction }
-
-  /**
-   * Gets the route handler that ultimately is responsible for the server crash.
-   */
-  HTTP::RouteHandler getRouteHandler() { result = routeHandler }
+Function getAPotentialServerCrasher(
+  HTTP::RouteHandler routeHandler, DataFlow::FunctionNode asyncCallback
+) {
+  exists(AsyncCall asyncCall |
+    // the route handler transitively calls an async function
+    asyncCall.getEnclosingFunction() =
+      getACallee*(routeHandler.(DataFlow::FunctionNode).getFunction()) and
+    asyncCallback = asyncCall.getCallback() and
+    // the async function transitively calls a function that may throw an exception out of the the async function
+    result = getAnUnguardedCallee*(asyncCallback.getFunction())
+  )
 }
 
-from ServerCrasher crasher
-where isLikelyToThrow(crasher.(Expr).flow()) or crasher instanceof ThrowStmt
+/**
+ * Gets an AST node that is likely to throw an uncaught exception in `fun`.
+ */
+ExprOrStmt getALikelyExceptionThrower(Function fun) {
+  result.getContainer() = fun and
+  not exists([result.(Expr).getEnclosingStmt(), result.(Stmt)].getEnclosingTryCatchStmt()) and
+  (isLikelyToThrow(result.(Expr).flow()) or result instanceof ThrowStmt)
+}
+
+from HTTP::RouteHandler routeHandler, DataFlow::FunctionNode asyncCallback, ExprOrStmt crasher
+where crasher = getALikelyExceptionThrower(getAPotentialServerCrasher(routeHandler, asyncCallback))
 select crasher, "When an exception is thrown here and later exits $@, the server of $@ will crash.",
-  crasher.getAsyncFunction(), "an asynchronous function", crasher.getRouteHandler(),
-  "this route handler"
+  asyncCallback, "this asynchronous callback", routeHandler, "this route handler"
