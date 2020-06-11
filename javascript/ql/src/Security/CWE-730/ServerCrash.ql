@@ -69,7 +69,7 @@ class AsyncCall extends DataFlow::CallNode {
 
 /**
  * Gets a function that is invoked by `asyncCallback` without any try-block wrapping, `asyncCallback` is in turn is called indirectly by `routeHandler`.
- * 
+ *
  * If the result throws an excection, the server of `routeHandler` will crash.
  */
 Function getAPotentialServerCrasher(
