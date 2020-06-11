@@ -87,13 +87,13 @@ var bad = goodRandom1 + goodRandom2; // NOT OK
 var dontFlag = bad + bad; // OK - the operands have already been flagged - but flagged anyway due to us not detecting that [INCONSISTENCY].
 
 var good = secureRandom(10)[0] / 0xff; // OK - result is not rounded. 
-var good = Math.ceil(0.5 - (secureRandom(10)[0] / 25.6)); // NOT OK - division generally introduces bias.
+var good = Math.ceil(0.5 - (secureRandom(10)[0] / 25.6)); // NOT OK - division generally introduces bias - but not flagged due to not looking through nested arithmetic [INCONSISTENCY]. 
 
 var good = (crypto.randomBytes(1)[0] << 8) + crypto.randomBytes(3)[0]; // OK - bit shifts are usually used to construct larger/smaller numbers, 
 
 var good = Math.floor(max * (crypto.randomBytes(1)[0] / 0xff)); // OK - division by 0xff (255) gives a uniformly random number between 0 and 1. 
 
-var bad = Math.floor(max * (crypto.randomBytes(1)[0] / 100)); // NOT OK - division by 100 gives bias.
+var bad = Math.floor(max * (crypto.randomBytes(1)[0] / 100)); // NOT OK - division by 100 gives bias - but not flagged due to not looking through nested arithmetic [INCONSISTENCY]. 
 
 var crb = crypto.randomBytes(4);
 var cryptoRand = 0x01000000 * crb[0] + 0x00010000 * crb[1] + 0x00000100 * crb[2] + 0x00000001 * crb[3]; // OK - producing a larger number from smaller numbers.

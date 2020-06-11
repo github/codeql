@@ -153,8 +153,10 @@ DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
     goodRandom(source).asExpr() = div.getLeftOperand() and
     description = "division and rounding the result" and
     not div.getRightOperand() = isPowerOfTwoMinusOne().asExpr() and // division by (2^n)-1 most of the time produces a uniformly random number between 0 and 1.
-    div.getParentExpr+() =
-      DataFlow::globalVarRef("Math").getAMemberCall(["round", "floor", "ceil"]).asExpr()
+    DataFlow::globalVarRef("Math")
+        .getAMemberCall(["round", "floor", "ceil"])
+        .getArgument(0)
+        .asExpr() = div
   )
   or
   // modulo - only bad if not by a power of 2 - and the result is not checked for bias
