@@ -265,3 +265,6 @@ Node getArgument(CallNode c, int i) {
   result = c.(MethodCallNode).getReceiver() and
   i = -1
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
