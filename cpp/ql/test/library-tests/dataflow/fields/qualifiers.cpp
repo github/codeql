@@ -30,12 +30,12 @@ namespace qualifiers {
 
   void getterArgument2(Outer outer) {
     pointerSetA(outer.getInner(), user_input());
-    sink(outer.inner->a); // $ast,ir
+    sink(outer.inner->a); // $ast $f-:ir
   }
 
   void getterArgument2Ref(Outer outer) {
     referenceSetA(*outer.getInner(), user_input());
-    sink(outer.inner->a); // $ast,ir
+    sink(outer.inner->a); // $ast $f-:ir
   }
 
   void assignToGetterStar(Outer outer) {
