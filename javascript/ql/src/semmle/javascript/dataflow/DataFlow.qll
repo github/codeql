@@ -318,7 +318,7 @@ module DataFlow {
   /**
    * A node in the data flow graph which corresponds to a `@property`.
    */
-  class PropNode extends Node, TPropNode {
+  private class PropNode extends Node, TPropNode {
     @property prop;
 
     PropNode() { this = TPropNode(prop) }
