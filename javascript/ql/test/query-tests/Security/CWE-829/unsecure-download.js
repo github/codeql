@@ -37,4 +37,6 @@ function baz() {
     cp.exec("curl " + url, function () {}); // NOT OK
 
     cp.execFile("curl", [url], function () {}); // NOT OK
+
+    nugget("ftp://example.org/unsafe.APK") // NOT OK
 }

@@ -34,7 +34,7 @@ module UnsecureDownload {
   class SensitiveFileUrl extends Source {
     SensitiveFileUrl() {
       exists(string str | str = this.getStringValue() |
-        str.regexpMatch("http://.*|ftp://.'") and
+        str.regexpMatch("http://.*|ftp://.*") and
         exists(string suffix | suffix = unsafeExtension() |
           str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
         )
