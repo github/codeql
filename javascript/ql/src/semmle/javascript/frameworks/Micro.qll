@@ -17,7 +17,7 @@ private module Micro {
     result = moduleImport("micro").getACall().getArgument(0)
   }
 
-  /** Gets a data flow node referring to a thing. */
+  /** Gets a data flow node interpreted as a route handler. */
   private DataFlow::SourceNode microRouteHandler(DataFlow::TypeBackTracker t) {
     t.start() and
     result = microRouteHandlerSink().getALocalSource()
@@ -34,7 +34,7 @@ private module Micro {
     )
   }
 
-  /** Gets a data flow node referring to a thing. */
+  /** Gets a data flow node interpreted as a route handler. */
   DataFlow::SourceNode microRouteHandler() {
     result = microRouteHandler(DataFlow::TypeBackTracker::end())
   }
