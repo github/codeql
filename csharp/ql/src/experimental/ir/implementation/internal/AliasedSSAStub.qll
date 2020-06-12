@@ -9,13 +9,11 @@ private import TInstruction
 module SSA {
   class MemoryLocation = boolean;
 
-  predicate hasPhiInstruction(
-    IRFunctionBase irFunc, TRawInstruction blockStartInstr, MemoryLocation memoryLocation
-  ) {
+  predicate hasPhiInstruction(TRawInstruction blockStartInstr, MemoryLocation memoryLocation) {
     none()
   }
 
-  predicate hasChiInstruction(IRFunctionBase irFunc, TRawInstruction primaryInstruction) { none() }
+  predicate hasChiInstruction(TRawInstruction primaryInstruction) { none() }
 
   predicate hasUnreachedInstruction(IRFunctionBase irFunc) { none() }
 }

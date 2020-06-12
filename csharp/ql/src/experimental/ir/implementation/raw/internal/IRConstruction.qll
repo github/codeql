@@ -17,11 +17,11 @@ private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
-  instruction = TRawInstruction(_, _, _, result, _)
+  instruction = TRawInstruction(result, _)
 }
 
 InstructionTag getInstructionTag(Instruction instruction) {
-  instruction = TRawInstruction(_, _, _, _, result)
+  instruction = TRawInstruction(_, result)
 }
 
 pragma[noinline]
@@ -51,13 +51,8 @@ module Raw {
   }
 
   cached
-  predicate hasInstruction(
-    Callable callable, Opcode opcode, Language::AST ast, TranslatedElement element,
-    InstructionTag tag
-  ) {
-    element.hasInstruction(opcode, tag, _) and
-    ast = element.getAST() and
-    callable = element.getFunction()
+  predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
+    element.hasInstruction(_, tag, _)
   }
 
   cached
@@ -173,11 +168,16 @@ import Cached
 cached
 private module Cached {
   cached
-  Opcode getInstructionOpcode(TRawInstruction instr) { instr = TRawInstruction(_, result, _, _, _) }
+  Opcode getInstructionOpcode(TRawInstruction instr) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instr, element, tag) and
+      element.hasInstruction(result, tag, _)
+    )
+  }
 
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(TRawInstruction instr) {
-    instr = TRawInstruction(result, _, _, _, _)
+    result.getFunction() = getInstructionTranslatedElement(instr).getFunction()
   }
 
   cached
