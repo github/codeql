@@ -415,6 +415,8 @@ class MapLit extends CompositeLit {
 
   /** Gets the value type of this literal. */
   Type getValueType() { result = mt.getValueType() }
+
+  override string toString() { result = "map literal" }
 }
 
 /**
@@ -435,6 +437,8 @@ class StructLit extends CompositeLit {
 
   /** Gets the struct type underlying this literal. */
   StructType getStructType() { result = st }
+
+  override string toString() { result = "struct literal" }
 }
 
 /**

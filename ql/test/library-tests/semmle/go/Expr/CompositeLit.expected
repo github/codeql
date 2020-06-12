@@ -1,9 +1,9 @@
-| literals.go:5:15:9:1 | composite literal | 0 | key | literals.go:6:2:6:10 | "decimal" |
-| literals.go:5:15:9:1 | composite literal | 0 | value | literals.go:6:17:6:18 | 42 |
-| literals.go:5:15:9:1 | composite literal | 1 | key | literals.go:7:2:7:8 | "octal" |
-| literals.go:5:15:9:1 | composite literal | 1 | value | literals.go:7:17:7:20 | 0600 |
-| literals.go:5:15:9:1 | composite literal | 2 | key | literals.go:8:2:8:14 | "hexadecimal" |
-| literals.go:5:15:9:1 | composite literal | 2 | value | literals.go:8:17:8:24 | 0xcaffee |
+| literals.go:5:15:9:1 | map literal | 0 | key | literals.go:6:2:6:10 | "decimal" |
+| literals.go:5:15:9:1 | map literal | 0 | value | literals.go:6:17:6:18 | 42 |
+| literals.go:5:15:9:1 | map literal | 1 | key | literals.go:7:2:7:8 | "octal" |
+| literals.go:5:15:9:1 | map literal | 1 | value | literals.go:7:17:7:20 | 0600 |
+| literals.go:5:15:9:1 | map literal | 2 | key | literals.go:8:2:8:14 | "hexadecimal" |
+| literals.go:5:15:9:1 | map literal | 2 | value | literals.go:8:17:8:24 | 0xcaffee |
 | literals.go:11:17:21:1 | slice literal | 0 | value | literals.go:12:2:12:3 | 0. |
 | literals.go:11:17:21:1 | slice literal | 1 | value | literals.go:13:2:13:6 | 72.40 |
 | literals.go:11:17:21:1 | slice literal | 2 | value | literals.go:14:2:14:7 | 072.40 |

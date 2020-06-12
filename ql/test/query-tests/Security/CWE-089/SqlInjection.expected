@@ -8,9 +8,9 @@ edges
 | main.go:14:63:14:67 | selection of URL : pointer type | main.go:14:11:14:84 | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header : Header | main.go:15:11:15:85 | call to Sprintf |
 | main.go:27:17:30:2 | &... [pointer, Category] | main.go:33:3:33:13 | RequestData [pointer, Category] |
-| main.go:27:18:30:2 | composite literal [Category] : slice type | main.go:27:17:30:2 | &... [pointer, Category] |
+| main.go:27:18:30:2 | struct literal [Category] : slice type | main.go:27:17:30:2 | &... [pointer, Category] |
 | main.go:29:13:29:19 | selection of URL : pointer type | main.go:29:13:29:39 | index expression : slice type |
-| main.go:29:13:29:39 | index expression : slice type | main.go:27:18:30:2 | composite literal [Category] : slice type |
+| main.go:29:13:29:39 | index expression : slice type | main.go:27:18:30:2 | struct literal [Category] : slice type |
 | main.go:33:3:33:13 | RequestData [pointer, Category] | main.go:33:3:33:13 | implicit dereference [Category] : slice type |
 | main.go:33:3:33:13 | implicit dereference [Category] : slice type | main.go:33:3:33:22 | selection of Category : slice type |
 | main.go:33:3:33:22 | selection of Category : slice type | main.go:34:11:34:11 | q |
@@ -72,7 +72,7 @@ nodes
 | main.go:15:11:15:85 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header : Header | semmle.label | selection of Header : Header |
 | main.go:27:17:30:2 | &... [pointer, Category] | semmle.label | &... [pointer, Category] |
-| main.go:27:18:30:2 | composite literal [Category] : slice type | semmle.label | composite literal [Category] : slice type |
+| main.go:27:18:30:2 | struct literal [Category] : slice type | semmle.label | struct literal [Category] : slice type |
 | main.go:29:13:29:19 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | main.go:29:13:29:39 | index expression : slice type | semmle.label | index expression : slice type |
 | main.go:33:3:33:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
