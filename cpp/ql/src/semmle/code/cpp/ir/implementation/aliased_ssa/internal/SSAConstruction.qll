@@ -18,19 +18,17 @@ cached
 private module Cached {
   cached
   predicate hasPhiInstructionCached(
-    IRFunction irFunc, OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
+    OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
   ) {
     exists(OldBlock oldBlock |
       definitionHasPhiNode(defLocation, oldBlock) and
-      irFunc = oldBlock.getEnclosingIRFunction() and
       blockStartInstr = oldBlock.getFirstInstruction()
     )
   }
 
   cached
-  predicate hasChiInstructionCached(IRFunctionBase irFunc, OldInstruction primaryInstruction) {
-    hasChiNode(_, primaryInstruction) and
-    irFunc = primaryInstruction.getEnclosingIRFunction()
+  predicate hasChiInstructionCached(OldInstruction primaryInstruction) {
+    hasChiNode(_, primaryInstruction)
   }
 
   cached
@@ -43,11 +41,6 @@ private module Cached {
 
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
-
-  private TRawInstruction rawInstruction(IRFunctionBase irFunc, Opcode opcode) {
-    result = TRawInstruction(irFunc, opcode, _, _) and
-    result instanceof OldInstruction
-  }
 
   cached
   predicate hasInstruction(TStageInstruction instr) {
@@ -268,12 +261,12 @@ private module Cached {
     result = getOldInstruction(instr).getAST()
     or
     exists(RawIR::Instruction blockStartInstr |
-      instr = phiInstruction(_, blockStartInstr, _) and
+      instr = phiInstruction(blockStartInstr, _) and
       result = blockStartInstr.getAST()
     )
     or
     exists(RawIR::Instruction primaryInstr |
-      instr = chiInstruction(_, primaryInstr) and
+      instr = chiInstruction(primaryInstr) and
       result = primaryInstr.getAST()
     )
     or
@@ -287,12 +280,12 @@ private module Cached {
     result = instr.(RawIR::Instruction).getResultLanguageType()
     or
     exists(Alias::MemoryLocation defLocation |
-      instr = phiInstruction(_, _, defLocation) and
+      instr = phiInstruction(_, defLocation) and
       result = defLocation.getType()
     )
     or
     exists(Instruction primaryInstr, Alias::VirtualVariable vvar |
-      instr = chiInstruction(_, primaryInstr) and
+      instr = chiInstruction(primaryInstr) and
       hasChiNode(vvar, primaryInstr) and
       result = vvar.getType()
     )
@@ -302,22 +295,27 @@ private module Cached {
 
   cached
   Opcode getInstructionOpcode(Instruction instr) {
-    instr = rawInstruction(_, result)
+    result = getOldInstruction(instr).getOpcode()
     or
-    instr = phiInstruction(_, _, _) and result instanceof Opcode::Phi
+    instr = phiInstruction(_, _) and result instanceof Opcode::Phi
     or
-    instr = chiInstruction(_, _) and result instanceof Opcode::Chi
+    instr = chiInstruction(_) and result instanceof Opcode::Chi
     or
     instr = unreachedInstruction(_) and result instanceof Opcode::Unreached
   }
 
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(Instruction instr) {
-    instr = rawInstruction(result, _)
+    result = getOldInstruction(instr).getEnclosingIRFunction()
     or
-    instr = phiInstruction(result, _, _)
+    exists(OldInstruction blockStartInstr |
+      instr = phiInstruction(blockStartInstr, _) and
+      result = blockStartInstr.getEnclosingIRFunction()
+    )
     or
-    instr = chiInstruction(result, _)
+    exists(OldInstruction primaryInstr |
+      instr = chiInstruction(primaryInstr) and result = primaryInstr.getEnclosingIRFunction()
+    )
     or
     instr = unreachedInstruction(result)
   }
@@ -341,11 +339,11 @@ private Instruction getNewInstruction(OldInstruction instr) { getOldInstruction(
 private OldInstruction getOldInstruction(Instruction instr) { instr = result }
 
 private ChiInstruction getChi(OldInstruction primaryInstr) {
-  result = chiInstruction(_, primaryInstr)
+  result = chiInstruction(primaryInstr)
 }
 
 private PhiInstruction getPhi(OldBlock defBlock, Alias::MemoryLocation defLocation) {
-  result = phiInstruction(_, defBlock.getFirstInstruction(), defLocation)
+  result = phiInstruction(defBlock.getFirstInstruction(), defLocation)
 }
 
 /**
@@ -910,9 +908,9 @@ module SSAConsistency {
 module SSA {
   class MemoryLocation = Alias::MemoryLocation;
 
-  predicate hasPhiInstruction = Cached::hasPhiInstructionCached/3;
+  predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
 
-  predicate hasChiInstruction = Cached::hasChiInstructionCached/2;
+  predicate hasChiInstruction = Cached::hasChiInstructionCached/1;
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }

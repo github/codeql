@@ -15,29 +15,29 @@ private import Imports::Opcode
 cached
 newtype TInstruction =
   TRawInstruction(
-    IRFunctionBase irFunc, Opcode opcode, IRConstruction::Raw::InstructionTag1 tag1,
+    Opcode opcode, IRConstruction::Raw::InstructionTag1 tag1,
     IRConstruction::Raw::InstructionTag2 tag2
   ) {
-    IRConstruction::Raw::hasInstruction(irFunc.getFunction(), opcode, tag1, tag2)
+    IRConstruction::Raw::hasInstruction(opcode, tag1, tag2)
   } or
   TUnaliasedSSAPhiInstruction(
-    IRFunctionBase irFunc, TRawInstruction blockStartInstr,
+    TRawInstruction blockStartInstr,
     UnaliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
-    UnaliasedSSA::SSA::hasPhiInstruction(irFunc, blockStartInstr, memoryLocation)
+    UnaliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
-  TUnaliasedSSAChiInstruction(IRFunctionBase irFunc, TRawInstruction primaryInstruction) { none() } or
+  TUnaliasedSSAChiInstruction(TRawInstruction primaryInstruction) { none() } or
   TUnaliasedSSAUnreachedInstruction(IRFunctionBase irFunc) {
     UnaliasedSSA::SSA::hasUnreachedInstruction(irFunc)
   } or
   TAliasedSSAPhiInstruction(
-    IRFunctionBase irFunc, TRawInstruction blockStartInstr,
+    TRawInstruction blockStartInstr,
     AliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
-    AliasedSSA::SSA::hasPhiInstruction(irFunc, blockStartInstr, memoryLocation)
+    AliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
-  TAliasedSSAChiInstruction(IRFunctionBase irFunc, TRawInstruction primaryInstruction) {
-    AliasedSSA::SSA::hasChiInstruction(irFunc, primaryInstruction)
+  TAliasedSSAChiInstruction(TRawInstruction primaryInstruction) {
+    AliasedSSA::SSA::hasChiInstruction(primaryInstruction)
   } or
   TAliasedSSAUnreachedInstruction(IRFunctionBase irFunc) {
     AliasedSSA::SSA::hasUnreachedInstruction(irFunc)
@@ -53,16 +53,16 @@ module UnaliasedSSAInstructions {
   class TPhiInstruction = TUnaliasedSSAPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    IRFunctionBase irFunc, TRawInstruction blockStartInstr,
+    TRawInstruction blockStartInstr,
     UnaliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
-    result = TUnaliasedSSAPhiInstruction(irFunc, blockStartInstr, memoryLocation)
+    result = TUnaliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
   }
 
   class TChiInstruction = TUnaliasedSSAChiInstruction;
 
-  TChiInstruction chiInstruction(IRFunctionBase irFunc, TRawInstruction primaryInstruction) {
-    result = TUnaliasedSSAChiInstruction(irFunc, primaryInstruction)
+  TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
+    result = TUnaliasedSSAChiInstruction(primaryInstruction)
   }
 
   class TUnreachedInstruction = TUnaliasedSSAUnreachedInstruction;
@@ -82,16 +82,16 @@ module AliasedSSAInstructions {
   class TPhiInstruction = TAliasedSSAPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    IRFunctionBase irFunc, TRawInstruction blockStartInstr,
+    TRawInstruction blockStartInstr,
     AliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
-    result = TAliasedSSAPhiInstruction(irFunc, blockStartInstr, memoryLocation)
+    result = TAliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
   }
 
   class TChiInstruction = TAliasedSSAChiInstruction;
 
-  TChiInstruction chiInstruction(IRFunctionBase irFunc, TRawInstruction primaryInstruction) {
-    result = TAliasedSSAChiInstruction(irFunc, primaryInstruction)
+  TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
+    result = TAliasedSSAChiInstruction(primaryInstruction)
   }
 
   class TUnreachedInstruction = TAliasedSSAUnreachedInstruction;

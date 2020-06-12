@@ -15,11 +15,11 @@ private import TranslatedStmt
 private import TranslatedFunction
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
-  instruction = TRawInstruction(_, _, result, _)
+  instruction = TRawInstruction(_, result, _)
 }
 
 InstructionTag getInstructionTag(Instruction instruction) {
-  instruction = TRawInstruction(_, _, _, result)
+  instruction = TRawInstruction(_, _, result)
 }
 
 pragma[noinline]
@@ -44,11 +44,8 @@ module Raw {
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
 
   cached
-  predicate hasInstruction(
-    Function func, Opcode opcode, TranslatedElement element, InstructionTag tag
-  ) {
-    element.hasInstruction(opcode, tag, _) and
-    func = element.getFunction()
+  predicate hasInstruction(Opcode opcode, TranslatedElement element, InstructionTag tag) {
+    element.hasInstruction(opcode, tag, _)
   }
 
   cached
@@ -382,12 +379,12 @@ private module Cached {
 
   cached
   Opcode getInstructionOpcode(TStageInstruction instr) {
-    instr = TRawInstruction(_, result, _, _)
+    instr = TRawInstruction(result, _, _)
   }
 
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
-    instr = TRawInstruction(result, _, _, _)
+    result.getFunction() = getInstructionTranslatedElement(instr).getFunction()
   }
 
   cached
