@@ -53,14 +53,6 @@ After the experimental query is merged, we welcome pull requests to improve it. 
 
 ## Using your personal data
 
-If you contribute to this project, we will record your name and email
-address (as provided by you with your contributions) as part of the code
-repositories, which are public. We might also use this information
-to contact you in relation to your contributions, as well as in the
-normal course of software development. We also store records of your
-CLA agreements. Under GDPR legislation, we do this
-on the basis of our legitimate interest in creating the CodeQL product.
+If you contribute to this project, we will record your name and email address (as provided by you with your contributions) as part of the code repositories, which are public. We might also use this information to contact you in relation to your contributions, as well as in the normal course of software development. We also store records of CLA agreements signed in the past, but no longer require contributors to sign a CLA. Under GDPR legislation, we do this on the basis of our legitimate interest in creating the CodeQL product. 
 
-Please do get in touch (privacy@github.com) if you have any questions about
-this or our data protection policies.
-
+Please do get in touch (privacy@github.com) if you have any questions about this or our data protection policies.

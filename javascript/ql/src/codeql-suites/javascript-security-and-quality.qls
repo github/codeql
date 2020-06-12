@@ -1,0 +1,4 @@
+- description: Security-and-quality queries for JavaScript
+- qlpack: codeql-javascript
+- apply: security-and-quality-selectors.yml
+  from: codeql-suite-helpers
