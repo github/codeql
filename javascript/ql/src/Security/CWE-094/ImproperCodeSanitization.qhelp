@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Placeholder
+</p>
+</overview>
+
+<recommendation>
+<p>
+Placeholder
+</p>
+</recommendation>
+
+<example>
+<p>
+Placeholder
+</p>
+
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#Function_properties">Global functions</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function constructor</a>.
+</li>
+</references>
+</qhelp>

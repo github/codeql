@@ -64,6 +64,11 @@ nodes
 | angularjs.js:53:32:53:39 | location |
 | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:46 | location.search |
+| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:21:16:21:16 | c |
@@ -197,6 +202,10 @@ edges
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
