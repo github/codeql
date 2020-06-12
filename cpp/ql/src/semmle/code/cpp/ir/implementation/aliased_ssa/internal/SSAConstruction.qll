@@ -65,9 +65,6 @@ private module Cached {
   }
 
   cached
-  OldInstruction getOldInstruction(Instruction instr) { instr = result }
-
-  cached
   predicate hasModeledMemoryResult(Instruction instruction) {
     exists(Alias::getResultMemoryLocation(getOldInstruction(instruction))) or
     instruction instanceof PhiInstruction or // Phis always have modeled results
@@ -340,6 +337,8 @@ private module Cached {
 }
 
 private Instruction getNewInstruction(OldInstruction instr) { getOldInstruction(result) = instr }
+
+private OldInstruction getOldInstruction(Instruction instr) { instr = result }
 
 private ChiInstruction getChi(OldInstruction primaryInstr) {
   result = chiInstruction(_, primaryInstr)
