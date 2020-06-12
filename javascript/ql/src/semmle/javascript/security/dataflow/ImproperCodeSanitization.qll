@@ -9,6 +9,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for reasoning about improper code sanitization.
+ */
 module ImproperCodeSanitization {
   import ImproperCodeSanitizationCustomizations::ImproperCodeSanitization
 

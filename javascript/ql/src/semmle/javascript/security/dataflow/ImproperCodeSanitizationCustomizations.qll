@@ -6,6 +6,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for reasoning about improper code sanitization.
+ */
 module ImproperCodeSanitization {
   /**
    * A data flow source for improper code sanitization.
