@@ -11,46 +11,8 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.UnsecureDownload::UnsecureDownload
 import DataFlow::PathGraph
-
-class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "HTTP/HTTPS" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(string str | str = source.getStringValue() |
-      str.regexpMatch("http://.*|ftp://.'") and
-      exists(string suffix | suffix = unsafeSuffix() |
-        str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
-      )
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ClientRequest request | sink = request.getUrl())
-    or
-    exists(SystemCommandExecution cmd |
-      cmd.getACommandArgument().getStringValue() = "curl" or
-      cmd
-          .getACommandArgument()
-          .(StringOps::ConcatenationRoot)
-          .getConstantStringParts()
-          .regexpMatch("curl .*")
-    |
-      sink = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
-      sink = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
-    )
-  }
-}
-
-/**
- * Gets a file-suffix
- */
-string unsafeSuffix() {
-  // including arcives, because they often contain source-code.
-  result =
-    ["exe", "dmg", "pkg", "tar.gz", "zip", "sh", "bat", "cmd", "app", "apk", "msi", "dmg", "tar.gz",
-        "zip"]
-}
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)

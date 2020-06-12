@@ -633,4 +633,32 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /**
+   * A shell execution of `curl` that downloads some file.
+   */
+  class CurlDownload extends ClientRequest::Range {
+    SystemCommandExecution cmd;
+
+    CurlDownload() {
+      this = cmd and
+      (
+        cmd.getACommandArgument().getStringValue() = "curl" or
+        cmd
+            .getACommandArgument()
+            .(StringOps::ConcatenationRoot)
+            .getConstantStringParts()
+            .regexpMatch("curl .*")
+      )
+    }
+
+    override DataFlow::Node getUrl() {
+      result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
+      result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
+    }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
 }
