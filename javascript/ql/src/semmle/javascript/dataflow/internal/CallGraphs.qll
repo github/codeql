@@ -61,6 +61,17 @@ module CallGraph {
       function = cls.getConstructor() and
       cls.getAClassReference(t.continue()).flowsTo(result)
     )
+    or
+    imprecision = 0 and
+    exists(DataFlow::FunctionNode outer |
+      result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
+      locallyReturnedFunction(outer, function)
+    )
+  }
+
+  cached
+  private predicate locallyReturnedFunction(DataFlow::FunctionNode outer, DataFlow::FunctionNode inner) {
+    inner.flowsTo(outer.getAReturn())
   }
 
   /**
