@@ -1,19 +1,19 @@
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
- * download of sensitive file through unsecure connection, as well as
+ * download of sensitive file through insecure connection, as well as
  * extension points for adding your own.
  */
 
 import javascript
 
-module UnsecureDownload {
+module InsecureDownload {
   /**
-   * A data flow source for download of sensitive file through unsecure connection.
+   * A data flow source for download of sensitive file through insecure connection.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for download of sensitive file through unsecure connection.
+   * A data flow sink for download of sensitive file through insecure connection.
    */
   abstract class Sink extends DataFlow::Node {
     /**
@@ -23,13 +23,13 @@ module UnsecureDownload {
   }
 
   /**
-   * A sanitizer for download of sensitive file through unsecure connection.
+   * A sanitizer for download of sensitive file through insecure connection.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
    * A HTTP or FTP URL that refers to a file with a sensitive file extension,
-   * seen as a source for download of sensitive file through unsecure connection.
+   * seen as a source for download of sensitive file through insecure connection.
    */
   class SensitiveFileUrl extends Source {
     SensitiveFileUrl() {
@@ -55,7 +55,7 @@ module UnsecureDownload {
 
   /**
    * A url downloaded by a client-request, seen as a sink for download of
-   * sensitive file through unsecure connection.a
+   * sensitive file through insecure connection.a
    */
   class ClientRequestURL extends Sink {
     ClientRequest request;

@@ -1,17 +1,17 @@
 /**
- * @name Download of sensitive file through unsecure connection
- * @description Downloading executables and other sensitive files over an unsecure connection
+ * @name Download of sensitive file through insecure connection
+ * @description Downloading executables and other sensitive files over an insecure connection
  *              opens up for potential man-in-the-middle attacks.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id js/unsecure-download
+ * @id js/insecure-download
  * @tags security
  *       external/cwe/cwe-829
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsecureDownload::UnsecureDownload
+import semmle.javascript.security.dataflow.InsecureDownload::InsecureDownload
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
