@@ -8,6 +8,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for reasoning about download of sensitive file through insecure connection vulnerabilities.
+ */
 module InsecureDownload {
   import InsecureDownloadCustomizations::InsecureDownload
 

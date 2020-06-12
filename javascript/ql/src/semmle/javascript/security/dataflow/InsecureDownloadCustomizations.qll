@@ -6,6 +6,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for reasoning about download of sensitive file through insecure connection vulnerabilities.
+ */
 module InsecureDownload {
   /**
    * A data flow source for download of sensitive file through insecure connection.
