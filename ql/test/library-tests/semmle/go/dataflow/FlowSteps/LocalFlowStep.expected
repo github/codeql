@@ -80,7 +80,7 @@
 | main.go:38:2:38:2 | definition of s | main.go:39:15:39:15 | s |
 | main.go:38:2:38:2 | definition of s | main.go:40:15:40:15 | s |
 | main.go:38:2:38:2 | definition of s | main.go:42:7:42:7 | s |
-| main.go:38:7:38:20 | composite literal | main.go:38:2:38:2 | definition of s |
+| main.go:38:7:38:20 | slice literal | main.go:38:2:38:2 | definition of s |
 | main.go:39:2:39:3 | definition of s1 | main.go:40:18:40:19 | s1 |
 | main.go:39:8:39:25 | call to append | main.go:39:2:39:3 | definition of s1 |
 | main.go:40:2:40:3 | definition of s2 | main.go:43:9:43:10 | s2 |

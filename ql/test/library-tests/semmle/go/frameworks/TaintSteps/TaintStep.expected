@@ -59,16 +59,16 @@
 | main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[0] |
 | main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[1] |
 | main.go:13:33:13:33 | v | main.go:13:2:13:52 | ... := ...[0] |
-| main.go:14:25:14:25 | b | main.go:14:9:14:41 | composite literal |
-| main.go:14:28:14:30 | err | main.go:14:9:14:41 | composite literal |
-| main.go:14:33:14:34 | b2 | main.go:14:9:14:41 | composite literal |
-| main.go:14:37:14:40 | err2 | main.go:14:9:14:41 | composite literal |
+| main.go:14:25:14:25 | b | main.go:14:9:14:41 | slice literal |
+| main.go:14:28:14:30 | err | main.go:14:9:14:41 | slice literal |
+| main.go:14:33:14:34 | b2 | main.go:14:9:14:41 | slice literal |
+| main.go:14:37:14:40 | err2 | main.go:14:9:14:41 | slice literal |
 | main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | ... := ...[0] |
 | main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | ... := ...[1] |
 | main.go:19:35:19:41 | encoded | main.go:19:2:19:42 | ... := ...[0] |
-| main.go:23:25:23:31 | decoded | main.go:23:9:23:48 | composite literal |
-| main.go:23:34:23:36 | err | main.go:23:9:23:48 | composite literal |
-| main.go:23:39:23:47 | reEncoded | main.go:23:9:23:48 | composite literal |
+| main.go:23:25:23:31 | decoded | main.go:23:9:23:48 | slice literal |
+| main.go:23:34:23:36 | err | main.go:23:9:23:48 | slice literal |
+| main.go:23:39:23:47 | reEncoded | main.go:23:9:23:48 | slice literal |
 | main.go:28:2:28:4 | implicit dereference | main.go:26:15:26:17 | definition of req |
 | main.go:28:2:28:4 | implicit dereference | main.go:28:2:28:9 | selection of Body |
 | main.go:28:2:28:4 | req | main.go:28:2:28:4 | implicit dereference |
