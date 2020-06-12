@@ -65,19 +65,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	pkgDirs := make(map[string]string)
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
-	for _, pkg := range pkgs {
-		mdir := util.GetModDir(pkg.PkgPath, modFlag)
-		pdir := util.GetPkgDir(pkg.PkgPath, modFlag)
-		if mdir == "" {
-			mdir = pdir
-		}
-		if mdir == "" {
-			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
-		}
-		pkgRoots[pkg.PkgPath] = mdir
-		pkgDirs[pkg.PkgPath] = pdir
-		wantedRoots[mdir] = true
-	}
 
 	// recursively visit all packages in depth-first order;
 	// on the way down, associate each package scope with its corresponding package,
@@ -88,6 +75,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
 			mdir := util.GetModDir(pkg.PkgPath, modFlag)
 			pdir := util.GetPkgDir(pkg.PkgPath, modFlag)
+			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
+			// is not using modules. If this is the case, fall back to the package directory
 			if mdir == "" {
 				mdir = pdir
 			}
@@ -115,6 +104,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 	})
 
+	for _, pkg := range pkgs {
+		if pkgRoots[pkg.PkgPath] == "" {
+			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
+		}
+		wantedRoots[pkgRoots[pkg.PkgPath]] = true
+	}
+
 	// this sets the number of threads that the Go runtime will spawn; this is separate
 	// from the number of goroutines that the program spawns, which are scheduled into
 	// the system threads by the Go runtime scheduler
@@ -136,43 +132,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		maxgoroutines = 32
 	} else {
 		log.Printf("Max goroutines set to %d", maxgoroutines)
-	}
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Printf("Warning: unable to get working directory: %s", err.Error())
-		log.Println("Skipping go.mod extraction")
-	}
-	rcwd, err := filepath.EvalSymlinks(cwd)
-	if err == nil {
-		cwd = rcwd
-	}
-
-	goModPaths := make([]string, 0, 10)
-
-	filepath.Walk(cwd, func(path string, info os.FileInfo, err error) error {
-		if filepath.Base(path) == "go.mod" && info != nil && info.Mode().IsRegular() {
-			if err != nil {
-				log.Printf("Found go.mod with path %s, but encountered error %s", path, err.Error())
-			}
-
-			goModPaths = append(goModPaths, path)
-		}
-
-		return nil
-	})
-
-	for _, path := range goModPaths {
-		log.Printf("Extracting %s", path)
-		start := time.Now()
-
-		err := extractGoMod(path)
-		if err != nil {
-			log.Printf("Failed to extract go.mod: %s", err.Error())
-		}
-
-		end := time.Since(start)
-		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
 	}
 
 	var wg sync.WaitGroup
@@ -215,6 +174,43 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	})
 
 	wg.Wait()
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Printf("Warning: unable to get working directory: %s", err.Error())
+		log.Println("Skipping go.mod extraction")
+	}
+	rcwd, err := filepath.EvalSymlinks(cwd)
+	if err == nil {
+		cwd = rcwd
+	}
+
+	goModPaths := make([]string, 0, 10)
+
+	filepath.Walk(cwd, func(path string, info os.FileInfo, err error) error {
+		if filepath.Base(path) == "go.mod" && info != nil && info.Mode().IsRegular() {
+			if err != nil {
+				log.Printf("Found go.mod with path %s, but encountered error %s", path, err.Error())
+			}
+
+			goModPaths = append(goModPaths, path)
+		}
+
+		return nil
+	})
+
+	for _, path := range goModPaths {
+		log.Printf("Extracting %s", path)
+		start := time.Now()
+
+		err := extractGoMod(path)
+		if err != nil {
+			log.Printf("Failed to extract go.mod: %s", err.Error())
+		}
+
+		end := time.Since(start)
+		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
+	}
 
 	return nil
 }
