@@ -212,7 +212,8 @@ module TaintedPath {
     DataFlow::Node output;
 
     PreservingPathCall() {
-      this = NodeJSLib::Path::moduleMember(["dirname", "toNamespacedPath", "parse", "format"]).getACall() and
+      this =
+        NodeJSLib::Path::moduleMember(["dirname", "toNamespacedPath", "parse", "format"]).getACall() and
       input = getAnArgument() and
       output = this
       or

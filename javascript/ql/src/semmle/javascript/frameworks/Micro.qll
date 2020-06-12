@@ -90,17 +90,13 @@ private module Micro {
       this = moduleMember("micro", name).getACall()
     }
 
-    override string getKind() {
-      result = "body"
-    }
+    override string getKind() { result = "body" }
 
     override HTTP::RouteHandler getRouteHandler() {
       result = getRouteHandlerFromReqRes(getArgument(0))
     }
 
-    override predicate isUserControlledObject() {
-      name = "json"
-    }
+    override predicate isUserControlledObject() { name = "json" }
   }
 
   class MicroSendArgument extends HTTP::ResponseSendArgument {

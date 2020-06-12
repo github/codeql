@@ -581,12 +581,11 @@ module Bluebird {
    * An async function created using a call to `bluebird.coroutine`.
    */
   class BluebirdCoroutineDefinition extends DataFlow::CallNode {
-    BluebirdCoroutineDefinition() {
-      this = bluebird().getAMemberCall("coroutine")
-    }
+    BluebirdCoroutineDefinition() { this = bluebird().getAMemberCall("coroutine") }
   }
 
-  private class BluebirdCoroutineDefinitionAsPartialInvoke extends DataFlow::PartialInvokeNode::Range, BluebirdCoroutineDefinition {
+  private class BluebirdCoroutineDefinitionAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
+    BluebirdCoroutineDefinition {
     override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
       boundArgs = 0 and
       callback = getArgument(0) and
