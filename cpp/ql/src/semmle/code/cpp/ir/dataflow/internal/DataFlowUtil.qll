@@ -426,7 +426,6 @@ private class StoreChainEndInstructionStoreWithChi extends StoreChainEndInstruct
   FieldAddressInstruction fi;
 
   StoreChainEndInstructionStoreWithChi() {
-    not this.isResultConflated() and
     this.getPartial() = store and
     fi = skipConversion*(store.getDestinationAddress())
   }
@@ -497,7 +496,6 @@ private class StoreChainEndInstructionSideEffect extends StoreChainEndInstructio
   FieldAddressInstruction fi;
 
   StoreChainEndInstructionSideEffect() {
-    not this.isResultConflated() and
     this.getPartial() = sideEffect and
     fi = skipConversion*(sideEffect.getArgumentDef())
   }
