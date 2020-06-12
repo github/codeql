@@ -2098,14 +2098,31 @@ class PathNode extends TPathNode {
   /** Gets the associated configuration. */
   Configuration getConfiguration() { none() }
 
+  private predicate isHidden() {
+    nodeIsHidden(this.getNode()) and
+    not this.isSource() and
+    not this instanceof PathNodeSink
+  }
+
+  private PathNode getASuccessorIfHidden() {
+    this.isHidden() and
+    result = this.(PathNodeImpl).getASuccessorImpl()
+  }
+
   /** Gets a successor of this node, if any. */
-  PathNode getASuccessor() { none() }
+  final PathNode getASuccessor() {
+    result = this.(PathNodeImpl).getASuccessorImpl().getASuccessorIfHidden*() and
+    not this.isHidden() and
+    not result.isHidden()
+  }
 
   /** Holds if this node is a source. */
   predicate isSource() { none() }
 }
 
 abstract private class PathNodeImpl extends PathNode {
+  abstract PathNode getASuccessorImpl();
+
   private string ppAp() {
     this instanceof PathNodeSink and result = ""
     or
@@ -2180,7 +2197,7 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     result.getConfiguration() = unbind(this.getConfiguration())
   }
 
-  override PathNodeImpl getASuccessor() {
+  override PathNodeImpl getASuccessorImpl() {
     // an intermediate step to another intermediate node
     result = getSuccMid()
     or
@@ -2217,7 +2234,7 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
 
   override Configuration getConfiguration() { result = config }
 
-  override PathNode getASuccessor() { none() }
+  override PathNode getASuccessorImpl() { none() }
 
   override predicate isSource() { config.isSource(node) }
 }
