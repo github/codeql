@@ -51,9 +51,7 @@ private module Cached {
 
   cached
   predicate hasInstruction(TStageInstruction instr) {
-    instr instanceof TRawInstruction and instr instanceof OldInstruction
-    or
-    not instr instanceof TRawInstruction
+    instr instanceof TRawInstruction implies instr instanceof OldInstruction
   }
 
   private IRBlock getNewBlock(OldBlock oldBlock) {
