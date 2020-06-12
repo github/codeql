@@ -96,7 +96,7 @@ class Configuration extends TaintTracking::Configuration {
           c = dst and
           src = c.getAnArgument()
         |
-          c = DataFlow::globalVarRef("Math").getAPropertyRead().getACall() or
+          c = DataFlow::globalVarRef("Math").getAMemberCall(_) or
           c = DataFlow::globalVarRef(["Number", "parseInt", "parseFloat"]).getACall()
         )
       )
@@ -191,10 +191,12 @@ class BufferSizeSink extends Sink {
       )
       or
       invk = clazz.getAnInvocation() and
-      invk.getNumArgument() = 1 and
-      index = 0
-      or
-      invk.getNumArgument() = 3 and index = 2
+      (
+        invk.getNumArgument() = 1 and
+        index = 0
+        or
+        invk.getNumArgument() = 3 and index = 2
+      )
     )
     or
     this = DataFlow::globalVarRef("SlowBuffer").getAnInstantiation().getArgument(0)
