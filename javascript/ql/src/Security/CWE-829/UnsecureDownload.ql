@@ -1,6 +1,6 @@
 /**
  * @name Download of sensitive file through unsecure connection
- * @description Downloading executeables and other sensitive files over an unsecure connection
+ * @description Downloading executables and other sensitive files over an unsecure connection
  *              opens up for potential man-in-the-middle attacks.
  * @kind path-problem
  * @problem.severity error
