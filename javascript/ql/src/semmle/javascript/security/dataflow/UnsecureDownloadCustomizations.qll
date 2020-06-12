@@ -59,12 +59,9 @@ module UnsecureDownload {
    */
   class ClientRequestURL extends Sink {
     ClientRequest request;
-    ClientRequestURL() {
-        this = request.getUrl()
-    }
 
-    override DataFlow::Node getDownloadCall() {
-      result = request
-    }
+    ClientRequestURL() { this = request.getUrl() }
+
+    override DataFlow::Node getDownloadCall() { result = request }
   }
 }

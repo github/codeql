@@ -16,4 +16,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Download of file from $@.", source.getNode(), "HTTP source"
+select sink.getNode(), source, sink, "$@ of sensitive file from $@.",
+  sink.getNode().(Sink).getDownloadCall(), "Download", source.getNode(), "HTTP source"

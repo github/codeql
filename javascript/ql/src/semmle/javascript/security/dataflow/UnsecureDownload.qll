@@ -17,12 +17,8 @@ module UnsecureDownload {
   class Configuration extends DataFlow::Configuration {
     Configuration() { this = "HTTP/HTTPS" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
   }
 }
