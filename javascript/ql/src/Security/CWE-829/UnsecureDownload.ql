@@ -10,11 +10,6 @@
  *       external/cwe/cwe-829
  */
 
-// TODO:
-// package.json urls (ALL package.json urls are sensitive.) - put in separate non-path query?
-// Other protocols?
-// Customizations module
-// An integrity-check is a sanitizer (but what does such a check look like?)
 import javascript
 import DataFlow::PathGraph
 
