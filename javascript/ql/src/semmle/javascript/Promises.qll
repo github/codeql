@@ -576,6 +576,23 @@ module Bluebird {
 
     override DataFlow::Node getArrayNode() { result = getArgument(0) }
   }
+
+  /**
+   * An async function created using a call to `bluebird.coroutine`.
+   */
+  class BluebirdCoroutineDefinition extends DataFlow::CallNode {
+    BluebirdCoroutineDefinition() {
+      this = bluebird().getAMemberCall("coroutine")
+    }
+  }
+
+  private class BluebirdCoroutineDefinitionAsPartialInvoke extends DataFlow::PartialInvokeNode::Range, BluebirdCoroutineDefinition {
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      boundArgs = 0 and
+      callback = getArgument(0) and
+      result = this
+    }
+  }
 }
 
 /**
