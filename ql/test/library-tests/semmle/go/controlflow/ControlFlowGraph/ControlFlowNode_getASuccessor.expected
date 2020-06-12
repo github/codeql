@@ -78,11 +78,11 @@
 | exprs.go:9:54:9:59 | type conversion | exprs.go:9:48:9:59 | ...<... |
 | exprs.go:9:58:9:58 | z | exprs.go:9:54:9:59 | type conversion |
 | exprs.go:10:2:10:8 | assignment to struct1 | exprs.go:11:2:11:8 | skip |
-| exprs.go:10:2:10:8 | skip | exprs.go:10:13:10:32 | composite literal |
-| exprs.go:10:13:10:32 | composite literal | exprs.go:10:2:10:8 | assignment to struct1 |
+| exprs.go:10:2:10:8 | skip | exprs.go:10:13:10:32 | struct literal |
+| exprs.go:10:13:10:32 | struct literal | exprs.go:10:2:10:8 | assignment to struct1 |
 | exprs.go:11:2:11:8 | assignment to struct2 | exprs.go:15:2:15:8 | skip |
-| exprs.go:11:2:11:8 | skip | exprs.go:11:13:14:21 | composite literal |
-| exprs.go:11:13:14:21 | composite literal | exprs.go:14:4:14:4 | k |
+| exprs.go:11:2:11:8 | skip | exprs.go:11:13:14:21 | struct literal |
+| exprs.go:11:13:14:21 | struct literal | exprs.go:14:4:14:4 | k |
 | exprs.go:14:4:14:4 | init of k | exprs.go:14:7:14:8 | fn |
 | exprs.go:14:4:14:4 | k | exprs.go:14:4:14:4 | init of k |
 | exprs.go:14:7:14:8 | fn | exprs.go:14:10:14:10 | i |
@@ -93,8 +93,8 @@
 | exprs.go:14:13:14:13 | j | exprs.go:14:16:14:19 | .../... |
 | exprs.go:14:16:14:19 | .../... | exprs.go:14:7:14:20 | call to fn |
 | exprs.go:15:2:15:8 | assignment to struct3 | exprs.go:16:2:16:5 | skip |
-| exprs.go:15:2:15:8 | skip | exprs.go:15:13:15:58 | composite literal |
-| exprs.go:15:13:15:58 | composite literal | exprs.go:15:35:15:41 | struct1 |
+| exprs.go:15:2:15:8 | skip | exprs.go:15:13:15:58 | struct literal |
+| exprs.go:15:13:15:58 | struct literal | exprs.go:15:35:15:41 | struct1 |
 | exprs.go:15:32:15:43 | init of key-value pair | exprs.go:15:49:15:55 | struct2 |
 | exprs.go:15:35:15:41 | struct1 | exprs.go:15:35:15:43 | selection of x |
 | exprs.go:15:35:15:43 | selection of x | exprs.go:15:32:15:43 | init of key-value pair |
@@ -102,15 +102,15 @@
 | exprs.go:15:49:15:55 | struct2 | exprs.go:15:49:15:57 | selection of x |
 | exprs.go:15:49:15:57 | selection of x | exprs.go:15:46:15:57 | init of key-value pair |
 | exprs.go:16:2:16:5 | assignment to arr1 | exprs.go:17:2:17:5 | skip |
-| exprs.go:16:2:16:5 | skip | exprs.go:16:10:16:26 | composite literal |
-| exprs.go:16:10:16:26 | composite literal | exprs.go:16:17:16:17 | element index |
+| exprs.go:16:2:16:5 | skip | exprs.go:16:10:16:26 | array literal |
+| exprs.go:16:10:16:26 | array literal | exprs.go:16:17:16:17 | element index |
 | exprs.go:16:17:16:17 | element index | exprs.go:16:17:16:23 | struct3 |
 | exprs.go:16:17:16:23 | struct3 | exprs.go:16:17:16:25 | selection of x |
 | exprs.go:16:17:16:25 | init of selection of x | exprs.go:16:2:16:5 | assignment to arr1 |
 | exprs.go:16:17:16:25 | selection of x | exprs.go:16:17:16:25 | init of selection of x |
 | exprs.go:17:2:17:5 | assignment to arr2 | exprs.go:18:2:18:4 | skip |
-| exprs.go:17:2:17:5 | skip | exprs.go:17:10:17:40 | composite literal |
-| exprs.go:17:10:17:40 | composite literal | exprs.go:17:19:17:19 | element index |
+| exprs.go:17:2:17:5 | skip | exprs.go:17:10:17:40 | array literal |
+| exprs.go:17:10:17:40 | array literal | exprs.go:17:19:17:19 | element index |
 | exprs.go:17:19:17:19 | element index | exprs.go:17:19:17:25 | struct3 |
 | exprs.go:17:19:17:25 | struct3 | exprs.go:17:19:17:27 | selection of x |
 | exprs.go:17:19:17:27 | init of selection of x | exprs.go:17:30:17:30 | 2 |
@@ -122,8 +122,8 @@
 | exprs.go:17:33:17:39 | index expression | exprs.go:26:1:26:1 | exit |
 | exprs.go:17:38:17:38 | 0 | exprs.go:17:33:17:39 | index expression |
 | exprs.go:18:2:18:4 | assignment to slc | exprs.go:19:2:19:3 | skip |
-| exprs.go:18:2:18:4 | skip | exprs.go:18:9:18:22 | composite literal |
-| exprs.go:18:9:18:22 | composite literal | exprs.go:18:18:18:18 | element index |
+| exprs.go:18:2:18:4 | skip | exprs.go:18:9:18:22 | slice literal |
+| exprs.go:18:9:18:22 | slice literal | exprs.go:18:18:18:18 | element index |
 | exprs.go:18:18:18:18 | element index | exprs.go:18:18:18:18 | s |
 | exprs.go:18:18:18:18 | init of s | exprs.go:18:21:18:21 | element index |
 | exprs.go:18:18:18:18 | s | exprs.go:18:18:18:18 | init of s |
@@ -131,8 +131,8 @@
 | exprs.go:18:21:18:21 | init of s | exprs.go:18:2:18:4 | assignment to slc |
 | exprs.go:18:21:18:21 | s | exprs.go:18:21:18:21 | init of s |
 | exprs.go:19:2:19:3 | assignment to mp | exprs.go:20:2:20:5 | skip |
-| exprs.go:19:2:19:3 | skip | exprs.go:19:8:19:38 | composite literal |
-| exprs.go:19:8:19:38 | composite literal | exprs.go:19:23:19:25 | slc |
+| exprs.go:19:2:19:3 | skip | exprs.go:19:8:19:38 | map literal |
+| exprs.go:19:8:19:38 | map literal | exprs.go:19:23:19:25 | slc |
 | exprs.go:19:23:19:25 | slc | exprs.go:19:27:19:27 | 0 |
 | exprs.go:19:23:19:28 | index expression | exprs.go:19:31:19:34 | arr2 |
 | exprs.go:19:23:19:28 | index expression | exprs.go:26:1:26:1 | exit |
@@ -174,7 +174,7 @@
 | exprs.go:23:10:23:17 | slice expression | exprs.go:23:2:23:5 | assignment to slc5 |
 | exprs.go:23:10:23:17 | slice expression | exprs.go:26:1:26:1 | exit |
 | exprs.go:23:15:23:15 | 0 | exprs.go:23:10:23:17 | len |
-| exprs.go:24:2:24:5 | assignment to slc6 | exprs.go:25:9:25:34 | composite literal |
+| exprs.go:24:2:24:5 | assignment to slc6 | exprs.go:25:9:25:34 | struct literal |
 | exprs.go:24:2:24:5 | skip | exprs.go:24:10:24:13 | slc5 |
 | exprs.go:24:10:24:13 | slc5 | exprs.go:24:10:24:17 | 0 |
 | exprs.go:24:10:24:17 | 0 | exprs.go:24:16:24:16 | 2 |
@@ -183,7 +183,7 @@
 | exprs.go:24:10:24:17 | slice expression | exprs.go:26:1:26:1 | exit |
 | exprs.go:24:16:24:16 | 2 | exprs.go:24:10:24:17 | cap |
 | exprs.go:25:2:25:34 | return statement | exprs.go:26:1:26:1 | exit |
-| exprs.go:25:9:25:34 | composite literal | exprs.go:25:15:25:16 | mp |
+| exprs.go:25:9:25:34 | struct literal | exprs.go:25:15:25:16 | mp |
 | exprs.go:25:15:25:16 | mp | exprs.go:25:18:25:18 | s |
 | exprs.go:25:15:25:19 | index expression | exprs.go:25:15:25:19 | init of index expression |
 | exprs.go:25:15:25:19 | index expression | exprs.go:26:1:26:1 | exit |
@@ -297,11 +297,11 @@
 | exprs.go:57:9:57:15 | call to sum | exprs.go:57:2:57:15 | return statement |
 | exprs.go:57:9:57:15 | call to sum | exprs.go:58:1:58:1 | exit |
 | exprs.go:57:13:57:14 | xs | exprs.go:57:9:57:15 | call to sum |
-| exprs.go:60:1:60:1 | entry | exprs.go:61:9:61:22 | composite literal |
+| exprs.go:60:1:60:1 | entry | exprs.go:61:9:61:22 | slice literal |
 | exprs.go:60:1:62:1 | function declaration | exprs.go:64:5:64:5 | skip |
 | exprs.go:60:6:60:9 | skip | exprs.go:60:1:62:1 | function declaration |
 | exprs.go:61:2:61:22 | return statement | exprs.go:62:1:62:1 | exit |
-| exprs.go:61:9:61:22 | composite literal | exprs.go:61:15:61:15 | element index |
+| exprs.go:61:9:61:22 | slice literal | exprs.go:61:15:61:15 | element index |
 | exprs.go:61:15:61:15 | 1 | exprs.go:61:15:61:15 | init of 1 |
 | exprs.go:61:15:61:15 | element index | exprs.go:61:15:61:15 | 1 |
 | exprs.go:61:15:61:15 | init of 1 | exprs.go:61:18:61:18 | element index |
@@ -402,8 +402,8 @@
 | exprs.go:89:7:89:9 | skip | exprs.go:89:13:89:13 | 1 |
 | exprs.go:89:13:89:13 | 1 | exprs.go:89:7:89:9 | assignment to one |
 | exprs.go:91:5:91:5 | assignment to a | exprs.go:93:6:93:11 | skip |
-| exprs.go:91:5:91:5 | skip | exprs.go:91:9:91:25 | composite literal |
-| exprs.go:91:9:91:25 | composite literal | exprs.go:91:15:91:21 | ...+... |
+| exprs.go:91:5:91:5 | skip | exprs.go:91:9:91:25 | slice literal |
+| exprs.go:91:9:91:25 | slice literal | exprs.go:91:15:91:21 | ...+... |
 | exprs.go:91:15:91:21 | ...+... | exprs.go:91:24:91:24 | 2 |
 | exprs.go:91:15:91:24 | init of key-value pair | exprs.go:91:5:91:5 | assignment to a |
 | exprs.go:91:24:91:24 | 2 | exprs.go:91:15:91:24 | init of key-value pair |

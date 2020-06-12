@@ -415,6 +415,8 @@ class MapLit extends CompositeLit {
 
   /** Gets the value type of this literal. */
   Type getValueType() { result = mt.getValueType() }
+
+  override string toString() { result = "map literal" }
 }
 
 /**
@@ -435,6 +437,73 @@ class StructLit extends CompositeLit {
 
   /** Gets the struct type underlying this literal. */
   StructType getStructType() { result = st }
+
+  override string toString() { result = "struct literal" }
+}
+
+/**
+ * An array or slice literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * [10]string{}
+ * [6]int{1, 2, 3, 5}
+ * [...]string{"Sat", "Sun"}
+ * []int{1, 2, 3, 5}
+ * []string{"Sat", "Sun"}
+ * ```
+ */
+class ArrayOrSliceLit extends CompositeLit {
+  CompositeType type;
+
+  ArrayOrSliceLit() {
+    type = getType().getUnderlyingType() and
+    (
+      type instanceof ArrayType
+      or
+      type instanceof SliceType
+    )
+  }
+}
+
+/**
+ * An array literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * [10]string{}
+ * [6]int{1, 2, 3, 5}
+ * [...]string{"Sat", "Sun"}
+ * ```
+ */
+class ArrayLit extends ArrayOrSliceLit {
+  override ArrayType type;
+
+  /** Gets the array type underlying this literal. */
+  ArrayType getArrayType() { result = type }
+
+  override string toString() { result = "array literal" }
+}
+
+/**
+ * A slice literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * []int{1, 2, 3, 5}
+ * []string{"Sat", "Sun"}
+ * ```
+ */
+class SliceLit extends ArrayOrSliceLit {
+  override SliceType type;
+
+  /** Gets the slice type underlying this literal. */
+  SliceType getSliceType() { result = type }
+
+  override string toString() { result = "slice literal" }
 }
 
 /**

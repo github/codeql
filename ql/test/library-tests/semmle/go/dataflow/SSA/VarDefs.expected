@@ -33,15 +33,15 @@
 | main.go:96:2:96:2 | assignment to x | main.go:96:2:96:2 | x | main.go:96:7:96:7 | 0 |
 | main.go:98:3:98:3 | assignment to x | main.go:96:2:96:2 | x | main.go:98:7:98:7 | 1 |
 | main.go:110:6:110:6 | assignment to p | main.go:110:6:110:6 | p | main.go:110:6:110:6 | zero value for p |
-| main.go:112:3:112:3 | assignment to p | main.go:110:6:110:6 | p | main.go:112:7:112:24 | composite literal |
+| main.go:112:3:112:3 | assignment to p | main.go:110:6:110:6 | p | main.go:112:7:112:24 | struct literal |
 | main.go:112:9:112:9 | init of 2 | main.go:104:2:104:2 | a | main.go:112:9:112:9 | 2 |
-| main.go:112:12:112:18 | init of composite literal | main.go:105:2:105:2 | b | main.go:112:12:112:18 | composite literal |
+| main.go:112:12:112:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:112:12:112:18 | struct literal |
 | main.go:112:14:112:14 | init of 1 | main.go:89:2:89:2 | a | main.go:112:14:112:14 | 1 |
 | main.go:112:17:112:17 | init of 5 | main.go:90:2:90:2 | b | main.go:112:17:112:17 | 5 |
 | main.go:112:21:112:23 | init of 'n' | main.go:106:2:106:2 | c | main.go:112:21:112:23 | 'n' |
-| main.go:114:3:114:3 | assignment to p | main.go:110:6:110:6 | p | main.go:114:7:114:24 | composite literal |
+| main.go:114:3:114:3 | assignment to p | main.go:110:6:110:6 | p | main.go:114:7:114:24 | struct literal |
 | main.go:114:9:114:9 | init of 3 | main.go:104:2:104:2 | a | main.go:114:9:114:9 | 3 |
-| main.go:114:12:114:18 | init of composite literal | main.go:105:2:105:2 | b | main.go:114:12:114:18 | composite literal |
+| main.go:114:12:114:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:114:12:114:18 | struct literal |
 | main.go:114:14:114:14 | init of 4 | main.go:89:2:89:2 | a | main.go:114:14:114:14 | 4 |
 | main.go:114:17:114:17 | init of 5 | main.go:90:2:90:2 | b | main.go:114:17:114:17 | 5 |
 | main.go:114:21:114:23 | init of '2' | main.go:106:2:106:2 | c | main.go:114:21:114:23 | '2' |

@@ -1,6 +1,6 @@
 | SystemCommandExecutors.go:30:3:30:36 | call to StartProcess | SystemCommandExecutors.go:30:19:30:24 | source |
 | SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:19:34:23 | shell |
-| SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:26:34:41 | composite literal |
+| SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:26:34:41 | slice literal |
 | SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:44:34:46 | nil |
 | SystemCommandExecutors.go:37:3:37:64 | call to StartProcess | SystemCommandExecutors.go:37:19:37:23 | shell |
 | SystemCommandExecutors.go:37:3:37:64 | call to StartProcess | SystemCommandExecutors.go:37:26:37:58 | call to append |
@@ -56,5 +56,5 @@
 | SystemCommandExecutors.go:100:3:100:60 | call to Exec | SystemCommandExecutors.go:100:16:100:21 | source |
 | SystemCommandExecutors.go:101:3:101:77 | call to StartProcess | SystemCommandExecutors.go:101:24:101:29 | source |
 | SystemCommandExecutors.go:103:3:103:76 | call to StartProcess | SystemCommandExecutors.go:103:24:103:28 | shell |
-| SystemCommandExecutors.go:103:3:103:76 | call to StartProcess | SystemCommandExecutors.go:103:31:103:54 | composite literal |
+| SystemCommandExecutors.go:103:3:103:76 | call to StartProcess | SystemCommandExecutors.go:103:31:103:54 | slice literal |
 | SystemCommandExecutors.go:103:3:103:76 | call to StartProcess | SystemCommandExecutors.go:103:57:103:75 | &... |
