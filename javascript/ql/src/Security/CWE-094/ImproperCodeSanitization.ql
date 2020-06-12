@@ -11,59 +11,30 @@
  *       external/cwe/cwe-116
  */
 
-// TODO: Proper customizations module, Source class Sink class etc. and qldoc.
 import javascript
+import semmle.javascript.security.dataflow.ImproperCodeSanitization::ImproperCodeSanitization
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 /**
- * A taint-tracking configuration for reasoning about improper code sanitization vulnerabilities.
+ * Gets a type-tracked instance of `RemoteFlowSource` using type-tracker `t`.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ImproperCodeSanitization" }
-
-  override predicate isSource(DataFlow::Node source) { source = source() }
-
-  override predicate isSink(DataFlow::Node sink) { sink = sink() }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof StringReplaceCall // any string-replace that happens after the bad-sanitizer, is assumed to be a good sanitizer.
-    // TODO: Specialize? This regexp sanitizes: /[<>\b\f\n\r\t\0\u2028\u2029]/g
-  }
-}
-
-private DataFlow::CallNode source() {
-  result instanceof HtmlSanitizerCall
-  or
-  result = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
-}
-
-private StringOps::ConcatenationLeaf sink() {
-  exists(StringOps::ConcatenationRoot root, int i |
-    root.getOperand(i) = result and
-    not exists(result.getStringValue())
-  |
-    exists(StringOps::ConcatenationLeaf functionLeaf |
-      functionLeaf = root.getOperand(any(int j | j < i))
-    |
-      functionLeaf
-          .getStringValue()
-          .regexpMatch([".*function( )?([a-zA-Z0-9]+)?( )?\\(.*", ".*eval\\(.*",
-                ".*new Function\\(.*", "(^|.*[^a-zA-Z0-9])\\(.*\\)( )?=>.*"])
-    )
-  )
-}
-
-DataFlow::SourceNode remoteFlow(DataFlow::TypeTracker t) {
+private DataFlow::SourceNode remoteFlow(DataFlow::TypeTracker t) {
   t.start() and
   result instanceof RemoteFlowSource
   or
   exists(DataFlow::TypeTracker t2 | result = remoteFlow(t2).track(t2, t))
 }
 
-DataFlow::SourceNode remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
+/**
+ * Gets a type-tracked reference to a `RemoteFlowSource`.
+ */
+private DataFlow::SourceNode remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
 
+/**
+ * Gets a type-back-tracked instance of a code-injection sink using type-tracker `t`.
+ */
 private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
   t.start() and
   (
@@ -76,9 +47,11 @@ private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
   exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, endsInCodeInjectionSink(t2)))
 }
 
-DataFlow::Node endsInCodeInjectionSink() {
-  result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end()) and
-  result.getFile().getBaseName() = "bad-code-sanitization.js" // TODO: TMp
+/**
+ * Gets a reference to to a data-flow node that ends in a code-injection sink.
+ */
+private DataFlow::Node endsInCodeInjectionSink() {
+  result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end())
 }
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
