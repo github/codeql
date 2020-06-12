@@ -1,0 +1,1 @@
+| UnsafeAndroidAccess.java:29:3:29:21 | loadUrl(...) | UnsafeAndroidAccess.java:29:14:29:20 | thisUrl | UnsafeAndroidAccess.java:29:14:29:20 | thisUrl | Unsafe resource loading in Android webview due to $@. | UnsafeAndroidAccess.java:29:14:29:20 | thisUrl | user input vulnerable to XSS and sensitive resource disclosure attacks |
