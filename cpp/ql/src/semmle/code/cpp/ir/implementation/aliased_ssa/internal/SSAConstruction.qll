@@ -44,8 +44,8 @@ private module Cached {
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
-  private TRawInstruction rawInstruction(IRFunctionBase irFunc, Opcode opcode, Language::AST ast) {
-    result = TRawInstruction(irFunc, opcode, ast, _, _) and
+  private TRawInstruction rawInstruction(IRFunctionBase irFunc, Opcode opcode) {
+    result = TRawInstruction(irFunc, opcode, _, _) and
     result instanceof OldInstruction
   }
 
@@ -265,7 +265,7 @@ private module Cached {
 
   cached
   Language::AST getInstructionAST(Instruction instr) {
-    instr = rawInstruction(_, _, result)
+    result = getOldInstruction(instr).getAST()
     or
     exists(RawIR::Instruction blockStartInstr |
       instr = phiInstruction(_, blockStartInstr, _) and
@@ -302,7 +302,7 @@ private module Cached {
 
   cached
   Opcode getInstructionOpcode(Instruction instr) {
-    instr = rawInstruction(_, result, _)
+    instr = rawInstruction(_, result)
     or
     instr = phiInstruction(_, _, _) and result instanceof Opcode::Phi
     or
@@ -313,7 +313,7 @@ private module Cached {
 
   cached
   IRFunctionBase getInstructionEnclosingIRFunction(Instruction instr) {
-    instr = rawInstruction(result, _, _)
+    instr = rawInstruction(result, _)
     or
     instr = phiInstruction(result, _, _)
     or

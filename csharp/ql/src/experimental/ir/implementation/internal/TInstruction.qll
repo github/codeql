@@ -15,10 +15,10 @@ private import Imports::Opcode
 cached
 newtype TInstruction =
   TRawInstruction(
-    IRFunctionBase irFunc, Opcode opcode, Language::AST ast,
-    IRConstruction::Raw::InstructionTag1 tag1, IRConstruction::Raw::InstructionTag2 tag2
+    IRFunctionBase irFunc, Opcode opcode, IRConstruction::Raw::InstructionTag1 tag1,
+    IRConstruction::Raw::InstructionTag2 tag2
   ) {
-    IRConstruction::Raw::hasInstruction(irFunc.getFunction(), opcode, ast, tag1, tag2)
+    IRConstruction::Raw::hasInstruction(irFunc.getFunction(), opcode, tag1, tag2)
   } or
   TUnaliasedSSAPhiInstruction(
     IRFunctionBase irFunc, TRawInstruction blockStartInstr,
