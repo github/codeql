@@ -48,13 +48,15 @@ interface ParseCommand {
     command: "parse";
     filename: string;
 }
-interface OpenProjectCommand {
-    command: "open-project";
+interface LoadCommand {
     tsConfig: string;
     sourceRoot: string | null;
     virtualSourceRoot: string | null;
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
+}
+interface OpenProjectCommand extends LoadCommand {
+    command: "open-project";
 }
 interface CloseProjectCommand {
     command: "close-project";
@@ -366,10 +368,17 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
  */
 const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
 
-function handleOpenProjectCommand(command: OpenProjectCommand) {
-    let tsConfigFilename = String(command.tsConfig);
-    let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
-    let basePath = pathlib.dirname(tsConfigFilename);
+interface LoadedConfig {
+    config: ts.ParsedCommandLine;
+    basePath: string;
+    packageEntryPoints: Map<string, string>;
+    packageJsonFiles: Map<string, string>;
+    virtualSourceRoot: VirtualSourceRoot;
+}
+
+function loadTsConfig(command: LoadCommand): LoadedConfig {
+    let tsConfig = ts.readConfigFile(command.tsConfig, ts.sys.readFile);
+    let basePath = pathlib.dirname(command.tsConfig);
 
     let packageEntryPoints = new Map(command.packageEntryPoints);
     let packageJsonFiles = new Map(command.packageJsonFiles);
@@ -418,7 +427,14 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         }
     };
     let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
-    let project = new Project(tsConfigFilename, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
+
+    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot };
+}
+
+function handleOpenProjectCommand(command: OpenProjectCommand) {
+    let { config, packageEntryPoints, virtualSourceRoot, basePath } = loadTsConfig(command);
+
+    let project = new Project(command.tsConfig, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
     project.load();
 
     state.project = project;
