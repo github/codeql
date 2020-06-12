@@ -15,8 +15,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonArray;
@@ -488,6 +490,29 @@ public class TypeScriptParser {
     return result;
   }
 
+  private static Set<File> getFilesFromJsonArray(JsonArray array) {
+    Set<File> files = new LinkedHashSet<>();
+    for (JsonElement elm : array) {
+      files.add(new File(elm.getAsString()));
+    }
+    return files;
+  }
+
+  /**
+   * Returns the set of files included by the inclusion pattern in the given tsconfig.json file.
+   */
+  public Set<File> getOwnFiles(File tsConfigFile, DependencyInstallationResult deps) {
+    JsonObject request = makeLoadCommand("get-own-files", tsConfigFile, deps);
+    JsonObject response = talkToParserWrapper(request);
+    try {
+      checkResponseType(response, "file-list");
+      return getFilesFromJsonArray(response.get("ownFiles").getAsJsonArray());
+    } catch (IllegalStateException e) {
+      throw new CatastrophicError(
+          "TypeScript parser wrapper sent unexpected response: " + response, e);
+    }
+  }
+
   /**
    * Opens a new project based on a tsconfig.json file. The compiler will analyze all files in the
    * project.
@@ -497,8 +522,23 @@ public class TypeScriptParser {
    * <p>Only one project should be opened at once.
    */
   public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps) {
+    JsonObject request = makeLoadCommand("open-project", tsConfigFile, deps);
+    JsonObject response = talkToParserWrapper(request);
+    try {
+      checkResponseType(response, "project-opened");
+      ParsedProject project = new ParsedProject(tsConfigFile,
+          getFilesFromJsonArray(response.get("ownFiles").getAsJsonArray()),
+          getFilesFromJsonArray(response.get("allFiles").getAsJsonArray()));
+      return project;
+    } catch (IllegalStateException e) {
+      throw new CatastrophicError(
+          "TypeScript parser wrapper sent unexpected response: " + response, e);
+    }
+  }
+
+  private JsonObject makeLoadCommand(String command, File tsConfigFile, DependencyInstallationResult deps) {
     JsonObject request = new JsonObject();
-    request.add("command", new JsonPrimitive("open-project"));
+    request.add("command", new JsonPrimitive(command));
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
     request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
     request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
@@ -508,19 +548,7 @@ public class TypeScriptParser {
     request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
         ? JsonNull.INSTANCE
         : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
-    JsonObject response = talkToParserWrapper(request);
-    try {
-      checkResponseType(response, "project-opened");
-      ParsedProject project = new ParsedProject(tsConfigFile);
-      JsonArray filesJson = response.get("files").getAsJsonArray();
-      for (JsonElement elm : filesJson) {
-        project.addSourceFile(new File(elm.getAsString()));
-      }
-      return project;
-    } catch (IllegalStateException e) {
-      throw new CatastrophicError(
-          "TypeScript parser wrapper sent unexpected response: " + response, e);
-    }
+    return request;
   }
 
   /**

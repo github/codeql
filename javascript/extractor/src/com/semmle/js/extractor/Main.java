@@ -157,7 +157,7 @@ public class Main {
       // Extract all files belonging to this project which are also matched
       // by our include/exclude filters.
       List<File> filesToExtract = new ArrayList<>();
-      for (File sourceFile : project.getSourceFiles()) {
+      for (File sourceFile : project.getOwnFiles()) {
         if (files.contains(normalizeFile(sourceFile))
             && !extractedFiles.contains(sourceFile.getAbsoluteFile())
             && FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourceFile))) {

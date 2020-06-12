@@ -58,6 +58,9 @@ interface LoadCommand {
 interface OpenProjectCommand extends LoadCommand {
     command: "open-project";
 }
+interface GetOwnFilesCommand extends LoadCommand {
+    command: "get-own-files";
+}
 interface CloseProjectCommand {
     command: "close-project";
     tsConfig: string;
@@ -78,7 +81,7 @@ interface PrepareFilesCommand {
 interface GetMetadataCommand {
     command: "get-metadata";
 }
-type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
+type Command = ParseCommand | OpenProjectCommand | GetOwnFilesCommand | CloseProjectCommand
     | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
@@ -374,6 +377,7 @@ interface LoadedConfig {
     packageEntryPoints: Map<string, string>;
     packageJsonFiles: Map<string, string>;
     virtualSourceRoot: VirtualSourceRoot;
+    ownFiles: string[];
 }
 
 function loadTsConfig(command: LoadCommand): LoadedConfig {
@@ -428,11 +432,26 @@ function loadTsConfig(command: LoadCommand): LoadedConfig {
     };
     let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
 
-    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot };
+    let ownFiles = config.fileNames.map(file => pathlib.resolve(file));
+
+    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot, ownFiles };
+}
+
+/**
+ * Returns the list of files included in the given tsconfig.json file's include pattern,
+ * (not including those only references through imports).
+ */
+function handleGetFileListCommand(command: GetOwnFilesCommand) {
+    let { config, ownFiles } = loadTsConfig(command);
+
+    console.log(JSON.stringify({
+        type: "file-list",
+        ownFiles,
+    }));
 }
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
-    let { config, packageEntryPoints, virtualSourceRoot, basePath } = loadTsConfig(command);
+    let { config, packageEntryPoints, virtualSourceRoot, basePath, ownFiles } = loadTsConfig(command);
 
     let project = new Project(command.tsConfig, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
     project.load();
@@ -606,9 +625,14 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         return symbol;
     }
 
+    // Unlike in the get-own-files command, this command gets all files we can possibly
+    // extract type information for, including files referenced outside the tsconfig's inclusion pattern.
+    let allFiles = program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName));
+
     console.log(JSON.stringify({
         type: "project-opened",
-        files: config.fileNames.map(file => pathlib.resolve(file)),
+        ownFiles,
+        allFiles,
     }));
 }
 
@@ -703,6 +727,9 @@ function runReadLineInterface() {
             break;
         case "open-project":
             handleOpenProjectCommand(req);
+            break;
+        case "get-own-files":
+            handleGetFileListCommand(req);
             break;
         case "close-project":
             handleCloseProjectCommand(req);

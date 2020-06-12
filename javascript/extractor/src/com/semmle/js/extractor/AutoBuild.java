@@ -949,6 +949,16 @@ public class AutoBuild {
       TypeScriptParser tsParser = extractorState.getTypeScriptParser();
       verifyTypeScriptInstallation(extractorState);
 
+      // Collect all files included in a tsconfig.json inclusion pattern.
+      // If a given file is referenced by multiple tsconfig files, we prefer to extract it using
+      // one that includes it rather than just references it.
+      Set<File> explicitlyIncludedFiles = new LinkedHashSet<>();
+      if (tsconfig.size() > 1) { // No prioritization needed if there's only one tsconfig.
+        for (Path projectPath : tsconfig) {
+          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps));
+        }
+      }
+
       // Extract TypeScript projects
       for (Path projectPath : tsconfig) {
         File projectFile = projectPath.toFile();
@@ -958,9 +968,10 @@ public class AutoBuild {
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.
         List<Path> typeScriptFiles = new ArrayList<Path>();
-        for (File sourceFile : project.getSourceFiles()) {
+        for (File sourceFile : project.getAllFiles()) {
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
+          if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
           if (!FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourcePath))) {
             // For the time being, skip non-TypeScript files, even if the TypeScript
             // compiler can parse them for us.
