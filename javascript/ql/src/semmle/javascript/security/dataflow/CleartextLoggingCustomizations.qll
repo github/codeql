@@ -208,8 +208,8 @@ module CleartextLogging {
         stringify.getArgument(0) = read
       )
     |
-      exists(write.getPropertyNameExpr()) and
-      exists(read.getPropertyNameExpr()) and
+      not exists(write.getPropertyName()) and
+      not exists(read.getPropertyName()) and
       src = read.getBase() and
       trg = write.getBase().getALocalSource()
     )
