@@ -41,6 +41,9 @@ import { Project } from "./common";
 import { TypeTable } from "./type_table";
 import { VirtualSourceRoot } from "./virtual_source_root";
 
+// Remove limit on stack trace depth.
+Error.stackTraceLimit = Infinity;
+
 interface ParseCommand {
     command: "parse";
     filename: string;
@@ -364,7 +367,6 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
 const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
-    Error.stackTraceLimit = Infinity;
     let tsConfigFilename = String(command.tsConfig);
     let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
     let basePath = pathlib.dirname(tsConfigFilename);
