@@ -76,6 +76,6 @@ where
     dangerous instanceof RegExpGroup
   ) and
   // don't flag replace operations in a loop
-  not replace.getReceiver() = replace.getASuccessor+()
+  not replace.getReceiver().getALocalSource() = replace
 select replace, "The replaced string may still contain a substring that starts matching at $@.",
   dangerous, dangerous.toString()
