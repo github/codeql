@@ -23,7 +23,7 @@ predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(Write write, string name |
     write.getRhs() = sink and
     name = write.getLhs().getName() and
-    // whitelist obvious test password variables
+    // allow obvious test password variables
     not name.regexpMatch(HeuristicNames::notSensitive())
   |
     name.regexpMatch(HeuristicNames::maybeSensitive(type))
@@ -35,7 +35,7 @@ where
   exists(string val | val = source.getStringValue() and val != "" |
     isSensitive(sink, type) and
     DataFlow::localFlow(source, sink) and
-    // whitelist obvious dummy/test values
+    // allow obvious dummy/test values
     not PasswordHeuristics::isDummyPassword(val) and
     not sink.asExpr().(Ident).getName().regexpMatch(HeuristicNames::notSensitive())
   ) and
