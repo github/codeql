@@ -299,6 +299,8 @@
 | simple.cpp:144:23:144:30 | & ... | AST only |
 | simple.cpp:167:17:167:17 | f | AST only |
 | simple.cpp:168:12:168:23 | & ... | AST only |
+| simple.cpp:173:5:173:29 | * ... | IR only |
+| simple.cpp:173:13:173:14 | a_ | AST only |
 | struct_init.c:15:8:15:9 | ab | AST only |
 | struct_init.c:15:12:15:12 | a | AST only |
 | struct_init.c:16:8:16:9 | ab | AST only |

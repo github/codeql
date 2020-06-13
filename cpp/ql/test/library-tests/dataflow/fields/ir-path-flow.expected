@@ -71,6 +71,21 @@ edges
 | by_reference.cpp:130:27:130:27 | inner_nested.a [a] | by_reference.cpp:130:27:130:27 | a |
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:134:29:134:29 | a |
 | by_reference.cpp:134:29:134:29 | inner_nested.a [a] | by_reference.cpp:134:29:134:29 | a |
+| qualifiers.cpp:22:5:22:38 | Chi [a] | qualifiers.cpp:23:23:23:23 | a |
+| qualifiers.cpp:22:5:22:38 | Store | qualifiers.cpp:22:5:22:38 | a [a] |
+| qualifiers.cpp:22:5:22:38 | a [a] | qualifiers.cpp:22:5:22:38 | Chi [a] |
+| qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:5:22:38 | Store |
+| qualifiers.cpp:23:23:23:23 | a | qualifiers.cpp:23:23:23:23 | a |
+| qualifiers.cpp:42:5:42:40 | Chi [a] | qualifiers.cpp:43:23:43:23 | a |
+| qualifiers.cpp:42:5:42:40 | Store | qualifiers.cpp:42:5:42:40 | a [a] |
+| qualifiers.cpp:42:5:42:40 | a [a] | qualifiers.cpp:42:5:42:40 | Chi [a] |
+| qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:5:42:40 | Store |
+| qualifiers.cpp:43:23:43:23 | a | qualifiers.cpp:43:23:43:23 | a |
+| qualifiers.cpp:47:5:47:42 | Chi [a] | qualifiers.cpp:48:23:48:23 | a |
+| qualifiers.cpp:47:5:47:42 | Store | qualifiers.cpp:47:5:47:42 | a [a] |
+| qualifiers.cpp:47:5:47:42 | a [a] | qualifiers.cpp:47:5:47:42 | Chi [a] |
+| qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | Store |
+| qualifiers.cpp:48:23:48:23 | a | qualifiers.cpp:48:23:48:23 | a |
 | simple.cpp:65:5:65:22 | i [i] | simple.cpp:66:12:66:12 | Store [i] |
 | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:65:5:65:22 | i [i] |
 | simple.cpp:66:12:66:12 | Store [i] | simple.cpp:67:13:67:13 | i |
@@ -128,6 +143,11 @@ edges
 | simple.cpp:167:21:167:30 | call to user_input | simple.cpp:167:5:167:32 | Store |
 | simple.cpp:168:12:168:23 | Argument 0 indirection [f] | simple.cpp:159:20:159:24 | *inner [f] |
 | simple.cpp:168:12:168:23 | inner [f] | simple.cpp:168:12:168:23 | Argument 0 indirection [f] |
+| simple.cpp:173:5:173:29 | Chi [a_] | simple.cpp:174:18:174:19 | a_ |
+| simple.cpp:173:5:173:29 | Store | simple.cpp:173:5:173:29 | a_ [a_] |
+| simple.cpp:173:5:173:29 | a_ [a_] | simple.cpp:173:5:173:29 | Chi [a_] |
+| simple.cpp:173:18:173:27 | call to user_input | simple.cpp:173:5:173:29 | Store |
+| simple.cpp:174:18:174:19 | a_ | simple.cpp:174:18:174:19 | a_ |
 | struct_init.c:14:24:14:25 | *ab [a] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:15:12:15:12 | a | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:20:20:29 | Store | struct_init.c:20:20:20:29 | a [a] |
@@ -232,6 +252,24 @@ nodes
 | by_reference.cpp:134:29:134:29 | a | semmle.label | a |
 | by_reference.cpp:134:29:134:29 | a | semmle.label | a |
 | by_reference.cpp:134:29:134:29 | inner_nested.a [a] | semmle.label | inner_nested.a [a] |
+| qualifiers.cpp:22:5:22:38 | Chi [a] | semmle.label | Chi [a] |
+| qualifiers.cpp:22:5:22:38 | Store | semmle.label | Store |
+| qualifiers.cpp:22:5:22:38 | a [a] | semmle.label | a [a] |
+| qualifiers.cpp:22:27:22:36 | call to user_input | semmle.label | call to user_input |
+| qualifiers.cpp:23:23:23:23 | a | semmle.label | a |
+| qualifiers.cpp:23:23:23:23 | a | semmle.label | a |
+| qualifiers.cpp:42:5:42:40 | Chi [a] | semmle.label | Chi [a] |
+| qualifiers.cpp:42:5:42:40 | Store | semmle.label | Store |
+| qualifiers.cpp:42:5:42:40 | a [a] | semmle.label | a [a] |
+| qualifiers.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
+| qualifiers.cpp:43:23:43:23 | a | semmle.label | a |
+| qualifiers.cpp:43:23:43:23 | a | semmle.label | a |
+| qualifiers.cpp:47:5:47:42 | Chi [a] | semmle.label | Chi [a] |
+| qualifiers.cpp:47:5:47:42 | Store | semmle.label | Store |
+| qualifiers.cpp:47:5:47:42 | a [a] | semmle.label | a [a] |
+| qualifiers.cpp:47:31:47:40 | call to user_input | semmle.label | call to user_input |
+| qualifiers.cpp:48:23:48:23 | a | semmle.label | a |
+| qualifiers.cpp:48:23:48:23 | a | semmle.label | a |
 | simple.cpp:65:5:65:22 | i [i] | semmle.label | i [i] |
 | simple.cpp:65:11:65:20 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:66:12:66:12 | Store [i] | semmle.label | Store [i] |
@@ -290,6 +328,12 @@ nodes
 | simple.cpp:167:21:167:30 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:168:12:168:23 | Argument 0 indirection [f] | semmle.label | Argument 0 indirection [f] |
 | simple.cpp:168:12:168:23 | inner [f] | semmle.label | inner [f] |
+| simple.cpp:173:5:173:29 | Chi [a_] | semmle.label | Chi [a_] |
+| simple.cpp:173:5:173:29 | Store | semmle.label | Store |
+| simple.cpp:173:5:173:29 | a_ [a_] | semmle.label | a_ [a_] |
+| simple.cpp:173:18:173:27 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:174:18:174:19 | a_ | semmle.label | a_ |
+| simple.cpp:174:18:174:19 | a_ | semmle.label | a_ |
 | struct_init.c:14:24:14:25 | *ab [a] | semmle.label | *ab [a] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
@@ -331,16 +375,13 @@ nodes
 | qualifiers.cpp:48:23:48:23 | a | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:48:23:48:23 | a | a flows from $@ | qualifiers.cpp:47:31:47:40 | call to user_input | call to user_input |
 | simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:84:14:84:20 | call to getf2f1 | call to getf2f1 flows from $@ | simple.cpp:83:17:83:26 | call to user_input | call to user_input |
-<<<<<<< HEAD
-| simple.cpp:91:18:91:19 | a_ | simple.cpp:90:18:90:27 | call to user_input | simple.cpp:91:18:91:19 | a_ | a_ flows from $@ | simple.cpp:90:18:90:27 | call to user_input | call to user_input |
-=======
 | simple.cpp:111:18:111:18 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:111:18:111:18 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
 | simple.cpp:117:19:117:19 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:117:19:117:19 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
 | simple.cpp:124:20:124:20 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:124:20:124:20 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
 | simple.cpp:130:15:130:15 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:130:15:130:15 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
 | simple.cpp:139:23:139:23 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:139:23:139:23 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
 | simple.cpp:161:17:161:17 | f | simple.cpp:167:21:167:30 | call to user_input | simple.cpp:161:17:161:17 | f | f flows from $@ | simple.cpp:167:21:167:30 | call to user_input | call to user_input |
->>>>>>> master
+| simple.cpp:174:18:174:19 | a_ | simple.cpp:173:18:173:27 | call to user_input | simple.cpp:174:18:174:19 | a_ | a_ flows from $@ | simple.cpp:173:18:173:27 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
 | struct_init.c:22:11:22:11 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:22:11:22:11 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |

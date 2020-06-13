@@ -82,4 +82,5 @@
 | simple.cpp:167:5:167:9 | outer |
 | simple.cpp:167:11:167:15 | inner |
 | simple.cpp:168:13:168:17 | outer |
+| simple.cpp:173:6:173:9 | * ... |
 | struct_init.c:36:11:36:15 | outer |
