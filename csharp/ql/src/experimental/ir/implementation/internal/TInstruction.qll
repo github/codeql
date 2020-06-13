@@ -15,14 +15,12 @@ private import Imports::Opcode
 cached
 newtype TInstruction =
   TRawInstruction(
-    IRConstruction::Raw::InstructionTag1 tag1,
-    IRConstruction::Raw::InstructionTag2 tag2
+    IRConstruction::Raw::InstructionTag1 tag1, IRConstruction::Raw::InstructionTag2 tag2
   ) {
     IRConstruction::Raw::hasInstruction(tag1, tag2)
   } or
   TUnaliasedSSAPhiInstruction(
-    TRawInstruction blockStartInstr,
-    UnaliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, UnaliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
     UnaliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
@@ -31,8 +29,7 @@ newtype TInstruction =
     UnaliasedSSA::SSA::hasUnreachedInstruction(irFunc)
   } or
   TAliasedSSAPhiInstruction(
-    TRawInstruction blockStartInstr,
-    AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
     AliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
@@ -53,8 +50,7 @@ module UnaliasedSSAInstructions {
   class TPhiInstruction = TUnaliasedSSAPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    TRawInstruction blockStartInstr,
-    UnaliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, UnaliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
     result = TUnaliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
   }
@@ -82,8 +78,7 @@ module AliasedSSAInstructions {
   class TPhiInstruction = TAliasedSSAPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    TRawInstruction blockStartInstr,
-    AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
   ) {
     result = TAliasedSSAPhiInstruction(blockStartInstr, memoryLocation)
   }

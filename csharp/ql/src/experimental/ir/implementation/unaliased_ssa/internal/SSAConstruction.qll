@@ -338,9 +338,7 @@ private Instruction getNewInstruction(OldInstruction instr) { getOldInstruction(
 
 private OldInstruction getOldInstruction(Instruction instr) { instr = result }
 
-private ChiInstruction getChi(OldInstruction primaryInstr) {
-  result = chiInstruction(primaryInstr)
-}
+private ChiInstruction getChi(OldInstruction primaryInstr) { result = chiInstruction(primaryInstr) }
 
 private PhiInstruction getPhi(OldBlock defBlock, Alias::MemoryLocation defLocation) {
   result = phiInstruction(defBlock.getFirstInstruction(), defLocation)
