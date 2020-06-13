@@ -507,7 +507,7 @@ class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
       body.mayHaveSideEffects()
       or
       // functions declared in files with build constraints may be defined differently
-      // for different platforms, so whitelist them to avoid false positives
+      // for different platforms, so allow them to avoid false positives
       body.getFile().hasBuildConstraints()
     )
   }

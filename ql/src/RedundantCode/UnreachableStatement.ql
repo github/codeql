@@ -21,7 +21,7 @@ ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
   )
 }
 
-predicate whitelist(Stmt s) {
+predicate allowlist(Stmt s) {
   // `panic("unreachable")` and similar
   exists(CallExpr ce | ce = s.(ExprStmt).getExpr() or ce = s.(ReturnStmt).getExpr() |
     ce.getTarget().mustPanic() or ce.getCalleeName().toLowerCase() = "error"
@@ -49,5 +49,5 @@ from Stmt s, ControlFlow::Node fst
 where
   fst = s.getFirstControlFlowNode() and
   not exists(nonGuardPredecessor(fst)) and
-  not whitelist(s)
+  not allowlist(s)
 select s, "This statement is unreachable."

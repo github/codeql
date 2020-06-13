@@ -17,9 +17,9 @@ from ComparisonExpr cmp, Expr l
 where
   l = cmp.getLeftOperand() and
   l.getGlobalValueNumber() = cmp.getRightOperand().getGlobalValueNumber() and
-  // whitelist floats, where self-comparison may be used for NaN checks
+  // allow floats, where self-comparison may be used for NaN checks
   not l.getType().getUnderlyingType() instanceof FloatType and
-  // whitelist comparisons of symbolic constants to literal constants; these are often feature flags
+  // allow comparisons of symbolic constants to literal constants; these are often feature flags
   not exists(DeclaredConstant decl |
     cmp.getAnOperand() = decl.getAReference() and
     cmp.getAnOperand() instanceof BasicLit

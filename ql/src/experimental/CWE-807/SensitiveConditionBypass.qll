@@ -9,7 +9,7 @@ predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(Write write, string name |
     write.getRhs() = sink and
     name = write.getLhs().getName() and
-    // whitelist obvious test password variables
+    // allow obvious test password variables
     not name.regexpMatch(HeuristicNames::notSensitive())
   |
     name.regexpMatch(HeuristicNames::maybeSensitive(type))
