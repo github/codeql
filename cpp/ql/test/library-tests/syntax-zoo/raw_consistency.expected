@@ -1,5 +1,4 @@
 missingOperand
-| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] | Instruction 'InitializeDynamicAllocation' is missing an expected operand with tag 'Address' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 | condition_decls.cpp:16:6:16:20 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
 | condition_decls.cpp:26:10:26:24 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
 | condition_decls.cpp:41:9:41:23 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
@@ -18,7 +17,6 @@ missingOperand
 | cpp11.cpp:82:51:82:51 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
 | cpp11.cpp:88:25:88:30 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | void lambda::main() | void lambda::main() |
 | cpp11.cpp:88:33:88:38 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | void lambda::main() | void lambda::main() |
-| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new | Instruction 'InitializeDynamicAllocation' is missing an expected operand with tag 'Address' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 | destructors.cpp:51:36:51:38 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | int cond_destruct::f(int) | int cond_destruct::f(int) |
 | ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 | ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
@@ -35,10 +33,7 @@ missingPhiOperand
 missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
-| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] | Side effect instruction 'InitializeDynamicAllocation: new[]' is missing a primary instruction in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new | Side effect instruction 'InitializeDynamicAllocation: new' is missing a primary instruction in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 instructionWithoutSuccessor
-| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] | Instruction 'InitializeDynamicAllocation: new[]' has no successors in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y | Instruction 'InitializeIndirection: y' has no successors in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
 | VacuousDestructorCall.cpp:3:3:3:3 | VariableAddress: x | Instruction 'VariableAddress: x' has no successors in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y | Instruction 'Load: y' has no successors in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
@@ -47,7 +42,6 @@ instructionWithoutSuccessor
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
-| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new | Instruction 'InitializeDynamicAllocation: new' has no successors in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 | enum.c:6:9:6:9 | Constant: (int)... | Instruction 'Constant: (int)...' has no successors in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
@@ -173,8 +167,6 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
-| CPP-309.cpp:7:5:7:20 | InitializeDynamicAllocation: new[] | Instruction 'InitializeDynamicAllocation: new[]' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
-| cpp17.cpp:15:5:15:45 | InitializeDynamicAllocation: new | Instruction 'InitializeDynamicAllocation: new' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
