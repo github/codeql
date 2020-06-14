@@ -20,6 +20,13 @@ switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
+nonUniqueEnclosingIRFunction
+| indexers.cs:3:18:3:24 | AliasedDefinition: MyClass | Instruction 'AliasedDefinition: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| indexers.cs:3:18:3:24 | AliasedUse: MyClass | Instruction 'AliasedUse: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| indexers.cs:3:18:3:24 | EnterFunction: MyClass | Instruction 'EnterFunction: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| indexers.cs:3:18:3:24 | ExitFunction: MyClass | Instruction 'ExitFunction: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| indexers.cs:3:18:3:24 | InitializeThis: MyClass | Instruction 'InitializeThis: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
+| indexers.cs:3:18:3:24 | ReturnVoid: MyClass | Instruction 'ReturnVoid: MyClass' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
