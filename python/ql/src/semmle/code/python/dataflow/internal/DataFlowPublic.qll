@@ -5,11 +5,19 @@
 import python
 private import DataFlowPrivate
 
+newtype TNode =
+  TEssaNode(EssaVariable var)
+
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
  * (`ExprNode`) or a parameter (`ParameterNode`).
  */
-class Node extends ControlFlowNode {
+class Node extends TNode {
+
+  EssaVariable asEssaNode() { this = TEssaNode(result) }
+
+  string toString() { result = this.asEssaNode().toString() }
+
   /** Gets the enclosing callable of this node. */
   final DataFlowCallable getEnclosingCallable() {
     none()
@@ -32,8 +40,9 @@ class Node extends ControlFlowNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asEssaNode().getDefinition().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
 
 }
 

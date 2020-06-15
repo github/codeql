@@ -1,6 +1,11 @@
 private import python
 private import DataFlowPublic
 
+// Data flow graph
+
+// Nodes
+
+
 class DataFlowCall extends Call {
   /** Gets the enclosing callable of this call. */
   abstract DataFlowCallable getEnclosingCallable();
@@ -92,7 +97,16 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  none()
+
+  exists(EssaEdgeRefinement r |
+    nodeTo.asEssaNode() = r.getVariable() and
+    nodeFrom.asEssaNode() = r.getInput()
+  )
+  or
+  exists(EssaNodeRefinement r |
+    nodeTo.asEssaNode() = r.getVariable() and
+    nodeFrom.asEssaNode() = r.getInput()
+  )
 }
 
 /**
