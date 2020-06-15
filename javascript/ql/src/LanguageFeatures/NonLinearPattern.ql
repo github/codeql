@@ -35,7 +35,12 @@ class RootDestructuringPattern extends BindingPattern {
   /** Gets the first occurrence of the conflicting binding `name`. */
   VarDecl getFirstClobberedVarDecl(string name) {
     hasConflictingBindings(name) and
-    result = min(VarDecl decl | decl = getABindingVarRef() and decl.getName() = name | decl order by decl.getLocation().getStartLine(), decl.getLocation().getStartColumn())
+    result =
+      min(VarDecl decl |
+        decl = getABindingVarRef() and decl.getName() = name
+      |
+        decl order by decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
+      )
   }
 
   /** Holds if variables in this pattern may resemble type annotations. */
@@ -54,8 +59,10 @@ where
   w = p.getABindingVarRef() and
   w.getName() = n and
   v != w and
-  if p.resemblesTypeAnnotation() then
-    message = "The pattern variable '" + n + "' appears to be a type, but is a variable previously bound $@."
-  else
-    message = "Repeated binding of pattern variable '" + n + "' previously bound $@."
+  if p.resemblesTypeAnnotation()
+  then
+    message =
+      "The pattern variable '" + n +
+        "' appears to be a type, but is a variable previously bound $@."
+  else message = "Repeated binding of pattern variable '" + n + "' previously bound $@."
 select w, message, v, "here"
