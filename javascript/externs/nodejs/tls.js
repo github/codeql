@@ -568,14 +568,14 @@ tls.SecureContext.prototype.context;
  * @param {(function(tls.ClearTextStream): void)=} secureConnectionListener
  * @return {tls.Server}
  */
-tls.createServer = function(options, secureConnectionListener) {};
+tls.createServer = function(options, secureConnectionListener) { if(secureConnectionListener) secureConnectionListener(); };
 
 /**
  * @param {tls.ConnectionOptions} options
  * @param {(function(): void)=} secureConnectionListener
  * @return {tls.ClearTextStream}
  */
-tls.connect = function(options, secureConnectionListener) {};
+tls.connect = function(options, secureConnectionListener) { if(secureConnectionListener) secureConnectionListener(); };
 
 /**
  * @param {number} port

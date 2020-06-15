@@ -590,7 +590,7 @@ http.STATUS_CODES;
  * @param {(function(http.IncomingMessage, http.ServerResponse): void)=} requestListener
  * @return {http.Server}
  */
-http.createServer = function(requestListener) {};
+http.createServer = function(requestListener) { if(requestListener) requestListener(); };
 
 /**
  * @param {number=} port
