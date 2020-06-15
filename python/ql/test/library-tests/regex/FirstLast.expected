@@ -90,6 +90,8 @@
 | ax{,3} | last | 1 | 2 |
 | ax{,3} | last | 1 | 6 |
 | ax{,3} | last | 5 | 6 |
+| https://www.humblebundle.com/home/library | first | 0 | 1 |
+| https://www.humblebundle.com/home/library | last | 40 | 41 |
 | x\| | first | 0 | 1 |
 | x\| | last | 0 | 1 |
 | x\|(?<!\\w)l | first | 0 | 1 |
