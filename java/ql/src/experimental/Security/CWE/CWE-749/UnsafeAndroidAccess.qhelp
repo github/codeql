@@ -13,11 +13,11 @@
   </overview>
 
   <recommendation>
-    <p>Only allow trusted web contents to be displayed in WebViews when JavaScript is enabled. And disallow universal resource access in WebSetting to reduce the attack surface .</p>
+    <p>Only allow trusted web contents to be displayed in WebViews when JavaScript is enabled. And disallow universal resource access in WebSettings to reduce the attack surface .</p>
   </recommendation>
 
   <example>
-    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, setting is enabled and JavaScript is enabled while urls are loaded from externally controlled inputs. In the 'GOOD' configuration, JavaScript is disabled or only trusted web contents are allowed to be loaded.</p>
+    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, universal resource access is enabled and JavaScript is enabled while urls are loaded from externally controlled inputs. In the 'GOOD' configuration, JavaScript is disabled or only trusted web contents are allowed to be loaded.</p>
     <sample src="UnsafeAndroidAccess.java" />
   </example>
 
