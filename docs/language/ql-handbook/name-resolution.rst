@@ -72,8 +72,8 @@ statement as follows:
      The query directory is the first enclosing directory containing a file called ``qlpack.yml``. (Or, in legacy products, a file called ``queries.xml``.)
   
   #. If the compiler can't find the library file using the above two checks, it looks up ``examples/security/MyLibrary.qll``
-     relative to each library path entry. The library path depends on the tools you use to 
-     run your query, and whether you have specified any extra settings.
+     relative to each library path entry.
+     The library path is usually specified in the ``libraryPathDependencies`` of the ``qlpack.yml`` file, though it may also depend on the tools you use to run your query, and whether you have specified any extra settings.
      For more information, see `Library path <https://help.semmle.com/QL/ql-spec/language.html#library-path>`__ in the QL language specification.
      
 If the compiler cannot resolve an import statement, then it gives a compilation error.
