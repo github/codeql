@@ -1355,6 +1355,11 @@ class EqualityTest extends @equalitytest, Comparison {
     (this instanceof NEqExpr or this instanceof StrictNEqExpr) and
     result = false
   }
+
+  /**
+   * Holds if the equality operator is strict (`===` or `!==`).
+   */
+  predicate isStrict() { this instanceof StrictEqExpr or this instanceof StrictNEqExpr }
 }
 
 /**

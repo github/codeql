@@ -39,7 +39,9 @@ class Node extends TNode {
 
   /** Gets the type of this node. */
   cached
-  DotNet::Type getType() { none() }
+  final DotNet::Type getType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and result = this.(NodeImpl).getTypeImpl()
+  }
 
   /** INTERNAL: Do not use. Gets an upper bound on the type of this node. */
   cached
@@ -55,19 +57,31 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   cached
-  DataFlowCallable getEnclosingCallable() { none() }
+  final DataFlowCallable getEnclosingCallable() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = unique(DataFlowCallable c | c = this.(NodeImpl).getEnclosingCallableImpl() | c)
+  }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
-  ControlFlow::Node getControlFlowNode() { none() }
+  final ControlFlow::Node getControlFlowNode() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = unique(ControlFlow::Node n | n = this.(NodeImpl).getControlFlowNodeImpl() | n)
+  }
 
   /** Gets a textual representation of this node. */
   cached
-  string toString() { none() }
+  final string toString() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = this.(NodeImpl).toStringImpl()
+  }
 
   /** Gets the location of this node. */
   cached
-  Location getLocation() { none() }
+  final Location getLocation() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = this.(NodeImpl).getLocationImpl()
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -107,31 +121,6 @@ class ExprNode extends Node {
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
     this = TExprNode(cfn) and
     result = cfn.getElement()
-  }
-
-  override DataFlowCallable getEnclosingCallable() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.getExpr().getEnclosingCallable()
-  }
-
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() {
-    Stages::DataFlowStage::forceCachingInSameStage() and this = TExprNode(result)
-  }
-
-  override DotNet::Type getType() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getType()
-  }
-
-  override Location getLocation() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getLocation()
-  }
-
-  override string toString() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.getControlFlowNode().toString()
-    or
-    this = TCilExprNode(_) and
-    result = "CIL expression"
   }
 }
 

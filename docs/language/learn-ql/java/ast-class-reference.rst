@@ -1,7 +1,9 @@
-Classes for working with Java code
-==================================
+Abstract syntax tree classes for working with Java programs
+===========================================================
 
-CodeQL has a large selection of classes for working with Java statements and expressions.
+CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
+
+.. include:: ../../reusables/abstract-syntax-tree.rst
 
 .. _Expr: https://help.semmle.com/qldoc/java/semmle/code/java/Expr.qll/type.Expr$Expr.html
 .. _Stmt: https://help.semmle.com/qldoc/java/semmle/code/java/Statement.qll/type.Statement$Stmt.html

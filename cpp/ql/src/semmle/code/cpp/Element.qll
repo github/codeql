@@ -1,3 +1,8 @@
+/**
+ * Provides the `Element` class, which is the base class for all classes representing C or C++
+ * program elements.
+ */
+
 import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
@@ -261,8 +266,14 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
 
+  /**
+   * Gets the expression which this static assertion ensures is true.
+   */
   Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
 
+  /**
+   * Gets the message which will be reported by the compiler if this static assertion fails.
+   */
   string getMessage() { static_asserts(underlyingElement(this), _, result, _) }
 
   override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }

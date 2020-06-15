@@ -67,6 +67,9 @@ private DataFlow::Node getNodeForSource(Expr source) {
     // to `gets`. It's impossible here to tell which is which, but the "access
     // to argv" source is definitely not intended to match an output argument,
     // and it causes false positives if we let it.
+    //
+    // This case goes together with the similar (but not identical) rule in
+    // `nodeIsBarrierIn`.
     result = DataFlow::definitionByReferenceNode(source) and
     not argv(source.(VariableAccess).getTarget())
   )
@@ -202,7 +205,13 @@ private predicate nodeIsBarrier(DataFlow::Node node) {
 
 private predicate nodeIsBarrierIn(DataFlow::Node node) {
   // don't use dataflow into taint sources, as this leads to duplicate results.
-  node = getNodeForSource(any(Expr e))
+  exists(Expr source | isUserInput(source, _) |
+    node = DataFlow::exprNode(source)
+    or
+    // This case goes together with the similar (but not identical) rule in
+    // `getNodeForSource`.
+    node = DataFlow::definitionByReferenceNode(source)
+  )
 }
 
 cached

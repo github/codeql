@@ -72,6 +72,11 @@
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:86:7:86:7 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:96:10:96:10 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:102:10:102:10 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |

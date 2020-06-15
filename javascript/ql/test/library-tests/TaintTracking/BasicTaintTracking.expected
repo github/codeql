@@ -96,6 +96,9 @@ typeInferenceMismatch
 | sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
 | spread.js:2:15:2:22 | source() | spread.js:4:8:4:19 | { ...taint } |
 | spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
 | spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |

@@ -200,7 +200,7 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| file://:0:0:0:0 | InitializeIndirection | Node should have one location but has 0. |
+| file://:0:0:0:0 | *p#2 | Node should have one location but has 0. |
 | file://:0:0:0:0 | Load | Node should have one location but has 0. |
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |
@@ -659,10 +659,10 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
-| assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
-| bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
-| cpp11.cpp:65:19:65:45 | Store | PostUpdateNode should have one pre-update node but has 0. |
-| ir.cpp:531:14:531:14 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| assignexpr.cpp:9:2:9:12 | i | PostUpdateNode should have one pre-update node but has 0. |
+| bad_asts.cpp:15:10:15:12 | x | PostUpdateNode should have one pre-update node but has 0. |
+| cpp11.cpp:65:19:65:45 | x | PostUpdateNode should have one pre-update node but has 0. |
+| ir.cpp:531:14:531:14 | d | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead

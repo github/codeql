@@ -8,16 +8,28 @@ private import DataFlowDispatch
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
 class ArgumentNode extends InstructionNode {
-  ArgumentNode() { exists(CallInstruction call | this.getInstruction() = call.getAnArgument()) }
+  ArgumentNode() {
+    exists(CallInstruction call |
+      instr = call.getAnArgument()
+      or
+      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
+    )
+  }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.getInstruction() = call.getPositionalArgument(pos)
+    instr = call.getPositionalArgument(pos)
     or
-    this.getInstruction() = call.getThisArgument() and pos = -1
+    instr = call.getThisArgument() and pos = -1
+    or
+    exists(ReadSideEffectInstruction read |
+      read = instr and
+      read.getPrimaryInstruction() = call and
+      pos = getArgumentPosOfSideEffect(read.getIndex())
+    )
   }
 
   /** Gets the call in which this node is an argument. */
@@ -180,32 +192,14 @@ private class ArrayContent extends Content, TArrayContent {
   override Type getType() { none() }
 }
 
-private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
-    store = node2.asInstruction() and
-    store.getDestinationAddress() = fa and
-    store.getSourceValue() = node1.asInstruction() and
-    f.(FieldContent).getField() = fa.getField()
-  )
-}
-
-private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
-    node1.asInstruction() = store and
-    store.getDestinationAddress() = fa and
-    node2.asInstruction().(ChiInstruction).getPartial() = store and
-    f.(FieldContent).getField() = fa.getField()
-  )
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  storeStepNoChi(node1, f, node2) or
-  storeStepChi(node1, f, node2)
+predicate storeStep(Node node1, Content f, StoreStepNode node2) {
+  node2.getStoredValue() = node1 and
+  f.(FieldContent).getField() = node2.getAField()
 }
 
 /**
@@ -213,13 +207,9 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
-  exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
-  )
+predicate readStep(Node node1, Content f, ReadStepNode node2) {
+  node2.getReadValue() = node1 and
+  f.(FieldContent).getField() = node2.getAField()
 }
 
 /**
@@ -294,3 +284,6 @@ predicate isImmutableOrUnobservable(Node n) {
   // complex to model here.
   any()
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }

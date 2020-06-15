@@ -78,18 +78,16 @@ module Shared {
    * A sanitizer guard that checks for the existence of HTML chars in a string.
    * E.g. `/["'&<>]/.exec(str)`.
    */
-  class ContainsHTMLGuard extends SanitizerGuard, DataFlow::MethodCallNode {
-    DataFlow::RegExpCreationNode regExp;
-
+  class ContainsHTMLGuard extends SanitizerGuard, StringOps::RegExpTest {
     ContainsHTMLGuard() {
-      this.getMethodName() = ["test", "exec"] and
-      this.getReceiver().getALocalSource() = regExp and
-      regExp.getRoot() instanceof RegExpCharacterClass and
-      forall(string s | s = ["\"", "&", "<", ">"] | regExp.getRoot().getAMatchedString() = s)
+      exists(RegExpCharacterClass regExp |
+        regExp = getRegExp() and
+        forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
+      )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = false and e = this.getArgument(0).asExpr()
+      outcome = getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
     }
   }
 
