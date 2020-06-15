@@ -2,6 +2,7 @@
  * Provides an extension point for contributing flow edges prior
  * to call graph construction and type tracking.
  */
+
 private import javascript
 
 private newtype TUnit = MkUnit()
@@ -88,7 +89,6 @@ private class NodeWithPreCallGraphStep extends DataFlow::Node {
 
 private class AdditionalFlowStepFromPreCallGraph extends NodeWithPreCallGraphStep,
   DataFlow::AdditionalFlowStep {
-
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = this and
     PreCallGraphStep::step(this, succ)
@@ -112,7 +112,6 @@ private class AdditionalFlowStepFromPreCallGraph extends NodeWithPreCallGraphSte
 
 private class AdditionalTypeTrackingStepFromPreCallGraph extends NodeWithPreCallGraphStep,
   DataFlow::AdditionalTypeTrackingStep {
-
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = this and
     PreCallGraphStep::step(this, succ)
