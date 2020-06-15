@@ -1,2 +1,1 @@
 | hosttest.py:6:27:6:51 | Str | This regular expression has an unescaped '.' before 'example.com', so it might match more hosts than expected. |
-| hosttest.py:23:21:23:63 | Str | This regular expression has an unescaped '.' before 'humblebundle.com', so it might match more hosts than expected. |
