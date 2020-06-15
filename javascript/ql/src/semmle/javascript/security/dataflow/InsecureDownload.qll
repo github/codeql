@@ -18,7 +18,7 @@ module InsecureDownload {
    * A taint tracking configuration for download of sensitive file through insecure connection.
    */
   class Configuration extends DataFlow::Configuration {
-    Configuration() { this = "HTTP/HTTPS" }
+    Configuration() { this = "InsecureDownload" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
