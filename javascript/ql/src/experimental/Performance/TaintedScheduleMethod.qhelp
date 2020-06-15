@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A schedule method that accepts a user-controlled delay could lead to a memory leak.
+When the setTimeout or setInterval method is invoked, a reference is created which will not be released until the timeout happens. 
+In particular, if a user provides an extremely long delay, the reference will stay in memory until it is cleared. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either prevent users for setting delays on schedule methods, or cap the delay to a maximum value.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following program snippet executes the <code>notifyUser();</code> method when it received a POST-request for <code>/notify</code>;
+This endpoint accepts a request body with a delay. If no delay provided it uses the default 200ms delay.
+As a user I can provide a random value. E.g. submitting <code>86400000</code> as a delay causes this <code>setTimeout</code> to stay in memory for 20 days.
+
+In the following example, function <code>sum</code> takes two arguments <code>xs</code> and
+<code>start</code>, and returns the sum of all elements in the array <code>xs</code>, plus
+the value of <code>start</code>. The argument <code>start</code> is optional and defaults
+to <code>0</code>. 
+</p>
+
+<sample src="examples/TaintedScheduleMethod.js" />
+
+<p>
+In this example, you can prevent this from happening by capping the delay that can be set to a sensible number.
+</p>
+
+<sample src="examples/TaintedScheduleMethodGood.js" />
+
+</example>
+<references>
+  <li>MSN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">setTimeout</a>.</li>
+  <li>MSN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval">setInterval</a>.</li>
+</references>
+</qhelp>
