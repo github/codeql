@@ -20,7 +20,7 @@ module BuildArtifactLeak {
    * A taint tracking configuration for storage of sensitive information in build artifact.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CleartextLogging" }
+    Configuration() { this = "BuildArtifactLeak" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
       source.(CleartextLogging::Source).getLabel() = lbl

@@ -12,7 +12,7 @@ private import semmle.javascript.security.SensitiveActions::HeuristicNames
  */
 module BuildArtifactLeak {
   /**
-   * A data flow sink for clear-text logging of sensitive information.
+   * A data flow sink for storage of sensitive information in a build artifact.
    */
   abstract class Sink extends DataFlow::Node {
     /**

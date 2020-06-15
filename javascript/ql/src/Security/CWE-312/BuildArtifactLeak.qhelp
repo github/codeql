@@ -26,7 +26,7 @@
       should instead insert only the environment variables that are supposed to be public. 
     </p>
     <p>
-      The issue has been fixed in the below, where only the <code>DEBUG</code> environment variable is inserted into the artifact.
+      The issue has been fixed below, where only the <code>DEBUG</code> environment variable is inserted into the artifact.
     </p>
     <sample src="examples/build-leak-fixed.js"/>
   </example>
