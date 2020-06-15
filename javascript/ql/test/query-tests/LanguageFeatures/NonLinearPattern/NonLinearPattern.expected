@@ -1,3 +1,4 @@
+| NonLinearPatternTS.ts:1:34:1:39 | number | The pattern variable 'number' appears to be a type, but is a variable previously bound $@. | NonLinearPatternTS.ts:1:23:1:28 | number | here |
 | ts-test.ts:3:13:3:13 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:3:10:3:10 | x | here |
 | ts-test.ts:8:16:8:16 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:8:10:8:10 | x | here |
 | ts-test.ts:11:10:11:10 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:11:7:11:7 | x | here |
