@@ -11,6 +11,7 @@
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
   - [marsdb](https://www.npmjs.com/package/marsdb)
+  - [micro](https://www.npmjs.com/package/micro/)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
   - [mssql](https://www.npmjs.com/package/mssql)
   - [mysql](https://www.npmjs.com/package/mysql)
