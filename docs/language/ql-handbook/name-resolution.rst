@@ -61,30 +61,22 @@ following import statement::
 
     import examples.security.MyLibrary
 
-To find the precise location of this library module, the QL compiler processes the import 
+To find the precise location of this :ref:`library module <library-modules>`, the QL compiler processes the import 
 statement as follows:
 
   #. The ``.``\ s in the qualified reference correspond to file path separators, so it first looks 
      up ``examples/security/MyLibrary.qll`` from the directory containing ``Example.ql``. 
 
-  #. If that fails, it looks up ``examples/security/MyLibrary.qll`` relative to the enclosing query 
-     directory, if any. 
-     This query directory is a directory containing a |queries.xml file|_, and where the contents 
-     of that file is compatible with the current database schema.
-     (For example, if you are querying a JavaScript database, then the |queries.xml file|_ should 
-     contain ``<queries language="javascript"/>``.) 
+  #. If that fails, it looks up ``examples/security/MyLibrary.qll`` relative to the query 
+     directory, if any.
+     The query directory is the first enclosing directory containing a file called ``qlpack.yml``. (Or, in legacy products, a file called ``queries.xml``.)
   
-  #. If no file is found using the above two checks, it looks up ``examples/security/MyLibrary.qll``
-     relative to each library path entry. The library path depends on the environment where you 
+  #. If the compiler can't find the library file using the above two checks, it looks up ``examples/security/MyLibrary.qll``
+     relative to each library path entry. The library path depends on the tools you use to 
      run your query, and whether you have specified any extra settings.
+     For more information, see `Library path <https://help.semmle.com/QL/ql-spec/language.html#library-path>`__ in the QL language specification.
      
-.. |queries.xml file| replace:: ``queries.xml`` file
-.. _queries.xml file: https://help.semmle.com/wiki/display/SD/queries.xml+file
-
 If the compiler cannot resolve an import statement, then it gives a compilation error.
-
-This process is described in more detail in the section on `module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`_
-in the QL language specification.
 
 .. _selections:
 
