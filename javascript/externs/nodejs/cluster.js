@@ -380,7 +380,7 @@ cluster.Cluster.prototype.Worker;
  * @param {Function=} callback
  * @return {void}
  */
-cluster.Cluster.prototype.disconnect = function(callback) {};
+cluster.Cluster.prototype.disconnect = function(callback) { if(callback) callback(); };
 
 /**
  * @param {*=} env
@@ -631,7 +631,7 @@ cluster.Cluster.prototype.prependOnceListener = function(event, listener) {};
  * @param {Function=} callback
  * @return {void}
  */
-cluster.disconnect = function(callback) {};
+cluster.disconnect = function(callback) { if(callback) callback(); };
 
 /**
  * @param {*=} env

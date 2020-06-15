@@ -45,7 +45,7 @@ var timers = {};
  * @param {...*} args
  * @return {NodeJS.Timer}
  */
-timers.setTimeout = function(callback, ms, args) {};
+timers.setTimeout = function(callback, ms, args) { if(callback) callback(); };
 
 /**
  * @param {NodeJS.Timer} timeoutId
@@ -59,7 +59,7 @@ timers.clearTimeout = function(timeoutId) {};
  * @param {...*} args
  * @return {NodeJS.Timer}
  */
-timers.setInterval = function(callback, ms, args) {};
+timers.setInterval = function(callback, ms, args) { if(callback) callback(); };
 
 /**
  * @param {NodeJS.Timer} intervalId
@@ -72,7 +72,7 @@ timers.clearInterval = function(intervalId) {};
  * @param {...*} args
  * @return {*}
  */
-timers.setImmediate = function(callback, args) {};
+timers.setImmediate = function(callback, args) { if(callback) callback(); };
 
 /**
  * @param {*} immediateId

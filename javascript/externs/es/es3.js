@@ -846,7 +846,7 @@ Array.prototype.length;
  * @return {boolean}
  * @template T,S
  */
-Array.every = function(arr, callback, opt_context) {};
+Array.every = function(arr, callback, opt_context) { if(callback) callback(); };
 
 /**
  * @param {IArrayLike<T>} arr
@@ -855,7 +855,7 @@ Array.every = function(arr, callback, opt_context) {};
  * @return {!Array<T>}
  * @template T,S
  */
-Array.filter = function(arr, callback, opt_context) {};
+Array.filter = function(arr, callback, opt_context) { if(callback) callback(); };
 
 /**
  * @param {IArrayLike<T>} arr
@@ -864,7 +864,7 @@ Array.filter = function(arr, callback, opt_context) {};
  * @template T,S
  * @return {undefined}
  */
-Array.forEach = function(arr, callback, opt_context) {};
+Array.forEach = function(arr, callback, opt_context) { if(callback) callback(); };
 
 /**
  * Mozilla 1.6+ only.
@@ -897,7 +897,7 @@ Array.lastIndexOf = function(arr, obj, opt_fromIndex) {};
  * @return {!Array<R>}
  * @template T,S,R
  */
-Array.map = function(arr, callback, opt_context) {};
+Array.map = function(arr, callback, opt_context) { if(callback) callback(); };
 
 /**
  * @param {IArrayLike<T>} arr
@@ -906,7 +906,7 @@ Array.map = function(arr, callback, opt_context) {};
  * @return {boolean}
  * @template T,S
  */
-Array.some = function(arr, callback, opt_context) {};
+Array.some = function(arr, callback, opt_context) { if(callback) callback(); };
 
 /**
  * Introduced in 1.8.5.

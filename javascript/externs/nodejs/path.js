@@ -342,7 +342,7 @@ module.exports._makeLong = path._makeLong;
  * @param {(function(boolean): *)} callback
  * @return {boolean}
  */
-path.exists = function(path, callback) {};
+path.exists = function(path, callback) { if(callback) callback(); };
 
 /**
  * @param {string} path

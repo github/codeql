@@ -56,14 +56,14 @@ net.Socket.prototype.write = function(buffer) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-net.Socket.prototype.write = function(buffer, cb) {};
+net.Socket.prototype.write = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {boolean}
  */
-net.Socket.prototype.write = function(str, cb) {};
+net.Socket.prototype.write = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -71,7 +71,7 @@ net.Socket.prototype.write = function(str, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-net.Socket.prototype.write = function(str, encoding, cb) {};
+net.Socket.prototype.write = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -87,7 +87,7 @@ net.Socket.prototype.write = function(str, encoding, fd) {};
  * @param {Function=} callback
  * @return {void}
  */
-net.Socket.prototype.write = function(data, encoding, callback) {};
+net.Socket.prototype.write = function(data, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {number} port
@@ -135,7 +135,7 @@ net.Socket.prototype.resume = function() {};
  * @param {Function=} callback
  * @return {void}
  */
-net.Socket.prototype.setTimeout = function(timeout, callback) {};
+net.Socket.prototype.setTimeout = function(timeout, callback) { if(callback) callback(); };
 
 /**
  * @param {boolean=} noDelay
@@ -210,14 +210,14 @@ net.Socket.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-net.Socket.prototype.end = function(buffer, cb) {};
+net.Socket.prototype.end = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {void}
  */
-net.Socket.prototype.end = function(str, cb) {};
+net.Socket.prototype.end = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -225,7 +225,7 @@ net.Socket.prototype.end = function(str, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-net.Socket.prototype.end = function(str, encoding, cb) {};
+net.Socket.prototype.end = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {*=} data
@@ -348,7 +348,7 @@ net.Server.prototype.listen = function(options, listeningListener) {};
  * @param {Function=} callback
  * @return {net.Server}
  */
-net.Server.prototype.close = function(callback) {};
+net.Server.prototype.close = function(callback) { if(callback) callback(); };
 
 /**
  * @return {{port: number, family: string, address: string}}
@@ -359,7 +359,7 @@ net.Server.prototype.address = function() {};
  * @param {(function(Error, number): void)} cb
  * @return {void}
  */
-net.Server.prototype.getConnections = function(cb) {};
+net.Server.prototype.getConnections = function(cb) { if(cb) cb(); };
 
 /**
  * @return {net.Server}

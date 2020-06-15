@@ -60,14 +60,14 @@ dns.MxRecord.prototype.priority;
  * @param {(function(Error, string, number): void)} callback
  * @return {string}
  */
-dns.lookup = function(domain, family, callback) {};
+dns.lookup = function(domain, family, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, string, number): void)} callback
  * @return {string}
  */
-dns.lookup = function(domain, callback) {};
+dns.lookup = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
@@ -75,70 +75,70 @@ dns.lookup = function(domain, callback) {};
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolve = function(domain, rrtype, callback) {};
+dns.resolve = function(domain, rrtype, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolve = function(domain, callback) {};
+dns.resolve = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolve4 = function(domain, callback) {};
+dns.resolve4 = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolve6 = function(domain, callback) {};
+dns.resolve6 = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<dns.MxRecord>): void)} callback
  * @return {Array<string>}
  */
-dns.resolveMx = function(domain, callback) {};
+dns.resolveMx = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolveTxt = function(domain, callback) {};
+dns.resolveTxt = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolveSrv = function(domain, callback) {};
+dns.resolveSrv = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolveNs = function(domain, callback) {};
+dns.resolveNs = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} domain
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.resolveCname = function(domain, callback) {};
+dns.resolveCname = function(domain, callback) { if(callback) callback(); };
 
 /**
  * @param {string} ip
  * @param {(function(Error, Array<string>): void)} callback
  * @return {Array<string>}
  */
-dns.reverse = function(ip, callback) {};
+dns.reverse = function(ip, callback) { if(callback) callback(); };
 
 /**
  * @param {Array<string>} servers

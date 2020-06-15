@@ -121,14 +121,14 @@ SocketOptions.prototype.reuseAddr;
  * @param {(function(Buffer, dgram.RemoteInfo): void)=} callback
  * @return {dgram.Socket}
  */
-dgram.createSocket = function(type, callback) {};
+dgram.createSocket = function(type, callback) { if(callback) callback(); };
 
 /**
  * @param {dgram.SocketOptions} options
  * @param {(function(Buffer, dgram.RemoteInfo): void)=} callback
  * @return {dgram.Socket}
  */
-dgram.createSocket = function(options, callback) {};
+dgram.createSocket = function(options, callback) { if(callback) callback(); };
 
 /**
  * @interface
@@ -143,7 +143,7 @@ dgram.Socket = function() {};
  * @param {(function(Error, number): void)=} callback
  * @return {void}
  */
-dgram.Socket.prototype.send = function(msg, port, address, callback) {};
+dgram.Socket.prototype.send = function(msg, port, address, callback) { if(callback) callback(); };
 
 /**
  * @param {(Buffer|String|Array<*>)} msg
@@ -154,7 +154,7 @@ dgram.Socket.prototype.send = function(msg, port, address, callback) {};
  * @param {(function(Error, number): void)=} callback
  * @return {void}
  */
-dgram.Socket.prototype.send = function(msg, offset, length, port, address, callback) {};
+dgram.Socket.prototype.send = function(msg, offset, length, port, address, callback) { if(callback) callback(); };
 
 /**
  * @param {number=} port
@@ -162,20 +162,20 @@ dgram.Socket.prototype.send = function(msg, offset, length, port, address, callb
  * @param {(function(): void)=} callback
  * @return {void}
  */
-dgram.Socket.prototype.bind = function(port, address, callback) {};
+dgram.Socket.prototype.bind = function(port, address, callback) { if(callback) callback(); };
 
 /**
  * @param {dgram.BindOptions} options
  * @param {Function=} callback
  * @return {void}
  */
-dgram.Socket.prototype.bind = function(options, callback) {};
+dgram.Socket.prototype.bind = function(options, callback) { if(callback) callback(); };
 
 /**
  * @param {*=} callback
  * @return {void}
  */
-dgram.Socket.prototype.close = function(callback) {};
+dgram.Socket.prototype.close = function(callback) { if(callback) callback(); };
 
 /**
  * @return {dgram.AddressInfo}

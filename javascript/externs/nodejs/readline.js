@@ -96,7 +96,7 @@ readline.ReadLine.prototype.prompt = function(preserveCursor) {};
  * @param {(function(string): void)} callback
  * @return {void}
  */
-readline.ReadLine.prototype.question = function(query, callback) {};
+readline.ReadLine.prototype.question = function(query, callback) { if(callback) callback(); };
 
 /**
  * @return {readline.ReadLine}

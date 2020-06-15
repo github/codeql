@@ -234,14 +234,14 @@ https.createServer = function(options, requestListener) {};
  * @param {(function(http.IncomingMessage): void)=} callback
  * @return {http.ClientRequest}
  */
-https.request = function(options, callback) {};
+https.request = function(options, callback) { if(callback) callback(); };
 
 /**
  * @param {https.RequestOptions} options
  * @param {(function(http.IncomingMessage): void)=} callback
  * @return {http.ClientRequest}
  */
-https.get = function(options, callback) {};
+https.get = function(options, callback) { if(callback) callback(); };
 
 /**
  * @type {https.Agent}

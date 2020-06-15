@@ -163,7 +163,7 @@ zlib.createUnzip = function(options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.deflate = function(buf, callback) {};
+zlib.deflate = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -177,7 +177,7 @@ zlib.deflateSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.deflateRaw = function(buf, callback) {};
+zlib.deflateRaw = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -191,7 +191,7 @@ zlib.deflateRawSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.gzip = function(buf, callback) {};
+zlib.gzip = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -205,7 +205,7 @@ zlib.gzipSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.gunzip = function(buf, callback) {};
+zlib.gunzip = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -219,7 +219,7 @@ zlib.gunzipSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.inflate = function(buf, callback) {};
+zlib.inflate = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -233,7 +233,7 @@ zlib.inflateSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.inflateRaw = function(buf, callback) {};
+zlib.inflateRaw = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf
@@ -247,7 +247,7 @@ zlib.inflateRawSync = function(buf, options) {};
  * @param {(function(Error, *): void)} callback
  * @return {void}
  */
-zlib.unzip = function(buf, callback) {};
+zlib.unzip = function(buf, callback) { if(callback) callback(); };
 
 /**
  * @param {Buffer} buf

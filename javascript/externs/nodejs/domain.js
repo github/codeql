@@ -70,13 +70,13 @@ domain.Domain.prototype.remove = function(emitter) {};
  * @param {(function(Error, *): *)} cb
  * @return {*}
  */
-domain.Domain.prototype.bind = function(cb) {};
+domain.Domain.prototype.bind = function(cb) { if(cb) cb(); };
 
 /**
  * @param {(function(*): *)} cb
  * @return {*}
  */
-domain.Domain.prototype.intercept = function(cb) {};
+domain.Domain.prototype.intercept = function(cb) { if(cb) cb(); };
 
 /**
  * @return {void}

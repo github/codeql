@@ -607,7 +607,7 @@ crypto.getDiffieHellman = function(group_name) {};
  * @param {(function(Error, Buffer): *)} callback
  * @return {void}
  */
-crypto.pbkdf2 = function(password, salt, iterations, keylen, digest, callback) {};
+crypto.pbkdf2 = function(password, salt, iterations, keylen, digest, callback) { if(callback) callback(); };
 
 /**
  * @param {(string|Buffer)} password
@@ -630,7 +630,7 @@ crypto.randomBytes = function(size) {};
  * @param {(function(Error, Buffer): void)} callback
  * @return {void}
  */
-crypto.randomBytes = function(size, callback) {};
+crypto.randomBytes = function(size, callback) { if(callback) callback(); };
 
 /**
  * @param {number} size
@@ -643,7 +643,7 @@ crypto.pseudoRandomBytes = function(size) {};
  * @param {(function(Error, Buffer): void)} callback
  * @return {void}
  */
-crypto.pseudoRandomBytes = function(size, callback) {};
+crypto.pseudoRandomBytes = function(size, callback) { if(callback) callback(); };
 
 /**
  * @interface
@@ -921,14 +921,14 @@ crypto.Sign = function() {};
  * @param {(function(Error, Buffer): *)=} callback
  * @return {void}
  */
-crypto.rng = function(size, callback) {};
+crypto.rng = function(size, callback) { if(callback) callback(); };
 
 /**
  * @param {number} size
  * @param {(function(Error, Buffer): *)=} callback
  * @return {void}
  */
-crypto.prng = function(size, callback) {};
+crypto.prng = function(size, callback) { if(callback) callback(); };
 
 /**
  * @interface

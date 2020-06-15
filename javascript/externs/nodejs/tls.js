@@ -180,7 +180,7 @@ tls.TLSSocket.prototype.remotePort;
  * @param {(function(Error): *)} callback
  * @return {*}
  */
-tls.TLSSocket.prototype.renegotiate = function(options, callback) {};
+tls.TLSSocket.prototype.renegotiate = function(options, callback) { if(callback) callback(); };
 
 /**
  * @param {number} size

@@ -115,7 +115,7 @@ http.Server = function() {};
  * @param {Function} callback
  * @return {void}
  */
-http.Server.prototype.setTimeout = function(msecs, callback) {};
+http.Server.prototype.setTimeout = function(msecs, callback) { if(callback) callback(); };
 
 /**
  * @type {number}
@@ -160,14 +160,14 @@ http.ServerResponse.prototype.write = function(buffer) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ServerResponse.prototype.write = function(buffer, cb) {};
+http.ServerResponse.prototype.write = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ServerResponse.prototype.write = function(str, cb) {};
+http.ServerResponse.prototype.write = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -175,7 +175,7 @@ http.ServerResponse.prototype.write = function(str, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ServerResponse.prototype.write = function(str, encoding, cb) {};
+http.ServerResponse.prototype.write = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -239,7 +239,7 @@ http.ServerResponse.prototype.setHeader = function(name, value) {};
  * @param {Function} callback
  * @return {http.ServerResponse}
  */
-http.ServerResponse.prototype.setTimeout = function(msecs, callback) {};
+http.ServerResponse.prototype.setTimeout = function(msecs, callback) { if(callback) callback(); };
 
 /**
  * @type {boolean}
@@ -279,14 +279,14 @@ http.ServerResponse.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-http.ServerResponse.prototype.end = function(buffer, cb) {};
+http.ServerResponse.prototype.end = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {void}
  */
-http.ServerResponse.prototype.end = function(str, cb) {};
+http.ServerResponse.prototype.end = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -294,7 +294,7 @@ http.ServerResponse.prototype.end = function(str, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-http.ServerResponse.prototype.end = function(str, encoding, cb) {};
+http.ServerResponse.prototype.end = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {*=} data
@@ -320,14 +320,14 @@ http.ClientRequest.prototype.write = function(buffer) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ClientRequest.prototype.write = function(buffer, cb) {};
+http.ClientRequest.prototype.write = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ClientRequest.prototype.write = function(str, cb) {};
+http.ClientRequest.prototype.write = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -335,7 +335,7 @@ http.ClientRequest.prototype.write = function(str, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-http.ClientRequest.prototype.write = function(str, encoding, cb) {};
+http.ClientRequest.prototype.write = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -362,7 +362,7 @@ http.ClientRequest.prototype.abort = function() {};
  * @param {Function=} callback
  * @return {void}
  */
-http.ClientRequest.prototype.setTimeout = function(timeout, callback) {};
+http.ClientRequest.prototype.setTimeout = function(timeout, callback) { if(callback) callback(); };
 
 /**
  * @param {boolean=} noDelay
@@ -412,14 +412,14 @@ http.ClientRequest.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-http.ClientRequest.prototype.end = function(buffer, cb) {};
+http.ClientRequest.prototype.end = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {void}
  */
-http.ClientRequest.prototype.end = function(str, cb) {};
+http.ClientRequest.prototype.end = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -427,7 +427,7 @@ http.ClientRequest.prototype.end = function(str, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-http.ClientRequest.prototype.end = function(str, encoding, cb) {};
+http.ClientRequest.prototype.end = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {*=} data
@@ -487,7 +487,7 @@ http.IncomingMessage.prototype.rawTrailers;
  * @param {Function} callback
  * @return {NodeJS.Timer}
  */
-http.IncomingMessage.prototype.setTimeout = function(msecs, callback) {};
+http.IncomingMessage.prototype.setTimeout = function(msecs, callback) { if(callback) callback(); };
 
 /**
  * @type {string}
@@ -604,14 +604,14 @@ http.createClient = function(port, host) {};
  * @param {(function(http.IncomingMessage): void)=} callback
  * @return {http.ClientRequest}
  */
-http.request = function(options, callback) {};
+http.request = function(options, callback) { if(callback) callback(); };
 
 /**
  * @param {*} options
  * @param {(function(http.IncomingMessage): void)=} callback
  * @return {http.ClientRequest}
  */
-http.get = function(options, callback) {};
+http.get = function(options, callback) { if(callback) callback(); };
 
 /**
  * @type {http.Agent}

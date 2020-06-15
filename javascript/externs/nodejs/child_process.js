@@ -225,7 +225,7 @@ child_process.ExecOptionsWithBufferEncoding.prototype.encoding;
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.exec = function(command, callback) {};
+child_process.exec = function(command, callback) { if(callback) callback(); };
 
 /**
  * @param {string} command
@@ -233,7 +233,7 @@ child_process.exec = function(command, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.exec = function(command, options, callback) {};
+child_process.exec = function(command, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} command
@@ -241,7 +241,7 @@ child_process.exec = function(command, options, callback) {};
  * @param {(function(Error, Buffer, Buffer): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.exec = function(command, options, callback) {};
+child_process.exec = function(command, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} command
@@ -249,7 +249,7 @@ child_process.exec = function(command, options, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.exec = function(command, options, callback) {};
+child_process.exec = function(command, options, callback) { if(callback) callback(); };
 
 /**
  * @interface
@@ -318,7 +318,7 @@ child_process.ExecFileOptionsWithBufferEncoding.prototype.encoding;
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, callback) {};
+child_process.execFile = function(file, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -326,7 +326,7 @@ child_process.execFile = function(file, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, options, callback) {};
+child_process.execFile = function(file, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -334,7 +334,7 @@ child_process.execFile = function(file, options, callback) {};
  * @param {(function(Error, Buffer, Buffer): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, options, callback) {};
+child_process.execFile = function(file, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -342,7 +342,7 @@ child_process.execFile = function(file, options, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, options, callback) {};
+child_process.execFile = function(file, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -350,7 +350,7 @@ child_process.execFile = function(file, options, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, args, callback) {};
+child_process.execFile = function(file, args, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -359,7 +359,7 @@ child_process.execFile = function(file, args, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, args, options, callback) {};
+child_process.execFile = function(file, args, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -368,7 +368,7 @@ child_process.execFile = function(file, args, options, callback) {};
  * @param {(function(Error, Buffer, Buffer): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, args, options, callback) {};
+child_process.execFile = function(file, args, options, callback) { if(callback) callback(); };
 
 /**
  * @param {string} file
@@ -377,7 +377,7 @@ child_process.execFile = function(file, args, options, callback) {};
  * @param {(function(Error, string, string): void)=} callback
  * @return {child_process.ChildProcess}
  */
-child_process.execFile = function(file, args, options, callback) {};
+child_process.execFile = function(file, args, options, callback) { if(callback) callback(); };
 
 /**
  * @interface

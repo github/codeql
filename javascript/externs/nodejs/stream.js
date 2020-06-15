@@ -403,14 +403,14 @@ internal.Writable.prototype.writable;
  * @param {Function} callback
  * @return {void}
  */
-internal.Writable.prototype._write = function(chunk, encoding, callback) {};
+internal.Writable.prototype._write = function(chunk, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {*} chunk
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Writable.prototype.write = function(chunk, cb) {};
+internal.Writable.prototype.write = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -418,7 +418,7 @@ internal.Writable.prototype.write = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Writable.prototype.write = function(chunk, encoding, cb) {};
+internal.Writable.prototype.write = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @return {void}
@@ -430,7 +430,7 @@ internal.Writable.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Writable.prototype.end = function(chunk, cb) {};
+internal.Writable.prototype.end = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -438,7 +438,7 @@ internal.Writable.prototype.end = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Writable.prototype.end = function(chunk, encoding, cb) {};
+internal.Writable.prototype.end = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @param {string} event
@@ -692,14 +692,14 @@ internal.Duplex.prototype.writable;
  * @param {Function} callback
  * @return {void}
  */
-internal.Duplex.prototype._write = function(chunk, encoding, callback) {};
+internal.Duplex.prototype._write = function(chunk, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {*} chunk
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Duplex.prototype.write = function(chunk, cb) {};
+internal.Duplex.prototype.write = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -707,7 +707,7 @@ internal.Duplex.prototype.write = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Duplex.prototype.write = function(chunk, encoding, cb) {};
+internal.Duplex.prototype.write = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @return {void}
@@ -719,7 +719,7 @@ internal.Duplex.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Duplex.prototype.end = function(chunk, cb) {};
+internal.Duplex.prototype.end = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -727,7 +727,7 @@ internal.Duplex.prototype.end = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Duplex.prototype.end = function(chunk, encoding, cb) {};
+internal.Duplex.prototype.end = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @interface
@@ -769,13 +769,13 @@ internal.Transform.prototype.writable;
  * @param {Function} callback
  * @return {void}
  */
-internal.Transform.prototype._transform = function(chunk, encoding, callback) {};
+internal.Transform.prototype._transform = function(chunk, encoding, callback) { if(callback) callback(); };
 
 /**
  * @param {Function} callback
  * @return {void}
  */
-internal.Transform.prototype._flush = function(callback) {};
+internal.Transform.prototype._flush = function(callback) { if(callback) callback(); };
 
 /**
  * @param {number=} size
@@ -838,7 +838,7 @@ internal.Transform.prototype.push = function(chunk, encoding) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Transform.prototype.write = function(chunk, cb) {};
+internal.Transform.prototype.write = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -846,7 +846,7 @@ internal.Transform.prototype.write = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-internal.Transform.prototype.write = function(chunk, encoding, cb) {};
+internal.Transform.prototype.write = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @return {void}
@@ -858,7 +858,7 @@ internal.Transform.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Transform.prototype.end = function(chunk, cb) {};
+internal.Transform.prototype.end = function(chunk, cb) { if(cb) cb(); };
 
 /**
  * @param {*} chunk
@@ -866,7 +866,7 @@ internal.Transform.prototype.end = function(chunk, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-internal.Transform.prototype.end = function(chunk, encoding, cb) {};
+internal.Transform.prototype.end = function(chunk, encoding, cb) { if(cb) cb(); };
 
 /**
  * @constructor

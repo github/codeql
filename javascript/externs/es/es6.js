@@ -533,7 +533,7 @@ TypedArray.prototype.slice = function(opt_begin, opt_end) {};
  * @template S
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/some
  */
-TypedArray.prototype.some = function(callback, opt_thisArg) {};
+TypedArray.prototype.some = function(callback, opt_thisArg) { if(callback) callback(); };
 
 /**
  * @param {(function(number, number) : number)=} opt_compareFunction

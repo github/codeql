@@ -120,7 +120,7 @@ var setTimeout = function(handler, timeout, args) {};
  * @param {...*} args
  * @return {NodeJS.Timer}
  */
-var setTimeout = function(callback, ms, args) {};
+var setTimeout = function(callback, ms, args) { if(callback) callback(); };
 
 /**
  * @param {number} handle
@@ -148,7 +148,7 @@ var setInterval = function(handler, timeout, args) {};
  * @param {...*} args
  * @return {NodeJS.Timer}
  */
-var setInterval = function(callback, ms, args) {};
+var setInterval = function(callback, ms, args) { if(callback) callback(); };
 
 /**
  * @param {number} handle
@@ -174,7 +174,7 @@ var setImmediate = function(expression, args) {};
  * @param {...*} args
  * @return {*}
  */
-var setImmediate = function(callback, args) {};
+var setImmediate = function(callback, args) { if(callback) callback(); };
 
 /**
  * @param {number} handle
@@ -624,7 +624,7 @@ NodeJS.WritableStream.prototype.writable;
  * @param {Function=} cb
  * @return {boolean}
  */
-NodeJS.WritableStream.prototype.write = function(buffer, cb) {};
+NodeJS.WritableStream.prototype.write = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -632,7 +632,7 @@ NodeJS.WritableStream.prototype.write = function(buffer, cb) {};
  * @param {Function=} cb
  * @return {boolean}
  */
-NodeJS.WritableStream.prototype.write = function(str, encoding, cb) {};
+NodeJS.WritableStream.prototype.write = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @return {void}
@@ -644,14 +644,14 @@ NodeJS.WritableStream.prototype.end = function() {};
  * @param {Function=} cb
  * @return {void}
  */
-NodeJS.WritableStream.prototype.end = function(buffer, cb) {};
+NodeJS.WritableStream.prototype.end = function(buffer, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
  * @param {Function=} cb
  * @return {void}
  */
-NodeJS.WritableStream.prototype.end = function(str, cb) {};
+NodeJS.WritableStream.prototype.end = function(str, cb) { if(cb) cb(); };
 
 /**
  * @param {string} str
@@ -659,7 +659,7 @@ NodeJS.WritableStream.prototype.end = function(str, cb) {};
  * @param {Function=} cb
  * @return {void}
  */
-NodeJS.WritableStream.prototype.end = function(str, encoding, cb) {};
+NodeJS.WritableStream.prototype.end = function(str, encoding, cb) { if(cb) cb(); };
 
 /**
  * @interface
@@ -712,13 +712,13 @@ NodeJS.Domain.prototype.remove = function(emitter) {};
  * @param {(function(Error, *): *)} cb
  * @return {*}
  */
-NodeJS.Domain.prototype.bind = function(cb) {};
+NodeJS.Domain.prototype.bind = function(cb) { if(cb) cb(); };
 
 /**
  * @param {(function(*): *)} cb
  * @return {*}
  */
-NodeJS.Domain.prototype.intercept = function(cb) {};
+NodeJS.Domain.prototype.intercept = function(cb) { if(cb) cb(); };
 
 /**
  * @return {void}
@@ -986,7 +986,7 @@ NodeJS.Process.prototype.memoryUsage = function() {};
  * @param {...*} args
  * @return {void}
  */
-NodeJS.Process.prototype.nextTick = function(callback, args) {};
+NodeJS.Process.prototype.nextTick = function(callback, args) { if(callback) callback(); };
 
 /**
  * @param {number=} mask
