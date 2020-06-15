@@ -24,3 +24,15 @@ function f({
 
 function g({x, y}: {x: string, y: string}) { // OK
 }
+
+function blah(arg) {
+    var {
+        x: x,
+        y: {
+            x: x, // NOT OK
+            y: {
+                x: x // NOT OK
+            }
+        }
+    } = arg;
+}
