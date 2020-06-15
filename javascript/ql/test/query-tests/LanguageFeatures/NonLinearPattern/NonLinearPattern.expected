@@ -4,7 +4,6 @@
 | ts-test.ts:21:8:21:13 | string | Repeated binding of pattern variable 'string' previously bound $@. | ts-test.ts:20:8:20:13 | string | here |
 | ts-test.ts:32:16:32:16 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:30:12:30:12 | x | here |
 | ts-test.ts:34:20:34:20 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:30:12:30:12 | x | here |
-| ts-test.ts:34:20:34:20 | x | Repeated binding of pattern variable 'x' previously bound $@. | ts-test.ts:32:16:32:16 | x | here |
 | tst.js:3:13:3:13 | x | Repeated binding of pattern variable 'x' previously bound $@. | tst.js:3:10:3:10 | x | here |
 | tst.js:8:16:8:16 | x | Repeated binding of pattern variable 'x' previously bound $@. | tst.js:8:10:8:10 | x | here |
 | tst.js:11:10:11:10 | x | Repeated binding of pattern variable 'x' previously bound $@. | tst.js:11:7:11:7 | x | here |
