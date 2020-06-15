@@ -36,10 +36,10 @@ var server = http.createServer(function(req, res) {
   x.repeat(s); // NOT OK
 
   new Buffer(n * x); // NOT OK
-  new Buffer(n + n); // NOT OK
-  new Buffer(n + x); // NOT OK (maybe)
-  new Buffer(n + s); // OK [INCONSISTENCY]: this is  a string if `s` is a string
-  new Buffer(s + 2); // OK [INCONSISTENCY]: this is  a string if `s` is a string
+  new Buffer(n + n); // NOT OK [INCONSISTENCY]
+  new Buffer(n + x); // OK (maybe)
+  new Buffer(n + s); // OK (this is  a string if `s` is a string)
+  new Buffer(s + 2); // OK (this is  a string if `s` is a string)
   new Buffer(s + s); // OK
   new Buffer(n + "X"); // OK
 
@@ -47,7 +47,7 @@ var server = http.createServer(function(req, res) {
   new Buffer(Number(s)); // NOT OK
   new Buffer(new Number(s)); // OK
 
-  new Buffer(s + x.length); // OK [INCONSISTENCY]: this is a string if `s` is a string
+  new Buffer(s + x.length); // OK (this is a string if `s` is a string)
   new Buffer(s.length); // NOT OK
 
   if (n < 100) {

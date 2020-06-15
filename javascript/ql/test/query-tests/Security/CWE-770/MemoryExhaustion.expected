@@ -43,28 +43,12 @@ nodes
 | memory-exhaustion.js:38:14:38:14 | n |
 | memory-exhaustion.js:38:14:38:18 | n * x |
 | memory-exhaustion.js:38:14:38:18 | n * x |
-| memory-exhaustion.js:39:14:39:14 | n |
-| memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:39:18:39:18 | n |
-| memory-exhaustion.js:40:14:40:14 | n |
-| memory-exhaustion.js:40:14:40:18 | n + x |
-| memory-exhaustion.js:40:14:40:18 | n + x |
-| memory-exhaustion.js:41:14:41:14 | n |
-| memory-exhaustion.js:41:14:41:18 | n + s |
-| memory-exhaustion.js:41:14:41:18 | n + s |
-| memory-exhaustion.js:42:14:42:14 | s |
-| memory-exhaustion.js:42:14:42:18 | s + 2 |
-| memory-exhaustion.js:42:14:42:18 | s + 2 |
 | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) |
 | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) |
 | memory-exhaustion.js:46:24:46:24 | s |
 | memory-exhaustion.js:47:14:47:22 | Number(s) |
 | memory-exhaustion.js:47:14:47:22 | Number(s) |
 | memory-exhaustion.js:47:21:47:21 | s |
-| memory-exhaustion.js:50:14:50:14 | s |
-| memory-exhaustion.js:50:14:50:25 | s + x.length |
-| memory-exhaustion.js:50:14:50:25 | s + x.length |
 | memory-exhaustion.js:51:14:51:14 | s |
 | memory-exhaustion.js:51:14:51:21 | s.length |
 | memory-exhaustion.js:51:14:51:21 | s.length |
@@ -83,10 +67,8 @@ edges
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:7:20:7:20 | s |
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:36:12:36:12 | s |
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:36:12:36:12 | s |
-| memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:42:14:42:14 | s |
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:46:24:46:24 | s |
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:47:21:47:21 | s |
-| memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:50:14:50:14 | s |
 | memory-exhaustion.js:6:7:6:42 | s | memory-exhaustion.js:51:14:51:14 | s |
 | memory-exhaustion.js:6:11:6:34 | url.par ... , true) | memory-exhaustion.js:6:11:6:40 | url.par ... ).query |
 | memory-exhaustion.js:6:11:6:40 | url.par ... ).query | memory-exhaustion.js:6:11:6:42 | url.par ... query.s |
@@ -124,10 +106,6 @@ edges
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:35:12:35:12 | n |
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:35:12:35:12 | n |
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:38:14:38:14 | n |
-| memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:39:14:39:14 | n |
-| memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:39:18:39:18 | n |
-| memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:40:14:40:14 | n |
-| memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:41:14:41:14 | n |
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:56:16:56:16 | n |
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:56:16:56:16 | n |
 | memory-exhaustion.js:7:7:7:21 | n | memory-exhaustion.js:59:16:59:16 | n |
@@ -139,22 +117,10 @@ edges
 | memory-exhaustion.js:7:20:7:20 | s | memory-exhaustion.js:7:11:7:21 | parseInt(s) |
 | memory-exhaustion.js:38:14:38:14 | n | memory-exhaustion.js:38:14:38:18 | n * x |
 | memory-exhaustion.js:38:14:38:14 | n | memory-exhaustion.js:38:14:38:18 | n * x |
-| memory-exhaustion.js:39:14:39:14 | n | memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:39:14:39:14 | n | memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:39:18:39:18 | n | memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:39:18:39:18 | n | memory-exhaustion.js:39:14:39:18 | n + n |
-| memory-exhaustion.js:40:14:40:14 | n | memory-exhaustion.js:40:14:40:18 | n + x |
-| memory-exhaustion.js:40:14:40:14 | n | memory-exhaustion.js:40:14:40:18 | n + x |
-| memory-exhaustion.js:41:14:41:14 | n | memory-exhaustion.js:41:14:41:18 | n + s |
-| memory-exhaustion.js:41:14:41:14 | n | memory-exhaustion.js:41:14:41:18 | n + s |
-| memory-exhaustion.js:42:14:42:14 | s | memory-exhaustion.js:42:14:42:18 | s + 2 |
-| memory-exhaustion.js:42:14:42:14 | s | memory-exhaustion.js:42:14:42:18 | s + 2 |
 | memory-exhaustion.js:46:24:46:24 | s | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) |
 | memory-exhaustion.js:46:24:46:24 | s | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) |
 | memory-exhaustion.js:47:21:47:21 | s | memory-exhaustion.js:47:14:47:22 | Number(s) |
 | memory-exhaustion.js:47:21:47:21 | s | memory-exhaustion.js:47:14:47:22 | Number(s) |
-| memory-exhaustion.js:50:14:50:14 | s | memory-exhaustion.js:50:14:50:25 | s + x.length |
-| memory-exhaustion.js:50:14:50:14 | s | memory-exhaustion.js:50:14:50:25 | s + x.length |
 | memory-exhaustion.js:51:14:51:14 | s | memory-exhaustion.js:51:14:51:21 | s.length |
 | memory-exhaustion.js:51:14:51:14 | s | memory-exhaustion.js:51:14:51:21 | s.length |
 | memory-exhaustion.js:59:7:59:20 | ns | memory-exhaustion.js:60:14:60:15 | ns |
@@ -179,13 +145,8 @@ edges
 | memory-exhaustion.js:35:12:35:12 | n | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:35:12:35:12 | n | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:36:12:36:12 | s | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:36:12:36:12 | s | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:38:14:38:18 | n * x | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:38:14:38:18 | n * x | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
-| memory-exhaustion.js:39:14:39:18 | n + n | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:39:14:39:18 | n + n | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
-| memory-exhaustion.js:40:14:40:18 | n + x | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:40:14:40:18 | n + x | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
-| memory-exhaustion.js:41:14:41:18 | n + s | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:41:14:41:18 | n + s | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
-| memory-exhaustion.js:42:14:42:18 | s + 2 | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:42:14:42:18 | s + 2 | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:46:14:46:25 | Math.ceil(s) | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:47:14:47:22 | Number(s) | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:47:14:47:22 | Number(s) | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
-| memory-exhaustion.js:50:14:50:25 | s + x.length | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:50:14:50:25 | s + x.length | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:51:14:51:21 | s.length | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:51:14:51:21 | s.length | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:56:16:56:16 | n | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:56:16:56:16 | n | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
 | memory-exhaustion.js:60:14:60:15 | ns | memory-exhaustion.js:6:21:6:27 | req.url | memory-exhaustion.js:60:14:60:15 | ns | This allocates an object with a user-controlled size from $@. | memory-exhaustion.js:6:21:6:27 | req.url | here |
