@@ -1,0 +1,18 @@
+edges
+| SSRF.java:21:19:21:52 | getParameter(...) : String | SSRF.java:23:23:23:25 | uri |
+| SSRF.java:28:19:28:52 | getParameter(...) : String | SSRF.java:30:25:30:27 | uri |
+| SSRF.java:37:28:37:61 | getParameter(...) : String | SSRF.java:46:97:46:111 | proxyRequestUri |
+| SSRF.java:37:28:37:61 | getParameter(...) : String | SSRF.java:48:48:48:62 | proxyRequestUri |
+nodes
+| SSRF.java:21:19:21:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SSRF.java:23:23:23:25 | uri | semmle.label | uri |
+| SSRF.java:28:19:28:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SSRF.java:30:25:30:27 | uri | semmle.label | uri |
+| SSRF.java:37:28:37:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SSRF.java:46:97:46:111 | proxyRequestUri | semmle.label | proxyRequestUri |
+| SSRF.java:48:48:48:62 | proxyRequestUri | semmle.label | proxyRequestUri |
+#select
+| SSRF.java:23:23:23:25 | uri | SSRF.java:21:19:21:52 | getParameter(...) : String | SSRF.java:23:23:23:25 | uri | URL constructed from remote source $@  | SSRF.java:21:19:21:52 | getParameter(...) | could be vulnerable to SSRF attack |
+| SSRF.java:30:25:30:27 | uri | SSRF.java:28:19:28:52 | getParameter(...) : String | SSRF.java:30:25:30:27 | uri | URL constructed from remote source $@  | SSRF.java:28:19:28:52 | getParameter(...) | could be vulnerable to SSRF attack |
+| SSRF.java:46:97:46:111 | proxyRequestUri | SSRF.java:37:28:37:61 | getParameter(...) : String | SSRF.java:46:97:46:111 | proxyRequestUri | URL constructed from remote source $@  | SSRF.java:37:28:37:61 | getParameter(...) | could be vulnerable to SSRF attack |
+| SSRF.java:48:48:48:62 | proxyRequestUri | SSRF.java:37:28:37:61 | getParameter(...) : String | SSRF.java:48:48:48:62 | proxyRequestUri | URL constructed from remote source $@  | SSRF.java:37:28:37:61 | getParameter(...) | could be vulnerable to SSRF attack |

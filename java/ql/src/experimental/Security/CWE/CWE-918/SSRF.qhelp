@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Server Side Request Forgery (SSRF) is an attack vector that abuses an application to interact with the internal/external network or the machine itself, frequently through the attack vector of URL mishandling.</p>
+    <p>In an SSRF attack, the attacker can abuse functionality on the server to read or update internal resources, e.g. cloud server meta-data, internal REST interface, and files.</p>
+    <p>By providing unexpected URLs, attackers can trick the application to send malicious requests, possibly bypassing access controls such as firewalls that prevent the attackers from accessing those URLs directly. The server can be used as a proxy to conduct port scanning of hosts in internal networks, use other URLs such as that can access documents on the system (using file:// or jar://), or use other content protocols such as gopher:// or tftp://, or invoke internal REST APIs.</p>
+    <p>This query detects the following two scenarios:</p>
+    <ol>
+      <li>Java networking uri.openConnection() and its derived uri.openStream(), which is a shorthand for openConnection().getInputStream(), from remote source.</li>
+      <li>Apache HTTPRequest constructed from remote source.</li>
+    </ol>
+  </overview>
+
+  <recommendation>
+    <p>Properly validate URLs and only send requests to identified and trusted applications and services.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, remote source is not validated before sending requests. In the 'GOOD' configuration, remote source is validated before sending requests.</p>
+    <sample src="SSRF.java" />
+  </example>
+
+  <references>
+    <li>
+      <a href="https://cwe.mitre.org/data/definitions/918.html">CWE-918: Server-Side Request Forgery (SSRF)</a>
+      <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">OWASP - Server Side Request Forgery</a>
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">Server Side Request Forgery Prevention</a>
+      <a href="https://www.ciphertechs.com/blog/hawtio-advisory/">CVE-2019-9827:  Unauthenticated Server-Side Request Forgery (SSRF) with Hawtio up to and including version 2.5.0</a>
+    </li>
+  </references>
+</qhelp>
