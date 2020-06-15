@@ -13,6 +13,11 @@
 | stl.cpp:125:13:125:17 | stl.cpp:117:10:117:15 | AST only |
 | stl.cpp:129:13:129:17 | stl.cpp:117:10:117:15 | AST only |
 | stl.cpp:132:13:132:17 | stl.cpp:117:10:117:15 | AST only |
+| stl.cpp:154:8:154:9 | stl.cpp:149:18:149:23 | AST only |
+| stl.cpp:155:8:155:9 | stl.cpp:150:20:150:25 | AST only |
+| stl.cpp:156:8:156:9 | stl.cpp:152:8:152:13 | AST only |
+| stl.cpp:175:8:175:9 | stl.cpp:171:32:171:37 | AST only |
+| stl.cpp:176:8:176:9 | stl.cpp:173:20:173:25 | AST only |
 | swap1.cpp:74:13:74:17 | swap1.cpp:69:16:69:21 | AST only |
 | swap1.cpp:75:13:75:17 | swap1.cpp:68:27:68:28 | AST only |
 | swap1.cpp:89:12:89:16 | swap1.cpp:80:23:80:23 | AST only |
