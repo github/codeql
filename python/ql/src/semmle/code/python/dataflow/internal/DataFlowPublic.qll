@@ -1,3 +1,7 @@
+/**
+ * Provides Python-specific definitions for use in the data flow library.
+ */
+
 import python
 private import DataFlowPrivate
 

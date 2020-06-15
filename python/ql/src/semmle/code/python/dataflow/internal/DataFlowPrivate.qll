@@ -68,7 +68,10 @@ newtype TDataFlowType =
   TStringFlow()
 
 class DataFlowType extends TDataFlowType {
-  string toString() { none() }
+  /**
+   * No representation yet
+   */
+   string toString() { none() }
 }
 
 /** Gets a viable run-time target for the call `call`. */
