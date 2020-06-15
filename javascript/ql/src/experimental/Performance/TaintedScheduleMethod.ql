@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @id js/tainted-schedule-method
  * @tags efficiency
- *       maintainabilitys
+ *       maintainability
  */
 
 import javascript
