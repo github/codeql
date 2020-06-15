@@ -25,10 +25,7 @@ import Cached
 cached
 private module Cached {
   cached
-  predicate functionHasIR(Callable callable) {
-    exists(getTranslatedFunction(callable)) and
-    callable.fromSource()
-  }
+  predicate functionHasIR(Callable callable) { exists(getTranslatedFunction(callable)) }
 
   cached
   newtype TInstruction =
