@@ -70,7 +70,9 @@ module CallGraph {
   }
 
   cached
-  private predicate locallyReturnedFunction(DataFlow::FunctionNode outer, DataFlow::FunctionNode inner) {
+  private predicate locallyReturnedFunction(
+    DataFlow::FunctionNode outer, DataFlow::FunctionNode inner
+  ) {
     inner.flowsTo(outer.getAReturn())
   }
 
