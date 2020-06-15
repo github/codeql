@@ -37,12 +37,25 @@ class RootDestructuringPattern extends BindingPattern {
     hasConflictingBindings(name) and
     result = min(VarDecl decl | decl = getABindingVarRef() and decl.getName() = name | decl order by decl.getLocation().getStartLine(), decl.getLocation().getStartColumn())
   }
+
+  /** Holds if variables in this pattern may resemble type annotations. */
+  predicate resemblesTypeAnnotation() {
+    hasConflictingBindings(_) and // Restrict size of predicate.
+    this instanceof Parameter and
+    this instanceof ObjectPattern and
+    not exists(getTypeAnnotation()) and
+    getFile().getFileType().isTypeScript()
+  }
 }
 
-from RootDestructuringPattern p, string n, VarDecl v, VarDecl w
+from RootDestructuringPattern p, string n, VarDecl v, VarDecl w, string message
 where
   v = p.getFirstClobberedVarDecl(n) and
   w = p.getABindingVarRef() and
   w.getName() = n and
-  v != w
-select w, "Repeated binding of pattern variable '" + n + "' previously bound $@.", v, "here"
+  v != w and
+  if p.resemblesTypeAnnotation() then
+    message = "The pattern variable '" + n + "' appears to be a type, but is a variable previously bound $@."
+  else
+    message = "Repeated binding of pattern variable '" + n + "' previously bound $@."
+select w, message, v, "here"

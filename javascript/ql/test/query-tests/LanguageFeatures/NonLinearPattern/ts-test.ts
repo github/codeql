@@ -36,3 +36,6 @@ function blah(arg) {
         }
     } = arg;
 }
+
+function h({x: string, y: string}: any) {  // NOT OK
+}
