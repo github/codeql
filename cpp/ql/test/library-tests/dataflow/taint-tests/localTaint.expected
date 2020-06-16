@@ -16,7 +16,7 @@
 | copyableclass.cpp:20:22:20:23 | call to MyCopyableClass | copyableclass.cpp:26:8:26:9 | s1 |  |
 | copyableclass.cpp:21:23:21:24 | call to MyCopyableClass | copyableclass.cpp:27:8:27:9 | s2 |  |
 | copyableclass.cpp:21:24:21:24 | 1 | copyableclass.cpp:21:23:21:24 | call to MyCopyableClass | TAINT |
-| copyableclass.cpp:22:22:22:23 | s1 | copyableclass.cpp:22:22:22:24 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:22:22:22:23 | s1 | copyableclass.cpp:22:22:22:24 | call to MyCopyableClass |  |
 | copyableclass.cpp:22:22:22:24 | call to MyCopyableClass | copyableclass.cpp:28:8:28:9 | s3 |  |
 | copyableclass.cpp:23:19:23:20 | call to MyCopyableClass | copyableclass.cpp:24:3:24:4 | s4 |  |
 | copyableclass.cpp:23:19:23:20 | call to MyCopyableClass | copyableclass.cpp:29:8:29:9 | s4 |  |
@@ -27,7 +27,7 @@
 | copyableclass.cpp:33:22:33:30 | call to MyCopyableClass | copyableclass.cpp:39:8:39:9 | s1 |  |
 | copyableclass.cpp:34:23:34:31 | call to MyCopyableClass | copyableclass.cpp:40:8:40:9 | s2 |  |
 | copyableclass.cpp:34:24:34:29 | call to source | copyableclass.cpp:34:23:34:31 | call to MyCopyableClass | TAINT |
-| copyableclass.cpp:35:22:35:23 | s1 | copyableclass.cpp:35:22:35:24 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:35:22:35:23 | s1 | copyableclass.cpp:35:22:35:24 | call to MyCopyableClass |  |
 | copyableclass.cpp:35:22:35:24 | call to MyCopyableClass | copyableclass.cpp:41:8:41:9 | s3 |  |
 | copyableclass.cpp:36:19:36:20 | call to MyCopyableClass | copyableclass.cpp:37:3:37:4 | s4 |  |
 | copyableclass.cpp:36:19:36:20 | call to MyCopyableClass | copyableclass.cpp:42:8:42:9 | s4 |  |
@@ -38,8 +38,8 @@
 | copyableclass.cpp:46:19:46:20 | call to MyCopyableClass | copyableclass.cpp:50:8:50:9 | s1 |  |
 | copyableclass.cpp:46:19:46:20 | call to MyCopyableClass | copyableclass.cpp:52:8:52:9 | s1 |  |
 | copyableclass.cpp:47:23:47:25 | call to MyCopyableClass | copyableclass.cpp:53:8:53:9 | s2 |  |
-| copyableclass.cpp:47:24:47:25 | s1 | copyableclass.cpp:47:23:47:25 | call to MyCopyableClass | TAINT |
-| copyableclass.cpp:48:22:48:23 | s1 | copyableclass.cpp:48:22:48:24 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:47:24:47:25 | s1 | copyableclass.cpp:47:23:47:25 | call to MyCopyableClass |  |
+| copyableclass.cpp:48:22:48:23 | s1 | copyableclass.cpp:48:22:48:24 | call to MyCopyableClass |  |
 | copyableclass.cpp:48:22:48:24 | call to MyCopyableClass | copyableclass.cpp:54:8:54:9 | s3 |  |
 | copyableclass.cpp:49:19:49:20 | call to MyCopyableClass | copyableclass.cpp:50:3:50:4 | s4 |  |
 | copyableclass.cpp:49:19:49:20 | call to MyCopyableClass | copyableclass.cpp:55:8:55:9 | s4 |  |
@@ -231,9 +231,9 @@
 | movableclass.cpp:50:18:50:19 | call to MyMovableClass | movableclass.cpp:54:8:54:9 | s2 |  |
 | movableclass.cpp:51:3:51:4 | ref arg s2 | movableclass.cpp:54:8:54:9 | s2 |  |
 | movableclass.cpp:51:23:51:28 | call to source | movableclass.cpp:51:8:51:31 | call to MyMovableClass | TAINT |
-| movableclass.cpp:58:21:58:32 | call to getUnTainted | movableclass.cpp:58:21:58:35 | call to MyMovableClass | TAINT |
+| movableclass.cpp:58:21:58:32 | call to getUnTainted | movableclass.cpp:58:21:58:35 | call to MyMovableClass |  |
 | movableclass.cpp:58:21:58:35 | call to MyMovableClass | movableclass.cpp:62:8:62:9 | s1 |  |
-| movableclass.cpp:59:21:59:30 | call to getTainted | movableclass.cpp:59:21:59:33 | call to MyMovableClass | TAINT |
+| movableclass.cpp:59:21:59:30 | call to getTainted | movableclass.cpp:59:21:59:33 | call to MyMovableClass |  |
 | movableclass.cpp:59:21:59:33 | call to MyMovableClass | movableclass.cpp:63:8:63:9 | s2 |  |
 | movableclass.cpp:60:18:60:19 | call to MyMovableClass | movableclass.cpp:64:8:64:9 | s3 |  |
 | movableclass.cpp:64:13:64:18 | call to source | movableclass.cpp:64:13:64:20 | call to MyMovableClass | TAINT |

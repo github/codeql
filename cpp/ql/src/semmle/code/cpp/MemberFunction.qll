@@ -197,8 +197,12 @@ class Constructor extends MemberFunction, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any constructor argument to the returned object
-    input.isParameter(_) and
-    output.isReturnValue()
+    exists(int idx |
+      input.isParameter(idx) and
+      output.isReturnValue() and
+      not this.(CopyConstructor).hasDataFlow(input, output) and // don't duplicate where we have data flow
+      not this.(MoveConstructor).hasDataFlow(input, output) // don't duplicate where we have data flow
+    )
   }
 }
 
@@ -274,7 +278,7 @@ private predicate hasMoveSignature(MemberFunction f) {
  * desired instead, see the member predicate
  * `mayNotBeCopyConstructorInInstantiation`.
  */
-class CopyConstructor extends Constructor {
+class CopyConstructor extends Constructor, DataFlowFunction {
   CopyConstructor() {
     hasCopySignature(this) and
     (
@@ -306,6 +310,12 @@ class CopyConstructor extends Constructor {
     getDeclaringType() instanceof TemplateClass and
     getNumberOfParameters() > 1
   }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // data flow from the first constructor argument to the returned object
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
 }
 
 /**
@@ -331,7 +341,7 @@ class CopyConstructor extends Constructor {
  * desired instead, see the member predicate
  * `mayNotBeMoveConstructorInInstantiation`.
  */
-class MoveConstructor extends Constructor {
+class MoveConstructor extends Constructor, DataFlowFunction {
   MoveConstructor() {
     hasMoveSignature(this) and
     (
@@ -362,6 +372,12 @@ class MoveConstructor extends Constructor {
     // no default argument in the instantiation.
     getDeclaringType() instanceof TemplateClass and
     getNumberOfParameters() > 1
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // data flow from the first constructor argument to the returned object
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 }
 
