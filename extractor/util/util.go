@@ -47,7 +47,7 @@ func GetModDir(pkgpath string, modflag string) string {
 	}
 
 	if strings.TrimSpace(string(mod)) == "<nil>" {
-		// if modules aren't being used, return nothing
+		// if modules aren't being used, return the empty string
 		return ""
 	}
 
@@ -104,7 +104,7 @@ func GetPkgDir(pkgpath string, modflag string) string {
 	return abs
 }
 
-// FileExists tests whether the file at `filename` exists.
+// FileExists tests whether the file at `filename` exists and is not a directory.
 func FileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if err != nil && !os.IsNotExist(err) {
