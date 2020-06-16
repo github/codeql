@@ -21,6 +21,7 @@
   - [sqlite](https://www.npmjs.com/package/sqlite)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
   - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [yargs](https://www.npmjs.com/package/yargs)
 
 * TypeScript 3.9 is now supported.
 
