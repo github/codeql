@@ -67,12 +67,12 @@ module ReflectedXss {
         // checks that the format value does not start with:
         //  - '<', which could lead to an HTML content type being detected, or
         //  - '%', which could be a format string.
-        call.getArgument(1).getStringValue().regexpMatch("^[^<%].*")
+        call.getArgument(1).getStringValue().regexpMatch("(?s)^[^<%].*")
       )
       or
       exists(DataFlow::Node pred | body = pred.getASuccessor*() |
         // data starting with a character other than `<` cannot cause an HTML content type to be detected.
-        pred.getStringValue().regexpMatch("^[^<].*")
+        pred.getStringValue().regexpMatch("(?s)^[^<].*")
         or
         // json data cannot begin with `<`
         exists(EncodingJson::MarshalFunction mf | pred = mf.getOutput().getNode(mf.getACall()))
