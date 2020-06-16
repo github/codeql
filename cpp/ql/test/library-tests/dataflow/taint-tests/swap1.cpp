@@ -71,7 +71,7 @@ void test_copy_assignment_operator()
 
     swap(z1, z2);
 
-    sink(z2.data1); // tainted
+    sink(z2.data1); // tainted [FALSE NEGATIVE in IR]
     sink(z1.data1); // clean [FALSE POSITIVE]
 }
 
