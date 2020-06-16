@@ -64,15 +64,18 @@ module ReflectedXss {
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
         body = call.getAnArgument() and
-        // checks that the format value does not start with:
+        // checks that the format value does not start with (ignoring whitespace as defined by
+        // https://mimesniff.spec.whatwg.org/#whitespace-byte):
         //  - '<', which could lead to an HTML content type being detected, or
         //  - '%', which could be a format string.
-        call.getArgument(1).getStringValue().regexpMatch("(?s)^[^<%].*")
+        call.getArgument(1).getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<%].*")
       )
       or
       exists(DataFlow::Node pred | body = pred.getASuccessor*() |
-        // data starting with a character other than `<` cannot cause an HTML content type to be detected.
-        pred.getStringValue().regexpMatch("(?s)^[^<].*")
+        // data starting with a character other than `<` (ignoring whitespace as defined by
+        // https://mimesniff.spec.whatwg.org/#whitespace-byte) cannot cause an HTML content type to
+        // be detected.
+        pred.getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<].*")
         or
         // json data cannot begin with `<`
         exists(EncodingJson::MarshalFunction mf | pred = mf.getOutput().getNode(mf.getACall()))
