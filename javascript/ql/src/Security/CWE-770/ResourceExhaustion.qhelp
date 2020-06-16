@@ -3,80 +3,106 @@
 "qhelp.dtd">
 <qhelp>
 
-<overview>
+	<overview>
 
-	Applications are constrained by how many resources they can make use
-	of, failing to respect these constraints may cause the application to
-	be unresponsive or crash. It is therefore be problematic if attackers
-	can control the sizes or lifetimes of allocated objects.
+		<p>
 
-</overview>
+			Applications are constrained by how many resources they can make use
+			of, failing to respect these constraints may cause the application to
+			be unresponsive or crash. It is therefore be problematic if attackers
+			can control the sizes or lifetimes of allocated objects.
 
-<recommendation>
+		</p>
 
-	Ensure that attackers can not control object sizes and their
-	lifetimes. If object sizes and lifetimes must be controlled by
-	external parties, ensure to restrict the object sizes and lifetimes to
-	be within accptable ranges.
+	</overview>
 
-</recommendation>
+	<recommendation>
 
-<example>
+		<p>
 
-	The following example allocates a buffer with a user-controlled
-	size.
+			Ensure that attackers can not control object sizes and their
+			lifetimes. If object sizes and lifetimes must be controlled by
+			external parties, ensure to restrict the object sizes and lifetimes to
+			be within accptable ranges.
 
-	<sample src="examples/ResourceExhaustion_buffer.js" />
+		</p>
 
-	This is problematic since an attacker can choose a size
-	that makes the application run out of memory. Even worse, in older
-	versions of Node.js, this could leak confidential memory.
+	</recommendation>
 
-	To prevent such attacks, limit the buffer size:
+	<example>
 
-	<sample src="examples/ResourceExhaustion_buffer_fixed.js" />
+		<p>
 
-</example>
+			The following example allocates a buffer with a user-controlled
+			size.
 
-<example>
+		</p>
 
-	As another example, consider an application that allocates an
-	array with a user-controlled size, and then fills it with values:
+		<sample src="examples/ResourceExhaustion_buffer.js" />
 
-	<sample src="examples/ResourceExhaustion_array.js" />
+		<p>
 
-	The allocation of the array itself is not problematic since arrays are
-	allocated sparsely, but the subsequent filling of the array will take
-	a long time, causing the application to be unresponsive, or even run
-	out of memory.
+			This is problematic since an attacker can choose a size
+			that makes the application run out of memory. Even worse, in older
+			versions of Node.js, this could leak confidential memory.
 
-	Again, a limit on the size will prevent the attack:
+			To prevent such attacks, limit the buffer size:
 
-	<sample src="examples/ResourceExhaustion_array_fixed.js" />
+		</p>
 
-</example>
+		<sample src="examples/ResourceExhaustion_buffer_fixed.js" />
 
-<example>
+	</example>
 
-	Finally, the following example lets a user choose delay after
-	which a function is executed:
+	<example>
 
-	<sample src="examples/ResourceExhaustion_timeout.js" />
+		<p>
 
-	This is problematic because a large delay essentially makes the
-	application wait indefinitely before executing the function. Repeated
-	registrations of such delays will therefore use up all of the memory
-	in the application.
+			As another example, consider an application that allocates an
+			array with a user-controlled size, and then fills it with values:
 
-	Again, a limit on the delay will prevent the attack:
+		</p>
 
-	<sample src="examples/ResourceExhaustion_timeout_fixed.js" />
+		<sample src="examples/ResourceExhaustion_array.js" />
 
+		<p>
+			The allocation of the array itself is not problematic since arrays are
+			allocated sparsely, but the subsequent filling of the array will take
+			a long time, causing the application to be unresponsive, or even run
+			out of memory.
 
-</example>
+			Again, a limit on the size will prevent the attack:
 
-<references>
+		</p>
 
-</references>
+		<sample src="examples/ResourceExhaustion_array_fixed.js" />
+
+	</example>
+
+	<example>
+
+		<p>
+
+			Finally, the following example lets a user choose delay after
+			which a function is executed:
+
+			<sample src="examples/ResourceExhaustion_timeout.js" />
+
+			This is problematic because a large delay essentially makes the
+			application wait indefinitely before executing the function. Repeated
+			registrations of such delays will therefore use up all of the memory
+			in the application.
+
+			Again, a limit on the delay will prevent the attack:
+
+			<sample src="examples/ResourceExhaustion_timeout_fixed.js" />
+
+		</p>
+
+	</example>
+
+	<references>
+
+	</references>
 
 </qhelp>
