@@ -33,7 +33,7 @@ class InsufficientOriginChecks extends DataFlow::MethodCallNode {
  * A function handler for the `MessageEvent`.
  */
 class PostMessageHandler extends DataFlow::FunctionNode {
-  PostMessageHandler() { this.getFunction() instanceof PostMessageEventHandler  }
+  PostMessageHandler() { this.getFunction() instanceof PostMessageEventHandler }
 }
 
 /**
@@ -42,16 +42,13 @@ class PostMessageHandler extends DataFlow::FunctionNode {
 class PostMessageEvent extends DataFlow::SourceNode {
   PostMessageEvent() { exists(PostMessageHandler handler | this = handler.getParameter(0)) }
 
-  VarAccess event;
-  EqualityTest astNode;
-
   /**
    * Holds if an access on `MessageEvent.origin` is in an `EqualityTest` and there is no call of an insufficient verification method on `MessageEvent.origin`
    */
   predicate hasOriginChecked() {
     exists(EqualityTest test |
       this.getAPropertyRead(["origin", "source"]).flowsToExpr(test.getAnOperand())
-   )
+    )
   }
 
   /**
