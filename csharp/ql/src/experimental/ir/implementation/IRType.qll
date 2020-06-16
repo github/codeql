@@ -111,6 +111,8 @@ private class IRSizedType extends IRType {
     this = TIRFunctionAddressType(byteSize) or
     this = TIROpaqueType(_, byteSize)
   }
+  // Don't override `getByteSize()` here. The optimizer seems to generate better code when this is
+  // overridden only in the leaf classes.
 }
 
 /**
@@ -137,6 +139,8 @@ class IRNumericType extends IRSizedType {
     this = TIRUnsignedIntegerType(byteSize) or
     this = TIRFloatingPointType(byteSize, _, _)
   }
+  // Don't override `getByteSize()` here. The optimizer seems to generate better code when this is
+  // overridden only in the leaf classes.
 }
 
 /**
@@ -147,9 +151,8 @@ class IRIntegerType extends IRNumericType {
     this = TIRSignedIntegerType(byteSize) or
     this = TIRUnsignedIntegerType(byteSize)
   }
-
-  pragma[noinline]
-  final override int getByteSize() { result = byteSize }
+  // Don't override `getByteSize()` here. The optimizer seems to generate better code when this is
+  // overridden only in the leaf classes.
 }
 
 /**
@@ -162,6 +165,9 @@ class IRSignedIntegerType extends IRIntegerType, TIRSignedIntegerType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalSignedIntegerType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
@@ -174,6 +180,9 @@ class IRUnsignedIntegerType extends IRIntegerType, TIRUnsignedIntegerType {
   final override Language::LanguageType getCanonicalLanguageType() {
     result = Language::getCanonicalUnsignedIntegerType(byteSize)
   }
+
+  pragma[noinline]
+  final override int getByteSize() { result = byteSize }
 }
 
 /**
