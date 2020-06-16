@@ -45,6 +45,7 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -292,6 +293,37 @@
 | stl.cpp:173:8:173:28 | call to basic_string | stl.cpp:173:3:173:28 | ... = ... |  |
 | stl.cpp:173:8:173:28 | call to basic_string | stl.cpp:176:8:176:9 | s2 |  |
 | stl.cpp:173:20:173:25 | call to source | stl.cpp:173:8:173:28 | call to basic_string | TAINT |
+| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:7:2:7:16 | this | structlikeclass.cpp:7:32:7:36 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:7:22:7:23 | _v | structlikeclass.cpp:7:34:7:35 | _v |  |
+| structlikeclass.cpp:7:34:7:35 | _v | structlikeclass.cpp:7:32:7:36 | constructor init of field v | TAINT |
+| structlikeclass.cpp:15:22:15:23 | call to StructLikeClass | structlikeclass.cpp:17:22:17:23 | s1 |  |
+| structlikeclass.cpp:15:22:15:23 | call to StructLikeClass | structlikeclass.cpp:21:8:21:9 | s1 |  |
+| structlikeclass.cpp:16:23:16:24 | call to StructLikeClass | structlikeclass.cpp:22:8:22:9 | s2 |  |
+| structlikeclass.cpp:17:22:17:23 | s1 | structlikeclass.cpp:23:8:23:9 | s3 |  |
+| structlikeclass.cpp:19:8:19:8 | call to StructLikeClass | structlikeclass.cpp:19:3:19:8 | ... = ... |  |
+| structlikeclass.cpp:19:8:19:8 | call to StructLikeClass | structlikeclass.cpp:24:8:24:9 | s4 |  |
+| structlikeclass.cpp:28:22:28:30 | call to StructLikeClass | structlikeclass.cpp:30:22:30:23 | s1 |  |
+| structlikeclass.cpp:28:22:28:30 | call to StructLikeClass | structlikeclass.cpp:34:8:34:9 | s1 |  |
+| structlikeclass.cpp:29:23:29:31 | call to StructLikeClass | structlikeclass.cpp:35:8:35:9 | s2 |  |
+| structlikeclass.cpp:30:22:30:23 | s1 | structlikeclass.cpp:36:8:36:9 | s3 |  |
+| structlikeclass.cpp:32:8:32:15 | call to StructLikeClass | structlikeclass.cpp:32:3:32:15 | ... = ... |  |
+| structlikeclass.cpp:32:8:32:15 | call to StructLikeClass | structlikeclass.cpp:37:8:37:9 | s4 |  |
+| structlikeclass.cpp:41:19:41:20 | call to StructLikeClass | structlikeclass.cpp:42:24:42:25 | s1 |  |
+| structlikeclass.cpp:41:19:41:20 | call to StructLikeClass | structlikeclass.cpp:43:22:43:23 | s1 |  |
+| structlikeclass.cpp:41:19:41:20 | call to StructLikeClass | structlikeclass.cpp:45:8:45:9 | s1 |  |
+| structlikeclass.cpp:41:19:41:20 | call to StructLikeClass | structlikeclass.cpp:47:8:47:9 | s1 |  |
+| structlikeclass.cpp:42:24:42:25 | s1 | structlikeclass.cpp:48:8:48:9 | s2 |  |
+| structlikeclass.cpp:43:22:43:23 | s1 | structlikeclass.cpp:49:8:49:9 | s3 |  |
+| structlikeclass.cpp:45:8:45:9 | s1 | structlikeclass.cpp:45:3:45:9 | ... = ... |  |
+| structlikeclass.cpp:45:8:45:9 | s1 | structlikeclass.cpp:50:8:50:9 | s4 |  |
+| structlikeclass.cpp:54:23:54:48 | call to StructLikeClass | structlikeclass.cpp:59:8:59:9 | s1 |  |
+| structlikeclass.cpp:57:8:57:32 | call to StructLikeClass | structlikeclass.cpp:57:3:57:32 | ... = ... |  |
+| structlikeclass.cpp:57:8:57:32 | call to StructLikeClass | structlikeclass.cpp:60:8:60:9 | s2 |  |
+| structlikeclass.cpp:61:13:61:20 | call to StructLikeClass | structlikeclass.cpp:61:8:61:20 | ... = ... |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |
