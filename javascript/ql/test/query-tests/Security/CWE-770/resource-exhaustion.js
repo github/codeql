@@ -1,6 +1,5 @@
 var http = require("http"),
-  url = require("url"),
-  fs = require("fs");
+    url = require("url");
 
 var server = http.createServer(function(req, res) {
   let s = url.parse(req.url, true).query.s;
@@ -79,4 +78,8 @@ var server = http.createServer(function(req, res) {
     new Buffer(s); // OK
   }
 
+  setTimeout(f, n); // NOT OK
+  setTimeout(f, s); // NOT OK
+  setInterval(f, n); // NOT OK
+  setInterval(f, s); // NOT OK
 });
