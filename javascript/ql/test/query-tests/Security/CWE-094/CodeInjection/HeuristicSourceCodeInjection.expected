@@ -69,6 +69,16 @@ nodes
 | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
+| bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
+| bad-code-sanitization.js:58:44:58:48 | taint |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:21:16:21:16 | c |
@@ -206,6 +216,15 @@ edges
 | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:56:7:56:47 | taint | bad-code-sanitization.js:58:44:58:48 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] | bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") | bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name | bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:44:58:48 | taint | bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
