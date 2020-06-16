@@ -42,13 +42,15 @@ abstract class PostUpdateNode extends Node {
   abstract Node getPreUpdateNode();
 }
 
+private newtype TReturnKind = TNormalReturnKind()
+
 /**
  * A return kind. A return kind describes how a value can be returned
- * from a callable.
+ * from a callable. For Python, this is simply a method return.
  */
-abstract class ReturnKind extends string {
-  /** Gets a textual representation of this position. */
-  ReturnKind() { this = "ReturnKind" }
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
 }
 
 /** A data flow node that represents a value returned by a callable. */

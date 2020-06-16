@@ -11,8 +11,8 @@
  *
  * To use global (interprocedural) data flow, extend the class
  * `DataFlow::Configuration` as documented on that class. To use local
- * (intraprocedural) data flow, call `DataFlow::localFlowStep*` with
- *  arguments of type `DataFlow::Node`.
+ * (intraprocedural) data flow, call `DataFlow::localFlow` or
+ * `DataFlow::localFlowStep` with arguments of type `DataFlow::Node`.
  */
 
 import python

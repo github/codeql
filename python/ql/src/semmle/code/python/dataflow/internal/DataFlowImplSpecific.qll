@@ -8,4 +8,5 @@ module Private {
 
 module Public {
   import DataFlowPublic
+  import DataFlowUtil
 }
