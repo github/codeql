@@ -11,23 +11,15 @@ import (
 	sendgrid "github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-// OK
-func mailGood(w http.ResponseWriter, r *http.Request) {
-	host := config["Host"]
-	token := backend.getUserSecretResetToken(email)
-	body := "Click to reset password: " + host + "/" + token
-	smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(body))
-}
-
-// Not OK
-func mail(w http.ResponseWriter, r *http.Request) {
-	host := r.Header.Get("Host")
-	token := backend.getUserSecretResetToken(email)
-	body := "Click to reset password: " + host + "/" + token
-	smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(body))
-}
-
 func main() {
+	var w http.ResponseWriter
+	var r *http.Request
+
+	// Not OK
+	mail(w, r)
+
+	// OK
+	mailGood(w, r)
 
 	// Not OK
 	http.HandleFunc("/ex0", func(w http.ResponseWriter, r *http.Request) {
