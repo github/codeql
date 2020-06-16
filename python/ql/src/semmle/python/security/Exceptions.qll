@@ -4,46 +4,34 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 
-private Value traceback_function(string name) {
-    result = Module::named("traceback").attr(name)
-}
+private Value traceback_function(string name) { result = Module::named("traceback").attr(name) }
 
 /**
  * This represents information relating to an exception, for instance the
  * message, arguments or parts of the exception traceback.
  */
 class ExceptionInfo extends StringKind {
+    ExceptionInfo() { this = "exception.info" }
 
-    ExceptionInfo() {
-        this = "exception.info"
-    }
-
-    override string repr() {
-        result = "exception info"
-    }
-
+    override string repr() { result = "exception info" }
 }
 
-/** A class representing sources of information about 
+/**
+ * A class representing sources of information about
  * execution state exposed in tracebacks and the like.
  */
-abstract class ErrorInfoSource extends TaintSource {}
+abstract class ErrorInfoSource extends TaintSource { }
 
 /**
  * This kind represents exceptions themselves.
  */
 class ExceptionKind extends TaintKind {
+    ExceptionKind() { this = "exception.kind" }
 
-    ExceptionKind() {
-        this = "exception.kind"
-    }
-
-    override string repr() {
-        result = "exception"
-    }
+    override string repr() { result = "exception" }
 
     override TaintKind getTaintOfAttribute(string name) {
         name = "args" and result instanceof ExceptionInfoSequence
@@ -57,23 +45,18 @@ class ExceptionKind extends TaintKind {
  * `except` statement.
  */
 class ExceptionSource extends ErrorInfoSource {
-
     ExceptionSource() {
-        exists(ClassObject cls |
-            cls.isSubclassOf(theExceptionType()) and
-            this.(ControlFlowNode).refersTo(_, cls, _)
+        exists(ClassValue cls |
+            cls.getASuperType() = ClassValue::baseException() and
+            this.(ControlFlowNode).pointsTo().getClass() = cls
         )
         or
         this = any(ExceptStmt s).getName().getAFlowNode()
     }
 
-    override string toString() {
-        result = "exception.source"
-    }
+    override string toString() { result = "exception.source" }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof ExceptionKind
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionKind }
 }
 
 /**
@@ -81,18 +64,14 @@ class ExceptionSource extends ErrorInfoSource {
  * for instance the contents of the `args` attribute, or the stack trace.
  */
 class ExceptionInfoSequence extends SequenceKind {
-    ExceptionInfoSequence() {
-        this.getItem() instanceof ExceptionInfo
-    }
+    ExceptionInfoSequence() { this.getItem() instanceof ExceptionInfo }
 }
-
 
 /**
  * Represents calls to functions in the `traceback` module that return
  * sequences of exception information.
  */
 class CallToTracebackFunction extends ErrorInfoSource {
-
     CallToTracebackFunction() {
         exists(string name |
             name = "extract_tb" or
@@ -107,30 +86,19 @@ class CallToTracebackFunction extends ErrorInfoSource {
         )
     }
 
-    override string toString() {
-        result = "exception.info.sequence.source"
-    }
+    override string toString() { result = "exception.info.sequence.source" }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof ExceptionInfoSequence
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfoSequence }
 }
 
-/** 
+/**
  * Represents calls to functions in the `traceback` module that return a single
  * string of information about an exception.
  */
 class FormattedTracebackSource extends ErrorInfoSource {
+    FormattedTracebackSource() { this = traceback_function("format_exc").getACall() }
 
-    FormattedTracebackSource() {
-        this = traceback_function("format_exc").getACall()
-    }
+    override string toString() { result = "exception.info.source" }
 
-    override string toString() {
-        result = "exception.info.source"
-    }
-
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof ExceptionInfo
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExceptionInfo }
 }

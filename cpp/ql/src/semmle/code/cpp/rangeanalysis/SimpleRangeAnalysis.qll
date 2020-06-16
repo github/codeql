@@ -91,36 +91,122 @@ private float wideningUpperBounds(ArithmeticType t) {
   result = 1.0 / 0.0 // +Inf
 }
 
+/**
+ * Gets the value of the expression `e`, if it is a constant.
+ * This predicate also handles the case of constant variables initialized in different
+ * compilation units, which doesn't necessarily have a getValue() result from the extractor.
+ */
+private string getValue(Expr e) {
+  if exists(e.getValue())
+  then result = e.getValue()
+  else
+    /*
+     * It should be safe to propagate the initialization value to a variable if:
+     * The type of v is const, and
+     * The type of v is not volatile, and
+     * Either:
+     *   v is a local/global variable, or
+     *   v is a static member variable
+     */
+
+    exists(VariableAccess access, StaticStorageDurationVariable v |
+      not v.getUnderlyingType().isVolatile() and
+      v.getUnderlyingType().isConst() and
+      e = access and
+      v = access.getTarget() and
+      result = getValue(v.getAnAssignedValue())
+    )
+}
+
+/**
+ * A bitwise `&` expression in which both operands are unsigned, or are effectively
+ * unsigned due to being a non-negative constant.
+ */
+private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
+  UnsignedBitwiseAndExpr() {
+    (
+      getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
+      getLeftOperand().getFullyConverted().getValue().toInt() >= 0
+    ) and
+    (
+      getRightOperand()
+          .getFullyConverted()
+          .getType()
+          .getUnderlyingType()
+          .(IntegralType)
+          .isUnsigned() or
+      getRightOperand().getFullyConverted().getValue().toInt() >= 0
+    )
+  }
+}
+
+/**
+ * Gets the floor of `v`, with additional logic to work around issues with
+ * large numbers.
+ */
+bindingset[v]
+float safeFloor(float v) {
+  // return the floor of v
+  v.abs() < 2.pow(31) and
+  result = v.floor()
+  or
+  // `floor()` doesn't work correctly on large numbers (since it returns an integer),
+  // so fall back to unrounded numbers at this scale.
+  not v.abs() < 2.pow(31) and
+  result = v
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
   // `exprMinVal` to check this.
   exists(exprMinVal(e)) and
   (
-    exists(e.getValue().toFloat()) or
-    e instanceof UnaryPlusExpr or
-    e instanceof UnaryMinusExpr or
-    e instanceof MinExpr or
-    e instanceof MaxExpr or
-    e instanceof ConditionalExpr or
-    e instanceof AddExpr or
-    e instanceof SubExpr or
-    e instanceof AssignExpr or
-    e instanceof AssignAddExpr or
-    e instanceof AssignSubExpr or
-    e instanceof CrementOperation or
-    e instanceof RemExpr or
-    e instanceof CommaExpr or
-    e instanceof StmtExpr or
+    exists(getValue(e).toFloat())
+    or
+    e instanceof UnaryPlusExpr
+    or
+    e instanceof UnaryMinusExpr
+    or
+    e instanceof MinExpr
+    or
+    e instanceof MaxExpr
+    or
+    e instanceof ConditionalExpr
+    or
+    e instanceof AddExpr
+    or
+    e instanceof SubExpr
+    or
+    e instanceof AssignExpr
+    or
+    e instanceof AssignAddExpr
+    or
+    e instanceof AssignSubExpr
+    or
+    e instanceof CrementOperation
+    or
+    e instanceof RemExpr
+    or
+    e instanceof CommaExpr
+    or
+    e instanceof StmtExpr
+    or
     // A conversion is analyzable, provided that its child has an arithmetic
     // type. (Sometimes the child is a reference type, and so does not get
     // any bounds.) Rather than checking whether the type of the child is
     // arithmetic, we reuse the logic that is already encoded in
     // `exprMinVal`.
-    exists(exprMinVal(e.(Conversion).getExpr())) or
+    exists(exprMinVal(e.(Conversion).getExpr()))
+    or
     // Also allow variable accesses, provided that they have SSA
     // information.
     exists(RangeSsaDefinition def, StackVariable v | e = def.getAUse(v))
+    or
+    e instanceof UnsignedBitwiseAndExpr
+    or
+    // `>>` by a constant
+    exists(e.(RShiftExpr).getRightOperand().getValue())
   )
 }
 
@@ -217,6 +303,19 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   )
   or
   exists(Conversion convExpr | e = convExpr | exprDependsOnDef(convExpr.getExpr(), srcDef, srcVar))
+  or
+  // unsigned `&`
+  exists(UnsignedBitwiseAndExpr andExpr |
+    andExpr = e and
+    exprDependsOnDef(andExpr.getAnOperand(), srcDef, srcVar)
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rs |
+    rs = e and
+    exists(rs.getRightOperand().getValue()) and
+    exprDependsOnDef(rs.getLeftOperand(), srcDef, srcVar)
+  )
   or
   e = srcDef.getAUse(srcVar)
 }
@@ -365,8 +464,8 @@ private float getTruncatedLowerBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getLowerBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by getLowerBoundsImpl might
       // overflow, so we replace invalid bounds with exprMinVal.
@@ -418,8 +517,8 @@ private float getTruncatedUpperBounds(Expr expr) {
   then
     // If the expression evaluates to a constant, then there is no
     // need to call getUpperBoundsImpl.
-    if exists(expr.getValue().toFloat())
-    then result = expr.getValue().toFloat()
+    if exists(getValue(expr).toFloat())
+    then result = getValue(expr).toFloat()
     else (
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
@@ -614,6 +713,20 @@ private float getLowerBoundsImpl(Expr expr) {
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefLowerBounds(def, v)
   )
+  or
+  // unsigned `&` (tighter bounds may exist)
+  exists(UnsignedBitwiseAndExpr andExpr |
+    andExpr = expr and
+    result = 0.0
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rsExpr, float left, int right |
+    rsExpr = expr and
+    left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
+    right = rsExpr.getRightOperand().getValue().toInt() and
+    result = safeFloor(left / 2.pow(right))
+  )
 }
 
 /** Only to be called by `getTruncatedUpperBounds`. */
@@ -766,6 +879,22 @@ private float getUpperBoundsImpl(Expr expr) {
   // Use SSA to get the upper bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefUpperBounds(def, v)
+  )
+  or
+  // unsigned `&` (tighter bounds may exist)
+  exists(UnsignedBitwiseAndExpr andExpr, float left, float right |
+    andExpr = expr and
+    left = getFullyConvertedUpperBounds(andExpr.getLeftOperand()) and
+    right = getFullyConvertedUpperBounds(andExpr.getRightOperand()) and
+    result = left.minimum(right)
+  )
+  or
+  // `>>` by a constant
+  exists(RShiftExpr rsExpr, float left, int right |
+    rsExpr = expr and
+    left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
+    right = rsExpr.getRightOperand().getValue().toInt() and
+    result = safeFloor(left / 2.pow(right))
   )
 }
 
@@ -994,7 +1123,8 @@ private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
       // The new lower bound is from a recursive source, so we round
       // down to one of a limited set of values to prevent the
       // recursion from exploding.
-      result = max(float widenLB |
+      result =
+        max(float widenLB |
           widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
           not widenLB > truncatedLB
         |
@@ -1023,7 +1153,8 @@ private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
       // The new upper bound is from a recursive source, so we round
       // up to one of a fixed set of values to prevent the recursion
       // from exploding.
-      result = min(float widenUB |
+      result =
+        min(float widenUB |
           widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
           not widenUB < truncatedUB
         |

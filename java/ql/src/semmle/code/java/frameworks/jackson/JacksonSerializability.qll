@@ -9,6 +9,9 @@ import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow5
 
+/**
+ * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
+ */
 class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
   JacksonJSONIgnoreAnnotation() {
     exists(AnnotationType anntp | anntp = this.getType() |
@@ -17,6 +20,7 @@ class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
   }
 }
 
+/** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
 
 /**
@@ -34,6 +38,7 @@ library class JacksonWriteValueMethod extends Method {
   }
 }
 
+/** A type whose values are explicitly serialized in a call to a Jackson method. */
 library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
     exists(MethodAccess ma |
@@ -45,12 +50,14 @@ library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializab
   }
 }
 
+/** A type used in a `JacksonSerializableField` declaration. */
 library class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
   FieldReferencedJacksonSerializableType() {
     exists(JacksonSerializableField f | usesType(f.getType(), this))
   }
 }
 
+/** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
 private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::Configuration {
@@ -76,6 +83,7 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::C
   TypeLiteral getSourceWithFlowToJacksonDatabind() { hasFlow(DataFlow::exprNode(result), _) }
 }
 
+/** A type whose values are explicitly deserialized in a call to a Jackson method. */
 library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
@@ -84,12 +92,14 @@ library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializa
   }
 }
 
+/** A type used in a `JacksonDeserializableField` declaration. */
 library class FieldReferencedJacksonDeSerializableType extends JacksonDeserializableType {
   FieldReferencedJacksonDeSerializableType() {
     exists(JacksonDeserializableField f | usesType(f.getType(), this))
   }
 }
 
+/** A field that may be serialized using the Jackson JSON framework. */
 class JacksonSerializableField extends SerializableField {
   JacksonSerializableField() {
     exists(JacksonSerializableType superType |
@@ -101,6 +111,7 @@ class JacksonSerializableField extends SerializableField {
   }
 }
 
+/** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
@@ -183,6 +194,7 @@ class JacksonMixinType extends ClassOrInterface {
   }
 }
 
+/** A callable used as a Jackson mixin callable. */
 class JacksonMixedInCallable extends Callable {
   JacksonMixedInCallable() {
     exists(JacksonMixinType mixinType | this = mixinType.getAMixedInCallable())
@@ -207,8 +219,8 @@ class JacksonMixedInCallable extends Callable {
       then
         // The mixed in type will have a different name to the target type, so just compare the
         // parameters.
-        result.getSignature().suffix(targetType.getName().length()) = getSignature()
-              .suffix(getDeclaringType().getName().length())
+        result.getSignature().suffix(targetType.getName().length()) =
+          getSignature().suffix(getDeclaringType().getName().length())
       else
         // Signatures should match
         result.getSignature() = getSignature()

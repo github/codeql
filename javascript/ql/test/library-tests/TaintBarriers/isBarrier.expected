@@ -1,43 +1,45 @@
-| tst.js:6:14:6:14 | v | ExampleConfiguration |
-| tst.js:14:14:14:14 | v | ExampleConfiguration |
-| tst.js:24:14:24:14 | v | ExampleConfiguration |
-| tst.js:36:14:36:14 | v | ExampleConfiguration |
-| tst.js:50:14:50:14 | v | ExampleConfiguration |
-| tst.js:56:14:56:14 | v | ExampleConfiguration |
-| tst.js:60:14:60:14 | v | ExampleConfiguration |
-| tst.js:74:14:74:14 | v | ExampleConfiguration |
-| tst.js:80:14:80:14 | v | ExampleConfiguration |
-| tst.js:84:14:84:14 | v | ExampleConfiguration |
-| tst.js:96:14:96:14 | v | ExampleConfiguration |
-| tst.js:108:14:108:14 | v | ExampleConfiguration |
-| tst.js:120:14:120:14 | v | ExampleConfiguration |
-| tst.js:132:14:132:14 | v | ExampleConfiguration |
-| tst.js:134:14:134:16 | v.p | ExampleConfiguration |
-| tst.js:136:14:136:18 | v.p.q | ExampleConfiguration |
-| tst.js:148:9:148:27 | v | ExampleConfiguration |
-| tst.js:149:14:149:14 | v | ExampleConfiguration |
-| tst.js:154:9:154:27 | v | ExampleConfiguration |
-| tst.js:157:14:157:14 | v | ExampleConfiguration |
-| tst.js:160:9:160:30 | v | ExampleConfiguration |
-| tst.js:160:35:160:56 | v | ExampleConfiguration |
-| tst.js:167:14:167:14 | v | ExampleConfiguration |
-| tst.js:176:18:176:18 | v | ExampleConfiguration |
-| tst.js:185:14:185:14 | v | ExampleConfiguration |
-| tst.js:193:14:193:14 | v | ExampleConfiguration |
-| tst.js:205:14:205:14 | v | ExampleConfiguration |
-| tst.js:209:14:209:14 | v | ExampleConfiguration |
-| tst.js:217:14:217:14 | v | ExampleConfiguration |
-| tst.js:221:14:221:14 | v | ExampleConfiguration |
-| tst.js:229:14:229:14 | v | ExampleConfiguration |
-| tst.js:237:14:237:14 | v | ExampleConfiguration |
-| tst.js:241:14:241:14 | v | ExampleConfiguration |
-| tst.js:255:14:255:14 | v | ExampleConfiguration |
-| tst.js:265:14:265:14 | v | ExampleConfiguration |
-| tst.js:284:14:284:14 | v | ExampleConfiguration |
-| tst.js:331:14:331:14 | v | ExampleConfiguration |
-| tst.js:350:14:350:14 | v | ExampleConfiguration |
-| tst.js:356:16:356:27 | x10 | ExampleConfiguration |
-| tst.js:356:32:356:34 | x10 | ExampleConfiguration |
-| tst.js:361:14:361:14 | v | ExampleConfiguration |
-| tst.js:371:14:371:16 | o.p | ExampleConfiguration |
-| tst.js:378:14:378:17 | o[p] | ExampleConfiguration |
+isBarrier
+isLabeledBarrier
+| ExampleConfiguration | tst.js:6:14:6:14 | v | taint |
+| ExampleConfiguration | tst.js:14:14:14:14 | v | taint |
+| ExampleConfiguration | tst.js:24:14:24:14 | v | taint |
+| ExampleConfiguration | tst.js:36:14:36:14 | v | taint |
+| ExampleConfiguration | tst.js:50:14:50:14 | v | taint |
+| ExampleConfiguration | tst.js:56:14:56:14 | v | taint |
+| ExampleConfiguration | tst.js:60:14:60:14 | v | taint |
+| ExampleConfiguration | tst.js:74:14:74:14 | v | taint |
+| ExampleConfiguration | tst.js:80:14:80:14 | v | taint |
+| ExampleConfiguration | tst.js:84:14:84:14 | v | taint |
+| ExampleConfiguration | tst.js:96:14:96:14 | v | taint |
+| ExampleConfiguration | tst.js:108:14:108:14 | v | taint |
+| ExampleConfiguration | tst.js:120:14:120:14 | v | taint |
+| ExampleConfiguration | tst.js:132:14:132:14 | v | taint |
+| ExampleConfiguration | tst.js:134:14:134:16 | v.p | taint |
+| ExampleConfiguration | tst.js:136:14:136:18 | v.p.q | taint |
+| ExampleConfiguration | tst.js:148:9:148:27 | v | taint |
+| ExampleConfiguration | tst.js:149:14:149:14 | v | taint |
+| ExampleConfiguration | tst.js:154:9:154:27 | v | taint |
+| ExampleConfiguration | tst.js:157:14:157:14 | v | taint |
+| ExampleConfiguration | tst.js:160:9:160:30 | v | taint |
+| ExampleConfiguration | tst.js:160:35:160:56 | v | taint |
+| ExampleConfiguration | tst.js:167:14:167:14 | v | taint |
+| ExampleConfiguration | tst.js:176:18:176:18 | v | taint |
+| ExampleConfiguration | tst.js:185:14:185:14 | v | taint |
+| ExampleConfiguration | tst.js:193:14:193:14 | v | taint |
+| ExampleConfiguration | tst.js:205:14:205:14 | v | taint |
+| ExampleConfiguration | tst.js:209:14:209:14 | v | taint |
+| ExampleConfiguration | tst.js:217:14:217:14 | v | taint |
+| ExampleConfiguration | tst.js:221:14:221:14 | v | taint |
+| ExampleConfiguration | tst.js:229:14:229:14 | v | taint |
+| ExampleConfiguration | tst.js:237:14:237:14 | v | taint |
+| ExampleConfiguration | tst.js:241:14:241:14 | v | taint |
+| ExampleConfiguration | tst.js:255:14:255:14 | v | taint |
+| ExampleConfiguration | tst.js:265:14:265:14 | v | taint |
+| ExampleConfiguration | tst.js:284:14:284:14 | v | taint |
+| ExampleConfiguration | tst.js:331:14:331:14 | v | taint |
+| ExampleConfiguration | tst.js:350:14:350:14 | v | taint |
+| ExampleConfiguration | tst.js:356:16:356:27 | x10 | taint |
+| ExampleConfiguration | tst.js:356:32:356:34 | x10 | taint |
+| ExampleConfiguration | tst.js:361:14:361:14 | v | taint |
+| ExampleConfiguration | tst.js:371:14:371:16 | o.p | taint |
+| ExampleConfiguration | tst.js:378:14:378:17 | o[p] | taint |

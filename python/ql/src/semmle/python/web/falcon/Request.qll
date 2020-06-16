@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.falcon.General
 import semmle.python.security.strings.External
@@ -35,7 +35,7 @@ class FalconRequest extends TaintKind {
     }
 }
 
-class FalconRequestParameter extends TaintSource {
+class FalconRequestParameter extends HttpRequestTaintSource {
     FalconRequestParameter() {
         exists(FalconHandlerFunction f | f.getRequest() = this.(ControlFlowNode).getNode())
     }

@@ -885,15 +885,24 @@ void FuncPtrConversions(int(*pfn)(int), void* p) {
   pfn = (int(*)(int))p;
 }
 
+void VAListUsage(int x, __builtin_va_list args) {
+  __builtin_va_list args2;
+  __builtin_va_copy(args2, args);
+  double d = __builtin_va_arg(args, double);
+  float f = __builtin_va_arg(args, int);
+  __builtin_va_end(args2);
+}
+
 void VarArgUsage(int x, ...) {
   __builtin_va_list args;
 
   __builtin_va_start(args, x);
   __builtin_va_list args2;
-  __builtin_va_start(args2, args);
+  __builtin_va_copy(args2, args);
   double d = __builtin_va_arg(args, double);
-  float f = __builtin_va_arg(args, float);
+  float f = __builtin_va_arg(args, int);
   __builtin_va_end(args);
+  VAListUsage(x, args2);
   __builtin_va_end(args2);
 }
 
@@ -1164,6 +1173,153 @@ int ModeledCallTarget(int x) {
   int y;
   memcpy(&y, &x, sizeof(int));
   return y;
+}
+
+String ReturnObjectImpl() {
+  return String("foo");
+}
+
+void switch1Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+    }
+    int z = y;
+}
+
+void switch2Case_fallthrough(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+        y = 2;
+        break;
+        case 2:
+        y = 3;
+    }
+    int z = y;
+}
+
+void switch2Case_default(int x) {
+    int y = 0;
+    switch(x) {
+        case 1:
+            y = 2;
+            break;
+
+        case 2:
+            y = 3;
+            break;
+
+        default:
+            y = 4;
+    }
+    int z = y;
+}
+
+int staticLocalInit(int x) {
+    static int a = 0;  // Constant initialization
+    static int b = sizeof(x);  // Constant initialization
+    static int c = x;  // Dynamic initialization
+    static int d;  // Zero initialization
+
+    return a + b + c + d;
+}
+
+void staticLocalWithConstructor(const char* dynamic) {
+    static String a;
+    static String b("static");
+    static String c(dynamic);
+}
+
+// --- strings ---
+
+char *strcpy(char *destination, const char *source);
+char *strcat(char *destination, const char *source);
+
+void test_strings(char *s1, char *s2) {
+    char buffer[1024] = {0};
+
+    strcpy(buffer, s1);
+    strcat(buffer, s2);
+}
+
+struct A {
+    int member;
+
+    static void static_member(A* a, int x) {
+        a->member = x;
+    }
+
+    static void static_member_without_def();
+};
+
+A* getAnInstanceOfA();
+
+void test_static_member_functions(int int_arg, A* a_arg) {
+    C c;
+    c.StaticMemberFunction(10);
+    C::StaticMemberFunction(10);
+
+    A a;
+    a.static_member(&a, int_arg);
+    A::static_member(&a, int_arg);
+
+    (&a)->static_member(a_arg, int_arg + 2);
+    (*a_arg).static_member(&a, 99);
+    a_arg->static_member(a_arg, -1);
+
+    a.static_member_without_def();
+    A::static_member_without_def();
+
+    getAnInstanceOfA()->static_member_without_def();
+}
+
+int missingReturnValue(bool b, int x) {
+    if (b) {
+        return x;
+    }
+}
+
+void returnVoid(int x, int y) {
+    return IntegerOps(x, y);
+}
+
+void gccBinaryConditional(bool b, int x, long y) {
+    int z = x;
+    z = b ?: x;
+    z = b ?: y;
+    z = x ?: x;
+    z = x ?: y;
+    z = y ?: x;
+    z = y ?: y;
+
+    z = (x && b || y) ?: x;
+}
+
+bool predicateA();
+bool predicateB();
+
+int shortCircuitConditional(int x, int y) {
+    return predicateA() && predicateB() ? x : y;
+}
+
+void *operator new(size_t, void *) noexcept;
+
+void f(int* p)
+{
+  new (p) int;
 }
 
 // semmle-extractor-options: -std=c++17 --clang

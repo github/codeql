@@ -295,7 +295,8 @@ module Ssa {
      * that is either a read or a certain write.
      */
     private int firstReadOrCertainWrite(BasicBlock bb, SourceVariable v) {
-      result = min(int r, RefKind k |
+      result =
+        min(int r, RefKind k |
           r = refRank(bb, _, v, k) and
           k != Write(false)
         |
@@ -387,7 +388,8 @@ module Ssa {
       or
       // Local variable declaration without initializer
       not exists(result.getTargetAccess()) and
-      this = any(LocalScopeSourceVariable v |
+      this =
+        any(LocalScopeSourceVariable v |
           result.getTarget() = v.getAssignable() and
           result.getEnclosingCallable() = v.getEnclosingCallable()
         )
@@ -450,7 +452,8 @@ module Ssa {
        * code location. This is used as the representative location.
        */
       private FieldOrPropAccess getFirstAccess() {
-        result = min(this.getAnAccess() as a
+        result =
+          min(this.getAnAccess() as a
             order by
               a.getLocation().getStartLine(), a.getLocation().getStartColumn()
           )
@@ -1064,12 +1067,14 @@ module Ssa {
       private predicate delegateCreation(
         Expr e, Callable c, SystemLinqExpressions::DelegateExtType dt
       ) {
-        e = any(AnonymousFunctionExpr afe |
+        e =
+          any(AnonymousFunctionExpr afe |
             dt = afe.getType() and
             c = afe
           )
         or
-        e = any(CallableAccess ca |
+        e =
+          any(CallableAccess ca |
             c = ca.getTarget().getSourceDeclaration() and
             dt = ca.getType()
           )
@@ -2560,7 +2565,8 @@ module Ssa {
    */
   class UncertainDefinition extends Definition {
     UncertainDefinition() {
-      this = any(ExplicitDefinition def |
+      this =
+        any(ExplicitDefinition def |
           forex(AssignableDefinition ad | ad = def.getADefinition() | not ad.isCertain())
         )
       or

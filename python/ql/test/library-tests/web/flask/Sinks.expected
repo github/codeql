@@ -1,8 +1,0 @@
-| test.py:8 | Str | externally controlled string |
-| test.py:29 | Attribute() | externally controlled string |
-| test.py:35 | Subscript | externally controlled string |
-| test.py:36 | None | externally controlled string |
-| test.py:41 | BinaryExpr | externally controlled string |
-| test.py:41 | make_response() | externally controlled string |
-| test.py:46 | BinaryExpr | externally controlled string |
-| test.py:46 | make_response() | externally controlled string |

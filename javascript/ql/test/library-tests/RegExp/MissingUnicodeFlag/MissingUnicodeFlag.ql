@@ -1,7 +1,8 @@
 import javascript
 
 from RegExpLiteral literal, RegExpConstant wideConstant
-where wideConstant.getLiteral() = literal and
+where
+  wideConstant.getLiteral() = literal and
   not literal.getFlags().matches("%u%") and
   wideConstant.getValue().length() > 1 and
   (

@@ -5,6 +5,8 @@
     <AssemblyName>Semmle.Util</AssemblyName>
     <RootNamespace>Semmle.Util</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

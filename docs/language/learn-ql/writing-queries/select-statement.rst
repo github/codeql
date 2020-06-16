@@ -1,5 +1,10 @@
-Defining 'select' statements
-============================
+Defining the results of a query
+===============================
+
+You can control how analysis results are displayed in source code by modifying a query's ``select`` statement.
+
+About query results
+-------------------
 
 The information contained in the results of a query is controlled by the ``select`` statement. Part of the process of developing a useful query is to make the results clear and easy for other users to understand.
 When you write your own queries in the query console or in the CodeQL `extension for VS Code <https://help.semmle.com/codeql/codeql-for-vscode.html>`__ there are no constraints on what can be selected.
@@ -10,7 +15,7 @@ This topic explains how to write your select statement to generate helpful analy
 Overview
 --------
 
-Alert queries must have the property ``@kind problem`` defined in their metadata. For further information, see the :doc:`query metadata reference <query-metadata>`. 
+Alert queries must have the property ``@kind problem`` defined in their metadata. For further information, see :doc:`Metadata for CodeQL queries <query-metadata>`. 
 In their most basic form, the ``select`` statement must select two 'columns':
 
 -  **Element**—a code element that's identified by the query. This defines the location of the alert.
@@ -22,7 +27,7 @@ If you look at some of the LGTM queries, you'll see that they can select extra e
 
     Note
 
-    An in-depth discussion of ``select`` statements for path and metric queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see :doc:`Constructing path queries <path-queries>`.
+    An in-depth discussion of ``select`` statements for path queries is not included in this topic. However, you can develop the string column of the ``select`` statement in the same way as for alert queries. For more specific information about path queries, see :doc:`Creating path queries <path-queries>`.
 
 Developing a select statement
 -----------------------------
@@ -100,3 +105,8 @@ The new elements added here don't need to be clickable, so we added them directl
 .. image:: ../../images/ql-select-statement-similarity.png
    :alt: Results showing the extent of similarity
    :class: border
+
+Further reading
+---------------
+
+- `CodeQL repository <https://github.com/github/codeql>`__

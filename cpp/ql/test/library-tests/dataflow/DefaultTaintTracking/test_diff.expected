@@ -1,0 +1,39 @@
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:14 | call to _strdup | IR only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | defaulttainttracking.cpp:16:8:16:29 | (const char *)... | IR only |
+| defaulttainttracking.cpp:16:16:16:21 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:21:8:21:10 | buf | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:22:15:22:17 | buf | AST only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:24:8:24:10 | (const char *)... | IR only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | defaulttainttracking.cpp:24:8:24:10 | array to pointer conversion | IR only |
+| defaulttainttracking.cpp:22:20:22:25 | call to getenv | shared.h:10:21:10:22 | s1 | AST only |
+| defaulttainttracking.cpp:38:25:38:30 | call to getenv | defaulttainttracking.cpp:39:51:39:61 | env_pointer | AST only |
+| defaulttainttracking.cpp:64:10:64:15 | call to getenv | defaulttainttracking.cpp:52:24:52:24 | p | IR only |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:16 | call to move | IR only |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:32 | (const char *)... | IR only |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:8:88:32 | (reference dereference) | IR only |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | defaulttainttracking.cpp:88:18:88:30 | (reference to) | IR only |
+| defaulttainttracking.cpp:88:18:88:23 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:91:31:91:33 | ret | AST only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:5:92:8 | * ... | AST only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:6:92:8 | ret | AST only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:96:11:96:12 | p2 | IR only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... | IR only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 | IR only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
+| defaulttainttracking.cpp:110:17:110:22 | call to getenv | defaulttainttracking.cpp:111:8:111:8 | y | AST only |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:126:16:126:16 | x | IR only |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:133:5:133:5 | x | AST only |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:134:10:134:10 | x | IR only |
+| defaulttainttracking.cpp:133:9:133:14 | call to getenv | shared.h:6:15:6:23 | sinkparam | IR only |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:140:7:140:7 | x | AST only |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:143:23:143:24 | pp | IR only |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:144:8:144:9 | pp | IR only |
+| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:150:13:150:14 | & ... | IR only |
+| globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
+| globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
+| test_diff.cpp:104:12:104:15 | argv | test_diff.cpp:104:11:104:20 | (...) | IR only |
+| test_diff.cpp:108:10:108:13 | argv | test_diff.cpp:36:24:36:24 | p | AST only |
+| test_diff.cpp:111:10:111:13 | argv | shared.h:5:23:5:31 | sinkparam | AST only |
+| test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:29:24:29:24 | p | AST only |
+| test_diff.cpp:111:10:111:13 | argv | test_diff.cpp:30:14:30:14 | p | AST only |
+| test_diff.cpp:124:19:124:22 | argv | test_diff.cpp:76:24:76:24 | p | IR only |

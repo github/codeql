@@ -340,7 +340,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (isFullyConstructed)
                 {
-                    trapFile.is_constructed(this);
                     trapFile.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol));
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
@@ -354,7 +353,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    trapFile.is_generic(this);
                     foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
                         trapFile.type_parameters(typeParam, child, this);

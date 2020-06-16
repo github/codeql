@@ -439,14 +439,16 @@ module ControlFlow {
           or
           this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
           or
-          this = any(FixedStmt fs |
+          this =
+            any(FixedStmt fs |
               result = fs.getVariableDeclExpr(i)
               or
               result = fs.getBody() and
               i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
             )
           or
-          this = any(UsingBlockStmt us |
+          this =
+            any(UsingBlockStmt us |
               if exists(us.getExpr())
               then (
                 result = us.getExpr() and
@@ -499,7 +501,7 @@ module ControlFlow {
       private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
         WriteAccessNoNodeExpr() {
           // For example a write to a static field, `Foo.Bar = 0`.
-          forall(Expr e | e = this.(QualifiableExpr).getQualifier() | e instanceof NoNodeExpr)
+          forall(Expr e | e = this.getAChildExpr() | e instanceof NoNodeExpr)
         }
       }
 
@@ -512,13 +514,15 @@ module ControlFlow {
         or
         e = any(ExtensionMethodCall emc | result = emc.getArgument(i))
         or
-        e = any(QualifiableExpr qe |
+        e =
+          any(QualifiableExpr qe |
             not qe instanceof ExtensionMethodCall and
             not qe.isConditional() and
             result = qe.getChild(i)
           )
         or
-        e = any(Assignment a |
+        e =
+          any(Assignment a |
             // The left-hand side of an assignment is evaluated before the right-hand side
             i = 0 and result = a.getLValue()
             or
@@ -527,7 +531,8 @@ module ControlFlow {
       }
 
       private ControlFlowElement getExprChildElement(Expr e, int i) {
-        result = rank[i + 1](ControlFlowElement cfe, int j |
+        result =
+          rank[i + 1](ControlFlowElement cfe, int j |
             cfe = getExprChildElement0(e, j) and
             not cfe instanceof NoNodeExpr
           |
@@ -548,7 +553,17 @@ module ControlFlow {
        * not evaluated, only the qualifier and the indexer arguments (if any).
        */
       private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr {
-        QualifiedWriteAccess() { this.hasQualifier() }
+        QualifiedWriteAccess() {
+          this.hasQualifier()
+          or
+          // Member initializers like
+          // ```
+          // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
+          // ```
+          // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+          // have no qualifier.
+          this = any(MemberInitializer mi).getLValue()
+        }
       }
 
       /** A normal or a (potential) dynamic call to an accessor. */
@@ -585,7 +600,8 @@ module ControlFlow {
          * can happen in tuple assignments.
          */
         StatOrDynAccessorCall getCall(int i) {
-          result = rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
+          result =
+            rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
               tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
             |
               tdef order by tdef.getEvaluationOrder()
@@ -629,20 +645,21 @@ module ControlFlow {
         result = cfe
         or
         // Post-order: first element of first child (or self, if no children)
-        cfe = any(PostOrderElement poe |
+        cfe =
+          any(PostOrderElement poe |
             result = first(poe.getFirstChild())
             or
             not exists(poe.getFirstChild()) and
             result = poe
           )
         or
-        cfe = any(AssignOperationWithExpandedAssignment a |
-            result = first(a.getExpandedAssignment())
-          )
+        cfe =
+          any(AssignOperationWithExpandedAssignment a | result = first(a.getExpandedAssignment()))
         or
         cfe = any(ConditionallyQualifiedExpr cqe | result = first(cqe.getChildExpr(-1)))
         or
-        cfe = any(ArrayCreation ac |
+        cfe =
+          any(ArrayCreation ac |
             if ac.isImplicitlySized()
             then
               // No length argument: element itself
@@ -652,7 +669,8 @@ module ControlFlow {
               result = first(ac.getLengthArgument(0))
           )
         or
-        cfe = any(ForeachStmt fs |
+        cfe =
+          any(ForeachStmt fs |
             // Unlike most other statements, `foreach` statements are not modelled in
             // pre-order, because we use the `foreach` node itself to represent the
             // emptiness test that determines whether to execute the loop body
@@ -765,7 +783,8 @@ module ControlFlow {
       pragma[nomagic]
       private ControlFlowElement lastNonRec(ControlFlowElement cfe, TLastComputation c) {
         // Pre-order: last element of last child (or self, if no children)
-        cfe = any(StandardStmt ss |
+        cfe =
+          any(StandardStmt ss |
             result = ss.getLastChildElement() and
             c = TRec(TLastRecAnyCompletion())
             or
@@ -783,7 +802,8 @@ module ControlFlow {
         result = cfe.(StandardElement).getChildElement(_) and
         c = TRec(TLastRecAbnormalCompletion())
         or
-        cfe = any(LogicalNotExpr lne |
+        cfe =
+          any(LogicalNotExpr lne |
             // Operand exits with a Boolean completion
             result = lne.getOperand() and
             c = TRec(TLastRecBooleanNegationCompletion())
@@ -793,7 +813,8 @@ module ControlFlow {
             c = TRec(TLastRecNonBooleanCompletion())
           )
         or
-        cfe = any(LogicalAndExpr lae |
+        cfe =
+          any(LogicalAndExpr lae |
             // Left operand exits with a false completion
             result = lae.getLeftOperand() and
             c = specificBoolean(false)
@@ -807,7 +828,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(LogicalOrExpr loe |
+        cfe =
+          any(LogicalOrExpr loe |
             // Left operand exits with a true completion
             result = loe.getLeftOperand() and
             c = specificBoolean(true)
@@ -821,7 +843,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(NullCoalescingExpr nce |
+        cfe =
+          any(NullCoalescingExpr nce |
             // Left operand exits with any non-`null` completion
             result = nce.getLeftOperand() and
             c = TRec(TLastRecSpecificNegCompletion(any(NullnessCompletion nc | nc.isNull())))
@@ -831,7 +854,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(ConditionalExpr ce |
+        cfe =
+          any(ConditionalExpr ce |
             // Condition exits abnormally
             result = ce.getCondition() and
             c = TRec(TLastRecAbnormalCompletion())
@@ -845,12 +869,14 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(AssignOperation ao |
+        cfe =
+          any(AssignOperation ao |
             result = ao.getExpandedAssignment() and
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(ConditionallyQualifiedExpr cqe |
+        cfe =
+          any(ConditionallyQualifiedExpr cqe |
             // Post-order: element itself
             result = cqe and
             c = getValidSelfCompletion(result)
@@ -860,7 +886,8 @@ module ControlFlow {
             c = TRec(TLastRecSpecificCompletion(any(NullnessCompletion nc | nc.isNull())))
           )
         or
-        cfe = any(ThrowExpr te |
+        cfe =
+          any(ThrowExpr te |
             // Post-order: element itself
             result = te and
             c = getValidSelfCompletion(result)
@@ -870,7 +897,8 @@ module ControlFlow {
             c = TRec(TLastRecAbnormalCompletion())
           )
         or
-        cfe = any(ObjectCreation oc |
+        cfe =
+          any(ObjectCreation oc |
             // Post-order: element itself (when no initializer)
             result = oc and
             not oc.hasInitializer() and
@@ -881,7 +909,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(ArrayCreation ac |
+        cfe =
+          any(ArrayCreation ac |
             // Post-order: element itself (when no initializer)
             result = ac and
             not ac.hasInitializer() and
@@ -892,7 +921,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(IfStmt is |
+        cfe =
+          any(IfStmt is |
             // Condition exits with a false completion and there is no `else` branch
             result = is.getCondition() and
             c = specificBoolean(false) and
@@ -911,7 +941,8 @@ module ControlFlow {
             c = TRec(TLastRecAnyCompletion())
           )
         or
-        cfe = any(Switch s |
+        cfe =
+          any(Switch s |
             // Switch expression exits normally and there are no cases
             result = s.getExpr() and
             not exists(s.getACase()) and
@@ -926,7 +957,8 @@ module ControlFlow {
             c = TRec(TLastRecAbnormalCompletion())
           )
         or
-        cfe = any(SwitchStmt ss |
+        cfe =
+          any(SwitchStmt ss |
             // A statement exits with a `break` completion
             result = ss.getStmt(_) and
             c = TRec(TLastRecBreakCompletion())
@@ -948,7 +980,8 @@ module ControlFlow {
             )
           )
         or
-        cfe = any(SwitchExpr se |
+        cfe =
+          any(SwitchExpr se |
             // A matching case exists with any completion
             result = se.getACase().getBody() and
             c = TRec(TLastRecAnyCompletion())
@@ -965,7 +998,8 @@ module ControlFlow {
             )
           )
         or
-        cfe = any(Case case |
+        cfe =
+          any(Case case |
             // Condition exists with a `false` completion
             result = case.getCondition() and
             c = specificBoolean(false)
@@ -1007,7 +1041,8 @@ module ControlFlow {
           c = TRec(TLastRecNonContinueCompletion())
         )
         or
-        cfe = any(ForeachStmt fs |
+        cfe =
+          any(ForeachStmt fs |
             // Iterator expression exits abnormally
             result = fs.getIterableExpr() and
             c = TRec(TLastRecAbnormalCompletion())
@@ -1028,14 +1063,16 @@ module ControlFlow {
             c = TRec(TLastRecLoopBodyAbnormal())
           )
         or
-        cfe = any(TryStmt ts |
+        cfe =
+          any(TryStmt ts |
             // If the `finally` block completes abnormally, take the completion of
             // the `finally` block itself
             result = ts.getFinally() and
             c = TRec(TLastRecAbnormalCompletion())
           )
         or
-        cfe = any(SpecificCatchClause scc |
+        cfe =
+          any(SpecificCatchClause scc |
             // Last element of `catch` block
             result = scc.getBlock() and
             c = TRec(TLastRecAnyCompletion())
@@ -1052,7 +1089,8 @@ module ControlFlow {
             )
           )
         or
-        cfe = any(JumpStmt js |
+        cfe =
+          any(JumpStmt js |
             // Post-order: element itself
             result = js and
             c = getValidSelfCompletion(result)
@@ -1062,7 +1100,8 @@ module ControlFlow {
             c = TRec(TLastRecAbnormalCompletion())
           )
         or
-        cfe = any(QualifiedWriteAccess qwa |
+        cfe =
+          any(QualifiedWriteAccess qwa |
             // Skip the access in a qualified write access
             result = getExprChildElement(qwa, getLastChildElement(qwa)) and
             c = TRec(TLastRecAnyCompletion())
@@ -1072,7 +1111,8 @@ module ControlFlow {
             c = TRec(TLastRecAbnormalCompletion())
           )
         or
-        cfe = any(AccessorWrite aw |
+        cfe =
+          any(AccessorWrite aw |
             // Post-order: element itself
             result = aw and
             c = getValidSelfCompletion(result)
@@ -1083,7 +1123,8 @@ module ControlFlow {
             or
             // An accessor call exits abnormally
             result = aw.getCall(_) and
-            c = TSelf(any(Completion comp |
+            c =
+              TSelf(any(Completion comp |
                   comp.isValidFor(result) and not comp instanceof NormalCompletion
                 ))
           )
@@ -1123,20 +1164,17 @@ module ControlFlow {
           or
           rec = TLastRecBooleanNegationCompletion() and
           (
-            c = any(NestedCompletion nc |
+            c =
+              any(NestedCompletion nc |
                 nc.getInnerCompletion() = c0 and
-                nc.getOuterCompletion().(BooleanCompletion).getValue() = c0
-                      .(BooleanCompletion)
-                      .getValue()
-                      .booleanNot()
+                nc.getOuterCompletion().(BooleanCompletion).getValue() =
+                  c0.(BooleanCompletion).getValue().booleanNot()
               )
             or
-            c = any(BooleanCompletion bc |
-                bc.getValue() = c0
-                      .(NestedCompletion)
-                      .getInnerCompletion()
-                      .(BooleanCompletion)
-                      .getValue() and
+            c =
+              any(BooleanCompletion bc |
+                bc.getValue() =
+                  c0.(NestedCompletion).getInnerCompletion().(BooleanCompletion).getValue() and
                 not bc instanceof NestedCompletion
               )
           )
@@ -1158,7 +1196,8 @@ module ControlFlow {
           or
           rec = TLastRecInvalidOperationException() and
           (c0.(MatchingCompletion).isNonMatch() or c0 instanceof FalseCompletion) and
-          c = any(NestedCompletion nc |
+          c =
+            any(NestedCompletion nc |
               nc.getInnerCompletion() = c0 and
               nc
                   .getOuterCompletion()
@@ -1191,7 +1230,8 @@ module ControlFlow {
           exists(MatchingCompletion mc |
             mc.isNonMatch() and
             mc.isValidFor(scc) and
-            c = any(NestedCompletion nc |
+            c =
+              any(NestedCompletion nc |
                 nc.getInnerCompletion() = mc and
                 nc.getOuterCompletion() = tc.getOuterCompletion()
               )
@@ -1200,14 +1240,16 @@ module ControlFlow {
           // Incompatible filter
           exists(FalseCompletion fc |
             result = lastSpecificCatchClauseFilterClause(scc, fc) and
-            c = any(NestedCompletion nc |
+            c =
+              any(NestedCompletion nc |
                 nc.getInnerCompletion() = fc and
                 nc.getOuterCompletion() = tc.getOuterCompletion()
               )
           )
         )
         or
-        cfe = any(TryStmt ts |
+        cfe =
+          any(TryStmt ts |
             result = getBlockOrCatchFinallyPred(ts, c) and
             (
               // If there is no `finally` block, last elements are from the body, from
@@ -1222,7 +1264,8 @@ module ControlFlow {
             or
             // If the `finally` block completes normally, it inherits any non-normal
             // completion that was current before the `finally` block was entered
-            c = any(NestedCompletion nc |
+            c =
+              any(NestedCompletion nc |
                 result = lastTryStmtFinally(ts, nc.getInnerCompletion(), nc.getOuterCompletion())
               )
           )
@@ -1333,7 +1376,8 @@ module ControlFlow {
       pragma[nomagic]
       ControlFlowElement succ(ControlFlowElement cfe, Completion c) {
         // Pre-order: flow from element itself to first element of first child
-        cfe = any(StandardStmt ss |
+        cfe =
+          any(StandardStmt ss |
             result = first(ss.getFirstChildElement()) and
             c instanceof SimpleCompletion
           )
@@ -1349,7 +1393,8 @@ module ControlFlow {
           result = first(parent.getChildElement(i + 1))
         )
         or
-        cfe = any(LogicalNotExpr lne |
+        cfe =
+          any(LogicalNotExpr lne |
             // Pre-order: flow from expression itself to first element of operand
             result = first(lne.getOperand()) and
             c instanceof SimpleCompletion
@@ -1546,7 +1591,8 @@ module ControlFlow {
         )
         or
         // Pre-order: flow from statement itself to first element of statement
-        cfe = any(DefaultCase dc |
+        cfe =
+          any(DefaultCase dc |
             result = first(dc.getStmt()) and
             c instanceof SimpleCompletion
           )
@@ -1564,13 +1610,15 @@ module ControlFlow {
           result = first(ls.getCondition())
         )
         or
-        cfe = any(WhileStmt ws |
+        cfe =
+          any(WhileStmt ws |
             // Pre-order: flow from statement itself to first element of condition
             result = first(ws.getCondition()) and
             c instanceof SimpleCompletion
           )
         or
-        cfe = any(DoStmt ds |
+        cfe =
+          any(DoStmt ds |
             // Pre-order: flow from statement itself to first element of body
             result = first(ds.getBody()) and
             c instanceof SimpleCompletion
@@ -1672,9 +1720,9 @@ module ControlFlow {
           exists(getAThrownException(ts, cfe, c)) and
           result = first(ts.getCatchClause(0))
           or
-          exists(SpecificCatchClause scc, int i | scc = ts.getCatchClause(i) |
-            cfe = scc and
-            scc = last(ts.getCatchClause(i), c) and
+          exists(CatchClause cc, int i | cc = ts.getCatchClause(i) |
+            cfe = cc and
+            cc = last(ts.getCatchClause(i), c) and
             (
               // Flow from one `catch` clause to the next
               result = first(ts.getCatchClause(i + 1)) and
@@ -1687,7 +1735,7 @@ module ControlFlow {
             )
             or
             cfe = last(ts.getCatchClause(i), c) and
-            cfe = last(scc.getFilterClause(), _) and
+            cfe = last(cc.getFilterClause(), _) and
             (
               // Flow from last element of `catch` clause filter to next `catch` clause
               result = first(ts.getCatchClause(i + 1)) and
@@ -1701,7 +1749,7 @@ module ControlFlow {
             )
             or
             // Flow from last element of a `catch` block to first element of `finally` block
-            cfe = lastCatchClauseBlock(scc, c) and
+            cfe = lastCatchClauseBlock(cc, c) and
             result = first(ts.getFinally())
           )
           or
@@ -1779,7 +1827,8 @@ module ControlFlow {
         or
         // Flow from element with `goto` completion to first element of relevant
         // target
-        c = any(GotoCompletion gc |
+        c =
+          any(GotoCompletion gc |
             cfe = last(_, gc) and
             // Special case: when a `goto` happens inside a `try` statement with a
             // `finally` block, flow does not go directly to the target, but instead
@@ -1849,13 +1898,15 @@ module ControlFlow {
        * callable `c`.
        */
       ControlFlowElement succEntry(@top_level_exprorstmt_parent p) {
-        p = any(Callable c |
+        p =
+          any(Callable c |
             if exists(c.(Constructor).getInitializer())
             then result = first(c.(Constructor).getInitializer())
             else
               if InitializerSplitting::constructorInitializes(c, _)
               then
-                result = first(any(InitializerSplitting::InitializedInstanceMember m |
+                result =
+                  first(any(InitializerSplitting::InitializedInstanceMember m |
                       InitializerSplitting::constructorInitializeOrder(c, m, 0)
                     ).getInitializer())
               else result = first(c.getBody())

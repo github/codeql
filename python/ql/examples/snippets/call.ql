@@ -5,7 +5,7 @@
  * @tags call
  *       function
  */
- 
+
 import python
 
 from Value len, CallNode call

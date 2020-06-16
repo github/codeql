@@ -1,4 +1,3 @@
-
 import python
 import analysis.DefinitionTracking
 import analysis.CrossProjectDefinitions
@@ -6,11 +5,11 @@ import analysis.CrossProjectDefinitions
 predicate local_problem(Definition defn, string issue, string repr) {
     not exists(defn.toString()) and issue = "no toString()" and repr = "a local definition"
     or
-    not exists(defn.getAstNode())  and issue = "no getAstNode()" and repr = defn.toString()
+    not exists(defn.getAstNode()) and issue = "no getAstNode()" and repr = defn.toString()
     or
-    not exists(defn.getLocation())  and issue = "no getLocation()" and repr = defn.toString()
+    not exists(defn.getLocation()) and issue = "no getLocation()" and repr = defn.toString()
     or
-    count(defn.getLocation())> 1 and issue = "more than one getLocation()" and repr = defn.toString()
+    count(defn.getLocation()) > 1 and issue = "more than one getLocation()" and repr = defn.toString()
 }
 
 predicate remote_problem(Symbol s, string issue, string repr) {

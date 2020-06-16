@@ -18,7 +18,8 @@ class GenericCatchClause extends CatchClause {
   GenericCatchClause() {
     this instanceof GeneralCatchClause
     or
-    this = any(SpecificCatchClause scc |
+    this =
+      any(SpecificCatchClause scc |
         scc.getCaughtExceptionType() instanceof SystemExceptionClass and
         not scc.hasFilterClause()
       )

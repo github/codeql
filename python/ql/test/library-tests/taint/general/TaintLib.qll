@@ -1,17 +1,11 @@
 import python
-import semmle.python.security.TaintTracking
-
+import semmle.python.dataflow.TaintTracking
 
 class SimpleTest extends TaintKind {
-
-    SimpleTest() {
-        this = "simple.test"
-    }
-
+    SimpleTest() { this = "simple.test" }
 }
 
 class SimpleSink extends TaintSink {
-
     override string toString() { result = "Simple sink" }
 
     SimpleSink() {
@@ -21,31 +15,21 @@ class SimpleSink extends TaintSink {
         )
     }
 
-    override predicate sinks(TaintKind taint) {
-        taint instanceof SimpleTest
-    }
-
+    override predicate sinks(TaintKind taint) { taint instanceof SimpleTest }
 }
 
 class SimpleSource extends TaintSource {
-
     SimpleSource() { this.(NameNode).getId() = "SOURCE" }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof SimpleTest
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof SimpleTest }
 
-    override string toString() {
-        result = "simple.source"
-    }
-
+    override string toString() { result = "simple.source" }
 }
 
 class SimpleSanitizer extends Sanitizer {
-
     SimpleSanitizer() { this = "Simple sanitizer" }
 
-    override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) { 
+    override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) {
         node.(CallNode).getFunction().(NameNode).getId() = "SANITIZE" and
         taint instanceof SimpleTest
     }
@@ -60,21 +44,16 @@ class SimpleSanitizer extends Sanitizer {
 }
 
 class BasicCustomTaint extends TaintKind {
-
-    BasicCustomTaint() {
-        this = "basic.custom"
-    }
+    BasicCustomTaint() { this = "basic.custom" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         tonode.(CallNode).getAnArg() = fromnode and
         tonode.(CallNode).getFunction().(NameNode).getId() = "TAINT_FROM_ARG" and
         result = this
     }
-
 }
 
 class BasicCustomSink extends TaintSink {
-
     override string toString() { result = "Basic custom sink" }
 
     BasicCustomSink() {
@@ -84,32 +63,21 @@ class BasicCustomSink extends TaintSink {
         )
     }
 
-    override predicate sinks(TaintKind taint) {
-        taint instanceof BasicCustomTaint
-    }
-
+    override predicate sinks(TaintKind taint) { taint instanceof BasicCustomTaint }
 }
 
-
 class BasicCustomSource extends TaintSource {
-
     BasicCustomSource() { this.(NameNode).getId() = "CUSTOM_SOURCE" }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof BasicCustomTaint
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof BasicCustomTaint }
 
-    override string toString() {
-        result = "basic.custom.source"
-    }
-
+    override string toString() { result = "basic.custom.source" }
 }
 
 class Rock extends TaintKind {
-
     Rock() { this = "rock" }
 
-    override TaintKind getTaintOfMethodResult(string name) { 
+    override TaintKind getTaintOfMethodResult(string name) {
         name = "prev" and result instanceof Scissors
     }
 
@@ -119,31 +87,27 @@ class Rock extends TaintKind {
             call.getFunction().(NameNode).getId() = "paper"
         )
     }
-
 }
 
 class Paper extends TaintKind {
-
     Paper() { this = "paper" }
 
-    override TaintKind getTaintOfMethodResult(string name) { 
+    override TaintKind getTaintOfMethodResult(string name) {
         name = "prev" and result instanceof Rock
     }
 
-     predicate isSink(ControlFlowNode sink) {
+    predicate isSink(ControlFlowNode sink) {
         exists(CallNode call |
             call.getArg(0) = sink and
             call.getFunction().(NameNode).getId() = "scissors"
         )
     }
-
 }
 
 class Scissors extends TaintKind {
-
     Scissors() { this = "scissors" }
 
-    override TaintKind getTaintOfMethodResult(string name) { 
+    override TaintKind getTaintOfMethodResult(string name) {
         name = "prev" and result instanceof Paper
     }
 
@@ -153,26 +117,18 @@ class Scissors extends TaintKind {
             call.getFunction().(NameNode).getId() = "rock"
         )
     }
-
 }
 
 class RockPaperScissorSource extends TaintSource {
-
-    RockPaperScissorSource() { 
-        exists(string name |
-            this.(NameNode).getId() = name |
+    RockPaperScissorSource() {
+        exists(string name | this.(NameNode).getId() = name |
             name = "ROCK" or name = "PAPER" or name = "SCISSORS"
         )
     }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind = this.(NameNode).getId().toLowerCase()
-    }
+    override predicate isSourceOf(TaintKind kind) { kind = this.(NameNode).getId().toLowerCase() }
 
-    override string toString() {
-        result = "rock.paper.scissors.source"
-    }
-
+    override string toString() { result = "rock.paper.scissors.source" }
 }
 
 private predicate function_param(string funcname, ControlFlowNode arg) {
@@ -183,17 +139,14 @@ private predicate function_param(string funcname, ControlFlowNode arg) {
 }
 
 class RockPaperScissorSink extends TaintSink {
-
     RockPaperScissorSink() {
-        exists(string name |
-            function_param(name, this) |
+        exists(string name | function_param(name, this) |
             name = "rock" or name = "paper" or name = "scissors"
         )
     }
 
     override predicate sinks(TaintKind taint) {
-        exists(string name |
-            function_param(name, this) |
+        exists(string name | function_param(name, this) |
             name = "paper" and taint = "rock"
             or
             name = "rock" and taint = "scissors"
@@ -202,79 +155,49 @@ class RockPaperScissorSink extends TaintSink {
         )
     }
 
-    override string toString() {
-        result = "rock.paper.scissors.sink"
-    }
-
+    override string toString() { result = "rock.paper.scissors.sink" }
 }
 
 class TaintCarrier extends TaintKind {
-
     TaintCarrier() { this = "explicit.carrier" }
 
     override TaintKind getTaintOfMethodResult(string name) {
         name = "get_taint" and result instanceof SimpleTest
     }
-
-
 }
 
 /* There is no sink for `TaintCarrier`. It is not "dangerous" in itself; it merely holds a `SimpleTest`. */
 class TaintCarrierSource extends TaintSource {
+    TaintCarrierSource() { this.(NameNode).getId() = "TAINT_CARRIER_SOURCE" }
 
-    TaintCarrierSource() {
-        this.(NameNode).getId() = "TAINT_CARRIER_SOURCE"
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof TaintCarrier }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof TaintCarrier
-    }
-
-    override string toString() {
-        result = "taint.carrier.source"
-    }
+    override string toString() { result = "taint.carrier.source" }
 }
 
-
 /* Some more realistic examples */
-
 abstract class UserInput extends TaintKind {
-
     bindingset[this]
     UserInput() { any() }
-
 }
 
 class UserInputSource extends TaintSource {
+    UserInputSource() { this.(CallNode).getFunction().(NameNode).getId() = "user_input" }
 
-    UserInputSource() { 
-        this.(CallNode).getFunction().(NameNode).getId() = "user_input" 
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof UserInput }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof UserInput
-    }
-
-    override string toString() {
-        result = "user.input.source"
-    }
-
+    override string toString() { result = "user.input.source" }
 }
 
 class SqlInjectionTaint extends UserInput {
-
     SqlInjectionTaint() { this = "SQL injection" }
-
 }
 
 class CommandInjectionTaint extends UserInput {
-
     CommandInjectionTaint() { this = "Command injection" }
-
 }
 
 class SqlSanitizer extends Sanitizer {
-
     SqlSanitizer() { this = "SQL sanitizer" }
 
     /** Holds if `test` shows value to be untainted with `taint` */
@@ -288,11 +211,9 @@ class SqlSanitizer extends Sanitizer {
         ) and
         taint instanceof SqlInjectionTaint
     }
-
 }
 
 class CommandSanitizer extends Sanitizer {
-
     CommandSanitizer() { this = "Command sanitizer" }
 
     /** Holds if `test` shows value to be untainted with `taint` */
@@ -304,11 +225,9 @@ class CommandSanitizer extends Sanitizer {
         ) and
         taint instanceof CommandInjectionTaint
     }
-
 }
 
 class SqlQuery extends TaintSink {
-
     SqlQuery() {
         exists(CallNode call |
             call.getFunction().(NameNode).getId() = "sql_query" and
@@ -318,15 +237,10 @@ class SqlQuery extends TaintSink {
 
     override string toString() { result = "SQL query" }
 
-    override predicate sinks(TaintKind taint) {
-        taint instanceof SqlInjectionTaint
-    }
-
+    override predicate sinks(TaintKind taint) { taint instanceof SqlInjectionTaint }
 }
 
-
 class OsCommand extends TaintSink {
-
     OsCommand() {
         exists(CallNode call |
             call.getFunction().(NameNode).getId() = "os_command" and
@@ -336,59 +250,31 @@ class OsCommand extends TaintSink {
 
     override string toString() { result = "OS command" }
 
-    override predicate sinks(TaintKind taint) {
-        taint instanceof CommandInjectionTaint
-    }
-
+    override predicate sinks(TaintKind taint) { taint instanceof CommandInjectionTaint }
 }
-
 
 class Falsey extends TaintKind {
-
     Falsey() { this = "falsey" }
 
-    override boolean booleanValue() {
-        result = false
-    }
-
+    override boolean booleanValue() { result = false }
 }
 
-class FalseySource  extends TaintSource {
+class FalseySource extends TaintSource {
+    FalseySource() { this.(NameNode).getId() = "FALSEY" }
 
-    FalseySource() {
-         this.(NameNode).getId() = "FALSEY"
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof Falsey }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof Falsey
-    }
-
-    override string toString() {
-        result = "falsey.source"
-    }
-
+    override string toString() { result = "falsey.source" }
 }
 
 class TaintIterable extends TaintKind {
+    TaintIterable() { this = "iterable.simple" }
 
-    TaintIterable() {
-        this = "iterable.simple"
-    }
-
-    override TaintKind getTaintForIteration() {
-        result instanceof SimpleTest
-    }
-
+    override TaintKind getTaintForIteration() { result instanceof SimpleTest }
 }
 
 class TaintIterableSource extends TaintSource {
+    TaintIterableSource() { this.(NameNode).getId() = "ITERABLE_SOURCE" }
 
-    TaintIterableSource() {
-        this.(NameNode).getId() = "ITERABLE_SOURCE"
-    }
-
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof TaintIterable
-    }
-
+    override predicate isSourceOf(TaintKind kind) { kind instanceof TaintIterable }
 }

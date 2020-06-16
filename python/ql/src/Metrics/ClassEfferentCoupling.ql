@@ -13,6 +13,4 @@
 import python
 
 from ClassMetrics cls
-select cls, cls.getEfferentCoupling() as n
-order by n desc
-
+select cls, cls.getEfferentCoupling() as n order by n desc

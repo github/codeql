@@ -1,4 +1,3 @@
-
 import python
 private import semmle.python.pointsto.PointsTo
 import Util

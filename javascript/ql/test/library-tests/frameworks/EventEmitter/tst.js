@@ -38,3 +38,10 @@ class ExtendsMyCustomEmitter extends MyEventEmitter{}
 var em5 = new ExtendsMyCustomEmitter();
 em5.on("yibity", (x) => {});
 em5.emit("yibity", "yabity");
+
+var process = require('process');
+process.addListener('FirstEvent', function (first) {});
+process.on('SecondEvent', function (second) {});
+
+process.emit('FirstEvent', 'FirstData');
+process.emit('SecondEvent', 'SecondData');

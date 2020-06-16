@@ -3,8 +3,6 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
-Function viableImpl(CallInstruction call) { result = viableCallable(call) }
-
 /**
  * Gets a function that might be called by `call`.
  */
@@ -72,58 +70,67 @@ private module VirtualDispatch {
         // Call return
         exists(DataFlowCall call, ReturnKind returnKind |
           other = getAnOutNode(call, returnKind) and
-          src.(ReturnNode).getKind() = returnKind and
-          call.getStaticCallTarget() = src.getEnclosingCallable()
+          returnNodeWithKindAndEnclosingCallable(src, returnKind, call.getStaticCallTarget())
         ) and
         allowFromArg = false
         or
         // Local flow
         DataFlow::localFlowStep(src, other) and
         allowFromArg = allowOtherFromArg
-      )
-      or
-      // Flow through global variable
-      exists(StoreInstruction store |
-        store = src.asInstruction() and
-        (
-          exists(Variable var |
-            var = store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() and
-            this.flowsFromGlobal(var)
-          )
-          or
-          exists(Variable var, FieldAccess a |
-            var = store
-                  .getDestinationAddress()
-                  .(FieldAddressInstruction)
-                  .getObjectAddress()
-                  .(VariableAddressInstruction)
-                  .getASTVariable() and
-            this.flowsFromGlobalUnionField(var, a)
-          )
-        ) and
-        allowFromArg = true
+        or
+        // Flow from global variable to load.
+        exists(LoadInstruction load, GlobalOrNamespaceVariable var |
+          var = src.asVariable() and
+          other.asInstruction() = load and
+          addressOfGlobal(load.getSourceAddress(), var) and
+          // The `allowFromArg` concept doesn't play a role when `src` is a
+          // global variable, so we just set it to a single arbitrary value for
+          // performance.
+          allowFromArg = true
+        )
+        or
+        // Flow from store to global variable.
+        exists(StoreInstruction store, GlobalOrNamespaceVariable var |
+          var = other.asVariable() and
+          store = src.asInstruction() and
+          storeIntoGlobal(store, var) and
+          // Setting `allowFromArg` to `true` like in the base case means we
+          // treat a store to a global variable like the dispatch itself: flow
+          // may come from anywhere.
+          allowFromArg = true
+        )
       )
     }
+  }
 
-    private predicate flowsFromGlobal(GlobalOrNamespaceVariable var) {
-      exists(LoadInstruction load |
-        this.flowsFrom(DataFlow::instructionNode(load), _) and
-        load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
-      )
-    }
+  pragma[noinline]
+  private predicate storeIntoGlobal(StoreInstruction store, GlobalOrNamespaceVariable var) {
+    addressOfGlobal(store.getDestinationAddress(), var)
+  }
 
-    private predicate flowsFromGlobalUnionField(Variable var, FieldAccess a) {
-      a.getTarget().getDeclaringType() instanceof Union and
-      exists(LoadInstruction load |
-        this.flowsFrom(DataFlow::instructionNode(load), _) and
-        load
-            .getSourceAddress()
-            .(FieldAddressInstruction)
-            .getObjectAddress()
-            .(VariableAddressInstruction)
-            .getASTVariable() = var
-      )
-    }
+  /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
+  private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
+    // Access directly to the global variable
+    addressInstr.(VariableAddressInstruction).getASTVariable() = var
+    or
+    // Access to a field on a global union
+    exists(FieldAddressInstruction fa |
+      fa = addressInstr and
+      fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+      fa.getField().getDeclaringType() instanceof Union
+    )
+  }
+
+  /**
+   * A ReturnNode with its ReturnKind and its enclosing callable.
+   *
+   * Used to fix a join ordering issue in flowsFrom.
+   */
+  private predicate returnNodeWithKindAndEnclosingCallable(
+    ReturnNode node, ReturnKind kind, DataFlowCallable callable
+  ) {
+    node.getKind() = kind and
+    node.getEnclosingCallable() = callable
   }
 
   /** Call through a function pointer. */
@@ -136,6 +143,12 @@ private module VirtualDispatch {
       exists(FunctionInstruction fi |
         this.flowsFrom(DataFlow::instructionNode(fi), _) and
         result = fi.getFunctionSymbol()
+      ) and
+      (
+        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
+        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        or
+        result.isVarargs()
       )
     }
   }

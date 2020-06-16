@@ -80,3 +80,6 @@ var obj = {
 obj.server;                    // SocketIO::ServerNode
 obj.serveClient(false);        // not a SocketIO::ServerNode
 obj.serveClient(false).server; // not a SocketIO::ServerNode
+
+function foo(x,socket) {}
+io.on('connect', foo.bind(null, "x"));

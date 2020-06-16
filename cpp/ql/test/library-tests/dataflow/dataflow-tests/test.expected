@@ -3,6 +3,7 @@
 | BarrierGuard.cpp:25:10:25:15 | source | BarrierGuard.cpp:21:17:21:22 | source |
 | BarrierGuard.cpp:31:10:31:15 | source | BarrierGuard.cpp:29:16:29:21 | source |
 | BarrierGuard.cpp:33:10:33:15 | source | BarrierGuard.cpp:29:16:29:21 | source |
+| BarrierGuard.cpp:51:13:51:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
 | BarrierGuard.cpp:53:13:53:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
 | BarrierGuard.cpp:55:13:55:13 | x | BarrierGuard.cpp:49:10:49:15 | call to source |
 | BarrierGuard.cpp:62:14:62:14 | x | BarrierGuard.cpp:60:11:60:16 | call to source |
@@ -21,6 +22,7 @@
 | dispatch.cpp:36:16:36:25 | call to notSource2 | dispatch.cpp:10:37:10:42 | call to source |
 | dispatch.cpp:43:15:43:24 | call to notSource1 | dispatch.cpp:9:37:9:42 | call to source |
 | dispatch.cpp:44:15:44:24 | call to notSource2 | dispatch.cpp:10:37:10:42 | call to source |
+| globals.cpp:6:10:6:14 | local | globals.cpp:5:17:5:22 | call to source |
 | lambdas.cpp:14:3:14:6 | t | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:18:8:18:8 | call to operator() | lambdas.cpp:8:10:8:15 | call to source |
 | lambdas.cpp:21:3:21:6 | t | lambdas.cpp:8:10:8:15 | call to source |

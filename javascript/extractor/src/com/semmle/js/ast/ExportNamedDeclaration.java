@@ -15,13 +15,21 @@ public class ExportNamedDeclaration extends ExportDeclaration {
   private final Statement declaration;
   private final List<ExportSpecifier> specifiers;
   private final Literal source;
+  private final boolean hasTypeKeyword;
 
   public ExportNamedDeclaration(
       SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source) {
+    this(loc, declaration, specifiers, source, false);
+  }
+
+  public ExportNamedDeclaration(
+      SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source,
+      boolean hasTypeKeyword) {
     super("ExportNamedDeclaration", loc);
     this.declaration = declaration;
     this.specifiers = specifiers;
     this.source = source;
+    this.hasTypeKeyword = hasTypeKeyword;
   }
 
   public Statement getDeclaration() {
@@ -47,5 +55,10 @@ public class ExportNamedDeclaration extends ExportDeclaration {
   @Override
   public <C, R> R accept(Visitor<C, R> v, C c) {
     return v.visit(this, c);
+  }
+
+  /** Returns true if this is an <code>export type</code> declaration. */
+  public boolean hasTypeKeyword() {
+    return hasTypeKeyword;
   }
 }

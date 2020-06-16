@@ -27,10 +27,18 @@ class IRBlockBase extends TIRBlock {
    * by debugging and printing code only.
    */
   int getDisplayIndex() {
-    this = rank[result + 1](IRBlock funcBlock |
-        funcBlock.getEnclosingFunction() = getEnclosingFunction()
+    exists(IRConfiguration::IRConfiguration config |
+      config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
+    ) and
+    this =
+      rank[result + 1](IRBlock funcBlock, int sortOverride |
+        funcBlock.getEnclosingFunction() = getEnclosingFunction() and
+        // Ensure that the block containing `EnterFunction` always comes first.
+        if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
+        then sortOverride = 0
+        else sortOverride = 1
       |
-        funcBlock order by funcBlock.getUniqueId()
+        funcBlock order by sortOverride, funcBlock.getUniqueId()
       )
   }
 
@@ -97,23 +105,24 @@ class IRBlock extends IRBlockBase {
 
 private predicate startsBasicBlock(Instruction instr) {
   not instr instanceof PhiInstruction and
-  (
-    count(Instruction predecessor | instr = predecessor.getASuccessor()) != 1 // Multiple predecessors or no predecessor
-    or
-    exists(Instruction predecessor |
-      instr = predecessor.getASuccessor() and
-      strictcount(Instruction other | other = predecessor.getASuccessor()) > 1
-    ) // Predecessor has multiple successors
-    or
-    exists(Instruction predecessor, EdgeKind kind |
-      instr = predecessor.getSuccessor(kind) and
-      not kind instanceof GotoEdge
-    ) // Incoming edge is not a GotoEdge
-    or
-    exists(Instruction predecessor |
-      instr = Construction::getInstructionBackEdgeSuccessor(predecessor, _)
-    ) // A back edge enters this instruction
-  )
+  not adjacentInBlock(_, instr)
+}
+
+/** Holds if `i2` follows `i1` in a `IRBlock`. */
+private predicate adjacentInBlock(Instruction i1, Instruction i2) {
+  // - i2 must be the only successor of i1
+  i2 = unique(Instruction i | i = i1.getASuccessor()) and
+  // - i1 must be the only predecessor of i2
+  i1 = unique(Instruction i | i.getASuccessor() = i2) and
+  // - The edge between the two must be a GotoEdge. We just check that one
+  //   exists since we've already checked that it's unique.
+  exists(GotoEdge edgeKind | exists(i1.getSuccessor(edgeKind))) and
+  // - The edge must not be a back edge. This means we get the same back edges
+  //   in the basic-block graph as we do in the raw CFG.
+  not exists(Construction::getInstructionBackEdgeSuccessor(i1, _))
+  // This predicate could be simplified to remove one of the `unique`s if we
+  // were willing to rely on the CFG being well-formed and thus never having
+  // more than one successor to an instruction that has a `GotoEdge` out of it.
 }
 
 private predicate isEntryBlock(TIRBlock block) {
@@ -124,12 +133,6 @@ cached
 private module Cached {
   cached
   newtype TIRBlock = MkIRBlock(Instruction firstInstr) { startsBasicBlock(firstInstr) }
-
-  /** Holds if `i2` follows `i1` in a `IRBlock`. */
-  private predicate adjacentInBlock(Instruction i1, Instruction i2) {
-    exists(GotoEdge edgeKind | i2 = i1.getSuccessor(edgeKind)) and
-    not startsBasicBlock(i2)
-  }
 
   /** Holds if `i` is the `index`th instruction the block starting with `first`. */
   private Instruction getInstructionFromFirst(Instruction first, int index) =

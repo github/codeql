@@ -12,7 +12,8 @@
 
 import python
 
-/* This assumes that any indexing operation where the value is not a sequence or numpy array involves hashing.
+/*
+ * This assumes that any indexing operation where the value is not a sequence or numpy array involves hashing.
  * For sequences, the index must be an int, which are hashable, so we don't need to treat them specially.
  * For numpy arrays, the index may be a list, which are not hashable and needs to be treated specially.
  */
@@ -30,7 +31,9 @@ predicate has_custom_getitem(Value v) {
 }
 
 predicate explicitly_hashed(ControlFlowNode f) {
-     exists(CallNode c, GlobalVariable hash | c.getArg(0) = f and c.getFunction().(NameNode).uses(hash) and hash.getId() = "hash")
+    exists(CallNode c, GlobalVariable hash |
+        c.getArg(0) = f and c.getFunction().(NameNode).uses(hash) and hash.getId() = "hash"
+    )
 }
 
 predicate unhashable_subscript(ControlFlowNode f, ClassValue c, ControlFlowNode origin) {
@@ -44,9 +47,7 @@ predicate unhashable_subscript(ControlFlowNode f, ClassValue c, ControlFlowNode 
 }
 
 predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origin) {
-    exists(Value v |
-        f.pointsTo(v, origin) and v.getClass() = cls
-        |
+    exists(Value v | f.pointsTo(v, origin) and v.getClass() = cls |
         not cls.hasAttribute("__hash__") and not cls.failedInference(_) and cls.isNewStyle()
         or
         cls.lookup("__hash__") = Value::named("None")
@@ -67,16 +68,18 @@ predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origi
  * it.
  */
 predicate typeerror_is_caught(ControlFlowNode f) {
-    exists (Try try |
+    exists(Try try |
         try.getBody().contains(f.getNode()) and
-        try.getAHandler().getType().refersTo(theTypeErrorType()))
+        try.getAHandler().getType().pointsTo(ClassValue::typeError())
+    )
 }
 
 from ControlFlowNode f, ClassValue c, ControlFlowNode origin
 where
-not typeerror_is_caught(f)
-and
-(explicitly_hashed(f) and is_unhashable(f, c, origin)
- or
- unhashable_subscript(f, c, origin))
+    not typeerror_is_caught(f) and
+    (
+        explicitly_hashed(f) and is_unhashable(f, c, origin)
+        or
+        unhashable_subscript(f, c, origin)
+    )
 select f.getNode(), "This $@ of $@ is unhashable.", origin, "instance", c, c.getQualifiedName()

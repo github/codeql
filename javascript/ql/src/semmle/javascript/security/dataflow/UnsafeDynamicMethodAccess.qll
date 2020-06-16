@@ -53,7 +53,7 @@ module UnsafeDynamicMethodAccess {
         hasUnsafeMethods(read.getBase().getALocalSource()) and
         src = read.getPropertyNameExpr().flow() and
         dst = read and
-        (srclabel = data() or srclabel = taint()) and
+        srclabel.isTaint() and
         dstlabel = unsafeFunction()
       )
       or
@@ -62,7 +62,7 @@ module UnsafeDynamicMethodAccess {
         not PropertyInjection::isPrototypeLessObject(proj.getObject().getALocalSource()) and
         src = proj.getASelector() and
         dst = proj and
-        (srclabel = data() or srclabel = taint()) and
+        srclabel.isTaint() and
         dstlabel = unsafeFunction()
       )
     }

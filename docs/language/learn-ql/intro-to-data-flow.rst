@@ -1,10 +1,11 @@
-Introduction to data flow analysis with CodeQL
-##############################################
+About data flow analysis
+########################
+
+Data flow analysis is used to compute the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
 
 Overview
 ********
 
-Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
 Many CodeQL security queries implement data flow analysis, which can highlight the fate of potentially malicious or insecure data that can cause vulnerabilities in your code base.
 These queries help you understand if data is used in an insecure way, whether dangerous arguments are passed to functions, or whether sensitive data can leak.
 As well as highlighting potential security issues, you can also use data flow analysis to understand other aspects of how a program behaves, by finding, for example, uses of uninitialized variables and resource leaks.
@@ -17,13 +18,13 @@ See the following tutorials for more information about analyzing data flow in sp
 - :doc:`Analyzing data flow in C# <csharp/dataflow>`
 - :doc:`Analyzing data flow in Java <java/dataflow>`
 - :doc:`Analyzing data flow in JavaScript/TypeScript <javascript/dataflow>`
-- :doc:`Taint tracking and data flow analysis in Python <python/taint-tracking>`
+- :doc:`Analyzing data flow and tracking tainted data in Python <python/taint-tracking>`
 
 .. pull-quote::
 
     Note
 
-    Data flow analysis is used extensively in path queries. To learn more about path queries, see :doc:`Constructing path queries <writing-queries/path-queries>`.  
+    Data flow analysis is used extensively in path queries. To learn more about path queries, see :doc:`Creating path queries <writing-queries/path-queries>`.  
 
 .. _data-flow-graph:
 
@@ -78,8 +79,7 @@ However, since ``y`` is derived from ``x``, it is influenced by the untrusted or
 In QL, taint tracking extends data flow analysis by including steps in which the data values are not necessarily preserved, but the potentially insecure object is still propagated. 
 These flow steps are modeled in the taint-tracking library using predicates that hold if taint is propagated between nodes.
 
-What next?
-**********
+Further reading
+***************
 
-- Search for ``DataFlow`` and ``TaintTracking`` in the `standard CodeQL libraries <https://help.semmle.com/QL/ql-libraries.html>`__ to learn more about the technical implementation of data flow analysis for specific programming languages.
-- Visit `Learning CodeQL <https://help.semmle.com/QL/learn-ql/>`__ to find language-specific tutorials on data flow and other topics.
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__

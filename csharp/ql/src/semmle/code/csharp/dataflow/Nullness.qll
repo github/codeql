@@ -39,7 +39,8 @@ class MaybeNullExpr extends Expr {
     or
     this.(Cast).getExpr() instanceof MaybeNullExpr
     or
-    this = any(ConditionalExpr ce |
+    this =
+      any(ConditionalExpr ce |
         ce.getThen() instanceof MaybeNullExpr
         or
         ce.getElse() instanceof MaybeNullExpr
@@ -58,7 +59,8 @@ class AlwaysNullExpr extends Expr {
     or
     exists(AlwaysNullExpr e1, AlwaysNullExpr e2 | G::Internal::nullValueImpliedBinary(e1, e2, this))
     or
-    this = any(Ssa::Definition def |
+    this =
+      any(Ssa::Definition def |
         forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
       ).getARead()
     or
@@ -84,7 +86,8 @@ class NonNullExpr extends Expr {
     or
     this instanceof G::NullGuardedExpr
     or
-    this = any(Ssa::Definition def |
+    this =
+      any(Ssa::Definition def |
         forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
       ).getARead()
     or
@@ -104,7 +107,8 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
   exists(AssignableDefinition ad | ad = def.getADefinition() |
     ad instanceof AssignableDefinitions::PatternDefinition
     or
-    ad = any(AssignableDefinitions::LocalVariableDefinition d |
+    ad =
+      any(AssignableDefinitions::LocalVariableDefinition d |
         d.getExpr() = any(SpecificCatchClause scc).getVariableDeclExpr()
         or
         d.getExpr() = any(ForeachStmt fs).getAVariableDeclExpr()
@@ -468,7 +472,8 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
     Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
-    not mid = any(Dereference d |
+    not mid =
+      any(Dereference d |
         if always = true
         then d.isAlwaysNull(def.getSourceVariable())
         else d.isMaybeNull(def, _, _, _, _)
@@ -542,7 +547,8 @@ class Dereference extends G::DereferenceableExpr {
     this = v.getAnAccess() and
     // Exclude fields, properties, and captured variables, as they may not have an
     // accurate SSA representation
-    v.getAssignable() = any(LocalScopeVariable lsv |
+    v.getAssignable() =
+      any(LocalScopeVariable lsv |
         strictcount(Callable c |
           c = any(AssignableDefinition ad | ad.getTarget() = lsv).getEnclosingCallable()
         ) = 1

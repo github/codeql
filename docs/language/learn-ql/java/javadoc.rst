@@ -1,8 +1,10 @@
-Tutorial: Javadoc
-=================
+Javadoc
+=======
 
-Overview
---------
+You can use CodeQL to find errors in Javadoc comments in Java code.
+
+About analyzing Javadoc
+-----------------------
 
 To access Javadoc associated with a program element, we use member predicate ``getDoc`` of class ``Element``, which returns a ``Documentable``. Class ``Documentable``, in turn, offers a member predicate ``getJavadoc`` to retrieve the Javadoc attached to the element in question, if any.
 
@@ -49,9 +51,9 @@ The ``JavadocTag`` has several subclasses representing specific kinds of Javadoc
 Example: Finding spurious @param tags
 -------------------------------------
 
-As an example of using the CodeQL Javadoc API, let us write a query that finds ``@param`` tags that refer to a non-existent parameter.
+As an example of using the CodeQL Javadoc API, let's write a query that finds ``@param`` tags that refer to a non-existent parameter.
 
-For example, consider the following program:
+For example, consider this program:
 
 .. code-block:: java
 
@@ -76,7 +78,7 @@ To begin with, we write a query that finds all callables (that is, methods or co
    where c.getDoc().getJavadoc() = pt.getParent()
    select c, pt
 
-It is now easy to add another conjunct to the ``where`` clause, restricting the query to ``@param`` tags that refer to a non-existent parameter: we simply need to require that no parameter of ``c`` has the name ``pt.getParamName()``.
+It's now easy to add another conjunct to the ``where`` clause, restricting the query to ``@param`` tags that refer to a non-existent parameter: we simply need to require that no parameter of ``c`` has the name ``pt.getParamName()``.
 
 .. code-block:: ql
 
@@ -92,7 +94,7 @@ Example: Finding spurious @throws tags
 
 A related, but somewhat more involved, problem is finding ``@throws`` tags that refer to an exception that the method in question cannot actually throw.
 
-For example, consider the following Java program:
+For example, consider this Java program:
 
 .. code-block:: java
 
@@ -108,9 +110,9 @@ For example, consider the following Java program:
        }
    }
 
-Notice that the Javadoc comment of ``A.foo`` documents two thrown exceptions: ``IOException`` and ``RuntimeException``. The former is clearly spurious: ``A.foo`` does not have a ``throws IOException`` clause, and thus cannot throw this kind of exception. On the other hand, ``RuntimeException`` is an unchecked exception, so it can be thrown even if there is no explicit ``throws`` clause listing it. Therefore, our query should flag the ``@throws`` tag for ``IOException``, but not the one for ``RuntimeException.``
+Notice that the Javadoc comment of ``A.foo`` documents two thrown exceptions: ``IOException`` and ``RuntimeException``. The former is clearly spurious: ``A.foo`` doesn't have a ``throws IOException`` clause, and therefore can't throw this kind of exception. On the other hand, ``RuntimeException`` is an unchecked exception, so it can be thrown even if there is no explicit ``throws`` clause listing it. So our query should flag the ``@throws`` tag for ``IOException``, but not the one for ``RuntimeException.``
 
-Recall from above that the CodeQL library represents ``@throws`` tags using class ``ThrowsTag``. This class does not provide a member predicate for determining the exception type that is being documented, so we first need to implement our own version. A simple version might look as follows:
+Remember that the CodeQL library represents ``@throws`` tags using class ``ThrowsTag``. This class doesn't provide a member predicate for determining the exception type that is being documented, so we first need to implement our own version. A simple version might look like this:
 
 .. code-block:: ql
 
@@ -118,7 +120,7 @@ Recall from above that the CodeQL library represents ``@throws`` tags using clas
        result.hasName(tt.getExceptionName())
    }
 
-Similarly, ``Callable`` does not come with a member predicate for querying all exceptions that the method or constructor may possibly throw. We can, however, implement this ourselves by using ``getAnException`` to find all ``throws`` clauses of the callable, and then use ``getType`` to resolve the corresponding exception types:
+Similarly, ``Callable`` doesn't come with a member predicate for querying all exceptions that the method or constructor may possibly throw. We can, however, implement this ourselves by using ``getAnException`` to find all ``throws`` clauses of the callable, and then use ``getType`` to resolve the corresponding exception types:
 
 .. code-block:: ql
 
@@ -131,7 +133,7 @@ Note the use of ``getASupertype*`` to find both exceptions declared in a ``throw
 Now we can write a query for finding all callables ``c`` and ``@throws`` tags ``tt`` such that:
 
 -  ``tt`` belongs to a Javadoc comment attached to ``c``.
--  ``c`` cannot throw the exception documented by ``tt``.
+-  ``c`` can't throw the exception documented by ``tt``.
 
 .. code-block:: ql
 
@@ -145,17 +147,17 @@ Now we can write a query for finding all callables ``c`` and ``@throws`` tags ``
        not mayThrow(c, exn)
    select tt, "Spurious @throws tag."
 
-➤ `See this in the query console <https://lgtm.com/query/1505752646058/>`__. This finds several results in the LGTM.com demo projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505752646058/>`__. This finds several results in the LGTM.com demo projects.
 
 Improvements
 ~~~~~~~~~~~~
 
 Currently, there are two problems with this query:
 
-#. ``getDocumentedException`` is too liberal: it will return *any* reference type with the right name, even if it is in a different package and not actually visible in the current compilation unit.
-#. ``mayThrow`` is too restrictive: it does not account for unchecked exceptions, which do not need to be declared.
+#. ``getDocumentedException`` is too liberal: it will return *any* reference type with the right name, even if it's in a different package and not actually visible in the current compilation unit.
+#. ``mayThrow`` is too restrictive: it doesn't account for unchecked exceptions, which do not need to be declared.
 
-To see why the former is a problem, consider the following program:
+To see why the former is a problem, consider this program:
 
 .. code-block:: java
 
@@ -166,9 +168,9 @@ To see why the former is a problem, consider the following program:
        void bar() throws IOException {}
    }
 
-This program defines its own class ``IOException``, which is unrelated to the class ``java.io.IOException`` in the standard library: they are in different packages. Our ``getDocumentedException`` predicate does not check packages, however, so it will consider the ``@throws`` clause to refer to both ``IOException`` classes, and thus flag the ``@param`` tag as spurious, since ``B.bar`` cannot actually throw ``java.io.IOException``.
+This program defines its own class ``IOException``, which is unrelated to the class ``java.io.IOException`` in the standard library: they are in different packages. Our ``getDocumentedException`` predicate doesn't check packages, however, so it will consider the ``@throws`` clause to refer to both ``IOException`` classes, and thus flag the ``@param`` tag as spurious, since ``B.bar`` can't actually throw ``java.io.IOException``.
 
-As an example of the second problem, method ``A.foo`` from our previous example was annotated with a ``@throws RuntimeException`` tag. Our current version of ``mayThrow``, however, would think that ``A.foo`` cannot throw a ``RuntimeException``, and thus flag the tag as spurious.
+As an example of the second problem, method ``A.foo`` from our previous example was annotated with a ``@throws RuntimeException`` tag. Our current version of ``mayThrow``, however, would think that ``A.foo`` can't throw a ``RuntimeException``, and thus flag the tag as spurious.
 
 We can make ``mayThrow`` less restrictive by introducing a new class to represent unchecked exceptions, which are just the subtypes of ``java.lang.RuntimeException`` and ``java.lang.Error``:
 
@@ -196,7 +198,7 @@ Fixing ``getDocumentedException`` is more complicated, but we can easily cover t
 #. The ``@throws`` tag refers to a type in the same package.
 #. The ``@throws`` tag refers to a type that is imported by the current compilation unit.
 
-The first case can be covered by changing ``getDocumentedException`` to use the qualified name of the ``@throws`` tag. To handle the second and the third case, we can introduce a new predicate ``visibleIn`` that checks whether a reference type is visible in a compilation unit, either by virtue of belonging to the same package or by being explicitly imported. We then rewrite ``getDocumentedException`` as follows:
+The first case can be covered by changing ``getDocumentedException`` to use the qualified name of the ``@throws`` tag. To handle the second and the third case, we can introduce a new predicate ``visibleIn`` that checks whether a reference type is visible in a compilation unit, either by virtue of belonging to the same package or by being explicitly imported. We then rewrite ``getDocumentedException`` as:
 
 .. code-block:: ql
 
@@ -212,13 +214,12 @@ The first case can be covered by changing ``getDocumentedException`` to use the 
        (result.hasName(tt.getExceptionName()) and visibleIn(tt.getFile(), result))
    }
 
-➤ `See this in the query console <https://lgtm.com/query/1505751136101/>`__. This finds many fewer, more interesting results in the LGTM.com demo projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505751136101/>`__. This finds many fewer, more interesting results in the LGTM.com demo projects.
 
-Currently, ``visibleIn`` only considers single-type imports, but it would be possible to extend it with support for other kinds of imports.
+Currently, ``visibleIn`` only considers single-type imports, but you could extend it with support for other kinds of imports.
 
-What next?
-----------
+Further reading
+---------------
 
--  Find out how you can use the location API to define queries on whitespace: :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

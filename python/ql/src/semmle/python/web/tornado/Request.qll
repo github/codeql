@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import Tornado
 
@@ -30,7 +30,7 @@ class TornadoRequest extends TaintKind {
     }
 }
 
-class TornadoRequestSource extends TaintSource {
+class TornadoRequestSource extends HttpRequestTaintSource {
     TornadoRequestSource() { isTornadoRequestHandlerInstance(this.(AttrNode).getObject("request")) }
 
     override string toString() { result = "Tornado request source" }
@@ -38,7 +38,7 @@ class TornadoRequestSource extends TaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof TornadoRequest }
 }
 
-class TornadoExternalInputSource extends TaintSource {
+class TornadoExternalInputSource extends HttpRequestTaintSource {
     TornadoExternalInputSource() {
         exists(string name |
             name = "get_argument" or
@@ -55,7 +55,7 @@ class TornadoExternalInputSource extends TaintSource {
     override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
 }
 
-class TornadoExternalInputListSource extends TaintSource {
+class TornadoExternalInputListSource extends HttpRequestTaintSource {
     TornadoExternalInputListSource() {
         exists(string name |
             name = "get_arguments" or

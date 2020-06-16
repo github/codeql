@@ -40,21 +40,21 @@ public:
     cc.insert(nullptr);
     ct.insert(new C());
     sink(&cc); // no flow
-    sink(&ct); // flow
+    sink(&ct); // $ast $f-:ir
   }
   void f1()
   {
     C *c = new C();
     B *b = B::make(c);
-    sink(b->c); // flow
+    sink(b->c); // $ast $f-:ir
   }
 
   void f2()
   {
     B *b = new B();
     b->set(new C1());
-    sink(b->get());                // flow
-    sink((new B(new C()))->get()); // flow
+    sink(b->get());                // $ast $f-:ir
+    sink((new B(new C()))->get()); // $ast $f-:ir
   }
 
   void f3()
@@ -63,7 +63,7 @@ public:
     B *b2;
     b2 = setOnB(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // flow
+    sink(b2->c); // $ast $f-:ir
   }
 
   void f4()
@@ -72,7 +72,7 @@ public:
     B *b2;
     b2 = setOnBWrap(b1, new C2());
     sink(b1->c); // no flow
-    sink(b2->c); // flow
+    sink(b2->c); // $ast $f-:ir
   }
 
   B *setOnBWrap(B *b1, C *c)
@@ -104,7 +104,7 @@ public:
   {
     if (C1 *c1 = dynamic_cast<C1 *>(c))
     {
-      sink(c1->a); // flow
+      sink(c1->a); // $ast $ir
     }
     C *cc;
     if (C2 *c2 = dynamic_cast<C2 *>(c))
@@ -117,7 +117,7 @@ public:
     }
     if (C1 *c1 = dynamic_cast<C1 *>(cc))
     {
-      sink(c1->a); // no flow, stopped by cast to C2 [FALSE POSITIVE]
+      sink(c1->a); //$f+:ast
     }
   }
 
@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // flow
+    sink(b->c); // $ast $f-:ir
   }
 
   class D
@@ -149,9 +149,9 @@ public:
   {
     B *b = new B();
     D *d = new D(b, r());
-    sink(d->b);    // flow x2
-    sink(d->b->c); // flow
-    sink(b->c);    // flow
+    sink(d->b);    // $ast=143:25 $ast=150:12 $f-:ir
+    sink(d->b->c); // $ast $f-:ir
+    sink(b->c);    // $ast,ir
   }
 
   void f10()
@@ -162,11 +162,11 @@ public:
     MyList *l3 = new MyList(nullptr, l2);
     sink(l3->head);                   // no flow, b is nested beneath at least one ->next
     sink(l3->next->head);             // no flow
-    sink(l3->next->next->head);       // flow
+    sink(l3->next->next->head);       // $ast $f-:ir
     sink(l3->next->next->next->head); // no flow
     for (MyList *l = l3; l != nullptr; l = l->next)
     {
-      sink(l->head); // flow
+      sink(l->head); // $ast $f-:ir
     }
   }
 

@@ -1,8 +1,13 @@
-Tutorial: Precise data-flow analysis using flow labels
-======================================================
+Using flow labels for precise data flow analysis
+================================================
+
+You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
+
+Overview
+--------
 
 You can use basic inter-procedural data-flow analysis and taint tracking as described in
-:doc:`Analyzing data flow in JavaScript/TypeScript <dataflow>` to check whether there is a path in
+:doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>` to check whether there is a path in
 the data-flow graph from some source node to a sink node that does not pass through any sanitizer
 nodes. Another way of thinking about this is that it statically models the flow of data through the
 program, and associates a flag with every data value telling us whether it might have come from a
@@ -390,9 +395,10 @@ tainted objects from partially tainted objects. The `Uncontrolled data used in p
 <https://lgtm.com/rules/1971530250>`_ query uses four flow labels to track whether a user-controlled
 string may be an absolute path and whether it may contain ``..`` components.
 
-What next?
-----------
+Further reading
+---------------
 
--  Learn about the standard CodeQL libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

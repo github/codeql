@@ -9,9 +9,21 @@ class LanguageType = CppType;
 
 class OpaqueTypeTag = Cpp::Type;
 
+class TypeDomain = Cpp::TypeDomain;
+
+class RealDomain = Cpp::RealDomain;
+
+class ComplexDomain = Cpp::ComplexDomain;
+
+class ImaginaryDomain = Cpp::ImaginaryDomain;
+
 class Function = Cpp::Function;
 
 class Location = Cpp::Location;
+
+class UnknownLocation = Cpp::UnknownLocation;
+
+class UnknownDefaultLocation = Cpp::UnknownDefaultLocation;
 
 class File = Cpp::File;
 
@@ -80,3 +92,17 @@ predicate hasPotentialLoop(Function f) {
 }
 
 predicate hasGoto(Function f) { exists(Cpp::GotoStmt s | s.getEnclosingFunction() = f) }
+
+/**
+ * Gets the offset of field `field` in bits.
+ */
+int getFieldBitOffset(Field field) {
+  if field instanceof Cpp::BitField
+  then result = (field.getByteOffset() * 8) + field.(Cpp::BitField).getBitOffset()
+  else result = field.getByteOffset() * 8
+}
+
+/**
+ * Holds if the specified `Function` can be overridden in a derived class.
+ */
+predicate isFunctionVirtual(Function f) { f.isVirtual() }

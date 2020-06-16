@@ -14,7 +14,8 @@ import cpp
 // Pick a representative file for a namespace - more than a bit dodgy, but otherwise
 // the results don't show up anywhere which is less than helpful
 predicate namespaceRepresentative(Namespace ns, File rep) {
-  rep.getAbsolutePath() = min(File f |
+  rep.getAbsolutePath() =
+    min(File f |
       exists(Declaration d | d = ns.getADeclaration() | d.getFile() = f)
     |
       f.getAbsolutePath()

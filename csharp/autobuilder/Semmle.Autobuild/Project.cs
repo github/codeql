@@ -82,7 +82,7 @@ namespace Semmle.Autobuild
                     foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
                     {
                         var includePath = builder.Actions.PathCombine(include.Value.Split('\\', StringSplitOptions.RemoveEmptyEntries));
-                        ret.Add(new Project(builder, builder.Actions.PathCombine(Path.GetDirectoryName(this.FullPath), includePath)));
+                        ret.Add(new Project(builder, builder.Actions.PathCombine(DirectoryName, includePath)));
                     }
                     return ret;
                 });

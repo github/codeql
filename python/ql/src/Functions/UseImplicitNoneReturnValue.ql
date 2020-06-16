@@ -13,9 +13,11 @@ import python
 import Testing.Mox
 
 predicate is_used(Call c) {
-    exists(Expr outer | outer != c and outer.containsInScope(c) | outer instanceof Call or outer instanceof Attribute or outer instanceof Subscript)
+    exists(Expr outer | outer != c and outer.containsInScope(c) |
+        outer instanceof Call or outer instanceof Attribute or outer instanceof Subscript
+    )
     or
-    exists(Stmt s | 
+    exists(Stmt s |
         c = s.getASubExpression() and
         not s instanceof ExprStmt and
         /* Ignore if a single return, as def f(): return g() is quite common. Covers implicit return in a lambda. */
@@ -23,12 +25,14 @@ predicate is_used(Call c) {
     )
 }
 
-from Call c, FunctionObject func
-where 
-/* Call result is used, but callee is a procedure */
-is_used(c) and c.getFunc().refersTo(func) and func.getFunction().isProcedure() and
-/* All callees are procedures */
-forall(FunctionObject callee | c.getFunc().refersTo(callee) | callee.getFunction().isProcedure()) and
-/* Mox return objects have an `AndReturn` method */
-not useOfMoxInModule(c.getEnclosingModule())
+from Call c, FunctionValue func
+where
+    /* Call result is used, but callee is a procedure */
+    is_used(c) and
+    c.getFunc().pointsTo(func) and
+    func.getScope().isProcedure() and
+    /* All callees are procedures */
+    forall(FunctionValue callee | c.getFunc().pointsTo(callee) | callee.getScope().isProcedure()) and
+    /* Mox return objects have an `AndReturn` method */
+    not useOfMoxInModule(c.getEnclosingModule())
 select c, "The result of '$@' is used even though it is always None.", func, func.getQualifiedName()

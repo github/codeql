@@ -1,13 +1,13 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.security.strings.Basic
 import Twisted
 import Request
 
-class TwistedResponse extends TaintSink {
+class TwistedResponse extends HttpResponseTaintSink {
     TwistedResponse() {
-        exists(PythonFunctionValue func, string name, Return ret |
+        exists(PythonFunctionValue func, string name |
             isKnownRequestHandlerMethodName(name) and
             name = func.getName() and
             func = getTwistedRequestHandlerMethod(name) and

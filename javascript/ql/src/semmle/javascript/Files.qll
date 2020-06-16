@@ -183,11 +183,8 @@ class Folder extends Container, @folder {
    * HTML files will not be found by this method.
    */
   File getJavaScriptFile(string stem) {
-    result = min(int p, string ext |
-        p = getFileExtensionPriority(ext)
-      |
-        getFile(stem, ext) order by p
-      )
+    result =
+      min(int p, string ext | p = getFileExtensionPriority(ext) | getFile(stem, ext) order by p)
   }
 
   /** Gets a subfolder contained in this folder. */

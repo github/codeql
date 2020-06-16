@@ -492,28 +492,28 @@ library class ExprEvaluator extends int {
       )
       or
       exists(AddExpr req | req = val |
-        result = getValueInternal(e, req.getLeftOperand()) +
-            getValueInternal(e, req.getRightOperand())
+        result =
+          getValueInternal(e, req.getLeftOperand()) + getValueInternal(e, req.getRightOperand())
       )
       or
       exists(SubExpr req | req = val |
-        result = getValueInternal(e, req.getLeftOperand()) -
-            getValueInternal(e, req.getRightOperand())
+        result =
+          getValueInternal(e, req.getLeftOperand()) - getValueInternal(e, req.getRightOperand())
       )
       or
       exists(MulExpr req | req = val |
-        result = getValueInternal(e, req.getLeftOperand()) *
-            getValueInternal(e, req.getRightOperand())
+        result =
+          getValueInternal(e, req.getLeftOperand()) * getValueInternal(e, req.getRightOperand())
       )
       or
       exists(RemExpr req | req = val |
-        result = getValueInternal(e, req.getLeftOperand()) %
-            getValueInternal(e, req.getRightOperand())
+        result =
+          getValueInternal(e, req.getLeftOperand()) % getValueInternal(e, req.getRightOperand())
       )
       or
       exists(DivExpr req | req = val |
-        result = getValueInternal(e, req.getLeftOperand()) /
-            getValueInternal(e, req.getRightOperand())
+        result =
+          getValueInternal(e, req.getLeftOperand()) / getValueInternal(e, req.getRightOperand())
       )
       or
       exists(AssignExpr req | req = val | result = getValueInternal(e, req.getRValue()))
@@ -531,12 +531,8 @@ library class ExprEvaluator extends int {
     exists(Variable v |
       interestingVariableAccess(e, va, v, true) and
       // All assignments must have the same int value
-      result = min(Expr value |
-          value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
-        |
-          getValueInternalNonSubExpr(value)
-        ) and
-      result = max(Expr value |
+      result =
+        unique(Expr value |
           value = v.getAnAssignedValue() and not ignoreVariableAssignment(e, v, value)
         |
           getValueInternalNonSubExpr(value)
@@ -606,86 +602,91 @@ library class ExprEvaluator extends int {
       or
       exists(LTExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) < getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) <
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >= getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) >=
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(GTExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) > getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) >
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <= getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) <=
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(LEExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) <= getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) <=
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) > getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) >
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(GEExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) >= getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) >=
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) < getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) <
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(EQExpr req | req = val |
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) = getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) =
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) != getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) !=
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(NEExpr req | req = val |
         result = 0 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) = getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) =
+          getValueInternalNonSubExpr(req.getRightOperand())
         or
         result = 1 and
-        getValueInternalNonSubExpr(req.getLeftOperand()) != getValueInternalNonSubExpr(req
-                .getRightOperand())
+        getValueInternalNonSubExpr(req.getLeftOperand()) !=
+          getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(AddExpr req | req = val |
-        result = getValueInternalNonSubExpr(req.getLeftOperand()) +
+        result =
+          getValueInternalNonSubExpr(req.getLeftOperand()) +
             getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(SubExpr req | req = val |
-        result = getValueInternalNonSubExpr(req.getLeftOperand()) -
+        result =
+          getValueInternalNonSubExpr(req.getLeftOperand()) -
             getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(MulExpr req | req = val |
-        result = getValueInternalNonSubExpr(req.getLeftOperand()) *
+        result =
+          getValueInternalNonSubExpr(req.getLeftOperand()) *
             getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(RemExpr req | req = val |
-        result = getValueInternalNonSubExpr(req.getLeftOperand()) %
+        result =
+          getValueInternalNonSubExpr(req.getLeftOperand()) %
             getValueInternalNonSubExpr(req.getRightOperand())
       )
       or
       exists(DivExpr req | req = val |
-        result = getValueInternalNonSubExpr(req.getLeftOperand()) /
+        result =
+          getValueInternalNonSubExpr(req.getLeftOperand()) /
             getValueInternalNonSubExpr(req.getRightOperand())
       )
       or

@@ -306,16 +306,6 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("indexers", propKey, name, declaringType, memberType, unboundProperty);
         }
 
-        internal static void is_constructed(this TextWriter trapFile, IEntity typeOrMethod)
-        {
-            trapFile.WriteTuple("is_constructed", typeOrMethod);
-        }
-
-        internal static void is_generic(this TextWriter trapFile, IEntity typeOrMethod)
-        {
-            trapFile.WriteTuple("is_generic", typeOrMethod);
-        }
-
         internal static void local_function_stmts(this TextWriter trapFile, Entities.Statements.LocalFunction fnStmt, LocalFunction fn)
         {
             trapFile.WriteTuple("local_function_stmts", fnStmt, fn);
@@ -464,6 +454,11 @@ namespace Semmle.Extraction.CSharp
         internal static void specific_type_parameter_nullability(this TextWriter trapFile, TypeParameterConstraints constraints, Type baseType, NullabilityEntity nullability)
         {
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
+        }
+
+        internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)
+        {
+            trapFile.WriteTuple("stackalloc_array_creation", array);
         }
 
         internal static void stmt_location(this TextWriter trapFile, Statement stmt, Location location)

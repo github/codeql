@@ -31,9 +31,9 @@ namespace Semmle.Util
         //#################### PUBLIC METHODS ####################
         #region
 
-        public override bool Equals(Object other)
+        public override bool Equals(object? other)
         {
-            LineCounts rhs = other as LineCounts;
+            var rhs = other as LineCounts;
             return rhs != null && Total == rhs.Total && Code == rhs.Code && Comment == rhs.Comment;
         }
 

@@ -12,7 +12,5 @@
 
 import python
 
-
 from FunctionMetrics func
-select func, func.getStatementNestingDepth() as n
-order by n desc
+select func, func.getStatementNestingDepth() as n order by n desc

@@ -7,12 +7,14 @@ import JDKAnnotations
 import Serializability
 import semmle.code.java.dataflow.DefUse
 
+/** Holds if `f` is a field that may be read by reflection. */
 predicate reflectivelyRead(Field f) {
   f instanceof SerializableField or
   f.getAnAnnotation() instanceof ReflectiveAccessAnnotation or
   referencedInXmlFile(f)
 }
 
+/** Holds if `f` is a field that may be written by reflection. */
 predicate reflectivelyWritten(Field f) {
   f instanceof DeserializableField or
   f.getAnAnnotation() instanceof ReflectiveAccessAnnotation or
@@ -284,7 +286,7 @@ class NewInstance extends MethodAccess {
    * cast.
    */
   private Type getCastInferredConstructedTypes() {
-    exists(CastExpr cast | cast.getExpr() = this or cast.getExpr().(ParExpr).getExpr() = this |
+    exists(CastExpr cast | cast.getExpr() = this |
       result = cast.getType()
       or
       // If we cast the result of this method, then this is either the type specified, or a
@@ -360,6 +362,7 @@ class ReflectiveFieldAccess extends ClassMethodAccess {
     this.getCallee().hasName("getDeclaredField")
   }
 
+  /** Gets the field accessed by this call. */
   Field inferAccessedField() {
     (
       if this.getCallee().hasName("getDeclaredField")

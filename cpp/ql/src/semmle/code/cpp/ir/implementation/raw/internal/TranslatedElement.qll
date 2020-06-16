@@ -50,6 +50,14 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Only translate the initializer of a static local if it uses run-time data.
+  // Otherwise the initializer does not run in function scope.
+  exists(Initializer init, StaticStorageDurationVariable var |
+    init = var.getInitializer() and
+    not var.hasDynamicInitialization() and
+    expr = init.getExpr().getFullyConverted()
+  )
+  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -75,6 +83,10 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
   or
   exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  or
+  exists(BuiltInVarArgsStart vaStartExpr |
+    vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
 }
 
 /**
@@ -188,7 +200,11 @@ private predicate usedAsCondition(Expr expr) {
   or
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
-  exists(ConditionalExpr condExpr | condExpr.getCondition().getFullyConverted() = expr)
+  exists(ConditionalExpr condExpr |
+    // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
+    // be reused as a value if the condition is true.
+    condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
+  )
   or
   exists(NotExpr notExpr |
     notExpr.getOperand().getFullyConverted() = expr and
@@ -208,7 +224,7 @@ private predicate usedAsCondition(Expr expr) {
  * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
  * lvalue and a function pointer prvalue the same.
  */
-predicate ignoreLoad(Expr expr) {
+private predicate ignoreLoad(Expr expr) {
   expr.hasLValueToRValueConversion() and
   (
     expr instanceof ThisExpr or
@@ -217,6 +233,54 @@ predicate ignoreLoad(Expr expr) {
       instanceof FunctionPointerType or
     expr.(ReferenceDereferenceExpr).getExpr().getType().getUnspecifiedType() instanceof
       FunctionReferenceType
+  )
+}
+
+/**
+ * Holds if `expr` should have a load on it because it will be loaded as part
+ * of the translation of its parent. We want to associate this load with `expr`
+ * itself rather than its parent since in practical applications like data flow
+ * we maintain that the value of the `x` in `x++` should be what's loaded from
+ * `x`.
+ */
+private predicate needsLoadForParentExpr(Expr expr) {
+  exists(CrementOperation crement | expr = crement.getOperand().getFullyConverted())
+  or
+  exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted())
+}
+
+/**
+ * Holds if `expr` should have a `TranslatedLoad` on it.
+ */
+predicate hasTranslatedLoad(Expr expr) {
+  (
+    expr.hasLValueToRValueConversion()
+    or
+    needsLoadForParentExpr(expr)
+  ) and
+  not ignoreExpr(expr) and
+  not isNativeCondition(expr) and
+  not isFlexibleCondition(expr) and
+  not ignoreLoad(expr)
+}
+
+/**
+ * Holds if the specified `DeclarationEntry` needs an IR translation. An IR translation is only
+ * necessary for automatic local variables, or for static local variables with dynamic
+ * initialization.
+ */
+private predicate translateDeclarationEntry(DeclarationEntry entry) {
+  exists(DeclStmt declStmt, LocalVariable var |
+    translateStmt(declStmt) and
+    declStmt.getADeclarationEntry() = entry and
+    // Only declarations of local variables need to be translated to IR.
+    var = entry.getDeclaration() and
+    (
+      not var.isStatic()
+      or
+      // Ignore static variables unless they have a dynamic initializer.
+      var.(StaticLocalVariable).hasDynamicInitialization()
+    )
   )
 }
 
@@ -229,21 +293,12 @@ newtype TTranslatedElement =
   } or
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
-  TTranslatedLoad(Expr expr) {
-    not ignoreExpr(expr) and
-    not isNativeCondition(expr) and
-    not isFlexibleCondition(expr) and
-    expr.hasLValueToRValueConversion() and
-    not ignoreLoad(expr)
-  } or
+  TTranslatedLoad(Expr expr) { hasTranslatedLoad(expr) } or
+  // For expressions that would not otherwise generate an instruction.
   TTranslatedResultCopy(Expr expr) {
     not ignoreExpr(expr) and
     exprNeedsCopyIfNotLoaded(expr) and
-    // Doesn't have a TTranslatedLoad
-    not (
-      expr.hasLValueToRValueConversion() and
-      not ignoreLoad(expr)
-    )
+    not hasTranslatedLoad(expr)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
@@ -345,6 +400,9 @@ newtype TTranslatedElement =
   TTranslatedConstructorInitList(Function func) { translateFunction(func) } or
   // A destructor destruction list
   TTranslatedDestructorDestructionList(Function func) { translateFunction(func) } or
+  TTranslatedThisParameter(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
     exists(Function func |
@@ -355,6 +413,7 @@ newtype TTranslatedElement =
       translateFunction(func)
     )
   } or
+  TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
   // The read side effects in a function's return block
   TTranslatedReadEffect(Parameter param) {
@@ -366,13 +425,12 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(DeclarationEntry entry) {
-    exists(DeclStmt declStmt |
-      translateStmt(declStmt) and
-      declStmt.getADeclarationEntry() = entry and
-      // Only declarations of local variables need to be translated to IR.
-      entry.getDeclaration() instanceof LocalVariable
-    )
+  TTranslatedDeclarationEntry(DeclarationEntry entry) { translateDeclarationEntry(entry) } or
+  // The dynamic initialization of a static local variable. This is a separate object from the
+  // declaration entry.
+  TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
+    translateDeclarationEntry(entry) and
+    entry.getDeclaration() instanceof StaticLocalVariable
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
   // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.
@@ -391,15 +449,30 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedSideEffects(Call expr) {
-    exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or expr instanceof ConstructorCall
-  } or // A precise side effect of an argument to a `Call`
+  TTranslatedCallSideEffects(Call expr) {
+    // Exclude allocations such as `malloc` (which happen to also be function calls).
+    // Both `TranslatedCallSideEffects` and `TranslatedAllocationSideEffects` generate
+    // the same side effects for its children as they both extend the `TranslatedSideEffects`
+    // class.
+    // Note: We can separate allocation side effects and call side effects into two
+    // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
+    not expr instanceof AllocationExpr and
+    (
+      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
+      expr instanceof ConstructorCall
+    )
+  } or
+  // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
+  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
       expr = call.getArgument(n).getFullyConverted()
       or
       expr = call.getQualifier().getFullyConverted() and
-      n = -1
+      n = -1 and
+      // Exclude calls to static member functions. They don't modify the qualifier
+      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
     ) and
     (
       call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
@@ -515,17 +588,14 @@ abstract class TranslatedElement extends TTranslatedElement {
   final string getId() { result = getUniqueId().toString() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
-    result = rank[rankIndex + 1](TranslatedElement child, int id |
-        child = getChild(id)
-      |
-        child order by id
-      )
+    result =
+      rank[rankIndex + 1](TranslatedElement child, int id | child = getChild(id) | child order by id)
   }
 
   language[monotonicAggregates]
   private int getDescendantCount() {
-    result = 1 +
-        sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
+    result =
+      1 + sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
@@ -669,12 +739,12 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the instruction whose result is consumed as an operand of the
    * instruction specified by `tag`, with the operand specified by `operandTag`.
    */
-  Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+  Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
   /**
    * Gets the type of the memory operand specified by `operandTag` on the the instruction specified by `tag`.
    */
-  CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
+  CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) { none() }
 
   /**
    * Gets the size of the memory operand specified by `operandTag` on the the instruction specified by `tag`.

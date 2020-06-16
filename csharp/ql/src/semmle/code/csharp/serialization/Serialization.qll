@@ -33,7 +33,8 @@ abstract class SerializableType extends ValueOrRefType {
   Callable getAnAutomaticCallback() {
     result = this.getADeserializationCallback() or
     result.(Destructor).getDeclaringType() = this or
-    result = any(Method m |
+    result =
+      any(Method m |
         m.getDeclaringType() = this and
         m.hasName("Dispose") and
         (

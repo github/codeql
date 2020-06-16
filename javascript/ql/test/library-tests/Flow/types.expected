@@ -78,6 +78,9 @@
 | globals.html:26:40:26:41 | x1 | globals.html:26:45:26:45 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | globals.html:26:52:26:53 | x2 | globals.html:26:57:26:66 | someGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | h_import.js:2:5:2:6 | ff | h_import.js:2:10:2:10 | f | function |
+| implicit-returns.js:4:9:4:9 | i | implicit-returns.js:4:13:4:13 | 0 | number |
+| implicit-returns.js:15:9:15:9 | x | implicit-returns.js:15:13:15:25 | endWithLoop() | boolean or undefined |
+| implicit-returns.js:25:9:25:9 | x | implicit-returns.js:25:13:25:28 | endWithShortIf() | boolean or undefined |
 | import.js:2:5:2:5 | m | import.js:2:9:2:13 | mixin | function |
 | import.js:5:5:5:7 | myf | import.js:5:11:5:11 | f | function |
 | import.js:8:5:8:11 | someVar | import.js:8:15:8:23 | someStuff | boolean, class, date, function, null, number, object, regular expression,string or undefined |
@@ -156,6 +159,9 @@
 | refinements.js:53:7:53:8 | x5 | refinements.js:53:12:53:12 | f | undefined |
 | refinements.js:55:7:55:8 | x6 | refinements.js:55:12:55:12 | f | null or undefined |
 | refinements.js:61:7:61:8 | x2 | refinements.js:61:12:61:12 | x | string |
+| tsTest.ts:2:14:2:14 | x | tsTest.ts:2:18:2:19 | 42 | number |
+| tsTest.ts:4:7:4:8 | x2 | tsTest.ts:4:12:4:12 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| tsTest.ts:12:5:12:5 | a | tsTest.ts:12:9:12:9 | A | object |
 | tst2.js:4:7:4:7 | x | tst2.js:4:11:4:20 | someGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | tst.js:3:7:3:8 | x1 | tst.js:3:12:3:15 | true | boolean |
 | tst.js:4:7:4:8 | x2 | tst.js:4:12:4:16 | false | boolean |
@@ -239,9 +245,6 @@
 | tst.js:185:5:185:21 | [someOtherGlobal] | tst.js:185:25:185:26 | [] | object |
 | tst.js:186:5:186:6 | x1 | tst.js:186:10:186:24 | someOtherGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | tst.mjs:3:5:3:7 | req | tst.mjs:3:11:3:17 | require | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| tst.ts:2:14:2:14 | x | tst.ts:2:18:2:19 | 42 | number |
-| tst.ts:4:7:4:8 | x2 | tst.ts:4:12:4:12 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| tst.ts:12:5:12:5 | a | tst.ts:12:9:12:9 | A | object |
 | with.js:2:7:2:7 | x | with.js:2:11:2:12 | 42 | number |
 | with.js:2:15:2:15 | y | with.js:2:19:2:22 | null | null |
 | with.js:4:9:4:10 | r1 | with.js:4:14:4:14 | x | boolean, class, date, function, null, number, object, regular expression,string or undefined |

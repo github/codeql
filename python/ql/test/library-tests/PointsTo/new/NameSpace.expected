@@ -123,7 +123,9 @@
 | l_calls.py:0 | Module code.l_calls | E | class E |
 | l_calls.py:0 | Module code.l_calls | F | class F |
 | l_calls.py:0 | Module code.l_calls | Owner | class Owner |
+| l_calls.py:0 | Module code.l_calls | a | Builtin-method bit_length |
 | l_calls.py:0 | Module code.l_calls | bar | Function bar |
+| l_calls.py:0 | Module code.l_calls | c | Builtin-method get |
 | l_calls.py:0 | Module code.l_calls | f | Function f |
 | l_calls.py:0 | Module code.l_calls | foo | Function foo |
 | l_calls.py:0 | Module code.l_calls | g | Function g |

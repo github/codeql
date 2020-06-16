@@ -91,7 +91,8 @@ module Typeahead {
 
     TypeaheadSuggestionFunction() {
       // Matches `$(...).typeahead({..}, { templates: { suggestion: <this> } })`.
-      this = typeaheadCall
+      this =
+        typeaheadCall
             .getOptionArgument(1, "templates")
             .getALocalSource()
             .getAPropertyWrite("suggestion")

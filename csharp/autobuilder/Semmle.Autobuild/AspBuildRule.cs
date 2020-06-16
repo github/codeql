@@ -7,10 +7,9 @@
     {
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
-            (var javaHome, var dist) =
-                builder.CodeQLJavaHome != null ?
-                (builder.CodeQLJavaHome, builder.CodeQLExtractorCSharpRoot) :
-                (builder.SemmleJavaHome, builder.SemmleDist);
+            var javaHome = builder.JavaHome;
+            var dist = builder.Distribution;
+
             var command = new CommandBuilder(builder.Actions).
                 RunCommand(builder.Actions.PathCombine(javaHome, "bin", "java")).
                 Argument("-jar").

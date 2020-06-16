@@ -6,11 +6,12 @@ private import DebugSSA
 
 bindingset[offset]
 private string getKeySuffixForOffset(int offset) {
+  offset >= 0 and
   if offset % 2 = 0 then result = "" else result = "_Chi"
 }
 
 bindingset[offset]
-private int getIndexForOffset(int offset) { result = offset / 2 }
+private int getIndexForOffset(int offset) { offset >= 0 and result = offset / 2 }
 
 /**
  * Property provide that dumps the memory access of each result. Useful for debugging SSA
@@ -19,28 +20,32 @@ private int getIndexForOffset(int offset) { result = offset / 2 }
 class PropertyProvider extends IRPropertyProvider {
   override string getInstructionProperty(Instruction instruction, string key) {
     key = "ResultMemoryLocation" and
-    result = strictconcat(MemoryLocation loc |
+    result =
+      strictconcat(MemoryLocation loc |
         loc = getResultMemoryLocation(instruction)
       |
         loc.toString(), ","
       )
     or
     key = "ResultVirtualVariable" and
-    result = strictconcat(MemoryLocation loc |
+    result =
+      strictconcat(MemoryLocation loc |
         loc = getResultMemoryLocation(instruction)
       |
         loc.getVirtualVariable().toString(), ","
       )
     or
     key = "OperandMemoryLocation" and
-    result = strictconcat(MemoryLocation loc |
+    result =
+      strictconcat(MemoryLocation loc |
         loc = getOperandMemoryLocation(instruction.getAnOperand())
       |
         loc.toString(), ","
       )
     or
     key = "OperandVirtualVariable" and
-    result = strictconcat(MemoryLocation loc |
+    result =
+      strictconcat(MemoryLocation loc |
         loc = getOperandMemoryLocation(instruction.getAnOperand())
       |
         loc.getVirtualVariable().toString(), ","
@@ -62,9 +67,11 @@ class PropertyProvider extends IRPropertyProvider {
     exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defOffset |
       hasDefinitionAtRank(useLocation, _, defBlock, defRank, defOffset) and
       defBlock.getInstruction(getIndexForOffset(defOffset)) = instruction and
-      key = "DefinitionReachesUse" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString()
-          + "]" and
-      result = strictconcat(IRBlock useBlock, int useRank, int useIndex |
+      key =
+        "DefinitionReachesUse" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString() +
+          "]" and
+      result =
+        strictconcat(IRBlock useBlock, int useRank, int useIndex |
           exists(Instruction useInstruction |
             hasUseAtRank(useLocation, useBlock, useRank, useInstruction) and
             useBlock.getInstruction(useIndex) = useInstruction and
@@ -90,7 +97,8 @@ class PropertyProvider extends IRPropertyProvider {
       hasDefinitionAtRank(useLocation, defLocation, block, defRank, defIndex) and
       defIndex = -1 and
       key = "DefinitionReachesUse(Phi)[" + useLocation.toString() + "]" and
-      result = strictconcat(IRBlock useBlock, int useRank, int useIndex |
+      result =
+        strictconcat(IRBlock useBlock, int useRank, int useIndex |
           exists(Instruction useInstruction |
             hasUseAtRank(useLocation, useBlock, useRank, useInstruction) and
             useBlock.getInstruction(useIndex) = useInstruction and
@@ -107,36 +115,40 @@ class PropertyProvider extends IRPropertyProvider {
     exists(
       MemoryLocation useLocation, IRBlock predBlock, IRBlock defBlock, int defIndex, Overlap overlap
     |
-      hasPhiOperandDefinition(_, useLocation, block, predBlock, defBlock, defIndex, overlap) and
-      key = "PhiUse[" + useLocation.toString() + " from " + predBlock.getDisplayIndex().toString() +
-          "]" and
-      result = defBlock.getDisplayIndex().toString() + "_" + defIndex + " (" + overlap.toString() +
-          ")"
+      hasPhiOperandDefinition(_, useLocation, block, predBlock, defBlock, defIndex) and
+      key =
+        "PhiUse[" + useLocation.toString() + " from " + predBlock.getDisplayIndex().toString() + "]" and
+      result =
+        defBlock.getDisplayIndex().toString() + "_" + defIndex + " (" + overlap.toString() + ")"
     )
     or
     key = "LiveOnEntry" and
-    result = strictconcat(MemoryLocation useLocation |
+    result =
+      strictconcat(MemoryLocation useLocation |
         locationLiveOnEntryToBlock(useLocation, block)
       |
         useLocation.toString(), ", " order by useLocation.toString()
       )
     or
     key = "LiveOnExit" and
-    result = strictconcat(MemoryLocation useLocation |
+    result =
+      strictconcat(MemoryLocation useLocation |
         locationLiveOnExitFromBlock(useLocation, block)
       |
         useLocation.toString(), ", " order by useLocation.toString()
       )
     or
     key = "DefsLiveOnEntry" and
-    result = strictconcat(MemoryLocation defLocation |
+    result =
+      strictconcat(MemoryLocation defLocation |
         definitionLiveOnEntryToBlock(defLocation, block)
       |
         defLocation.toString(), ", " order by defLocation.toString()
       )
     or
     key = "DefsLiveOnExit" and
-    result = strictconcat(MemoryLocation defLocation |
+    result =
+      strictconcat(MemoryLocation defLocation |
         definitionLiveOnExitFromBlock(defLocation, block)
       |
         defLocation.toString(), ", " order by defLocation.toString()

@@ -33,9 +33,7 @@ module LoopBoundInjection {
    */
   class ArrayIterationLoop extends Stmt {
     LocalVariable indexVariable;
-
     LoopStmt loop;
-
     DataFlow::PropRead lengthRead;
 
     ArrayIterationLoop() {
@@ -203,9 +201,7 @@ module LoopBoundInjection {
             )
             or
             // Similar to the loop sink - the existence of an early-exit usually means that no DoS can happen.
-            exists(ThrowStmt throw |
-              throw.getTarget() = func.asExpr()
-            )
+            exists(ThrowStmt throw | throw.getTarget() = func.asExpr())
             or
             // A crash happens looking up the index variable.
             hasCrashingArrayAccess(func.getParameter(1).getParameter().getVariable())
@@ -269,7 +265,6 @@ module LoopBoundInjection {
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
     DataFlow::ValueNode {
     override RelationalComparison astNode;
-
     DataFlow::PropRead propRead;
 
     LengthCheckSanitizerGuard() {

@@ -8,6 +8,4 @@ query predicate test_PredicateTypeExpr(PredicateTypeExpr type, VarTypeAccess res
   res0 = type.getParameterName()
 }
 
-query predicate test_hasAssertsKeyword(PredicateTypeExpr type) {
-  type.hasAssertsKeyword()
-}
+query predicate test_hasAssertsKeyword(PredicateTypeExpr type) { type.hasAssertsKeyword() }

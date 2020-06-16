@@ -22,7 +22,8 @@ where
     not exists(TypeVariable tv | tv.getGenericCallable() = callable |
       "<" + tv.getName() + ">" = paramTag.getParamName()
     ) and
-    msg = "@param tag \"" + paramTag.getParamName() + "\" does not match any actual parameter of " +
+    msg =
+      "@param tag \"" + paramTag.getParamName() + "\" does not match any actual parameter of " +
         what + " \"" + callable.getName() + "()\"."
   else
     // The tag has no value at all.

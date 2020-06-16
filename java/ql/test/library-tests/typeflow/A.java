@@ -70,4 +70,26 @@ public class A extends ArrayList<Long> {
     int i2 = (Integer)x2;
     int j2 = i2;
   }
+
+  public static class C {
+    private Map<String, String> map;
+    public static C empty = new C(Collections.emptyMap());
+    private C(Map<String, String> map) {
+      this.map = map;
+    }
+    public C() {
+      this(new LinkedHashMap<>());
+    }
+    public void put(String k, String v) {
+      map.put(k, v);
+      empty.put(k, v);
+    }
+  }
+
+  public void m8(Object[] xs, int i) {
+    if (xs[i] instanceof Integer) {
+      Object n = xs[i];
+      Object r = n;
+    }
+  }
 }

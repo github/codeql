@@ -292,9 +292,7 @@ class EdgeLabel extends TInputSymbol {
  * Gets the state before matching `t`.
  */
 pragma[inline]
-State before(RegExpTerm t) {
-  result = Match(t, 0)
-}
+State before(RegExpTerm t) { result = Match(t, 0) }
 
 /**
  * Gets a state the NFA may be in after matching `t`.
@@ -337,9 +335,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     )
   )
   or
-  exists(RegExpDot dot |
-    q1 = before(dot) and q2 = after(dot)
-  |
+  exists(RegExpDot dot | q1 = before(dot) and q2 = after(dot) |
     if dot.getLiteral().isDotAll() then lbl = Any() else lbl = Dot()
   )
   or
@@ -545,7 +541,8 @@ string intersect(InputSymbol c, InputSymbol d) {
  * Gets a character matched by character class `cc`.
  */
 string choose(RegExpCharacterClass cc) {
-  result = min(string c |
+  result =
+    min(string c |
       exists(RegExpTerm child | child = cc.getAChild() |
         c = child.(RegExpConstant).getValue() or
         child.(RegExpCharacterRange).isRange(c, _)

@@ -33,7 +33,8 @@ predicate spaceProblem(FunctionCall append, string msg) {
     malloc.getASuccessor+() = insert and
     insert.getArgument(1) = buffer.getAnAccess() and
     insert.getASuccessor+() = append and
-    msg = "This buffer only contains enough room for '" + buffer.getName() + "' (copied on line " +
+    msg =
+      "This buffer only contains enough room for '" + buffer.getName() + "' (copied on line " +
         insert.getLocation().getStartLine().toString() + ")"
   )
 }

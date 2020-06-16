@@ -16,7 +16,6 @@ import javascript
 import ExprHasNoEffect
 import semmle.javascript.RestrictedLocations
 
-
 from Expr e
 where hasNoEffect(e)
 select e.(FirstLineOf), "This expression has no effect."

@@ -60,7 +60,7 @@ void good2(char *str) {
 }
 
 void bad3(char *str) {
-    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    // BAD -- Not allocating space for '\0' terminator
     char *buffer = malloc(strlen(str) * sizeof(char));
     strcpy(buffer, str);
     free(buffer);

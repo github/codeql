@@ -49,7 +49,7 @@ class AssignmentConversionContext extends ConversionSite {
   AssignmentConversionContext() {
     this = v.getAnAssignedValue()
     or
-    exists(Assignment a | a.getDest().getProperExpr() = v.getAnAccess() and this = a.getSource())
+    exists(Assignment a | a.getDest() = v.getAnAccess() and this = a.getSource())
   }
 
   override Type getConversionTarget() { result = v.getType() }

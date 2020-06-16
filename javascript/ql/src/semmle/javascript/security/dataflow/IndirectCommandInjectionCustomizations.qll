@@ -45,11 +45,14 @@ module IndirectCommandInjection {
   class ParsedCommandLineArgumentsAsSource extends Source {
     ParsedCommandLineArgumentsAsSource() {
       // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
-      this = DataFlow::moduleImport("get-them-args").getACall() or
+      this = DataFlow::moduleImport("get-them-args").getACall()
+      or
       // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleImport("minimist").getACall() or
+      this = DataFlow::moduleImport("minimist").getACall()
+      or
       // `require('yargs').argv` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleMember("yargs", "argv") or
+      this = DataFlow::moduleMember("yargs", "argv")
+      or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
     }

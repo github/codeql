@@ -4,6 +4,7 @@ Annotations
 ###########
 
 An annotation is a string that you can place directly before the declaration of a QL entity or name.
+
 For example, to declare a module ``M`` as private, you could use::
 
     private module M {
@@ -248,7 +249,7 @@ Compiler pragmas
 The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
-Before adding pragmas to your code, contact Semmle to describe the performance problems.
+Before adding pragmas to your code, contact GitHub to describe the performance problems.
 That way we can suggest the best solution for your problem, and take it into account when
 improving the QL optimizer.
 
@@ -291,7 +292,7 @@ optimization on a predicate.
 This kind of optimization involves taking information from the context of a predicate 
 :ref:`call <calls>` and pushing it into the body of a predicate. This is usually
 beneficial, so you shouldn't use the ``pragma[nomagic]`` annotation unless recommended to do so
-by Semmle.
+by GitHub.
 
 Note that ``nomagic`` implies ``noinline``.
 
@@ -302,7 +303,7 @@ The ``pragma[noopt]`` annotation is used to prevent the QL optimizer from optimi
 predicate, except when it's absolutely necessary for compilation and evaluation to work.
 
 This is rarely necessary and you should not use the ``pragma[noopt]`` annotation unless
-recommended to do so by Semmle, for example, to help resolve performance issues.
+recommended to do so by GitHub, for example, to help resolve performance issues.
 
 When you use this annotation, be aware of the following issues:
 

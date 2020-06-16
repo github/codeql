@@ -1,3 +1,0 @@
-| red.py:8 | Str | externally controlled string |
-| test.py:11 | BinaryExpr | externally controlled string |
-| test.py:17 | BinaryExpr | externally controlled string |

@@ -1,7 +1,6 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import TaintLib
-
 
 from TaintSource src, TaintKind kind
 where src.isSourceOf(kind)

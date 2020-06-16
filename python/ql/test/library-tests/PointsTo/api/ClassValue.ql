@@ -11,5 +11,4 @@ where
     cls = ClassValue::classmethod() and description = "classmethod"
     or
     cls = ClassValue::bool().getMro().getItem(2) and description = "object"
-
 select cls, description

@@ -132,6 +132,9 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
       // dest_ptr = strdup(tainted_ptr)
       inModel.isParameterDeref(argInIndex) and
       exprIn = call.getArgument(argInIndex)
+      or
+      inModel.isParameter(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
     )
   )
   or
@@ -172,6 +175,9 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
       // Taint flows from a pointer to a dereference, which DataFlow does not handle
       // memcpy(&dest_var, tainted_ptr, len)
       inModel.isParameterDeref(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+      or
+      inModel.isParameter(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
   )

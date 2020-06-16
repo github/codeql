@@ -37,10 +37,48 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
     exists(JQuery::MethodCall jq |
       this.flow().getALocalSource() = jq and
-      // `jQuery.val()` does _not_ return a jQuery object
-      jq.getMethodName() != "val"
+      returnsAJQueryObject(jq, jq.getMethodName())
     )
   }
+}
+
+/**
+ * Holds if the jQuery method call `call`, with name `methodName`, returns a JQuery object.
+ *
+ * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion.
+ * The not is placed inside the predicate to avoid non-monotonic recursion.
+ */
+bindingset[methodName, call]
+private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodName) {
+  not (
+    neverReturnsJQuery(methodName)
+    or
+    methodName = "val" and call.getNumArgument() = 0 // `jQuery.val()`
+    or
+    methodName = ["html", "text"] and call.getNumArgument() = 0 // `jQuery.html()`/`jQuery.text()`
+    or
+    // `jQuery.attr(key)`/`jQuery.prop(key)`
+    methodName = ["attr", "prop"] and
+    call.getNumArgument() = 1 and
+    call.getArgument(0).mayHaveStringValue(_)
+  )
+}
+
+/**
+ * Holds if a jQuery method named `name` never returns a JQuery object.
+ */
+private predicate neverReturnsJQuery(string name) {
+  forex(ExternalMemberDecl decl |
+    decl.getBaseName() = "jQuery" and
+    decl.getName() = name
+  |
+    not decl
+        .getDocumentation()
+        .getATagByTitle("return")
+        .getType()
+        .getAnUnderlyingType()
+        .hasQualifiedName("jQuery")
+  )
 }
 
 /**
@@ -125,7 +163,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @callex
 /**
  * An attribute defined using jQuery APIs.
  */
-abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition {}
+abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition { }
 
 /**
  * An attribute definition supplied when constructing a DOM element using `$(...)`.
@@ -150,9 +188,7 @@ private class JQueryAttributeDefinitionInElement extends JQueryAttributeDefiniti
 }
 
 /** Gets the `attr` or `prop` string. */
-private string attrOrProp() {
-  result = "attr" or result = "prop"
-}
+private string attrOrProp() { result = "attr" or result = "prop" }
 
 /**
  * An attribute definition using `elt.attr(name, value)` or `elt.prop(name, value)`
@@ -260,26 +296,145 @@ private class JQueryChainedElement extends DOM::Element, InvokeExpr {
 }
 
 /**
- * A model of a URL request made using the `jQuery.ajax` or `jQuery.getJSON`.
+ * Classes and predicates for modelling `ClientRequest`s in JQuery.
  */
-private class JQueryClientRequest extends ClientRequest::Range {
-  JQueryClientRequest() {
-    exists(string name |
-      name = "ajax" or
-      name = "getJSON"
-    |
+private module JQueryClientRequest {
+  /**
+   * A model of a URL request made using the `jQuery.ajax`.
+   */
+  private class JQueryAjaxCall extends ClientRequest::Range {
+    JQueryAjaxCall() { this = jquery().getAMemberCall("ajax") }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) and not exists(getOptionArgument(0, _))
+      or
+      result = getOptionArgument([0 .. 1], "url")
+    }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+
+    private string getResponseType() {
+      getOptionArgument([0 .. 1], "dataType").mayHaveStringValue(result)
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      (
+        responseType = getResponseType()
+        or
+        not exists(getResponseType()) and responseType = ""
+      ) and
+      promise = false and
+      (
+        result =
+          getOptionArgument([0 .. 1], "success")
+              .getALocalSource()
+              .(DataFlow::FunctionNode)
+              .getParameter(0)
+        or
+        result =
+          getAResponseNodeFromAnXHRObject(getOptionArgument([0 .. 1],
+              any(string method | method = "error" or method = "complete"))
+                .getALocalSource()
+                .(DataFlow::FunctionNode)
+                .getParameter(0))
+        or
+        result = getAnAjaxCallbackDataNode(this)
+      )
+    }
+  }
+
+  /**
+   * Gets a response data node from a call to a method on jqXHR Object `request`.
+   */
+  private DataFlow::Node getAnAjaxCallbackDataNode(ClientRequest::Range request) {
+    result =
+      request
+          .getAMemberCall(any(string s | s = "done" or s = "then"))
+          .getCallback(0)
+          .getParameter(0)
+    or
+    result =
+      getAResponseNodeFromAnXHRObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
+  }
+
+  /**
+   * Gets a node refering to the response contained in an `jqXHR` object.
+   */
+  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
+    result =
+      obj
+          .getAPropertyRead(any(string s |
+              s = "responseText" or
+              s = "responseXML"
+            ))
+  }
+
+  /**
+   * A model of a URL request made using a `jQuery.ajax` shorthand.
+   * E.g. `jQuery.getJSON`, `jQuery.post` etc.
+   * See: https://api.jquery.com/category/ajax/shorthand-methods/.
+   *
+   * Models the following method signatures:
+   * - `jQuery.get( url [, data ] [, success ] [, dataType ] )`
+   * - `jQuery.getJSON( url [, data ] [, success ] )`
+   * - `jQuery.getScript( url [, success ] )`
+   * - `jQuery.post( url [, data ] [, success ] [, dataType ] )`
+   * - `.load( url [, data ] [, complete ] )`
+   */
+  private class JQueryAjaxShortHand extends ClientRequest::Range {
+    string name;
+
+    JQueryAjaxShortHand() {
+      (
+        name = "get" or
+        name = "getJSON" or
+        name = "getScript" or
+        name = "post"
+      ) and
       this = jquery().getAMemberCall(name)
-    )
+      or
+      name = "load" and
+      this = JQuery::objectRef().getAMethodCall(name)
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() {
+      result = getArgument(1) and
+      not name = "getScript" and // doesn't have a data-node.
+      not result.getALocalSource() instanceof DataFlow::FunctionNode // looks like the success callback.
+    }
+
+    private string getResponseType() {
+      (name = "get" or name = "post") and
+      getLastArgument().mayHaveStringValue(result) and
+      getNumArgument() > 1
+      or
+      name = "getJSON" and result = "json"
+      or
+      (name = "getScript" or name = "load") and
+      result = "text"
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      (
+        responseType = getResponseType()
+        or
+        not exists(getResponseType()) and responseType = ""
+      ) and
+      promise = false and
+      (
+        // one of the two last arguments
+        result = getCallback([getNumArgument() - 2 .. getNumArgument() - 1]).getParameter(0)
+        or
+        result = getAnAjaxCallbackDataNode(this)
+      )
+    }
   }
-
-  override DataFlow::Node getUrl() {
-    result = getArgument(0) or
-    result = getOptionArgument([0 .. 1], "url")
-  }
-
-  override DataFlow::Node getHost() { none() }
-
-  override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
 }
 
 module JQuery {
@@ -379,12 +534,19 @@ module JQuery {
         hasUnderlyingType("jQuery")
       }
     }
+
+    /**
+     * A `this` node in a JQuery plugin function, which is a JQuery object.
+     */
+    private class JQueryPluginThisObject extends Range {
+      JQueryPluginThisObject() {
+        this = DataFlow::thisNode(any(JQueryPluginMethod method).getFunction())
+      }
+    }
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
-  private DataFlow::Node legacyObjectSource() {
-    result = any(JQueryObjectInternal e).flow()
-  }
+  private DataFlow::Node legacyObjectSource() { result = any(JQueryObjectInternal e).flow() }
 
   /** Gets a source of jQuery objects. */
   private DataFlow::SourceNode objectSource(DataFlow::TypeTracker t) {
@@ -423,9 +585,13 @@ module JQuery {
     MethodCall() {
       this = dollarCall() and name = "$"
       or
-      this = dollar().getAMemberCall(name)
+      this = ([dollar(), objectRef()]).getAMemberCall(name)
       or
-      this = objectRef().getAMethodCall(name)
+      // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
+      exists(DataFlow::PropRead read | read = this.getCalleeNode() |
+        read.getBase().getALocalSource() = [dollar(), objectRef()] and
+        read.mayHavePropertyName(name)
+      )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
       getReceiver() = legacyObjectSource() and
@@ -470,5 +636,62 @@ module JQuery {
       name = "$" and
       node = getArgument(0)
     }
+  }
+
+  /**
+   * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or `$.extend($.fn, {<pluginName>, <plugin>})`.
+   */
+  private predicate jQueryPluginDefinition(string pluginName, DataFlow::Node plugin) {
+    exists(DataFlow::PropRead fn, DataFlow::PropWrite write |
+      fn = jquery().getAPropertyRead("fn") and
+      (
+        write = fn.getAPropertyWrite()
+        or
+        exists(ExtendCall extend, DataFlow::SourceNode source |
+          fn.flowsTo(extend.getDestinationOperand()) and
+          source = extend.getASourceOperand() and
+          write = source.getAPropertyWrite()
+        )
+      ) and
+      plugin = write.getRhs() and
+      write.mayHavePropertyName(pluginName)
+    )
+  }
+
+  /**
+   * Gets a node that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::SourceNode getAJQueryPluginMethod(
+    DataFlow::TypeBackTracker t, DataFlow::Node def
+  ) {
+    t.start() and jQueryPluginDefinition(_, def) and result.flowsTo(def)
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = getAJQueryPluginMethod(t2, def).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is registered as a jQuery plugin method at `def`.
+   */
+  private DataFlow::FunctionNode getAJQueryPluginMethod(DataFlow::Node def) {
+    result = getAJQueryPluginMethod(DataFlow::TypeBackTracker::end(), def)
+  }
+
+  /**
+   * A function that is registered as a jQuery plugin method.
+   */
+  class JQueryPluginMethod extends DataFlow::FunctionNode {
+    string pluginName;
+
+    JQueryPluginMethod() {
+      exists(DataFlow::Node def |
+        jQueryPluginDefinition(pluginName, def) and
+        this = getAJQueryPluginMethod(def)
+      )
+    }
+
+    /**
+     * Gets the name of this plugin.
+     */
+    string getPluginName() { result = pluginName }
   }
 }

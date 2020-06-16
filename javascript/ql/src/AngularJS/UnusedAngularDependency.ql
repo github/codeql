@@ -3,7 +3,7 @@
  * @description Unused dependencies are confusing, and should be removed.
  * @kind problem
  * @problem.severity recommendation
- * @precision high
+ * @precision low
  * @id js/angular/unused-dependency
  * @tags maintainability
  *       frameworks/angularjs
@@ -34,8 +34,9 @@ predicate isMissingParameter(AngularJS::InjectableFunction f, string msg, ASTNod
         then dependenciesAreString = "dependency is"
         else dependenciesAreString = "dependencies are"
       ) and
-      msg = "This function has " + paramCount + " " + parametersString + ", but " + injectionCount +
-          " " + dependenciesAreString + " injected into it."
+      msg =
+        "This function has " + paramCount + " " + parametersString + ", but " + injectionCount + " "
+          + dependenciesAreString + " injected into it."
     )
   )
 }

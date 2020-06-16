@@ -5,7 +5,8 @@ class DestructorCallEnhanced extends DestructorCall {
   override string toString() {
     if exists(this.getQualifier().(VariableAccess).getTarget().getName())
     then
-      result = "call to " + this.getQualifier().(VariableAccess).getTarget().getName() + "." +
+      result =
+        "call to " + this.getQualifier().(VariableAccess).getTarget().getName() + "." +
           this.getTarget().getName()
     else result = super.toString()
   }

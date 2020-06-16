@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -13,16 +14,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(ContainingType);
-            trapFile.Write(".");
-            trapFile.WriteSubId(Location);
-            if (symbol.IsGenericMethod && !IsSourceDeclaration)
-            {
-                trapFile.Write('<');
-                trapFile.BuildList(",", symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(Context, tb0, symbol, ta));
-                trapFile.Write('>');
-            }
-            trapFile.Write(";localfunction");
+            throw new InvalidOperationException();
+        }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            trapFile.Write('*');
         }
 
         public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntity(cx, field);

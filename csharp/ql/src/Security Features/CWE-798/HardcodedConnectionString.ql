@@ -36,9 +36,8 @@ class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configur
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SystemDataConnectionClass connection)
-          .getConnectionStringProperty()
-          .getAnAssignedValue()
+    sink.asExpr() =
+      any(SystemDataConnectionClass connection).getConnectionStringProperty().getAnAssignedValue()
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

@@ -65,7 +65,7 @@ private predicate mayDynamicallyComputeExports(Module m) {
   or
   // `m` re-exports all exports of some other module that dynamically computes its exports
   exists(BulkReExportDeclaration rexp | rexp = m.(ES2015Module).getAnExport() |
-    mayDynamicallyComputeExports(rexp.getImportedModule())
+    mayDynamicallyComputeExports(rexp.getReExportedModule())
   )
 }
 
@@ -79,7 +79,7 @@ private predicate relevantExport(ES2015Module m, string x) {
   )
   or
   exists(ReExportDeclaration rexp, string y |
-    rexp.getImportedModule() = m and
+    rexp.getReExportedModule() = m and
     reExportsAs(rexp, x, y)
   )
 }
@@ -110,9 +110,9 @@ private predicate incompleteExport(ES2015Module m, string y) {
       mayDependOnLookupPath(rexp.getImportedPath().getStringValue())
       or
       // unresolvable path
-      not exists(rexp.getImportedModule())
+      not exists(rexp.getReExportedModule())
       or
-      exists(Module n | n = rexp.getImportedModule() |
+      exists(Module n | n = rexp.getReExportedModule() |
         // re-export from CommonJS/AMD
         mayDynamicallyComputeExports(n)
         or
@@ -397,5 +397,24 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
       base = TAbstractModuleObject(mod) and
       propName = "exports"
     )
+  }
+}
+
+/**
+ * A namespace export declaration analyzed as a property write.
+ */
+private class AnalyzedExportNamespaceSpecifier extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  override ExportNamespaceSpecifier astNode;
+  ReExportDeclaration decl;
+
+  AnalyzedExportNamespaceSpecifier() {
+    decl = astNode.getExportDeclaration() and
+    not decl.isTypeOnly()
+  }
+
+  override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue value) {
+    baseVal = TAbstractExportsObject(getTopLevel()) and
+    propName = astNode.getExportedName() and
+    value = TAbstractExportsObject(decl.getReExportedModule())
   }
 }

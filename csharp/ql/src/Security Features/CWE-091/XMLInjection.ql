@@ -5,16 +5,13 @@
  * @kind problem
  * @id cs/xml-injection
  * @problem.severity error
+ * @precision high
  * @tags security
  *       external/cwe/cwe-091
  */
 
-/*
- * consider: @precision high
- */
-
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.frameworks.system.Xml
 
 /**

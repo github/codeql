@@ -1,0 +1,2 @@
+| test.py:72:26:72:58 | Taint sink | externally controlled string |
+| test.py:73:31:73:54 | Taint sink | [externally controlled string] |

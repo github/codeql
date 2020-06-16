@@ -11,8 +11,6 @@ Expr valueFlow(Expr src) {
     src = c.getTrueExpr() or
     src = c.getFalseExpr()
   )
-  or
-  src = result.(ParExpr).getExpr()
 }
 
 /**

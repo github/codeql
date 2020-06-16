@@ -1,28 +1,5 @@
 package com.semmle.js.parser;
 
-import ch.qos.logback.classic.Level;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.semmle.js.extractor.EnvironmentVariables;
-import com.semmle.js.extractor.ExtractionMetrics;
-import com.semmle.js.parser.JSParser.Result;
-import com.semmle.ts.extractor.TypeTable;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.data.UnitParser;
-import com.semmle.util.exception.CatastrophicError;
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.InterruptedError;
-import com.semmle.util.exception.ResourceError;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.io.WholeIO;
-import com.semmle.util.logging.LogbackUtils;
-import com.semmle.util.process.AbstractProcessBuilder;
-import com.semmle.util.process.Builder;
-import com.semmle.util.process.Env;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -34,10 +11,39 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.DependencyInstallationResult;
+import com.semmle.js.extractor.EnvironmentVariables;
+import com.semmle.js.extractor.ExtractionMetrics;
+import com.semmle.js.parser.JSParser.Result;
+import com.semmle.ts.extractor.TypeTable;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.data.UnitParser;
+import com.semmle.util.exception.CatastrophicError;
+import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.InterruptedError;
+import com.semmle.util.exception.ResourceError;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.logging.LogbackUtils;
+import com.semmle.util.process.AbstractProcessBuilder;
+import com.semmle.util.process.Builder;
+import com.semmle.util.process.Env;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * The Java half of our wrapper for invoking the TypeScript parser.
@@ -81,6 +87,12 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_TIMEOUT_VAR = "SEMMLE_TYPESCRIPT_TIMEOUT";
 
   /**
+   * An environment variable that can be set to specify a number of retries when verifying
+   * the TypeScript installation. Default is 3.
+   */
+  public static final String TYPESCRIPT_RETRIES_VAR = "SEMMLE_TYPESCRIPT_RETRIES";
+
+  /**
    * An environment variable (without the <tt>SEMMLE_</tt> or <tt>LGTM_</tt> prefix), that can be
    * set to indicate the maximum heap space usable by the Node.js process, in addition to its
    * "reserve memory".
@@ -108,6 +120,18 @@ public class TypeScriptParser {
    */
   public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
 
+  /**
+   * Exit code for Node.js in case of a fatal error from V8. This exit code sometimes occurs
+   * when the process runs out of memory.
+   */
+  private static final int NODEJS_EXIT_CODE_FATAL_ERROR = 5;
+
+  /**
+   * Exit code for Node.js in case it exits due to <code>SIGABRT</code>. This exit code sometimes occurs
+   * when the process runs out of memory.
+   */
+  private static final int NODEJS_EXIT_CODE_SIG_ABORT = 128 + 6;
+
   /** The Node.js parser wrapper process, if it has been started already. */
   private Process parserWrapperProcess;
 
@@ -131,6 +155,9 @@ public class TypeScriptParser {
 
   /** If non-zero, we use this instead of relying on the corresponding environment variable. */
   private int typescriptRam = 0;
+
+  /** Metadata requested immediately after starting the TypeScript parser. */
+  private TypeScriptParserMetadata metadata;
 
   /** Sets the amount of RAM to allocate to the TypeScript compiler.s */
   public void setTypescriptRam(int megabytes) {
@@ -158,9 +185,6 @@ public class TypeScriptParser {
   public String verifyNodeInstallation() {
     if (nodeJsVersionString != null) return nodeJsVersionString;
 
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    ByteArrayOutputStream err = new ByteArrayOutputStream();
-
     // Determine where to find the Node.js runtime.
     String explicitNodeJsRuntime = Env.systemEnv().get(TYPESCRIPT_NODE_RUNTIME_VAR);
     if (explicitNodeJsRuntime != null) {
@@ -177,12 +201,41 @@ public class TypeScriptParser {
       nodeJsRuntimeExtraArgs = Arrays.asList(extraArgs.split("\\s+"));
     }
 
+    // Run 'node --version' with a timeout, and retry a few times if it times out.
+    // If the Java process is suspended we may get a spurious timeout, and we want to
+    // support long suspensions in cloud environments. Instead of setting a huge timeout,
+    // retrying guarantees we can survive arbitrary suspensions as long as they don't happen
+    // too many times in rapid succession.
+    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
+    int numRetries = Env.systemEnv().getInt(TYPESCRIPT_RETRIES_VAR, 3);
+    for (int i = 0; i < numRetries - 1; ++i) {
+      try {
+        return startNodeAndGetVersion(timeout);
+      } catch (InterruptedError e) {
+        Exceptions.ignore(e, "We will retry the call that caused this exception.");
+        System.err.println("Starting Node.js seems to take a long time. Retrying.");
+      }
+    }
+    try {
+      return startNodeAndGetVersion(timeout);
+    } catch (InterruptedError e) {
+      Exceptions.ignore(e, "Exception details are not important.");
+      throw new CatastrophicError(
+          "Could not start Node.js (timed out after " + (timeout / 1000) + "s and " + numRetries + " attempts");
+    }
+  }
+
+  /**
+   * Checks that Node.js is installed and can be run and returns its version string.
+   */
+  private String startNodeAndGetVersion(int timeout) throws InterruptedError {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
     Builder b =
         new Builder(
             getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
     b.expectFailure(); // We want to do our own logging in case of an error.
 
-    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
     try {
       int r = b.execute(timeout);
       String stdout = new String(out.toByteArray());
@@ -192,10 +245,6 @@ public class TypeScriptParser {
             "Could not start Node.js. It is required for TypeScript extraction.\n" + stderr);
       }
       return nodeJsVersionString = stdout;
-    } catch (InterruptedError e) {
-      Exceptions.ignore(e, "Exception details are not important.");
-      throw new CatastrophicError(
-          "Could not start Node.js (timed out after " + (timeout / 1000) + "s).");
     } catch (ResourceError e) {
       // In case 'node' is not found, the process builder converts the IOException
       // into a ResourceError.
@@ -244,7 +293,7 @@ public class TypeScriptParser {
     int mainMemoryMb =
         typescriptRam != 0
             ? typescriptRam
-            : getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_SUFFIX, 1000);
+            : getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_SUFFIX, 2000);
     int reserveMemoryMb = getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_RESERVE_SUFFIX, 400);
 
     File parserWrapper = getParserWrapper();
@@ -279,6 +328,7 @@ public class TypeScriptParser {
       InputStream is = parserWrapperProcess.getInputStream();
       InputStreamReader isr = new InputStreamReader(is, "UTF-8");
       fromParserWrapper = new BufferedReader(isr);
+      this.loadMetadata();
     } catch (IOException e) {
       throw new CatastrophicError(
           "Could not start TypeScript parser wrapper " + "(command: ." + parserWrapperCommand + ")",
@@ -312,15 +362,7 @@ public class TypeScriptParser {
     if (parserWrapperProcess == null) setupParserWrapper();
 
     if (!parserWrapperProcess.isAlive()) {
-      int exitCode = 0;
-      try {
-        exitCode = parserWrapperProcess.waitFor();
-      } catch (InterruptedException e) {
-        Exceptions.ignore(e, "This is for diagnostic purposes only.");
-      }
-      String err = new WholeIO().strictReadString(parserWrapperProcess.getErrorStream());
-      throw new CatastrophicError(
-          "TypeScript parser wrapper terminated with exit code " + exitCode + "; stderr: " + err);
+      throw getExceptionFromMalformedResponse(null, null);
     }
 
     String response = null;
@@ -329,13 +371,14 @@ public class TypeScriptParser {
       toParserWrapper.newLine();
       toParserWrapper.flush();
       response = fromParserWrapper.readLine();
-      if (response == null)
-        throw new CatastrophicError(
-            "Could not communicate with TypeScript parser wrapper "
-                + "(command: "
-                + parserWrapperCommand
-                + ").");
-      return new JsonParser().parse(response).getAsJsonObject();
+      if (response == null || response.isEmpty()) {
+        throw getExceptionFromMalformedResponse(response, null);
+      }
+      try {
+        return new JsonParser().parse(response).getAsJsonObject();
+      } catch (JsonParseException | IllegalStateException e) {
+        throw getExceptionFromMalformedResponse(response, e);
+      }
     } catch (IOException e) {
       throw new CatastrophicError(
           "Could not communicate with TypeScript parser wrapper "
@@ -343,15 +386,46 @@ public class TypeScriptParser {
               + parserWrapperCommand
               + ").",
           e);
-    } catch (JsonParseException | IllegalStateException e) {
-      throw new CatastrophicError(
-          "TypeScript parser wrapper sent unexpected response: "
-              + response
-              + " (command: "
-              + parserWrapperCommand
-              + ").",
-          e);
     }
+  }
+
+  /**
+   * Creates an exception object describing the best known reason for the TypeScript parser wrapper
+   * failing to behave as expected.
+   *
+   * Note that the stderr stream is redirected to our stderr so a more descriptive error is likely
+   * to be found in the log, but we try to make the Java exception descriptive as well.
+   */
+  private RuntimeException getExceptionFromMalformedResponse(String response, Exception e) {
+    try {
+      Integer exitCode = null;
+      if (parserWrapperProcess.waitFor(1L, TimeUnit.SECONDS)) {
+        exitCode = parserWrapperProcess.waitFor();
+      }
+      if (exitCode != null && (exitCode == NODEJS_EXIT_CODE_FATAL_ERROR || exitCode == NODEJS_EXIT_CODE_SIG_ABORT)) {
+        return new ResourceError("The TypeScript parser wrapper crashed, possibly from running out of memory.", e);
+      }
+      if (exitCode != null) {
+        return new CatastrophicError("The TypeScript parser wrapper crashed with exit code " + exitCode);
+      }
+    } catch (InterruptedException e1) {
+      Exceptions.ignore(e, "This is for diagnostic purposes only.");
+    }
+    if (response == null) {
+      return new CatastrophicError("No response from TypeScript parser wrapper", e);
+    }
+    return new CatastrophicError("Unexpected response from TypeScript parser wrapper:\n" + response, e);
+  }
+
+  /**
+   * Requests metadata from the TypeScript process. See {@link TypeScriptParserMetadata}.
+   */
+  private void loadMetadata() {
+    JsonObject request = new JsonObject();
+    request.add("command", new JsonPrimitive("get-metadata"));
+    JsonObject response = talkToParserWrapper(request);
+    checkResponseType(response, "metadata");
+    this.metadata = new TypeScriptParserMetadata(response);
   }
 
   /**
@@ -371,11 +445,9 @@ public class TypeScriptParser {
     metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     try {
       checkResponseType(response, "ast");
-      JsonObject nodeFlags = response.get("nodeFlags").getAsJsonObject();
-      JsonObject syntaxKinds = response.get("syntaxKinds").getAsJsonObject();
       JsonObject ast = response.get("ast").getAsJsonObject();
       metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
-      Result converted = new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      Result converted = new TypeScriptASTConverter(metadata).convertAST(ast, source);
       metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
       return converted;
     } catch (IllegalStateException e) {
@@ -402,6 +474,21 @@ public class TypeScriptParser {
   }
 
   /**
+   * Converts a map to an array of [key, value] pairs.
+   */
+  private JsonArray mapToArray(Map<String, Path> map) {
+    JsonArray result = new JsonArray();
+    map.forEach(
+        (key, path) -> {
+          JsonArray entry = new JsonArray();
+          entry.add(key);
+          entry.add(path.toString());
+          result.add(entry);
+        });
+    return result;
+  }
+
+  /**
    * Opens a new project based on a tsconfig.json file. The compiler will analyze all files in the
    * project.
    *
@@ -409,10 +496,15 @@ public class TypeScriptParser {
    *
    * <p>Only one project should be opened at once.
    */
-  public ParsedProject openProject(File tsConfigFile) {
+  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps) {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive("open-project"));
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
+    request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
+    request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
+    request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");

@@ -710,19 +710,21 @@ entryPoint
 | Finally.cs:147:10:147:11 | M8 | Finally.cs:148:5:170:5 | {...} |
 | Finally.cs:176:10:176:11 | M9 | Finally.cs:177:5:193:5 | {...} |
 | Finally.cs:195:10:195:12 | M10 | Finally.cs:196:5:214:5 | {...} |
+| Finally.cs:216:10:216:12 | M11 | Finally.cs:217:5:231:5 | {...} |
 | Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |
 | Foreach.cs:24:10:24:11 | M4 | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:30:10:30:11 | M5 | Foreach.cs:31:5:34:5 | {...} |
 | Foreach.cs:36:10:36:11 | M6 | Foreach.cs:37:5:40:5 | {...} |
-| Initializers.cs:6:5:6:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
-| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
-| Initializers.cs:10:10:10:10 | M | Initializers.cs:11:5:14:5 | {...} |
-| Initializers.cs:18:11:18:23 | NoConstructor | Initializers.cs:20:23:20:23 | this access |
-| Initializers.cs:29:9:29:11 | Sub | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
-| Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
-| Initializers.cs:33:9:33:11 | Sub | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
+| Initializers.cs:10:5:10:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
+| Initializers.cs:12:10:12:10 | M | Initializers.cs:13:5:16:5 | {...} |
+| Initializers.cs:20:11:20:23 | NoConstructor | Initializers.cs:22:23:22:23 | this access |
+| Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |
+| Initializers.cs:33:9:33:11 | Sub | Initializers.cs:33:22:33:25 | call to constructor Sub |
+| Initializers.cs:35:9:35:11 | Sub | Initializers.cs:22:23:22:23 | this access |
+| Initializers.cs:51:10:51:13 | Test | Initializers.cs:52:5:66:5 | {...} |
 | LoopUnrolling.cs:7:10:7:11 | M1 | LoopUnrolling.cs:8:5:13:5 | {...} |
 | LoopUnrolling.cs:15:10:15:11 | M2 | LoopUnrolling.cs:16:5:20:5 | {...} |
 | LoopUnrolling.cs:22:10:22:11 | M3 | LoopUnrolling.cs:23:5:27:5 | {...} |

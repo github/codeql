@@ -46,3 +46,21 @@ def foo():
 def bar():
     return NotImplemented()
 
+
+# FP due to decorator
+# https://github.com/Semmle/ql/issues/3113
+def some_decorator(func):
+    print("this could be tricky for our analysis")
+    return func
+
+class Foo(object):
+    def __init__(self, arg):
+        self.arg = arg
+
+    @some_decorator
+    @classmethod
+    def new_instance(cls, new_arg):
+        return cls(new_arg) # TODO: FP
+
+f1 = Foo(1)
+f2 = f1.new_instance(2)

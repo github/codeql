@@ -20,8 +20,8 @@ class SafeXStream extends DataFlow2::Configuration {
   SafeXStream() { this = "UnsafeDeserialization::SafeXStream" }
 
   override predicate isSource(DataFlow::Node src) {
-    any(XStreamEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src
-          .asExpr()
+    any(XStreamEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() =
+      src.asExpr()
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -36,8 +36,8 @@ class SafeKryo extends DataFlow2::Configuration {
   SafeKryo() { this = "UnsafeDeserialization::SafeKryo" }
 
   override predicate isSource(DataFlow::Node src) {
-    any(KryoEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() = src
-          .asExpr()
+    any(KryoEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() =
+      src.asExpr()
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -51,7 +51,14 @@ class SafeKryo extends DataFlow2::Configuration {
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
-    sink = ma.getQualifier()
+    sink = ma.getQualifier() and
+    not exists(DataFlow::ExprNode node |
+      node.getExpr() = sink and
+      node
+          .getTypeBound()
+          .(RefType)
+          .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
+    )
     or
     m instanceof XMLDecoderReadObjectMethod and
     sink = ma.getQualifier()

@@ -2,9 +2,10 @@ import cpp
 import semmle.code.cpp.controlflow.SubBasicBlocks
 
 string subBasicBlockDebugInfo(SubBasicBlock sbb) {
-  result = sbb.getStart().toString() + " [line " + sbb.getStart().getLocation().getStartLine() + "-"
-      + sbb.getEnd().getLocation().getEndLine() + ", " + sbb.getNumberOfNodes() + " nodes, " +
-      "pos " + (sbb.getRankInBasicBlock(_) - 1) +
+  result =
+    sbb.getStart().toString() + " [line " + sbb.getStart().getLocation().getStartLine() + "-" +
+      sbb.getEnd().getLocation().getEndLine() + ", " + sbb.getNumberOfNodes() + " nodes, " + "pos " +
+      (sbb.getRankInBasicBlock(_) - 1) +
       any(string s | if sbb.firstInBB() then s = " (first in BB)" else s = "") +
       any(string s | if sbb.lastInBB() then s = " (last in BB)" else s = "") + ", " +
       count(sbb.getAPredecessor()) + " predecessors, " + count(sbb.getASuccessor()) + " successors" +

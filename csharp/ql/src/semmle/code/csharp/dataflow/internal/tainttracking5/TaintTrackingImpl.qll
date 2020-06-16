@@ -1,3 +1,13 @@
+/**
+ * Provides an implementation of global (interprocedural) taint tracking.
+ * This file re-exports the local (intraprocedural) taint-tracking analysis
+ * from `TaintTrackingParameter::Public` and adds a global analysis, mainly
+ * exposed through the `Configuration` class. For some languages, this file
+ * exists in several identical copies, allowing queries to use multiple
+ * `Configuration` classes that depend on each other without introducing
+ * mutual recursion among those configurations.
+ */
+
 import TaintTrackingParameter::Public
 private import TaintTrackingParameter::Private
 
@@ -67,13 +77,6 @@ abstract class Configuration extends DataFlow::Configuration {
   final override predicate isBarrier(DataFlow::Node node) {
     isSanitizer(node) or
     defaultTaintBarrier(node)
-  }
-
-  /** DEPRECATED: override `isSanitizerIn` and `isSanitizerOut` instead. */
-  deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
-
-  deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
-    isSanitizerEdge(node1, node2)
   }
 
   /** Holds if data flow into `node` is prohibited. */

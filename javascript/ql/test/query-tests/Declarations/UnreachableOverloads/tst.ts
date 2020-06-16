@@ -14,6 +14,12 @@ declare class Foobar {
   on(event: string, fn?: (event?: any, ...args: any[]) => void): Function;
   on(event: string, fn?: (event?: any, ...args: any[]) => void): Function; // NOT OK.
 
+  foo(this: string): string;
+  foo(this: number): number; // OK
+
+  bar(this: number): string;
+  bar(this: number): number; // NOT OK
+
 }
 
 declare class Base {

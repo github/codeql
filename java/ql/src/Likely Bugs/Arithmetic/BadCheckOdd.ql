@@ -15,7 +15,7 @@ import java
 import semmle.code.java.Collections
 
 predicate isDefinitelyPositive(Expr e) {
-  isDefinitelyPositive(e.getProperExpr()) or
+  isDefinitelyPositive(e) or
   e.(IntegerLiteral).getIntValue() >= 0 or
   e.(MethodAccess).getMethod() instanceof CollectionSizeMethod or
   e.(MethodAccess).getMethod() instanceof StringLengthMethod or
@@ -24,10 +24,10 @@ predicate isDefinitelyPositive(Expr e) {
 
 from BinaryExpr t, RemExpr lhs, IntegerLiteral rhs, string parity
 where
-  t.getLeftOperand().getProperExpr() = lhs and
-  t.getRightOperand().getProperExpr() = rhs and
+  t.getLeftOperand() = lhs and
+  t.getRightOperand() = rhs and
   not isDefinitelyPositive(lhs.getLeftOperand()) and
-  lhs.getRightOperand().getProperExpr().(IntegerLiteral).getIntValue() = 2 and
+  lhs.getRightOperand().(IntegerLiteral).getIntValue() = 2 and
   (
     t instanceof EQExpr and rhs.getIntValue() = 1 and parity = "oddness"
     or

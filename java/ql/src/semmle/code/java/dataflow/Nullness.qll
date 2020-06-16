@@ -45,9 +45,7 @@ private import semmle.code.java.frameworks.Assertions
 /** Gets an expression that may be `null`. */
 Expr nullExpr() {
   result instanceof NullLiteral or
-  result.(ParExpr).getExpr() = nullExpr() or
-  result.(ConditionalExpr).getTrueExpr() = nullExpr() or
-  result.(ConditionalExpr).getFalseExpr() = nullExpr() or
+  result.(ChooseExpr).getAResultExpr() = nullExpr() or
   result.(AssignExpr).getSource() = nullExpr() or
   result.(CastExpr).getExpr() = nullExpr()
 }
@@ -82,9 +80,7 @@ private predicate unboxed(Expr e) {
     or
     exists(UnaryExpr un | un.getExpr() = e)
     or
-    exists(ConditionalExpr cond | cond.getType() instanceof PrimitiveType |
-      cond.getTrueExpr() = e or cond.getFalseExpr() = e
-    )
+    exists(ChooseExpr cond | cond.getType() instanceof PrimitiveType | cond.getAResultExpr() = e)
     or
     exists(ConditionNode cond | cond.getCondition() = e)
     or
@@ -131,11 +127,8 @@ predicate dereference(Expr e) {
  * The `VarAccess` is included for nicer error reporting.
  */
 private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
-  exists(Expr e |
-    dereference(e) and
-    e = sameValue(v, va) and
-    result = e.getProperExpr()
-  )
+  dereference(result) and
+  result = sameValue(v, va)
 }
 
 /**
@@ -442,8 +435,8 @@ private predicate nullDerefCandidate(SsaVariable origin, VarAccess va) {
 /** A variable that is assigned `null` if the given condition takes the given branch. */
 private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond, boolean branch) {
   exists(ConditionalExpr condexpr |
-    v.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = condexpr and
-    condexpr.getCondition().getProperExpr() = cond.getCondition()
+    v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
+    condexpr.getCondition() = cond.getCondition()
   |
     condexpr.getTrueExpr() = nullExpr() and
     branch = true and
@@ -583,7 +576,7 @@ private predicate varMaybeNullInBlock_corrCond(
  * - int: A means a specific integer value and B means any other value.
  */
 
-newtype TrackVarKind =
+private newtype TrackVarKind =
   TrackVarKindNull() or
   TrackVarKindBool() or
   TrackVarKindEnum() or
@@ -705,7 +698,7 @@ private predicate isReset(
 }
 
 /** The abstract value of the tracked variable. */
-newtype TrackedValue =
+private newtype TrackedValue =
   TrackedValueA() or
   TrackedValueB() or
   TrackedValueUnknown()

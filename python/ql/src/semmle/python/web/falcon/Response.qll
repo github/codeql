@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.falcon.General
 import semmle.python.security.strings.External
@@ -9,7 +9,8 @@ class FalconResponse extends TaintKind {
     FalconResponse() { this = "falcon.response" }
 }
 
-class FalconResponseParameter extends TaintSource {
+/** Only used internally to track the response parameter */
+private class FalconResponseParameter extends TaintSource {
     FalconResponseParameter() {
         exists(FalconHandlerFunction f | f.getResponse() = this.(ControlFlowNode).getNode())
     }

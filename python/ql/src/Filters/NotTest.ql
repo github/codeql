@@ -4,6 +4,7 @@
  * @kind problem
  * @id py/not-test-file-filter
  */
+
 import python
 import external.DefectFilter
 import semmle.python.filters.Tests

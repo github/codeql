@@ -16,11 +16,11 @@ import semmle.python.regex
 predicate unmatchable_dollar(Regex r, int start) {
     not r.getAMode() = "MULTILINE" and
     not r.getAMode() = "VERBOSE" and
-    r.specialCharacter(start, start+1, "$")
-    and
-    not r.lastItem(start, start+1)
+    r.specialCharacter(start, start + 1, "$") and
+    not r.lastItem(start, start + 1)
 }
 
 from Regex r, int offset
 where unmatchable_dollar(r, offset)
-select r, "This regular expression includes an unmatchable dollar at offset " + offset.toString() + "."
+select r,
+    "This regular expression includes an unmatchable dollar at offset " + offset.toString() + "."

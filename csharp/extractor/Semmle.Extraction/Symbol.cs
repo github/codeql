@@ -16,7 +16,7 @@ namespace Semmle.Extraction
 
         public Label Label { get; set; }
 
-        public abstract Microsoft.CodeAnalysis.Location ReportingLocation { get; }
+        public abstract Microsoft.CodeAnalysis.Location? ReportingLocation { get; }
 
         public override string ToString() => Label.ToString();
 
@@ -39,21 +39,21 @@ namespace Semmle.Extraction
 
         public Context Context
         {
-            get; private set;
+            get;
         }
 
         public Initializer symbol
         {
-            get; private set;
+            get;
         }
 
-        object ICachedEntity.UnderlyingObject => symbol;
+        object? ICachedEntity.UnderlyingObject => symbol;
 
         public Initializer UnderlyingObject => symbol;
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
-        public void WriteQuotedId(TextWriter trapFile)
+        public virtual void WriteQuotedId(TextWriter trapFile)
         {
             trapFile.Write("@\"");
             WriteId(trapFile);
@@ -75,9 +75,9 @@ namespace Semmle.Extraction
             Context.WithDuplicationGuard(key, a);
         }
 
-        public override int GetHashCode() => symbol.GetHashCode();
+        public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as CachedEntity<Initializer>;
             return other?.GetType() == GetType() && Equals(other.symbol, symbol);

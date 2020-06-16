@@ -49,14 +49,15 @@ private predicate excludedAssembly(Assembly assembly) {
  * Generate the table of dependencies for the query.
  */
 predicate externalDependencies(File file, string encodedDependency, int num) {
-  num = strictcount(Element e |
+  num =
+    strictcount(Element e |
       // Quantify over `assembly` inside the `strictcount`, to avoid multiple entries for
       // assemblies with the same name and version
       exists(Assembly assembly |
         getElementInFile(file, e, assembly) and
         not excludedAssembly(assembly) and
-        encodedDependency = "/" + file.getRelativePath() + "<|>" + assembly.getName() + "<|>" +
-            assembly.getVersion()
+        encodedDependency =
+          "/" + file.getRelativePath() + "<|>" + assembly.getName() + "<|>" + assembly.getVersion()
       )
     )
 }

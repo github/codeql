@@ -1,0 +1,7 @@
+| test.py:10:15:10:17 | ControlFlowNode for cls | class Foo |
+| test.py:17:15:17:17 | ControlFlowNode for cls | class Foo |
+| test.py:17:15:17:17 | ControlFlowNode for cls | self instance of Foo |
+| test.py:22:15:22:17 | ControlFlowNode for cls | class Foo |
+| test.py:22:15:22:17 | ControlFlowNode for cls | self instance of Foo |
+| test.py:27:15:27:17 | ControlFlowNode for cls | class Foo |
+| test.py:27:15:27:17 | ControlFlowNode for cls | self instance of Foo |

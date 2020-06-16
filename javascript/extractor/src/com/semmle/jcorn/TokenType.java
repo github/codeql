@@ -85,6 +85,7 @@ public class TokenType {
       dot = new TokenType(new Properties(".")),
       questiondot = new TokenType(new Properties("?.")),
       question = new TokenType(new Properties("?").beforeExpr()),
+      pound = new TokenType(kw("#")),
       arrow = new TokenType(new Properties("=>").beforeExpr()),
       template = new TokenType(new Properties("template")),
       invalidTemplate = new TokenType(new Properties("invalidTemplate")),

@@ -16,7 +16,7 @@ import semmle.code.csharp.frameworks.Test
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 module Random {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.security.SensitiveActions
 
   /**
@@ -55,7 +55,8 @@ module Random {
   /** A source of cryptographically insecure random numbers. */
   class RandomSource extends Source {
     RandomSource() {
-      this.getExpr() = any(MethodCall mc |
+      this.getExpr() =
+        any(MethodCall mc |
           mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
         )
     }

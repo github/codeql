@@ -57,7 +57,8 @@ module CharacterEscapes {
       hasRawStringAndQuote(n, delim, rawStringNode, raw) and
       if rawStringNode instanceof RegExpLiteral
       then
-        additionalEscapeChars = Sets::regexpMetaChars() + Sets::regexpAssertionChars() + Sets::regexpCharClassChars() +
+        additionalEscapeChars =
+          Sets::regexpMetaChars() + Sets::regexpAssertionChars() + Sets::regexpCharClassChars() +
             Sets::regexpBackreferenceChars()
       else additionalEscapeChars = "b"
     |
@@ -92,6 +93,12 @@ module CharacterEscapes {
       // conservative formulation: we do not know in general if the sequence is enclosed in a character class `[...]`
       result = Sets::regexpMetaChars().charAt(_) and
       mistake = "may still represent a meta-character"
+    ) and
+    // avoid the benign case where preceding escaped backslashes turns into backslashes when the regexp is constructed
+    not exists(string raw |
+      not rawStringNode instanceof RegExpLiteral and
+      hasRawStringAndQuote(_, _, rawStringNode, raw) and
+      result = raw.regexpFind("(?<=(^|[^\\\\])((\\\\{3})|(\\\\{7}))).", _, i)
     )
   }
 }

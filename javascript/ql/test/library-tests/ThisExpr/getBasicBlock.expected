@@ -1,5 +1,8 @@
 missingBasicBlock
 basicBlock
+| module-exports.js:1:1:1:0 | this | module-exports.js:1:1:1:0 | entry node of <toplevel> |
+| module-exports.js:4:15:4:14 | this | module-exports.js:4:15:4:14 | entry node of function() { this; } |
+| module-exports.js:5:22:5:21 | this | module-exports.js:5:22:5:21 | entry node of function() { this; } |
 | tst.js:1:1:1:0 | this | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:16:1:15 | this | tst.js:1:16:1:15 | entry node of () {} |
 | tst.js:3:7:3:6 | this | tst.js:3:7:3:6 | entry node of () {\\n   ... ;\\n    } |

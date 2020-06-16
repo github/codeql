@@ -15,7 +15,7 @@ module CleartextLogging {
   abstract class Source extends DataFlow::Node {
     /** Gets a string that describes the type of this data flow source. */
     abstract string describe();
-    
+
     abstract DataFlow::FlowLabel getLabel();
   }
 
@@ -23,16 +23,14 @@ module CleartextLogging {
    * A data flow sink for clear-text logging of sensitive information.
    */
   abstract class Sink extends DataFlow::Node {
-    DataFlow::FlowLabel getLabel() {
-      result.isDataOrTaint()
-    }
+    DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
    * A barrier for clear-text logging of sensitive information.
    */
   abstract class Barrier extends DataFlow::Node { }
-  
+
   /**
    * A call to `.replace()` that seems to mask sensitive information.
    */
@@ -43,8 +41,7 @@ module CleartextLogging {
         reg = this.getArgument(0).getALocalSource().asExpr() and
         reg.isGlobal() and
         any(RegExpDot term).getLiteral() = reg
-      )
-      and
+      ) and
       exists(this.getArgument(1).getStringValue())
     }
   }
@@ -129,10 +126,8 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an access to " + name }
-    
-    override DataFlow::FlowLabel getLabel() {
-      result.isData()
-    }
+
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** An access to a variable or property that might contain a password. */
@@ -157,10 +152,8 @@ module CleartextLogging {
     }
 
     override string describe() { result = "an access to " + name }
-    
-    override DataFlow::FlowLabel getLabel() {
-      result.isData()
-    }
+
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** A call that might return a password. */
@@ -173,33 +166,27 @@ module CleartextLogging {
     }
 
     override string describe() { result = "a call to " + name }
-    
-    override DataFlow::FlowLabel getLabel() {
-      result.isData()
-    }
+
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /** An access to the sensitive object `process.env`. */
   class ProcessEnvSource extends Source {
-    ProcessEnvSource() {
-      this = NodeJSLib::process().getAPropertyRead("env")
-    }
+    ProcessEnvSource() { this = NodeJSLib::process().getAPropertyRead("env") }
 
     override string describe() { result = "process environment" }
-    
+
     override DataFlow::FlowLabel getLabel() {
-      result.isData() or 
+      result.isTaint() or
       result instanceof PartiallySensitiveMap
     }
   }
-  
+
   /**
    * A flow label describing a map that might contain sensitive information in some properties.
-   * Property reads on such maps where the property name is fixed is unlikely to leak sensitive information. 
+   * Property reads on such maps where the property name is fixed is unlikely to leak sensitive information.
    */
   class PartiallySensitiveMap extends DataFlow::FlowLabel {
-    PartiallySensitiveMap() {
-      this = "PartiallySensitiveMap"
-    }
+    PartiallySensitiveMap() { this = "PartiallySensitiveMap" }
   }
 }

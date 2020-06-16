@@ -32,11 +32,11 @@ predicate checksReferenceEquality(EqualsMethod em) {
     eq.getAnOperand().(VarAccess).getVariable() = em.getParameter(0) and
     (
       // `{ return (ojb==this); }`
-      eq = blk.getStmt().(ReturnStmt).getResult().getProperExpr()
+      eq = blk.getStmt().(ReturnStmt).getResult()
       or
       // `{ if (ojb==this) return true; else return false; }`
       exists(IfStmt ifStmt | ifStmt = blk.getStmt() |
-        eq = ifStmt.getCondition().getProperExpr() and
+        eq = ifStmt.getCondition() and
         ifStmt.getThen().(ReturnStmt).getResult().(BooleanLiteral).getBooleanValue() = true and
         ifStmt.getElse().(ReturnStmt).getResult().(BooleanLiteral).getBooleanValue() = false
       )

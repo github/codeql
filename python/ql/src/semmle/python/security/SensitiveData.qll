@@ -10,7 +10,7 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.HttpRequest
 
 /**
@@ -20,7 +20,6 @@ import semmle.python.web.HttpRequest
  * This is copied from the javascript library, but should be language independent.
  */
 private module HeuristicNames {
-
     /**
      * Gets a regular expression that identifies strings that may indicate the presence of secret
      * or trusted data.
@@ -32,8 +31,8 @@ private module HeuristicNames {
      * user names or other account information.
      */
     string maybeAccountInfo() {
-      result = "(?is).*acc(ou)?nt.*" or
-      result = "(?is).*(puid|username|userid).*"
+        result = "(?is).*acc(ou)?nt.*" or
+        result = "(?is).*(puid|username|userid).*"
     }
 
     /**
@@ -41,8 +40,8 @@ private module HeuristicNames {
      * a password or an authorization key.
      */
     string maybePassword() {
-      result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
-      result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
+        result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
+        result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
     }
 
     /**
@@ -51,7 +50,7 @@ private module HeuristicNames {
      */
     string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name)).*" }
 
-     /**
+    /**
      * Gets a regular expression that identifies strings that may indicate the presence
      * of sensitive data, with `classification` describing the kind of sensitive data involved.
      */
@@ -78,35 +77,35 @@ private module HeuristicNames {
         name.regexpMatch(HeuristicNames::maybeSensitive(result)) and
         not name.regexpMatch(HeuristicNames::notSensitive())
     }
-
 }
 
 abstract class SensitiveData extends TaintKind {
-
     bindingset[this]
     SensitiveData() { this = this }
-
 }
 
 module SensitiveData {
-
     class Secret extends SensitiveData {
         Secret() { this = "sensitive.data.secret" }
+
         override string repr() { result = "a secret" }
     }
 
     class Id extends SensitiveData {
         Id() { this = "sensitive.data.id" }
+
         override string repr() { result = "an ID" }
     }
 
     class Password extends SensitiveData {
         Password() { this = "sensitive.data.password" }
+
         override string repr() { result = "a password" }
     }
 
     class Certificate extends SensitiveData {
         Certificate() { this = "sensitive.data.certificate" }
+
         override string repr() { result = "a certificate or key" }
     }
 
@@ -115,73 +114,49 @@ module SensitiveData {
     }
 
     abstract class Source extends TaintSource {
-
         abstract string repr();
-
     }
 
     private class SensitiveCallSource extends Source {
-
         SensitiveData data;
 
         SensitiveCallSource() {
-            exists(Value callee |
-                callee.getACall() = this |
-                data = fromFunction(callee)
-            )
+            exists(Value callee | callee.getACall() = this | data = fromFunction(callee))
         }
 
-        override predicate isSourceOf(TaintKind kind) {
-            kind = data
-        }
+        override predicate isSourceOf(TaintKind kind) { kind = data }
 
-        override string repr() {
-            result = "a call returning " + data.repr()
-        }
-
+        override string repr() { result = "a call returning " + data.repr() }
     }
 
     /** An access to a variable or property that might contain sensitive data. */
     private class SensitiveVariableAccess extends SensitiveData::Source {
-
         SensitiveData data;
 
         SensitiveVariableAccess() {
             data = HeuristicNames::getSensitiveDataForName(this.(AttrNode).getName())
         }
 
-        override predicate isSourceOf(TaintKind kind) {
-            kind = data
-        }
+        override predicate isSourceOf(TaintKind kind) { kind = data }
 
-        override string repr() {
-            result = "an attribute or property containing " + data.repr()
-        }
-
+        override string repr() { result = "an attribute or property containing " + data.repr() }
     }
 
     private class SensitiveRequestParameter extends SensitiveData::Source {
-
         SensitiveData data;
 
         SensitiveRequestParameter() {
             this.(CallNode).getFunction().(AttrNode).getName() = "get" and
-            exists(string sensitive |
-                this.(CallNode).getAnArg().refersTo(any(StringObject s | s.getText() = sensitive)) and
-                data = HeuristicNames::getSensitiveDataForName(sensitive)
+            exists(StringValue sensitive |
+                this.(CallNode).getAnArg().pointsTo(sensitive) and
+                data = HeuristicNames::getSensitiveDataForName(sensitive.getText())
             )
         }
 
-        override predicate isSourceOf(TaintKind kind) {
-            kind = data
-        }
+        override predicate isSourceOf(TaintKind kind) { kind = data }
 
-        override string repr() {
-            result = "a request parameter containing " + data.repr()
-        }
-
+        override string repr() { result = "a request parameter containing " + data.repr() }
     }
-
 }
 
 //Backwards compatibility

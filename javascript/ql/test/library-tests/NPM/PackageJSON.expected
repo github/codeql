@@ -1,4 +1,5 @@
 | src/node_modules/b/package.json:1:1:4:1 | {\\n  "na ... "lib"\\n} |
 | src/node_modules/c/package.json:1:1:4:1 | {\\n  "na ... src/"\\n} |
+| src/node_modules/d/package.json:1:1:4:1 | {\\n  "na ... main"\\n} |
 | src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} |
 | src/package.json:1:1:18:1 | {\\n  "na ... "\\n  }\\n} |

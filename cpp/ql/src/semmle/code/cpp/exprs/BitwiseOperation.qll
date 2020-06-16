@@ -14,7 +14,7 @@ class UnaryBitwiseOperation extends UnaryOperation, @un_bitwise_op_expr { }
 class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
   override string getOperator() { result = "~" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   override string getCanonicalQLClass() { result = "ComplementExpr" }
 }
@@ -33,7 +33,7 @@ class BinaryBitwiseOperation extends BinaryOperation, @bin_bitwise_op_expr { }
 class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
   override string getOperator() { result = "<<" }
 
-  override int getPrecedence() { result = 11 }
+  override int getPrecedence() { result = 12 }
 
   override string getCanonicalQLClass() { result = "LShiftExpr" }
 }
@@ -47,7 +47,7 @@ class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
 class RShiftExpr extends BinaryBitwiseOperation, @rshiftexpr {
   override string getOperator() { result = ">>" }
 
-  override int getPrecedence() { result = 11 }
+  override int getPrecedence() { result = 12 }
 
   override string getCanonicalQLClass() { result = "RShiftExpr" }
 }

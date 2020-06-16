@@ -21,6 +21,7 @@ where
   if call.getTarget() = call.getEnclosingFunction()
   then msg = "This call directly invokes its containing function $@."
   else
-    msg = "The function " + call.getEnclosingFunction() +
+    msg =
+      "The function " + call.getEnclosingFunction() +
         " is indirectly recursive via this call to $@."
 select call, msg, call.getTarget(), call.getTarget().getName()

@@ -1,6 +1,4 @@
-
 import python
-
 import Util
 
 from EssaDefinition def, Variable v

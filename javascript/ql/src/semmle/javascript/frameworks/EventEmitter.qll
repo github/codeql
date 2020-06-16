@@ -129,9 +129,7 @@ module EventRegistration {
    * argument is the event handler callback.
    */
   abstract class DefaultEventRegistration extends Range, DataFlow::InvokeNode {
-    override string getChannel() {
-      this.getArgument(0).mayHaveStringValue(result)
-    }
+    override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
     override DataFlow::Node getReceivedItem(int i) {
       result = this.getABoundCallbackParameter(1, i)
@@ -187,13 +185,9 @@ module EventDispatch {
    * is the `i`th item sent to the event handler.
    */
   abstract class DefaultEventDispatch extends Range, DataFlow::InvokeNode {
-    override string getChannel() {
-      this.getArgument(0).mayHaveStringValue(result)
-    }
+    override string getChannel() { this.getArgument(0).mayHaveStringValue(result) }
 
-    override DataFlow::Node getSentItem(int i) {
-      result = this.getArgument(i + 1)
-    }
+    override DataFlow::Node getSentItem(int i) { result = this.getArgument(i + 1) }
 
     override EventRegistration::Range getAReceiver() { this.getEmitter() = result.getEmitter() }
   }
@@ -223,4 +217,3 @@ private class EventEmitterTaintStep extends DataFlow::AdditionalFlowStep {
     succ = dispatch
   }
 }
-

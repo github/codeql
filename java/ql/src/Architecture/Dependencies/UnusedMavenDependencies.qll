@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with Maven dependencies. */
+
 import java
 import semmle.code.xml.MavenPom
 

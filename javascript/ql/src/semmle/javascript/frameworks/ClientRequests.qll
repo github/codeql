@@ -111,28 +111,36 @@ module ClientRequest {
   private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
   /**
+   * Gets a model of an instance of the `request` library, or one of
+   * its wrappers, `promise` is true if the instance uses promises
+   * rather than callbacks.
+   */
+  private DataFlow::SourceNode getRequestLibrary(boolean promise) {
+    exists(string moduleName | result = DataFlow::moduleImport(moduleName) |
+      promise = false and
+      moduleName = "request"
+      or
+      promise = true and
+      (
+        moduleName = "request-promise" or
+        moduleName = "request-promise-any" or
+        moduleName = "request-promise-native"
+      )
+    )
+    or
+    result = getRequestLibrary(promise).getAMethodCall("defaults")
+  }
+
+  /**
    * A model of a URL request made using the `request` library.
    */
   class RequestUrlRequest extends ClientRequest::Range, DataFlow::CallNode {
     boolean promise;
 
     RequestUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          promise = false and
-          moduleName = "request"
-          or
-          promise = true and
-          (
-            moduleName = "request-promise" or
-            moduleName = "request-promise-any" or
-            moduleName = "request-promise-native"
-          )
-        ) and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName())
-        )
+      exists(DataFlow::SourceNode callee | this = callee.getACall() |
+        callee = getRequestLibrary(promise) or
+        callee = getRequestLibrary(promise).getAPropertyRead(httpMethodName())
       )
     }
 
@@ -252,6 +260,23 @@ module ClientRequest {
     }
   }
 
+  /** An expression that is used as a credential in a request. */
+  private class AuthorizationHeader extends CredentialsExpr {
+    AuthorizationHeader() {
+      exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
+        this = write.getRhs().asExpr()
+      )
+      or
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
+        call.getNumArgument() = 2 and
+        call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
+        this = call.getArgument(1).asExpr()
+      )
+    }
+
+    override string getCredentialsKind() { result = "authorization header" }
+  }
+
   /**
    * A model of a URL request made using an implementation of the `fetch` API.
    */
@@ -259,18 +284,14 @@ module ClientRequest {
     DataFlow::Node url;
 
     FetchUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          moduleName = "node-fetch" or
-          moduleName = "cross-fetch" or
-          moduleName = "isomorphic-fetch"
-        ) and
-        callee = DataFlow::moduleImport(moduleName) and
+      exists(DataFlow::SourceNode fetch |
+        fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+        or
+        fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+      |
+        this = fetch.getACall() and
         url = getArgument(0)
       )
-      or
-      this = DataFlow::globalVarRef("fetch").getACall() and
-      url = getArgument(0)
     }
 
     override DataFlow::Node getUrl() { result = url }
@@ -548,5 +569,55 @@ module ClientRequest {
         method = "getStatusText" and responseType = "text"
       )
     }
+  }
+
+  /**
+   * Gets a reference to an instance of `chrome-remote-interface`.
+   *
+   * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise.
+   *
+   * The `isPromise` parameter reflects whether the reference is a promise containing
+   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`.
+   */
+  private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t) {
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleImport("chrome-remote-interface").getAnInvocation()
+    |
+      // the client is inside in a promise.
+      t.startInPromise() and result = call
+      or
+      // the client is accessed directly using a callback.
+      t.start() and result = call.getCallback([0 .. 1]).getParameter(0)
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2).track(t2, t))
+  }
+
+  /**
+   * A call to navigate a browser controlled by `chrome-remote-interface` to a specific URL.
+   */
+  class ChromeRemoteInterfaceRequest extends ClientRequest::Range, DataFlow::CallNode {
+    int optionsArg;
+
+    ChromeRemoteInterfaceRequest() {
+      exists(DataFlow::SourceNode instance |
+        instance = chromeRemoteInterface(DataFlow::TypeTracker::end())
+      |
+        optionsArg = 0 and
+        this = instance.getAPropertyRead("Page").getAMemberCall("navigate")
+        or
+        optionsArg = 1 and
+        this = instance.getAMemberCall("send") and
+        this.getArgument(0).mayHaveStringValue("Page.navigate")
+      )
+    }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(optionsArg).getALocalSource().getAPropertyWrite("url").getRhs()
+    }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
   }
 }

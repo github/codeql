@@ -53,7 +53,7 @@ class ES2015Module extends Module {
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
-  override PathExprInModule getImportedPath() { result = getChildExpr(-1) }
+  override PathExpr getImportedPath() { result = getChildExpr(-1) }
 
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
@@ -76,10 +76,13 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
     // `import { createServer } from 'http'`
     result = DataFlow::destructuredModuleImportNode(this)
   }
+
+  /** Holds if this is declared with the `type` keyword, so it only imports types. */
+  predicate isTypeOnly() { hasTypeKeyword(this) }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
-private class LiteralImportPath extends PathExprInModule, ConstantString {
+private class LiteralImportPath extends PathExpr, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
   override string getValue() { result = getStringValue() }
@@ -256,6 +259,9 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
    * to module `a` or possibly to some other module from which `a` re-exports.
    */
   abstract DataFlow::Node getSourceNode(string name);
+
+  /** Holds if is declared with the `type` keyword, so only types are exported. */
+  predicate isTypeOnly() { hasTypeKeyword(this) }
 }
 
 /**
@@ -273,12 +279,12 @@ class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration
   override ConstantString getImportedPath() { result = getChildExpr(0) }
 
   override predicate exportsAs(LexicalName v, string name) {
-    getImportedModule().exportsAs(v, name) and
+    getReExportedES2015Module().exportsAs(v, name) and
     not isShadowedFromBulkExport(this, name)
   }
 
   override DataFlow::Node getSourceNode(string name) {
-    result = getImportedModule().getAnExport().getSourceNode(name)
+    result = getReExportedES2015Module().getAnExport().getSourceNode(name)
   }
 }
 
@@ -379,7 +385,7 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
     exists(ExportSpecifier spec | spec = getASpecifier() and name = spec.getExportedName() |
       v = spec.getLocal().(LexicalAccess).getALexicalName()
       or
-      this.(ReExportDeclaration).getImportedModule().exportsAs(v, spec.getLocalName())
+      this.(ReExportDeclaration).getReExportedES2015Module().exportsAs(v, spec.getLocalName())
     )
   }
 
@@ -393,7 +399,7 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
       not exists(getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
       or
       exists(ReExportDeclaration red | red = this |
-        result = red.getImportedModule().getAnExport().getSourceNode(spec.getLocalName())
+        result = red.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
       )
     )
   }
@@ -406,10 +412,17 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
 
   /** Gets an export specifier of this declaration. */
   ExportSpecifier getASpecifier() { result = getSpecifier(_) }
+}
 
-  override predicate isAmbient() {
-    // An export such as `export declare function f()` should be seen as ambient.
-    hasDeclareKeyword(getOperand()) or getParent().isAmbient()
+/**
+ * An export declaration with the `type` modifier.
+ */
+private class TypeOnlyExportDeclaration extends ExportNamedDeclaration {
+  TypeOnlyExportDeclaration() { isTypeOnly() }
+
+  override predicate exportsAs(LexicalName v, string name) {
+    super.exportsAs(v, name) and
+    not v instanceof Variable
   }
 }
 
@@ -545,13 +558,17 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier.
+ * A namespace export specifier, that is `*` or `* as x` occuring in an export declaration.
  *
- * Example:
+ * Examples:
  *
  * ```
  * export
  *   *          // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   * as x     // namespace export specifier
  *   from 'a';
  * ```
  */
@@ -564,6 +581,7 @@ class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifie
  *
  * ```
  * export * from 'a';               // bulk re-export declaration
+ * export * as x from 'a';          // namespace re-export declaration
  * export { x } from 'a';           // named re-export declaration
  * export x from 'a';               // default re-export declaration
  * ```
@@ -572,8 +590,18 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
 
+  /**
+   * DEPRECATED. Use `getReExportedES2015Module()` instead.
+   *
+   * Gets the module from which this declaration re-exports.
+   */
+  deprecated ES2015Module getImportedModule() { result = getReExportedModule() }
+
+  /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
+  ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
+
   /** Gets the module from which this declaration re-exports. */
-  ES2015Module getImportedModule() {
+  Module getReExportedModule() {
     result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
     or
     result = resolveFromTypeRoot()
@@ -583,7 +611,8 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
    */
   private Module resolveFromTypeRoot() {
-    result.getFile() = min(TypeRootFolder typeRoot |
+    result.getFile() =
+      min(TypeRootFolder typeRoot |
         |
         typeRoot.getModuleFile(getImportedPath().getStringValue())
         order by
@@ -593,7 +622,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
 }
 
 /** A literal path expression appearing in a re-export declaration. */
-private class LiteralReExportPath extends PathExprInModule, ConstantString {
+private class LiteralReExportPath extends PathExpr, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
   override string getValue() { result = getStringValue() }

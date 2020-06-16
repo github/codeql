@@ -23,6 +23,8 @@ predicate freeFunction(Function f, int argNum) { argNum = f.(DeallocationFunctio
 
 /**
  * A call to a library routine that frees memory.
+ *
+ * DEPRECATED: Use `DeallocationExpr` instead (this also includes `delete` expressions).
  */
 predicate freeCall(FunctionCall fc, Expr arg) { arg = fc.(DeallocationExpr).getFreedExpr() }
 

@@ -89,3 +89,13 @@ function addExprPhi(b) {
   x += 'three';
   return x;
 }
+
+function concatCall() {
+  let x = 'one';
+  x = x.concat('two', 'three');
+  return x;
+}
+
+function arrayConcat(a, b) {
+  return [].concat(a, b);
+}

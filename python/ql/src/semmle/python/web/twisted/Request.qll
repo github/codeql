@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import Twisted
 
@@ -26,7 +26,7 @@ class TwistedRequest extends TaintKind {
     }
 }
 
-class TwistedRequestSource extends TaintSource {
+class TwistedRequestSource extends HttpRequestTaintSource {
     TwistedRequestSource() { isTwistedRequestInstance(this) }
 
     override string toString() { result = "Twisted request source" }

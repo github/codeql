@@ -70,7 +70,7 @@ Local vs global data flow
 
   For further information, see:
 
-  - `Introduction to data flow analysis with CodeQL <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
+  - `About data flow analysis <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
 
 .. rst-class:: background2
 
@@ -111,8 +111,8 @@ So all references will need to be qualified (that is, ``DataFlow::Node``)
 
   A **module** is a way of organizing QL code by grouping together related predicates, classes, and (sub-)modules. They can be either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
 
-  For further information on libraries and modules in QL, see the chapter on `Modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ in the QL language handbook.
-  For further information on importing QL libraries and modules, see the chapter on `Name resolution <https://help.semmle.com/QL/ql-handbook/name-resolution.html>`__ in the QL language handbook.
+  For further information on libraries and modules in QL, see the chapter on `Modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ in the QL language reference.
+  For further information on importing QL libraries and modules, see the chapter on `Name resolution <https://help.semmle.com/QL/ql-handbook/name-resolution.html>`__ in the QL language reference.
 
 Data flow graph
 ===============

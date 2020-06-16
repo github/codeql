@@ -12,3 +12,9 @@ class C {
     return this.x;
   }
 }
+
+class D {
+  constructor() {
+    this.f = (x) => {};
+  }
+}

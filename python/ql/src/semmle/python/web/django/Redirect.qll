@@ -5,7 +5,7 @@
  */
 
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
@@ -16,10 +16,5 @@ private import semmle.python.web.Http
 class DjangoRedirect extends HttpRedirectTaintSink {
     override string toString() { result = "django.redirect" }
 
-    DjangoRedirect() {
-        exists(CallNode call |
-            redirect().getACall() = call and
-            this = call.getAnArg()
-        )
-    }
+    DjangoRedirect() { this = redirect().getACall().getAnArg() }
 }

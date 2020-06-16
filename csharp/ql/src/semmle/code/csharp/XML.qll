@@ -100,11 +100,8 @@ class XMLParent extends @xmlparent {
    * left to right, separated by a space.
    */
   string allCharactersString() {
-    result = concat(string chars, int pos |
-        xmlChars(_, chars, this, pos, _, _)
-      |
-        chars, " " order by pos
-      )
+    result =
+      concat(string chars, int pos | xmlChars(_, chars, this, pos, _, _) | chars, " " order by pos)
   }
 
   /** Gets the text value contained in this XML parent. */
@@ -119,7 +116,7 @@ class XMLFile extends XMLParent, File {
   XMLFile() { xmlEncoding(this, _) }
 
   /** Gets a printable representation of this XML file. */
-  override string toString() { result = XMLParent.super.toString() }
+  override string toString() { result = getName() }
 
   /** Gets the name of this XML file. */
   override string getName() { result = File.super.getAbsolutePath() }
@@ -239,7 +236,7 @@ class XMLElement extends @xmlelement, XMLParent, XMLLocatable {
   string getAttributeValue(string name) { result = this.getAttribute(name).getValue() }
 
   /** Gets a printable representation of this XML element. */
-  override string toString() { result = XMLParent.super.toString() }
+  override string toString() { result = getName() }
 }
 
 /**

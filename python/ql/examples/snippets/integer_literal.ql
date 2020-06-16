@@ -5,7 +5,7 @@
  * @tags integer
  *       literal
  */
- 
+
 import python
 
 from IntegerLiteral literal

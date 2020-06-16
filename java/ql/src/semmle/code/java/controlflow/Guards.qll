@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about guards and the control
+ * flow elements controlled by those guards.
+ */
+
 import java
 private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.GuardsLogic
@@ -103,8 +108,8 @@ class Guard extends ExprParent {
    */
   BasicBlock getBasicBlock() {
     result = this.(Expr).getBasicBlock() or
-    result = this.(SwitchCase).getSwitch().getExpr().getProperExpr().getBasicBlock() or
-    result = this.(SwitchCase).getSwitchExpr().getExpr().getProperExpr().getBasicBlock()
+    result = this.(SwitchCase).getSwitch().getExpr().getBasicBlock() or
+    result = this.(SwitchCase).getSwitchExpr().getExpr().getBasicBlock()
   }
 
   /**
@@ -115,9 +120,9 @@ class Guard extends ExprParent {
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
     exists(Expr exp1, Expr exp2 | equalityGuard(this, exp1, exp2, polarity) |
-      e1 = exp1.getProperExpr() and e2 = exp2.getProperExpr()
+      e1 = exp1 and e2 = exp2
       or
-      e2 = exp1.getProperExpr() and e1 = exp2.getProperExpr()
+      e2 = exp1 and e1 = exp2
     )
   }
 
@@ -265,7 +270,7 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
   exists(ConstCase cc |
     cc = g and
     polarity = true and
-    cc.getSelectorExpr().getProperExpr() = e1 and
+    cc.getSelectorExpr() = e1 and
     cc.getValue() = e2 and
     strictcount(cc.getValue(_)) = 1
   )

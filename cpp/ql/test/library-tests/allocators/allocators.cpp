@@ -143,3 +143,22 @@ void multidimensionalNew(int x, int y) {
   auto p2 = new char[20][20];
   auto p3 = new char[x][30][30];
 }
+
+void directOperatorCall() {
+	void *ptr;
+	ptr = operator new(sizeof(int));
+	operator delete(ptr);
+}
+
+void *malloc(size_t);
+typedef int* ptr_int;
+
+void testMalloc(size_t count) {
+  const volatile int *i = (const volatile int *) malloc(5);
+  ptr_int i2 = (ptr_int) malloc(5 * sizeof(int));
+  volatile long *l = (long *) malloc(count);
+  l = (long *) malloc(count * sizeof(int));
+  const char* c = (const char *) malloc(count * sizeof(int) + 1);
+  void * v = (void *) malloc(((int) count) * sizeof(void *));
+  malloc(sizeof(void *) * sizeof(int));
+}

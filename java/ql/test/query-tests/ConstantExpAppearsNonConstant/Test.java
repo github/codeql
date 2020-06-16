@@ -29,31 +29,6 @@ class Test{
 	long rem_is_constant_hex = rnd.nextLong() % 0x1; //NOT OK
 	long rem_is_constant_binary = rnd.nextLong() % 01; //NOT OK
 
-	//Left shift by 32 or 64
-	int lshift_not_constant_int = 42 << 6; //OK
-	long lshift_not_constant_long = 42L << 6; //OK
-
-	int lshift_constant_cast = ((char) 42) << 16; //OK
-	int lshift_not_constant_byte = ((byte)rnd.nextInt(8)) << 8; //OK (not constant, because of conversion from byte to int)
-	int lshift_is_constant_byte = ((byte)rnd.nextInt(8)) << 32; //NOT OK
-
-	int lshift_not_constant_char = ((char)rnd.nextInt(8)) << 8; //OK (not constant, because of conversion from byte to int)
-	int lshift_is_constant_char = ((char)rnd.nextInt(8)) << 32; //NOT OK
-
-	int lshift_not_constant_short = ((byte)rnd.nextInt(42)) << 16; //OK (not constant, because of conversion from byte to int)
-	int lshift_is_constant_short = ((byte)rnd.nextInt(42)) << 32; //NOT OK
-
-	int lshift_appears_constant_int = 60 << 32; //OK
-	long lshift_appears_constant_long = 60L << 64; //OK
-
-	int lshift_is_not_constant = rnd.nextInt() << 2; //OK
-	int lshift_is_constant_int = rnd.nextInt() << 32; //NOT OK
-	long lshift_is_constant_long = rnd.nextLong() << 64; //NOT OK
-	int lshift_is_constant_int_hex = rnd.nextInt() << 0x20; //NOT OK
-	int lshift_is_constant_int_binary = rnd.nextInt() << 040; //NOT OK
-	long lshift_is_constant_long_hex = rnd.nextLong() << 0x40; //NOT OK
-	long lshift_is_constant_long_binary = rnd.nextLong() << 0100; //NOT OK
-
 	//Bitwise 'and' by 0
 	int band_not_constant = 42 & 6; //OK
 	int band_appears_constant_left = 0 & 60; //OK

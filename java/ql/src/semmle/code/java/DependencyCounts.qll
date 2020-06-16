@@ -27,7 +27,8 @@ predicate numDepends(RefType t, RefType dep, int value) {
   not isRaw(t) and
   not t = dep and
   // Type `t` depends on:
-  value = strictcount(Element elem |
+  value =
+    strictcount(Element elem |
       // its supertypes,
       exists(RefType s | elem = s and t.hasSupertype(s) | usesType(s, dep))
       or
@@ -106,7 +107,8 @@ predicate numDepends(RefType t, RefType dep, int value) {
 
 predicate filePackageDependencyCount(File sourceFile, int total, string entity) {
   exists(Package targetPackage |
-    total = strictsum(RefType sourceType, RefType targetType, int num |
+    total =
+      strictsum(RefType sourceType, RefType targetType, int num |
         sourceType.getFile() = sourceFile and
         sourceType.fromSource() and
         sourceType.getPackage() != targetPackage and
@@ -141,7 +143,8 @@ predicate fileJarDependencyCount(File sourceFile, int total, string entity) {
     targetJar.(File).getExtension() = "jar" and
     jarStem != "rt"
   |
-    total = strictsum(RefType r, RefType dep, int num |
+    total =
+      strictsum(RefType r, RefType dep, int num |
         r.getFile() = sourceFile and
         r.fromSource() and
         dep.getFile().getParentContainer*() = targetJar and

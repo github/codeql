@@ -163,7 +163,19 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="filepath">The filename to query.</param>
         /// <returns>The assembly info.</returns>
-        public AssemblyInfo GetAssemblyInfo(string filepath) => assemblyInfo[filepath];
+        public AssemblyInfo GetAssemblyInfo(string filepath)
+        {
+            if(assemblyInfo.TryGetValue(filepath, out var info))
+            {
+                return info;
+            }
+            else
+            {
+                info = AssemblyInfo.ReadFromFile(filepath);
+                assemblyInfo.Add(filepath, info);
+                return info;
+            }
+        }
 
         // List of pending DLLs to index.
         readonly List<string> dlls = new List<string>();

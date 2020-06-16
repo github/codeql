@@ -79,7 +79,8 @@ class MetricElement extends Element {
 
   /** Gets the maintainability index without comment weight. */
   float getMaintainabilityIndexWithoutComments() {
-    result = 171 - 5.2 * this.getHalsteadVolume().log() - 0.23 * this.getCyclomaticComplexity() -
+    result =
+      171 - 5.2 * this.getHalsteadVolume().log() - 0.23 * this.getCyclomaticComplexity() -
         16.2 * this.getNumberOfLinesOfCode().log()
   }
 
@@ -101,8 +102,8 @@ class MetricElement extends Element {
    * `MetricRefType` and `MetricCallable` provide concrete implementations.
    */
   float getMaintainabilityIndex() {
-    result = this.getMaintainabilityIndexWithoutComments() +
-        this.getMaintainabilityIndexCommentWeight()
+    result =
+      this.getMaintainabilityIndexWithoutComments() + this.getMaintainabilityIndexCommentWeight()
   }
 }
 /* ========================================================================= */

@@ -6,7 +6,7 @@ import javascript
 
 module Handlebars {
   /**
-   * A reference to the Handlebars library. 
+   * A reference to the Handlebars library.
    */
   class Handlebars extends DataFlow::SourceNode {
     Handlebars() {

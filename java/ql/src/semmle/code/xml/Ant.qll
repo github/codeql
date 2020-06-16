@@ -18,7 +18,8 @@ class AntTarget extends XMLElement {
    * This is a utility method used for extracting individual dependencies.
    */
   string getDependsString() {
-    result = "," +
+    result =
+      "," +
         this
             .getAttributeValue("depends")
             .replaceAll(" ", "")

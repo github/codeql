@@ -15,8 +15,13 @@ import semmle.code.cpp.models.Models
  * A library function for which a taint-tracking library should propagate taint
  * from a parameter or qualifier to an output buffer, return value, or qualifier.
  *
+ * An expression is tainted if it could be influenced by an attacker to have
+ * an unusual value.
+ *
  * Note that this does not include direct copying of values; that is covered by
- * DataFlowModel.qll
+ * DataFlowModel.qll. If a value is sometimes copied in full, and sometimes
+ * altered (for example copying a string with `strncpy`), this is also considered
+ * data flow.
  */
 abstract class TaintFunction extends Function {
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);

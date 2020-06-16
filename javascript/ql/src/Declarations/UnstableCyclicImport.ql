@@ -74,7 +74,8 @@ class CandidateVarAccess extends VarAccess {
  * We use this to avoid duplicate alerts about the same underlying cyclic import.
  */
 VarAccess getFirstCandidateAccess(ImportDeclaration decl) {
-  result = min(decl.getASpecifier().getLocal().getVariable().getAnAccess().(CandidateVarAccess) as p
+  result =
+    min(decl.getASpecifier().getLocal().getVariable().getAnAccess().(CandidateVarAccess) as p
       order by
         p.getFirstToken().getIndex()
     )
@@ -133,14 +134,15 @@ string pathToModule(Module source, Module destination, int steps) {
     steps > 1 and
     exists(Module next |
       // Only extend the path to one of the potential successors, as we only need one example.
-      next = min(Module mod |
+      next =
+        min(Module mod |
           isImportedAtRuntime(source, mod) and
           numberOfStepsToModule(mod, destination, steps - 1)
         |
           mod order by mod.getName()
         ) and
-      result = repr(getARuntimeImport(source, next)) + " => " +
-          pathToModule(next, destination, steps - 1)
+      result =
+        repr(getARuntimeImport(source, next)) + " => " + pathToModule(next, destination, steps - 1)
     )
   )
 }

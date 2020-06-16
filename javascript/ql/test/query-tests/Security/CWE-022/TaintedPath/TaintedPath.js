@@ -114,3 +114,90 @@ var server = http.createServer(function(req, res) {
 	               );
 
 });
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+  
+  if (path) { // sanitization
+    path = path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''); // remove all invalid characters from states plus slashes
+    path = path.replace(/\.\./g, ''); // remove all ".."
+  }
+  
+  res.write(fs.readFileSync(path));  // OK. Is sanitized above.
+});
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+  
+  if (!path) {
+    
+  } else { // sanitization
+	  path = path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''); // remove all invalid characters from states plus slashes
+    path = path.replace(/\.\./g, ''); // remove all ".."
+  }
+  
+  res.write(fs.readFileSync(path));  // OK. Is sanitized above.
+});
+
+var server = http.createServer(function(req, res) {
+	let path = url.parse(req.url, true).query.path;
+
+	require('send')(req, path); // NOT OK
+});
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+
+  fs.readFileSync(path); // NOT OK
+  
+  var split = path.split("/");
+  
+  fs.readFileSync(split.join("/")); // NOT OK
+
+  fs.readFileSync(prefix + split[split.length - 1]) // OK
+
+  fs.readFileSync(split[x]) // NOT OK
+  fs.readFileSync(prefix + split[x]) // NOT OK 
+
+  var concatted = prefix.concat(split);
+  fs.readFileSync(concatted.join("/")); // NOT OK
+
+  var concatted2 = split.concat(prefix);
+  fs.readFileSync(concatted2.join("/")); // NOT OK
+
+  fs.readFileSync(split.pop()); // NOT OK 
+
+});
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+  
+  // Removal of forward-slash or dots.
+  res.write(fs.readFileSync(path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''))); // OK.
+  res.write(fs.readFileSync(path.replace(/[abcd]/g, ''))); // NOT OK
+  res.write(fs.readFileSync(path.replace(/[./]/g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/[foobar/foobar]/g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\//g, ''))); // OK
+  res.write(fs.readFileSync(path.replace(/\.|\//g, ''))); // OK
+
+  res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/\./g, ''))); // NOT OK (can be absolute)
+  res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // NOT OK (can be absolute)
+
+  if (!pathModule.isAbsolute(path)) {
+    res.write(fs.readFileSync(path.replace(/[.]/g, ''))); // OK
+  	res.write(fs.readFileSync(path.replace(/[..]/g, ''))); // OK
+    res.write(fs.readFileSync(path.replace(/\./g, ''))); // OK
+  	res.write(fs.readFileSync(path.replace(/\.\.|BLA/g, ''))); // OK
+  }
+
+  // removing of "../" from prefix.
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.[\/\\])+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.\/)+/, ''))); // OK
+  res.write(fs.readFileSync("prefix" + pathModule.normalize(path).replace(/(\.\.\/)*/, ''))); // OK
+
+  res.write(fs.readFileSync("prefix" + path.replace(/^(\.\.[\/\\])+/, ''))); // NOT OK - not normalized
+  res.write(fs.readFileSync(pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // NOT OK (can be absolute)
+});

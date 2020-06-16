@@ -45,8 +45,6 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
-  or
-  lhs = def and def.(Parameter).getDefault() = rhs
 }
 
 /**
@@ -284,7 +282,8 @@ private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
  */
 private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
   bb.defAt(i, v, d) and
-  result = min(int jj |
+  result =
+    min(int jj |
       (bb.defAt(jj, v, _) or jj = bb.length()) and
       jj > i
     )

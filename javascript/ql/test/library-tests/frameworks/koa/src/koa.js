@@ -54,3 +54,8 @@ app2.use(async ctx => {
 	var headers = ctx.headers;
 	headers.foo;
 });
+
+var app3 = Koa();
+app3.use(function*(){
+	this.request.url;
+});

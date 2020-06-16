@@ -2,7 +2,9 @@ newtype TTempVariableTag =
   ConditionValueTempVar() or
   ReturnValueTempVar() or
   ThrowTempVar() or
-  LambdaTempVar()
+  LambdaTempVar() or
+  EllipsisTempVar() or
+  ThisTempVar()
 
 string getTempVariableTagId(TTempVariableTag tag) {
   tag = ConditionValueTempVar() and result = "CondVal"
@@ -12,4 +14,8 @@ string getTempVariableTagId(TTempVariableTag tag) {
   tag = ThrowTempVar() and result = "Throw"
   or
   tag = LambdaTempVar() and result = "Lambda"
+  or
+  tag = EllipsisTempVar() and result = "Ellipsis"
+  or
+  tag = ThisTempVar() and result = "This"
 }

@@ -6,7 +6,6 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 cached
 private newtype TNode =
@@ -21,10 +20,12 @@ private newtype TNode =
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
   TPreConstructorInitThis(ConstructorFieldInit cfi) or
   TPostConstructorInitThis(ConstructorFieldInit cfi) or
-  TThisArgumentPostUpdate(ThisExpr ta) {
-    exists(Call c, int i |
-      ta = c.getArgument(i) and
-      not c.getTarget().getParameter(i).getUnderlyingType().(PointerType).getBaseType().isConst()
+  TInnerPartialDefinitionNode(Expr e) {
+    exists(PartialDefinition def, Expr outer |
+      def.definesExpressions(e, outer) and
+      // This condition ensures that we don't get two post-update nodes sharing
+      // the same pre-update node.
+      e != outer
     )
   } or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() } or
@@ -44,7 +45,7 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  Function getEnclosingCallable() { result = this.getFunction() }
+  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
@@ -67,7 +68,7 @@ class Node extends TNode {
    * a partial definition of `&x`).
    */
   Expr asPartialDefinition() {
-    result = this.(PartialDefinitionNode).getPartialDefinition().getDefinedExpr()
+    this.(PartialDefinitionNode).getPartialDefinition().definesExpressions(_, result)
   }
 
   /**
@@ -115,31 +116,10 @@ class ExprNode extends Node, TExprNode {
 
   override string toString() { result = expr.toString() }
 
-  override Location getLocation() {
-    result = getExprLocationOverride(expr)
-    or
-    not exists(getExprLocationOverride(expr)) and
-    result = expr.getLocation()
-  }
+  override Location getLocation() { result = expr.getLocation() }
 
   /** Gets the expression corresponding to this node. */
   Expr getExpr() { result = expr }
-}
-
-/**
- * Gets a location for `e` that's more accurate than `e.getLocation()`, if any.
- */
-private Location getExprLocationOverride(Expr e) {
-  // Base case: the parent has a better location than `e`.
-  e.getLocation() instanceof UnknownExprLocation and
-  result = e.getParent().getLocation() and
-  not result instanceof UnknownLocation
-  or
-  // Recursive case: the parent has a location override that's better than what
-  // `e` has.
-  e.getLocation() instanceof UnknownExprLocation and
-  result = getExprLocationOverride(e.getParent()) and
-  not result instanceof UnknownLocation
 }
 
 abstract class ParameterNode extends Node, TNode {
@@ -199,24 +179,22 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
  * returned. This node will have its `getArgument()` equal to `&x`.
  */
 class DefinitionByReferenceNode extends PartialDefinitionNode {
-  VariableAccess va;
+  Expr inner;
   Expr argument;
 
   DefinitionByReferenceNode() {
-    exists(DefinitionByReference def |
-      def = this.getPartialDefinition() and
-      argument = def.getDefinedExpr() and
-      va = def.getVariableAccess()
-    )
+    this.getPartialDefinition().(DefinitionByReference).definesExpressions(inner, argument)
   }
 
-  override Function getFunction() { result = va.getEnclosingFunction() }
+  override Function getFunction() { result = inner.getEnclosingFunction() }
 
-  override Type getType() { result = va.getType() }
+  override Type getType() { result = inner.getType() }
 
   override string toString() { result = "ref arg " + argument.toString() }
 
   override Location getLocation() { result = argument.getLocation() }
+
+  override ExprNode getPreUpdateNode() { result.getExpr() = argument }
 
   /** Gets the argument corresponding to this node. */
   Expr getArgument() { result = argument }
@@ -298,23 +276,32 @@ private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNo
 
   PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
 
-  override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 
-  override Location getLocation() { result = pd.getLocation() }
+  override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-private class ThisArgumentPostUpdateNode extends PostUpdateNode, TThisArgumentPostUpdate {
-  ThisExpr thisExpr;
+/**
+ * A post-update node on the `e->f` in `f(&e->f)` (and other forms).
+ */
+private class InnerPartialDefinitionNode extends TInnerPartialDefinitionNode, PostUpdateNode {
+  Expr e;
 
-  ThisArgumentPostUpdateNode() { this = TThisArgumentPostUpdate(thisExpr) }
+  InnerPartialDefinitionNode() { this = TInnerPartialDefinitionNode(e) }
 
-  override Node getPreUpdateNode() { result.asExpr() = thisExpr }
+  override ExprNode getPreUpdateNode() { result.getExpr() = e }
 
-  override string toString() { result = "ref arg this" }
+  override Function getFunction() { result = e.getEnclosingFunction() }
+
+  override Type getType() { result = e.getType() }
+
+  override string toString() { result = e.toString() + " [inner post update]" }
+
+  override Location getLocation() { result = e.getLocation() }
 }
 
 /**
@@ -497,8 +484,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
-  exprToExprStep_nocfg(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), nodeTo.asExpr())
-  or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
     (
@@ -521,6 +506,14 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // post-update-`this` -> following-`this`-ref
   ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+  or
+  // In `f(&x->a)`, this step provides the flow from post-`&` to post-`x->a`,
+  // from which there is field flow to `x` via reverse read.
+  exists(PartialDefinition def, Expr inner, Expr outer |
+    def.definesExpressions(inner, outer) and
+    inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
+    outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
+  )
 }
 
 /**
@@ -598,7 +591,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
-  toExpr = any(Call call |
+  toExpr =
+    any(Call call |
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
         f.hasDataFlow(inModel, outModel) and
@@ -657,7 +651,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getFunction() = node2.getFunction()
+    node1.getEnclosingCallable() = node2.getEnclosingCallable()
   }
 }
 
@@ -688,9 +682,9 @@ class BarrierGuard extends GuardCondition {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(GVN value, boolean branch |
-      result.getExpr() = value.getAnExpr() and
-      this.checks(value.getAnExpr(), branch) and
+    exists(SsaDefinition def, Variable v, boolean branch |
+      result.getExpr() = def.getAUse(v) and
+      this.checks(def.getAUse(v), branch) and
       this.controls(result.getExpr().getBasicBlock(), branch)
     )
   }

@@ -1,7 +1,4 @@
-
 import python
-
-
 import semmle.python.regex
 
 from Regex r

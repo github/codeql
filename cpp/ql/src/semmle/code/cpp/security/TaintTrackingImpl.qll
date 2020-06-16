@@ -1,4 +1,8 @@
 /**
+ * DEPRECATED: we now use `semmle.code.cpp.ir.dataflow.DefaultTaintTracking`,
+ * which is based on the IR but designed to behave similarly to this old
+ * libarary.
+ *
  * Provides the implementation of `semmle.code.cpp.security.TaintTracking`. Do
  * not import this file directly.
  */
@@ -328,14 +332,24 @@ GlobalOrNamespaceVariable globalVarFromId(string id) {
 }
 
 /**
- * A variable that has any kind of upper-bound check anywhere in the program
+ * A variable that has any kind of upper-bound check anywhere in the program.  This is
+ * biased towards being inclusive because there are a lot of valid ways of doing an
+ * upper bounds checks if we don't consider where it occurs, for example:
+ * ```
+ *   if (x < 10) { sink(x); }
+ *
+ *   if (10 > y) { sink(y); }
+ *
+ *   if (z > 10) { z = 10; }
+ *   sink(z);
+ * ```
  */
 private predicate hasUpperBoundsCheck(Variable var) {
   exists(RelationalOperation oper, VariableAccess access |
-    oper.getLeftOperand() = access and
+    oper.getAnOperand() = access and
     access.getTarget() = var and
     // Comparing to 0 is not an upper bound check
-    not oper.getRightOperand().getValue() = "0"
+    not oper.getAnOperand().getValue() = "0"
   )
 }
 
@@ -417,7 +431,8 @@ private predicate predictable(Expr expr) {
 }
 
 private int maxArgIndex(Function f) {
-  result = max(FunctionCall fc, int toMax |
+  result =
+    max(FunctionCall fc, int toMax |
       fc.getTarget() = f and toMax = fc.getNumberOfArguments() - 1
     |
       toMax

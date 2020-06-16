@@ -73,13 +73,9 @@ abstract class RegExpQuery extends DataFlow::CallNode {
 class RegExpTestCall extends DataFlow::MethodCallNode, RegExpQuery {
   DataFlow::RegExpCreationNode regexp;
 
-  RegExpTestCall() {
-    this = regexp.getAReference().getAMethodCall("test")
-  }
+  RegExpTestCall() { this = regexp.getAReference().getAMethodCall("test") }
 
-  override RegExpTerm getRegExp() {
-    result = regexp.getRoot()
-  }
+  override RegExpTerm getRegExp() { result = regexp.getRoot() }
 }
 
 /**
@@ -93,9 +89,7 @@ class RegExpSearchCall extends DataFlow::MethodCallNode, RegExpQuery {
     regexp.getAReference().flowsTo(getArgument(0))
   }
 
-  override RegExpTerm getRegExp() {
-    result = regexp.getRoot()
-  }
+  override RegExpTerm getRegExp() { result = regexp.getRoot() }
 }
 
 /**
@@ -116,10 +110,12 @@ where
   (
     call instanceof RegExpTestCall and
     not isPossiblyAnchoredOnBothEnds(term) and
-    message = "This regular expression always matches when used in a test $@, as it can match an empty substring."
+    message =
+      "This regular expression always matches when used in a test $@, as it can match an empty substring."
     or
     call instanceof RegExpSearchCall and
     not term.getAChild*() instanceof RegExpDollar and
-    message = "This regular expression always the matches at index 0 when used $@, as it matches the empty substring."
+    message =
+      "This regular expression always the matches at index 0 when used $@, as it matches the empty substring."
   )
 select term, message, call, "here"

@@ -37,7 +37,7 @@ module CleartextLogging {
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       succ.(DataFlow::PropRead).getBase() = pred
     }
-       
+
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data flow edge through objects: a tainted write taints the entire object.
       exists(DataFlow::PropWrite write |

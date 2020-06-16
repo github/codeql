@@ -4,6 +4,7 @@
  * @kind problem
  * @id py/not-generated-file-filter
  */
+
 import python
 import external.DefectFilter
 import semmle.python.filters.GeneratedCode

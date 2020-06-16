@@ -1,1 +1,1 @@
-assert(subprocess.call(['run-backup']) == 0)
+assert subprocess.call(['run-backup']) == 0

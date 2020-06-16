@@ -44,6 +44,7 @@ private predicate branchingExpr(Expr expr) {
  *    possible execution paths. They should be refactored.
  */
 predicate cyclomaticComplexity(/* this */ Callable c, int n) {
-  n = count(Stmt stmt | branchingStmt(stmt) and stmt.getEnclosingCallable() = c) +
+  n =
+    count(Stmt stmt | branchingStmt(stmt) and stmt.getEnclosingCallable() = c) +
       count(Expr expr | branchingExpr(expr) and expr.getEnclosingCallable() = c) + 1
 }

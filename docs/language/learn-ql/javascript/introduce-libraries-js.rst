@@ -1,5 +1,7 @@
-Introducing the CodeQL libraries for JavaScript
-===============================================
+CodeQL library for JavaScript
+=============================
+
+When you're analyzing a JavaScript program, you can make use of the large collection of classes in the CodeQL library for JavaScript.
 
 Overview
 --------
@@ -73,7 +75,7 @@ For example, the following query computes, for each folder, the number of JavaSc
    from Folder d
    select d.getRelativePath(), count(File f | f = d.getAFile() and f.getExtension() = "js")
 
-➤ `See this in the query console <https://lgtm.com/query/1506075865985/>`__. When you run the query on most projects, the results include folders that contain files with a ``js`` extension and folders that don't.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1506075865985/>`__. When you run the query on most projects, the results include folders that contain files with a ``js`` extension and folders that don't.
 
 Locations
 ^^^^^^^^^
@@ -134,7 +136,7 @@ As an example of a query operating entirely on the lexical level, consider the f
    where comma.getNextToken() instanceof CommaToken
    select comma, "Omitted array elements are bad style."
 
-➤ `See this in the query console <https://lgtm.com/query/659662177/>`__. If the query returns no results, this pattern isn't used in the projects that you analyzed.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662177/>`__. If the query returns no results, this pattern isn't used in the projects that you analyzed.
 
 You can use predicate ``Locatable.getFirstToken()`` and ``Locatable.getLastToken()`` to access the first and last token (if any) belonging to an element with a source location.
 
@@ -175,7 +177,7 @@ As an example of a query using only lexical information, consider the following 
    from HtmlLineComment c
    select c, "Do not use HTML comments."
 
-➤ `See this in the query console <https://lgtm.com/query/686330023/>`__. When we ran this query on the *mozilla/pdf.js* project in LGTM.com, we found three HTML comments.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/686330023/>`__. When we ran this query on the *mozilla/pdf.js* project in LGTM.com, we found three HTML comments.
 
 Syntactic level
 ~~~~~~~~~~~~~~~
@@ -347,7 +349,7 @@ As an example of how to use expression AST nodes, here is a query that finds exp
    where add = shift.getAnOperand()
    select add, "This expression should be bracketed to clarify precedence rules."
 
-➤ `See this in the query console <https://lgtm.com/query/690010024/>`__. When we ran this query on the *meteor/meteor* project in LGTM.com, we found many results where precedence could be clarified using brackets.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010024/>`__. When we ran this query on the *meteor/meteor* project in LGTM.com, we found many results where precedence could be clarified using brackets.
 
 Functions
 ^^^^^^^^^
@@ -369,7 +371,7 @@ As an example, here is a query that finds all expression closures:
    where fe.getBody() instanceof Expr
    select fe, "Use arrow expressions instead of expression closures."
 
-➤ `See this in the query console <https://lgtm.com/query/668510056/>`__. None of the LGTM.com demo projects uses expression closures, but you may find this query gets results on other projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668510056/>`__. None of the LGTM.com demo projects uses expression closures, but you may find this query gets results on other projects.
 
 As another example, this query finds functions that have two parameters that bind the same variable:
 
@@ -384,7 +386,7 @@ As another example, this query finds functions that have two parameters that bin
        p.getAVariable() = q.getAVariable()
    select fun, "This function has two parameters that bind the same variable."
 
-➤ `See this in the query console <https://lgtm.com/query/673860037/>`__. None of the LGTM.com demo projects has functions where two parameters bind the same variable.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/673860037/>`__. None of the LGTM.com demo projects has functions where two parameters bind the same variable.
 
 Classes
 ^^^^^^^
@@ -440,7 +442,7 @@ Here is an example of a query to find declaration statements that declare the sa
        not ds.getTopLevel().isMinified()
    select ds, "Variable " + v.getName() + " is declared both $@ and $@.", d1, "here", d2, "here"
 
-➤ `See this in the query console <https://lgtm.com/query/668700496/>`__. This is not a common problem, so you may not find any results in your own projects. The *angular/angular.js* project on LGTM.com has one instance of this problem at the time of writing.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668700496/>`__. This is not a common problem, so you may not find any results in your own projects. The *angular/angular.js* project on LGTM.com has one instance of this problem at the time of writing.
 
    Notice the use of ``not ... isMinified()`` here and in the next few queries. This excludes any results found in minified code. If you delete ``and not ds.getTopLevel().isMinified()`` and re-run the query, two results in minified code in the *meteor/meteor* project are reported.
 
@@ -467,7 +469,7 @@ As an example of a query involving properties, consider the following query that
        not oe.getTopLevel().isMinified()
    select oe, "Property " + p1.getName() + " is defined both $@ and $@.", p1, "here", p2, "here"
 
-➤ `See this in the query console <https://lgtm.com/query/660700064/>`__. Many projects have a few instances of object expressions with two identically named properties.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/660700064/>`__. Many projects have a few instances of object expressions with two identically named properties.
 
 Modules
 ^^^^^^^
@@ -533,7 +535,7 @@ As an example, consider the following query which finds distinct function declar
        not g.getTopLevel().isMinified()
    select f, g
 
-➤ `See this in the query console <https://lgtm.com/query/667290067/>`__. Some projects declare conflicting functions of the same name and rely on platform-specific behavior to disambiguate the two declarations.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/667290067/>`__. Some projects declare conflicting functions of the same name and rely on platform-specific behavior to disambiguate the two declarations.
 
 Control flow
 ~~~~~~~~~~~~
@@ -570,7 +572,7 @@ As an example of an analysis using basic blocks, ``BasicBlock.isLiveAtEntry(v, u
        not f.getStartBB().isLiveAtEntry(gv, _)
    select f, "This function uses " + gv + " like a local variable."
 
-➤ `See this in the query console <https://lgtm.com/query/686320048/>`__. Many projects have some variables which look as if they were intended to be local.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/686320048/>`__. Many projects have some variables which look as if they were intended to be local.
 
 Data flow
 ~~~~~~~~~
@@ -595,7 +597,7 @@ As an example, the following query finds definitions of local variables that are
        not exists (VarUse use | def = use.getADef())
    select def, "Dead store of local variable."
 
-➤ `See this in the query console <https://lgtm.com/query/2086440429/>`__. Many projects have some examples of useless assignments to local variables.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2086440429/>`__. Many projects have some examples of useless assignments to local variables.
 
 SSA
 ^^^
@@ -638,7 +640,7 @@ For example, here is a query that finds all invocations of a method called ``sen
          send.getMethodName() = "send"
    select send
 
-➤ `See this in the query console <https://lgtm.com/query/1506058347056/>`__. The query finds HTTP response sends in the `AMP HTML <https://lgtm.com/projects/g/ampproject/amphtml>`__ project.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1506058347056/>`__. The query finds HTTP response sends in the `AMP HTML <https://lgtm.com/projects/g/ampproject/amphtml>`__ project.
 
 Note that the data flow modeling in this library is intraprocedural, that is, flow across function calls and returns is *not* modeled. Likewise, flow through object properties and global variables is not modeled.
 
@@ -703,7 +705,7 @@ As an example of a call-graph-based query, here is a query to find invocations f
          not exists(invk.getACallee())
    select invk, "Unable to find a callee for this invocation."
 
-➤ `See this in the query console <https://lgtm.com/query/3260345690335671362/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3260345690335671362/>`__
 
 Inter-procedural data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -839,7 +841,7 @@ As an example of the use of these classes, here is a query that counts for every
    from NodeModule m
    select m, count(m.getAnImportedModule())
 
-➤ `See this in the query console <https://lgtm.com/query/659662207/>`__. When you analyze a project, for each module you can see how many other modules it imports.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662207/>`__. When you analyze a project, for each module you can see how many other modules it imports.
 
 NPM
 ^^^
@@ -868,7 +870,7 @@ As an example of the use of these classes, here is a query that identifies unuse
    not exists (Require req | req.getTopLevel() = pkg.getAModule() | name = req.getImportedPath().getValue())
    select deps, "Unused dependency '" + name + "'."
 
-➤ `See this in the query console <https://lgtm.com/query/666680077/>`__. It is not uncommon for projects to have some unused dependencies.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666680077/>`__. It is not uncommon for projects to have some unused dependencies.
 
 React
 ^^^^^
@@ -895,7 +897,7 @@ For example, here is a query to find SQL queries that use string concatenation (
    where ss instanceof AddExpr
    select ss, "Use templating instead of string concatenation."
 
-➤ `See this in the query console <https://lgtm.com/query/1506076336224/>`__, showing two (benign) results on `strong-arc <https://lgtm.com/projects/g/strongloop/strong-arc/>`__.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1506076336224/>`__, showing two (benign) results on `strong-arc <https://lgtm.com/projects/g/strongloop/strong-arc/>`__.
 
 Miscellaneous
 ~~~~~~~~~~~~~
@@ -961,7 +963,7 @@ As an example, here is a query that finds ``@param`` tags that do not specify th
    not exists(t.getName())
    select t, "@param tag is missing name."
 
-➤ `See this in the query console <https://lgtm.com/query/673060054/>`__. Of the LGTM.com demo projects analyzed, only *Semantic-Org/Semantic-UI* has an example where the ``@param`` tag omits the name.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/673060054/>`__. Of the LGTM.com demo projects analyzed, only *Semantic-Org/Semantic-UI* has an example where the ``@param`` tag omits the name.
 
 For full details on these and other classes representing JSDoc comments and type expressions, see `the API documentation <https://help.semmle.com/qldoc/javascript/semmle/javascript/JSDoc.qll/module.JSDoc.html>`__.
 
@@ -1026,9 +1028,8 @@ Alias nodes are represented by class `YAMLAliasNode <https://help.semmle.com/qld
 
 Predicate ``YAMLMapping.maps(key, value)`` models the key-value relation represented by a mapping, taking merge keys into account.
 
-What next?
-----------
+Further reading
+---------------
 
--  Learn about the standard CodeQL libraries used to write queries for TypeScript in :doc:`Introducing the TypeScript libraries <introduce-libraries-ts>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+.. include:: ../../reusables/javascript-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

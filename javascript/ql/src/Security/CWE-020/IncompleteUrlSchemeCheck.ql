@@ -12,21 +12,63 @@
  */
 
 import javascript
-import semmle.javascript.dataflow.internal.AccessPaths
 
 /** A URL scheme that can be used to represent executable code. */
 class DangerousScheme extends string {
   DangerousScheme() { this = "data:" or this = "javascript:" or this = "vbscript:" }
+
+  /** Gets the name of this scheme without the `:`. */
+  string getWithoutColon() { this = result + ":" }
+
+  /** Gets the name of this scheme, with or without the `:`. */
+  string getWithOrWithoutColon() { result = this or result = getWithoutColon() }
+}
+
+/** Returns a node that refers to the scheme of `url`. */
+DataFlow::SourceNode schemeOf(DataFlow::Node url) {
+  // url.split(":")[0]
+  exists(StringSplitCall split |
+    split.getSeparator() = ":" and
+    result = split.getASubstringRead(0) and
+    url = split.getBaseString()
+  )
+  or
+  // url.getScheme(), url.getProtocol(), getScheme(url), getProtocol(url)
+  exists(DataFlow::CallNode call |
+    result = call and
+    (call.getCalleeName() = "getScheme" or call.getCalleeName() = "getProtocol")
+  |
+    call.getNumArgument() = 1 and
+    url = call.getArgument(0)
+    or
+    call.getNumArgument() = 0 and
+    url = call.getReceiver()
+  )
+  or
+  // url.scheme, url.protocol
+  exists(DataFlow::PropRead prop |
+    result = prop and
+    (prop.getPropertyName() = "scheme" or prop.getPropertyName() = "protocol") and
+    url = prop.getBase()
+  )
 }
 
 /** Gets a data-flow node that checks `nd` against the given `scheme`. */
-DataFlow::Node schemeCheck(
-  DataFlow::Node nd, DangerousScheme scheme
-) {
+DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   // check of the form `nd.startsWith(scheme)`
   exists(StringOps::StartsWith sw | sw = result |
     sw.getBaseString() = nd and
     sw.getSubstring().mayHaveStringValue(scheme)
+  )
+  or
+  exists(MembershipCandidate candidate |
+    result = candidate.getTest()
+    or
+    // fall back to the candidate if the test itself is implicit
+    not exists(candidate.getTest()) and result = candidate
+  |
+    candidate.getAMemberString() = scheme.getWithOrWithoutColon() and
+    schemeOf(nd).flowsTo(candidate)
   )
   or
   // propagate through trimming, case conversion, and regexp replace
@@ -44,14 +86,14 @@ DataFlow::Node schemeCheck(
 }
 
 /** Gets a data-flow node that checks an instance of `ap` against the given `scheme`. */
-DataFlow::Node schemeCheckOn(AccessPath ap, DangerousScheme scheme) {
-  result = schemeCheck(ap.getAnInstance().flow(), scheme)
+DataFlow::Node schemeCheckOn(DataFlow::SourceNode root, string path, DangerousScheme scheme) {
+  result = schemeCheck(AccessPath::getAReferenceTo(root, path), scheme)
 }
 
-from AccessPath ap, int n
+from DataFlow::SourceNode root, string path, int n
 where
   n = strictcount(DangerousScheme s) and
-  strictcount(DangerousScheme s | exists(schemeCheckOn(ap, s))) < n
-select schemeCheckOn(ap, "javascript:"),
+  strictcount(DangerousScheme s | exists(schemeCheckOn(root, path, s))) < n
+select schemeCheckOn(root, path, "javascript:"),
   "This check does not consider " +
-    strictconcat(DangerousScheme s | not exists(schemeCheckOn(ap, s)) | s, " and ") + "."
+    strictconcat(DangerousScheme s | not exists(schemeCheckOn(root, path, s)) | s, " and ") + "."

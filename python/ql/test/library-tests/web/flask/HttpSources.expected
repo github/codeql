@@ -1,0 +1,9 @@
+| test.py:29:12:29:23 | Attribute | {externally controlled string} |
+| test.py:33:9:33:20 | Attribute | {externally controlled string} |
+| test.py:35:16:35:27 | Attribute | {externally controlled string} |
+| test.py:40:18:40:29 | Attribute | {externally controlled string} |
+| test.py:45:18:45:29 | Attribute | {externally controlled string} |
+| test.py:49:11:49:14 | name | externally controlled string |
+| test.py:53:9:53:15 | subpath | externally controlled string |
+| test.py:59:24:59:26 | bar | externally controlled string |
+| test.py:63:13:63:21 | lang_code | externally controlled string |

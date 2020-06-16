@@ -1,0 +1,28 @@
+uniqueEnclosingCallable
+uniqueTypeBound
+uniqueTypeRepr
+uniqueNodeLocation
+| D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+| by_reference.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| qualifiers.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+missingLocation
+| Nodes without location: 4 |
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+| simple.cpp:65:5:65:22 | i | PostUpdateNode should have one pre-update node but has 0. |
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+storeIsPostUpdate
+argHasPostUpdate

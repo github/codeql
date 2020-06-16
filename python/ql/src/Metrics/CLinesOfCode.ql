@@ -8,8 +8,8 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  */
+
 import python
 
 from Function f
-select f, f.getMetrics().getNumberOfLinesOfCode() as n
-order by n desc
+select f, f.getMetrics().getNumberOfLinesOfCode() as n order by n desc

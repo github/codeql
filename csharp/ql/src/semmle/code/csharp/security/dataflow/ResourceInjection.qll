@@ -5,8 +5,8 @@
 import csharp
 
 module ResourceInjection {
-  import semmle.code.csharp.dataflow.flowsources.Remote
-  import semmle.code.csharp.dataflow.flowsources.Local
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Local
   import semmle.code.csharp.frameworks.system.Data
   import semmle.code.csharp.security.Sanitizers
 
@@ -51,9 +51,8 @@ module ResourceInjection {
   /** An argument to the `ConnectionString` property on a data connection class. */
   class SqlConnectionStringSink extends Sink {
     SqlConnectionStringSink() {
-      this.getExpr() = any(SystemDataConnectionClass dataConn)
-            .getConnectionStringProperty()
-            .getAnAssignedValue()
+      this.getExpr() =
+        any(SystemDataConnectionClass dataConn).getConnectionStringProperty().getAnAssignedValue()
     }
   }
 

@@ -1,0 +1,14 @@
+digraph cfg2 {
+    graph [dpi=300];
+    rankdir=LR;
+
+    "p != nil is true" [shape=box];
+    "p != nil is false" [shape=box];
+
+    "x := 0" -> "p != nil";
+    "p != nil" -> "p != nil is true";
+    "p != nil is true" -> "x = p.f";
+    "p != nil" -> "p != nil is false";
+    "p != nil is false" -> "return x";
+    "x = p.f" -> "return x";
+}

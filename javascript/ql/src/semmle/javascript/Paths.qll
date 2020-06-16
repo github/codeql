@@ -175,17 +175,6 @@ abstract class PathString extends string {
 }
 
 /**
- * Non-abstract base class for path expressions.
- */
-private class PathExprBase extends Locatable {
-  // We must put getEnclosingModule here for it to be usable in the characteristic predicate of PathExprInModule
-  /** Gets the module containing this path expression, if any. */
-  Module getEnclosingModule() {
-    result = this.(Expr).getTopLevel() or result = this.(Comment).getTopLevel()
-  }
-}
-
-/**
  * An expression whose value represents a (relative or absolute) file system path.
  *
  * Each path expression is associated with one or more root folders, each of which
@@ -197,12 +186,25 @@ private class PathExprBase extends Locatable {
  * as their highest-priority root, with default library paths as additional roots
  * of lower priority.
  */
-abstract class PathExpr extends PathExprBase {
+abstract class PathExpr extends Locatable {
   /** Gets the (unresolved) path represented by this expression. */
   abstract string getValue();
 
   /** Gets the root folder of priority `priority` associated with this path expression. */
-  abstract Folder getSearchRoot(int priority);
+  Folder getSearchRoot(int priority) {
+    // We default to the enclosing module's search root, though this may be overridden.
+    getEnclosingModule().searchRoot(this, result, priority)
+    or
+    result = getAdditionalSearchRoot(priority)
+  }
+
+  /**
+   * INTERNAL. Use `getSearchRoot` instead.
+   *
+   * Can be overridden by subclasses of `PathExpr` to provide additional search roots
+   * without overriding `getSearchRoot`.
+   */
+  Folder getAdditionalSearchRoot(int priority) { none() }
 
   /** Gets the `i`th component of this path. */
   string getComponent(int i) { result = getValue().(PathString).getComponent(i) }
@@ -246,6 +248,11 @@ abstract class PathExpr extends PathExprBase {
 
   /** Gets the file or folder that this path refers to. */
   Container resolve() { result = resolveUpTo(getNumComponent()) }
+
+  /** Gets the module containing this path expression, if any. */
+  Module getEnclosingModule() {
+    result = this.(Expr).getTopLevel() or result = this.(Comment).getTopLevel()
+  }
 }
 
 /** A path string derived from a path expression. */
@@ -279,8 +286,8 @@ private class ConcatPath extends PathExpr {
     )
   }
 
-  override Folder getSearchRoot(int priority) {
-    result = this.(AddExpr).getAnOperand().(PathExpr).getSearchRoot(priority)
+  override Folder getAdditionalSearchRoot(int priority) {
+    result = this.(AddExpr).getAnOperand().(PathExpr).getAdditionalSearchRoot(priority)
   }
 }
 

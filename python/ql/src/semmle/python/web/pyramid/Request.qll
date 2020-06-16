@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 private import semmle.python.web.webob.Request
 private import semmle.python.web.pyramid.View
@@ -11,7 +11,7 @@ class PyramidRequest extends BaseWebobRequest {
 }
 
 /** Source of pyramid request objects */
-class PyramidViewArgument extends TaintSource {
+class PyramidViewArgument extends HttpRequestTaintSource {
     PyramidViewArgument() {
         exists(Function view_func |
             is_pyramid_view_function(view_func) and

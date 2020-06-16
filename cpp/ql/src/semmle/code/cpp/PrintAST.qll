@@ -22,7 +22,8 @@ private predicate shouldPrintFunction(Function func) {
 
 bindingset[s]
 private string escapeString(string s) {
-  result = s
+  result =
+    s
         .replaceAll("\\", "\\\\")
         .replaceAll("\n", "\\n")
         .replaceAll("\r", "\\r")
@@ -448,7 +449,8 @@ class FunctionNode extends ASTNode {
   }
 
   private int getOrder() {
-    this = rank[result](FunctionNode node, Function function, string file, int line, int column |
+    this =
+      rank[result](FunctionNode node, Function function, string file, int line, int column |
         node.getAST() = function and
         locationSortKeys(function, file, line, column)
       |

@@ -207,6 +207,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.StackAllocArrayCreationExpression:
                         return StackAllocArrayCreation.Create(info);
 
+                    case SyntaxKind.ImplicitStackAllocArrayCreationExpression:
+                        return ImplicitStackAllocArrayCreation.Create(info);
+
                     case SyntaxKind.ArgListExpression:
                         return ArgList.Create(info);
 

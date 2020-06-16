@@ -14,6 +14,8 @@
 
 import python
 
-from ClassObject c
-where not c.isC() and not c.isContextManager() and exists(c.declaredAttribute("__del__"))
-select c, "Class " + c.getName() + " implements __del__ (presumably to release some resource). Consider making it a context manager."
+from ClassValue c
+where not c.isBuiltin() and not c.isContextManager() and exists(c.declaredAttribute("__del__"))
+select c,
+    "Class " + c.getName() +
+        " implements __del__ (presumably to release some resource). Consider making it a context manager."

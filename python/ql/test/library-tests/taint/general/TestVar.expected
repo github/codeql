@@ -1,3 +1,9 @@
+| assignment.py:5 | a_0 | assignment.py:5 | Taint simple.test |
+| assignment.py:6 | a_1 | assignment.py:6 | Taint simple.test |
+| assignment.py:7 | b_1 | assignment.py:7 | Taint simple.test |
+| assignment.py:13 | t1_0 | assignment.py:13 | Taint simple.test |
+| assignment.py:13 | t2_0 | assignment.py:13 | Taint simple.test |
+| assignment.py:14 | t1_1 | assignment.py:14 | Taint simple.test |
 | carrier.py:4 | arg_0 | carrier.py:4 | Taint explicit.carrier |
 | carrier.py:4 | arg_0 | carrier.py:4 | Taint simple.test |
 | carrier.py:5 | self_1 | carrier.py:5 | Taint .attr = explicit.carrier |

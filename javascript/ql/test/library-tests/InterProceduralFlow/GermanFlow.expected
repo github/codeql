@@ -2,6 +2,7 @@
 | a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
+| callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
 | custom.js:1:14:1:26 | "verschmutzt" | custom.js:2:15:2:20 | quelle |
 | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
@@ -23,12 +24,16 @@
 | partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
 | partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
 | partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:10:15:10:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:16:15:16:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:22:15:22:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:28:15:28:15 | y |
 | promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
+| promises.js:2:16:2:24 | "tainted" | promises.js:38:32:38:32 | v |
 | promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
-| promises.js:11:22:11:31 | "resolved" | promises.js:27:16:27:16 | v |
 | promises.js:12:22:12:31 | "rejected" | promises.js:21:20:21:20 | v |
 | promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
-| promises.js:12:22:12:31 | "rejected" | promises.js:27:16:27:16 | v |
+| promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
 | properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
 | properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
@@ -41,6 +46,7 @@
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
 | tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
 | tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
+| tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
 | tst.js:2:17:2:22 | "src1" | tst.js:39:17:39:17 | x |
 | tst.js:2:17:2:22 | "src1" | tst.js:41:19:41:19 | x |
 | tst.js:2:17:2:22 | "src1" | tst.js:45:17:45:17 | x |

@@ -19,7 +19,7 @@ module UnvalidatedDynamicMethodCall {
     /**
      * Gets the flow label relevant for this source.
      */
-    DataFlow::FlowLabel getFlowLabel() { result = data() }
+    DataFlow::FlowLabel getFlowLabel() { result = taint() }
   }
 
   /**

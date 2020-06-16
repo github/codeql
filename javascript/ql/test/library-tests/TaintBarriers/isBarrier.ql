@@ -1,6 +1,10 @@
 import javascript
 import ExampleConfiguration
 
-from ExampleConfiguration cfg, DataFlow::Node n
-where cfg.isBarrier(n)
-select n, cfg
+query predicate isBarrier(ExampleConfiguration cfg, DataFlow::Node n) { cfg.isBarrier(n) }
+
+query predicate isLabeledBarrier(
+  ExampleConfiguration cfg, DataFlow::Node n, DataFlow::FlowLabel label
+) {
+  cfg.isLabeledBarrier(n, label)
+}

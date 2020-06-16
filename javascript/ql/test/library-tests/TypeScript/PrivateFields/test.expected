@@ -1,0 +1,5 @@
+propAccess
+| #privateField | tst.ts:5:9:5:26 | this.#privateField |
+| #privateField | tst.ts:6:9:6:26 | this.#privateField |
+fieldDecl
+| #privateField | tst.ts:2:5:2:23 | #privateField: any; |

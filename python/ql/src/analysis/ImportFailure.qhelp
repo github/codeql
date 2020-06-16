@@ -21,7 +21,7 @@ Ensure that all required modules and packages can be found when running the extr
 </recommendation>
 <references>
 
-<li>Semmle Tutorial: <a href="https://semmle.com/wiki/pages/viewpage.action?pageId=9493108">Basic project creation (Python)</a>.</li>
+<li>Semmle Tutorial: <a href="https://help.semmle.com/codeql/codeql-cli/procedures/create-codeql-database.html">Creating a CodeQL database</a>.</li>
 
 
 </references>

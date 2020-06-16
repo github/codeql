@@ -39,3 +39,6 @@ public:
 	MyClass(MyClass &&from);
 	operator int();
 };
+
+void h(int x);
+void h(int y);

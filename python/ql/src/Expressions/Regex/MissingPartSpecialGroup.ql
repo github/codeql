@@ -16,5 +16,3 @@ import semmle.python.regex
 from Regex r, string missing, string part
 where r.getText().regexpMatch(".*\\(P<\\w+>.*") and missing = "?" and part = "named group"
 select r, "Regular expression is missing '" + missing + "' in " + part + "."
-
-

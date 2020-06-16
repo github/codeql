@@ -115,11 +115,19 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.(CollectionMethod).hasName("remove") and m.getParameterType(0).(PrimitiveType).hasName("int")
   or
+  m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
+  or
   m.(CollectionMethod).hasName("subList")
   or
   m.(CollectionMethod).hasName("firstElement")
   or
   m.(CollectionMethod).hasName("lastElement")
+  or
+  m.(CollectionMethod).hasName("poll")
+  or
+  m.(CollectionMethod).hasName("peek")
+  or
+  m.(CollectionMethod).hasName("element")
 }
 
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
@@ -147,6 +155,8 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   method.(CollectionMethod).hasName("addElement") and arg = 0
   or
   method.(CollectionMethod).hasName("set") and arg = 1
+  or
+  method.(CollectionMethod).hasName("offer") and arg = 0
 }
 
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
@@ -161,10 +171,27 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 /**
  * Holds if the step from `n1` to `n2` is either extracting a value from a
  * container, inserting a value into a container, or transforming one container
+ * to another. This is restricted to cases where `n2` is the returned value of
+ * a call.
+ */
+predicate containerReturnValueStep(Expr n1, Expr n2) { qualifierToMethodStep(n1, n2) }
+
+/**
+ * Holds if the step from `n1` to `n2` is either extracting a value from a
+ * container, inserting a value into a container, or transforming one container
+ * to another. This is restricted to cases where the value of `n2` is being modified.
+ */
+predicate containerUpdateStep(Expr n1, Expr n2) {
+  qualifierToArgumentStep(n1, n2) or
+  argToQualifierStep(n1, n2)
+}
+
+/**
+ * Holds if the step from `n1` to `n2` is either extracting a value from a
+ * container, inserting a value into a container, or transforming one container
  * to another.
  */
 predicate containerStep(Expr n1, Expr n2) {
-  qualifierToMethodStep(n1, n2) or
-  qualifierToArgumentStep(n1, n2) or
-  argToQualifierStep(n1, n2)
+  containerReturnValueStep(n1, n2) or
+  containerUpdateStep(n1, n2)
 }

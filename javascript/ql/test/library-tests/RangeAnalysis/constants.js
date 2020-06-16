@@ -6,3 +6,8 @@ function f() {
   if (two > one) {}  // NOT OK - always true
   if (two <= one) {} // NOT OK - always false
 }
+
+function underscores(x) {
+  if (x >= 1_000_000) return; // OK
+  if (x >= 1_000) return; // OK
+}

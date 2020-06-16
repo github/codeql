@@ -12,37 +12,37 @@
 
 import python
 
-ClassObject jinja2EnvironmentOrTemplate() {
-    exists(ModuleObject jinja2, string name |
-        jinja2.getName() = "jinja2" and
-        jinja2.attr(name) = result |
-        name = "Environment" or
-        name = "Template"
-    )
+/*
+ * Jinja 2 Docs:
+ * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Environment
+ * https://jinja.palletsprojects.com/en/2.11.x/api/#jinja2.Template
+ *
+ * Although the docs doesn't say very clearly, autoescape is a valid argument when constructing
+ * a Template manually
+ *
+ * unsafe_tmpl = Template('Hello {{ name }}!')
+ * safe1_tmpl = Template('Hello {{ name }}!', autoescape=True)
+ */
+
+ClassValue jinja2EnvironmentOrTemplate() {
+    result = Value::named("jinja2.Environment")
+    or
+    result = Value::named("jinja2.Template")
 }
 
-ControlFlowNode getAutoEscapeParameter(CallNode call) {
-    exists(Object callable |
-        call.getFunction().refersTo(callable) |
-        callable = jinja2EnvironmentOrTemplate() and
-        result = call.getArgByName("autoescape")
-    )
-}
+ControlFlowNode getAutoEscapeParameter(CallNode call) { result = call.getArgByName("autoescape") }
 
 from CallNode call
 where
-not exists(call.getNode().getStarargs()) and
-not exists(call.getNode().getKwargs()) and
-(
-    not exists(getAutoEscapeParameter(call)) and
-    exists(Object env |
-        call.getFunction().refersTo(env) and
-        env = jinja2EnvironmentOrTemplate()
+    call.getFunction().pointsTo(jinja2EnvironmentOrTemplate()) and
+    not exists(call.getNode().getStarargs()) and
+    not exists(call.getNode().getKwargs()) and
+    (
+        not exists(getAutoEscapeParameter(call))
+        or
+        exists(Value isFalse |
+            getAutoEscapeParameter(call).pointsTo(isFalse) and
+            isFalse.getDefiniteBooleanValue() = false
+        )
     )
-    or
-    exists(Object isFalse |
-        getAutoEscapeParameter(call).refersTo(isFalse) and isFalse.booleanValue() = false
-    )
-)
-
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."

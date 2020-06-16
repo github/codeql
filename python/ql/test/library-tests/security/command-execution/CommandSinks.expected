@@ -1,0 +1,17 @@
+| fabric_v1_test.py:8:7:8:28 | FabricV1Commands | externally controlled string |
+| fabric_v1_test.py:9:5:9:27 | FabricV1Commands | externally controlled string |
+| fabric_v1_test.py:10:6:10:38 | FabricV1Commands | externally controlled string |
+| fabric_v2_test.py:10:16:10:25 | InvokeContextRun | externally controlled string |
+| fabric_v2_test.py:12:15:12:36 | InvokeContextRun | externally controlled string |
+| fabric_v2_test.py:16:45:16:54 | FabricGroupRun | externally controlled string |
+| fabric_v2_test.py:21:10:21:13 | FabricGroupRun | externally controlled string |
+| fabric_v2_test.py:31:14:31:41 | InvokeContextRun | externally controlled string |
+| fabric_v2_test.py:33:15:33:64 | InvokeContextRun | externally controlled string |
+| invoke_test.py:8:12:8:21 | InvokeRun | externally controlled string |
+| invoke_test.py:9:20:9:40 | InvokeRun | externally controlled string |
+| invoke_test.py:12:17:12:24 | InvokeRun | externally controlled string |
+| invoke_test.py:13:25:13:32 | InvokeRun | externally controlled string |
+| invoke_test.py:17:11:17:40 | InvokeContextRun | externally controlled string |
+| invoke_test.py:21:11:21:32 | InvokeContextRun | externally controlled string |
+| invoke_test.py:27:11:27:25 | InvokeContextRun | externally controlled string |
+| invoke_test.py:32:11:32:25 | InvokeContextRun | externally controlled string |

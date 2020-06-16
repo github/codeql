@@ -18,7 +18,7 @@ namespace Semmle.Util
             var found = false;
             foreach (var arg in commandLineArguments.Where(arg => arg.StartsWith('@')).Select(arg => arg.Substring(1)))
             {
-                string line;
+                string? line;
                 using (StreamReader file = new StreamReader(arg))
                     while ((line = file.ReadLine()) != null)
                         textWriter.WriteLine(line);

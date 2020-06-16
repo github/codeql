@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -114,7 +115,7 @@ private predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
  *
  * At the database level, a basic block is represented by its first control flow node.
  */
-class BasicBlock extends @cfg_node, Locatable {
+class BasicBlock extends @cfg_node, NodeInStmtContainer {
   BasicBlock() { startsBB(this) }
 
   /** Gets a basic block succeeding this one. */
@@ -235,7 +236,8 @@ class BasicBlock extends @cfg_node, Locatable {
    */
   private int nextDefOrUseAfter(PurelyLocalVariable v, int i, VarDef d) {
     defAt(i, v, d) and
-    result = min(int j |
+    result =
+      min(int j |
         (defAt(j, v, _) or useAt(j, v, _) or j = length()) and
         j > i
       )
@@ -269,11 +271,6 @@ class BasicBlock extends @cfg_node, Locatable {
   private predicate isLocallyOverwritten(Variable v, VarDef d) {
     exists(int n | defAt(n, v, d) | not exists(int m | m < n | defAt(m, v, _)))
   }
-
-  /**
-   * Gets the function or script to which this basic block belongs.
-   */
-  StmtContainer getContainer() { result = getFirstNode().getContainer() }
 
   /**
    * Gets the basic block that immediately dominates this basic block.

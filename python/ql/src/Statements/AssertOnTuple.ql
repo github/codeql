@@ -14,11 +14,14 @@
 import python
 
 from Assert a, string b, string non
-where a.getTest() instanceof Tuple and
-			(if exists(((Tuple)a.getTest()).getAnElt()) then
-			    (b = "True" and non = "non-")
-       else
-          (b = "False" and non = "")
-      )
+where
+    a.getTest() instanceof Tuple and
+    (
+        if exists(a.getTest().(Tuple).getAnElt())
+        then (
+            b = "True" and non = "non-"
+        ) else (
+            b = "False" and non = ""
+        )
+    )
 select a, "Assertion of " + non + "empty tuple is always " + b + "."
-

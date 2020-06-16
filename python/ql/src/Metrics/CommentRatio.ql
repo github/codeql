@@ -10,9 +10,10 @@
  * @tags maintainability
  *       documentation
  */
+
 import python
 
 from Module m, ModuleMetrics mm
 where mm = m.getMetrics() and mm.getNumberOfLines() > 0
-select m, 100.0 * ((float)mm.getNumberOfLinesOfComments() / (float)mm.getNumberOfLines()) as ratio
-order by ratio desc
+select m, 100.0 * (mm.getNumberOfLinesOfComments().(float) / mm.getNumberOfLines().(float)) as ratio
+    order by ratio desc

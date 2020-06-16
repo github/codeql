@@ -160,20 +160,15 @@ class TestNGTestMethod extends Method {
     exists(TestNGTestAnnotation testAnnotation |
       testAnnotation = getAnAnnotation() and
       // The data provider must have the same name as the referenced data provider
-      result.getDataProviderName() = testAnnotation
-            .getValue("dataProvider")
-            .(StringLiteral)
-            .getRepresentedString()
+      result.getDataProviderName() =
+        testAnnotation.getValue("dataProvider").(StringLiteral).getRepresentedString()
     |
       // Either the data provider should be on the current class, or a supertype
       getDeclaringType().getAnAncestor() = result.getDeclaringType()
       or
       // Or the data provider class should be declared
-      result.getDeclaringType() = testAnnotation
-            .getValue("dataProviderClass")
-            .(TypeLiteral)
-            .getTypeName()
-            .getType()
+      result.getDeclaringType() =
+        testAnnotation.getValue("dataProviderClass").(TypeLiteral).getTypeName().getType()
     )
   }
 }
@@ -257,7 +252,8 @@ class TestNGDataProviderMethod extends Method {
    * Gets the name associated with this data provider.
    */
   string getDataProviderName() {
-    result = getAnAnnotation()
+    result =
+      getAnAnnotation()
           .(TestNGDataProviderAnnotation)
           .getValue("name")
           .(StringLiteral)

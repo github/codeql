@@ -7,6 +7,7 @@
  * @metricType commit
  * @metricAggregate sum
  */
+
 import python
 import external.VCS
 

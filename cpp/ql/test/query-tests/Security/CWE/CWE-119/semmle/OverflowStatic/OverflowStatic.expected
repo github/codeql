@@ -1,7 +1,0 @@
-| test.c:28:19:28:20 | 41 | Potential buffer-overflow: 'buffer' has size 40 not 41. |
-| test.c:29:26:29:27 | 43 | Potential buffer-overflow: 'buffer' has size 40 not 43. |
-| test.c:31:26:31:27 | 44 | Potential buffer-overflow: 'buffer' has size 40 not 44. |
-| test.c:32:25:32:26 | 45 | Potential buffer-overflow: 'buffer' has size 40 not 45. |
-| test.c:33:26:33:27 | 46 | Potential buffer-overflow: 'buffer' has size 40 not 46. |
-| test.c:34:22:34:23 | 47 | Potential buffer-overflow: 'buffer' has size 40 not 47. |
-| test.c:35:23:35:24 | 48 | Potential buffer-overflow: 'buffer' has size 40 not 48. |

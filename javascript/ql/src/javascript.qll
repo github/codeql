@@ -5,12 +5,14 @@
 import Customizations
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
+import semmle.javascript.Arrays
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
 import semmle.javascript.Base64
 import semmle.javascript.CFG
 import semmle.javascript.Classes
 import semmle.javascript.Closure
+import semmle.javascript.Collections
 import semmle.javascript.Comments
 import semmle.javascript.Concepts
 import semmle.javascript.Constants
@@ -35,6 +37,7 @@ import semmle.javascript.JsonParsers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations
+import semmle.javascript.MembershipCandidates
 import semmle.javascript.Modules
 import semmle.javascript.NodeJS
 import semmle.javascript.NPM
@@ -78,6 +81,7 @@ import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.Handlebars
+import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
@@ -96,6 +100,7 @@ import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
+import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
 import semmle.javascript.linters.ESLint

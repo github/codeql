@@ -74,6 +74,8 @@ abstract class Architecture extends string {
     or
     t instanceof WideCharType and result = wideCharSize()
     or
+    t instanceof Char8Type and result = 8
+    or
     t instanceof Char16Type and result = 16
     or
     t instanceof Char32Type and result = 32
@@ -154,6 +156,8 @@ abstract class Architecture extends string {
     t instanceof CharType and result = 8
     or
     t instanceof WideCharType and result = wideCharSize()
+    or
+    t instanceof Char8Type and result = 8
     or
     t instanceof Char16Type and result = 16
     or
@@ -501,7 +505,8 @@ class PaddedType extends Class {
   int typeAlignment(Architecture arch) {
     // The alignment of the type is the largest alignment of any of its fields,
     // including fields from base class subobjects.
-    result = max(PaddedType c |
+    result =
+      max(PaddedType c |
         c = this.getABaseClass*()
       |
         c.biggestAlignmentUpTo(c.lastFieldIndex(), arch)
@@ -630,8 +635,8 @@ class PaddedType extends Class {
                       // Previous field was a bitfield.
                       if
                         nextSizeofBoundary >= (firstFree + fSize) and
-                        arch.integralBitSize(previousBitField.getType()) = arch
-                              .integralBitSize(f.getType())
+                        arch.integralBitSize(previousBitField.getType()) =
+                          arch.integralBitSize(f.getType())
                       then
                         // The new bitfield can be stored in the same allocation unit as the previous one,
                         // so we can avoid padding.
@@ -646,10 +651,11 @@ class PaddedType extends Class {
                         //   };
                         // If we only aligned to sizeof(T), we'd align 'y' to a 2-byte boundary. This is incorrect. The allocation
                         // unit that started with 'x' has to consume an entire unsigned int (4 bytes).
-                        result = max(int boundary |
+                        result =
+                          max(int boundary |
                               boundary = nextAlignofBoundary or
-                              boundary = alignUp(firstFree,
-                                  arch.alignment(previousBitField.getType()))
+                              boundary =
+                                alignUp(firstFree, arch.alignment(previousBitField.getType()))
                             |
                               boundary
                             ) + fSize

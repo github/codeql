@@ -13,12 +13,17 @@ string locate(Location l, string which) {
 }
 
 string repr(Object o) {
-    /* Do not show `unknownValue()` to keep noise levels down. 
+    /*
+     * Do not show `unknownValue()` to keep noise levels down.
      * To show it add:
      * `o = unknownValue() and result = "*UNKNOWN VALUE*"`
      */
-    not o instanceof StringObject and not o = undefinedVariable() and not o = theUnknownType() and 
-    not o = theBoundMethodType() and result = o.toString()
+
+    not o instanceof StringObject and
+    not o = undefinedVariable() and
+    not o = theUnknownType() and
+    not o = theBoundMethodType() and
+    result = o.toString()
     or
     o = undefinedVariable() and result = "*UNDEFINED*"
     or
@@ -30,14 +35,13 @@ string repr(Object o) {
     o = theBoundMethodType() and result = "builtin-class method"
 }
 
-predicate long_tuple(Value v) {
-    v.(TupleObjectInternal).length() > 3
-}
+predicate long_tuple(Value v) { v.(TupleObjectInternal).length() > 3 }
 
 string vrepr(Value v) {
     /* Work around differing names in 2/3 */
     not v = ObjectInternal::boundMethod() and
-    not long_tuple(v) and result = v.toString()
+    not long_tuple(v) and
+    result = v.toString()
     or
     v = ObjectInternal::boundMethod() and result = "builtin-class method"
     or

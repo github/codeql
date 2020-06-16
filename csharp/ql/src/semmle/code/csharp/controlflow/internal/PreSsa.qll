@@ -196,7 +196,8 @@ private int maxRefRank(PreBasicBlock bb, SimpleAssignable a) {
 }
 
 private int firstReadOrCertainWrite(PreBasicBlock bb, SimpleAssignable a) {
-  result = min(int r, RefKind k |
+  result =
+    min(int r, RefKind k |
       r = refRank(bb, _, a, k) and
       k != Write(false)
     |

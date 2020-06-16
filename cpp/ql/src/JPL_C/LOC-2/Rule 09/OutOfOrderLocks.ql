@@ -17,7 +17,8 @@ predicate lockOrder(LockOperation outer, LockOperation inner) {
 }
 
 int orderCount(Declaration outerLock, Declaration innerLock) {
-  result = strictcount(LockOperation outer, LockOperation inner |
+  result =
+    strictcount(LockOperation outer, LockOperation inner |
       outer.getLocked() = outerLock and
       inner.getLocked() = innerLock and
       lockOrder(outer, inner)
@@ -27,6 +28,6 @@ int orderCount(Declaration outerLock, Declaration innerLock) {
 from LockOperation outer, LockOperation inner
 where
   lockOrder(outer, inner) and
-  orderCount(outer.getLocked(), inner.getLocked()) <= orderCount(inner.getLocked(),
-      outer.getLocked())
+  orderCount(outer.getLocked(), inner.getLocked()) <=
+    orderCount(inner.getLocked(), outer.getLocked())
 select inner, "Out-of-order locks: A " + inner.say() + " usually precedes a $@.", outer, outer.say()

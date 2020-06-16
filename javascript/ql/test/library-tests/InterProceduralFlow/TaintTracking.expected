@@ -27,13 +27,15 @@
 | partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
 | partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
 | partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:10:15:10:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:16:15:16:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:22:15:22:15 | y |
+| partial.js:6:15:6:24 | "tainted2" | partial.js:28:15:28:15 | y |
 | promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
 | promises.js:2:16:2:24 | "tainted" | promises.js:38:32:38:32 | v |
 | promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
-| promises.js:11:22:11:31 | "resolved" | promises.js:27:16:27:16 | v |
 | promises.js:12:22:12:31 | "rejected" | promises.js:21:20:21:20 | v |
 | promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
-| promises.js:12:22:12:31 | "rejected" | promises.js:27:16:27:16 | v |
 | promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
 | properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
 | properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |

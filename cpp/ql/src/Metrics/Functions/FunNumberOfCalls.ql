@@ -20,7 +20,8 @@ predicate callToOperator(FunctionCall fc) {
 from Function f, int n, int o
 where
   strictcount(f.getEntryPoint()) = 1 and
-  o = count(FunctionCall c |
+  o =
+    count(FunctionCall c |
       c.getEnclosingFunction() = f and
       not c.isInMacroExpansion() and
       not c.isCompilerGenerated() and

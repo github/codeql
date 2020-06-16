@@ -1,10 +1,12 @@
-Tutorial: Function classes
-==========================
+Functions in C and C++
+=======================
+
+You can use CodeQL to explore functions in C and C++ code.
 
 Overview
 --------
 
-The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`).
+The standard CodeQL library for C and C++ represents functions using the ``Function`` class (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`).
 
 The example queries in this topic explore some of the most useful library predicates for querying functions.
 
@@ -26,7 +28,7 @@ This query is very general, so there are probably too many results to be interes
 Finding functions that are not called
 -------------------------------------
 
-It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`Introducing the C/C++ libraries <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
+It might be more interesting to find functions that are not called, using the standard CodeQL ``FunctionCall`` class from the **abstract syntax tree** category (see :doc:`CodeQL libraries for C and C++ <introduce-libraries-cpp>`). The ``FunctionCall`` class can be used to identify places where a function is actually used, and it is related to ``Function`` through the ``FunctionCall.getTarget()`` predicate.
 
 .. code-block:: ql
 
@@ -36,7 +38,7 @@ It might be more interesting to find functions that are not called, using the st
    where not exists(FunctionCall fc | fc.getTarget() = f)
    select f, "This function is never called."
 
-➤ `See this in the query console <https://lgtm.com/query/1505891246456/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505891246456/>`__
 
 The new query finds functions that are not the target of any ``FunctionCall``—in other words, functions that are never called. You may be surprised by how many results the query finds. However, if you examine the results, you can see that many of the functions it finds are used indirectly. To create a query that finds only unused functions, we need to refine the query and exclude other ways of using a function.
 
@@ -54,7 +56,7 @@ You can modify the query to remove functions where a function pointer is used to
      and not exists(FunctionAccess fa | fa.getTarget() = f)
    select f, "This function is never called, or referenced with a function pointer."
 
-➤ `See this in the query console <https://lgtm.com/query/1505890446605/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505890446605/>`__
 
 This query returns fewer results. However, if you examine the results then you can probably still find potential refinements.
 
@@ -76,7 +78,7 @@ This query uses ``Function`` and ``FunctionCall`` to find calls to the function 
      and not fc.getArgument(1) instanceof StringLiteral
    select fc, "sprintf called with variable format string."
 
-➤ `See this in the query console <https://lgtm.com/query/1505889506751/>`__
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505889506751/>`__
 
 This uses:
 
@@ -87,10 +89,8 @@ Note that we could have used ``Declaration.getName()``, but ``Declaration.getQua
 
 The LGTM version of this query is considerably more complicated, but if you look carefully you will find that its structure is the same. See `Non-constant format string <https://lgtm.com/rules/2152810612/>`__ and click **Open in query console** at the top of the page.
 
-What next?
-----------
+Further reading
+---------------
 
--  Explore other ways of finding functions using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/function>`__.
--  Take a look at some of the other tutorials: :doc:`Expressions, types and statements <expressions-types>`, :doc:`Conversions and classes <conversions-classes>`, and :doc:`Analyzing data flow in C/C++ <dataflow>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

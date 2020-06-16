@@ -61,3 +61,7 @@ function useThingPossiblySync(b) {
 
     return thing + "bar"; // NOT OK - but we don't flag it
 }
+
+function useThingInVoid() {
+    void getThing(); // OK
+}

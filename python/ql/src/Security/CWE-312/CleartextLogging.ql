@@ -14,15 +14,12 @@
 
 import python
 import semmle.python.security.Paths
-
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.SensitiveData
 import semmle.python.security.ClearText
 
-
 class CleartextLoggingConfiguration extends TaintTracking::Configuration {
-
-    CleartextLoggingConfiguration() {  this = "ClearTextLogging" }
+    CleartextLoggingConfiguration() { this = "ClearTextLogging" }
 
     override predicate isSource(DataFlow::Node src, TaintKind kind) {
         src.asCfgNode().(SensitiveData::Source).isSourceOf(kind)
@@ -32,11 +29,9 @@ class CleartextLoggingConfiguration extends TaintTracking::Configuration {
         sink.asCfgNode() instanceof ClearTextLogging::Sink and
         kind instanceof SensitiveData
     }
-
 }
-
 
 from CleartextLoggingConfiguration config, TaintedPathSource source, TaintedPathSink sink
 where config.hasFlowPath(source, sink)
 select sink.getSink(), source, sink, "Sensitive data returned by $@ is logged here.",
-  source.getSource(), source.getCfgNode().(SensitiveData::Source).repr()
+    source.getSource(), source.getCfgNode().(SensitiveData::Source).repr()

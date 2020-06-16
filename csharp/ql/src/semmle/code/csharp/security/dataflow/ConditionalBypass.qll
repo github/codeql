@@ -8,7 +8,7 @@ import csharp
 module UserControlledBypassOfSensitiveMethod {
   import semmle.code.csharp.controlflow.Guards
   import semmle.code.csharp.controlflow.BasicBlocks
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.System
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.security.SensitiveActions
@@ -52,8 +52,8 @@ module UserControlledBypassOfSensitiveMethod {
   /** The result of a reverse dns may be user-controlled. */
   class ReverseDnsSource extends Source {
     ReverseDnsSource() {
-      this.asExpr().(MethodCall).getTarget() = any(SystemNetDnsClass dns)
-            .getGetHostByAddressMethod()
+      this.asExpr().(MethodCall).getTarget() =
+        any(SystemNetDnsClass dns).getGetHostByAddressMethod()
     }
   }
 

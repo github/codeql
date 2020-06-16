@@ -195,7 +195,7 @@ void test_memcpy(int *source) {
 	sink(x);
 }
 
-// --- swap ---
+// --- std::swap ---
 
 namespace std {
 	template<class T> constexpr void swap(T& a, T& b);
@@ -371,7 +371,7 @@ void test_strdup(char *source)
 	c = strndup(source, 100);
 	sink(a); // tainted
 	sink(b);
-	sink(c); // tainted [NOT DETECTED]
+	sink(c); // tainted
 }
 
 void test_strndup(int source)
@@ -379,7 +379,7 @@ void test_strndup(int source)
 	char *a;
 
 	a = strndup("hello, world", source);
-	sink(a);
+	sink(a); // tainted
 }
 
 void test_wcsdup(wchar_t *source)
@@ -445,4 +445,42 @@ void test_qualifiers()
 	d.setString(strings::source());
 	sink(d); // tainted
 	sink(d.getString()); // tainted
+}
+
+// --- non-standard swap ---
+
+void swop(int &a, int &b)
+{
+	int c = a;
+	a = b;
+	b = c;
+}
+
+void test_swop() {
+	int x, y;
+
+	x = source();
+	y = 0;
+
+	sink(x); // tainted
+	sink(y); // clean
+
+	swop(x, y);
+
+	sink(x); // clean [FALSE POSITIVE]
+	sink(y); // tainted
+}
+
+// --- getdelim ---
+
+struct FILE;
+
+int getdelim(char ** lineptr, size_t * n, int delimiter, FILE *stream);
+
+void test_getdelim(FILE* source1) {
+	char* line = nullptr;
+	size_t n;
+	getdelim(&line, &n, '\n', source1);
+
+	sink(line);
 }

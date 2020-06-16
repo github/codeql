@@ -1,0 +1,36 @@
+uniqueEnclosingCallable
+uniqueTypeBound
+uniqueTypeRepr
+uniqueNodeLocation
+| BarrierGuard.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
+| acrossLinkTargets.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
+| clang.cpp:4:11:4:13 | p#0 | Node should have one location but has 6. |
+| clang.cpp:4:27:4:35 | p#0 | Node should have one location but has 2. |
+| clang.cpp:4:51:4:53 | p#0 | Node should have one location but has 2. |
+| dispatch.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| globals.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
+| test.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
+| test.cpp:2:27:2:35 | p#0 | Node should have one location but has 2. |
+| test.cpp:2:51:2:53 | p#0 | Node should have one location but has 2. |
+missingLocation
+| Nodes without location: 4 |
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+| ref.cpp:83:5:83:17 | Chi | Node has multiple PostUpdateNodes. |
+| ref.cpp:109:5:109:22 | Chi | Node has multiple PostUpdateNodes. |
+postIsInSameCallable
+reverseRead
+storeIsPostUpdate
+argHasPostUpdate

@@ -23,7 +23,8 @@ class IRVariable extends TIRVariable {
   IRVariable() {
     this = TIRUserVariable(_, _, func) or
     this = TIRTempVariable(func, _, _, _) or
-    this = TIRStringLiteral(func, _, _, _)
+    this = TIRStringLiteral(func, _, _, _) or
+    this = TIRDynamicInitializationFlag(func, _, _)
   }
 
   string toString() { none() }
@@ -149,7 +150,8 @@ class IRGeneratedVariable extends IRVariable {
 
   IRGeneratedVariable() {
     this = TIRTempVariable(func, ast, _, type) or
-    this = TIRStringLiteral(func, ast, type, _)
+    this = TIRStringLiteral(func, ast, type, _) or
+    this = TIRDynamicInitializationFlag(func, ast, type)
   }
 
   final override Language::LanguageType getLanguageType() { result = type }
@@ -161,7 +163,8 @@ class IRGeneratedVariable extends IRVariable {
   override string getUniqueId() { none() }
 
   final string getLocationString() {
-    result = ast.getLocation().getStartLine().toString() + ":" +
+    result =
+      ast.getLocation().getStartLine().toString() + ":" +
         ast.getLocation().getStartColumn().toString()
   }
 
@@ -175,7 +178,7 @@ IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
 
 /**
  * A temporary variable introduced by IR construction. The most common examples are the variable
- * generated to hold the return value of afunction, or the variable generated to hold the result of
+ * generated to hold the return value of a function, or the variable generated to hold the result of
  * a condition operator (`a ? b : c`).
  */
 class IRTempVariable extends IRGeneratedVariable, IRAutomaticVariable, TIRTempVariable {
@@ -207,7 +210,26 @@ class IRReturnVariable extends IRTempVariable {
 class IRThrowVariable extends IRTempVariable {
   IRThrowVariable() { tag = ThrowTempVar() }
 
-  override string getBaseString() { result = "#throw" }
+  final override string getBaseString() { result = "#throw" }
+}
+
+/**
+ * A temporary variable generated to hold the contents of all arguments passed to the `...` of a
+ * function that accepts a variable number of arguments.
+ */
+class IREllipsisVariable extends IRTempVariable {
+  IREllipsisVariable() { tag = EllipsisTempVar() }
+
+  final override string toString() { result = "#ellipsis" }
+}
+
+/**
+ * A temporary variable generated to hold the `this` pointer.
+ */
+class IRThisVariable extends IRTempVariable {
+  IRThisVariable() { tag = ThisTempVar() }
+
+  final override string toString() { result = "#this" }
 }
 
 /**
@@ -225,7 +247,30 @@ class IRStringLiteral extends IRGeneratedVariable, TIRStringLiteral {
     result = "String: " + getLocationString() + "=" + Language::getStringLiteralText(literal)
   }
 
-  override string getBaseString() { result = "#string" }
+  final override string getBaseString() { result = "#string" }
 
   final Language::StringLiteral getLiteral() { result = literal }
+}
+
+/**
+ * A variable generated to track whether a specific non-stack variable has been initialized. This is
+ * used to model the runtime initialization of static local variables in C++, as well as static
+ * fields in C#.
+ */
+class IRDynamicInitializationFlag extends IRGeneratedVariable, TIRDynamicInitializationFlag {
+  Language::Variable var;
+
+  IRDynamicInitializationFlag() {
+    this = TIRDynamicInitializationFlag(func, var, type) and ast = var
+  }
+
+  final override string toString() { result = var.toString() + "#init" }
+
+  final Language::Variable getVariable() { result = var }
+
+  final override string getUniqueId() {
+    result = "Init: " + getVariable().toString() + " " + getVariable().getLocation().toString()
+  }
+
+  final override string getBaseString() { result = "#init:" + var.toString() + ":" }
 }

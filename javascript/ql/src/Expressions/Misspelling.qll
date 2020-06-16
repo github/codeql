@@ -91,7 +91,8 @@ private string replaceATypoAndLowerCase(Identifier wrong) {
     idPart(wrong, wrongPart, offset)
   |
     normalized_typos(wrongPart, rightPart, _, _, _, _) and
-    rightName = wrong.getName().substring(0, offset) + rightPart +
+    rightName =
+      wrong.getName().substring(0, offset) + rightPart +
         wrong.getName().suffix(offset + wrongPart.length()) and
     result = rightName.toLowerCase()
   )

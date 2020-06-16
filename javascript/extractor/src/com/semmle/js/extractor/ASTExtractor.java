@@ -250,6 +250,22 @@ public class ASTExtractor {
     /** An identifier that declares a variable and a namespace. */
     varAndNamespaceDecl,
 
+    /**
+     * An identifier that occurs in a type-only import.
+     *
+     * These may declare a type and/or a namespace, but for compatibility with our AST,
+     * must be emitted as a VarDecl (with no variable binding).
+     */
+    typeOnlyImport,
+
+    /**
+     * An identifier that occurs in a type-only export.
+     *
+     * These may refer to a type and/or a namespace, but for compatibility with our AST,
+     * must be emitted as an ExportVarAccess (with no variable binding).
+     */
+    typeOnlyExport,
+
     /** An identifier that declares a variable, type, and namepsace. */
     varAndTypeAndNamespaceDecl,
 
@@ -278,7 +294,8 @@ public class ASTExtractor {
      * True if this occurs as part of a type annotation, i.e. it is {@link #typeBind} or {@link
      * #typeDecl}, {@link #typeLabel}, {@link #varInTypeBind}, or {@link #namespaceBind}.
      *
-     * <p>Does not hold for {@link #varAndTypeDecl}.
+     * <p>Does not hold for {@link #varAndTypeDecl}, {@link #typeOnlyImport}, or @{link {@link #typeOnlyExport}
+     * as these do not occur in type annotations.
      */
     public boolean isInsideType() {
       return this == typeBind
@@ -487,6 +504,14 @@ public class ASTExtractor {
         case varAndNamespaceDecl:
           addVariableBinding("decl", key, name);
           addNamespaceBinding("namespacedecl", key, name);
+          break;
+        case typeOnlyImport:
+          addTypeBinding("typedecl", key, name);
+          addNamespaceBinding("namespacedecl", key, name);
+          break;
+        case typeOnlyExport:
+          addTypeBinding("typebind", key, name);
+          addNamespaceBinding("namespacebind", key, name);
           break;
         case varAndTypeAndNamespaceDecl:
           addVariableBinding("decl", key, name);
@@ -1538,7 +1563,14 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getDeclaration(), lbl, -1);
       visit(nd.getSource(), lbl, -2);
-      visitAll(nd.getSpecifiers(), lbl, nd.hasSource() ? IdContext.label : IdContext.export, 0);
+      IdContext childContext =
+          nd.hasSource() ? IdContext.label :
+          nd.hasTypeKeyword() ? IdContext.typeOnlyExport :
+          IdContext.export;
+      visitAll(nd.getSpecifiers(), lbl, childContext, 0);
+      if (nd.hasTypeKeyword()) {
+        trapwriter.addTuple("hasTypeKeyword", lbl);
+      }
       return lbl;
     }
 
@@ -1554,7 +1586,12 @@ public class ASTExtractor {
     public Label visit(ImportDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
-      visitAll(nd.getSpecifiers(), lbl);
+      IdContext childContext = nd.hasTypeKeyword() ? IdContext.typeOnlyImport : IdContext.varAndTypeAndNamespaceDecl;
+      visitAll(nd.getSpecifiers(), lbl, childContext, 0);
+      emitNodeSymbol(nd, lbl);
+      if (nd.hasTypeKeyword()) {
+        trapwriter.addTuple("hasTypeKeyword", lbl);
+      }
       return lbl;
     }
 
@@ -1562,7 +1599,7 @@ public class ASTExtractor {
     public Label visit(ImportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getImported(), lbl, 0, IdContext.label);
-      visit(nd.getLocal(), lbl, 1, IdContext.varAndTypeAndNamespaceDecl);
+      visit(nd.getLocal(), lbl, 1, c.idcontext);
       return lbl;
     }
 
@@ -1705,6 +1742,7 @@ public class ASTExtractor {
     public Label visit(ExternalModuleReference nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getExpression(), key, 0);
+      emitNodeSymbol(nd, key);
       return key;
     }
 
@@ -2061,12 +2099,14 @@ public class ASTExtractor {
 
     @Override
     public Label visit(AssignmentPattern nd, Context c) {
-      additionalErrors.add(new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
+      additionalErrors.add(
+          new ParseError("Unexpected assignment pattern.", nd.getLoc().getStart()));
       return super.visit(nd, c);
     }
   }
 
-  public List<ParseError> extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+  public List<ParseError> extract(
+      Node root, Platform platform, SourceType sourceType, int toplevelKind) {
     lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);

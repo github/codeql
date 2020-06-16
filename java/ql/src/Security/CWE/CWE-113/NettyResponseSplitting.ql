@@ -29,5 +29,12 @@ private class InsecureDefaultHttpResponseClassInstantiation extends InsecureNett
   }
 }
 
+private class InsecureDefaultFullHttpResponseClassInstantiation extends InsecureNettyObjectCreation {
+  InsecureDefaultFullHttpResponseClassInstantiation() {
+    getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpResponse") and
+    getArgument(3).(CompileTimeConstantExpr).getBooleanValue() = false
+  }
+}
+
 from InsecureNettyObjectCreation new
 select new, "Response-splitting vulnerability due to header value verification being disabled."

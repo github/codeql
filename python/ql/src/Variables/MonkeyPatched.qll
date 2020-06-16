@@ -5,7 +5,7 @@ predicate monkey_patched_builtin(string name) {
         subscr.isStore() and
         subscr.getIndex().getNode() = s and
         s.getText() = name and
-        subscr.getValue() = attr and
+        subscr.getObject() = attr and
         attr.getObject("__dict__").pointsTo(Module::builtinModule())
     )
     or

@@ -86,9 +86,7 @@ SourceNode nodeLeadingToInvocation() {
  * Holds if there is a call edge `invoke -> f` between a relevant invocation
  * and a relevant function.
  */
-predicate relevantCall(RelevantInvoke invoke, RelevantFunction f) {
-  FlowSteps::calls(invoke, f)
-}
+predicate relevantCall(RelevantInvoke invoke, RelevantFunction f) { FlowSteps::calls(invoke, f) }
 
 /**
  * A call site that can be resolved to a function in the same project.
@@ -105,9 +103,7 @@ class ResolvableCall extends RelevantInvoke {
  * A call site that could not be resolved.
  */
 class UnresolvableCall extends RelevantInvoke {
-  UnresolvableCall() {
-    not this instanceof ResolvableCall
-  }
+  UnresolvableCall() { not this instanceof ResolvableCall }
 }
 
 /**

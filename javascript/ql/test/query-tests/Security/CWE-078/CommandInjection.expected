@@ -3,6 +3,7 @@ nodes
 | child_process-test.js:6:15:6:38 | url.par ... , true) |
 | child_process-test.js:6:15:6:44 | url.par ... ).query |
 | child_process-test.js:6:15:6:49 | url.par ... ry.path |
+| child_process-test.js:6:15:6:49 | url.par ... ry.path |
 | child_process-test.js:6:25:6:31 | req.url |
 | child_process-test.js:6:25:6:31 | req.url |
 | child_process-test.js:17:13:17:15 | cmd |
@@ -22,12 +23,31 @@ nodes
 | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:25:21:25:23 | cmd |
+| child_process-test.js:39:18:39:30 | [ flag, cmd ] |
+| child_process-test.js:39:18:39:30 | [ flag, cmd ] |
 | child_process-test.js:39:26:39:28 | cmd |
 | child_process-test.js:39:26:39:28 | cmd |
 | child_process-test.js:43:15:43:17 | cmd |
 | child_process-test.js:43:15:43:17 | cmd |
 | child_process-test.js:50:15:50:17 | cmd |
 | child_process-test.js:50:15:50:17 | cmd |
+| child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:53:46:53:57 | ["bar", cmd] |
+| child_process-test.js:53:46:53:57 | ["bar", cmd] |
+| child_process-test.js:53:54:53:56 | cmd |
+| child_process-test.js:53:54:53:56 | cmd |
+| child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:54:46:54:48 | cmd |
+| child_process-test.js:70:9:70:49 | cmd |
+| child_process-test.js:70:15:70:38 | url.par ... , true) |
+| child_process-test.js:70:15:70:44 | url.par ... ).query |
+| child_process-test.js:70:15:70:49 | url.par ... ry.path |
+| child_process-test.js:70:25:70:31 | req.url |
+| child_process-test.js:70:25:70:31 | req.url |
+| child_process-test.js:72:29:72:31 | cmd |
+| child_process-test.js:72:29:72:31 | cmd |
 | execSeries.js:3:20:3:22 | arr |
 | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:21 | arr[i++] |
@@ -74,6 +94,12 @@ nodes
 | other.js:18:22:18:24 | cmd |
 | other.js:19:36:19:38 | cmd |
 | other.js:19:36:19:38 | cmd |
+| other.js:22:21:22:23 | cmd |
+| other.js:22:21:22:23 | cmd |
+| other.js:23:28:23:30 | cmd |
+| other.js:23:28:23:30 | cmd |
+| other.js:26:34:26:36 | cmd |
+| other.js:26:34:26:36 | cmd |
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
@@ -100,13 +126,32 @@ edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:43:15:43:17 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:50:15:50:17 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:50:15:50:17 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:54:53:56 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:54:53:56 | cmd |
+| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:54:46:54:48 | cmd |
 | child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:15:6:44 | url.par ... ).query |
+| child_process-test.js:6:15:6:44 | url.par ... ).query | child_process-test.js:6:15:6:49 | url.par ... ry.path |
 | child_process-test.js:6:15:6:44 | url.par ... ).query | child_process-test.js:6:15:6:49 | url.par ... ry.path |
 | child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:49 | cmd |
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) |
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
+| child_process-test.js:39:26:39:28 | cmd | child_process-test.js:39:18:39:30 | [ flag, cmd ] |
+| child_process-test.js:39:26:39:28 | cmd | child_process-test.js:39:18:39:30 | [ flag, cmd ] |
+| child_process-test.js:53:46:53:57 | ["bar", cmd] | child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:53:46:53:57 | ["bar", cmd] | child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) |
+| child_process-test.js:53:54:53:56 | cmd | child_process-test.js:53:46:53:57 | ["bar", cmd] |
+| child_process-test.js:53:54:53:56 | cmd | child_process-test.js:53:46:53:57 | ["bar", cmd] |
+| child_process-test.js:54:46:54:48 | cmd | child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:54:46:54:48 | cmd | child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) |
+| child_process-test.js:70:9:70:49 | cmd | child_process-test.js:72:29:72:31 | cmd |
+| child_process-test.js:70:9:70:49 | cmd | child_process-test.js:72:29:72:31 | cmd |
+| child_process-test.js:70:15:70:38 | url.par ... , true) | child_process-test.js:70:15:70:44 | url.par ... ).query |
+| child_process-test.js:70:15:70:44 | url.par ... ).query | child_process-test.js:70:15:70:49 | url.par ... ry.path |
+| child_process-test.js:70:15:70:49 | url.par ... ry.path | child_process-test.js:70:9:70:49 | cmd |
+| child_process-test.js:70:25:70:31 | req.url | child_process-test.js:70:15:70:38 | url.par ... , true) |
+| child_process-test.js:70:25:70:31 | req.url | child_process-test.js:70:15:70:38 | url.par ... , true) |
 | execSeries.js:3:20:3:22 | arr | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:16 | arr | execSeries.js:6:14:6:21 | arr[i++] |
 | execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command |
@@ -147,6 +192,12 @@ edges
 | other.js:5:9:5:49 | cmd | other.js:18:22:18:24 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:22:21:22:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:22:21:22:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:23:28:23:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:23:28:23:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd |
 | other.js:5:15:5:38 | url.par ... , true) | other.js:5:15:5:44 | url.par ... ).query |
 | other.js:5:15:5:44 | url.par ... ).query | other.js:5:15:5:49 | url.par ... ry.path |
 | other.js:5:15:5:49 | url.par ... ry.path | other.js:5:9:5:49 | cmd |
@@ -165,10 +216,18 @@ edges
 | child_process-test.js:22:18:22:20 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:22:18:22:20 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:23:13:23:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:23:13:23:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:39:5:39:31 | cp.spaw ...  cmd ]) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:39:18:39:30 | [ flag, cmd ] | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:39:5:39:31 | cp.spaw ...  cmd ]) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:39:26:39:28 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:44:5:44:34 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:43:15:43:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:51:5:51:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:50:15:50:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
-| child_process-test.js:56:3:56:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:43:15:43:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:53:5:53:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:25:53:58 | ['/C',  ... , cmd]) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:53:5:53:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:46:53:57 | ["bar", cmd] | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:53:5:53:59 | cp.spaw ...  cmd])) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:53:54:53:56 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:54:5:54:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:49 | url.par ... ry.path | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:54:5:54:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:54:25:54:49 | ['/C',  ... at(cmd) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:59:5:59:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:50:15:50:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:64:3:64:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:43:15:43:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:72:29:72:31 | cmd | child_process-test.js:70:25:70:31 | req.url | child_process-test.js:72:29:72:31 | cmd | This command depends on $@. | child_process-test.js:70:25:70:31 | req.url | a user-provided value |
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
@@ -182,4 +241,7 @@ edges
 | other.js:17:27:17:29 | cmd | other.js:5:25:5:31 | req.url | other.js:17:27:17:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:18:22:18:24 | cmd | other.js:5:25:5:31 | req.url | other.js:18:22:18:24 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:19:36:19:38 | cmd | other.js:5:25:5:31 | req.url | other.js:19:36:19:38 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:22:21:22:23 | cmd | other.js:5:25:5:31 | req.url | other.js:22:21:22:23 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:23:28:23:30 | cmd | other.js:5:25:5:31 | req.url | other.js:23:28:23:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:26:34:26:36 | cmd | other.js:5:25:5:31 | req.url | other.js:26:34:26:36 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command depends on $@. | third-party-command-injection.js:5:20:5:26 | command | a server-provided value |

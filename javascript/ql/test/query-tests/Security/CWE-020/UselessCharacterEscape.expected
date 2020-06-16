@@ -1,4 +1,5 @@
 | tst-IncompleteHostnameRegExp.js:42:13:42:65 | '^http[ ... \\/(.+)' | The escape sequence '\\/' is equivalent to just '/'. |
+| tst-SemiAnchoredRegExp.js:72:13:72:40 | '^good\\ ... \\\\.com' | The escape sequence '\\.' is equivalent to just '.'. |
 | tst-SemiAnchoredRegExp.js:109:2:109:45 | /^((\\+\| ... ?\\d\\d)/ | The escape sequence '\\:' is equivalent to just ':'. |
 | tst-escapes.js:19:8:19:11 | "\\ " | The escape sequence '\\ ' is equivalent to just ' '. |
 | tst-escapes.js:20:1:20:54 | /\\a\\b\\c ... x\\y\\z"/ | The escape sequence '\\a' is equivalent to just 'a'. |
@@ -56,3 +57,6 @@
 | tst-escapes.js:42:1:42:4 | "\\." | The escape sequence '\\.' is equivalent to just '.'. |
 | tst-escapes.js:48:8:48:15 | "'\\'\\\\'" | The escape sequence '\\'' is equivalent to just '''. |
 | tst-escapes.js:50:8:50:15 | '"\\"\\\\"' | The escape sequence '\\"' is equivalent to just '"'. |
+| tst-escapes.js:66:8:66:13 | "\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |
+| tst-escapes.js:67:8:67:14 | "x\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |
+| tst-escapes.js:71:8:71:17 | "\\\\\\\\\\\\\\]" | The escape sequence '\\]' is equivalent to just ']'. |

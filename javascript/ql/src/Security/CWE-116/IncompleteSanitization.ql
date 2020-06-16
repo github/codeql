@@ -44,9 +44,7 @@ predicate isSimpleCharacterClass(RegExpCharacterClass t) {
 }
 
 /** Holds if `t` is an alternation of simple terms. */
-predicate isSimpleAlt(RegExpAlt t) {
-  forall(RegExpTerm ch | ch = t.getAChild() | isSimple(ch))
-}
+predicate isSimpleAlt(RegExpAlt t) { forall(RegExpTerm ch | ch = t.getAChild() | isSimple(ch)) }
 
 /**
  * Holds if `mce` is of the form `x.replace(re, new)`, where `re` is a global

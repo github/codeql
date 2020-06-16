@@ -1,5 +1,8 @@
-WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:6,6-17)
-WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,14-25)
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:5,6-17)
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,12-23)
+| assignment.py:1 | p0 = simple.test | Function test |
+| assignment.py:1 | p1 = simple.test | Function test |
+| assignment.py:1 | p2 = simple.test | Function test |
 | carrier.py:4 | p1 = explicit.carrier | Function __init__ |
 | carrier.py:4 | p1 = simple.test | Function __init__ |
 | carrier.py:10 | p0.attr = simple.test | Function get_attr |

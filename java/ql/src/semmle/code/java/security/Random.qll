@@ -34,10 +34,6 @@ private class PredictableSeedFlowConfiguration extends DataFlow::Configuration {
   }
 }
 
-private class TypeNumber extends Class {
-  TypeNumber() { this.getQualifiedName() = "java.lang.Number" }
-}
-
 private predicate predictableCalcStep(Expr e1, Expr e2) {
   e2.(BinaryExpr).hasOperands(e1, any(PredictableSeedExpr p))
   or

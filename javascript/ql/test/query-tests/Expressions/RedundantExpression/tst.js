@@ -7,3 +7,5 @@ x & x;
 
 // this may actually be OK, but it's not good style
 pop() && pop();
+
+foo[bar++] && foo[bar++] // OK

@@ -40,7 +40,7 @@ module UnvalidatedDynamicMethodCall {
       exists(DataFlow::PropRead read |
         src = read.getPropertyNameExpr().flow() and
         dst = read and
-        (srclabel = data() or srclabel = taint()) and
+        srclabel.isTaint() and
         (
           dstlabel instanceof MaybeNonFunction
           or

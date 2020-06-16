@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
@@ -9,10 +10,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Location);
-            trapFile.Write('_');
-            trapFile.Write(symbol.Name);
-            trapFile.Write(";localvar");
+            throw new InvalidOperationException();
+        }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            trapFile.Write('*');
         }
 
         public override void Populate(TextWriter trapFile) { }

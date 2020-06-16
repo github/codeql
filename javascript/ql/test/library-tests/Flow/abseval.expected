@@ -142,12 +142,19 @@
 | globals.html:26:52:26:53 | x2 | globals.html:26:57:26:66 | someGlobal | file://:0:0:0:0 | non-zero value |
 | globals.html:26:52:26:53 | x2 | globals.html:26:57:26:66 | someGlobal | file://:0:0:0:0 | true |
 | h_import.js:2:5:2:6 | ff | h_import.js:2:10:2:10 | f | h.js:1:8:1:22 | function f |
+| implicit-returns.js:4:9:4:9 | i | implicit-returns.js:4:13:4:13 | 0 | file://:0:0:0:0 | 0 |
+| implicit-returns.js:15:9:15:9 | x | implicit-returns.js:15:13:15:25 | endWithLoop() | file://:0:0:0:0 | true |
+| implicit-returns.js:15:9:15:9 | x | implicit-returns.js:15:13:15:25 | endWithLoop() | file://:0:0:0:0 | undefined |
+| implicit-returns.js:25:9:25:9 | x | implicit-returns.js:25:13:25:28 | endWithShortIf() | file://:0:0:0:0 | true |
+| implicit-returns.js:25:9:25:9 | x | implicit-returns.js:25:13:25:28 | endWithShortIf() | file://:0:0:0:0 | undefined |
 | import.js:2:5:2:5 | m | import.js:2:9:2:13 | mixin | mixins.js:1:16:1:32 | anonymous function |
 | import.js:5:5:5:7 | myf | import.js:5:11:5:11 | f | n.js:1:1:1:15 | function f |
 | import.js:8:5:8:11 | someVar | import.js:8:15:8:23 | someStuff | file://:0:0:0:0 | indefinite value (call) |
 | import.js:11:5:11:6 | h1 | import.js:11:10:11:10 | h | file://:0:0:0:0 | indefinite value (import) |
+| import.js:11:5:11:6 | h1 | import.js:11:10:11:10 | h | h.js:1:1:3:0 | exports object of module h |
 | import.js:12:5:12:6 | hf | import.js:12:10:12:12 | h.f | file://:0:0:0:0 | indefinite value (heap) |
 | import.js:12:5:12:6 | hf | import.js:12:10:12:12 | h.f | file://:0:0:0:0 | indefinite value (import) |
+| import.js:12:5:12:6 | hf | import.js:12:10:12:12 | h.f | h.js:1:8:1:22 | function f |
 | imports.ts:2:5:2:6 | ax | imports.ts:2:10:2:11 | Ax | file://:0:0:0:0 | indefinite value (global) |
 | imports.ts:2:5:2:6 | ax | imports.ts:2:10:2:11 | Ax | file://:0:0:0:0 | indefinite value (heap) |
 | imports.ts:5:5:5:7 | fs_ | imports.ts:5:11:5:12 | fs | file://:0:0:0:0 | indefinite value (import) |
@@ -279,6 +286,10 @@
 | refinements.js:61:7:61:8 | x2 | refinements.js:61:12:61:12 | x | file://:0:0:0:0 | "" |
 | refinements.js:61:7:61:8 | x2 | refinements.js:61:12:61:12 | x | file://:0:0:0:0 | non-empty, non-numeric string |
 | refinements.js:61:7:61:8 | x2 | refinements.js:61:12:61:12 | x | file://:0:0:0:0 | numeric string |
+| tsTest.ts:2:14:2:14 | x | tsTest.ts:2:18:2:19 | 42 | file://:0:0:0:0 | non-zero value |
+| tsTest.ts:4:7:4:8 | x2 | tsTest.ts:4:12:4:12 | x | file://:0:0:0:0 | indefinite value (namespace) |
+| tsTest.ts:4:7:4:8 | x2 | tsTest.ts:4:12:4:12 | x | file://:0:0:0:0 | non-zero value |
+| tsTest.ts:12:5:12:5 | a | tsTest.ts:12:9:12:9 | A | file://:0:0:0:0 | object |
 | tst2.js:4:7:4:7 | x | tst2.js:4:11:4:20 | someGlobal | file://:0:0:0:0 | "" |
 | tst2.js:4:7:4:7 | x | tst2.js:4:11:4:20 | someGlobal | file://:0:0:0:0 | indefinite value (global) |
 | tst.js:3:7:3:8 | x1 | tst.js:3:12:3:15 | true | file://:0:0:0:0 | true |
@@ -460,10 +471,6 @@
 | tst.js:186:5:186:6 | x1 | tst.js:186:10:186:24 | someOtherGlobal | file://:0:0:0:0 | indefinite value (global) |
 | tst.js:186:5:186:6 | x1 | tst.js:186:10:186:24 | someOtherGlobal | file://:0:0:0:0 | indefinite value (heap) |
 | tst.mjs:3:5:3:7 | req | tst.mjs:3:11:3:17 | require | file://:0:0:0:0 | indefinite value (global) |
-| tst.ts:2:14:2:14 | x | tst.ts:2:18:2:19 | 42 | file://:0:0:0:0 | non-zero value |
-| tst.ts:4:7:4:8 | x2 | tst.ts:4:12:4:12 | x | file://:0:0:0:0 | indefinite value (namespace) |
-| tst.ts:4:7:4:8 | x2 | tst.ts:4:12:4:12 | x | file://:0:0:0:0 | non-zero value |
-| tst.ts:12:5:12:5 | a | tst.ts:12:9:12:9 | A | file://:0:0:0:0 | object |
 | with.js:2:7:2:7 | x | with.js:2:11:2:12 | 42 | file://:0:0:0:0 | non-zero value |
 | with.js:2:15:2:15 | y | with.js:2:19:2:22 | null | file://:0:0:0:0 | null |
 | with.js:4:9:4:10 | r1 | with.js:4:14:4:14 | x | file://:0:0:0:0 | indefinite value (eval) |

@@ -3,6 +3,8 @@
 Evaluation of QL programs
 #########################
 
+A QL program is evaluated in a number of different steps.
+
 Process
 *******
 

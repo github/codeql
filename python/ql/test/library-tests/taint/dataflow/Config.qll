@@ -2,7 +2,6 @@ import python
 import semmle.python.dataflow.DataFlow
 
 class TestConfiguration extends DataFlow::Configuration {
-
     TestConfiguration() { this = "Test configuration" }
 
     override predicate isSource(ControlFlowNode source) { source.(NameNode).getId() = "SOURCE" }
@@ -13,5 +12,4 @@ class TestConfiguration extends DataFlow::Configuration {
             sink = call.getAnArg()
         )
     }
-
 }

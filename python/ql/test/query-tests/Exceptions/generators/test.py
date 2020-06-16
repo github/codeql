@@ -47,3 +47,9 @@ def next_in_comp(seq, fields):
     seq_iter = iter(seq)
     values = [ next(seq_iter) if f.attname in NAMES else DEFAULT for f in fields ]
     return values
+
+def ok5(seq):
+    yield next(iter([]), 'foo')
+
+def ok6(seq):
+    yield next(iter([]), default='foo')    

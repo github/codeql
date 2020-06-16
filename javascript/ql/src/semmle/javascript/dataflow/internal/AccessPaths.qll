@@ -128,8 +128,9 @@ class AccessPath extends TAccessPath {
     exists(AccessPath base, PropertyName name, string rest |
       rest = "." + any(string s | name = StaticPropertyName(s))
       or
-      rest = "[" +
-          any(SsaVariable var | name = DynamicPropertyName(var)).getSourceVariable().getName() + "]"
+      rest =
+        "[" + any(SsaVariable var | name = DynamicPropertyName(var)).getSourceVariable().getName() +
+          "]"
     |
       result = base.toString() + rest and
       this = MkAccessStep(base, name)

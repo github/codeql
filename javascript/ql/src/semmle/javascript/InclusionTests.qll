@@ -1,10 +1,11 @@
 /**
  * Contains classes for recognizing array and string inclusion tests.
  */
+
 private import javascript
 
 /**
- * A expression that checks if an element is contained in an array
+ * An expression that checks if an element is contained in an array
  * or is a substring of another string.
  *
  * Examples:
@@ -55,6 +56,40 @@ module InclusionTest {
      * the given element.
      */
     boolean getPolarity() { result = true }
+  }
+
+  /**
+   * A call to a utility function (`callee`) that performs an InclusionTest (`inner`).
+   */
+  private class IndirectInclusionTest extends Range, DataFlow::CallNode {
+    InclusionTest inner;
+    Function callee;
+
+    IndirectInclusionTest() {
+      inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+      callee = unique(Function f | f = this.getACallee()) and
+      not this.isImprecise() and
+      inner.getContainedNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter()) and
+      inner.getContainerNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter())
+    }
+
+    override DataFlow::Node getContainerNode() {
+      exists(int arg |
+        inner.getContainerNode().getALocalSource() =
+          DataFlow::parameterNode(callee.getParameter(arg)) and
+        result = this.getArgument(arg)
+      )
+    }
+
+    override DataFlow::Node getContainedNode() {
+      exists(int arg |
+        inner.getContainedNode().getALocalSource() =
+          DataFlow::parameterNode(callee.getParameter(arg)) and
+        result = this.getArgument(arg)
+      )
+    }
+
+    override boolean getPolarity() { result = inner.getPolarity() }
   }
 
   /**

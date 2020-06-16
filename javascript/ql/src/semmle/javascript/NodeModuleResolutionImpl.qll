@@ -84,10 +84,16 @@ File tryExtensions(Folder dir, string basename, int priority) {
 File resolveMainModule(PackageJSON pkg, int priority) {
   if exists(MainModulePath::of(pkg))
   then
-    exists(Container c | c = MainModulePath::of(pkg).resolve() |
-      result = c and priority = 0
+    exists(PathExpr main | main = MainModulePath::of(pkg) |
+      result = main.resolve() and priority = 0
       or
-      result = tryExtensions(c, "index", priority)
+      result = tryExtensions(main.resolve(), "index", priority)
+      or
+      not exists(main.resolve()) and
+      not exists(main.getExtension()) and
+      exists(int n | n = main.getNumComponent() |
+        result = tryExtensions(main.resolveUpTo(n - 1), main.getComponent(n - 1), priority)
+      )
     )
   else result = tryExtensions(pkg.getFile().getParentContainer(), "index", priority)
 }
@@ -106,7 +112,7 @@ class MainModulePath extends PathExpr, @json_string {
 
   override string getValue() { result = this.(JSONString).getValue() }
 
-  override Folder getSearchRoot(int priority) {
+  override Folder getAdditionalSearchRoot(int priority) {
     priority = 0 and
     result = pkg.getFile().getParentContainer()
   }

@@ -15,31 +15,33 @@
 import python
 import semmle.python.strings
 
-predicate string_format(BinaryExpr operation, StrConst str, Object args, AstNode origin) {
-    exists(Object fmt, Context ctx | operation.getOp() instanceof Mod |
-           operation.getLeft().refersTo(ctx, fmt, _, str) and
-           operation.getRight().refersTo(ctx, args, _, origin)
+predicate string_format(BinaryExpr operation, StrConst str, Value args, AstNode origin) {
+    operation.getOp() instanceof Mod and
+    exists(Value fmt, Context ctx |
+        operation.getLeft().pointsTo(ctx, fmt, str) and
+        operation.getRight().pointsTo(ctx, args, origin)
     )
 }
 
-int sequence_length(Object args) {
+int sequence_length(Value args) {
     /* Guess length of sequence */
-    exists(Tuple seq |
-        seq = args.getOrigin() |
+    exists(Tuple seq, AstNode origin | seq.pointsTo(args, origin) |
         result = strictcount(seq.getAnElt()) and
         not seq.getAnElt() instanceof Starred
     )
     or
-    exists(ImmutableLiteral i |
-        i.getLiteralObject() = args |
-        result = 1
-    )
+    exists(ImmutableLiteral i | i.getLiteralValue() = args | result = 1)
 }
 
-
-from BinaryExpr operation, StrConst fmt, Object args, int slen, int alen, AstNode origin, string provided
-where string_format(operation, fmt, args, origin) and slen = sequence_length(args) and alen = format_items(fmt) and slen != alen and
-(if slen = 1 then provided = " is provided." else provided = " are provided.")
-select operation, "Wrong number of $@ for string format. Format $@ takes " + alen.toString() + ", but " + slen.toString() + provided,
-  origin, "arguments",
-  fmt, fmt.getText()
+from
+    BinaryExpr operation, StrConst fmt, Value args, int slen, int alen, AstNode origin,
+    string provided
+where
+    string_format(operation, fmt, args, origin) and
+    slen = sequence_length(args) and
+    alen = format_items(fmt) and
+    slen != alen and
+    (if slen = 1 then provided = " is provided." else provided = " are provided.")
+select operation,
+    "Wrong number of $@ for string format. Format $@ takes " + alen.toString() + ", but " +
+        slen.toString() + provided, origin, "arguments", fmt, fmt.getText()

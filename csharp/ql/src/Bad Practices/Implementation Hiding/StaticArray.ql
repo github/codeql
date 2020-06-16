@@ -14,7 +14,8 @@
 import csharp
 
 predicate nonEmptyArrayLiteralOrNull(Expr e) {
-  e = any(ArrayCreation arr |
+  e =
+    any(ArrayCreation arr |
       exists(arr.getInitializer().getAnElement())
       or
       not arr.getALengthArgument().getValue() = "0"
@@ -22,7 +23,8 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
   or
   e instanceof NullLiteral
   or
-  e = any(ConditionalExpr cond |
+  e =
+    any(ConditionalExpr cond |
       nonEmptyArrayLiteralOrNull(cond.getThen()) and
       nonEmptyArrayLiteralOrNull(cond.getElse())
     )

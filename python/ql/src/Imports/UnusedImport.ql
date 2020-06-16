@@ -62,7 +62,7 @@ private string doctest_in_scope(Scope scope) {
 }
 
 pragma[noinline]
-private string typehint_annotation_in_file(File file) {
+private string typehint_annotation_in_module(Module module_scope) {
     exists(StrConst annotation |
         annotation = any(Arguments a).getAnAnnotation().getASubExpression*()
         or
@@ -71,7 +71,7 @@ private string typehint_annotation_in_file(File file) {
         annotation = any(FunctionExpr f).getReturns().getASubExpression*()
     |
         annotation.pointsTo(Value::forString(result)) and
-        file = annotation.getLocation().getFile()
+        annotation.getEnclosingModule() = module_scope
     )
 }
 
@@ -84,17 +84,19 @@ private string typehint_comment_in_file(File file) {
     )
 }
 
-predicate imported_module_used_in_typehint(Import imp) {
-    exists(string modname, File file |
-        imp.getAName().getAsname().(Name).getId() = modname and
-        file = imp.getScope().(Module).getFile()
+/** Holds if the imported alias `name` from `imp` is used in a typehint (in the same file as `imp`) */
+predicate imported_alias_used_in_typehint(Import imp, Variable name) {
+    imp.getAName().getAsname().(Name).getVariable() = name and
+    exists(File file, Module module_scope |
+        module_scope = imp.getEnclosingModule() and
+        file = module_scope.getFile()
     |
         // Look for type hints containing the patterns:
         // # type: …name…
-        typehint_comment_in_file(file).regexpMatch("# type:.*" + modname + ".*")
+        typehint_comment_in_file(file).regexpMatch("# type:.*" + name.getId() + ".*")
         or
         // Type hint is inside a string annotation, as needed for forward references
-        typehint_annotation_in_file(file).regexpMatch(".*\\b" + modname + "\\b.*")
+        typehint_annotation_in_module(module_scope).regexpMatch(".*\\b" + name.getId() + "\\b.*")
     )
 }
 
@@ -114,7 +116,7 @@ predicate unused_import(Import imp, Variable name) {
     // Assume that opaque `__all__` includes imported module
     not all_not_understood(imp.getEnclosingModule()) and
     not imported_module_used_in_doctest(imp) and
-    not imported_module_used_in_typehint(imp) and
+    not imported_alias_used_in_typehint(imp, name) and
     // Only consider import statements that actually point-to something (possibly an unknown module).
     // If this is not the case, it's likely that the import statement never gets executed.
     imp.getAName().getValue().pointsTo(_)

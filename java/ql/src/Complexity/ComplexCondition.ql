@@ -13,7 +13,10 @@ import java
 
 predicate nontrivialLogicalOperator(BinaryExpr e) {
   e instanceof LogicExpr and
-  not e.getParent().(Expr).getKind() = e.getKind()
+  (
+    not e.getParent().(Expr).getKind() = e.getKind() or
+    e.isParenthesized()
+  )
 }
 
 Expr getSimpleParent(Expr e) {

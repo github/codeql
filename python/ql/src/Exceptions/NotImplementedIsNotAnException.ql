@@ -15,5 +15,4 @@ import Exceptions.NotImplemented
 
 from Expr notimpl
 where use_of_not_implemented_in_raise(_, notimpl)
-
 select notimpl, "NotImplemented is not an Exception. Did you mean NotImplementedError?"

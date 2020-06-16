@@ -1,0 +1,33 @@
+| test.py:23 | test_construction | a | [externally controlled string] |
+| test.py:23 | test_construction | b | [externally controlled string] |
+| test.py:23 | test_construction | c | NO TAINT |
+| test.py:23 | test_construction | d | [externally controlled string] |
+| test.py:23 | test_construction | e | NO TAINT |
+| test.py:23 | test_construction | f | [externally controlled string] |
+| test.py:23 | test_construction | g | [externally controlled string] |
+| test.py:23 | test_construction | h | NO TAINT |
+| test.py:32 | test_access | a | externally controlled string |
+| test.py:32 | test_access | b | externally controlled string |
+| test.py:32 | test_access | c | [externally controlled string] |
+| test.py:32 | test_access | d | [externally controlled string] |
+| test.py:32 | test_access | e | externally controlled string |
+| test.py:32 | test_access | f | externally controlled string |
+| test.py:32 | test_access | g | externally controlled string |
+| test.py:34 | test_access | h | externally controlled string |
+| test.py:36 | test_access | i | externally controlled string |
+| test.py:43 | test_dict_access | a | externally controlled string |
+| test.py:43 | test_dict_access | b | externally controlled string |
+| test.py:43 | test_dict_access | c | {externally controlled string} |
+| test.py:45 | test_dict_access | d | externally controlled string |
+| test.py:47 | test_dict_access | e | NO TAINT |
+| test.py:58 | test_named_tuple | a | NO TAINT |
+| test.py:58 | test_named_tuple | b | NO TAINT |
+| test.py:58 | test_named_tuple | c | NO TAINT |
+| test.py:58 | test_named_tuple | d | NO TAINT |
+| test.py:58 | test_named_tuple | e | NO TAINT |
+| test.py:58 | test_named_tuple | f | NO TAINT |
+| test.py:67 | test_defaultdict | a | NO TAINT |
+| test.py:67 | test_defaultdict | b | NO TAINT |
+| test.py:67 | test_defaultdict | c | NO TAINT |
+| test.py:69 | test_defaultdict | d | NO TAINT |
+| test.py:71 | test_defaultdict | e | NO TAINT |

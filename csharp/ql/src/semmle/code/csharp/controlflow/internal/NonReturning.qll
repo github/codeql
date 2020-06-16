@@ -70,7 +70,8 @@ abstract private class ExitingCallable extends NonReturningCallable { }
 
 private class DirectlyExitingCallable extends ExitingCallable {
   DirectlyExitingCallable() {
-    this = any(Method m |
+    this =
+      any(Method m |
         m.hasQualifiedName("System.Environment", "Exit") or
         m.hasQualifiedName("System.Windows.Forms.Application", "Exit")
       )

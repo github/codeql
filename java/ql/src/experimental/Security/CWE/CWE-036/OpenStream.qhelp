@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Calling <code>openStream</code> on URLs created from remote source can lead to local file disclosure.</p>
+<p>If <code>openStream</code> is called on a <code>java.net.URL</code>, that was created from a remote source,
+an attacker can try to pass absolute URLs starting with <code>file://</code> or <code>jar://</code> to access
+local resources in addition to remote ones.</p>
+</overview>
+
+<recommendation>
+<p>When you construct a URL using <code>java.net.URL</code> from a remote source,
+don't call <code>openStream</code> on it. Instead, use an HTTP Client to fetch the URL and access its content.
+You should also validate the URL to check that it uses the correct protocol and host combination.</p>
+</recommendation>
+
+<example>
+<p>The following example shows an URL that is constructed from a request parameter. Afterwards <code>openStream</code>
+is called on the URL, potentially leading to a local file access.</p>
+<sample src="OpenStream.java" />
+</example>
+
+<references>
+<li>Java Platform, Standard Edition 11, API Specification: 
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/URL.html">
+Class URL</a>.
+</li>
+<!--  LocalWords:  CWE -->
+</references>
+
+</qhelp>

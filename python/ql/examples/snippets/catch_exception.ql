@@ -6,11 +6,11 @@
  *       try
  *       exception
  */
- 
+
 import python
 
 from ExceptStmt ex, ClassValue cls
-where 
+where
     cls.getName() = "MyExceptionClass" and
     ex.getType().pointsTo(cls)
 select ex

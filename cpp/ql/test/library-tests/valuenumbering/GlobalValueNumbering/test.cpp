@@ -1,4 +1,4 @@
-int test00(int p0, int p1) {
+void test00(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -9,7 +9,7 @@ int test00(int p0, int p1) {
 
 int global01 = 1;
 
-int test01(int p0, int p1) {
+void test01(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -22,7 +22,7 @@ int global02 = 2;
 
 void change_global02(); // Just a declaration
 
-int test02(int p0, int p1) {
+void test02(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -36,13 +36,13 @@ int global03 = 3;
 
 void change_global03(); // Just a declaration
 
-int test03(int p0, int p1, int* p2) {
+void test03(int p0, int p1, int* p2) {
   int x, y;
   unsigned char b;
 
   x = p0 + p1 + global03;
   *p2 = 0; // Might change global03
-  x = p0 + p1 + global03; // Not the same value
+  x = p0 + p1 + global03; // BUG: Not the same value, but given the same value number (this is likely due to #2696)
   y = x;
 }
 
@@ -114,4 +114,46 @@ void test06() {
   "b";
   "a";
   "c";
+}
+
+struct A {
+  int x;
+  int y;
+};
+
+void test_read_arg_same(A *pa, int n) {
+  int b = pa->x;
+  int c = pa->x;
+
+  pa->x = n;
+  int d = pa->x;
+}
+
+A* global_a;
+int global_n;
+
+void test_read_global_same() {
+  int b = global_a->x;
+  int c = global_a->x;
+
+  global_a->x = global_n;
+  int d = global_a->x;
+}
+
+void test_read_arg_different(A *pa) {
+  int b = pa->x;
+  int c = pa->y;
+
+  pa->y = global_n;
+
+  int d = pa->x;
+}
+
+void test_read_global_different(int n) {
+  int b = global_a->x;
+  int c = global_a->x;
+
+  global_a->y = n;
+
+  int d = global_a->x;
 }

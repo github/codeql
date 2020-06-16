@@ -4,6 +4,7 @@
  * @id py/lgtm/class-display-strings
  * @metricType reftype
  */
+
 import python
 
 from Class c

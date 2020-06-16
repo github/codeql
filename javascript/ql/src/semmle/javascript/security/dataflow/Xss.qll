@@ -23,6 +23,9 @@ module Shared {
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /** A sanitizer guard for XSS vulnerabilities. */
+  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode { }
+
   /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
@@ -51,6 +54,83 @@ module Shared {
       )
     }
   }
+
+  private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
+
+  /**
+   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
+   */
+  class QuoteGuard extends SanitizerGuard, StringOps::Includes {
+    QuoteGuard() {
+      this.getSubstring().mayHaveStringValue("\"") and
+      this
+          .getBaseString()
+          .getALocalSource()
+          .flowsTo(any(IncompleteHTML::HtmlAttributeConcatenation attributeConcat))
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
+    }
+  }
+
+  /**
+   * A sanitizer guard that checks for the existence of HTML chars in a string.
+   * E.g. `/["'&<>]/.exec(str)`.
+   */
+  class ContainsHTMLGuard extends SanitizerGuard, StringOps::RegExpTest {
+    ContainsHTMLGuard() {
+      exists(RegExpCharacterClass regExp |
+        regExp = getRegExp() and
+        forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
+    }
+  }
+
+  /**
+   * Holds if `str` is used in a switch-case that has cases matching HTML escaping.
+   */
+  private predicate isUsedInHTMLEscapingSwitch(Expr str) {
+    exists(SwitchStmt switch |
+      // "\"".charCodeAt(0) == 34, "&".charCodeAt(0) == 38, "<".charCodeAt(0) == 60
+      forall(int c | c = [34, 38, 60] | c = switch.getACase().getExpr().getIntValue()) and
+      exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charCodeAt" |
+        mcn.flowsToExpr(switch.getExpr()) and
+        str = mcn.getReceiver().asExpr()
+      )
+      or
+      forall(string c | c = ["\"", "&", "<"] | c = switch.getACase().getExpr().getStringValue()) and
+      (
+        exists(DataFlow::MethodCallNode mcn | mcn.getMethodName() = "charAt" |
+          mcn.flowsToExpr(switch.getExpr()) and
+          str = mcn.getReceiver().asExpr()
+        )
+        or
+        exists(DataFlow::PropRead read | exists(read.getPropertyNameExpr()) |
+          read.flowsToExpr(switch.getExpr()) and
+          str = read.getBase().asExpr()
+        )
+      )
+    )
+  }
+
+  /**
+   * Gets an Ssa variable that is used in a sanitizing switch statement.
+   * The `pragma[noinline]` is to avoid materializing a cartesian product.
+   */
+  pragma[noinline]
+  private SsaVariable getAPathEscapedInSwitch() { isUsedInHTMLEscapingSwitch(result.getAUse()) }
+
+  /**
+   * An expression that is sanitized by a switch-case.
+   */
+  class IsEscapedInSwitchSanitizer extends Sanitizer {
+    IsEscapedInSwitchSanitizer() { this.asExpr() = getAPathEscapedInSwitch().getAUse() }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -63,6 +143,9 @@ module DomBasedXss {
 
   /** A sanitizer for DOM-based XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for DOM-based XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
   /**
    * An expression whose value is interpreted as HTML
@@ -80,6 +163,7 @@ module DomBasedXss {
         not exists(DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(this, prefix) and
           strval = prefix.getStringValue() and
+          not strval = "" and
           not strval.regexpMatch("\\s*<.*")
         ) and
         not DOM::locationRef().flowsTo(this)
@@ -99,6 +183,8 @@ module DomBasedXss {
       this = any(Typeahead::TypeaheadSuggestionFunction f).getAReturn()
       or
       this = any(Handlebars::SafeString s).getAnArgument()
+      or
+      this = any(JQuery::MethodCall call | call.getMethodName() = "jGrowl").getArgument(0)
     }
   }
 
@@ -106,7 +192,7 @@ module DomBasedXss {
    * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
    * HTML by a jQuery method.
    */
-  private predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
+  predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
     any(JQuery::MethodCall call).interpretsArgumentAsHtml(htmlString) and
     prefix = htmlString
     or
@@ -243,10 +329,8 @@ module DomBasedXss {
 
     VHtmlSourceWrite() {
       exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() = instance
-              .getTemplateElement()
-              .(Vue::Template::HtmlElement)
-              .getElement() and
+        attr.getAttr().getRoot() =
+          instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and
@@ -260,6 +344,38 @@ module DomBasedXss {
   }
 
   /**
+   * A property read from a safe property is considered a sanitizer.
+   */
+  class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
+    SafePropertyReadSanitizer() {
+      exists(PropAccess pacc | pacc = this.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
+        // `$(location.hash)` is a fairly common and safe idiom
+        // (because `location.hash` always starts with `#`),
+        // so we mark `hash` as safe for the purposes of this query
+        pacc.getPropertyName() = "hash"
+        or
+        pacc.getPropertyName() = "length"
+      )
+    }
+  }
+
+  /**
+   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
+   */
+  class QueryPrefixSanitizer extends Sanitizer {
+    StringSplitCall splitCall;
+
+    QueryPrefixSanitizer() {
+      this = splitCall.getASubstringRead(0) and
+      splitCall.getSeparator() = "?" and
+      splitCall.getBaseString().getALocalSource() =
+        [DOM::locationRef(), DOM::locationRef().getAPropertyRead("href")]
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *
@@ -269,6 +385,42 @@ module DomBasedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  /**
+   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
+   */
+  predicate isOptionallySanitizedEdge(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(HtmlSanitizerCall sanitizer |
+      // sanitized = sanitize ? sanitizer(source) : source;
+      exists(ConditionalExpr branch, Variable var, VarAccess access |
+        branch = succ.asExpr() and access = var.getAnAccess()
+      |
+        branch.getABranch() = access and
+        pred.getEnclosingExpr() = access and
+        sanitizer = branch.getABranch().flow() and
+        sanitizer.getAnArgument().getEnclosingExpr() = var.getAnAccess()
+      )
+      or
+      // sanitized = source; if (sanitize) {sanitized = sanitizer(source)};
+      exists(SsaPhiNode phi, SsaExplicitDefinition a, SsaDefinition b |
+        a = phi.getAnInput().getDefinition() and
+        b = phi.getAnInput().getDefinition() and
+        count(phi.getAnInput()) = 2 and
+        not a = b and
+        sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
+        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+      |
+        pred = DataFlow::ssaDefinitionNode(b) and
+        succ = DataFlow::ssaDefinitionNode(phi)
+      )
+    )
+  }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -282,6 +434,9 @@ module ReflectedXss {
   /** A sanitizer for reflected XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
 
+  /** A sanitizer guard for reflected XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
+
   /**
    * An expression that is sent as part of an HTTP response, considered as an XSS sink.
    *
@@ -289,18 +444,72 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  private class HttpResponseSink extends Sink, DataFlow::ValueNode {
+  class HttpResponseSink extends Sink, DataFlow::ValueNode {
     override HTTP::ResponseSendArgument astNode;
 
-    HttpResponseSink() { not nonHtmlContentType(astNode.getRouteHandler()) }
+    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
+  }
+
+  /**
+   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   */
+  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
+    exists(HTTP::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = nonHtmlContentTypeHeader(h)
+    |
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
+    )
   }
 
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  private predicate nonHtmlContentType(HTTP::RouteHandler h) {
-    exists(HTTP::HeaderDefinition hd | hd = h.getAResponseHeader("content-type") |
-      not exists(string tp | hd.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
+   * Holds if a header set in `header` is likely to affect a response sent at `sender`.
+   */
+  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+    sender.getRouteHandler() = header.getRouteHandler() and
+    (
+      // `sender` is affected by a dominating `header`.
+      header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      or
+      // There is no dominating header, and `header` is non-local.
+      not isLocalHeaderDefinition(header) and
+      not exists(HTTP::HeaderDefinition dominatingHeader |
+        dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      )
+    )
+  }
+
+  /**
+   * Holds if the HeaderDefinition `header` seems to be local.
+   * A HeaderDefinition is local if it dominates exactly one `ResponseSendArgument`.
+   *
+   * Recognizes variants of:
+   * ```
+   * response.writeHead(500, ...);
+   * response.end('Some error');
+   * return;
+   * ```
+   */
+  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+    exists(ReachableBasicBlock headerBlock |
+      headerBlock = header.getBasicBlock().(ReachableBasicBlock)
+    |
+      1 =
+        strictcount(HTTP::ResponseSendArgument sender |
+          sender.getRouteHandler() = header.getRouteHandler() and
+          header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+        ) and
+      // doesn't dominate something that looks like a callback.
+      not exists(Expr e | e instanceof Function | headerBlock.dominates(e.getBasicBlock()))
     )
   }
 
@@ -314,6 +523,12 @@ module ReflectedXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -326,6 +541,9 @@ module StoredXss {
 
   /** A sanitizer for stored XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /** A sanitizer guard for stored XSS vulnerabilities. */
+  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink {
@@ -342,4 +560,16 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
+
+  private class ContainsHTMLGuard extends SanitizerGuard, Shared::ContainsHTMLGuard { }
+}
+
+/** Provides classes and predicates for the XSS through DOM query. */
+module XssThroughDom {
+  /** A data flow source for XSS through DOM vulnerabilities. */
+  abstract class Source extends Shared::Source { }
 }

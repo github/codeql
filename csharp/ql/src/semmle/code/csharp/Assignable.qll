@@ -337,13 +337,13 @@ module AssignableInternal {
       or
       def = any(AssignableDefinitions::ImplicitParameterDefinition p | result = p.getParameter())
       or
-      def = any(AssignableDefinitions::LocalVariableDefinition decl |
+      def =
+        any(AssignableDefinitions::LocalVariableDefinition decl |
           result = decl.getDeclaration().getVariable()
         )
       or
-      def = any(AssignableDefinitions::PatternDefinition pd |
-          result = pd.getDeclaration().getVariable()
-        )
+      def =
+        any(AssignableDefinitions::PatternDefinition pd | result = pd.getDeclaration().getVariable())
       or
       def = any(AssignableDefinitions::InitializerDefinition init | result = init.getAssignable())
     }
@@ -540,7 +540,8 @@ module AssignableDefinitions {
      * orders of the definitions of `x`, `y`, and `z` are 0, 1, and 2, respectively.
      */
     int getEvaluationOrder() {
-      leaf = rank[result + 1](Expr leaf0 |
+      leaf =
+        rank[result + 1](Expr leaf0 |
           exists(TTupleAssignmentDefinition(ae, leaf0))
         |
           leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
@@ -616,7 +617,8 @@ module AssignableDefinitions {
      * the definitions of `x` and `y` are 0 and 1, respectively.
      */
     int getIndex() {
-      this = rank[result + 1](OutRefDefinition def |
+      this =
+        rank[result + 1](OutRefDefinition def |
           def.getCall() = this.getCall()
         |
           def order by def.getPosition()

@@ -1,22 +1,25 @@
-import default
+import cpp
 import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
+import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
+import semmle.code.cpp.ir.implementation.UseSoundEscapeAnalysis
 
-predicate shouldEscape(IRAutomaticUserVariable var) {
-  exists(string name |
-    name = var.getVariable().getName() and
-    name.matches("no_%")
-  )
+class InterestingAllocation extends VariableAllocation {
+  IRUserVariable userVar;
+
+  InterestingAllocation() { userVar = this.getIRVariable() }
+
+  final predicate shouldEscape() { userVar.getVariable().getName().matches("no_%") }
 }
 
-from IRAutomaticUserVariable var
+from InterestingAllocation var
 where
   exists(IRFunction irFunc |
     irFunc = var.getEnclosingIRFunction() and
     (
-      shouldEscape(var) and variableAddressEscapes(var)
+      var.shouldEscape() and allocationEscapes(var)
       or
-      not shouldEscape(var) and not variableAddressEscapes(var)
+      not var.shouldEscape() and not allocationEscapes(var)
     )
   )
 select var

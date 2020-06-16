@@ -9,20 +9,19 @@ namespace Semmle.Util
     /// </summary>
     /// <typeparam name="Key"></typeparam>
     /// <typeparam name="Value"></typeparam>
-    public class ActionMap<Key, Value>
+    public class ActionMap<Key, Value> where Key : notnull
     {
         public void Add(Key key, Value value)
         {
-            Action<Value> a;
-            if (actions.TryGetValue(key, out a))
+
+            if (actions.TryGetValue(key, out var a))
                 a(value);
             values[key] = value;
         }
 
         public void OnAdd(Key key, Action<Value> action)
         {
-            Action<Value> a;
-            if (actions.TryGetValue(key, out a))
+            if (actions.TryGetValue(key, out var a))
             {
                 actions[key] = a + action;
             }

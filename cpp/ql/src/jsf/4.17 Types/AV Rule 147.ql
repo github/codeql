@@ -53,8 +53,10 @@ class FloatUnion extends Union {
 from Element e, string message
 where
   e instanceof InvalidFloatCastExpr and
-  message = "Casting a float pointer to another pointer type exposes the bit representation of the float, leading to unportable code."
+  message =
+    "Casting a float pointer to another pointer type exposes the bit representation of the float, leading to unportable code."
   or
   exists(FloatUnion fu | e = fu.getAFloatMember()) and
-  message = "Defining a union with a float member exposes the bit representation of the float, leading to unportable code."
+  message =
+    "Defining a union with a float member exposes the bit representation of the float, leading to unportable code."
 select e, message

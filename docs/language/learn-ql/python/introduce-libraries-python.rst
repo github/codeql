@@ -1,16 +1,18 @@
-Introducing the CodeQL libraries for Python
-===========================================
+CodeQL library for Python
+=========================
 
-There is an extensive library for analyzing CodeQL databases extracted from Python projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.  The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
+When you need to analyze a Python program, you can make use of the large collection of classes in the CodeQL library for Python.
+
+About the CodeQL library for Python
+-----------------------------------
+
+The CodeQL library for each programming language uses classes with abstractions and predicates to present data in an object-oriented form. 
+
+Each CodeQL library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``python.qll`` imports all the core Python library modules, so you can include the complete library by beginning your query with:
 
 .. code-block:: ql
 
    import python
-
-The rest of this tutorial summarizes the contents of the standard libraries for Python. We recommend that you read this and then work through the practical examples in the tutorials shown at the end of the page.
-
-Overview of the library
------------------------
 
 The CodeQL library for Python incorporates a large number of classes. Each class corresponds either to one kind of entity in Python source code or to an entity that can be derived from the source code using static analysis. These classes can be divided into four categories:
 
@@ -20,16 +22,14 @@ The CodeQL library for Python incorporates a large number of classes. Each class
 -  **Taint tracking** - classes that represent the source, sinks and kinds of taint used to implement taint-tracking queries.
 
 Syntactic classes
-~~~~~~~~~~~~~~~~~
+-----------------
 
-This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (AST). The root of each AST is a ``Module``.
-
-`Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ is attached to the AST in the form of variables (represented by the class ``Variable``).
+This part of the library represents the Python source code. The ``Module``, ``Class``, and ``Function`` classes correspond to Python modules, classes, and functions respectively, collectively these are known as ``Scope`` classes. Each ``Scope`` contains a list of statements each of which is represented by a subclass of the class ``Stmt``. Statements themselves can contain other statements or expressions which are represented by subclasses of ``Expr``. Finally, there are a few additional classes for the parts of more complex expressions such as list comprehensions. Collectively these classes are subclasses of ``AstNode`` and form an Abstract syntax tree (AST). The root of each AST is a ``Module``. Symbolic information is attached to the AST in the form of variables (represented by the class ``Variable``). For more information, see `Abstract syntax tree <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ and `Symbolic information <http://en.wikipedia.org/wiki/Symbol_table>`__ on Wikipedia.
 
 Scope
 ^^^^^
 
-A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes (`Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
+A Python program is a group of modules. Technically a module is just a list of statements, but we often think of it as composed of classes and functions. These top-level entities, the module, class, and function are represented by the three CodeQL classes `Module <https://help.semmle.com/qldoc/python/semmle/python/Module.qll/type.Module$Module.html>`__, `Class <https://help.semmle.com/qldoc/python/semmle/python/Class.qll/type.Class$Class.html>`__ and `Function <https://help.semmle.com/qldoc/python/semmle/python/Function.qll/type.Function$Function.html>`__ which are all subclasses of ``Scope``.
 
 -  ``Scope``
 
@@ -47,7 +47,7 @@ All scopes are basically a list of statements, although ``Scope`` classes have a
    where f.getScope() instanceof Function
    select f
 
-➤ `See this in the query console <https://lgtm.com/query/665620040/>`__. Many projects have nested functions.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665620040/>`__. Many projects have nested functions.
 
 Statement
 ^^^^^^^^^
@@ -89,7 +89,7 @@ As an example, to find expressions of the form ``a+2`` where the left is a simpl
    where bin.getLeft() instanceof Name and bin.getRight() instanceof Num
    select bin
 
-➤ `See this in the query console <https://lgtm.com/query/669950026/>`__. Many projects include examples of this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669950026/>`__. Many projects include examples of this pattern.
 
 Variable
 ^^^^^^^^
@@ -120,7 +120,7 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
    from Try t
    select t.getFinalbody()
 
-➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
 2. Finding ``except`` blocks that do nothing
 ''''''''''''''''''''''''''''''''''''''''''''
@@ -151,7 +151,7 @@ Both forms are equivalent. Using the positive expression, the whole query looks 
    where forall(Stmt s | s = ex.getAStmt() | s instanceof Pass)
    select ex
 
-➤ `See this in the query console <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010036/>`__. Many projects include pass-only ``except`` blocks.
 
 Summary
 ^^^^^^^
@@ -237,11 +237,14 @@ Other
 -  ``Comment`` – A comment
 
 Control flow classes
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
-This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__.
+This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into basic blocks. For more information, see `Basic block <http://en.wikipedia.org/wiki/Basic_block>`__ on Wikipedia.
 
-As an example, we might want to find the longest sequence of code without any branches. A ``BasicBlock`` is, by definition, a sequence of code without any branches, so we just need to find the longest ``BasicBlock``.
+Example
+^^^^^^^
+
+If we want to find the longest sequence of code without any branches, we need to consider control flow. A ``BasicBlock`` is, by definition, a sequence of code without any branches, so we just need to find the longest ``BasicBlock``.
 
 First of all we introduce a simple predicate ``bb_length()`` which relates ``BasicBlock``\ s to their length.
 
@@ -269,7 +272,7 @@ Using this predicate we can select the longest ``BasicBlock`` by selecting the `
    where bb_length(b) = max(bb_length(_))
    select b
 
-➤ `See this in the query console <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
 
 .. pull-quote::
 
@@ -289,7 +292,12 @@ The classes in the control-flow part of the library are:
 Type-inference classes
 ----------------------
 
-The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
+The CodeQL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. 
+
+Example
+^^^^^^^
+
+For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
 **Find iterable "ClassValue"s**
 
@@ -301,10 +309,10 @@ The CodeQL library for Python also supplies some classes for accessing the infer
    where cls.hasAttribute("__iter__")
    select cls
 
-➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for ``builtin`` classes, which do not have any Python source code, show the non-source results. For more information, see `builtin classes <http://docs.python.org/library/stdtypes.html>`__ in the Python documentation.
 
 Summary
-~~~~~~~
+^^^^^^^
 
 -  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
@@ -312,7 +320,7 @@ Summary
    -  ``CallableValue``
    -  ``ModuleValue``
 
-These classes are explained in more detail in :doc:`Tutorial: Points-to analysis and type inference <pointsto-type-infer>`.
+For more information about these classes, see ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`."
 
 Taint-tracking classes
 ----------------------
@@ -321,16 +329,17 @@ The CodeQL library for Python also supplies classes to specify taint-tracking an
 
 
 Summary
-~~~~~~~
+^^^^^^^
 
 - `TaintKind <https://help.semmle.com/qldoc/python/semmle/python/dataflow/TaintTracking.qll/type.TaintTracking$TaintKind.html>`__
 - `Configuration <https://help.semmle.com/qldoc/python/semmle/python/dataflow/Configuration.qll/type.Configuration$TaintTracking$Configuration.html>`__
 
-These classes are explained in more detail in :doc:`Tutorial: Taint tracking and data flow analysis in Python <taint-tracking>`.
+For more information about these classes, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`."
 
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the following tutorial topics: :doc:`Functions <functions>`, :doc:`Statements and expressions <statements-expressions>`, :doc:`Control flow <control-flow>`, :doc:`Points-to analysis and type inference <pointsto-type-infer>`, and :doc:`Taint tracking and data flow analysis in Python <taint-tracking>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/python-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
+

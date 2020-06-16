@@ -23,6 +23,8 @@
 | l_calls.py:51 | ControlFlowNode for g() | g |
 | l_calls.py:52 | ControlFlowNode for Attribute() | F.m |
 | l_calls.py:53 | ControlFlowNode for Attribute() | F.m |
+| l_calls.py:59 | ControlFlowNode for Attribute() | int.bit_length |
+| l_calls.py:63 | ControlFlowNode for Attribute() | dict.get |
 | q_super.py:4 | ControlFlowNode for Attribute() | object.__init__ |
 | q_super.py:12 | ControlFlowNode for Attribute() | Base2.__init__ |
 | q_super.py:22 | ControlFlowNode for Attribute() | Base1.meth |

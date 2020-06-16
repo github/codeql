@@ -6,10 +6,6 @@ import java
  * Used as basis for the transitive closure in `exprImplies`.
  */
 private predicate exprImpliesStep(Expr e1, boolean b1, Expr e2, boolean b2) {
-  e1.(ParExpr).getProperExpr() = e2 and
-  b2 = b1 and
-  (b1 = true or b1 = false)
-  or
   e1.(LogNotExpr).getExpr() = e2 and
   b2 = b1.booleanNot() and
   (b1 = true or b1 = false)

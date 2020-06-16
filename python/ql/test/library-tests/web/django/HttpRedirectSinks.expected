@@ -1,0 +1,2 @@
+| test_1x.py:13:21:13:24 | django.redirect | externally controlled string |
+| test_2x_3x.py:13:21:13:24 | django.redirect | externally controlled string |

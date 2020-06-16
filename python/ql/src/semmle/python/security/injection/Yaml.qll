@@ -1,25 +1,20 @@
-/** Provides class and predicates to track external data that
+/**
+ * Provides class and predicates to track external data that
  * may represent malicious yaml-encoded objects.
  *
  * This module is intended to be imported into a taint-tracking query
  * to extend `TaintKind` and `TaintSink`.
- *
  */
 
 import python
-
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
-
-private FunctionObject yamlLoad() {
-    result = ModuleObject::named("yaml").attr("load")
-}
+private FunctionObject yamlLoad() { result = ModuleObject::named("yaml").attr("load") }
 
 /** `yaml.load(untrusted)` vulnerability. */
 class YamlLoadNode extends DeserializationSink {
-
     override string toString() { result = "yaml.load vulnerability" }
 
     YamlLoadNode() {
@@ -29,8 +24,5 @@ class YamlLoadNode extends DeserializationSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalStringKind
-    }
-
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }

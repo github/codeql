@@ -60,8 +60,6 @@ from MethodAccess ma, Method get
 where
   ma.getMethod() = get and
   get.hasName("get") and
-  ma.getAnArgument().(VarAccess).getVariable().(Key).getBase().getBase() = ma
-        .getQualifier()
-        .(VarAccess)
-        .getVariable()
+  ma.getAnArgument().(VarAccess).getVariable().(Key).getBase().getBase() =
+    ma.getQualifier().(VarAccess).getVariable()
 select ma, "Inefficient use of key set iterator instead of entry set iterator."

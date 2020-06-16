@@ -30,7 +30,13 @@ predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
   ) and
   exists(ReturnStmt s |
     f.getAPredecessor() = s and
-    blame = s.getAPredecessor()
+    (
+      blame = s.getAPredecessor() and
+      count(blame.getASuccessor()) = 1
+      or
+      blame = s and
+      exists(ControlFlowNode pred | pred = s.getAPredecessor() | count(pred.getASuccessor()) != 1)
+    )
   )
 }
 
@@ -58,6 +64,7 @@ where
   reachable(blame) and
   not functionImperfectlyExtracted(f) and
   (blame = stmt or blame.(Expr).getEnclosingStmt() = stmt) and
-  msg = "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
+  msg =
+    "Function " + f.getName() + " should return a value of type " + f.getType().getName() +
       " but does not return a value here"
 select stmt, msg

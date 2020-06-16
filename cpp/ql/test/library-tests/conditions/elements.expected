@@ -1,7 +1,6 @@
 | file://:0:0:0:0 |  |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | <error expr> |
-| file://:0:0:0:0 | <error expr> |
 | file://:0:0:0:0 | <error> |
 | file://:0:0:0:0 | There was an error during this compilation |
 | file://:0:0:0:0 | _Complex __float128 |
@@ -38,6 +37,7 @@
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | bool |
 | file://:0:0:0:0 | char |
+| file://:0:0:0:0 | char8_t |
 | file://:0:0:0:0 | char16_t |
 | file://:0:0:0:0 | char32_t |
 | file://:0:0:0:0 | const |
@@ -65,6 +65,7 @@
 | file://:0:0:0:0 | initializer for <error> |
 | file://:0:0:0:0 | inline |
 | file://:0:0:0:0 | int |
+| file://:0:0:0:0 | is_consteval |
 | file://:0:0:0:0 | is_constexpr |
 | file://:0:0:0:0 | is_thread_local |
 | file://:0:0:0:0 | long |
@@ -123,6 +124,7 @@
 | test.cpp:2:10:4:1 | { ... } |
 | test.cpp:3:5:3:15 | if (...) ...  |
 | test.cpp:3:9:3:12 | (condition decl) |
+| test.cpp:3:9:3:12 | <error expr> |
 | test.cpp:3:12:3:12 | <error> |
 | test.cpp:3:12:3:12 | a condition declaration must include an initializer |
 | test.cpp:3:12:3:12 | declaration of <error> |

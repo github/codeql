@@ -1,10 +1,8 @@
 import python
-
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
 abstract class BaseWebobRequest extends TaintKind {
-
     bindingset[this]
     BaseWebobRequest() { any() }
 
@@ -17,9 +15,7 @@ abstract class BaseWebobRequest extends TaintKind {
         )
         or
         result instanceof ExternalStringKind and
-        (
-            name = "body"
-        )
+        name = "body"
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -30,22 +26,13 @@ abstract class BaseWebobRequest extends TaintKind {
             name = "copy_body"
         )
         or
-        result instanceof ExternalStringKind and 
-        (
-            name = "as_bytes"
-        )
+        result instanceof ExternalStringKind and
+        name = "as_bytes"
     }
-
 }
 
 class WebobRequest extends BaseWebobRequest {
+    WebobRequest() { this = "webob.Request" }
 
-    WebobRequest() {
-        this = "webob.Request"
-    }
-
-    override ClassValue getType() {
-        result = Value::named("webob.request.Request")
-    }
-
+    override ClassValue getType() { result = Value::named("webob.request.Request") }
 }

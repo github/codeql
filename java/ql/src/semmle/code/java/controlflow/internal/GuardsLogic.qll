@@ -19,10 +19,6 @@ private import semmle.code.java.dataflow.IntegerGuards
  * Restricted to BaseSSA-based reasoning.
  */
 predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
-  g1.(ParExpr).getExpr() = g2 and
-  b1 = b2 and
-  (b1 = true or b1 = false)
-  or
   g1.(AndBitwiseExpr).getAnOperand() = g2 and b1 = true and b2 = true
   or
   g1.(OrBitwiseExpr).getAnOperand() = g2 and b1 = false and b2 = false
@@ -217,16 +213,14 @@ private predicate hasPossibleUnknownValue(SsaVariable v) {
 
 /**
  * Gets a sub-expression of `e` whose value can flow to `e` through
- * `ConditionalExpr`s. Parentheses are also removed.
+ * `ConditionalExpr`s.
  */
 private Expr possibleValue(Expr e) {
-  result = possibleValue(e.(ParExpr).getExpr())
-  or
   result = possibleValue(e.(ConditionalExpr).getTrueExpr())
   or
   result = possibleValue(e.(ConditionalExpr).getFalseExpr())
   or
-  result = e and not e instanceof ParExpr and not e instanceof ConditionalExpr
+  result = e and not e instanceof ConditionalExpr
 }
 
 /**
@@ -253,7 +247,7 @@ private predicate possibleValue(SsaVariable v, boolean fromBackEdge, Expr e, Abs
   not hasPossibleUnknownValue(v) and
   exists(SsaExplicitUpdate def |
     def = getADefinition(v, fromBackEdge) and
-    e = possibleValue(def.getDefiningExpr().(VariableAssign).getSource().getProperExpr()) and
+    e = possibleValue(def.getDefiningExpr().(VariableAssign).getSource()) and
     k.getExpr() = e
   )
 }
@@ -305,7 +299,7 @@ private predicate guardControlsPhiBranch(
   SsaExplicitUpdate upd, SsaPhiNode phi, Guard guard, boolean branch, Expr e
 ) {
   guard.directlyControls(upd.getBasicBlock(), branch) and
-  upd.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = e and
+  upd.getDefiningExpr().(VariableAssign).getSource() = e and
   upd = phi.getAPhiInput() and
   guard.getBasicBlock().bbStrictlyDominates(phi.getBasicBlock())
 }
@@ -319,12 +313,12 @@ private predicate guardControlsPhiBranch(
  */
 private predicate conditionalAssign(SsaVariable v, Guard guard, boolean branch, Expr e) {
   exists(ConditionalExpr c |
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource().getProperExpr() = c and
-    guard = c.getCondition().getProperExpr()
+    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = c and
+    guard = c.getCondition()
   |
-    branch = true and e = c.getTrueExpr().getProperExpr()
+    branch = true and e = c.getTrueExpr()
     or
-    branch = false and e = c.getFalseExpr().getProperExpr()
+    branch = false and e = c.getFalseExpr()
   )
   or
   exists(SsaExplicitUpdate upd, SsaPhiNode phi |

@@ -30,7 +30,8 @@ class WebPage extends RefType {
  */
 predicate isAutoDisposedWebControl(Field f) {
   f.getType() instanceof WebControl and
-  f.getDeclaringType() = any(RefType t |
+  f.getDeclaringType() =
+    any(RefType t |
       t instanceof WebControl or
       t instanceof WebPage
     )

@@ -1,7 +1,7 @@
-/** Helper predicates for standard tests in Python commonly
+/**
+ * Helper predicates for standard tests in Python commonly
  * used to filter objects by value or by type.
  */
-
 
 import python
 
@@ -21,13 +21,15 @@ predicate is_callable(CallNode c, ControlFlowNode obj) {
 /** Holds if `c` is a call to `isinstance(use, cls)`. */
 predicate isinstance(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
     fc.getFunction().(NameNode).getId() = "isinstance" and
-    cls = fc.getArg(1) and fc.getArg(0) = use
+    cls = fc.getArg(1) and
+    fc.getArg(0) = use
 }
 
 /** Holds if `c` is a call to `issubclass(use, cls)`. */
 predicate issubclass(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
     fc.getFunction().(NameNode).getId() = "issubclass" and
-    fc.getArg(0) = use and cls = fc.getArg(1)
+    fc.getArg(0) = use and
+    cls = fc.getArg(1)
 }
 
 /** Holds if `c` is a test comparing `x` and `y`. `is` is true if the operator is `is` or `==`, it is false if the operator is `is not` or `!=`. */
@@ -35,11 +37,15 @@ predicate equality_test(CompareNode c, ControlFlowNode x, boolean is, ControlFlo
     exists(Cmpop op |
         c.operands(x, op, y) or
         c.operands(y, op, x)
-        |
-        (is = true and op instanceof Is or
-         is = false and op instanceof IsNot or
-         is = true and op instanceof Eq or
-         is = false and op instanceof NotEq
+    |
+        (
+            is = true and op instanceof Is
+            or
+            is = false and op instanceof IsNot
+            or
+            is = true and op instanceof Eq
+            or
+            is = false and op instanceof NotEq
         )
     )
 }

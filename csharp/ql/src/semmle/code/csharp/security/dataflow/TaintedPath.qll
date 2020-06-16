@@ -7,7 +7,7 @@ import csharp
 
 module TaintedPath {
   import semmle.code.csharp.controlflow.Guards
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.IO
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.security.Sanitizers

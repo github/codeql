@@ -32,6 +32,7 @@ where
         not name = "__new__" and
         not name = "__metaclass__" and
         not name = "__init_subclass__" and
+        not name = "__class_getitem__" and
         /* declared in scope */
         f.getScope() = cls.getScope()
     ) and
@@ -44,10 +45,12 @@ where
         (
             if exists(f.getArgName(0))
             then
-                message = "Normal methods should have 'self', rather than '" + f.getArgName(0) +
+                message =
+                    "Normal methods should have 'self', rather than '" + f.getArgName(0) +
                         "', as their first parameter."
             else
-                message = "Normal methods should have at least one parameter (the first of which should be 'self')."
+                message =
+                    "Normal methods should have at least one parameter (the first of which should be 'self')."
         ) and
         not f.hasVarArg()
     ) and

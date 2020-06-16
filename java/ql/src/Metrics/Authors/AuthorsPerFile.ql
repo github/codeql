@@ -13,7 +13,6 @@ import java
 
 from CompilationUnit u, int num
 where
-  num = strictcount(string s |
-      exists(Documentable d | d.getAuthor() = s and d.getCompilationUnit() = u)
-    )
+  num =
+    strictcount(string s | exists(Documentable d | d.getAuthor() = s and d.getCompilationUnit() = u))
 select u, num

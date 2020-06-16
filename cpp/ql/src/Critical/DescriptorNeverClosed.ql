@@ -1,6 +1,6 @@
 /**
  * @name Open descriptor never closed
- * @description Functions that always return before closing the socket or file they opened leak resources.
+ * @description Functions that always return before closing the socket they opened leak resources.
  * @kind problem
  * @id cpp/descriptor-never-closed
  * @problem.severity warning

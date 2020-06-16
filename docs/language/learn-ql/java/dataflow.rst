@@ -1,13 +1,15 @@
 Analyzing data flow in Java
-============================
+===========================
 
-Overview
---------
+You can use CodeQL to track the flow of data through a Java program to its use. 
 
-This topic describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
-The following sections describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
+About this article
+------------------
 
-For a more general introduction to modeling data flow, see :doc:`Introduction to data flow analysis with CodeQL <../intro-to-data-flow>`.
+This article describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
+The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
+
+For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
 
 Local data flow
 ---------------
@@ -17,7 +19,7 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). It is possible to map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
 
 .. code-block:: ql
 
@@ -45,9 +47,9 @@ or using the predicates ``exprNode`` and ``parameterNode``:
     */
    ParameterNode parameterNode(Parameter p) { ... }
 
-The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
+The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localFlow``, which is equivalent to ``localFlowStep*``.
 
-For example, finding flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
+For example, you can find flow from a parameter ``source`` to an expression ``sink`` in zero or more local steps:
 
 .. code-block:: ql
 
@@ -65,9 +67,9 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
-The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. The predicate can be applied recursively (using the ``+`` and ``*`` operators), or through the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
+The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
 
-For example, finding taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps can be achieved as follows:
+For example, you can find taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps:
 
 .. code-block:: ql
 
@@ -76,7 +78,7 @@ For example, finding taint propagation from a parameter ``source`` to an express
 Examples
 ~~~~~~~~
 
-The following query finds the filename passed to ``new FileReader(..)``.
+This query finds the filename passed to ``new FileReader(..)``.
 
 .. code-block:: ql
 
@@ -88,7 +90,7 @@ The following query finds the filename passed to ``new FileReader(..)``.
      call.getCallee() = fileReader
    select call.getArgument(0)
 
-Unfortunately, this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
+Unfortunately, this only gives the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:
 
 .. code-block:: ql
 
@@ -102,7 +104,7 @@ Unfortunately, this will only give the expression in the argument, not the value
      DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
    select src
 
-Then we can make the source more specific, for example an access to a public parameter. The following query finds where a public parameter is passed to ``new FileReader(..)``:
+Then we can make the source more specific, for example an access to a public parameter. This query finds where a public parameter is passed to ``new FileReader(..)``:
 
 .. code-block:: ql
 
@@ -113,10 +115,10 @@ Then we can make the source more specific, for example an access to a public par
    where
      fileReader.getDeclaringType().hasQualifiedName("java.io", "FileReader") and
      call.getCallee() = fileReader and
-     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(fc.getArgument(0)))
+     DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
    select p
 
-The following example finds calls to formatting functions where the format string is not hard-coded.
+This query finds calls to formatting functions where the format string is not hard-coded.
 
 .. code-block:: ql
 
@@ -145,10 +147,14 @@ Global data flow
 
 Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.
 
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
+   
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by extending the class ``DataFlow::Configuration`` as follows:
+You use the global data flow library by extending the class ``DataFlow::Configuration``:
 
 .. code-block:: ql
 
@@ -166,7 +172,7 @@ The global data flow library is used by extending the class ``DataFlow::Configur
      }
    }
 
-The following predicates are defined in the configuration:
+These predicates are defined in the configuration:
 
 -  ``isSource``—defines where data may flow from
 -  ``isSink``—defines where data may flow to
@@ -186,7 +192,7 @@ The data flow analysis is performed using the predicate ``hasFlow(DataFlow::Node
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. The global taint tracking library is used by extending the class ``TaintTracking::Configuration`` as follows:
+Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by extending the class ``TaintTracking::Configuration``:
 
 .. code-block:: ql
 
@@ -204,7 +210,7 @@ Global taint tracking is to global data flow as local taint tracking is to local
      }
    }
 
-The following predicates are defined in the configuration:
+These predicates are defined in the configuration:
 
 -  ``isSource``—defines where taint may flow from
 -  ``isSink``—defines where taint may flow to
@@ -223,7 +229,7 @@ The data flow library contains some predefined flow sources. The class ``RemoteF
 Examples
 ~~~~~~~~
 
-The following example shows a taint-tracking configuration that uses remote user input as data sources.
+This query shows a taint-tracking configuration that uses remote user input as data sources.
 
 .. code-block:: ql
 
@@ -250,13 +256,6 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``j
 Exercise 3: Write a class that represents flow sources from ``java.lang.System.getenv(..)``. (`Answer <#exercise-3>`__)
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
-
-What next?
-----------
-
--  Try the worked examples in the following topics: :doc:`Tutorial: Navigating the call graph <call-graph>` and :doc:`Tutorial: Working with source locations <source-locations>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
 
 Answers
 -------
@@ -355,3 +354,11 @@ Exercise 4
    from DataFlow::Node src, DataFlow::Node sink, GetenvToURLConfiguration config
    where config.hasFlow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
+
+Further reading
+---------------
+
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

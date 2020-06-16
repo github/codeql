@@ -6,7 +6,8 @@ ClassValue theFalconAPIClass() { result = Value::named("falcon.API") }
 
 /** Holds if `route` is routed to `resource` */
 private predicate api_route(CallNode route_call, ControlFlowNode route, ClassValue resource) {
-    route_call.getFunction().(AttrNode).getObject("add_route").pointsTo().getClass() = theFalconAPIClass() and
+    route_call.getFunction().(AttrNode).getObject("add_route").pointsTo().getClass() =
+        theFalconAPIClass() and
     route_call.getArg(0) = route and
     route_call.getArg(1).pointsTo().getClass() = resource
 }

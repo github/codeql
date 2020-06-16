@@ -18,9 +18,6 @@ import javascript
  * ```
  */
 class Stmt extends @stmt, ExprOrStmt, Documentable {
-  /** Gets the statement container (toplevel, function or namespace) to which this statement belongs. */
-  override StmtContainer getContainer() { stmtContainers(this, result) }
-
   /** Holds if this statement has an implicitly inserted semicolon. */
   predicate hasSemicolonInserted() {
     isSubjectToSemicolonInsertion() and
@@ -54,16 +51,14 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
     getContainer().(Expr).getEnclosingStmt().nestedIn(outer)
   }
 
-  override predicate isAmbient() { hasDeclareKeyword(this) or getParent().isAmbient() }
-  
   /**
-  * Gets the `try` statement with a catch block containing this statement without
-  * crossing function boundaries or other `try ` statements with catch blocks.
-  */
+   * Gets the `try` statement with a catch block containing this statement without
+   * crossing function boundaries or other `try ` statements with catch blocks.
+   */
   TryStmt getEnclosingTryCatchStmt() {
     getParentStmt+() = result.getBody() and
     exists(result.getACatchClause()) and
-    not exists(TryStmt mid | exists(mid.getACatchClause()) | 
+    not exists(TryStmt mid | exists(mid.getACatchClause()) |
       getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result.getBody()
     )
   }
@@ -931,8 +926,6 @@ class DebuggerStmt extends @debuggerstmt, Stmt {
  */
 class FunctionDeclStmt extends @functiondeclstmt, Stmt, Function {
   override Stmt getEnclosingStmt() { result = this }
-
-  override predicate isAmbient() { Function.super.isAmbient() }
 }
 
 /**

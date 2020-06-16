@@ -13,7 +13,7 @@ abstract class UnboundGeneric extends Generic {
   /** Gets the `i`th type parameter, if any. */
   abstract TypeParameter getTypeParameter(int i);
 
-  /** Gets a type parameter, if any. */
+  /** Gets a type parameter. */
   TypeParameter getATypeParameter() { result = getTypeParameter(_) }
 
   /**
@@ -28,7 +28,8 @@ abstract class UnboundGeneric extends Generic {
   /** Gets the type parameters as a comma-separated string. */
   language[monotonicAggregates]
   string typeParametersToString() {
-    result = concat(int i |
+    result =
+      concat(int i |
         exists(this.getTypeParameter(i))
       |
         this.getTypeParameter(i).toStringWithTypes(), ", " order by i
@@ -41,10 +42,13 @@ abstract class ConstructedGeneric extends Generic {
   /** Gets the `i`th type argument, if any. */
   abstract Type getTypeArgument(int i);
 
-  /** Gets a type argument, if any. */
+  /** Gets a type argument. */
   Type getATypeArgument() { result = getTypeArgument(_) }
 
-  /** Gets the unbound generic declaration from which this declaration was constructed. */
+  /**
+   * Gets the unbound generic declaration from which this declaration was
+   * constructed.
+   */
   UnboundGeneric getUnboundGeneric() { none() }
 
   /** Gets the total number of type arguments. */
@@ -53,7 +57,8 @@ abstract class ConstructedGeneric extends Generic {
   /** Gets the type arguments as a comma-separated string. */
   language[monotonicAggregates]
   string typeArgumentsToString() {
-    result = concat(int i |
+    result =
+      concat(int i |
         exists(this.getTypeArgument(i))
       |
         this.getTypeArgument(i).toStringWithTypes(), ", " order by i
@@ -80,7 +85,8 @@ private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
 language[monotonicAggregates]
 pragma[nomagic]
 private string typeArgs(ConstructedGeneric generic) {
-  result = concat(int p |
+  result =
+    concat(int p |
       p in [0 .. generic.getNumberOfTypeArguments() - 1]
     |
       getTypeArgumentLabel(generic, p), ","

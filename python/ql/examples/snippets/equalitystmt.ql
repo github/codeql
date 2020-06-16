@@ -6,7 +6,7 @@
  *       equality
  *       expression statement
  */
- 
+
 import python
 
 from ExprStmt e, Compare eq

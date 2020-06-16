@@ -6,7 +6,7 @@
 import csharp
 
 module RegexInjection {
-  import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.text.RegularExpressions
   import semmle.code.csharp.security.Sanitizers
 
@@ -58,8 +58,8 @@ module RegexInjection {
   /** A call to `Regex.Escape` that sanitizes the user input for use in a regex. */
   class RegexEscapeSanitizer extends Sanitizer {
     RegexEscapeSanitizer() {
-      this.getExpr().(MethodCall).getTarget() = any(SystemTextRegularExpressionsRegexClass r)
-            .getAMethod("Escape")
+      this.getExpr().(MethodCall).getTarget() =
+        any(SystemTextRegularExpressionsRegexClass r).getAMethod("Escape")
     }
   }
 

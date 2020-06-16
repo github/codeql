@@ -6,4 +6,4 @@ edges
 | reflected_xss.py:8:44:8:53 | externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string |
 | reflected_xss.py:8:44:8:53 | externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string |
 #select
-| reflected_xss.py:8:26:8:53 | BinaryExpr | reflected_xss.py:7:18:7:29 | dict of externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string | Cross-site scripting vulnerability due to $@. | reflected_xss.py:7:18:7:29 | Attribute | user-provided value |
+| reflected_xss.py:8:26:8:53 | BinaryExpr | reflected_xss.py:7:18:7:29 | dict of externally controlled string | reflected_xss.py:8:26:8:53 | externally controlled string | Cross-site scripting vulnerability due to $@. | reflected_xss.py:7:18:7:29 | Attribute | a user-provided value |

@@ -18,7 +18,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.FIELD_ACCESS;
 
                 case SymbolKind.Property:
-                    return ExprKind.PROPERTY_ACCESS;
+                    return symbol is IPropertySymbol prop && prop.IsIndexer ?
+                         ExprKind.INDEXER_ACCESS : ExprKind.PROPERTY_ACCESS;
 
                 case SymbolKind.Event:
                     return ExprKind.EVENT_ACCESS;
@@ -45,7 +46,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
             : base(info.SetKind(AccessKind(info.Context, symbol)))
         {
-            cx.TrapWriter.Writer.expr_access(this, target);
+            if (!(target is null))
+            {
+                cx.TrapWriter.Writer.expr_access(this, target);
+            }
 
             if (implicitThis && !symbol.IsStatic)
             {

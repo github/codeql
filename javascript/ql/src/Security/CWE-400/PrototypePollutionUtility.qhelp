@@ -13,7 +13,8 @@
 
   <p>
     One way to cause prototype pollution is through use of an unsafe <em>merge</em> or <em>extend</em> function
-    to recursively copy properties from one object to another.
+    to recursively copy properties from one object to another, or through the use of a <em>deep assignment</em>
+    function to assign to an unverified chain of property names.
     Such a function has the potential to modify any object reachable from the destination object, and
     the built-in <code>Object.prototype</code> is usually reachable through the special properties
     <code>__proto__</code> and <code>constructor.prototype</code>.
@@ -23,13 +24,13 @@
 <recommendation>
   <p>
     The most effective place to guard against this is in the function that performs
-    the recursive copy.
+    the recursive copy or deep assignment.
   </p>
 
   <p>
-    Only merge a property recursively when it is an own property of the <em>destination</em> object.
+    Only merge or assign a property recursively when it is an own property of the <em>destination</em> object.
     Alternatively, blacklist the property names <code>__proto__</code> and <code>constructor</code>
-    from being merged.
+    from being merged or assigned to.
   </p>
 </recommendation>
 

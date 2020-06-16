@@ -7,7 +7,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * Instances of this class are not present in the main AST which is navigated by parent/child links. Instead,
  * instances of this class are attached to nodes in the main AST via special conversion links.
  */
-abstract class Conversion extends Expr {
+class Conversion extends Expr, @conversion {
   /** Gets the expression being converted. */
   Expr getExpr() { result.getConversion() = this }
 
@@ -34,10 +34,10 @@ abstract class Conversion extends Expr {
  * a `PointerBaseClassConversion`, or some other semantic conversion. Similarly,
  * a `PointerDerivedClassConversion` may also be a `CStyleCast` or a `StaticCast`.
  *
- * This is an abstract root QL class representing the different casts.  For
+ * This is a root QL class representing the different casts.  For
  * specific examples, consult the documentation for any of QL classes mentioned above.
  */
-abstract class Cast extends Conversion, @cast {
+class Cast extends Conversion, @cast {
   /**
    * Gets a string describing the semantic conversion operation being performed by
    * this cast.
@@ -48,10 +48,13 @@ abstract class Cast extends Conversion, @cast {
 /**
  * INTERNAL: Do not use.
  * Query predicates used to check invariants that should hold for all `Cast`
- * nodes. To run all sanity queries for the ASTs, including the ones below,
- * run "semmle/code/cpp/ASTSanity.ql".
+ * nodes. To run all consistency queries for the ASTs, including the ones below,
+ * run "semmle/code/cpp/ASTConsistency.ql".
  */
-module CastSanity {
+module CastConsistency {
+  /**
+   * Holds if the cast has more than one result for `Cast.getSemanticConversionString()`.
+   */
   query predicate multipleSemanticConversionStrings(Cast cast, Type fromType, string kind) {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and
@@ -59,12 +62,19 @@ module CastSanity {
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has no result for `Cast.getSemanticConversionString()`.
+   */
   query predicate missingSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have exactly one semantic conversion kind
     not exists(cast.getSemanticConversionString()) and
     fromType = cast.getExpr().getUnspecifiedType()
   }
 
+  /**
+   * Holds if the cast has a result for `Cast.getSemanticConversionString()` that indicates that the
+   * kind of its semantic conversion is not known.
+   */
   query predicate unknownSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have a known semantic conversion kind
     cast.getSemanticConversionString() = "unknown conversion" and
@@ -84,7 +94,7 @@ class CStyleCast extends Cast, @c_style_cast {
 
   override string getCanonicalQLClass() { result = "CStyleCast" }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -103,7 +113,7 @@ class StaticCast extends Cast, @static_cast {
 
   override string getCanonicalQLClass() { result = "StaticCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 /**
@@ -121,7 +131,7 @@ class ConstCast extends Cast, @const_cast {
 
   override string getCanonicalQLClass() { result = "ConstCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 /**
@@ -139,7 +149,7 @@ class ReinterpretCast extends Cast, @reinterpret_cast {
 
   override string getCanonicalQLClass() { result = "ReinterpretCast" }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 }
 
 private predicate isArithmeticOrEnum(Type type) {
@@ -608,7 +618,7 @@ class PrvalueAdjustmentConversion extends Cast {
 class DynamicCast extends Cast, @dynamic_cast {
   override string toString() { result = "dynamic_cast<" + this.getType().getName() + ">..." }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 
   override string getCanonicalQLClass() { result = "DynamicCast" }
 
@@ -631,7 +641,7 @@ class UuidofOperator extends Expr, @uuidof {
     else result = "__uuidof(0)"
   }
 
-  override int getPrecedence() { result = 15 }
+  override int getPrecedence() { result = 16 }
 
   /** Gets the contained type. */
   Type getTypeOperand() { uuidof_bind(underlyingElement(this), unresolveElement(result)) }
@@ -669,7 +679,7 @@ class TypeidOperator extends Expr, @type_id {
 
   override string toString() { result = "typeid ..." }
 
-  override int getPrecedence() { result = 16 }
+  override int getPrecedence() { result = 17 }
 
   override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
 
@@ -699,8 +709,8 @@ class SizeofPackOperator extends Expr, @sizeof_pack {
 /**
  * A C/C++ sizeof expression.
  */
-abstract class SizeofOperator extends Expr, @runtime_sizeof {
-  override int getPrecedence() { result = 15 }
+class SizeofOperator extends Expr, @runtime_sizeof {
+  override int getPrecedence() { result = 16 }
 }
 
 /**
@@ -762,8 +772,8 @@ class SizeofTypeOperator extends SizeofOperator {
 /**
  * A C++11 `alignof` expression.
  */
-abstract class AlignofOperator extends Expr, @runtime_alignof {
-  override int getPrecedence() { result = 15 }
+class AlignofOperator extends Expr, @runtime_alignof {
+  override int getPrecedence() { result = 16 }
 }
 
 /**

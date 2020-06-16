@@ -1,0 +1,19 @@
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:50:15:50:24 | envStr_ptr | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:50:28:50:40 | & ... | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:50:29:50:40 | envStrGlobal | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:52:2:52:12 | * ... | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:52:3:52:12 | envStr_ptr | AST only |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:67:7:67:13 | copying | AST only |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:69:10:69:13 | copy | AST only |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:70:12:70:15 | copy | AST only |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:71:12:71:15 | copy | AST only |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:85:8:85:11 | copy | AST only |
+| test.cpp:83:28:83:33 | call to getenv | test.cpp:86:9:86:12 | copy | AST only |
+| test.cpp:100:12:100:15 | call to gets | test.cpp:100:2:100:8 | pointer | AST only |
+| test.cpp:100:17:100:22 | buffer | test.cpp:97:7:97:12 | buffer | AST only |
+| test.cpp:100:17:100:22 | buffer | test.cpp:100:17:100:22 | array to pointer conversion | IR only |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:108:8:108:11 | copy | AST only |
+| test.cpp:106:28:106:33 | call to getenv | test.cpp:109:9:109:12 | copy | AST only |

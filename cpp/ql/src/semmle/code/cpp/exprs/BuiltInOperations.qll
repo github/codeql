@@ -4,9 +4,15 @@ import semmle.code.cpp.exprs.Expr
  * A C/C++ builtin operation. This is the root QL class encompassing
  * built-in functionality.
  */
-abstract class BuiltInOperation extends Expr {
+class BuiltInOperation extends Expr, @builtin_op {
   override string getCanonicalQLClass() { result = "BuiltInOperation" }
 }
+
+/**
+ * A C/C++ built-in operation that is used to support functions with variable numbers of arguments.
+ * This includes `va_start`, `va_end`, `va_copy`, and `va_arg`.
+ */
+class VarArgsExpr extends BuiltInOperation, @var_args_expr { }
 
 /**
  * A C/C++ `__builtin_va_start` built-in operation (used by some
@@ -20,6 +26,16 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
   override string toString() { result = "__builtin_va_start" }
 
   override string getCanonicalQLClass() { result = "BuiltInVarArgsStart" }
+
+  /**
+   * Gets the `va_list` argument.
+   */
+  final Expr getVAList() { result = getChild(0) }
+
+  /**
+   * Gets the argument that specifies the last named parameter before the ellipsis.
+   */
+  final VariableAccess getLastNamedParameter() { result = getChild(1) }
 }
 
 /**
@@ -35,6 +51,11 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
   override string toString() { result = "__builtin_va_end" }
 
   override string getCanonicalQLClass() { result = "BuiltInVarArgsEnd" }
+
+  /**
+   * Gets the `va_list` argument.
+   */
+  final Expr getVAList() { result = getChild(0) }
 }
 
 /**
@@ -48,6 +69,11 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
   override string toString() { result = "__builtin_va_arg" }
 
   override string getCanonicalQLClass() { result = "BuiltInVarArg" }
+
+  /**
+   * Gets the `va_list` argument.
+   */
+  final Expr getVAList() { result = getChild(0) }
 }
 
 /**
@@ -63,6 +89,16 @@ class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
   override string toString() { result = "__builtin_va_copy" }
 
   override string getCanonicalQLClass() { result = "BuiltInVarArgCopy" }
+
+  /**
+   * Gets the destination `va_list` argument.
+   */
+  final Expr getDestinationVAList() { result = getChild(0) }
+
+  /**
+   * Gets the the source `va_list` argument.
+   */
+  final Expr getSourceVAList() { result = getChild(1) }
 }
 
 /**

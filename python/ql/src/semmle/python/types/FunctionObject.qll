@@ -9,22 +9,13 @@ private import semmle.python.types.Builtins
 
 /** A function object, whether written in Python or builtin */
 abstract class FunctionObject extends Object {
+    CallableValue theCallable() { result.(ObjectInternal).getSource() = this }
 
-    CallableValue theCallable() {
-        result.(ObjectInternal).getSource() = this
-    }
+    predicate isOverridingMethod() { exists(Object f | this.overrides(f)) }
 
-    predicate isOverridingMethod() {
-        exists(Object f | this.overrides(f))
-    }
+    predicate isOverriddenMethod() { exists(Object f | f.overrides(this)) }
 
-    predicate isOverriddenMethod() {
-        exists(Object f | f.overrides(this))
-    }
-
-    Function getFunction() {
-        result = ((CallableExpr)this.getOrigin()).getInnerScope()
-    }
+    Function getFunction() { result = this.getOrigin().(CallableExpr).getInnerScope() }
 
     /** This function always returns None, meaning that its return value should be disregarded */
     abstract predicate isProcedure();
@@ -39,17 +30,13 @@ abstract class FunctionObject extends Object {
     abstract predicate raisesUnknownType();
 
     /** Use descriptiveString() instead. */
-    deprecated string prettyString() {
-        result = this.descriptiveString()
-    }
+    deprecated string prettyString() { result = this.descriptiveString() }
 
     /** Gets a longer, more descriptive version of toString() */
     abstract string descriptiveString();
 
     /** Gets a call-site from where this function is called as a function */
-    CallNode getAFunctionCall() {
-        result.getFunction().inferredValue() = theCallable()
-    }
+    CallNode getAFunctionCall() { result.getFunction().inferredValue() = theCallable() }
 
     /** Gets a call-site from where this function is called as a method */
     CallNode getAMethodCall() {
@@ -60,37 +47,36 @@ abstract class FunctionObject extends Object {
     }
 
     /** Gets a call-site from where this function is called */
-    ControlFlowNode getACall() {
-        result = theCallable().getACall()
-    }
+    ControlFlowNode getACall() { result = theCallable().getACall() }
 
     /** Gets a call-site from where this function is called, given the `context` */
     ControlFlowNode getACall(Context caller_context) {
         result = theCallable().getACall(caller_context)
     }
 
-    /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
-    */
+    /**
+     * Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
+     * This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
+     */
     ControlFlowNode getArgumentForCall(CallNode call, int n) {
         result = theCallable().getArgumentForCall(call, n)
     }
 
-    /** Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the self argument.
-    */
+    /**
+     * Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
+     * This predicate will correctly handle `x.y()`, treating `x` as the self argument.
+     */
     ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
         result = theCallable().getNamedArgumentForCall(call, name)
     }
 
-    /** Whether this function never returns. This is an approximation.
-     */
-    predicate neverReturns() {
-        theCallable().neverReturns()
-    }
+    /** Whether this function never returns. This is an approximation. */
+    predicate neverReturns() { theCallable().neverReturns() }
 
-    /** Whether this is a "normal" method, that is, it is exists as a class attribute 
-     *  which is not wrapped and not the __new__ method. */
+    /**
+     * Whether this is a "normal" method, that is, it is exists as a class attribute
+     * which is not wrapped and not the __new__ method.
+     */
     predicate isNormalMethod() {
         exists(ClassObject cls, string name |
             cls.declaredAttribute(name) = this and
@@ -113,7 +99,8 @@ abstract class FunctionObject extends Object {
         )
     }
 
-    /** Gets the qualified name for this function object.
+    /**
+     * Gets the qualified name for this function object.
      * Should return the same name as the `__qualname__` attribute on functions in Python 3.
      */
     abstract string getQualifiedName();
@@ -129,59 +116,39 @@ abstract class FunctionObject extends Object {
     }
 
     /** Gets a class that this function may return */
-    ClassObject getAnInferredReturnType() {
-        result = this.(BuiltinCallable).getAReturnType()
-    }
+    ClassObject getAnInferredReturnType() { result = this.(BuiltinCallable).getAReturnType() }
 
-    predicate isAbstract() {
-        this.getARaisedType() = theNotImplementedErrorType()
-    }
-
+    predicate isAbstract() { this.getARaisedType() = theNotImplementedErrorType() }
 }
 
 class PyFunctionObject extends FunctionObject {
+    PyFunctionObject() { any(PythonFunctionObjectInternal f).getOrigin() = this }
 
-    PyFunctionObject() {
-        any(PythonFunctionObjectInternal f).getOrigin() = this
-    }
-
-    override string toString() {
-        result = "Function " + this.getName()
-    }
+    override string toString() { result = "Function " + this.getName() }
 
     override string getName() {
-        result = ((FunctionExpr)this.getOrigin()).getName()
+        result = this.getOrigin().(FunctionExpr).getName()
         or
         this.getOrigin() instanceof Lambda and result = "lambda"
     }
 
     /** Whether this function is a procedure, that is, it has no explicit return statement and is not a generator function */
-    override predicate isProcedure() {
-        this.getFunction().isProcedure()
-    }
+    override predicate isProcedure() { this.getFunction().isProcedure() }
 
-    override ClassObject getARaisedType() {
-        scope_raises(result, this.getFunction())
-    }
+    override ClassObject getARaisedType() { scope_raises_objectapi(result, this.getFunction()) }
 
-    override predicate raisesUnknownType() {
-        scope_raises_unknown(this.getFunction())
-    }
+    override predicate raisesUnknownType() { scope_raises_unknown(this.getFunction()) }
 
     /** Gets a control flow node corresponding to the value of a return statement */
-    ControlFlowNode getAReturnedNode() {
-        result = this.getFunction().getAReturnValueFlowNode()
-    }
+    ControlFlowNode getAReturnedNode() { result = this.getFunction().getAReturnValueFlowNode() }
 
     override string descriptiveString() {
-        if this.getFunction().isMethod() then (
-            exists(Class cls | 
-                this.getFunction().getScope() = cls |
+        if this.getFunction().isMethod()
+        then
+            exists(Class cls | this.getFunction().getScope() = cls |
                 result = "method " + this.getQualifiedName()
             )
-        ) else (
-            result = "function " + this.getQualifiedName()
-        )
+        else result = "function " + this.getQualifiedName()
     }
 
     override int minParameters() {
@@ -194,16 +161,13 @@ class PyFunctionObject extends FunctionObject {
     override int maxParameters() {
         exists(Function f |
             f = this.getFunction() and
-            if exists(f.getVararg()) then
-                result = 2147483647 // INT_MAX
-            else
-                result = count(f.getAnArg())
+            if exists(f.getVararg())
+            then result = 2147483647 // INT_MAX
+            else result = count(f.getAnArg())
         )
     }
 
-    override string getQualifiedName() {
-        result = this.getFunction().getQualifiedName()
-    }
+    override string getQualifiedName() { result = this.getFunction().getQualifiedName() }
 
     predicate unconditionallyReturnsParameter(int n) {
         exists(SsaVariable pvar |
@@ -220,7 +184,9 @@ class PyFunctionObject extends FunctionObject {
 
     /** Factored out to help join ordering */
     private predicate implicitlyReturns(Object none_, ClassObject noneType) {
-        noneType = theNoneType() and not this.getFunction().isGenerator() and none_ = theNoneObject() and
+        noneType = theNoneType() and
+        not this.getFunction().isGenerator() and
+        none_ = theNoneObject() and
         (
             not exists(this.getAReturnedNode()) and exists(this.getFunction().getANormalExit())
             or
@@ -232,9 +198,10 @@ class PyFunctionObject extends FunctionObject {
     override ClassObject getAnInferredReturnType() {
         this.getFunction().isGenerator() and result = theGeneratorType()
         or
-        not this.neverReturns() and not this.getFunction().isGenerator() and
+        not this.neverReturns() and
+        not this.getFunction().isGenerator() and
         (
-            this.(PyFunctionObject).getAReturnedNode().refersTo( _, result, _)
+            this.(PyFunctionObject).getAReturnedNode().refersTo(_, result, _)
             or
             this.implicitlyReturns(_, result)
         )
@@ -243,18 +210,13 @@ class PyFunctionObject extends FunctionObject {
     ParameterDefinition getParameter(int n) {
         result.getDefiningNode().getNode() = this.getFunction().getArg(n)
     }
-
 }
 
 abstract class BuiltinCallable extends FunctionObject {
-
     abstract ClassObject getAReturnType();
 
     override predicate isProcedure() {
-        forex(ClassObject rt |
-            rt = this.getAReturnType() |
-            rt = theNoneType()
-        )
+        forex(ClassObject rt | rt = this.getAReturnType() | rt = theNoneType())
     }
 
     abstract override string getQualifiedName();
@@ -262,18 +224,13 @@ abstract class BuiltinCallable extends FunctionObject {
     override ControlFlowNode getArgumentForCall(CallNode call, int n) {
         call = this.getACall() and result = call.getArg(n)
     }
-
 }
 
 class BuiltinMethodObject extends BuiltinCallable {
-
-    BuiltinMethodObject() {
-        any(BuiltinMethodObjectInternal m).getBuiltin() = this
-    }
+    BuiltinMethodObject() { any(BuiltinMethodObjectInternal m).getBuiltin() = this }
 
     override string getQualifiedName() {
-        exists(ClassObject cls |
-            cls.asBuiltin().getMember(_) = this.asBuiltin() |
+        exists(ClassObject cls | cls.asBuiltin().getMember(_) = this.asBuiltin() |
             result = cls.getName() + "." + this.getName()
         )
         or
@@ -281,17 +238,11 @@ class BuiltinMethodObject extends BuiltinCallable {
         result = this.getName()
     }
 
-    override string descriptiveString() {
-        result = "builtin-method " + this.getQualifiedName()
-    }
+    override string descriptiveString() { result = "builtin-method " + this.getQualifiedName() }
 
-    override string getName() {
-        result = this.asBuiltin().getName()
-    }
+    override string getName() { result = this.asBuiltin().getName() }
 
-    override string toString() {
-        result = "Builtin-method " + this.getName()
-    }
+    override string toString() { result = "Builtin-method " + this.getName() }
 
     override ClassObject getARaisedType() {
         /* Information is unavailable for C code in general */
@@ -303,41 +254,23 @@ class BuiltinMethodObject extends BuiltinCallable {
         any()
     }
 
-    override int minParameters() {
-        none() 
-    }
+    override int minParameters() { none() }
 
-    override int maxParameters() {
-        none() 
-    }
+    override int maxParameters() { none() }
 
-    override ClassObject getAReturnType() {
-        ext_rettype(this.asBuiltin(), result.asBuiltin())
-    }
-
+    override ClassObject getAReturnType() { ext_rettype(this.asBuiltin(), result.asBuiltin()) }
 }
 
 class BuiltinFunctionObject extends BuiltinCallable {
+    BuiltinFunctionObject() { any(BuiltinFunctionObjectInternal f).getBuiltin() = this }
 
-    BuiltinFunctionObject() {
-        any(BuiltinFunctionObjectInternal f).getBuiltin() = this
-    }
+    override string getName() { result = this.asBuiltin().getName() }
 
-    override string getName() {
-        result = this.asBuiltin().getName()
-    }
+    override string getQualifiedName() { result = this.getName() }
 
-    override string getQualifiedName() {
-        result = this.getName()
-    }
+    override string toString() { result = "Builtin-function " + this.getName() }
 
-    override string toString() {
-        result = "Builtin-function " + this.getName()
-    }
-
-    override string descriptiveString() {
-        result = "builtin-function " + this.getName()
-    }
+    override string descriptiveString() { result = "builtin-function " + this.getName() }
 
     override ClassObject getARaisedType() {
         /* Information is unavailable for C code in general */
@@ -350,16 +283,19 @@ class BuiltinFunctionObject extends BuiltinCallable {
     }
 
     override ClassObject getAReturnType() {
-        /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
-        */
+        /*
+         * Enumerate the types of a few builtin functions, that the CPython analysis misses.
+         */
+
         this = Object::builtin("hex") and result = theStrType()
         or
         this = Object::builtin("oct") and result = theStrType()
         or
         this = Object::builtin("intern") and result = theStrType()
         or
-        /* Fix a few minor inaccuracies in the CPython analysis */ 
-        ext_rettype(this.asBuiltin(), result.asBuiltin()) and not (
+        /* Fix a few minor inaccuracies in the CPython analysis */
+        ext_rettype(this.asBuiltin(), result.asBuiltin()) and
+        not (
             this = Object::builtin("__import__") and result = theNoneType()
             or
             this = Object::builtin("compile") and result = theNoneType()
@@ -370,63 +306,37 @@ class BuiltinFunctionObject extends BuiltinCallable {
         )
     }
 
-    override int minParameters() {
-        none() 
-    }
+    override int minParameters() { none() }
 
-    override int maxParameters() {
-        none() 
-    }
-
+    override int maxParameters() { none() }
 }
 
 /** DEPRECATED -- Use `Object::builtin("apply")` instead. */
-deprecated Object theApplyFunction() {
-    result = Object::builtin("apply")
-}
+deprecated Object theApplyFunction() { result = Object::builtin("apply") }
 
 /** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
-deprecated Object theHasattrFunction() {
-    result = Object::builtin("hasattr")
-}
+deprecated Object theHasattrFunction() { result = Object::builtin("hasattr") }
 
 /** DEPRECATED -- Use `Object::builtin("len")` instead. */
-deprecated Object theLenFunction() {
-    result = Object::builtin("len")
-}
+deprecated Object theLenFunction() { result = Object::builtin("len") }
 
 /** DEPRECATED -- Use `Object::builtin("format")` instead. */
-deprecated Object theFormatFunction() {
-    result = Object::builtin("format")
-}
+deprecated Object theFormatFunction() { result = Object::builtin("format") }
 
 /** DEPRECATED -- Use `Object::builtin("open")` instead. */
-deprecated Object theOpenFunction() {
-    result = Object::builtin("open")
-}
+deprecated Object theOpenFunction() { result = Object::builtin("open") }
 
 /** DEPRECATED -- Use `Object::builtin("print")` instead. */
-deprecated Object thePrintFunction() {
-    result = Object::builtin("print")
-}
+deprecated Object thePrintFunction() { result = Object::builtin("print") }
 
 /** DEPRECATED -- Use `Object::builtin("input")` instead. */
-deprecated Object theInputFunction() {
-    result = Object::builtin("input")
-}
+deprecated Object theInputFunction() { result = Object::builtin("input") }
 
 /** DEPRECATED -- Use `Object::builtin("locals")` instead. */
-deprecated Object theLocalsFunction() {
-    result = Object::builtin("locals")
-}
+deprecated Object theLocalsFunction() { result = Object::builtin("locals") }
 
 /** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
-deprecated Object theGlobalsFunction() {
-    result = Object::builtin("globals")
-}
+deprecated Object theGlobalsFunction() { result = Object::builtin("globals") }
 
 /** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
-deprecated Object theExitFunctionObject() {
-    result = ModuleObject::named("sys").attr("exit")
-}
-
+deprecated Object theExitFunctionObject() { result = ModuleObject::named("sys").attr("exit") }

@@ -1,4 +1,10 @@
-import semmle.code.cpp.models.interfaces.Allocation
+/**
+ * Provides implementation classes  modelling various methods of deallocation
+ * (`free`, `delete` etc). See `semmle.code.cpp.models.interfaces.Deallocation`
+ * for usage information.
+ */
+
+import semmle.code.cpp.models.interfaces.Deallocation
 
 /**
  * A deallocation function such as `free`.
@@ -13,6 +19,10 @@ class StandardDeallocationFunction extends DeallocationFunction {
         name = "free" and freedArg = 0
         or
         name = "realloc" and freedArg = 0
+        or
+        name = "CRYPTO_free" and freedArg = 0
+        or
+        name = "CRYPTO_secure_free" and freedArg = 0
       )
       or
       hasGlobalOrStdName(name) and
@@ -77,6 +87,28 @@ class StandardDeallocationFunction extends DeallocationFunction {
   }
 
   override int getFreedArg() { result = freedArg }
+}
+
+/**
+ * An `operator delete` or `operator delete[]` function that may be associated
+ * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
+ * are not function calls, but these functions may also be called directly.
+ */
+class OperatorDeleteDeallocationFunction extends DeallocationFunction {
+  OperatorDeleteDeallocationFunction() {
+    exists(string name |
+      hasGlobalName(name) and
+      (
+        // operator delete(pointer, ...)
+        name = "operator delete"
+        or
+        // operator delete[](pointer, ...)
+        name = "operator delete[]"
+      )
+    )
+  }
+
+  override int getFreedArg() { result = 0 }
 }
 
 /**

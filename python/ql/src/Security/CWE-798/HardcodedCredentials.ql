@@ -13,7 +13,7 @@
 
 import python
 import semmle.python.security.Paths
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.filters.Tests
 
 class HardcodedValue extends TaintKind {
@@ -33,15 +33,15 @@ predicate fewer_characters_than(StrConst str, string char, float fraction) {
 }
 
 predicate possible_reflective_name(string name) {
-    exists(any(ModuleObject m).attr(name))
+    exists(any(ModuleValue m).attr(name))
     or
-    exists(any(ClassObject c).lookupAttribute(name))
+    exists(any(ClassValue c).lookup(name))
     or
-    any(ClassObject c).getName() = name
+    any(ClassValue c).getName() = name
     or
-    exists(ModuleObject::named(name))
+    exists(Module::named(name))
     or
-    exists(Object::builtin(name))
+    exists(Value::named(name))
 }
 
 int char_count(StrConst str) { result = count(string c | c = str.getText().charAt(_)) }
@@ -89,7 +89,7 @@ class CredentialSink extends TaintSink {
             name.regexpMatch(getACredentialRegex()) and
             not name.suffix(name.length() - 4) = "file"
         |
-            any(FunctionObject func).getNamedArgumentForCall(_, name) = this
+            any(FunctionValue func).getNamedArgumentForCall(_, name) = this
             or
             exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this)
             or

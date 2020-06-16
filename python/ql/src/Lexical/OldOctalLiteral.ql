@@ -12,8 +12,7 @@
 import python
 
 predicate is_old_octal(IntegerLiteral i) {
-    exists(string text |
-        text = i.getText() |
+    exists(string text | text = i.getText() |
         text.charAt(0) = "0" and
         not text = "00" and
         exists(text.charAt(1).toInt()) and

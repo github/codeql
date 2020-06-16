@@ -98,13 +98,9 @@ private predicate step(Node n1, Node n2) {
     n2.asExpr().(FieldRead).getField() = f
   )
   or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
-  or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
   or
@@ -307,6 +303,7 @@ private module Unification {
     arg2 = t2.getTypeArgument(pos)
   }
 
+  pragma[nomagic]
   predicate failsUnification(Type t1, Type t2) {
     unificationTargets(t1, t2) and
     (

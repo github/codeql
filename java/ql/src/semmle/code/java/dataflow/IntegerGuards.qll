@@ -10,9 +10,7 @@ private import RangeAnalysis
 /** Gets an expression that might have the value `i`. */
 private Expr exprWithIntValue(int i) {
   result.(ConstantIntegerExpr).getIntValue() = i or
-  result.(ParExpr).getExpr() = exprWithIntValue(i) or
-  result.(ConditionalExpr).getTrueExpr() = exprWithIntValue(i) or
-  result.(ConditionalExpr).getFalseExpr() = exprWithIntValue(i)
+  result.(ChooseExpr).getAResultExpr() = exprWithIntValue(i)
 }
 
 /**
@@ -142,25 +140,25 @@ Expr intBoundGuard(RValue x, boolean branch_with_lower_bound_k, int k) {
     x.getVariable().getType() instanceof IntegralType
   |
     // c < x
-    comp.getLesserOperand().getProperExpr() = c and
+    comp.getLesserOperand() = c and
     comp.isStrict() and
     branch_with_lower_bound_k = true and
     val + 1 = k
     or
     // c <= x
-    comp.getLesserOperand().getProperExpr() = c and
+    comp.getLesserOperand() = c and
     not comp.isStrict() and
     branch_with_lower_bound_k = true and
     val = k
     or
     // x < c
-    comp.getGreaterOperand().getProperExpr() = c and
+    comp.getGreaterOperand() = c and
     comp.isStrict() and
     branch_with_lower_bound_k = false and
     val = k
     or
     // x <= c
-    comp.getGreaterOperand().getProperExpr() = c and
+    comp.getGreaterOperand() = c and
     not comp.isStrict() and
     branch_with_lower_bound_k = false and
     val + 1 = k

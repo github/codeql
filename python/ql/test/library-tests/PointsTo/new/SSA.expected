@@ -1,4 +1,4 @@
-WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed in future (SSA.ql:10,1-33)
+WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed in future (SSA.ql:10,5-37)
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code' | builtin-class str |
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code.package' | builtin-class str |
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code.test_package' | builtin-class str |
@@ -31,6 +31,11 @@ WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed
 | a_simple.py:38 | multi_assign_and_packing_0 = FunctionExpr | Function multi_assign_and_packing | builtin-class function |
 | a_simple.py:39 | t_0 = Tuple | Tuple | builtin-class tuple |
 | a_simple.py:40 | w_0 = Tuple | Tuple | builtin-class tuple |
+| a_simple.py:41 | p_0 = t[0] | int 1 | builtin-class int |
+| a_simple.py:41 | q_0 = t[1] | int 2 | builtin-class int |
+| a_simple.py:41 | r_0 = t[2] | int 3 | builtin-class int |
+| a_simple.py:42 | y_0 = w[1] | 'b' | builtin-class str |
+| a_simple.py:42 | z_0 = w[2] | 'c' | builtin-class str |
 | a_simple.py:49 | h_0 = b | 'b' | builtin-class str |
 | a_simple.py:49 | i_0 = c | 'c' | builtin-class str |
 | b_condition.py:0 | __name___0 = ScopeEntryDefinition | 'code.b_condition' | builtin-class str |

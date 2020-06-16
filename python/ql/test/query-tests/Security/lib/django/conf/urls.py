@@ -2,5 +2,6 @@
 def url(regex, view, kwargs=None, name=None):
     pass
 
+
 def patterns(*urls):
     pass

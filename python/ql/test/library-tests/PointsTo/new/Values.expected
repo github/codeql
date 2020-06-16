@@ -41,6 +41,11 @@
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
 | a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, Unknown value, ) | builtin-class tuple |
+| a_simple.py:43 | ControlFlowNode for p | runtime | int 1 | builtin-class int |
+| a_simple.py:44 | ControlFlowNode for q | runtime | int 2 | builtin-class int |
+| a_simple.py:45 | ControlFlowNode for r | runtime | int 3 | builtin-class int |
+| a_simple.py:47 | ControlFlowNode for y | runtime | 'b' | builtin-class str |
+| a_simple.py:48 | ControlFlowNode for z | runtime | 'c' | builtin-class str |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', 'c', ) | builtin-class tuple |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
 | a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
@@ -49,6 +54,11 @@
 | a_simple.py:49 | ControlFlowNode for c | runtime | 'c' | builtin-class str |
 | a_simple.py:51 | ControlFlowNode for h | runtime | 'b' | builtin-class str |
 | a_simple.py:52 | ControlFlowNode for i | runtime | 'c' | builtin-class str |
+| a_simple.py:53 | ControlFlowNode for BinaryExpr | runtime | instance of tuple | builtin-class tuple |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | runtime | int 1 | builtin-class int |
+| a_simple.py:53 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
+| a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 1, ) | builtin-class tuple |
+| a_simple.py:53 | ControlFlowNode for Tuple | runtime | (int 2, ) | builtin-class tuple |
 | b_condition.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | b_condition.py:5 | ControlFlowNode for IfExp | runtime | None | builtin-class NoneType |
 | b_condition.py:5 | ControlFlowNode for None | runtime | None | builtin-class NoneType |
@@ -575,6 +585,22 @@
 | l_calls.py:53 | ControlFlowNode for Attribute() | import | 'b' | builtin-class str |
 | l_calls.py:53 | ControlFlowNode for F | import | class F | builtin-class type |
 | l_calls.py:53 | ControlFlowNode for t | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:58 | ControlFlowNode for Attribute | import | builtin method bit_length | builtin-class method_descriptor |
+| l_calls.py:58 | ControlFlowNode for int | import | builtin-class int | builtin-class type |
+| l_calls.py:59 | ControlFlowNode for Attribute | import | builtin method bit_length | builtin-class method_descriptor |
+| l_calls.py:59 | ControlFlowNode for Attribute() | import | instance of int | builtin-class int |
+| l_calls.py:59 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
+| l_calls.py:59 | ControlFlowNode for int | import | builtin-class int | builtin-class type |
+| l_calls.py:62 | ControlFlowNode for Attribute | import | builtin method get | builtin-class method_descriptor |
+| l_calls.py:62 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
+| l_calls.py:63 | ControlFlowNode for Attribute | import | builtin method get | builtin-class method_descriptor |
+| l_calls.py:63 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
+| l_calls.py:63 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
+| l_calls.py:63 | ControlFlowNode for Str | import | 'foo' | builtin-class str |
+| l_calls.py:63 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
+| l_calls.py:64 | ControlFlowNode for a | import | builtin method bit_length | builtin-class method_descriptor |
+| l_calls.py:64 | ControlFlowNode for b | import | instance of int | builtin-class int |
+| l_calls.py:64 | ControlFlowNode for c | import | builtin method get | builtin-class method_descriptor |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | m_attributes.py:3 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | m_attributes.py:5 | ControlFlowNode for FunctionExpr | import | Function C.__init__ | builtin-class function |

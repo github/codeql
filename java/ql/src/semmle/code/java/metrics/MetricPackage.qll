@@ -22,7 +22,8 @@ class MetricPackage extends Package, MetricElement {
   /** Gets the number of lines of code in this package. */
   override int getNumberOfLinesOfCode() {
     // Refer to `numlines(...)` directly to avoid invalid recursive aggregate.
-    result = sum(CompilationUnit cu, int lines |
+    result =
+      sum(CompilationUnit cu, int lines |
         cu.getPackage() = this and numlines(cu, _, lines, _)
       |
         lines
@@ -31,7 +32,8 @@ class MetricPackage extends Package, MetricElement {
 
   /** Gets the number of lines of comments in this package. */
   override int getNumberOfCommentLines() {
-    result = sum(CompilationUnit cu, int lines |
+    result =
+      sum(CompilationUnit cu, int lines |
         cu.getPackage() = this and numlines(cu, _, _, lines)
       |
         lines
@@ -40,7 +42,8 @@ class MetricPackage extends Package, MetricElement {
 
   /** Gets the total number of lines in this package, including code, comments and whitespace-only lines. */
   override int getTotalNumberOfLines() {
-    result = sum(CompilationUnit cu, int lines |
+    result =
+      sum(CompilationUnit cu, int lines |
         cu.getPackage() = this and numlines(cu, lines, _, _)
       |
         lines
@@ -60,7 +63,8 @@ class MetricPackage extends Package, MetricElement {
    * This is an indication of the size of the API provided by this package.
    */
   int getNumberOfPublicCallables() {
-    result = sum(MetricRefType t, int toSum |
+    result =
+      sum(MetricRefType t, int toSum |
         t.getPackage() = this and
         toSum = t.getNumberOfPublicCallables()
       |
@@ -86,7 +90,8 @@ class MetricPackage extends Package, MetricElement {
    * package metrics, such as the instability metric.
    */
   int getAfferentCoupling() {
-    result = count(RefType t |
+    result =
+      count(RefType t |
         t.getPackage() != this and
         exists(RefType s | s.getPackage() = this and depends(t, s))
       )
@@ -105,7 +110,8 @@ class MetricPackage extends Package, MetricElement {
    * package metrics, such as the instability metric.
    */
   int getEfferentCoupling() {
-    result = count(RefType t |
+    result =
+      count(RefType t |
         t.getPackage() = this and
         exists(RefType s | s.getPackage() != this and depends(t, s))
       )
@@ -114,7 +120,8 @@ class MetricPackage extends Package, MetricElement {
   /** Efferent Coupling (outgoing dependencies) to the specified package. */
   int getEfferentCoupling(Package p) {
     p != this and
-    result = count(RefType t |
+    result =
+      count(RefType t |
         t.getPackage() = this and
         exists(RefType s | s.getPackage() = p and depends(t, s))
       )
@@ -219,7 +226,8 @@ class MetricPackage extends Package, MetricElement {
    * for metrics that are directly computed from code.
    */
   float relationalCohesion() {
-    result = 1 +
+    result =
+      1 +
         avg(RefType t, float toAvg |
           t.getPackage() = this and
           toAvg = this.countDependencies(t)
@@ -264,7 +272,8 @@ class MetricPackage extends Package, MetricElement {
    * representative member of the cycle to which it belongs.
    */
   predicate isRepresentative() {
-    this.getName() = min(MetricPackage p, string toMin |
+    this.getName() =
+      min(MetricPackage p, string toMin |
         p = this.getACycleMember() and
         toMin = p.getName()
       |
@@ -278,7 +287,8 @@ class MetricPackage extends Package, MetricElement {
    * The fan-in of a package is the average efferent coupling over all callables in that package.
    */
   float getAverageFanIn() {
-    result = avg(RefType t, MetricCallable c, int toAvg |
+    result =
+      avg(RefType t, MetricCallable c, int toAvg |
         (c = t.getACallable() and t.getPackage() = this) and
         toAvg = c.getAfferentCoupling()
       |

@@ -1,8 +1,10 @@
-Introducing the CodeQL libraries for Java
-=========================================
+CodeQL library for Java
+=======================
 
-Overview
---------
+When you're analyzing a Java program, you can make use of the large collection of classes in the CodeQL library for Java.
+
+About the CodeQL library for Java
+---------------------------------
 
 There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
@@ -12,13 +14,13 @@ The library is implemented as a set of QL modules, that is, files with the exten
 
    import java
 
-The rest of this topic briefly summarizes the most important classes and predicates provided by this library.
+The rest of this article briefly summarizes the most important classes and predicates provided by this library.
 
 .. pull-quote::
 
    Note
 
-   The example queries in this topic illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The tutorial topics show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
+   The example queries in this article illustrate the types of results returned by different library classes. The results themselves are not interesting but can be used as the basis for developing a more complex query. The other articles in this section of the help show how you can take a simple query and fine-tune it to find precisely the results you're interested in.
 
 Summary of the library classes
 ------------------------------
@@ -40,7 +42,7 @@ These classes represent named program elements: packages (``Package``), compilat
 
 Their common superclass is ``Element``, which provides general member predicates for determining the name of a program element and checking whether two elements are nested inside each other.
 
-It is often convenient to refer to an element that might either be a method or a constructor; the class ``Callable``, which is a common superclass of ``Method`` and ``Constructor``, can be used for this purpose.
+It's often convenient to refer to an element that might either be a method or a constructor; the class ``Callable``, which is a common superclass of ``Method`` and ``Constructor``, can be used for this purpose.
 
 Types
 ~~~~~
@@ -66,9 +68,9 @@ For example, the following query finds all variables of type ``int`` in the prog
        pt.hasName("int")
    select v
 
-➤ `See this in the query console <https://lgtm.com/query/660700018/>`__. You are likely to get many results when you run this query because most projects contain many variables of type ``int``.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/660700018/>`__. You're likely to get many results when you run this query because most projects contain many variables of type ``int``.
 
-Reference types can also be categorized according to their declaration scope:
+Reference types are also categorized according to their declaration scope:
 
 -  ``TopLevelType`` represents a reference type declared at the top-level of a compilation unit.
 -  ``NestedType`` is a type declared inside another type.
@@ -83,7 +85,7 @@ For instance, this query finds all top-level types whose name is not the same as
    where tl.getName() != tl.getCompilationUnit().getName()
    select tl
 
-➤ `See this in the query console <https://lgtm.com/query/674620002/>`__. This pattern is seen in many projects. When we ran it on the LGTM.com demo projects, most of the projects had at least one instance of this problem in the source code. There were many more instances in the files referenced by the source code.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/674620002/>`__. This pattern is seen in many projects. When we ran it on the LGTM.com demo projects, most of the projects had at least one instance of this problem in the source code. There were many more instances in the files referenced by the source code.
 
 Several more specialized classes are available as well:
 
@@ -105,7 +107,7 @@ As an example, we can write a query that finds all nested classes that directly 
    where nc.getASupertype() instanceof TypeObject
    select nc
 
-➤ `See this in the query console <https://lgtm.com/query/672230026/>`__. You are likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672230026/>`__. You're likely to get many results when you run this query because many projects include nested classes that extend ``Object`` directly.
 
 Generics
 ~~~~~~~~
@@ -139,7 +141,7 @@ For instance, we could use the following query to find all parameterized instanc
        pt.getSourceDeclaration() = map
    select pt
 
-➤ `See this in the query console <https://lgtm.com/query/660700019/>`__. None of the LGTM.com demo projects contain parameterized instances of ``java.util.Map`` in their source code, but they all have results in reference files.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/660700019/>`__. None of the LGTM.com demo projects contain parameterized instances of ``java.util.Map`` in their source code, but they all have results in reference files.
 
 In general, generic types may restrict which types a type parameter can be bound to. For instance, a type of maps from strings to numbers could be declared as follows:
 
@@ -162,7 +164,7 @@ As an example, the following query finds all type variables with type bound ``Nu
        tb.getType().hasQualifiedName("java.lang", "Number")
    select tv
 
-➤ `See this in the query console <https://lgtm.com/query/690010016/>`__. When we ran it on the LGTM.com demo projects, the *neo4j/neo4j*, *gradle/gradle* and *hibernate/hibernate-orm* projects all contained examples of this pattern.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/690010016/>`__. When we ran it on the LGTM.com demo projects, the *neo4j/neo4j*, *gradle/gradle* and *hibernate/hibernate-orm* projects all contained examples of this pattern.
 
 For dealing with legacy code that is unaware of generics, every generic type has a "raw" version without any type parameters. In the CodeQL libraries, raw types are represented using class ``RawType``, which has the expected subclasses ``RawClass`` and ``RawInterface``. Again, there is a predicate ``getSourceDeclaration`` for obtaining the corresponding generic type. As an example, we can find variables of (raw) type ``Map``:
 
@@ -175,7 +177,7 @@ For dealing with legacy code that is unaware of generics, every generic type has
        rt.getSourceDeclaration().hasQualifiedName("java.util", "Map")
    select v
 
-➤ `See this in the query console <https://lgtm.com/query/686320008/>`__. Many projects have variables of raw type ``Map``.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/686320008/>`__. Many projects have variables of raw type ``Map``.
 
 For example, in the following code snippet this query would find ``m1``, but not ``m2``:
 
@@ -194,7 +196,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-More information on working with types can be found in the :doc:`tutorial on types and the class hierarchy <types-class-hierarchy>`.
+For more information on working with types, see the :doc:`article on Java types <types-class-hierarchy>`.
 
 Variables
 ~~~~~~~~~
@@ -208,7 +210,7 @@ Class ``Variable`` represents a variable `in the Java sense <http://docs.oracle.
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). See the :doc:`AST class reference <ast-class-reference>` for an exhaustive list of all expression and statement types available in the standard QL library.
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`.
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
@@ -226,7 +228,7 @@ For example, the following query finds all expressions whose parents are ``retur
    where e.getParent() instanceof ReturnStmt
    select e
 
-➤ `See this in the query console <https://lgtm.com/query/668700463/>`__. Many projects have examples of ``return`` statements with child statements.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668700463/>`__. Many projects have examples of ``return`` statements with child statements.
 
 Therefore, if the program contains a return statement ``return x + y;``, this query will return ``x + y``.
 
@@ -240,7 +242,7 @@ As another example, the following query finds statements whose parent is an ``if
    where s.getParent() instanceof IfStmt
    select s
 
-➤ `See this in the query console <https://lgtm.com/query/670720173/>`__. Many projects have examples of ``if`` statements with child statements.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/670720173/>`__. Many projects have examples of ``if`` statements with child statements.
 
 This query will find both ``then`` branches and ``else`` branches of all ``if`` statements in the program.
 
@@ -254,11 +256,11 @@ Finally, here is a query that finds method bodies:
    where s.getParent() instanceof Method
    select s
 
-➤ `See this in the query console <https://lgtm.com/query/663740023/>`__. Most projects have many method bodies.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/663740023/>`__. Most projects have many method bodies.
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
-   For more information on working with AST classes, see the :doc:`tutorial on expressions and statements <expressions-statements>`.
+For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java <expressions-statements>`.
 
 Metadata
 --------
@@ -274,7 +276,7 @@ For annotations, class ``Annotatable`` is a superclass of all program elements t
    from Constructor c
    select c.getAnAnnotation()
 
-➤ `See this in the query console <https://lgtm.com/query/665620008/>`__. The LGTM.com demo projects all use annotations, you can see examples where they are used to suppress warnings and mark code as deprecated.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665620008/>`__. The LGTM.com demo projects all use annotations, you can see examples where they are used to suppress warnings and mark code as deprecated.
 
 These annotations are represented by class ``Annotation``. An annotation is simply an expression whose type is an ``AnnotationType``. For example, you can amend this query so that it only reports deprecated constructors:
 
@@ -288,9 +290,9 @@ These annotations are represented by class ``Annotation``. An annotation is simp
        anntp.hasQualifiedName("java.lang", "Deprecated")
    select ann
 
-➤ `See this in the query console <https://lgtm.com/query/659662167/>`__. Only constructors with the ``@deprecated`` annotation are reported this time.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/659662167/>`__. Only constructors with the ``@deprecated`` annotation are reported this time.
 
-For more information on working with annotations, see the :doc:`tutorial on annotations <annotations>`.
+For more information on working with annotations, see the :doc:`article on annotations <annotations>`.
 
 For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a delegate ``Documentable`` object, which can then be queried for its attached Javadoc comments. For example, the following query finds Javadoc comments on private fields:
 
@@ -303,7 +305,7 @@ For Javadoc, class ``Element`` has a member predicate ``getDoc`` that returns a 
        jdoc = f.getDoc().getJavadoc()
    select jdoc
 
-➤ `See this in the query console <https://lgtm.com/query/663330296/>`__. You can see this pattern in many projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/663330296/>`__. You can see this pattern in many projects.
 
 Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocElement`` nodes, which can be traversed using member predicates ``getAChild`` and ``getParent``. For instance, you could edit the query so that it finds all ``@author`` tags in Javadoc comments on private fields:
 
@@ -317,7 +319,7 @@ Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocEle
        at.getParent+() = jdoc
    select at
 
-➤ `See this in the query console <https://lgtm.com/query/670490015/>`__. None of the LGTM.com demo projects uses the ``@author`` tag on private fields.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/670490015/>`__. None of the LGTM.com demo projects uses the ``@author`` tag on private fields.
 
 .. pull-quote::
 
@@ -325,7 +327,7 @@ Class ``Javadoc`` represents an entire Javadoc comment as a tree of ``JavadocEle
 
    On line 5 we used ``getParent+`` to capture tags that are nested at any depth within the Javadoc comment.
 
-For more information on working with Javadoc, see the :doc:`tutorial on Javadoc <javadoc>`.
+For more information on working with Javadoc, see the :doc:`article on Javadoc <javadoc>`.
 
 Metrics
 -------
@@ -345,7 +347,7 @@ For example, the following query finds methods with a `cyclomatic complexity <ht
        mc.getCyclomaticComplexity() > 40
    select m
 
-➤ `See this in the query console <https://lgtm.com/query/670720174/>`__. Most large projects include some methods with a very high cyclomatic complexity. These methods are likely to be difficult to understand and test.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/670720174/>`__. Most large projects include some methods with a very high cyclomatic complexity. These methods are likely to be difficult to understand and test.
 
 Call graph
 ----------
@@ -365,7 +367,7 @@ We can use predicate ``Call.getCallee`` to find out which method or constructor 
        m.hasName("println")
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/669220009/>`__. The LGTM.com demo projects all include many calls to methods of this name.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/669220009/>`__. The LGTM.com demo projects all include many calls to methods of this name.
 
 Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So we can find methods and constructors that are never called using this query:
 
@@ -377,13 +379,12 @@ Conversely, ``Callable.getAReference`` returns a ``Call`` that refers to it. So 
    where not exists(c.getAReference())
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/666680036/>`__. The LGTM.com demo projects all appear to have many methods that are not called directly, but this is unlikely to be the whole story. To explore this area further, see :doc:`Navigating the call graph <call-graph>`.
 
-For more information about callables and calls, see the :doc:`call graph tutorial <call-graph>`.
+For more information about callables and calls, see the :doc:`article on the call graph <call-graph>`.
 
-What next?
-----------
+Further reading
+---------------
 
--  Experiment with the worked examples in the CodeQL for Java tutorial topics: :doc:`Types and the class hierarchy <types-class-hierarchy>`, :doc:`Expressions and statements <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations <annotations>`, :doc:`Javadoc <javadoc>` and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`AST class reference <ast-class-reference>`.
--  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

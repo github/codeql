@@ -6,6 +6,7 @@
     <AssemblyName>Semmle.Extraction.CSharp.Driver</AssemblyName>
     <RootNamespace>Semmle.Extraction.CSharp.Driver</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>

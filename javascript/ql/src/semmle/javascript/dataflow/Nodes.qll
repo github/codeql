@@ -9,7 +9,7 @@ private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
 
 /**
- * A data flow node corresponding to an expression. 
+ * A data flow node corresponding to an expression.
  *
  * Examples:
  * ```js
@@ -147,7 +147,8 @@ class InvokeNode extends DataFlow::SourceNode {
    */
   ParameterNode getABoundCallbackParameter(int callback, int param) {
     exists(int boundArgs |
-      result = getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
+      result =
+        getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
     )
   }
 
@@ -155,12 +156,13 @@ class InvokeNode extends DataFlow::SourceNode {
    * Holds if the `i`th argument of this invocation is an object literal whose property
    * `name` is set to `result`.
    */
+  pragma[nomagic]
   DataFlow::ValueNode getOptionArgument(int i, string name) {
-    exists(ObjectLiteralNode obj |
-      obj.flowsTo(getArgument(i)) and
-      obj.hasPropertyWrite(name, result)
-    )
+    getOptionsArgument(i).hasPropertyWrite(name, result)
   }
+
+  pragma[noinline]
+  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
   final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
@@ -548,9 +550,7 @@ class RegExpLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   RegExpTerm getRoot() { result = astNode.getRoot() }
 
   /** Gets the flags of this regular expression literal. */
-  string getFlags() {
-    result = astNode.getFlags()
-  }
+  string getFlags() { result = astNode.getFlags() }
 }
 
 /**
@@ -581,22 +581,21 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
 
   /** Gets the initial size of the created array, if it can be determined. */
   int getSize() {
-    if getNumArgument() = 1 then
-      result = getArgument(0).getIntValue()
-    else
-      result = count(getAnElement())
+    if getNumArgument() = 1
+    then result = getArgument(0).getIntValue()
+    else result = count(getAnElement())
   }
 }
 
 /**
- * A data flow node corresponding to the creation or a new array, either through an array literal
- * or an invocation of the `Array` constructor.
+ * A data flow node corresponding to the creation or a new array, either through an array literal,
+ * an invocation of the `Array` constructor, or the `Array.from` method.
  *
  *
  * Examples:
  * ```js
  * ['apple', 'orange'];
- * Array('apple', 'orange') 
+ * Array('apple', 'orange')
  * new Array('apple', 'orange')
  * Array(16)
  * new Array(16)
@@ -621,6 +620,16 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   int getSize() {
     result = this.(ArrayLiteralNode).getSize() or
     result = this.(ArrayConstructorInvokeNode).getSize()
+  }
+
+  /**
+   * Gets a data flow node corresponding to an array of values being passed as
+   * individual arguments to this array creation.
+   */
+  DataFlow::Node getASpreadArgument() {
+    exists(SpreadElement arg | arg = getAnElement().getEnclosingExpr() |
+      result = DataFlow::valueNode(arg.getOperand())
+    )
   }
 }
 
@@ -688,6 +697,7 @@ module ModuleImportNode {
  *
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
+cached
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
 /**
@@ -1036,6 +1046,9 @@ module ClassNode {
         kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = getConstructor().getReceiver().getAPropertySource(name)
     }
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
@@ -1045,6 +1058,9 @@ module ClassNode {
         kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = getConstructor().getReceiver().getAPropertySource()
     }
 
     override FunctionNode getStaticMethod(string name) {
@@ -1063,6 +1079,8 @@ module ClassNode {
         method.isStatic() and
         result = method.getBody().flow()
       )
+      or
+      result = getAPropertySource()
     }
 
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
@@ -1180,6 +1198,14 @@ module ClassNode {
         getAPropertySource("prototype") = newCall and
         result = newCall.getCalleeNode()
       )
+      or
+      // util.inherits(C, D);
+      exists(DataFlow::CallNode inheritsCall |
+        inheritsCall = DataFlow::moduleMember("util", "inherits").getACall()
+      |
+        this = inheritsCall.getArgument(0).getALocalSource() and
+        result = inheritsCall.getArgument(1)
+      )
     }
   }
 }
@@ -1199,6 +1225,13 @@ class PartialInvokeNode extends DataFlow::Node {
 
   PartialInvokeNode() { this = range }
 
+  /** Gets a node holding a callback invoked by this partial invocation node. */
+  DataFlow::Node getACallbackNode() {
+    isPartialArgument(result, _, _)
+    or
+    exists(getBoundReceiver(result))
+  }
+
   /**
    * Holds if `argument` is passed as argument `index` to the function in `callback`.
    */
@@ -1216,7 +1249,14 @@ class PartialInvokeNode extends DataFlow::Node {
   /**
    * Gets the node holding the receiver to be passed to the bound function, if specified.
    */
-  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver() }
+  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver(_) }
+
+  /**
+   * Gets the node holding the receiver to be passed to the bound function, if specified.
+   */
+  DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+    result = range.getBoundReceiver(callback)
+  }
 }
 
 module PartialInvokeNode {
@@ -1227,7 +1267,9 @@ module PartialInvokeNode {
     /**
      * Holds if `argument` is passed as argument `index` to the function in `callback`.
      */
-    predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) { none() }
+    predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      none()
+    }
 
     /**
      * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
@@ -1235,18 +1277,24 @@ module PartialInvokeNode {
     DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
 
     /**
+     * DEPRECATED. Use the one-argument version of `getBoundReceiver` instead.
+     *
      * Gets the node holding the receiver to be passed to the bound function, if specified.
      */
-    DataFlow::Node getBoundReceiver() { none() }
+    deprecated DataFlow::Node getBoundReceiver() { none() }
+
+    /**
+     * Gets the node holding the receiver to be passed to `callback`.
+     */
+    DataFlow::Node getBoundReceiver(DataFlow::Node callback) { none() }
   }
 
   /**
-  * A partial call through the built-in `Function.prototype.bind`.
-  */
+   * A partial call through the built-in `Function.prototype.bind`.
+   */
   private class BindPartialCall extends PartialInvokeNode::Range, DataFlow::MethodCallNode {
     BindPartialCall() {
       getMethodName() = "bind" and
-
       // Avoid overlap with angular.bind and goog.bind
       not this = AngularJS::angular().getAMethodCall() and
       not getReceiver().accessesGlobal("goog")
@@ -1264,14 +1312,15 @@ module PartialInvokeNode {
       result = this
     }
 
-    override DataFlow::Node getBoundReceiver() {
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getReceiver() and
       result = getArgument(0)
     }
   }
 
   /**
-  * A partial call through `_.partial`.
-  */
+   * A partial call through `_.partial`.
+   */
   private class LodashPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
     LodashPartialCall() { this = LodashUnderscore::member("partial").getACall() }
 
@@ -1294,9 +1343,7 @@ module PartialInvokeNode {
   private class RamdaPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
     RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
 
-    private DataFlow::ArrayCreationNode getArgumentsArray() {
-      result.flowsTo(getArgument(1))
-    }
+    private DataFlow::ArrayCreationNode getArgumentsArray() { result.flowsTo(getArgument(1)) }
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       callback = getArgument(0) and
@@ -1307,6 +1354,22 @@ module PartialInvokeNode {
       callback = getArgument(0) and
       boundArgs = getArgumentsArray().getSize() and
       result = this
+    }
+  }
+
+  /**
+   * A call to `for-in` or `for-own`, passing the context parameter to the target function.
+   */
+  class ForOwnInPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    ForOwnInPartialCall() {
+      exists(string name | name = "for-in" or name = "for-own" |
+        this = moduleImport(name).getACall()
+      )
+    }
+
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getArgument(1) and
+      result = getArgument(2)
     }
   }
 }
@@ -1331,17 +1394,13 @@ deprecated class AdditionalPartialInvokeNode = PartialInvokeNode::Range;
  * ```
  */
 class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
-  RegExpConstructorInvokeNode() {
-    this = DataFlow::globalVarRef("RegExp").getAnInvocation()
-  }
+  RegExpConstructorInvokeNode() { this = DataFlow::globalVarRef("RegExp").getAnInvocation() }
 
   /**
    * Gets the AST of the regular expression created here, provided that the
    * first argument is a string literal.
    */
-  RegExpTerm getRoot() {
-    result = getArgument(0).asExpr().(StringLiteral).asRegExp()
-  }
+  RegExpTerm getRoot() { result = getArgument(0).asExpr().(StringLiteral).asRegExp() }
 
   /**
    * Gets the flags provided in the second argument, or an empty string if no
@@ -1417,13 +1476,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
     t.start() and
     result = this
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = getAReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAReference(t2).track(t2, t))
   }
 
   /** Gets a data flow node referring to this regular expression. */
-  DataFlow::SourceNode getAReference() {
-    result = getAReference(DataFlow::TypeTracker::end())
-  }
+  DataFlow::SourceNode getAReference() { result = getAReference(DataFlow::TypeTracker::end()) }
 }

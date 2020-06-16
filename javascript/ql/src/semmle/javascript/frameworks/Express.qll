@@ -119,7 +119,14 @@ module Express {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        exists(HTTP::RouteHandlerCandidateContainer container |
+          result = container.getRouteHandler(succ)
+        ) and
+        t = t2
+      )
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -127,14 +134,14 @@ module Express {
     /**
      * Gets the HTTP request type this is registered for, if any.
      *
-     * Has no result for `use` and `all` calls.
+     * Has no result for `use`, `all`, or `param` calls.
      */
     HTTP::RequestMethodName getRequestMethod() { result.toLowerCase() = getMethodName() }
 
     /**
      * Holds if this registers a route for all request methods.
      */
-    predicate handlesAllRequestMethods() { getMethodName() = "use" or getMethodName() = "all" }
+    predicate handlesAllRequestMethods() { getMethodName() = ["use", "all", "param"] }
 
     /**
      * Holds if this route setup sets up a route for the same
@@ -146,37 +153,40 @@ module Express {
       that.handlesAllRequestMethods() or
       this.getRequestMethod() = that.getRequestMethod()
     }
+
+    /**
+     * Holds if this route setup is a parameter handler, such as `app.param("foo", ...)`.
+     */
+    predicate isParameterHandler() { getMethodName() = "param" }
   }
-  
+
   /**
    * A call that sets up a Passport router that includes the request object.
    */
   private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
     DataFlow::ModuleImportNode importNode;
     DataFlow::FunctionNode callback;
-  	
+
     // looks for this pattern: passport.use(new Strategy({passReqToCallback: true}, callback))
     PassportRouteSetup() {
       importNode = DataFlow::moduleImport("passport") and
       this = importNode.getAMemberCall("use").asExpr() and
-      exists(DataFlow::NewNode strategy | 
-      	strategy.flowsToExpr(this.getArgument(0)) and
-      	strategy.getNumArgument() = 2 and 
-      	// new Strategy({passReqToCallback: true}, ...)
-      	strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and 
-      	callback.flowsTo(strategy.getArgument(1))
+      exists(DataFlow::NewNode strategy |
+        strategy.flowsToExpr(this.getArgument(0)) and
+        strategy.getNumArgument() = 2 and
+        // new Strategy({passReqToCallback: true}, ...)
+        strategy.getOptionArgument(0, "passReqToCallback").mayHaveBooleanValue(true) and
+        callback.flowsTo(strategy.getArgument(1))
       )
     }
-    
+
     override Expr getServer() { result = importNode.asExpr() }
-    
-    override DataFlow::SourceNode getARouteHandler() {
-      result = callback
-    }
+
+    override DataFlow::SourceNode getARouteHandler() { result = callback }
   }
-  
+
   /**
-   * The callback given to passport in PassportRouteSetup. 
+   * The callback given to passport in PassportRouteSetup.
    */
   private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
     DataFlow::ValueNode {
@@ -185,7 +195,7 @@ module Express {
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
-      kind = "request" and 
+      kind = "request" and
       result = astNode.getParameter(0)
     }
   }
@@ -316,7 +326,7 @@ module Express {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
-     * `kind` is one of: "error", "request", "response", "next".
+     * `kind` is one of: "error", "request", "response", "next", or "parameter".
      */
     abstract SimpleParameter getRouteHandlerParameter(string kind);
 
@@ -342,11 +352,14 @@ module Express {
   class StandardRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
     DataFlow::ValueNode {
     override Function astNode;
+    RouteSetup routeSetup;
 
-    StandardRouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
+    StandardRouteHandler() { this = routeSetup.getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
-      result = getRouteHandlerParameter(astNode, kind)
+      if routeSetup.isParameterHandler()
+      then result = getRouteParameterHandlerParameter(astNode, kind)
+      else result = getRouteHandlerParameter(astNode, kind)
     }
   }
 
@@ -455,32 +468,31 @@ module Express {
     string kind;
 
     RequestInputAccess() {
-      exists(DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+      exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
         (
-          this.(DataFlow::MethodCallNode).calls(request, "param")
+          this = request.getAMethodCall("param")
           or
-          exists(DataFlow::PropRead base, string propName |
-            // `req.params.name` or `req.query.name`
-            base.accesses(request, propName) and
-            this = base.getAPropertyReference(_)
-          |
-            propName = "params" or
-            propName = "query"
-          )
+          this = request.getAPropertyRead(["params", "query"]).getAPropertyRead()
         )
         or
         // `req.originalUrl`
         kind = "url" and
-        this.(DataFlow::PropRef).accesses(request, "originalUrl")
+        this = request.getAPropertyRead("originalUrl")
         or
         // `req.cookies`
         kind = "cookie" and
-        this.(DataFlow::PropRef).accesses(request, "cookies")
+        this = request.getAPropertyRead("cookies")
       )
       or
       kind = "body" and
       this.asExpr() = rh.getARequestBodyAccess()
+      or
+      // `value` in `router.param('foo', (req, res, next, value) => { ... })`
+      kind = "parameter" and
+      exists(RouteSetup setup | rh = setup.getARouteHandler() |
+        this = DataFlow::parameterNode(rh.getRouteHandlerParameter("parameter"))
+      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -850,10 +862,14 @@ module Express {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
+    RouteSetup routeSetup;
+
+    TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
-      result = getRouteHandlerParameter(astNode, kind)
+      if routeSetup.isParameterHandler()
+      then result = getRouteParameterHandlerParameter(astNode, kind)
+      else result = getRouteHandlerParameter(astNode, kind)
     }
   }
 

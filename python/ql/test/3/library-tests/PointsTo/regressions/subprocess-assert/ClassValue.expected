@@ -1,0 +1,3 @@
+| mwe_failure.py:7:1:7:23 | class MyTest | <MISSING BASE TYPE> |
+| mwe_failure_2.py:7:1:7:23 | class MyTest | <MISSING BASE TYPE> |
+| mwe_success.py:7:1:7:23 | class MyTest | class TestCase |

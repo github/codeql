@@ -30,7 +30,7 @@ class InetAton extends TaintFunction, ArrayFunction {
   }
 }
 
-class InetAddr extends TaintFunction, ArrayFunction {
+class InetAddr extends TaintFunction, ArrayFunction, AliasFunction {
   InetAddr() { hasGlobalName("inet_addr") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -41,6 +41,12 @@ class InetAddr extends TaintFunction, ArrayFunction {
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam = 0 }
+
+  override predicate parameterNeverEscapes(int index) { index = 0 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate parameterIsAlwaysReturned(int index) { none() }
 }
 
 class InetNetwork extends TaintFunction, ArrayFunction {

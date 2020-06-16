@@ -35,7 +35,8 @@ private predicate looksLikeCode(JavadocText line) {
  * - HTML entities in hexadecimal notation (e.g. `&#x705F;`)
  */
 private string trimmedCommentText(JavadocText line) {
-  result = line
+  result =
+    line
         .getText()
         .trim()
         .regexpReplaceAll("\\s*//.*$", "")
@@ -74,7 +75,8 @@ private class JavadocFirst extends Javadoc {
  * The number of lines that look like code in the comment `first`, or ones that follow it.
  */
 private int codeCount(JavadocFirst first) {
-  result = sum(Javadoc following |
+  result =
+    sum(Javadoc following |
       following = getNextComment*(first) and not hasCodeTags(following)
     |
       count(JavadocText line | line = following.getAChild() and looksLikeCode(line))
@@ -85,7 +87,8 @@ private int codeCount(JavadocFirst first) {
  * The number of lines in the comment `first`, or ones that follow it.
  */
 private int anyCount(JavadocFirst first) {
-  result = sum(Javadoc following |
+  result =
+    sum(Javadoc following |
       following = getNextComment*(first) and not hasCodeTags(following)
     |
       count(JavadocText line |

@@ -14,9 +14,8 @@ import python
 import semmle.python.regex
 
 from Regex r, int offset
-where r.escapingChar(offset) and r.getChar(offset+1) = "b" and 
-exists(int start, int end |
-    start < offset and end > offset |
-    r.charSet(start, end)
-)
+where
+    r.escapingChar(offset) and
+    r.getChar(offset + 1) = "b" and
+    exists(int start, int end | start < offset and end > offset | r.charSet(start, end))
 select r, "Backspace escape in regular expression at offset " + offset + "."

@@ -146,19 +146,21 @@ int main(int argc, char **argv) {
 
 	// BAD: i8 value comes from argv
 	char *i8;
-	*(&i8 + 1) = argv[1];
+	*(&i8) = argv[1];
 	printf(i8);
 	printWrapper(i8);
 
 	// BAD: i9 value comes from argv
-	char *i9;
-	memcpy(1 ? i9++ : 0, argv[1], 1);
+	char i9buf[32];
+	char *i9 = i9buf;
+	memcpy(1 ? ++i9 : 0, argv[1], 1);
 	printf(i9);
 	printWrapper(i9);
 
 	// BAD: i91 value comes from argv
-	char *i91;
-	memcpy(0 ? 0 : (char *)((int) i91 * 2), argv[1], 1);
+	char i91buf[64];
+	char *i91 = &i91buf[0];
+	memcpy(0 ? 0 : i91, argv[1] + 1, 1);
 	printf(i91);
 	printWrapper(i91);
 

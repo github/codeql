@@ -33,21 +33,41 @@ class AnnotatedCall extends InvokeExpr {
   string getCallTargetName() { result = calls }
 
   AnnotatedFunction getAnExpectedCallee() { result.getCalleeName() = getCallTargetName() }
+
+  int getBoundArgs() { result = getAnnotation(this, "boundArgs").toInt() }
+
+  int getBoundArgsOrMinusOne() {
+    result = getBoundArgs()
+    or
+    not exists(getBoundArgs()) and
+    result = -1
+  }
 }
 
-query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target) {
-  FlowSteps::calls(call.flow(), target) and
-  not target = call.getAnExpectedCallee()
+predicate callEdge(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
+  FlowSteps::calls(call.flow(), target) and boundArgs = -1
+  or
+  FlowSteps::callsBound(call.flow(), target, boundArgs)
 }
 
-query predicate missingCallee(AnnotatedCall call, AnnotatedFunction target) {
-  not FlowSteps::calls(call.flow(), target) and
-  target = call.getAnExpectedCallee()
+query predicate spuriousCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
+  callEdge(call, target, boundArgs) and
+  not (
+    target = call.getAnExpectedCallee() and
+    boundArgs = call.getBoundArgsOrMinusOne()
+  )
+}
+
+query predicate missingCallee(AnnotatedCall call, AnnotatedFunction target, int boundArgs) {
+  not callEdge(call, target, boundArgs) and
+  target = call.getAnExpectedCallee() and
+  boundArgs = call.getBoundArgsOrMinusOne()
 }
 
 query predicate badAnnotation(string name) {
   name = any(AnnotatedCall cl).getCallTargetName() and
-  not name = any(AnnotatedFunction cl).getCalleeName()
+  not name = any(AnnotatedFunction cl).getCalleeName() and
+  name != "NONE"
   or
   not name = any(AnnotatedCall cl).getCallTargetName() and
   name = any(AnnotatedFunction cl).getCalleeName()

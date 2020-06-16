@@ -251,8 +251,13 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
                     }
                 }
             }
-            if (isNamedNodeWithSymbol(node)) {
-                let symbol = typeChecker.getSymbolAtLocation(node.name);
+            let symbolNode =
+                isNamedNodeWithSymbol(node) ? node.name :
+                ts.isImportDeclaration(node) ? node.moduleSpecifier :
+                ts.isExternalModuleReference(node) ? node.expression :
+                null;
+            if (symbolNode != null) {
+                let symbol = typeChecker.getSymbolAtLocation(symbolNode);
                 if (symbol != null) {
                     node.$symbol = typeTable.getSymbolId(symbol);
                 }

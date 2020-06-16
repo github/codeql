@@ -10,20 +10,16 @@
  *       external/cwe/cwe-20
  */
 
-
 import python
 import semmle.python.regex
 
-private string commonTopLevelDomainRegex() {
-    result = "com|org|edu|gov|uk|net|io"
-}
+private string commonTopLevelDomainRegex() { result = "com|org|edu|gov|uk|net|io" }
 
 predicate looksLikeUrl(StrConst s) {
-    exists(string text |
-        text = s.getText()
-        |
-        text.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + 
-            commonTopLevelDomainRegex() +")(:[0-9]+)?/?")
+    exists(string text | text = s.getText() |
+        text
+                .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + commonTopLevelDomainRegex() +
+                        ")(:[0-9]+)?/?")
         or
         // target is a HTTP URL to a domain on any TLD
         text.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")
@@ -42,10 +38,8 @@ predicate incomplete_sanitization(Expr sanitizer, StrConst url) {
 }
 
 predicate unsafe_call_to_startswith(Call sanitizer, StrConst url) {
-    sanitizer.getFunc().(Attribute).getName() = "startswith"
-    and
-    sanitizer.getArg(0) = url
-    and
+    sanitizer.getFunc().(Attribute).getName() = "startswith" and
+    sanitizer.getArg(0) = url and
     not url.getText().regexpMatch("(?i)https?://[\\.a-z0-9-]+/.*")
 }
 

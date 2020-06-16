@@ -14,10 +14,8 @@ import python
 
 /* Helper predicate for CallToAssertOnComparison class */
 predicate callToAssertOnComparison(Call call, string assertName, Cmpop op) {
-    call.getFunc().(Attribute).getName() = assertName
-    and
-    (assertName = "assertTrue" or assertName = "assertFalse")
-    and
+    call.getFunc().(Attribute).getName() = assertName and
+    (assertName = "assertTrue" or assertName = "assertFalse") and
     exists(Compare cmp |
         cmp = call.getArg(0) and
         /* Exclude complex comparisons like: a < b < c */
@@ -27,18 +25,11 @@ predicate callToAssertOnComparison(Call call, string assertName, Cmpop op) {
 }
 
 class CallToAssertOnComparison extends Call {
+    CallToAssertOnComparison() { callToAssertOnComparison(this, _, _) }
 
-    CallToAssertOnComparison() {
-        callToAssertOnComparison(this, _, _)
-    }
+    Cmpop getOperator() { callToAssertOnComparison(this, _, result) }
 
-    Cmpop getOperator() {
-        callToAssertOnComparison(this, _, result) 
-    }
-
-    string getMethodName() {
-        callToAssertOnComparison(this, result, _)
-    }
+    string getMethodName() { callToAssertOnComparison(this, result, _) }
 
     string getBetterName() {
         exists(Cmpop op |
@@ -89,13 +80,13 @@ class CallToAssertOnComparison extends Call {
             )
         )
     }
-
 }
 
-
 from CallToAssertOnComparison call
-where 
-  /* Exclude cases where an explicit message is provided*/
-  not exists(call.getArg(1))
-select call, call.getMethodName() + "(a " + call.getOperator().getSymbol() + " b) " +
-             "cannot provide an informative message. Using " + call.getBetterName() + "(a, b) instead will give more informative messages."
+where
+    /* Exclude cases where an explicit message is provided*/
+    not exists(call.getArg(1))
+select call,
+    call.getMethodName() + "(a " + call.getOperator().getSymbol() + " b) " +
+        "cannot provide an informative message. Using " + call.getBetterName() +
+        "(a, b) instead will give more informative messages."

@@ -32,7 +32,8 @@ class ValueReturn extends ReturnStmt {
 
 /** Gets the lexically first explicit return statement in function `f`. */
 ValueReturn getFirstExplicitReturn(Function f) {
-  result = min(ValueReturn ret |
+  result =
+    min(ValueReturn ret |
       ret.getContainer() = f
     |
       ret order by ret.getLocation().getStartLine(), ret.getLocation().getStartColumn()

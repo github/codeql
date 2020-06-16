@@ -50,8 +50,25 @@ var server = http.createServer(function(req, res) {
     args[1] = cmd;
     cp.execFile(`/bin` + "/bash", args); // NOT OK
 
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // NOT OK
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // NOT OK
+
+	let myArgs = [];
+    myArgs.push(`-` + "c");
+    myArgs.push(cmd);
+    cp.execFile(`/bin` + "/bash", args); // NOT OK
+
 });
 
 function run(cmd, args) {
   cp.spawn(cmd, args); // NOT OK
 }
+
+var util = require("util")
+
+http.createServer(function(req, res) {
+    let cmd = url.parse(req.url, true).query.path;
+
+    util.promisify(cp.exec)(cmd); // NOT OK
+});
+

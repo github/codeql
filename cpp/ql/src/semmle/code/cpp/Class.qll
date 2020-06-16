@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C++ classes, including structs, unions, and template classes.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.UserType
 import semmle.code.cpp.metrics.MetricClass
@@ -231,7 +235,8 @@ class Class extends UserType {
     this = base and result = fieldInBase
     or
     exists(ClassDerivation cd | cd.getBaseClass() = base |
-      result = this
+      result =
+        this
             .accessOfBaseMemberMulti(cd.getDerivedClass(),
               fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
     )
@@ -257,8 +262,8 @@ class Class extends UserType {
    * includes the case of `base` = `this`.
    */
   AccessSpecifier accessOfBaseMember(Declaration member) {
-    result = this
-          .accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
+    result =
+      this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier))
   }
 
   /**
@@ -457,6 +462,15 @@ class Class extends UserType {
     exists(ClassDerivation d | d.getDerivedClass() = this and d = result)
   }
 
+  /**
+   * Gets class derivation number `index` of this class/struct, for example the
+   * `public B` is derivation 1 in the following code:
+   * ```
+   * class D : public A, public B, public C {
+   *   ...
+   * };
+   * ```
+   */
   ClassDerivation getDerivation(int index) {
     exists(ClassDerivation d | d.getDerivedClass() = this and d.getIndex() = index and d = result)
   }
@@ -899,6 +913,22 @@ class AbstractClass extends Class {
 class TemplateClass extends Class {
   TemplateClass() { usertypes(underlyingElement(this), _, 6) }
 
+  /**
+   * Gets a class instantiated from this template.
+   *
+   * For example for `MyTemplateClass<T>` in the following code, the results are
+   * `MyTemplateClass<int>` and `MyTemplateClass<long>`:
+   * ```
+   * template<class T>
+   * class MyTemplateClass {
+   *   ...
+   * };
+   *
+   * MyTemplateClass<int> instance;
+   *
+   * MyTemplateClass<long> instance;
+   * ```
+   */
   Class getAnInstantiation() {
     result.isConstructedFrom(this) and
     exists(result.getATemplateArgument())
@@ -962,9 +992,8 @@ abstract class ClassTemplateSpecialization extends Class {
     result.getNamespace() = getNamespace() and
     // It is distinguished by the fact that each of its template arguments
     // is a distinct template parameter.
-    count(TemplateParameter tp | tp = result.getATemplateArgument()) = count(int i |
-        exists(result.getTemplateArgument(i))
-      )
+    count(TemplateParameter tp | tp = result.getATemplateArgument()) =
+      count(int i | exists(result.getTemplateArgument(i)))
   }
 
   override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
@@ -1031,9 +1060,8 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
      */
 
     exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
-    count(TemplateParameter tp | tp = getATemplateArgument()) != count(int i |
-        exists(getTemplateArgument(i))
-      )
+    count(TemplateParameter tp | tp = getATemplateArgument()) !=
+      count(int i | exists(getTemplateArgument(i)))
   }
 
   override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }

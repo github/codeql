@@ -1,36 +1,26 @@
-/** Provides class and predicates to track external data that
+/**
+ * Provides class and predicates to track external data that
  * may represent malicious XML objects.
  *
  * This module is intended to be imported into a taint-tracking query
  * to extend `TaintKind` and `TaintSink`.
  */
-import python
 
-import semmle.python.security.TaintTracking
+import python
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Untrusted
 import semmle.python.security.injection.Deserialization
 
+private ModuleObject xmlElementTreeModule() { result.getName() = "xml.etree.ElementTree" }
 
-private ModuleObject xmlElementTreeModule() {
-    result.getName() = "xml.etree.ElementTree"
-}
+private ModuleObject xmlMiniDomModule() { result.getName() = "xml.dom.minidom" }
 
-private ModuleObject xmlMiniDomModule() {
-    result.getName() = "xml.dom.minidom"
-}
+private ModuleObject xmlPullDomModule() { result.getName() = "xml.dom.pulldom" }
 
-private ModuleObject xmlPullDomModule() {
-    result.getName() = "xml.dom.pulldom"
-}
-
-private ModuleObject xmlSaxModule() {
-    result.getName() = "xml.sax"
-}
+private ModuleObject xmlSaxModule() { result.getName() = "xml.sax" }
 
 private class ExpatParser extends TaintKind {
-
     ExpatParser() { this = "expat.parser" }
-
 }
 
 private FunctionObject expatCreateParseFunction() {
@@ -38,18 +28,11 @@ private FunctionObject expatCreateParseFunction() {
 }
 
 private class ExpatCreateParser extends TaintSource {
+    ExpatCreateParser() { expatCreateParseFunction().getACall() = this }
 
-    ExpatCreateParser() {
-        expatCreateParseFunction().getACall() = this
-    }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExpatParser }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof ExpatParser
-    }
-
-    string toString() {
-        result = "expat.create.parser"
-    }
+    string toString() { result = "expat.create.parser" }
 }
 
 private FunctionObject xmlFromString() {
@@ -64,30 +47,22 @@ private FunctionObject xmlFromString() {
 
 /** A (potentially) malicious XML string. */
 class ExternalXmlString extends ExternalStringKind {
-
-    ExternalXmlString() {
-        this = "external xml encoded object"
-    }
-
+    ExternalXmlString() { this = "external xml encoded object" }
 }
 
-/** A call to an XML library function that is potentially vulnerable to a
+/**
+ * A call to an XML library function that is potentially vulnerable to a
  * specially crafted XML string.
  */
 class XmlLoadNode extends DeserializationSink {
-
     override string toString() { result = "xml.load vulnerability" }
 
     XmlLoadNode() {
-        exists(CallNode call |
-            call.getAnArg() = this |
+        exists(CallNode call | call.getAnArg() = this |
             xmlFromString().getACall() = call or
             any(ExpatParser parser).taints(call.getFunction().(AttrNode).getObject("Parse"))
         )
     }
 
-    override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalXmlString
-    }
-
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalXmlString }
 }

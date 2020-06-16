@@ -361,18 +361,23 @@ class Method extends Callable, @method {
   override MethodAccess getAReference() { result = Callable.super.getAReference() }
 
   override predicate isPublic() {
-    Callable.super.isPublic() or
-    // JLS 9.4: Every method declaration in the body of an interface is implicitly public.
-    getDeclaringType() instanceof Interface or
+    Callable.super.isPublic()
+    or
+    // JLS 9.4: Every method declaration in the body of an interface without an
+    // access modifier is implicitly public.
+    getDeclaringType() instanceof Interface and
+    not this.isPrivate()
+    or
     exists(FunctionalExpr func | func.asMethod() = this)
   }
 
   override predicate isAbstract() {
     Callable.super.isAbstract()
     or
-    // JLS 9.4: An interface method lacking a `default` modifier or a `static` modifier
+    // JLS 9.4: An interface method lacking a `private`, `default`, or `static` modifier
     // is implicitly abstract.
     this.getDeclaringType() instanceof Interface and
+    not this.isPrivate() and
     not this.isDefault() and
     not this.isStatic()
   }
@@ -481,13 +486,13 @@ class GetterMethod extends Method {
 
 /**
  * A finalizer method, with name `finalize`,
- * return type `void` and modifier `protected`.
+ * return type `void` and no parameters.
  */
 class FinalizeMethod extends Method {
   FinalizeMethod() {
     this.hasName("finalize") and
     this.getReturnType().hasName("void") and
-    this.isProtected()
+    this.hasNoParameters()
   }
 }
 

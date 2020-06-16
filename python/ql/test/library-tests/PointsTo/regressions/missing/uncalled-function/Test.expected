@@ -1,0 +1,2 @@
+| test.py:10:11:10:14 | ControlFlowNode for open | <MISSING pointsTo()> |
+| test.py:14:11:14:14 | ControlFlowNode for open | Builtin-function open |

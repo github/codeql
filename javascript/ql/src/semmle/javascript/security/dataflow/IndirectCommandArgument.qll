@@ -30,9 +30,14 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
   t.start() and
   result = sys.getACommandArgument()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    t = t2.smallstep(result, commandArgument(sys, t2))
-  )
+  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, commandArgument(sys, t2)))
+}
+
+/**
+ * Gets a data-flow node whose value ends up being interpreted as the command argument in `sys`.
+ */
+private DataFlow::Node commandArgument(SystemCommandExecution sys) {
+  result = commandArgument(sys, DataFlow::TypeBackTracker::end())
 }
 
 /**
@@ -43,9 +48,19 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
   t.start() and
   result = sys.getArgumentList().getALocalSource()
   or
-  exists(DataFlow::TypeBackTracker t2 |
-    result = argumentList(sys, t2).backtrack(t2, t)
+  exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode pred | pred = argumentList(sys, t2) |
+    result = pred.backtrack(t2, t)
+    or
+    t = t2.continue() and
+    TaintTracking::arrayFunctionTaintStep(any(DataFlow::Node n | result.flowsTo(n)), pred, _)
   )
+}
+
+/**
+ * Gets a data-flow node whose value ends up being interpreted as the argument list in `sys`.
+ */
+private DataFlow::SourceNode argumentList(SystemCommandExecution sys) {
+  result = argumentList(sys, DataFlow::TypeBackTracker::end())
 }
 
 /**
@@ -61,15 +76,22 @@ private DataFlow::SourceNode argumentList(SystemCommandExecution sys, DataFlow::
  * let args = ["-c", cmd];
  * childProcess.spawn(sh, args, cb);
  * ```
+ * or
+ * ```
+ * let cmd = getCommand();
+ * childProcess.spawn("cmd.exe", ["/c"].concat(cmd), cb);
+ * ```
  */
 predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecution sys) {
-  exists(
-    DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC
-  |
+  exists(DataFlow::ArrayCreationNode args, DataFlow::Node shell, string dashC |
     shellCmd(shell.asExpr(), dashC) and
-    shell = commandArgument(sys, DataFlow::TypeBackTracker::end()) and
-    args = argumentList(sys, DataFlow::TypeBackTracker::end()) and
+    shell = commandArgument(sys) and
     args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
-    source = args.getAPropertyWrite().getRhs()
+    args = argumentList(sys) and
+    (
+      source = argumentList(sys)
+      or
+      source = argumentList(sys).getAPropertyWrite().getRhs()
+    )
   )
 }

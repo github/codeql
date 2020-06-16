@@ -13,6 +13,6 @@ namespace Semmle.Util
         /// <summary>
         /// The shared object to which different parts of the code want to refer.
         /// </summary>
-        public T Obj { get; set; }
+        public T? Obj { get; set; }
     }
 }

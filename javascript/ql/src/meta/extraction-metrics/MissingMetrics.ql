@@ -12,7 +12,8 @@ import javascript
 import semmle.javascript.meta.ExtractionMetrics::ExtractionMetrics
 
 from File f, string cause
-where not extraction_data(f, _, _, _) and cause = "No extraction_data for this file"
-      or
-      not extraction_time(f, _,_, _) and cause =  "No extraction_time for this file"
+where
+  not extraction_data(f, _, _, _) and cause = "No extraction_data for this file"
+  or
+  not extraction_time(f, _, _, _) and cause = "No extraction_time for this file"
 select f, cause

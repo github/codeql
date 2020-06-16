@@ -1,6 +1,0 @@
-| test.py:22 | Attribute() | flask/MyView.as.view |
-| test.py:29 | Attribute | {externally controlled string} |
-| test.py:33 | Attribute | {externally controlled string} |
-| test.py:35 | Attribute | {externally controlled string} |
-| test.py:40 | Attribute | {externally controlled string} |
-| test.py:45 | Attribute | {externally controlled string} |

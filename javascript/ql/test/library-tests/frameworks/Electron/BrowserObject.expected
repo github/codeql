@@ -1,9 +1,8 @@
-| electron.d.ts:2:16:2:28 | BrowserWindow |
-| electron.d.ts:3:16:3:26 | BrowserView |
 | electron.js:3:5:3:48 | bw |
 | electron.js:3:10:3:48 | new Bro ... s: {}}) |
 | electron.js:4:5:4:46 | bv |
 | electron.js:4:10:4:46 | new Bro ... s: {}}) |
+| electron.js:35:14:35:14 | x |
 | electron.js:35:14:35:14 | x |
 | electron.js:36:12:36:12 | x |
 | electron.js:39:1:39:7 | foo(bw) |
@@ -14,7 +13,9 @@
 | electron.js:62:13:62:59 | new Bro ... 1500 }) |
 | electron.js:63:3:63:5 | win |
 | electron.js:65:18:65:20 | win |
-| electron.ts:3:12:3:13 | bw |
-| electron.ts:3:40:3:41 | bv |
-| electron.ts:4:3:4:4 | bw |
-| electron.ts:5:3:5:4 | bv |
+| electronTs.d.ts:2:16:2:28 | BrowserWindow |
+| electronTs.d.ts:3:16:3:26 | BrowserView |
+| electronTs.ts:3:12:3:13 | bw |
+| electronTs.ts:3:40:3:41 | bv |
+| electronTs.ts:4:3:4:4 | bw |
+| electronTs.ts:5:3:5:4 | bv |

@@ -117,7 +117,14 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   ArgumentsVariable getArgumentsVariable() { result.getFunction() = this }
 
   /** Holds if the body of this function refers to the function's `arguments` variable. */
-  predicate usesArgumentsObject() { exists(getArgumentsVariable().getAnAccess()) }
+  predicate usesArgumentsObject() {
+    exists(getArgumentsVariable().getAnAccess())
+    or
+    exists(PropAccess read |
+      read.getBase() = getVariable().getAnAccess() and
+      read.getPropertyName() = "arguments"
+    )
+  }
 
   /**
    * Holds if this function declares a parameter or local variable named `arguments`.
@@ -206,7 +213,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Gets the cyclomatic complexity of this function. */
   int getCyclomaticComplexity() {
-    result = 2 +
+    result =
+      2 +
         sum(Expr nd |
           nd.getContainer() = this and nd.isBranch()
         |
@@ -389,8 +397,6 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   predicate isAbstract() { exists(MethodDeclaration md | this = md.getBody() | md.isAbstract()) }
 
-  override predicate isAmbient() { getParent().isAmbient() or not hasBody() }
-
   /**
    * Holds if this function cannot be invoked using `new` because it
    * is of the given `kind`.
@@ -420,9 +426,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /**
    * Gets the call signature of this function, as determined by the TypeScript compiler, if any.
    */
-  CallSignatureType getCallSignature() {
-    declared_function_signature(this, result)
-  }
+  CallSignatureType getCallSignature() { declared_function_signature(this, result) }
 }
 
 /**

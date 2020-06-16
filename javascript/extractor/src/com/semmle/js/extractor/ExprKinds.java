@@ -1,5 +1,9 @@
 package com.semmle.js.extractor;
 
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.semmle.jcorn.TokenType;
 import com.semmle.jcorn.jsx.JSXParser;
 import com.semmle.js.ast.AssignmentExpression;
@@ -29,9 +33,6 @@ import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ExpressionWithTypeArguments;
 import com.semmle.ts.ast.TypeAssertion;
 import com.semmle.util.exception.CatastrophicError;
-import java.util.EnumMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /** Map from SpiderMonkey expression types to the numeric kinds used in the DB scheme. */
 public class ExprKinds {
@@ -154,6 +155,8 @@ public class ExprKinds {
     idKinds.put(IdContext.namespaceDecl, 78);
     idKinds.put(IdContext.varAndNamespaceDecl, 78);
     idKinds.put(IdContext.varAndTypeAndNamespaceDecl, 78);
+    idKinds.put(IdContext.typeOnlyImport, 78);
+    idKinds.put(IdContext.typeOnlyExport, 103);
     idKinds.put(IdContext.varBind, 79);
     idKinds.put(IdContext.export, 103);
     idKinds.put(IdContext.exportBase, 103);

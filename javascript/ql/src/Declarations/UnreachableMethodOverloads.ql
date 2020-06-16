@@ -44,43 +44,39 @@ string getKind(MemberDeclaration m) {
  * A call-signature that originates from a MethodSignature in the AST.
  */
 private class MethodCallSig extends CallSignatureType {
-    string name;
-    
-    MethodCallSig() {
-        exists(MethodSignature sig | 
-            this = sig.getBody().getCallSignature() and
-            name = sig.getName()
-        )
-    }
-    
-    /**
-     * Gets the name of any member that has this signature.
-     */
-    string getName() {
-        result = name
-    }
+  string name;
+
+  MethodCallSig() {
+    exists(MethodSignature sig |
+      this = sig.getBody().getCallSignature() and
+      name = sig.getName()
+    )
+  }
+
+  /**
+   * Gets the name of any member that has this signature.
+   */
+  string getName() { result = name }
 }
 
 /**
  * Holds if the two call signatures could be overloads of each other and have the same parameter types.
  */
 predicate matchingCallSignature(MethodCallSig method, MethodCallSig other) {
-  method.getName() = other.getName() and 
-  
+  method.getName() = other.getName() and
   method.getNumOptionalParameter() = other.getNumOptionalParameter() and
   method.getNumParameter() = other.getNumParameter() and
   method.getNumRequiredParameter() = other.getNumRequiredParameter() and
-  // purposely not looking at number of type arguments. 
-  
-  method.getKind() = other.getKind() and 
-  
-  
-  forall(int i | i in [0 .. -1 + method.getNumParameter()] | 
+  // purposely not looking at number of type arguments.
+  method.getKind() = other.getKind() and
+  forall(int i | i in [0 .. -1 + method.getNumParameter()] |
     method.getParameter(i) = other.getParameter(i) // This is sometimes imprecise, so it is still a good idea to compare type annotations.
-  ) and 
-  
-  // shared type parameters are equal. 
-  forall(int i | i in [0 .. -1 + min(int num | num = method.getNumTypeParameter() or num = other.getNumTypeParameter())] |
+  ) and
+  // shared type parameters are equal.
+  forall(int i |
+    i in [0 .. -1 +
+          min(int num | num = method.getNumTypeParameter() or num = other.getNumTypeParameter())]
+  |
     method.getTypeParameterBound(i) = other.getTypeParameterBound(i)
   )
 }
@@ -89,7 +85,7 @@ predicate matchingCallSignature(MethodCallSig method, MethodCallSig other) {
  * Gets which overload index the MethodSignature has among the overloads of the same name.
  */
 int getOverloadIndex(MethodSignature sig) {
-    sig.getDeclaringType().getMethodOverload(sig.getName(), result) = sig
+  sig.getDeclaringType().getMethodOverload(sig.getName(), result) = sig
 }
 
 /**
@@ -100,18 +96,22 @@ predicate signaturesMatch(MethodSignature method, MethodSignature other) {
   method.getDeclaringType() = other.getDeclaringType() and
   // same static modifier.
   getKind(method) = getKind(other) and
-
   // same name.
   method.getName() = other.getName() and
-
   // same number of parameters.
   method.getBody().getNumParameter() = other.getBody().getNumParameter() and
-  
-  // The types are compared in matchingCallSignature. This is sanity-check that the textual representation of the type-annotations are somewhat similar.
-  forall(int i | i in [0 .. -1 + method.getBody().getNumParameter()] |
-    getParameterTypeAnnotation(method, i) = getParameterTypeAnnotation(other, i)   
+  // same this parameter (if exists)
+  (
+    not exists(method.getBody().getThisTypeAnnotation()) and
+    not exists(other.getBody().getThisTypeAnnotation())
+    or
+    method.getBody().getThisTypeAnnotation().getType() =
+      other.getBody().getThisTypeAnnotation().getType()
   ) and
-  
+  // The types are compared in matchingCallSignature. This is a consistency check that the textual representation of the type-annotations are somewhat similar.
+  forall(int i | i in [0 .. -1 + method.getBody().getNumParameter()] |
+    getParameterTypeAnnotation(method, i) = getParameterTypeAnnotation(other, i)
+  ) and
   matchingCallSignature(method.getBody().getCallSignature(), other.getBody().getCallSignature())
 }
 
@@ -119,22 +119,19 @@ from ClassOrInterface decl, string name, MethodSignature previous, MethodSignatu
 where
   previous = decl.getMethod(name) and
   unreachable = getOtherMatchingSignatures(previous) and
-  
   // If the method is part of inheritance between classes/interfaces, then there can sometimes be reasons for having this pattern.
-  not exists(decl.getASuperTypeDeclaration().getMethod(name)) and 
-  not exists(ClassOrInterface sub | 
+  not exists(decl.getASuperTypeDeclaration().getMethod(name)) and
+  not exists(ClassOrInterface sub |
     decl = sub.getASuperTypeDeclaration() and
     exists(sub.getMethod(name))
   ) and
-  
-  
   // If a later method overload has more type parameters, then that overload can be selected by explicitly declaring the type arguments at the callsite.
   // This comparison removes those cases.
   unreachable.getBody().getNumTypeParameter() <= previous.getBody().getNumTypeParameter() and
-  
   // We always select the first of the overloaded methods.
   not exists(MethodSignature later | later = getOtherMatchingSignatures(previous) |
     getOverloadIndex(later) < getOverloadIndex(previous)
   )
 select unreachable,
-  "This overload of " + name + "() is unreachable, the $@ overload will always be selected.", previous, "previous"
+  "This overload of " + name + "() is unreachable, the $@ overload will always be selected.",
+  previous, "previous"

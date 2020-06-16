@@ -1,5 +1,11 @@
 package com.semmle.js.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -34,6 +40,7 @@ import com.semmle.js.ast.ExportAllDeclaration;
 import com.semmle.js.ast.ExportDeclaration;
 import com.semmle.js.ast.ExportDefaultDeclaration;
 import com.semmle.js.ast.ExportNamedDeclaration;
+import com.semmle.js.ast.ExportNamespaceSpecifier;
 import com.semmle.js.ast.ExportSpecifier;
 import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
@@ -144,13 +151,6 @@ import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.data.IntList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for converting a <a
@@ -161,10 +161,7 @@ import java.util.regex.Pattern;
  */
 public class TypeScriptASTConverter {
   private String source;
-  private final JsonObject nodeFlags;
-  private final JsonObject syntaxKinds;
-  private final Map<Integer, String> nodeFlagMap = new LinkedHashMap<>();
-  private final Map<Integer, String> syntaxKindMap = new LinkedHashMap<>();
+  private final TypeScriptParserMetadata metadata;
   private int[] lineStarts;
 
   private int syntaxKindExtends;
@@ -178,22 +175,9 @@ public class TypeScriptASTConverter {
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
-  TypeScriptASTConverter(JsonObject nodeFlags, JsonObject syntaxKinds) {
-    this.nodeFlags = nodeFlags;
-    this.syntaxKinds = syntaxKinds;
-    makeEnumIdMap(nodeFlags, nodeFlagMap);
-    makeEnumIdMap(syntaxKinds, syntaxKindMap);
-    this.syntaxKindExtends = getSyntaxKind("ExtendsKeyword");
-  }
-
-  /** Builds a mapping from ID to name given a TypeScript enum object. */
-  private void makeEnumIdMap(JsonObject enumObject, Map<Integer, String> idToName) {
-    for (Map.Entry<String, JsonElement> entry : enumObject.entrySet()) {
-      JsonPrimitive prim = entry.getValue().getAsJsonPrimitive();
-      if (prim.isNumber() && !idToName.containsKey(prim.getAsInt())) {
-        idToName.put(prim.getAsInt(), entry.getKey());
-      }
-    }
+  TypeScriptASTConverter(TypeScriptParserMetadata metadata) {
+    this.metadata = metadata;
+    this.syntaxKindExtends = metadata.getSyntaxKindId("ExtendsKeyword");
   }
 
   /**
@@ -334,7 +318,11 @@ public class TypeScriptASTConverter {
   private Node convertNodeUntyped(JsonObject node, String defaultKind) throws ParseError {
     String kind = getKind(node);
     if (kind == null) kind = defaultKind;
-    if (kind == null) kind = "Identifier";
+    if (kind == null) {
+      // Identifiers and PrivateIdentifiers do not have a "kind" property like other nodes.
+      // Since we encode identifiers and private identifiers the same, default to Identifier.
+      kind = "Identifier";
+    }
     SourceLocation loc = getSourceLocation(node);
     switch (kind) {
       case "AnyKeyword":
@@ -441,6 +429,7 @@ public class TypeScriptASTConverter {
       case "FunctionType":
         return convertFunctionType(node, loc);
       case "Identifier":
+      case "PrivateIdentifier":
         return convertIdentifier(node, loc);
       case "IfStatement":
         return convertIfStatement(node, loc);
@@ -507,6 +496,8 @@ public class TypeScriptASTConverter {
         return convertNamespaceDeclaration(node, loc);
       case "ModuleBlock":
         return convertModuleBlock(node, loc);
+      case "NamespaceExport":
+        return convertNamespaceExport(node, loc);
       case "NamespaceExportDeclaration":
         return convertNamespaceExportDeclaration(node, loc);
       case "NamespaceImport":
@@ -1170,11 +1161,12 @@ public class TypeScriptASTConverter {
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     if (hasChild(node, "exportClause")) {
-      return new ExportNamedDeclaration(
-          loc,
-          null,
-          convertChildren(node.get("exportClause").getAsJsonObject(), "elements"),
-          source);
+      boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
+      List<ExportSpecifier> specifiers =
+          hasKind(node.get("exportClause"), "NamespaceExport")
+              ? Collections.singletonList(convertChild(node, "exportClause"))
+              : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
+      return new ExportNamedDeclaration(loc, null, specifiers, source, hasTypeKeyword);
     } else {
       return new ExportAllDeclaration(loc, source);
     }
@@ -1185,6 +1177,11 @@ public class TypeScriptASTConverter {
         loc,
         convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name"),
         convertChild(node, "name"));
+  }
+
+  private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
+    // Convert the "* as ns" from an export declaration.
+    return new ExportNamespaceSpecifier(loc, convertChild(node, "name"));
   }
 
   private Node convertExpressionStatement(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1202,7 +1199,9 @@ public class TypeScriptASTConverter {
 
   private Node convertExternalModuleReference(JsonObject node, SourceLocation loc)
       throws ParseError {
-    return new ExternalModuleReference(loc, convertChild(node, "expression"));
+    ExternalModuleReference moduleRef = new ExternalModuleReference(loc, convertChild(node, "expression"));
+    attachSymbolInformation(moduleRef, node);
+    return moduleRef;
   }
 
   private Node convertFalseKeyword(SourceLocation loc) {
@@ -1352,6 +1351,7 @@ public class TypeScriptASTConverter {
   private Node convertImportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     List<ImportSpecifier> specifiers = new ArrayList<>();
+    boolean hasTypeKeyword = false;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1365,8 +1365,11 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
+      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    return new ImportDeclaration(loc, specifiers, src);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, hasTypeKeyword);
+    attachSymbolInformation(importDecl, node);
+    return importDecl;
   }
 
   private Node convertImportEqualsDeclaration(JsonObject node, SourceLocation loc)
@@ -1585,7 +1588,16 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertLiteralType(JsonObject node, SourceLocation loc) throws ParseError {
-    return convertChild(node, "literal");
+    Node literal = convertChild(node, "literal");
+    // Convert a negated literal to a negative number
+    if (literal instanceof UnaryExpression) {
+      UnaryExpression unary = (UnaryExpression) literal;
+      if (unary.getOperator().equals("-") && unary.getArgument() instanceof Literal) {
+        Literal arg = (Literal) unary.getArgument();
+        literal = new Literal(loc, arg.getTokenType(), "-" + arg.getValue());
+      }
+    }
+    return literal;
   }
 
   private Node convertMappedType(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1596,7 +1608,7 @@ public class TypeScriptASTConverter {
   private Node convertMetaProperty(JsonObject node, SourceLocation loc) throws ParseError {
     Position metaStart = loc.getStart();
     String keywordKind =
-        syntaxKinds.get(node.getAsJsonPrimitive("keywordToken").getAsInt() + "").getAsString();
+        metadata.getSyntaxKindName(node.getAsJsonPrimitive("keywordToken").getAsInt());
     String identifier = keywordKind.equals("ImportKeyword") ? "import" : "new";
     Position metaEnd =
         new Position(
@@ -1974,7 +1986,7 @@ public class TypeScriptASTConverter {
 
   private String getOperator(JsonObject node) throws ParseError {
     int operatorId = node.get("operator").getAsInt();
-    switch (syntaxKindMap.get(operatorId)) {
+    switch (metadata.getSyntaxKindName(operatorId)) {
       case "PlusPlusToken":
         return "++";
       case "MinusMinusToken":
@@ -2198,7 +2210,7 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTypeOperator(JsonObject node, SourceLocation loc) throws ParseError {
-    String operator = syntaxKinds.get("" + node.get("operator").getAsInt()).getAsString();
+    String operator = metadata.getSyntaxKindName(node.get("operator").getAsInt());
     if (operator.equals("KeyOfKeyword")) {
       return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Keyof, convertChildAsType(node, "type"));
     }
@@ -2516,27 +2528,12 @@ public class TypeScriptASTConverter {
    * <tt>ts.NodeFlags</tt> in enum.
    */
   private boolean hasFlag(JsonObject node, String flagName) {
-    JsonElement flagDescriptor = this.nodeFlags.get(flagName);
-    if (flagDescriptor == null) {
-      throw new RuntimeException(
-          "Incompatible version of TypeScript installed. Missing node flag " + flagName);
-    }
-    int flagId = flagDescriptor.getAsInt();
+    int flagId = metadata.getNodeFlagId(flagName);
     JsonElement flags = node.get("flags");
     if (flags instanceof JsonPrimitive) {
       return (flags.getAsInt() & flagId) != 0;
     }
     return false;
-  }
-
-  /** Gets the numeric value of the syntax kind enum with the given name. */
-  private int getSyntaxKind(String syntaxKind) {
-    JsonElement descriptor = this.syntaxKinds.get(syntaxKind);
-    if (descriptor == null) {
-      throw new RuntimeException(
-          "Incompatible version of TypeScript installed. Missing syntax kind " + syntaxKind);
-    }
-    return descriptor.getAsInt();
   }
 
   /** Check whether a node has a child with a given name. */
@@ -2560,7 +2557,7 @@ public class TypeScriptASTConverter {
     if (node instanceof JsonObject) {
       JsonElement kind = ((JsonObject) node).get("kind");
       if (kind instanceof JsonPrimitive && ((JsonPrimitive) kind).isNumber())
-        return syntaxKindMap.get(kind.getAsInt());
+        return metadata.getSyntaxKindName(kind.getAsInt());
     }
     return null;
   }

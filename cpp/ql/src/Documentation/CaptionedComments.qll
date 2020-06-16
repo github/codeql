@@ -4,6 +4,10 @@
 
 import cpp
 
+/**
+ * Gets a string representation of the comment `c` containing the caption 'TODO' or 'FIXME'.
+ * If `c` spans multiple lines, all lines after the first are abbreviated as [...].
+ */
 string getCommentTextCaptioned(Comment c, string caption) {
   (caption = "TODO" or caption = "FIXME") and
   exists(
@@ -18,14 +22,13 @@ string getCommentTextCaptioned(Comment c, string caption) {
     dontCare = commentBody.regexpFind("\\n[/* \\t\\x0B\\f\\r]*" + caption, _, offset) and
     interestingSuffix = commentBody.suffix(offset) and
     endOfLine = interestingSuffix.indexOf("\n", 1, 0) and
-    captionedLine = interestingSuffix
+    captionedLine =
+      interestingSuffix
           .prefix(endOfLine)
           .regexpReplaceAll("^[/*\\s]*" + caption + "\\s*:?", "")
           .trim() and
-    followingLine = interestingSuffix
-          .prefix(interestingSuffix.indexOf("\n", 2, 0))
-          .suffix(endOfLine)
-          .trim() and
+    followingLine =
+      interestingSuffix.prefix(interestingSuffix.indexOf("\n", 2, 0)).suffix(endOfLine).trim() and
     if captionedLine = ""
     then result = caption + " comment"
     else

@@ -95,8 +95,8 @@ class Property extends DotNet::Property, Member, @cil_property {
   override string toString() { result = "property " + getName() }
 
   override string toStringWithTypes() {
-    result = getType().toStringWithTypes() + " " + getDeclaringType().toStringWithTypes() + "." +
-        getName()
+    result =
+      getType().toStringWithTypes() + " " + getDeclaringType().toStringWithTypes() + "." + getName()
   }
 }
 

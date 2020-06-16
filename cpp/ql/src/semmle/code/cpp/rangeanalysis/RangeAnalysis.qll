@@ -187,6 +187,13 @@ private predicate boundFlowStepSsa(
     guard.controls(op2.getUse().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
+  or
+  exists(IRGuardCondition guard, boolean testIsTrue, SafeCastInstruction cast |
+    valueNumberOfOperand(op2) = valueNumber(cast.getUnary()) and
+    guard = boundFlowCond(valueNumber(cast), op1, delta, upper, testIsTrue) and
+    guard.controls(op2.getUse().getBlock(), testIsTrue) and
+    reason = TCondReason(guard)
+  )
 }
 
 /**
@@ -232,38 +239,6 @@ class CondReason extends Reason, TCondReason {
   IRGuardCondition getCond() { this = TCondReason(result) }
 
   override string toString() { result = getCond().toString() }
-}
-
-/**
- * Holds if a cast from `fromtyp` to `totyp` can be ignored for the purpose of
- * range analysis.
- */
-pragma[inline]
-private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
-  fromtyp.getSize() < totyp.getSize() and
-  (
-    fromtyp.isUnsigned()
-    or
-    totyp.isSigned()
-  )
-  or
-  fromtyp.getSize() <= totyp.getSize() and
-  (
-    fromtyp.isSigned() and
-    totyp.isSigned()
-    or
-    fromtyp.isUnsigned() and
-    totyp.isUnsigned()
-  )
-}
-
-private class SafeCastInstruction extends ConvertInstruction {
-  SafeCastInstruction() {
-    safeCast(getResultType(), getUnary().getResultType())
-    or
-    getResultType() instanceof PointerType and
-    getUnary().getResultType() instanceof PointerType
-  }
 }
 
 /**

@@ -1,8 +1,9 @@
+| arguments.js:2:16:2:16 | x |
 | sources.js:1:6:1:6 | x |
 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array |
+| tst2.ts:13:39:13:38 | args |
 | tst.js:16:13:16:13 | a |
 | tst.js:32:12:32:12 | b |
 | tst.js:87:11:87:24 | { p: x, ...o } |
 | tst.js:98:11:98:24 | [ x, ...rest ] |
-| tst.ts:13:39:13:38 | args |

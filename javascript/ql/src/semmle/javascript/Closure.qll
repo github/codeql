@@ -115,18 +115,25 @@ module Closure {
     override DefaultClosureModuleDeclaration range;
   }
 
+  private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExpr() {
+    result.getReceiver() = googVariable().getAnAccess() and
+    result.getMethodName() = ["module", "declareModuleId"]
+  }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExprInContainer(StmtContainer container) {
+    result = googModuleDeclExpr() and
+    container = result.getContainer()
+  }
+
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    ClosureModule() {
-      // Use AST-based predicate to cut recursive dependencies.
-      exists(MethodCallExpr call |
-        getAStmt().(ExprStmt).getExpr() = call and
-        call.getReceiver().(GlobalVarAccess).getName() = "goog" and
-        (call.getMethodName() = "module" or call.getMethodName() = "declareModuleId")
-      )
-    }
+    ClosureModule() { exists(googModuleDeclExprInContainer(this)) }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
@@ -267,6 +274,9 @@ module Closure {
       result = this
     }
 
-    override DataFlow::Node getBoundReceiver() { result = getArgument(1) }
+    override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
+      callback = getArgument(0) and
+      result = getArgument(1)
+    }
   }
 }

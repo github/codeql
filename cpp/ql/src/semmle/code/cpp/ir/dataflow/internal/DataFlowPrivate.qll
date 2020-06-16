@@ -7,24 +7,38 @@ private import DataFlowDispatch
  * A data flow node that occurs as the argument of a call and is passed as-is
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
-class ArgumentNode extends Node {
-  ArgumentNode() { exists(CallInstruction call | this.asInstruction() = call.getAnArgument()) }
+class ArgumentNode extends InstructionNode {
+  ArgumentNode() {
+    exists(CallInstruction call |
+      instr = call.getAnArgument()
+      or
+      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
+    )
+  }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.asInstruction() = call.getPositionalArgument(pos)
+    instr = call.getPositionalArgument(pos)
     or
-    this.asInstruction() = call.getThisArgument() and pos = -1
+    instr = call.getThisArgument() and pos = -1
+    or
+    exists(ReadSideEffectInstruction read |
+      read = instr and
+      read.getPrimaryInstruction() = call and
+      pos = getArgumentPosOfSideEffect(read.getIndex())
+    )
   }
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind =
+  TNormalReturnKind() or
+  TIndirectReturnKind(ParameterIndex index)
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -32,23 +46,76 @@ private newtype TReturnKind = TNormalReturnKind()
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  abstract string toString();
+}
+
+private class NormalReturnKind extends ReturnKind, TNormalReturnKind {
+  override string toString() { result = "return" }
+}
+
+private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
+  ParameterIndex index;
+
+  IndirectReturnKind() { this = TIndirectReturnKind(index) }
+
+  override string toString() { result = "outparam[" + index.toString() + "]" }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends Node {
-  ReturnNode() { exists(ReturnValueInstruction ret | this.asInstruction() = ret.getReturnValue()) }
+class ReturnNode extends InstructionNode {
+  Instruction primary;
+
+  ReturnNode() {
+    exists(ReturnValueInstruction ret | instr = ret.getReturnValue() and primary = ret)
+    or
+    exists(ReturnIndirectionInstruction rii |
+      instr = rii.getSideEffectOperand().getAnyDef() and primary = rii
+    )
+  }
 
   /** Gets the kind of this returned value. */
-  ReturnKind getKind() { result = TNormalReturnKind() }
+  abstract ReturnKind getKind();
+}
+
+class ReturnValueNode extends ReturnNode {
+  override ReturnValueInstruction primary;
+
+  override ReturnKind getKind() { result = TNormalReturnKind() }
+}
+
+class ReturnIndirectionNode extends ReturnNode {
+  override ReturnIndirectionInstruction primary;
+
+  override ReturnKind getKind() { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends Node {
-  override CallInstruction instr;
+class OutNode extends InstructionNode {
+  OutNode() {
+    instr instanceof CallInstruction or
+    instr instanceof WriteSideEffectInstruction
+  }
 
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = instr }
+  abstract DataFlowCall getCall();
+
+  abstract ReturnKind getReturnKind();
+}
+
+private class CallOutNode extends OutNode {
+  override CallInstruction instr;
+
+  override DataFlowCall getCall() { result = instr }
+
+  override ReturnKind getReturnKind() { result instanceof NormalReturnKind }
+}
+
+private class SideEffectOutNode extends OutNode {
+  override WriteSideEffectInstruction instr;
+
+  override DataFlowCall getCall() { result = instr.getPrimaryInstruction() }
+
+  override ReturnKind getReturnKind() { result = TIndirectReturnKind(instr.getIndex()) }
 }
 
 /**
@@ -57,7 +124,7 @@ class OutNode extends Node {
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result.getCall() = call and
-  kind = TNormalReturnKind()
+  result.getReturnKind() = kind
 }
 
 /**
@@ -66,16 +133,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) { none() }
-
-/**
- * Holds if `call` passes an implicit or explicit qualifier, i.e., a
- * `this` parameter.
- */
-predicate callHasQualifier(Call call) {
-  call.hasQualifier()
-  or
-  call.getTarget() instanceof Destructor
-}
 
 private newtype TContent =
   TFieldContent(Field f) or
@@ -140,8 +197,9 @@ private class ArrayContent extends Content, TArrayContent {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  none() // stub implementation
+predicate storeStep(Node node1, Content f, StoreStepNode node2) {
+  node2.getStoredValue() = node1 and
+  f.(FieldContent).getField() = node2.getAField()
 }
 
 /**
@@ -149,8 +207,9 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
-  none() // stub implementation
+predicate readStep(Node node1, Content f, ReadStepNode node2) {
+  node2.getReadValue() = node1 and
+  f.(FieldContent).getField() = node2.getAField()
 }
 
 /**
@@ -164,7 +223,7 @@ Type getErasedRepr(Type t) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(Type t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -181,11 +240,17 @@ private predicate suppressUnusedType(Type t) { any() }
 // Java QL library compatibility wrappers
 //////////////////////////////////////////////////////////////////////////////
 /** A node that performs a type cast. */
-class CastNode extends Node {
+class CastNode extends InstructionNode {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable = Function;
+/**
+ * A function that may contain code or a variable that may contain itself. When
+ * flow crosses from one _enclosing callable_ to another, the interprocedural
+ * data-flow library discards call contexts and inserts a node in the big-step
+ * relation used for human-readable path explanations.
+ */
+class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
@@ -204,3 +269,21 @@ class DataFlowCall extends CallInstruction {
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+
+int accessPathLimit() { result = 5 }
+
+/**
+ * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
+ * modified or its modification cannot be observed, for example if it is a
+ * freshly created object that is not saved in a variable.
+ *
+ * This predicate is only used for consistency checks.
+ */
+predicate isImmutableOrUnobservable(Node n) {
+  // The rules for whether an IR argument gets a post-update node are too
+  // complex to model here.
+  any()
+}
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }

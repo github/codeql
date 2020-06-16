@@ -48,8 +48,9 @@ namespace Semmle.Autobuild
 
         class BuildCommand : BuildScript
         {
-            readonly string exe, arguments, workingDirectory;
-            readonly IDictionary<string, string> environment;
+            readonly string exe, arguments;
+            readonly string? workingDirectory;
+            readonly IDictionary<string, string>? environment;
             readonly bool silent;
 
             /// <summary>
@@ -60,7 +61,7 @@ namespace Semmle.Autobuild
             /// <param name="silent">Whether this command should run silently.</param>
             /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
             /// <param name="environment">Additional environment variables.</param>
-            public BuildCommand(string exe, string argumentsOpt, bool silent, string workingDirectory = null, IDictionary<string, string> environment = null)
+            public BuildCommand(string exe, string? argumentsOpt, bool silent, string? workingDirectory = null, IDictionary<string, string>? environment = null)
             {
                 this.exe = exe;
                 this.arguments = argumentsOpt ?? "";
@@ -131,8 +132,8 @@ namespace Semmle.Autobuild
         class BindBuildScript : BuildScript
         {
             readonly BuildScript s1;
-            readonly Func<IList<string>, int, BuildScript> s2a;
-            readonly Func<int, BuildScript> s2b;
+            readonly Func<IList<string>, int, BuildScript>? s2a;
+            readonly Func<int, BuildScript>? s2b;
             public BindBuildScript(BuildScript s1, Func<IList<string>, int, BuildScript> s2)
             {
                 this.s1 = s1;
@@ -154,14 +155,19 @@ namespace Semmle.Autobuild
                     return s2a(stdout1, ret1).Run(actions, startCallback, exitCallBack);
                 }
 
-                ret1 = s1.Run(actions, startCallback, exitCallBack);
-                return s2b(ret1).Run(actions, startCallback, exitCallBack);
+                if (s2b != null)
+                {
+                    ret1 = s1.Run(actions, startCallback, exitCallBack);
+                    return s2b(ret1).Run(actions, startCallback, exitCallBack);
+                }
+
+                throw new InvalidOperationException("Unexpected error");
             }
 
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout)
             {
                 var ret1 = s1.Run(actions, startCallback, exitCallBack, out var stdout1);
-                var ret2 = (s2a != null ? s2a(stdout1, ret1) : s2b(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
+                var ret2 = (s2a != null ? s2a(stdout1, ret1) : s2b!(ret1)).Run(actions, startCallback, exitCallBack, out var stdout2);
                 var @out = new List<string>();
                 @out.AddRange(stdout1);
                 @out.AddRange(stdout2);
@@ -177,7 +183,7 @@ namespace Semmle.Autobuild
         /// <param name="silent">Whether the executable should run silently.</param>
         /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
         /// <param name="environment">Additional environment variables.</param>
-        public static BuildScript Create(string exe, string argumentsOpt, bool silent, string workingDirectory, IDictionary<string, string> environment) =>
+        public static BuildScript Create(string exe, string? argumentsOpt, bool silent, string? workingDirectory, IDictionary<string, string>? environment) =>
             new BuildCommand(exe, argumentsOpt, silent, workingDirectory, environment);
 
         /// <summary>

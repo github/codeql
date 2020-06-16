@@ -34,12 +34,8 @@ class SpringBeanFile extends XMLFile {
    * applicable to any profile.
    */
   string getAProfileExpr() {
-    result = getBeansElement()
-          .getAttribute("profile")
-          .getValue()
-          .splitAt(",")
-          .splitAt(" ")
-          .splitAt(";") and
+    result =
+      getBeansElement().getAttribute("profile").getValue().splitAt(",").splitAt(" ").splitAt(";") and
     result.length() != 0
   }
 

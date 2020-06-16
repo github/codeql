@@ -1,6 +1,6 @@
-/** 
- * Provides predicates for working with useless conditionals.  
- */ 
+/**
+ * Provides predicates for working with useless conditionals.
+ */
 
 import javascript
 

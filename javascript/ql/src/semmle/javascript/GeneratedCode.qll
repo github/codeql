@@ -35,8 +35,10 @@ class CodeGeneratorMarkerComment extends GeneratedCodeMarkerComment {
  */
 private predicate codeGeneratorMarkerComment(Comment c, string tool) {
   exists(string toolPattern |
-    toolPattern = "js_of_ocaml|CoffeeScript|LiveScript|dart2js|ANTLR|PEG\\.js|Opal|JSX|jison(?:-lex)?|(?:Microsoft \\(R\\) AutoRest Code Generator)|purs" and
-    tool = c
+    toolPattern =
+      "js_of_ocaml|CoffeeScript|LiveScript|dart2js|ANTLR|PEG\\.js|Opal|JSX|jison(?:-lex)?|(?:Microsoft \\(R\\) AutoRest Code Generator)|purs" and
+    tool =
+      c
           .getText()
           .regexpCapture("(?s)[\\s*]*(?:parser |Code )?[gG]eneratedy? (?:from .*)?by (" +
               toolPattern + ")\\b.*", 1)

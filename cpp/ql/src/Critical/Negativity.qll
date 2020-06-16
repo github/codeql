@@ -1,10 +1,19 @@
 import cpp
 
+/**
+ * Holds if `val` is an access to the variable `v`, or if `val`
+ * is an assignment with an access to `v` on the left-hand side.
+ */
 predicate valueOfVar(Variable v, Expr val) {
   val = v.getAnAccess() or
   val.(AssignExpr).getLValue() = v.getAnAccess()
 }
 
+/**
+ * Holds if either:
+ * - `cond` is an (in)equality expression that compares the variable `v` to the value `-1`, or
+ * - `cond` is a relational expression that compares the variable `v` to a constant.
+ */
 predicate boundsCheckExpr(Variable v, Expr cond) {
   exists(EQExpr eq |
     cond = eq and
@@ -43,6 +52,18 @@ predicate boundsCheckExpr(Variable v, Expr cond) {
   )
 }
 
+/**
+ * Holds if `node` is an expression in a conditional statement and `succ` is an
+ * immediate successor of `node` that may be reached after evaluating `node`.
+ * For example, given
+ * ```
+ * if (a < 10 && b) func1();
+ * else func2();
+ * ```
+ * this predicate holds when either:
+ * - `node` is `a < 10` and `succ` is `func2()` or `b`, or
+ * - `node` is `b` and `succ` is `func1()` or `func2()`
+ */
 predicate conditionalSuccessor(ControlFlowNode node, ControlFlowNode succ) {
   if node.isCondition()
   then succ = node.getATrueSuccessor() or succ = node.getAFalseSuccessor()
@@ -52,6 +73,12 @@ predicate conditionalSuccessor(ControlFlowNode node, ControlFlowNode succ) {
     )
 }
 
+/**
+ * Holds if the current value of the variable `v` at control-flow
+ * node `n` has been used either in:
+ * - an (in)equality comparison with the value `-1`, or
+ * - a relational comparison that compares `v` to a constant.
+ */
 predicate boundsChecked(Variable v, ControlFlowNode node) {
   exists(Expr test |
     boundsCheckExpr(v, test) and
@@ -63,6 +90,14 @@ predicate boundsChecked(Variable v, ControlFlowNode node) {
   )
 }
 
+/**
+ * Holds if `cond` compares `v` to some common error values. Specifically, this
+ * predicate holds when:
+ * - `cond` checks that `v` is equal to `-1`, or
+ * - `cond` checks that `v` is less than `0`, or
+ * - `cond` checks that `v` is less than or equal to `-1`, or
+ * - `cond` checks that `v` is not some common success value (see `successCondition`).
+ */
 predicate errorCondition(Variable v, Expr cond) {
   exists(EQExpr eq |
     cond = eq and
@@ -88,6 +123,14 @@ predicate errorCondition(Variable v, Expr cond) {
   )
 }
 
+/**
+ * Holds if `cond` compares `v` to some common success values. Specifically, this
+ * predicate holds when:
+ * - `cond` checks that `v` is not equal to `-1`, or
+ * - `cond` checks that `v` is greater than or equal than `0`, or
+ * - `cond` checks that `v` is greater than `-1`, or
+ * - `cond` checks that `v` is not some common error value (see `errorCondition`).
+ */
 predicate successCondition(Variable v, Expr cond) {
   exists(NEExpr ne |
     cond = ne and
@@ -113,6 +156,11 @@ predicate successCondition(Variable v, Expr cond) {
   )
 }
 
+/**
+ * Holds if there exists a comparison operation that checks whether `v`
+ * represents some common *error* values, and `n` may be reached
+ * immediately following the comparison operation.
+ */
 predicate errorSuccessor(Variable v, ControlFlowNode n) {
   exists(Expr cond |
     errorCondition(v, cond) and n = cond.getATrueSuccessor()
@@ -121,6 +169,11 @@ predicate errorSuccessor(Variable v, ControlFlowNode n) {
   )
 }
 
+/**
+ * Holds if there exists a comparison operation that checks whether `v`
+ * represents some common *success* values, and `n` may be reached
+ * immediately following the comparison operation.
+ */
 predicate successSuccessor(Variable v, ControlFlowNode n) {
   exists(Expr cond |
     successCondition(v, cond) and n = cond.getATrueSuccessor()
@@ -129,6 +182,10 @@ predicate successSuccessor(Variable v, ControlFlowNode n) {
   )
 }
 
+/**
+ * Holds if the current value of the variable `v` at control-flow node
+ * `n` may have been checked against a common set of *error* values.
+ */
 predicate checkedError(Variable v, ControlFlowNode n) {
   errorSuccessor(v, n)
   or
@@ -139,6 +196,10 @@ predicate checkedError(Variable v, ControlFlowNode n) {
   )
 }
 
+/**
+ * Holds if the current value of the variable `v` at control-flow node
+ * `n` may have been checked against a common set of *success* values.
+ */
 predicate checkedSuccess(Variable v, ControlFlowNode n) {
   successSuccessor(v, n)
   or

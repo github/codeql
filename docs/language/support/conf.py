@@ -80,4 +80,4 @@ htmlhelp_basename = 'Supported languages and frameworks'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['read-me-project.rst', 'cobol-note.rst']
+exclude_patterns = ['read-me-project.rst', 'reusables/*']

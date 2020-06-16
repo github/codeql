@@ -1,4 +1,3 @@
-
 import python
 import semmle.python.objects.ObjectInternal
 
@@ -10,6 +9,5 @@ string vrepr(Value v) {
 }
 
 from ControlFlowNode f, Context ctx, Value v, ControlFlowNode origin
-where
-  f.pointsTo(ctx, v, origin)
+where f.pointsTo(ctx, v, origin)
 select f.getLocation(), f.toString(), ctx, vrepr(v), vrepr(v.getClass())

@@ -25,8 +25,7 @@ private class DeclaredRepository extends PomElement {
   string getUrl() { result = getAChild("url").(PomElement).getValue() }
 
   predicate isInsecureRepositoryUsage() {
-    getUrl().matches("http://%") or
-    getUrl().matches("ftp://%")
+    getUrl().regexpMatch("(?i)^(http|ftp)://(?!localhost[:/]).*")
   }
 }
 

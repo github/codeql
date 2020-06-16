@@ -14,7 +14,8 @@ import javascript
 
 from File f, float n
 where
-  n = avg(Function fun, int toAvg |
+  n =
+    avg(Function fun, int toAvg |
       fun.getTopLevel().getFile() = f and toAvg = fun.getCyclomaticComplexity()
     |
       toAvg

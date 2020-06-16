@@ -1,0 +1,4 @@
+- description: Standard Code Scanning queries for Python
+- qlpack: codeql-python
+- apply: code-scanning-selectors.yml
+  from: codeql-suite-helpers

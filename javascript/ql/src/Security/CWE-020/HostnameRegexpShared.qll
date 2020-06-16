@@ -2,6 +2,7 @@
  * Provides predicates for reasoning about regular expressions
  * that match URLs and hostname patterns.
  */
+
 import javascript
 
 /**
@@ -39,9 +40,7 @@ predicate isDotLike(RegExpTerm term) {
 predicate matchesBeginningOfString(RegExpTerm term) {
   term.isRootTerm()
   or
-  exists(RegExpTerm parent |
-    matchesBeginningOfString(parent)
-  |
+  exists(RegExpTerm parent | matchesBeginningOfString(parent) |
     term = parent.(RegExpSequence).getChild(0)
     or
     parent.(RegExpSequence).getChild(0) instanceof RegExpCaret and
@@ -60,7 +59,11 @@ predicate matchesBeginningOfString(RegExpTerm term) {
  * `i` is bound to the index of the last child in the top-level domain part.
  */
 predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
-  seq.getChild(i).(RegExpConstant).getValue().regexpMatch("(?i)" + RegExpPatterns::commonTLD() + "(:\\d+)?([/?#].*)?") and
+  seq
+      .getChild(i)
+      .(RegExpConstant)
+      .getValue()
+      .regexpMatch("(?i)" + RegExpPatterns::commonTLD() + "(:\\d+)?([/?#].*)?") and
   isDotLike(seq.getChild(i - 1)) and
   not (i = 1 and matchesBeginningOfString(seq))
 }
@@ -69,9 +72,7 @@ predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
  * Holds if the given regular expression term contains top-level domain preceded by a dot,
  * such as `.com`.
  */
-predicate hasTopLevelDomainEnding(RegExpSequence seq) {
-  hasTopLevelDomainEnding(seq, _)
-}
+predicate hasTopLevelDomainEnding(RegExpSequence seq) { hasTopLevelDomainEnding(seq, _) }
 
 /**
  * Holds if `term` will always match a hostname, that is, all disjunctions contain

@@ -20,8 +20,8 @@ string getNamespaceName(NamespaceDeclaration decl) {
   result = decl.getStmt(0).(ExprStmt).getExpr().getStringValue()
   or
   not decl.getStmt(0).(ExprStmt).getExpr() instanceof ConstantString and
-  result = "Namespace " + decl.getId() + " on line " +
-      decl.getFirstToken().getLocation().getStartLine()
+  result =
+    "Namespace " + decl.getId() + " on line " + decl.getFirstToken().getLocation().getStartLine()
 }
 
 from ResolveCall resolve

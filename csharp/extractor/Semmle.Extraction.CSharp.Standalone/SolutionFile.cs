@@ -12,6 +12,8 @@ namespace Semmle.BuildAnalyser
     {
         readonly Microsoft.Build.Construction.SolutionFile solutionFile;
 
+        private string FullPath { get; }
+
         /// <summary>
         /// Read the file.
         /// </summary>
@@ -19,8 +21,8 @@ namespace Semmle.BuildAnalyser
         public SolutionFile(string filename)
         {
             // SolutionFile.Parse() expects a rooted path.
-            var fullPath = Path.GetFullPath(filename);
-            solutionFile = Microsoft.Build.Construction.SolutionFile.Parse(fullPath);
+            FullPath = Path.GetFullPath(filename);
+            solutionFile = Microsoft.Build.Construction.SolutionFile.Parse(FullPath);
         }
 
         /// <summary>

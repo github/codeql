@@ -27,3 +27,5 @@
 | declarationEntry.cpp:31:4:31:19 | myMemberVariable | declarationEntry.cpp:31:4:31:19 | definition of myMemberVariable | 1 | 1 |
 | declarationEntry.cpp:34:22:34:28 | mtc_int | declarationEntry.cpp:34:22:34:28 | definition of mtc_int | 1 | 1 |
 | declarationEntry.cpp:35:24:35:32 | mtc_short | declarationEntry.cpp:35:24:35:32 | definition of mtc_short | 1 | 1 |
+| macro.c:2:1:2:3 | foo | macro.c:2:1:2:3 | declaration of foo | 1 | 1 |
+| macro.c:4:5:4:8 | main | macro.c:4:5:4:8 | definition of main | 1 | 1 |

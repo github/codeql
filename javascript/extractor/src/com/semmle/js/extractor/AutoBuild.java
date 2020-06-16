@@ -1,31 +1,11 @@
 package com.semmle.js.extractor;
 
-import com.semmle.js.extractor.ExtractorConfig.SourceType;
-import com.semmle.js.extractor.FileExtractor.FileType;
-import com.semmle.js.extractor.trapcache.DefaultTrapCache;
-import com.semmle.js.extractor.trapcache.DummyTrapCache;
-import com.semmle.js.extractor.trapcache.ITrapCache;
-import com.semmle.js.parser.ParsedProject;
-import com.semmle.js.parser.TypeScriptParser;
-import com.semmle.ts.extractor.TypeExtractor;
-import com.semmle.ts.extractor.TypeTable;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.exception.CatastrophicError;
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.ResourceError;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.extraction.ExtractorOutputConfig;
-import com.semmle.util.files.FileUtil;
-import com.semmle.util.io.csv.CSVReader;
-import com.semmle.util.language.LegacyLanguage;
-import com.semmle.util.process.Env;
-import com.semmle.util.projectstructure.ProjectLayout;
-import com.semmle.util.trap.TrapWriter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,6 +30,35 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.ExtractorConfig.SourceType;
+import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.js.extractor.trapcache.DefaultTrapCache;
+import com.semmle.js.extractor.trapcache.DummyTrapCache;
+import com.semmle.js.extractor.trapcache.ITrapCache;
+import com.semmle.js.parser.ParsedProject;
+import com.semmle.js.parser.TypeScriptParser;
+import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeTable;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.CatastrophicError;
+import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.ResourceError;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.extraction.ExtractorOutputConfig;
+import com.semmle.util.files.FileUtil;
+import com.semmle.util.io.WholeIO;
+import com.semmle.util.io.csv.CSVReader;
+import com.semmle.util.language.LegacyLanguage;
+import com.semmle.util.process.Env;
+import com.semmle.util.projectstructure.ProjectLayout;
+import com.semmle.util.trap.TrapWriter;
+
 /**
  * An alternative entry point to the JavaScript extractor.
  *
@@ -68,8 +77,8 @@ import java.util.stream.Stream;
  *   <li><code>LGTM_INDEX_EXCLUDE</code>: a newline-separated list of paths to exclude
  *   <li><code>LGTM_REPOSITORY_FOLDERS_CSV</code>: the path of a CSV file containing file
  *       classifications
- *   <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of {@link ProjectLayout}-style
- *       patterns that can be used to refine the list of files to include and exclude
+ *   <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of strings of form "include:PATTERN"
+ *      or "exclude:PATTERN" that can be used to refine the list of files to include and exclude.
  *   <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript
  *   <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
  *       specifying which {@link FileType} to use for the given extension; the additional file type
@@ -388,9 +397,10 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files and package.json files
+    // include .eslintrc files, package.json files, and tsconfig.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
+    patterns.add("**/tsconfig.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
@@ -545,24 +555,50 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
+    DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty() && this.installDependencies) {
-      this.installDependencies(filesToExtract);
+      dependencyInstallationResult = this.installDependencies(filesToExtract);
     }
 
     // extract TypeScript projects and files
-    Set<Path> extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
+    Set<Path> extractedFiles =
+          extractTypeScript(
+              defaultExtractor, filesToExtract, tsconfigFiles, dependencyInstallationResult);
+
+    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
 
     // extract remaining files
     for (Path f : filesToExtract) {
-      if (extractedFiles.add(f)) {
-        FileExtractor extractor = defaultExtractor;
-        if (!fileTypes.isEmpty()) {
-          String extension = FileUtil.extension(f);
-          if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
-        }
-        extract(extractor, f, null);
+      if (extractedFiles.contains(f))
+        continue;
+      if (hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)) {
+        continue;
+      }
+      extractedFiles.add(f);
+      FileExtractor extractor = defaultExtractor;
+      if (!fileTypes.isEmpty()) {
+        String extension = FileUtil.extension(f);
+        if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
+      }
+      extract(extractor, f, null);
+    }
+  }
+
+  /**
+   * Returns true if the given path is likely the output of compiling a TypeScript file
+   * which we have already extracted.
+   */
+  private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
+    String name = path.getFileName().toString();
+    if (!name.endsWith(".js"))
+      return false;
+    String stem = name.substring(0, name.length() - ".js".length());
+    for (String ext : FileType.TYPESCRIPT.getExtensions()) {
+      if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
+        return true;
       }
     }
+    return false;
   }
 
   /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
@@ -587,36 +623,255 @@ public class AutoBuild {
     }
   }
 
-  protected void installDependencies(Set<Path> filesToExtract) {
-    if (!verifyYarnInstallation()) {
-      return;
+  /**
+   * Returns an existing file named <code>dir/stem.ext</code> where <code>.ext</code> is any
+   * of the given extensions, or <code>null</code> if no such file exists.
+   */
+  private static Path tryResolveWithExtensions(Path dir, String stem, Iterable<String> extensions) {
+    for (String ext : extensions) {
+      Path path = dir.resolve(stem + ext);
+      if (Files.exists(dir.resolve(path))) {
+        return path;
+      }
     }
+    return null;
+  }
+
+  /**
+   * Returns an existing file named <code>dir/stem.ext</code> where <code>ext</code> is any TypeScript or JavaScript extension,
+   * or <code>null</code> if no such file exists.
+   */
+  private static Path tryResolveTypeScriptOrJavaScriptFile(Path dir, String stem) {
+    Path resolved = tryResolveWithExtensions(dir, stem, FileType.TYPESCRIPT.getExtensions());
+    if (resolved != null) return resolved;
+    return tryResolveWithExtensions(dir, stem, FileType.JS.getExtensions());
+  }
+
+  /**
+   * Gets a child of a JSON object as a string, or <code>null</code>.
+   */
+  private String getChildAsString(JsonObject obj, String name) {
+     JsonElement child = obj.get(name);
+     if (child instanceof JsonPrimitive && ((JsonPrimitive)child).isString()) {
+       return child.getAsString();
+     }
+     return null;
+  }
+
+  /**
+   * Installs dependencies for use by the TypeScript type checker.
+   * <p>
+   * Some packages must be downloaded while others exist within the same repo ("monorepos")
+   * but are not in a location where TypeScript would look for it.
+   * <p>
+   * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
+   * we call the "virtual source root".
+   * Each <tt>package.json</tt> file is rewritten and copied to the virtual source root,
+   * where <tt>yarn install</tt> is invoked.
+   * <p>
+   * Packages that exists within the repo are stripped from the dependencies
+   * before installation, so they are not downloaded. Since they are part of the main source tree,
+   * these packages are not mirrored under the virtual source root.
+   * Instead, an explicit package location mapping is passed to the TypeScript parser wrapper.
+   * <p>
+   * The TypeScript parser wrapper then overrides module resolution so packages can be found
+   * under the virtual source root and via that package location mapping.
+   */
+  protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
+    if (!verifyYarnInstallation()) {
+      return DependencyInstallationResult.empty;
+    }
+
+    final Path sourceRoot = Paths.get(".").toAbsolutePath();
+    final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
+
+    // Read all package.json files and index them by name.
+    Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
+    Map<String, Path> packagesInRepo = new LinkedHashMap<>();
+    Map<String, Path> packageMainFile = new LinkedHashMap<>();
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
-        System.out.println("Installing dependencies from " + file);
-        ProcessBuilder pb =
-            new ProcessBuilder(
-                Arrays.asList(
-                    "yarn",
-                    "install",
-                    "--non-interactive",
-                    "--ignore-scripts",
-                    "--ignore-platform",
-                    "--ignore-engines",
-                    "--ignore-optional",
-                    "--no-default-rc",
-                    "--no-bin-links",
-                    "--pure-lockfile"));
-        pb.directory(file.getParent().toFile());
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
         try {
-          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-        } catch (IOException | InterruptedException ex) {
-          throw new ResourceError("Could not install dependencies from " + file, ex);
+          String text = new WholeIO().read(file);
+          JsonElement json = new JsonParser().parse(text);
+          if (!(json instanceof JsonObject)) continue;
+          JsonObject jsonObject = (JsonObject) json;
+          file = file.toAbsolutePath();
+          packageJsonFiles.put(file, jsonObject);
+
+          String name = getChildAsString(jsonObject, "name");
+          if (name != null) {
+            packagesInRepo.put(name, file);
+          }
+        } catch (JsonParseException e) {
+          System.err.println("Could not parse JSON file: " + file);
+          System.err.println(e);
+          // Continue without the malformed package.json file
         }
       }
     }
+
+    // Process all package.json files now that we know the names of all local packages.
+    // - remove dependencies on local packages
+    // - guess the main file for each package
+    // Note that we ignore optional dependencies during installation, so "optionalDependencies"
+    // is ignored here as well.
+    final List<String> dependencyFields =
+        Arrays.asList("dependencies", "devDependencies", "peerDependencies");
+    packageJsonFiles.forEach(
+        (path, packageJson) -> {
+          Path relativePath = sourceRoot.relativize(path);
+          for (String dependencyField : dependencyFields) {
+            JsonElement dependencyElm = packageJson.get(dependencyField);
+            if (!(dependencyElm instanceof JsonObject)) continue;
+            JsonObject dependencyObj = (JsonObject) dependencyElm;
+            List<String> propsToRemove = new ArrayList<>();
+            for (String packageName : dependencyObj.keySet()) {
+              if (packagesInRepo.containsKey(packageName)) {
+                // Remove dependency on local package
+                propsToRemove.add(packageName);
+              } else {
+                // Remove file dependency on a package that doesn't exist in the checkout.
+                String dependency = getChildAsString(dependencyObj, packageName);
+                if (dependency != null && (dependency.startsWith("file:") || dependency.startsWith("./") || dependency.startsWith("../"))) {
+                    if (dependency.startsWith("file:")) {
+                      dependency = dependency.substring("file:".length());
+                    }
+                    Path resolvedPackage = path.getParent().resolve(dependency + "/package.json");
+                    if (!Files.exists(resolvedPackage)) {
+                      propsToRemove.add(packageName);
+                    }
+                }
+              }
+            }
+            for (String prop : propsToRemove) {
+              dependencyObj.remove(prop);
+            }
+          }
+          // For named packages, find the main file.
+          String name = getChildAsString(packageJson, "name");
+          if (name != null) {
+            Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
+            if (entryPoint == null) {
+              // Try a TypeScript-recognized JS extension instead
+              entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+            }
+            if (entryPoint != null) {
+              System.out.println(relativePath + ": Main file set to " + sourceRoot.relativize(entryPoint));
+              packageMainFile.put(name, entryPoint);
+            } else {
+              System.out.println(relativePath + ": Main file not found");
+            }
+          }
+        });
+
+    // Write the new package.json files to disk
+    for (Path file : packageJsonFiles.keySet()) {
+      Path relativePath = sourceRoot.relativize(file);
+      Path virtualFile = virtualSourceRoot.resolve(relativePath);
+
+      try {
+        Files.createDirectories(virtualFile.getParent());
+        try (Writer writer = Files.newBufferedWriter(virtualFile)) {
+          new Gson().toJson(packageJsonFiles.get(file), writer);
+        }
+      } catch (IOException e) {
+        throw new ResourceError("Could not rewrite package.json file: " + virtualFile, e);
+      }
+    }
+
+    // Install dependencies
+    for (Path file : packageJsonFiles.keySet()) {
+      Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
+      System.out.println("Installing dependencies from " + virtualFile);
+      ProcessBuilder pb =
+          new ProcessBuilder(
+              Arrays.asList(
+                  "yarn",
+                  "install",
+                  "--non-interactive",
+                  "--ignore-scripts",
+                  "--ignore-platform",
+                  "--ignore-engines",
+                  "--ignore-optional",
+                  "--no-default-rc",
+                  "--no-bin-links",
+                  "--pure-lockfile"));
+      pb.directory(virtualFile.getParent().toFile());
+      pb.redirectOutput(Redirect.INHERIT);
+      pb.redirectError(Redirect.INHERIT);
+      try {
+        pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+      } catch (IOException | InterruptedException ex) {
+        throw new ResourceError("Could not install dependencies from " + file, ex);
+      }
+    }
+
+    return new DependencyInstallationResult(virtualSourceRoot, packageMainFile, packagesInRepo);
+  }
+
+  /**
+   * Attempts to find a TypeScript file that acts as the main entry point to the
+   * given package - that is, the file you get when importing the package by name
+   * without any path suffix.
+   */
+  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
+    Path packageDir = packageJsonFile.getParent();
+
+    // Try <package_dir>/index.ts.
+    Path resolved = tryResolveWithExtensions(packageDir, "index", extensions);
+    if (resolved != null) {
+      return resolved;
+    }
+
+    // Get the "main" property from the package.json
+    // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
+    // the name of main file ("foo" in this case).
+    String mainStr = getChildAsString(packageJson, "main");
+
+    // Look for source files `./src` if it exists
+    Path sourceDir = packageDir.resolve("src");
+    if (Files.isDirectory(sourceDir)) {
+      // Try `src/index.ts`
+      resolved = tryResolveTypeScriptOrJavaScriptFile(sourceDir, "index");
+      if (resolved != null) {
+        return resolved;
+      }
+
+      // If "main" was defined, try to map it to a file in `src`.
+      // For example `out/dist/foo.bundle.js` might be mapped back to `src/foo.ts`.
+      if (mainStr != null) {
+        Path candidatePath = Paths.get(mainStr);
+
+        // Strip off prefix directories that don't exist under `src/`, such as `out` and `dist`.
+        while (candidatePath.getNameCount() > 1 && !Files.isDirectory(sourceDir.resolve(candidatePath.getParent()))) {
+          candidatePath = candidatePath.subpath(1, candidatePath.getNameCount());
+        }
+
+        // Strip off extensions until a file can be found
+        while (true) {
+          resolved = tryResolveWithExtensions(sourceDir, candidatePath.toString(), extensions);
+          if (resolved != null) {
+            return resolved;
+          }
+          Path withoutExt = candidatePath.resolveSibling(FileUtil.stripExtension(candidatePath.getFileName().toString()));
+          if (withoutExt.equals(candidatePath)) break; // No more extensions to strip
+          candidatePath = withoutExt;
+        }
+      }
+    }
+
+    // Try to resolve main as a sibling of the package.json file, such as "./main.js" -> "./main.ts".
+    if (mainStr != null) {
+      Path mainPath = Paths.get(mainStr);
+      String withoutExt = FileUtil.stripExtension(mainPath.getFileName().toString());
+      resolved = tryResolveWithExtensions(packageDir, withoutExt, extensions);
+      if (resolved != null) {
+        return resolved;
+      }
+    }
+
+    return null;
   }
 
   private ExtractorConfig mkExtractorConfig() {
@@ -628,7 +883,10 @@ public class AutoBuild {
   }
 
   private Set<Path> extractTypeScript(
-      FileExtractor extractor, Set<Path> files, List<Path> tsconfig) {
+      FileExtractor extractor,
+      Set<Path> files,
+      List<Path> tsconfig,
+      DependencyInstallationResult deps) {
     Set<Path> extractedFiles = new LinkedHashSet<>();
 
     if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
@@ -640,7 +898,7 @@ public class AutoBuild {
       for (Path projectPath : tsconfig) {
         File projectFile = projectPath.toFile();
         long start = logBeginProcess("Opening project " + projectFile);
-        ParsedProject project = tsParser.openProject(projectFile);
+        ParsedProject project = tsParser.openProject(projectFile, deps);
         logEndProcess(start, "Done opening project " + projectFile);
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.
@@ -729,7 +987,8 @@ public class AutoBuild {
             // extract TypeScript projects from 'tsconfig.json'
             if (typeScriptMode == TypeScriptMode.FULL
                 && file.getFileName().endsWith("tsconfig.json")
-                && !excludes.contains(file)) {
+                && !excludes.contains(file)
+                && isFileIncluded(file)) {
               tsconfigFiles.add(file);
             }
 

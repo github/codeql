@@ -1,4 +1,3 @@
-
 import python
 
 from ModuleObject m, string name

@@ -44,23 +44,17 @@ predicate escapingScheme(string metachar, string regex) {
  * A call to `String.prototype.replace` that replaces all instances of a pattern.
  */
 class Replacement extends StringReplaceCall {
-  Replacement() {
-    isGlobal()
-  }
+  Replacement() { isGlobal() }
 
   /**
    * Gets the input of this replacement.
    */
-  DataFlow::Node getInput() {
-    result = this.getReceiver()
-  }
+  DataFlow::Node getInput() { result = this.getReceiver() }
 
   /**
    * Gets the output of this replacement.
    */
-  DataFlow::SourceNode getOutput() {
-    result = this
-  }
+  DataFlow::SourceNode getOutput() { result = this }
 
   /**
    * Holds if this replacement escapes `char` using `metachar`.
@@ -93,9 +87,7 @@ class Replacement extends StringReplaceCall {
   /**
    * Gets the previous replacement in this chain of replacements.
    */
-  Replacement getPreviousReplacement() {
-    result.getOutput() = getASimplePredecessor*(getInput())
-  }
+  Replacement getPreviousReplacement() { result.getOutput() = getASimplePredecessor*(getInput()) }
 
   /**
    * Gets an earlier replacement in this chain of replacements that

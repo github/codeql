@@ -310,13 +310,15 @@ private Node getControlOrderChildSparse(Node n, int i) {
   not result instanceof TypeName and
   not isDeleteDestructorCall(n)
   or
-  n = any(AssignExpr a |
+  n =
+    any(AssignExpr a |
       i = 0 and result = a.getRValue()
       or
       i = 1 and result = a.getLValue()
     )
   or
-  n = any(Call c |
+  n =
+    any(Call c |
       not isDeleteDestructorCall(c) and
       (
         result = c.getArgument(i)
@@ -329,7 +331,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
   or
   n = any(ConditionDeclExpr cd | i = 0 and result = cd.getInitializingExpr())
   or
-  n = any(DeleteExpr del |
+  n =
+    any(DeleteExpr del |
       i = 0 and result = del.getExpr()
       or
       i = 1 and result = del.getDestructorCall()
@@ -337,7 +340,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
       i = 2 and result = del.getAllocatorCall()
     )
   or
-  n = any(DeleteArrayExpr del |
+  n =
+    any(DeleteArrayExpr del |
       i = 0 and result = del.getExpr()
       or
       i = 1 and result = del.getDestructorCall()
@@ -345,7 +349,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
       i = 2 and result = del.getAllocatorCall()
     )
   or
-  n = any(NewArrayExpr new |
+  n =
+    any(NewArrayExpr new |
       // Extra arguments to a built-in allocator, such as alignment or pointer
       // address, are found at child positions >= 3. Extra arguments to custom
       // allocators are instead placed as subexpressions of `getAllocatorCall`.
@@ -362,7 +367,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
       i = 3 and result = new.getInitializer()
     )
   or
-  n = any(NewExpr new |
+  n =
+    any(NewExpr new |
       // Extra arguments to a built-in allocator, such as alignment or pointer
       // address, are found at child positions >= 3. Extra arguments to custom
       // allocators are instead placed as subexpressions of `getAllocatorCall`.
@@ -379,7 +385,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
   or
   // The extractor sometimes emits literals with no value for captures and
   // routes control flow around them.
-  n = any(Expr e |
+  n =
+    any(Expr e |
       e.getParent() instanceof LambdaExpression and
       result = e.getChild(i) and
       forall(Literal lit | result = lit | exists(lit.getValue()))
@@ -387,7 +394,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
   or
   n = any(StmtExpr e | i = 0 and result = e.getStmt())
   or
-  n = any(Initializer init |
+  n =
+    any(Initializer init |
       not skipInitializer(init) and
       not exists(ConditionDeclExpr cd | result = cd.getInitializingExpr()) and
       i = 0 and
@@ -407,7 +415,8 @@ private Node getControlOrderChildSparse(Node n, int i) {
   not result instanceof VlaDeclStmt and
   not result instanceof VlaDimensionStmt
   or
-  n = any(DeclStmt s |
+  n =
+    any(DeclStmt s |
       exists(LocalVariable var | var = s.getDeclaration(i) |
         result = var.getInitializer() and
         not skipInitializer(result)
@@ -432,10 +441,9 @@ private Node getControlOrderChildSparse(Node n, int i) {
  * thus should not have control flow computed.
  */
 private predicate skipInitializer(Initializer init) {
-  exists(LocalVariable local |
+  exists(StaticLocalVariable local |
     init = local.getInitializer() and
-    local.isStatic() and
-    not runtimeExprInStaticInitializer(init.getExpr())
+    not local.hasDynamicInitialization()
   )
 }
 
@@ -464,7 +472,8 @@ private predicate inStaticInitializer(Expr e) {
  * contiguous, and the first index is 0.
  */
 private Node getControlOrderChildDense(Node n, int i) {
-  result = rank[i + 1](Node child, int childIdx |
+  result =
+    rank[i + 1](Node child, int childIdx |
       child = getControlOrderChildSparse(n, childIdx)
     |
       child order by childIdx
@@ -547,7 +556,8 @@ private class Spec extends Pos {
  * together instead.
  */
 private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
-  scope = any(Block b |
+  scope =
+    any(Block b |
       i = -1 and ni = b and spec.isAt()
       or
       if exists(getLastControlOrderChild(b))
@@ -571,7 +581,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       )
     )
   or
-  scope = any(ShortCircuitOperator op |
+  scope =
+    any(ShortCircuitOperator op |
       i = -1 and ni = op and spec.isBefore()
       or
       i = 0 and ni = op and spec.isAt()
@@ -579,7 +590,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 1 and ni = op.getFirstChildNode() and spec.isBefore()
     )
   or
-  scope = any(ThrowExpr e |
+  scope =
+    any(ThrowExpr e |
       i = -1 and ni = e and spec.isBefore()
       or
       i = 0 and ni = e.getExpr() and spec.isAround()
@@ -591,7 +603,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 3 and ni = e.(ExceptionSource).getExceptionTarget() and spec.isBefore()
     )
   or
-  scope = any(ReturnStmt ret |
+  scope =
+    any(ReturnStmt ret |
       i = -1 and ni = ret and spec.isAt()
       or
       i = 0 and ni = ret.getExpr() and spec.isAround()
@@ -601,7 +614,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 2 and ni = ret.getEnclosingFunction() and spec.isAt()
     )
   or
-  scope = any(JumpStmt s |
+  scope =
+    any(JumpStmt s |
       i = -1 and ni = s and spec.isAt()
       or
       i = 0 and ni = s and spec.isAroundDestructors()
@@ -609,7 +623,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 1 and ni = s.getTarget() and spec.isBefore()
     )
   or
-  scope = any(ForStmt s |
+  scope =
+    any(ForStmt s |
       // ForStmt [-> init]
       i = -1 and ni = s and spec.isAt()
       or
@@ -647,7 +662,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       )
     )
   or
-  scope = any(RangeBasedForStmt for |
+  scope =
+    any(RangeBasedForStmt for |
       i = -1 and ni = for and spec.isAt()
       or
       exists(DeclStmt s | s.getADeclaration() = for.getRangeVariable() |
@@ -680,7 +696,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 7 and ni = for.getCondition() and spec.isBefore()
     )
   or
-  scope = any(TryStmt s |
+  scope =
+    any(TryStmt s |
       i = -1 and ni = s and spec.isAt()
       or
       i = 0 and ni = s.getStmt() and spec.isAround()
@@ -688,7 +705,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 1 and ni = s and spec.isAfter()
     )
   or
-  scope = any(MicrosoftTryExceptStmt s |
+  scope =
+    any(MicrosoftTryExceptStmt s |
       i = -1 and ni = s and spec.isAt()
       or
       i = 0 and ni = s.getStmt() and spec.isAround()
@@ -708,7 +726,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 7 and ni = s.(ExceptionSource).getExceptionTarget() and spec.isBefore()
     )
   or
-  scope = any(SwitchStmt s |
+  scope =
+    any(SwitchStmt s |
       i = -1 and ni = s and spec.isAt()
       or
       i = 0 and ni = s.getExpr() and spec.isAround()
@@ -735,7 +754,8 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
       i = 6 and ni = s and spec.isAfter()
     )
   or
-  scope = any(ComputedGotoStmt s |
+  scope =
+    any(ComputedGotoStmt s |
       i = -1 and ni = s and spec.isAt()
       or
       i = 0 and ni = s.getExpr() and spec.isBefore()
@@ -1034,13 +1054,15 @@ private class LogicalOrLikeExpr extends ShortCircuitOperator {
   Expr right;
 
   LogicalOrLikeExpr() {
-    this = any(LogicalOrExpr e |
+    this =
+      any(LogicalOrExpr e |
         left = e.getLeftOperand() and
         right = e.getRightOperand()
       )
     or
     // GNU extension: the binary `? :` operator
-    this = any(ConditionalExpr e |
+    this =
+      any(ConditionalExpr e |
         e.isTwoOperand() and
         left = e.getCondition() and
         right = e.getElse()
@@ -1059,14 +1081,16 @@ private class ConditionalLikeExpr extends ShortCircuitOperator {
   Expr elseExpr;
 
   ConditionalLikeExpr() {
-    this = any(ConditionalExpr e |
+    this =
+      any(ConditionalExpr e |
         not e.isTwoOperand() and
         condition = e.getCondition() and
         thenExpr = e.getThen() and
         elseExpr = e.getElse()
       )
     or
-    this = any(BuiltInChooseExpr e |
+    this =
+      any(BuiltInChooseExpr e |
         condition = e.getChild(0) and
         thenExpr = e.getChild(1) and
         elseExpr = e.getChild(2)

@@ -23,7 +23,8 @@ predicate important(Function f, string message) {
 predicate dubious(Function f, string message) {
   not important(f, _) and
   exists(Options opts, int used, int total, int percentage |
-    used = count(FunctionCall fc |
+    used =
+      count(FunctionCall fc |
         fc.getTarget() = f and not opts.okToIgnoreReturnValue(fc) and not unused(fc)
       ) and
     total = count(FunctionCall fc | fc.getTarget() = f and not opts.okToIgnoreReturnValue(fc)) and

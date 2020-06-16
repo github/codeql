@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about instances of
+ * `java.util.Collection` and their methods.
+ */
+
 import java
 
 /**
@@ -77,6 +82,7 @@ class CollectionMutator extends CollectionMethod {
 class CollectionMutation extends MethodAccess {
   CollectionMutation() { this.getMethod() instanceof CollectionMutator }
 
+  /** Holds if the result of this call is not immediately discarded. */
   predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
 }
 

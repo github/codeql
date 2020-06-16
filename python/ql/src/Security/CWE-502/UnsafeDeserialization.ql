@@ -10,28 +10,26 @@
  *       security
  *       serialization
  */
-import python
 
+import python
+import semmle.python.security.Paths
 // Sources -- Any untrusted input
 import semmle.python.web.HttpRequest
-import semmle.python.security.Paths
-
 // Flow -- untrusted string
 import semmle.python.security.strings.Untrusted
-
 // Sink -- Unpickling and other deserialization formats.
 import semmle.python.security.injection.Pickle
 import semmle.python.security.injection.Marshal
 import semmle.python.security.injection.Yaml
 
-class UnsafeDeserializationConfiguration  extends TaintTracking::Configuration {
-
+class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
     UnsafeDeserializationConfiguration() { this = "Unsafe deserialization configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof HttpRequestTaintSource
+    }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof DeserializationSink }
-
 }
 
 from UnsafeDeserializationConfiguration config, TaintedPathSource src, TaintedPathSink sink

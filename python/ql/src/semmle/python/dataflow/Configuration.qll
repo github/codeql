@@ -1,10 +1,9 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.dataflow.Implementation
 
 module TaintTracking {
-
     class Source = TaintSource;
 
     class Sink = TaintSink;
@@ -16,13 +15,11 @@ module TaintTracking {
     class PathSink = TaintTrackingNode;
 
     abstract class Configuration extends string {
-
         /* Required to prevent compiler warning */
         bindingset[this]
         Configuration() { this = this }
 
         /* Old implementation API */
-
         predicate isSource(Source src) { none() }
 
         predicate isSink(Sink sink) { none() }
@@ -32,7 +29,6 @@ module TaintTracking {
         predicate isExtension(Extension extension) { none() }
 
         /* New implementation API */
-
         /**
          * Holds if `src` is a source of taint of `kind` that is relevant
          * for this configuration.
@@ -66,7 +62,9 @@ module TaintTracking {
         /**
          * Holds if `src -> dest` is a flow edge converting taint from `srckind` to `destkind`.
          */
-        predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
+        predicate isAdditionalFlowStep(
+            DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind
+        ) {
             none()
         }
 
@@ -79,9 +77,7 @@ module TaintTracking {
          * Holds if `node` should be considered as a barrier to flow of `kind`.
          */
         predicate isBarrier(DataFlow::Node node, TaintKind kind) {
-            exists(Sanitizer sanitizer |
-                this.isSanitizer(sanitizer)
-                |
+            exists(Sanitizer sanitizer | this.isSanitizer(sanitizer) |
                 sanitizer.sanitizingNode(kind, node.asCfgNode())
                 or
                 sanitizer.sanitizingEdge(kind, node.asVariable())
@@ -112,16 +108,18 @@ module TaintTracking {
          * Holds if flow from `src` to `dest` is prohibited when the incoming taint is `srckind` and the outgoing taint is `destkind`.
          * Note that `srckind` and `destkind` can be the same.
          */
-        predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) { none() }
+        predicate isBarrierEdge(
+            DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind
+        ) {
+            none()
+        }
 
         /* Common query API */
-
         predicate hasFlowPath(PathSource src, PathSink sink) {
             this.(TaintTrackingImplementation).hasFlowPath(src, sink)
         }
 
         /* Old query API */
-
         /* deprecated */
         deprecated predicate hasFlow(Source src, Sink sink) {
             exists(PathSource psrc, PathSink psink |
@@ -132,7 +130,6 @@ module TaintTracking {
         }
 
         /* New query API */
-
         predicate hasSimpleFlow(DataFlow::Node src, DataFlow::Node sink) {
             exists(PathSource psrc, PathSink psink |
                 this.hasFlowPath(psrc, psink) and
@@ -140,7 +137,5 @@ module TaintTracking {
                 sink = psink.getNode()
             )
         }
-
     }
-
 }

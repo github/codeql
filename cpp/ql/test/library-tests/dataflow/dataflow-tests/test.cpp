@@ -366,7 +366,7 @@ class FlowThroughFields {
   }
 
   int calledAfterTaint() {
-    sink(field); // tainted [NOT DETECTED with IR]
+    sink(field); // tainted
   }
 
   int taintAndCall() {
@@ -459,4 +459,14 @@ void throughStmtExpr(int source1, int clean1) {
     tmp;
   });
   sink(local); // tainted
+}
+
+void intOutparamSource(int *p) {
+  *p = source();
+}
+
+void viaOutparam() {
+  int x = 0;
+  intOutparamSource(&x);
+  sink(x); // tainted [FALSE NEGATIVE]
 }

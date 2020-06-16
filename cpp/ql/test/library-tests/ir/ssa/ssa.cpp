@@ -243,3 +243,71 @@ void ExplicitConstructorCalls() {
   Constructible c2 = Constructible(2);
   c2.g();
 }
+
+char *VoidStarIndirectParameters(char *src, int size) {
+  char *dst = new char[size];
+  *src = 'a';
+  memcpy(dst, src, size);
+  return dst;
+}
+
+char StringLiteralAliasing2(bool b) {
+  if (b) {
+    ExternalFunc();
+  }
+  else {
+    ExternalFunc();
+  }
+
+  const char* s = "Literal";
+  return s[2];
+}
+
+void *malloc(int size);
+
+void *MallocAliasing(void *s, int size) {
+  void *buf = malloc(size);
+  memcpy(buf, s, size);
+  return buf;
+}
+
+Point *pp;
+void EscapedButNotConflated(bool c, Point p, int x1) {
+  Point a = {};
+  pp = &a; // `a` escapes here and therefore belongs to the aliased vvar
+  if (c) {
+    a.x = x1;
+  }
+  int x = a.x; // The phi node here is not conflated
+}
+
+struct A {
+  int i;
+  A(int x) {}
+  A(A*) {}
+  A() {}
+};
+
+Point *NewAliasing(int x) {
+  Point* p = new Point;
+  Point* q = new Point;
+  int j = new A(new A(x))->i;
+  A* a = new A;
+  return p;
+}
+
+void unknownFunction(int argc, char **argv);
+
+int main(int argc, char **argv) {
+  unknownFunction(argc, argv);
+  unknownFunction(argc, argv);
+  return **argv; // Chi chain goes through side effects from unknownFunction
+}
+
+class ThisAliasTest {
+  int x, y;
+  
+  void setX(int arg) {
+    this->x = arg;
+  }
+};

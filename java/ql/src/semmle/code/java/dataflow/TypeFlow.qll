@@ -72,9 +72,7 @@ private predicate privateParamArg(Parameter p, Argument arg) {
  * necessarily functionally determined by `n2`.
  */
 private predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   exists(Field f, Expr e |
     f = n2.asField() and
@@ -108,8 +106,6 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   n2.asExpr() = n1.asField().getAnAccess()
   or
   n2.asExpr() = n1.asSsa().getAUse()
-  or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
   not n2.asExpr().getType() instanceof PrimitiveType
@@ -151,7 +147,8 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 }
 
 private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 = rank[r](TypeFlowNode n |
+  n1 =
+    rank[r](TypeFlowNode n |
       joinStep(n, n2)
     |
       n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
@@ -227,9 +224,8 @@ private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) 
     or
     exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
     or
-    exists(ConditionalExpr cond |
-      cond.getTrueExpr() = n.asExpr() or cond.getFalseExpr() = n.asExpr()
-    |
+    exists(ChooseExpr cond |
+      cond.getAResultExpr() = n.asExpr() and
       t2 = cond.getType().getErasure()
     )
   )
@@ -310,6 +306,21 @@ private predicate instanceOfGuarded(VarAccess va, RefType t) {
 }
 
 /**
+ * Holds if `aa` is an access to a value that is guarded by `instanceof t`.
+ */
+predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
+  exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    ioe.getExpr() = aa1 and
+    t = ioe.getTypeName().getType() and
+    aa1.getArray() = v1.getAUse() and
+    aa1.getIndexExpr() = v2.getAUse() and
+    aa.getArray() = v1.getAUse() and
+    aa.getIndexExpr() = v2.getAUse() and
+    guardControls_v1(ioe, aa.getBasicBlock(), true)
+  )
+}
+
+/**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
  * might be a better type bound for nodes where `n` flows to.
  */
@@ -319,6 +330,7 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
     upcastEnhancedForStmt(n.asSsa(), srctype) or
     downcastSuccessor(n.asExpr(), srctype) or
     instanceOfGuarded(n.asExpr(), srctype) or
+    arrayInstanceOfGuarded(n.asExpr(), srctype) or
     n.asExpr().(FunctionalExpr).getConstructedType() = srctype
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
@@ -365,13 +377,45 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
   typeFlowJoin(lastRank(n), n, t)
 }
 
+pragma[nomagic]
+private predicate erasedTypeBound(RefType t) {
+  exists(RefType t0 | typeFlow(_, t0) and t = t0.getErasure())
+}
+
+pragma[nomagic]
+private predicate typeBound(RefType t) { typeFlow(_, t) }
+
+/**
+ * Holds if we have a bound for `n` that is better than `t`, taking only erased
+ * types into account.
+ */
+pragma[nomagic]
+private predicate irrelevantErasedBound(TypeFlowNode n, RefType t) {
+  exists(RefType bound |
+    typeFlow(n, bound)
+    or
+    n.getType() = bound and typeFlow(n, _)
+  |
+    t = bound.getErasure().(RefType).getASourceSupertype+() and
+    erasedTypeBound(t)
+  )
+}
+
 /**
  * Holds if we have a bound for `n` that is better than `t`.
  */
-pragma[noinline]
+pragma[nomagic]
 private predicate irrelevantBound(TypeFlowNode n, RefType t) {
-  exists(RefType bound | typeFlow(n, bound) or n.getType() = bound |
-    t = bound.getErasure().(RefType).getASourceSupertype+()
+  exists(RefType bound |
+    typeFlow(n, bound) and
+    t = bound.getASupertype+() and
+    typeBound(t) and
+    typeFlow(n, t) and
+    not t.getASupertype*() = bound
+    or
+    n.getType() = bound and
+    typeFlow(n, t) and
+    t = bound.getASupertype*()
   )
 }
 
@@ -381,7 +425,8 @@ private predicate irrelevantBound(TypeFlowNode n, RefType t) {
  */
 private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   typeFlow(n, t) and
-  not irrelevantBound(n, t.getErasure())
+  not irrelevantErasedBound(n, t.getErasure()) and
+  not irrelevantBound(n, t)
 }
 
 cached

@@ -1,0 +1,108 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+
+<qhelp>
+
+	<include src="ReDoSIntroduction.qhelp" />
+
+	<example>
+		<p>
+
+			Consider this use of a regular expression, which removes
+			all leading and trailing whitespace in a string:
+
+		</p>
+
+		<sample language="javascript">
+			text.replace(/^\s+|\s+$/g, ''); // BAD
+		</sample>
+
+		<p>
+
+			The sub-expression <code>"\s+$"</code> will match the
+			whitespace characters in <code>text</code> from left to right, but it
+			can start matching anywhere within a whitespace sequence. This is
+			problematic for strings that do <strong>not</strong> end with a whitespace
+			character. Such a string will force the regular expression engine to
+			process each whitespace sequence once per whitespace character in the
+			sequence.
+
+		</p>
+
+		<p>
+
+			This ultimately means that the time cost of trimming a
+			string is quadratic in the length of the string. So a string like
+			<code>"a b"</code> will take milliseconds to process, but a similar
+			string with a million spaces instead of just one will take several
+			minutes.
+
+		</p>
+
+		<p>
+
+			Avoid this problem by rewriting the regular expression to
+			not contain the ambiguity about when to start matching whitespace
+			sequences. For instance, by using a negative look-behind
+			(<code>/^\s+|(?&lt;!\s)\s+$/g</code>), or just by using the built-in trim
+			method (<code>text.trim()</code>).
+
+		</p>
+
+		<p>
+
+			Note that the sub-expression <code>"^\s+"</code> is
+			<strong>not</strong> problematic as the <code>^</code> anchor restricts
+			when that sub-expression can start matching, and as the regular
+			expression engine matches from left to right.
+
+		</p>
+
+	</example>
+
+	<example>
+
+		<p>
+
+			As a similar, but slightly subtler problem, consider the
+			regular expression that matches lines with numbers, possibly written
+			using scientific notation:
+		</p>
+
+		<sample language="javascript">
+			^0\.\d+E?\d+$ // BAD
+		</sample>
+
+		<p>
+
+			The problem with this regular expression is in the
+			sub-expression <code>\d+E?\d+</code> because the second
+			<code>\d+</code> can start matching digits anywhere after the first
+			match of the first <code>\d+</code> if there is no <code>E</code> in
+			the input string.
+
+		</p>
+
+		<p>
+
+			This is problematic for strings that do <strong>not</strong>
+			end with a digit. Such a string will force the regular expression
+			engine to process each digit sequence once per digit in the sequence,
+			again leading to a quadratic time complexity.
+
+		</p>
+
+		<p>
+
+			To make the processing faster, the regular expression
+			should be rewritten such that the two <code>\d+</code> sub-expressions
+			do not have overlapping matches: <code>^0\.\d+(E\d+)?$</code>.
+
+		</p>
+
+	</example>
+
+	<include src="ReDoSReferences.qhelp"/>
+
+</qhelp>
