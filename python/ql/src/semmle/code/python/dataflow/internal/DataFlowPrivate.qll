@@ -9,7 +9,7 @@ private import DataFlowPublic
 // Nodes
 //--------
 
-class DataFlowCall extends Call {
+class DataFlowCall extends CallNode {
   /** Gets the enclosing callable of this call. */
   abstract DataFlowCallable getEnclosingCallable();
 }
@@ -103,16 +103,25 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 // Global flow
 //--------
 
-class DataFlowCallable = FunctionValue;
+import semmle.python.pointsto.CallGraph
+
+class DataFlowCallable = FunctionObject;
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) { none() }
+DataFlowCallable viableCallable(DataFlowCall call) {
+  exists(FunctionInvocation i |
+    call = i.getCall() and
+    result = i.getFunction())
+}
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+// Extend OutNode here
+// Consider whether to use AST nodes rather than CFG nodes 
 
 //--------
 // Type pruning
