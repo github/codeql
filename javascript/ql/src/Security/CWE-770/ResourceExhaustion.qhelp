@@ -86,7 +86,11 @@
 			Finally, the following example lets a user choose delay after
 			which a function is executed:
 
-			<sample src="examples/ResourceExhaustion_timeout.js" />
+		</p>
+
+		<sample src="examples/ResourceExhaustion_timeout.js" />
+
+		<p>
 
 			This is problematic because a large delay essentially makes the
 			application wait indefinitely before executing the function. Repeated
@@ -95,9 +99,10 @@
 
 			Again, a limit on the delay will prevent the attack:
 
-			<sample src="examples/ResourceExhaustion_timeout_fixed.js" />
-
 		</p>
+
+		<sample src="examples/ResourceExhaustion_timeout_fixed.js" />
+
 
 	</example>
 
