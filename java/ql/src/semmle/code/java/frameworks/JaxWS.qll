@@ -50,6 +50,27 @@ class JaxRsResourceMethod extends Method {
       a.hasName("OPTIONS") or
       a.hasName("HEAD")
     )
+    or
+    // A JaxRS resource method can also inherit these annotations from a supertype, but only if
+    // there are no JaxRS annotations on the method itself
+    getAnOverride() instanceof JaxRsResourceMethod and
+    not exists(getAnAnnotation().(JaxRSAnnotation))
+  }
+
+  /** Gets an `@Produces` annotation that applies to this method */
+  JaxRSProducesAnnotation getProducesAnnotation() {
+    result = getAnAnnotation()
+    or
+    // No direct annotations
+    not exists(getAnAnnotation().(JaxRSProducesAnnotation)) and
+    (
+      // Annotations on a method we've overridden
+      result = getAnOverride().getAnAnnotation()
+      or
+      // No annotations on this method, or a method we've overridden, so look to the class
+      not exists(getAnOverride().getAnAnnotation().(JaxRSProducesAnnotation)) and
+      result = getDeclaringType().getAnAnnotation()
+    )
   }
 }
 
@@ -139,11 +160,21 @@ class JaxRsResourceClass extends Class {
   }
 }
 
+/** An annotation from the `javax.ws.rs` package hierarchy. */
+class JaxRSAnnotation extends Annotation {
+  JaxRSAnnotation() {
+    exists(AnnotationType a |
+      a = getType() and
+      a.getPackage().getName().regexpMatch("javax\\.ws\\.rs(\\..*)?")
+    )
+  }
+}
+
 /**
  * An annotation that is used by JaxRS containers to determine a value to inject into the annotated
  * element.
  */
-class JaxRsInjectionAnnotation extends Annotation {
+class JaxRsInjectionAnnotation extends JaxRSAnnotation {
   JaxRsInjectionAnnotation() {
     exists(AnnotationType a |
       a = getType() and
@@ -167,7 +198,7 @@ class JaxRsResponse extends Class {
 }
 
 class JaxRsResponseBuilder extends Class {
-  JaxRsResponseBuilder() { this.hasQualifiedName("javax.ws.rs.core", "ResponseBuilder") }
+  JaxRsResponseBuilder() { this.hasQualifiedName("javax.ws.rs.core", "Response$ResponseBuilder") }
 }
 
 /**
@@ -221,5 +252,34 @@ class MessageBodyReaderRead extends Method {
     exists(Method m | m.getSourceDeclaration() instanceof MessageBodyReaderReadFrom |
       this.overrides*(m)
     )
+  }
+}
+
+/** An `@Produces` annotation that describes which MIME types can be produced by this resource. */
+class JaxRSProducesAnnotation extends JaxRSAnnotation {
+  JaxRSProducesAnnotation() {
+    getType().hasQualifiedName("javax.ws.rs", "Produces")
+  }
+
+  /**
+   * Gets a declared MIME type that can be produced by this resource.
+   */
+  string getADeclaredMimeType() {
+    result = getAValue().(CompileTimeConstantExpr).getStringValue() or
+    exists(Field jaxMediaType |
+      // Accesses to static fields on `MediaType` class do not have constant strings in the database
+      // so convert the field name to a mime type string
+      jaxMediaType.getDeclaringType().hasQualifiedName("javax.ws.rs.core", "MediaType") and
+      jaxMediaType.getAnAccess() = getAValue() and
+      // e.g. MediaType.TEXT_PLAIN => text/plain
+      result = jaxMediaType.getName().toLowerCase().replaceAll("_", "/")
+    )
+  }
+}
+
+/** An `@Consumes` annotation that describes MIME types can be consumed by this resource. */
+class JaxRSConsumesAnnotation extends JaxRSAnnotation {
+  JaxRSConsumesAnnotation() {
+    getType().hasQualifiedName("javax.ws.rs", "Consumes")
   }
 }
