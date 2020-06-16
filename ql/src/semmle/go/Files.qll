@@ -207,4 +207,6 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  override string describeQlClass() { result = "File" }
 }

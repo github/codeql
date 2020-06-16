@@ -27,6 +27,8 @@ class Comment extends @comment, AstNode {
   CommentGroup getGroup() { this = result.getAComment() }
 
   override string toString() { result = "comment" }
+
+  override string describeQlClass() { result = "Comment" }
 }
 
 /**
@@ -59,6 +61,8 @@ class CommentGroup extends @comment_group, AstNode {
   int getNumComment() { result = count(getAComment()) }
 
   override string toString() { result = "comment group" }
+
+  override string describeQlClass() { result = "CommentGroup" }
 }
 
 /**
@@ -109,6 +113,8 @@ class DocComment extends CommentGroup {
 
   /** Gets the program element documented by this comment group. */
   Documentable getDocumentedElement() { result = node }
+
+  override string describeQlClass() { result = "DocComment" }
 }
 
 /**
@@ -120,7 +126,9 @@ class DocComment extends CommentGroup {
  * // Single line comment
  * ```
  */
-class SlashSlashComment extends @slashslashcomment, Comment { }
+class SlashSlashComment extends @slashslashcomment, Comment {
+  override string describeQlClass() { result = "SlashSlashComment" }
+}
 
 /**
  * A block comment starting with `/*` and ending with <code>*&#47;</code>.
@@ -132,7 +140,9 @@ class SlashSlashComment extends @slashslashcomment, Comment { }
  *   comment *&#47
  * </pre>
  */
-class SlashStarComment extends @slashstarcomment, Comment { }
+class SlashStarComment extends @slashstarcomment, Comment {
+  override string describeQlClass() { result = "SlashStarComment" }
+}
 
 /**
  * A single-line comment starting with `//`.
@@ -194,4 +204,6 @@ class BuildConstraintComment extends LineComment {
     // comment text starts with `+build`
     getText().regexpMatch("\\s*\\+build.*")
   }
+
+  override string describeQlClass() { result = "BuildConstraintComment" }
 }

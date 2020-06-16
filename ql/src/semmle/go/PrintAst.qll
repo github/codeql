@@ -93,12 +93,12 @@ class PrintAstNode extends TPrintAstNode {
 /**
  * Gets a pretty-printed representation of the QL class(es) for entity `el`.
  */
-private string qlClass(AstNode el) { result = "[" + concat(el.getAQlClass(), ", ") + "] " }
-
-/**
- * Gets a pretty-printed representation of the QL class(es) for entity `el`.
- */
-private string qlClassType(Type el) { result = "[" + concat(el.getAQlClass(), ", ") + "] " }
+private string qlClass(AstNode el) {
+  // This version shows all non-overridden QL classes:
+  // result = "[" + concat(el.getAQlClass(), ", ") + "] "
+  // Normally we prefer to show just the canonical class:
+  result = "[" + concat(el.describeQlClass(), ", ") + "] "
+}
 
 /**
  * Gets a child with the given index and of the given kind, if one exists.

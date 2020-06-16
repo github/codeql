@@ -45,6 +45,12 @@ class AstNode extends @node, Locatable {
   /** Gets the innermost function definition to which this AST node belongs, if any. */
   FuncDef getEnclosingFunction() { result = getParent().parentInSameFunction*() }
 
+  /**
+   * Describes important CodeQL classes for this node. May
+   * return multiple values.
+   */
+  string describeQlClass() { result = "???" }
+
   override string toString() { result = "AST node" }
 }
 
