@@ -13,7 +13,7 @@
   </overview>
 
   <recommendation>
-    <p>Only allow trusted web contents to be displayed in WebViews when JavaScript is enabled. And disallow universal resource access in WebSettings to reduce the attack surface .</p>
+    <p>Only allow trusted web contents to be displayed in WebViews when JavaScript is enabled. And disallow universal resource access in WebSettings to reduce the attack surface.</p>
   </recommendation>
 
   <example>
