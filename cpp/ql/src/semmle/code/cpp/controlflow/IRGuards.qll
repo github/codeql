@@ -466,6 +466,12 @@ class IRGuardCondition extends Instruction {
       branchBlock.getASuccessor() = succ and
       forall(IRBlock pred | pred = succ.getAPredecessor() and pred != branchBlock |
         succ.dominates(pred)
+        or
+        // An unreachable `pred` is vacuously dominated by `succ` since all
+        // paths from the entry to `pred` go through `succ`. Such vacuous
+        // dominance is not included in the `dominates` predicate since that
+        // could cause quadratic blow-up.
+        not pred.isReachableFromFunctionEntry()
       )
     )
   }
