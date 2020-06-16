@@ -5,7 +5,13 @@
 import python
 private import DataFlowPrivate
 
+/**
+ * IPA type for dta flow nodes.
+ */
 newtype TNode =
+  /**
+   * A node corresponding to local flow as computed via SSA.
+   */
   TEssaNode(EssaVariable var)
 
 /**
@@ -14,8 +20,14 @@ newtype TNode =
  */
 class Node extends TNode {
 
+  /**
+   * Get the underlying SSA variable if this is such a node.
+   */
   EssaVariable asEssaNode() { this = TEssaNode(result) }
 
+  /**
+   * Get a string representation of this data flow node.
+   */
   string toString() { result = this.asEssaNode().toString() }
 
   /** Gets the enclosing callable of this node. */

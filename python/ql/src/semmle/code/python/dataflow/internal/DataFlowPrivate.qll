@@ -76,7 +76,6 @@ class DataFlowExpr = Expr;
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-
   exists(EssaEdgeRefinement r |
     nodeTo.asEssaNode() = r.getVariable() and
     nodeFrom.asEssaNode() = r.getInput()
@@ -85,6 +84,16 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   exists(EssaNodeRefinement r |
     nodeTo.asEssaNode() = r.getVariable() and
     nodeFrom.asEssaNode() = r.getInput()
+  )
+  or
+  exists(PhiFunction p |
+    nodeTo.asEssaNode() = p.getVariable() and
+    nodeFrom.asEssaNode() = p.getShortCircuitInput()
+  )
+  or
+  exists(EssaNodeDefinition d |
+    nodeTo.asEssaNode() = d.getVariable() and
+    nodeFrom.asEssaNode().getDefinition().getLocation() = d.(AssignmentDefinition).getValue().getLocation() // TODO: A better way to tie these together
   )
 }
 
