@@ -42,10 +42,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 
-	var modFlag string
+	modFlags := make([]string, 0, 1)
 	for _, flag := range buildFlags {
 		if strings.HasPrefix(flag, "-mod=") {
-			modFlag = flag
+			modFlags = append(modFlags, flag)
 		}
 	}
 
@@ -73,8 +73,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		return true
 	}, func(pkg *packages.Package) {
 		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
-			mdir := util.GetModDir(pkg.PkgPath, modFlag)
-			pdir := util.GetPkgDir(pkg.PkgPath, modFlag)
+			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
+			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
 			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
 			// is not using modules. If this is the case, fall back to the package directory
 			if mdir == "" {

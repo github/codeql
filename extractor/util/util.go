@@ -25,81 +25,60 @@ func Getenv(key string, aliases ...string) string {
 	return ""
 }
 
+// runGoList is a helper function for running go list with format `format` and flags `flags` on
+// package `pkgpath`.
+func runGoList(format string, pkgpath string, flags ...string) (string, error) {
+	args := append([]string{"list", "-e", "-f", format}, flags...)
+	args = append(args, pkgpath)
+	cmd := exec.Command("go", args...)
+	out, err := cmd.Output()
+
+	if err != nil {
+		if err, ok := err.(*exec.ExitError); ok {
+			log.Printf("Warning: go list command failed, output below:\nstdout:\n%s\nstderr:\n%s\n", out, err.Stderr)
+		} else {
+			log.Printf("Warning: Failed to run go list: %s", err.Error())
+		}
+		return "", err
+	}
+
+	return strings.TrimSpace(string(out)), nil
+}
+
 // GetModDir gets directory of the module containing the package with path `pkgpath`. It passes the
-// `go list` command `modflag`, which should be of the form `-mod=<mod mode>`, as described by `go
-// help modules`.
-func GetModDir(pkgpath string, modflag string) string {
-	var cmd *exec.Cmd
-	if modflag != "" {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Module}}", modflag, pkgpath)
-	} else {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Module}}", pkgpath)
-	}
-	mod, err := cmd.Output()
-	if err != nil {
-		if err, ok := err.(*exec.ExitError); ok {
-			log.Printf("Warning: go list command failed, output below:\n%s%s", mod, err.Stderr)
-		} else {
-			log.Printf("Warning: Failed to run go list: %s", err.Error())
-		}
-
+// `go list` the flags specified by `flags`.
+func GetModDir(pkgpath string, flags ...string) string {
+	mod, err := runGoList("{{.Module}}", pkgpath, flags...)
+	if err != nil || mod == "<nil>" {
+		// if the command errors or modules aren't being used, return the empty string
 		return ""
 	}
 
-	if strings.TrimSpace(string(mod)) == "<nil>" {
-		// if modules aren't being used, return the empty string
+	modDir, err := runGoList("{{.Module.Dir}}", pkgpath, flags...)
+	if err != nil {
 		return ""
 	}
 
-	if modflag != "" {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Module.Dir}}", modflag, pkgpath)
-	} else {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Module.Dir}}", pkgpath)
-	}
-	modDir, err := cmd.Output()
+	abs, err := filepath.Abs(modDir)
 	if err != nil {
-		if err, ok := err.(*exec.ExitError); ok {
-			log.Printf("Warning: go list command failed, output below:\n%s%s", modDir, err.Stderr)
-		} else {
-			log.Printf("Warning: Failed to run go list: %s", err.Error())
-		}
-
+		log.Printf("Warning: unable to make %s absolute: %s", modDir, err.Error())
 		return ""
-	}
-
-	trimmed := strings.TrimSpace(string(modDir))
-	abs, err := filepath.Abs(trimmed)
-	if err != nil {
-		log.Printf("Warning: unable to make %s absolute: %s", trimmed, err.Error())
 	}
 	return abs
 }
 
 // GetPkgDir gets directory containing the package with path `pkgpath`. It passes the `go list`
-// command `modflag`, which should be of the form `-mod=<mod mode>`, as described by `go help
-// modules`.
-func GetPkgDir(pkgpath string, modflag string) string {
-	var cmd *exec.Cmd
-	if modflag != "" {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Dir}}", modflag, pkgpath)
-	} else {
-		cmd = exec.Command("go", "list", "-e", "-f", "{{.Dir}}", pkgpath)
-	}
-	pkgDir, err := cmd.Output()
+// command the flags specified by `flags`.
+func GetPkgDir(pkgpath string, flags ...string) string {
+	pkgDir, err := runGoList("{{.Dir}}", pkgpath, flags...)
 	if err != nil {
-		if err, ok := err.(*exec.ExitError); ok {
-			log.Printf("Warning: go list command failed, output below:\n%s%s", pkgDir, err.Stderr)
-		} else {
-			log.Printf("Warning: Failed to run go list: %s", err.Error())
-		}
-
 		return ""
 	}
 
-	trimmed := strings.TrimSpace(string(pkgDir))
-	abs, err := filepath.Abs(trimmed)
+	abs, err := filepath.Abs(pkgDir)
 	if err != nil {
-		log.Printf("Warning: unable to make %s absolute: %s", trimmed, err.Error())
+		log.Printf("Warning: unable to make %s absolute: %s", pkgDir, err.Error())
+		return ""
 	}
 	return abs
 }
