@@ -44,9 +44,38 @@ class ApacheTextRandomProviderType extends RefType {
   }
 }
 
-class JavaStdlibInsecureRandomType extends RefType {
-  JavaStdlibInsecureRandomType() {
-    this.hasQualifiedName("java.util.concurrent", "ThreadLocalRandom") or
+abstract class JavaStdlibInsecureRandomType extends RefType {}
+
+class ThreadLocalRandomType extends JavaStdlibInsecureRandomType {
+  ThreadLocalRandomType() {
+    this.hasQualifiedName("java.util.concurrent", "ThreadLocalRandom")
+  }
+}
+
+class RandomType extends JavaStdlibInsecureRandomType {
+  RandomType() {
     this.hasQualifiedName("java.util", "Random")
+  }
+}
+
+class SplittableRandomType extends JavaStdlibInsecureRandomType {
+  SplittableRandomType() {
+    this.hasQualifiedName("java.util", "SplittableRandom")
+  }
+}
+
+abstract class JavaStdlibInsecureRandomTypeKnownCreation extends Expr {}
+
+class ThreadLocalRandomInstanceMethodAccess extends MethodAccess, JavaStdlibInsecureRandomTypeKnownCreation {
+  ThreadLocalRandomInstanceMethodAccess() {
+    this.getMethod().hasName("current") and 
+    this.getMethod().isStatic() and 
+    this.getMethod().getDeclaringType() instanceof ThreadLocalRandomType
+  }
+}
+
+class RandomCreationExp extends ClassInstanceExpr, JavaStdlibInsecureRandomTypeKnownCreation {
+  RandomCreationExp() {
+    this.getConstructedType() instanceof JavaStdlibInsecureRandomType
   }
 }

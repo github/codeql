@@ -1,8 +1,10 @@
 import java
 import types
+import StrictPredictableRandomTaintTracker
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TypeFlow
 import semmle.code.java.dataflow.TaintTracking2
 
 abstract class PredictableRandomFlowSource extends DataFlow::Node { }
@@ -21,26 +23,25 @@ private class PredictableApacheRandomStringUtilsMethodAccess extends Predictable
     // The one valid use of this type that uses SecureRandom as a source of data.
     not (
       this.getMethod().getName() = "random" and
-      (
-        this.getArgument(6).getProperExpr().getType() instanceof TypeSecureRandom or
-        isSecureRuntimeVarAccess(this.getArgument(6).getProperExpr())
+      not(
+        // this.getArgument(6).getProperExpr().getType() instanceof TypeSecureRandom or
+        isPredictableRandomRuntimeExp(this.getArgument(6).getProperExpr())
       )
     )
   }
 }
 
-private class FinalSecureRandomVariableAssignment extends VariableAssign {
-  FinalSecureRandomVariableAssignment() {
-    this.getSource().getType() instanceof TypeSecureRandom and
-    this.getDestVar().isFinal()
-  }
+private predicate isPredictableRandomRuntimeExp(VarAccess varAccess) {
+  exists(StrictPredictableToAnyRandomConfig config |
+    config.hasFlowTo(DataFlow::exprNode(varAccess))
+  )
 }
 
 /**
  * Determines if this VarAccess can be safely assumed to be 'Secure'
  * at runtime due to the implied type of the variable due to assignments.
  */
-private predicate isSecureRuntimeVarAccess(VarAccess varAccess) {
+private predicate isSecureRuntimeExpr(VarAccess varAccess) {
   /*
    * TODO: Perhaps also check for multiple constructors that assign different things.
    * This currently verifies that there is at least one final assignment that is 'Secure'.
@@ -50,15 +51,13 @@ private predicate isSecureRuntimeVarAccess(VarAccess varAccess) {
    * complete problem, so we can only use this to eliminate the common cases.
    */
 
-  exists(FinalSecureRandomVariableAssignment finalSecureVarAssign |
-    varAccess.getVariable() = finalSecureVarAssign.getDestVar()
-  )
+  exists(TypeSecureRandom typeSecureRandom | exprTypeFlow(varAccess, typeSecureRandom, false))
 }
 
-private class PredictableJavaStdlibRandomMethodAcccess extends PredictableRandomMethodAccess {
+class PredictableJavaStdlibRandomMethodAcccess extends PredictableRandomMethodAccess {
   PredictableJavaStdlibRandomMethodAcccess() {
     this.getReceiverType() instanceof JavaStdlibInsecureRandomType and
-    not isSecureRuntimeVarAccess(this.getQualifier())
+    not isSecureRuntimeExpr(this.getQualifier())
   }
 }
 
@@ -148,7 +147,7 @@ private class TaintedRandomStringGeneratorMethodAccess extends PredictableRandom
 
 private class PredictableRandomTaintedMethodAccessSource extends PredictableRandomFlowSource {
   PredictableRandomTaintedMethodAccessSource() {
-    this.asExpr() instanceof PredictableRandomMethodAccess or
-    this.asExpr() instanceof TaintedByteArrayWrite
+    this.asExpr() instanceof PredictableRandomMethodAccess // or
+    // this.asExpr() instanceof TaintedByteArrayWrite
   }
 }
