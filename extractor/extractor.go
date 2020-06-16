@@ -145,31 +145,21 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	// extract AST information for all packages
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
-		return wantedRoots[pkgRoots[pkg.PkgPath]]
+		return true
 	}, func(pkg *packages.Package) {
-	rootLoop:
+		sep := regexp.QuoteMeta(string(filepath.Separator))
+		relativeOrVendorRe := regexp.MustCompile(`(^\.\.` + sep + ")|((^|.*" + sep + ")vendor" + sep + ").*")
+
 		for root, _ := range wantedRoots {
 			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
-			if err != nil {
-				// if the paths can't be made relative, skip it
+			if err != nil || relativeOrVendorRe.MatchString(relDir) {
+				// if the paths can't be made relative or the relative path starts with `".."` or contains a
+				// directory called `"vendor"`, skip it
 				continue
 			}
-			dirList := strings.Split(relDir, string(filepath.Separator))
-			if len(dirList) == 0 || dirList[0] != ".." {
-				// if dirList is empty, root is the same as	the source dir
-				// if dirList starts with `".."`, it is not inside the root dir
-				for _, dir := range dirList {
-					if dir == "vendor" {
-						// if the path relative to the root contains vendor, continue
-						//
-						// we may want to extract the package if it's been explicitly included
-						// (i.e. it has been passed directly), but we shouldn't include it for
-						// this root
-						continue rootLoop
-					}
-				}
-				extractPackage(pkg, &wg, goroutineSem, fdSem)
-			}
+
+			extractPackage(pkg, &wg, goroutineSem, fdSem)
+			return
 		}
 	})
 
