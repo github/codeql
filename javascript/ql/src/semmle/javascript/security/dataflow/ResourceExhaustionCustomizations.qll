@@ -174,7 +174,8 @@ module ResourceExhaustion {
    */
   class TimerDurationSink extends Sink {
     TimerDurationSink() {
-      this = DataFlow::globalVarRef(["setTimeout", "setInterval"]).getACall().getArgument(1)
+      this = DataFlow::globalVarRef(["setTimeout", "setInterval"]).getACall().getArgument(1) or
+      this = LodashUnderscore::member(["delay", "throttle", "debounce"]).getACall().getArgument(1)
     }
 
     override DataFlow::FlowLabel getAFlowLabel() { any() }
