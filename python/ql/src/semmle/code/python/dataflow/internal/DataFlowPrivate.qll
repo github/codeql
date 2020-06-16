@@ -1,10 +1,13 @@
 private import python
 private import DataFlowPublic
 
+//--------
 // Data flow graph
+//--------
 
+//--------
 // Nodes
-
+//--------
 
 class DataFlowCall extends Call {
   /** Gets the enclosing callable of this call. */
@@ -61,35 +64,11 @@ abstract class OutNode extends Node {
   abstract DataFlowCall getCall(ReturnKind kind);
 }
 
-/** A node that performs a type cast. */
-class CastNode extends Node {
-}
-
-class DataFlowCallable = FunctionValue;
-
 class DataFlowExpr = Expr;
 
-newtype TDataFlowType =
-  TStringFlow()
-
-class DataFlowType extends TDataFlowType {
-  /**
-   * No representation yet
-   */
-   string toString() { none() }
-}
-
-/** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) { none() }
-
-/**
- * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
- * a node of type `t1` to a node of type `t2`.
- */
-pragma[inline]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  none()
-}
+//--------
+// Local flow
+//--------
 
 /**
  * This is the local flow predicate that is used as a building block in global
@@ -109,6 +88,57 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
 }
 
+//--------
+// Global flow
+//--------
+
+class DataFlowCallable = FunctionValue;
+
+/** Gets a viable run-time target for the call `call`. */
+DataFlowCallable viableCallable(DataFlowCall call) { none() }
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+//--------
+// Type pruning
+//--------
+
+newtype TDataFlowType =
+  TStringFlow()
+
+class DataFlowType extends TDataFlowType {
+  /**
+   * No representation yet
+   */
+   string toString() { none() }
+}
+
+/** A node that performs a type cast. */
+class CastNode extends Node {
+}
+
+/**
+ * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
+ * a node of type `t1` to a node of type `t2`.
+ */
+pragma[inline]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  none()
+}
+
+DataFlowType getErasedRepr(DataFlowType t) { result = t }
+
+/** Gets a string representation of a type returned by `getErasedRepr`. */
+string ppReprType(DataFlowType t) { result = t.toString() }
+
+//--------
+// Extra flow
+//--------
+
 /**
  * Holds if `pred` can flow to `succ`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
@@ -117,6 +147,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 predicate jumpStep(ExprNode pred, ExprNode succ) {
   none()
 }
+
+//--------
+// Field flow
+//--------
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
@@ -133,24 +167,26 @@ predicate readStep(Node node1, Content c, Node node2) {
   none()
 }
 
+//--------
+// Fancy context-sensitive guards
+//--------
+
 /**
- * Gets a node that can read the value returned from `call` with return kind
- * `kind`.
+ * Holds if the node `n` is unreachable when the call context is `call`.
  */
-OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  none()
+}
+
+//--------
+// Fancy dispatch
+//--------
 
 /**
  * Holds if the call context `ctx` reduces the set of viable run-time
  * targets of call `call` in `c`.
  */
 predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
-  none()
-}
-
-/**
- * Holds if the node `n` is unreachable when the call context is `call`.
- */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
   none()
 }
 
@@ -185,6 +221,10 @@ DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall c
   // reducedViableImplInCallContext(call, _, ctx)
 }
 
+//--------
+// Misc
+//--------
+
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
  * modified or its modification cannot be observed, for example if it is a
@@ -193,11 +233,6 @@ DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall c
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
-
-DataFlowType getErasedRepr(DataFlowType t) { result = t }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
 
 int accessPathLimit() { result = 3 }
 
