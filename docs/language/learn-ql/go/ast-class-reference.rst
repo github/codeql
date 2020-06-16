@@ -1,5 +1,9 @@
-Abstract syntax tree classes for Go
-===================================
+Abstract syntax tree classes for working with Go programs
+=========================================================
+
+CodeQL has a large selection of classes for representing the abstract syntax tree of Go programs.
+
+.. include:: ../../reusables/abstract-syntax-tree.rst
 
 Statement classes
 -----------------
@@ -471,3 +475,9 @@ The following classes organize expressions by the kind of entity they refer to.
 +------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | `ValueExpr <https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$BadExpr.html>`__           | an expression that can be evaluated to a value (as opposed to expressions that refer to a package, a type, or a statement label). This generalizes `ReferenceExpr <https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$ReferenceExpr.html>`__ |
 +------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Further reading
+---------------
+
+.. include:: ../../reusables/go-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

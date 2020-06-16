@@ -522,8 +522,8 @@ class ThrowStmt extends Stmt, @throwstmt {
 
   /**
    * Gets the `catch` clause that catches the exception
-   * thrown by this `throws` statement and occurs
-   * in the same method as this `throws` statement,
+   * thrown by this `throw` statement and occurs
+   * in the same method as this `throw` statement,
    * provided such a `catch` exists.
    */
   CatchClause getLexicalCatchIfAny() {

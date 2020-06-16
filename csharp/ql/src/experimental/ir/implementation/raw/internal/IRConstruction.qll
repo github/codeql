@@ -45,10 +45,7 @@ module Raw {
   class InstructionTag2 = InstructionTag;
 
   cached
-  predicate functionHasIR(Callable callable) {
-    exists(getTranslatedFunction(callable)) and
-    callable.fromSource()
-  }
+  predicate functionHasIR(Callable callable) { exists(getTranslatedFunction(callable)) }
 
   cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
