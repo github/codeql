@@ -8,10 +8,14 @@ import semmle.code.cpp.dataflow.DataFlow::DataFlow as AST
 import Nodes
 
 class ASTPartialDefNode extends ASTNode {
+  ASTPartialDefNode() { exists(n.asPartialDefinition()) }
+
   override string toString() { result = n.asPartialDefinition().toString() }
 }
 
 class IRPartialDefNode extends IRNode {
+  IRPartialDefNode() { exists(n.asPartialDefinition()) }
+
   override string toString() { result = n.asPartialDefinition().toString() }
 }
 
