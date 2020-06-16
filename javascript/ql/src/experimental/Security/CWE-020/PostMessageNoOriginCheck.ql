@@ -49,11 +49,9 @@ class PostMessageEvent extends DataFlow::SourceNode {
    * Holds if an access on `MessageEvent.origin` is in an `EqualityTest` and there is no call of an insufficient verification method on `MessageEvent.origin`
    */
   predicate hasOriginChecked() {
-    exists(string prop | prop = "origin" or prop = "source" |
-      astNode.getAnOperand().(PropAccess).accesses(event, prop) and
-      event.mayReferToParameter*(this.asExpr()) and
-      not this.hasOriginInsufficientlyChecked()
-    )
+    exists(EqualityTest test |
+      this.getAPropertyRead(["origin", "source"]).flowsToExpr(test.getAnOperand())
+   )
   }
 
   /**
