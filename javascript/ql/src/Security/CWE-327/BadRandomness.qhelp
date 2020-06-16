@@ -4,9 +4,9 @@
 <qhelp>
 	<overview>
 		<p>
-			Generating secure random numbers can be an important part of creating
-			a secure software system, and for that purpose there exists secure APIs
-			for creating cryptographically secure random numbers.  
+			Generating secure random numbers can be an important part of creating a
+			secure software system. This can be done using APIs that create 
+			cryptographically secure random numbers.
 		</p>
 		<p>
 			However, using some mathematical operations on these cryptographically 
@@ -28,7 +28,7 @@
 	</recommendation>
 	<example>
 		<p>
-			The below example uses the modulo operator to create an array of 10 random digits
+			The example below uses the modulo operator to create an array of 10 random digits
 			using random bytes as the source for randomness. 
 		</p>
 		<sample src="examples/bad-random.js" />
@@ -38,12 +38,17 @@
 			between 6 and 9.
 		</p>
 		<p>
-			The issue has been fixed in the code below, where the random byte is discarded if 
-			the value was greater than or equal to 250. 
+			The issue has been fixed in the code below by using a library that correctly generates
+			cryptographically secure random values.
+		</p>
+		<sample src="examples/bad-random-fixed.js" />
+		<p>
+			Alternatively, the issue can be fixed by fixing the math in the original code. 
+			In the code below the random byte is discarded if the value is greater than or equal to 250. 
 			Thus the modulo operator is used on a uniformly random number between 0 and 249, which
 			results in a uniformly random digit between 0 and 9.
 		</p>
-		<sample src="examples/bad-random-fixed.js" />
+		<sample src="examples/bad-random-fixed2.js" />
 
 	</example>
 
