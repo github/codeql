@@ -23,6 +23,7 @@ private import internal.CallGraphs
 private import internal.FlowSteps as FlowSteps
 private import internal.DataFlowNode
 private import internal.AnalyzedParameters
+private import internal.PreCallGraphStep
 
 module DataFlow {
   /**

@@ -2,7 +2,6 @@
 | src/bound-handler.js:9:12:9:31 | function(req, res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
 | src/hapi.js:1:1:1:30 | functio ... t, h){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
 | src/iterated-handlers.js:4:2:4:22 | functio ...  res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
-| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
 | src/route-objects.js:7:19:7:38 | function(req, res){} | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
 | src/route-objects.js:8:12:10:5 | (req, res) {\\n\\n    } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |
 | src/route-objects.js:20:16:22:9 | (req, r ...       } | A `RouteHandlerCandidate` that did not get promoted to `RouteHandler`, and it is not used in a `RouteSetupCandidate`. |

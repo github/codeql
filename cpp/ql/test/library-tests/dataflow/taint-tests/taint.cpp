@@ -197,9 +197,9 @@ void test_memcpy(int *source) {
 
 // --- std::swap ---
 
-namespace std {
-	template<class T> constexpr void swap(T& a, T& b);
-}
+#include "swap.h"
+
+
 
 void test_swap() {
 	int x, y;
