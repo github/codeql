@@ -463,7 +463,7 @@ newtype TTranslatedElement =
     )
   } or
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
-  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
