@@ -143,18 +143,20 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// don't run into memory issues
 	goroutineSem := newSemaphore(maxgoroutines)
 
+	sep := regexp.QuoteMeta(string(filepath.Separator))
+	// if a path matches this regexp, we don't want to extract this package. Currently, it checks
+	//   - that the path does not contain a `..` segment, and
+	//   - the path does not contain a `vendor` directory.
+	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(\.\.|vendor)($|` + sep + `).*`)
+
 	// extract AST information for all packages
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
-		sep := regexp.QuoteMeta(string(filepath.Separator))
-		relativeOrVendorRe := regexp.MustCompile(`(^\.\.` + sep + ")|((^|.*" + sep + ")vendor" + sep + ").*")
-
 		for root, _ := range wantedRoots {
 			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
-			if err != nil || relativeOrVendorRe.MatchString(relDir) {
-				// if the paths can't be made relative or the relative path starts with `".."` or contains a
-				// directory called `"vendor"`, skip it
+			if err != nil || noExtractRe.MatchString(relDir) {
+				// if the path can't be made relative or matches the noExtract regexp skip it
 				continue
 			}
 
