@@ -39,7 +39,7 @@ void test_copyableclass()
 		sink(s1); // tainted
 		sink(s2); // tainted
 		sink(s3); // tainted
-		sink(s4); // tainted [NOT DETECTED]
+		sink(s4); // tainted
 	}
 
 	{
@@ -62,7 +62,7 @@ void test_copyableclass()
 		s2 = MyCopyableClass(source());
 
 		sink(s1); // tainted
-		sink(s2); // tainted [NOT DETECTED]
-		sink(s3 = source()); // tainted [NOT DETECTED]
+		sink(s2); // tainted
+		sink(s3 = source()); // tainted
 	}
 }

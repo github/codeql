@@ -467,7 +467,7 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
  * takes exactly one parameter of type `T`, `T&`, `const T&`, `volatile
  * T&`, or `const volatile T&`.
  */
-class CopyAssignmentOperator extends Operator {
+class CopyAssignmentOperator extends Operator,TaintFunction {
   CopyAssignmentOperator() {
     hasName("operator=") and
     (
@@ -482,6 +482,17 @@ class CopyAssignmentOperator extends Operator {
   }
 
   override string getCanonicalQLClass() { result = "CopyAssignmentOperator" }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from argument to self
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+    or
+    // taint flow from argument to return value
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
+    // TODO: it would be more accurate to model copy assignment as data flow
+  }
 }
 
 /**
@@ -499,7 +510,7 @@ class CopyAssignmentOperator extends Operator {
  * takes exactly one parameter of type `T&&`, `const T&&`, `volatile T&&`,
  * or `const volatile T&&`.
  */
-class MoveAssignmentOperator extends Operator {
+class MoveAssignmentOperator extends Operator, TaintFunction {
   MoveAssignmentOperator() {
     hasName("operator=") and
     hasMoveSignature(this) and
@@ -508,4 +519,15 @@ class MoveAssignmentOperator extends Operator {
   }
 
   override string getCanonicalQLClass() { result = "MoveAssignmentOperator" }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from argument to self
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+    or
+    // taint flow from argument to return value
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
+    // TODO: it would be more accurate to model move assignment as data flow
+  }
 }
