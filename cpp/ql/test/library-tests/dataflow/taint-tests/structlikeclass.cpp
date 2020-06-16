@@ -31,10 +31,10 @@ void test_structlikeclass()
 		StructLikeClass s4;
 		s4 = source();
 
-		sink(s1); // tainted [NOT DETECTED]
-		sink(s2); // tainted [NOT DETECTED]
-		sink(s3); // tainted [NOT DETECTED]
-		sink(s4); // tainted [NOT DETECTED]
+		sink(s1); // tainted
+		sink(s2); // tainted
+		sink(s3); // tainted
+		sink(s4); // tainted
 	}
 
 	{
@@ -56,8 +56,8 @@ void test_structlikeclass()
 		StructLikeClass s3;
 		s2 = StructLikeClass(source());
 
-		sink(s1); // tainted [NOT DETECTED]
-		sink(s2); // tainted [NOT DETECTED]
-		sink(s3 = source()); // tainted [NOT DETECTED]
+		sink(s1); // tainted
+		sink(s2); // tainted
+		sink(s3 = source()); // tainted
 	}
 }

@@ -4,6 +4,8 @@
  */
 
 import cpp
+import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * A C++ function declared as a member of a class [N4140 9.3]. This includes
@@ -162,7 +164,7 @@ class ConstMemberFunction extends MemberFunction {
  * };
  * ```
  */
-class Constructor extends MemberFunction {
+class Constructor extends MemberFunction, TaintFunction {
   Constructor() { functions(underlyingElement(this), _, 2) }
 
   override string getCanonicalQLClass() { result = "Constructor" }
@@ -191,6 +193,12 @@ class Constructor extends MemberFunction {
    */
   ConstructorInit getInitializer(int i) {
     exprparents(unresolveElement(result), i, underlyingElement(this))
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from any constructor argument to the returned object
+    input.isParameter(_) and
+    output.isReturnValue()
   }
 }
 

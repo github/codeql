@@ -40,8 +40,8 @@ void test_copyableclass()
 		MyMovableClass s3;
 		s3 = source();
 
-		sink(s1); // tainted [NOT DETECTED]
-		sink(s2); // tainted [NOT DETECTED]
+		sink(s1); // tainted
+		sink(s2); // tainted
 		sink(s3); // tainted [NOT DETECTED]
 	}
 
@@ -50,7 +50,7 @@ void test_copyableclass()
 		MyMovableClass s2;
 		s2 = MyMovableClass(source());
 
-		sink(s1); // tainted [NOT DETECTED]
+		sink(s1); // tainted
 		sink(s2); // tainted [NOT DETECTED]
 	}
 
@@ -60,7 +60,7 @@ void test_copyableclass()
 		MyMovableClass s3;
 
 		sink(s1);
-		sink(s2); // tainted [NOT DETECTED]
+		sink(s2); // tainted
 		sink(s3 = source()); // tainted [NOT DETECTED]
 	}
 }
