@@ -52,4 +52,8 @@ app.get('/some/path', function(req, res) {
   var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // NOT - the source is remote-flow, but we know of no sink.
 
   setTimeout(`(function(){${JSON.stringify(req.param("wobble"))}))`); // OK - the source is remote-flow, and the sink is code-injection.
+
+  var taint = [req.body.name, "foo"].join("\n");
+   
+  setTimeout(`(function(){${JSON.stringify(taint)}))`); // OK - the source is remote-flow, and the sink is code-injection.
 });

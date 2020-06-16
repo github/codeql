@@ -20,17 +20,22 @@ private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 /**
  * Gets a type-tracked instance of `RemoteFlowSource` using type-tracker `t`.
  */
-private DataFlow::SourceNode remoteFlow(DataFlow::TypeTracker t) {
+private DataFlow::Node remoteFlow(DataFlow::TypeTracker t) {
   t.start() and
   result instanceof RemoteFlowSource
   or
-  exists(DataFlow::TypeTracker t2 | result = remoteFlow(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2, DataFlow::Node prev | prev = remoteFlow(t2) |
+    t2 = t.smallstep(prev, result)
+    or
+    any(TaintTracking::AdditionalTaintStep dts).step(prev, result) and
+    t = t2
+  )
 }
 
 /**
  * Gets a type-tracked reference to a `RemoteFlowSource`.
  */
-private DataFlow::SourceNode remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
+private DataFlow::Node remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
 
 /**
  * Gets a type-back-tracked instance of a code-injection sink using type-tracker `t`.
@@ -60,7 +65,7 @@ where
   // Basic detection of duplicate results with `js/code-injection`.
   not (
     sink.getNode().(StringOps::ConcatenationLeaf).getRoot() = endsInCodeInjectionSink() and
-    remoteFlow().flowsTo(source.getNode().(DataFlow::InvokeNode).getAnArgument())
+    remoteFlow() = source.getNode().(DataFlow::InvokeNode).getAnArgument()
   )
 select sink.getNode(), source, sink, "$@ flows to here and is used to construct code.",
   source.getNode(), "Improperly sanitized value"
