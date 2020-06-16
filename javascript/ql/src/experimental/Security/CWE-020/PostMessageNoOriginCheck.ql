@@ -33,7 +33,7 @@ class InsufficientOriginChecks extends DataFlow::MethodCallNode {
  * A function handler for the `MessageEvent`.
  */
 class PostMessageHandler extends DataFlow::FunctionNode {
-  PostMessageHandler() { exists(PostMessageEventHandler handler | this.getFunction() = handler) }
+  PostMessageHandler() { this.getFunction() instanceof PostMessageEventHandler  }
 }
 
 /**
