@@ -62,6 +62,14 @@ class RemoteInputToURLOpenMethodFlowConfig extends TaintTracking::Configuration 
     exists(ApacheHttpRequestConstructor cc | sink.asExpr() = cc.getAnArgument())
   }
 
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(IfStmt is, Variable v |
+      node.asExpr().getEnclosingStmt().getEnclosingStmt*() = is and
+      is.getCondition().getAChildExpr() = v.getAnAccess() and
+      node.asExpr().(VarAccess).getVariable() = v
+    )
+  }
+
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(URLConstructor u |
       node1.asExpr() = u.stringArg() and

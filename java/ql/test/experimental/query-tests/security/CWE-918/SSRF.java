@@ -49,4 +49,35 @@ class SSRF {
 		}
 	}
 
+	/** Test GOOD case of url.openConnection() */
+	public void openUrlConnection2(HttpServletRequest servletRequest) {
+		String urlStr = servletRequest.getParameter("url");
+		if (urlStr.startsWith("https://www.mycorp.com")) {
+			URL uri = new URL(urlStr);
+			URLConnection input = uri.openConnection();
+		}
+	}
+
+	/** Test GOOD case of Apache HttpRequest */
+	public void service2(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
+			throws ServletException, IOException {
+		String method = servletRequest.getMethod();
+		String proxyRequestUri = servletRequest.getParameter("url");
+
+		URI targetUriObj = new URI(proxyRequestUri);
+
+		HttpRequest proxyRequest;
+		// spec: RFC 2616, sec 4.3: either of these two headers signal that there is a
+		// message body.
+		if (proxyRequestUri.startsWith("https://www.mycorp.com")) {
+			if (servletRequest.getHeader("CONTENT_LENGTH") != null
+					|| servletRequest.getHeader("TRANSFER_ENCODING") != null) {
+				BasicHttpEntityEnclosingRequest eProxyRequest = new BasicHttpEntityEnclosingRequest(method,
+						proxyRequestUri);
+			} else {
+				proxyRequest = new BasicHttpRequest(method, proxyRequestUri);
+			}
+		}
+	}
+
 }
