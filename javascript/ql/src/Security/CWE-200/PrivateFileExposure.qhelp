@@ -5,20 +5,33 @@
 
 <overview>
   <p>
-    Placeholder
+    Libraries like <code>express</code> provide easy methods for serving entire 
+    directories of static files from a web server.
+    However, using these can sometimes lead to accidential information exposure. 
+    If for example the <code>node_modules</code> folder is served, then an attacker
+    can access the <code>_where</code> field from a <code>package.json</code> file, 
+    which gives the attacker access to the absolute path of the file. 
   </p>
 </overview>
 
 <recommendation>
   <p>
-    Placeholder
+    Limit which folders of static files are served from a web server.
   </p>
 </recommendation>
 
 <example>
   <p>
-    Placeholder
+    In the example below all the files from the <code>node_modules</code> are served. 
+    This allows clients easy access to all files inside that folder, but also allows
+    access to potentially private information inside <code>package.json</code> files. 
   </p>
+  <sample src="examples/FileAccessToHttp.js"/>
+  <p>
+    The issue has been fixed in the below by only serving specific folders within the
+    <code>node_modules</code> folder.
+  </p>
+  <sample src="examples/FileAccessToHttpFixed.js"/>
 </example>
 
 <references>
