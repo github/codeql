@@ -301,6 +301,15 @@ private module Cached {
       }
 
       /**
+       * Holds if `arg` flows to `out` through a call using only
+       * value-preserving steps and a single read step, not taking call
+       * contexts into account, thus representing a getter-step.
+       */
+      predicate getterStep(ArgumentNode arg, Content c, Node out) {
+        argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out)
+      }
+
+      /**
        * Holds if `p` can flow to a return node of kind `kind` in the same
        * callable using only value-preserving steps and possibly a single read
        * step.
