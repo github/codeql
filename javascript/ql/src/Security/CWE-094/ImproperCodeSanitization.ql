@@ -1,6 +1,6 @@
 /**
  * @name Improper code sanitization
- * @description Escaping code as HTML does not provide protection against code-injection.
+ * @description Escaping code as HTML does not provide protection against code injection.
  * @kind path-problem
  * @problem.severity error
  * @precision high
@@ -38,7 +38,7 @@ private DataFlow::Node remoteFlow(DataFlow::TypeTracker t) {
 private DataFlow::Node remoteFlow() { result = remoteFlow(DataFlow::TypeTracker::end()) }
 
 /**
- * Gets a type-back-tracked instance of a code-injection sink using type-tracker `t`.
+ * Gets a type-back-tracked instance of a code injection sink using type-tracker `t`.
  */
 private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
   t.start() and
@@ -53,7 +53,7 @@ private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
 }
 
 /**
- * Gets a reference to to a data-flow node that ends in a code-injection sink.
+ * Gets a reference to to a data-flow node that ends in a code injection sink.
  */
 private DataFlow::Node endsInCodeInjectionSink() {
   result = endsInCodeInjectionSink(DataFlow::TypeBackTracker::end())
