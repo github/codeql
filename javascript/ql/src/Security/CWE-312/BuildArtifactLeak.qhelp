@@ -31,6 +31,6 @@
     <sample src="examples/build-leak-fixed.js"/>
   </example>
   <references>
-    <li>webpack: <a href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin API</a></li>
+    <li>webpack: <a href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin API</a>.</li>
   </references>
 </qhelp>
