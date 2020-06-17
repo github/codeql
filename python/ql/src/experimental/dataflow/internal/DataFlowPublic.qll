@@ -6,13 +6,17 @@ import python
 private import DataFlowPrivate
 
 /**
- * IPA type for dta flow nodes.
+ * IPA type for data flow nodes.
+ * 
+ * Flow between SSA variables are computed in `Essa.qll`
+ * Flow from SSA variables to control flow nodes is as in
+ * `EssaTaintTracking`.
  */
 newtype TNode =
-  /**
-   * A node corresponding to local flow as computed via SSA.
-   */
-  TEssaNode(EssaVariable var)
+  /** A node corresponding to an SSA variable. */
+  TEssaNode(EssaVariable var) or
+  /** A node corresponding to a control flow node. */
+  TCfgNode(ControlFlowNode node)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -26,9 +30,18 @@ class Node extends TNode {
   EssaVariable asEssaNode() { this = TEssaNode(result) }
 
   /**
+   * Get the underlying ControlFlowNode if this is such a node.
+   */
+  ControlFlowNode asCfgNode() { this = TCfgNode(result) }
+
+  /**
    * Get a string representation of this data flow node.
    */
-  string toString() { result = this.asEssaNode().toString() }
+  string toString() {
+    result = this.asEssaNode().toString()
+    or
+    result = this.asCfgNode().toString()
+  }
 
   /** Gets the enclosing callable of this node. */
   final DataFlowCallable getEnclosingCallable() {
@@ -53,6 +66,8 @@ class Node extends TNode {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.asEssaNode().getDefinition().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    this.asCfgNode().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
 

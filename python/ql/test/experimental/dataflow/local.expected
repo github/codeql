@@ -1,4 +1,6 @@
-ERROR: Could not resolve module DataFlow (local.ql:5,3-11)
-ERROR: Could not resolve module DataFlow (local.ql:6,3-11)
-ERROR: Could not resolve module DataFlow (local.ql:8,3-11)
-ERROR: Could not resolve module semmle.code.python.dataflow.DataFlow (local.ql:2,8-44)
+| test.py:1:1:1:1 | GSSA Variable a | test.py:8:5:8:8 | GSSA Variable a |
+| test.py:1:5:1:5 | ControlFlowNode for IntegerLiteral | test.py:1:1:1:1 | GSSA Variable a |
+| test.py:2:5:2:5 | ControlFlowNode for a | test.py:2:1:2:1 | GSSA Variable b |
+| test.py:4:1:4:9 | ControlFlowNode for FunctionExpr | test.py:4:5:4:5 | GSSA Variable f |
+| test.py:5:7:5:11 | ControlFlowNode for BinaryExpr | test.py:5:3:5:3 | SSA variable y |
+| test.py:8:5:8:8 | ControlFlowNode for f() | test.py:8:1:8:1 | GSSA Variable c |

@@ -26,30 +26,6 @@ abstract class PostUpdateNode extends Node {
   abstract Node getPreUpdateNode();
 }
 
-private newtype TReturnKind = TNormalReturnKind()
-
-/**
- * A return kind. A return kind describes how a value can be returned
- * from a callable. For Python, this is simply a method return.
- */
-class ReturnKind extends TReturnKind {
-  /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
-}
-
-/** A data flow node that represents a value returned by a callable. */
-abstract class ReturnNode extends Node {
-  /** Gets the kind of this return node. */
-  abstract ReturnKind getKind();
-}
-
-/** A data flow node that represents the output of a call. */
-abstract class OutNode extends Node {
-  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
-  cached
-  abstract DataFlowCall getCall(ReturnKind kind);
-}
-
 class DataFlowExpr = Expr;
 
 //--------
@@ -76,19 +52,26 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeTo.asEssaNode() = p.getVariable() and
     nodeFrom.asEssaNode() = p.getShortCircuitInput()
   )
+  // or
+  // exists(EssaNodeDefinition d |
+  //   nodeTo.asEssaNode() = d.getVariable() and
+  //   nodeFrom.asEssaNode().getDefinition().getLocation() = d.(AssignmentDefinition).getValue().getLocation() // TODO: A better way to tie these together
+  // )
   or
-  exists(EssaNodeDefinition d |
-    nodeTo.asEssaNode() = d.getVariable() and
-    nodeFrom.asEssaNode().getDefinition().getLocation() = d.(AssignmentDefinition).getValue().getLocation() // TODO: A better way to tie these together
-  )
+  // As in `taintedAssignment`
+  // `x = f(42)`
+  // nodeTo is any use of `x`
+  // nodeFrom is `f(42)`
+  nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
 }
 
+// TODO: Make modules for these headings
 //--------
 // Global flow
 //--------
 
 /** Represents a callable */
-class DataFlowCallable = FunctionObject;
+class DataFlowCallable = FunctionObject; // TODO: consider CallableValue
 
 /** Represents a call to a callable */
 class DataFlowCall extends CallNode {
@@ -112,7 +95,37 @@ import semmle.python.pointsto.CallGraph
 DataFlowCallable viableCallable(DataFlowCall call) {
   exists(FunctionInvocation i |
     call = i.getCall() and
-    result = i.getFunction())
+    result = i.getFunction()
+  )
+}
+
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned
+ * from a callable. For Python, this is simply a method return.
+ */
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
+}
+
+/** A data flow node that represents a value returned by a callable. */
+abstract class ReturnNode extends Node {
+  /** Gets the kind of this return node. */
+  abstract ReturnKind getKind();
+}
+
+/** A data flow node that represents the output of a call. */
+class OutNode extends Node {
+  OutNode() { this.asCfgNode() instanceof CallNode}
+
+  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+  cached
+  DataFlowCall getCall(ReturnKind kind) {
+    kind = TNormalReturnKind() and
+    result = this.asCfgNode().(CallNode)
+  }
 }
 
 /**
@@ -120,9 +133,6 @@ DataFlowCallable viableCallable(DataFlowCall call) {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-// Extend OutNode here
-// Consider whether to use AST nodes rather than CFG nodes 
 
 //--------
 // Type pruning
