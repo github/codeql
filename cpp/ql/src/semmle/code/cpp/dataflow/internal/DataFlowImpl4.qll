@@ -289,7 +289,7 @@ private predicate nodeCandFwd1(Node node, boolean fromArg, Configuration config)
     exists(Node mid |
       useFieldFlow(config) and
       nodeCandFwd1(mid, fromArg, config) and
-      store(mid, _, node) and
+      store(mid, _, node, _) and
       not outBarrier(mid, config)
     )
     or
@@ -337,7 +337,7 @@ private predicate nodeCandFwd1IsStored(Content c, Configuration config) {
     not fullBarrier(node, config) and
     useFieldFlow(config) and
     nodeCandFwd1(mid, config) and
-    store(mid, tc, node) and
+    store(mid, tc, node, _) and
     c = tc.getContent()
   )
 }
@@ -469,7 +469,7 @@ private predicate nodeCand1Store(Content c, Node node, boolean toReturn, Configu
   exists(Node mid, TypedContent tc |
     nodeCand1(mid, toReturn, config) and
     nodeCandFwd1IsStored(c, unbind(config)) and
-    store(node, tc, mid) and
+    store(node, tc, mid, _) and
     c = tc.getContent()
   )
 }
@@ -571,11 +571,11 @@ private predicate parameterThroughFlowNodeCand1(ParameterNode p, Configuration c
 }
 
 pragma[nomagic]
-private predicate store(Node n1, Content c, Node n2, Configuration config) {
+private predicate storeCand1(Node n1, Content c, Node n2, Configuration config) {
   exists(TypedContent tc |
     nodeCand1IsReadAndStored(c, config) and
     nodeCand1(n2, unbind(config)) and
-    store(n1, tc, n2) and
+    store(n1, tc, n2, _) and
     c = tc.getContent()
   )
 }
@@ -758,7 +758,7 @@ private predicate nodeCandFwd2(
     // store
     exists(Node mid |
       nodeCandFwd2(mid, fromArg, argStored, _, config) and
-      store(mid, _, node, config) and
+      storeCand1(mid, _, node, config) and
       stored = true
     )
     or
@@ -797,7 +797,7 @@ private predicate nodeCandFwd2IsStored(Content c, boolean stored, Configuration 
     useFieldFlow(config) and
     nodeCand1(node, unbind(config)) and
     nodeCandFwd2(mid, _, _, stored, config) and
-    store(mid, c, node, config)
+    storeCand1(mid, c, node, config)
   )
 }
 
@@ -957,7 +957,7 @@ private predicate nodeCand2Store(
   Configuration config
 ) {
   exists(Node mid |
-    store(node, c, mid, config) and
+    storeCand1(node, c, mid, config) and
     nodeCand2(mid, toReturn, returnRead, true, config) and
     nodeCandFwd2(node, _, _, stored, unbind(config))
   )
@@ -1066,7 +1066,7 @@ private module LocalFlowBigStep {
       additionalJumpStep(_, node, config) or
       node instanceof ParameterNode or
       node instanceof OutNodeExt or
-      store(_, _, node) or
+      store(_, _, node, _) or
       read(_, _, node) or
       node instanceof CastNode
     )
@@ -1082,7 +1082,7 @@ private module LocalFlowBigStep {
       additionalJumpStep(node, next, config) or
       flowIntoCallNodeCand1(_, node, next, config) or
       flowOutOfCallNodeCand1(_, node, next, config) or
-      store(node, _, next) or
+      store(node, _, next, _) or
       read(node, _, next)
     )
     or
@@ -1170,8 +1170,10 @@ private predicate readCand2(Node node1, Content c, Node node2, Configuration con
 }
 
 pragma[nomagic]
-private predicate storeCand2(Node node1, TypedContent tc, Node node2, Configuration config) {
-  store(node1, tc, node2) and
+private predicate storeCand2(
+  Node node1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
+) {
+  store(node1, tc, node2, contentType) and
   nodeCand2(node1, config) and
   nodeCand2(node2, _, _, true, unbind(config)) and
   nodeCand2IsReadAndStored(tc.getContent(), unbind(config))
@@ -1235,11 +1237,12 @@ private predicate flowCandFwd0(
   )
   or
   // store
-  exists(Node mid, TypedContent tc |
-    flowCandFwd(mid, fromArg, argApf, _, config) and
-    storeCand2(mid, tc, node, config) and
+  exists(Node mid, TypedContent tc, AccessPathFront apf0, DataFlowType contentType |
+    flowCandFwd(mid, fromArg, argApf, apf0, config) and
+    storeCand2(mid, tc, node, contentType, config) and
     nodeCand2(node, _, _, true, unbind(config)) and
-    apf.headUsesContent(tc)
+    apf.headUsesContent(tc) and
+    compatibleTypes(apf0.getType(), contentType)
   )
   or
   // read
@@ -1270,11 +1273,11 @@ private predicate flowCandFwd0(
 
 pragma[nomagic]
 private predicate flowCandFwdConsCand(TypedContent tc, AccessPathFront apf, Configuration config) {
-  exists(Node mid, Node n |
+  exists(Node mid, Node n, DataFlowType contentType |
     flowCandFwd(mid, _, _, apf, config) and
-    storeCand2(mid, tc, n, config) and
+    storeCand2(mid, tc, n, contentType, config) and
     nodeCand2(n, _, _, true, unbind(config)) and
-    compatibleTypes(apf.getType(), mid.getTypeBound())
+    compatibleTypes(apf.getType(), contentType)
   )
 }
 
@@ -1454,7 +1457,7 @@ private predicate flowCandStore(
 ) {
   exists(Node mid |
     flowCandFwd(node, _, _, apf, config) and
-    storeCand2(node, tc, mid, unbind(config)) and
+    storeCand2(node, tc, mid, _, unbind(config)) and
     flowCand(mid, toReturn, returnApf, TFrontHead(tc), unbind(config))
   )
 }
@@ -1737,7 +1740,7 @@ private predicate storeCand(
   Node mid, TypedContent tc, Node node, AccessPathFront apf0, AccessPathFront apf,
   Configuration config
 ) {
-  storeCand2(mid, tc, node, config) and
+  storeCand2(mid, tc, node, _, config) and
   flowCand(mid, _, _, apf0, config) and
   apf.headUsesContent(tc)
 }
@@ -1919,7 +1922,7 @@ pragma[nomagic]
 private predicate storeFlowFwd(
   Node node1, TypedContent tc, Node node2, AccessPath ap, AccessPath ap0, Configuration config
 ) {
-  storeCand2(node1, tc, node2, config) and
+  storeCand2(node1, tc, node2, _, config) and
   flowFwdStore(node2, tc, ap, _, _, _, config) and
   ap0 = push(tc, ap)
 }
@@ -2307,7 +2310,7 @@ private predicate pathReadStep(
 
 pragma[nomagic]
 private predicate storeCand(Node node1, TypedContent tc, Node node2, Configuration config) {
-  storeCand2(node1, tc, node2, config) and
+  storeCand2(node1, tc, node2, _, config) and
   flow(node2, config)
 }
 
@@ -2799,13 +2802,13 @@ private module FlowExploration {
     PartialPathNodePriv mid, PartialAccessPath ap1, TypedContent tc, Node node,
     PartialAccessPath ap2
   ) {
-    exists(Node midNode |
+    exists(Node midNode, DataFlowType contentType |
       midNode = mid.getNode() and
       ap1 = mid.getAp() and
-      store(midNode, tc, node) and
+      store(midNode, tc, node, contentType) and
       ap2.getHead() = tc and
       ap2.len() = unbindInt(ap1.len() + 1) and
-      compatibleTypes(ap1.getType(), getErasedNodeTypeBound(midNode))
+      compatibleTypes(ap1.getType(), contentType)
     )
   }
 
@@ -2830,8 +2833,7 @@ private module FlowExploration {
       read(midNode, tc.getContent(), node) and
       ap.getHead() = tc and
       config = mid.getConfiguration() and
-      cc = mid.getCallContext() and
-      compatibleTypes(tc.getContainerType(), getErasedNodeTypeBound(midNode))
+      cc = mid.getCallContext()
     )
   }
 
