@@ -16,6 +16,34 @@
 | stl.cpp:125:13:125:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
 | stl.cpp:129:13:129:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
 | stl.cpp:132:13:132:17 | call to c_str | stl.cpp:117:10:117:15 | call to source |
+| swap1.cpp:60:12:60:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:65:12:65:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:66:12:66:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:70:13:70:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:74:13:74:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:68:27:68:28 | z2 |
+| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:84:12:84:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:80:23:80:23 | x |
+| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:90:12:90:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:98:20:98:24 | data1 | swap1.cpp:96:23:96:28 | call to source |
+| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:95:23:95:31 | move_from |
+| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:96:23:96:28 | call to source |
+| swap2.cpp:60:12:60:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:65:12:65:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:66:12:66:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:70:13:70:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:74:13:74:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:68:27:68:28 | z2 |
+| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:84:12:84:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:80:23:80:23 | x |
+| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:90:12:90:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:98:20:98:24 | data1 | swap2.cpp:96:23:96:28 | call to source |
+| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:95:23:95:31 | move_from |
+| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:96:23:96:28 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

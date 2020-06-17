@@ -66,7 +66,8 @@ query predicate missingCallee(AnnotatedCall call, AnnotatedFunction target, int 
 
 query predicate badAnnotation(string name) {
   name = any(AnnotatedCall cl).getCallTargetName() and
-  not name = any(AnnotatedFunction cl).getCalleeName()
+  not name = any(AnnotatedFunction cl).getCalleeName() and
+  name != "NONE"
   or
   not name = any(AnnotatedCall cl).getCallTargetName() and
   name = any(AnnotatedFunction cl).getCalleeName()

@@ -1,32 +1,24 @@
 missingOperand
-| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:1:6:1:7 | IR: f1 | void f1() |
-| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | IR: f2 | void f2() |
-| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | forstmt.cpp:8:6:8:7 | IR: f2 | void f2() |
-| cpp11.cpp:77:19:77:21 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:76:8:76:8 | IR: apply | void lambda::apply<(void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)>(lambda::Val, (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)) |
-| cpp11.cpp:82:11:82:14 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:81:8:81:8 | IR: apply2 | void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val) |
-| cpp11.cpp:82:45:82:48 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
-| cpp11.cpp:82:51:82:51 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | IR: operator() | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
-| cpp11.cpp:88:25:88:30 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
-| cpp11.cpp:88:33:88:38 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | IR: main | void lambda::main() |
-| destructors.cpp:51:36:51:38 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | IR: f | int cond_destruct::f(int) |
-| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | IR: misc3 | void misc3() |
+| conditional_destructors.cpp:30:9:30:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:30:18:30:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:33:9:33:13 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:33:18:33:22 | IndirectMayWriteSideEffect: call to C1 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:39:9:39:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| conditional_destructors.cpp:39:18:39:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| conditional_destructors.cpp:42:9:42:13 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| conditional_destructors.cpp:42:18:42:22 | IndirectMayWriteSideEffect: call to C2 | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| cpp11.cpp:77:19:77:21 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:76:8:76:8 | void lambda::apply<(void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)>(lambda::Val, (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)) | void lambda::apply<(void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)>(lambda::Val, (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)) |
+| cpp11.cpp:82:11:82:14 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:81:8:81:8 | void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val) | void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val) |
+| cpp11.cpp:82:45:82:48 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:82:51:82:51 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:82:20:82:20 | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const | void (void lambda::apply2<int(*)(lambda::Val, lambda::Val)>(int(*)(lambda::Val, lambda::Val), lambda::Val, lambda::Val))::(lambda [] type at line 82, col. 17)::operator()(lambda::Val) const |
+| cpp11.cpp:88:25:88:30 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | void lambda::main() | void lambda::main() |
+| cpp11.cpp:88:33:88:38 | IndirectMayWriteSideEffect: call to Val | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | cpp11.cpp:87:8:87:11 | void lambda::main() | void lambda::main() |
+| destructors.cpp:51:36:51:38 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | destructors.cpp:49:7:49:7 | int cond_destruct::f(int) | int cond_destruct::f(int) |
+| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -34,475 +26,79 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y |
-| condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt |
-| condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt |
-| condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt |
-| condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt |
-| misc.c:171:10:171:13 | Uninitialized: definition of str2 |
-| misc.c:219:47:219:48 | InitializeIndirection: sp |
-| ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x |
-| ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
-| ms_try_mix.cpp:28:12:28:15 | Chi: call to C |
-| ms_try_mix.cpp:48:10:48:13 | Chi: call to C |
-| stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
-| vla.c:5:9:5:14 | Uninitialized: definition of matrix |
-| vla.c:11:6:11:16 | Chi: vla_typedef |
+| VacuousDestructorCall.cpp:2:29:2:29 | InitializeIndirection: y | Instruction 'InitializeIndirection: y' has no successors in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
+| condition_decls.cpp:16:19:16:20 | Chi: call to BoxedInt | Instruction 'Chi: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
+| condition_decls.cpp:26:23:26:24 | Chi: call to BoxedInt | Instruction 'Chi: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
+| condition_decls.cpp:41:22:41:23 | Chi: call to BoxedInt | Instruction 'Chi: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
+| condition_decls.cpp:48:52:48:53 | Chi: call to BoxedInt | Instruction 'Chi: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
+| misc.c:171:10:171:13 | Uninitialized: definition of str2 | Instruction 'Uninitialized: definition of str2' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
+| misc.c:219:47:219:48 | InitializeIndirection: sp | Instruction 'InitializeIndirection: sp' has no successors in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
+| ms_try_except.cpp:3:9:3:9 | Uninitialized: definition of x | Instruction 'Uninitialized: definition of x' has no successors in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_mix.cpp:11:12:11:15 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:28:12:28:15 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:48:10:48:13 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
+| vla.c:11:6:11:16 | Chi: vla_typedef | Instruction 'Chi: vla_typedef' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
 ambiguousSuccessors
-| allocators.cpp:14:5:14:8 | Chi: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| allocators.cpp:14:5:14:8 | Chi: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
-| allocators.cpp:14:5:14:8 | Chi: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
-| allocators.cpp:14:5:14:8 | Chi: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| array_delete.cpp:5:6:5:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| assignexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| break_labels.c:2:11:2:11 | InitializeParameter: i | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| break_labels.c:2:11:2:11 | InitializeParameter: x | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| conditional_destructors.cpp:29:6:29:7 | Chi: f1 | Goto | 2 | conditional_destructors.cpp:30:9:30:13 | FunctionAddress: call to C1 |
-| conditional_destructors.cpp:29:6:29:7 | Chi: f1 | Goto | 2 | forstmt.cpp:2:14:2:14 | VariableAddress: definition of i |
-| conditional_destructors.cpp:38:6:38:7 | Chi: f2 | Goto | 2 | conditional_destructors.cpp:39:9:39:13 | FunctionAddress: call to C2 |
-| conditional_destructors.cpp:38:6:38:7 | Chi: f2 | Goto | 2 | forstmt.cpp:9:14:9:14 | VariableAddress: definition of i |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| constmemberaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| constructorinitializer.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| deleteexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| dostmt.c:8:6:8:18 | Chi: always_true_1 | Goto | 4 | dostmt.c:10:5:10:7 | NoOp: label ...: |
-| dostmt.c:8:6:8:18 | Chi: always_true_1 | Goto | 4 | ifelsestmt.c:20:6:20:6 | Constant: 1 |
-| dostmt.c:8:6:8:18 | Chi: always_true_1 | Goto | 4 | ifstmt.c:15:6:15:6 | Constant: 1 |
-| dostmt.c:8:6:8:18 | Chi: always_true_1 | Goto | 4 | whilestmt.c:16:9:16:9 | Constant: 1 |
-| dostmt.c:16:6:16:18 | Chi: always_true_2 | Goto | 4 | dostmt.c:18:5:18:7 | NoOp: label ...: |
-| dostmt.c:16:6:16:18 | Chi: always_true_2 | Goto | 4 | ifelsestmt.c:30:6:30:6 | Constant: 1 |
-| dostmt.c:16:6:16:18 | Chi: always_true_2 | Goto | 4 | ifstmt.c:22:6:22:6 | Constant: 1 |
-| dostmt.c:16:6:16:18 | Chi: always_true_2 | Goto | 4 | whilestmt.c:24:9:24:9 | Constant: 1 |
-| dostmt.c:25:6:25:18 | Chi: always_true_3 | Goto | 2 | dostmt.c:27:5:27:7 | NoOp: label ...: |
-| dostmt.c:25:6:25:18 | Chi: always_true_3 | Goto | 2 | whilestmt.c:33:9:33:9 | Constant: 1 |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| duff.c:2:12:2:12 | InitializeParameter: i | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| duff.c:2:12:2:12 | InitializeParameter: x | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| fieldaccess.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| forstmt.cpp:1:6:1:7 | Chi: f1 | Goto | 2 | conditional_destructors.cpp:30:9:30:13 | FunctionAddress: call to C1 |
-| forstmt.cpp:1:6:1:7 | Chi: f1 | Goto | 2 | forstmt.cpp:2:14:2:14 | VariableAddress: definition of i |
-| forstmt.cpp:8:6:8:7 | Chi: f2 | Goto | 2 | conditional_destructors.cpp:39:9:39:13 | FunctionAddress: call to C2 |
-| forstmt.cpp:8:6:8:7 | Chi: f2 | Goto | 2 | forstmt.cpp:9:14:9:14 | VariableAddress: definition of i |
-| ifelsestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifelsestmt.c:2:6:2:6 | Constant: 0 |
-| ifelsestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifstmt.c:2:6:2:6 | Constant: 0 |
-| ifelsestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | whilestmt.c:2:9:2:9 | Constant: 0 |
-| ifelsestmt.c:11:6:11:19 | Chi: always_false_2 | Goto | 3 | ifelsestmt.c:12:6:12:6 | Constant: 0 |
-| ifelsestmt.c:11:6:11:19 | Chi: always_false_2 | Goto | 3 | ifstmt.c:9:6:9:6 | Constant: 0 |
-| ifelsestmt.c:11:6:11:19 | Chi: always_false_2 | Goto | 3 | whilestmt.c:9:7:9:10 | VariableAddress: definition of done |
-| ifelsestmt.c:19:6:19:18 | Chi: always_true_1 | Goto | 4 | dostmt.c:10:5:10:7 | NoOp: label ...: |
-| ifelsestmt.c:19:6:19:18 | Chi: always_true_1 | Goto | 4 | ifelsestmt.c:20:6:20:6 | Constant: 1 |
-| ifelsestmt.c:19:6:19:18 | Chi: always_true_1 | Goto | 4 | ifstmt.c:15:6:15:6 | Constant: 1 |
-| ifelsestmt.c:19:6:19:18 | Chi: always_true_1 | Goto | 4 | whilestmt.c:16:9:16:9 | Constant: 1 |
-| ifelsestmt.c:29:6:29:18 | Chi: always_true_2 | Goto | 4 | dostmt.c:18:5:18:7 | NoOp: label ...: |
-| ifelsestmt.c:29:6:29:18 | Chi: always_true_2 | Goto | 4 | ifelsestmt.c:30:6:30:6 | Constant: 1 |
-| ifelsestmt.c:29:6:29:18 | Chi: always_true_2 | Goto | 4 | ifstmt.c:22:6:22:6 | Constant: 1 |
-| ifelsestmt.c:29:6:29:18 | Chi: always_true_2 | Goto | 4 | whilestmt.c:24:9:24:9 | Constant: 1 |
-| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Goto | 4 | dostmt.c:33:7:33:7 | VariableAddress: definition of i |
-| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Goto | 4 | ifelsestmt.c:38:6:38:6 | VariableAddress: x |
-| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Goto | 4 | ifstmt.c:28:6:28:6 | VariableAddress: x |
-| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Goto | 4 | whilestmt.c:40:7:40:7 | VariableAddress: definition of i |
-| ifstmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifelsestmt.c:2:6:2:6 | Constant: 0 |
-| ifstmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifstmt.c:2:6:2:6 | Constant: 0 |
-| ifstmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | whilestmt.c:2:9:2:9 | Constant: 0 |
-| ifstmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | ifelsestmt.c:12:6:12:6 | Constant: 0 |
-| ifstmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | ifstmt.c:9:6:9:6 | Constant: 0 |
-| ifstmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | whilestmt.c:9:7:9:10 | VariableAddress: definition of done |
-| ifstmt.c:14:6:14:18 | Chi: always_true_1 | Goto | 4 | dostmt.c:10:5:10:7 | NoOp: label ...: |
-| ifstmt.c:14:6:14:18 | Chi: always_true_1 | Goto | 4 | ifelsestmt.c:20:6:20:6 | Constant: 1 |
-| ifstmt.c:14:6:14:18 | Chi: always_true_1 | Goto | 4 | ifstmt.c:15:6:15:6 | Constant: 1 |
-| ifstmt.c:14:6:14:18 | Chi: always_true_1 | Goto | 4 | whilestmt.c:16:9:16:9 | Constant: 1 |
-| ifstmt.c:21:6:21:18 | Chi: always_true_2 | Goto | 4 | dostmt.c:18:5:18:7 | NoOp: label ...: |
-| ifstmt.c:21:6:21:18 | Chi: always_true_2 | Goto | 4 | ifelsestmt.c:30:6:30:6 | Constant: 1 |
-| ifstmt.c:21:6:21:18 | Chi: always_true_2 | Goto | 4 | ifstmt.c:22:6:22:6 | Constant: 1 |
-| ifstmt.c:21:6:21:18 | Chi: always_true_2 | Goto | 4 | whilestmt.c:24:9:24:9 | Constant: 1 |
-| ifstmt.c:27:24:27:24 | InitializeParameter: y | Goto | 4 | dostmt.c:33:7:33:7 | VariableAddress: definition of i |
-| ifstmt.c:27:24:27:24 | InitializeParameter: y | Goto | 4 | ifelsestmt.c:38:6:38:6 | VariableAddress: x |
-| ifstmt.c:27:24:27:24 | InitializeParameter: y | Goto | 4 | ifstmt.c:28:6:28:6 | VariableAddress: x |
-| ifstmt.c:27:24:27:24 | InitializeParameter: y | Goto | 4 | whilestmt.c:40:7:40:7 | VariableAddress: definition of i |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| membercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| newexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| no_dynamic_init.cpp:9:5:9:8 | Chi: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| no_dynamic_init.cpp:9:5:9:8 | Chi: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
-| no_dynamic_init.cpp:9:5:9:8 | Chi: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
-| no_dynamic_init.cpp:9:5:9:8 | Chi: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| nonmembercallexpr.c:1:6:1:6 | Chi: g | Goto | 2 | nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
-| nonmembercallexpr.c:1:6:1:6 | Chi: g | Goto | 2 | revsubscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| parameterinitializer.cpp:18:5:18:8 | Chi: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| parameterinitializer.cpp:18:5:18:8 | Chi: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
-| parameterinitializer.cpp:18:5:18:8 | Chi: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
-| parameterinitializer.cpp:18:5:18:8 | Chi: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| pmcallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| revsubscriptexpr.c:1:6:1:6 | Chi: g | Goto | 2 | nonmembercallexpr.c:1:12:1:12 | NoOp: return ... |
-| revsubscriptexpr.c:1:6:1:6 | Chi: g | Goto | 2 | revsubscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | array_delete.cpp:6:12:6:24 | Constant: (Foo *)... |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | assignexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | constmemberaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | constructorinitializer.cpp:7:6:7:6 | VariableAddress: definition of i |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | defconstructornewexpr.cpp:4:2:4:6 | FunctionAddress: new |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | defdestructordeleteexpr.cpp:4:5:4:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | deleteexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | fieldaccess.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | membercallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | membercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | newexpr.cpp:7:6:7:6 | VariableAddress: definition of a |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | pmcallexpr.cpp:7:5:7:5 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | staticmembercallexpr.cpp:7:4:7:4 | VariableAddress: definition of c |
-| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Goto | 14 | staticmembercallexpr_args.cpp:8:6:8:6 | VariableAddress: definition of i |
-| stream_it.cpp:16:5:16:8 | Chi: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
-| stream_it.cpp:16:5:16:8 | Chi: main | Goto | 4 | no_dynamic_init.cpp:11:3:11:11 | VariableAddress: return ... |
-| stream_it.cpp:16:5:16:8 | Chi: main | Goto | 4 | parameterinitializer.cpp:19:5:19:5 | FunctionAddress: call to f |
-| stream_it.cpp:16:5:16:8 | Chi: main | Goto | 4 | stream_it.cpp:18:15:18:16 | VariableAddress: definition of xs |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| switchstmt.c:1:12:1:12 | InitializeParameter: i | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | aggregateinitializer.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | break_labels.c:3:9:3:14 | VariableAddress: definition of result |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | duff.c:3:9:3:9 | VariableAddress: definition of n |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | dummyblock.c:2:9:2:9 | Constant: 1 |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | emptyblock.c:2:5:3:5 | NoOp: { ... } |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | exprstmt.c:2:5:2:5 | Constant: 1 |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | initializer.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | landexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | lorexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | ltrbinopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nodefaultswitchstmt.c:2:14:2:14 | VariableAddress: x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmembercallexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmemberfp2callexpr.c:4:2:4:2 | FunctionAddress: call to g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | nonmemberfpcallexpr.c:2:8:2:8 | VariableAddress: definition of g |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | questionexpr.c:2:6:2:6 | VariableAddress: definition of a |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | subscriptexpr.c:2:9:2:9 | VariableAddress: definition of x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: i |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | switchstmt.c:2:14:2:14 | VariableAddress: x |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | tinyforstmt.c:3:9:3:9 | NoOp: ; |
-| switchstmt.c:1:12:1:12 | InitializeParameter: x | Goto | 19 | unaryopexpr.c:2:9:2:9 | VariableAddress: definition of i |
-| whilestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifelsestmt.c:2:6:2:6 | Constant: 0 |
-| whilestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | ifstmt.c:2:6:2:6 | Constant: 0 |
-| whilestmt.c:1:6:1:19 | Chi: always_false_1 | Goto | 3 | whilestmt.c:2:9:2:9 | Constant: 0 |
-| whilestmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | ifelsestmt.c:12:6:12:6 | Constant: 0 |
-| whilestmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | ifstmt.c:9:6:9:6 | Constant: 0 |
-| whilestmt.c:8:6:8:19 | Chi: always_false_2 | Goto | 3 | whilestmt.c:9:7:9:10 | VariableAddress: definition of done |
-| whilestmt.c:15:6:15:18 | Chi: always_true_1 | Goto | 4 | dostmt.c:10:5:10:7 | NoOp: label ...: |
-| whilestmt.c:15:6:15:18 | Chi: always_true_1 | Goto | 4 | ifelsestmt.c:20:6:20:6 | Constant: 1 |
-| whilestmt.c:15:6:15:18 | Chi: always_true_1 | Goto | 4 | ifstmt.c:15:6:15:6 | Constant: 1 |
-| whilestmt.c:15:6:15:18 | Chi: always_true_1 | Goto | 4 | whilestmt.c:16:9:16:9 | Constant: 1 |
-| whilestmt.c:23:6:23:18 | Chi: always_true_2 | Goto | 4 | dostmt.c:18:5:18:7 | NoOp: label ...: |
-| whilestmt.c:23:6:23:18 | Chi: always_true_2 | Goto | 4 | ifelsestmt.c:30:6:30:6 | Constant: 1 |
-| whilestmt.c:23:6:23:18 | Chi: always_true_2 | Goto | 4 | ifstmt.c:22:6:22:6 | Constant: 1 |
-| whilestmt.c:23:6:23:18 | Chi: always_true_2 | Goto | 4 | whilestmt.c:24:9:24:9 | Constant: 1 |
-| whilestmt.c:32:6:32:18 | Chi: always_true_3 | Goto | 2 | dostmt.c:27:5:27:7 | NoOp: label ...: |
-| whilestmt.c:32:6:32:18 | Chi: always_true_3 | Goto | 2 | whilestmt.c:33:9:33:9 | Constant: 1 |
+| allocators.cpp:14:5:14:8 | Chi: main | Instruction 'Chi: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| array_delete.cpp:5:6:5:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| assignexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| break_labels.c:2:11:2:11 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| break_labels.c:2:11:2:11 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| conditional_destructors.cpp:29:6:29:7 | Chi: f1 | Instruction 'Chi: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| conditional_destructors.cpp:38:6:38:7 | Chi: f2 | Instruction 'Chi: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| constmemberaccess.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| constructorinitializer.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| defconstructornewexpr.cpp:3:6:3:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| defdestructordeleteexpr.cpp:3:6:3:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| deleteexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| dostmt.c:8:6:8:18 | Chi: always_true_1 | Instruction 'Chi: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| dostmt.c:16:6:16:18 | Chi: always_true_2 | Instruction 'Chi: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| dostmt.c:25:6:25:18 | Chi: always_true_3 | Instruction 'Chi: always_true_3' has 2 successors of kind 'Goto' in function '$@'. | dostmt.c:25:6:25:18 | void always_true_3() | void always_true_3() |
+| duff.c:2:12:2:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| duff.c:2:12:2:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| fieldaccess.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| forstmt.cpp:1:6:1:7 | Chi: f1 | Instruction 'Chi: f1' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:29:6:29:7 | void f1() | void f1() |
+| forstmt.cpp:8:6:8:7 | Chi: f2 | Instruction 'Chi: f2' has 2 successors of kind 'Goto' in function '$@'. | conditional_destructors.cpp:38:6:38:7 | void f2() | void f2() |
+| ifelsestmt.c:1:6:1:19 | Chi: always_false_1 | Instruction 'Chi: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| ifelsestmt.c:11:6:11:19 | Chi: always_false_2 | Instruction 'Chi: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| ifelsestmt.c:19:6:19:18 | Chi: always_true_1 | Instruction 'Chi: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| ifelsestmt.c:29:6:29:18 | Chi: always_true_2 | Instruction 'Chi: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| ifelsestmt.c:37:24:37:24 | InitializeParameter: y | Instruction 'InitializeParameter: y' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:32:6:32:11 | void normal(int, int) | void normal(int, int) |
+| ifstmt.c:1:6:1:19 | Chi: always_false_1 | Instruction 'Chi: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| ifstmt.c:8:6:8:19 | Chi: always_false_2 | Instruction 'Chi: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| ifstmt.c:14:6:14:18 | Chi: always_true_1 | Instruction 'Chi: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| ifstmt.c:21:6:21:18 | Chi: always_true_2 | Instruction 'Chi: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| ifstmt.c:27:24:27:24 | InitializeParameter: y | Instruction 'InitializeParameter: y' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:32:6:32:11 | void normal(int, int) | void normal(int, int) |
+| membercallexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| membercallexpr_args.cpp:7:6:7:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| newexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| no_dynamic_init.cpp:9:5:9:8 | Chi: main | Instruction 'Chi: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nodefaultswitchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| nonmembercallexpr.c:1:6:1:6 | Chi: g | Instruction 'Chi: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
+| parameterinitializer.cpp:18:5:18:8 | Chi: main | Instruction 'Chi: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| pmcallexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| revsubscriptexpr.c:1:6:1:6 | Chi: g | Instruction 'Chi: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
+| staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| stream_it.cpp:16:5:16:8 | Chi: main | Instruction 'Chi: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
+| switchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: i | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: i' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| switchstmt.c:1:12:1:12 | InitializeParameter: x | Instruction 'InitializeParameter: x' has 19 successors of kind 'Goto' in function '$@'. | aggregateinitializer.c:1:6:1:6 | int f(int); void f(int) | int f(int); void f(int) |
+| whilestmt.c:1:6:1:19 | Chi: always_false_1 | Instruction 'Chi: always_false_1' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:1:6:1:19 | void always_false_1() | void always_false_1() |
+| whilestmt.c:8:6:8:19 | Chi: always_false_2 | Instruction 'Chi: always_false_2' has 3 successors of kind 'Goto' in function '$@'. | ifelsestmt.c:11:6:11:19 | void always_false_2() | void always_false_2() |
+| whilestmt.c:15:6:15:18 | Chi: always_true_1 | Instruction 'Chi: always_true_1' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:8:6:8:18 | void always_true_1() | void always_true_1() |
+| whilestmt.c:23:6:23:18 | Chi: always_true_2 | Instruction 'Chi: always_true_2' has 4 successors of kind 'Goto' in function '$@'. | dostmt.c:16:6:16:18 | void always_true_2() | void always_true_2() |
+| whilestmt.c:32:6:32:18 | Chi: always_true_3 | Instruction 'Chi: always_true_3' has 2 successors of kind 'Goto' in function '$@'. | dostmt.c:25:6:25:18 | void always_true_3() | void always_true_3() |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
@@ -516,6 +112,7 @@ switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
+nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
