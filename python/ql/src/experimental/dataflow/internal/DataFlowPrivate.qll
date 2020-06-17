@@ -71,18 +71,24 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 //--------
 
 /** Represents a callable */
-class DataFlowCallable = FunctionObject; // TODO: consider CallableValue
+class DataFlowCallable = CallableValue;
 
 /** Represents a call to a callable */
 class DataFlowCall extends CallNode {
+  DataFlowCallable callable;
+
+  DataFlowCall() {
+    this = callable.getACall()
+  }
+
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  DataFlowCallable getEnclosingCallable() { result = callable }
 }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends Node {
   ArgumentNode() {
-    exists( DataFlowCall call, int pos |
+    exists(DataFlowCall call, int pos |
       this.asCfgNode() = call.getArg(pos)
     )
   }
@@ -96,14 +102,9 @@ class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-import semmle.python.pointsto.CallGraph
-
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) {
-  exists(FunctionInvocation i |
-    call = i.getCall() and
-    result = i.getFunction()
-  )
+  result = call.getEnclosingCallable()
 }
 
 private newtype TReturnKind = TNormalReturnKind()
