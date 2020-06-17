@@ -467,7 +467,7 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
  * takes exactly one parameter of type `T`, `T&`, `const T&`, `volatile
  * T&`, or `const volatile T&`.
  */
-class CopyAssignmentOperator extends Operator,TaintFunction {
+class CopyAssignmentOperator extends Operator, TaintFunction {
   CopyAssignmentOperator() {
     hasName("operator=") and
     (
