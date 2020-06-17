@@ -221,7 +221,7 @@ private module Cached {
           compatibleTypes(getErasedNodeTypeBound(p), getErasedNodeTypeBound(node))
           or
           // getter
-          compatibleTypes(read.getType(), getErasedNodeTypeBound(node))
+          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(node))
         else any()
       }
 
@@ -240,7 +240,7 @@ private module Cached {
         // read
         exists(Node mid |
           parameterValueFlow(p, mid, TReadStepTypesNone()) and
-          readStepWithTypes(mid, read.getContainerType(), read.getContent(), node, read.getType()) and
+          readStepWithTypes(mid, read.getContainerType(), read.getContent(), node, read.getContentType()) and
           Cand::parameterValueFlowReturnCand(p, _, true) and
           compatibleTypes(getErasedNodeTypeBound(p), read.getContainerType())
         )
@@ -295,7 +295,7 @@ private module Cached {
           or
           // getter
           compatibleTypes(getErasedNodeTypeBound(arg), read.getContainerType()) and
-          compatibleTypes(read.getType(), getErasedNodeTypeBound(out))
+          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(out))
         )
       }
 
@@ -438,8 +438,8 @@ private predicate readStepWithTypes(
   Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
 ) {
   readStep(n1, c, n2) and
-  container = getErasedRepr(n1.getTypeBound()) and
-  content = getErasedRepr(n2.getTypeBound())
+  container = getErasedNodeTypeBound(n1) and
+  content = getErasedNodeTypeBound(n2)
 }
 
 private newtype TReadStepTypesOption =
@@ -455,7 +455,7 @@ private class ReadStepTypesOption extends TReadStepTypesOption {
 
   Content getContent() { this = TReadStepTypesSome(_, result, _) }
 
-  DataFlowType getType() { this = TReadStepTypesSome(_, _, result) }
+  DataFlowType getContentType() { this = TReadStepTypesSome(_, _, result) }
 
   string toString() { if this.isSome() then result = "Some(..)" else result = "None()" }
 }
