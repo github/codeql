@@ -35,3 +35,7 @@ app.use('/js/', express.static('node_modules/bootstrap/dist/js'))
 app.use('/css/', express.static('node_modules/font-awesome/css'));
 app.use('basedir', express.static(__dirname)); // GOOD, because there is no package.json in the same folder.
 app.use('/monthly', express.static(__dirname + '/')); // GOOD, because there is no package.json in the same folder.
+
+const connect = require("connect");
+app.use('/angular', connect.static(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK
+app.use('/angular', require('serve-static')(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK

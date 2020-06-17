@@ -14,3 +14,5 @@
 | private-file-exposure.js:18:1:18:74 | app.use ... les"))) | Serves the folder "/node_modules", which can contain private information. |
 | private-file-exposure.js:19:1:19:88 | app.use ... lar/')) | Serves the folder "/node_modules/angular/", which can contain private information. |
 | private-file-exposure.js:22:1:22:58 | app.use ... lar/')) | Serves the folder "/node_modules/angular/", which can contain private information. |
+| private-file-exposure.js:40:1:40:88 | app.use ... lar/')) | Serves the folder "/node_modules/angular/", which can contain private information. |
+| private-file-exposure.js:41:1:41:97 | app.use ... lar/')) | Serves the folder "/node_modules/angular/", which can contain private information. |

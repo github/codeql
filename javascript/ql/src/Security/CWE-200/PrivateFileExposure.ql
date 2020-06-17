@@ -105,7 +105,10 @@ DataFlow::Node getAPrivateFolderPath(string description) {
  * Gest a call that serves the folder `path` to the public.
  */
 DataFlow::CallNode servesAPrivateFolder(string description) {
-  result = DataFlow::moduleMember("express", "static").getACall() and
+  result = DataFlow::moduleMember(["express", "connect"], "static").getACall() and
+  result.getArgument(0) = getAPrivateFolderPath(description)
+  or
+  result = DataFlow::moduleImport("serve-static").getACall() and
   result.getArgument(0) = getAPrivateFolderPath(description)
 }
 
