@@ -1,1 +1,2 @@
-| test.py:8:5:8:8 | ControlFlowNode for f() |
+| test.py:0:0:0:0 | Entry node for Module test |
+| test.py:4:1:4:9 | Entry node for Function f |

@@ -88,7 +88,6 @@ class ArgumentNode extends Node {
   }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  cached
   predicate argumentOf(DataFlowCall call, int pos) {
     this.asCfgNode() = call.getArg(pos)
   }
@@ -120,7 +119,7 @@ class ReturnKind extends TReturnKind {
 
 /** A data flow node that represents a value returned by a callable. */
 class ReturnNode extends Node {
-  // ReturnNode() { this.asCfgNode() instanceof TODO }
+  ReturnNode() { this.asCfgNode().isNormalExit() }
 
   /** Gets the kind of this return node. */
   ReturnKind getKind() { result = TNormalReturnKind() }
@@ -128,7 +127,7 @@ class ReturnNode extends Node {
 
 /** A data flow node that represents the output of a call. */
 class OutNode extends Node {
-  OutNode() { this.asCfgNode() instanceof CallNode}
+  OutNode() { this.asCfgNode() instanceof CallNode }
 
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
   cached

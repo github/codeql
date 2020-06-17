@@ -8,10 +8,13 @@ class AllFlowsConfig extends DataFlow::Configuration {
   AllFlowsConfig() { this = "AllFlowsConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.asCfgNode() instanceof CallNode
+    node.asCfgNode().isEntryNode()
   }
 
   override predicate isSink(DataFlow::Node node) {
+    node.asCfgNode().isNormalExit()
+    or
+    node = DataFlow::TEssaNode(_) and
     not exists(DataFlow::Node succ |
       DataFlow::localFlowStep(node, succ)
     )
