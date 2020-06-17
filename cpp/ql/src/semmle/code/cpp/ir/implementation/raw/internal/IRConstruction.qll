@@ -71,7 +71,8 @@ module Raw {
   cached
   TIRVariable getInstructionVariable(Instruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
-      instruction = TRawInstruction(element, tag) and
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
       (
         result = element.getInstructionVariable(tag) or
         result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
@@ -81,10 +82,9 @@ module Raw {
 
   cached
   Field getInstructionField(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instruction = TRawInstruction(element, tag) and
-      result = element.getInstructionField(tag)
-    )
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionField(getInstructionTag(instruction))
   }
 
   cached
@@ -103,10 +103,9 @@ module Raw {
 
   cached
   int getInstructionIndex(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instruction = TRawInstruction(element, tag) and
-      result = element.getInstructionIndex(tag)
-    )
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionIndex(getInstructionTag(instruction))
   }
 
   cached
@@ -131,10 +130,9 @@ module Raw {
 
   cached
   int getInstructionElementSize(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instruction = TRawInstruction(element, tag) and
-      result = element.getInstructionElementSize(tag)
-    )
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionElementSize(getInstructionTag(instruction))
   }
 
   cached
@@ -345,17 +343,11 @@ Locatable getInstructionAST(TStageInstruction instr) {
 }
 
 CppType getInstructionResultType(TStageInstruction instr) {
-  exists(TranslatedElement element, InstructionTag tag |
-    instr = TRawInstruction(element, tag) and
-    element.hasInstruction(_, tag, result)
-  )
+  getInstructionTranslatedElement(instr).hasInstruction(_, getInstructionTag(instr), result)
 }
 
 Opcode getInstructionOpcode(TStageInstruction instr) {
-  exists(TranslatedElement element, InstructionTag tag |
-    instr = TRawInstruction(element, tag) and
-    element.hasInstruction(result, tag, _)
-  )
+  getInstructionTranslatedElement(instr).hasInstruction(result, getInstructionTag(instr), _)
 }
 
 IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
@@ -363,10 +355,9 @@ IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
 }
 
 Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction) {
-  exists(TranslatedElement element, InstructionTag tag |
-    instruction = TRawInstruction(element, tag) and
-    result = element.getPrimaryInstructionForSideEffect(tag)
-  )
+  result =
+    getInstructionTranslatedElement(instruction)
+        .getPrimaryInstructionForSideEffect(getInstructionTag(instruction))
 }
 
 import CachedForDebugging
