@@ -28,7 +28,7 @@ public class DependencyInstallationResult {
   /**
    * Returns the source root mirrored by {@link #getVirtualSourceRoot()} or <code>null</code>
    * if no virtual source root exists.
-   * <p/>
+   * <p>
    * When invoked from the AutoBuilder, this corresponds to the source root. When invoked
    * from ODASA, there is no notion of source root, so this is always <code>null</code> in that context.
    */
@@ -38,7 +38,7 @@ public class DependencyInstallationResult {
 
   /**
    * Returns the virtual source root or <code>null</code> if no virtual source root exists.
-   *
+   * <p>
    * The virtual source root is a directory hierarchy that mirrors the real source
    * root, where dependencies are installed.
    */
