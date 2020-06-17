@@ -62,7 +62,7 @@ void test_copy_assignment_operator()
 
     y = x;
 
-    sink(y.data1); // tainted [FALSE NEGATIVE in IR]
+    sink(y.data1); // tainted
     sink(x.data1); // tainted
 
     IntWrapper::Class z1, z2;
@@ -71,7 +71,7 @@ void test_copy_assignment_operator()
 
     swap(z1, z2);
 
-    sink(z2.data1); // tainted
+    sink(z2.data1); // tainted [FALSE NEGATIVE in IR]
     sink(z1.data1); // clean [FALSE POSITIVE]
 }
 
@@ -86,7 +86,7 @@ void test_move_assignment_operator()
 
     y = std::move(x);
 
-    sink(y.data1); // tainted [FALSE NEGATIVE in IR]
+    sink(y.data1); // tainted
     sink(x.data1); // tainted
 }
 
@@ -99,5 +99,5 @@ void test_move_constructor()
 
     IntWrapper::Class move_to(std::move(move_from));
 
-    sink(move_to.data1); // tainted [FALSE NEGATIVE in IR]
+    sink(move_to.data1); // tainted
 }

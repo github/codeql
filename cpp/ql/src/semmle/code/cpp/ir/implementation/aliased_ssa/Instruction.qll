@@ -541,6 +541,11 @@ class ReturnIndirectionInstruction extends VariableInstruction {
    * function.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Holds if this instruction is the return indirection for `this`.
+   */
+  final predicate isThisIndirection() { var instanceof IRThisVariable }
 }
 
 class CopyInstruction extends Instruction {

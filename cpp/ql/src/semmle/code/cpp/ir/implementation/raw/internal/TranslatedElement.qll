@@ -415,8 +415,11 @@ newtype TTranslatedElement =
   } or
   TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
+  TTranslatedThisReadEffect(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // The read side effects in a function's return block
-  TTranslatedReadEffect(Parameter param) {
+  TTranslatedParameterReadEffect(Parameter param) {
     translateFunction(param.getFunction()) and
     exists(Type t | t = param.getUnspecifiedType() |
       t instanceof ArrayType or
