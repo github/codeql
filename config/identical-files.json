@@ -19,15 +19,15 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl4.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll",
-    "python/ql/src/semmle/code/python/dataflow/internal/DataFlowImpl.qll",
-    "python/ql/src/semmle/code/python/dataflow/internal/DataFlowImpl2.qll"
+    "python/ql/src/experimental/dataflow/internal/DataFlowImpl.qll",
+    "python/ql/src/experimental/dataflow/internal/DataFlowImpl2.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
-    "python/ql/src/semmle/code/python/dataflow/internal/DataFlowImplCommon.qll"
+    "python/ql/src/experimental/dataflow/internal/DataFlowImplCommon.qll"
   ],
   "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -41,14 +41,14 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "python/ql/src/semmle/code/python/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+    "python/ql/src/experimental/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-    "python/ql/src/semmle/code/python/dataflow/internal/DataFlowImplConsistency.qll"
+    "python/ql/src/experimental/dataflow/internal/DataFlowImplConsistency.qll"
   ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",

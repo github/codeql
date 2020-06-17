@@ -9,22 +9,6 @@ private import DataFlowPublic
 // Nodes
 //--------
 
-class DataFlowCall extends CallNode {
-  /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
-}
-
-/** A data flow node that represents a call argument. */
-abstract class ArgumentNode extends Node {
-  /** Holds if this argument occurs at the given position in the given call. */
-  cached
-  abstract predicate argumentOf(DataFlowCall call, int pos);
-
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
-}
-
-
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -103,9 +87,26 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 // Global flow
 //--------
 
-import semmle.python.pointsto.CallGraph
-
+/** Represents a callable */
 class DataFlowCallable = FunctionObject;
+
+/** Represents a call to a callable */
+class DataFlowCall extends CallNode {
+  /** Gets the enclosing callable of this call. */
+  abstract DataFlowCallable getEnclosingCallable();
+}
+
+/** A data flow node that represents a call argument. */
+abstract class ArgumentNode extends Node {
+  /** Holds if this argument occurs at the given position in the given call. */
+  cached
+  abstract predicate argumentOf(DataFlowCall call, int pos);
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+import semmle.python.pointsto.CallGraph
 
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) {
