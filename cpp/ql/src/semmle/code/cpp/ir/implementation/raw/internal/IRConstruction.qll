@@ -22,14 +22,6 @@ InstructionTag getInstructionTag(Instruction instruction) {
   instruction = TRawInstruction(_, result)
 }
 
-pragma[noinline]
-private predicate instructionOrigin(
-  Instruction instruction, TranslatedElement element, InstructionTag tag
-) {
-  element = getInstructionTranslatedElement(instruction) and
-  tag = getInstructionTag(instruction)
-}
-
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the initial
  * "raw" stage of the IR. The other stages of the IR do not expose these predicates.
@@ -79,8 +71,7 @@ module Raw {
   cached
   TIRVariable getInstructionVariable(Instruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
-      element = getInstructionTranslatedElement(instruction) and
-      tag = getInstructionTag(instruction) and
+      instruction = TRawInstruction(element, tag) and
       (
         result = element.getInstructionVariable(tag) or
         result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
@@ -91,7 +82,7 @@ module Raw {
   cached
   Field getInstructionField(Instruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
+      instruction = TRawInstruction(element, tag) and
       result = element.getInstructionField(tag)
     )
   }
@@ -113,7 +104,7 @@ module Raw {
   cached
   int getInstructionIndex(Instruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
+      instruction = TRawInstruction(element, tag) and
       result = element.getInstructionIndex(tag)
     )
   }
@@ -141,7 +132,7 @@ module Raw {
   cached
   int getInstructionElementSize(Instruction instruction) {
     exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
+      instruction = TRawInstruction(element, tag) and
       result = element.getInstructionElementSize(tag)
     )
   }
@@ -355,14 +346,14 @@ Locatable getInstructionAST(TStageInstruction instr) {
 
 CppType getInstructionResultType(TStageInstruction instr) {
   exists(TranslatedElement element, InstructionTag tag |
-    instructionOrigin(instr, element, tag) and
+    instr = TRawInstruction(element, tag) and
     element.hasInstruction(_, tag, result)
   )
 }
 
 Opcode getInstructionOpcode(TStageInstruction instr) {
   exists(TranslatedElement element, InstructionTag tag |
-    instructionOrigin(instr, element, tag) and
+    instr = TRawInstruction(element, tag) and
     element.hasInstruction(result, tag, _)
   )
 }
@@ -373,7 +364,7 @@ IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
 
 Instruction getPrimaryInstructionForSideEffect(SideEffectInstruction instruction) {
   exists(TranslatedElement element, InstructionTag tag |
-    instructionOrigin(instruction, element, tag) and
+    instruction = TRawInstruction(element, tag) and
     result = element.getPrimaryInstructionForSideEffect(tag)
   )
 }
