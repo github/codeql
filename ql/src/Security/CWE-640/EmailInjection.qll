@@ -24,19 +24,6 @@ module EmailInjection {
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      exists(DataFlow::CallNode call |
-        call.getTarget().hasQualifiedName("hash.Hash", "Write") and
-        (
-          call.getReceiver().getType().getName() = "Hash" or
-          call.getReceiver().getType().getName() = "Hash32" or
-          call.getReceiver().getType().getName() = "Hash64"
-        )
-      |
-        node = call.getArgument(0)
-      )
-    }
-
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
   }
 }
