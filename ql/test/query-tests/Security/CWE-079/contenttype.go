@@ -54,3 +54,63 @@ func serve5() {
 	})
 	http.ListenAndServe(":80", nil)
 }
+
+func serve10() {
+	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		data := r.Form.Get("data")
+
+		data := r.FormValue("data")
+		fmt.Fprintf(w, "\t<html><body>%s</body></html>", data) // Not OK
+	})
+}
+
+func serve11() {
+	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		data := r.Form.Get("data")
+
+		data := r.FormValue("data")
+		fmt.Fprintf(w, `
+<html>
+  <body>
+    %s
+  </body>
+</html>`, data) // Not OK
+	})
+}
+
+func serve12() {
+	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		data := r.Form.Get("data")
+
+		data := r.FormValue("data")
+		fmt.Fprintf(w, `
+    %s
+`, data) // Not OK
+	})
+}
+
+func serve13() {
+	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		data := r.Form.Get("data")
+
+		data := r.FormValue("data")
+		fmt.Fprintf(w, `
+Echoed:
+%s
+`, data) // OK
+	})
+}
+
+func serve14() {
+	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		data := r.Form.Get("data")
+
+		data := r.FormValue("data")
+		fmt.Fprintf(w, "<html><body>%s</body></html>", data) // Not OK
+	})
+}
