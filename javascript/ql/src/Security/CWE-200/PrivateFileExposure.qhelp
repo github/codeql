@@ -26,12 +26,12 @@
     This allows clients easy access to all files inside that folder, but also allows
     access to potentially private information inside <code>package.json</code> files. 
   </p>
-  <sample src="examples/FileAccessToHttp.js"/>
+  <sample src="examples/PrivateFileExposure.js"/>
   <p>
     The issue has been fixed in the below by only serving specific folders within the
     <code>node_modules</code> folder.
   </p>
-  <sample src="examples/FileAccessToHttpFixed.js"/>
+  <sample src="examples/PrivateFileExposureFixed.js"/>
 </example>
 
 <references>
