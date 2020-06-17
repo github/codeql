@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with C++ constructors, destructors,
+ * Provides classes for working with C++ member functions, constructors, destructors,
  * and user-defined operators.
  */
 
