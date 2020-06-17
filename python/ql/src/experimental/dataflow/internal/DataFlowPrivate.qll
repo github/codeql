@@ -63,6 +63,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // nodeFrom is control flow node for `x`
   // nodeTo is SSA variable for `x`
   nodeFrom.asCfgNode() = nodeTo.asEssaNode().(ParameterDefinition).getDefiningNode()
+  or
+  nodeFrom.asEssaNode().getAUse() = nodeTo.asCfgNode()
 }
 
 // TODO: Make modules for these headings
@@ -120,7 +122,8 @@ class ReturnKind extends TReturnKind {
 
 /** A data flow node that represents a value returned by a callable. */
 class ReturnNode extends Node {
-  ReturnNode() { this.asCfgNode().isNormalExit() }
+  // See `TaintTrackingImplementation::returnFlowStep`
+  ReturnNode() { this.asCfgNode() = any(Return r).getValue().getAFlowNode() }
 
   /** Gets the kind of this return node. */
   ReturnKind getKind() { result = TNormalReturnKind() }

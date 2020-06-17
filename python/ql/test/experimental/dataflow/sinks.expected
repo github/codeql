@@ -1,12 +1,2 @@
 | test.py:0:0:0:0 | Exit node for Module test |
-| test.py:0:0:0:0 | GSSA Variable __name__ |
-| test.py:0:0:0:0 | GSSA Variable __package__ |
-| test.py:0:0:0:0 | GSSA Variable c |
-| test.py:0:0:0:0 | SSA variable $ |
-| test.py:2:1:2:1 | GSSA Variable b |
 | test.py:4:1:4:9 | Exit node for Function f |
-| test.py:4:5:4:5 | GSSA Variable f |
-| test.py:4:7:4:7 | SSA variable x |
-| test.py:5:3:5:3 | SSA variable y |
-| test.py:8:1:8:1 | GSSA Variable c |
-| test.py:8:5:8:8 | GSSA Variable a |
