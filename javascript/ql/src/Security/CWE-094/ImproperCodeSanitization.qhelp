@@ -22,8 +22,8 @@
     <p>
       The example below constructs a function that assigns the number 42 to the property <code>key</code>
       on an object <code>obj</code>. However, if <code>key</code> contains <code>&lt;/script&gt;</code>, then 
-      the generated code will break out of a <code>&lt;script&gt;</code> if the generated code is inserted 
-      into a <code>&lt;script&gt;</code> tag.
+      the generated code will break out of a <code>&lt;/script&gt;</code> if inserted into a 
+      <code>&lt;/script&gt;</code> tag.
     </p>
     <sample src="examples/ImproperCodeSanitization.js" />
     <p>
