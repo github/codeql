@@ -13,6 +13,7 @@ import semmle.code.cpp.ir.IR
  * has the AST for the `Function` itself, which tends to confuse mapping between the AST `BasicBlock`
  * and the `IRBlock`.
  */
+pragma[noinline]
 private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
@@ -304,13 +305,13 @@ class IRGuardCondition extends Instruction {
     pred.getASuccessor() = succ and
     controls(pred, testIsTrue)
     or
-    hasBranchEdge(succ, testIsTrue) and
+    succ = getBranchSuccessor(testIsTrue) and
     branch.getCondition() = this and
     branch.getBlock() = pred
   }
 
   /**
-   * Holds if `branch` jumps directly to `succ` when this condition is `testIsTrue`.
+   * Gets the block to which `branch` jumps directly when this condition is `testIsTrue`.
    *
    * This predicate is intended to help with situations in which an inference can only be made
    * based on an edge between a block with multiple successors and a block with multiple
@@ -324,14 +325,14 @@ class IRGuardCondition extends Instruction {
    * return x;
    * ```
    */
-  private predicate hasBranchEdge(IRBlock succ, boolean testIsTrue) {
+  private IRBlock getBranchSuccessor(boolean testIsTrue) {
     branch.getCondition() = this and
     (
       testIsTrue = true and
-      succ.getFirstInstruction() = branch.getTrueSuccessor()
+      result.getFirstInstruction() = branch.getTrueSuccessor()
       or
       testIsTrue = false and
-      succ.getFirstInstruction() = branch.getFalseSuccessor()
+      result.getFirstInstruction() = branch.getFalseSuccessor()
     )
   }
 
@@ -405,20 +406,78 @@ class IRGuardCondition extends Instruction {
    */
   private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
     not isUnreachedBlock(controlled) and
-    exists(IRBlock branchBlock | branchBlock.getAnInstruction() = branch |
-      exists(IRBlock succ |
-        testIsTrue = true and succ.getFirstInstruction() = branch.getTrueSuccessor()
+    //
+    // For this block to control the block `controlled` with `testIsTrue` the
+    // following must hold: Execution must have passed through the test; that
+    // is, `this` must strictly dominate `controlled`. Execution must have
+    // passed through the `testIsTrue` edge leaving `this`.
+    //
+    // Although "passed through the true edge" implies that
+    // `getBranchSuccessor(true)` dominates `controlled`, the reverse is not
+    // true, as flow may have passed through another edge to get to
+    // `getBranchSuccessor(true)`, so we need to assert that
+    // `getBranchSuccessor(true)` dominates `controlled` *and* that all
+    // predecessors of `getBranchSuccessor(true)` are either `this` or
+    // dominated by `getBranchSuccessor(true)`.
+    //
+    // For example, in the following snippet:
+    //
+    //     if (x)
+    //       controlled;
+    //     false_successor;
+    //     uncontrolled;
+    //
+    // `false_successor` dominates `uncontrolled`, but not all of its
+    // predecessors are `this` (`if (x)`) or dominated by itself. Whereas in
+    // the following code:
+    //
+    //     if (x)
+    //       while (controlled)
+    //         also_controlled;
+    //     false_successor;
+    //     uncontrolled;
+    //
+    // the block `while (controlled)` is controlled because all of its
+    // predecessors are `this` (`if (x)`) or (in the case of `also_controlled`)
+    // dominated by itself.
+    //
+    // The additional constraint on the predecessors of the test successor implies
+    // that `this` strictly dominates `controlled` so that isn't necessary to check
+    // directly.
+    exists(IRBlock succ |
+      succ = this.getBranchSuccessor(testIsTrue) and
+      this.hasDominatingEdgeTo(succ) and
+      succ.dominates(controlled)
+    )
+  }
+
+  /**
+   * Holds if `(this, succ)` is an edge that dominates `succ`, that is, all other
+   * predecessors of `succ` are dominated by `succ`. This implies that `this` is the
+   * immediate dominator of `succ`.
+   *
+   * This is a necessary and sufficient condition for an edge to dominate anything,
+   * and in particular `bb1.hasDominatingEdgeTo(bb2) and bb2.dominates(bb3)` means
+   * that the edge `(bb1, bb2)` dominates `bb3`.
+   */
+  private predicate hasDominatingEdgeTo(IRBlock succ) {
+    exists(IRBlock branchBlock | branchBlock = this.getBranchBlock() |
+      branchBlock.immediatelyDominates(succ) and
+      branchBlock.getASuccessor() = succ and
+      forall(IRBlock pred | pred = succ.getAPredecessor() and pred != branchBlock |
+        succ.dominates(pred)
         or
-        testIsTrue = false and succ.getFirstInstruction() = branch.getFalseSuccessor()
-      |
-        branch.getCondition() = this and
-        succ.dominates(controlled) and
-        forall(IRBlock pred | pred.getASuccessor() = succ |
-          pred = branchBlock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry()
-        )
+        // An unreachable `pred` is vacuously dominated by `succ` since all
+        // paths from the entry to `pred` go through `succ`. Such vacuous
+        // dominance is not included in the `dominates` predicate since that
+        // could cause quadratic blow-up.
+        not pred.isReachableFromFunctionEntry()
       )
     )
   }
+
+  pragma[noinline]
+  private IRBlock getBranchBlock() { result = branch.getBlock() }
 }
 
 private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {

@@ -48,8 +48,8 @@ void bar(Outer &b)
   // in _some_ access path somewhere in the search. That makes the library conclude
   // that there could be flow to `b.inner.f.a_` even when the flow was actually to
   // `b.inner.f.b_`.
-  sink(b.inner.f.a()); // $ast=62:19 $f+:ast=63:19 $ast=64:19 $f+:ast=65:19 $f-:ir
-  sink(b.inner.f.b()); // $f+:ast=62:19 $ast=63:19 $f+:ast=64:19 $ast=65:19 $f-:ir
+  sink(b.inner.f.a()); // $ast=62:19 $f+:ast=63:19 $ast=64:19 $f+:ast=65:19 $ir=62:19 $f+:ir=63:19 $ir=64:19 $f+:ir=65:19
+  sink(b.inner.f.b()); // $f+:ast=62:19 $ast=63:19 $f+:ast=64:19 $ast=65:19 $f+:ir=62:19 $ir=63:19 $f+:ir=64:19 $ir=65:19
 }
 
 void foo()

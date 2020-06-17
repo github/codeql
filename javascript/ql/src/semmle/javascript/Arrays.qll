@@ -1,5 +1,6 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Classes and predicates for modelling TaintTracking steps for arrays.
@@ -222,29 +223,32 @@ private module ArrayDataFlow {
    *
    * And the second parameter in the callback is the array ifself, so there is a `loadStoreStep` from the array to that second parameter.
    */
-  private class ArrayIteration extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArrayIteration() {
-      this.getMethodName() = "map" or
-      this.getMethodName() = "forEach"
-    }
-
+  private class ArrayIteration extends PreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
-      prop = arrayElement() and
-      obj = this.getReceiver() and
-      element = getCallback(0).getParameter(0)
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["map", "forEach"] and
+        prop = arrayElement() and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0)
+      )
     }
 
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
-      this.getMethodName() = "map" and
-      prop = arrayElement() and
-      element = this.getCallback(0).getAReturn() and
-      obj = this
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "map" and
+        prop = arrayElement() and
+        element = call.getCallback(0).getAReturn() and
+        obj = call
+      )
     }
 
-    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = arrayElement() and
-      pred = this.getReceiver() and
-      succ = getCallback(0).getParameter(2)
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["map", "forEach"] and
+        prop = arrayElement() and
+        pred = call.getReceiver() and
+        succ = call.getCallback(0).getParameter(2)
+      )
     }
   }
 
@@ -311,16 +315,13 @@ private module ArrayDataFlow {
   /**
    * A step for modelling `for of` iteration on arrays.
    */
-  private class ForOfStep extends DataFlow::AdditionalFlowStep, DataFlow::ValueNode {
-    ForOfStmt forOf;
-    DataFlow::Node element;
-
-    ForOfStep() { this.asExpr() = forOf.getIterationDomain() }
-
+  private class ForOfStep extends PreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
-      obj = this and
-      e = DataFlow::lvalueNode(forOf.getLValue()) and
-      prop = arrayElement()
+      exists(ForOfStmt forOf |
+        obj = forOf.getIterationDomain().flow() and
+        e = DataFlow::lvalueNode(forOf.getLValue()) and
+        prop = arrayElement()
+      )
     }
   }
 }

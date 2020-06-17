@@ -415,8 +415,11 @@ newtype TTranslatedElement =
   } or
   TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
+  TTranslatedThisReadEffect(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // The read side effects in a function's return block
-  TTranslatedReadEffect(Parameter param) {
+  TTranslatedParameterReadEffect(Parameter param) {
     translateFunction(param.getFunction()) and
     exists(Type t | t = param.getUnspecifiedType() |
       t instanceof ArrayType or
@@ -463,7 +466,7 @@ newtype TTranslatedElement =
     )
   } or
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
-  TTranslatedAllocationSideEffects(AllocationExpr expr) or
+  TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
   TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
     (
