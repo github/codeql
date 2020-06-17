@@ -1,6 +1,6 @@
-import semmle.code.python.dataflow.internal.TaintTrackingPublic as Public
+import experimental.dataflow.internal.TaintTrackingPublic as Public
 
 module Private {
-  import semmle.code.python.dataflow.DataFlow::DataFlow as DataFlow
-  import semmle.code.python.dataflow.internal.TaintTrackingPrivate
+  import experimental.dataflow.DataFlow::DataFlow as DataFlow
+  import experimental.dataflow.internal.TaintTrackingPrivate
 }

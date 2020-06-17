@@ -1,7 +1,7 @@
 private import python
 private import TaintTrackingPublic
-private import semmle.code.python.dataflow.DataFlow
-private import semmle.code.python.dataflow.internal.DataFlowPrivate
+private import experimental.dataflow.DataFlow
+private import experimental.dataflow.internal.DataFlowPrivate
 
 /**
  * Holds if `node` should be a barrier in all global taint flow configurations

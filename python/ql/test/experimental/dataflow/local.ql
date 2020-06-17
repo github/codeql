@@ -1,5 +1,5 @@
 import python
-import semmle.code.python.dataflow.DataFlow
+import experimental.dataflow.DataFlow
 
 from
   DataFlow::Node fromNode,

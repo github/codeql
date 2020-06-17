@@ -5,7 +5,7 @@
 
 private import python
 private import TaintTrackingPrivate
-private import semmle.code.python.dataflow.DataFlow
+private import experimental.dataflow.DataFlow
 
 // /**
 //  * Holds if taint propagates from `source` to `sink` in zero or more local

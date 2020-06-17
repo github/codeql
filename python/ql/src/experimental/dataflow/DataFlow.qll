@@ -7,7 +7,7 @@
  * the source may reach the sink. We do not track flow across pointer
  * dereferences or array indexing. To track these types of flow, where the
  * exact value may not be preserved, import
- * `semmle.code.python.dataflow.TaintTracking`.
+ * `experimental.dataflow.TaintTracking`.
  *
  * To use global (interprocedural) data flow, extend the class
  * `DataFlow::Configuration` as documented on that class. To use local
@@ -22,5 +22,5 @@ import python
  * global (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  import semmle.code.python.dataflow.internal.DataFlowImpl
+  import experimental.dataflow.internal.DataFlowImpl
 }
