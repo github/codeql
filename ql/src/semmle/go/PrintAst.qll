@@ -173,6 +173,20 @@ class ExprNode extends BaseAstNode {
   }
 }
 
+/**
+ * A node representing a `File`
+ */
+class FileNode extends BaseAstNode {
+  override File ast;
+
+  /**
+   * Gets the string representation of this File. Note explicitly using a relative path
+   * like this rather than absolute as per default for the File class is a workaround for
+   * a bug with codeql run test, which should replace absolute paths but currently does not.
+   */
+  override string toString() { result = qlClass(ast) + ast.getRelativePath() }
+}
+
 query predicate nodes(PrintAstNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)

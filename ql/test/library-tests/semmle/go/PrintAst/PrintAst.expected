@@ -1,5 +1,5 @@
 input.go:
-#    0| [File] /home/chris/codeql-home/codeql-go/ql/test/library-tests/semmle/go/PrintAst/input.go
+#    0| [File] library-tests/semmle/go/PrintAst/input.go
 #    3|   0: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
