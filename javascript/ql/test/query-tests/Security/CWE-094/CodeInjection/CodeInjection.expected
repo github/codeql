@@ -69,6 +69,16 @@ nodes
 | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
+| bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
+| bad-code-sanitization.js:58:44:58:48 | taint |
 | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") |
@@ -202,6 +212,15 @@ edges
 | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
 | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:56:7:56:47 | taint | bad-code-sanitization.js:58:44:58:48 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] | bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") | bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name | bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:44:58:48 | taint | bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
@@ -271,6 +290,7 @@ edges
 | angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:29 | location | angularjs.js:50:22:50:36 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:50:22:50:29 | location | User-provided value |
 | angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:53:32:53:39 | location | User-provided value |
 | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` | $@ flows to here and is interpreted as code. | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | User-provided value |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` | bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` | $@ flows to here and is interpreted as code. | bad-code-sanitization.js:56:16:56:23 | req.body | User-provided value |
 | express.js:7:24:7:69 | "return ...  + "];" | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:7:44:7:62 | req.param("wobble") | User-provided value |
 | express.js:9:34:9:79 | "return ...  + "];" | express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:9:54:9:72 | req.param("wobble") | User-provided value |
 | express.js:12:8:12:53 | "return ...  + "];" | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:12:28:12:46 | req.param("wobble") | User-provided value |
