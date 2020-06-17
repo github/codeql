@@ -1,4 +1,9 @@
-import cpp
+/**
+ * Provides classes for working with C++ constructors, destructors,
+ * and user-defined operators.
+ */
+
+ import cpp
 
 /**
  * A C++ function declared as a member of a class [N4140 9.3]. This includes

@@ -1,6 +1,5 @@
 /**
- * Provides classes for working with functions, including C++ constructors, destructors,
- * user-defined operators, and template functions.
+ * Provides classes for working with functions, including template functions.
  */
 
 import semmle.code.cpp.Location
