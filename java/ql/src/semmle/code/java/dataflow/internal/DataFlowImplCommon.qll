@@ -240,7 +240,8 @@ private module Cached {
         // read
         exists(Node mid |
           parameterValueFlow(p, mid, TReadStepTypesNone()) and
-          readStepWithTypes(mid, read.getContainerType(), read.getContent(), node, read.getContentType()) and
+          readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
+            read.getContentType()) and
           Cand::parameterValueFlowReturnCand(p, _, true) and
           compatibleTypes(getErasedNodeTypeBound(p), read.getContainerType())
         )
