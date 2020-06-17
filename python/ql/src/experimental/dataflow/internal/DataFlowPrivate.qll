@@ -52,17 +52,17 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeTo.asEssaNode() = p.getVariable() and
     nodeFrom.asEssaNode() = p.getShortCircuitInput()
   )
-  // or
-  // exists(EssaNodeDefinition d |
-  //   nodeTo.asEssaNode() = d.getVariable() and
-  //   nodeFrom.asEssaNode().getDefinition().getLocation() = d.(AssignmentDefinition).getValue().getLocation() // TODO: A better way to tie these together
-  // )
   or
   // As in `taintedAssignment`
   // `x = f(42)`
-  // nodeTo is any use of `x`
   // nodeFrom is `f(42)`
+  // nodeTo is any use of `x`
   nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
+  or
+  // `def f(x):`
+  // nodeFrom is control flow node for `x`
+  // nodeTo is SSA variable for `x`
+  nodeFrom.asCfgNode() = nodeTo.asEssaNode().(ParameterDefinition).getDefiningNode()
 }
 
 // TODO: Make modules for these headings
