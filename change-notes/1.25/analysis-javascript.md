@@ -46,6 +46,7 @@
 | Hard-coded credentials (`js/hardcoded-credentials`) | More results | This query now recognizes hard-coded credentials sent via HTTP authorization headers. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional url scheme checks. |
 | Misspelled variable name (`js/misspelled-variable-name`) | Message changed | The message for this query now correctly identifies the misspelled variable in additional cases. |
+| Non-linear pattern (`js/non-linear-pattern`) | Fewer duplicates and message changed | This query now generates fewer duplicate alerts and has a clearer explanation in case of type annotations used in a pattern. |
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes additional utility functions as vulnerable to prototype polution. |
 | Uncontrolled command line (`js/command-line-injection`) | More results | This query now recognizes additional command execution calls. |
 | Uncontrolled data used in path expression (`js/path-injection`) | More results | This query now recognizes additional file system calls. |
