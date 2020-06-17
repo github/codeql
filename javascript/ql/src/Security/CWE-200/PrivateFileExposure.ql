@@ -69,19 +69,33 @@ pragma[noinline]
 Folder getAPackageJSONFolder() { result = any(PackageJSON json).getFile().getParentContainer() }
 
 /**
- * Gets a reference to `dirname` that might cause information to be leaked.
- * That can happen if there is a `package.json` file in the same folder.
- * (It is assumed that the presence of a `package.json` file means that a `node_modules` folder can also exist.
+ * Gets a reference to `dirname`, the home folder, the current working folder, or the root folder.
+ * All of these might cause information to be leaked.
+ *
+ * For `dirname` that can happen if there is a `package.json` file in the same folder.
+ * It is assumed that the presence of a `package.json` file means that a `node_modules` folder can also exist.
+ *
+ * For the root/home/working folder, they contain so much information that they must leak information somehow (e.g. ssh keys in the `~/.ssh` folder).
  */
-DataFlow::Node dirname() {
+DataFlow::Node getALeakingFolder(string description) {
   exists(ModuleScope ms | result.asExpr() = ms.getVariable("__dirname").getAnAccess()) and
-  result.getFile().getParentContainer() = getAPackageJSONFolder()
+  result.getFile().getParentContainer() = getAPackageJSONFolder() and
+  description = "the folder " + result.getFile().getParentContainer().getRelativePath()
   or
-  result.getAPredecessor() = dirname()
+  result = DataFlow::moduleImport("os").getAMemberCall("homedir") and
+  description = "the home folder "
+  or
+  result.mayHaveStringValue("/") and
+  description = "the root folder"
+  or
+  result.getStringValue() = [".", "./"] and
+  description = "the current working folder"
+  or
+  result.getAPredecessor() = getALeakingFolder(description)
   or
   exists(StringOps::ConcatenationRoot root | root = result |
     root.getNumOperand() = 2 and
-    root.getOperand(0) = dirname() and
+    root.getOperand(0) = getALeakingFolder(description) and
     root.getOperand(1).getStringValue() = "/"
   )
 }
@@ -94,11 +108,7 @@ DataFlow::Node getAPrivateFolderPath(string description) {
     result = getANodeModulePath(path) and description = "the folder \"" + path + "\""
   )
   or
-  result = dirname() and
-  description = "the folder " + result.getFile().getParentContainer().getRelativePath()
-  or
-  result.getStringValue() = [".", "./"] and
-  description = "the current working folder"
+  result = getALeakingFolder(description)
 }
 
 /**

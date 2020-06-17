@@ -39,3 +39,5 @@ app.use('/monthly', express.static(__dirname + '/')); // GOOD, because there is 
 const connect = require("connect");
 app.use('/angular', connect.static(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK
 app.use('/angular', require('serve-static')(path.join(__dirname, "/node_modules") + '/angular/')); // NOT OK
+app.use('/home', require('serve-static')(require("os").homedir())); // NOT OK
+app.use('/root', require('serve-static')("/")); // NOT OK
