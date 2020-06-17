@@ -3,6 +3,9 @@ package main
 //go:generate depstubber -vendor github.com/sendgrid/sendgrid-go/helpers/mail "" NewEmail,NewSingleEmail,NewContent,NewV3Mail,NewV3MailInit
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"io"
 	"log"
 	"net/http"
@@ -88,6 +91,19 @@ func main() {
 		content2 := sendgrid.NewContent("text/html", untrustedInput)
 
 		v.AddContent(content2)
+	})
+
+	// OK
+	http.HandleFunc("/ex6", func(w http.ResponseWriter, r *http.Request) {
+		untrustedInput := r.Referer()
+
+		sha256 := sha256.New
+		appsecret := "appid"
+		hash := hmac.New(sha256, []byte(appsecret))
+		hash.Write([]byte(untrustedInput))
+		signature := base64.StdEncoding.EncodeToString(hash.Sum(nil))
+
+		smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(signature))
 	})
 
 	log.Println(http.ListenAndServe(":80", nil))
