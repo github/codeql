@@ -155,6 +155,8 @@ class Expr extends @expr, ExprParent {
  */
 class BadExpr extends @badexpr, Expr {
   override string toString() { result = "bad expression" }
+
+  override string describeQlClass() { result = "BadExpr" }
 }
 
 /**
@@ -180,6 +182,8 @@ class Ident extends @ident, Expr {
   predicate refersTo(Entity e) { uses(e) or declares(e) }
 
   override string toString() { result = getName() }
+
+  override string describeQlClass() { result = "Ident" }
 }
 
 /**
@@ -193,6 +197,8 @@ class Ident extends @ident, Expr {
  */
 class BlankIdent extends Ident {
   BlankIdent() { getName() = "_" }
+
+  override string describeQlClass() { result = "BlankIdent" }
 }
 
 /**
@@ -210,6 +216,8 @@ class Ellipsis extends @ellipsis, Expr {
   Expr getOperand() { result = getChildExpr(0) }
 
   override string toString() { result = "..." }
+
+  override string describeQlClass() { result = "Ellipsis" }
 }
 
 /**
@@ -267,7 +275,9 @@ class BasicLit extends @basiclit, Literal {
  * 256
  * ```
  */
-class IntLit extends @intlit, BasicLit { }
+class IntLit extends @intlit, BasicLit {
+  override string describeQlClass() { result = "IntLit" }
+}
 
 /**
  * A floating-point literal.
@@ -278,7 +288,9 @@ class IntLit extends @intlit, BasicLit { }
  * 2.71828
  * ```
  */
-class FloatLit extends @floatlit, BasicLit { }
+class FloatLit extends @floatlit, BasicLit {
+  override string describeQlClass() { result = "FloatLit" }
+}
 
 /**
  * An imaginary literal.
@@ -290,7 +302,9 @@ class FloatLit extends @floatlit, BasicLit { }
  * 2.7i
  * ```
  */
-class ImagLit extends @imaglit, BasicLit { }
+class ImagLit extends @imaglit, BasicLit {
+  override string describeQlClass() { result = "ImagLit" }
+}
 
 /**
  * A rune literal.
@@ -312,6 +326,8 @@ class CharLit extends @charlit, BasicLit {
   // use the constant value of the literal as the string value, as the value we get from the
   // compiler is an integer, meaning we would not otherwise have a string value for rune literals
   override string getStringValue() { result = this.getValue() }
+
+  override string describeQlClass() { result = "CharLit" }
 }
 
 class RuneLit = CharLit;
@@ -325,7 +341,9 @@ class RuneLit = CharLit;
  * "hello world"
  * ```
  */
-class StringLit extends @stringlit, BasicLit { }
+class StringLit extends @stringlit, BasicLit {
+  override string describeQlClass() { result = "StringLit" }
+}
 
 /**
  * A function literal.
@@ -347,6 +365,8 @@ class FuncLit extends @funclit, Literal, StmtParent, FuncDef {
   override predicate isPlatformIndependentConstant() { any() }
 
   override string toString() { result = "function literal" }
+
+  override string describeQlClass() { result = "FuncLit" }
 }
 
 /**
@@ -394,6 +414,8 @@ class CompositeLit extends @compositelit, Literal {
   }
 
   override string toString() { result = "composite literal" }
+
+  override string describeQlClass() { result = "CompositeLit" }
 }
 
 /**
@@ -417,6 +439,8 @@ class MapLit extends CompositeLit {
   Type getValueType() { result = mt.getValueType() }
 
   override string toString() { result = "map literal" }
+
+  override string describeQlClass() { result = "MapLit" }
 }
 
 /**
@@ -439,6 +463,8 @@ class StructLit extends CompositeLit {
   StructType getStructType() { result = st }
 
   override string toString() { result = "struct literal" }
+
+  override string describeQlClass() { result = "StructLit" }
 }
 
 /**
@@ -485,6 +511,8 @@ class ArrayLit extends ArrayOrSliceLit {
   ArrayType getArrayType() { result = type }
 
   override string toString() { result = "array literal" }
+
+  override string describeQlClass() { result = "ArrayLit" }
 }
 
 /**
@@ -504,6 +532,8 @@ class SliceLit extends ArrayOrSliceLit {
   SliceType getSliceType() { result = type }
 
   override string toString() { result = "slice literal" }
+
+  override string describeQlClass() { result = "SliceLit" }
 }
 
 /**
@@ -524,6 +554,8 @@ class ParenExpr extends @parenexpr, Expr {
   override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
 
   override string toString() { result = "(...)" }
+
+  override string describeQlClass() { result = "ParenExpr" }
 }
 
 /**
@@ -554,6 +586,8 @@ class SelectorExpr extends @selectorexpr, Expr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string toString() { result = "selection of " + getSelector() }
+
+  override string describeQlClass() { result = "SelectorExpr" }
 }
 
 /**
@@ -575,6 +609,8 @@ class IndexExpr extends @indexexpr, Expr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string toString() { result = "index expression" }
+
+  override string describeQlClass() { result = "IndexExpr" }
 }
 
 /**
@@ -601,6 +637,8 @@ class SliceExpr extends @sliceexpr, Expr {
   Expr getMax() { result = getChildExpr(3) }
 
   override string toString() { result = "slice expression" }
+
+  override string describeQlClass() { result = "SliceExpr" }
 }
 
 /**
@@ -624,6 +662,8 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
   override predicate isPlatformIndependentConstant() { getExpr().isPlatformIndependentConstant() }
 
   override string toString() { result = "type assertion" }
+
+  override string describeQlClass() { result = "TypeAssertExpr" }
 }
 
 /**
@@ -641,7 +681,9 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
  * []byte("x")
  * ```
  */
-class CallOrConversionExpr extends @callorconversionexpr, Expr { }
+class CallOrConversionExpr extends @callorconversionexpr, Expr {
+  override string describeQlClass() { result = "CallOrConversionExpr" }
+}
 
 /**
  * A type conversion expression.
@@ -666,6 +708,8 @@ class ConversionExpr extends CallOrConversionExpr {
   }
 
   override string toString() { result = "type conversion" }
+
+  override string describeQlClass() { result = "ConversionExpr" }
 }
 
 /**
@@ -722,6 +766,8 @@ class CallExpr extends CallOrConversionExpr {
     not exists(getCalleeName()) and
     result = "function call"
   }
+
+  override string describeQlClass() { result = "CallExpr" }
 }
 
 /**
@@ -740,6 +786,8 @@ class StarExpr extends @starexpr, Expr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string toString() { result = "star expression" }
+
+  override string describeQlClass() { result = "StarExpr" }
 }
 
 /**
@@ -762,6 +810,8 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
   CompositeLit getLiteral() { this = result.getElement(_) }
 
   override string toString() { result = "key-value pair" }
+
+  override string describeQlClass() { result = "KeyValueExpr" }
 }
 
 /**
@@ -781,6 +831,8 @@ class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
   Expr getElement() { result = getChildExpr(1) }
 
   override string toString() { result = "array type" }
+
+  override string describeQlClass() { result = "ArrayTypeExpr" }
 }
 
 /**
@@ -803,6 +855,8 @@ class StructTypeExpr extends @structtypeexpr, TypeExpr {
   int getNumField() { result = count(getAField()) }
 
   override string toString() { result = "struct type" }
+
+  override string describeQlClass() { result = "StructTypeExpr" }
 }
 
 /**
@@ -843,6 +897,8 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode {
   ResultVariableDecl getResultDecl() { getNumResult() = 1 and result = getAResultDecl() }
 
   override string toString() { result = "function type" }
+
+  override string describeQlClass() { result = "FuncTypeExpr" }
 }
 
 /**
@@ -868,6 +924,8 @@ class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr {
   int getNumMethod() { result = count(getAMethod()) }
 
   override string toString() { result = "interface type" }
+
+  override string describeQlClass() { result = "InterfaceTypeExpr" }
 }
 
 /**
@@ -893,6 +951,8 @@ class MapTypeExpr extends @maptypeexpr, TypeExpr {
   Type getValueType() { result = getValueTypeExpr().getType() }
 
   override string toString() { result = "map type" }
+
+  override string describeQlClass() { result = "MapTypeExpr" }
 }
 
 /**
@@ -1018,6 +1078,8 @@ class BitwiseUnaryExpr extends @bitwiseunaryexpr, BitwiseExpr, UnaryExpr { }
  */
 class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "+" }
+
+  override string describeQlClass() { result = "PlusExpr" }
 }
 
 /**
@@ -1031,6 +1093,8 @@ class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
  */
 class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "-" }
+
+  override string describeQlClass() { result = "MinusExpr" }
 }
 
 /**
@@ -1044,6 +1108,8 @@ class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
  */
 class NotExpr extends @notexpr, LogicalUnaryExpr {
   override string getOperator() { result = "!" }
+
+  override string describeQlClass() { result = "NotExpr" }
 }
 
 /**
@@ -1057,6 +1123,8 @@ class NotExpr extends @notexpr, LogicalUnaryExpr {
  */
 class ComplementExpr extends @complementexpr, BitwiseUnaryExpr {
   override string getOperator() { result = "^" }
+
+  override string describeQlClass() { result = "ComplementExpr" }
 }
 
 /**
@@ -1068,6 +1136,8 @@ class DerefExpr extends @derefexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string getOperator() { result = "*" }
+
+  override string describeQlClass() { result = "DerefExpr" }
 }
 
 /**
@@ -1083,6 +1153,8 @@ class AddressExpr extends @addressexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string getOperator() { result = "&" }
+
+  override string describeQlClass() { result = "AddressExpr" }
 }
 
 /**
@@ -1098,6 +1170,8 @@ class RecvExpr extends @arrowexpr, UnaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string getOperator() { result = "<-" }
+
+  override string describeQlClass() { result = "RecvExpr" }
 }
 
 /**
@@ -1243,6 +1317,8 @@ class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
  */
 class LorExpr extends @lorexpr, LogicalBinaryExpr {
   override string getOperator() { result = "||" }
+
+  override string describeQlClass() { result = "LorExpr" }
 }
 
 class LogOrExpr = LorExpr;
@@ -1258,6 +1334,8 @@ class LogOrExpr = LorExpr;
  */
 class LandExpr extends @landexpr, LogicalBinaryExpr {
   override string getOperator() { result = "&&" }
+
+  override string describeQlClass() { result = "LandExpr" }
 }
 
 class LogAndExpr = LandExpr;
@@ -1275,6 +1353,8 @@ class EqlExpr extends @eqlexpr, EqualityTestExpr {
   override string getOperator() { result = "==" }
 
   override boolean getPolarity() { result = true }
+
+  override string describeQlClass() { result = "EqlExpr" }
 }
 
 class EqExpr = EqlExpr;
@@ -1292,6 +1372,8 @@ class NeqExpr extends @neqexpr, EqualityTestExpr {
   override string getOperator() { result = "!=" }
 
   override boolean getPolarity() { result = false }
+
+  override string describeQlClass() { result = "NeqExpr" }
 }
 
 /**
@@ -1311,6 +1393,8 @@ class LssExpr extends @lssexpr, RelationalComparisonExpr {
   override Expr getLesserOperand() { result = getLeftOperand() }
 
   override Expr getGreaterOperand() { result = getRightOperand() }
+
+  override string describeQlClass() { result = "LssExpr" }
 }
 
 class LTExpr = LssExpr;
@@ -1330,6 +1414,8 @@ class LeqExpr extends @leqexpr, RelationalComparisonExpr {
   override Expr getLesserOperand() { result = getLeftOperand() }
 
   override Expr getGreaterOperand() { result = getRightOperand() }
+
+  override string describeQlClass() { result = "LeqExpr" }
 }
 
 class LEExpr = LeqExpr;
@@ -1351,6 +1437,8 @@ class GtrExpr extends @gtrexpr, RelationalComparisonExpr {
   override Expr getLesserOperand() { result = getRightOperand() }
 
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
+  override string describeQlClass() { result = "GtrExpr" }
 }
 
 class GTExpr = GtrExpr;
@@ -1370,6 +1458,8 @@ class GeqExpr extends @geqexpr, RelationalComparisonExpr {
   override Expr getLesserOperand() { result = getRightOperand() }
 
   override Expr getGreaterOperand() { result = getLeftOperand() }
+
+  override string describeQlClass() { result = "GeqExpr" }
 }
 
 class GEExpr = GeqExpr;
@@ -1385,6 +1475,8 @@ class GEExpr = GeqExpr;
  */
 class AddExpr extends @addexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "+" }
+
+  override string describeQlClass() { result = "AddExpr" }
 }
 
 /**
@@ -1398,6 +1490,8 @@ class AddExpr extends @addexpr, ArithmeticBinaryExpr {
  */
 class SubExpr extends @subexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "-" }
+
+  override string describeQlClass() { result = "SubExpr" }
 }
 
 /**
@@ -1411,6 +1505,8 @@ class SubExpr extends @subexpr, ArithmeticBinaryExpr {
  */
 class OrExpr extends @orexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "|" }
+
+  override string describeQlClass() { result = "OrExpr" }
 }
 
 class BitOrExpr = OrExpr;
@@ -1426,6 +1522,8 @@ class BitOrExpr = OrExpr;
  */
 class XorExpr extends @xorexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "^" }
+
+  override string describeQlClass() { result = "XorExpr" }
 }
 
 /**
@@ -1439,6 +1537,8 @@ class XorExpr extends @xorexpr, BitwiseBinaryExpr {
  */
 class MulExpr extends @mulexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "*" }
+
+  override string describeQlClass() { result = "MulExpr" }
 }
 
 /**
@@ -1454,6 +1554,8 @@ class QuoExpr extends @quoexpr, ArithmeticBinaryExpr {
   override predicate mayHaveOwnSideEffects() { any() }
 
   override string getOperator() { result = "/" }
+
+  override string describeQlClass() { result = "QuoExpr" }
 }
 
 class DivExpr = QuoExpr;
@@ -1469,6 +1571,8 @@ class DivExpr = QuoExpr;
  */
 class RemExpr extends @remexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "%" }
+
+  override string describeQlClass() { result = "RemExpr" }
 }
 
 class ModExpr = RemExpr;
@@ -1484,6 +1588,8 @@ class ModExpr = RemExpr;
  */
 class ShlExpr extends @shlexpr, ShiftExpr {
   override string getOperator() { result = "<<" }
+
+  override string describeQlClass() { result = "ShlExpr" }
 }
 
 class LShiftExpr = ShlExpr;
@@ -1499,6 +1605,8 @@ class LShiftExpr = ShlExpr;
  */
 class ShrExpr extends @shrexpr, ShiftExpr {
   override string getOperator() { result = ">>" }
+
+  override string describeQlClass() { result = "ShrExpr" }
 }
 
 class RShiftExpr = ShrExpr;
@@ -1514,6 +1622,8 @@ class RShiftExpr = ShrExpr;
  */
 class AndExpr extends @andexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&" }
+
+  override string describeQlClass() { result = "AndExpr" }
 }
 
 class BitAndExpr = AndExpr;
@@ -1529,6 +1639,8 @@ class BitAndExpr = AndExpr;
  */
 class AndNotExpr extends @andnotexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&^" }
+
+  override string describeQlClass() { result = "AndNotExpr" }
 }
 
 /**
@@ -1555,6 +1667,8 @@ class ChanTypeExpr extends @chantypeexpr, TypeExpr {
   predicate canReceive() { none() }
 
   override string toString() { result = "channel type" }
+
+  override string describeQlClass() { result = "ChanTypeExpr" }
 }
 
 /**
@@ -1568,6 +1682,8 @@ class ChanTypeExpr extends @chantypeexpr, TypeExpr {
  */
 class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
   override predicate canSend() { any() }
+
+  override string describeQlClass() { result = "SendChanTypeExpr" }
 }
 
 /**
@@ -1581,6 +1697,8 @@ class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
  */
 class RecvChanTypeExpr extends @recvchantypeexpr, ChanTypeExpr {
   override predicate canReceive() { any() }
+
+  override string describeQlClass() { result = "RecvChanTypeExpr" }
 }
 
 /**
@@ -1596,6 +1714,8 @@ class SendRecvChanTypeExpr extends @sendrcvchantypeexpr, ChanTypeExpr {
   override predicate canSend() { any() }
 
   override predicate canReceive() { any() }
+
+  override string describeQlClass() { result = "SendRecvChanTypeExpr" }
 }
 
 /**
@@ -1658,6 +1778,8 @@ class PackageName extends Name {
 
   /** Gets the package this name refers to. */
   override PackageEntity getTarget() { result = target }
+
+  override string describeQlClass() { result = "PackageName" }
 }
 
 /**
@@ -1675,6 +1797,8 @@ class TypeName extends Name {
 
   /** Gets the type this name refers to. */
   override TypeEntity getTarget() { result = target }
+
+  override string describeQlClass() { result = "TypeName" }
 }
 
 /**
@@ -1693,6 +1817,8 @@ class ValueName extends Name {
 
   /** Gets the constant, variable or function this name refers to. */
   override ValueEntity getTarget() { result = target }
+
+  override string describeQlClass() { result = "ValueName" }
 }
 
 /**
@@ -1722,6 +1848,8 @@ class ConstantName extends ValueName {
       c.getInit().isPlatformIndependentConstant()
     )
   }
+
+  override string describeQlClass() { result = "ConstantName" }
 }
 
 /**
@@ -1738,6 +1866,8 @@ class VariableName extends ValueName {
 
   /** Gets the variable this name refers to. */
   override Variable getTarget() { result = target }
+
+  override string describeQlClass() { result = "VariableName" }
 }
 
 /**
@@ -1754,6 +1884,8 @@ class FunctionName extends ValueName {
 
   /** Gets the function this name refers to. */
   override Function getTarget() { result = target }
+
+  override string describeQlClass() { result = "FunctionName" }
 }
 
 /**
@@ -1770,6 +1902,8 @@ class LabelName extends Name {
 
   /** Gets the label this name refers to. */
   override Label getTarget() { result = target }
+
+  override string describeQlClass() { result = "LabelName" }
 }
 
 /**

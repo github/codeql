@@ -30,6 +30,8 @@ class Decl extends @decl, ExprParent, StmtParent {
  */
 class BadDecl extends @baddecl, Decl {
   override string toString() { result = "bad declaration" }
+
+  override string describeQlClass() { result = "BadDecl" }
 }
 
 /**
@@ -46,6 +48,8 @@ class GenDecl extends @gendecl, Decl, Documentable {
   int getNumSpec() { result = count(getASpec()) }
 
   override predicate mayHaveSideEffects() { getASpec().mayHaveSideEffects() }
+
+  override string describeQlClass() { result = "GenDecl" }
 }
 
 /**
@@ -53,6 +57,8 @@ class GenDecl extends @gendecl, Decl, Documentable {
  */
 class ImportDecl extends @importdecl, GenDecl {
   override string toString() { result = "import declaration" }
+
+  override string describeQlClass() { result = "ImportDecl" }
 }
 
 /**
@@ -60,6 +66,8 @@ class ImportDecl extends @importdecl, GenDecl {
  */
 class ConstDecl extends @constdecl, GenDecl {
   override string toString() { result = "constant declaration" }
+
+  override string describeQlClass() { result = "ConstDecl" }
 }
 
 /**
@@ -67,6 +75,8 @@ class ConstDecl extends @constdecl, GenDecl {
  */
 class TypeDecl extends @typedecl, GenDecl {
   override string toString() { result = "type declaration" }
+
+  override string describeQlClass() { result = "TypeDecl" }
 }
 
 /**
@@ -74,6 +84,8 @@ class TypeDecl extends @typedecl, GenDecl {
  */
 class VarDecl extends @vardecl, GenDecl {
   override string toString() { result = "variable declaration" }
+
+  override string describeQlClass() { result = "VarDecl" }
 }
 
 /**
@@ -133,6 +145,8 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
    * Gets a call to this function.
    */
   DataFlow::CallNode getACall() { result.getACallee() = this }
+
+  override string describeQlClass() { result = "FuncDef" }
 }
 
 /**
@@ -155,6 +169,8 @@ class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef {
   DeclaredFunction getFunction() { this = result.getFuncDecl() }
 
   override string toString() { result = "function declaration" }
+
+  override string describeQlClass() { result = "FuncDecl" }
 }
 
 /**
@@ -219,6 +235,8 @@ class MethodDecl extends FuncDecl {
    * is the variable `p`.
    */
   ReceiverVariable getReceiver() { result.getFunction() = this }
+
+  override string describeQlClass() { result = "MethodDecl" }
 }
 
 /**
@@ -243,6 +261,8 @@ class Spec extends @spec, ExprParent, Documentable {
    * Memory allocation is not considered an observable side effect.
    */
   predicate mayHaveSideEffects() { none() }
+
+  override string describeQlClass() { result = "Spec" }
 }
 
 /**
@@ -262,6 +282,8 @@ class ImportSpec extends @importspec, Spec {
   string getPath() { result = getPathExpr().getValue() }
 
   override string toString() { result = "import specifier" }
+
+  override string describeQlClass() { result = "ImportSpec" }
 }
 
 /**
@@ -344,6 +366,8 @@ class ValueSpec extends @valuespec, Spec {
   override predicate mayHaveSideEffects() { getAnInit().mayHaveSideEffects() }
 
   override string toString() { result = "value declaration specifier" }
+
+  override string describeQlClass() { result = "ValueSpec" }
 }
 
 /**
@@ -360,6 +384,8 @@ class TypeSpec extends @typespec, Spec {
   Expr getTypeExpr() { result = getChildExpr(1) }
 
   override string toString() { result = "type declaration specifier" }
+
+  override string describeQlClass() { result = "TypeSpec" }
 }
 
 /**
@@ -397,6 +423,8 @@ class FieldDecl extends @field, Documentable, ExprParent {
   StructType getDeclaringType() { result = getDeclaringStructTypeExpr().getType() }
 
   override string toString() { result = "field declaration" }
+
+  override string describeQlClass() { result = "FieldDecl" }
 }
 
 /**
@@ -404,6 +432,8 @@ class FieldDecl extends @field, Documentable, ExprParent {
  */
 class EmbeddedFieldDecl extends FieldDecl {
   EmbeddedFieldDecl() { not exists(this.getNameExpr(_)) }
+
+  override string describeQlClass() { result = "EmbeddedFieldDecl" }
 }
 
 /**
@@ -453,6 +483,8 @@ class ParameterDecl extends @field, Documentable, ExprParent {
   }
 
   override string toString() { result = "parameter declaration" }
+
+  override string describeQlClass() { result = "ParameterDecl" }
 }
 
 /**
@@ -482,6 +514,8 @@ class ReceiverDecl extends @field, Documentable, ExprParent {
   Expr getNameExpr() { result = getChildExpr(1) }
 
   override string toString() { result = "receiver declaration" }
+
+  override string describeQlClass() { result = "ReceiverDecl" }
 }
 
 /**
@@ -531,6 +565,8 @@ class ResultVariableDecl extends @field, Documentable, ExprParent {
   int getIndex() { fields(this, _, -(result + 1)) }
 
   override string toString() { result = "result variable declaration" }
+
+  override string describeQlClass() { result = "ResultVariableDecl" }
 }
 
 /**
@@ -579,6 +615,8 @@ class MethodSpec extends InterfaceMemberSpec {
   Expr getNameExpr() { result = name }
 
   override string toString() { result = "method declaration" }
+
+  override string describeQlClass() { result = "MethodSpec" }
 }
 
 /**
@@ -588,4 +626,6 @@ class EmbeddingSpec extends InterfaceMemberSpec {
   EmbeddingSpec() { not exists(getChildExpr(1)) }
 
   override string toString() { result = "interface embedding" }
+
+  override string describeQlClass() { result = "EmbeddingSpec" }
 }
