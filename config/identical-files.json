@@ -53,114 +53,114 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Instruction.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/Instruction.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/Instruction.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/Instruction.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Instruction.qll"
   ],
   "IR IRBlock": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRBlock.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRBlock.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRBlock.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRBlock.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRBlock.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/IRBlock.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/IRBlock.qll"
   ],
   "IR IRVariable": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRVariable.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRVariable.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRVariable.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRVariable.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRVariable.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/IRVariable.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/IRVariable.qll"
   ],
   "IR IRFunction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRFunction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRFunction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRFunction.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRFunction.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRFunction.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/IRFunction.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/IRFunction.qll"
   ],
   "IR Operand": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Operand.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/Operand.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/Operand.qll" 
+    "csharp/ql/src/experimental/ir/implementation/raw/Operand.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Operand.qll" 
   ],
   "IR IRType": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/IRType.qll"
+    "csharp/ql/src/experimental/ir/implementation/IRType.qll"
   ],
   "IR IRConfiguration": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRConfiguration.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/IRConfiguration.qll"
+    "csharp/ql/src/experimental/ir/implementation/IRConfiguration.qll"
   ],
   "IR UseSoundEscapeAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/UseSoundEscapeAnalysis.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/UseSoundEscapeAnalysis.qll"
+    "csharp/ql/src/experimental/ir/implementation/UseSoundEscapeAnalysis.qll"
   ],
   "IR Operand Tag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/OperandTag.qll"
+    "csharp/ql/src/experimental/ir/implementation/internal/OperandTag.qll"
   ],
   "IR TIRVariable":[
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TIRVariable.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/TIRVariable.qll"
+    "csharp/ql/src/experimental/ir/implementation/internal/TIRVariable.qll"
   ],
   "IR IR": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IR.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IR.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IR.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IR.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IR.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/IR.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/IR.qll"
   ],
   "IR IRConsistency": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRConsistency.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/IRConsistency.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/IRConsistency.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/IRConsistency.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/IRConsistency.qll"
   ],
   "IR PrintIR": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/PrintIR.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/PrintIR.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/PrintIR.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/PrintIR.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/PrintIR.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/PrintIR.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/PrintIR.qll"
   ],
   "IR IntegerConstant": [
     "cpp/ql/src/semmle/code/cpp/ir/internal/IntegerConstant.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/internal/IntegerConstant.qll"
+    "csharp/ql/src/experimental/ir/internal/IntegerConstant.qll"
   ],
   "IR IntegerInteval": [
     "cpp/ql/src/semmle/code/cpp/ir/internal/IntegerInterval.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/internal/IntegerInterval.qll"
+    "csharp/ql/src/experimental/ir/internal/IntegerInterval.qll"
   ],
   "IR IntegerPartial": [
     "cpp/ql/src/semmle/code/cpp/ir/internal/IntegerPartial.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/internal/IntegerPartial.qll"
+    "csharp/ql/src/experimental/ir/internal/IntegerPartial.qll"
   ],
   "IR Overlap": [
     "cpp/ql/src/semmle/code/cpp/ir/internal/Overlap.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/internal/Overlap.qll"
+    "csharp/ql/src/experimental/ir/internal/Overlap.qll"
   ],
   "IR EdgeKind": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/EdgeKind.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/EdgeKind.qll"
+    "csharp/ql/src/experimental/ir/implementation/EdgeKind.qll"
   ],
   "IR MemoryAccessKind": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/MemoryAccessKind.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/MemoryAccessKind.qll"
+    "csharp/ql/src/experimental/ir/implementation/MemoryAccessKind.qll"
   ],
   "IR TempVariableTag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/TempVariableTag.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/TempVariableTag.qll"
+    "csharp/ql/src/experimental/ir/implementation/TempVariableTag.qll"
   ],
   "IR Opcode": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/Opcode.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/Opcode.qll"
+    "csharp/ql/src/experimental/ir/implementation/Opcode.qll"
   ],
   "IR SSAConsistency": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConsistency.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll"
   ],
   "C++ IR InstructionImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",
@@ -199,7 +199,7 @@
   "SSA AliasAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
   ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
@@ -212,42 +212,42 @@
   ],
   "IR SSA SimpleSSA": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll"
   ],
   "IR AliasConfiguration (unaliased_ssa)": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasConfiguration.qll"
   ],
   "IR SSA SSAConstruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll"
   ],
   "IR SSA PrintSSA": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll"
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/PrintSSA.qll"
   ],
   "IR ValueNumberInternal": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingInternal.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll"
   ],
   "C++ IR ValueNumber": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/ValueNumbering.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/gvn/ValueNumbering.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
   ],
   "C++ IR PrintValueNumbering": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/PrintValueNumbering.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll"
   ],
   "C++ IR ConstantAnalysis": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
@@ -276,32 +276,32 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintDominance.qll"
   ],
   "C# IR InstructionImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/InstructionImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/InstructionImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/InstructionImports.qll"
   ],
   "C# IR IRImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/IRImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/IRImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/IRImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/IRImports.qll"
   ],
   "C# IR IRBlockImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/IRBlockImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/IRBlockImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll"
   ],
   "C# IR IRVariableImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/IRVariableImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/IRVariableImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/IRVariableImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/IRVariableImports.qll"
   ],
   "C# IR OperandImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/OperandImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/OperandImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/OperandImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/OperandImports.qll"
   ],
   "C# IR PrintIRImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/internal/PrintIRImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/PrintIRImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll"
   ],
   "C# IR ValueNumberingImports": [
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
-    "csharp/ql/src/semmle/code/csharp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
+    "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
   "XML": [
     "cpp/ql/src/semmle/code/cpp/XML.qll",

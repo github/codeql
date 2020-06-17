@@ -119,7 +119,14 @@ module Express {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        exists(HTTP::RouteHandlerCandidateContainer container |
+          result = container.getRouteHandler(succ)
+        ) and
+        t = t2
+      )
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
