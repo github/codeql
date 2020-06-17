@@ -4,7 +4,7 @@
     <p>
       Using untrusted input to construct an email can cause multiple security
       vulnerabilities. For instance, inclusion of an untrusted input in an email body
-      may allow an attacker to conduct Cross Site Scripting (XSS) attacks, while
+      may allow an attacker to conduct cross-site scripting (XSS) attacks, while
       inclusion of an HTTP header may allow a full account compromise as shown in the
       example below.
     </p>
@@ -19,13 +19,13 @@
       In the following example snippet, the <code>host</code> field is user controlled.
     </p>
     <p>
-      A malicious user can send an HTTP request to the targeted web site,
-      but with a Host header that refers to their own web site. This means the
+      A malicious user can send an HTTP request to the targeted website,
+      but with a Host header that refers to their own website. This means the
       emails will be sent out to potential victims, originating from a server
-      they trust, but with links leading to a malicious web site.
+      they trust, but with links leading to a malicious website.
     </p>
     <p>
-      If the email contains a password reset link, and should the victim click
+      If the email contains a password reset link, and the victim clicks
       the link, the secret reset token will be leaked to the attacker. Using the
       leaked token, the attacker can then construct the real reset link and use it to
       change the victim's password.
@@ -38,7 +38,7 @@
   </example>
   <references>
     <li>
-      OWASP
+      OWASP:
       <a href="https://owasp.org/www-community/attacks/Content_Spoofing">Content Spoofing</a>
       .
     </li>

@@ -8,6 +8,7 @@
  * @problem.severity error
  * @tags security
  *       external/cwe/cwe-640
+ * @precision high
  */
 
 import go
