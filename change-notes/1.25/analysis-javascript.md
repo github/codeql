@@ -21,6 +21,7 @@
   - [sqlite](https://www.npmjs.com/package/sqlite)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
   - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [yargs](https://www.npmjs.com/package/yargs)
 
 * TypeScript 3.9 is now supported.
 
@@ -36,6 +37,7 @@
 | Unsafe expansion of self-closing HTML tag (`js/unsafe-html-expansion`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities caused by unsafe expansion of self-closing HTML tags. |
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights potential command injections due to a shell command being constructed from library inputs. Results are shown on LGTM by default. |
 | Creating biased random numbers from a cryptographically secure source (`js/biased-cryptographic-random`) | security, external/cwe/cwe-327 | Highlights mathematical operations on cryptographically secure numbers that can create biased results. Results are shown on LGTM by default. |
+| Improper code sanitization (`js/bad-code-sanitization`) | security, external/cwe/cwe-094, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights string concatenation where code is constructed without proper sanitization. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
