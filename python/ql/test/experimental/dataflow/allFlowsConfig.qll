@@ -8,7 +8,8 @@ class AllFlowsConfig extends DataFlow::Configuration {
   AllFlowsConfig() { this = "AllFlowsConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.asCfgNode().isEntryNode()
+    // node.asCfgNode().isEntryNode()
+    node instanceof DataFlow::ParameterNode
     or
     node = DataFlow::TEssaNode(_) and
     not exists(DataFlow::Node pred |
@@ -18,11 +19,9 @@ class AllFlowsConfig extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) {
-    node.asCfgNode().isNormalExit()
+    node instanceof DataFlow::ReturnNode
     or
     node = DataFlow::TEssaNode(_) and
-    not exists(DataFlow::Node succ |
-      DataFlow::localFlowStep(node, succ)
-    )
+    not exists(node.asEssaNode().getASourceUse())
   }
 }

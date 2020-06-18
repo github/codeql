@@ -1,8 +1,7 @@
-a = 3
-b = a
+def obfuscated_id(x):
+  y = x
+  z = y
+  return z
 
-def f(x):
-  y = x + 2 # would expect flow to here from x
-  return y - 2 # would expect flow to here from y
-
-c = f(a)
+a = 42
+b = obfuscated_id(a)

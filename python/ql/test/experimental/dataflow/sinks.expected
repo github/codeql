@@ -1,2 +1,7 @@
-| test.py:0:0:0:0 | Exit node for Module test |
-| test.py:4:1:4:9 | Exit node for Function f |
+| test.py:0:0:0:0 | GSSA Variable __name__ |
+| test.py:0:0:0:0 | GSSA Variable __package__ |
+| test.py:0:0:0:0 | GSSA Variable b |
+| test.py:0:0:0:0 | SSA variable $ |
+| test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:7:1:7:1 | GSSA Variable b |
+| test.py:7:5:7:20 | GSSA Variable a |

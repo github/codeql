@@ -52,7 +52,7 @@ class Node extends TNode {
    * Gets an upper bound on the type of this node.
    */
   DataFlowType getTypeBound() {
-    none()
+    any()
   }
 
   /**
@@ -91,11 +91,17 @@ ExprNode exprNode(DataFlowExpr e) { none() }
  * flow graph.
  */
 class ParameterNode extends Node {
+  ParameterNode() {
+    this.asEssaNode() instanceof ParameterDefinition
+  }
+
     /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) {
+    this.asEssaNode().(ParameterDefinition).getDefiningNode() = c.getParameter(i)
+  }
 }
 
 /**

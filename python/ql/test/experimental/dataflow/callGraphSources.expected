@@ -1,1 +1,1 @@
-| test.py:6:10:6:14 | ControlFlowNode for BinaryExpr |
+| test.py:4:10:4:10 | ControlFlowNode for z |
