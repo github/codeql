@@ -23,8 +23,8 @@
 <example>
   <p>
     In the example below, all the files from the <code>node_modules</code> are served. 
-    This allows clients easy access to all files inside that folder, but also allows
-    access to potentially private information inside <code>package.json</code> files. 
+    This allows clients to easily access all the files inside that folder,
+    which includes potentially private information inside <code>package.json</code> files.
   </p>
   <sample src="examples/PrivateFileExposure.js"/>
   <p>
