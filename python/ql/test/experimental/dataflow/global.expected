@@ -1,0 +1,5 @@
+| test.py:0:0:0:0 | GSSA Variable __name__ | test.py:0:0:0:0 | GSSA Variable __name__ |
+| test.py:0:0:0:0 | GSSA Variable __package__ | test.py:0:0:0:0 | GSSA Variable __package__ |
+| test.py:0:0:0:0 | GSSA Variable b | test.py:0:0:0:0 | GSSA Variable b |
+| test.py:0:0:0:0 | SSA variable $ | test.py:0:0:0:0 | SSA variable $ |
+| test.py:7:1:7:1 | GSSA Variable b | test.py:7:1:7:1 | GSSA Variable b |

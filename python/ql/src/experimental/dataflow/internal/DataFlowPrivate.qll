@@ -171,7 +171,7 @@ class CastNode extends Node {
  */
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  none()
+  any()
 }
 
 DataFlowType getErasedRepr(DataFlowType t) { result = t }
