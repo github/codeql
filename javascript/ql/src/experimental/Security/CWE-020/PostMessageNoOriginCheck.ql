@@ -17,14 +17,12 @@ import semmle.javascript.security.dataflow.DOM
 /**
  * A method call for the insecure functions used to verify the `MessageEvent.origin`.
  */
-class InsufficientOriginChecks extends DataFlow::MethodCallNode {
+class InsufficientOriginChecks extends DataFlow::Node {
   InsufficientOriginChecks() {
-    exists(string name | name = getMethodName() |
-      name = "indexOf" or
-      name = "includes" or
-      name = "endsWith" or
-      name = "startsWith" or
-      name = "lastIndexOf"
+    exists(DataFlow::Node node |
+      this.(StringOps::StartsWith).getSubstring() = node or
+      this.(StringOps::Includes).getSubstring() = node or
+      this.(StringOps::EndsWith).getSubstring() = node
     )
   }
 }
