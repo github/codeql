@@ -25,7 +25,7 @@ Always verify the sender's identity of incoming messages.
 <sample src="examples/postMessageWithInsufficientCheck.js" />
 
 <p> In the third example, the `MessageEvent.origin` is properly checked against a trusted origin. </p>
-<sample src="examples/postMessageWithInsufficientCheck.js" />
+<sample src="examples/postMessageWithOriginCheck.js" />
 
 </example>
 
