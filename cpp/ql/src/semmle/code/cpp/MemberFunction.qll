@@ -4,8 +4,6 @@
  */
 
 import cpp
-import semmle.code.cpp.models.interfaces.DataFlow
-import semmle.code.cpp.models.interfaces.Taint
 
 /**
  * A C++ function declared as a member of a class [N4140 9.3]. This includes
@@ -164,7 +162,7 @@ class ConstMemberFunction extends MemberFunction {
  * };
  * ```
  */
-class Constructor extends MemberFunction, TaintFunction {
+class Constructor extends MemberFunction {
   Constructor() { functions(underlyingElement(this), _, 2) }
 
   override string getCanonicalQLClass() { result = "Constructor" }
@@ -193,16 +191,6 @@ class Constructor extends MemberFunction, TaintFunction {
    */
   ConstructorInit getInitializer(int i) {
     exprparents(unresolveElement(result), i, underlyingElement(this))
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any constructor argument to the returned object
-    exists(int idx |
-      input.isParameter(idx) and
-      output.isReturnValue() and
-      not this.(CopyConstructor).hasDataFlow(input, output) and // don't duplicate where we have data flow
-      not this.(MoveConstructor).hasDataFlow(input, output) // don't duplicate where we have data flow
-    )
   }
 }
 
@@ -278,7 +266,7 @@ private predicate hasMoveSignature(MemberFunction f) {
  * desired instead, see the member predicate
  * `mayNotBeCopyConstructorInInstantiation`.
  */
-class CopyConstructor extends Constructor, DataFlowFunction {
+class CopyConstructor extends Constructor {
   CopyConstructor() {
     hasCopySignature(this) and
     (
@@ -310,12 +298,6 @@ class CopyConstructor extends Constructor, DataFlowFunction {
     getDeclaringType() instanceof TemplateClass and
     getNumberOfParameters() > 1
   }
-
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
-    output.isReturnValue()
-  }
 }
 
 /**
@@ -341,7 +323,7 @@ class CopyConstructor extends Constructor, DataFlowFunction {
  * desired instead, see the member predicate
  * `mayNotBeMoveConstructorInInstantiation`.
  */
-class MoveConstructor extends Constructor, DataFlowFunction {
+class MoveConstructor extends Constructor {
   MoveConstructor() {
     hasMoveSignature(this) and
     (
@@ -372,12 +354,6 @@ class MoveConstructor extends Constructor, DataFlowFunction {
     // no default argument in the instantiation.
     getDeclaringType() instanceof TemplateClass and
     getNumberOfParameters() > 1
-  }
-
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // data flow from the first constructor argument to the returned object
-    input.isParameter(0) and
-    output.isReturnValue()
   }
 }
 
@@ -467,7 +443,7 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
  * takes exactly one parameter of type `T`, `T&`, `const T&`, `volatile
  * T&`, or `const volatile T&`.
  */
-class CopyAssignmentOperator extends Operator, TaintFunction {
+class CopyAssignmentOperator extends Operator {
   CopyAssignmentOperator() {
     hasName("operator=") and
     (
@@ -482,17 +458,6 @@ class CopyAssignmentOperator extends Operator, TaintFunction {
   }
 
   override string getCanonicalQLClass() { result = "CopyAssignmentOperator" }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from argument to self
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-    or
-    // taint flow from argument to return value
-    input.isParameterDeref(0) and
-    output.isReturnValueDeref()
-    // TODO: it would be more accurate to model copy assignment as data flow
-  }
 }
 
 /**
@@ -510,7 +475,7 @@ class CopyAssignmentOperator extends Operator, TaintFunction {
  * takes exactly one parameter of type `T&&`, `const T&&`, `volatile T&&`,
  * or `const volatile T&&`.
  */
-class MoveAssignmentOperator extends Operator, TaintFunction {
+class MoveAssignmentOperator extends Operator {
   MoveAssignmentOperator() {
     hasName("operator=") and
     hasMoveSignature(this) and
@@ -519,15 +484,4 @@ class MoveAssignmentOperator extends Operator, TaintFunction {
   }
 
   override string getCanonicalQLClass() { result = "MoveAssignmentOperator" }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from argument to self
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-    or
-    // taint flow from argument to return value
-    input.isParameterDeref(0) and
-    output.isReturnValueDeref()
-    // TODO: it would be more accurate to model move assignment as data flow
-  }
 }
