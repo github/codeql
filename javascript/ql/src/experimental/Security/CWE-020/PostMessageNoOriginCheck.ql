@@ -61,4 +61,4 @@ class PostMessageEvent extends DataFlow::SourceNode {
 
 from PostMessageEvent event
 where not event.hasOriginChecked() or event.hasOriginInsufficientlyChecked()
-select event, "Missing or unsafe origin verification"
+select event, "Missing or unsafe origin verification."
