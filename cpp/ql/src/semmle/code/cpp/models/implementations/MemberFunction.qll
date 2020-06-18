@@ -7,17 +7,13 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
- * Model for C++ constructors (including copy and move constructors).
+ * Model for C++ conversion constructors.
  */
-class ConstructorModel extends Constructor, TaintFunction {
+class ConversionConstructorModel extends ConversionConstructor, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any constructor argument to the returned object
-    exists(int idx |
-      input.isParameter(idx) and
-      output.isReturnValue() and
-      not this.(CopyConstructorModel).hasDataFlow(input, output) and // don't duplicate where we have data flow
-      not this.(MoveConstructorModel).hasDataFlow(input, output) // don't duplicate where we have data flow
-    )
+    // taint flow from the first constructor argument to the returned object
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 }
 
