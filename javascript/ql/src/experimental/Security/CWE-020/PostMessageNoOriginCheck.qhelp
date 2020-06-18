@@ -21,7 +21,7 @@ Always verify the sender's identity of incoming messages.
 <p>In the first example, the `MessageEvent.data` is passed to the `eval` function withouth checking the origin. This means that any window can send arbitrary messages that will be executed in the window receiving the message</p>
 <sample src="examples/postMessageNoOriginCheck.js" />
 
-<p> In the second example, the `MessageEvent.origin` is verified with an unsecure check. For example, using `event.origin.indexOf('www.example.com') > -1` can be baypassed because the string `www.example.com` could appear anywhere in `event.origin` (i.e. `www.example.com.mydomain.com`)
+<p> In the second example, the `MessageEvent.origin` is verified with an unsecure check. For example, using `event.origin.indexOf('www.example.com') > -1` can be bypassed because the string `www.example.com` could appear anywhere in `event.origin` (i.e. `www.example.com.mydomain.com`)</p>
 <sample src="examples/postMessageWithInsufficientCheck.js" />
 
 <p> In the third example, the `MessageEvent.origin` is properly checked against a trusted origin. 
