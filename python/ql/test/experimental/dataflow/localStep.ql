@@ -4,6 +4,6 @@ from
   DataFlow::Node fromNode,
   DataFlow::Node toNode
 where
-  DataFlow::localFlow(fromNode, toNode)
+  DataFlow::localFlowStep(fromNode, toNode)
 select
   fromNode, toNode

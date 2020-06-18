@@ -156,9 +156,9 @@ newtype TDataFlowType =
 
 class DataFlowType extends TDataFlowType {
   /**
-   * No representation yet
+   * Gets a string representation of the data flow type.
    */
-   string toString() { none() }
+   string toString() { result = "DataFlowType" }
 }
 
 /** A node that performs a type cast. */
