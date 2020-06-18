@@ -10,7 +10,7 @@
 <p>Forgery can occur if a user provides some input with characters that are interpreted
 when the log output is displayed. If the log is displayed as a plain text file, then new
 line characters can be used by a malicious user. If the log is displayed as HTML, then
-arbitrary HTML may be include to spoof log entries.</p>
+arbitrary HTML may be included to spoof log entries.</p>
 </overview>
 
 <recommendation>
