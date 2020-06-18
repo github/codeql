@@ -168,7 +168,7 @@ module ControlFlow {
   }
 
   /**
-   * A control-flow node recording the fact that a certain expression is has a known
+   * A control-flow node recording the fact that a certain expression has a known
    * Boolean value at this point in the program.
    */
   class ConditionGuardNode extends IR::Instruction, MkConditionGuardNode {
