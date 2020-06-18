@@ -9,8 +9,12 @@ private import DataFlowPrivate
  * IPA type for data flow nodes.
  * 
  * Flow between SSA variables are computed in `Essa.qll`
- * Flow from SSA variables to control flow nodes is as in
- * `EssaTaintTracking`.
+ * 
+ * Flow from SSA variables to control flow nodes are generally via uses.
+ * 
+ * Flow from control flow nodes to SSA variables are generally via assignments.
+ * 
+ * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
  */
 newtype TNode =
   /** A node corresponding to an SSA variable. */
