@@ -1,6 +1,6 @@
 /**
  * Provides a dataflow tracking configuration for reasoning about
- * clear-text logging of sensitive information.
+ * storage of sensitive information in build artifact.
  *
  * Note, for performance reasons: only import this file if
  * `CleartextLogging::Configuration` is needed, otherwise
@@ -9,30 +9,30 @@
 
 import javascript
 
-module CleartextLogging {
-  import CleartextLoggingCustomizations::CleartextLogging
+/**
+ * Classes and predicates for storage of sensitive information in build artifact query.
+ */
+module BuildArtifactLeak {
+  import BuildArtifactLeakCustomizations::BuildArtifactLeak
+  import CleartextLoggingCustomizations::CleartextLogging as CleartextLogging
 
   /**
-   * A taint tracking configuration for clear-text logging of sensitive information.
-   *
-   * This configuration identifies flows from `Source`s, which are sources of
-   * sensitive data, to `Sink`s, which is an abstract class representing all
-   * the places sensitive data may be stored in clear-text. Additional sources or sinks can be
-   * added either by extending the relevant class, or by subclassing this configuration itself,
-   * and amending the sources and sinks.
+   * A taint tracking configuration for storage of sensitive information in build artifact.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CleartextLogging" }
+    Configuration() { this = "BuildArtifactLeak" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-      source.(Source).getLabel() = lbl
+      source.(CleartextLogging::Source).getLabel() = lbl
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       sink.(Sink).getLabel() = lbl
     }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
+    override predicate isSanitizer(DataFlow::Node node) {
+      node instanceof CleartextLogging::Barrier
+    }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       CleartextLogging::isSanitizerEdge(pred, succ)
