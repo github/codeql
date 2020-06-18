@@ -57,8 +57,8 @@ module LogInjection {
    * A call to a logging mechanism. For example, the call could be in the following forms:
    * `console.log('hello')` or
    *
-   * `let logger = console.log; `
-   * `logger('hello')`  or
+   * `let logger = console.log;`
+   * `logger('hello')` or
    *
    * `let logger = {info: console.log};`
    * `logger.info('hello')`
