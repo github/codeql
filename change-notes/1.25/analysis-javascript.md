@@ -37,6 +37,7 @@
 | Unsafe expansion of self-closing HTML tag (`js/unsafe-html-expansion`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities caused by unsafe expansion of self-closing HTML tags. |
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights potential command injections due to a shell command being constructed from library inputs. Results are shown on LGTM by default. |
 | Download of sensitive file through insecure connection (`js/insecure-download`) | security, external/cwe/cwe-829 | Highlights downloads of sensitive files through an unencrypted protocol. Results are shown on LGTM by default. |
+| Storage of sensitive information in build artifact (`js/build-artifact-leak`) | security, external/cwe/cwe-312 | Highlights storage of sensitive information in build artifacts. Results are shown on LGTM by default. |
 | Improper code sanitization (`js/bad-code-sanitization`) | security, external/cwe/cwe-094, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights string concatenation where code is constructed without proper sanitization. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
