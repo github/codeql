@@ -1,4 +1,12 @@
 | cyclic.go:4:3:4:3 | s | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| cyclic.go:8:3:8:3 | u | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| cyclic.go:9:2:9:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| cyclic.go:13:2:13:2 | t | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| depth.go:6:2:6:2 | b | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| depth.go:7:2:7:2 | c | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| depth.go:11:2:11:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| depth.go:15:2:15:2 | d | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| depth.go:19:2:19:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
 | pkg1/embedding.go:19:23:19:26 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:22:27:22:30 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:25:24:25:31 | embedder | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
