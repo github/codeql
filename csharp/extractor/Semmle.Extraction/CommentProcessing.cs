@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
+            int IComparer<Location>.Compare(Location? l1, Location? l2) => l1 is null ? (l2 is null ? 0 : -1) : l2 is null ? 1 : CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
