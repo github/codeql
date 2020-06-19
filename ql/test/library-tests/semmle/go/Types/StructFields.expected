@@ -31,3 +31,4 @@
 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
 | ptrembedder | pkg1/embedding.go:22:18:22:32 | struct type | base | * base |
+| s | cyclic.go:3:8:5:1 | struct type | s | * s |

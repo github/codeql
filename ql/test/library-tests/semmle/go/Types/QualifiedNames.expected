@@ -19,3 +19,4 @@
 | embedder3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder3 |
 | embedder4 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder4 |
 | ptrembedder | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.ptrembedder |
+| s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s |

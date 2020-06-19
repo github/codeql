@@ -1,3 +1,4 @@
+| cyclic.go:4:3:4:3 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s | s |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder | base |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder2 | base |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder3 | base |
