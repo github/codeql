@@ -844,16 +844,7 @@ class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
  * struct {x, y int; z float32}
  * ```
  */
-class StructTypeExpr extends @structtypeexpr, TypeExpr {
-  /** Gets the `i`th field declared in this struct type expression (0-based). */
-  FieldDecl getField(int i) { fields(result, this, i) }
-
-  /** Gets a field declared in this struct type expression. */
-  FieldDecl getAField() { result = getField(_) }
-
-  /** Gets the number of fields declared in this struct type expression. */
-  int getNumField() { result = count(getAField()) }
-
+class StructTypeExpr extends @structtypeexpr, TypeExpr, FieldParent {
   override string toString() { result = "struct type" }
 
   override string describeQlClass() { result = "StructTypeExpr" }
@@ -868,12 +859,9 @@ class StructTypeExpr extends @structtypeexpr, TypeExpr {
  * func(a, b int, c float32) (float32, bool)
  * ```
  */
-class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode {
+class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
   /** Gets the `i`th parameter of this function type (0-based). */
-  ParameterDecl getParameterDecl(int i) {
-    result.getFunctionTypeExpr() = this and
-    result.getIndex() = i
-  }
+  ParameterDecl getParameterDecl(int i) { result = getField(i) and i >= 0 }
 
   /** Gets a parameter of this function type. */
   ParameterDecl getAParameterDecl() { result = getParameterDecl(_) }
@@ -882,10 +870,7 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode {
   int getNumParameter() { result = count(getAParameterDecl()) }
 
   /** Gets the `i`th result of this function type (0-based). */
-  ResultVariableDecl getResultDecl(int i) {
-    result.getFunctionTypeExpr() = this and
-    result.getIndex() = i
-  }
+  ResultVariableDecl getResultDecl(int i) { result = getField(-(i + 1)) }
 
   /** Gets a result of this function type. */
   ResultVariableDecl getAResultDecl() { result = getResultDecl(_) }
@@ -910,12 +895,9 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode {
  * interface { Read(p []byte) (n int, err error); Close() error}
  * ```
  */
-class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr {
+class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr, FieldParent {
   /** Gets the `i`th method specification of this interface type. */
-  MethodSpec getMethod(int i) {
-    result.getInterfaceTypeExpr() = this and
-    result.getIndex() = i
-  }
+  MethodSpec getMethod(int i) { result = getField(i) }
 
   /** Gets a method of this interface type. */
   MethodSpec getAMethod() { result = getMethod(_) }

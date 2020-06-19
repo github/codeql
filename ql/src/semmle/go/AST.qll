@@ -20,7 +20,7 @@ class AstNode extends @node, Locatable {
     result = this.(StmtParent).getChildStmt(i) or
     result = this.(DeclParent).getDecl(i) or
     result = this.(GenDecl).getSpec(i) or
-    fields(result, this, i)
+    result = this.(FieldParent).getField(i)
   }
 
   /**
@@ -144,6 +144,29 @@ class DeclParent extends @declparent, AstNode {
    * Gets the number of child declarations of this node.
    */
   int getNumDecl() { result = count(getADecl()) }
+}
+
+/**
+ * An AST node whose children include fields.
+ */
+class FieldParent extends @fieldparent, AstNode {
+  /**
+   * Gets the `i`th field of this node.
+   *
+   * Note that the precise indices of fields are considered an implementation detail
+   * and are subject to change without notice.
+   */
+  FieldBase getField(int i) { fields(result, this, i) }
+
+  /**
+   * Gets a child field of this node in the AST.
+   */
+  FieldBase getAField() { result = getField(_) }
+
+  /**
+   * Gets the number of child fields of this node.
+   */
+  int getNumFields() { result = count(getAField()) }
 }
 
 /**
