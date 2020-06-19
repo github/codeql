@@ -2,10 +2,10 @@ edges
 | ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username |
 | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data |
-| contenttype.go:63:11:63:29 | call to FormValue : string | contenttype.go:64:52:64:55 | data |
-| contenttype.go:73:11:73:29 | call to FormValue : string | contenttype.go:79:11:79:14 | data |
-| contenttype.go:88:11:88:29 | call to FormValue : string | contenttype.go:91:4:91:7 | data |
-| contenttype.go:113:11:113:29 | call to FormValue : string | contenttype.go:114:50:114:53 | data |
+| contenttype.go:63:10:63:28 | call to FormValue : string | contenttype.go:64:52:64:55 | data |
+| contenttype.go:73:10:73:28 | call to FormValue : string | contenttype.go:79:11:79:14 | data |
+| contenttype.go:88:10:88:28 | call to FormValue : string | contenttype.go:91:4:91:7 | data |
+| contenttype.go:113:10:113:28 | call to FormValue : string | contenttype.go:114:50:114:53 | data |
 | tst.go:14:15:14:20 | selection of Form : Values | tst.go:18:12:18:39 | type conversion |
 | tst.go:48:14:48:19 | selection of Form : Values | tst.go:53:12:53:26 | type conversion |
 | websocketXss.go:30:7:30:10 | definition of xnet : slice type | websocketXss.go:32:24:32:27 | xnet |
@@ -21,13 +21,13 @@ nodes
 | contenttype.go:17:11:17:22 | type conversion | semmle.label | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | semmle.label | selection of Form : Values |
 | contenttype.go:53:34:53:37 | data | semmle.label | data |
-| contenttype.go:63:11:63:29 | call to FormValue : string | semmle.label | call to FormValue : string |
+| contenttype.go:63:10:63:28 | call to FormValue : string | semmle.label | call to FormValue : string |
 | contenttype.go:64:52:64:55 | data | semmle.label | data |
-| contenttype.go:73:11:73:29 | call to FormValue : string | semmle.label | call to FormValue : string |
+| contenttype.go:73:10:73:28 | call to FormValue : string | semmle.label | call to FormValue : string |
 | contenttype.go:79:11:79:14 | data | semmle.label | data |
-| contenttype.go:88:11:88:29 | call to FormValue : string | semmle.label | call to FormValue : string |
+| contenttype.go:88:10:88:28 | call to FormValue : string | semmle.label | call to FormValue : string |
 | contenttype.go:91:4:91:7 | data | semmle.label | data |
-| contenttype.go:113:11:113:29 | call to FormValue : string | semmle.label | call to FormValue : string |
+| contenttype.go:113:10:113:28 | call to FormValue : string | semmle.label | call to FormValue : string |
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
 | tst.go:14:15:14:20 | selection of Form : Values | semmle.label | selection of Form : Values |
 | tst.go:18:12:18:39 | type conversion | semmle.label | type conversion |
@@ -49,10 +49,10 @@ nodes
 | ReflectedXss.go:14:44:14:51 | username | ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value |
 | contenttype.go:17:11:17:22 | type conversion | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion | Cross-site scripting vulnerability due to $@. | contenttype.go:11:11:11:16 | selection of Form | user-provided value |
 | contenttype.go:53:34:53:37 | data | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:49:11:49:16 | selection of Form | user-provided value |
-| contenttype.go:64:52:64:55 | data | contenttype.go:63:11:63:29 | call to FormValue : string | contenttype.go:64:52:64:55 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:63:11:63:29 | call to FormValue | user-provided value |
-| contenttype.go:79:11:79:14 | data | contenttype.go:73:11:73:29 | call to FormValue : string | contenttype.go:79:11:79:14 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:73:11:73:29 | call to FormValue | user-provided value |
-| contenttype.go:91:4:91:7 | data | contenttype.go:88:11:88:29 | call to FormValue : string | contenttype.go:91:4:91:7 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:88:11:88:29 | call to FormValue | user-provided value |
-| contenttype.go:114:50:114:53 | data | contenttype.go:113:11:113:29 | call to FormValue : string | contenttype.go:114:50:114:53 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:113:11:113:29 | call to FormValue | user-provided value |
+| contenttype.go:64:52:64:55 | data | contenttype.go:63:10:63:28 | call to FormValue : string | contenttype.go:64:52:64:55 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:63:10:63:28 | call to FormValue | user-provided value |
+| contenttype.go:79:11:79:14 | data | contenttype.go:73:10:73:28 | call to FormValue : string | contenttype.go:79:11:79:14 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:73:10:73:28 | call to FormValue | user-provided value |
+| contenttype.go:91:4:91:7 | data | contenttype.go:88:10:88:28 | call to FormValue : string | contenttype.go:91:4:91:7 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:88:10:88:28 | call to FormValue | user-provided value |
+| contenttype.go:114:50:114:53 | data | contenttype.go:113:10:113:28 | call to FormValue : string | contenttype.go:114:50:114:53 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:113:10:113:28 | call to FormValue | user-provided value |
 | tst.go:18:12:18:39 | type conversion | tst.go:14:15:14:20 | selection of Form : Values | tst.go:18:12:18:39 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:14:15:14:20 | selection of Form | user-provided value |
 | tst.go:53:12:53:26 | type conversion | tst.go:48:14:48:19 | selection of Form : Values | tst.go:53:12:53:26 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
 | websocketXss.go:32:24:32:27 | xnet | websocketXss.go:30:7:30:10 | definition of xnet : slice type | websocketXss.go:32:24:32:27 | xnet | Cross-site scripting vulnerability due to $@. | websocketXss.go:30:7:30:10 | definition of xnet | user-provided value |

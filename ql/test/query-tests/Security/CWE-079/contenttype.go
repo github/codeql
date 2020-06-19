@@ -60,7 +60,7 @@ func serve10() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data := r.FormValue("data")
+		data = r.FormValue("data")
 		fmt.Fprintf(w, "\t<html><body>%s</body></html>", data) // Not OK
 	})
 }
@@ -70,7 +70,7 @@ func serve11() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data := r.FormValue("data")
+		data = r.FormValue("data")
 		fmt.Fprintf(w, `
 <html>
   <body>
@@ -85,7 +85,7 @@ func serve12() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data := r.FormValue("data")
+		data = r.FormValue("data")
 		fmt.Fprintf(w, `
     %s
 `, data) // Not OK
@@ -97,7 +97,7 @@ func serve13() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data := r.FormValue("data")
+		data = r.FormValue("data")
 		fmt.Fprintf(w, `
 Echoed:
 %s
@@ -110,7 +110,7 @@ func serve14() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data := r.FormValue("data")
+		data = r.FormValue("data")
 		fmt.Fprintf(w, "<html><body>%s</body></html>", data) // Not OK
 	})
 }
