@@ -53,3 +53,10 @@
 + semmlecode-javascript-queries/Security/CWE-843/TypeConfusionThroughParameterTampering.ql: /Security/CWE/CWE-834
 + semmlecode-javascript-queries/Security/CWE-916/InsufficientPasswordHash.ql: /Security/CWE/CWE-916
 + semmlecode-javascript-queries/Security/CWE-918/RequestForgery.ql: /Security/CWE/CWE-918
++ semmlecode-javascript-queries/Security/CWE-094/ImproperCodeSanitization.ql: /Security/CWE/CWE-094
++ semmlecode-javascript-queries/Security/CWE-116/IncompleteMultiCharacterSanitization.ql: /Security/CWE/CWE-116
++ semmlecode-javascript-queries/Security/CWE-200/PrivateFileExposure.ql: /Security/CWE/CWE-200
++ semmlecode-javascript-queries/Security/CWE-295/DisablingCertificateValidation.ql: /Security/CWE/CWE-295
++ semmlecode-javascript-queries/Security/CWE-312/BuildArtifactLeak.ql: /Security/CWE/CWE-312
++ semmlecode-javascript-queries/Security/CWE-327/BadRandomness.ql: /Security/CWE/CWE-327
++ semmlecode-javascript-queries/Security/CWE-829/InsecureDownload.ql: /Security/CWE/CWE-829
