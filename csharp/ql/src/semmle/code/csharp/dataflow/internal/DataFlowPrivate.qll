@@ -1468,7 +1468,10 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
     sourceAp = AccessPath::empty() and
     result = this.getPredecessor(_).getTypeBound()
     or
-    result = sourceAp.getHead().getType()
+    exists(FieldOrProperty f |
+      sourceAp.getHead() = f.getContent() and
+      result = Gvn::getGlobalValueNumber(f.getType())
+    )
     or
     preservesValue = false and
     result = this.getSuccessor(_).getTypeBound()
