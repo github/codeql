@@ -7,9 +7,10 @@
 
 		<p>
 
-			Certificate validation is the standard authentication
-			method of a secure TLS connection. Without it, there is no guarantee
-			about who the other party of a TLS connection is.
+			Certificate validation is the standard authentication method of a
+			secure TLS connection. Without it, there is no guarantee about who the
+			other party of a TLS connection is, enabling man-in-the-middle
+			attacks.
 
 		</p>
 
@@ -61,8 +62,9 @@
 
 	<references>
 
-		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security
-		(TLS)</a></li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security (TLS)</a></li>
+
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a></li>
 
 		<li>Node.js: <a href="https://nodejs.org/api/tls.html">TLS (SSL)</a></li>
 
