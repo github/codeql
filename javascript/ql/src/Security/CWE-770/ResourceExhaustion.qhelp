@@ -22,7 +22,7 @@
 
 			Ensure that attackers can not control object sizes and their
 			lifetimes. If object sizes and lifetimes must be controlled by
-			external parties, ensure to restrict the object sizes and lifetimes to
+			external parties, ensure you restrict the object sizes and lifetimes so that
 			be within accptable ranges.
 
 		</p>
