@@ -22,7 +22,7 @@ Always verify the sender's identity of incoming messages.
 <sample src="examples/postMessageNoOriginCheck.js" />
 
 <p> In the second example, the `MessageEvent.origin` is verified with an unsecure check. For example, using `event.origin.indexOf('www.example.com') > -1` can be bypassed because the string `www.example.com` could appear anywhere in `event.origin` (i.e. `www.example.com.mydomain.com`)</p>
-<sample src="examples/postMessageWithInsufficientCheck.js" />
+<sample src="examples/postMessageInsufficientCheck.js" />
 
 <p> In the third example, the `MessageEvent.origin` is properly checked against a trusted origin. </p>
 <sample src="examples/postMessageWithOriginCheck.js" />
