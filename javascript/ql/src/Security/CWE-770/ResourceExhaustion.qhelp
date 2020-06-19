@@ -9,7 +9,7 @@
 
 			Applications are constrained by how many resources they can make use
 			of. Failing to respect these constraints may cause the application to
-			be unresponsive or crash. It is therefore be problematic if attackers
+			be unresponsive or crash. It is therefore problematic if attackers
 			can control the sizes or lifetimes of allocated objects.
 
 		</p>
