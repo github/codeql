@@ -188,6 +188,17 @@
 | stl.cpp:131:15:131:24 | call to user_input | stl.cpp:131:15:131:27 | call to basic_string | TAINT |
 | stl.cpp:131:15:131:27 | call to basic_string | stl.cpp:132:7:132:11 | path3 |  |
 | stl.cpp:132:7:132:11 | path3 | stl.cpp:132:13:132:17 | call to c_str | TAINT |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:140:17:140:18 | cs |  |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:142:7:142:8 | cs |  |
+| stl.cpp:140:17:140:18 | cs | stl.cpp:140:17:140:19 | call to basic_string | TAINT |
+| stl.cpp:140:17:140:19 | call to basic_string | stl.cpp:143:7:143:8 | ss |  |
+| stl.cpp:148:19:148:24 | call to source | stl.cpp:151:17:151:18 | cs |  |
+| stl.cpp:151:17:151:18 | cs | stl.cpp:151:17:151:19 | call to basic_string | TAINT |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:154:7:154:8 | ss |  |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:157:7:157:8 | ss |  |
+| stl.cpp:154:7:154:8 | ss | stl.cpp:154:10:154:14 | call to c_str | TAINT |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:154:2:154:16 | ... = ... |  |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:156:7:156:8 | cs |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |

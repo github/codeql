@@ -1,4 +1,6 @@
 
+#include "shared.h"
+
 typedef unsigned long size_t;
 
 namespace std
@@ -57,8 +59,7 @@ namespace std
 	using stringstream = basic_stringstream<char>;
 }
 
-char *source();
-void sink(const char *s) {};
+char *source() { return getenv("USERDATA"); }
 void sink(const std::string &s) {};
 void sink(const std::stringstream &s) {};
 
@@ -70,9 +71,9 @@ void test_string()
 
 	sink(a); // tainted
 	sink(b);
-	sink(c); // tainted
+	sink(c); // tainted [NOT DETECTED]
 	sink(b.c_str());
-	sink(c.c_str()); // tainted
+	sink(c.c_str()); // tainted [NOT DETECTED]
 }
 
 void test_stringstream()
@@ -122,14 +123,14 @@ void sink(const char *filename, const char *mode);
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // tainted
+	sink(path1.c_str(), "r"); // tainted [NOT DETECTED]
 
 	string path2;
 	path2 = user_input();
 	sink(path2.c_str(), "r"); // tainted
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // tainted
+	sink(path3.c_str(), "r"); // tainted [NOT DETECTED]
 }
 
 void test_string3()
@@ -140,7 +141,7 @@ void test_string3()
 	std::string ss(cs);
 
 	sink(cs); // tainted
-	sink(ss); // tainted
+	sink(ss); // tainted [NOT DETECTED]
 }
 
 void test_string4()
@@ -153,6 +154,6 @@ void test_string4()
 	// convert back std::string -> char *
 	cs = ss.c_str();
 
-	sink(cs); // tainted
-	sink(ss); // tainted
+	sink(cs); // tainted [NOT DETECTED]
+	sink(ss); // tainted [NOT DETECTED]
 }
