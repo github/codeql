@@ -187,11 +187,16 @@ class FileNode extends BaseAstNode {
   override string toString() { result = qlClass(ast) + ast.getRelativePath() }
 }
 
+/** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)
 }
 
+/**
+ * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the
+ * given `value`.
+ */
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   exists(int childIndex |
     source.shouldPrint() and
@@ -204,6 +209,7 @@ query predicate edges(PrintAstNode source, PrintAstNode target, string key, stri
   )
 }
 
+/** Holds if property `key` of the graph has the given `value`. */
 query predicate graphProperties(string key, string value) {
   key = "semmle.graphKind" and value = "tree"
 }
