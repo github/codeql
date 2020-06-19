@@ -2,7 +2,7 @@ import python
 import semmle.python.pointsto.PointsTo
 import semmle.python.objects.ObjectInternal
 
-predicate ssa_sanity(string clsname, string problem, string what) {
+predicate ssa_consistency(string clsname, string problem, string what) {
     /* Exactly one definition of each SSA variable */
     exists(EssaVariable var | clsname = var.getAQlClass() |
         /* Exactly one definition of each SSA variable */
@@ -130,7 +130,7 @@ predicate ssa_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate undefined_sanity(string clsname, string problem, string what) {
+predicate undefined_consistency(string clsname, string problem, string what) {
     /* Variables may be undefined, but values cannot be */
     exists(ControlFlowNode f |
         PointsToInternal::pointsTo(f, _, ObjectInternal::undefined(), _) and
@@ -142,5 +142,5 @@ predicate undefined_sanity(string clsname, string problem, string what) {
 }
 
 from string clsname, string problem, string what
-where ssa_sanity(clsname, problem, what) or undefined_sanity(clsname, problem, what)
+where ssa_consistency(clsname, problem, what) or undefined_consistency(clsname, problem, what)
 select clsname, what, problem
