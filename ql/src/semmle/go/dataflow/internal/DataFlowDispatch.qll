@@ -64,13 +64,35 @@ private FuncDecl getConcreteTarget(DataFlow::CallNode call) {
 }
 
 /**
+ * Holds if `call` is a method call whose receiver has an interface type.
+ */
+private predicate isInterfaceMethodCall(DataFlow::CallNode call) {
+  isInterfaceCallReceiver(call, _, _, _)
+}
+
+/**
+ * Gets a method that might be called by `call`, where we restrict the result to
+ * implement the interface type of the receiver of `call`.
+ */
+private MethodDecl getRestrictedInterfaceTarget(DataFlow::CallNode call) {
+  exists(InterfaceType tp, Type recvtp, string m |
+    isInterfaceCallReceiver(call, _, tp, m) and
+    result = recvtp.getMethod(m).(DeclaredFunction).getFuncDecl() and
+    recvtp.implements(tp)
+  )
+}
+
+/**
  * Gets a function that might be called by `call`.
  */
 DataFlowCallable viableCallable(CallExpr ma) {
   exists(DataFlow::CallNode call | call.asExpr() = ma |
     if isConcreteInterfaceCall(call, _, _)
     then result = getConcreteTarget(call)
-    else result = call.getACallee()
+    else
+      if isInterfaceMethodCall(call)
+      then result = getRestrictedInterfaceTarget(call)
+      else result = call.getACallee()
   )
 }
 
