@@ -4,7 +4,8 @@ void sink(...) {};
 
 class MyMovableClass {
 public:
-	MyMovableClass(int _v = 0) : v(_v) {} // Constructor
+	MyMovableClass() {} // Constructor
+	MyMovableClass(int _v) : v(_v) {} // ConversionConstructor
 	MyMovableClass(MyMovableClass &&other) noexcept { // ConversionConstructor, MoveConstructor
 		v = other.v;
 		other.v = 0;

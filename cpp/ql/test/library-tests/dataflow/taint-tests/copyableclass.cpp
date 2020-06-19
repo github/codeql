@@ -4,7 +4,8 @@ void sink(...) {};
 
 class MyCopyableClass {
 public:
-	MyCopyableClass(int _v = 0) : v(_v) {} // Constructor
+	MyCopyableClass() {} // Constructor
+	MyCopyableClass(int _v) : v(_v) {} // ConversionConstructor
 	MyCopyableClass(const MyCopyableClass &other) : v(other.v) {} // CopyConstructor
 	MyCopyableClass &operator=(const MyCopyableClass &other) { // CopyAssignmentOperator
 		v = other.v;

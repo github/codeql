@@ -4,7 +4,8 @@ void sink(...) {};
 
 class StructLikeClass {
 public:
-	StructLikeClass(int _v = 0) : v(_v) {} // Constructor
+	StructLikeClass() {} // Constructor
+	StructLikeClass(int _v) : v(_v) {} // ConversionConstructor
 
 	int v;
 };
