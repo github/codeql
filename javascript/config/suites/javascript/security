@@ -44,6 +44,7 @@
 + semmlecode-javascript-queries/Security/CWE-730/RegExpInjection.ql: /Security/CWE/CWE-730
 + semmlecode-javascript-queries/Security/CWE-754/UnvalidatedDynamicMethodCall.ql: /Security/CWE/CWE-754
 + semmlecode-javascript-queries/Security/CWE-770/MissingRateLimiting.ql: /Security/CWE/CWE-770
++ semmlecode-javascript-queries/Security/CWE-770/ResourceExhaustion.ql: /Security/CWE/CWE-770
 + semmlecode-javascript-queries/Security/CWE-776/XmlBomb.ql: /Security/CWE/CWE-776
 + semmlecode-javascript-queries/Security/CWE-798/HardcodedCredentials.ql: /Security/CWE/CWE-798
 + semmlecode-javascript-queries/Security/CWE-807/ConditionalBypass.ql: /Security/CWE/CWE-807
