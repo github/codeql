@@ -2,18 +2,20 @@ private import go
 private import DataFlowPrivate
 
 /**
- * Holds if `call` is an interface call to method `m`, meaning that its receiver `recv` has an
- * interface type.
+ * Holds if `call` is an interface call to method `m`, meaning that its receiver `recv` has
+ * interface type `tp`.
  */
-private predicate isInterfaceCallReceiver(DataFlow::CallNode call, DataFlow::Node recv, string m) {
+private predicate isInterfaceCallReceiver(
+  DataFlow::CallNode call, DataFlow::Node recv, InterfaceType tp, string m
+) {
   call.getReceiver() = recv and
-  recv.getType().getUnderlyingType() instanceof InterfaceType and
+  recv.getType().getUnderlyingType() = tp and
   m = call.getCalleeName()
 }
 
 /** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */
 private DataFlow::Node getInterfaceCallReceiverSource(DataFlow::CallNode call) {
-  isInterfaceCallReceiver(call, result.getASuccessor*(), _)
+  isInterfaceCallReceiver(call, result.getASuccessor*(), _, _)
 }
 
 /** Gets the type of `nd`, which must be a valid type and not an interface type. */
@@ -44,7 +46,7 @@ private predicate isConcreteValue(DataFlow::Node nd) {
  * types of `recv` can be established by local reasoning.
  */
 private predicate isConcreteInterfaceCall(DataFlow::Node call, DataFlow::Node recv, string m) {
-  isInterfaceCallReceiver(call, recv, m) and isConcreteValue(recv)
+  isInterfaceCallReceiver(call, recv, _, m) and isConcreteValue(recv)
 }
 
 /**
