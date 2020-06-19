@@ -128,8 +128,13 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result.getCall() = call and
-  result.getReturnKind() = kind
+  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
+  // this is true helps it make better decisions downstream, especially in virtual dispatch.
+  result =
+    unique(OutNode outNode |
+      outNode.getCall() = call and
+      outNode.getReturnKind() = kind
+    )
 }
 
 /**
