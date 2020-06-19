@@ -8,9 +8,13 @@ class CallGraphConfig extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     node instanceof DataFlow::ReturnNode
+    or
+    node instanceof DataFlow::ArgumentNode
   }
 
   override predicate isSink(DataFlow::Node node) {
     node instanceof DataFlow::OutNode
+    or
+    node instanceof DataFlow::ParameterNode
   }
 }
