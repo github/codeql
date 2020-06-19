@@ -163,7 +163,12 @@ public class A2
 
     public virtual void M(object o)
     {
-        Sink(o); // no flow here
+        Sink(o);
+    }
+
+    public static void CallM(A2 a2, object o)
+    {
+        a2.M(o);
     }
 
     public void Callsite(InterfaceB intF)
@@ -172,7 +177,10 @@ public class A2
         // in both possible implementations of foo, this callsite is relevant
         // in IntA, it improves virtual dispatch,
         // and in IntB, it improves the dataflow analysis.
-        intF.Foo(b, new object(), false);
+        intF.Foo(b, new object(), false); // no flow to `Sink()` via `A2.M()`, but flow via `IntA.Foo()`
+
+        CallM(b, new object()); // no flow to `Sink()`
+        CallM(this, new object());  // flow to `Sink()`
     }
 
     public class B : A2

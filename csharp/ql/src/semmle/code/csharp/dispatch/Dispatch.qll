@@ -265,12 +265,13 @@ private module Internal {
   private predicate hasQualifierTypeOverridden0(ValueOrRefType t, DispatchMethodOrAccessorCall call) {
     hasOverrider(_, t) and
     (
-      exists(Type t0 | t0 = getAPossibleType(call.getQualifier(), false) |
-        t = t0
+      exists(Type t0, Type t1 |
+        t0 = getAPossibleType(call.getQualifier(), false) and
+        t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
+      |
+        t = t1
         or
-        Unification::subsumes(t0, t)
-        or
-        t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+        Unification::subsumes(t1, t)
       )
       or
       constrainedTypeParameterQualifierTypeSubsumes(t,
@@ -325,7 +326,8 @@ private module Internal {
 
     /**
      * Holds if the call `ctx` might act as a context that improves the set of
-     * dispatch targets of this call, which occurs in a viable target of `ctx`.
+     * dispatch targets of this call, depending on the type of the `i`th argument
+     * of `ctx`.
      */
     pragma[nomagic]
     private predicate relevantContext(DispatchCall ctx, int i) {
@@ -333,7 +335,8 @@ private module Internal {
     }
 
     /**
-     * Holds if the `i`th argument of `ctx` has type `t` and `ctx` is a relevant
+     * Holds if the argument of `ctx`, which is passed for the parameter that is
+     * accessed in the qualifier of this call, has type `t` and `ctx` is a relevant
      * call context.
      */
     private predicate contextArgHasType(DispatchCall ctx, Type t, boolean isExact) {
@@ -377,25 +380,29 @@ private module Internal {
      * Example:
      *
      * ```csharp
-     * class A {
-     *   public virtual void M() { }
+     * class A
+     * {
+     *     public virtual void M() { }
      * }
      *
-     * class B : A {
-     *   public override void M() { }
+     * class B : A
+     * {
+     *     public override void M() { }
      * }
      *
      * class C : B { }
      *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.M();
-     *     x = new B();
-     *     x.M();
-     *     x = new C();
-     *     x.M();
-     *   }
+     * class D
+     * {
+     *     void CallM()
+     *     {
+     *         A x = new A();
+     *         x.M();
+     *         x = new B();
+     *         x.M();
+     *         x = new C();
+     *         x.M();
+     *     }
      * }
      * ```
      *
@@ -421,27 +428,32 @@ private module Internal {
      * Example:
      *
      * ```csharp
-     * class A {
-     *   public virtual void M() { }
+     * class A
+     * {
+     *     public virtual void M() { }
      * }
      *
-     * class B : A {
-     *   public override void M() { }
+     * class B : A
+     * {
+     *     public override void M() { }
      * }
      *
-     * class C : B {
-     *   public override void M() { }
+     * class C : B
+     * {
+     *     public override void M() { }
      * }
      *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.M();
-     *     x = new B();
-     *     x.M();
-     *     x = new C();
-     *     x.M();
-     *   }
+     * class D
+     * {
+     *     void CallM()
+     *     {
+     *         A x = new A();
+     *         x.M();
+     *         x = new B();
+     *         x.M();
+     *         x = new C();
+     *         x.M();
+     *     }
      * }
      * ```
      *
@@ -507,12 +519,13 @@ private module Internal {
     ) {
       exists(ValueOrRefType t |
         result = this.getAViableOverriderInCallContext0(c, t) and
-        exists(Type t0 | this.contextArgHasType(ctx, t0, false) |
-          t = t0
+        exists(Type t0, Type t1 |
+          this.contextArgHasType(ctx, t0, false) and
+          t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
+        |
+          t = t1
           or
-          Unification::subsumes(t0, t)
-          or
-          t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+          Unification::subsumes(t1, t)
         )
       )
     }
@@ -764,22 +777,25 @@ private module Internal {
      * For reflection/dynamic calls, unless the type of the qualifier is exact,
      * all subtypes of the qualifier type must be considered relevant. Example:
      *
-     * ```
-     * class A {
-     *   public void M() { Console.WriteLine("A"); }
+     * ```csharp
+     * class A
+     * {
+     *     public void M() { Console.WriteLine("A"); }
      * }
      *
-     * class B : A {
-     *   new public void M() { Console.WriteLine("B"); }
+     * class B : A
+     * {
+     *     new public void M() { Console.WriteLine("B"); }
      * }
      *
-     * class C {
-     *   void InvokeMDyn(A x) { ((dynamic) x).M(); }
+     * class C
+     * {
+     *     void InvokeMDyn(A x) { ((dynamic) x).M(); }
      *
-     *   void CallM() {
-     *     InvokeMDyn(new A()); // prints "A"
-     *     InvokeMDyn(new B()); // prints "B"
-     *   }
+     *     void CallM() {
+     *         InvokeMDyn(new A()); // prints "A"
+     *         InvokeMDyn(new B()); // prints "B"
+     *     }
      * }
      * ```
      *
