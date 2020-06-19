@@ -1,5 +1,5 @@
 /**
- * @name Creating biased random numbers from cryptographically secure source.
+ * @name Creating biased random numbers from a cryptographically secure source.
  * @description Some mathematical operations on random numbers can cause bias in
  *              the results and compromise security.
  * @kind problem
@@ -133,6 +133,18 @@ DataFlow::Node goodRandom(DataFlow::SourceNode source) {
 }
 
 /**
+ * Gets a node that is passed to a rounding function from `Math`, using type-backtracker `t`.
+ */
+DataFlow::Node isRounded(DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = DataFlow::globalVarRef("Math").getAMemberCall(["round", "floor", "ceil"]).getArgument(0)
+  or
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isRounded(t2)))
+  or
+  InsecureRandomness::isAdditionalTaintStep(result, isRounded(t.continue()))
+}
+
+/**
  * Gets a node that that produces a biased result from otherwise cryptographically secure random numbers produced by `source`.
  */
 DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
@@ -153,10 +165,7 @@ DataFlow::Node badCrypto(string description, DataFlow::SourceNode source) {
     goodRandom(source).asExpr() = div.getLeftOperand() and
     description = "division and rounding the result" and
     not div.getRightOperand() = isPowerOfTwoMinusOne().asExpr() and // division by (2^n)-1 most of the time produces a uniformly random number between 0 and 1.
-    DataFlow::globalVarRef("Math")
-        .getAMemberCall(["round", "floor", "ceil"])
-        .getArgument(0)
-        .asExpr() = div
+    div = isRounded(DataFlow::TypeBackTracker::end()).asExpr()
   )
   or
   // modulo - only bad if not by a power of 2 - and the result is not checked for bias
