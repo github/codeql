@@ -122,11 +122,19 @@ class ReturnKind extends TReturnKind {
 
 /** A data flow node that represents a value returned by a callable. */
 class ReturnNode extends Node {
+  Return ret;
+
   // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnNode() { this.asCfgNode() = any(Return r).getValue().getAFlowNode() }
+  ReturnNode() {
+    this.asCfgNode() = ret.getValue().getAFlowNode()
+  }
 
   /** Gets the kind of this return node. */
   ReturnKind getKind() { result = TNormalReturnKind() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.getScope().getAStmt() = ret // TODO: check nested function definitions
+  }
 }
 
 /** A data flow node that represents the output of a call. */

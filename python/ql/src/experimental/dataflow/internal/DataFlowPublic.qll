@@ -48,7 +48,7 @@ class Node extends TNode {
   }
 
   /** Gets the enclosing callable of this node. */
-  final DataFlowCallable getEnclosingCallable() {
+  DataFlowCallable getEnclosingCallable() {
     none()
   }
 
@@ -99,12 +99,16 @@ class ParameterNode extends Node {
     this.asEssaNode() instanceof ParameterDefinition
   }
 
-    /**
+  /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
   predicate isParameterOf(DataFlowCallable c, int i) {
     this.asEssaNode().(ParameterDefinition).getDefiningNode() = c.getParameter(i)
+  }
+
+  override DataFlowCallable getEnclosingCallable() {
+    this.isParameterOf(result, _)
   }
 }
 
