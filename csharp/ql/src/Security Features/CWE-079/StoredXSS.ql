@@ -14,15 +14,14 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.security.dataflow.XSS::XSS
-import semmle.code.csharp.dataflow.DataFlow2
-import DataFlow2::PathGraph
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
-  override predicate isSource(DataFlow2::Node source) { source instanceof StoredFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof StoredFlowSource }
 }
 
 from
-  StoredTaintTrackingConfiguration c, DataFlow2::PathNode source, DataFlow2::PathNode sink,
+  StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink,
   string explanation
 where
   c.hasFlowPath(source, sink) and
