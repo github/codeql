@@ -47,4 +47,3 @@
 *.jpeg -text
 *.gif -text
 *.dll -text
-*.pdb -text
