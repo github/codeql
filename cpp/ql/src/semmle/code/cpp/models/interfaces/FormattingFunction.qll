@@ -1,6 +1,6 @@
 /**
  * Provides a class for modeling `printf`-style formatting functions. To use
- * this QL library, create a QL class extending `DataFlowFunction` with a
+ * this QL library, create a QL class extending `FormattingFunction` with a
  * characteristic predicate that selects the function or set of functions you
  * are modeling. Within that class, override the predicates provided by
  * `FormattingFunction` to match the flow within that function.

@@ -129,15 +129,6 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   )
 }
 
-/**
- * Gets an upper bound on the type of `f`.
- */
-private Type getFieldTypeBound(Field f) {
-  fieldTypeFlow(f, result, _)
-  or
-  not fieldTypeFlow(f, _, _) and result = f.getType()
-}
-
 private newtype TContent =
   TFieldContent(InstanceField f) or
   TCollectionContent() or
@@ -154,12 +145,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the erased type of the object containing this content. */
-  abstract DataFlowType getContainerType();
-
-  /** Gets the erased type of this content. */
-  abstract DataFlowType getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -174,26 +159,14 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override DataFlowType getContainerType() { result = getErasedRepr(f.getDeclaringType()) }
-
-  override DataFlowType getType() { result = getErasedRepr(getFieldTypeBound(f)) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 /**

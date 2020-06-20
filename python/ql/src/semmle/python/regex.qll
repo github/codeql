@@ -28,7 +28,8 @@ predicate used_as_regex(Expr s, string mode) {
     /* Call to re.xxx(regex, ... [mode]) */
     exists(CallNode call, string name |
         call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
-        call.getFunction().pointsTo(Module::named("re").attr(name))
+        call.getFunction().pointsTo(Module::named("re").attr(name)) and
+        not name = "escape"
     |
         mode = "None"
         or
