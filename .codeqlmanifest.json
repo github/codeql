@@ -2,4 +2,5 @@
                "*/ql/test/qlpack.yml",
                "*/upgrades/qlpack.yml",
                "misc/legacy-support/*/qlpack.yml",
-               "misc/suite-helpers/qlpack.yml" ] }
+               "misc/suite-helpers/qlpack.yml",
+               "codeql/.codeqlmanifest.json" ] }
