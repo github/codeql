@@ -15,6 +15,9 @@ module XpathInjection {
   /** Returns a class value which refers to `lxml.etree` */
   Value etree() { result = Value::named("lxml.etree") }
 
+  /** Returns a class value which refers to `lxml.etree` */
+  Value libxml2parseFile() { result = Value::named("libxml2.parseFile") }
+
   /** A generic taint sink that is vulnerable to Xpath injection. */
   abstract class XpathInjectionSink extends TaintSink { }
 
@@ -75,6 +78,32 @@ module XpathInjection {
         parseCall.getFunction().(AttrNode).getObject("parse").pointsTo(etree()) and
         assign.getValue().(Call).getAFlowNode() = parseCall and
         xpathCall.getFunction().(AttrNode).getObject("xpath") = obj and
+        var.getAUse() = obj and
+        assign.getATarget() = var.getAStore() and
+        xpathCall.getArg(0) = this
+      )
+    }
+
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  }
+
+  /**
+   * A Sink representing an argument to the `xpathEval` call to a parsed libxml2 document.
+   *
+   *    import libxml2
+   *    tree = libxml2.parseFile("file.xml")
+   *    r = tree.xpathEval('`sink`')
+   */
+  private class ParseFileXpathEvalArgument extends XpathInjectionSink {
+    override string toString() { result = "libxml2.parseFile.xpathEval" }
+
+    ParseFileXpathEvalArgument() {
+      exists(
+        CallNode parseCall, CallNode xpathCall, ControlFlowNode obj, Variable var, AssignStmt assign
+      |
+        parseCall.getFunction().(AttrNode).pointsTo(libxml2parseFile()) and
+        assign.getValue().(Call).getAFlowNode() = parseCall and
+        xpathCall.getFunction().(AttrNode).getObject("xpathEval") = obj and
         var.getAUse() = obj and
         assign.getATarget() = var.getAStore() and
         xpathCall.getArg(0) = this

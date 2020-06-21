@@ -26,8 +26,15 @@ def d():
     text = find_text(root)[0]
 
 
+def e():
+    import libxml2
+    doc = libxml2.parseFile('xpath_injection/credential.xml')
+    results = doc.xpathEval('sink')
+
+
 if __name__ == "__main__":
     a()
     b()
     c()
     d()
+    e()
