@@ -19,6 +19,14 @@
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | Foo | * Foo |
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | flag | bool |
 | T4 | pkg1/tst.go:19:9:22:1 | struct type | val | int |
+| a | depth.go:5:8:8:1 | struct type | b | b |
+| a | depth.go:5:8:8:1 | struct type | c | c |
+| a | depth.go:5:8:8:1 | struct type | d | d |
+| a | depth.go:5:8:8:1 | struct type | f | int |
+| b | depth.go:10:8:12:1 | struct type | f | int |
+| c | depth.go:14:8:16:1 | struct type | d | d |
+| c | depth.go:14:8:16:1 | struct type | f | string |
+| d | depth.go:18:8:20:1 | struct type | f | string |
 | embedder | pkg1/embedding.go:19:15:19:28 | struct type | base | base |
 | embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
 | embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
@@ -31,3 +39,10 @@
 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
 | ptrembedder | pkg1/embedding.go:22:18:22:32 | struct type | base | * base |
+| s | cyclic.go:3:8:5:1 | struct type | s | * s |
+| t | cyclic.go:7:8:10:1 | struct type | f | int |
+| t | cyclic.go:7:8:10:1 | struct type | t | t |
+| t | cyclic.go:7:8:10:1 | struct type | u | * u |
+| u | cyclic.go:12:8:14:1 | struct type | f | int |
+| u | cyclic.go:12:8:14:1 | struct type | t | t |
+| u | cyclic.go:12:8:14:1 | struct type | u | * u |

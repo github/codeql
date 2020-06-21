@@ -389,6 +389,7 @@ class StructType extends @structtype, CompositeType {
   ) {
     hasOwnField(_, name, tp, isEmbedded) and depth = 0 and isMethod = false
     or
+    not hasOwnField(_, name, _, _) and
     exists(Type embedded | hasEmbeddedField(embedded, depth - 1) |
       embedded.getUnderlyingType().(StructType).hasOwnField(_, name, tp, isEmbedded) and
       isMethod = false
