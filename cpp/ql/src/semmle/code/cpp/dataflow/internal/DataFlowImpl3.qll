@@ -1051,6 +1051,13 @@ private predicate flowIntoCallNodeCand2(
 }
 
 private module LocalFlowBigStep {
+  private class BigStepBarrierNode extends Node {
+    BigStepBarrierNode() {
+      this instanceof CastNode or
+      clearsContent(this, _)
+    }
+  }
+
   /**
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
@@ -1065,7 +1072,7 @@ private module LocalFlowBigStep {
       node instanceof OutNodeExt or
       store(_, _, node, _) or
       read(_, _, node) or
-      node instanceof CastNode
+      node instanceof BigStepBarrierNode
     )
   }
 
@@ -1083,7 +1090,7 @@ private module LocalFlowBigStep {
       read(node, _, next)
     )
     or
-    node instanceof CastNode
+    node instanceof BigStepBarrierNode
     or
     config.isSink(node)
   }
@@ -1127,14 +1134,14 @@ private module LocalFlowBigStep {
       exists(Node mid |
         localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
-        not mid instanceof CastNode and
+        not mid instanceof BigStepBarrierNode and
         nodeCand2(node2, unbind(config))
       )
       or
       exists(Node mid |
         localFlowStepPlus(node1, mid, _, _, config, cc) and
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
-        not mid instanceof CastNode and
+        not mid instanceof BigStepBarrierNode and
         preservesValue = false and
         t = getErasedNodeTypeBound(node2) and
         nodeCand2(node2, unbind(config))
@@ -1208,7 +1215,8 @@ private predicate flowCandFwd0(
   or
   exists(Node mid |
     flowCandFwd(mid, fromArg, argApf, apf, config) and
-    localFlowBigStep(mid, node, true, _, config, _)
+    localFlowBigStep(mid, node, true, _, config, _) and
+    not apf.isClearedAt(node)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
@@ -1221,7 +1229,8 @@ private predicate flowCandFwd0(
     nodeCand2(node, unbind(config)) and
     jumpStep(mid, node, config) and
     fromArg = false and
-    argApf = TAccessPathFrontNone()
+    argApf = TAccessPathFrontNone() and
+    not apf.isClearedAt(node)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
@@ -1246,7 +1255,8 @@ private predicate flowCandFwd0(
   exists(TypedContent tc |
     flowCandFwdRead(tc, node, fromArg, argApf, config) and
     flowCandFwdConsCand(tc, apf, config) and
-    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
+    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config)) and
+    not apf.isClearedAt(node)
   )
   or
   // flow into a callable
@@ -1302,7 +1312,8 @@ private predicate flowCandFwdIn(
 ) {
   exists(ArgumentNode arg, boolean allowsFieldFlow |
     flowCandFwd(arg, fromArg, argApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
+    not apf.isClearedAt(p)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1315,7 +1326,8 @@ private predicate flowCandFwdOut(
 ) {
   exists(ReturnNodeExt ret, boolean allowsFieldFlow |
     flowCandFwd(ret, fromArg, argApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
+    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
+    not apf.isClearedAt(node)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
