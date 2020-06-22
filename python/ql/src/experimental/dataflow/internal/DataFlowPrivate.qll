@@ -96,8 +96,13 @@ class DataFlowCall extends CallNode {
     this = callable.getACall()
   }
 
+  /** Get the callable to which this call goes. */
+  DataFlowCallable getCallable() { result = callable }
+
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() { result = callable }
+  DataFlowCallable getEnclosingCallable() {
+    result.getScope() = this.getNode().getScope()
+  }
 }
 
 /** A data flow node that represents a call argument. */
@@ -119,7 +124,7 @@ class ArgumentNode extends Node {
 
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) {
-  result = call.getEnclosingCallable()
+  result = call.getCallable()
 }
 
 private newtype TReturnKind = TNormalReturnKind()

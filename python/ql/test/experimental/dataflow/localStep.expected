@@ -8,7 +8,6 @@
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:0:0:0:0 | Exit node for Module test |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
-| test.py:1:19:1:19 | ControlFlowNode for x | test.py:1:19:1:19 | SSA variable x |
 | test.py:1:19:1:19 | SSA variable x | test.py:1:1:1:21 | Exit node for Function obfuscated_id |
 | test.py:1:19:1:19 | SSA variable x | test.py:2:7:2:7 | ControlFlowNode for x |
 | test.py:2:3:2:3 | SSA variable y | test.py:1:1:1:21 | Exit node for Function obfuscated_id |
