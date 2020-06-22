@@ -54,7 +54,7 @@
 
 			To make the connection secure, the
 			<code>rejectUnauthorized</code> option should have its default value,
-			or be set explicitly to <code>true</code>.
+			or be explicitly set to <code>true</code>.
 
 		</p>
 
