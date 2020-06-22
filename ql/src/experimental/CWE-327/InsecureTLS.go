@@ -24,7 +24,7 @@ func insecureMinMaxTlsVersion() {
 func insecureCipherSuites() {
 	config := &tls.Config{
 		CipherSuites: []uint16{
-			tls.TLS_RSA_WITH_RC4_128_SHA, // BAD: TLS_RSA_WITH_RC4_128_SHA is one of the non-secure chiper suites; it's not safe to be used.
+			tls.TLS_RSA_WITH_RC4_128_SHA, // BAD: TLS_RSA_WITH_RC4_128_SHA is one of the non-secure cipher suites; it's not safe to be used.
 		},
 	}
 	_ = config
