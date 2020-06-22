@@ -882,6 +882,9 @@ class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
   /** Gets the assign statement of this type-switch statement. */
   SimpleAssignStmt getAssign() { result = getChildStmt(1) }
 
+  /** Gets the test statement of this type-switch statement. This is a `SimpleAssignStmt` or `ExprStmt`. */
+  Stmt getTest() { result = getChildStmt(1) }
+
   /** Gets the expression whose type is examined by this `switch` statement. */
   Expr getExpr() { result = getAssign().getRhs() or result = getChildStmt(1).(ExprStmt).getExpr() }
 
