@@ -9,7 +9,7 @@ private class DjangoResponseKind extends TaintKind {
     DjangoResponseKind() { this = "django.response.HttpResponse" }
 }
 
-/** INTENRAL taint-source used for tracking a django response. */
+/** INTERNAL taint-source used for tracking a django response object. */
 private class DjangoResponseSource extends TaintSource {
     DjangoResponseSource() {
         exists(DjangoContentResponseClass cls |

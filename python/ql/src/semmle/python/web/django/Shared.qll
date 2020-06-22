@@ -34,7 +34,7 @@ class DjangoContentResponseClass extends ClassValue {
         this.getASuperType() = base
     }
 
-    // The reason these two method are defined in this class (and not in the Sink
+    // The reason these two methods are defined in this class (and not in the Sink
     // definition that uses this class), is that if we were to add support for
     // `django.http.response.HttpResponseNotAllowed` it would make much more sense to add
     // the custom logic in this class (or subclass), than to handle all of it in the sink
@@ -47,7 +47,7 @@ class DjangoContentResponseClass extends ClassValue {
     ControlFlowNode getContentTypeArg(CallNode call) { none() }
 }
 
-/** A Class that is a Django Response, and is vulnerable to XSS. */
+/** A class that is a Django Response, and is vulnerable to XSS. */
 class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass{
     DjangoXSSVulnerableResponseClass() {
         // We want to avoid FPs on subclasses that are not exposed to XSS, for example `JsonResponse`.
