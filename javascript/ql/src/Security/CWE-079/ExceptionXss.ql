@@ -1,6 +1,6 @@
 /**
  * @name Exception text reinterpreted as HTML
- * @description Reinterpreting text from the an exception as HTML
+ * @description Reinterpreting text from an exception as HTML
  *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
