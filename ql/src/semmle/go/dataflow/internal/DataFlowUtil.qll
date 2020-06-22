@@ -64,6 +64,21 @@ class Node extends TNode {
     endcolumn = 0
   }
 
+  /** Gets the file in which this node appears. */
+  File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+
+  /** Gets the start line of the location of this node. */
+  int getStartLine() { hasLocationInfo(_, result, _, _, _) }
+
+  /** Gets the start column of the location of this node. */
+  int getStartColumn() { hasLocationInfo(_, _, result, _, _) }
+
+  /** Gets the end line of the location of this node. */
+  int getEndLine() { hasLocationInfo(_, _, _, result, _) }
+
+  /** Gets the end column of the location of this node. */
+  int getEndColumn() { hasLocationInfo(_, _, _, _, result) }
+
   /**
    * Gets an upper bound on the type of this node.
    */
