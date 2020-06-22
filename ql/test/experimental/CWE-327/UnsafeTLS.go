@@ -4,9 +4,7 @@ import (
 	"crypto/tls"
 )
 
-func main() {
-
-}
+func main() {}
 
 func minMaxTlsVersion() {
 	{
@@ -79,6 +77,19 @@ func minMaxTlsVersion() {
 	{
 		config := &tls.Config{
 			MaxVersion: tls.VersionTLS13, // GOOD
+		}
+		_ = config
+	}
+	///
+	{
+		config := &tls.Config{
+			MinVersion: 0x0300, // BAD
+		}
+		_ = config
+	}
+	{
+		config := &tls.Config{
+			MaxVersion: 0x0301, // BAD
 		}
 		_ = config
 	}

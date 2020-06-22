@@ -37,6 +37,28 @@ string getSourceValueEntityName(DataFlow::PathNode source) {
     any(DataFlow::ValueEntity val | source.getNode().(DataFlow::ReadNode).reads(val)).getName()
 }
 
+predicate isUnsafeTlsVersionInt(int val) {
+  // tls.VersionSSL30
+  val = 768
+  or
+  // tls.VersionTLS10
+  val = 769
+  or
+  // tls.VersionTLS11
+  val = 770
+}
+
+string tlsVersionIntToString(int val) {
+  // tls.VersionSSL30
+  val = 768 and result = "VersionSSL30"
+  or
+  // tls.VersionTLS10
+  val = 769 and result = "VersionTLS10"
+  or
+  // tls.VersionTLS11
+  val = 770 and result = "VersionTLS11"
+}
+
 /**
  * Flow of unsecure TLS versions into a `tls.Config` struct,
  * to the `MinVersion` and `MaxVersion` fields.
@@ -45,11 +67,10 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() = any(DataFlow::ValueExpr val | val.getIntValue() = [0]) or
-    source =
-      any(DataFlow::ValueEntity val |
-        val.hasQualifiedName("crypto/tls", ["VersionSSL30", "VersionTLS10", "VersionTLS11"])
-      ).getARead()
+    source.asExpr() =
+      any(DataFlow::ValueExpr val |
+        val.getIntValue() = 0 or isUnsafeTlsVersionInt(val.getIntValue())
+      )
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -89,7 +110,10 @@ predicate checkTlsVersions(DataFlow::PathNode source, DataFlow::PathNode sink, s
   |
     message =
       "TLS version too low for " + getSinkTargetFieldName(sink) + ": " +
-        getSourceValueEntityName(source)
+        tlsVersionIntToString(any(DataFlow::ValueExpr val |
+            val = sink.getNode().asExpr() and
+            val.getIntValue() != 0
+          ).getIntValue())
     or
     message = "Using lowest TLS version for " + getSinkTargetFieldName(sink) and
     exists(DataFlow::ValueExpr v0 |
