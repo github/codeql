@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision high
- * @id js/jwt-missing-secret-or-public-key-verification
+ * @id js/jwt-missing-verification
  * @tags security
  *       external/cwe/cwe-347
  */
@@ -15,5 +15,5 @@ import DataFlow
 from CallNode call
 where
   call = moduleMember("jsonwebtoken", "verify").getACall() and
-  call.getArgument(1).analyze().getABooleanValue() = false
+  unique(boolean b | b = call.getArgument(1).analyze().getABooleanValue()) = false
 select call
