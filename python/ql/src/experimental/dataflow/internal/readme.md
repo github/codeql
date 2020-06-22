@@ -2,9 +2,9 @@
 
 ## File organisation
 
-The files currently live in `semmle/code/python` (whereas the exisitng implementation lives in `semmle/python/dataflow`).
+The files currently live in `experimental` (whereas the existing implementation lives in `semmle\python\dataflow`).
 
-In there is found `DataFlow.qll`, `DataFlow2.qll` etc. which refer to `internal\DataFlowImpl`, `internal\DataFlowImpl2` etc. respectively. The `DataFlowImplN`-files are all identical copies to avoid mutual recursion. They start off by including two files `internal\DataFlowImplCommon` and `internal\DataFlowImplSpecific`. The former contains all the language-agnostic definitions, while the latter is where we describe our favorite language. `Sepcific` simply forwards to two other files `internal/DataFlowPrivate.qll` and `internal/DataFlowPublic.qll`. Definitions in the former will be hidden behind a `private` modifier, while those in the latter can be referred to in data flow queries. For instance, the definition of `DataFlow::Node` should likely be in `DataFlowPublic.qll`.
+In there is found `DataFlow.qll`, `DataFlow2.qll` etc. which refer to `internal\DataFlowImpl`, `internal\DataFlowImpl2` etc. respectively. The `DataFlowImplN`-files are all identical copies to avoid mutual recursion. They start off by including two files `internal\DataFlowImplCommon` and `internal\DataFlowImplSpecific`. The former contains all the language-agnostic definitions, while the latter is where we describe our favorite language. `Sepcific` simply forwards to two other files `internal\DataFlowPrivate.qll` and `internal\DataFlowPublic.qll`. Definitions in the former will be hidden behind a `private` modifier, while those in the latter can be referred to in data flow queries. For instance, the definition of `DataFlow::Node` should likely be in `DataFlowPublic.qll`.
 
 ## Define the dataflow graph
 
@@ -31,9 +31,13 @@ The edges split into local flow (within a function) and global flow (the call gr
 
 Extra flow, such as reading from and writing to global variables, can be captured in `jumpStep`.
 The local flow should be obtainalble from an SSA computation.
+Local flow nodes are generally either control flow nodes or SSA variables.
+Flow from control flow nodes to SSA variables comes from SSA variable definitions, while flow from SSA variables to control flow nodes comes from def-use pairs.
 
 The global flow should be obtainable from a `PointsTo` analysis. It is specified via `viableCallable` and
 `getAnOutNode`. Consider making `ReturnKind` a singleton IPA type as in java.
+
+Global flow includes local flow within a consistent call context. Thus, for local flow to count as global flow, all relevant node should implement `getEnclosingCallable`.
 
 If complicated dispatch needs to be modelled, try using the `[reduced|pruned]viable*` predicates.
 
@@ -52,6 +56,7 @@ Work is being done to make field flow handle lists and dictionaries and the like
 If type information is available, flows can be discarded on the grounds of type mismatch.
 
 Tracked types are given by the class `DataFlowType` and the predicate `getTypeBound`, and compatibility is recorded in the predicate `compatibleTypes`.
+If type pruning is not used, `compatibleTypes` should be implemented as `any`; if it is implemented, say, as `none`, all flows will be pruned.
 
 Further, possible casts are given by the class `CastNode`.
 
