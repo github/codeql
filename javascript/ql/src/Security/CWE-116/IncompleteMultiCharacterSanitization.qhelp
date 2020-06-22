@@ -3,22 +3,6 @@
 "qhelp.dtd">
 <qhelp>
 
-	<overview>
-
-	</overview>
-
-	<recommendation>
-
-	</recommendation>
-
-	<example>
-
-	</example>
-
-	<references>
-
-		<li>OWASP Top 10: <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1 Injection</a>.</li>
-
-	</references>
+	<include src="IncompleteSanitization.qhelp" />
 
 </qhelp>
