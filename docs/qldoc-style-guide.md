@@ -45,11 +45,11 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 1. Use a third-person verb phrase of the form ``Holds if `arg` has <property>.``.
 1. Avoid:
-   - `/**Whether ...*/`
-   - `/**"Relates ...*/`
+   - `/** Whether ... */`
+   - `/**" Relates ... */`
    - Question forms:
-     - ``/**Is `x` a foo?*/``
-     - ``/**Does `x` have a bar?*/``
+     - ``/** Is `x` a foo? */``
+     - ``/** Does `x` have a bar? */``
 
 #### Example
 
@@ -64,7 +64,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 ### Predicates with result
 
 1. Use a third-person verb phrase of the form `Gets (a|the) <thing>`.
-1. Use "if any" if the item is usually unique, but might be missing. For example
+1. Use "if any" if the item is usually unique but might be missing. For example
 `Gets the body of this method, if any.`.
 1. If the predicate has more complex behaviour, for example multiple arguments are conceptually "outputs", it can be described like a predicate without a result. For example
 ``Holds if `result` is a child of this expression.``.
@@ -113,7 +113,7 @@ Certain special predicates should be documented consistently.
 - Always document `toString` as 
   
   ```ql
-  /**Gets a textual representation of this element.*/
+  /** Gets a textual representation of this element. */
   string toString() { ... } 
   ```
 
