@@ -16,16 +16,16 @@ public class I
         i.Field2 = o;
         i.Field2 = null;
         Sink(i.Field1); // flow
-        Sink(i.Field2); // no flow [FALSE POSITIVE]
+        Sink(i.Field2); // no flow
 
         i = new I();
         i.Field2 = null;
         Sink(i.Field1); // flow
-        Sink(i.Field2); // no flow [FALSE POSITIVE]
+        Sink(i.Field2); // no flow
 
         i = new I() { Field2 = null };
         Sink(i.Field1); // flow
-        Sink(i.Field2); // no flow [FALSE POSITIVE]
+        Sink(i.Field2); // no flow
 
         i = new I();
         o = new object();
@@ -38,7 +38,7 @@ public class I
     {
         i.Field2 = null;
         Sink(i.Field1); // flow
-        Sink(i.Field2); // no flow [FALSE POSITIVE]
+        Sink(i.Field2); // no flow
 
     }
 

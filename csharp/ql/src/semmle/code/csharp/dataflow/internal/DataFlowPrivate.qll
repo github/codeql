@@ -548,6 +548,20 @@ private module Cached {
   }
 
   /**
+   * Holds if values stored inside content `c` are cleared at node `n`. For example,
+   * any value stored inside `f` is cleared at the pre-update node associated with `x`
+   * in `x.f = newValue`.
+   */
+  cached
+  predicate clearsContent(Node n, Content c) {
+    fieldOrPropertyAssign(_, c, _, n.asExpr())
+    or
+    fieldOrPropertyInit(n.asExpr(), c, _)
+    or
+    exists(n.(LibraryCodeNode).getSuccessor(any(AccessPath ap | ap.getHead() = c)))
+  }
+
+  /**
    * Holds if the node `n` is unreachable when the call context is `call`.
    */
   cached
