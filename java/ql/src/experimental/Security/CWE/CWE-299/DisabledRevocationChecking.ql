@@ -1,7 +1,7 @@
 /**
  * @name Disabled ceritificate revocation checking
  * @description Using revoked certificates is dangerous.
- *              Therefore, revocation status of ceritifcates in a chain should be checked.
+ *              Therefore, revocation status of certificates in a chain should be checked.
  * @kind path-problem
  * @problem.severity error
  * @precision high

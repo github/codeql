@@ -47,13 +47,23 @@ public class DisabledRevocationChecking {
     validator.validate(certPath, params);
   }
 
-  public void testSettingRevocationCheckerWithList(KeyStore cacerts, CertPath certPath) throws Exception {
+  public void testSettingRevocationCheckerWithAddingToArrayList(KeyStore cacerts, CertPath certPath) throws Exception {
     CertPathValidator validator = CertPathValidator.getInstance("PKIX");
     PKIXParameters params = new PKIXParameters(cacerts);
     params.setRevocationEnabled(false);
     PKIXRevocationChecker checker = (PKIXRevocationChecker) validator.getRevocationChecker();
     List<PKIXCertPathChecker> checkers = new ArrayList<>();
     checkers.add(checker);
+    params.setCertPathCheckers(checkers);
+    validator.validate(certPath, params);
+  }
+
+  public void testSettingRevocationCheckerWithListOf(KeyStore cacerts, CertPath certPath) throws Exception {
+    CertPathValidator validator = CertPathValidator.getInstance("PKIX");
+    PKIXParameters params = new PKIXParameters(cacerts);
+    params.setRevocationEnabled(false);
+    PKIXRevocationChecker checker = (PKIXRevocationChecker) validator.getRevocationChecker();
+    List<PKIXCertPathChecker> checkers = List.of(checker);
     params.setCertPathCheckers(checkers);
     validator.validate(certPath, params);
   }

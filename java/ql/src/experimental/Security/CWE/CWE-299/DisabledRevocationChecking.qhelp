@@ -56,7 +56,7 @@ revocation checker that uses OCSP to obtain revocation status of certificates.</
 </li>
 <li>
   Java SE API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/index.html?java/security/cert/CertPathValidator.html">CertPathValidator</a>
+  <a href="https://docs.oracle.com/javase/8/docs/api/java/security/cert/CertPathValidator.html">CertPathValidator</a>
 </li>
 
 </references>
