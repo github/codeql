@@ -312,31 +312,42 @@
 | stl.cpp:131:15:131:24 | call to user_input | stl.cpp:131:15:131:27 | call to basic_string | TAINT |
 | stl.cpp:131:15:131:27 | call to basic_string | stl.cpp:132:7:132:11 | path3 |  |
 | stl.cpp:132:7:132:11 | path3 | stl.cpp:132:13:132:17 | call to c_str | TAINT |
-| stl.cpp:138:18:138:24 | hello | stl.cpp:138:18:138:25 | call to basic_string | TAINT |
-| stl.cpp:138:18:138:25 | call to basic_string | stl.cpp:143:8:143:9 | s1 |  |
-| stl.cpp:139:19:139:26 | call to basic_string | stl.cpp:144:8:144:9 | s2 |  |
-| stl.cpp:139:20:139:26 | hello | stl.cpp:139:19:139:26 | call to basic_string | TAINT |
-| stl.cpp:141:8:141:14 | call to basic_string | stl.cpp:141:3:141:14 | ... = ... |  |
-| stl.cpp:141:8:141:14 | call to basic_string | stl.cpp:145:8:145:9 | s3 |  |
-| stl.cpp:141:8:141:14 | hello | stl.cpp:141:8:141:14 | call to basic_string | TAINT |
-| stl.cpp:149:18:149:23 | call to source | stl.cpp:149:18:149:26 | call to basic_string | TAINT |
-| stl.cpp:149:18:149:26 | call to basic_string | stl.cpp:154:8:154:9 | s1 |  |
-| stl.cpp:150:19:150:27 | call to basic_string | stl.cpp:155:8:155:9 | s2 |  |
-| stl.cpp:150:20:150:25 | call to source | stl.cpp:150:19:150:27 | call to basic_string | TAINT |
-| stl.cpp:152:8:152:13 | call to source | stl.cpp:152:8:152:15 | call to basic_string | TAINT |
-| stl.cpp:152:8:152:15 | call to basic_string | stl.cpp:152:3:152:15 | ... = ... |  |
-| stl.cpp:152:8:152:15 | call to basic_string | stl.cpp:156:8:156:9 | s3 |  |
-| stl.cpp:160:15:160:16 | call to basic_string | stl.cpp:161:20:161:21 | s1 |  |
-| stl.cpp:160:15:160:16 | call to basic_string | stl.cpp:163:8:163:9 | s1 |  |
-| stl.cpp:160:15:160:16 | call to basic_string | stl.cpp:165:8:165:9 | s1 |  |
-| stl.cpp:161:20:161:21 | s1 | stl.cpp:166:8:166:9 | s2 |  |
-| stl.cpp:163:8:163:9 | s1 | stl.cpp:163:3:163:9 | ... = ... |  |
-| stl.cpp:163:8:163:9 | s1 | stl.cpp:167:8:167:9 | s3 |  |
-| stl.cpp:171:19:171:40 | call to basic_string | stl.cpp:175:8:175:9 | s1 |  |
-| stl.cpp:171:32:171:37 | call to source | stl.cpp:171:19:171:40 | call to basic_string | TAINT |
-| stl.cpp:173:8:173:28 | call to basic_string | stl.cpp:173:3:173:28 | ... = ... |  |
-| stl.cpp:173:8:173:28 | call to basic_string | stl.cpp:176:8:176:9 | s2 |  |
-| stl.cpp:173:20:173:25 | call to source | stl.cpp:173:8:173:28 | call to basic_string | TAINT |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:140:17:140:18 | cs |  |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:142:7:142:8 | cs |  |
+| stl.cpp:140:17:140:18 | cs | stl.cpp:140:17:140:19 | call to basic_string | TAINT |
+| stl.cpp:140:17:140:19 | call to basic_string | stl.cpp:143:7:143:8 | ss |  |
+| stl.cpp:148:19:148:24 | call to source | stl.cpp:151:17:151:18 | cs |  |
+| stl.cpp:151:17:151:18 | cs | stl.cpp:151:17:151:19 | call to basic_string | TAINT |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:154:7:154:8 | ss |  |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:157:7:157:8 | ss |  |
+| stl.cpp:154:7:154:8 | ss | stl.cpp:154:10:154:14 | call to c_str | TAINT |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:154:2:154:16 | ... = ... |  |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:156:7:156:8 | cs |  |
+| stl.cpp:163:18:163:24 | hello | stl.cpp:163:18:163:25 | call to basic_string | TAINT |
+| stl.cpp:163:18:163:25 | call to basic_string | stl.cpp:168:8:168:9 | s1 |  |
+| stl.cpp:164:19:164:26 | call to basic_string | stl.cpp:169:8:169:9 | s2 |  |
+| stl.cpp:164:20:164:26 | hello | stl.cpp:164:19:164:26 | call to basic_string | TAINT |
+| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:166:3:166:14 | ... = ... |  |
+| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:170:8:170:9 | s3 |  |
+| stl.cpp:166:8:166:14 | hello | stl.cpp:166:8:166:14 | call to basic_string | TAINT |
+| stl.cpp:174:18:174:23 | call to source | stl.cpp:174:18:174:26 | call to basic_string | TAINT |
+| stl.cpp:174:18:174:26 | call to basic_string | stl.cpp:179:8:179:9 | s1 |  |
+| stl.cpp:175:19:175:27 | call to basic_string | stl.cpp:180:8:180:9 | s2 |  |
+| stl.cpp:175:20:175:25 | call to source | stl.cpp:175:19:175:27 | call to basic_string | TAINT |
+| stl.cpp:177:8:177:13 | call to source | stl.cpp:177:8:177:15 | call to basic_string | TAINT |
+| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:177:3:177:15 | ... = ... |  |
+| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:181:8:181:9 | s3 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:186:20:186:21 | s1 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:188:8:188:9 | s1 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:190:8:190:9 | s1 |  |
+| stl.cpp:186:20:186:21 | s1 | stl.cpp:191:8:191:9 | s2 |  |
+| stl.cpp:188:8:188:9 | s1 | stl.cpp:188:3:188:9 | ... = ... |  |
+| stl.cpp:188:8:188:9 | s1 | stl.cpp:192:8:192:9 | s3 |  |
+| stl.cpp:196:19:196:40 | call to basic_string | stl.cpp:200:8:200:9 | s1 |  |
+| stl.cpp:196:32:196:37 | call to source | stl.cpp:196:19:196:40 | call to basic_string | TAINT |
+| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:198:3:198:28 | ... = ... |  |
+| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:201:8:201:9 | s2 |  |
+| stl.cpp:198:20:198:25 | call to source | stl.cpp:198:8:198:28 | call to basic_string | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |

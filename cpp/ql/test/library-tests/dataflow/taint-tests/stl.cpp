@@ -132,6 +132,31 @@ void test_strings2()
 	sink(path3.c_str(), "r"); // tainted
 }
 
+void test_string3()
+{
+	const char *cs = source();
+
+	// convert char * -> std::string
+	std::string ss(cs);
+
+	sink(cs); // tainted
+	sink(ss); // tainted
+}
+
+void test_string4()
+{
+	const char *cs = source();
+
+	// convert char * -> std::string
+	std::string ss(cs);
+
+	// convert back std::string -> char *
+	cs = ss.c_str();
+
+	sink(cs); // tainted
+	sink(ss); // tainted
+}
+
 void test_string_constructors_assignments()
 {
 	{
@@ -176,3 +201,4 @@ void test_string_constructors_assignments()
 		sink(s2); // tainted
 	}
 }
+
