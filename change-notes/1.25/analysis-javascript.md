@@ -30,7 +30,7 @@
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
 |---------------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Cross-site scripting through DOM (`js/xss-through-dom`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities where existing text from the DOM is used as HTML. Results are not shown on LGTM by default. |
+| DOM text reinterpreted as HTML (`js/xss-through-dom`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities where existing text from the DOM is used as HTML. Results are shown on LGTM by default. |
 | Incomplete HTML attribute sanitization (`js/incomplete-html-attribute-sanitization`) | security, external/cwe/cwe-20, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities due to incomplete sanitization of HTML meta-characters. Results are shown on LGTM by default. |
 | Unsafe expansion of self-closing HTML tag (`js/unsafe-html-expansion`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities caused by unsafe expansion of self-closing HTML tags. |
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights potential command injections due to a shell command being constructed from library inputs. Results are shown on LGTM by default. |
@@ -42,6 +42,7 @@
 | Client-side cross-site scripting (`js/xss`) | Fewer results | This query now recognizes additional safe patterns of constructing HTML. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Fewer results | This query now recognizes additional safe patterns of doing URL redirects. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving NoSQL code operators are now recognized. |
+| Exception text reinterpreted as HTML (`js/exception-xss`) | Rephrased and changed visibility | Rephrased name and alert message. Severity lowered from error to warning. Results are now shown on LGTM by default. |
 | Expression has no effect (`js/useless-expression`) | Fewer results | This query no longer flags an expression when that expression is the only content of the containing file. |
 | Hard-coded credentials (`js/hardcoded-credentials`) | More results | This query now recognizes hard-coded credentials sent via HTTP authorization headers. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional url scheme checks. |
