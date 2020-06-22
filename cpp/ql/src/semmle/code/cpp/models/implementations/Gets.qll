@@ -51,7 +51,8 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     not hasGlobalOrStdName("gets") and
-    bufParam = 0 and countParam = 1
+    bufParam = 0 and
+    countParam = 1
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
