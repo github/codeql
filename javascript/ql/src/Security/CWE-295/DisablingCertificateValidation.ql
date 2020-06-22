@@ -11,19 +11,11 @@
 
 import javascript
 
-from DataFlow::PropWrite disable
-where
-  exists(DataFlow::SourceNode env |
-    env = NodeJSLib::process().getAPropertyRead("env") and
-    disable = env.getAPropertyWrite("NODE_TLS_REJECT_UNAUTHORIZED") and
-    disable.getRhs().mayHaveStringValue("0")
-  )
-  or
-  exists(DataFlow::ObjectLiteralNode options, DataFlow::InvokeNode invk |
-    options.flowsTo(invk.getAnArgument()) and
-    disable = options.getAPropertyWrite("rejectUnauthorized") and
-    disable.getRhs().(AnalyzedNode).getTheBooleanValue() = false
-  |
+/**
+ * Gets an options object for a TLS connection.
+ */
+DataFlow::ObjectLiteralNode tlsOptions() {
+  exists(DataFlow::InvokeNode invk | result.flowsTo(invk.getAnArgument()) |
     invk instanceof NodeJSLib::NodeJSClientRequest
     or
     invk = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
@@ -37,4 +29,16 @@ where
     or
     invk = DataFlow::moduleMember("tls", ["connect", "createServer"]).getACall()
   )
+}
+
+from DataFlow::PropWrite disable
+where
+  exists(DataFlow::SourceNode env |
+    env = NodeJSLib::process().getAPropertyRead("env") and
+    disable = env.getAPropertyWrite("NODE_TLS_REJECT_UNAUTHORIZED") and
+    disable.getRhs().mayHaveStringValue("0")
+  )
+  or
+  disable = tlsOptions().getAPropertyWrite("rejectUnauthorized") and
+  disable.getRhs().(AnalyzedNode).getTheBooleanValue() = false
 select disable, "Disabling certificate validation is strongly discouraged."
