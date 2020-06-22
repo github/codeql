@@ -88,10 +88,8 @@ module LogInjection {
    */
   class StringReplaceSanitizer extends Sanitizer {
     StringReplaceSanitizer() {
-      exists(StringReplaceCall replace, string s |
-        replace.replaces(s, "") and s.regexpMatch("\\n")
-      |
-        this = replace
+      exists(string s |
+        this.(StringReplaceCall).replaces(s, "") and s.regexpMatch("\\n")
       )
     }
   }
