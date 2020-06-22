@@ -13,12 +13,12 @@ public class F {
     f.Field2 = o;
     f.Field2 = null;
     sink(f.Field1); // flow
-    sink(f.Field2); // no flow [FALSE POSITIVE]
+    sink(f.Field2); // no flow
 
     f = new F();
     f.Field2 = null;
     sink(f.Field1); // flow
-    sink(f.Field2); // no flow [FALSE POSITIVE]
+    sink(f.Field2); // no flow
 
     f = new F();
     o = new Object();
@@ -31,7 +31,7 @@ public class F {
   {
     f.Field2 = null;
     sink(f.Field1); // flow
-    sink(f.Field2); // no flow [FALSE POSITIVE]
+    sink(f.Field2); // no flow
   }
 
   public static void sink(Object o) { }

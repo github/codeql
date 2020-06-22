@@ -196,6 +196,15 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+}
+
+/**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
