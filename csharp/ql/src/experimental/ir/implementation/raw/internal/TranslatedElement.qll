@@ -117,6 +117,7 @@ private predicate ignoreExpr(Expr expr) {
 private predicate translateFunction(Callable callable) {
   // not isInvalidFunction(callable)
   exists(callable.getEntryPoint()) and
+  callable.fromSource() and
   exists(IRConfiguration config | config.shouldCreateIRForFunction(callable))
 }
 

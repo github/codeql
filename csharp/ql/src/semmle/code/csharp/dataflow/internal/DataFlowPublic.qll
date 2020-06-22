@@ -241,10 +241,10 @@ class Content extends TContent {
   Location getLocation() { none() }
 
   /** Gets the type of the object containing this content. */
-  DataFlowType getContainerType() { none() }
+  deprecated DataFlowType getContainerType() { none() }
 
   /** Gets the type of this content. */
-  DataFlowType getType() { none() }
+  deprecated DataFlowType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -260,11 +260,11 @@ class FieldContent extends Content, TFieldContent {
 
   override Location getLocation() { result = f.getLocation() }
 
-  override DataFlowType getContainerType() {
+  deprecated override DataFlowType getContainerType() {
     result = Gvn::getGlobalValueNumber(f.getDeclaringType())
   }
 
-  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a property. */
@@ -280,9 +280,9 @@ class PropertyContent extends Content, TPropertyContent {
 
   override Location getLocation() { result = p.getLocation() }
 
-  override DataFlowType getContainerType() {
+  deprecated override DataFlowType getContainerType() {
     result = Gvn::getGlobalValueNumber(p.getDeclaringType())
   }
 
-  override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
+  deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }

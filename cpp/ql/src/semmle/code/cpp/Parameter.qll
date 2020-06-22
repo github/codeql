@@ -165,6 +165,7 @@ class Parameter extends LocalScopeVariable, @parameter {
 class ParameterIndex extends int {
   ParameterIndex() {
     exists(Parameter p | this = p.getIndex()) or
-    exists(Call c | exists(c.getArgument(this))) // permit indexing varargs
+    exists(Call c | exists(c.getArgument(this))) or // permit indexing varargs
+    this = -1 // used for `this`
   }
 }

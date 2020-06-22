@@ -77,8 +77,8 @@ import com.semmle.util.trap.TrapWriter;
  *   <li><code>LGTM_INDEX_EXCLUDE</code>: a newline-separated list of paths to exclude
  *   <li><code>LGTM_REPOSITORY_FOLDERS_CSV</code>: the path of a CSV file containing file
  *       classifications
- *   <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of {@link ProjectLayout}-style
- *       patterns that can be used to refine the list of files to include and exclude
+ *   <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of strings of form "include:PATTERN"
+ *      or "exclude:PATTERN" that can be used to refine the list of files to include and exclude.
  *   <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript
  *   <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
  *       specifying which {@link FileType} to use for the given extension; the additional file type
