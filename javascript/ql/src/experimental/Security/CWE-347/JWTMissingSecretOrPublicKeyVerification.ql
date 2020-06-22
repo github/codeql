@@ -1,6 +1,6 @@
 /**
  * @name JWT Missing Secret Or Public Key Verification
- * @description The software does not verify the JWT token with a cryptographic secret or public key.
+ * @description The application does not verify the JWT payload with a cryptographic secret or public key.
  * @kind problem
  * @problem.severity warning
  * @precision high
