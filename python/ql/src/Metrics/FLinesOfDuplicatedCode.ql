@@ -20,7 +20,7 @@ where
         count(int line |
             exists(DuplicateBlock d | d.sourceFile() = f |
                 line in [d.sourceStartLine() .. d.sourceEndLine()] and
-                not whitelistedLineForDuplication(f, line)
+                not allowlistedLineForDuplication(f, line)
             )
         )
 select f, n order by n desc

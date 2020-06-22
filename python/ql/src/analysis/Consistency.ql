@@ -1,7 +1,7 @@
 /**
- * @name Sanity check
- * @description General sanity check to be run on any and all code. Should never produce any results.
- * @id py/sanity-check
+ * @name Consistency check
+ * @description General consistency check to be run on any and all code. Should never produce any results.
+ * @id py/consistency-check
  */
 
 import python
@@ -24,7 +24,7 @@ predicate uniqueness_error(int number, string what, string problem) {
     )
 }
 
-predicate ast_sanity(string clsname, string problem, string what) {
+predicate ast_consistency(string clsname, string problem, string what) {
     exists(AstNode a | clsname = a.getAQlClass() |
         uniqueness_error(count(a.toString()), "toString", problem) and
         what = "at " + a.getLocation().toString()
@@ -39,7 +39,7 @@ predicate ast_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate location_sanity(string clsname, string problem, string what) {
+predicate location_consistency(string clsname, string problem, string what) {
     exists(Location l | clsname = l.getAQlClass() |
         uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l.toString()
         or
@@ -65,7 +65,7 @@ predicate location_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate cfg_sanity(string clsname, string problem, string what) {
+predicate cfg_consistency(string clsname, string problem, string what) {
     exists(ControlFlowNode f | clsname = f.getAQlClass() |
         uniqueness_error(count(f.getNode()), "getNode", problem) and
         what = "at " + f.getLocation().toString()
@@ -80,7 +80,7 @@ predicate cfg_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate scope_sanity(string clsname, string problem, string what) {
+predicate scope_consistency(string clsname, string problem, string what) {
     exists(Scope s | clsname = s.getAQlClass() |
         uniqueness_error(count(s.getEntryNode()), "getEntryNode", problem) and
         what = "at " + s.getLocation().toString()
@@ -125,7 +125,7 @@ private predicate introspected_builtin_object(Object o) {
     py_cobject_sources(o, 0)
 }
 
-predicate builtin_object_sanity(string clsname, string problem, string what) {
+predicate builtin_object_consistency(string clsname, string problem, string what) {
     exists(Object o |
         clsname = o.getAQlClass() and
         what = best_description_builtin_object(o) and
@@ -146,7 +146,7 @@ predicate builtin_object_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate source_object_sanity(string clsname, string problem, string what) {
+predicate source_object_consistency(string clsname, string problem, string what) {
     exists(Object o | clsname = o.getAQlClass() and not o.isBuiltin() |
         uniqueness_error(count(o.getOrigin()), "getOrigin", problem) and
         what = "at " + o.getOrigin().getLocation().toString()
@@ -161,7 +161,7 @@ predicate source_object_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate ssa_sanity(string clsname, string problem, string what) {
+predicate ssa_consistency(string clsname, string problem, string what) {
     /* Zero or one definitions of each SSA variable */
     exists(SsaVariable var | clsname = var.getAQlClass() |
         uniqueness_error(strictcount(var.getDefinition()), "getDefinition", problem) and
@@ -196,7 +196,7 @@ predicate ssa_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate function_object_sanity(string clsname, string problem, string what) {
+predicate function_object_consistency(string clsname, string problem, string what) {
     exists(FunctionObject func | clsname = func.getAQlClass() |
         what = func.getName() and
         (
@@ -229,7 +229,7 @@ predicate intermediate_origins(ControlFlowNode use, ControlFlowNode inter, Objec
     )
 }
 
-predicate points_to_sanity(string clsname, string problem, string what) {
+predicate points_to_consistency(string clsname, string problem, string what) {
     exists(Object obj |
         multiple_origins_per_object(obj) and
         clsname = obj.getAQlClass() and
@@ -245,7 +245,7 @@ predicate points_to_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate jump_to_definition_sanity(string clsname, string problem, string what) {
+predicate jump_to_definition_consistency(string clsname, string problem, string what) {
     problem = "multiple (jump-to) definitions" and
     exists(Expr use |
         strictcount(getUniqueDefinition(use)) > 1 and
@@ -254,7 +254,7 @@ predicate jump_to_definition_sanity(string clsname, string problem, string what)
     )
 }
 
-predicate file_sanity(string clsname, string problem, string what) {
+predicate file_consistency(string clsname, string problem, string what) {
     exists(File file, Folder folder |
         clsname = file.getAQlClass() and
         problem = "has same name as a folder" and
@@ -269,7 +269,7 @@ predicate file_sanity(string clsname, string problem, string what) {
     )
 }
 
-predicate class_value_sanity(string clsname, string problem, string what) {
+predicate class_value_consistency(string clsname, string problem, string what) {
     exists(ClassValue value, ClassValue sup, string attr |
         what = value.getName() and
         sup = value.getASuperType() and
@@ -283,16 +283,16 @@ predicate class_value_sanity(string clsname, string problem, string what) {
 
 from string clsname, string problem, string what
 where
-    ast_sanity(clsname, problem, what) or
-    location_sanity(clsname, problem, what) or
-    scope_sanity(clsname, problem, what) or
-    cfg_sanity(clsname, problem, what) or
-    ssa_sanity(clsname, problem, what) or
-    builtin_object_sanity(clsname, problem, what) or
-    source_object_sanity(clsname, problem, what) or
-    function_object_sanity(clsname, problem, what) or
-    points_to_sanity(clsname, problem, what) or
-    jump_to_definition_sanity(clsname, problem, what) or
-    file_sanity(clsname, problem, what) or
-    class_value_sanity(clsname, problem, what)
+    ast_consistency(clsname, problem, what) or
+    location_consistency(clsname, problem, what) or
+    scope_consistency(clsname, problem, what) or
+    cfg_consistency(clsname, problem, what) or
+    ssa_consistency(clsname, problem, what) or
+    builtin_object_consistency(clsname, problem, what) or
+    source_object_consistency(clsname, problem, what) or
+    function_object_consistency(clsname, problem, what) or
+    points_to_consistency(clsname, problem, what) or
+    jump_to_definition_consistency(clsname, problem, what) or
+    file_consistency(clsname, problem, what) or
+    class_value_consistency(clsname, problem, what)
 select clsname + " " + what + " has " + problem
