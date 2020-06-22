@@ -41,6 +41,7 @@
 | Creating biased random numbers from a cryptographically secure source (`js/biased-cryptographic-random`) | security, external/cwe/cwe-327 | Highlights mathematical operations on cryptographically secure numbers that can create biased results. Results are shown on LGTM by default. |
 | Storage of sensitive information in build artifact (`js/build-artifact-leak`) | security, external/cwe/cwe-312 | Highlights storage of sensitive information in build artifacts. Results are shown on LGTM by default. |
 | Improper code sanitization (`js/bad-code-sanitization`) | security, external/cwe/cwe-094, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights string concatenation where code is constructed without proper sanitization. Results are shown on LGTM by default. |
+| Incomplete multi-character sanitization (`js/incomplete-multi-character-sanitization`) | correctness, security, external/cwe/cwe-20, external/cwe/cwe-116 | Highlights sanitizers that fail to remove dangerous substrings completely. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 

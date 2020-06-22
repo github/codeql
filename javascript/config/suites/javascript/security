@@ -19,6 +19,7 @@
 + semmlecode-javascript-queries/Security/CWE-094/CodeInjection.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-094/UnsafeDynamicMethodAccess.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-116/IncompleteSanitization.ql: /Security/CWE/CWE-116
++ semmlecode-javascript-queries/Security/CWE-116/IncompleteMultiCharacterSanitization.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-116/IncompleteHtmlAttributeSanitization.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-116/DoubleEscaping.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-134/TaintedFormatString.ql: /Security/CWE/CWE-134
