@@ -49,7 +49,9 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   DataFlowCallable getEnclosingCallable() {
-    none()
+    result.getScope() = this.asCfgNode().getNode().getScope() // this allows Cfg -> ESSA def
+    or
+    result.getScope() = this.asEssaNode().getScope() // this allows ESSA var -> Cfg use
   }
 
   /**

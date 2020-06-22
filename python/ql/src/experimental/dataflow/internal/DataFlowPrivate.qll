@@ -28,6 +28,45 @@ abstract class PostUpdateNode extends Node {
 
 class DataFlowExpr = Expr;
 
+/**
+ * Flow between ESSA variables.
+ * This includes both local and global variables.
+ * Flow comes from definitions, uses and refinements.
+ */
+// TODO: Consider constraining `nodeFrom` and `nodeTo` to be in the same scope.
+module EssaFlow {
+  predicate essaFlowStep(Node nodeFrom, Node nodeTo) {
+    // Definition
+    //   `x = f(42)`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
+    or
+    // Use
+    //   `y = 42`
+    //   `x = f(y)`
+    //   nodeFrom is `y` on first line, essa var
+    //   nodeTo is `y` on second line, cfg node
+    nodeFrom.asEssaNode().getAUse() = nodeTo.asCfgNode()
+    or
+    // Refinements
+    exists(EssaEdgeRefinement r |
+      nodeTo.asEssaNode() = r.getVariable() and
+      nodeFrom.asEssaNode() = r.getInput()
+    )
+    or
+    exists(EssaNodeRefinement r |
+      nodeTo.asEssaNode() = r.getVariable() and
+      nodeFrom.asEssaNode() = r.getInput()
+    )
+    or
+    exists(PhiFunction p |
+      nodeTo.asEssaNode() = p.getVariable() and
+      nodeFrom.asEssaNode() = p.getShortCircuitInput()
+    )
+  }
+}
+
 //--------
 // Local flow
 //--------
@@ -38,33 +77,7 @@ class DataFlowExpr = Expr;
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  exists(EssaEdgeRefinement r |
-    nodeTo.asEssaNode() = r.getVariable() and
-    nodeFrom.asEssaNode() = r.getInput()
-  )
-  or
-  exists(EssaNodeRefinement r |
-    nodeTo.asEssaNode() = r.getVariable() and
-    nodeFrom.asEssaNode() = r.getInput()
-  )
-  or
-  exists(PhiFunction p |
-    nodeTo.asEssaNode() = p.getVariable() and
-    nodeFrom.asEssaNode() = p.getShortCircuitInput()
-  )
-  or
-  // As in `taintedAssignment`
-  // `x = f(42)`
-  // nodeFrom is `f(42)`
-  // nodeTo is any use of `x`
-  nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
-  or
-  // `def f(x):`
-  // nodeFrom is control flow node for `x`
-  // nodeTo is SSA variable for `x`
-  nodeFrom.asCfgNode() = nodeTo.asEssaNode().(ParameterDefinition).getDefiningNode()
-  or
-  nodeFrom.asEssaNode().getAUse() = nodeTo.asCfgNode()
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
 }
 
 // TODO: Make modules for these headings
@@ -145,7 +158,7 @@ class OutNode extends Node {
   cached
   DataFlowCall getCall(ReturnKind kind) {
     kind = TNormalReturnKind() and
-    result = this.asCfgNode().(CallNode)
+    result = this.asCfgNode()
   }
 }
 
@@ -197,7 +210,14 @@ string ppReprType(DataFlowType t) { result = t.toString() }
  * taken into account.
  */
 predicate jumpStep(ExprNode pred, ExprNode succ) {
-  none()
+  // As we have ESSA variables for global variables,
+  // we include ESSA flow steps involving global variables.
+  (
+    pred.asEssaNode() instanceof GlobalSsaVariable
+    or
+    succ.asEssaNode() instanceof GlobalSsaVariable
+  ) and
+  EssaFlow::essaFlowStep(pred, succ)
 }
 
 //--------
