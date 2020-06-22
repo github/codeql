@@ -43,7 +43,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### Predicates without result
 
-1. Document predicates that do not have using a third-person verb phrase of the form ``Holds if `arg` has <property>.``.
+1. Use a third-person verb phrase of the form ``Holds if `arg` has <property>.``.
 1. Avoid:
    - `/**Whether ...*/`
    - `/**"Relates ...*/`
@@ -63,7 +63,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### Predicates with result
 
-1. Document predicates that have a result using a third-person verb phrase of the form `Gets (a|the) <thing>`.
+1. Use a third-person verb phrase of the form `Gets (a|the) <thing>`.
 1. Use "if any" if the item is usually unique, but might be missing. For example
 `Gets the body of this method, if any.`.
 1. If the predicate has more complex behaviour, for example multiple arguments are conceptually "outputs", it can be described like a predicate without a result. For example
@@ -117,7 +117,7 @@ Certain special predicates should be documented consistently.
   string toString() { ... } 
   ```
 
-- Always document `hasLocationInfo` be documented like this:
+- Always document `hasLocationInfo` as
 
   ```ql
   /**
@@ -125,7 +125,7 @@ Certain special predicates should be documented consistently.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
    */
 
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) { ... }

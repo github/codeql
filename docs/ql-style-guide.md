@@ -214,7 +214,7 @@ class Type extends ... {
 
 ## Documentation
 
-For more information about documenting the code that you contribute to this repository, see the [QLDoc style guide](ql-doc-style-guide.md).
+For more information about documenting the code that you contribute to this repository, see the [QLDoc style guide](qldoc-style-guide.md).
 
 ## Formulas
 1. *Prefer* one *conjunct* per line.
