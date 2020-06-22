@@ -16,4 +16,5 @@ from CallNode call
 where
   call = moduleMember("jsonwebtoken", "verify").getACall() and
   unique(boolean b | b = call.getArgument(1).analyze().getABooleanValue()) = false
-select call
+select call.getStartLine(), call,
+  "does not verify the JWT payload with a cryptographic secret or public key."
