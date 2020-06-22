@@ -9,7 +9,7 @@ func main() {}
 func insecureMinMaxTlsVersion() {
 	{
 		config := &tls.Config{}
-		config.MinVersion = 0 //BAD: Setting the MinVersion to 0 equal to choosing the lowest supported version (i.e. SSL3.0)
+		config.MinVersion = 0 //BAD: Setting the MinVersion to 0 equals to choosing the lowest supported version (i.e. SSL3.0)
 	}
 	{
 		config := &tls.Config{}
