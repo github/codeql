@@ -217,19 +217,23 @@ class IRThrowVariable extends IRTempVariable {
  * A temporary variable generated to hold the contents of all arguments passed to the `...` of a
  * function that accepts a variable number of arguments.
  */
-class IREllipsisVariable extends IRTempVariable {
+class IREllipsisVariable extends IRTempVariable, IRParameter {
   IREllipsisVariable() { tag = EllipsisTempVar() }
 
   final override string toString() { result = "#ellipsis" }
+
+  final override int getIndex() { result = func.getNumberOfParameters() }
 }
 
 /**
  * A temporary variable generated to hold the `this` pointer.
  */
-class IRThisVariable extends IRTempVariable {
+class IRThisVariable extends IRTempVariable, IRParameter {
   IRThisVariable() { tag = ThisTempVar() }
 
   final override string toString() { result = "#this" }
+
+  final override int getIndex() { result = -1 }
 }
 
 /**
@@ -273,4 +277,30 @@ class IRDynamicInitializationFlag extends IRGeneratedVariable, TIRDynamicInitial
   }
 
   final override string getBaseString() { result = "#init:" + var.toString() + ":" }
+}
+
+/**
+ * An IR variable which acts like a function parameter, including positional parameters and the
+ * temporary variables generated for `this` and ellipsis parameters.
+ */
+class IRParameter extends IRAutomaticVariable {
+  IRParameter() {
+    this.(IRAutomaticUserVariable).getVariable() instanceof Language::Parameter
+    or
+    this = TIRTempVariable(_, _, ThisTempVar(), _)
+    or
+    this = TIRTempVariable(_, _, EllipsisTempVar(), _)
+  }
+
+  /**
+   * Gets the zero-based index of this parameter. The `this` parameter has index -1.
+   */
+  int getIndex() { none() }
+}
+
+/**
+ * An IR variable representing a positional parameter.
+ */
+class IRPositionalParameter extends IRParameter, IRAutomaticUserVariable {
+  final override int getIndex() { result = getVariable().(Language::Parameter).getIndex() }
 }

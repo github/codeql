@@ -16,7 +16,7 @@ import python
 import Shadowing
 import semmle.python.types.Builtins
 
-predicate white_list(string name) {
+predicate allow_list(string name) {
     /* These are rarely used and thus unlikely to be confusing */
     name = "iter" or
     name = "next" or
@@ -51,7 +51,7 @@ predicate shadows(Name d, string name, Function scope, int line) {
     ) and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and
-    not white_list(name) and
+    not allow_list(name) and
     not optimizing_parameter(d)
 }
 

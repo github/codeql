@@ -72,3 +72,14 @@ http.createServer(function(req, res) {
     util.promisify(cp.exec)(cmd); // NOT OK
 });
 
+
+const webpackDevServer = require('webpack-dev-server');
+new webpackDevServer(compiler, {
+    before: function (app) {
+        app.use(function (req, res, next) {
+          cp.exec(req.query.fileName); // NOT OK
+
+          require("my-sub-lib").foo(req.query.fileName); // calls lib/subLib/index.js#foo
+        });
+    }
+});

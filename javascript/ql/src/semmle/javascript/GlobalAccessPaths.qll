@@ -33,7 +33,7 @@ deprecated module GlobalAccessPath {
 /**
  * Provides predicates for associating access paths with data flow nodes.
  *
- * For example, `AccessPath.getAReferenceTo(x)` can be used to obtain the global access path
+ * For example, `AccessPath::getAReferenceTo(x)` can be used to obtain the global access path
  * that `x` refers to, as in the following sample:
  * ```
  * function f() {
@@ -240,7 +240,7 @@ module AccessPath {
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
-   *   x.foo = { bar: class() };
+   *   x.foo = { bar: class {} };
    *   let alias = x;
    *   alias.foo.bar = class {};
    * }
@@ -338,7 +338,7 @@ module AccessPath {
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
-   *   x.foo = { bar: class() };
+   *   x.foo = { bar: class {} };
    *   let alias = x;
    *   alias.foo.bar = class {};
    * }
@@ -355,7 +355,7 @@ module AccessPath {
    * Only gets the immediate right-hand side of an assignment or property or a global declaration,
    * not nodes that transitively flow there.
    *
-   * For example, the class nodes below are all assignmetns to `foo.bar`:
+   * For example, the class nodes below are all assignments to `foo.bar`:
    * ```
    * foo.bar = class {};
    * foo = { bar: class {} };

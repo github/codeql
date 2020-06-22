@@ -7,7 +7,7 @@ import DefinitionTracking
 
 predicate want_to_have_definition(Expr e) {
     /* not builtin object like len, tuple, etc. */
-    not exists(Object cobj | e.refersTo(cobj) and cobj.isC()) and
+    not exists(Value builtin | e.pointsTo(builtin) and builtin.isBuiltin()) and
     (
         e instanceof Name and e.(Name).getCtx() instanceof Load
         or
