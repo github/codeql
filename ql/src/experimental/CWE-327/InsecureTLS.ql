@@ -102,10 +102,7 @@ predicate checkTlsVersions(DataFlow::PathNode source, DataFlow::PathNode sink, s
     not exists(Write write, DataFlow::ValueExpr v0 | write.getRhs() = sink.getNode() |
       v0 = source.getNode().asExpr() and
       v0.getIntValue() = 0 and
-      exists(DataFlow::Field fld |
-        fld.hasQualifiedName("crypto/tls", "Config", "MaxVersion") and
-        fld.getAWrite().getRhs() = sink.getNode()
-      )
+      getSinkTargetFieldName(sink) = "MaxVersion"
     )
   |
     message =
