@@ -305,10 +305,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the integer value of this expression, where possible.
    *
-   * All computations are performed on QL 32-bit `int`s, so no
-   * truncation is performed in the case of overflow within `byte` or `short`:
-   * `((byte)127)+((byte)1)` evaluates to 128 rather than to -128.
-   *
    * Note that this does not handle the following cases:
    *
    * - values of type `long`,
@@ -332,7 +328,10 @@ class CompileTimeConstantExpr extends Expr {
         else
           if cast.getType().hasName("short")
           then result = (val + 32768).bitAnd(65535) - 32768
-          else result = val
+          else
+            if cast.getType().hasName("char")
+            then result = val.bitAnd(65535)
+            else result = val
       )
       or
       result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()

@@ -676,14 +676,17 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   override string toString() { result = "read effects: " + func.toString() }
 
   override TranslatedElement getChild(int id) {
-    result = getTranslatedReadEffect(func.getParameter(id))
+    result = getTranslatedThisReadEffect(func) and
+    id = -1
+    or
+    result = getTranslatedParameterReadEffect(func.getParameter(id))
   }
 
   override Instruction getFirstInstruction() {
     if exists(getAChild())
     then
       result =
-        min(TranslatedReadEffect child, int id | child = getChild(id) | child order by id)
+        min(TranslatedElement child, int id | child = getChild(id) | child order by id)
             .getFirstInstruction()
     else result = getParent().getChildSuccessor(this)
   }
@@ -709,17 +712,15 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 }
 
-private TranslatedReadEffect getTranslatedReadEffect(Parameter param) { result.getAST() = param }
+private TranslatedThisReadEffect getTranslatedThisReadEffect(Function func) {
+  result.getAST() = func
+}
 
-class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
-  Parameter param;
+private TranslatedParameterReadEffect getTranslatedParameterReadEffect(Parameter param) {
+  result.getAST() = param
+}
 
-  TranslatedReadEffect() { this = TTranslatedReadEffect(param) }
-
-  override Locatable getAST() { result = param }
-
-  override string toString() { result = "read effect: " + param.toString() }
-
+abstract class TranslatedReadEffect extends TranslatedElement {
   override TranslatedElement getChild(int id) { none() }
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
@@ -732,18 +733,10 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
 
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  override Function getFunction() { result = param.getFunction() }
-
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     opcode instanceof Opcode::ReturnIndirection and
     tag = OnlyInstructionTag() and
     resultType = getVoidType()
-  }
-
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag = addressOperand() and
-    result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
   }
 
   final override CppType getInstructionMemoryOperandType(
@@ -752,6 +745,47 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
     tag = OnlyInstructionTag() and
     operandTag = sideEffectOperand() and
     result = getUnknownType()
+  }
+}
+
+class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisReadEffect {
+  Function func;
+
+  TranslatedThisReadEffect() { this = TTranslatedThisReadEffect(func) }
+
+  override Locatable getAST() { result = func }
+
+  override Function getFunction() { result = func }
+
+  override string toString() { result = "read effect: this" }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getTranslatedThisParameter(func).getInstruction(InitializerIndirectAddressTag())
+  }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getTranslatedFunction(func).getThisVariable()
+  }
+}
+
+class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedParameterReadEffect {
+  Parameter param;
+
+  TranslatedParameterReadEffect() { this = TTranslatedParameterReadEffect(param) }
+
+  override Locatable getAST() { result = param }
+
+  override string toString() { result = "read effect: " + param.toString() }
+
+  override Function getFunction() { result = param.getFunction() }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag = addressOperand() and
+    result = getTranslatedParameter(param).getInstruction(InitializerIndirectAddressTag())
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
