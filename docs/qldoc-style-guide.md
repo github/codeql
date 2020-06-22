@@ -18,8 +18,8 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### Language requirements
 
-1. Use US English.
-1. Use full sentences, with capital letters and full stops, except for the initial sentence of the comment, which may be fragmentary as described below.
+1. Use American English.
+1. Use full sentences, with capital letters and periods, except for the initial sentence of the comment, which may be fragmentary as described below.
 1. Use simple sentence structures and avoid complex or academic language.
 1. Avoid colloquialisms and contractions.
 1. Use words that are in common usage.
