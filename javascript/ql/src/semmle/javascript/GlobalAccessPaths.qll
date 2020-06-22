@@ -435,6 +435,8 @@ module AccessPath {
     /**
      * Gets the `ranking`th access-path with `root` and `path` within `bb`.
      * And the access-path has type `type`.
+     *
+     * Only has a result if there exists both a read and write of the access-path within `bb`.
      */
     private ControlFlowNode rankedAccessPath(
       ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
@@ -442,7 +444,10 @@ module AccessPath {
       result =
         rank[ranking](ControlFlowNode ref |
           ref = getAccessTo(root, path, _) and
-          ref.getBasicBlock() = bb
+          ref.getBasicBlock() = bb and
+          // Prunes the accesses where there does not exists a read and write within the same basicblock.
+          // This could be more precise, but doing it like this avoids massive joins.
+          hasRead(bb) and hasWrite(bb)
         |
           ref order by any(int i | ref = bb.getNode(i))
         ) and
@@ -450,22 +455,50 @@ module AccessPath {
     }
 
     /**
+     * Holds if there exists an access-path read inside the basic-block `bb`. 
+     * 
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`. 
+     */
+    pragma[noinline]
+    private predicate hasRead(ReachableBasicBlock bb) {
+      bb = getAccessTo(_, _, AccessPathRead()).getBasicBlock()
+    }
+
+    /**
+     * Holds if there exists an access-path write inside the basic-block `bb`. 
+     * 
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`. 
+     */
+    pragma[noinline]
+    private predicate hasWrite(ReachableBasicBlock bb) {
+      bb = getAccessTo(_, _, AccessPathRead()).getBasicBlock()
+    }
+
+    /**
      * Gets a `ControlFlowNode` for an access to `path` from `root` with type `type`.
      *
      * This predicate uses both the AccessPath API, and the SourceNode API.
      * This ensures that we have basic support for access-paths with ambiguous roots.
+     *
+     * There is only a result if both a read and a write of the access-path exists.
      */
     pragma[nomagic]
     private ControlFlowNode getAccessTo(Root root, string path, AccessPathKind type) {
-      type = AccessPathRead() and
-      result = getAReadNode(root, path)
-      or
-      type = AccessPathWrite() and
-      result = getAWriteNode(root, path)
+      exists(getAReadNode(root, path)) and
+      exists(getAWriteNode(root, path)) and
+      (
+        type = AccessPathRead() and
+        result = getAReadNode(root, path)
+        or
+        type = AccessPathWrite() and
+        result = getAWriteNode(root, path)
+      )
     }
 
     /**
      * Gets a `ControlFlowNode` for a read to `path` from `root`.
+     *
+     * Only used within `getAccessTo`.
      */
     private ControlFlowNode getAReadNode(Root root, string path) {
       exists(DataFlow::PropRead read | read.asExpr() = result |
@@ -476,6 +509,8 @@ module AccessPath {
 
     /**
      * Gets a `ControlFlowNode` for a write to `path` from `root`.
+     *
+     * Only used within `getAccessTo`.
      */
     private ControlFlowNode getAWriteNode(Root root, string path) {
       result = root.getAPropertyWrite(path).getWriteNode()
