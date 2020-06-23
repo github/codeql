@@ -19,3 +19,13 @@ func check2(value int64) {
 
 	}
 }
+
+func check3() {
+	switch { }
+}
+
+func check4() {
+	switch {
+	default:
+	}
+}

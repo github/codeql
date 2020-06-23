@@ -1772,9 +1772,6 @@ module CFG {
       (
         lastNode(this.(ExpressionSwitchStmt).getExpr(), last, cmpl)
         or
-        last = MkImplicitTrue(this) and
-        cmpl = Bool(true)
-        or
         lastNode(this.(TypeSwitchStmt).getTest(), last, cmpl)
       ) and
       (
@@ -1782,6 +1779,10 @@ module CFG {
         or
         not exists(this.getDefault())
       )
+      or
+      last = MkImplicitTrue(this) and
+      cmpl = Bool(true) and
+      this.getNumCase() = 0
       or
       exists(CaseClause cc, int i, Completion inner |
         cc = this.getCase(i) and lastNode(cc, last, inner)
