@@ -19,7 +19,7 @@ import DataFlowImplSpecific::Public
  * a subclass whose characteristic predicate is a unique singleton string.
  * For example, write
  *
- * ```
+ * ```ql
  * class MyAnalysisConfiguration extends DataFlow::Configuration {
  *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
  *   // Override `isSource` and `isSink`.
@@ -37,7 +37,7 @@ import DataFlowImplSpecific::Public
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
  *
- * ```
+ * ```ql
  * exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
  * ```
  *
