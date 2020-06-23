@@ -48,4 +48,17 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
     output.isParameterDeref(0) and
     description = "String read by " + this.getName()
   }
+
+  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
+    not hasGlobalOrStdName("gets") and
+    bufParam = 0 and
+    countParam = 1
+  }
+
+  override predicate hasArrayWithUnknownSize(int bufParam) {
+    hasGlobalOrStdName("gets") and
+    bufParam = 0
+  }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 }
