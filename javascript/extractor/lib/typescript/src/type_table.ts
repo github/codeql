@@ -875,21 +875,23 @@ export class TypeTable {
   }
 
   /**
-   * Returns the properties of the given type, or `null` if the properties of this
-   * type could not be computed.
+   * Returns the properties to extract for the given type or `null` if nothing should be extracted.
+   *
+   * For performance reasons we only extract properties needed to recognize promise types at the QL
+   * level.
    */
-  private tryGetProperties(type: ts.Type) {
-    // Workaround for https://github.com/Microsoft/TypeScript/issues/30845
-    // Should be safe to remove once that has been fixed.
-    try {
-      return type.getProperties();
-    } catch (e) {
-      return null;
+  private getPropertiesToExtract(type: ts.Type) {
+    if (this.getSelfType(type) === type) {
+      let thenSymbol = this.typeChecker.getPropertyOfType(type, "then");
+      if (thenSymbol != null) {
+        return [thenSymbol];
+      }
     }
+    return null;
   }
 
   private extractProperties(type: ts.Type, id: number) {
-    let props = this.tryGetProperties(type);
+    let props = this.getPropertiesToExtract(type);
     if (props == null) return;
     for (let symbol of props) {
       let propertyType = this.tryGetTypeOfSymbol(symbol);

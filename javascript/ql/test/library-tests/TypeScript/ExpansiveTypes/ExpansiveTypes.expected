@@ -1,3 +1,8 @@
+WARNING: Predicate getProperty has been deprecated and may be removed in future (ExpansiveTypes.ql:5,19-30)
+| After in library-tests/TypeScript/ExpansiveTypes/leading_into_expansion.ts | has no properties |
+| AfterX in library-tests/TypeScript/ExpansiveTypes/used_from_expansion.ts | has no properties |
+| Before in library-tests/TypeScript/ExpansiveTypes/leading_into_expansion.ts | has no properties |
+| BeforeX in library-tests/TypeScript/ExpansiveTypes/used_from_expansion.ts | has no properties |
 | Box in library-tests/TypeScript/ExpansiveTypes/shared_non_expansive.ts | has no properties |
 | Box in library-tests/TypeScript/ExpansiveTypes/through_non_expansive.ts | has no properties |
 | C in library-tests/TypeScript/ExpansiveTypes/expansive_class.ts | has no properties |
@@ -21,3 +26,4 @@
 | ExpansiveSignature in library-tests/TypeScript/ExpansiveTypes/expansive_signature.ts | has no properties |
 | ExpansiveSignatureTypeBound in library-tests/TypeScript/ExpansiveTypes/expansive_signature.ts | has no properties |
 | ExpansiveX in library-tests/TypeScript/ExpansiveTypes/used_from_expansion.ts | has no properties |
+| NonExpansive in library-tests/TypeScript/ExpansiveTypes/shared_non_expansive.ts | has no properties |
