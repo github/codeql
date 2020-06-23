@@ -1,5 +1,0 @@
-| col0 |        call         |                                    col2                                    |
-+------+---------------------+----------------------------------------------------------------------------+
-|    9 | jwt.ver ... ne"] }) | does not verify the JWT payload with a cryptographic secret or public key. |
-|   10 | jwt.ver ... ne"] }) | does not verify the JWT payload with a cryptographic secret or public key. |
-|   11 | jwt.ver ... ne"] }) | does not verify the JWT payload with a cryptographic secret or public key. |
