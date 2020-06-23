@@ -1,8 +1,8 @@
 /**
- * @id java/j2ee-server-directory-listing
  * @name Inappropriately exposed directories and files yielding sensitive information like source code and credentials to attackers.
  * @description A directory listing provides an attacker with the complete index of all the resources located inside of the complete web directory.
  * @kind problem
+ * @id java/dir-listing
  * @tags security
  *       external/cwe-548
  */
@@ -40,3 +40,4 @@ class DirectoryListingInitParam extends WebXMLElement {
 from DirectoryListingInitParam initp
 where initp.isListingEnabled()
 select initp, "Directory listing should be disabled to mitigate filename and path disclosure"
+
