@@ -221,11 +221,12 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
   ConversionConstructor() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
     not hasSpecifier("explicit") and
-    not this instanceof CopyConstructor
+    not this instanceof CopyConstructor and
+    not this instanceof MoveConstructor
   }
 
   override string getCanonicalQLClass() {
-    not this instanceof MoveConstructor and result = "ConversionConstructor"
+    result = "ConversionConstructor"
   }
 
   /** Gets the type this `ConversionConstructor` takes as input. */

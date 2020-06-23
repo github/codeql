@@ -22,5 +22,5 @@
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:36:2:36:8 | MyClass | Constructor, NoArgConstructor, getAConstructor() |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:37:2:37:8 | MyClass | Constructor, ConversionConstructor, getAConstructor() |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:38:2:38:8 | MyClass | Constructor, CopyConstructor, getAConstructor() |
-| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:39:2:39:8 | MyClass | Constructor, ConversionConstructor, MoveConstructor, getAConstructor() |
+| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:39:2:39:8 | MyClass | Constructor, MoveConstructor, getAConstructor() |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:40:2:40:13 | operator int | ConversionOperator |
