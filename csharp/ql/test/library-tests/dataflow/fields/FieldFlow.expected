@@ -217,7 +217,7 @@ edges
 | H.cs:165:21:165:28 | access to field FieldA [FieldB] : Object | H.cs:165:17:165:28 | (...) ... [FieldB] : Object |
 | H.cs:167:14:167:14 | access to local variable b [FieldB] : Object | H.cs:167:14:167:21 | access to field FieldB |
 | I.cs:7:9:7:14 | [post] this access [Field1] : Object | I.cs:21:13:21:19 | object creation of type I [Field1] : Object |
-| I.cs:7:9:7:14 | [post] this access [Field1] : Object | I.cs:26:13:26:37 | object creation of type I [Field1] : Object |
+| I.cs:7:9:7:14 | [post] this access [Field1] : Object | I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object |
 | I.cs:7:18:7:29 | object creation of type Object : Object | I.cs:7:9:7:14 | [post] this access [Field1] : Object |
 | I.cs:13:17:13:28 | object creation of type Object : Object | I.cs:15:20:15:20 | access to local variable o : Object |
 | I.cs:15:9:15:9 | [post] access to local variable i [Field1] : Object | I.cs:16:9:16:9 | access to local variable i [Field1] : Object |
@@ -228,7 +228,7 @@ edges
 | I.cs:21:13:21:19 | object creation of type I [Field1] : Object | I.cs:22:9:22:9 | access to local variable i [Field1] : Object |
 | I.cs:22:9:22:9 | access to local variable i [Field1] : Object | I.cs:23:14:23:14 | access to local variable i [Field1] : Object |
 | I.cs:23:14:23:14 | access to local variable i [Field1] : Object | I.cs:23:14:23:21 | access to field Field1 |
-| I.cs:26:13:26:37 | object creation of type I [Field1] : Object | I.cs:27:14:27:14 | access to local variable i [Field1] : Object |
+| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object | I.cs:27:14:27:14 | access to local variable i [Field1] : Object |
 | I.cs:27:14:27:14 | access to local variable i [Field1] : Object | I.cs:27:14:27:21 | access to field Field1 |
 | I.cs:31:13:31:24 | object creation of type Object : Object | I.cs:32:20:32:20 | access to local variable o : Object |
 | I.cs:32:9:32:9 | [post] access to local variable i [Field1] : Object | I.cs:33:9:33:9 | access to local variable i [Field1] : Object |
@@ -501,7 +501,7 @@ nodes
 | I.cs:22:9:22:9 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
 | I.cs:23:14:23:14 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
 | I.cs:23:14:23:21 | access to field Field1 | semmle.label | access to field Field1 |
-| I.cs:26:13:26:37 | object creation of type I [Field1] : Object | semmle.label | object creation of type I [Field1] : Object |
+| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object | semmle.label | [pre-initializer] object creation of type I [Field1] : Object |
 | I.cs:27:14:27:14 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
 | I.cs:27:14:27:21 | access to field Field1 | semmle.label | access to field Field1 |
 | I.cs:31:13:31:24 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
