@@ -42,6 +42,19 @@ module EssaFlow {
     //   nodeTo is `x`, essa var
     nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
     or
+    // With definition
+    //   `with f(42) as x:`
+    //   nodeFrom is `f(42)`, cfg node
+    //   nodeTo is `x`, essa var
+    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+      nodeFrom.asCfgNode() = contextManager and
+      nodeTo.asEssaNode().getDefinition().(WithDefinition).getDefiningNode() = var and
+      // see `with_flow`
+      with.getContextExpr() = contextManager.getNode() and
+      with.getOptionalVars() = var.getNode() and
+      contextManager.strictlyDominates(var)
+    )
+    or
     // Use
     //   `y = 42`
     //   `x = f(y)`
