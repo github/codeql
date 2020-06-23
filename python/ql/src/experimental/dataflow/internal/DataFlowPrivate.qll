@@ -75,7 +75,7 @@ module EssaFlow {
     or
     exists(PhiFunction p |
       nodeTo.asEssaNode() = p.getVariable() and
-      nodeFrom.asEssaNode() = p.getShortCircuitInput()
+      nodeFrom.asEssaNode() = p.getAnInput()
     )
   }
 }
