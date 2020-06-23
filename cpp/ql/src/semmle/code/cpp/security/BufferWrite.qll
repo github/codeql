@@ -181,8 +181,10 @@ class StrCatBW extends BufferWriteCall {
  * A call to a variant of `sprintf`.
  */
 class SprintfBW extends BufferWriteCall {
+  FormattingFunction f;
+
   SprintfBW() {
-    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
+    exists(string name | f = getTarget().(TopLevelFunction) and name = f.getName() |
       /*
        * C sprintf variants:
        */
@@ -218,10 +220,7 @@ class SprintfBW extends BufferWriteCall {
   }
 
   override Type getBufferType() {
-    exists(FormattingFunction f |
-      f = this.getTarget() and
-      result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
-    )
+    result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
   }
 
   override Expr getASource() {
@@ -230,7 +229,7 @@ class SprintfBW extends BufferWriteCall {
     result = this.(FormattingFunctionCall).getFormatArgument(_)
   }
 
-  override Expr getDest() { result = getArgument(0) }
+  override Expr getDest() { result = getArgument(f.getOutputParameterIndex()) }
 
   override int getMaxData() {
     exists(FormatLiteral fl |

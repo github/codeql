@@ -66,12 +66,19 @@ class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
+      // sprintf(dst, format, args...)
       hasGlobalOrStdName("sprintf") or
+      //  _sprintf_l(dst, format, locale, args...)
       hasGlobalName("_sprintf_l") or
+      // __swprintf_l(dst, format, locale, args...)
       hasGlobalName("__swprintf_l") or
+      // wsprintf(dst, format, args...)
       hasGlobalOrStdName("wsprintf") or
+      // g_strdup_printf(format, ...)
       hasGlobalName("g_strdup_printf") or
+      // g_sprintf(dst, format, ...)
       hasGlobalName("g_sprintf") or
+      // __builtin___sprintf_chk(dst, flag, os, format, ...)
       hasGlobalName("__builtin___sprintf_chk")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
