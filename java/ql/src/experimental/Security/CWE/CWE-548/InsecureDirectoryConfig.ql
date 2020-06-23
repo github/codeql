@@ -1,8 +1,8 @@
 /**
- * @name Inappropriately exposed directories and files yielding sensitive information like source code and credentials to attackers.
- * @description A directory listing provides an attacker with the complete index of all the resources located inside of the complete web directory.
+ * @name Directories and files exposure
+ * @description A directory listing provides an attacker with the complete index of all the resources located inside of the complete web directory, which could yield files containing sensitive information like source code and credentials to the attacker.
  * @kind problem
- * @id java/dir-listing
+ * @id java/server-directory-listing
  * @tags security
  *       external/cwe-548
  */
