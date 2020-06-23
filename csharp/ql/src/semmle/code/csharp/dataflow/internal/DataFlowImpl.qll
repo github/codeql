@@ -1051,8 +1051,12 @@ private predicate flowIntoCallNodeCand2(
 }
 
 private module LocalFlowBigStep {
-  private class BigStepBarrierNode extends Node {
-    BigStepBarrierNode() {
+  /**
+   * A node where some checking is required, and hence the big-step relation
+   * is not allowed to step over.
+   */
+  private class FlowCheckNode extends Node {
+    FlowCheckNode() {
       this instanceof CastNode or
       clearsContent(this, _)
     }
@@ -1072,7 +1076,7 @@ private module LocalFlowBigStep {
       node instanceof OutNodeExt or
       store(_, _, node, _) or
       read(_, _, node) or
-      node instanceof BigStepBarrierNode
+      node instanceof FlowCheckNode
     )
   }
 
@@ -1090,7 +1094,7 @@ private module LocalFlowBigStep {
       read(node, _, next)
     )
     or
-    node instanceof BigStepBarrierNode
+    node instanceof FlowCheckNode
     or
     config.isSink(node)
   }
@@ -1134,14 +1138,14 @@ private module LocalFlowBigStep {
       exists(Node mid |
         localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
-        not mid instanceof BigStepBarrierNode and
+        not mid instanceof FlowCheckNode and
         nodeCand2(node2, unbind(config))
       )
       or
       exists(Node mid |
         localFlowStepPlus(node1, mid, _, _, config, cc) and
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
-        not mid instanceof BigStepBarrierNode and
+        not mid instanceof FlowCheckNode and
         preservesValue = false and
         t = getErasedNodeTypeBound(node2) and
         nodeCand2(node2, unbind(config))
