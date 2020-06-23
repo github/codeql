@@ -653,10 +653,10 @@ class MarshalingFunction extends Function {
   MarshalingFunction() { this = self }
 
   /** Gets an input that is encoded by this function. */
-  DataFlow::FunctionInput getAnInput() { result = self.getAnInput() }
+  FunctionInput getAnInput() { result = self.getAnInput() }
 
   /** Gets the output that contains the encoded data produced by this function. */
-  DataFlow::FunctionOutput getOutput() { result = self.getOutput() }
+  FunctionOutput getOutput() { result = self.getOutput() }
 
   /** Gets an identifier for the format this function encodes into, such as "JSON". */
   string getFormat() { result = self.getFormat() }
@@ -672,10 +672,10 @@ module MarshalingFunction {
    */
   abstract class Range extends Function {
     /** Gets an input that is encoded by this function. */
-    abstract DataFlow::FunctionInput getAnInput();
+    abstract FunctionInput getAnInput();
 
     /** Gets the output that contains the encoded data produced by this function. */
-    abstract DataFlow::FunctionOutput getOutput();
+    abstract FunctionOutput getOutput();
 
     /** Gets an identifier for the format this function encodes into, such as "JSON". */
     abstract string getFormat();
@@ -694,10 +694,10 @@ class UnmarshalingFunction extends Function {
   UnmarshalingFunction() { this = self }
 
   /** Gets an input that is decoded by this function. */
-  DataFlow::FunctionInput getAnInput() { result = self.getAnInput() }
+  FunctionInput getAnInput() { result = self.getAnInput() }
 
   /** Gets the output that contains the decoded data produced by this function. */
-  DataFlow::FunctionOutput getOutput() { result = self.getOutput() }
+  FunctionOutput getOutput() { result = self.getOutput() }
 
   /** Gets an identifier for the format this function decodes from, such as "JSON". */
   string getFormat() { result = self.getFormat() }
@@ -713,10 +713,10 @@ module UnmarshalingFunction {
    */
   abstract class Range extends Function {
     /** Gets an input that is decoded by this function. */
-    abstract DataFlow::FunctionInput getAnInput();
+    abstract FunctionInput getAnInput();
 
     /** Gets the output that contains the decoded data produced by this function. */
-    abstract DataFlow::FunctionOutput getOutput();
+    abstract FunctionOutput getOutput();
 
     /** Gets an identifier for the format this function decodes from, such as "JSON". */
     abstract string getFormat();

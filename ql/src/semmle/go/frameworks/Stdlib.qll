@@ -8,7 +8,7 @@ import go
 class StringMethod extends TaintTracking::FunctionModel, Method {
   StringMethod() { getName() = "String" and getNumParameter() = 0 }
 
-  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isReceiver() and outp.isResult()
   }
 }
@@ -20,7 +20,7 @@ class StringMethod extends TaintTracking::FunctionModel, Method {
 private class AppendFunction extends TaintTracking::FunctionModel {
   AppendFunction() { this = Builtin::append() }
 
-  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(_) and outp.isResult()
   }
 }
@@ -32,7 +32,7 @@ private class AppendFunction extends TaintTracking::FunctionModel {
 private class CopyFunction extends TaintTracking::FunctionModel {
   CopyFunction() { this = Builtin::copy() }
 
-  override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(1) and outp.isParameter(0)
   }
 }
@@ -60,7 +60,7 @@ module PathFilePath {
       )
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and
       outp.isResult(_)
     }
@@ -84,7 +84,7 @@ module Fmt {
   class Sprinter extends TaintTracking::FunctionModel {
     Sprinter() { this.hasQualifiedName("fmt", ["Sprint", "Sprintf", "Sprintln"]) }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
@@ -440,7 +440,7 @@ module OS {
   class Expand extends TaintTracking::FunctionModel {
     Expand() { hasQualifiedName("os", "Expand") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -449,7 +449,7 @@ module OS {
   class ExpandEnv extends TaintTracking::FunctionModel {
     ExpandEnv() { hasQualifiedName("os", "ExpandEnv") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -470,7 +470,7 @@ module Path {
       )
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and
       outp.isResult(_)
     }
@@ -483,7 +483,7 @@ module Strings {
   class Join extends TaintTracking::FunctionModel {
     Join() { hasQualifiedName("strings", "Join") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter([0 .. 1]) and outp.isResult()
     }
   }
@@ -492,7 +492,7 @@ module Strings {
   class Repeat extends TaintTracking::FunctionModel {
     Repeat() { hasQualifiedName("strings", "Repeat") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -503,7 +503,7 @@ module Strings {
       hasQualifiedName("strings", "Replace") or hasQualifiedName("strings", "ReplaceAll")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       (inp.isParameter(0) or inp.isParameter(2)) and
       outp.isResult()
     }
@@ -515,7 +515,7 @@ module Strings {
       exists(string split | split.matches("Split%") | hasQualifiedName("strings", split))
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -526,7 +526,7 @@ module Strings {
       exists(string conv | conv.matches("To%") | hasQualifiedName("strings", conv))
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(getNumParameter() - 1) and outp.isResult()
     }
   }
@@ -535,7 +535,7 @@ module Strings {
   class Trimmer extends TaintTracking::FunctionModel {
     Trimmer() { exists(string split | split.matches("Trim%") | hasQualifiedName("strings", split)) }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -591,7 +591,7 @@ module URL {
       hasQualifiedName("net/url", "PathEscape") or hasQualifiedName("net/url", "QueryEscape")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
@@ -602,7 +602,7 @@ module URL {
       hasQualifiedName("net/url", "PathUnescape") or hasQualifiedName("net/url", "QueryUnescape")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult(0)
     }
   }
@@ -616,7 +616,7 @@ module URL {
       hasQualifiedName("net/url", "ParseRequestURI")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and
       outp.isResult(0)
       or
@@ -638,7 +638,7 @@ module URL {
       )
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
     }
   }
@@ -647,7 +647,7 @@ module URL {
   class UrlMarshalBinary extends TaintTracking::FunctionModel, Method {
     UrlMarshalBinary() { hasQualifiedName("net/url", "URL", "MarshalBinary") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult(0)
     }
   }
@@ -656,7 +656,7 @@ module URL {
   class UrlResolveReference extends TaintTracking::FunctionModel, Method {
     UrlResolveReference() { hasQualifiedName("net/url", "URL", "ResolveReference") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       (inp.isReceiver() or inp.isParameter(0)) and
       outp.isResult()
     }
@@ -669,7 +669,7 @@ module URL {
       hasQualifiedName("net/url", "UserPassword")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
@@ -683,7 +683,7 @@ module URL {
       )
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult(0)
     }
   }
@@ -697,7 +697,7 @@ module URL {
       )
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
     }
   }
@@ -797,13 +797,13 @@ module EncodingJson {
       this.hasQualifiedName("encoding/json", "MarshalIndent")
     }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp = getAnInput() and outp = getOutput()
     }
 
-    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+    override FunctionInput getAnInput() { result.isParameter(0) }
 
-    override DataFlow::FunctionOutput getOutput() { result.isResult(0) }
+    override FunctionOutput getOutput() { result.isResult(0) }
 
     override string getFormat() { result = "JSON" }
   }
@@ -811,13 +811,13 @@ module EncodingJson {
   private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
     UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp = getAnInput() and outp = getOutput()
     }
 
-    override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
+    override FunctionInput getAnInput() { result.isParameter(0) }
 
-    override DataFlow::FunctionOutput getOutput() { result.isParameter(1) }
+    override FunctionOutput getOutput() { result.isParameter(1) }
 
     override string getFormat() { result = "JSON" }
   }
@@ -828,7 +828,7 @@ module EncodingHex {
   private class DecodeStringFunction extends TaintTracking::FunctionModel {
     DecodeStringFunction() { this.hasQualifiedName("encoding/hex", "DecodeString") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and
       outp.isResult(0)
     }
@@ -840,7 +840,7 @@ module CryptoCipher {
   private class AeadOpenFunction extends TaintTracking::FunctionModel, Method {
     AeadOpenFunction() { this.hasQualifiedName("crypto/cipher", "AEAD", "Open") }
 
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(2) and
       outp.isResult(0)
     }
