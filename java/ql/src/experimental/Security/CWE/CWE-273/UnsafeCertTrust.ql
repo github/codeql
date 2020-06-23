@@ -226,4 +226,3 @@ where
   aa instanceof SSLEndpointIdentificationNotSet or
   aa instanceof RabbitMQEnableHostnameVerificationNotSet
 select aa, "Unsafe configuration of trusted certificates"
-
