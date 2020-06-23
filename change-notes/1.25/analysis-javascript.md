@@ -56,6 +56,7 @@
 | Expression has no effect (`js/useless-expression`) | Fewer results | This query no longer flags an expression when that expression is the only content of the containing file. |
 | Hard-coded credentials (`js/hardcoded-credentials`) | More results | This query now recognizes hard-coded credentials sent via HTTP authorization headers. |
 | Incomplete URL scheme check (`js/incomplete-url-scheme-check`) | More results | This query now recognizes additional url scheme checks. |
+| Insecure randomness (`js/insecure-randomness`) | Less results | This query now recognizes when an insecure random value is used as a fallback when secure random values are unsupported. |
 | Misspelled variable name (`js/misspelled-variable-name`) | Message changed | The message for this query now correctly identifies the misspelled variable in additional cases. |
 | Non-linear pattern (`js/non-linear-pattern`) | Fewer duplicates and message changed | This query now generates fewer duplicate alerts and has a clearer explanation in case of type annotations used in a pattern. |
 | Prototype pollution in utility function (`js/prototype-pollution-utility`) | More results | This query now recognizes additional utility functions as vulnerable to prototype polution. |
