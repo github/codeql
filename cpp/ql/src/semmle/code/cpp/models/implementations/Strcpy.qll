@@ -93,9 +93,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    not exists(getParamSize()) and
     input.isParameterDeref(getParamSrc()) and
     output.isParameterDeref(getParamDest())
     or
+    not exists(getParamSize()) and
     input.isParameterDeref(getParamSrc()) and
     output.isReturnValueDeref()
     or
@@ -106,7 +108,8 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // these may do only a partial copy of the input buffer to the output
     // buffer
-    input.isParameter(getParamSize()) and
+    exists(getParamSize()) and
+    input.isParameter(getParamSrc()) and
     (
       output.isParameterDeref(getParamDest()) or
       output.isReturnValueDeref()
