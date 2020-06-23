@@ -1,3 +1,5 @@
+/** Contains predicates concerning when and where files are opened and closed. */
+
 import python
 import semmle.python.GuardedControlFlow
 import semmle.python.pointsto.Filters
@@ -113,12 +115,14 @@ predicate close_method_call(CallNode call, ControlFlowNode self) {
     call.getFunction().(AttrNode).getObject("close") = self
 }
 
+/** Holds if `close` is a function that appears to close files that are passed to it as an argument. */
 predicate function_closes_file(FunctionValue close) {
     close = Value::named("os.close")
     or
     function_should_close_parameter(close.getScope())
 }
 
+/** INTERNAL - Helper predicate for `function_closes_file` */
 predicate function_should_close_parameter(Function func) {
     exists(EssaDefinition def |
         closes_file(def) and
@@ -126,6 +130,7 @@ predicate function_should_close_parameter(Function func) {
     )
 }
 
+/** Holds if `f` opens a file, either directly or indirectly. */
 predicate function_opens_file(FunctionValue f) {
     f = Value::named("open")
     or
@@ -140,6 +145,7 @@ predicate function_opens_file(FunctionValue f) {
     )
 }
 
+/** Holds if `v` refers to a file opened at `open` which is subsequently returned from a function. */
 predicate file_is_returned(EssaVariable v, ControlFlowNode open) {
     exists(NameNode n, Return ret |
         var_is_open(v, open) and
