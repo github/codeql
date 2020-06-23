@@ -11,10 +11,11 @@
 
 import javascript
 import DataFlow
+import semmle.javascript.RestrictedLocations
 
 from CallNode call
 where
   call = moduleMember("jsonwebtoken", "verify").getACall() and
   unique(boolean b | b = call.getArgument(1).analyze().getABooleanValue()) = false
-select call.getStartLine(), call,
+select call.asExpr().(FirstLineOf),
   "does not verify the JWT payload with a cryptographic secret or public key."
