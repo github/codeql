@@ -24,6 +24,21 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the size of the copy (in characters).
+   */
+  int getParamSize() { if exists(getParameter(2)) then result = 2 else none() }
+
+  /**
+   * Gets the index of the parameter that is the source of the copy.
+   */
+  int getParamSrc() { result = 1 }
+
+  /**
+   * Gets the index of the parameter that is the destination to be appended to.
+   */
+  int getParamDest() { result = 0 }
+
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()

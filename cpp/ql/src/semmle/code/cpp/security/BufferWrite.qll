@@ -10,6 +10,7 @@ import semmle.code.cpp.commons.Alloc
 import semmle.code.cpp.commons.Buffer
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.models.implementations.Strcat
+import semmle.code.cpp.models.implementations.Strcpy
 
 /*
  * --- BufferWrite framework ---
@@ -106,74 +107,19 @@ abstract class BufferWriteCall extends BufferWrite, FunctionCall { }
  * A call to a variant of `strcpy`.
  */
 class StrCopyBW extends BufferWriteCall {
-  StrCopyBW() {
-    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
-      // strcpy(dst, src)
-      name = "strcpy"
-      or
-      // wcscpy(dst, src)
-      name = "wcscpy"
-      or
-      // _mbscpy(dst, src)
-      name = "_mbscpy"
-      or
-      (
-        name = "strcpy_s" or // strcpy_s(dst, max_amount, src)
-        name = "wcscpy_s" or // wcscpy_s(dst, max_amount, src)
-        name = "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
-      ) and
-      // exclude the 2-parameter template versions
-      // that find the size of a fixed size destination buffer.
-      fn.getNumberOfParameters() = 3
-      or
-      // strncpy(dst, src, max_amount)
-      name = "strncpy"
-      or
-      // strncpy_l(dst, src, max_amount, locale)
-      name = "strncpy_l"
-      or
-      // wcsncpy(dst, src, max_amount)
-      name = "wcsncpy"
-      or
-      // _wcsncpy_l(dst, src, max_amount, locale)
-      name = "_wcsncpy_l"
-      or
-      // _mbsncpy(dst, src, max_amount)
-      name = "_mbsncpy"
-      or
-      // _mbsncpy_l(dst, src, max_amount, locale)
-      name = "_mbsncpy_l"
-    )
-  }
+  StrcpyFunction f;
+
+  StrCopyBW() { getTarget() = f.(TopLevelFunction) }
 
   /**
    * Gets the index of the parameter that is the maximum size of the copy (in characters).
    */
-  int getParamSize() {
-    exists(TopLevelFunction fn, string name |
-      fn = getTarget() and
-      name = fn.getName() and
-      (
-        if name.suffix(name.length() - 2) = "_s"
-        then result = 1
-        else
-          if exists(name.indexOf("ncpy"))
-          then result = 2
-          else none()
-      )
-    )
-  }
+  int getParamSize() { result = f.getParamSize() }
 
   /**
    * Gets the index of the parameter that is the source of the copy.
    */
-  int getParamSrc() {
-    exists(TopLevelFunction fn, string name |
-      fn = getTarget() and
-      name = fn.getName() and
-      (if name.suffix(name.length() - 2) = "_s" then result = 2 else result = 1)
-    )
-  }
+  int getParamSrc() { result = f.getParamSrc() }
 
   override Type getBufferType() {
     result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
@@ -181,7 +127,7 @@ class StrCopyBW extends BufferWriteCall {
 
   override Expr getASource() { result = getArgument(getParamSrc()) }
 
-  override Expr getDest() { result = getArgument(0) }
+  override Expr getDest() { result = getArgument(f.getParamDest()) }
 
   override predicate hasExplicitLimit() { exists(getParamSize()) }
 
@@ -198,17 +144,19 @@ class StrCopyBW extends BufferWriteCall {
  * A call to a variant of `strcat`.
  */
 class StrCatBW extends BufferWriteCall {
-  StrCatBW() { exists(TopLevelFunction fn | fn = getTarget() and fn instanceof StrcatFunction) }
+  StrcatFunction f;
+
+  StrCatBW() { getTarget() = f.(TopLevelFunction) }
 
   /**
    * Gets the index of the parameter that is the maximum size of the copy (in characters).
    */
-  int getParamSize() { if exists(getArgument(2)) then result = 2 else none() }
+  int getParamSize() { result = f.getParamSize() }
 
   /**
    * Gets the index of the parameter that is the source of the copy.
    */
-  int getParamSrc() { result = 1 }
+  int getParamSrc() { result = f.getParamSrc() }
 
   override Type getBufferType() {
     result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
@@ -216,7 +164,7 @@ class StrCatBW extends BufferWriteCall {
 
   override Expr getASource() { result = getArgument(getParamSrc()) }
 
-  override Expr getDest() { result = getArgument(0) }
+  override Expr getDest() { result = getArgument(f.getParamDest()) }
 
   override predicate hasExplicitLimit() { exists(getParamSize()) }
 
