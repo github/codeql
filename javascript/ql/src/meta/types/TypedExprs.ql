@@ -12,8 +12,6 @@
 import javascript
 import meta.MetaMetrics
 
-predicate isProperType(Type t) {
-  not t instanceof AnyType
-}
+predicate isProperType(Type t) { not t instanceof AnyType }
 
 select projectRoot(), count(Expr e | isProperType(e.getType()))

@@ -9,7 +9,6 @@ private import semmle.javascript.dependencies.Dependencies
 private import semmle.javascript.dependencies.FrameworkLibraries
 private import semmle.javascript.frameworks.Testing
 private import DataFlow
-
 import meta.MetaMetrics
 
 /** An call site that is relevant for analysis quality. */

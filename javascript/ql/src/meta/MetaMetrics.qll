@@ -1,6 +1,7 @@
 /**
  * Helpers to generating meta metrics, that is, metrics about the CodeQL analysis and extractor.
  */
+
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import semmle.javascript.dependencies.FrameworkLibraries
