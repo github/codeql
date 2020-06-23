@@ -11,6 +11,7 @@
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)
   - [marsdb](https://www.npmjs.com/package/marsdb)
+  - [micro](https://www.npmjs.com/package/micro/)
   - [minimongo](https://www.npmjs.com/package/minimongo/)
   - [mssql](https://www.npmjs.com/package/mssql)
   - [mysql](https://www.npmjs.com/package/mysql)
@@ -20,6 +21,7 @@
   - [sqlite](https://www.npmjs.com/package/sqlite)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
   - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [yargs](https://www.npmjs.com/package/yargs)
   - [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)
 
 * TypeScript 3.9 is now supported.
@@ -35,6 +37,13 @@
 | Incomplete HTML attribute sanitization (`js/incomplete-html-attribute-sanitization`) | security, external/cwe/cwe-20, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities due to incomplete sanitization of HTML meta-characters. Results are shown on LGTM by default. |
 | Unsafe expansion of self-closing HTML tag (`js/unsafe-html-expansion`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights potential XSS vulnerabilities caused by unsafe expansion of self-closing HTML tags. |
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights potential command injections due to a shell command being constructed from library inputs. Results are shown on LGTM by default. |
+| Download of sensitive file through insecure connection (`js/insecure-download`) | security, external/cwe/cwe-829 | Highlights downloads of sensitive files through an unencrypted protocol. Results are shown on LGTM by default. |
+| Exposure of private files (`js/exposure-of-private-files`) | security, external/cwe/cwe-200 | Highlights servers that serve private files. Results are shown on LGTM by default. |
+| Creating biased random numbers from a cryptographically secure source (`js/biased-cryptographic-random`) | security, external/cwe/cwe-327 | Highlights mathematical operations on cryptographically secure numbers that can create biased results. Results are shown on LGTM by default. |
+| Storage of sensitive information in build artifact (`js/build-artifact-leak`) | security, external/cwe/cwe-312 | Highlights storage of sensitive information in build artifacts. Results are shown on LGTM by default. |
+| Improper code sanitization (`js/bad-code-sanitization`) | security, external/cwe/cwe-094, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights string concatenation where code is constructed without proper sanitization. Results are shown on LGTM by default. |
+| Disabling certificate validation (`js/disabling-certificate-validation`) | security, external/cwe-295 | Highlights locations where SSL certificate validation is disabled. Results are shown on LGTM by default. | 
+| Incomplete multi-character sanitization (`js/incomplete-multi-character-sanitization`) | correctness, security, external/cwe/cwe-20, external/cwe/cwe-116 | Highlights sanitizers that fail to remove dangerous substrings completely. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
