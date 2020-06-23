@@ -1201,6 +1201,7 @@ private predicate flowCandFwd(
   Configuration config
 ) {
   flowCandFwd0(node, fromArg, argApf, apf, config) and
+  not apf.isClearedAt(node) and
   if node instanceof CastingNode
   then compatibleTypes(getErasedNodeTypeBound(node), apf.getType())
   else any()
@@ -1219,8 +1220,7 @@ private predicate flowCandFwd0(
   or
   exists(Node mid |
     flowCandFwd(mid, fromArg, argApf, apf, config) and
-    localFlowBigStep(mid, node, true, _, config, _) and
-    not apf.isClearedAt(node)
+    localFlowBigStep(mid, node, true, _, config, _)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
@@ -1233,8 +1233,7 @@ private predicate flowCandFwd0(
     nodeCand2(node, unbind(config)) and
     jumpStep(mid, node, config) and
     fromArg = false and
-    argApf = TAccessPathFrontNone() and
-    not apf.isClearedAt(node)
+    argApf = TAccessPathFrontNone()
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
@@ -1259,8 +1258,7 @@ private predicate flowCandFwd0(
   exists(TypedContent tc |
     flowCandFwdRead(tc, node, fromArg, argApf, config) and
     flowCandFwdConsCand(tc, apf, config) and
-    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config)) and
-    not apf.isClearedAt(node)
+    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
   )
   or
   // flow into a callable
@@ -1316,8 +1314,7 @@ private predicate flowCandFwdIn(
 ) {
   exists(ArgumentNode arg, boolean allowsFieldFlow |
     flowCandFwd(arg, fromArg, argApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
-    not apf.isClearedAt(p)
+    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1330,8 +1327,7 @@ private predicate flowCandFwdOut(
 ) {
   exists(ReturnNodeExt ret, boolean allowsFieldFlow |
     flowCandFwd(ret, fromArg, argApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
-    not apf.isClearedAt(node)
+    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
