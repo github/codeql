@@ -1,3 +1,5 @@
+/** INTERNAL - Methods used for queries relating to the correct invocation of functions. */
+
 import python
 import Testing.Mox
 
@@ -71,36 +73,38 @@ private int positional_arg_count_for_call(Call call, Value callable) {
     )
 }
 
+/** Gets the number of arguments in `call`. */
 int arg_count_objectapi(Call call) {
     result = count(call.getAnArg()) + varargs_length_objectapi(call) + count(call.getAKeyword())
 }
 
+/** Gets the number of arguments in `call`. */
 int arg_count(Call call) {
     result = count(call.getAnArg()) + varargs_length(call) + count(call.getAKeyword())
 }
 
-/* Gets a call corresponding to the given class or function*/
+/** Gets a call corresponding to the given class or function. */
 private ControlFlowNode get_a_call_objectapi(Object callable) {
     result = callable.(ClassObject).getACall()
     or
     result = callable.(FunctionObject).getACall()
 }
 
-/* Gets a call corresponding to the given class or function*/
+/** Gets a call corresponding to the given class or function. */
 private ControlFlowNode get_a_call(Value callable) {
     result = callable.(ClassValue).getACall()
     or
     result = callable.(FunctionValue).getACall()
 }
 
-/* Gets the function object corresponding to the given class or function*/
+/** Gets the function object corresponding to the given class or function. */
 FunctionObject get_function_or_initializer_objectapi(Object func_or_cls) {
     result = func_or_cls.(FunctionObject)
     or
     result = func_or_cls.(ClassObject).declaredAttribute("__init__")
 }
 
-/* Gets the function object corresponding to the given class or function*/
+/** Gets the function object corresponding to the given class or function. */
 FunctionValue get_function_or_initializer(Value func_or_cls) {
     result = func_or_cls.(FunctionValue)
     or
