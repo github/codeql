@@ -130,13 +130,9 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     // TODO: source can also be result of tls.InsecureCipherSuites()[0].ID
     source =
-      any(DataFlow::FieldReadNode fieldRead |
-        fieldRead.getBase().getAPredecessor*() =
-          any(Function insecureCipherSuites |
-            insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
-          ).getACall().getResult() and
-        fieldRead.getFieldName() = "ID"
-      )
+      any(Function insecureCipherSuites |
+        insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
+      ).getACall().getResult()
     or
     source =
       any(DataFlow::ValueEntity val |

@@ -178,6 +178,24 @@ func cipherSuites() {
 			config.CipherSuites = append(config.CipherSuites, v.ID) // BAD
 		}
 	}
+	{
+		config := &tls.Config{}
+		cipherSuites := make([]uint16, 0)
+		insecureSuites := tls.InsecureCipherSuites()
+		for _, v := range insecureSuites {
+			cipherSuites = append(cipherSuites, v.ID)
+		}
+		config.CipherSuites = cipherSuites // BAD
+	}
+	{
+		config := &tls.Config{}
+		cipherSuites := make([]uint16, 0)
+		insecureSuites := tls.InsecureCipherSuites()
+		for i := range insecureSuites {
+			cipherSuites = append(cipherSuites, insecureSuites[i].ID)
+		}
+		config.CipherSuites = cipherSuites // BAD
+	}
 }
 
 func good(version string) {
