@@ -1,5 +1,8 @@
+/** Helper functions for queries having to do with redundant comparisons. */
+
 import python
 
+/** A comparison where the left and right hand sides appear to be identical. */
 class RedundantComparison extends Compare {
     RedundantComparison() {
         exists(Expr left, Expr right |
@@ -8,6 +11,15 @@ class RedundantComparison extends Compare {
         )
     }
 
+    /** Holds if this comparison could be due to a missing `self.`, for example
+     * ```python
+     * foo == foo
+     * ```
+     * instead of
+     * ```python
+     * self.foo == foo
+     * ```
+     */
     predicate maybeMissingSelf() {
         exists(Name left |
             this.compares(left, _, _) and
