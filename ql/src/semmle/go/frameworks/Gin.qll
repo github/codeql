@@ -161,7 +161,7 @@ private module Gin {
             methodName = "ShouldBindYAML"
           )
         |
-          this = call.getArgument(0)
+          this = any(FunctionOutput output | output.isParameter(0)).getExitNode(call)
         )
       )
     }
