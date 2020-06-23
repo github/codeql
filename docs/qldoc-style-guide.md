@@ -12,7 +12,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 1. Use `/** ... */` for documentation, even for single line comments.
    - For single-line documentation, the `/**` and `*/` are written on the same line as the comment.
    - For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
-1. Use code formatting (`backticks`) within comments for code from the source language, and also for QL code (for example, names of classes, predicates, and variables).
+1. Use code formatting (backticks) within comments for code from the source language, and also for QL code (for example, names of classes, predicates, and variables).
 1. Give explanatory examples of code in the target language, enclosed in ```` ``` ````  or `` ` ``.
 
 
@@ -43,7 +43,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### Predicates without result
 
-1. Use a third-person verb phrase of the form ``Holds if `arg` has <property>.``.
+1. Use a third-person verb phrase of the form ``Holds if `arg` has <property>.``
 1. Avoid:
    - `/** Whether ... */`
    - `/**" Relates ... */`
@@ -65,9 +65,9 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 1. Use a third-person verb phrase of the form `Gets (a|the) <thing>`.
 1. Use "if any" if the item is usually unique but might be missing. For example
-`Gets the body of this method, if any.`.
+`Gets the body of this method, if any.`
 1. If the predicate has more complex behaviour, for example multiple arguments are conceptually "outputs", it can be described like a predicate without a result. For example
-``Holds if `result` is a child of this expression.``.
+``Holds if `result` is a child of this expression.``
 1. Avoid:
    - `Get a ...`
    - `The ...`
@@ -96,7 +96,7 @@ deprecated Expr getInitializer()
 
 ### Internal predicates
 
-Some predicates are internal-only declarations that cannot be made private. The documentation for internal predicates should begin with `INTERNAL: Do not use.`. 
+Some predicates are internal-only declarations that cannot be made private. The documentation for internal predicates should begin with `INTERNAL: Do not use.`
 
 #### Example
 
@@ -170,8 +170,8 @@ Modules should be documented using a third-person verb phrase of the form `Provi
 /** Provides logic for determining constant expressions. */
 ```
 ```ql
- /** Provides classes representing the control flow graph within functions. */
- ```
+/** Provides classes representing the control flow graph within functions. */
+```
 
 ## Special variables
 
