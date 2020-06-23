@@ -1,8 +1,8 @@
 /**
- * @id java/unsafe-cert-trust
  * @name Unsafe implementation of trusting any certificate or missing hostname verification in SSL configuration
  * @description Unsafe implementation of the interface X509TrustManager, HostnameVerifier, and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
  * @kind problem
+ * @id java/unsafe-cert-trust
  * @tags security
  *       external/cwe-273
  */
@@ -226,3 +226,4 @@ where
   aa instanceof SSLEndpointIdentificationNotSet or
   aa instanceof RabbitMQEnableHostnameVerificationNotSet
 select aa, "Unsafe configuration of trusted certificates"
+
