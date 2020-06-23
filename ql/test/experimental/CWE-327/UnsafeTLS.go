@@ -204,7 +204,7 @@ func good(version string) {
 	switch version {
 	case "1.0":
 		config.MinVersion = tls.VersionTLS10 // OK
-		config.MaxVersion = tls.VersionTLS11 // BAD
+		config.MaxVersion = tls.VersionTLS11 // OK
 	case "1.1":
 		config.MinVersion = tls.VersionTLS11 // OK
 	default:
