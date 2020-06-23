@@ -32,7 +32,6 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 1. Declarations in query files should be documented.
 1. Library files (`.qll` files) should be have a documentation comment at the top of the file.
 1. Query files, except for tests, must have a QLDoc query documentation comment at the top of the file.
-1. Where a class denotes a generic concept with subclasses, list those subclasses.
 
 ## QLDoc for predicates
 
@@ -63,7 +62,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### Predicates with result
 
-1. Use a third-person verb phrase of the form `Gets (a|the) <thing>`.
+1. Use a third-person verb phrase of the form `Gets (a|the) <thing>.`
 1. Use "if any" if the item is usually unique but might be missing. For example
 `Gets the body of this method, if any.`
 1. If the predicate has more complex behaviour, for example multiple arguments are conceptually "outputs", it can be described like a predicate without a result. For example
@@ -79,7 +78,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 /**
  * Gets the expression denoting the super class of this class,
  * or nothing if this is an interface or a class without an `extends` clause.
-  */
+ */
 ```
 
 ### Deprecated predicates
@@ -132,9 +131,10 @@ Certain special predicates should be documented consistently.
   ```
 ## QLDoc for classes
 
-1. Document classes using a noun phrase of the form `A <domain element> that <has property>`.
+1. Document classes using a noun phrase of the form `A <domain element> that <has property>.`
 1. Use "that", not "which".
 1. Refer to member elements in the singular.
+1. Where a class denotes a generic concept with subclasses, list those subclasses.
 
 #### Example
 
@@ -162,7 +162,7 @@ class Callable extends ...
 
 ## QLDoc for modules
 
-Modules should be documented using a third-person verb phrase of the form `Provides <classes and predicates to do something>`. 
+Modules should be documented using a third-person verb phrase of the form `Provides <classes and predicates to do something>.` 
 
 #### Example
 
