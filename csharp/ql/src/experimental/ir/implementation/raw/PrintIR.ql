@@ -5,4 +5,4 @@
  * @kind graph
  */
 
-import PrintIR
+import experimental.ir.implementation.raw.PrintIR
