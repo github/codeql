@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -169,6 +170,16 @@ func serveStdlib() {
 		target := r.FormValue("target")
 		// BAD: a request parameter is incorporated without validation into a URL redirect
 		http.Redirect(w, r, target, 301)
+	})
+
+	http.HandleFunc("/ex10", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		target, _ := url.ParseRequestURI(r.FormValue("target"))
+		// BAD: Path could start with `//`
+		http.Redirect(w, r, target.Path, 301)
+		// BAD: EscapedPath() does not help with that
+		http.Redirect(w, r, target.EscapedPath(), 301)
 	})
 
 	http.ListenAndServe(":80", nil)
