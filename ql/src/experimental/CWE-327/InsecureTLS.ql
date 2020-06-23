@@ -22,41 +22,19 @@ predicate isTestFile(DataFlow::Node node) {
   )
 }
 
-/**
- * Returns the name of the write target field.
- */
-string getSinkTargetFieldName(DataFlow::PathNode sink) {
-  result = any(DataFlow::Field fld | fld.getAWrite().getRhs() = sink.getNode()).getName()
-}
-
-/**
- * Returns the name of a ValueEntity.
- */
-string getSourceValueEntityName(DataFlow::PathNode source) {
-  result =
-    any(DataFlow::ValueEntity val | source.getNode().(DataFlow::ReadNode).reads(val)).getName()
-}
-
-predicate isUnsafeTlsVersionInt(int val) {
+predicate unsafeTlsVersion(int val, string name) {
   // tls.VersionSSL30
-  val = 768
+  val = 768 and name = "VersionSSL30"
   or
   // tls.VersionTLS10
-  val = 769
+  val = 769 and name = "VersionTLS10"
   or
   // tls.VersionTLS11
-  val = 770
-}
-
-string tlsVersionIntToString(int val) {
-  // tls.VersionSSL30
-  val = 768 and result = "VersionSSL30"
+  val = 770 and name = "VersionTLS11"
   or
-  // tls.VersionTLS10
-  val = 769 and result = "VersionTLS10"
-  or
-  // tls.VersionTLS11
-  val = 770 and result = "VersionTLS11"
+  // Zero indicates the lowest available version setting for MinVersion,
+  // or the highest available version setting for MaxVersion.
+  val = 0 and name = ""
 }
 
 /**
@@ -66,56 +44,46 @@ string tlsVersionIntToString(int val) {
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() =
-      any(DataFlow::ValueExpr val |
-        val.getIntValue() = 0 or isUnsafeTlsVersionInt(val.getIntValue())
-      )
+  predicate isSource(DataFlow::Node source, int val) {
+    val = source.getIntValue() and
+    unsafeTlsVersion(val, _)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Write write |
-      write =
-        any(DataFlow::Field fld |
-          fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"])
-        ).getAWrite() and
-      // The write must NOT happen inside a switch statement:
-      not exists(ExpressionSwitchStmt switch |
-        switch.getBody().getAChildStmt().getChild(0) =
-          any(Assignment asign | asign.getRhs() = sink.asExpr())
-      )
-    |
-      sink = write.getRhs()
+  predicate isSink(DataFlow::Node sink, Field f) {
+    f.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
+    sink = f.getAWrite().getRhs() and
+    // Exclude writes happening inside a switch statement,
+    // provided the config struct is not declared inside that same statement:
+    not exists(ExpressionSwitchStmt switch |
+      switch.getBody().getAChildStmt().getChild(0) =
+        any(Assignment asign | asign.getRhs() = sink.asExpr())
+      // TODO: make sure that the parent struct of the field is not declared
+      // inside the switch statement.
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { isTestFile(node) }
+  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
+  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 }
 
 /**
  * Find insecure TLS versions.
  */
 predicate checkTlsVersions(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
-  exists(TlsVersionFlowConfig cfg |
+  exists(TlsVersionFlowConfig cfg, int version, Field fld |
     cfg.hasFlowPath(source, sink) and
+    cfg.isSource(source.getNode(), version) and
+    cfg.isSink(sink.getNode(), fld) and
     // Exclude tls.Config.Max = 0 (which is OK):
-    not exists(Write write, DataFlow::ValueExpr v0 | write.getRhs() = sink.getNode() |
-      v0 = source.getNode().asExpr() and
-      v0.getIntValue() = 0 and
-      getSinkTargetFieldName(sink) = "MaxVersion"
-    )
+    not (version = 0 and fld.getName() = "MaxVersion")
   |
-    message =
-      "TLS version too low for " + getSinkTargetFieldName(sink) + ": " +
-        tlsVersionIntToString(any(DataFlow::ValueExpr val |
-            val = sink.getNode().asExpr() and
-            val.getIntValue() != 0
-          ).getIntValue())
+    version = 0 and
+    message = "Using lowest TLS version for " + fld + "."
     or
-    message = "Using lowest TLS version for " + getSinkTargetFieldName(sink) and
-    exists(DataFlow::ValueExpr v0 |
-      v0 = sink.getNode().asExpr() and
-      v0.getIntValue() = 0
+    version != 0 and
+    exists(string name | unsafeTlsVersion(version, name) |
+      message = "Using insecure TLS version " + name + " for " + fld + "."
     )
   )
 }
@@ -127,36 +95,47 @@ predicate checkTlsVersions(DataFlow::PathNode source, DataFlow::PathNode sink, s
 class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   TlsInsecureCipherSuitesFlowConfig() { this = "TlsInsecureCipherSuitesFlowConfig" }
 
+  predicate isSourceValueEntity(DataFlow::Node source, string suiteName) {
+    exists(DataFlow::ValueEntity val |
+      val.hasQualifiedName("crypto/tls", suiteName) and
+      (
+        suiteName = "TLS_RSA_WITH_RC4_128_SHA"
+        or
+        suiteName = "TLS_RSA_WITH_AES_128_CBC_SHA256"
+        or
+        suiteName = "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA"
+        or
+        suiteName = "TLS_ECDHE_RSA_WITH_RC4_128_SHA"
+        or
+        suiteName = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
+        or
+        suiteName = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+      )
+    |
+      source = val.getARead()
+    )
+  }
+
+  predicate isSourceInsecureCipherSuites(DataFlow::Node source) {
+    exists(Function insecureCipherSuites |
+      insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
+    |
+      source = insecureCipherSuites.getACall().getResult()
+    )
+  }
+
   override predicate isSource(DataFlow::Node source) {
     // TODO: source can also be result of tls.InsecureCipherSuites()[0].ID
-    source =
-      any(Function insecureCipherSuites |
-        insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
-      ).getACall().getResult()
+    isSourceInsecureCipherSuites(source)
     or
-    source =
-      any(DataFlow::ValueEntity val |
-        val
-            .hasQualifiedName("crypto/tls",
-              any(string suiteName |
-                suiteName = "TLS_RSA_WITH_RC4_128_SHA" or
-                suiteName = "TLS_RSA_WITH_AES_128_CBC_SHA256" or
-                suiteName = "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA" or
-                suiteName = "TLS_ECDHE_RSA_WITH_RC4_128_SHA" or
-                suiteName = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256" or
-                suiteName = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-              ))
-      ).getARead()
+    isSourceValueEntity(source, _)
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink =
-      any(DataFlow::Field fld | fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites"))
-          .getAWrite()
-          .getRhs()
+    exists(DataFlow::Field fld | fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") |
+      sink = fld.getAWrite().getRhs()
+    )
   }
-
-  override predicate isSanitizer(DataFlow::Node node) { isTestFile(node) }
 }
 
 /**
@@ -166,12 +145,21 @@ predicate checkTlsInsecureCipherSuites(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message
 ) {
   exists(TlsInsecureCipherSuitesFlowConfig cfg | cfg.hasFlowPath(source, sink) |
-    message = "Use of an insecure cipher suite: " + getSourceValueEntityName(source)
+    exists(string name | cfg.isSourceValueEntity(source.getNode(), name) |
+      message = "Use of an insecure cipher suite: " + name + "."
+    )
+    or
+    cfg.isSourceInsecureCipherSuites(source.getNode()) and
+    message = "Use of an insecure cipher suite from InsecureCipherSuites()."
   )
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
 where
-  checkTlsVersions(source, sink, message) or
-  checkTlsInsecureCipherSuites(source, sink, message)
+  (
+    checkTlsVersions(source, sink, message) or
+    checkTlsInsecureCipherSuites(source, sink, message)
+  ) and
+  // Exclude results in test code:
+  not isTestFile(sink.getNode())
 select sink.getNode(), source, sink, message

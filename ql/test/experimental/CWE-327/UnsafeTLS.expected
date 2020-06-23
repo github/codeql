@@ -25,6 +25,10 @@ edges
 | UnsafeTLS.go:171:32:171:50 | selection of CipherSuites : slice type | UnsafeTLS.go:171:25:171:94 | call to append : slice type |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append : slice type |
+| UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:197:25:197:36 | cipherSuites |
+| UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | UnsafeTLS.go:197:25:197:36 | cipherSuites |
 nodes
 | UnsafeTLS.go:12:23:12:23 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:16:23:16:23 | 0 | semmle.label | 0 |
@@ -70,35 +74,41 @@ nodes
 | UnsafeTLS.go:171:32:171:37 | implicit dereference [CipherSuites] : slice type | semmle.label | implicit dereference [CipherSuites] : slice type |
 | UnsafeTLS.go:171:32:171:50 | selection of CipherSuites : slice type | semmle.label | selection of CipherSuites : slice type |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
-| UnsafeTLS.go:210:23:210:38 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
-| UnsafeTLS.go:219:24:219:39 | selection of VersionTLS10 | semmle.label | selection of VersionTLS10 |
-| UnsafeTLS.go:220:24:220:39 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
+| UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
+| UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
+| UnsafeTLS.go:197:25:197:36 | cipherSuites | semmle.label | cipherSuites |
+| UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
+| UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
+| UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | semmle.label | selection of VersionTLS10 |
+| UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
 #select
-| UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | Using lowest TLS version for MinVersion |
-| UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | Using lowest TLS version for MinVersion |
-| UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | TLS version too low for MinVersion: VersionSSL30 |
-| UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | TLS version too low for MaxVersion: VersionSSL30 |
-| UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | TLS version too low for MinVersion: VersionTLS10 |
-| UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | TLS version too low for MaxVersion: VersionTLS10 |
-| UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | TLS version too low for MinVersion: VersionTLS11 |
-| UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | TLS version too low for MaxVersion: VersionTLS11 |
-| UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | TLS version too low for MinVersion: VersionTLS11 |
-| UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | TLS version too low for MaxVersion: VersionTLS11 |
-| UnsafeTLS.go:86:16:86:21 | 0x0300 | UnsafeTLS.go:86:16:86:21 | 0x0300 | UnsafeTLS.go:86:16:86:21 | 0x0300 | TLS version too low for MinVersion: VersionSSL30 |
-| UnsafeTLS.go:92:16:92:21 | 0x0301 | UnsafeTLS.go:92:16:92:21 | 0x0301 | UnsafeTLS.go:92:16:92:21 | 0x0301 | TLS version too low for MaxVersion: VersionTLS10 |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:102:5:102:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:103:5:103:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:104:5:104:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:105:5:105:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:106:5:106:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:107:5:107:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:114:18:116:4 | slice literal | UnsafeTLS.go:115:5:115:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:114:18:116:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:122:18:124:4 | slice literal | UnsafeTLS.go:123:5:123:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:122:18:124:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:130:18:132:4 | slice literal | UnsafeTLS.go:131:5:131:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:130:18:132:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:138:18:140:4 | slice literal | UnsafeTLS.go:139:5:139:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:138:18:140:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA |
-| UnsafeTLS.go:146:18:148:4 | slice literal | UnsafeTLS.go:147:5:147:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:146:18:148:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:154:18:156:4 | slice literal | UnsafeTLS.go:155:5:155:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:154:18:156:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:171:25:171:94 | call to append | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 |
-| UnsafeTLS.go:210:23:210:38 | selection of VersionTLS11 | UnsafeTLS.go:210:23:210:38 | selection of VersionTLS11 | UnsafeTLS.go:210:23:210:38 | selection of VersionTLS11 | TLS version too low for MinVersion: VersionTLS11 |
-| UnsafeTLS.go:219:24:219:39 | selection of VersionTLS10 | UnsafeTLS.go:219:24:219:39 | selection of VersionTLS10 | UnsafeTLS.go:219:24:219:39 | selection of VersionTLS10 | TLS version too low for MinVersion: VersionTLS10 |
-| UnsafeTLS.go:220:24:220:39 | selection of VersionTLS11 | UnsafeTLS.go:220:24:220:39 | selection of VersionTLS11 | UnsafeTLS.go:220:24:220:39 | selection of VersionTLS11 | TLS version too low for MinVersion: VersionTLS11 |
+| UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | Using lowest TLS version for MinVersion. |
+| UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | Using lowest TLS version for MinVersion. |
+| UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | UnsafeTLS.go:34:23:34:38 | selection of VersionSSL30 | Using insecure TLS version VersionSSL30 for MinVersion. |
+| UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | UnsafeTLS.go:38:23:38:38 | selection of VersionSSL30 | Using insecure TLS version VersionSSL30 for MaxVersion. |
+| UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | UnsafeTLS.go:43:23:43:38 | selection of VersionTLS10 | Using insecure TLS version VersionTLS10 for MinVersion. |
+| UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | UnsafeTLS.go:47:23:47:38 | selection of VersionTLS10 | Using insecure TLS version VersionTLS10 for MaxVersion. |
+| UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | UnsafeTLS.go:52:23:52:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
+| UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | UnsafeTLS.go:56:23:56:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MaxVersion. |
+| UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | UnsafeTLS.go:61:16:61:31 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
+| UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | UnsafeTLS.go:67:16:67:31 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MaxVersion. |
+| UnsafeTLS.go:86:16:86:21 | 0x0300 | UnsafeTLS.go:86:16:86:21 | 0x0300 | UnsafeTLS.go:86:16:86:21 | 0x0300 | Using insecure TLS version VersionSSL30 for MinVersion. |
+| UnsafeTLS.go:92:16:92:21 | 0x0301 | UnsafeTLS.go:92:16:92:21 | 0x0301 | UnsafeTLS.go:92:16:92:21 | 0x0301 | Using insecure TLS version VersionTLS10 for MaxVersion. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:102:5:102:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:103:5:103:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:104:5:104:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:105:5:105:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:106:5:106:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:101:18:108:4 | slice literal | UnsafeTLS.go:107:5:107:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:101:18:108:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:114:18:116:4 | slice literal | UnsafeTLS.go:115:5:115:32 | selection of TLS_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:114:18:116:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:122:18:124:4 | slice literal | UnsafeTLS.go:123:5:123:39 | selection of TLS_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:122:18:124:4 | slice literal | Use of an insecure cipher suite: TLS_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:130:18:132:4 | slice literal | UnsafeTLS.go:131:5:131:40 | selection of TLS_ECDHE_ECDSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:130:18:132:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:138:18:140:4 | slice literal | UnsafeTLS.go:139:5:139:38 | selection of TLS_ECDHE_RSA_WITH_RC4_128_SHA : uint16 | UnsafeTLS.go:138:18:140:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA. |
+| UnsafeTLS.go:146:18:148:4 | slice literal | UnsafeTLS.go:147:5:147:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:146:18:148:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:154:18:156:4 | slice literal | UnsafeTLS.go:155:5:155:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:154:18:156:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:171:25:171:94 | call to append | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:197:25:197:36 | cipherSuites | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:197:25:197:36 | cipherSuites | Use of an insecure cipher suite from InsecureCipherSuites(). |
+| UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MaxVersion. |
+| UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
+| UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | Using insecure TLS version VersionTLS10 for MinVersion. |
+| UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
