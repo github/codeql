@@ -12,23 +12,6 @@ private import DataFlow
 
 import meta.MetaMetrics
 
-/** A file we ignore because it is a test file or compiled/generated/bundled code. */
-class IgnoredFile extends File {
-  IgnoredFile() {
-    any(Test t).getFile() = this
-    or
-    getRelativePath().regexpMatch("(?i).*/test(case)?s?/.*")
-    or
-    getBaseName().regexpMatch("(?i)(.*[._\\-]|^)(min|bundle|concat|spec|tests?)\\.[a-zA-Z]+")
-    or
-    exists(TopLevel tl | tl.getFile() = this |
-      tl.isExterns()
-      or
-      tl instanceof FrameworkLibraryInstance
-    )
-  }
-}
-
 /** An call site that is relevant for analysis quality. */
 class RelevantInvoke extends InvokeNode {
   RelevantInvoke() { not getFile() instanceof IgnoredFile }
